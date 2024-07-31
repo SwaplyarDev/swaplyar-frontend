@@ -45,75 +45,55 @@ export const RegisterForm = () => {
   };
 
   return (
-    <form onSubmit={ handleSubmit( onSubmit ) }  className="flex flex-col">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-black">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col bg-white dark:bg-gray-800 p-8 rounded shadow-md w-full max-w-sm">
+        <h2 className="text-2xl font-bold mb-5 text-center text-gray-900 dark:text-white">Crear Cuenta</h2>
 
-      {/* {
-        errors.name?.type === 'required' && (
-          <span className="text-red-500">* El nombre es obligatorio</span>
-        )
-      } */}
+        <label htmlFor="name" className="text-gray-900 dark:text-gray-300">Nombre completo</label>
+        <input
+          className={clsx(
+            "px-5 py-2 border bg-gray-200 dark:bg-gray-700 rounded mb-5 text-gray-900 dark:text-white",
+            { 'border-red-500': errors.name }
+          )}
+          type="text"
+          autoFocus
+          {...register('name', { required: true })}
+        />
 
+        <label htmlFor="email" className="text-gray-900 dark:text-gray-300">Correo electrónico</label>
+        <input
+          className={clsx(
+            "px-5 py-2 border bg-gray-200 dark:bg-gray-700 rounded mb-5 text-gray-900 dark:text-white",
+            { 'border-red-500': errors.email }
+          )}
+          type="email"
+          {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
+        />
 
-      <label htmlFor="email">Nombre completo</label>
-      <input
-        className={
-          clsx(
-            "px-5 py-2 border bg-gray-200 rounded mb-5",
-            {
-              'border-red-500': errors.name
-            }
-          )
-        }
-        type="text"
-        autoFocus
-        { ...register('name', { required: true }) }
-      />
+        <label htmlFor="password" className="text-gray-900 dark:text-gray-300">Contraseña</label>
+        <input
+          className={clsx(
+            "px-5 py-2 border bg-gray-200 dark:bg-gray-700 rounded mb-5 text-gray-900 dark:text-white",
+            { 'border-red-500': errors.password }
+          )}
+          type="password"
+          {...register('password', { required: true, minLength: 6 })}
+        />
 
-      <label htmlFor="email">Correo electrónico</label>
-      <input
-        className={
-          clsx(
-            "px-5 py-2 border bg-gray-200 rounded mb-5",
-            {
-              'border-red-500': errors.email
-            }
-          )
-        }
-        type="email"
-        { ...register('email', { required: true, pattern: /^\S+@\S+$/i }) }
-      />
+        <span className="text-red-500">{errorMessage}</span>
 
-      <label htmlFor="email">Contraseña</label>
-      <input
-        className={
-          clsx(
-            "px-5 py-2 border bg-gray-200 rounded mb-5",
-            {
-              'border-red-500': errors.password
-            }
-          )
-        }
-        type="password"
-        { ...register('password', { required: true, minLength: 6 }) }
-      />
+        <button className="btn-primary">Crear cuenta</button>
 
-      
-        <span className="text-red-500">{ errorMessage } </span>
-        
-      
+        <div className="flex items-center my-5">
+          <div className="flex-1 border-t border-gray-500"></div>
+          <div className="px-2 text-gray-800 dark:text-gray-300">O</div>
+          <div className="flex-1 border-t border-gray-500"></div>
+        </div>
 
-      <button className="btn-primary">Crear cuenta</button>
-
-      {/* divisor l ine */}
-      <div className="flex items-center my-5">
-        <div className="flex-1 border-t border-gray-500"></div>
-        <div className="px-2 text-gray-800">O</div>
-        <div className="flex-1 border-t border-gray-500"></div>
-      </div>
-
-      <Link href="/auth/login" className="btn-secondary text-center">
-        Ingresar
-      </Link>
-    </form>
+        <Link href="/auth/login" className="btn-secondary text-center">
+          Ingresar
+        </Link>
+      </form>
+    </div>
   );
 };

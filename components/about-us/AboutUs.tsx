@@ -4,6 +4,42 @@ import Image from "next/image";
 import CaedAboutUs from "../ui/caed-about-us/caed-about-us";
 import FlyerTrabajo from "../FlyerTrabajo/FlyerTrabajo";
 
+const cardsData = [
+    {
+        src: '/images/Apoyo.png',
+        alt: 'Imagen de Apoyo',
+        title: 'Apoyo',
+        backTitle: 'Apoyo Personalizado',
+        backText:
+        'En SwaplyAr, ofrecemos un equipo siempre dispuesto a resolver tus dudas, acompañándote paso a paso en cada transacción.',
+    },
+    {
+        src: '/images/Transparencia.png',
+        alt: 'Imagen de Transparencia',
+        title: 'Transparencia',
+        backTitle: 'Transparencia Total',
+        backText:
+        'La claridad es clave en SwaplyAr. No hay letras pequeñas; cada término del servicio es claro y directo para todos.',
+    },
+    {
+        src: '/images/Simplicidad.png',
+        alt: 'Imagen de Simplicidad',
+        title: 'Simplicidad',
+        backTitle: 'Simplicidad en Cada Paso',
+        backText:
+        'Nuestra plataforma está diseñada para ser intuitiva y fácil de usar, garantizando que cada usuario realice sus transacciones sin complicaciones.',
+    },
+    {
+        src: '/images/Eficiencia.png',
+        alt: 'Imagen de Eficiencia',
+        title: 'Eficiencia',
+        backTitle: 'Eficiencia en Cada Transacción',
+        backText:
+        'Garantizamos intercambios rápidos y precisos para que accedas a tus fondos sin demoras.',
+    },
+];
+
+
 const AboutUs = () => {
   return (
     <div className="py-10">
@@ -37,7 +73,7 @@ const AboutUs = () => {
             está buscando de una manera fácil y protegida.
           </h5>
         </div>
-        <CaedAboutUs />
+        <CaedAboutUs cardsData={cardsData} />
         <div className="default-space-between-components">
           <div className="rs-wrapper-v4 grid col1">
             <div className="info-content-container flex flex-col md:flex-row items-center">

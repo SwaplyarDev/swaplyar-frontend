@@ -5,6 +5,8 @@
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo'; // Asegúrate de tener este componente
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 
+
+
 export default function SwaplyArInstructions() {
     return (
         <div  className="py-10">

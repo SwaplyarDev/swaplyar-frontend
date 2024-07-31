@@ -35,6 +35,15 @@ export default function HomePage() {
                     content="Simplemente envianos un mensaje especificando la cantidad que necesitás y te proporcionaremos una cotización. Si aceptás el precio, procederemos con la transacción de manera rápida y segura."
                 />
             </div>
+            <div 
+                className="mt-10"
+            >
+                <FlyerTrabajo
+                imageSrc="/gif/flyer.gif"
+                >
+                    &iquest;Nuevo en SwaplyAr? Hac&eacute; clic en &quot;C&oacute;mo usar SwaplyAr&quot; y aprend&eacute; a operar f&aacute;cilmente. &iexcl;Empez&aacute; ahora!
+                </FlyerTrabajo>
+            </div>
         </main>
     );
 }
