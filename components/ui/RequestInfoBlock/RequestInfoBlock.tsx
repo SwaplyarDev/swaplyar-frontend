@@ -8,6 +8,7 @@ interface InfoBlockProps {
     className?: string;
 }
 
+
 const RequestInfoBlock: React.FC<InfoBlockProps> = ({ title, content, className }) => {
     return (
         <div className={`my-8 w-full max-w-3xl px-4 ${className}`}> 
