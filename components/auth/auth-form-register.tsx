@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { registerUser } from '@/actions/auth/register';
 import { signIn } from 'next-auth/react';
 
+
 type FormInputs = {
   name: string;
   email: string;
@@ -40,7 +41,7 @@ export const RegisterForm = () => {
     if (result?.error) {
       setErrorMessage(result.error);
     } else {
-      window.location.replace('/dashboard'); // Redirige al usuario al dashboard
+      window.location.replace('/dashboard'); 
     }
   };
 

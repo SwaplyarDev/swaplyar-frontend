@@ -35,7 +35,7 @@ export default function Footer() {
                 <div className="flex flex-col items-start">
                     <h4 className="text-gray-900 dark:text-white">Normativa</h4>
                     <FooterLink href="/info/warranty">Garantía</FooterLink>
-                    <FooterLink href="/info/terminos-y-condiciones">Términos y condiciones</FooterLink>
+                    <FooterLink href="/info/terms-and-conditions">Términos y condiciones</FooterLink>
                 </div>
                 <div className="flex flex-col items-start">
                     <h4 className="text-gray-900 dark:text-white">Atención al Cliente</h4>
