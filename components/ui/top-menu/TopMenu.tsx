@@ -1,62 +1,28 @@
 "use client";
 
+import { useState } from "react";
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import NavLinks from '@/components/ui/nav-links';
 import Image from "next/image";
 import Link from "next/link";
-import styled from '@emotion/styled';
 import { GiHamburgerMenu } from 'react-icons/gi';
 
-const MenuIcon = styled(GiHamburgerMenu)`
-    width: 30px;
-    height: 30px;
-    color: #333;
-    cursor: pointer;
-
-    &:hover {
-        color: #007BFF;
-    }
-`;
-
-const StyledNavbar = styled(Navbar)`
-  background-color: #ffffff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 1rem 2rem;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-
-  .navbar-brand {
-    display: flex;
-    align-items: center;
-    margin-left: 2em; 
-  }
-
-  .navbar-collapse {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-
-  .navbar-toggler {
-    border: none;
-    background: none;
-    font-size: 1.5rem;
-  }
-
-  .dropdown-item {
-    font-size: 0.9rem;
-  }
-`;
-
 export function TopMenu() {
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
+  const handleSelect = (item: string) => {
+    setSelectedItem(item);
+  };
+
   return (
-    <StyledNavbar fluid rounded>
+    <Navbar fluid rounded className="bg-white dark:bg-gray-800 shadow-md p-4">
       <Navbar.Brand href="/">
         <Image
           alt="Your Company"
           src="https://res.cloudinary.com/df5jwzuq9/image/upload/v1722209853/logo_g74htq.png"
           width={200}
           height={200}
-          className="h-12 w-auto navbar-brand"
+          className="h-12 w-auto"
         />
       </Navbar.Brand>
       <div className="flex items-center">
@@ -64,23 +30,48 @@ export function TopMenu() {
           <Dropdown
             arrowIcon={false}
             inline
-            label={<MenuIcon />}
+            label={<GiHamburgerMenu className="w-8 h-8 text-gray-800 dark:text-gray-200" />}
           >
-            <Dropdown.Item >
+            <Dropdown.Item
+              className={`cursor-pointer ${
+                selectedItem === 'about-us' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+              }`}
+              onClick={() => handleSelect('about-us')}
+            >
               <Link href="/info/about-us">Quienes Somos</Link>
             </Dropdown.Item>
-            <Dropdown.Item>
+            <Dropdown.Item
+              className={`cursor-pointer ${
+                selectedItem === 'how-to-use' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+              }`}
+              onClick={() => handleSelect('how-to-use')}
+            >
               <Link href="/info/how-to-use">Como Usar Swaplyar</Link>
             </Dropdown.Item>
-            <Dropdown.Item>
-              <Link href="/info/loyalty-program">Programa de Fidelizacion</Link>
+            <Dropdown.Item
+              className={`cursor-pointer ${
+                selectedItem === 'loyalty-program' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+              }`}
+              onClick={() => handleSelect('loyalty-program')}
+            >
+              <Link href="/info/loyalty-program">Programa de Fidelización</Link>
             </Dropdown.Item>
             <Dropdown.Divider />
-            <Dropdown.Item>
+            <Dropdown.Item
+              className={`cursor-pointer ${
+                selectedItem === 'login' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+              }`}
+              onClick={() => handleSelect('login')}
+            >
               <Link href="/auth/login">Login</Link>
             </Dropdown.Item>
-            <Dropdown.Item>
-              <Link href="/auth/new-account" >Register</Link>
+            <Dropdown.Item
+              className={`cursor-pointer ${
+                selectedItem === 'register' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+              }`}
+              onClick={() => handleSelect('register')}
+            >
+              <Link href="/auth/new-account">Register</Link>
             </Dropdown.Item>
           </Dropdown>
         </div>
@@ -91,25 +82,6 @@ export function TopMenu() {
           </div>
         </Navbar.Collapse>
       </div>
-    </StyledNavbar>
+    </Navbar>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          {/* <Dropdown.Header>
-            <span className="block text-sm">Bonnie Green</span>
-            <span className="block truncate text-sm font-medium">name@flowbite.com</span>
-          </Dropdown.Header> */}
