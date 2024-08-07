@@ -26,30 +26,30 @@ function FooterLink({ href, children }: FooterLinkProps) {
 
 export default function Footer() {
     return (
-        <footer className="rs-wrapper-v4 py-8 bg-white dark:bg-gray-900 mx-auto w-4/5 ">
-            <div className="one-info-footer flex gap-4 px-4">
-                <div className="flex flex-col items-start text-left w-1/3">
-                    <h4 className="text-gray-900 text-lg dark:text-white mb-2  ">Regístrate y disfruta de beneficios</h4>
+        <footer className="rs-wrapper-v4 py-8 bg-white dark:bg-gray-900 mx-auto w-full px-4">
+            <div className="one-info-footer flex flex-col sm:flex-row gap-4 sm:gap-0 sm:justify-between px-4">
+                <div className="flex flex-col items-start text-left sm:w-1/3 mb-4 sm:mb-0">
+                    <h4 className="text-gray-900 text-lg dark:text-white mb-2">Regístrate y disfruta de beneficios</h4>
                     <FooterLink href="/auth/login">Iniciar Sesión</FooterLink>
                     <FooterLink href="/auth/new-account">Registrarse</FooterLink>
                     <FooterLink href="/info/loyalty-program">Programa de Fidelización</FooterLink>
                 </div>
-                <div className="flex flex-col items-center text-center w-1/3">
-                    <h4 className="text-gray-900 text-lg dark:text-white mb-2 ">Normativa</h4>
+                <div className="flex flex-col items-start sm:items-center text-left sm:text-center sm:w-1/3 mb-4 sm:mb-0">
+                    <h4 className="text-gray-900 text-lg dark:text-white mb-2">Normativa</h4>
                     <FooterLink href="/info/warranty">Garantía</FooterLink>
                     <FooterLink href="/info/terms-and-conditions">Términos y condiciones</FooterLink>
                     <FooterLink href="/info/privacy-policy">Política de privacidad</FooterLink>
                 </div>
-                <div className="flex flex-col items-end text-right w-1/3">
-                    <h4 className="text-gray-900 text-lg dark:text-white mb-2 ">Atención al Cliente</h4>
-                    <FooterLink href="/info/centro-de-ayuda" >  Centro de Ayuda</FooterLink>
+                <div className="flex flex-col items-start sm:items-end text-left sm:text-right sm:w-1/3">
+                    <h4 className="text-gray-900 text-lg dark:text-white mb-2">Atención al Cliente</h4>
+                    <FooterLink href="/info/centro-de-ayuda">Centro de Ayuda</FooterLink>
                     <FooterLink href="/info/quienes-somos">Quienes Somos</FooterLink>
                     <FooterLink href="/info/por-que-elegir-swaplyar">¿Por qué Elegir SwaplyAr?</FooterLink>
                 </div>
             </div>
 
             <div className="two-info-footer flex flex-col sm:flex-row items-center justify-between mt-5 px-4 pt-4">
-                <div className="container-footer-icon-social flex space-x-4 w-1/3">
+                <div className="container-footer-icon-social flex justify-center sm:justify-start space-x-4 mb-4 sm:mb-0">
                     <a href="https://www.linkedin.com/in/oa-suarez" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="SwaplyAr CEO en LinkedIn" className="hover:opacity-75 transition-opacity duration-200">
                         <FontAwesomeIcon icon={faLinkedin} className="text-[#012D8A] text-2xl" />
                     </a>
@@ -63,12 +63,12 @@ export default function Footer() {
                         <FontAwesomeIcon icon={faWhatsapp} className="text-[#012D8A] text-2xl" />
                     </a>
                 </div>
-                <div className="flex-grow flex justify-center w-1/3 mt-7 sm:mt-0">
+                <div className="flex-grow flex justify-center sm:justify-center mb-4 sm:mb-0">
                     <Link href="/">
                         <Image src={S} alt="Cambiar saldo online" width={65} height={70} />
                     </Link>
                 </div>
-                <div className="flex items-center justify-center sm:justify-end mt-7 sm:mt-0 w-1/3">
+                <div className="flex items-center justify-center sm:justify-end">
                     <p className="text-gray-600 dark:text-gray-400 text-center text-xs">
                         Todos los derechos reservados © SWAPLYAR | Group OA
                     </p>
