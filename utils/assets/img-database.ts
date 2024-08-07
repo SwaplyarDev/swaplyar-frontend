@@ -40,3 +40,8 @@ export const Transacciones = "/images/transacciones.png"
 export const Aumeno = "/images/Aumeno.png"
 export const Caida = "/images/caida.png"
 
+    /**help-center**/
+export const Contacto = "/images/contacto.png"
+export const PlusRewardsGif = "/gif/plus-rewards.gif"
+export const Ayuda1 = "/images/ayuda1.png"
+export const Ayuda2 = "/images/ayuda2.png"

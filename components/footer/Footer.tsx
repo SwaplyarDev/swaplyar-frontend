@@ -39,7 +39,7 @@ export default function Footer() {
                 </div>
                 <div className="flex flex-col items-start">
                     <h4 className="text-gray-900 dark:text-white mb-4 font-semibold">Atención al Cliente</h4>
-                    <FooterLink href="/info/centro-de-ayuda">Centro de Ayuda</FooterLink>
+                    <FooterLink href="/info/help-center">Centro de Ayuda</FooterLink>
                     <FooterLink href="/info/quienes-somos">Quienes Somos</FooterLink>
                     <FooterLink href="/info/por-que-elegir-swaplyar">¿Por qué Elegir SwaplyAr?</FooterLink>
                 </div>
