@@ -16,7 +16,11 @@ const config: Config = {
       },
       boxShadow: {
         'custom-blue': '0 5px 10px #012a8d',
+        'custom-black':'0 5px 10px #000'
       },
+      backgroundColor:{
+        'dark-blue':'rgb(3, 35, 54)'
+      }
     },
   },
   plugins: [],

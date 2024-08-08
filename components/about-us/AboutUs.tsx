@@ -43,7 +43,7 @@ const cardsData = [
 const AboutUs = () => {
   return (
     <div className="py-10  ">
-      <div className="shadow-custom-blue">
+      <div className="shadow-custom-blue bg-white">
       <FlyerTrabajo
         imageSrc="/images/need-help.png"
       >
@@ -55,7 +55,7 @@ const AboutUs = () => {
         {/* <div className="need-help delante need-help-container rs-link"></div> */}
         {/* <div id="animated-blurred-circles-container"></div> */}
         <div className="rs-wrapper-v4 sm:w-4/5 mx-auto ">
-          <div className="container-text text-4xl  pt-24 pb-24">
+          <div className="container-text text-4xl  pt-20 pb-24">
             <h1 >En SwaplyAr, garantizamos un intercambio seguro y confiable de tu
               dinero de PayPal. Estamos comprometidos con tu seguridad y
               satisfacción.
