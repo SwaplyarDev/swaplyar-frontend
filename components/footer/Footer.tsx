@@ -50,7 +50,7 @@ export default function Footer() {
 
             <div className="two-info-footer flex flex-col sm:flex-row items-center justify-between mt-5 px-4 pt-4 sm:w-9/12 sm:mx-auto">
                 <div className="container-footer-icon-social flex justify-center sm:justify-start space-x-4 mb-4 sm:mb-0 sm:w-1/3">
-                    <a href="https://www.linkedin.com/in/oa-suarez" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="SwaplyAr CEO en LinkedIn" className="hover:opacity-75 transition-opacity duration-200">
+                    <a href="https://www.linkedin.com/company/swaplyar/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="SwaplyAr CEO en LinkedIn" className="hover:opacity-75 transition-opacity duration-200">
                         <FontAwesomeIcon icon={faLinkedin} className="text-[#012D8A] text-2xl" />
                     </a>
                     <a href="https://www.instagram.com/swaplyar/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="SwaplyAr en Instagram" className="hover:opacity-75 transition-opacity duration-200">
