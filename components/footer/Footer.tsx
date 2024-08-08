@@ -26,7 +26,7 @@ function FooterLink({ href, children }: FooterLinkProps) {
 
 export default function Footer() {
     return (
-        <footer className="rs-wrapper-v4 py-8 bg-white dark:bg-gray-900 mx-auto w-full px-4">
+        <footer className="rs-wrapper-v4 py-8 bg-white dark:bg-gray-900 mx-auto mb-12 w-full px-4">
             <div className="one-info-footer flex flex-col sm:flex-row gap-4 sm:gap-0 sm:justify-between px-4 sm:w-4/5 md:mx-auto">
                 <div className="flex flex-col items-start text-left sm:w-1/3 mb-4 sm:mb-0">
                     <h4 className="text-gray-900 text-lg dark:text-white mb-2">Regístrate y disfruta de beneficios</h4>
