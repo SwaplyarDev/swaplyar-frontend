@@ -41,7 +41,7 @@ export default function Footer() {
                     <h4 className="text-gray-900 dark:text-white mb-4 font-semibold">Atención al Cliente</h4>
                     <FooterLink href="/info/help-center">Centro de Ayuda</FooterLink>
                     <FooterLink href="/info/about-us">Quienes Somos</FooterLink>
-                    <FooterLink href="/info/por-que-elegir-swaplyar">¿Por qué Elegir SwaplyAr?</FooterLink>
+                    <FooterLink href="/info/why-choose-swaplyar">¿Por qué Elegir SwaplyAr?</FooterLink>
                 </div>
             </div>
 
