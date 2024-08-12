@@ -21,7 +21,7 @@ export default function NavLinks() {
 
   return (
     <div className="flex justify-between items-center w-full">
-      <div className="flex gap-2 ml-1">
+      <div className="flex gap-1 mr-7">
         {Links.slice(0, -2).map((link) => (
           <Link
             key={link.name}
@@ -31,7 +31,7 @@ export default function NavLinks() {
               dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700
               hover:text-white hover:shadow-sm hover:underline
               transition-colors duration-300 ease-in-out
-              m-1
+              m-2
             `}
             style={{ color: '#012D8A', fontSize: '16px' }}
           >
@@ -41,12 +41,12 @@ export default function NavLinks() {
           </Link>
         ))}
       </div>
-      <div className="flex gap-2 ml-20"> 
+      <div className="flex gap-3 ml-20"> 
         {Links.slice(-2).map((link) => (
           <Link
             key={link.name}
             href={link.href}
-            className={`relative flex h-[48px] items-center gap-0 rounded-md p-1 
+            className={`relative flex h-[48px] items-center gap-0 rounded-md 
               ${pathname === link.href ? 'bg-gray-500 text-white border-2 border-sky-200' : 'text-gray-900'}
               dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700
               hover:text-white hover:shadow-sm hover:underline

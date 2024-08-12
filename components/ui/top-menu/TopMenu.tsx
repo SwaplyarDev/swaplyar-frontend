@@ -31,7 +31,7 @@ const StyledNavbar = styled(Navbar)`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 75%;
+    width: 80%;
     margin: 0 auto; 
   }
 
@@ -70,7 +70,7 @@ export function TopMenu() {
             className="h-12 w-auto navbar-brand"
           />
         </Navbar.Brand>
-        <div className="flex items-center">
+        <div className="flex ">
           <div className="flex md:hidden">
             <Dropdown
               arrowIcon={false}
