@@ -29,11 +29,11 @@ export default function NavLinks() {
             className={`relative flex h-[48px] items-center  rounded-md
               ${pathname === link.href ? 'bg-gray-500 text-white border-2 border-sky-200' : 'text-gray-900'}
               dark:text-white dark:bg-gray-800 dark:hover:bg-gray-700
-              hover:text-white hover:shadow-sm hover:underline
+             text-nav-blue hover:shadow-sm hover:underline
               transition-colors duration-300 ease-in-out
               m-2
             `}
-            style={{ color: '#012D8A', fontSize: '16px' }}
+            style={{  fontSize: '16px' }}
           >
             <p className="hidden md:block">
               {link.name}
@@ -49,11 +49,11 @@ export default function NavLinks() {
             className={`relative flex h-[48px] items-center gap-0 rounded-md 
               ${pathname === link.href ? 'bg-gray-500 text-white border-2 border-sky-200' : 'text-gray-900'}
               dark:text-white dark:bg-gray-800 dark:hover:bg-gray-700
-              hover:text-white hover:shadow-sm hover:underline
+              text-nav-blue  hover:shadow-sm hover:underline
               transition-colors duration-300 ease-in-out
               m-1
             `}
-            style={{ color: '#012D8A', fontSize: '16px' }}
+            style={{ fontSize: '16px' }}
           >
             <p className="hidden md:block">
               {link.name}
