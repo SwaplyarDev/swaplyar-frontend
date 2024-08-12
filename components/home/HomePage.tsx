@@ -7,8 +7,8 @@ import { CentroDeAyuda, FlyerGif, RecargaPaypal, UsdArs } from '@/utils/assets/i
 
 const mainStyles = {
     main: "py-10",
-    infoBlocksContainer: "flex flex-col items-center justify-center",
-    instructionsCalculatorContainer: "flex space-x-4", 
+    infoBlocksContainer: "flex flex-col items-center justify-center mt-32",  
+    instructionsCalculatorContainer: "flex space-x-4 mt-32",  
 };
 
 export default function HomePage() {
@@ -24,7 +24,7 @@ export default function HomePage() {
             </div>
             <div className={mainStyles.infoBlocksContainer}>
                 <InfoBlock
-                    title="Cambia USD de PayPal por ARS"
+                    title="Cambia USD de PayPal por ARS con SwaplyAr"
                     imageSrc={UsdArs}
                     imageAlt="Cambia USD de PayPal por ARS"
                     content="Realizá cambios de dólares de PayPal a pesos argentinos de manera rápida y eficiente. Ofrecemos las mejores tasas del mercado para que maximices tus ganancias. Si necesitás transferir dinero desde PayPal, lo depositamos directamente en tu cuenta bancaria local o internacional según prefieras. Aumentá tus beneficios con SwaplyAr."
@@ -48,5 +48,6 @@ export default function HomePage() {
         </main>
     );
 }
+
 
 

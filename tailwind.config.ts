@@ -16,7 +16,10 @@ const config: Config = {
       },
       colors:{
         'nav-blue': '#012D8A'
-      }
+      },
+      width: {
+        '9/10': '90%',
+      },
     },
   },
   plugins: [],
