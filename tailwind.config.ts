@@ -20,7 +20,13 @@ const config: Config = {
       },
       backgroundColor:{
         'dark-blue':'rgb(3, 35, 54)'
-      }
+      },
+      colors:{
+        'nav-blue': '#012D8A'
+      },
+      width: {
+        '9/10': '90%',
+      },
     },
   },
   plugins: [],

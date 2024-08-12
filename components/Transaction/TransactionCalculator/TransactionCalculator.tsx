@@ -89,7 +89,7 @@ export default function TransactionCalculator() {
     { id: 'paypal', name: 'PayPal', logo: '/images/paypal.big.png' },
     { id: 'payoneer-usd', name: 'Payoneer USD', logo: '/images/payoneer.usd.big.png' },
     { id: 'payoneer-eur', name: 'Payoneer EUR', logo: '/images/payoneer.eur.big.png' },
-    { id: 'banco', name: 'Banco', logo: '/images/banco.png' },
+    { id: 'banco', name: 'Banco', logo: '/images/banco.medium.webp' },
     { id: 'wise-usd', name: 'Wise USD', logo: '/images/wise.usd.big.png' },
     { id: 'wise-eur', name: 'Wise EUR', logo: '/images/wise.eur.big.png' },
   ];

@@ -12,3 +12,11 @@ export interface System {
   name: string;     // Nombre del sistema de pago
   logo: string;     // Ruta a la imagen del logo
 }
+
+
+export type FormValues = {
+    Nombre: string;
+    Apellido: string;
+    email: string;
+    message: string;
+};

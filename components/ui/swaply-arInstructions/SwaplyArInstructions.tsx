@@ -4,6 +4,7 @@
 
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo'; // Asegúrate de tener este componente
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
+import { CentroDeAyuda, Paso1Gif, Paso2Gif, Paso3Gif, Paso4Gif } from '@/utils/assets/img-database';
 
 
 
@@ -11,7 +12,7 @@ export default function SwaplyArInstructions() {
     return (
         <div  className="py-10">
             <FlyerTrabajo
-                imageSrc="/images/centro-ayuda.png"
+                imageSrc={CentroDeAyuda}
             >
                 Estamos trabajando en las funciones de inicio de sesión y registro.
             </FlyerTrabajo>
@@ -32,14 +33,14 @@ export default function SwaplyArInstructions() {
             <div className="flex flex-col items-center text-2xl">
                 <InfoBlock
                     title="Paso 1:"
-                    imageSrc="/images/paso1.gif"
+                    imageSrc={Paso1Gif}
                     imageAlt="Cambia USD de PayPal por ARS"
                     content="Ingresá el monto que querés cambiar o el dinero que deseás
                         recibir y hacé clic en 'Ir a PayPal'."
                 />
                 <InfoBlock
                     title="Paso 2:"
-                    imageSrc="/images/paso2.gif"
+                    imageSrc={Paso2Gif}
                     imageAlt="Cambia USD de PayPal por ARS"
                     content="Se abrirá una nueva pestaña para que realices el pago con el
                         monto correspondiente. Completá el pago y tomá una captura de
@@ -47,14 +48,14 @@ export default function SwaplyArInstructions() {
                 />
                 <InfoBlock
                     title="Paso 3:"
-                    imageSrc="/images/paso3.gif"
+                    imageSrc={Paso3Gif}
                     imageAlt="Cambia USD de PayPal por ARS"
                     content="Volvé a la ventana de SwaplyAr, donde se actualizará y aparecerá
                         un formulario."
                 />
                 <InfoBlock
                     title="Paso 4:"
-                    imageSrc="/images/paso4.gif"
+                    imageSrc={Paso4Gif}
                     imageAlt="Cambia USD de PayPal por ARS"
                     content="Completá el formulario con los datos requeridos, subí la captura
                         de pantalla del comprobante de pago y presioná 'Enviar

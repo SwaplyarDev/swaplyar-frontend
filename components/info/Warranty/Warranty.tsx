@@ -4,17 +4,18 @@ import FlyerTrabajo from "@/components/FlyerTrabajo/FlyerTrabajo";
 import InfoBlock from "@/components/InfoBlock/InfoBlock";
 import CaedAboutUs from "@/components/ui/caed-about-us/caed-about-us";
 import GuaranteeSection from "@/components/ui/warranty-section/WarrantySection";
+import { Aumeno, Caida, CentroDeAyuda, Garantizamos, Transacciones, Ventajaalelegirswaplyar } from "@/utils/assets/img-database";
 
 const cardsData = [
     {
-        src: '/images/transacciones.png',
+        src: Transacciones,
         alt: 'Imagen de Apoyo',
         title: 'Transacciones',
         backTitle: 'Directas y Seguras',
         backText: 'Asegurá que el dinero se mueva directamente de SwaplyAr al usuario, sin intermediarios, ofreciendo mayor rapidez y seguridad en cada transacción.',
     },
     {
-        src: '/images/Aumeno.png',
+        src: Aumeno,
         alt: 'Imagen de Transparencia',
         title: 'Aumento',
         backTitle: 'Aumento en la cotización',
@@ -22,7 +23,7 @@ const cardsData = [
         'Al confirmar tu pago, fijamos la cotización. Si no recibís el dinero en 8 horas y hay aumento, ajustamos tu tasa.',
     },
     {
-        src: '/images/caida.png',
+        src: Caida,
         alt: 'Imagen de Simplicidad',
         title: 'Caída',
         backTitle: 'Caída en la cotización',
@@ -36,7 +37,7 @@ const Warranty = () => {
     return (
         <div className="py-10">
             <FlyerTrabajo
-                imageSrc="/images/centro-ayuda.png"
+                imageSrc={CentroDeAyuda}
             >
                 Estamos trabajando en las funciones de inicio de sesión y registro.
             </FlyerTrabajo>
@@ -44,7 +45,7 @@ const Warranty = () => {
                 <GuaranteeSection
                     title="Garantizamos Tu Tranquilidad en Cada Transacción"
                     text="En SwaplyAr, nos comprometemos a que cada cambio de divisas sea seguro y confiable. Con nuestra garantía de satisfacción, podés estar seguro de que tus operaciones se manejarán con la mayor eficiencia y cuidado. ¡Confiá en nosotros para una experiencia sin preocupaciones!"
-                    imageSrc="/images/Garantizamos.png"
+                    imageSrc={Garantizamos}
                     imageAlt="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
                 />
 
@@ -54,7 +55,7 @@ const Warranty = () => {
 
                 <InfoBlock
                     title="Ventajas Exclusivas al Elegir SwaplyAr para tus Transacciones"
-                    imageSrc="/images/ventajaalelegirswaplyar.png"
+                    imageSrc={Ventajaalelegirswaplyar}
                     imageAlt="Cambia USD de PayPal por ARS"
                     contentNode={
                         <>

@@ -3,10 +3,11 @@
 import Image from "next/image";
 import CaedAboutUs from "../ui/caed-about-us/caed-about-us";
 import FlyerTrabajo from "../FlyerTrabajo/FlyerTrabajo";
+import { Apoyo, CentroDeAyuda, Eficiencia, FlyerGif, OaSuarez, Simplicidad, Transparencia } from "@/utils/assets/img-database";
 
 const cardsData = [
     {
-        src: '/images/Apoyo.png',
+        src: Apoyo,
         alt: 'Imagen de Apoyo',
         title: 'Apoyo',
         backTitle: 'Apoyo Personalizado',
@@ -14,7 +15,7 @@ const cardsData = [
         'En SwaplyAr, ofrecemos un equipo siempre dispuesto a resolver tus dudas, acompañándote paso a paso en cada transacción.',
     },
     {
-        src: '/images/Transparencia.png',
+        src: Transparencia,
         alt: 'Imagen de Transparencia',
         title: 'Transparencia',
         backTitle: 'Transparencia Total',
@@ -22,7 +23,7 @@ const cardsData = [
         'La claridad es clave en SwaplyAr. No hay letras pequeñas; cada término del servicio es claro y directo para todos.',
     },
     {
-        src: '/images/Simplicidad.png',
+        src: Simplicidad,
         alt: 'Imagen de Simplicidad',
         title: 'Simplicidad',
         backTitle: 'Simplicidad en Cada Paso',
@@ -30,7 +31,7 @@ const cardsData = [
         'Nuestra plataforma está diseñada para ser intuitiva y fácil de usar, garantizando que cada usuario realice sus transacciones sin complicaciones.',
     },
     {
-        src: '/images/Eficiencia.png',
+        src: Eficiencia,
         alt: 'Imagen de Eficiencia',
         title: 'Eficiencia',
         backTitle: 'Eficiencia en Cada Transacción',
@@ -83,7 +84,7 @@ const AboutUs = () => {
             <div className="info-content-container w-full flex flex-col md:flex-row items-center">
               <div className="col-left  w-1/2 dark:bg-black flex flex-col items-center ">
                 <Image
-                  src="/images/oa-suarez.png"
+                  src={OaSuarez}
                   alt="Chief Executive Officer (CEO)"
                   width={350}
                   height={300}
@@ -106,7 +107,7 @@ const AboutUs = () => {
 
         <div className="mt-10">
           <FlyerTrabajo
-            imageSrc="/gif/flyer.gif"
+            imageSrc={FlyerGif}
           >
             &iquest;Nuevo en SwaplyAr? Hac&eacute; clic en &quot;C&oacute;mo usar SwaplyAr&quot; y aprend&eacute; a operar f&aacute;cilmente. &iexcl;Empez&aacute; ahora!
           </FlyerTrabajo>

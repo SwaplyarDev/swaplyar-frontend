@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
 import { requestRegister } from '@/actions/request/action.requestRegister';
 
 type FormInputs = {
@@ -16,8 +15,8 @@ type FormInputs = {
     cbuAlias: string;
     cuil: string;
     email: string;
-    password: string;
     comprobante: FileList;
+    note: string;
 };
 
 export const RequestRegisterForm = () => {
@@ -26,7 +25,7 @@ export const RequestRegisterForm = () => {
 
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
         setErrorMessage('');
-        const { name, surname, whatsappNumber, cbuAlias, cuil, email, password, comprobante } = data;
+        const { name, surname, whatsappNumber, cbuAlias, cuil, email, comprobante, note } = data;
 
         // Prepare form data
         const formData = new FormData();
@@ -36,8 +35,8 @@ export const RequestRegisterForm = () => {
         formData.append('cbuAlias', cbuAlias);
         formData.append('cuil', cuil);
         formData.append('email', email);
-        formData.append('password', password);
         formData.append('comprobante', comprobante[0]);
+        formData.append('note', note);
 
         // Server action
         const resp = await requestRegister(formData);
@@ -46,23 +45,11 @@ export const RequestRegisterForm = () => {
             setErrorMessage(resp.message);
             return;
         }
-
-        const result = await signIn('credentials', {
-            redirect: false,
-            email,
-            password,
-        });
-
-        if (result?.error) {
-            setErrorMessage(result.error);
-        } else {
-            window.location.replace('/dashboard');
-        }
     };
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-black">
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col bg-white dark:bg-gray-800 p-8 rounded shadow-md w-full max-w-sm">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col bg-white dark:bg-gray-800 p-8 rounded shadow-md w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-5 text-center text-gray-900 dark:text-white">Crear Cuenta</h2>
 
                 <label htmlFor="name" className="text-gray-900 dark:text-gray-300">Nombre</label>
@@ -125,16 +112,6 @@ export const RequestRegisterForm = () => {
                     {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
                 />
 
-                <label htmlFor="password" className="text-gray-900 dark:text-gray-300">Contraseña</label>
-                <input
-                    className={clsx(
-                        "px-5 py-2 border bg-gray-200 dark:bg-gray-700 rounded mb-5 text-gray-900 dark:text-white",
-                        { 'border-red-500': errors.password }
-                    )}
-                    type="password"
-                    {...register('password', { required: true, minLength: 6 })}
-                />
-
                 <label htmlFor="comprobante" className="text-gray-900 dark:text-gray-300">Comprobante</label>
                 <input
                     className={clsx(
@@ -144,6 +121,15 @@ export const RequestRegisterForm = () => {
                     type="file"
                     {...register('comprobante', { required: true })}
                 />
+
+                <label htmlFor="note" className="text-gray-900 dark:text-gray-300">Nota</label>
+                <textarea
+                    className={clsx(
+                        "px-5 py-2 border bg-gray-200 dark:bg-gray-700 rounded mb-5 text-gray-900 dark:text-white",
+                        { 'border-red-500': errors.note }
+                    )}
+                    {...register('note')}
+                ></textarea>
 
                 <span className="text-red-500">{errorMessage}</span>
 

@@ -3,13 +3,14 @@
 "use client";
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import RewardCard from '@/components/ui/reward-card/RewardCard';
+import { CentroDeAyuda, Rewards1, Rewards2, Rewards3 } from '@/utils/assets/img-database';
 
 function LoyaltyProgram() {
   return (
     <div className="py-10">
 
       <FlyerTrabajo
-        imageSrc="/images/centro-ayuda.png"
+        imageSrc={CentroDeAyuda}
       >
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
@@ -42,7 +43,7 @@ function LoyaltyProgram() {
 
       <div className="bg-gray-100 dark:bg-black py-10 flex flex-wrap justify-center">
         <RewardCard 
-          imageSrc="/images/rewards1.png" 
+          imageSrc={Rewards1}
           imageAlt="paso 1 de como cambiar tu dinero en SwaplyAr" 
           title="Regalo de Bienvenida"
           description="Únete a SwaplyAr Plus Rewards™ y recibe 10 pesos por cada dólar en el cargo de tu segunda solicitud"
@@ -50,7 +51,7 @@ function LoyaltyProgram() {
           linkHref="/"
         />
         <RewardCard 
-          imageSrc="/images/rewards2.png" 
+          imageSrc={Rewards2}
           imageAlt="paso 2 de como cambiar tu dinero en SwaplyAr" 
           title="Los premios nunca terminan"
           description="Recompensas Continuas: Gana 15 pesos por cada dólar en el cargo después de completar 5 solicitudes"
@@ -58,7 +59,7 @@ function LoyaltyProgram() {
           linkHref="/"
         />
         <RewardCard 
-          imageSrc="/images/rewards3.png" 
+          imageSrc={Rewards3}
           imageAlt="paso 3 de como cambiar tu dinero en SwaplyAr" 
           title="Exclusivo"
           description="¡Promociones exclusivas y acceso a ofertas únicas!"
@@ -68,7 +69,7 @@ function LoyaltyProgram() {
       </div>
 
       <FlyerTrabajo
-        imageSrc="/images/centro-ayuda.png"
+        imageSrc={CentroDeAyuda}
       >
         <div className="dark:text-white text-black">
           <p>

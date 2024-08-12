@@ -1,11 +1,12 @@
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
+import { CentroDeAyuda, TerminosCondiciones } from '@/utils/assets/img-database';
 import Image from 'next/image';
 
 const TermsAndConditions = () => {
     return (
         <div className="py-10 flex flex-col items-center bg-white dark:bg-black">
-            <FlyerTrabajo imageSrc="/images/centro-ayuda.png">
+            <FlyerTrabajo imageSrc={CentroDeAyuda}>
                 Estamos trabajando en las funciones de inicio de sesión y registro.
             </FlyerTrabajo>
 
@@ -18,7 +19,7 @@ const TermsAndConditions = () => {
                 <div className="flex-shrink-0 w-full md:w-auto flex justify-center items-center">
                     <Image
                         className="hero-img"
-                        src="/images/terminos-y-condiciones.png"
+                        src={TerminosCondiciones}
                         alt="terminos-y-condiciones"
                         width={500}
                         height={500} 
