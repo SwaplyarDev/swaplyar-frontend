@@ -28,7 +28,7 @@ export default function NavLinks() {
             href={link.href}
             className={`relative flex h-[48px] items-center  rounded-md
               ${pathname === link.href ? 'bg-gray-500 text-white border-2 border-sky-200' : 'text-gray-900'}
-              dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700
+              dark:text-white dark:bg-gray-800 dark:hover:bg-gray-700
               hover:text-white hover:shadow-sm hover:underline
               transition-colors duration-300 ease-in-out
               m-2

@@ -1,10 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import NavLinks from '@/components/ui/nav-links';
 import Image from "next/image";
 import Link from "next/link";
-import styled from '@emotion/styled';
 import { GiHamburgerMenu } from 'react-icons/gi';
 
 const MenuIcon = styled(GiHamburgerMenu)`
@@ -58,6 +58,12 @@ const StyledNavbar = styled(Navbar)`
 `;
 
 export function TopMenu() {
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
+  const handleSelect = (item: string) => {
+    setSelectedItem(item);
+  };
+
   return (
     <StyledNavbar fluid rounded >
       <div className="navbar-content">
@@ -103,25 +109,6 @@ export function TopMenu() {
           </Navbar.Collapse>
         </div>
       </div>
-    </StyledNavbar>
+    </Navbar>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          {/* <Dropdown.Header>
-            <span className="block text-sm">Bonnie Green</span>
-            <span className="block truncate text-sm font-medium">name@flowbite.com</span>
-          </Dropdown.Header> */}
