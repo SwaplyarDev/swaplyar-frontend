@@ -40,11 +40,13 @@ export default function Footer() {
                     <FooterLink href="/info/terms-and-conditions">Términos y condiciones</FooterLink>
                     <FooterLink href="/info/privacy-policy">Política de privacidad</FooterLink>
                 </div>
+
                 <div className="flex flex-col items-start sm:items-end text-left sm:text-right sm:w-1/3">
                     <h4 className="text-gray-900 text-lg dark:text-white mb-2">Atención al Cliente</h4>
                     <FooterLink href="/info/centro-de-ayuda">Centro de Ayuda</FooterLink>
                     <FooterLink href="/info/quienes-somos">Quienes Somos</FooterLink>
                     <FooterLink href="/info/por-que-elegir-swaplyar">¿Por qué Elegir SwaplyAr?</FooterLink>
+
                 </div>
             </div>
 
