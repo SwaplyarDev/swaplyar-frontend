@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import NavLinks from '@/components/ui/nav-links';
 import Image from "next/image";
 import Link from "next/link";
+import styled from '@emotion/styled';
 import { GiHamburgerMenu } from 'react-icons/gi';
+import { useState } from "react";
 
 const MenuIcon = styled(GiHamburgerMenu)`
   width: 30px;
@@ -109,6 +110,7 @@ export function TopMenu() {
           </Navbar.Collapse>
         </div>
       </div>
-    </Navbar>
+    </StyledNavbar>
+
   );
 }
