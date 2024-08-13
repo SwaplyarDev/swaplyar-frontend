@@ -3,7 +3,7 @@
 
 
 import { LoginForm } from '@/components/auth/auth-form-login';
-import { titleFont } from '@/components/config/fonts';
+import { titleFont } from '@/components/ui/config/fonts';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 
 export default function LoginPage() {

@@ -1,5 +1,5 @@
 import { RegisterForm } from '@/components/auth/auth-form-register';
-import { titleFont } from '@/components/config/fonts';
+import { titleFont } from '@/components/ui/config/fonts';
 
 export default function NewAccountPage() {
   return (
