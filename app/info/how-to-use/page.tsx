@@ -1,11 +1,11 @@
-import SwaplyArInstructions from '@/components/ui/swaply-arInstructions/SwaplyArInstructions'
+import SwaplyArInstructions from '@/components/ui/swaply-arInstructions/SwaplyArInstructions';
 
 const page = () => {
   return (
     <>
-      <SwaplyArInstructions/>
+      <SwaplyArInstructions />
     </>
-  )
-}
+  );
+};
 
-export default page
+export default page;

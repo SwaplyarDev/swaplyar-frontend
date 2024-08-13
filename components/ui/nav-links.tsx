@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {
   UserGroupIcon,
@@ -24,15 +24,11 @@ export default function NavLinks() {
         <Link
           key={link.name}
           href={link.href}
-          className={`relative flex h-[48px] items-center gap-2 rounded-md p-3 
-            ${pathname === link.href ? 'bg-gray-500 text-white border-2 border-sky-200' : 'text-gray-900'}
-            dark:text-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700
-            hover:bg-gray-600 hover:text-white hover:shadow-sm
-            transition-colors duration-300 ease-in-out
-            m-1
-          `}
+          className={`relative flex h-[48px] items-center gap-2 rounded-md p-3 ${pathname === link.href ? 'border-2 border-sky-200 bg-gray-500 text-white' : 'text-gray-900'} m-1 transition-colors duration-300 ease-in-out hover:bg-gray-600 hover:text-white hover:shadow-sm dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700`}
         >
-          <p className={`hidden md:block ${link.name === 'Login' || link.name === 'Register' ? 'font-bold' : ''}`}>
+          <p
+            className={`hidden md:block ${link.name === 'Login' || link.name === 'Register' ? 'font-bold' : ''}`}
+          >
             {link.name}
           </p>
         </Link>

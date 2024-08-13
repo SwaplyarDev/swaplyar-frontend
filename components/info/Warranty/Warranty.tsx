@@ -1,78 +1,89 @@
 // /components/about-us/AboutUs.tsx
 
-import FlyerTrabajo from "@/components/FlyerTrabajo/FlyerTrabajo";
-import InfoBlock from "@/components/InfoBlock/InfoBlock";
-import CaedAboutUs from "@/components/ui/caed-about-us/caed-about-us";
-import GuaranteeSection from "@/components/ui/warranty-section/WarrantySection";
-import { Aumeno, Caida, CentroDeAyuda, Garantizamos, Transacciones, Ventajaalelegirswaplyar } from "@/utils/assets/img-database";
+import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
+import InfoBlock from '@/components/InfoBlock/InfoBlock';
+import CaedAboutUs from '@/components/ui/caed-about-us/caed-about-us';
+import GuaranteeSection from '@/components/ui/warranty-section/WarrantySection';
+import {
+  Aumeno,
+  Caida,
+  CentroDeAyuda,
+  Garantizamos,
+  Transacciones,
+  Ventajaalelegirswaplyar,
+} from '@/utils/assets/img-database';
 
 const cardsData = [
-    {
-        src: Transacciones,
-        alt: 'Imagen de Apoyo',
-        title: 'Transacciones',
-        backTitle: 'Directas y Seguras',
-        backText: 'Asegurá que el dinero se mueva directamente de SwaplyAr al usuario, sin intermediarios, ofreciendo mayor rapidez y seguridad en cada transacción.',
-    },
-    {
-        src: Aumeno,
-        alt: 'Imagen de Transparencia',
-        title: 'Aumento',
-        backTitle: 'Aumento en la cotización',
-        backText:
-        'Al confirmar tu pago, fijamos la cotización. Si no recibís el dinero en 8 horas y hay aumento, ajustamos tu tasa.',
-    },
-    {
-        src: Caida,
-        alt: 'Imagen de Simplicidad',
-        title: 'Caída',
-        backTitle: 'Caída en la cotización',
-        backText:
-        'Confirmá tu pago, bloqueamos la cotización inicial. Si la cotización cae y no has recibido el dinero en 5 horas, mantenemos fijo el valor original.',
-    },
+  {
+    src: Transacciones,
+    alt: 'Imagen de Apoyo',
+    title: 'Transacciones',
+    backTitle: 'Directas y Seguras',
+    backText:
+      'Asegurá que el dinero se mueva directamente de SwaplyAr al usuario, sin intermediarios, ofreciendo mayor rapidez y seguridad en cada transacción.',
+  },
+  {
+    src: Aumeno,
+    alt: 'Imagen de Transparencia',
+    title: 'Aumento',
+    backTitle: 'Aumento en la cotización',
+    backText:
+      'Al confirmar tu pago, fijamos la cotización. Si no recibís el dinero en 8 horas y hay aumento, ajustamos tu tasa.',
+  },
+  {
+    src: Caida,
+    alt: 'Imagen de Simplicidad',
+    title: 'Caída',
+    backTitle: 'Caída en la cotización',
+    backText:
+      'Confirmá tu pago, bloqueamos la cotización inicial. Si la cotización cae y no has recibido el dinero en 5 horas, mantenemos fijo el valor original.',
+  },
 ];
 
-
 const Warranty = () => {
-    return (
-        <div className="py-10">
-            <FlyerTrabajo
-                imageSrc={CentroDeAyuda}
-            >
-                Estamos trabajando en las funciones de inicio de sesión y registro.
-            </FlyerTrabajo>
-            <div className="rs-wrapper-v4 p-4">
-                <GuaranteeSection
-                    title="Garantizamos Tu Tranquilidad en Cada Transacción"
-                    text="En SwaplyAr, nos comprometemos a que cada cambio de divisas sea seguro y confiable. Con nuestra garantía de satisfacción, podés estar seguro de que tus operaciones se manejarán con la mayor eficiencia y cuidado. ¡Confiá en nosotros para una experiencia sin preocupaciones!"
-                    imageSrc={Garantizamos}
-                    imageAlt="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
-                />
+  return (
+    <div className="py-10">
+      <FlyerTrabajo imageSrc={CentroDeAyuda}>
+        Estamos trabajando en las funciones de inicio de sesión y registro.
+      </FlyerTrabajo>
+      <div className="rs-wrapper-v4 p-4">
+        <GuaranteeSection
+          title="Garantizamos Tu Tranquilidad en Cada Transacción"
+          text="En SwaplyAr, nos comprometemos a que cada cambio de divisas sea seguro y confiable. Con nuestra garantía de satisfacción, podés estar seguro de que tus operaciones se manejarán con la mayor eficiencia y cuidado. ¡Confiá en nosotros para una experiencia sin preocupaciones!"
+          imageSrc={Garantizamos}
+          imageAlt="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
+        />
 
-            <div className="cards-container flex-center full-height my-8">
-                <CaedAboutUs cardsData={cardsData} />
-            </div>
-
-                <InfoBlock
-                    title="Ventajas Exclusivas al Elegir SwaplyAr para tus Transacciones"
-                    imageSrc={Ventajaalelegirswaplyar}
-                    imageAlt="Cambia USD de PayPal por ARS"
-                    contentNode={
-                        <>
-                            En SwaplyAr, no solo garantizamos total seguridad y atención personalizada durante cada transacción, sino que también ofrecemos beneficios adicionales. Para nuestros usuarios registrados, disponemos de promociones exclusivas y asumimos las comisiones por vos.
-                            <span style={{ backgroundColor: 'yellow', color: 'black' }}>
-                                Mientras que otros servicios pueden incluir una comisión de PayPal del 5.6% + $0.30 USD, en SwaplyAr, nosotros absorbemos esos costos para ofrecerte el mejor valor.
-                            </span>
-                        </>
-                    }
-                />
-                <div id="flyer-container"></div>
-                <footer>
-                <div id="footer-placeholder"></div>
-                </footer>
-            </div>
+        <div className="cards-container flex-center full-height my-8">
+          <CaedAboutUs cardsData={cardsData} />
         </div>
-    );
-}
+
+        <InfoBlock
+          title="Ventajas Exclusivas al Elegir SwaplyAr para tus Transacciones"
+          imageSrc={Ventajaalelegirswaplyar}
+          imageAlt="Cambia USD de PayPal por ARS"
+          contentNode={
+            <>
+              En SwaplyAr, no solo garantizamos total seguridad y atención
+              personalizada durante cada transacción, sino que también ofrecemos
+              beneficios adicionales. Para nuestros usuarios registrados,
+              disponemos de promociones exclusivas y asumimos las comisiones por
+              vos.
+              <span style={{ backgroundColor: 'yellow', color: 'black' }}>
+                Mientras que otros servicios pueden incluir una comisión de
+                PayPal del 5.6% + $0.30 USD, en SwaplyAr, nosotros absorbemos
+                esos costos para ofrecerte el mejor valor.
+              </span>
+            </>
+          }
+        />
+        <div id="flyer-container"></div>
+        <footer>
+          <div id="footer-placeholder"></div>
+        </footer>
+      </div>
+    </div>
+  );
+};
 
 export default Warranty;

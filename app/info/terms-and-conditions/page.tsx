@@ -1,12 +1,11 @@
-import TermsAndConditions from "@/components/info/terms-and-conditions"
-
+import TermsAndConditions from '@/components/info/terms-and-conditions';
 
 const page = () => {
-    return (
-        <>
-            <TermsAndConditions/>
-        </>
-    )
-}
+  return (
+    <>
+      <TermsAndConditions />
+    </>
+  );
+};
 
-export default page
+export default page;

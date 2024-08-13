@@ -16,7 +16,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
   const handleSearch = useDebouncedCallback((term: string) => {
     console.log('searching for:', term);
     const params = new URLSearchParams(searchParams);
-    if(term) {
+    if (term) {
       params.set('query', term);
     } else {
       params.delete('query');
@@ -24,7 +24,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
     params.set('page', '1');
 
     replace(`${pathname}?${params.toString()}`);
-  }, WAIT_BETWEEN_CHANGE )
+  }, WAIT_BETWEEN_CHANGE);
 
   return (
     <div className="relative flex flex-1 flex-shrink-0">

@@ -9,6 +9,7 @@ Esta documentación cubre la descripción del proyecto, la configuración inicia
 **SwaplyAr** nació de una simple necesidad: intercambiar saldo y asegurar que cada persona que lo utiliza reciba lo pactado, acompañándolos en todo el proceso. El crecimiento de SwaplyAr fue exponencial debido a la confiabilidad, seguridad y velocidad en cada operación. Somos una empresa en la que los usuarios confían plenamente, ya que la transparencia es uno de nuestros pilares fundamentales. Ayudamos a que cada persona consiga lo que está buscando de una manera fácil y protegida.
 
 **Funcionalidad principal:**
+
 - Convertir y enviar dinero de PayPal a una cuenta bancaria en tres simples pasos:
   1. **Cotizá y solicitá**: Consulta la cotización actual y solicita el cambio.
   2. **Seguí el Flujo**: Sigue las instrucciones detalladas para proceder con tu envío de manera segura y eficiente.

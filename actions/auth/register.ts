@@ -2,7 +2,11 @@
 
 'use server';
 
-export const registerUser = async (name: string, email: string, password: string) => {
+export const registerUser = async (
+  name: string,
+  email: string,
+  password: string,
+) => {
   try {
     const response = await fetch('https://your-api-endpoint.com/register', {
       method: 'POST',
@@ -12,7 +16,7 @@ export const registerUser = async (name: string, email: string, password: string
       body: JSON.stringify({
         name: name,
         email: email.toLowerCase(),
-        password: password,  // Enviar la contraseña sin encriptar, asumiendo que la API se encargará de ello
+        password: password, // Enviar la contraseña sin encriptar, asumiendo que la API se encargará de ello
       }),
     });
 

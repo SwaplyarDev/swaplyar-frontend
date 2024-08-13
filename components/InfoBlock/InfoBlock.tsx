@@ -1,37 +1,50 @@
 // components/InfoBlock/InfoBlock.tsx
 
-"use client";
+'use client';
 
 import Image from 'next/image';
 
 interface InfoBlockProps {
-    title: string;
-    imageSrc: string;
-    imageAlt: string;
-    content?: string;
-    contentNode?: React.ReactNode;
+  title: string;
+  imageSrc: string;
+  imageAlt: string;
+  content?: string;
+  contentNode?: React.ReactNode;
 }
 
-export default function InfoBlock({ title, imageSrc, imageAlt, content, contentNode }: InfoBlockProps) {
-    return (
-        <div className="flex items-center flex-col md:flex-row p-8 max-w-3xl"> 
-            <div className="info-image-container mb-4 md:mb-0 md:mr-8 w-full md:w-1/2"> 
-                <Image
-                    src={imageSrc}
-                    alt={imageAlt}
-                    width={750} 
-                    height={750} 
-                    className="rounded-lg shadow-md"
-                />
-            </div>
-            <div className="info-content-container w-full md:w-1/2"> 
-                <div className="flex flex-col items-start">
-                    <h2 className="dark-title text-2xl font-semibold mb-4">{title}</h2>
-                </div>
-                <div className="info-content pl-2">
-                    {contentNode ? contentNode : <p className="text-gray-700" dangerouslySetInnerHTML={{ __html: content || '' }}></p>}
-                </div>
-            </div>
+export default function InfoBlock({
+  title,
+  imageSrc,
+  imageAlt,
+  content,
+  contentNode,
+}: InfoBlockProps) {
+  return (
+    <div className="flex max-w-3xl flex-col items-center p-8 md:flex-row">
+      <div className="info-image-container mb-4 w-full md:mb-0 md:mr-8 md:w-1/2">
+        <Image
+          src={imageSrc}
+          alt={imageAlt}
+          width={750}
+          height={750}
+          className="rounded-lg shadow-md"
+        />
+      </div>
+      <div className="info-content-container w-full md:w-1/2">
+        <div className="flex flex-col items-start">
+          <h2 className="dark-title mb-4 text-2xl font-semibold">{title}</h2>
         </div>
-    );
+        <div className="info-content pl-2">
+          {contentNode ? (
+            contentNode
+          ) : (
+            <p
+              className="text-gray-700"
+              dangerouslySetInnerHTML={{ __html: content || '' }}
+            ></p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }

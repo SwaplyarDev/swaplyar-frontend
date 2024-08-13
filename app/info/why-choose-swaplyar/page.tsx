@@ -1,11 +1,11 @@
-import WhyChooseSwaplyar from '@/components/info/whyChooseSwaplyar/WhyChooseSwaplyar'
+import WhyChooseSwaplyar from '@/components/info/whyChooseSwaplyar/WhyChooseSwaplyar';
 
 const page = () => {
   return (
     <>
-      <WhyChooseSwaplyar/>
+      <WhyChooseSwaplyar />
     </>
-  )
-}
+  );
+};
 
-export default page
+export default page;

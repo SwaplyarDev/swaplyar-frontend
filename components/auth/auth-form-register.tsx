@@ -1,6 +1,6 @@
 // /components/auth/auth-form-register.tsx
 
-"use client";
+'use client';
 
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -8,7 +8,6 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { registerUser } from '@/actions/auth/register';
 import { signIn } from 'next-auth/react';
-
 
 type FormInputs = {
   name: string;
@@ -18,7 +17,11 @@ type FormInputs = {
 
 export const RegisterForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
-  const { register, handleSubmit, formState: { errors } } = useForm<FormInputs>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>();
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setErrorMessage('');
@@ -41,41 +44,52 @@ export const RegisterForm = () => {
     if (result?.error) {
       setErrorMessage(result.error);
     } else {
-      window.location.replace('/dashboard'); 
+      window.location.replace('/dashboard');
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-black">
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col bg-white dark:bg-gray-800 p-8 rounded shadow-md w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-5 text-center text-gray-900 dark:text-white">Crear Cuenta</h2>
+    <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-black">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex w-full max-w-sm flex-col rounded bg-white p-8 shadow-md dark:bg-gray-800"
+      >
+        <h2 className="mb-5 text-center text-2xl font-bold text-gray-900 dark:text-white">
+          Crear Cuenta
+        </h2>
 
-        <label htmlFor="name" className="text-gray-900 dark:text-gray-300">Nombre completo</label>
+        <label htmlFor="name" className="text-gray-900 dark:text-gray-300">
+          Nombre completo
+        </label>
         <input
           className={clsx(
-            "px-5 py-2 border bg-gray-200 dark:bg-gray-700 rounded mb-5 text-gray-900 dark:text-white",
-            { 'border-red-500': errors.name }
+            'mb-5 rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
+            { 'border-red-500': errors.name },
           )}
           type="text"
           autoFocus
           {...register('name', { required: true })}
         />
 
-        <label htmlFor="email" className="text-gray-900 dark:text-gray-300">Correo electrónico</label>
+        <label htmlFor="email" className="text-gray-900 dark:text-gray-300">
+          Correo electrónico
+        </label>
         <input
           className={clsx(
-            "px-5 py-2 border bg-gray-200 dark:bg-gray-700 rounded mb-5 text-gray-900 dark:text-white",
-            { 'border-red-500': errors.email }
+            'mb-5 rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
+            { 'border-red-500': errors.email },
           )}
           type="email"
           {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
         />
 
-        <label htmlFor="password" className="text-gray-900 dark:text-gray-300">Contraseña</label>
+        <label htmlFor="password" className="text-gray-900 dark:text-gray-300">
+          Contraseña
+        </label>
         <input
           className={clsx(
-            "px-5 py-2 border bg-gray-200 dark:bg-gray-700 rounded mb-5 text-gray-900 dark:text-white",
-            { 'border-red-500': errors.password }
+            'mb-5 rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
+            { 'border-red-500': errors.password },
           )}
           type="password"
           {...register('password', { required: true, minLength: 6 })}
@@ -85,7 +99,7 @@ export const RegisterForm = () => {
 
         <button className="btn-primary">Crear cuenta</button>
 
-        <div className="flex items-center my-5">
+        <div className="my-5 flex items-center">
           <div className="flex-1 border-t border-gray-500"></div>
           <div className="px-2 text-gray-800 dark:text-gray-300">O</div>
           <div className="flex-1 border-t border-gray-500"></div>

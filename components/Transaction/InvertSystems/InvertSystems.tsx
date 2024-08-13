@@ -1,5 +1,5 @@
 // app/components/InvertSystems/InvertSystems.tsx
-'use client'
+'use client';
 
 import Icon from '@mui/material/Icon';
 
@@ -10,7 +10,7 @@ interface InvertSystemsProps {
 export default function InvertSystems({ onInvert }: InvertSystemsProps) {
   return (
     <button
-      className="big-icon-button bg-blue-500 hover:bg-blue-700 text-white rounded-full p-4 focus:outline-none"
+      className="big-icon-button rounded-full bg-blue-500 p-4 text-white hover:bg-blue-700 focus:outline-none"
       onClick={onInvert}
       aria-label="Invertir sistemas"
     >
