@@ -132,11 +132,11 @@ swaplyar-frontend/
 
 ## 🤖 Scripts Disponibles
 
+* `npm run lint`: Ejecuta ESLint para analizar el código.
+* `npm run format`: Formatea el código utilizando Prettier.
 * `npm run dev`: Inicia el entorno de desarrollo.
 * `npm run build`: Compila la aplicación para producción.
 * `npm run start`: Inicia el servidor de la aplicación compilada.
-* `npm run lint`: Ejecuta ESLint para analizar el código.
-* `npm run format`: Formatea el código utilizando Prettier.
 
 ## 💪 Contribución
 
