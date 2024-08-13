@@ -15,9 +15,8 @@ const config: Config = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
 
-
       colors: {
-       'nav-blue': '#012D8A',
+        'nav-blue': '#012D8A',
         blue: {
           400: '#2589FE',
           500: '#0070F3',
@@ -31,7 +30,6 @@ const config: Config = {
           transform: 'translateX(100%)',
         },
       },
-
     },
   },
   plugins: [require('@tailwindcss/forms')],

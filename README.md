@@ -7,37 +7,36 @@
 ## 🚀 Funcionalidad principal
 
 - **Convertir y enviar dinero de PayPal a una cuenta bancaria en tres simples pasos:**
-    1. **Cotizá y solicitá**: Consulta la cotización actual y solicita el cambio.
-    2. **Seguí el Flujo**: Sigue las instrucciones detalladas para proceder con tu envío de manera segura y eficiente.
-    3. **Recibí tu dinero**: Recibe los pesos argentinos cotizados directamente en tu cuenta bancaria.
+  1. **Cotizá y solicitá**: Consulta la cotización actual y solicita el cambio.
+  2. **Seguí el Flujo**: Sigue las instrucciones detalladas para proceder con tu envío de manera segura y eficiente.
+  3. **Recibí tu dinero**: Recibe los pesos argentinos cotizados directamente en tu cuenta bancaria.
 
 ## 🛠️ Tecnologías Utilizadas
 
 ### Frontend
 
-* **Next.js 14.2.5:** Framework de React para aplicaciones web.
-* **TypeScript 5:** Lenguaje de programación tipado.
-* **Tailwind CSS 3.4.1:** Framework de utilidades CSS para diseñar rápidamente.
-* **React 18:** Librería de JavaScript para construir interfaces de usuario.
-* **React Hook Form 7.52.1:** Manejador de formularios eficiente y flexible para React.
-* **Material UI (MUI) 5.16.5:** Conjunto de componentes de interfaz de usuario.
-* **NextAuth.js 5.0.0-beta.20**: Autenticación para aplicaciones Next.js.
-* **Flowbite React 0.10.1**: Biblioteca de componentes de interfaz de usuario basada en Tailwind CSS
-* **@emotion/react & @emotion/styled 11.13.0:** Para estilos CSS-in-JS.
-* **react-icons 5.2.1:** Colección de iconos populares.
-* **sharp 0.33.4:** Biblioteca para procesamiento de imágenes.
-* **use-debounce 10.0.0:** Hook para implementar debounce en eventos.
-* **@fortawesome/*:** Varias bibliotecas para el uso de iconos de Font Awesome.
-* **@heroicons/react 2.1.4:** Conjunto de iconos SVG.
+- **Next.js 14.2.5:** Framework de React para aplicaciones web.
+- **TypeScript 5:** Lenguaje de programación tipado.
+- **Tailwind CSS 3.4.1:** Framework de utilidades CSS para diseñar rápidamente.
+- **React 18:** Librería de JavaScript para construir interfaces de usuario.
+- **React Hook Form 7.52.1:** Manejador de formularios eficiente y flexible para React.
+- **Material UI (MUI) 5.16.5:** Conjunto de componentes de interfaz de usuario.
+- **NextAuth.js 5.0.0-beta.20**: Autenticación para aplicaciones Next.js.
+- **Flowbite React 0.10.1**: Biblioteca de componentes de interfaz de usuario basada en Tailwind CSS
+- **@emotion/react & @emotion/styled 11.13.0:** Para estilos CSS-in-JS.
+- **react-icons 5.2.1:** Colección de iconos populares.
+- **sharp 0.33.4:** Biblioteca para procesamiento de imágenes.
+- **use-debounce 10.0.0:** Hook para implementar debounce en eventos.
+- **@fortawesome/\*:** Varias bibliotecas para el uso de iconos de Font Awesome.
+- **@heroicons/react 2.1.4:** Conjunto de iconos SVG.
 
 ### Desarrollo
 
-* **@types/node, @types/react, @types/react-dom:** Definiciones de tipos para mejorar el desarrollo con TypeScript.
-* **@tailwindcss/forms 0.5.7:** Extensión de Tailwind CSS para estilos de formularios.
-* **@vercel/style-guide 6.0.0:** Guía de estilo de Vercel (opcional, si se utiliza Vercel para despliegue).
-* **eslint, eslint-config-next, eslint-config-prettier:** Herramientas para análisis y formateo de código.
-* **postcss, prettier, prettier-plugin-tailwindcss:** Herramientas adicionales para formateo y procesamiento de CSS.
-
+- **@types/node, @types/react, @types/react-dom:** Definiciones de tipos para mejorar el desarrollo con TypeScript.
+- **@tailwindcss/forms 0.5.7:** Extensión de Tailwind CSS para estilos de formularios.
+- **@vercel/style-guide 6.0.0:** Guía de estilo de Vercel (opcional, si se utiliza Vercel para despliegue).
+- **eslint, eslint-config-next, eslint-config-prettier:** Herramientas para análisis y formateo de código.
+- **postcss, prettier, prettier-plugin-tailwindcss:** Herramientas adicionales para formateo y procesamiento de CSS.
 
 ## 📂 Estructura del Proyecto
 
@@ -72,30 +71,29 @@ swaplyar-frontend/
 
 **Explicación:**
 
-* **`app/`:**
-    * **`api/auth/[...nextauth]`:** Ruta de NextAuth.js para manejar la autenticación.
-    * **`info/`, `auth/`, `request/`:** Carpetas para agrupar las rutas relacionadas con cada sección de la aplicación.
-    * **`layout.js`:** Define el diseño general de la aplicación (opcional).
-    * **`page.js`:** Define la página de inicio (opcional).
-* **`components/`:** Contiene componentes reutilizables, organizados por funcionalidad.
-* **`public/`:** Almacena archivos estáticos accesibles públicamente.
-* **`styles/`:** Contiene estilos globales que se aplican a toda la aplicación.
-
+- **`app/`:**
+  - **`api/auth/[...nextauth]`:** Ruta de NextAuth.js para manejar la autenticación.
+  - **`info/`, `auth/`, `request/`:** Carpetas para agrupar las rutas relacionadas con cada sección de la aplicación.
+  - **`layout.js`:** Define el diseño general de la aplicación (opcional).
+  - **`page.js`:** Define la página de inicio (opcional).
+- **`components/`:** Contiene componentes reutilizables, organizados por funcionalidad.
+- **`public/`:** Almacena archivos estáticos accesibles públicamente.
+- **`styles/`:** Contiene estilos globales que se aplican a toda la aplicación.
 
 ## 🛣️ Rutas Principales
 
-* `/`: Página de inicio.
-* `/_not-found`: Página de error 404.
-* `/auth/login`: Página de inicio de sesión.
-* `/auth/new-account`: Página de registro de nueva cuenta.
-* `/info/about-us`: Página "Quienes Somos".
-* `/info/help-center`: Página de centro de ayuda.
-* `/info/how-to-use`: Página "Cómo usar Swaplyar".
-* `/info/loyalty-program`: Página del programa de fidelización.
-* `/info/terms-and-conditions`: Página de términos y condiciones.
-* `/info/warranty`: Página de garantía.
-* `/info/why-choose-swaplyar`: Página "Por qué elegir Swaplyar".
-* `/request`: Página principal de solicitudes de intercambio.
+- `/`: Página de inicio.
+- `/_not-found`: Página de error 404.
+- `/auth/login`: Página de inicio de sesión.
+- `/auth/new-account`: Página de registro de nueva cuenta.
+- `/info/about-us`: Página "Quienes Somos".
+- `/info/help-center`: Página de centro de ayuda.
+- `/info/how-to-use`: Página "Cómo usar Swaplyar".
+- `/info/loyalty-program`: Página del programa de fidelización.
+- `/info/terms-and-conditions`: Página de términos y condiciones.
+- `/info/warranty`: Página de garantía.
+- `/info/why-choose-swaplyar`: Página "Por qué elegir Swaplyar".
+- `/request`: Página principal de solicitudes de intercambio.
 
 ## 🚀 Configuración Inicial
 
@@ -132,11 +130,11 @@ swaplyar-frontend/
 
 ## 🤖 Scripts Disponibles
 
-* `npm run lint`: Ejecuta ESLint para analizar el código.
-* `npm run format`: Formatea el código utilizando Prettier.
-* `npm run dev`: Inicia el entorno de desarrollo.
-* `npm run build`: Compila la aplicación para producción.
-* `npm run start`: Inicia el servidor de la aplicación compilada.
+- `npm run lint`: Ejecuta ESLint para analizar el código.
+- `npm run format`: Formatea el código utilizando Prettier.
+- `npm run dev`: Inicia el entorno de desarrollo.
+- `npm run build`: Compila la aplicación para producción.
+- `npm run start`: Inicia el servidor de la aplicación compilada.
 
 ## 💪 Contribución
 
