@@ -146,9 +146,18 @@ Si deseas contribuir al proyecto, sigue estos pasos:
 2. Crea una nueva rama (`git checkout -b feature/nueva-funcionalidad`).
 3. Realiza tus cambios.
 4. **Ejecuta `npm run format` para formatear tu código con Prettier.**
-5. **Ejecuta `npm run build --clean` para asegurarte de que la compilación se realice correctamente y se limpien los archivos generados previamente.**
+5. **Ejecuta `npm run lint` para verificar que no haya errores en el código.**
 6. Haz commit de tus cambios (`git commit -m 'Agregar nueva funcionalidad'`).
-7. Envía un pull request.
+7. **Actualiza tu rama con los últimos cambios de la rama principal:**
+   ```bash
+   git fetch origin
+   git checkout main
+   git pull origin main
+   git checkout feature/nueva-funcionalidad
+   git merge main
+   ```
+8. **Ejecuta `npm run build --clean` para asegurarte de que la compilación se realice correctamente y se limpien los archivos generados previamente.**
+9. Envía un pull request.
 
 **¡Gracias por contribuir a SwaplyAr!** 😊
 

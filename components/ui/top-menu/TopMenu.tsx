@@ -1,62 +1,11 @@
 'use client';
 
-import { useState } from "react";
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import { useState } from 'react';
+import { Avatar, Dropdown, Navbar } from 'flowbite-react';
 import NavLinks from '@/components/ui/nav-links';
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import { useState } from "react";
-
-const MenuIcon = styled(GiHamburgerMenu)`
-  width: 30px;
-  height: 30px;
-  color: #333;
-  cursor: pointer;
-
-  &:hover {
-    color: #007BFF;
-  }
-`;
-
-const StyledNavbar = styled(Navbar)`
-  background-color: #ffffff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  height: 100px;
-  padding: 1.5rem;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  width: 100%;
-
-
-  .navbar-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 80%;
-    margin: 0 auto; 
-  }
-
-  .navbar-brand {
-    display: flex;
-    align-items: center;
-  }
-
-  .navbar-collapse {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-
-  .navbar-toggler {
-    border: none;
-    background: none;
-    font-size: 1.5rem;
-  }
-
-  .dropdown-item {
-    font-size: 0.9rem;
-  }
-`;
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -66,7 +15,7 @@ export function TopMenu() {
   };
 
   return (
-    <Navbar fluid rounded className="bg-white dark:bg-gray-800 shadow-md p-4">
+    <Navbar fluid rounded className="bg-white p-4 shadow-md dark:bg-gray-800">
       <Navbar.Brand href="/">
         <Image
           alt="Your Company"
@@ -81,11 +30,15 @@ export function TopMenu() {
           <Dropdown
             arrowIcon={false}
             inline
-            label={<GiHamburgerMenu className="w-8 h-8 text-gray-800 dark:text-gray-200" />}
+            label={
+              <GiHamburgerMenu className="h-8 w-8 text-gray-800 dark:text-gray-200" />
+            }
           >
             <Dropdown.Item
               className={`cursor-pointer ${
-                selectedItem === 'about-us' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+                selectedItem === 'about-us'
+                  ? 'bg-blue-500 text-white'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-600'
               }`}
               onClick={() => handleSelect('about-us')}
             >
@@ -93,7 +46,9 @@ export function TopMenu() {
             </Dropdown.Item>
             <Dropdown.Item
               className={`cursor-pointer ${
-                selectedItem === 'how-to-use' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+                selectedItem === 'how-to-use'
+                  ? 'bg-blue-500 text-white'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-600'
               }`}
               onClick={() => handleSelect('how-to-use')}
             >
@@ -101,7 +56,9 @@ export function TopMenu() {
             </Dropdown.Item>
             <Dropdown.Item
               className={`cursor-pointer ${
-                selectedItem === 'loyalty-program' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+                selectedItem === 'loyalty-program'
+                  ? 'bg-blue-500 text-white'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-600'
               }`}
               onClick={() => handleSelect('loyalty-program')}
             >
@@ -110,7 +67,9 @@ export function TopMenu() {
             <Dropdown.Divider />
             <Dropdown.Item
               className={`cursor-pointer ${
-                selectedItem === 'login' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+                selectedItem === 'login'
+                  ? 'bg-blue-500 text-white'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-600'
               }`}
               onClick={() => handleSelect('login')}
             >
@@ -118,7 +77,9 @@ export function TopMenu() {
             </Dropdown.Item>
             <Dropdown.Item
               className={`cursor-pointer ${
-                selectedItem === 'register' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+                selectedItem === 'register'
+                  ? 'bg-blue-500 text-white'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-600'
               }`}
               onClick={() => handleSelect('register')}
             >
@@ -128,7 +89,7 @@ export function TopMenu() {
         </div>
 
         <Navbar.Collapse>
-          <div className="hidden md:flex md:ml-6">
+          <div className="hidden md:ml-6 md:flex">
             <NavLinks />
           </div>
         </Navbar.Collapse>
