@@ -43,9 +43,9 @@ export default function Footer() {
 
                 <div className="flex flex-col items-start sm:items-end text-left sm:text-right sm:w-1/3">
                     <h4 className="text-gray-900 text-lg dark:text-white mb-2">Atención al Cliente</h4>
-                    <FooterLink href="/info/centro-de-ayuda">Centro de Ayuda</FooterLink>
-                    <FooterLink href="/info/quienes-somos">Quienes Somos</FooterLink>
-                    <FooterLink href="/info/por-que-elegir-swaplyar">¿Por qué Elegir SwaplyAr?</FooterLink>
+                    <FooterLink href="/info/help-center">Centro de Ayuda</FooterLink>
+                    <FooterLink href="/info/about-us">Quienes Somos</FooterLink>
+                    <FooterLink href="/info/why-choose-swaplyar">¿Por qué Elegir SwaplyAr?</FooterLink>
 
                 </div>
             </div>

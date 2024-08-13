@@ -45,3 +45,9 @@ export const Contacto = "/images/contacto.png"
 export const PlusRewardsGif = "/gif/plus-rewards.gif"
 export const Ayuda1 = "/images/ayuda1.png"
 export const Ayuda2 = "/images/ayuda2.png"
+
+/**why-choose-swaplyar**/
+export const ElegirSwaplyAr = "/images/elegirSwaplyAr.png"
+export const Porqueelegirnos = "/images/porqueelegirnos.png"
+export const LideresenCambio = "/images/lideresencambio.png"
+export const SeguridadySatisfaccion = "/images/seguridadysatisfaccion.png"

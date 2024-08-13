@@ -1,7 +1,7 @@
 import FlyerTrabajo from "@/components/FlyerTrabajo/FlyerTrabajo";
 import InfoBlock from "@/components/InfoBlock/InfoBlock";
 import GuaranteeSection from "@/components/ui/warranty-section/WarrantySection";
-import { CentroDeAyuda, FlyerGif } from "@/utils/assets/img-database";
+import { CentroDeAyuda, ElegirSwaplyAr, FlyerGif, LideresenCambio, Porqueelegirnos, SeguridadySatisfaccion } from "@/utils/assets/img-database";
 
 const mainStyles = {
     main: "py-10",
@@ -19,7 +19,7 @@ const WhyChooseSwaplyar: React.FC = () => {
         <div className={mainStyles.instructionsCalculatorContainer}>
             <GuaranteeSection
             title="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
-            imageSrc="/images/elegirSwaplyAr.png"
+            imageSrc={ElegirSwaplyAr}
             imageAlt="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
             contentNode={(
                 <>
@@ -37,7 +37,7 @@ const WhyChooseSwaplyar: React.FC = () => {
         <div className={mainStyles.infoBlocksContainer}>
             <InfoBlock
             title="¿Por qué elegirnos?"
-            imageSrc="/images/porqueelegirnos.png"
+            imageSrc={Porqueelegirnos}
             imageAlt="Cambia USD de PayPal por ARS"
             contentNode={(
                 <>
@@ -57,7 +57,7 @@ const WhyChooseSwaplyar: React.FC = () => {
 
             <InfoBlock
             title="SwaplyAr: Líderes en Cambio de Divisas de PayPal"
-            imageSrc="/images/lideresencambio.png"
+            imageSrc={LideresenCambio}
             imageAlt="Recarga PayPal"
             content="
                 Orgullosos de ofrecer las mejores tasas del mercado, en SwaplyAr nos
@@ -69,7 +69,7 @@ const WhyChooseSwaplyar: React.FC = () => {
 
             <InfoBlock
             title="Tu Seguridad y Satisfacción Son Nuestra Prioridad en SwaplyAr"
-            imageSrc="/images/seguridadysatisfaccion.png"
+            imageSrc={SeguridadySatisfaccion}
             imageAlt="Recarga PayPal"
             content="
                 Con nosotros, tu dinero y tú están en manos seguras. Nuestro dedicado
