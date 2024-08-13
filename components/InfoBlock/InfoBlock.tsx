@@ -26,9 +26,9 @@ export default function InfoBlock({ title, imageSrc, imageAlt, content, contentN
             </div>
             <div className="info-content-container w-full md:w-1/2"> 
                 <div className="flex flex-col items-start">
-                    <h2 className="dark-title text-4xl mb-4">{title}</h2>
+                    <h2 className="dark-title text-4xl mb-4 text-gray-blue">{title}</h2>
                 </div>
-                <div className="info-content text-xl ">
+                <div className="info-content text-xl text-gray-blue ">
                     {contentNode ? contentNode : <p className="text-gray-700" dangerouslySetInnerHTML={{ __html: content || '' }}></p>}
                 </div>
             </div>

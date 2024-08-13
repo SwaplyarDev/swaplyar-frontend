@@ -3,8 +3,8 @@ import TransactionCalculator from "@/components/Transaction/TransactionCalculato
 const ConversionInstructions = () => {
     return (
 <div className="flex  flex-col md:flex-row justify-between items-center h-full  space-y-4 md:space-y-0  md:space-x-4 w-4/5 sm:w-4/5 md:w-4/5 mx-auto">
-    <div className="conversion-instructions max-w-md">
-        <h2 className="text-5xl mb-4">Convertí y enviá tu dinero de PayPal a tu cuenta bancaria</h2>
+    <div className="conversion-instructions max-w-md ">
+        <h2 className="text-5xl mb-4 text-gray-blue">Convertí y enviá tu dinero de PayPal a tu cuenta bancaria</h2>
         <ol className="list-decimal list  mt-7 md:ml-8">
             <li className="step mb-4">
                 <h3 className="text-xl font-bold mb-0">¡Cotizá y solicitá!</h3>
