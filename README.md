@@ -43,16 +43,59 @@
 
 ```
 swaplyar-frontend/
-├── components/
-│   ├── ui/
-│   ├── auth/
-│   └── request/
-├── pages/
-├── public/
-├── styles/
+├── app/               # (Nuevo) Directorio App Router (Next.js 13)
+│   ├── api/           # Rutas de API
+│   │   └── auth/      # Rutas de NextAuth.js
+│   ├── info/          # Rutas relacionadas con información
+│   │   ├── about-us/  # Página "Quienes Somos"
+│   │   ├── help-center/ # Página de centro de ayuda
+│   │   ├── how-to-use/  # Página "Cómo usar Swaplyar"
+│   │   ├── loyalty-program/ # Página del programa de fidelización
+│   │   ├── terms-and-conditions/ # Página de términos y condiciones
+│   │   ├── warranty/  # Página de garantía
+│   │   └── why-choose-swaplyar/ # Página "Por qué elegir Swaplyar"
+│   ├── auth/          # Rutas relacionadas con autenticación
+│   │   ├── login/     # Página de inicio de sesión
+│   │   └── new-account/ # Página de registro de nueva cuenta
+│   └── request/       # Rutas relacionadas con solicitudes de intercambio
+│   └── layout.js      # Layout principal de la aplicación (opcional)
+│   └── page.js        # Página de inicio (opcional)
+├── components/        # Componentes reutilizables
+│   ├── ui/            # Componentes de interfaz de usuario
+│   ├── auth/          # Componentes relacionados con la autenticación
+│   └── request/       # Componentes relacionados con solicitudes
+├── public/            # Archivos estáticos (imágenes, fuentes, etc.)
+├── styles/            # Estilos globales (CSS o módulos CSS)
 ├── ... otros archivos y carpetas ...
 └── package.json
 ```
+
+**Explicación:**
+
+* **`app/`:**
+    * **`api/auth/[...nextauth]`:** Ruta de NextAuth.js para manejar la autenticación.
+    * **`info/`, `auth/`, `request/`:** Carpetas para agrupar las rutas relacionadas con cada sección de la aplicación.
+    * **`layout.js`:** Define el diseño general de la aplicación (opcional).
+    * **`page.js`:** Define la página de inicio (opcional).
+* **`components/`:** Contiene componentes reutilizables, organizados por funcionalidad.
+* **`public/`:** Almacena archivos estáticos accesibles públicamente.
+* **`styles/`:** Contiene estilos globales que se aplican a toda la aplicación.
+
+
+## 🛣️ Rutas Principales
+
+* `/`: Página de inicio.
+* `/_not-found`: Página de error 404.
+* `/auth/login`: Página de inicio de sesión.
+* `/auth/new-account`: Página de registro de nueva cuenta.
+* `/info/about-us`: Página "Quienes Somos".
+* `/info/help-center`: Página de centro de ayuda.
+* `/info/how-to-use`: Página "Cómo usar Swaplyar".
+* `/info/loyalty-program`: Página del programa de fidelización.
+* `/info/terms-and-conditions`: Página de términos y condiciones.
+* `/info/warranty`: Página de garantía.
+* `/info/why-choose-swaplyar`: Página "Por qué elegir Swaplyar".
+* `/request`: Página principal de solicitudes de intercambio.
 
 ## 🚀 Configuración Inicial
 
@@ -74,7 +117,7 @@ swaplyar-frontend/
    Crea un archivo `.env.local` en la raíz del proyecto y agrega las variables de entorno necesarias.
 
    ```env
-   NEXT_PUBLIC_API_URL=https://api.swaplyar.com
+   NEXT_PUBLIC_API_URL=[https://api.swaplyar.com](https://api.swaplyar.com)
    NEXTAUTH_URL=http://localhost:3000
    NEXTAUTH_SECRET=your-secret-key
    ```
@@ -95,21 +138,19 @@ swaplyar-frontend/
 * `npm run lint`: Ejecuta ESLint para analizar el código.
 * `npm run format`: Formatea el código utilizando Prettier.
 
-## 🛣️ Rutas Principales
-
-* `/`: Página de inicio.
-* `/info`: Información sobre el servicio.
-* `/auth`: Página de autenticación.
-* `/request`: Solicitudes de intercambio de saldo.
-
 ## 💪 Contribución
 
 Si deseas contribuir al proyecto, sigue estos pasos:
 
 1. Haz un fork del repositorio.
 2. Crea una nueva rama (`git checkout -b feature/nueva-funcionalidad`).
-3. Realiza tus cambios y haz commit (`git commit -m 'Agregar nueva funcionalidad'`).
-4. Envía un pull request.
+3. Realiza tus cambios.
+4. **Ejecuta `npm run format` para formatear tu código con Prettier.**
+5. **Ejecuta `npm run build --clean` para asegurarte de que la compilación se realice correctamente y se limpien los archivos generados previamente.**
+6. Haz commit de tus cambios (`git commit -m 'Agregar nueva funcionalidad'`).
+7. Envía un pull request.
+
+**¡Gracias por contribuir a SwaplyAr!** 😊
 
 ## 🚀 Despliegue
 
