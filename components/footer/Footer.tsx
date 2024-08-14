@@ -27,28 +27,28 @@ function FooterLink({ href, children }: FooterLinkProps) {
 export default function Footer() {
     return (
         <footer className="rs-wrapper-v4 py-8 bg-white dark:bg-gray-900 mx-auto mb-12 w-full px-4">
-            <div className="one-info-footer flex flex-col sm:flex-row gap-4 sm:gap-0 sm:justify-between px-4 sm:w-4/5 md:mx-auto">
-                <div className="flex flex-col items-start dark:text-white text-left sm:w-1/3 mb-4 sm:mb-0">
-                    <h4 className="text-gray-900 text-lg dark:text-white mb-2">Regístrate y disfruta de beneficios</h4>
-                    <FooterLink href="/auth/login">Iniciar Sesión</FooterLink>
-                    <FooterLink href="/auth/new-account">Registrarse</FooterLink>
-                    <FooterLink href="/info/loyalty-program">Programa de Fidelización</FooterLink>
-                </div>
-                <div className="flex flex-col items-start dark:text-white sm:items-center text-left sm:text-center sm:w-1/3 mb-4 sm:mb-0">
-                    <h4 className="text-gray-900 text-lg dark:text-white mb-2">Normativa</h4>
-                    <FooterLink href="/info/warranty">Garantía</FooterLink>
-                    <FooterLink href="/info/terms-and-conditions">Términos y condiciones</FooterLink>
-                    <FooterLink href="/info/privacy-policy">Política de privacidad</FooterLink>
-                </div>
+<div className="one-info-footer flex flex-col sm:flex-row gap-4 sm:gap-0 sm:justify-between px-4 sm:w-4/5 md:mx-auto">
+    <div className="flex flex-col items-center sm:items-start dark:text-white text-center sm:text-left w-full sm:w-1/3 mb-4 sm:mb-0 sm:w-80%">
+        <h4 className="text-gray-900 text-lg dark:text-white mb-2">Regístrate y disfruta de beneficios</h4>
+        <FooterLink href="/auth/login">Iniciar Sesión</FooterLink>
+        <FooterLink href="/auth/new-account">Registrarse</FooterLink>
+        <FooterLink href="/info/loyalty-program">Programa de Fidelización</FooterLink>
+    </div>
+    <div className="flex flex-col items-center sm:items-center dark:text-white text-center sm:text-center w-full sm:w-1/3 mb-4 sm:mb-0 sm:w-80%">
+        <h4 className="text-gray-900 text-lg dark:text-white mb-2">Normativa</h4>
+        <FooterLink href="/info/warranty">Garantía</FooterLink>
+        <FooterLink href="/info/terms-and-conditions">Términos y condiciones</FooterLink>
+        <FooterLink href="/info/privacy-policy">Política de privacidad</FooterLink>
+    </div>
 
-                <div className="flex flex-col items-start dark:text-white sm:items-end text-left sm:text-right sm:w-1/3">
-                    <h4 className="text-gray-900 text-lg dark:text-white mb-2">Atención al Cliente</h4>
-                    <FooterLink href="/info/centro-de-ayuda">Centro de Ayuda</FooterLink>
-                    <FooterLink href="/info/quienes-somos">Quienes Somos</FooterLink>
-                    <FooterLink href="/info/por-que-elegir-swaplyar">¿Por qué Elegir SwaplyAr?</FooterLink>
+    <div className="flex flex-col items-center sm:items-end dark:text-white text-center sm:text-right w-full sm:w-1/3 sm:w-80%">
+        <h4 className="text-gray-900 text-lg dark:text-white mb-2">Atención al Cliente</h4>
+        <FooterLink href="/info/centro-de-ayuda">Centro de Ayuda</FooterLink>
+        <FooterLink href="/info/quienes-somos">Quienes Somos</FooterLink>
+        <FooterLink href="/info/por-que-elegir-swaplyar">¿Por qué Elegir SwaplyAr?</FooterLink>
+    </div>
+</div>
 
-                </div>
-            </div>
 
             <div className="two-info-footer flex flex-col sm:flex-row items-center justify-between mt-5 px-4 pt-4 sm:w-9/12 sm:mx-auto">
                 <div className="container-footer-icon-social flex justify-center sm:justify-start space-x-4 mb-4 sm:mb-0 sm:w-1/3">
