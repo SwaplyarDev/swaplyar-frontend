@@ -9,6 +9,7 @@ import {
   RecargaPaypal,
   UsdArs,
 } from '@/utils/assets/img-database';
+import ButtonTest from '../ButtonTest';
 
 const mainStyles = {
   main: 'py-10',
@@ -46,6 +47,7 @@ export default function HomePage() {
           &iexcl;Empez&aacute; ahora!
         </FlyerTrabajo>
       </div>
+      <ButtonTest/> //Borrar
     </main>
   );
 }
