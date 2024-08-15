@@ -7,8 +7,8 @@ async function updateCurrentValueUSDToEUR() {
         const data = await response.json()
         let currentValueEURToUSD = 1 / data.data.EUR;
         let currentValueUSDToEUR = data.data.EUR;
-        console.log("con 1 euro compro "+1 / data.data.EUR)
-        console.log("con 1 dolar compro "+data.data.EUR)
+        console.log(`con 1 euro compro ${currentValueEURToUSD} dolares`)
+        console.log(`con 1 dolar compro ${currentValueUSDToEUR} euros`)
     } catch (error) {
         throw new Error('Network response was not ok');
     }    
