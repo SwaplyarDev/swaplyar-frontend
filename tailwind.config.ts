@@ -16,7 +16,7 @@ const config: Config = {
       },
       colors:{
         'nav-blue': '#012D8A',
-        'gay-blue':'#020919e2'
+        'gray-blue':'#020919',
       },
       width: {
         '9/10': '90%',
