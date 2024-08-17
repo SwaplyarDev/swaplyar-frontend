@@ -43,26 +43,28 @@ const cardsData = [
 
 const AboutUs = () => {
   return (
-    <div className="py-10">
+    <div className="py-10  ">
+      <div className="shadow-custom-blue bg-white">
       <FlyerTrabajo
-        imageSrc={CentroDeAyuda}
+        imageSrc="/images/need-help.png"
       >
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-      <div className="bg-white dark:bg-black text-black dark:text-white">
-        <div className="need-help delante need-help-container rs-link"></div>
-        <div id="animated-blurred-circles-container"></div>
-        <div className="rs-wrapper-v4">
-          <div className="container-text">
-            <h1>
-              En SwaplyAr, garantizamos un intercambio seguro y confiable de tu
+      </div>
+
+      <div className="bg-white dark:bg-black text-black dark:text-white pt-5 ">
+        {/* <div className="need-help delante need-help-container rs-link"></div> */}
+        {/* <div id="animated-blurred-circles-container"></div> */}
+        <div className="rs-wrapper-v4 sm:w-4/5 mx-auto ">
+          <div className="container-text text-4xl  pt-20 pb-24">
+            <h1 >En SwaplyAr, garantizamos un intercambio seguro y confiable de tu
               dinero de PayPal. Estamos comprometidos con tu seguridad y
               satisfacción.
             </h1>
           </div>
         </div>
-        <div className="rs-wrapper-v4">
-          <h2>Nuestra misión y valores</h2>
+        <div className="rs-wrapper-v4 sm:w-4/5 mx-auto mt-8 mb-12  ">
+          <h2 className="text-3xl" >Nuestra misión y valores</h2>
           <h5>
             SwaplyAr nació de una simple necesidad, intercambiar saldo y que cada
             persona que lo utiliza reciba lo pactado, acompañándolo en todo el
@@ -74,23 +76,25 @@ const AboutUs = () => {
             está buscando de una manera fácil y protegida.
           </h5>
         </div>
-        <CaedAboutUs cardsData={cardsData} />
-        <div className="default-space-between-components">
+       <div className="sm:w-4/5 mx-auto">
+       <CaedAboutUs cardsData={cardsData} />
+       </div>
+        <div className="default-space-evenly-components sm:w-9/12 mx-auto mt-40 mb-36">
           <div className="rs-wrapper-v4 grid col1">
-            <div className="info-content-container flex flex-col md:flex-row items-center">
-              <div className="col-left bg-white dark:bg-black p-4 rounded-lg shadow-lg flex flex-col items-center md:items-start">
+            <div className="info-content-container w-full flex flex-col md:flex-row items-center">
+              <div className="col-left  w-1/2 dark:bg-black flex flex-col items-center ">
                 <Image
                   src={OaSuarez}
                   alt="Chief Executive Officer (CEO)"
                   width={350}
                   height={300}
                 />
-                <div className="text-team text-black dark:text-white mt-4">
-                  <h4>Oa Johan Javier Suarez Merchan</h4>
+                <div className="text-team text-black dark:text-white  mt-4">
+                  <h4 className="text-2xl" >Oa Johan Javier Suarez Merchan</h4>
                   <h5>Founder &amp; Chief Executive Officer (CEO)</h5>
                 </div>
               </div>
-              <div className="col-right text-black dark:text-white p-4 rounded-lg shadow-lg md:ml-8 mt-4 md:mt-0">
+              <div className="col-right w-1/2 text-4xl text-black dark:text-white md:ml-8 mt-4 md:mt-0">
                 <h2>
                   &quot;Buscamos solucionar los problemas de las personas
                   implementando las &uacute;ltimas tecnolog&iacute;as y sistemas de pago.&quot;
@@ -99,6 +103,8 @@ const AboutUs = () => {
             </div>
           </div>
         </div>
+
+
         <div className="mt-10">
           <FlyerTrabajo
             imageSrc={FlyerGif}
