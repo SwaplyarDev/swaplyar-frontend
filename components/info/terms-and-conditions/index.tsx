@@ -14,7 +14,7 @@ const TermsAndConditions = () => {
       </FlyerTrabajo>
 
       <div className="rs-wrapper-v4 my-8 flex flex-col items-center justify-center text-center md:flex-row md:items-center">
-        <div className="container-text flex h-full items-center justify-center text-gray-900 md:ml-8 dark:text-gray-100">
+        <div className="container-text flex h-full items-center justify-center text-gray-900 dark:text-gray-100 md:ml-8">
           <h1 className="mb-6 text-3xl font-bold">
             Términos y Condiciones de Uso y Navegación del Sitio SwaplyAr
           </h1>

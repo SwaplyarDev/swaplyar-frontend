@@ -83,7 +83,7 @@ const AboutUs = () => {
         <div className="default-space-between-components">
           <div className="rs-wrapper-v4 col1 grid">
             <div className="info-content-container flex flex-col items-center md:flex-row">
-              <div className="col-left flex flex-col items-center rounded-lg bg-white p-4 shadow-lg md:items-start dark:bg-black">
+              <div className="col-left flex flex-col items-center rounded-lg bg-white p-4 shadow-lg dark:bg-black md:items-start">
                 <Image
                   src={OaSuarez}
                   alt="Chief Executive Officer (CEO)"
@@ -95,7 +95,7 @@ const AboutUs = () => {
                   <h5>Founder &amp; Chief Executive Officer (CEO)</h5>
                 </div>
               </div>
-              <div className="col-right mt-4 rounded-lg p-4 text-black shadow-lg md:ml-8 md:mt-0 dark:text-white">
+              <div className="col-right mt-4 rounded-lg p-4 text-black shadow-lg dark:text-white md:ml-8 md:mt-0">
                 <h2>
                   &quot;Buscamos solucionar los problemas de las personas
                   implementando las &uacute;ltimas tecnolog&iacute;as y sistemas

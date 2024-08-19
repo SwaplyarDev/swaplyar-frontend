@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Footer from '@/components/footer/Footer';
 import { TopMenu } from '@/components/ui/top-menu/TopMenu';
+import ThemeProvider from '../components/ui/themeProvider/themeProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,10 +19,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <TopMenu />
-        {children}
-        <Footer />
+      <body
+        className={`${inter.className} bg-white text-black dark:bg-gray-900 dark:text-white`}
+      >
+        <ThemeProvider>
+          <TopMenu />
+          {children}
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
