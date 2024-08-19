@@ -33,7 +33,7 @@ body {
 }
 
 /* Spinner */ 
-.spinner {
+/* .spinner {
   width: 44px;
   height: 44px;
   animation: spinner-y0fdc1 2s infinite ease;
@@ -88,4 +88,87 @@ body {
   100% {
    transform: rotate(45deg) rotateX(-385deg) rotateY(385deg);
   }
- }
+ } */
+
+/* Skeleton */ 
+.loaderRegister {/* Igual al tamaño máximo del formulario */
+  height: 486px;
+}
+
+.loaderLogin {
+  height: 432px;
+}
+
+.loader {
+  position: relative;
+  width: 100%;
+  max-width: 384px; /* Igual al tamaño máximo del formulario */
+  padding: 15px;
+  background: #ffffff; /* Fondo blanco similar al del formulario */
+  border-radius: 0.375rem; /* Bordes redondeados del formulario */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra del formulario */
+  overflow: hidden;
+}
+
+.loader:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: linear-gradient(110deg, rgba(227, 227, 227, 0) 0%, rgba(227, 227, 227, 0) 40%, rgba(227, 227, 227, 0.5) 50%, rgba(227, 227, 227, 0) 60%, rgba(227, 227, 227, 0) 100%);
+  animation: gradient-animation 1.2s linear infinite;
+}
+
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.loader .line-1, .line-2, .line-3, .line-4, .line-5, .line-6 {
+  background-color: #cacaca;
+  border-radius: 0.375rem; /* Bordes redondeados */
+}
+
+.loader .line-1 {
+  height: 3.5rem;
+  width: 60%; /* Ajustado para el ancho del input de nombre */
+}
+
+.loader .line-2 {
+  height: 3rem;
+  width: 90%; /* Ajustado para el ancho del input de correo electrónico */
+}
+
+.loader .line-3 {
+  height: 3rem;
+  width: 90%; /* Ajustado para el ancho del input de contraseña */
+}
+
+.loader .line-4 {
+  height: 3rem;
+  width: 90%; /* Ajustado para el ancho del botón */
+}
+
+.loader .line-5 {
+  height: 2rem;
+  width: 40%; /* Ajustado para el ancho del botón */
+}
+
+.loader .line-6 {
+  height: 2rem;
+  width: 40%; /* Ajustado para el ancho del botón */
+}
+
+@keyframes gradient-animation {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
