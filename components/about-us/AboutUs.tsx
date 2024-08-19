@@ -1,8 +1,12 @@
 // /components/about-us/AboutUs.tsx
+
+"use client"
 import Image from "next/image";
+import { useState, useEffect, useRef } from "react";
 import CaedAboutUs from "../ui/caed-about-us/caed-about-us";
 import FlyerTrabajo from "../FlyerTrabajo/FlyerTrabajo";
 import { Apoyo, CentroDeAyuda, Eficiencia, FlyerGif, OaSuarez, Simplicidad, Transparencia } from "@/utils/assets/img-database";
+import AnimatedBlurredCircles from "../ui/animations/AnimatedBlurredCircles";
 
 const cardsData = [
     {
@@ -40,26 +44,51 @@ const cardsData = [
 ];
 
 const AboutUs = () => {
+  const [bannerHeight, setBannerHeight] = useState(0);
+  const bannerRef = useRef<HTMLDivElement>(null);
+
+
+  const calculateBannerHeight = () => {
+      if (bannerRef.current) {
+          setBannerHeight(bannerRef.current.offsetHeight);
+      }
+  };
+
+  useEffect(() => {
+
+      calculateBannerHeight();
+
+      window.addEventListener('resize', calculateBannerHeight);
+
+      return () => {
+          window.removeEventListener('resize', calculateBannerHeight);
+      };
+  }, []);
   return (
     <div className="py-10">
-      <div className="shadow-custom-blue bg-white">
+      <div className="shadow-custom-blue bg-white" ref={bannerRef}  >
         <FlyerTrabajo imageSrc="/images/need-help.png">
           Estamos trabajando en las funciones de inicio de sesión y registro.
         </FlyerTrabajo>
       </div>
 
       <div className="bg-white dark:bg-black text-black dark:text-white pt-5">
+      
         <div className="rs-wrapper-v4 w-full sm:w-11/12 mx-auto text-center">
+        
           <div className="container-text text-xl sm:text-2xl lg:text-4xl pt-10 sm:pt-20 pb-12 sm:pb-24">
+          
             <h1 className="w-[90%] lg:text-4xl sm:w-[86%] text-left mx-auto">
               En SwaplyAr, garantizamos un intercambio seguro y confiable de tu
               dinero de PayPal. Estamos comprometidos con tu seguridad y
               satisfacción.
             </h1>
           </div>
+          
         </div>
 
         <div className="rs-wrapper-v4 w-[90%] sm:w-[80%] mx-auto lg:mt-8 mb-12 sm:mt-4 md:mt-8 text-justify">
+        
           <h2 className="text-xl sm:text-4xl">Nuestra misión y valores</h2>
           <h5 className="text-lg md:text-base sm:text-base lg:text-xl mt-4 md:mt-4 sm:mt-6 mx-auto">
             SwaplyAr nació de una simple necesidad, intercambiar saldo y que cada
@@ -71,6 +100,7 @@ const AboutUs = () => {
             pilares fundamentales. Ayudamos a que cada persona consiga, lo que
             está buscando de una manera fácil y protegida.
           </h5>
+          <AnimatedBlurredCircles topOffset={bannerHeight} />
         </div>
 
         <div className="w-[90%] sm:w-[80%] mx-auto">
