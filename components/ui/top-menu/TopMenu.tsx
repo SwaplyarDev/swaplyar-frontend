@@ -32,7 +32,7 @@ export function TopMenu() {
       <div className="flex items-center">
         <section className="flex items-center justify-end">
           <button
-            className="rounded-md p-3 transition-colors duration-300 ease-in-out hover:bg-gray-600 hover:text-white hover:shadow-sm dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+            className="mr-1 rounded-md p-3 transition-colors duration-300 ease-in-out hover:bg-gray-600 hover:text-white hover:shadow-sm dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-white dark:hover:text-black md:-mr-2"
             onClick={changeTheme}
           >
             {isDark ? (
