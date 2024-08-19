@@ -6,12 +6,18 @@ import NavLinks from '@/components/ui/nav-links';
 import Image from 'next/image';
 import Link from 'next/link';
 import { GiHamburgerMenu } from 'react-icons/gi';
+import useStore from '@/store/store';
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const { setView } = useStore();
 
   const handleSelect = (item: string) => {
     setSelectedItem(item);
+  };
+
+  const handleChange = () => {
+    setView('register');
   };
 
   return (
@@ -73,7 +79,7 @@ export function TopMenu() {
               }`}
               onClick={() => handleSelect('login')}
             >
-              <Link href="/auth/login">Login</Link>
+              <Link href="/auth/login-register" onClick={() => setView('login')}>Login</Link>
             </Dropdown.Item>
             <Dropdown.Item
               className={`cursor-pointer ${
@@ -83,7 +89,7 @@ export function TopMenu() {
               }`}
               onClick={() => handleSelect('register')}
             >
-              <Link href="/auth/new-account">Register</Link>
+              <Link href="/auth/login-register" onClick={() => setView('register')}>Register</Link>
             </Dropdown.Item>
           </Dropdown>
         </div>

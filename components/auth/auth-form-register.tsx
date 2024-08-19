@@ -8,6 +8,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { registerUser } from '@/actions/auth/register';
 import { signIn } from 'next-auth/react';
+import useStore from '@/store/store';
 
 type FormInputs = {
   name: string;
@@ -22,6 +23,11 @@ export const RegisterForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>();
+
+  const { view, setView } = useStore();
+  const handleChange = () => {
+    setView('login');
+  };
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setErrorMessage('');
@@ -97,7 +103,7 @@ export const RegisterForm = () => {
 
         <span className="text-red-500">{errorMessage}</span>
 
-        <button className="btn-primary">Crear cuenta</button>
+        <button className="btn-primary" type="submit">Crear cuenta</button>
 
         <div className="my-5 flex items-center">
           <div className="flex-1 border-t border-gray-500"></div>
@@ -105,10 +111,11 @@ export const RegisterForm = () => {
           <div className="flex-1 border-t border-gray-500"></div>
         </div>
 
-        <Link href="/auth/login" className="btn-secondary text-center">
+        <button onClick={handleChange} className="btn-secondary text-center" type="button">
           Ingresar
-        </Link>
+        </button>
       </form>
     </div>
+    
   );
 };

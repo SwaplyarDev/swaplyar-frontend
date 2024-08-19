@@ -1,7 +1,6 @@
-// /auth/login
+// /auth/login-register
 
-import { LoginForm } from '@/components/auth/auth-form-login';
-import { titleFont } from '@/components/ui/config/fonts';
+import AuthForm from '@/components/auth/auth-form';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 
 export default function LoginPage() {
@@ -9,7 +8,7 @@ export default function LoginPage() {
     <>
       {/* <h1 className={ `${ titleFont.className } text-4xl mb-5` }>Ingresar</h1> */}
 
-      <LoginForm />
+      <AuthForm/>
       <FlyerTrabajo imageSrc="/images/centro-ayuda.png">
         <></>
       </FlyerTrabajo>

@@ -34,7 +34,7 @@ export default auth((req) => {
     !configRoutes.authRoutes.includes(nextUrl.pathname) &&
     !configRoutes.publicRoutes.includes(nextUrl.pathname)
   ) {
-    return NextResponse.redirect(new URL('/auth/login', nextUrl));
+    return NextResponse.redirect(new URL('/auth/login-register', nextUrl));
   }
 
   return NextResponse.next();

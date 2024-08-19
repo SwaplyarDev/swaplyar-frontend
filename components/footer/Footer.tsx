@@ -10,16 +10,20 @@ import {
   faFacebook,
   faWhatsapp,
 } from '@fortawesome/free-brands-svg-icons';
+import useStore from '@/store/store';
 
 interface FooterLinkProps {
   href: string;
   children: React.ReactNode;
+  view?: 'login' | 'register';
 }
 
-function FooterLink({ href, children }: FooterLinkProps) {
+function FooterLink({ href, children, view }: FooterLinkProps) {
+  const { setView } = useStore();
   return (
     <Link
       href={href}
+      {...(view ? { onClick: () => setView(view) } : {})}
       className="rs-link text-sm text-blue-500 transition duration-200 ease-in-out hover:text-blue-700"
     >
       {children}
@@ -35,8 +39,8 @@ export default function Footer() {
           <h4 className="mb-2 text-lg text-gray-900 dark:text-white">
             Regístrate y disfruta de beneficios
           </h4>
-          <FooterLink href="/auth/login">Iniciar Sesión</FooterLink>
-          <FooterLink href="/auth/new-account">Registrarse</FooterLink>
+          <FooterLink href="/auth/login-register" view='login'>Iniciar Sesión</FooterLink>
+          <FooterLink href="/auth/login-register" view='register'>Registrarse</FooterLink>
           <FooterLink href="/info/loyalty-program">
             Programa de Fidelización
           </FooterLink>

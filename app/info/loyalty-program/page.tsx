@@ -3,6 +3,7 @@
 'use client';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import RewardCard from '@/components/ui/reward-card/RewardCard';
+import useStore from '@/store/store';
 import {
   CentroDeAyuda,
   Rewards1,
@@ -11,6 +12,11 @@ import {
 } from '@/utils/assets/img-database';
 
 function LoyaltyProgram() {
+  const { setView } = useStore();
+  const handleChange = () => {
+    setView('register');
+    window.location.href = '/auth/login-register';
+  };
   return (
     <div className="py-10">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
@@ -25,7 +31,7 @@ function LoyaltyProgram() {
           <button
             id="submit-25456"
             className="rounded bg-blue-600 px-4 py-2 text-white"
-            onClick={() => (window.location.href = '/auth/new-account')}
+            onClick={() => handleChange()}
           >
             ¡Únete ya!
           </button>

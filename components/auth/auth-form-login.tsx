@@ -8,15 +8,21 @@ import { useFormState, useFormStatus } from 'react-dom';
 import { authenticate } from '@/actions/auth/login';
 import { IoInformationOutline } from 'react-icons/io5';
 import clsx from 'clsx';
+import useStore from '@/store/store';
 
 export const LoginForm = () => {
   const [state, dispatch] = useFormState(authenticate, undefined);
+  const { view, setView } = useStore();
 
   useEffect(() => {
     if (state === 'Success') {
       window.location.replace('/');
     }
   }, [state]);
+
+  const handleChange = () => {
+    setView('register');
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-black">
@@ -69,9 +75,9 @@ export const LoginForm = () => {
           <div className="flex-1 border-t border-gray-500"></div>
         </div>
 
-        <Link href="/auth/new-account" className="btn-secondary text-center">
+        <button onClick={handleChange} className="btn-secondary text-center" type="button">
           Crear una nueva cuenta
-        </Link>
+        </button>
       </form>
     </div>
   );
