@@ -43,77 +43,69 @@ const cardsData = [
 
 const AboutUs = () => {
   return (
-    <div className="py-10  ">
-      <div className="shadow-custom-blue bg-white">
-      <FlyerTrabajo
-        imageSrc="/images/need-help.png"
-      >
-        Estamos trabajando en las funciones de inicio de sesión y registro.
-      </FlyerTrabajo>
+<div className="py-10">
+  <div className="shadow-custom-blue bg-white">
+    <FlyerTrabajo imageSrc="/images/need-help.png">
+      Estamos trabajando en las funciones de inicio de sesión y registro.
+    </FlyerTrabajo>
+  </div>
+
+  <div className="bg-white dark:bg-black text-black dark:text-white pt-5">
+    <div className="rs-wrapper-v4 w-11/12 mx-auto text-center">
+      <div className="container-text text-xl sm:text-2xl lg:text-4xl pt-10 sm:pt-20 pb-12 sm:pb-24">
+        <h1>
+          En SwaplyAr, garantizamos un intercambio seguro y confiable de tu
+          dinero de PayPal. Estamos comprometidos con tu seguridad y
+          satisfacción.
+        </h1>
       </div>
+    </div>
 
-      <div className="bg-white dark:bg-black text-black dark:text-white pt-5 ">
-        {/* <div className="need-help delante need-help-container rs-link"></div> */}
-        {/* <div id="animated-blurred-circles-container"></div> */}
-        <div className="rs-wrapper-v4 sm:w-4/5 mx-auto ">
-          <div className="container-text text-4xl  pt-20 pb-24">
-            <h1 >En SwaplyAr, garantizamos un intercambio seguro y confiable de tu
-              dinero de PayPal. Estamos comprometidos con tu seguridad y
-              satisfacción.
-            </h1>
+    <div className="rs-wrapper-v4 w-11/12 mx-auto mt-8 mb-12 text-center">
+      <h2 className="text-xl sm:text-3xl">Nuestra misión y valores</h2>
+      <h5 className="text-sm sm:text-base mt-4">
+        SwaplyAr nació de una simple necesidad, intercambiar saldo y que cada
+        persona que lo utiliza reciba lo pactado...
+      </h5>
+    </div>
+
+    <div className="w-11/12 mx-auto">
+      <CaedAboutUs cardsData={cardsData} />
+    </div>
+
+    <div className="w-11/12 mx-auto mt-20 sm:mt-40 mb-20 sm:mb-36">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div className="col-left dark:bg-black flex flex-col items-center">
+          <Image
+            src={OaSuarez}
+            alt="Chief Executive Officer (CEO)"
+            width={350}
+            height={300}
+          />
+          <div className="text-team text-black dark:text-white mt-4 text-center">
+            <h4 className="text-lg sm:text-2xl">
+              Oa Johan Javier Suarez Merchan
+            </h4>
+            <h5>Founder &amp; Chief Executive Officer (CEO)</h5>
           </div>
         </div>
-        <div className="rs-wrapper-v4 sm:w-4/5 mx-auto mt-8 mb-12  ">
-          <h2 className="text-3xl" >Nuestra misión y valores</h2>
-          <h5>
-            SwaplyAr nació de una simple necesidad, intercambiar saldo y que cada
-            persona que lo utiliza reciba lo pactado, acompañándolo en todo el
-            proceso. Pronto su crecimiento fue exponencial debido a la
-            confiabilidad, seguridad y velocidad en cada operación. Somos una
-            empresa en la que las personas usuarias confían plenamente, ya que la
-            importancia de ser transparente hacia ellos, es uno de nuestros
-            pilares fundamentales. Ayudamos a que cada persona consiga, lo que
-            está buscando de una manera fácil y protegida.
-          </h5>
-        </div>
-       <div className="sm:w-4/5 mx-auto">
-       <CaedAboutUs cardsData={cardsData} />
-       </div>
-        <div className="default-space-evenly-components sm:w-9/12 mx-auto mt-40 mb-36">
-          <div className="rs-wrapper-v4 grid col1">
-            <div className="info-content-container w-full flex flex-col md:flex-row items-center">
-              <div className="col-left  w-1/2 dark:bg-black flex flex-col items-center ">
-                <Image
-                  src={OaSuarez}
-                  alt="Chief Executive Officer (CEO)"
-                  width={350}
-                  height={300}
-                />
-                <div className="text-team text-black dark:text-white  mt-4">
-                  <h4 className="text-2xl" >Oa Johan Javier Suarez Merchan</h4>
-                  <h5>Founder &amp; Chief Executive Officer (CEO)</h5>
-                </div>
-              </div>
-              <div className="col-right w-1/2 text-4xl text-black dark:text-white md:ml-8 mt-4 md:mt-0">
-                <h2>
-                  &quot;Buscamos solucionar los problemas de las personas
-                  implementando las &uacute;ltimas tecnolog&iacute;as y sistemas de pago.&quot;
-                </h2>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <div className="mt-10">
-          <FlyerTrabajo
-            imageSrc={FlyerGif}
-          >
-            &iquest;Nuevo en SwaplyAr? Hac&eacute; clic en &quot;C&oacute;mo usar SwaplyAr&quot; y aprend&eacute; a operar f&aacute;cilmente. &iexcl;Empez&aacute; ahora!
-          </FlyerTrabajo>
+        <div className="col-right text-base sm:text-4xl text-black dark:text-white mt-4 md:mt-0 sm:mt-0  text-center">
+          <h2>
+            &quot;Buscamos solucionar los problemas de las personas implementando las &uacute;ltimas tecnolog&iacute;as y sistemas de pago.&quot;
+          </h2>
         </div>
       </div>
     </div>
+
+    <div className="mt-10 text-center">
+      <FlyerTrabajo imageSrc={FlyerGif} >
+        &iquest;Nuevo en SwaplyAr? Hac&eacute; clic en &quot;C&oacute;mo usar SwaplyAr&quot; y aprend&eacute; a operar f&aacute;cilmente. &iexcl;Empez&aacute; ahora!
+      </FlyerTrabajo>
+    </div>
+  </div>
+</div>
+
+
   );
 };
 
