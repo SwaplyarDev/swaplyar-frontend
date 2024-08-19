@@ -7,6 +7,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import useStore from '@/store/store';
+import { useDarkTheme } from '@/components/ui/themeProvider/themeProvider';
+import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -19,6 +21,7 @@ export function TopMenu() {
   const handleChange = () => {
     setView('register');
   };
+  const { changeTheme, isDark } = useDarkTheme();
 
   return (
     <Navbar fluid rounded className="bg-white p-4 shadow-md dark:bg-gray-800">
@@ -32,6 +35,18 @@ export function TopMenu() {
         />
       </Navbar.Brand>
       <div className="flex items-center">
+        <section className="flex items-center justify-end">
+          <button
+            className="mr-1 rounded-md p-3 transition-colors duration-300 ease-in-out hover:bg-gray-600 hover:text-white hover:shadow-sm dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-white dark:hover:text-black md:-mr-2"
+            onClick={changeTheme}
+          >
+            {isDark ? (
+              <SunIcon className="size-6" />
+            ) : (
+              <MoonIcon className="size-6" />
+            )}
+          </button>
+        </section>
         <div className="flex md:hidden">
           <Dropdown
             arrowIcon={false}
