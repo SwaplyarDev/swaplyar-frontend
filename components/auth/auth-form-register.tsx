@@ -103,7 +103,9 @@ export const RegisterForm = () => {
 
         <span className="text-red-500">{errorMessage}</span>
 
-        <button className="btn-primary" type="submit">Crear cuenta</button>
+        <button className="btn-primary" type="submit">
+          Crear cuenta
+        </button>
 
         <div className="my-5 flex items-center">
           <div className="flex-1 border-t border-gray-500"></div>
@@ -111,11 +113,14 @@ export const RegisterForm = () => {
           <div className="flex-1 border-t border-gray-500"></div>
         </div>
 
-        <button onClick={handleChange} className="btn-secondary text-center" type="button">
+        <button
+          onClick={handleChange}
+          className="btn-secondary text-center"
+          type="button"
+        >
           Ingresar
         </button>
       </form>
     </div>
-    
   );
 };

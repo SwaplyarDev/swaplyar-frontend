@@ -75,7 +75,11 @@ export const LoginForm = () => {
           <div className="flex-1 border-t border-gray-500"></div>
         </div>
 
-        <button onClick={handleChange} className="btn-secondary text-center" type="button">
+        <button
+          onClick={handleChange}
+          className="btn-secondary text-center"
+          type="button"
+        >
           Crear una nueva cuenta
         </button>
       </form>

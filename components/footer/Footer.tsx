@@ -39,8 +39,12 @@ export default function Footer() {
           <h4 className="mb-2 text-lg text-gray-900 dark:text-white">
             Regístrate y disfruta de beneficios
           </h4>
-          <FooterLink href="/auth/login-register" view='login'>Iniciar Sesión</FooterLink>
-          <FooterLink href="/auth/login-register" view='register'>Registrarse</FooterLink>
+          <FooterLink href="/auth/login-register" view="login">
+            Iniciar Sesión
+          </FooterLink>
+          <FooterLink href="/auth/login-register" view="register">
+            Registrarse
+          </FooterLink>
           <FooterLink href="/info/loyalty-program">
             Programa de Fidelización
           </FooterLink>
