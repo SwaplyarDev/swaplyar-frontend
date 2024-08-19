@@ -14,6 +14,13 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors:{
+        'nav-blue': '#012D8A',
+        'gray-blue':'#020919',
+      },
+      width: {
+        '9/10': '90%',
+      },
       boxShadow: {
         'custom-blue': '0 5px 10px #012a8d',
         'custom-black':'0 5px 10px #000'
@@ -21,11 +28,8 @@ const config: Config = {
       backgroundColor:{
         'dark-blue':'rgb(3, 35, 54)'
       },
-      colors:{
-        'nav-blue': '#012D8A'
-      },
-      width: {
-        '9/10': '90%',
+      top:{
+        '57':'57%'
       },
     },
   },
