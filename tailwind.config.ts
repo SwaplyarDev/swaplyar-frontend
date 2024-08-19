@@ -27,7 +27,10 @@ const config: Config = {
       },
       backgroundColor:{
         'dark-blue':'rgb(3, 35, 54)'
-      }
+      },
+      top:{
+        '57':'57%'
+      },
     },
   },
   plugins: [],
