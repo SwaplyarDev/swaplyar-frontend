@@ -4,6 +4,7 @@ export const configRoutes: ConfigRoutes = {
   publicRoutes: [
     '/',
     '/auth/login',
+    '/auth/login-register',
     '/auth/change-password',
     '/info/about-us',
     '/info/help-center',
@@ -14,7 +15,7 @@ export const configRoutes: ConfigRoutes = {
     '/info/why-choose-swaplyar',
     '/request',
   ],
-  authRoutes: ['/auth/login'],
+  authRoutes: ['/auth/login-register'],
   apiRoutes: ['/api/login', '/api/users', '/api/company', '/api/roles'],
   protectedRoutes: ['/auth/settings', '/products/:path*'],
 };
