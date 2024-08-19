@@ -1,9 +1,7 @@
 // /componente/auth/auth-form-login.tsx
 
 'use client';
-
 import { useEffect } from 'react';
-import Link from 'next/link';
 import { useFormState, useFormStatus } from 'react-dom';
 import { authenticate } from '@/actions/auth/login';
 import { IoInformationOutline } from 'react-icons/io5';

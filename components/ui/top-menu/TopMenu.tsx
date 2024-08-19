@@ -1,3 +1,5 @@
+// /components/ui/top-menu/TopMenu.tsx
+
 'use client';
 
 import { useState } from 'react';
@@ -7,7 +9,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import useStore from '@/store/store';
-import { useDarkTheme } from '@/components/ui/themeProvider/themeProvider';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 
 export function TopMenu() {

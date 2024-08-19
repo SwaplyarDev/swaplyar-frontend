@@ -1,3 +1,5 @@
+// /components/ui/warranty-section/WarrantySection.tsx
+
 import Image from 'next/image';
 
 interface GuaranteeSectionProps {

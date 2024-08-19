@@ -1,3 +1,5 @@
+// components/skeleton/SkeletonLogin.tsx
+
 import React from 'react';
 
 const SkeletonLogin = () => {

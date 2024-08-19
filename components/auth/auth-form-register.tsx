@@ -3,7 +3,6 @@
 'use client';
 
 import clsx from 'clsx';
-import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { registerUser } from '@/actions/auth/register';

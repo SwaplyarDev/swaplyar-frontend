@@ -1,11 +1,12 @@
+// /app/layout.tsx
+
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
 import Footer from '@/components/footer/Footer';
 import { TopMenu } from '@/components/ui/top-menu/TopMenu';
-import ThemeProvider from '../components/ui/themeProvider/themeProvider';
+import ThemeProvider from '../components/ui/theme-Provider/themeProvider';
+import { inter } from '@/config/fonts/fonts';
+import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'SwaplyAr | Pasar dólares de PayPal a pesos argentinos',
