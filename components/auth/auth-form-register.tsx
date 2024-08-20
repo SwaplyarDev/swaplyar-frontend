@@ -7,6 +7,8 @@ import { registerUser } from '@/actions/auth/register';
 import { signIn } from 'next-auth/react';
 import useStore from '@/store/authViewStore';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 
 type FormInputs = {
   name: string;
@@ -18,6 +20,9 @@ type FormInputs = {
 export const RegisterForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -25,9 +30,7 @@ export const RegisterForm = () => {
     watch,
     getValues,
     setError,
-  } = useForm<FormInputs>({
-    mode: 'onBlur', // Para validar al salir del campo
-  });
+  } = useForm<FormInputs>();
 
   const { view, setView } = useStore();
   const handleChange = () => {
@@ -71,7 +74,7 @@ export const RegisterForm = () => {
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 dark:bg-black">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex w-full max-w-sm flex-col rounded bg-white p-8 shadow-md dark:bg-gray-800"
+        className="relative flex w-full max-w-sm flex-col rounded bg-white p-8 shadow-md dark:bg-gray-800"
       >
         <h2 className="mb-5 text-center text-2xl font-bold text-gray-900 dark:text-white">
           Crear Cuenta
@@ -88,7 +91,7 @@ export const RegisterForm = () => {
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.name ? 'border-red-500 mb-0' : 'mb-5'
+            errors.name ? 'border-red-500 mb-0' : 'mb-5 hover:border-blue-600'
           )}
           type="text"
           autoFocus
@@ -109,7 +112,7 @@ export const RegisterForm = () => {
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.email ? 'border-red-500 mb-0' : 'mb-5'
+            errors.email ? 'border-red-500 mb-0' : 'mb-5 hover:border-blue-600'
           )}
           type="email"
           {...register('email', {
@@ -132,20 +135,34 @@ export const RegisterForm = () => {
         >
           Contraseña
         </label>
-        <input
-          className={clsx(
-            'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.password ? 'border-red-500 mb-0' : 'mb-5'
-          )}
-          type="password"
-          {...register('password', {
-            required: 'La contraseña es obligatoria',
-            minLength: {
-              value: 6,
-              message: 'La contraseña debe tener al menos 6 caracteres',
-            },
-          })}
-        />
+        <div className="relative">
+          <input
+            id="password"
+            className={clsx(
+              'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white pr-10 w-full',
+              errors.password ? 'border-red-500 mb-0' : 'mb-5 hover:border-blue-600'
+            )}
+            type={showPassword ? 'text' : 'password'}
+            {...register('password', {
+              required: 'La contraseña es obligatoria',
+              minLength: {
+                value: 6,
+                message: 'La contraseña debe tener al menos 6 caracteres',
+              },
+            })}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute inset-y-0 right-0 flex items-center px-3 mb-5"
+          >
+            {showPassword ? (
+              <VisibilityOffOutlinedIcon />
+            ) : (
+              <VisibilityOutlinedIcon />
+            )}
+          </button>
+        </div>
         {errors.password && (
           <p className="mb-5 text-sm text-red-500">
             • {errors.password.message}
@@ -160,17 +177,31 @@ export const RegisterForm = () => {
         >
           Repetir contraseña
         </label>
-        <input
-          className={clsx(
-            'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.confirmPassword ? 'border-red-500 mb-0' : 'mb-5'
-          )}
-          type="password"
-          {...register('confirmPassword', {
-            required: 'La confirmación de la contraseña es obligatoria',
-            validate: validatePasswordMatch,
-          })}
-        />
+        <div className="relative">
+          <input
+            id="confirmPassword"
+            className={clsx(
+              'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white pr-10 w-full',
+              errors.confirmPassword ? 'border-red-500 mb-0' : 'mb-5 hover:border-blue-600'
+            )}
+            type={showConfirmPassword ? 'text' : 'password'}
+            {...register('confirmPassword', {
+              required: 'La confirmación de la contraseña es obligatoria',
+              validate: validatePasswordMatch,
+            })}
+          />
+          <button
+            type="button"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            className="absolute inset-y-0 right-0 flex items-center px-3 mb-5"
+          >
+            {showConfirmPassword ? (
+              <VisibilityOffOutlinedIcon />
+            ) : (
+              <VisibilityOutlinedIcon />
+            )}
+          </button>
+        </div>
         {errors.confirmPassword && (
           <p className="mb-5 text-sm text-red-500">
             • {errors.confirmPassword.message}
@@ -182,7 +213,7 @@ export const RegisterForm = () => {
             <ErrorOutlineIcon className="text-red-500" />
             <div className="ml-2">
               <p className="text-base text-red-500">Error</p>
-              <p className="text-sm font-thin text-red-500">{errorMessage}</p>
+              <p className="text-sm font-light text-red-500">{errorMessage}</p>
             </div>
           </div>
         )}
@@ -192,6 +223,7 @@ export const RegisterForm = () => {
           className={clsx({
             'btn-primary': !loading,
             'btn-disabled': loading,
+            'btnAuthForm': true,
           })}
           disabled={loading}
         >
@@ -206,7 +238,7 @@ export const RegisterForm = () => {
 
         <button
           onClick={handleChange}
-          className="btn-secondary text-center"
+          className="btn-secondary text-center btnAuthForm"
           type="button"
         >
           Ingresar
@@ -215,3 +247,4 @@ export const RegisterForm = () => {
     </div>
   );
 };
+

@@ -79,7 +79,7 @@ export const LoginForm = () => {
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.email ? 'mb-0 border-red-500' : 'mb-5',
+            errors.email ? 'border-red-500 mb-0' : 'mb-5 hover:border-blue-600',
           )}
           type="email"
           {...register('email', {
@@ -107,7 +107,7 @@ export const LoginForm = () => {
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.password ? 'mb-0 border-red-500' : 'mb-5',
+            errors.password ? 'border-red-500 mb-0' : 'mb-5 hover:border-blue-600',
           )}
           type="password"
           {...register('password', {
@@ -125,7 +125,7 @@ export const LoginForm = () => {
             <ErrorOutlineIcon className="text-red-500" />
             <div className="ml-2">
               <p className="text-base text-red-500">Error</p>
-              <p className="text-sm font-thin text-red-500">
+              <p className="text-sm font-light text-red-500">
                 Las credenciales son incorrectas
               </p>
             </div>
@@ -142,7 +142,7 @@ export const LoginForm = () => {
 
         <button
           onClick={handleChange}
-          className="btn-secondary text-center"
+          className="btn-secondary text-center btnAuthForm"
           type="button"
         >
           Crear una nueva cuenta
@@ -159,6 +159,7 @@ function LoginButton({ pending }: { pending: boolean }) {
       className={clsx({
         'btn-primary': !pending,
         'btn-disabled': pending,
+        'btnAuthForm': true,
       })}
       disabled={pending}
     >

@@ -185,3 +185,44 @@ body {
     transform: translateX(100%);
   }
 }
+
+/* Button Auth Form */
+.btnAuthForm {
+  border: 1px solid transparent;
+  -webkit-transition: all 0.4s cubic-bezier(0.5, 0.24, 0, 1);
+  transition: all 0.4s cubic-bezier(0.5, 0.24, 0, 1);
+  padding: 0.5rem;
+}
+
+.btnAuthForm:hover {
+  border: 1px solid #6098ff;
+  color: #6098ff;
+}
+
+/*Scrollbar*/
+
+body {
+  --sb-track-color: #232e33;
+  --sb-thumb-color: #75bfff;
+  --sb-size: 6px;
+}
+
+body::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 3px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 3px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  body {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+  }
+}
