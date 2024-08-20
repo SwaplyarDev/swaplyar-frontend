@@ -1,3 +1,5 @@
+// components/skeleton/SkeletonRegister.tsx
+
 import React from 'react';
 
 const SkeletonRegister = () => {

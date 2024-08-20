@@ -1,34 +1,37 @@
+// components/clientWrapper/ClientWrapper.tsx
 'use client';
 
 import { useHydrateStore } from '@/hooks/useHydrateStore';
 import { useState, useEffect } from 'react';
-import SkeletonRegister from '../skeleton/SkeletonRegister';
-import SkeletonLogin from '../skeleton/SkeletonLogin';
 import useStore from '@/store/authViewStore';
+import SkeletonManager from '../skeleton/SkeletonManager';
 
-export default function ClientWrapper({
-  children,
-}: {
+interface ClientWrapperProps {
   children: React.ReactNode;
-}) {
+  loadingDelay?: number;
+}
+
+const ClientWrapper: React.FC<ClientWrapperProps> = ({ children, loadingDelay = 300 }) => {
   const [isLoading, setIsLoading] = useState(true);
-  useHydrateStore();
-  const { view } = useStore();
+
+  useHydrateStore(); 
+
+  const { view } = useStore(); 
 
   useEffect(() => {
-    console.log('Current view:', view); // Verifica el valor de `view`
-    const timer = setTimeout(() => setIsLoading(false), 300); // Ajusta el tiempo si es necesario
+    const timer = setTimeout(() => setIsLoading(false), loadingDelay);
     return () => clearTimeout(timer);
-  }, [view]); // Dependencia de `view` para actualizar el efecto
+  }, [view, loadingDelay]);
 
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-black">
-        {view === 'login' && <SkeletonLogin />}
-        {view === 'register' && <SkeletonRegister />}
+        <SkeletonManager view={view} />
       </div>
     );
   }
 
   return <>{children}</>;
-}
+};
+
+export default ClientWrapper;

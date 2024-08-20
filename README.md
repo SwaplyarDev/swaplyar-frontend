@@ -62,11 +62,15 @@ swaplyar-frontend/
 ├── components/        # Componentes reutilizables
 │   ├── ui/            # Componentes de interfaz de usuario
 │   ├── auth/          # Componentes relacionados con la autenticación
-│   └── request/       # Componentes relacionados con solicitudes
+│   ├── clientWrapper/ # Componente para envolver vistas y gestionar estados de carga
+│   ├── skeleton/      # Componentes Skeleton para estados de carga
+│   └── request/       # Componentes relacionados con solicitudes de intercambio
+├── hooks/             # Hooks personalizados
+├── store/             # Configuración del store global
 ├── public/            # Archivos estáticos (imágenes, fuentes, etc.)
 ├── styles/            # Estilos globales (CSS o módulos CSS)
 ├── ... otros archivos y carpetas ...
-└── package.json
+└── package.json       # Dependencias y scripts del proyecto
 ```
 
 **Explicación:**
@@ -77,7 +81,14 @@ swaplyar-frontend/
   - **`layout.js`:** Define el diseño general de la aplicación (opcional).
   - **`page.js`:** Define la página de inicio (opcional).
 - **`components/`:** Contiene componentes reutilizables, organizados por funcionalidad.
-- **`public/`:** Almacena archivos estáticos accesibles públicamente.
+  - **`ui/`:** Componentes de interfaz de usuario reutilizables.
+  - **`auth/`:** Componentes relacionados con la autenticación, como formularios de inicio de sesión y registro.
+  - **`clientWrapper/`:** Componente que envuelve vistas para gestionar estados de carga, mostrando skeletons cuando sea necesario.
+  - **`skeleton/`:** Componentes Skeleton que se muestran mientras las vistas se están cargando, mejorando la experiencia de usuario.
+  - **`request/`:** Componentes específicos para gestionar solicitudes de intercambio.
+- **`hooks/`:** Contiene hooks personalizados para gestionar lógica compartida.
+- **`store/`:** Contiene la configuración del store global, usando Zustand para manejar el estado global de la aplicación.
+- **`public/`:** Almacena archivos estáticos accesibles públicamente, como imágenes y fuentes.
 - **`styles/`:** Contiene estilos globales que se aplican a toda la aplicación.
 
 ## 🛣️ Rutas Principales
