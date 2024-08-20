@@ -11,6 +11,7 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 type FormInputs = {
   email: string;
   password: string;
+  rememberMe: boolean;
 };
 
 export const LoginForm = () => {
@@ -19,22 +20,21 @@ export const LoginForm = () => {
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm<FormInputs>({
-    mode: 'onBlur', // Para validar al salir del campo
-  });
+  } = useForm<FormInputs>({});
   const { view, setView } = useStore();
   const [loading, setLoading] = useState(false);
   const [authState, setAuthState] = useState<string | null>(null);
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setLoading(true);
-    const { email, password } = data;
+    const { email, password, rememberMe } = data;
 
     try {
       const result = await signIn('credentials', {
         redirect: false,
         email,
         password,
+        rememberMe,
       });
 
       if (result?.error) {
@@ -62,7 +62,7 @@ export const LoginForm = () => {
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 dark:bg-black">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex w-full max-w-sm flex-col rounded bg-white p-8 shadow-md dark:bg-gray-800"
+        className="flex w-full max-w-lg flex-col rounded bg-white p-8 shadow-md dark:bg-gray-800"
       >
         <h2 className="mb-5 text-center text-2xl font-bold text-gray-900 dark:text-white">
           Iniciar Sesión
@@ -79,7 +79,7 @@ export const LoginForm = () => {
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.email ? 'border-red-500 mb-0' : 'mb-5 hover:border-blue-600',
+            errors.email ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
           )}
           type="email"
           {...register('email', {
@@ -107,7 +107,9 @@ export const LoginForm = () => {
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.password ? 'border-red-500 mb-0' : 'mb-5 hover:border-blue-600',
+            errors.password
+              ? 'mb-0 border-red-500'
+              : 'mb-5 hover:border-blue-600',
           )}
           type="password"
           {...register('password', {
@@ -119,6 +121,21 @@ export const LoginForm = () => {
             • {errors.password.message}
           </p>
         )}
+
+        <div className="mb-5 flex items-center">
+          <input
+            id="rememberMe"
+            type="checkbox"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
+            {...register('rememberMe')}
+          />
+          <label
+            htmlFor="rememberMe"
+            className="ml-2 text-gray-900 dark:text-gray-300"
+          >
+            Recordar esta cuenta
+          </label>
+        </div>
 
         {authState === 'CredentialsSignin' && (
           <div className="mb-5 flex w-full max-w-sm rounded border-2 border-red-500 bg-transparent p-4">
@@ -142,7 +159,7 @@ export const LoginForm = () => {
 
         <button
           onClick={handleChange}
-          className="btn-secondary text-center btnAuthForm"
+          className="btn-secondary btnAuthForm text-center"
           type="button"
         >
           Crear una nueva cuenta
@@ -159,7 +176,7 @@ function LoginButton({ pending }: { pending: boolean }) {
       className={clsx({
         'btn-primary': !pending,
         'btn-disabled': pending,
-        'btnAuthForm': true,
+        btnAuthForm: true,
       })}
       disabled={pending}
     >

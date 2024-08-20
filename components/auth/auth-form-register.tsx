@@ -11,10 +11,12 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 
 type FormInputs = {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   confirmPassword: string;
+  rememberMe: boolean; // Nuevo campo para el checkbox
 };
 
 export const RegisterForm = () => {
@@ -40,7 +42,8 @@ export const RegisterForm = () => {
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setErrorMessage('');
     setLoading(true);
-    const { name, email, password } = data;
+    const { firstName, lastName, email, password, rememberMe } = data;
+    const name = `${firstName} ${lastName}`;
 
     // Server action
     const resp = await registerUser(name, email, password);
@@ -55,6 +58,7 @@ export const RegisterForm = () => {
       redirect: false,
       email,
       password,
+      rememberMe,
     });
 
     if (result?.error) {
@@ -74,45 +78,89 @@ export const RegisterForm = () => {
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 dark:bg-black">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="relative flex w-full max-w-sm flex-col rounded bg-white p-8 shadow-md dark:bg-gray-800"
+        className="relative flex w-full max-w-lg flex-col rounded bg-white p-8 shadow-md dark:bg-gray-800"
       >
         <h2 className="mb-5 text-center text-2xl font-bold text-gray-900 dark:text-white">
           Crear Cuenta
         </h2>
 
-        <label
-          htmlFor="name"
-          className={clsx(
-            errors.name ? 'text-red-500' : 'text-gray-900 dark:text-gray-300'
-          )}
-        >
-          Nombre completo
-        </label>
-        <input
-          className={clsx(
-            'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.name ? 'border-red-500 mb-0' : 'mb-5 hover:border-blue-600'
-          )}
-          type="text"
-          autoFocus
-          {...register('name', { required: 'El nombre es obligatorio' })}
-        />
-        {errors.name && (
-          <p className="mb-5 text-sm text-red-500">• {errors.name.message}</p>
-        )}
+        <div className='flex flex-col justify-between xs:flex-row'>
+          <div className='flex flex-col xs:max-w-48'>
+            <label
+              htmlFor="firstName"
+              className={clsx(
+                errors.firstName
+                  ? 'text-red-500'
+                  : 'text-gray-900 dark:text-gray-300',
+              )}
+            >
+              Nombre
+            </label>
+            <input
+              id="firstName"
+              className={clsx(
+                'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white max-w-full',
+                errors.firstName
+                  ? 'mb-0 border-red-500'
+                  : 'mb-5 hover:border-blue-600',
+              )}
+              type="text"
+              autoFocus
+              {...register('firstName', {
+                required: 'El nombre es obligatorio',
+              })}
+            />
+            {errors.firstName && (
+              <p className="mb-5 text-sm text-red-500">
+                • {errors.firstName.message}
+              </p>
+            )}
+          </div>
+          <div className='xs:max-w-48 flex flex-col'>
+            <label
+              htmlFor="lastName"
+              className={clsx(
+                errors.lastName
+                  ? 'text-red-500'
+                  : 'text-gray-900 dark:text-gray-300',
+              )}
+            >
+              Apellido
+            </label>
+            <input
+              id="lastName"
+              className={clsx(
+                'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white max-w-full',
+                errors.lastName
+                  ? 'mb-0 border-red-500'
+                  : 'mb-5 hover:border-blue-600',
+              )}
+              type="text"
+              {...register('lastName', {
+                required: 'El apellido es obligatorio',
+              })}
+            />
+            {errors.lastName && (
+              <p className="mb-5 text-sm text-red-500">
+                • {errors.lastName.message}
+              </p>
+            )}
+          </div>
+        </div>
 
         <label
           htmlFor="email"
           className={clsx(
-            errors.email ? 'text-red-500' : 'text-gray-900 dark:text-gray-300'
+            errors.email ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
           )}
         >
           Correo electrónico
         </label>
         <input
+          id="email"
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.email ? 'border-red-500 mb-0' : 'mb-5 hover:border-blue-600'
+            errors.email ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
           )}
           type="email"
           {...register('email', {
@@ -130,7 +178,9 @@ export const RegisterForm = () => {
         <label
           htmlFor="password"
           className={clsx(
-            errors.password ? 'text-red-500' : 'text-gray-900 dark:text-gray-300'
+            errors.password
+              ? 'text-red-500'
+              : 'text-gray-900 dark:text-gray-300',
           )}
         >
           Contraseña
@@ -139,8 +189,10 @@ export const RegisterForm = () => {
           <input
             id="password"
             className={clsx(
-              'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white pr-10 w-full',
-              errors.password ? 'border-red-500 mb-0' : 'mb-5 hover:border-blue-600'
+              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 text-gray-900 dark:bg-gray-700 dark:text-white',
+              errors.password
+                ? 'mb-0 border-red-500'
+                : 'mb-5 hover:border-blue-600',
             )}
             type={showPassword ? 'text' : 'password'}
             {...register('password', {
@@ -154,7 +206,7 @@ export const RegisterForm = () => {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 right-0 flex items-center px-3 mb-5"
+            className="absolute inset-y-0 right-0 mb-5 flex items-center px-3"
           >
             {showPassword ? (
               <VisibilityOffOutlinedIcon />
@@ -172,7 +224,9 @@ export const RegisterForm = () => {
         <label
           htmlFor="confirmPassword"
           className={clsx(
-            errors.confirmPassword ? 'text-red-500' : 'text-gray-900 dark:text-gray-300'
+            errors.confirmPassword
+              ? 'text-red-500'
+              : 'text-gray-900 dark:text-gray-300',
           )}
         >
           Repetir contraseña
@@ -181,8 +235,10 @@ export const RegisterForm = () => {
           <input
             id="confirmPassword"
             className={clsx(
-              'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white pr-10 w-full',
-              errors.confirmPassword ? 'border-red-500 mb-0' : 'mb-5 hover:border-blue-600'
+              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 text-gray-900 dark:bg-gray-700 dark:text-white',
+              errors.confirmPassword
+                ? 'mb-0 border-red-500'
+                : 'mb-5 hover:border-blue-600',
             )}
             type={showConfirmPassword ? 'text' : 'password'}
             {...register('confirmPassword', {
@@ -193,7 +249,7 @@ export const RegisterForm = () => {
           <button
             type="button"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute inset-y-0 right-0 flex items-center px-3 mb-5"
+            className="absolute inset-y-0 right-0 mb-5 flex items-center px-3"
           >
             {showConfirmPassword ? (
               <VisibilityOffOutlinedIcon />
@@ -207,6 +263,21 @@ export const RegisterForm = () => {
             • {errors.confirmPassword.message}
           </p>
         )}
+
+        <div className="flex items-center mb-5">
+          <input
+            id="rememberMe"
+            type="checkbox"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
+            {...register('rememberMe')}
+          />
+          <label
+            htmlFor="rememberMe"
+            className="ml-2 text-gray-900 dark:text-gray-300"
+          >
+            Recordar esta cuenta
+          </label>
+        </div>
 
         {errorMessage && (
           <div className="mb-5 flex w-full max-w-sm rounded border-2 border-red-500 bg-transparent p-4">
@@ -223,7 +294,7 @@ export const RegisterForm = () => {
           className={clsx({
             'btn-primary': !loading,
             'btn-disabled': loading,
-            'btnAuthForm': true,
+            btnAuthForm: true,
           })}
           disabled={loading}
         >
@@ -238,7 +309,7 @@ export const RegisterForm = () => {
 
         <button
           onClick={handleChange}
-          className="btn-secondary text-center btnAuthForm"
+          className="btn-secondary btnAuthForm text-center"
           type="button"
         >
           Ingresar
