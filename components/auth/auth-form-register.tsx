@@ -84,8 +84,8 @@ export const RegisterForm = () => {
           Crear Cuenta
         </h2>
 
-        <div className='flex flex-col justify-between xs:flex-row'>
-          <div className='flex flex-col xs:max-w-48'>
+        <div className="flex flex-col justify-between xs:flex-row">
+          <div className="flex flex-col xs:max-w-48">
             <label
               htmlFor="firstName"
               className={clsx(
@@ -99,7 +99,7 @@ export const RegisterForm = () => {
             <input
               id="firstName"
               className={clsx(
-                'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white max-w-full',
+                'max-w-full rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
                 errors.firstName
                   ? 'mb-0 border-red-500'
                   : 'mb-5 hover:border-blue-600',
@@ -116,7 +116,7 @@ export const RegisterForm = () => {
               </p>
             )}
           </div>
-          <div className='xs:max-w-48 flex flex-col'>
+          <div className="flex flex-col xs:max-w-48">
             <label
               htmlFor="lastName"
               className={clsx(
@@ -130,7 +130,7 @@ export const RegisterForm = () => {
             <input
               id="lastName"
               className={clsx(
-                'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white max-w-full',
+                'max-w-full rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
                 errors.lastName
                   ? 'mb-0 border-red-500'
                   : 'mb-5 hover:border-blue-600',
@@ -264,7 +264,7 @@ export const RegisterForm = () => {
           </p>
         )}
 
-        <div className="flex items-center mb-5">
+        <div className="mb-5 flex items-center">
           <input
             id="rememberMe"
             type="checkbox"
@@ -318,4 +318,3 @@ export const RegisterForm = () => {
     </div>
   );
 };
-
