@@ -6,7 +6,7 @@ import NavLinks from '@/components/ui/nav-links';
 import Image from 'next/image';
 import Link from 'next/link';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import useStore from '@/store/store';
+import useStore from '@/store/authViewStore';
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);

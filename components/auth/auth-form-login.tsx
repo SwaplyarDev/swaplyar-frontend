@@ -1,73 +1,138 @@
-// /componente/auth/auth-form-login.tsx
-
 'use client';
 
-import { useEffect } from 'react';
-import Link from 'next/link';
-import { useFormState, useFormStatus } from 'react-dom';
-import { authenticate } from '@/actions/auth/login';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { IoInformationOutline } from 'react-icons/io5';
 import clsx from 'clsx';
-import useStore from '@/store/store';
+import { signIn } from 'next-auth/react';
+import { useState } from 'react';
+import useStore from '@/store/authViewStore';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+
+type FormInputs = {
+  email: string;
+  password: string;
+};
 
 export const LoginForm = () => {
-  const [state, dispatch] = useFormState(authenticate, undefined);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<FormInputs>({
+    mode: 'onBlur', // Para validar al salir del campo
+  });
   const { view, setView } = useStore();
+  const [loading, setLoading] = useState(false);
+  const [authState, setAuthState] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (state === 'Success') {
-      window.location.replace('/');
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+    setLoading(true);
+    const { email, password } = data;
+
+    try {
+      const result = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+      });
+
+      if (result?.error) {
+        setAuthState('CredentialsSignin');
+        setError('email', {
+          type: 'manual',
+          message: 'Las credenciales son incorrectas',
+        });
+      } else {
+        setAuthState('Success');
+        window.location.replace('/');
+      }
+    } catch (error) {
+      console.error('Error during sign in:', error);
+    } finally {
+      setLoading(false);
     }
-  }, [state]);
+  };
 
   const handleChange = () => {
     setView('register');
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-black">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 dark:bg-black">
       <form
-        action={dispatch}
+        onSubmit={handleSubmit(onSubmit)}
         className="flex w-full max-w-sm flex-col rounded bg-white p-8 shadow-md dark:bg-gray-800"
       >
         <h2 className="mb-5 text-center text-2xl font-bold text-gray-900 dark:text-white">
           Iniciar Sesión
         </h2>
 
-        <label htmlFor="email" className="text-gray-900 dark:text-gray-300">
+        <label
+          htmlFor="email"
+          className={clsx(
+            errors.email ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
+          )}
+        >
           Correo electrónico
         </label>
         <input
-          className="mb-5 rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white"
+          className={clsx(
+            'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
+            errors.email ? 'mb-0 border-red-500' : 'mb-5',
+          )}
           type="email"
-          name="email"
+          {...register('email', {
+            required: 'El correo electrónico es obligatorio',
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: 'El formato del correo electrónico es inválido',
+            },
+          })}
         />
+        {errors.email && (
+          <p className="mb-5 text-sm text-red-500">• {errors.email.message}</p>
+        )}
 
-        <label htmlFor="password" className="text-gray-900 dark:text-gray-300">
+        <label
+          htmlFor="password"
+          className={clsx(
+            errors.password
+              ? 'text-red-500'
+              : 'text-gray-900 dark:text-gray-300',
+          )}
+        >
           Contraseña
         </label>
         <input
-          className="mb-5 rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white"
+          className={clsx(
+            'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
+            errors.password ? 'mb-0 border-red-500' : 'mb-5',
+          )}
           type="password"
-          name="password"
+          {...register('password', {
+            required: 'La contraseña es obligatoria',
+          })}
         />
+        {errors.password && (
+          <p className="mb-5 text-sm text-red-500">
+            • {errors.password.message}
+          </p>
+        )}
 
-        <div
-          className="flex h-8 items-end space-x-1"
-          aria-live="polite"
-          aria-atomic="true"
-        >
-          {state === 'CredentialsSignin' && (
-            <div className="mb-2 flex flex-row">
-              <IoInformationOutline className="h-5 w-5 text-red-500" />
-              <p className="text-sm text-red-500">
-                Credenciales no son correctas
+        {authState === 'CredentialsSignin' && (
+          <div className="mb-5 flex w-full max-w-sm rounded border-2 border-red-500 bg-transparent p-4">
+            <ErrorOutlineIcon className="text-red-500" />
+            <div className="ml-2">
+              <p className="text-base text-red-500">Error</p>
+              <p className="text-sm font-thin text-red-500">
+                Las credenciales son incorrectas
               </p>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
-        <LoginButton />
+        <LoginButton pending={loading} />
 
         <div className="my-5 flex items-center">
           <div className="flex-1 border-t border-gray-500"></div>
@@ -75,7 +140,11 @@ export const LoginForm = () => {
           <div className="flex-1 border-t border-gray-500"></div>
         </div>
 
-        <button onClick={handleChange} className="btn-secondary text-center" type="button">
+        <button
+          onClick={handleChange}
+          className="btn-secondary text-center"
+          type="button"
+        >
           Crear una nueva cuenta
         </button>
       </form>
@@ -83,9 +152,7 @@ export const LoginForm = () => {
   );
 };
 
-function LoginButton() {
-  const { pending } = useFormStatus();
-
+function LoginButton({ pending }: { pending: boolean }) {
   return (
     <button
       type="submit"
@@ -95,7 +162,7 @@ function LoginButton() {
       })}
       disabled={pending}
     >
-      Ingresar
+      {pending ? 'Ingresando...' : 'Ingresar'}
     </button>
   );
 }

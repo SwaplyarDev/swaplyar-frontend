@@ -3,8 +3,8 @@
 import { useHydrateStore } from '@/hooks/useHydrateStore';
 import { useState, useEffect } from 'react';
 import SkeletonRegister from '../skeleton/SkeletonRegister';
-import useStore from '@/store/store';
 import SkeletonLogin from '../skeleton/SkeletonLogin';
+import useStore from '@/store/authViewStore';
 
 export default function ClientWrapper({
   children,
