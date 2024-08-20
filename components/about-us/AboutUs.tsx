@@ -84,7 +84,7 @@ const AboutUs = () => {
               satisfacción.
             </h1>
           </div>
-          
+          <AnimatedBlurredCircles topOffset={bannerHeight} />
         </div>
 
         <div className="rs-wrapper-v4 w-[90%] sm:w-[80%] mx-auto lg:mt-8 mb-12 sm:mt-4 md:mt-8 text-justify">
@@ -100,7 +100,7 @@ const AboutUs = () => {
             pilares fundamentales. Ayudamos a que cada persona consiga, lo que
             está buscando de una manera fácil y protegida.
           </h5>
-          <AnimatedBlurredCircles topOffset={bannerHeight} />
+          
         </div>
 
         <div className="w-[90%] sm:w-[80%] mx-auto">
@@ -136,7 +136,15 @@ const AboutUs = () => {
 
         <div className="mt-10 text-center">
           <FlyerTrabajo imageSrc={FlyerGif}  >
-            &iquest;Nuevo en SwaplyAr? Hac&eacute; clic en &quot;C&oacute;mo usar SwaplyAr&quot; y aprend&eacute; a operar f&aacute;cilmente. &iexcl;Empez&aacute; ahora!
+           <span   > &iquest;Nuevo en SwaplyAr? Hac&eacute; clic en &quot;C&oacute;mo usar SwaplyAr&quot; y aprend&eacute; a operar f&aacute;cilmente. &iexcl;Empez&aacute; ahora!</span>
+            <div>
+             <button
+            id="bannerHTUButton"
+            
+          >
+            <span>Como usar Swaplyar</span>
+          </button>
+</div>
           </FlyerTrabajo>
         </div>
       </div>
