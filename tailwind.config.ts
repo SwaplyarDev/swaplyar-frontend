@@ -34,6 +34,12 @@ const config: Config = {
           600: '#2F6FEB',
         },
       },
+      boxShadow: {
+        'custom': '0px 4px 10px rgba(39, 33, 69, 0.5)',
+      },
+      dropShadow:{
+        'logo': '0px 4px 10px rgba(39, 33, 69, 0.5)'
+      },
     },
     keyframes: {
       shimmer: {

@@ -31,7 +31,7 @@ export function TopMenu() {
 
   return (
     <Navbar fluid rounded className="p-4 shadow-md">
-      <div className="flex w-full flex-row-reverse justify-between lg:flex-row">
+      <div className="flex w-full flex-row-reverse justify-between lg:flex-row gap-4">
         <Link
           key="Iniciar sesión"
           href="/auth/login-register"
@@ -47,9 +47,10 @@ export function TopMenu() {
             src="https://res.cloudinary.com/df5jwzuq9/image/upload/v1722209853/logo_g74htq.png"
             width={200}
             height={200}
-            className="h-12 w-auto filter dark:brightness-[300%]"
+            className="h-12 w-auto filter dark:brightness-[300%] drop-shadow-xl"
           />
         </Navbar.Brand>
+
         <nav className="flex flex-row-reverse items-center justify-center lg:flex-row">
           <section className="flex items-center justify-end">
             <label className={`${styles.switch} ml-3`}>
