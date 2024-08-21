@@ -16,7 +16,7 @@ type FormInputs = {
   email: string;
   password: string;
   confirmPassword: string;
-  rememberMe: boolean; // Nuevo campo para el checkbox
+  rememberMe: boolean;
 };
 
 export const RegisterForm = () => {
@@ -29,9 +29,7 @@ export const RegisterForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
     getValues,
-    setError,
   } = useForm<FormInputs>();
 
   const { view, setView } = useStore();
@@ -45,7 +43,8 @@ export const RegisterForm = () => {
     const { firstName, lastName, email, password, rememberMe } = data;
     const name = `${firstName} ${lastName}`;
 
-    // Server action
+    localStorage.setItem('rememberMe', JSON.stringify(rememberMe));
+
     const resp = await registerUser(name, email, password);
 
     if (!resp.ok) {
@@ -58,7 +57,7 @@ export const RegisterForm = () => {
       redirect: false,
       email,
       password,
-      rememberMe,
+      rememberMe: toString(),
     });
 
     if (result?.error) {
@@ -280,7 +279,7 @@ export const RegisterForm = () => {
         </div>
 
         {errorMessage && (
-          <div className="mb-5 flex w-full max-w-sm rounded border-2 border-red-500 bg-transparent p-4">
+          <div className="mb-5 flex w-full rounded border-2 border-red-500 bg-transparent p-4">
             <ErrorOutlineIcon className="text-red-500" />
             <div className="ml-2">
               <p className="text-base text-red-500">Error</p>
@@ -318,4 +317,5 @@ export const RegisterForm = () => {
     </div>
   );
 };
+
 

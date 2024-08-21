@@ -28,7 +28,7 @@ export const LoginForm = () => {
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setLoading(true);
     const { email, password, rememberMe } = data;
-
+  
     try {
       const result = await signIn('credentials', {
         redirect: false,
@@ -36,7 +36,7 @@ export const LoginForm = () => {
         password,
         rememberMe,
       });
-
+  
       if (result?.error) {
         setAuthState('CredentialsSignin');
         setError('email', {
@@ -52,7 +52,7 @@ export const LoginForm = () => {
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   const handleChange = () => {
     setView('register');
@@ -138,7 +138,7 @@ export const LoginForm = () => {
         </div>
 
         {authState === 'CredentialsSignin' && (
-          <div className="mb-5 flex w-full max-w-sm rounded border-2 border-red-500 bg-transparent p-4">
+          <div className="mb-5 flex w-full rounded border-2 border-red-500 bg-transparent p-4">
             <ErrorOutlineIcon className="text-red-500" />
             <div className="ml-2">
               <p className="text-base text-red-500">Error</p>
