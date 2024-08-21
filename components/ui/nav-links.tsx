@@ -20,7 +20,7 @@ export default function NavLinks() {
   const pathname = usePathname();
 
   return (
-    <div className="flex justify-between items-center w-full">
+    <div className="flex justify-between  box-border pb-3 items-center w-full">
       <div className="flex gap-1 mr-7">
         {Links.slice(0, -2).map((link) => (
           <Link

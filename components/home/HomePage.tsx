@@ -10,7 +10,7 @@ import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 const mainStyles = {
     main: "py-10 relative",
     infoBlocksContainer: "flex flex-col items-center justify-center mt-32",  
-    instructionsCalculatorContainer: "relative flex space-x-4 mt-32",  
+    instructionsCalculatorContainer: " flex space-x-4 mt-32",  
 };
 
 export default function HomePage() {

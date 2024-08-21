@@ -23,7 +23,7 @@ const StyledNavbar = styled(Navbar)`
   background-color: #ffffff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   height: 100px;
-  padding: 1.5rem;
+  padding:0.5%;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   width: 100%;
 
@@ -33,7 +33,8 @@ const StyledNavbar = styled(Navbar)`
     justify-content: space-between;
     align-items: center;
     width: 80%;
-    margin: 0 auto; 
+    margin: auto; 
+  
   }
 
   .navbar-brand {
