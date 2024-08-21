@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import useStore from '@/store/store';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
+import styles from './switchStyle.module.css';
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -33,23 +33,19 @@ export function TopMenu() {
           src="https://res.cloudinary.com/df5jwzuq9/image/upload/v1722209853/logo_g74htq.png"
           width={200}
           height={200}
-          className="h-12 w-auto"
+          className="h-12 w-auto filter dark:brightness-[300%]"
         />
       </Navbar.Brand>
-      <div className="flex items-center">
+      <div className="flex items-center justify-center">
+
         <section className="flex items-center justify-end">
-          <button
-            className="mr-1 rounded-md p-3 transition-colors duration-300 ease-in-out hover:bg-gray-600 hover:text-white hover:shadow-sm dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-white dark:hover:text-black md:-mr-2"
-            onClick={changeTheme}
-          >
-            {isDark ? (
-              <SunIcon className="size-6" />
-            ) : (
-              <MoonIcon className="size-6" />
-            )}
-          </button>
+          <label className={`${styles.switch} m-3 lg:-mr-5 `}>
+            <input type="checkbox" onClick={changeTheme} />
+            <span className={isDark ? styles.sliderDark : styles.sliderLight}></span>
+          </label>
         </section>
-        <div className="flex md:hidden">
+
+        <div className="flex lg:hidden">
           <Dropdown
             arrowIcon={false}
             inline
@@ -88,6 +84,8 @@ export function TopMenu() {
               <Link href="/info/loyalty-program">Programa de Fidelización</Link>
             </Dropdown.Item>
             <Dropdown.Divider />
+            <section className='md:hidden'>
+
             <Dropdown.Item
               className={`cursor-pointer ${
                 selectedItem === 'login'
@@ -118,11 +116,13 @@ export function TopMenu() {
                 Register
               </Link>
             </Dropdown.Item>
+            </section>
           </Dropdown>
+
         </div>
 
         <Navbar.Collapse>
-          <div className="hidden md:ml-6 md:flex">
+          <div className="hidden lg:ml-6 lg:flex">
             <NavLinks />
           </div>
         </Navbar.Collapse>
