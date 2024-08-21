@@ -36,13 +36,9 @@ export function TopMenu() {
           key="Iniciar sesión"
           href="/auth/login-register"
           onClick={() => setView('login')}
-          className={`hidden relative md:flex lg:hidden h-[48px] items-center gap-2 rounded-md p-3 ${pathname === '/auth/login-register' ? 'border-2 border-sky-200 bg-gray-500 text-white' : 'text-gray-900'} m-1 transition-colors duration-300 ease-in-out hover:bg-gray-600 hover:text-white hover:shadow-sm dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700`}
+          className={`relative hidden h-[48px] items-center gap-2 rounded-md p-3 md:flex lg:hidden ${pathname === '/auth/login-register' ? 'border-2 border-sky-200 bg-gray-500 text-white' : 'text-gray-900'} m-1 transition-colors duration-300 ease-in-out hover:bg-gray-600 hover:text-white hover:shadow-sm dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700`}
         >
-          <p
-            className="font-bold"
-          >
-            Iniciar sesión
-          </p>
+          <p className="font-bold">Iniciar sesión</p>
         </Link>
 
         <Navbar.Brand href="/">
