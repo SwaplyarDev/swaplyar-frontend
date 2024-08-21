@@ -1,6 +1,6 @@
 /* Common styles for both themes */
 .switch {
-  font-size: 14px;
+  font-size: 13px;
   position: relative;
   display: inline-block;
   width: 3.5em;
@@ -43,7 +43,7 @@
 .sliderLight:before {
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity));
-  box-shadow: inset 8px -4px 0px 0px #fff000;
+  box-shadow: inset 8px -4px 0px 0px #ffee00;
 }
 
 /* Dark Mode */
@@ -52,7 +52,7 @@
 }
 
 .sliderDark:before {
-  background: #ffffff;
-  box-shadow: inset 15px -4px 0px 15px #fff000;
+  background: #ffee00dc;
+  box-shadow: inset 15px -4px 0px 15px #ffee00;
   transform: translateX(100%);
 }
