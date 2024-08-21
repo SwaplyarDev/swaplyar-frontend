@@ -1,7 +1,6 @@
 // components/AuthForm.tsx
 'use client';
 
-
 import React, { useState } from 'react';
 import { LoginForm } from './auth-form-login';
 import { RegisterForm } from './auth-form-register';

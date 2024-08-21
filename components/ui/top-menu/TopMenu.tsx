@@ -19,7 +19,7 @@ export function TopMenu() {
   const handleSelect = (item: string) => {
     setSelectedItem(item);
   };
-  
+
   const { changeTheme, isDark } = useDarkTheme();
 
   return (
