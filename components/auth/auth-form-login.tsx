@@ -28,7 +28,7 @@ export const LoginForm = () => {
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setLoading(true);
     const { email, password, rememberMe } = data;
-  
+
     try {
       const result = await signIn('credentials', {
         redirect: false,
@@ -36,7 +36,7 @@ export const LoginForm = () => {
         password,
         rememberMe,
       });
-  
+
       if (result?.error) {
         setAuthState('CredentialsSignin');
         setError('email', {
@@ -52,7 +52,7 @@ export const LoginForm = () => {
     } finally {
       setLoading(false);
     }
-  };  
+  };
 
   const handleChange = () => {
     setView('register');
