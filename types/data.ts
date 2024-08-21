@@ -8,15 +8,14 @@ export interface ExchangeRate {
 }
 
 export interface System {
-  id: string;       // Identificador único del sistema (paypal, payoneer-usd, etc.)
-  name: string;     // Nombre del sistema de pago
-  logo: string;     // Ruta a la imagen del logo
+  id: string; // Identificador único del sistema (paypal, payoneer-usd, etc.)
+  name: string; // Nombre del sistema de pago
+  logo: string; // Ruta a la imagen del logo
 }
 
-
 export type FormValues = {
-    Nombre: string;
-    Apellido: string;
-    email: string;
-    message: string;
+  Nombre: string;
+  Apellido: string;
+  email: string;
+  message: string;
 };

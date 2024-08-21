@@ -1,13 +1,13 @@
 // /TransactionCalculator
 
-"use client";
+'use client';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SystemSelect from '../SystemSelect/SystemSelect';
 import SystemInfo from '../SystemInfo/SystemInfo';
 import InvertSystems from '../InvertSystems/InvertSystems';
-import { ExchangeRate, System } from '@/types/data'; 
+import { ExchangeRate, System } from '@/types/data';
 
 // Extender el objeto Window para incluir paypal
 declare global {
@@ -18,10 +18,14 @@ declare global {
 
 export default function TransactionCalculator() {
   const [exchangeRate, setExchangeRate] = useState<number>(0);
-  const [selectedSendingSystem, setSelectedSendingSystem] = useState<System | null>(null);
-  const [selectedReceivingSystem, setSelectedReceivingSystem] = useState<System | null>(null);
-  const [showSendingSystemOptions, setShowSendingSystemOptions] = useState(false);
-  const [showReceivingSystemOptions, setShowReceivingSystemOptions] = useState(false);
+  const [selectedSendingSystem, setSelectedSendingSystem] =
+    useState<System | null>(null);
+  const [selectedReceivingSystem, setSelectedReceivingSystem] =
+    useState<System | null>(null);
+  const [showSendingSystemOptions, setShowSendingSystemOptions] =
+    useState(false);
+  const [showReceivingSystemOptions, setShowReceivingSystemOptions] =
+    useState(false);
   const [sendAmount, setSendAmount] = useState(0);
   const [receiveAmount, setReceiveAmount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -47,11 +51,15 @@ export default function TransactionCalculator() {
     }
   }, [darkMode]);
 
-  const handleSendAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSendAmountChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setSendAmount(parseFloat(event.target.value) || 0); // Asegura que sea un número válido
   };
 
-  const handleReceiveAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleReceiveAmountChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setReceiveAmount(parseFloat(event.target.value) || 0);
   };
 
@@ -87,8 +95,16 @@ export default function TransactionCalculator() {
   // Datos de sistemas de pago
   const systems: System[] = [
     { id: 'paypal', name: 'PayPal', logo: '/images/paypal.big.png' },
-    { id: 'payoneer-usd', name: 'Payoneer USD', logo: '/images/payoneer.usd.big.png' },
-    { id: 'payoneer-eur', name: 'Payoneer EUR', logo: '/images/payoneer.eur.big.png' },
+    {
+      id: 'payoneer-usd',
+      name: 'Payoneer USD',
+      logo: '/images/payoneer.usd.big.png',
+    },
+    {
+      id: 'payoneer-eur',
+      name: 'Payoneer EUR',
+      logo: '/images/payoneer.eur.big.png',
+    },
     { id: 'banco', name: 'Banco', logo: '/images/banco.medium.webp' },
     { id: 'wise-usd', name: 'Wise USD', logo: '/images/wise.usd.big.png' },
     { id: 'wise-eur', name: 'Wise EUR', logo: '/images/wise.eur.big.png' },
@@ -121,7 +137,7 @@ export default function TransactionCalculator() {
 
     try {
       // 1. Crear un pedido en tu backend
-      const orderResponse = await fetch('/api/paypal/create-order', { 
+      const orderResponse = await fetch('/api/paypal/create-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -131,7 +147,7 @@ export default function TransactionCalculator() {
           currency: 'USD',
         }),
       });
- 
+
       const order = await orderResponse.json();
 
       if (!order.id) {
@@ -139,34 +155,39 @@ export default function TransactionCalculator() {
         setIsLoading(false);
         return;
       }
- 
+
       // Asegúrate de que el SDK de PayPal esté cargado
       if (window.paypal) {
         window.paypal
           .Buttons({
             createOrder: function (data: any, actions: any) {
               return actions.order.create({
-                purchase_units: [{
-                  amount: {
-                    value: sendAmount.toString(),
+                purchase_units: [
+                  {
+                    amount: {
+                      value: sendAmount.toString(),
+                    },
                   },
-                }],
+                ],
               });
             },
 
             onApprove: async function (data: any, actions: any) {
               const captureResponse = await actions.order.capture();
-              
+
               // 3. Manejar la aprobación del pago en tu backend
-              const captureOrderResponse = await fetch('/api/paypal/capture-order', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
+              const captureOrderResponse = await fetch(
+                '/api/paypal/capture-order',
+                {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    orderID: data.orderID,
+                  }),
                 },
-                body: JSON.stringify({
-                  orderID: data.orderID,
-                }),
-              });
+              );
               const captureResult = await captureOrderResponse.json();
 
               if (captureResult.success) {
@@ -196,14 +217,15 @@ export default function TransactionCalculator() {
   };
 
   return (
-    <div className={`not-design-system flex flex-col items-center mt-8`}>
-
-      <div className="mat-card flex flex-col items-center calculator-container p-8 rounded-md shadow-md bg-white dark:bg-gray-800 dark:text-white">
-        {error && <div className="error-message text-red-500 mb-4">{error}</div>}
+    <div className={`not-design-system mt-8 flex flex-col items-center`}>
+      <div className="mat-card calculator-container flex flex-col items-center rounded-md bg-white p-8 shadow-md dark:bg-gray-800 dark:text-white">
+        {error && (
+          <div className="error-message mb-4 text-red-500">{error}</div>
+        )}
         <SystemInfo pointBorder="border" linePosition="up">
           <p>Información del sistema de envío</p>
         </SystemInfo>
-        <div className='space-x-4'>
+        <div className="space-x-4">
           <SystemSelect
             systems={systems}
             selectedSystem={selectedSendingSystem}
@@ -215,7 +237,7 @@ export default function TransactionCalculator() {
           <div className="input-box mt-4">
             <input
               type="number"
-              className="input-field w-full p-2 border rounded bg-white dark:bg-gray-700 dark:border-gray-600"
+              className="input-field w-full rounded border bg-white p-2 dark:border-gray-600 dark:bg-gray-700"
               placeholder="Monto a recibir (ARS)"
               id="usdInputUniqueID"
               value={receiveAmount.toFixed(2)}
@@ -223,7 +245,7 @@ export default function TransactionCalculator() {
             />
           </div>
         </div>
-        <div className="flex justify-center items-center h-full mt-4">
+        <div className="mt-4 flex h-full items-center justify-center">
           <InvertSystems onInvert={handleInvertSystemsClick} />
         </div>
         <SystemInfo pointBorder="border" linePosition="up">
@@ -240,14 +262,14 @@ export default function TransactionCalculator() {
         <div className="input-box mt-4">
           <input
             type="number"
-            className="input-field w-full p-2 border rounded bg-white dark:bg-gray-700 dark:border-gray-600"
+            className="input-field w-full rounded border bg-white p-2 dark:border-gray-600 dark:bg-gray-700"
             placeholder="Monto a recibir (ARS)"
             id="arsInputUniqueID"
             value={receiveAmount.toFixed(2)}
             onChange={handleReceiveAmountChange}
           />
         </div>
-        <div id="goToPayPalButton" className="mt-4"></div> 
+        <div id="goToPayPalButton" className="mt-4"></div>
       </div>
     </div>
   );

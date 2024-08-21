@@ -1,4 +1,4 @@
-import TransactionCalculator from "@/components/Transaction/TransactionCalculator/TransactionCalculator";
+import TransactionCalculator from '@/components/Transaction/TransactionCalculator/TransactionCalculator';
 
 const ConversionInstructions = () => {
     return (

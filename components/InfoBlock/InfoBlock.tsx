@@ -3,11 +3,11 @@
 import Image from 'next/image';
 
 interface InfoBlockProps {
-    title: string;
-    imageSrc: string;
-    imageAlt: string;
-    content?: string;
-    contentNode?: React.ReactNode;
+  title: string;
+  imageSrc: string;
+  imageAlt: string;
+  content?: string;
+  contentNode?: React.ReactNode;
 }
 
 export default function InfoBlock({ title, imageSrc, imageAlt, content, contentNode }: InfoBlockProps) {
@@ -29,8 +29,19 @@ export default function InfoBlock({ title, imageSrc, imageAlt, content, contentN
                 <div className="info-content text-xl text-gray-blue dark:text-white">
                     {contentNode ? contentNode : <p className="text-gray-700 dark:text-white" dangerouslySetInnerHTML={{ __html: content || '' }}></p>}
                 </div>
-            </div>
+
+        <div className="info-content pl-2">
+          {contentNode ? (
+            contentNode
+          ) : (
+            <p
+              className="text-gray-700"
+              dangerouslySetInnerHTML={{ __html: content || '' }}
+            ></p>
+          )}
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 

@@ -1,27 +1,34 @@
 'use client';
 
 import Link from 'next/link';
-import Image from "next/image";
-import S from "../../public/images/logo-solo.png";
+import Image from 'next/image';
+import S from '../../public/images/logo-solo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faLinkedin,
-    faInstagram,
-    faFacebook,
-    faWhatsapp,
+  faLinkedin,
+  faInstagram,
+  faFacebook,
+  faWhatsapp,
 } from '@fortawesome/free-brands-svg-icons';
+import useStore from '@/store/authViewStore';
 
 interface FooterLinkProps {
-    href: string;
-    children: React.ReactNode;
+  href: string;
+  children: React.ReactNode;
+  view?: 'login' | 'register';
 }
 
-function FooterLink({ href, children }: FooterLinkProps) {
-    return (
-        <Link href={href} className="rs-link text-blue-500 text-sm hover:text-blue-700 transition duration-200 ease-in-out">
-            {children}
-        </Link>
-    );
+function FooterLink({ href, children, view }: FooterLinkProps) {
+  const { setView } = useStore();
+  return (
+    <Link
+      href={href}
+      {...(view ? { onClick: () => setView(view) } : {})}
+      className="rs-link text-sm text-blue-500 transition duration-200 ease-in-out hover:text-blue-700"
+    >
+      {children}
+    </Link>
+  );
 }
 
 export default function Footer() {

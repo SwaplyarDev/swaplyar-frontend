@@ -4,15 +4,15 @@ import { useSwipeable } from 'react-swipeable';
 import Image from 'next/image';
 import './CaedAboutUs.css'; 
 interface CardData {
-    src: string;
-    alt: string;
-    title: string;
-    backTitle: string;
-    backText: string;
+  src: string;
+  alt: string;
+  title: string;
+  backTitle: string;
+  backText: string;
 }
 
 interface CaedAboutUsProps {
-    cardsData: CardData[];
+  cardsData: CardData[];
 }
 
 const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
