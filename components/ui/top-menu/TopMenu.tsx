@@ -2,14 +2,14 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import useStore from '@/store/authViewStore';
 
-
-import { Avatar, Dropdown, Navbar } from 'flowbite-react';
+import { Dropdown, Navbar } from 'flowbite-react';
 import { GiHamburgerMenu } from 'react-icons/gi';
+import { BsChevronRight } from 'react-icons/bs';
 
 import NavLinks from '@/components/ui/nav-links';
 import Image from 'next/image';
@@ -24,13 +24,14 @@ export function TopMenu() {
   const pathname = usePathname();
 
   const handleSelect = (item: string) => {
+    sessionStorage.setItem('currentView', item);
     setSelectedItem(item);
   };
 
-  const handleChange = () => {
-    setView('register');
-  };
-
+  useEffect(()=>{
+    const storage = sessionStorage.getItem('currentView');
+    setSelectedItem(storage);
+  },[]);
   const { changeTheme, isDark } = useDarkTheme();
 
   return (
@@ -40,7 +41,7 @@ export function TopMenu() {
           key="Iniciar sesión"
           href="/auth/login-register"
           onClick={() => setView('login')}
-          className={`relative hidden h-[48px] items-center gap-2 rounded-md p-3 md:flex lg:hidden ${pathname === '/auth/login-register' ? 'border-2 border-sky-200 bg-gray-500 text-white' : 'text-gray-900'} m-1 transition-colors duration-300 ease-in-out hover:bg-gray-600 hover:text-white hover:shadow-sm dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700`}
+          className={`relative hidden h-[48px] items-center gap-2 rounded-md p-3 text-blue-700 md:flex lg:hidden ${pathname === '/auth/login-register' ? 'underline decoration-blue-700 dark:decoration-white' : ''} m-1 transition duration-300 ease-in-out hover:drop-shadow-light dark:text-gray-300 dark:hover:drop-shadow-dark`}
         >
           <p className="font-bold">Iniciar sesión</p>
         </Link>
@@ -88,7 +89,10 @@ export function TopMenu() {
                 }`}
                 onClick={() => handleSelect('about-us')}
               >
-                <Link href="/info/about-us">Quienes Somos</Link>
+                <Link href="/info/about-us" className="flex items-center">
+                  <BsChevronRight />
+                  Quienes Somos
+                </Link>
               </Dropdown.Item>
               <Dropdown.Item
                 className={`cursor-pointer ${
@@ -98,7 +102,10 @@ export function TopMenu() {
                 }`}
                 onClick={() => handleSelect('how-to-use')}
               >
-                <Link href="/info/how-to-use">Como Usar Swaplyar</Link>
+                <Link href="/info/how-to-use" className="flex items-center">
+                  <BsChevronRight />
+                  Como Usar Swaplyar
+                </Link>
               </Dropdown.Item>
               <Dropdown.Item
                 className={`cursor-pointer ${
@@ -108,7 +115,11 @@ export function TopMenu() {
                 }`}
                 onClick={() => handleSelect('loyalty-program')}
               >
-                <Link href="/info/loyalty-program">
+                <Link
+                  href="/info/loyalty-program"
+                  className="flex items-center"
+                >
+                  <BsChevronRight />
                   Programa de Fidelización
                 </Link>
               </Dropdown.Item>
@@ -125,7 +136,9 @@ export function TopMenu() {
                   <Link
                     href="/auth/login-register"
                     onClick={() => setView('login')}
+                    className="flex items-center"
                   >
+                    <BsChevronRight />
                     Login
                   </Link>
                 </Dropdown.Item>
@@ -140,7 +153,9 @@ export function TopMenu() {
                   <Link
                     href="/auth/login-register"
                     onClick={() => setView('register')}
+                    className="flex items-center"
                   >
+                    <BsChevronRight />
                     Register
                   </Link>
                 </Dropdown.Item>

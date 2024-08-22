@@ -34,11 +34,13 @@ const config: Config = {
           600: '#2F6FEB',
         },
       },
-      boxShadow: {
-        custom: '0px 4px 10px rgba(39, 33, 69, 0.5)',
-      },
       dropShadow: {
-        logo: '0px 4px 10px rgba(39, 33, 69, 0.5)',
+        light: '4px 4px 10px rgba(29, 78, 216, 0.9)',
+        dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',
+      },
+      textShadow: {
+        light: '4px 4px 10px rgba(29, 78, 216, 0.9)',
+        dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',
       },
     },
     keyframes: {
@@ -49,6 +51,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('tailwindcss-textshadow')],
 };
 export default config;
