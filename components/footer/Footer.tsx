@@ -10,7 +10,7 @@ import {
   faFacebook,
   faWhatsapp,
 } from '@fortawesome/free-brands-svg-icons';
-import useStore from '@/store/store';
+import useStore from '@/store/authViewStore';
 
 interface FooterLinkProps {
   href: string;

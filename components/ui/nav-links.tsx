@@ -1,6 +1,6 @@
 'use client';
 
-import useStore from '@/store/store';
+import useStore from '@/store/authViewStore';
 import {
   UserGroupIcon,
   HomeIcon,

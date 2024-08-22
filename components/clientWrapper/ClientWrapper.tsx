@@ -3,8 +3,8 @@
 
 import { useHydrateStore } from '@/hooks/useHydrateStore';
 import { useState, useEffect } from 'react';
+import useStore from '@/store/authViewStore';
 import SkeletonManager from '../skeleton/SkeletonManager';
-import useStore from '@/store/store';
 
 interface ClientWrapperProps {
   children: React.ReactNode;
