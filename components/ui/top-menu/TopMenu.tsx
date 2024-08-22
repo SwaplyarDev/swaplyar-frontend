@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import useStore from '@/store/authViewStore';
 
+
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 
@@ -29,6 +30,7 @@ export function TopMenu() {
   const handleChange = () => {
     setView('register');
   };
+
   const { changeTheme, isDark } = useDarkTheme();
 
   return (
