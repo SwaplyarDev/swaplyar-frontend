@@ -222,9 +222,7 @@ export default function TransactionCalculator() {
         {error && (
           <div className="error-message mb-4 text-red-500">{error}</div>
         )}
-        <SystemInfo pointBorder="border" linePosition="up">
-          <p>Información del sistema de envío</p>
-        </SystemInfo>
+        
         <div className="space-x-4">
           <SystemSelect
             systems={systems}

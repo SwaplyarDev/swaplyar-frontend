@@ -47,7 +47,7 @@ export default function HomePage() {
           &iexcl;Empez&aacute; ahora!
         </FlyerTrabajo>
       </div>
-      <ButtonTest/> //Borrar
+      <ButtonTest/> {/*  Borrar */}
     </main>
   );
 }
