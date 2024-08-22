@@ -35,10 +35,10 @@ const config: Config = {
         },
       },
       boxShadow: {
-        'custom': '0px 4px 10px rgba(39, 33, 69, 0.5)',
+        custom: '0px 4px 10px rgba(39, 33, 69, 0.5)',
       },
-      dropShadow:{
-        'logo': '0px 4px 10px rgba(39, 33, 69, 0.5)'
+      dropShadow: {
+        logo: '0px 4px 10px rgba(39, 33, 69, 0.5)',
       },
     },
     keyframes: {

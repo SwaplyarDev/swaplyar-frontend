@@ -3,15 +3,18 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import useStore from '@/store/store';
+
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
+import { GiHamburgerMenu } from 'react-icons/gi';
+
 import NavLinks from '@/components/ui/nav-links';
 import Image from 'next/image';
 import Link from 'next/link';
-import { GiHamburgerMenu } from 'react-icons/gi';
-import useStore from '@/store/store';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import styles from './switchStyle.module.css';
-import { usePathname } from 'next/navigation';
+import S from '../../../public/images/logo-solo.png';
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -31,7 +34,7 @@ export function TopMenu() {
 
   return (
     <Navbar fluid rounded className="p-4 shadow-md">
-      <div className="flex w-full flex-row-reverse justify-between lg:flex-row gap-4">
+      <div className="flex w-full flex-row-reverse justify-between gap-4 lg:flex-row">
         <Link
           key="Iniciar sesión"
           href="/auth/login-register"
@@ -47,7 +50,14 @@ export function TopMenu() {
             src="https://res.cloudinary.com/df5jwzuq9/image/upload/v1722209853/logo_g74htq.png"
             width={200}
             height={200}
-            className="h-12 w-auto filter dark:brightness-[300%] drop-shadow-xl"
+            className="hidden h-12 w-auto filter dark:brightness-[0%] dark:invert md:block"
+          />
+          <Image
+            alt="Your Company"
+            src={S}
+            width={200}
+            height={200}
+            className="h-12 w-auto filter dark:brightness-[0%] dark:invert md:hidden"
           />
         </Navbar.Brand>
 

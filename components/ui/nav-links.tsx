@@ -34,7 +34,7 @@ export default function NavLinks() {
                 ? () => setView('register')
                 : undefined
           }
-          className={`relative flex h-[48px] items-center gap-2 rounded-md p-3 ${pathname === link.href ? 'underline decoration-2 decoration-sky-400 dark:decoration-white' : ''} m-1 transition-colors duration-300 ease-in-out hover:filter hover:shadow-custom dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700`}
+          className={`relative flex h-[48px] items-center gap-2 rounded-md p-3 text-blue-700 ${pathname === link.href ? 'underline decoration-blue-700 dark:decoration-white' : ''} m-1 transition-colors duration-300 ease-in-out hover:shadow-custom hover:filter dark:text-gray-300 dark:hover:bg-gray-700`}
         >
           <p
             className={`hidden md:block ${link.name === 'Login' || link.name === 'Register' ? 'font-bold' : ''}`}
