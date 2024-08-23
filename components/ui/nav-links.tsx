@@ -17,19 +17,18 @@ export default function NavLinks() {
 
   const [currentView, setCurrentView] = useState<string | null>(null);
 
-  const handleLogView = (view : string) => {
-    if(view === "Iniciar sesión" || view === "Registrarse"){
-        view === 'Iniciar sesión' ? setView('login') : setView('register');
-    };
+  const handleLogView = (view: string) => {
+    if (view === 'Iniciar sesión' || view === 'Registrarse') {
+      view === 'Iniciar sesión' ? setView('login') : setView('register');
+    }
     setCurrentView(view);
     sessionStorage.setItem('currentView', view);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const storage = sessionStorage.getItem('currentView');
     setCurrentView(storage);
-  },[])
-
+  }, []);
 
   return (
     <>
@@ -38,7 +37,7 @@ export default function NavLinks() {
           key={link.name}
           href={link.href}
           onClick={() => handleLogView(link.name)}
-          className={`relative flex h-[48px] items-center gap-2 rounded-md p-3 text-blue-700 ${ currentView === link.name ? 'underline decoration-blue-700 dark:decoration-white' : ''} m-1 transition dark:text-gray-300 duration-300 ease-in-out hover:drop-shadow-light dark:hover:drop-shadow-dark  `}
+          className={`relative flex h-[48px] items-center gap-2 rounded-md p-3 text-blue-700 ${currentView === link.name ? 'underline decoration-blue-700 dark:decoration-white' : ''} m-1 transition duration-300 ease-in-out hover:drop-shadow-light dark:text-gray-300 dark:hover:drop-shadow-dark`}
         >
           <p
             className={`hidden md:block ${link.name === 'Login' || link.name === 'Register' ? 'font-bold' : ''}`}
