@@ -1,13 +1,8 @@
 'use client';
 
 import useStore from '@/store/authViewStore';
-import {
-  UserGroupIcon,
-  HomeIcon,
-  DocumentDuplicateIcon,
-} from '@heroicons/react/24/outline';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
 export const Links = [
   { name: 'Quienes Somos', href: '/info/about-us' },
@@ -18,8 +13,22 @@ export const Links = [
 ];
 
 export default function NavLinks() {
-  const pathname = usePathname();
   const { setView } = useStore();
+
+  const [currentView, setCurrentView] = useState<string | null>(null);
+
+  const handleLogView = (view: string) => {
+    if (view === 'Iniciar sesión' || view === 'Registrarse') {
+      view === 'Iniciar sesión' ? setView('login') : setView('register');
+    }
+    setCurrentView(view);
+    sessionStorage.setItem('currentView', view);
+  };
+
+  useEffect(() => {
+    const storage = sessionStorage.getItem('currentView');
+    setCurrentView(storage);
+  }, []);
 
   return (
     <>
@@ -27,14 +36,8 @@ export default function NavLinks() {
         <Link
           key={link.name}
           href={link.href}
-          onClick={
-            link.name === 'Iniciar sesión'
-              ? () => setView('login')
-              : link.name === 'Registrarse'
-                ? () => setView('register')
-                : undefined
-          }
-          className={`relative flex h-[48px] items-center gap-2 rounded-md p-3 ${pathname === link.href ? 'border-2 border-sky-200 bg-gray-500 text-white' : 'text-gray-900'} m-1 transition-colors duration-300 ease-in-out hover:bg-gray-600 hover:text-white hover:shadow-sm dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700`}
+          onClick={() => handleLogView(link.name)}
+          className={`relative flex h-[48px] items-center gap-2 rounded-md p-3 text-blue-700 ${currentView === link.name ? 'underline decoration-blue-700 dark:decoration-white' : ''} m-1 transition duration-300 ease-in-out hover:drop-shadow-light dark:text-gray-300 dark:hover:drop-shadow-dark`}
         >
           <p
             className={`hidden md:block ${link.name === 'Login' || link.name === 'Register' ? 'font-bold' : ''}`}
@@ -46,3 +49,7 @@ export default function NavLinks() {
     </>
   );
 }
+
+//hover:drop-shadow-light dark:hover:drop-shadow-dark
+
+//hover:text-shadow-light dark:hover:text-shadow-dark
