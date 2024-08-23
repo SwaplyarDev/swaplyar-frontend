@@ -29,7 +29,7 @@ const RequestPage = () => {
 
   return (
     <div
-      className={`flex flex-col ${isMobile ? '' : 'md:flex-row'} items-center justify-center gap-8 py-10`}
+      className={`flex flex-col ${isMobile ? '' : 'md:flex-row'} items-center justify-center gap-8 p-10`}
     >
       {isMobile && (
         <RequestInfoBlock
