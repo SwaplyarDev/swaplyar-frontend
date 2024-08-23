@@ -19,6 +19,9 @@ import S from '../../../public/images/logo-solo.png';
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
+  const [bgOpacity, setBgOpacity] = useState(false);
+
   const { setView } = useStore();
 
   const pathname = usePathname();
@@ -28,15 +31,34 @@ export function TopMenu() {
     setSelectedItem(item);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const storage = sessionStorage.getItem('currentView');
     setSelectedItem(storage);
-  },[]);
+
+    const handleScroll = () => {
+      setBgOpacity(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   const { changeTheme, isDark } = useDarkTheme();
 
   return (
-    <Navbar fluid rounded className="p-4 shadow-md">
-      <div className="flex w-full flex-row-reverse justify-between gap-4 lg:flex-row">
+    <Navbar
+      fluid
+      rounded
+      className={`sticky top-0 z-50 w-full p-4 shadow-md transition-opacity duration-300 ${
+        bgOpacity
+          ? 'bg-opacity-90 dark:bg-opacity-90'
+          : 'bg-opacity-100 dark:bg-opacity-100'
+      }`}
+    >
+      <div
+        className={`flex w-full flex-row-reverse justify-between gap-4 lg:flex-row`}
+      >
         <Link
           key="Iniciar sesión"
           href="/auth/login-register"

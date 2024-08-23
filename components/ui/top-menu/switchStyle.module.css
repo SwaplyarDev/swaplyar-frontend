@@ -39,11 +39,11 @@
 
 /* Light Mode */
 .sliderLight {
+  --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity));
 }
 
 .sliderLight:before {
-  --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity));
   box-shadow: inset 8px -4px 0px 0px #ffee00;
 }
