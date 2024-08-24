@@ -71,10 +71,10 @@ export const RequestRegisterForm = () => {
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setErrorMessage('');
     setLoading(true);
-  
+
     // Verifica que todos los datos estén presentes
     console.log('Datos del formulario:', data);
-  
+
     const {
       name,
       surname,
@@ -86,10 +86,10 @@ export const RequestRegisterForm = () => {
       note,
       country,
     } = data;
-  
+
     // Combina el callingCode con el whatsappNumber
     const fullWhatsappNumber = `${selectedCountry?.callingCode}${whatsappNumber}`;
-  
+
     // Crea el FormData y añade los campos
     const formData = new FormData();
     formData.append('name', name || '');
@@ -98,29 +98,29 @@ export const RequestRegisterForm = () => {
     formData.append('cbuAlias', cbuAlias || '');
     formData.append('cuil', cuil || '');
     formData.append('email', email || '');
-    
+
     // Verifica que comprobante tenga al menos un archivo antes de añadirlo
     if (comprobante && comprobante.length > 0) {
       formData.append('comprobante', comprobante[0]);
     } else {
       console.warn('No se ha proporcionado un archivo de comprobante');
     }
-  
+
     formData.append('note', note || '');
     formData.append('country', country || '');
-  
+
     const entries = formData.entries();
     let entry = entries.next();
     while (!entry.done) {
       console.log(`${entry.value[0]}: ${entry.value[1]}`);
       entry = entries.next();
     }
-  
+
     try {
       const resp = await requestRegister(formData);
-  
+
       setLoading(false);
-  
+
       if (!resp.ok) {
         setErrorMessage(resp.message);
         return;
@@ -131,7 +131,6 @@ export const RequestRegisterForm = () => {
       setLoading(false);
     }
   };
-  
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-transparent">

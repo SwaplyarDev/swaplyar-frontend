@@ -147,12 +147,12 @@ swaplyar-frontend/
 - `npm run build`: Compila la aplicación para producción.
 - `npm run start`: Inicia el servidor de la aplicación compilada.
 
-
 ---
 
 ## 💪 Contribución
 
 1. **Crea una nueva rama para tu funcionalidad o corrección desde la rama principal `developer`:**
+
    ```bash
    git checkout developer
    git pull origin developer
@@ -166,12 +166,14 @@ swaplyar-frontend/
 4. **Ejecuta `npm run lint` para verificar que no haya errores en el código.**
 
 5. **Haz commit de tus cambios:**
+
    ```bash
    git add .
    git commit -m 'Agregar nueva funcionalidad'
    ```
 
 6. **Actualiza tu rama de trabajo con los últimos cambios de la rama principal `developer`:**
+
    ```bash
    git checkout developer
    git pull origin developer
@@ -182,6 +184,7 @@ swaplyar-frontend/
 7. **Ejecuta `npm run build --clean` para asegurarte de que la compilación se realice correctamente y se limpien los archivos generados previamente.**
 
 8. **Envía tus cambios a la rama `developer`:**
+
    ```bash
    git push origin feature/nueva-funcionalidad
    ```
