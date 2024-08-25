@@ -161,9 +161,7 @@ swaplyar-frontend/
 
 2. **Realiza tus cambios.**
 
-3. **Ejecut
-
-a pruebas y asegúrate de que todo funcione correctamente:**
+3. **Ejecuta pruebas y asegúrate de que todo funcione correctamente:**
 
    ```bash
    npm run lint
@@ -202,6 +200,21 @@ a pruebas y asegúrate de que todo funcione correctamente:**
    git push origin feature/nueva-funcionalidad --force-with-lease
    ```
 
+8. **Fusionar el PR::**
+    - Después de fusionar, puedes eliminar la rama `feature/nueva-funcionalidad` tanto localmente como en el repositorio remoto.
+   ```bash
+   git checkout developer
+   git pull origin developer
+   git merge feature/nueva-funcionalidad
+   ```
+
+9. **Eliminar la Rama Temporal:**
+   - Después de fusionar, puedes eliminar la rama `feature/nueva-funcionalidad` tanto localmente como en el repositorio remoto.
+   
+   ```bash
+   git branch -d feature/nueva-funcionalidad
+   git push origin --delete feature/nueva-funcionalidad
+   ```
 
 **¡Gracias por contribuir a SwaplyAr!** 😊
 
@@ -214,239 +227,3 @@ progreso...
 ---
 
 **¡Gracias por leer!** Esperamos que esta documentación te sea útil. Si tienes alguna pregunta o necesitas más información, no dudes en contactarnos. 😊
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Aquí tienes el `README.md` actualizado con la instrucción dinámica para actualizar una rama desde `developer`, adaptada para tu proyecto:
-
----
-
-# SwaplyAr Frontend 🚀
-
-**SwaplyAr** nació de una simple necesidad: intercambiar saldo y asegurar que cada persona que lo utiliza reciba lo pactado, acompañándolos en todo el proceso. El crecimiento de SwaplyAr fue exponencial debido a la confiabilidad, seguridad y velocidad en cada operación. Somos una empresa en la que los usuarios confían plenamente, ya que la transparencia es uno de nuestros pilares fundamentales. Ayudamos a que cada persona consiga lo que está buscando de una manera fácil y protegida.
-
-![Imagen o banner representativo del proyecto](public/images/lideresencambio.png)
-
-## 🚀 Funcionalidad principal
-
-- **Convertir y enviar dinero de PayPal a una cuenta bancaria en tres simples pasos:**
-  1. **Cotizá y solicitá**: Consulta la cotización actual y solicita el cambio.
-  2. **Seguí el Flujo**: Sigue las instrucciones detalladas para proceder con tu envío de manera segura y eficiente.
-  3. **Recibí tu dinero**: Recibe los pesos argentinos cotizados directamente en tu cuenta bancaria.
-
-## 🛠️ Tecnologías Utilizadas
-
-### Frontend
-
-- **Next.js 14.2.5:** Framework de React para aplicaciones web.
-- **TypeScript 5:** Lenguaje de programación tipado.
-- **Tailwind CSS 3.4.1:** Framework de utilidades CSS para diseñar rápidamente.
-- **React 18:** Librería de JavaScript para construir interfaces de usuario.
-- **React Hook Form 7.52.1:** Manejador de formularios eficiente y flexible para React.
-- **Material UI (MUI) 5.16.5:** Conjunto de componentes de interfaz de usuario.
-- **NextAuth.js 5.0.0-beta.20**: Autenticación para aplicaciones Next.js.
-- **Flowbite React 0.10.1**: Biblioteca de componentes de interfaz de usuario basada en Tailwind CSS.
-- **@emotion/react & @emotion/styled 11.13.0:** Para estilos CSS-in-JS.
-- **react-icons 5.2.1:** Colección de iconos populares.
-- **sharp 0.33.4:** Biblioteca para procesamiento de imágenes.
-- **use-debounce 10.0.0:** Hook para implementar debounce en eventos.
-- **@fortawesome/\*:** Varias bibliotecas para el uso de iconos de Font Awesome.
-- **@heroicons/react 2.1.4:** Conjunto de iconos SVG.
-
-### Desarrollo
-
-- **@types/node, @types/react, @types/react-dom:** Definiciones de tipos para mejorar el desarrollo con TypeScript.
-- **@tailwindcss/forms 0.5.7:** Extensión de Tailwind CSS para estilos de formularios.
-- **@vercel/style-guide 6.0.0:** Guía de estilo de Vercel (opcional, si se utiliza Vercel para despliegue).
-- **eslint, eslint-config-next, eslint-config-prettier:** Herramientas para análisis y formateo de código.
-- **postcss, prettier, prettier-plugin-tailwindcss:** Herramientas adicionales para formateo y procesamiento de CSS.
-
-## 📂 Estructura del Proyecto
-
-```
-swaplyar-frontend/
-├── app/               # (Nuevo) Directorio App Router (Next.js 13)
-│   ├── api/           # Rutas de API
-│   │   └── auth/      # Rutas de NextAuth.js
-│   ├── info/          # Rutas relacionadas con información
-│   │   ├── about-us/  # Página "Quienes Somos"
-│   │   ├── help-center/ # Página de centro de ayuda
-│   │   ├── how-to-use/  # Página "Cómo usar Swaplyar"
-│   │   ├── loyalty-program/ # Página del programa de fidelización
-│   │   ├── terms-and-conditions/ # Página de términos y condiciones
-│   │   ├── warranty/  # Página de garantía
-│   │   └── why-choose-swaplyar/ # Página "Por qué elegir Swaplyar"
-│   ├── auth/          # Rutas relacionadas con autenticación
-│   │   ├── login/     # Página de inicio de sesión
-│   │   └── new-account/ # Página de registro de nueva cuenta
-│   └── request/       # Rutas relacionadas con solicitudes de intercambio
-│   └── layout.js      # Layout principal de la aplicación (opcional)
-│   └── page.js        # Página de inicio (opcional)
-├── components/        # Componentes reutilizables
-│   ├── ui/            # Componentes de interfaz de usuario
-│   ├── auth/          # Componentes relacionados con la autenticación
-│   ├── clientWrapper/ # Componente para envolver vistas y gestionar estados de carga
-│   ├── skeleton/      # Componentes Skeleton para estados de carga
-│   └── request/       # Componentes relacionados con solicitudes de intercambio
-├── hooks/             # Hooks personalizados
-├── store/             # Configuración del store global
-├── public/            # Archivos estáticos (imágenes, fuentes, etc.)
-├── styles/            # Estilos globales (CSS o módulos CSS)
-├── ... otros archivos y carpetas ...
-└── package.json       # Dependencias y scripts del proyecto
-```
-
-**Explicación:**
-
-- **`app/`:**
-  - **`api/auth/[...nextauth]`:** Ruta de NextAuth.js para manejar la autenticación.
-  - **`info/`, `auth/`, `request/`:** Carpetas para agrupar las rutas relacionadas con cada sección de la aplicación.
-  - **`layout.js`:** Define el diseño general de la aplicación (opcional).
-  - **`page.js`:** Define la página de inicio (opcional).
-- **`components/`:** Contiene componentes reutilizables, organizados por funcionalidad.
-  - **`ui/`:** Componentes de interfaz de usuario reutilizables.
-  - **`auth/`:** Componentes relacionados con la autenticación, como formularios de inicio de sesión y registro.
-  - **`clientWrapper/`:** Componente que envuelve vistas para gestionar estados de carga, mostrando skeletons cuando sea necesario.
-  - **`skeleton/`:** Componentes Skeleton que se muestran mientras las vistas se están cargando, mejorando la experiencia de usuario.
-  - **`request/`:** Componentes específicos para gestionar solicitudes de intercambio.
-- **`hooks/`:** Contiene hooks personalizados para gestionar lógica compartida.
-- **`store/`:** Contiene la configuración del store global, usando Zustand para manejar el estado global de la aplicación.
-- **`public/`:** Almacena archivos estáticos accesibles públicamente, como imágenes y fuentes.
-- **`styles/`:** Contiene estilos globales que se aplican a toda la aplicación.
-
-## 🛣️ Rutas Principales
-
-- `/`: Página de inicio.
-- `/_not-found`: Página de error 404.
-- `/auth/login`: Página de inicio de sesión.
-- `/auth/new-account`: Página de registro de nueva cuenta.
-- `/info/about-us`: Página "Quienes Somos".
-- `/info/help-center`: Página de centro de ayuda.
-- `/info/how-to-use`: Página "Cómo usar Swaplyar".
-- `/info/loyalty-program`: Página del programa de fidelización.
-- `/info/terms-and-conditions`: Página de términos y condiciones.
-- `/info/warranty`: Página de garantía.
-- `/info/why-choose-swaplyar`: Página "Por qué elegir Swaplyar".
-- `/request`: Página principal de solicitudes de intercambio.
-
-## 🚀 Configuración Inicial
-
-1. **Clonar el Repositorio**
-
-   ```bash
-   git clone git@github.com:SwaplyAr/swaplyar-frontend.git
-   cd swaplyar-frontend
-   ```
-
-2. **Instalación de Dependencias**
-
-   ```bash
-   npm install
-   ```
-
-3. **Variables de Entorno**
-
-   Crea un archivo `.env.local` en la raíz del proyecto y agrega las variables de entorno necesarias.
-
-   ```env
-   NEXT_PUBLIC_API_URL=[https://api.swaplyar.com](https://api.swaplyar.com)
-   NEXTAUTH_URL=http://localhost:3000
-   NEXTAUTH_SECRET=your-secret-key
-   ```
-
-4. **Ejecutar el Proyecto**
-
-   ```bash
-   npm run dev
-   ```
-
-   Accede al proyecto en [http://localhost:3000](http://localhost:3000).
-
-## 🤖 Scripts Disponibles
-
-- `npm run lint`: Ejecuta ESLint para analizar el código.
-- `npm run format`: Formatea el código utilizando Prettier.
-- `npm run dev`: Inicia el entorno de desarrollo.
-- `npm run build`: Compila la aplicación para producción.
-- `npm run start`: Inicia el servidor de la aplicación compilada.
-
----
-
-## 💪 Contribución
-
-1. **Crea una nueva rama para tu funcionalidad o corrección desde la rama principal `developer`:**
-
-   ```bash
-   git checkout developer
-   git pull origin developer
-   git checkout -b feature/nueva-funcionalidad
-   ```
-
-2. **Realiza tus cambios.**
-
-3. **Ejecut
-
-a pruebas y asegúrate de que todo funcione correctamente:**
-
-   ```bash
-   npm run lint
-   npm run format
-   ```
-
-4. **Confirma tus cambios y empuja la rama a tu repositorio:**
-
-   ```bash
-   git add .
-   git commit -m "Descripción de los cambios"
-   git push origin feature/nueva-funcionalidad
-   ```
-
-5. **Crea un Pull Request (PR) desde tu rama hacia la rama `developer`.**
-
-6. **Antes de realizar el Pull Request, actualiza tu rama con los últimos cambios de `developer`:**
-
-   ```bash
-   git checkout developer
-   git pull origin developer
-   git checkout feature/nueva-funcionalidad
-   git rebase developer
-   ```
-
-   **Si hay conflictos, resuélvelos y continua con el rebase:**
-
-   ```bash
-   git add .
-   git rebase --continue
-   ```
-
-7. **Finalmente, empuja los cambios a tu rama remota:**
-
-   ```bash
-   git push origin feature/nueva-funcionalidad --force-with-lease
-   ```
-
-## 📄 Licencia
-
-Este proyecto está bajo la licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
-
----
-
-Este `README.md` cubre todas las instrucciones necesarias para trabajar con el proyecto SwaplyAr, incluyendo las buenas prácticas para colaborar con ramas de características (`feature branches`) y la instrucción dinámica para actualizar la rama `developer`.
