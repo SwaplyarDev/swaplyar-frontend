@@ -23,7 +23,7 @@ export default function NavLinks() {
   const { setView } = useStore();
 
   return (
-    <div className="flex justify-between items-center box-border pb-3 w-full">
+    <div className="flex justify-between items-center  pb-2 w-full">
       <div className="flex gap-1  mr-7">
         {Links.slice(0, -2).map((link) => (
           <Link

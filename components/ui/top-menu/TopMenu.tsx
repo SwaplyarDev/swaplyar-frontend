@@ -37,7 +37,7 @@ const StyledNavbar = styled(Navbar)`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 80%;
+    width: 90%;
     margin: auto; 
   
   }
@@ -75,8 +75,9 @@ export function TopMenu() {
   const { changeTheme, isDark } = useDarkTheme();
 
   return (
-    <Navbar fluid rounded className="bg-white p-4 shadow-md dark:bg-gray-800">
-      <Navbar.Brand href="/">
+    <StyledNavbar fluid rounded className="bg-white p-4 shadow-md dark:bg-gray-800">
+<div className='navbar-content'>
+<Navbar.Brand href="/" className='navbar-brand'>
         <Image
           alt="Your Company"
           src="https://res.cloudinary.com/df5jwzuq9/image/upload/v1722209853/logo_g74htq.png"
@@ -170,12 +171,13 @@ export function TopMenu() {
           </Dropdown>
         </div>
 
-        <Navbar.Collapse>
+        <Navbar.Collapse className='navbar-collapse'>
           <div className="hidden md:ml-6 md:flex">
             <NavLinks />
           </div>
         </Navbar.Collapse>
       </div>
-    </Navbar>
+</div>
+    </StyledNavbar>
   );
 }
