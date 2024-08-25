@@ -1,11 +1,6 @@
-
 'use client';
 
-import {
-  UserGroupIcon,
-  HomeIcon,
-  DocumentDuplicateIcon,
-} from '@heroicons/react/24/outline';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import useStore from '@/store/authViewStore';
@@ -21,56 +16,60 @@ export const Links = [
 export default function NavLinks() {
   const pathname = usePathname();
   const { setView } = useStore();
+  const [currentView, setCurrentView] = useState<string | null>(null);
+
+  const handleLogView = (view: string) => {
+    if (view === 'Iniciar sesión' || view === 'Registrarse') {
+      view === 'Iniciar sesión' ? setView('login') : setView('register');
+    }
+    setCurrentView(view);
+    sessionStorage.setItem('currentView', view);
+  };
+
+  useEffect(() => {
+    const storage = sessionStorage.getItem('currentView');
+    setCurrentView(storage);
+  }, []);
 
   return (
     <div className="flex justify-between items-center box-border pb-3 w-full">
-      <div className="flex gap-1  mr-7">
+      <div className="flex gap-1 mr-7">
         {Links.slice(0, -2).map((link) => (
           <Link
             key={link.name}
             href={link.href}
-            className={`relative flex h-[48px] items-center  rounded-md
+            className={`relative flex h-[48px] items-center rounded-md
               ${pathname === link.href ? 'bg-gray-500 text-white border-2 border-sky-200' : 'text-gray-900'}
               dark:text-white dark:bg-gray-800 dark:hover:bg-gray-700
-             text-nav-blue hover:shadow-sm hover:underline
-              transition-colors duration-300 ease-in-out
-              m-2
-            `}
-            style={{  fontSize: '16px' }}
+              text-nav-blue hover:shadow-sm hover:underline
+              transition-colors duration-300 ease-in-out m-2`}
+            style={{ fontSize: '16px' }}
           >
-            <p className="hidden md:block">
-              {link.name}
-            </p>
+            <p className="hidden md:block">{link.name}</p>
           </Link>
         ))}
       </div>
-      <div className="flex gap-3 ml-20"> 
+      <div className="flex gap-3 ml-20">
         {Links.slice(-2).map((link) => (
           <Link
             key={link.name}
             href={link.href}
-            onClick={
-              link.name === 'Iniciar sesión'
-                ? () => setView('login')
-                : link.name === 'Registrarse'
-                  ? () => setView('register')
-                  : undefined
-            }
+            onClick={() => handleLogView(link.name)}
             className={`relative flex h-[48px] items-center gap-0 rounded-md 
               ${pathname === link.href ? 'bg-gray-500 text-white border-2 border-sky-200' : 'text-gray-900'}
               dark:text-white dark:bg-gray-800 dark:hover:bg-gray-700
-              text-nav-blue  hover:shadow-sm hover:underline
-              transition-colors duration-300 ease-in-out
-              m-1
-            `}
+              text-nav-blue hover:shadow-sm hover:underline
+              transition-colors duration-300 ease-in-out m-1`}
             style={{ fontSize: '16px' }}
           >
-            <p className="hidden md:block">
-              {link.name}
-            </p>
+            <p className="hidden md:block">{link.name}</p>
           </Link>
         ))}
       </div>
     </div>
   );
 }
+
+//hover:drop-shadow-light dark:hover:drop-shadow-dark
+
+//hover:text-shadow-light dark:hover:text-shadow-dark

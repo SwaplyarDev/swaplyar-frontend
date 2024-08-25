@@ -2,6 +2,10 @@
 export const CentroDeAyuda = '/images/centro-ayuda.png';
 export const FlyerGif = '/gif/flyer.gif';
 
+/**Logo SwaplyAr White**/
+export const SwaplyArlogoMobileWhite = '/images/SwaplyAr-logo-Mobile-White.png';
+export const SwaplyArlogoWhite = '/images/SwaplyAr-Logo-White.png';
+
 /**request**/
 export const FormularioDeSolicitud = '/images/Formulario-de-Solicitud.png';
 export const FormularioDeSolicitudMovil =

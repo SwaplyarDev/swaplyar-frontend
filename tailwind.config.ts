@@ -21,7 +21,7 @@ const config: Config = {
         xs: '480px',
         sm: '640px',
         md: '768px',
-        lg: '1024px',
+        lg: '1170px',
         xl: '1280px',
         '2k': '2048px',
         '4k': '3840px',
@@ -46,7 +46,14 @@ const config: Config = {
         'dark-blue':'rgb(3, 35, 54)'
       },
       top:{
-        '57':'57%'
+        '57':'57%'},
+      dropShadow: {
+        light: '4px 4px 10px rgba(29, 78, 216, 0.9)',
+        dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',
+      },
+      textShadow: {
+        light: '4px 4px 10px rgba(29, 78, 216, 0.9)',
+        dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',
       },
     },
     keyframes: {
@@ -57,6 +64,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('tailwindcss-textshadow')],
 };
 export default config;
