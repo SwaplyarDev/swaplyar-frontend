@@ -30,16 +30,7 @@ export default function InfoBlock({ title, imageSrc, imageAlt, content, contentN
                     {contentNode ? contentNode : <p className="text-gray-700 dark:text-white" dangerouslySetInnerHTML={{ __html: content || '' }}></p>}
                 </div>
 
-        <div className="info-content pl-2">
-          {contentNode ? (
-            contentNode
-          ) : (
-            <p
-              className="text-gray-700"
-              dangerouslySetInnerHTML={{ __html: content || '' }}
-            ></p>
-          )}
-        </div>
+
       </div>
     </div>
   );
