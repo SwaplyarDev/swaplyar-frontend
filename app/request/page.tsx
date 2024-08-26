@@ -16,7 +16,7 @@ const RequestPage = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+      setIsMobile(window.innerWidth <= 1170);
     };
 
     handleResize();
@@ -29,14 +29,14 @@ const RequestPage = () => {
 
   return (
     <div
-      className={`flex flex-col ${isMobile ? '' : 'md:flex-row'} items-center justify-center gap-8 p-10`}
+      className={`flex flex-col ${isMobile ? '' : 'lg:flex-row'} items-center justify-center gap-8 p-10`}
     >
       {isMobile && (
         <RequestInfoBlock
           title="Complete el formulario para procesar su transferencia bancaria."
           content={
             <>
-              <p className="mb-4 text-lg">
+              <p className="mb-4 text-lg text-center md:text-left">
                 Ingrese sus datos personales en el formulario: Nombre, Apellido,
                 Número de WhatsApp, CBU o Alias, CUIL, Correo Electrónico y
                 Comprobante.
