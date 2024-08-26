@@ -25,7 +25,7 @@ export const requestRegister = async (formData: FormData) => {
 
     return {
       ok: false,
-      message: error.message || 'No se pudo crear el usuario',
+      message: 'No se pudo crear el usuario',
     };
   }
 };
