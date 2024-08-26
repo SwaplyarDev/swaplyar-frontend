@@ -147,32 +147,82 @@ swaplyar-frontend/
 - `npm run build`: Compila la aplicación para producción.
 - `npm run start`: Inicia el servidor de la aplicación compilada.
 
+---
+
 ## 💪 Contribución
 
-Si deseas contribuir al proyecto, sigue estos pasos:
+1. **Crea una nueva rama para tu funcionalidad o corrección desde la rama principal `developer`:**
 
-1. Haz un fork del repositorio.
-2. Crea una nueva rama (`git checkout -b feature/nueva-funcionalidad`).
-3. Realiza tus cambios.
-4. **Ejecuta `npm run format` para formatear tu código con Prettier.**
-5. **Ejecuta `npm run lint` para verificar que no haya errores en el código.**
-6. Haz commit de tus cambios (`git commit -m 'Agregar nueva funcionalidad'`).
-7. **Actualiza tu rama con los últimos cambios de la rama principal:**
    ```bash
-   git fetch origin
-   git checkout main
-   git pull origin main
-   git checkout feature/nueva-funcionalidad
-   git merge main
+   git checkout developer
+   git pull origin developer
+   git checkout -b feature/nueva-funcionalidad
    ```
-8. **Ejecuta `npm run build --clean` para asegurarte de que la compilación se realice correctamente y se limpien los archivos generados previamente.**
-9. Envía un pull request.
+
+2. **Realiza tus cambios.**
+
+3. **Ejecuta pruebas y asegúrate de que todo funcione correctamente:**
+
+   ```bash
+   npm run lint
+   npm run format
+   ```
+
+4. **Confirma tus cambios y empuja la rama a tu repositorio:**
+
+   ```bash
+   git add .
+   git commit -m "Descripción de los cambios"
+   git push origin feature/nueva-funcionalidad
+   ```
+
+5. **Crea un Pull Request (PR) desde tu rama hacia la rama `developer`.**
+
+6. **Antes de realizar el Pull Request, actualiza tu rama con los últimos cambios de `developer`:**
+
+   ```bash
+   git checkout developer
+   git pull origin developer
+   git checkout feature/nueva-funcionalidad
+   git rebase developer
+   ```
+
+   **Si hay conflictos, resuélvelos y continua con el rebase:**
+
+   ```bash
+   git add .
+   git rebase --continue
+   ```
+
+7. **Finalmente, empuja los cambios a tu rama remota:**
+
+   ```bash
+   git push origin feature/nueva-funcionalidad --force-with-lease
+   ```
+
+8. **Fusionar el PR::**
+    - Después de fusionar, puedes eliminar la rama `feature/nueva-funcionalidad` tanto localmente como en el repositorio remoto.
+   ```bash
+   git checkout developer
+   git pull origin developer
+   git merge feature/nueva-funcionalidad
+   ```
+
+9. **Eliminar la Rama Temporal:**
+   - Después de fusionar, puedes eliminar la rama `feature/nueva-funcionalidad` tanto localmente como en el repositorio remoto.
+   
+   ```bash
+   git branch -d feature/nueva-funcionalidad
+   git push origin --delete feature/nueva-funcionalidad
+   ```
 
 **¡Gracias por contribuir a SwaplyAr!** 😊
 
+---
+
 ## 🚀 Despliegue
 
-Este proyecto está configurado para desplegarse en plataformas como Vercel o Netlify. Asegúrate de que las variables de entorno estén configuradas en la plataforma de despliegue.
+progreso...
 
 ---
 
