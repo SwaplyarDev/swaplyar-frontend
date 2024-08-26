@@ -166,6 +166,7 @@ swaplyar-frontend/
    ```bash
    npm run lint
    npm run format
+   npm run build --clean
    ```
 
 4. **Confirma tus cambios y empuja la rama a tu repositorio:**
