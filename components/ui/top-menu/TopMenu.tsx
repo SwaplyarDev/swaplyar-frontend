@@ -57,7 +57,7 @@ export function TopMenu() {
       }`}
     >
       <div
-        className={`flex w-full flex-row-reverse justify-between gap-4 lg:flex-row`}
+        className={`flex w-full max-w-screen-2xl m-auto flex-row-reverse justify-between gap-4 lg:flex-row`}
       >
         <Link
           key="Iniciar sesión"
