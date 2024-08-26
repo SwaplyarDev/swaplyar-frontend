@@ -88,7 +88,7 @@ export const RequestRegisterForm = () => {
     } = data;
   
     // Combina el callingCode con el whatsappNumber
-    const fullWhatsappNumber = `${selectedCountry?.callingCode}${whatsappNumber}`;
+    const fullWhatsappNumber = `${selectedCountry?.callingCode} ${whatsappNumber}`;
   
     // Crea el FormData y añade los campos
     const formData = new FormData();
@@ -137,7 +137,7 @@ export const RequestRegisterForm = () => {
     <div className="flex min-h-screen flex-col items-center justify-center bg-transparent">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex min-h-screen w-full max-w-lg flex-col justify-center rounded-lg bg-white p-8 shadow-md dark:bg-gray-800"
+        className="flex min-h-screen w-full max-w-xs xs:max-w-lg flex-col justify-center rounded-lg bg-white p-8 shadow-md dark:bg-gray-800"
       >
         <h2 className="mb-5 text-center text-2xl font-bold text-gray-900 dark:text-white">
           Formulario de Solicitud de Transferencia Bancaria
