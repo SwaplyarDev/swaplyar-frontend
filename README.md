@@ -22,13 +22,23 @@
 - **React Hook Form 7.52.1:** Manejador de formularios eficiente y flexible para React.
 - **Material UI (MUI) 5.16.5:** Conjunto de componentes de interfaz de usuario.
 - **NextAuth.js 5.0.0-beta.20**: Autenticación para aplicaciones Next.js.
-- **Flowbite React 0.10.1**: Biblioteca de componentes de interfaz de usuario basada en Tailwind CSS
-- **@emotion/react & @emotion/styled 11.13.0:** Para estilos CSS-in-JS.
-- **react-icons 5.2.1:** Colección de iconos populares.
+- **Flowbite React 0.10.1**: Biblioteca de componentes de interfaz de usuario basada en Tailwind CSS.
 - **sharp 0.33.4:** Biblioteca para procesamiento de imágenes.
 - **use-debounce 10.0.0:** Hook para implementar debounce en eventos.
-- **@fortawesome/\*:** Varias bibliotecas para el uso de iconos de Font Awesome.
-- **@heroicons/react 2.1.4:** Conjunto de iconos SVG.
+- **zustand 4.5.5:** Manejo de estado global.
+
+#### ***Librerías de iconos***
+
+- **@emotion/react & @emotion/styled 11.13.0:**
+- **react-icons 5.2.1:**
+- **Font Awesome**:
+  - **@fortawesome/fontawesome-svg-core**
+  - **@fortawesome/free-brands-svg-icons**
+  - **@fortawesome/free-regular-svg-icons**
+  - **@fortawesome/free-solid-svg-icons**
+  - **@fortawesome/react-fontawesome**
+- **Heroicons**:
+  - **@heroicons/react 2.1.4:** 
 
 ### Desarrollo
 
@@ -95,8 +105,7 @@ swaplyar-frontend/
 
 - `/`: Página de inicio.
 - `/_not-found`: Página de error 404.
-- `/auth/login`: Página de inicio de sesión.
-- `/auth/new-account`: Página de registro de nueva cuenta.
+- `/auth/login-register`: Página de inicio de sesión de usuario o para registrar una nueva cuenta.
 - `/info/about-us`: Página "Quienes Somos".
 - `/info/help-center`: Página de centro de ayuda.
 - `/info/how-to-use`: Página "Cómo usar Swaplyar".
@@ -142,9 +151,13 @@ swaplyar-frontend/
 ## 🤖 Scripts Disponibles
 
 - `npm run lint`: Ejecuta ESLint para analizar el código.
+
 - `npm run format`: Formatea el código utilizando Prettier.
+
 - `npm run dev`: Inicia el entorno de desarrollo.
-- `npm run build`: Compila la aplicación para producción.
+
+- `npm run build --clean`: Compila la aplicación para producción y se limpien los archivos generados previamente.
+
 - `npm run start`: Inicia el servidor de la aplicación compilada.
 
 ---
@@ -153,6 +166,30 @@ swaplyar-frontend/
 
 1. **Crea una nueva rama para tu funcionalidad o corrección desde la rama principal `developer`:**
 
+<<<<<<< Updated upstream
+=======
+1. **Haz un fork del repositorio**: Crea tu propia copia del repositorio para poder trabajar.
+
+2. **Crea una nueva rama para realizar tu tarea**.
+   ```bash
+   git checkout -b feature/nueva-funcionalidad
+   ```
+
+3. **Realiza tus cambios**: Asegúrate de seguir las convenciones de código del proyecto
+
+4. **Ejecuta los siguientes comandos para formatear tu código con Prettier y verificar que no haya errores en el código.**
+   ```bash
+   npm run format
+   npm run lint
+   ```
+
+5. **Haz el commit de tus cambios:**
+   ```bash
+   git commit -m 'Agregar nueva funcionalidad'
+   ```
+
+6. **Muy importante, actualiza tu rama con los últimos cambios de la rama principal:**
+>>>>>>> Stashed changes
    ```bash
    git checkout developer
    git pull origin developer
@@ -216,6 +253,22 @@ swaplyar-frontend/
    git branch -d feature/nueva-funcionalidad
    git push origin --delete feature/nueva-funcionalidad
    ```
+<<<<<<< Updated upstream
+=======
+
+7. **Asegúrate de que la compilación se realice correctamente:**
+   ```bash
+   npm run build --clean
+   ```
+
+8. **Sube tus cambios al repositorio remoto:**
+   ```bash
+   git push origin feature/nueva-funcionalidad
+   ```
+
+9. **Por ultimo envía un pull request:** Ve al repositorio original en GitHub y crea un pull request describiendo tus cambios.
+
+>>>>>>> Stashed changes
 
 **¡Gracias por contribuir a SwaplyAr!** 😊
 
