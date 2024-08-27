@@ -63,7 +63,7 @@ export function TopMenu() {
           key="Iniciar sesión"
           href="/auth/login-register"
           onClick={() => setView('login')}
-          className={`relative hidden h-[48px] items-center gap-2 rounded-md p-3 text-blue-700 md:flex lg:hidden ${pathname === '/auth/login-register' ? 'underline decoration-blue-700 dark:decoration-white' : ''} m-1 transition duration-300 ease-in-out hover:drop-shadow-light dark:text-gray-300 dark:hover:drop-shadow-dark`}
+          className={`relative hidden h-[48px] items-center gap-2 rounded-md p-3 md:flex lg:hidden ${pathname === '/auth/login-register' ? 'underline decoration-lightText dark:decoration-darkText' : ''} m-1 transition duration-300 ease-in-out hover:drop-shadow-light dark:hover:drop-shadow-dark`}
         >
           <p className="font-bold">Iniciar sesión</p>
         </Link>

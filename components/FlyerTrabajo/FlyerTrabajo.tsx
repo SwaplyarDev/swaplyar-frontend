@@ -19,7 +19,7 @@ export default function FlyerTrabajo({
       style={{ backgroundImage }}
     >
       <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
-        <div className="p-6 text-center text-white">
+        <div className="p-6 text-center text-darkText">
           <h1 className="text-2xl font-semibold">{children}</h1>
         </div>
       </div>

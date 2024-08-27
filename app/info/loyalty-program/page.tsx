@@ -25,13 +25,13 @@ function LoyaltyProgram() {
       </FlyerTrabajo>
 
       <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold text-black dark:text-white">
+        <h1 className="mb-4 text-4xl font-bold">
           SwaplyAr Plus Rewards™ premia tu fidelidad
         </h1>
         <div className="mt-4">
           <button
             id="submit-25456"
-            className="rounded bg-blue-600 px-4 py-2 text-white"
+            className="rounded bg-blue-600 text-darkText px-4 py-2"
             onClick={() => handleChange()}
           >
             ¡Únete ya!
@@ -39,13 +39,13 @@ function LoyaltyProgram() {
         </div>
       </div>
 
-      <div className="bg-gray-100 py-10 dark:bg-black">
+      <div className=" py-10 ">
         <div className="text-center">
-          <h2 className="mb-4 text-2xl font-bold text-black dark:text-white">
+          <h2 className="mb-4 text-2xl font-bold">
             Obtén beneficios exclusivos cada vez que realices intercambio de
             divisa con SwaplyAr Plus Rewards.
           </h2>
-          <p className="text-black dark:text-white">
+          <p className="">
             ¿No estás inscrito todavía?&nbsp;
             <a className="text-blue-800" href="/">
               Crea
@@ -60,7 +60,7 @@ function LoyaltyProgram() {
         </div>
       </div>
 
-      <div className="flex flex-wrap justify-center bg-gray-100 py-10 dark:bg-black">
+      <div className="flex flex-wrap justify-center py-10">
         <RewardCard
           imageSrc={Rewards1}
           imageAlt="paso 1 de como cambiar tu dinero en SwaplyAr"
@@ -88,7 +88,7 @@ function LoyaltyProgram() {
       </div>
 
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
-        <div className="text-black dark:text-white">
+        <div>
           <p>
             Para conocer los Términos y Condiciones del programa MoneyGram Plus
             Rewards, haz

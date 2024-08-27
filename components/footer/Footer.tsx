@@ -24,7 +24,7 @@ function FooterLink({ href, children, view }: FooterLinkProps) {
     <Link
       href={href}
       {...(view ? { onClick: () => setView(view) } : {})}
-      className="rs-link text-sm text-blue-500 transition duration-200 ease-in-out hover:text-blue-700"
+      className="rs-link text-sm transition duration-200 ease-in-out hover:text-blue-700"
     >
       {children}
     </Link>
@@ -36,7 +36,7 @@ export default function Footer() {
     <footer className="rs-wrapper-v4 mx-auto max-w-screen-2xl px-4 py-8">
       <div className="one-info-footer flex flex-col gap-4 px-4 sm:flex-row sm:justify-between sm:gap-0 w-full sm:items-start items-center">
         <div className="mb-4 flex flex-col items-center sm:items-start text-left sm:mb-0 sm:w-1/3">
-          <h4 className="mb-2 text-lg text-gray-900 dark:text-white">
+          <h4 className="mb-2 text-lg font-bold">
             Regístrate y disfruta de beneficios
           </h4>
           <FooterLink href="/auth/login-register" view="login">
@@ -50,20 +50,20 @@ export default function Footer() {
           </FooterLink>
         </div>
         <div className="mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-center sm:text-center">
-          <h4 className="mb-2 text-lg text-gray-900 dark:text-white">
+          <h4 className="mb-2 text-lg font-bold">
             Normativa
           </h4>
           <FooterLink href="/info/warranty">Garantía</FooterLink>
           <FooterLink href="/info/terms-and-conditions">
             Términos y condiciones
           </FooterLink>
-          <FooterLink href="/info/privacy-policy">
+          {/* <FooterLink href="/info/privacy-policy">
             Política de privacidad
-          </FooterLink>
+          </FooterLink> */}
         </div>
 
         <div className="flex flex-col items-center text-left sm:w-1/3 sm:items-end sm:text-right">
-          <h4 className="mb-2 text-lg text-gray-900 dark:text-white">
+          <h4 className="mb-2 text-lg font-bold">
             Atención al Cliente
           </h4>
           <FooterLink href="/info/help-center">Centro de Ayuda</FooterLink>

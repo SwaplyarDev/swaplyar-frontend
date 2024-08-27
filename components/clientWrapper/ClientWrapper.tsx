@@ -28,7 +28,7 @@ const ClientWrapper: React.FC<ClientWrapperProps> = ({
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-black">
+      <div className="flex min-h-screen items-center justify-center">
         <SkeletonManager view={view} />
       </div>
     );
