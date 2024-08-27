@@ -37,11 +37,11 @@ const config: Config = {
         'lightText':'#252526',
       },
       dropShadow: {
-        light: '4px 4px 10px rgba(29, 78, 216, 0.9)',
+        light: '4px 4px 10px rgba(0, 0, 0, 0.9)',
         dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',
       },
       textShadow: {
-        light: '4px 4px 10px rgba(29, 78, 216, 0.9)',
+        light: '4px 4px 10px rgba(0, 0, 0, 0.9)',
         dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',
       },
     },
