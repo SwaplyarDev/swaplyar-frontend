@@ -37,7 +37,7 @@ export default function NavLinks() {
           key={link.name}
           href={link.href}
           onClick={() => handleLogView(link.name)}
-          className={`relative flex h-[48px] items-center gap-2 rounded-md p-3 ${currentView === link.name ? 'underline decoration-lightText dark:decoration-darkText' : ''} m-1 transition duration-300 ease-in-out hover:drop-shadow-light dark:text-gray-300 dark:hover:drop-shadow-dark`}
+          className={`relative flex h-[48px] items-center gap-2 rounded-md p-3 ${currentView === link.name ? 'underline decoration-lightText dark:decoration-darkText' : ''} m-1 transition duration-300 ease-in-out hover:drop-shadow-light dark:hover:drop-shadow-dark`}
         >
           <p
             className={`hidden md:block ${link.name === 'Login' || link.name === 'Register' ? 'font-bold' : ''}`}
