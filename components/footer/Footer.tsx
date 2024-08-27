@@ -57,9 +57,9 @@ export default function Footer() {
           <FooterLink href="/info/terms-and-conditions">
             Términos y condiciones
           </FooterLink>
-          <FooterLink href="/info/privacy-policy">
+          {/* <FooterLink href="/info/privacy-policy">
             Política de privacidad
-          </FooterLink>
+          </FooterLink> */}
         </div>
 
         <div className="flex flex-col items-center text-left sm:w-1/3 sm:items-end sm:text-right">
