@@ -93,17 +93,17 @@ body {
 /* Skeleton */
 .loaderRegister {
   /* Igual al tamaño máximo del formulario */
-  height: 486px;
+  height: 652px;
 }
 
 .loaderLogin {
-  height: 432px;
+  height: 480px;
 }
 
 .loader {
   position: relative;
   width: 100%;
-  max-width: 384px; /* Igual al tamaño máximo del formulario */
+  max-width: 512px; /* Igual al tamaño máximo del formulario */
   padding: 15px;
   background: #ffffff; /* Fondo blanco similar al del formulario */
   border-radius: 0.375rem; /* Bordes redondeados del formulario */

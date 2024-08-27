@@ -79,7 +79,7 @@ export const RegisterForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="relative flex w-full max-w-lg flex-col rounded bg-white p-8 shadow-md dark:bg-gray-800"
       >
-        <h2 className="mb-5 text-center text-2xl font-bold text-gray-900 dark:text-white">
+        <h2 className="mb-5 text-center text-2xl font-bold">
           Crear Cuenta
         </h2>
 
@@ -90,7 +90,7 @@ export const RegisterForm = () => {
               className={clsx(
                 errors.firstName
                   ? 'text-red-500'
-                  : 'text-gray-900 dark:text-gray-300',
+                  : 'text-lightText dark:text-darkText',
               )}
             >
               Nombre
@@ -98,7 +98,7 @@ export const RegisterForm = () => {
             <input
               id="firstName"
               className={clsx(
-                'max-w-full rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
+                'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-gray-700',
                 errors.firstName
                   ? 'mb-0 border-red-500'
                   : 'mb-5 hover:border-blue-600',
@@ -121,7 +121,7 @@ export const RegisterForm = () => {
               className={clsx(
                 errors.lastName
                   ? 'text-red-500'
-                  : 'text-gray-900 dark:text-gray-300',
+                  : 'text-lightText dark:text-darkText',
               )}
             >
               Apellido
@@ -129,7 +129,7 @@ export const RegisterForm = () => {
             <input
               id="lastName"
               className={clsx(
-                'max-w-full rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
+                'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-gray-700',
                 errors.lastName
                   ? 'mb-0 border-red-500'
                   : 'mb-5 hover:border-blue-600',
@@ -150,7 +150,7 @@ export const RegisterForm = () => {
         <label
           htmlFor="email"
           className={clsx(
-            errors.email ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
+            errors.email ? 'text-red-500' : 'text-lightText dark:text-darkText',
           )}
         >
           Correo electrónico
@@ -158,7 +158,7 @@ export const RegisterForm = () => {
         <input
           id="email"
           className={clsx(
-            'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
+            'rounded border bg-gray-200 px-5 py-2 dark:bg-gray-700',
             errors.email ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
           )}
           type="email"
@@ -179,7 +179,7 @@ export const RegisterForm = () => {
           className={clsx(
             errors.password
               ? 'text-red-500'
-              : 'text-gray-900 dark:text-gray-300',
+              : 'text-lightText dark:text-darkText',
           )}
         >
           Contraseña
@@ -188,7 +188,7 @@ export const RegisterForm = () => {
           <input
             id="password"
             className={clsx(
-              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 text-gray-900 dark:bg-gray-700 dark:text-white',
+              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 dark:bg-gray-700',
               errors.password
                 ? 'mb-0 border-red-500'
                 : 'mb-5 hover:border-blue-600',
@@ -225,7 +225,7 @@ export const RegisterForm = () => {
           className={clsx(
             errors.confirmPassword
               ? 'text-red-500'
-              : 'text-gray-900 dark:text-gray-300',
+              : 'text-lightText dark:text-darkText',
           )}
         >
           Repetir contraseña
@@ -234,7 +234,7 @@ export const RegisterForm = () => {
           <input
             id="confirmPassword"
             className={clsx(
-              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 text-gray-900 dark:bg-gray-700 dark:text-white',
+              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 dark:bg-gray-700',
               errors.confirmPassword
                 ? 'mb-0 border-red-500'
                 : 'mb-5 hover:border-blue-600',
@@ -272,7 +272,7 @@ export const RegisterForm = () => {
           />
           <label
             htmlFor="rememberMe"
-            className="ml-2 text-gray-900 dark:text-gray-300"
+            className="ml-2"
           >
             Recordar esta cuenta
           </label>
