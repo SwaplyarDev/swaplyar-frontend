@@ -15,7 +15,7 @@ export default function FlyerTrabajo({
 
   return (
     <div
-      className={`relative -mt-10 mb-7 h-60 w-full bg-cover bg-center bg-no-repeat md:h-80`}
+      className={`relative -mt-10 mb-7 h-60 w-full bg-cover bg-center bg-no-repeat`}
       style={{ backgroundImage }}
     >
       <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
