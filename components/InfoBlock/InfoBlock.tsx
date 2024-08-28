@@ -27,7 +27,7 @@ export default function InfoBlock({
           alt={imageAlt}
           width={750}
           height={750}
-          className="rounded-lg shadow-md"
+          className="rounded-lg"
         />
       </div>
       <div className="info-content-container w-full md:w-1/2">
@@ -39,7 +39,7 @@ export default function InfoBlock({
             contentNode
           ) : (
             <p
-              className="text-gray-700"
+              className=" font-light dark:font-extralight"
               dangerouslySetInnerHTML={{ __html: content || '' }}
             ></p>
           )}

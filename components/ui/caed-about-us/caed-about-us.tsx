@@ -17,7 +17,7 @@ interface CaedAboutUsProps {
 
 const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
   return (
-    <div className="cards-container flex h-full items-center justify-center">
+    <div className="cards-container flex flex-wrap h-full items-center justify-center">
       {cardsData.map((card, index) => (
         <div key={index} className="card relative m-4 h-80 w-60">
           <div className="card-inner transform-style preserve-3d h-full w-full transition-transform duration-700">

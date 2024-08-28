@@ -50,25 +50,28 @@ const cardsData = [
 
 const AboutUs = () => {
   return (
-    <div className="py-10">
+    <main className="py-10 w-full text-pretty">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-      <div>
-        <div className="need-help delante need-help-container rs-link"></div>
-        <div id="animated-blurred-circles-container"></div>
-        <div className="rs-wrapper-v4">
-          <div className="container-text">
-            <h1>
+      
+      <div className=" w-[80%] max-w-screen-2xl mx-auto flex flex-col justify-center gap-y-12">
+
+        {/* <div className="need-help delante need-help-container rs-link"></div> */}
+        {/* <div id="animated-blurred-circles-container"></div> */}
+        <section className="rs-wrapper-v4">
+          <article className="container-text pb-5">
+            <h1 className='text-2xl lg:text-4xl text-center text-balance font-extrabold'>
               En SwaplyAr, garantizamos un intercambio seguro y confiable de tu
               dinero de PayPal. Estamos comprometidos con tu seguridad y
               satisfacción.
             </h1>
-          </div>
-        </div>
-        <div className="rs-wrapper-v4">
-          <h2>Nuestra misión y valores</h2>
-          <h5>
+          </article>
+        </section>
+
+        <article className="rs-wrapper-v4">
+          <h2 className=' font-bold text-lg pb-2'>Nuestra misión y valores</h2>
+          <h5 className=' text-pretty'>
             SwaplyAr nació de una simple necesidad, intercambiar saldo y que
             cada persona que lo utiliza reciba lo pactado, acompañándolo en todo
             el proceso. Pronto su crecimiento fue exponencial debido a la
@@ -78,42 +81,47 @@ const AboutUs = () => {
             pilares fundamentales. Ayudamos a que cada persona consiga, lo que
             está buscando de una manera fácil y protegida.
           </h5>
-        </div>
+        </article>
+
         <CaedAboutUs cardsData={cardsData} />
-        <div className="default-space-between-components">
-          <div className="rs-wrapper-v4 col1 grid">
-            <div className="info-content-container flex flex-col items-center md:flex-row">
-              <div className="col-left flex flex-col items-center rounded-lg p-4 shadow-lg md:items-start">
+
+        <section className="text-center text-balance pb-5">
+          {/* <span className="rs-wrapper-v4 col1 grid"> */}
+            <span className="info-content-container flex flex-col items-center justify-center md:flex-row">
+              <section className="col-left flex flex-col items-center rounded-lg ">
                 <Image
                   src={OaSuarez}
                   alt="Chief Executive Officer (CEO)"
                   width={350}
                   height={300}
                 />
-                <div className="text-team mt-4 ">
+                <article className="text-team  mt-4 ">
                   <h4>Oa Johan Javier Suarez Merchan</h4>
                   <h5>Founder &amp; Chief Executive Officer (CEO)</h5>
-                </div>
-              </div>
-              <div className="col-right mt-4 rounded-lg p-4 shadow-lg md:ml-8 md:mt-0">
-                <h2>
+                </article>
+              </section>
+
+                <h2 className="col-right text-lg font-semibold rounded-lg w-[50%]">
                   &quot;Buscamos solucionar los problemas de las personas
                   implementando las &uacute;ltimas tecnolog&iacute;as y sistemas
                   de pago.&quot;
                 </h2>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="mt-10">
+
+            </span>
+          {/* </span> */}
+        </section>
+
+      </div>
+        <section className="mt-10">
           <FlyerTrabajo imageSrc={FlyerGif}>
             &iquest;Nuevo en SwaplyAr? Hac&eacute; clic en &quot;C&oacute;mo
             usar SwaplyAr&quot; y aprend&eacute; a operar f&aacute;cilmente.
             &iexcl;Empez&aacute; ahora!
           </FlyerTrabajo>
-        </div>
-      </div>
-    </div>
+        </section>
+
+
+    </main>
   );
 };
 
