@@ -1,15 +1,15 @@
-// /SystemSelect
-
 'use client';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { useSystemStore } from '@/store/useSystemStore';
 
 interface System {
   id: string;
   name: string;
   logo: string;
+  isDisabled: boolean;
 }
 
 interface SystemSelectProps {
@@ -32,6 +32,14 @@ export default function SystemSelect({
   const [showOptions, setShowOptions] = useState(false);
   const [darkMode, setDarkMode] = useState<boolean>(false);
 
+  // Zustand Store
+  const {
+    selectedSendingSystem,
+    selectedReceivingSystem,
+    setSelectedSendingSystem,
+    setSelectedReceivingSystem,
+  } = useSystemStore();
+
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     setDarkMode(mediaQuery.matches);
@@ -51,14 +59,28 @@ export default function SystemSelect({
   }, [darkMode]);
 
   const handleOptionClick = (system: System) => {
+    if (isSending) {
+      setSelectedSendingSystem(system);
+    } else {
+      setSelectedReceivingSystem(system);
+    }
     onSystemSelect(system);
     setShowOptions(false);
   };
 
+  const updatedSystems = systems.map((system) => ({
+    ...system,
+    isDisabled:
+      system.id === selectedSendingSystem?.id ||
+      system.id === selectedReceivingSystem?.id,
+  }));
+
   return (
     <div className="relative mt-4">
       <button
-        className={`system-input-select flex w-full items-center justify-between rounded border p-2 ${isSending ? 'animation-system-send' : 'animation-system-receive'} ${darkMode ? 'dark' : ''}`}
+        className={`system-input-select flex w-full items-center justify-between rounded border p-2 ${
+          isSending ? 'animation-system-send' : 'animation-system-receive'
+        } ${darkMode ? 'dark' : ''}`}
         onClick={() => setShowOptions(!showOptions)}
       >
         {selectedSystem ? (
@@ -69,22 +91,26 @@ export default function SystemSelect({
               width={32}
               height={32}
             />
-            <span>{selectedSystem.name}</span>
+            <span className="w-full px-1 text-start">
+              {selectedSystem.name}
+            </span>
           </>
         ) : (
           <span>
             Selecciona un sistema {isSending ? 'de envío' : 'de recepción'}
           </span>
         )}
-        <FontAwesomeIcon icon={faChevronDown} />
+        <FontAwesomeIcon icon={faChevronDown} width={32} height={16} />
       </button>
       {showOptions && (
         <ul className="absolute z-10 w-full rounded border bg-white shadow-md dark:bg-gray-800">
-          {systems.map((system) => (
+          {updatedSystems.map((system) => (
             <li
               key={system.id}
-              onClick={() => handleOptionClick(system)}
-              className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+              onClick={() => !system.isDisabled && handleOptionClick(system)}
+              className={`flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                system.isDisabled ? 'cursor-not-allowed opacity-50' : ''
+              }`}
             >
               <Image
                 src={system.logo}
@@ -92,7 +118,7 @@ export default function SystemSelect({
                 width={32}
                 height={32}
               />
-              <span>{system.name}</span>
+              <span className="px-1">{system.name}</span>
             </li>
           ))}
         </ul>

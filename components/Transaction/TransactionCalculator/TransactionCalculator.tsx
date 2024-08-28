@@ -8,8 +8,8 @@ import SystemSelect from '../SystemSelect/SystemSelect';
 import SystemInfo from '../SystemInfo/SystemInfo';
 import InvertSystems from '../InvertSystems/InvertSystems';
 import { ExchangeRate, System } from '@/types/data';
+import { useSystemStore } from '@/store/useSystemStore';
 
-// Extender el objeto Window para incluir paypal
 declare global {
   interface Window {
     paypal: any;
@@ -17,11 +17,13 @@ declare global {
 }
 
 export default function TransactionCalculator() {
+  const {
+    selectedSendingSystem,
+    selectedReceivingSystem,
+    setSelectedSendingSystem,
+    setSelectedReceivingSystem,
+  } = useSystemStore();
   const [exchangeRate, setExchangeRate] = useState<number>(0);
-  const [selectedSendingSystem, setSelectedSendingSystem] =
-    useState<System | null>(null);
-  const [selectedReceivingSystem, setSelectedReceivingSystem] =
-    useState<System | null>(null);
   const [showSendingSystemOptions, setShowSendingSystemOptions] =
     useState(false);
   const [showReceivingSystemOptions, setShowReceivingSystemOptions] =
@@ -54,7 +56,7 @@ export default function TransactionCalculator() {
   const handleSendAmountChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setSendAmount(parseFloat(event.target.value) || 0); // Asegura que sea un número válido
+    setSendAmount(parseFloat(event.target.value) || 0);
   };
 
   const handleReceiveAmountChange = (
@@ -94,20 +96,42 @@ export default function TransactionCalculator() {
 
   // Datos de sistemas de pago
   const systems: System[] = [
-    { id: 'paypal', name: 'PayPal', logo: '/images/paypal.big.png' },
+    {
+      id: 'paypal',
+      name: 'PayPal',
+      logo: '/images/paypal.big.png',
+      isDisabled: false,
+    },
     {
       id: 'payoneer-usd',
       name: 'Payoneer USD',
       logo: '/images/payoneer.usd.big.png',
+      isDisabled: false,
     },
     {
       id: 'payoneer-eur',
       name: 'Payoneer EUR',
       logo: '/images/payoneer.eur.big.png',
+      isDisabled: false,
     },
-    { id: 'banco', name: 'Banco', logo: '/images/banco.medium.webp' },
-    { id: 'wise-usd', name: 'Wise USD', logo: '/images/wise.usd.big.png' },
-    { id: 'wise-eur', name: 'Wise EUR', logo: '/images/wise.eur.big.png' },
+    {
+      id: 'banco',
+      name: 'Banco',
+      logo: '/images/banco.medium.webp',
+      isDisabled: false,
+    },
+    {
+      id: 'wise-usd',
+      name: 'Wise USD',
+      logo: '/images/wise.usd.big.png',
+      isDisabled: false,
+    },
+    {
+      id: 'wise-eur',
+      name: 'Wise EUR',
+      logo: '/images/wise.eur.big.png',
+      isDisabled: false,
+    },
   ];
 
   const handleInvertSystemsClick = () => {
@@ -217,13 +241,13 @@ export default function TransactionCalculator() {
   };
 
   return (
-    <div className={`not-design-system flex flex-col items-center w-full`}>
-      <div className="w-full mat-card calculator-container flex flex-col items-center rounded-md bg-white p-8 shadow-md dark:bg-gray-800 dark:text-white">
+    <div className={`not-design-system flex w-full flex-col items-center`}>
+      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-md bg-white p-8 shadow-md dark:bg-gray-800 dark:text-white">
         {error && (
           <div className="error-message mb-4 text-red-500">{error}</div>
         )}
-        
-        <div className="space-x-4">
+
+        <div className="w-full max-w-96">
           <SystemSelect
             systems={systems}
             selectedSystem={selectedSendingSystem}
@@ -249,23 +273,25 @@ export default function TransactionCalculator() {
         <SystemInfo pointBorder="border" linePosition="up">
           <p>Información del sistema de recepción</p>
         </SystemInfo>
-        <SystemSelect
-          systems={systems}
-          selectedSystem={selectedReceivingSystem}
-          onSystemSelect={(system) => handleSystemSelection(system, false)}
-          label="Recibes ARS"
-          inputId="arsInputUniqueID"
-          isSending={false}
-        />
-        <div className="input-box mt-4">
-          <input
-            type="number"
-            className="input-field w-full rounded border bg-white p-2 dark:border-gray-600 dark:bg-gray-700"
-            placeholder="Monto a recibir (ARS)"
-            id="arsInputUniqueID"
-            value={receiveAmount.toFixed(2)}
-            onChange={handleReceiveAmountChange}
+        <div className="w-full max-w-96">
+          <SystemSelect
+            systems={systems}
+            selectedSystem={selectedReceivingSystem}
+            onSystemSelect={(system) => handleSystemSelection(system, false)}
+            label="Recibes ARS"
+            inputId="arsInputUniqueID"
+            isSending={false}
           />
+          <div className="input-box mt-4">
+            <input
+              type="number"
+              className="input-field w-full rounded border bg-white p-2 dark:border-gray-600 dark:bg-gray-700"
+              placeholder="Monto a recibir (ARS)"
+              id="arsInputUniqueID"
+              value={receiveAmount.toFixed(2)}
+              onChange={handleReceiveAmountChange}
+            />
+          </div>
         </div>
         <div id="goToPayPalButton" className="mt-4"></div>
       </div>
