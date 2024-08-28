@@ -217,8 +217,8 @@ export default function TransactionCalculator() {
   };
 
   return (
-    <div className={`not-design-system mt-8 flex flex-col items-center`}>
-      <div className="mat-card calculator-container flex flex-col items-center rounded-md bg-white p-8 shadow-md dark:bg-gray-800 dark:text-white">
+    <div className={`not-design-system flex flex-col items-center w-full`}>
+      <div className="w-full mat-card calculator-container flex flex-col items-center rounded-md bg-white p-8 shadow-md dark:bg-gray-800 dark:text-white">
         {error && (
           <div className="error-message mb-4 text-red-500">{error}</div>
         )}

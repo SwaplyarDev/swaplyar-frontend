@@ -2,12 +2,12 @@ import TransactionCalculator from '@/components/Transaction/TransactionCalculato
 
 const ConversionInstructions = () => {
   return (
-    <div className="flex h-full w-full items-center justify-center space-x-4">
+    <div className="grid h-full w-full grid-cols-2 gap-6 justify-center justify-items-center items-center">
       <div className="conversion-instructions max-w-md">
         <h2 className="mb-4 text-2xl font-semibold">
           Estamos trabajando en las funciones de inicio de sesión y registro.
         </h2>
-        <ol className="list list-decimal">
+        <ol className="list list-decimal p-revert">
           <li className="step mb-4">
             <h3 className="mb-0 text-xl font-bold">¡Cotizá y solicitá!</h3>
             <p>
