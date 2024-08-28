@@ -14,7 +14,7 @@ import Link from 'next/link';
 
 const HelpCenterPage = () => {
   return (
-    <div className="bg-white py-9 text-black dark:bg-gray-900 dark:text-white">
+    <div className="py-9">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>

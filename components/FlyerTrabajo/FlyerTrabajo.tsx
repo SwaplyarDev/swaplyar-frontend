@@ -15,11 +15,11 @@ export default function FlyerTrabajo({
 
   return (
     <div
-      className={`relative -mt-10 mb-7 h-60 w-full bg-cover bg-center bg-no-repeat md:h-80`}
+      className={`relative -mt-10 mb-7 h-60 w-full bg-cover bg-center bg-no-repeat`}
       style={{ backgroundImage }}
     >
       <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
-        <div className="p-6 text-center text-white">
+        <div className="p-6 text-center text-darkText">
           <h1 className="text-2xl font-semibold">{children}</h1>
         </div>
       </div>

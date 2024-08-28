@@ -1,10 +1,11 @@
+// /app/layout.tsx
+
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
 import Footer from '@/components/footer/Footer';
 import { TopMenu } from '@/components/ui/top-menu/TopMenu';
-
-const inter = Inter({ subsets: ['latin'] });
+import ThemeProvider from '../components/ui/theme-Provider/themeProvider';
+import { inter } from '@/config/fonts/fonts';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'SwaplyAr | Pasar dólares de PayPal a pesos argentinos',
@@ -18,10 +19,28 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <TopMenu />
-        {children}
-        <Footer />
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const theme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const isDark = theme === 'dark' || (!theme && systemPrefersDark);
+                isDark ? document.documentElement.classList.add('dark') : document.documentElement.classList.remove('dark');
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body
+        className={`${inter.className} bg-darkText text-lightText dark:bg-lightText dark:text-darkText`}
+      >
+        <ThemeProvider>
+          <TopMenu />
+          {children}
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -10,17 +10,21 @@ import {
   faFacebook,
   faWhatsapp,
 } from '@fortawesome/free-brands-svg-icons';
+import useStore from '@/store/authViewStore';
 
 interface FooterLinkProps {
   href: string;
   children: React.ReactNode;
+  view?: 'login' | 'register';
 }
 
-function FooterLink({ href, children }: FooterLinkProps) {
+function FooterLink({ href, children, view }: FooterLinkProps) {
+  const { setView } = useStore();
   return (
     <Link
       href={href}
-      className="rs-link text-sm text-blue-500 transition duration-200 ease-in-out hover:text-blue-700"
+      {...(view ? { onClick: () => setView(view) } : {})}
+      className="rs-link text-sm transition duration-200 ease-in-out hover:text-blue-700"
     >
       {children}
     </Link>
@@ -29,33 +33,37 @@ function FooterLink({ href, children }: FooterLinkProps) {
 
 export default function Footer() {
   return (
-    <footer className="rs-wrapper-v4 mx-auto mb-12 w-full bg-white px-4 py-8 dark:bg-gray-900">
-      <div className="one-info-footer flex flex-col gap-4 px-4 sm:w-4/5 sm:flex-row sm:justify-between sm:gap-0 md:mx-auto">
-        <div className="mb-4 flex flex-col items-start text-left sm:mb-0 sm:w-1/3">
-          <h4 className="mb-2 text-lg text-gray-900 dark:text-white">
+    <footer className="rs-wrapper-v4 mx-auto max-w-screen-2xl px-4 py-8">
+      <div className="one-info-footer flex flex-col gap-4 px-4 sm:flex-row sm:justify-between sm:gap-0 w-full sm:items-start items-center">
+        <div className="mb-4 flex flex-col items-center sm:items-start text-left sm:mb-0 sm:w-1/3">
+          <h4 className="mb-2 text-lg font-bold">
             Regístrate y disfruta de beneficios
           </h4>
-          <FooterLink href="/auth/login">Iniciar Sesión</FooterLink>
-          <FooterLink href="/auth/new-account">Registrarse</FooterLink>
+          <FooterLink href="/auth/login-register" view="login">
+            Iniciar Sesión
+          </FooterLink>
+          <FooterLink href="/auth/login-register" view="register">
+            Registrarse
+          </FooterLink>
           <FooterLink href="/info/loyalty-program">
             Programa de Fidelización
           </FooterLink>
         </div>
-        <div className="mb-4 flex flex-col items-start text-left sm:mb-0 sm:w-1/3 sm:items-center sm:text-center">
-          <h4 className="mb-2 text-lg text-gray-900 dark:text-white">
+        <div className="mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-center sm:text-center">
+          <h4 className="mb-2 text-lg font-bold">
             Normativa
           </h4>
           <FooterLink href="/info/warranty">Garantía</FooterLink>
           <FooterLink href="/info/terms-and-conditions">
             Términos y condiciones
           </FooterLink>
-          <FooterLink href="/info/privacy-policy">
+          {/* <FooterLink href="/info/privacy-policy">
             Política de privacidad
-          </FooterLink>
+          </FooterLink> */}
         </div>
 
-        <div className="flex flex-col items-start text-left sm:w-1/3 sm:items-end sm:text-right">
-          <h4 className="mb-2 text-lg text-gray-900 dark:text-white">
+        <div className="flex flex-col items-center text-left sm:w-1/3 sm:items-end sm:text-right">
+          <h4 className="mb-2 text-lg font-bold">
             Atención al Cliente
           </h4>
           <FooterLink href="/info/help-center">Centro de Ayuda</FooterLink>
@@ -66,7 +74,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="two-info-footer mt-5 flex flex-col items-center justify-between px-4 pt-4 sm:mx-auto sm:w-9/12 sm:flex-row">
+      <div className="two-info-footer mt-5 flex flex-col items-center justify-between px-4 pt-4 sm:flex-row">
         <div className="container-footer-icon-social mb-4 flex justify-center space-x-4 sm:mb-0 sm:w-1/3 sm:justify-start">
           <a
             href="https://www.linkedin.com/company/swaplyar/"
@@ -78,7 +86,7 @@ export default function Footer() {
           >
             <FontAwesomeIcon
               icon={faLinkedin}
-              className="text-2xl text-[#012D8A]"
+              className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]"
             />
           </a>
           <a
@@ -91,7 +99,7 @@ export default function Footer() {
           >
             <FontAwesomeIcon
               icon={faInstagram}
-              className="text-2xl text-[#012D8A]"
+              className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]"
             />
           </a>
           <a
@@ -104,7 +112,7 @@ export default function Footer() {
           >
             <FontAwesomeIcon
               icon={faFacebook}
-              className="text-2xl text-[#012D8A]"
+              className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]"
             />
           </a>
           <a
@@ -117,11 +125,11 @@ export default function Footer() {
           >
             <FontAwesomeIcon
               icon={faWhatsapp}
-              className="text-2xl text-[#012D8A]"
+              className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]"
             />
           </a>
         </div>
-        <div className="mb-4 flex flex-grow justify-center sm:mb-0 sm:w-1/3 sm:justify-center">
+        <div className="mb-4 flex flex-grow justify-center sm:mb-0 sm:w-1/3 filter dark:brightness-[0%] dark:invert sm:justify-center">
           <Link href="/">
             <Image src={S} alt="Cambiar saldo online" width={65} height={70} />
           </Link>

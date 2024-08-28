@@ -1,3 +1,5 @@
+// /tailwind.config.ts
+
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
@@ -6,6 +8,7 @@ const config: Config = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       backgroundImage: {
@@ -14,7 +17,15 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
-
+      screens: {
+        xs: '480px',
+        sm: '640px',
+        md: '768px',
+        lg: '1170px',
+        xl: '1280px',
+        '2k': '2048px',
+        '4k': '3840px',
+      },
       colors: {
         'nav-blue': '#012D8A',
         blue: {
@@ -22,6 +33,16 @@ const config: Config = {
           500: '#0070F3',
           600: '#2F6FEB',
         },
+        'darkText':'#ebe7e0',
+        'lightText':'#252526',
+      },
+      dropShadow: {
+        light: '4px 4px 10px rgba(0, 0, 0, 0.9)',
+        dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',
+      },
+      textShadow: {
+        light: '4px 4px 10px rgba(0, 0, 0, 0.9)',
+        dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',
       },
     },
     keyframes: {
@@ -32,6 +53,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('tailwindcss-textshadow')],
 };
 export default config;

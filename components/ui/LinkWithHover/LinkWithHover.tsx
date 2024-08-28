@@ -1,4 +1,4 @@
-// components/LinkWithHover.tsx
+// components/ui/LinkWithHover.tsx
 'use client';
 
 import React, { FC, MouseEvent } from 'react';

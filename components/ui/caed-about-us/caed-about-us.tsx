@@ -21,7 +21,7 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
       {cardsData.map((card, index) => (
         <div key={index} className="card relative m-4 h-80 w-60">
           <div className="card-inner transform-style preserve-3d h-full w-full transition-transform duration-700">
-            <div className="card-front backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-lg bg-white p-4 text-black shadow-lg dark:bg-gray-800 dark:text-white">
+            <div className="card-front backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-lg bg-white p-4  shadow-lg dark:bg-gray-800 ">
               <Image
                 src={card.src}
                 alt={card.alt}
@@ -33,7 +33,7 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
                 {card.title}
               </h3>
             </div>
-            <div className="card-back backface-hidden rotate-y-180 absolute flex h-full w-full transform flex-col items-center justify-center rounded-lg bg-white p-4 text-black shadow-lg dark:bg-gray-800 dark:text-white">
+            <div className="card-back backface-hidden rotate-y-180 absolute flex h-full w-full transform flex-col items-center justify-center rounded-lg bg-white p-4  shadow-lg dark:bg-gray-800 ">
               <h3 className="text-xl">{card.backTitle}</h3>
               <p className="mt-2">{card.backText}</p>
             </div>

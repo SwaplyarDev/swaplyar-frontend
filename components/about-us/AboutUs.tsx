@@ -54,7 +54,7 @@ const AboutUs = () => {
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-      <div className="bg-white text-black dark:bg-black dark:text-white">
+      <div>
         <div className="need-help delante need-help-container rs-link"></div>
         <div id="animated-blurred-circles-container"></div>
         <div className="rs-wrapper-v4">
@@ -83,19 +83,19 @@ const AboutUs = () => {
         <div className="default-space-between-components">
           <div className="rs-wrapper-v4 col1 grid">
             <div className="info-content-container flex flex-col items-center md:flex-row">
-              <div className="col-left flex flex-col items-center rounded-lg bg-white p-4 shadow-lg md:items-start dark:bg-black">
+              <div className="col-left flex flex-col items-center rounded-lg p-4 shadow-lg md:items-start">
                 <Image
                   src={OaSuarez}
                   alt="Chief Executive Officer (CEO)"
                   width={350}
                   height={300}
                 />
-                <div className="text-team mt-4 text-black dark:text-white">
+                <div className="text-team mt-4 ">
                   <h4>Oa Johan Javier Suarez Merchan</h4>
                   <h5>Founder &amp; Chief Executive Officer (CEO)</h5>
                 </div>
               </div>
-              <div className="col-right mt-4 rounded-lg p-4 text-black shadow-lg md:ml-8 md:mt-0 dark:text-white">
+              <div className="col-right mt-4 rounded-lg p-4 shadow-lg md:ml-8 md:mt-0">
                 <h2>
                   &quot;Buscamos solucionar los problemas de las personas
                   implementando las &uacute;ltimas tecnolog&iacute;as y sistemas
