@@ -59,26 +59,26 @@ export const LoginForm = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 dark:bg-black">
+    <div className="flex min-h-screen flex-col items-center justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full max-w-lg flex-col rounded bg-white p-8 shadow-md dark:bg-gray-800"
       >
-        <h2 className="mb-5 text-center text-2xl font-bold text-gray-900 dark:text-white">
+        <h2 className="mb-5 text-center text-2xl font-bold">
           Iniciar Sesión
         </h2>
 
         <label
           htmlFor="email"
           className={clsx(
-            errors.email ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
+            errors.email ? 'text-red-500' : 'text-lightText dark:text-darkText',
           )}
         >
           Correo electrónico
         </label>
         <input
           className={clsx(
-            'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
+            'rounded border bg-gray-200 px-5 py-2 dark:bg-gray-700',
             errors.email ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
           )}
           type="email"
@@ -99,14 +99,14 @@ export const LoginForm = () => {
           className={clsx(
             errors.password
               ? 'text-red-500'
-              : 'text-gray-900 dark:text-gray-300',
+              : 'text-lightText dark:text-darkText',
           )}
         >
           Contraseña
         </label>
         <input
           className={clsx(
-            'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
+            'rounded border bg-gray-200 px-5 py-2 dark:bg-gray-700',
             errors.password
               ? 'mb-0 border-red-500'
               : 'mb-5 hover:border-blue-600',
@@ -131,7 +131,7 @@ export const LoginForm = () => {
           />
           <label
             htmlFor="rememberMe"
-            className="ml-2 text-gray-900 dark:text-gray-300"
+            className="ml-2"
           >
             Recordar esta cuenta
           </label>

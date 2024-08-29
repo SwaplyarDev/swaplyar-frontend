@@ -19,7 +19,7 @@ const GuaranteeSection: React.FC<GuaranteeSectionProps> = ({
 }) => {
   return (
     <div className="rs-wrapper-v4 my-8 flex flex-col items-center md:flex-row md:items-start">
-      <div className="container-text text-gray-900 dark:text-gray-100 md:mr-8">
+      <div className="container-text md:mr-8">
         <h1>{title}</h1>
         {contentNode ? contentNode : <p>{text}</p>}
       </div>

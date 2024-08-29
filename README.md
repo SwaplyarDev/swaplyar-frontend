@@ -136,6 +136,8 @@ swaplyar-frontend/
    ```bash
    npm run dev
    ```
+  
+
 
    Accede al proyecto en [http://localhost:3000](http://localhost:3000).
 
@@ -144,7 +146,7 @@ swaplyar-frontend/
 - `npm run lint`: Ejecuta ESLint para analizar el código.
 - `npm run format`: Formatea el código utilizando Prettier.
 - `npm run dev`: Inicia el entorno de desarrollo.
-- `npm run build`: Compila la aplicación para producción.
+- `npm run build --clean`: Compila la aplicación para producción.
 - `npm run start`: Inicia el servidor de la aplicación compilada.
 
 ---

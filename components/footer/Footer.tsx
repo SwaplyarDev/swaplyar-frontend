@@ -32,45 +32,103 @@ export default function Footer() {
   const { isDark } = useDarkTheme(); 
 
   return (
-    <footer className="rs-wrapper-v4 py-8 bg-white dark:bg-gray-900 mx-auto h-[50vh] w-full px-4">
-      <div className="one-info-footer flex flex-col sm:flex-row gap-4 sm:gap-0 sm:justify-between px-4 sm:w-4/5 md:mx-auto">
-        <div className="flex flex-col items-center sm:items-start dark:text-white text-center sm:text-left w-full sm:w-1/3 mb-4 sm:mb-0 sm:w-80%">
-          <h4 className="text-gray-900 text-lg dark:text-white mb-2">Regístrate y disfruta de beneficios</h4>
-          <FooterLink href="/auth/login">Iniciar Sesión</FooterLink>
-          <FooterLink href="/auth/new-account">Registrarse</FooterLink>
-          <FooterLink href="/info/loyalty-program">Programa de Fidelización</FooterLink>
+    <footer className="rs-wrapper-v4 mx-auto max-w-screen-2xl px-4 py-8">
+      <div className="one-info-footer flex flex-col gap-4 px-4 sm:flex-row sm:justify-between sm:gap-0 w-full sm:items-start items-center">
+        <div className="mb-4 flex flex-col items-center sm:items-start text-left sm:mb-0 sm:w-1/3">
+          <h4 className="mb-2 text-lg font-bold">
+            Regístrate y disfruta de beneficios
+          </h4>
+          <FooterLink href="/auth/login-register" view="login">
+            Iniciar Sesión
+          </FooterLink>
+          <FooterLink href="/auth/login-register" view="register">
+            Registrarse
+          </FooterLink>
+          <FooterLink href="/info/loyalty-program">
+            Programa de Fidelización
+          </FooterLink>
         </div>
-        <div className="flex flex-col items-center sm:items-center dark:text-white text-center sm:text-center w-full sm:w-1/3 mb-4 sm:mb-0 sm:w-80%">
-          <h4 className="text-gray-900 text-lg dark:text-white mb-2">Normativa</h4>
+        <div className="mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-center sm:text-center">
+          <h4 className="mb-2 text-lg font-bold">
+            Normativa
+          </h4>
           <FooterLink href="/info/warranty">Garantía</FooterLink>
-          <FooterLink href="/info/terms-and-conditions">Términos y condiciones</FooterLink>
-          <FooterLink href="/info/privacy-policy">Política de privacidad</FooterLink>
+          <FooterLink href="/info/terms-and-conditions">
+            Términos y condiciones
+          </FooterLink>
+          {/* <FooterLink href="/info/privacy-policy">
+            Política de privacidad
+          </FooterLink> */}
         </div>
 
-        <div className="flex flex-col items-center sm:items-end dark:text-white text-center sm:text-right w-full sm:w-1/3 sm:w-80%">
-          <h4 className="text-gray-900 text-lg dark:text-white mb-2">Atención al Cliente</h4>
-          <FooterLink href="/info/centro-de-ayuda">Centro de Ayuda</FooterLink>
-          <FooterLink href="/info/quienes-somos">Quienes Somos</FooterLink>
-          <FooterLink href="/info/por-que-elegir-swaplyar">¿Por qué Elegir SwaplyAr?</FooterLink>
+        <div className="flex flex-col items-center text-left sm:w-1/3 sm:items-end sm:text-right">
+          <h4 className="mb-2 text-lg font-bold">
+            Atención al Cliente
+          </h4>
+          <FooterLink href="/info/help-center">Centro de Ayuda</FooterLink>
+          <FooterLink href="/info/about-us">Quienes Somos</FooterLink>
+          <FooterLink href="/info/why-choose-swaplyar">
+            ¿Por qué Elegir SwaplyAr?
+          </FooterLink>
         </div>
       </div>
 
-      <div className="two-info-footer flex flex-col sm:flex-row items-center justify-between mt-5 px-4 pt-4 sm:w-9/12 sm:mx-auto">
-        <div className="container-footer-icon-social flex justify-center sm:justify-start space-x-4 mb-4 sm:mb-0 sm:w-1/3">
-          <a href="https://www.linkedin.com/company/swaplyar/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="SwaplyAr CEO en LinkedIn" className="hover:opacity-75 transition-opacity duration-200">
-            <FontAwesomeIcon icon={faLinkedin} className="text-[#012D8A] text-2xl dark:text-white" />
+      <div className="two-info-footer mt-5 flex flex-col items-center justify-between px-4 pt-4 sm:flex-row">
+        <div className="container-footer-icon-social mb-4 flex justify-center space-x-4 sm:mb-0 sm:w-1/3 sm:justify-start">
+          <a
+            href="https://www.linkedin.com/company/swaplyar/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+            title="SwaplyAr CEO en LinkedIn"
+            className="transition-opacity duration-200 hover:opacity-75"
+          >
+            <FontAwesomeIcon
+              icon={faLinkedin}
+              className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]"
+            />
           </a>
-          <a href="https://www.instagram.com/swaplyar/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="SwaplyAr en Instagram" className="hover:opacity-75 transition-opacity duration-200">
-            <FontAwesomeIcon icon={faInstagram} className="text-[#012D8A] text-2xl dark:text-white" />
+          <a
+            href="https://www.instagram.com/swaplyar/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+            title="SwaplyAr en Instagram"
+            className="transition-opacity duration-200 hover:opacity-75"
+          >
+            <FontAwesomeIcon
+              icon={faInstagram}
+              className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]"
+            />
           </a>
-          <a href="https://www.facebook.com/swaplyar/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="SwaplyAr en Facebook" className="hover:opacity-75 transition-opacity duration-200">
-            <FontAwesomeIcon icon={faFacebook} className="text-[#012D8A] text-2xl dark:text-white" />
+          <a
+            href="https://www.facebook.com/swaplyar/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook"
+            title="SwaplyAr en Facebook"
+            className="transition-opacity duration-200 hover:opacity-75"
+          >
+            <FontAwesomeIcon
+              icon={faFacebook}
+              className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]"
+            />
           </a>
-          <a href="https://wa.me/5491123832198" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" title="SwaplyAr en WhatsApp" className="hover:opacity-75 transition-opacity duration-200">
-            <FontAwesomeIcon icon={faWhatsapp} className="text-[#012D8A] text-2xl dark:text-white" />
+          <a
+            href="https://wa.me/5491123832198"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="WhatsApp"
+            title="SwaplyAr en WhatsApp"
+            className="transition-opacity duration-200 hover:opacity-75"
+          >
+            <FontAwesomeIcon
+              icon={faWhatsapp}
+              className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]"
+            />
           </a>
         </div>
-        <div className="flex-grow flex justify-center sm:justify-center mb-4 sm:mb-0 sm:w-1/3">
+        <div className="mb-4 flex flex-grow justify-center sm:mb-0 sm:w-1/3 filter dark:brightness-[0%] dark:invert sm:justify-center">
           <Link href="/">
             <Image src={isDark ? SDark : S} alt="Cambiar saldo online" width={65} height={70} /> 
           </Link>
