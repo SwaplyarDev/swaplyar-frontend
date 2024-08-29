@@ -11,26 +11,26 @@ import {
 } from '@/utils/assets/img-database';
 
 const mainStyles = {
-  main: 'py-10',
   infoBlocksContainer: 'flex flex-col items-center justify-center',
-  instructionsCalculatorContainer: 'flex space-x-4',
+  instructionsCalculatorContainer: 'flex space-x-4 justify-center',
 };
 
 const WhyChooseSwaplyar: React.FC = () => {
   return (
-    <main className={mainStyles.main}>
+    <main className="py-10 flex flex-col gap-20 w-full">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
 
-      <div className={mainStyles.instructionsCalculatorContainer}>
+    <div className=' grid justify-center items-center gap-12 w-[90%] m-auto'>
+      <section >
         <GuaranteeSection
           title="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
           imageSrc={ElegirSwaplyAr}
           imageAlt="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
           contentNode={
             <>
-              <p>
+              <p className='text-xl'>
                 Si estás buscando seguridad y confiabilidad en el intercambio de
                 tu dinero digital, SwaplyAr es tu mejor opción. Descubre por qué
                 somos la elección preferida para cambiar divisas de PayPal, con
@@ -39,9 +39,9 @@ const WhyChooseSwaplyar: React.FC = () => {
             </>
           }
         />
-      </div>
+      </section>
 
-      <div className={mainStyles.infoBlocksContainer}>
+      <section className='space-y-32'>
         <InfoBlock
           title="¿Por qué elegirnos?"
           imageSrc={Porqueelegirnos}
@@ -85,15 +85,14 @@ const WhyChooseSwaplyar: React.FC = () => {
                 garantizando una experiencia sin estrés.
             "
         />
-      </div>
+      </section>
+    </div>
 
-      <div className="mt-10">
         <FlyerTrabajo imageSrc={FlyerGif}>
           &iquest;Nuevo en SwaplyAr? Hac&eacute; clic en &quot;C&oacute;mo usar
           SwaplyAr&quot; y aprend&eacute; a operar f&aacute;cilmente.
           &iexcl;Empez&aacute; ahora!
         </FlyerTrabajo>
-      </div>
     </main>
   );
 };
