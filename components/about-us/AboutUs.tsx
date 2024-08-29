@@ -69,8 +69,8 @@ const AboutUs = () => {
         </FlyerTrabajo>
       </div>
 
-      <div className=" dark:bg-black text-black dark:text-white pt-5">
-        <div className="rs-wrapper-v4 w-full sm:w-11/12 mx-auto text-center">
+      <div className="  text-black dark:text-white pt-5">
+        <div className="rs-wrapper-v4  sm:w-11/12 mx-auto text-center">
           <div className="container-text text-xl sm:text-2xl lg:text-4xl pt-10 sm:pt-20 pb-12 sm:pb-24">
             <h1 className="max-w-[1000px] lg:text-4xl sm:w-[86%] text-left mx-auto">
               En SwaplyAr, garantizamos un intercambio seguro y confiable de tu
@@ -107,7 +107,7 @@ const AboutUs = () => {
               </h2>
             </div>
 
-            <div className="col-left dark:bg-black flex flex-col items-center order-2 md:order-1">
+            <div className="col-left flex flex-col items-center order-2 md:order-1">
               <Image
                 src={OaSuarez}
                 alt="Chief Executive Officer (CEO)"
