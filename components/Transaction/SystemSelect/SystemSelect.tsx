@@ -10,6 +10,7 @@ interface System {
   name: string;
   logo: string;
   isDisabled: boolean;
+  coin: string;
 }
 
 interface SystemSelectProps {
@@ -77,8 +78,11 @@ export default function SystemSelect({
 
   return (
     <div className="relative mt-4">
+      <span className="text-lg">
+        {isSending ? 'Envías' : 'Recibes'} {selectedSystem?.coin}
+      </span>
       <button
-        className={`system-input-select flex w-full items-center justify-between rounded border p-2 ${
+        className={`border-[#012c8a] dark:border-gray-200 rounded-br-none rounded-tr-none w-64 system-input-select flex h-28 border-r-0 items-center justify-start rounded border p-2 ${
           isSending ? 'animation-system-send' : 'animation-system-receive'
         } ${darkMode ? 'dark' : ''}`}
         onClick={() => setShowOptions(!showOptions)}
@@ -88,37 +92,35 @@ export default function SystemSelect({
             <Image
               src={selectedSystem.logo}
               alt={selectedSystem.name}
-              width={32}
-              height={32}
+              width={200}
+              height={70}
             />
-            <span className="w-full px-1 text-start">
+            {/* <span className="w-full px-1 text-start">
               {selectedSystem.name}
-            </span>
+            </span> */}
           </>
         ) : (
-          <span>
-            Selecciona un sistema {isSending ? 'de envío' : 'de recepción'}
-          </span>
+          <></>
         )}
         <FontAwesomeIcon icon={faChevronDown} width={32} height={16} />
       </button>
       {showOptions && (
-        <ul className="absolute z-10 w-full rounded border bg-white shadow-md dark:bg-gray-800">
+        <ul className="scrollable-list w-64 absolute z-10 rounded max-h-64 overflow-y-auto border bg-white shadow-md dark:bg-gray-800">
           {updatedSystems.map((system) => (
             <li
               key={system.id}
               onClick={() => !system.isDisabled && handleOptionClick(system)}
-              className={`flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
+              className={`flex cursor-pointer items-center px-5 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
                 system.isDisabled ? 'cursor-not-allowed opacity-50' : ''
               }`}
             >
               <Image
                 src={system.logo}
                 alt={system.name}
-                width={32}
-                height={32}
+                width={200}
+                height={70}
               />
-              <span className="px-1">{system.name}</span>
+              {/* <span className="px-1">{system.name}</span> */}
             </li>
           ))}
         </ul>

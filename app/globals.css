@@ -204,10 +204,16 @@ body {
 
 /*Scrollbar*/
 
+body.swal2-shown {
+  padding-right: 6px !important;
+}
+
+
 body {
   --sb-track-color: #232e33;
   --sb-thumb-color: #75bfff;
   --sb-size: 6px;
+  padding-right: 0px !important;
 }
 
 body::-webkit-scrollbar {
@@ -228,4 +234,36 @@ body::-webkit-scrollbar-thumb {
   body {
     scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
+}
+
+/* Estilos del scrollbar usando variables definidas en el body */
+ul.scrollable-list::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+ul.scrollable-list::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 3px;
+}
+
+ul.scrollable-list::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 3px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  ul.scrollable-list {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+  }
+}
+
+/* boton de pago */
+
+.buttonPay{
+  -webkit-transition: all 0.4s cubic-bezier(0.5, 0.24, 0, 1);
+  transition: all 0.4s cubic-bezier(0.5, 0.24, 0, 1);
+}
+
+.buttonPay:hover{
+  background-color: #6098ff;
 }

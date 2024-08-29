@@ -56,13 +56,25 @@ export default function TransactionCalculator() {
   const handleSendAmountChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setSendAmount(parseFloat(event.target.value) || 0);
+    const value = event.target.value;
+
+    const isValidInput = /^[0-9]*\.?[0-9]*$/.test(value);
+
+    if (isValidInput) {
+      setSendAmount(parseFloat(value) || 0);
+    }
   };
 
   const handleReceiveAmountChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setReceiveAmount(parseFloat(event.target.value) || 0);
+    const value = event.target.value;
+
+    const isValidInput = /^[0-9]*\.?[0-9]*$/.test(value);
+
+    if (isValidInput) {
+      setReceiveAmount(parseFloat(value) || 0);
+    }
   };
 
   const handleSystemSelection = (system: System, isSending: boolean) => {
@@ -101,36 +113,42 @@ export default function TransactionCalculator() {
       name: 'PayPal',
       logo: '/images/paypal.big.png',
       isDisabled: false,
+      coin: 'USD',
     },
     {
       id: 'payoneer-usd',
       name: 'Payoneer USD',
       logo: '/images/payoneer.usd.big.png',
       isDisabled: false,
+      coin: 'USD',
     },
     {
       id: 'payoneer-eur',
       name: 'Payoneer EUR',
       logo: '/images/payoneer.eur.big.png',
       isDisabled: false,
+      coin: 'EUR',
     },
     {
       id: 'banco',
       name: 'Banco',
       logo: '/images/banco.medium.webp',
       isDisabled: false,
+      coin: 'ARS',
     },
     {
       id: 'wise-usd',
       name: 'Wise USD',
       logo: '/images/wise.usd.big.png',
       isDisabled: false,
+      coin: 'USD',
     },
     {
       id: 'wise-eur',
       name: 'Wise EUR',
       logo: '/images/wise.eur.big.png',
       isDisabled: false,
+      coin: 'EUR',
     },
   ];
 
@@ -242,27 +260,30 @@ export default function TransactionCalculator() {
 
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
-      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-md bg-white p-8 shadow-md dark:bg-gray-800 dark:text-white">
+      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-white p-8 shadow-md dark:bg-gray-800 dark:text-white">
         {error && (
           <div className="error-message mb-4 text-red-500">{error}</div>
         )}
 
-        <div className="w-full max-w-96">
+        <p className="w-full max-w-lg text-2xl text-[#012c8a] dark:text-darkText">
+          1 {selectedSendingSystem?.coin} / 1500 {selectedReceivingSystem?.coin}
+        </p>
+
+        <div className="flex w-full max-w-lg items-center text-[#012c8a] dark:text-darkText">
           <SystemSelect
             systems={systems}
             selectedSystem={selectedSendingSystem}
             onSystemSelect={(system) => handleSystemSelection(system, true)}
-            label="Envías USD"
-            inputId="usdInputUniqueID"
+            label=""
+            inputId="sendInputUniqueID"
             isSending={true}
           />
-          <div className="input-box mt-4">
+          <div className="mt-11 flex h-28 w-full items-center justify-between rounded rounded-bl-none rounded-tl-none border border-l-0 border-[#012c8a] p-2 dark:border-gray-200">
             <input
-              type="number"
-              className="input-field w-full rounded border bg-white p-2 dark:border-gray-600 dark:bg-gray-700"
-              placeholder="Monto a recibir (ARS)"
-              id="usdInputUniqueID"
-              value={receiveAmount.toFixed(2)}
+              type="text"
+              className="h-full w-full border-transparent bg-transparent p-2 text-xl focus:border-transparent focus:ring-transparent"
+              id="sendInputUniqueID"
+              value={receiveAmount}
               onChange={handleReceiveAmountChange}
             />
           </div>
@@ -273,27 +294,30 @@ export default function TransactionCalculator() {
         <SystemInfo pointBorder="border" linePosition="up">
           <p>Información del sistema de recepción</p>
         </SystemInfo>
-        <div className="w-full max-w-96">
+        <div className="flex w-full max-w-lg items-center text-[#012c8a] dark:text-darkText">
           <SystemSelect
             systems={systems}
             selectedSystem={selectedReceivingSystem}
             onSystemSelect={(system) => handleSystemSelection(system, false)}
-            label="Recibes ARS"
-            inputId="arsInputUniqueID"
+            label=""
+            inputId="receptionInputUniqueID"
             isSending={false}
           />
-          <div className="input-box mt-4">
+          <div className="mt-11 flex h-28 w-full items-center justify-between rounded rounded-bl-none rounded-tl-none border border-l-0 border-[#012c8a] p-2 dark:border-gray-200">
             <input
-              type="number"
-              className="input-field w-full rounded border bg-white p-2 dark:border-gray-600 dark:bg-gray-700"
-              placeholder="Monto a recibir (ARS)"
-              id="arsInputUniqueID"
-              value={receiveAmount.toFixed(2)}
+              type="text"
+              className="h-full w-full border-transparent bg-transparent p-2 text-xl focus:border-transparent focus:ring-transparent"
+              id="receptionInputUniqueID"
+              value={receiveAmount}
               onChange={handleReceiveAmountChange}
             />
           </div>
         </div>
-        <div id="goToPayPalButton" className="mt-4"></div>
+        <div id="goToPayPalButton" className="mt-4">
+          <button className='rounded-md borde bg- p-2 px-10 bg-[#012c8a] text-darkText dark:bg-transparent dark:border-[#012c8a] border buttonPay'>
+            Realizar el pago
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ export interface System {
   name: string; // Nombre del sistema de pago
   logo: string; // Ruta a la imagen del logo
   isDisabled: boolean; // Indica si el sistema de pago es deshabilitado
+  coin: string; // Indica el tipo de moneda
 }
 
 export type FormValues = {
