@@ -26,8 +26,9 @@ const config: Config = {
         '2k': '2048px',
         '4k': '3840px',
       },
-      colors: {
+      colors:{
         'nav-blue': '#012D8A',
+        'gray-blue':'#020919',
         blue: {
           400: '#2589FE',
           500: '#0070F3',
@@ -36,10 +37,24 @@ const config: Config = {
         'darkText':'#ebe7e0',
         'lightText':'#252526',
       },
+      width: {
+        '9/10': '90%',},
       dropShadow: {
-        light: '4px 4px 10px rgba(0, 0, 0, 0.9)',
-        dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',
+         'light': '0 5px 4px rgba(0, 0, 0, 0.400)',
+        'darkmode': '0 4px 5px rgba(187, 187, 187, 0.400)'
       },
+      boxShadow: {
+        'custom-blue': '0 5px 10px #012a8d',
+        'custom-black':'0 5px 10px #000',
+  
+      },
+    
+      backgroundColor:{
+        'dark-blue':'rgb(3, 35, 54)'
+      },
+      top:{
+        '57':'57%'},
+ 
       textShadow: {
         light: '4px 4px 10px rgba(0, 0, 0, 0.9)',
         dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',

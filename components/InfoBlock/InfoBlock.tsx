@@ -1,8 +1,8 @@
-// components/InfoBlock/InfoBlock.tsx
-
-'use client';
+"use client";
 
 import Image from 'next/image';
+import './shadow.css'
+
 
 interface InfoBlockProps {
   title: string;
@@ -12,39 +12,28 @@ interface InfoBlockProps {
   contentNode?: React.ReactNode;
 }
 
-export default function InfoBlock({
-  title,
-  imageSrc,
-  imageAlt,
-  content,
-  contentNode,
-}: InfoBlockProps) {
+export default function InfoBlock({ title, imageSrc, imageAlt, content, contentNode }: InfoBlockProps) {
   return (
-    <div className="flex max-w-3xl flex-col items-center p-8 md:flex-row">
-      <div className="info-image-container mb-4 w-full md:mb-0 md:mr-8 md:w-1/2">
-        <Image
-          src={imageSrc}
-          alt={imageAlt}
-          width={750}
-          height={750}
-          className="rounded-lg shadow-md"
-        />
+    <div className="flex flex-col items-center justify-center mt-16 mb-12 md:flex-row w-full max-w-4xl"> 
+      <div className="info-image-container mb-4 md:mb-0 md:mr-8 w-full md:w-1/2 flex justify-center"> 
+      <Image
+  src={imageSrc}
+  alt={imageAlt}
+  width={350} 
+  height={350} 
+  className="md:ml-16 drop-shadow-light dark:drop-shadow-darkmode"  
+/>
+
       </div>
-      <div className="info-content-container w-full md:w-1/2">
-        <div className="flex flex-col items-start">
-          <h2 className="dark-title mb-4 text-2xl font-semibold">{title}</h2>
+      <div className="info-content-container w-full md:w-1/2"> 
+        <div className="flex flex-col items-center md:items-start">
+          <h2 className="dark-title text-4xl mb-4 text-gray-blue dark:text-white text-center md:text-left">{title}</h2>
         </div>
-        <div className="info-content pl-2">
-          {contentNode ? (
-            contentNode
-          ) : (
-            <p
-              className="text-gray-700"
-              dangerouslySetInnerHTML={{ __html: content || '' }}
-            ></p>
-          )}
+        <div className="info-content text-xl text-gray-blue dark:text-white text-center md:text-left">
+          {contentNode ? contentNode : <p className="text-gray-700 dark:text-white" dangerouslySetInnerHTML={{ __html: content || '' }}></p>}
         </div>
       </div>
     </div>
   );
 }
+
