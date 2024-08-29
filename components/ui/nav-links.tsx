@@ -37,7 +37,19 @@ export default function NavLinks() {
           key={link.name}
           href={link.href}
           onClick={() => handleLogView(link.name)}
-          className={`relative flex h-[48px] items-center gap-2 rounded-md p-3 ${currentView === link.name ? 'underline decoration-lightText dark:decoration-darkText' : ''} m-1 transition duration-300 ease-in-out hover:drop-shadow-light dark:hover:drop-shadow-dark`}
+          className={`relative m-1 flex h-[48px] items-center gap-2 p-3 transition-transform ease-in-out duration-300 hover:scale-105 ${
+            currentView === link.name
+              ? link.name === 'Registrarse'
+                ? 'underline decoration-darkText dark:decoration-lightText'
+                : 'underline decoration-lightText dark:decoration-darkText'
+              : ''
+          } ${
+            link.name !== 'Iniciar sesión' && link.name !== 'Registrarse'
+              ? ''
+              : link.name === 'Iniciar sesión'
+                ? 'rounded-3xl border border-lightText dark:border-darkText'
+                : 'rounded-3xl border bg-lightText text-darkText dark:bg-darkText dark:text-lightText'
+          } `}
         >
           <p
             className={`hidden md:block ${link.name === 'Login' || link.name === 'Register' ? 'font-bold' : ''}`}
@@ -49,7 +61,3 @@ export default function NavLinks() {
     </>
   );
 }
-
-//hover:drop-shadow-light dark:hover:drop-shadow-dark
-
-//hover:text-shadow-light dark:hover:text-shadow-dark

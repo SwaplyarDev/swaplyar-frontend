@@ -50,20 +50,20 @@ export function TopMenu() {
     <Navbar
       fluid
       rounded
-      className={`sticky top-0 z-50 w-full bg-inherit dark:bg-inherit p-4 shadow-md transition-opacity duration-300 ${
+      className={`sticky top-0 z-50 w-full bg-inherit p-4 shadow-md transition-opacity duration-200 dark:bg-inherit ${
         bgOpacity
           ? 'bg-opacity-90 dark:bg-opacity-90'
           : 'bg-opacity-100 dark:bg-opacity-100'
       }`}
     >
       <div
-        className={`flex w-full max-w-screen-2xl m-auto flex-row-reverse justify-between gap-4 lg:flex-row`}
+        className={`m-auto flex w-full max-w-screen-2xl flex-row-reverse justify-between gap-4 lg:flex-row`}
       >
         <Link
           key="Iniciar sesión"
           href="/auth/login-register"
           onClick={() => setView('login')}
-          className={`relative hidden h-[48px] items-center gap-2 rounded-md p-3 md:flex lg:hidden ${pathname === '/auth/login-register' ? 'underline decoration-lightText dark:decoration-darkText' : ''} m-1 transition duration-300 ease-in-out hover:drop-shadow-light dark:hover:drop-shadow-dark`}
+          className={`relative m-1 hidden h-[48px] items-center gap-2 rounded-3xl border border-lightText p-3 transition-transform duration-300 ease-in-out hover:scale-105 dark:border-darkText md:flex lg:hidden ${pathname === '/auth/login-register' ? 'underline decoration-lightText dark:decoration-darkText' : ''} `}
         >
           <p className="font-bold">Iniciar sesión</p>
         </Link>
@@ -74,14 +74,14 @@ export function TopMenu() {
             src="https://res.cloudinary.com/df5jwzuq9/image/upload/v1722209853/logo_g74htq.png"
             width={200}
             height={200}
-            className="hidden h-12 w-auto filter dark:brightness-[0%] dark:invert md:block"
+            className="hidden h-12 w-auto filter dark:brightness-[0%] dark:invert md:block rounded-xl hover:outline hover:outline-[1px] hover:outline-offset-4 hover:outline-slate-500 dark:hover:outline-darkText"
           />
           <Image
             alt="Your Company"
             src={S}
             width={200}
             height={200}
-            className="h-12 w-auto filter dark:brightness-[0%] dark:invert md:hidden"
+            className="h-12 w-auto filter dark:brightness-[0%] dark:invert md:hidden rounded-xl hover:outline hover:outline-[1px] hover:outline-offset-4 hover:outline-slate-500 dark:hover:outline-darkText"
           />
         </Navbar.Brand>
 
