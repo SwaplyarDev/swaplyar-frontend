@@ -63,13 +63,13 @@ const AboutUs = () => {
 
   return (
     <div className="py-10">
-      <div className="shadow-custom-blue bg-white" ref={bannerRef}>
+      <div className="shadow-custom-blue" ref={bannerRef}>
         <FlyerTrabajo imageSrc="/images/need-help.png">
           Estamos trabajando en las funciones de inicio de sesión y registro.
         </FlyerTrabajo>
       </div>
 
-      <div className="bg-white dark:bg-black text-black dark:text-white pt-5">
+      <div className=" dark:bg-black text-black dark:text-white pt-5">
         <div className="rs-wrapper-v4 w-full sm:w-11/12 mx-auto text-center">
           <div className="container-text text-xl sm:text-2xl lg:text-4xl pt-10 sm:pt-20 pb-12 sm:pb-24">
             <h1 className="max-w-[1000px] lg:text-4xl sm:w-[86%] text-left mx-auto">
