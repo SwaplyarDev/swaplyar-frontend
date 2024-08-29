@@ -1,75 +1,35 @@
+// /components/ui/top-menu/TopMenu.tsx
+
 'use client';
 
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import useStore from '@/store/authViewStore';
+
 import { Dropdown, Navbar } from 'flowbite-react';
+import { GiHamburgerMenu } from 'react-icons/gi';
 import { BsChevronRight } from 'react-icons/bs';
+
 import NavLinks from '@/components/ui/nav-links';
 import Image from 'next/image';
 import Link from 'next/link';
-import styled from '@emotion/styled';
-import { GiHamburgerMenu } from 'react-icons/gi';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
-import useStore from '@/store/authViewStore';
-import S from '../../../public/images/dark-mode-nav-logo.png';
 import styles from './switchStyle.module.css';
-
-const MenuIcon = styled(GiHamburgerMenu)`
-  width: 30px;
-  height: 30px;
-  color: #333;
-  cursor: pointer;
-
-  &:hover {
-    color: #007BFF;
-  }
-`;
-
-const StyledNavbar = styled(Navbar)`
-  background-color: #ffffff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  height: 100px;
-  padding: 0.5%;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  width: 100%;
-
-  .navbar-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 90%;
-    margin: auto; 
-  }
-
-  .navbar-brand {
-    display: flex;
-    align-items: center;
-  }
-
-  .navbar-collapse {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-
-  .navbar-toggler {
-    border: none;
-    background: none;
-    font-size: 1.5rem;
-  }
-
-  .dropdown-item {
-    font-size: 0.9rem;
-  }
-`;
+import S from '../../../public/images/logo-solo.png';
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
   const [bgOpacity, setBgOpacity] = useState(false);
+
   const { setView } = useStore();
-  const { changeTheme, isDark } = useDarkTheme();
+
   const pathname = usePathname();
+
+  const handleSelect = (item: string) => {
+    sessionStorage.setItem('currentView', item);
+    setSelectedItem(item);
+  };
 
   useEffect(() => {
     const storage = sessionStorage.getItem('currentView');
@@ -84,45 +44,71 @@ export function TopMenu() {
     };
   }, []);
 
-  const handleSelect = (item: string) => {
-    sessionStorage.setItem('currentView', item);
-    setSelectedItem(item);
-  };
-
-  const logoLight = 'https://res.cloudinary.com/df5jwzuq9/image/upload/v1722209853/logo_g74htq.png';
-  const logoDark = S;
+  const { changeTheme, isDark } = useDarkTheme();
 
   return (
-    <StyledNavbar fluid rounded className={`sticky top-0 z-50 w-full p-4 shadow-md transition-opacity duration-300 ${
-        bgOpacity ? 'bg-opacity-90 dark:bg-opacity-90' : 'bg-opacity-100 dark:bg-opacity-100'
-      }`}>
-      <div className='navbar-content'>
-        <Navbar.Brand href="/" className='navbar-brand'>
+    <Navbar
+      fluid
+      rounded
+      className={`sticky top-0 z-50 w-full bg-inherit dark:bg-inherit p-4 shadow-md transition-opacity duration-300 ${
+        bgOpacity
+          ? 'bg-opacity-90 dark:bg-opacity-90'
+          : 'bg-opacity-100 dark:bg-opacity-100'
+      }`}
+    >
+      <div
+        className={`flex w-full max-w-screen-2xl m-auto flex-row-reverse justify-between gap-4 lg:flex-row`}
+      >
+        <Link
+          key="Iniciar sesión"
+          href="/auth/login-register"
+          onClick={() => setView('login')}
+          className={`relative hidden h-[48px] items-center gap-2 rounded-md p-3 md:flex lg:hidden ${pathname === '/auth/login-register' ? 'underline decoration-lightText dark:decoration-darkText' : ''} m-1 transition duration-300 ease-in-out hover:drop-shadow-light dark:hover:drop-shadow-dark`}
+        >
+          <p className="font-bold">Iniciar sesión</p>
+        </Link>
+
+        <Navbar.Brand href="/">
           <Image
             alt="Your Company"
-            src={isDark ? logoDark : logoLight}
+            src="https://res.cloudinary.com/df5jwzuq9/image/upload/v1722209853/logo_g74htq.png"
             width={200}
             height={200}
-            className="h-12 w-auto"
+            className="hidden h-12 w-auto filter dark:brightness-[0%] dark:invert md:block"
+          />
+          <Image
+            alt="Your Company"
+            src={S}
+            width={200}
+            height={200}
+            className="h-12 w-auto filter dark:brightness-[0%] dark:invert md:hidden"
           />
         </Navbar.Brand>
-        <nav className="flex items-center lg:flex-row">
+
+        <nav className="flex flex-row-reverse items-center justify-center lg:flex-row">
           <section className="flex items-center justify-end">
-            <button
-              className="mr-1 rounded-md p-3 transition-colors duration-300 ease-in-out hover:bg-gray-600 hover:text-white hover:shadow-sm dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-white dark:hover:text-black md:-mr-2"
-              onClick={changeTheme}
-            >
-              {isDark ? (
-                <SunIcon className="size-6" />
-              ) : (
-                <MoonIcon className="size-6" />
-              )}
-            </button>
+            <label className={`${styles.switch} ml-3`}>
+              <input type="checkbox" onClick={changeTheme} />
+              <span
+                className={isDark ? styles.sliderDark : styles.sliderLight}
+              ></span>
+            </label>
           </section>
-          <div className="flex md:hidden">
-            <Dropdown arrowIcon={false} inline label={<MenuIcon />}>
+
+          <section className="flex lg:hidden">
+            <Dropdown
+              arrowIcon={false}
+              inline
+              label={
+                <GiHamburgerMenu className="size-8 text-gray-800 dark:text-gray-200" />
+              }
+            >
               <Dropdown.Item
-                className={`cursor-pointer ${selectedItem === 'about-us' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-600'}`}
+                className={`cursor-pointer ${
+                  selectedItem === 'about-us'
+                    ? 'bg-blue-500 text-white'
+                    : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+                }`}
                 onClick={() => handleSelect('about-us')}
               >
                 <Link href="/info/about-us" className="flex items-center">
@@ -131,7 +117,11 @@ export function TopMenu() {
                 </Link>
               </Dropdown.Item>
               <Dropdown.Item
-                className={`cursor-pointer ${selectedItem === 'how-to-use' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-600'}`}
+                className={`cursor-pointer ${
+                  selectedItem === 'how-to-use'
+                    ? 'bg-blue-500 text-white'
+                    : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+                }`}
                 onClick={() => handleSelect('how-to-use')}
               >
                 <Link href="/info/how-to-use" className="flex items-center">
@@ -140,10 +130,17 @@ export function TopMenu() {
                 </Link>
               </Dropdown.Item>
               <Dropdown.Item
-                className={`cursor-pointer ${selectedItem === 'loyalty-program' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-600'}`}
+                className={`cursor-pointer ${
+                  selectedItem === 'loyalty-program'
+                    ? 'bg-blue-500 text-white'
+                    : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+                }`}
                 onClick={() => handleSelect('loyalty-program')}
               >
-                <Link href="/info/loyalty-program" className="flex items-center">
+                <Link
+                  href="/info/loyalty-program"
+                  className="flex items-center"
+                >
                   <BsChevronRight />
                   Programa de Fidelización
                 </Link>
@@ -151,34 +148,50 @@ export function TopMenu() {
               <Dropdown.Divider />
               <section className="md:hidden">
                 <Dropdown.Item
-                  className={`cursor-pointer ${selectedItem === 'login' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-600'}`}
+                  className={`cursor-pointer ${
+                    selectedItem === 'login'
+                      ? 'bg-blue-500 text-white'
+                      : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+                  }`}
                   onClick={() => handleSelect('login')}
                 >
-                  <Link href="/auth/login-register" onClick={() => setView('login')} className="flex items-center">
+                  <Link
+                    href="/auth/login-register"
+                    onClick={() => setView('login')}
+                    className="flex items-center"
+                  >
                     <BsChevronRight />
                     Login
                   </Link>
                 </Dropdown.Item>
                 <Dropdown.Item
-                  className={`cursor-pointer ${selectedItem === 'register' ? 'bg-blue-500 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-600'}`}
+                  className={`cursor-pointer ${
+                    selectedItem === 'register'
+                      ? 'bg-blue-500 text-white'
+                      : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+                  }`}
                   onClick={() => handleSelect('register')}
                 >
-                  <Link href="/auth/login-register" onClick={() => setView('register')} className="flex items-center">
+                  <Link
+                    href="/auth/login-register"
+                    onClick={() => setView('register')}
+                    className="flex items-center"
+                  >
                     <BsChevronRight />
                     Register
                   </Link>
                 </Dropdown.Item>
               </section>
             </Dropdown>
-          </div>
-          <Navbar.Collapse className='navbar-collapse'>
-            <div className="hidden md:ml-6 md:flex">
+          </section>
+
+          <Navbar.Collapse>
+            <section className="hidden lg:flex">
               <NavLinks />
-            </div>
+            </section>
           </Navbar.Collapse>
         </nav>
       </div>
-    </StyledNavbar>
+    </Navbar>
   );
 }
-
