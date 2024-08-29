@@ -55,9 +55,10 @@ export default function NavLinks() {
           <p
             className={`hidden md:block ${link.name === 'Login' || link.name === 'Register' ? 'font-bold' : ''}`}
           >
+            {link.name}
           </p>
-          </Link>
-        ))}
+        </Link>
+      ))}
     </>
   );
 }

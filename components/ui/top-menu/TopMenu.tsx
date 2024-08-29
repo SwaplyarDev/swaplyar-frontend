@@ -74,14 +74,14 @@ export function TopMenu() {
             src="https://res.cloudinary.com/df5jwzuq9/image/upload/v1722209853/logo_g74htq.png"
             width={200}
             height={200}
-            className="hidden h-12 w-auto filter dark:brightness-[0%] dark:invert md:block rounded-xl hover:outline hover:outline-[1px] hover:outline-offset-4 hover:outline-slate-500 dark:hover:outline-darkText"
+            className="hidden h-12 w-auto rounded-xl filter hover:outline hover:outline-[1px] hover:outline-offset-4 hover:outline-slate-500 dark:brightness-[0%] dark:invert dark:hover:outline-darkText md:block"
           />
           <Image
             alt="Your Company"
             src={S}
             width={200}
             height={200}
-            className="h-12 w-auto filter dark:brightness-[0%] dark:invert md:hidden rounded-xl hover:outline hover:outline-[1px] hover:outline-offset-4 hover:outline-slate-500 dark:hover:outline-darkText"
+            className="h-12 w-auto rounded-xl filter hover:outline hover:outline-[1px] hover:outline-offset-4 hover:outline-slate-500 dark:brightness-[0%] dark:invert dark:hover:outline-darkText md:hidden"
           />
         </Navbar.Brand>
 
