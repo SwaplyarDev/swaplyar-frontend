@@ -2,12 +2,12 @@ import TransactionCalculator from '@/components/Transaction/TransactionCalculato
 
 const ConversionInstructions = () => {
     return (
-        <div className="flex flex-col md:flex-row justify-between items-center h-full space-y-4 md:space-y-0 md:space-x-4 w-4/5 sm:w-4/5 md:w-4/5 mx-auto sm:items-center sm:mx-auto">
-            <div className="conversion-instructions max-w-md sm:ml-8">
-                <h2 className="sm:text-5xl text-3xl mb-4 text-gray-blue dark:text-white">
+        <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4 w-full max-w-7xl mx-auto px-4 py-8">
+            <div className="conversion-instructions max-w-xl flex-1">
+                <h2 className="text-3xl sm:text-5xl mb-4 text-gray-blue dark:text-white">
                     Convertí y enviá tu dinero de PayPal a tu cuenta bancaria
                 </h2>
-                <ol className="list-decimal list mt-7 ml-4 sm:ml-8 text-gray-blue dark:text-white">
+                <ol className="list-decimal mt-7 ml-4 text-gray-blue dark:text-white">
                     <li className="step mb-4">
                         <h3 className="text-xl font-bold mb-0 text-gray-blue dark:text-white">¡Cotizá y solicitá!</h3>
                         <p>Iniciá tu cambio consultando la cotización actual y hacenos saber cuánto deseas convertir.</p>
@@ -22,11 +22,14 @@ const ConversionInstructions = () => {
                     </li>
                 </ol>
             </div>
-            <TransactionCalculator />
+            <div className="flex-1">
+                <TransactionCalculator />
+            </div>
         </div>
     );
 }
 
 export default ConversionInstructions;
+
 
 

@@ -40,17 +40,19 @@ const config: Config = {
       },
       boxShadow: {
         'custom-blue': '0 5px 10px #012a8d',
-        'custom-black':'0 5px 10px #000'
+        'custom-black':'0 5px 10px #000',
+  
+      },
+      dropShadow: {
+        'light': '0 5px 4px rgba(0, 0, 0, 0.400)',
+        'darkmode': '0 4px 5px rgba(187, 187, 187, 0.400)'
       },
       backgroundColor:{
         'dark-blue':'rgb(3, 35, 54)'
       },
       top:{
         '57':'57%'},
-      dropShadow: {
-        light: '4px 4px 10px rgba(29, 78, 216, 0.9)',
-        dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',
-      },
+ 
       textShadow: {
         light: '4px 4px 10px rgba(29, 78, 216, 0.9)',
         dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',

@@ -34,7 +34,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.className} bg-white text-black dark:bg-gray-900 dark:text-white`}
+        className={`${inter.className} bg-white text-black dark:bg-black dark:text-white`}
       >
         <ThemeProvider>
           <TopMenu />
