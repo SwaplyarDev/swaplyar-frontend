@@ -48,7 +48,7 @@ export default function NavLinks() {
               ? ''
               : link.name === 'Iniciar sesión'
                 ? 'rounded-3xl border border-lightText dark:border-darkText'
-                : 'rounded-3xl border bg-lightText text-darkText dark:bg-darkText dark:text-lightText'
+                : 'rounded-3xl border border-lightText bg-lightText text-darkText dark:bg-darkText dark:text-lightText dark:border-darkText'
           } `}
         >
           <p
