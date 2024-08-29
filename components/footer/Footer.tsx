@@ -3,14 +3,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import S from '../../public/images/logo-solo.png';
+import SDark from '../../public/images/dark-mode-footerr-logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faLinkedin,
-  faInstagram,
-  faFacebook,
-  faWhatsapp,
-} from '@fortawesome/free-brands-svg-icons';
+import { faLinkedin, faInstagram, faFacebook, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import useStore from '@/store/authViewStore';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider'; // Asegúrate de importar el hook useDarkTheme
 
 interface FooterLinkProps {
   href: string;
@@ -24,7 +21,7 @@ function FooterLink({ href, children, view }: FooterLinkProps) {
     <Link
       href={href}
       {...(view ? { onClick: () => setView(view) } : {})}
-      className="rs-link text-sm transition duration-200 ease-in-out hover:text-blue-700"
+      className="rs-link text-sm text-blue-500 dark:text-sky-500 transition duration-200 ease-in-out hover:text-blue-700"
     >
       {children}
     </Link>
@@ -32,6 +29,8 @@ function FooterLink({ href, children, view }: FooterLinkProps) {
 }
 
 export default function Footer() {
+  const { isDark } = useDarkTheme(); 
+
   return (
     <footer className="rs-wrapper-v4 mx-auto max-w-screen-2xl px-4 py-8">
       <div className="one-info-footer flex flex-col gap-4 px-4 sm:flex-row sm:justify-between sm:gap-0 w-full sm:items-start items-center">
@@ -131,11 +130,11 @@ export default function Footer() {
         </div>
         <div className="mb-4 flex flex-grow justify-center sm:mb-0 sm:w-1/3 filter dark:brightness-[0%] dark:invert sm:justify-center">
           <Link href="/">
-            <Image src={S} alt="Cambiar saldo online" width={65} height={70} />
+            <Image src={isDark ? SDark : S} alt="Cambiar saldo online" width={65} height={70} /> 
           </Link>
         </div>
-        <div className="flex items-center justify-center sm:w-1/3 sm:justify-end">
-          <p className="text-center text-xs text-gray-600 dark:text-gray-400">
+        <div className="flex items-center justify-center sm:justify-end sm:w-1/3">
+          <p className="text-gray-600 dark:text-gray-400 text-center text-xs">
             Todos los derechos reservados © SWAPLYAR | Group OA
           </p>
         </div>

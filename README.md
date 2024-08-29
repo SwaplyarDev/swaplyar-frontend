@@ -129,6 +129,7 @@ swaplyar-frontend/
    NEXT_PUBLIC_API_URL=[https://api.swaplyar.com](https://api.swaplyar.com)
    NEXTAUTH_URL=http://localhost:3000
    NEXTAUTH_SECRET=your-secret-key
+   NEXT_PUBLIC_FREE_CURRENCY_APY_KEY=api-key-exchange-rate
    ```
 
 4. **Ejecutar el Proyecto**

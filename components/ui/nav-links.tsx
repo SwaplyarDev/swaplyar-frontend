@@ -1,20 +1,21 @@
 'use client';
 
-import useStore from '@/store/authViewStore';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import useStore from '@/store/authViewStore';
 
 export const Links = [
   { name: 'Quienes Somos', href: '/info/about-us' },
   { name: 'Como Usar Swaplyar', href: '/info/how-to-use' },
   { name: 'Programa de Fidelizacion', href: '/info/loyalty-program' },
-  { name: 'Iniciar sesión', href: '/auth/login-register' },
-  { name: 'Registrarse', href: '/auth/login-register' },
+  { name: 'Iniciar sesión', href: '/auth/login' },
+  { name: 'Registrarse', href: '/auth/new-account' },
 ];
 
 export default function NavLinks() {
+  const pathname = usePathname();
   const { setView } = useStore();
-
   const [currentView, setCurrentView] = useState<string | null>(null);
 
   const handleLogView = (view: string) => {
@@ -54,10 +55,9 @@ export default function NavLinks() {
           <p
             className={`hidden md:block ${link.name === 'Login' || link.name === 'Register' ? 'font-bold' : ''}`}
           >
-            {link.name}
           </p>
-        </Link>
-      ))}
+          </Link>
+        ))}
     </>
   );
 }
