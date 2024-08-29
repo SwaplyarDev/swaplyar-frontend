@@ -41,7 +41,7 @@ export default function StepBlock ({
             contentNode
           ) : (
             <p
-              className=" font-light text-pretty dark:font-extralight lg:text-lg"
+              className=" font-light text-pretty dark:font-extralight lg:text-xl"
               dangerouslySetInnerHTML={{ __html: content || '' }}
             ></p>
           )}
