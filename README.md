@@ -137,8 +137,6 @@ swaplyar-frontend/
    ```bash
    npm run dev
    ```
-  
-
 
    Accede al proyecto en [http://localhost:3000](http://localhost:3000).
 
@@ -205,7 +203,9 @@ swaplyar-frontend/
    ```
 
 8. **Fusionar el PR::**
-    - Después de fusionar, puedes eliminar la rama `feature/nueva-funcionalidad` tanto localmente como en el repositorio remoto.
+
+   - Después de fusionar, puedes eliminar la rama `feature/nueva-funcionalidad` tanto localmente como en el repositorio remoto.
+
    ```bash
    git checkout developer
    git pull origin developer
@@ -213,8 +213,9 @@ swaplyar-frontend/
    ```
 
 9. **Eliminar la Rama Temporal:**
+
    - Después de fusionar, puedes eliminar la rama `feature/nueva-funcionalidad` tanto localmente como en el repositorio remoto.
-   
+
    ```bash
    git branch -d feature/nueva-funcionalidad
    git push origin --delete feature/nueva-funcionalidad

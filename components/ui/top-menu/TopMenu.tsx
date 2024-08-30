@@ -50,20 +50,20 @@ export function TopMenu() {
     <Navbar
       fluid
       rounded
-      className={`sticky top-0 z-50 w-full bg-inherit dark:bg-inherit p-4 shadow-md transition-opacity duration-300 ${
+      className={`sticky top-0 z-50 w-full bg-inherit p-4 shadow-md transition-opacity duration-300 dark:bg-inherit ${
         bgOpacity
           ? 'bg-opacity-90 dark:bg-opacity-90'
           : 'bg-opacity-100 dark:bg-opacity-100'
       }`}
     >
       <div
-        className={`flex w-full max-w-screen-2xl m-auto flex-row-reverse justify-between gap-4 lg:flex-row`}
+        className={`m-auto flex w-full max-w-screen-2xl flex-row-reverse justify-between gap-4 lg:flex-row`}
       >
         <Link
           key="Iniciar sesión"
           href="/auth/login-register"
           onClick={() => setView('login')}
-          className={`relative hidden h-[48px] items-center gap-2 rounded-md p-3 md:flex lg:hidden ${pathname === '/auth/login-register' ? 'underline decoration-lightText dark:decoration-darkText' : ''} m-1 transition duration-300 ease-in-out hover:drop-shadow-light dark:hover:drop-shadow-dark`}
+          className={`relative hidden h-[48px] items-center gap-2 rounded-md p-3 md:flex lg:hidden ${pathname === '/auth/login-register' ? 'underline decoration-lightText dark:decoration-darkText' : ''} dark:hover:drop-shadow-dark m-1 transition duration-300 ease-in-out hover:drop-shadow-light`}
         >
           <p className="font-bold">Iniciar sesión</p>
         </Link>
