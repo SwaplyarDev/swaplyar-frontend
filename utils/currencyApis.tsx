@@ -10,8 +10,8 @@ export async function updateCurrentValueUSDToEUR() {
         let currentValueEURToUSD = 1 / data.data.EUR;
         let currentValueUSDToEUR = data.data.EUR;
 
-        console.log(`con 1 euro compro ${currentValueEURToUSD} dolares`);
-        console.log(`con 1 dolar compro ${currentValueUSDToEUR} euros`);
+        // console.log(`con 1 euro compro ${currentValueEURToUSD} dolares`);
+        // console.log(`con 1 dolar compro ${currentValueUSDToEUR} euros`);
 
         return {currentValueEURToUSD, currentValueUSDToEUR}
     } catch (error) {
@@ -28,8 +28,8 @@ export async function updateCurrentValueUSD() {
         let currentValueUSDBlueSale = data.blue.value_sell;
         let currentValueUSDBluePurchase = data.blue.value_buy;
         
-        console.log(`Dolar blue venta: ${currentValueUSDBlueSale}`);
-        console.log(`Dolar blue compra: ${currentValueUSDBluePurchase}`);
+        // console.log(`Dolar blue venta: ${currentValueUSDBlueSale}`);
+        // console.log(`Dolar blue compra: ${currentValueUSDBluePurchase}`);
 
         return {currentValueUSDBlueSale, currentValueUSDBluePurchase}
     } catch (error) {
@@ -46,8 +46,8 @@ export async function updateCurrentValueEUR() {
         let currentValueEURBlueSale = data.blue_euro.value_sell;
         let currentValueEURBluePurchase = data.blue_euro.value_buy;
 
-        console.log(`Dolar blue venta: ${currentValueEURBlueSale}`);
-        console.log(`Dolar blue compra: ${currentValueEURBluePurchase}`);
+        // console.log(`Euro blue venta: ${currentValueEURBlueSale}`);
+        // console.log(`Euro blue compra: ${currentValueEURBluePurchase}`);
 
         return {currentValueEURBlueSale, currentValueEURBluePurchase}
     } catch (error) {

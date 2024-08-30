@@ -6,7 +6,7 @@ interface ExchangeRate {
     formula: ExchangeRateFormula;
 }
 
-const exchangeRates: ExchangeRate[] = [
+export const exchangeRates: ExchangeRate[] = [
     {
         from: 'bank',
         to: 'payoneer_usd',

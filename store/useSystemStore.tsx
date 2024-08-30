@@ -10,7 +10,7 @@ const defaultSendingSystem: System = {
 };
 
 const defaultReceivingSystem: System = {
-  id: 'banco',
+  id: 'bank',
   name: 'Banco',
   logo: '/images/banco.medium.webp',
   isDisabled: false,
