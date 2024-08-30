@@ -42,11 +42,11 @@ const cardsData = [
 
 const Warranty = () => {
   return (
-    <div className="py-10">
+    <main className="flex w-full flex-col gap-20 py-10">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-      <div className="rs-wrapper-v4 p-4">
+      <div className="rs-wrapper-v4 m-auto flex w-[90%] gap-12 flex-col items-center justify-center">
         <GuaranteeSection
           title="Garantizamos Tu Tranquilidad en Cada Transacción"
           text="En SwaplyAr, nos comprometemos a que cada cambio de divisas sea seguro y confiable. Con nuestra garantía de satisfacción, podés estar seguro de que tus operaciones se manejarán con la mayor eficiencia y cuidado. ¡Confiá en nosotros para una experiencia sin preocupaciones!"
@@ -54,9 +54,9 @@ const Warranty = () => {
           imageAlt="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
         />
 
-        <div className="cards-container flex-center full-height my-8">
+        <section className="mx-auto w-full max-w-screen-md">
           <CaedAboutUs cardsData={cardsData} />
-        </div>
+        </section>
 
         <InfoBlock
           title="Ventajas Exclusivas al Elegir SwaplyAr para tus Transacciones"
@@ -77,12 +77,10 @@ const Warranty = () => {
             </>
           }
         />
-        <div id="flyer-container"></div>
-        <footer>
-          <div id="footer-placeholder"></div>
-        </footer>
+        {/* <div id="flyer-container"></div> */}
+        <footer>{/* <div id="footer-placeholder"></div> */}</footer>
       </div>
-    </div>
+    </main>
   );
 };
 
