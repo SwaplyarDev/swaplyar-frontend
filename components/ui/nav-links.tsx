@@ -1,20 +1,21 @@
 'use client';
 
-import useStore from '@/store/authViewStore';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import useStore from '@/store/authViewStore';
 
 export const Links = [
   { name: 'Quienes Somos', href: '/info/about-us' },
   { name: 'Como Usar Swaplyar', href: '/info/how-to-use' },
   { name: 'Programa de Fidelizacion', href: '/info/loyalty-program' },
-  { name: 'Iniciar sesión', href: '/auth/login-register' },
-  { name: 'Registrarse', href: '/auth/login-register' },
+  { name: 'Iniciar sesión', href: '/auth/login' },
+  { name: 'Registrarse', href: '/auth/new-account' },
 ];
 
 export default function NavLinks() {
+  const pathname = usePathname();
   const { setView } = useStore();
-
   const [currentView, setCurrentView] = useState<string | null>(null);
 
   const handleLogView = (view: string) => {
@@ -31,22 +32,41 @@ export default function NavLinks() {
   }, []);
 
   return (
-    <>
-      {Links.map((link) => (
-        <Link
-          key={link.name}
-          href={link.href}
-          onClick={() => handleLogView(link.name)}
-          className={`relative flex h-[48px] items-center gap-2 rounded-md p-3 ${currentView === link.name ? 'underline decoration-lightText dark:decoration-darkText' : ''} m-1 transition duration-300 ease-in-out hover:drop-shadow-light dark:hover:drop-shadow-dark`}
-        >
-          <p
-            className={`hidden md:block ${link.name === 'Login' || link.name === 'Register' ? 'font-bold' : ''}`}
+    <div className="flex justify-between items-center box-border pb-3 w-full">
+      <div className="flex gap-1 mr-7">
+        {Links.slice(0, -2).map((link) => (
+          <Link
+            key={link.name}
+            href={link.href}
+            className={`relative flex h-[48px] items-center rounded-md
+              ${pathname === link.href ? 'bg-gray-500 text-white border-2 border-sky-200' : 'text-gray-900'}
+              dark:text-white  dark:hover:bg-gray-700
+              text-nav-blue hover:shadow-sm hover:underline
+              transition-colors duration-300 ease-in-out m-2`}
+            style={{ fontSize: '16px' }}
           >
-            {link.name}
-          </p>
-        </Link>
-      ))}
-    </>
+            <p className="hidden md:block">{link.name}</p>
+          </Link>
+        ))}
+      </div>
+      <div className="flex gap-3 ml-20">
+        {Links.slice(-2).map((link) => (
+          <Link
+            key={link.name}
+            href={link.href}
+            onClick={() => handleLogView(link.name)}
+            className={`relative flex h-[48px] items-center gap-0 rounded-md 
+              ${pathname === link.href ? 'bg-gray-500 text-white border-2 border-sky-200' : 'text-gray-900'}
+              dark:text-white  dark:hover:bg-gray-700
+              text-nav-blue hover:shadow-sm hover:underline
+              transition-colors duration-300 ease-in-out m-1`}
+            style={{ fontSize: '16px' }}
+          >
+            <p className="hidden md:block">{link.name}</p>
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 }
 
