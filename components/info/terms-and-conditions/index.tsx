@@ -368,7 +368,7 @@ const TermsAndConditions = () => {
 
           {/* <!--11--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6  shadow-md dark:bg-gray-800">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-gray-800">
               <h2
                 className="mb-4 text-2xl font-semibold"
                 id="cuarta-comisiones-y-operativa"
@@ -388,7 +388,7 @@ const TermsAndConditions = () => {
 
           {/* <!--12--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6  shadow-md dark:bg-gray-800">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-gray-800">
               <h2
                 className="mb-4 text-2xl font-semibold"
                 id="cuarta-comisiones-y-operativa"
@@ -408,7 +408,7 @@ const TermsAndConditions = () => {
 
           {/* <!--13--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6  shadow-md dark:bg-gray-800">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-gray-800">
               <h2
                 className="mb-4 text-2xl font-semibold"
                 id="cuarta-comisiones-y-operativa"
@@ -427,7 +427,7 @@ const TermsAndConditions = () => {
           </div>
 
           {/* <!--14--> */}
-          <div className="rounded-lg bg-gray-100 p-6  shadow-md dark:bg-gray-800">
+          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-gray-800">
             <h2
               className="mb-4 text-2xl font-semibold"
               id="decima-cuarta-defensa-al-consumidor"

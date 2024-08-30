@@ -38,7 +38,7 @@ export default function NavLinks() {
           key={link.name}
           href={link.href}
           onClick={() => handleLogView(link.name)}
-          className={`relative m-1 flex h-[48px] items-center gap-2 p-3 transition-transform ease-in-out duration-300 hover:scale-105 ${
+          className={`relative m-1 flex h-[48px] items-center gap-2 p-3 transition-transform duration-300 ease-in-out hover:scale-105 ${
             currentView === link.name
               ? link.name === 'Registrarse'
                 ? 'underline decoration-darkText dark:decoration-lightText'
@@ -49,7 +49,7 @@ export default function NavLinks() {
               ? ''
               : link.name === 'Iniciar sesión'
                 ? 'rounded-3xl border border-lightText dark:border-darkText'
-                : 'rounded-3xl border border-lightText bg-lightText text-darkText dark:bg-darkText dark:text-lightText dark:border-darkText'
+                : 'rounded-3xl border border-lightText bg-lightText text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText'
           } `}
         >
           <p

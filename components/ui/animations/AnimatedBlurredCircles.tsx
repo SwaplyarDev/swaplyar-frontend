@@ -5,9 +5,11 @@ interface AnimatedBlurredCirclesProps {
   topOffset: number;
 }
 
-const AnimatedBlurredCircles: React.FC<AnimatedBlurredCirclesProps> = ({ topOffset }) => {
+const AnimatedBlurredCircles: React.FC<AnimatedBlurredCirclesProps> = ({
+  topOffset,
+}) => {
   return (
-    <div 
+    <div
       className="container-blur"
       style={{ top: `${topOffset}px` }} // Posicionamos la animación justo debajo del banner
     >

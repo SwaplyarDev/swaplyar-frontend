@@ -64,9 +64,7 @@ export const LoginForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full max-w-lg flex-col rounded bg-white p-8 shadow-md dark:bg-gray-800"
       >
-        <h2 className="mb-5 text-center text-2xl font-bold">
-          Iniciar Sesión
-        </h2>
+        <h2 className="mb-5 text-center text-2xl font-bold">Iniciar Sesión</h2>
 
         <label
           htmlFor="email"
@@ -129,10 +127,7 @@ export const LoginForm = () => {
             className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
             {...register('rememberMe')}
           />
-          <label
-            htmlFor="rememberMe"
-            className="ml-2"
-          >
+          <label htmlFor="rememberMe" className="ml-2">
             Recordar esta cuenta
           </label>
         </div>

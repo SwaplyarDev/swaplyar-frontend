@@ -5,7 +5,12 @@ import Image from 'next/image';
 import S from '../../public/images/logo-solo.png';
 import SDark from '../../public/images/dark-mode-footerr-logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLinkedin, faInstagram, faFacebook, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import {
+  faLinkedin,
+  faInstagram,
+  faFacebook,
+  faWhatsapp,
+} from '@fortawesome/free-brands-svg-icons';
 import useStore from '@/store/authViewStore';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider'; // Asegúrate de importar el hook useDarkTheme
 
@@ -21,7 +26,7 @@ function FooterLink({ href, children, view }: FooterLinkProps) {
     <Link
       href={href}
       {...(view ? { onClick: () => setView(view) } : {})}
-      className="rs-link text-sm text-blue-500 dark:text-sky-500 transition duration-200 ease-in-out hover:text-blue-700"
+      className="rs-link text-sm text-blue-500 transition duration-200 ease-in-out hover:text-blue-700 dark:text-sky-500"
     >
       {children}
     </Link>
@@ -29,12 +34,12 @@ function FooterLink({ href, children, view }: FooterLinkProps) {
 }
 
 export default function Footer() {
-  const { isDark } = useDarkTheme(); 
+  const { isDark } = useDarkTheme();
 
   return (
     <footer className="rs-wrapper-v4 mx-auto max-w-screen-2xl px-4 py-8">
-      <div className="one-info-footer flex flex-col gap-4 px-4 sm:flex-row sm:justify-between sm:gap-0 w-full sm:items-start items-center">
-        <div className="mb-4 flex flex-col items-center sm:items-start text-left sm:mb-0 sm:w-1/3">
+      <div className="one-info-footer flex w-full flex-col items-center gap-4 px-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0">
+        <div className="mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-start">
           <h4 className="mb-2 text-lg font-bold">
             Regístrate y disfruta de beneficios
           </h4>
@@ -49,9 +54,7 @@ export default function Footer() {
           </FooterLink>
         </div>
         <div className="mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-center sm:text-center">
-          <h4 className="mb-2 text-lg font-bold">
-            Normativa
-          </h4>
+          <h4 className="mb-2 text-lg font-bold">Normativa</h4>
           <FooterLink href="/info/warranty">Garantía</FooterLink>
           <FooterLink href="/info/terms-and-conditions">
             Términos y condiciones
@@ -62,9 +65,7 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col items-center text-left sm:w-1/3 sm:items-end sm:text-right">
-          <h4 className="mb-2 text-lg font-bold">
-            Atención al Cliente
-          </h4>
+          <h4 className="mb-2 text-lg font-bold">Atención al Cliente</h4>
           <FooterLink href="/info/help-center">Centro de Ayuda</FooterLink>
           <FooterLink href="/info/about-us">Quienes Somos</FooterLink>
           <FooterLink href="/info/why-choose-swaplyar">
@@ -128,13 +129,18 @@ export default function Footer() {
             />
           </a>
         </div>
-        <div className="mb-4 flex flex-grow justify-center sm:mb-0 sm:w-1/3 filter dark:brightness-[0%] dark:invert sm:justify-center">
+        <div className="mb-4 flex flex-grow justify-center filter dark:brightness-[0%] dark:invert sm:mb-0 sm:w-1/3 sm:justify-center">
           <Link href="/">
-            <Image src={isDark ? SDark : S} alt="Cambiar saldo online" width={65} height={70} /> 
+            <Image
+              src={isDark ? SDark : S}
+              alt="Cambiar saldo online"
+              width={65}
+              height={70}
+            />
           </Link>
         </div>
-        <div className="flex items-center justify-center sm:justify-end sm:w-1/3">
-          <p className="text-gray-600 dark:text-gray-400 text-center text-xs">
+        <div className="flex items-center justify-center sm:w-1/3 sm:justify-end">
+          <p className="text-center text-xs text-gray-600 dark:text-gray-400">
             Todos los derechos reservados © SWAPLYAR | Group OA
           </p>
         </div>

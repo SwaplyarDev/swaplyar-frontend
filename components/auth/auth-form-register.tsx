@@ -79,9 +79,7 @@ export const RegisterForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="relative flex w-full max-w-lg flex-col rounded bg-white p-8 shadow-md dark:bg-gray-800"
       >
-        <h2 className="mb-5 text-center text-2xl font-bold">
-          Crear Cuenta
-        </h2>
+        <h2 className="mb-5 text-center text-2xl font-bold">Crear Cuenta</h2>
 
         <div className="flex flex-col justify-between xs:flex-row">
           <div className="flex flex-col xs:max-w-48">
@@ -270,10 +268,7 @@ export const RegisterForm = () => {
             className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
             {...register('rememberMe')}
           />
-          <label
-            htmlFor="rememberMe"
-            className="ml-2"
-          >
+          <label htmlFor="rememberMe" className="ml-2">
             Recordar esta cuenta
           </label>
         </div>

@@ -1,4 +1,4 @@
-import LoyaltyProgram from "@/components/info/loyaltyProgram/LoyaltyProgram";
+import LoyaltyProgram from '@/components/info/loyaltyProgram/LoyaltyProgram';
 
 const page = () => {
   return (
