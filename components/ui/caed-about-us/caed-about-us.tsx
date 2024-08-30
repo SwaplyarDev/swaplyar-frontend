@@ -68,7 +68,7 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
                                             />
                                             <h3 className="text-xl w-full mt-2 absolute bottom-0 bg-opacity-75 bg-black text-white p-2 rounded">{card.title}</h3>
                                         </div>
-                                        <div className="card-back absolute w-full h-full bg-dark-blue shadow-custom-black dark:bg-gray-800 text-white dark:text-white backface-hidden flex flex-col items-center justify-center p-4 rounded-lg shadow-lg">
+                                        <div className="card-back absolute w-full h-full bg-dark-blue shadow-custom-black dark:bg-gray-800 text-white dark:text-white backface-hidden flex flex-col items-center justify-center p-4 rounded-lg">
                                             <h3 className="text-xl">{card.backTitle}</h3>
                                             <p className="mt-2">{card.backText}</p>
                                         </div>
