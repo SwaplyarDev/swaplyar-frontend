@@ -36,7 +36,7 @@ const RequestPage = () => {
           title="Complete el formulario para procesar su transferencia bancaria."
           content={
             <>
-              <p className="mb-4 text-lg text-center md:text-left">
+              <p className="mb-4 text-center text-lg md:text-left">
                 Ingrese sus datos personales en el formulario: Nombre, Apellido,
                 Número de WhatsApp, CBU o Alias, CUIL, Correo Electrónico y
                 Comprobante.

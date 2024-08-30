@@ -8,7 +8,7 @@ import useStore from '@/store/authViewStore';
 export const Links = [
   { name: 'Quienes Somos', href: '/info/about-us' },
   { name: 'Como Usar Swaplyar', href: '/info/how-to-use' },
-  { name: 'Programa de Fidelizacion', href: '/info/loyalty-program' },
+  { name: 'Programa de Fidelización', href: '/info/loyalty-program' },
   { name: 'Iniciar sesión', href: '/auth/login' },
   { name: 'Registrarse', href: '/auth/new-account' },
 ];
@@ -32,44 +32,33 @@ export default function NavLinks() {
   }, []);
 
   return (
-    <div className="flex justify-between items-center box-border pb-3 w-full">
-      <div className="flex gap-1 mr-7">
-        {Links.slice(0, -2).map((link) => (
-          <Link
-            key={link.name}
-            href={link.href}
-            className={`relative flex h-[48px] items-center rounded-md
-              ${pathname === link.href ? 'bg-gray-500 text-white border-2 border-sky-200' : 'text-gray-900'}
-              dark:text-white  dark:hover:bg-gray-700
-              text-nav-blue hover:shadow-sm hover:underline
-              transition-colors duration-300 ease-in-out m-2`}
-            style={{ fontSize: '16px' }}
+    <>
+      {Links.map((link) => (
+        <Link
+          key={link.name}
+          href={link.href}
+          onClick={() => handleLogView(link.name)}
+          className={`relative m-1 flex h-[48px] items-center gap-2 p-3 transition-transform duration-300 ease-in-out hover:scale-105 ${
+            currentView === link.name
+              ? link.name === 'Registrarse'
+                ? 'underline decoration-darkText dark:decoration-lightText'
+                : 'underline decoration-lightText dark:decoration-darkText'
+              : ''
+          } ${
+            link.name !== 'Iniciar sesión' && link.name !== 'Registrarse'
+              ? ''
+              : link.name === 'Iniciar sesión'
+                ? 'rounded-3xl border border-lightText dark:border-darkText'
+                : 'rounded-3xl border border-lightText bg-lightText text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText'
+          } `}
+        >
+          <p
+            className={`hidden md:block ${link.name === 'Login' || link.name === 'Register' ? 'font-bold' : ''}`}
           >
-            <p className="hidden md:block">{link.name}</p>
-          </Link>
-        ))}
-      </div>
-      <div className="flex gap-3 ml-20">
-        {Links.slice(-2).map((link) => (
-          <Link
-            key={link.name}
-            href={link.href}
-            onClick={() => handleLogView(link.name)}
-            className={`relative flex h-[48px] items-center gap-0 rounded-md 
-              ${pathname === link.href ? 'bg-gray-500 text-white border-2 border-sky-200' : 'text-gray-900'}
-              dark:text-white  dark:hover:bg-gray-700
-              text-nav-blue hover:shadow-sm hover:underline
-              transition-colors duration-300 ease-in-out m-1`}
-            style={{ fontSize: '16px' }}
-          >
-            <p className="hidden md:block">{link.name}</p>
-          </Link>
-        ))}
-      </div>
-    </div>
+            {link.name}
+          </p>
+        </Link>
+      ))}
+    </>
   );
 }
-
-//hover:drop-shadow-light dark:hover:drop-shadow-dark
-
-//hover:text-shadow-light dark:hover:text-shadow-dark
