@@ -8,7 +8,7 @@ import useStore from '@/store/authViewStore';
 export const Links = [
   { name: 'Quienes Somos', href: '/info/about-us' },
   { name: 'Como Usar Swaplyar', href: '/info/how-to-use' },
-  { name: 'Programa de Fidelizacion', href: '/info/loyalty-program' },
+  { name: 'Programa de Fidelización', href: '/info/loyalty-program' },
   { name: 'Iniciar sesión', href: '/auth/login' },
   { name: 'Registrarse', href: '/auth/new-account' },
 ];
