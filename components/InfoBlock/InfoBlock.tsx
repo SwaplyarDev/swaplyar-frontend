@@ -35,12 +35,12 @@ export default function InfoBlock({
             {title}
           </h2>
         </div>
-        <div className="info-content pl-2">
+        <div className="info-content text-center text-xl text-gray-blue dark:text-white md:text-left">
           {contentNode ? (
             contentNode
           ) : (
             <p
-              className="font-light dark:font-extralight"
+              className="text-gray-700 dark:text-white"
               dangerouslySetInnerHTML={{ __html: content || '' }}
             ></p>
           )}
