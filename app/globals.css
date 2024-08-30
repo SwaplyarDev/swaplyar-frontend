@@ -42,38 +42,55 @@ body {
 
     
 
-}
-
+}*/
 
 .container-blur {
-  @apply w-full h-[1200px] overflow-hidden flex justify-center relative left-0;
+  @apply w-full h-[150vh] overflow-hidden flex justify-center relative; 
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  clip-path: inset(0 0 -10% 0); /* Ajusta este valor si es necesario } */
+  top: 20%;
+  right: 5%;
+  overflow: hidden;
+}
 
-
-/* Caja */
 .box {
-  @apply w-full absolute rounded-full;
+  @apply w-full h-full absolute rounded-full;
   animation: spin 30s infinite linear;
 }
 
-#bannerHTUButton {
-  border: none;
-  width: 200px;
-  margin:auto;
-  background-color: #012d8a;
-  color: #ffffff;
-  padding-left: 20px;
-  padding-right: 20px;
-  min-width: 150px;
-  border-radius: 5px;
-  transition: transform 0.2s ease-in-out;
-  font-size: 16px;
-  margin-top: 2%;
+.ball {
+  @apply absolute w-[110px] h-[110px] blur-[4em]  rounded-full;
+}
+
+/* Ajustes para posiciones más centradas y rotación en círculo */
+.ball1 { 
+  background-color: rgba(42, 41, 120, 0.601); 
+  top: 35%; 
+  left: 40%; 
+}
+
+.ball2 { 
+  background-color: rgba(42, 41, 120, 0.601); 
+  top: 35%; 
+  right: 40%; 
+}
+
+.ball3 { 
+  background-color: rgba(42, 41, 120, 0.601); 
+  bottom: 35%; 
+  left: 50%; 
+  transform: translateX(-50%); 
+}
+
+.ball4 { 
+  background-color: rgba(42, 41, 120, 0.601);  
+  bottom: 25%; 
+  left: 30%; 
+}
+
+.ball5 { 
+  background-color: rgba(42, 41, 120, 0.601); 
+  bottom: 25%; 
+  right: 30%; 
 }
 
 @keyframes spin {
@@ -81,44 +98,36 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-.ball {
-  @apply absolute w-[130px] h-[130px] rounded-full blur-[5em];
-}
-
-.ball1 { background-color: rgba(42, 41, 120, 0.601); top: 10%; left: 25%; }
-.ball2 { background-color: rgba(42, 41, 120, 0.601); top: 10%; right: 10%; }
-.ball3 { background-color: rgba(42, 41, 120, 0.601); bottom: 10%; left: 50%; }
-.ball4 { background-color: rgba(42, 41, 120, 0.601); bottom: 0; left: 10%; }
-.ball5 { background-color: rgba(42, 41, 120, 0.601); bottom: 50%; right: 15%; }
-
-
-
 @media (max-width: 640px) {
   .container-blur {
-    @apply w-full h-[200vh] overflow-hidden flex justify-center relative left-0;
+    @apply w-full h-[200vh] overflow-hidden flex justify-center relative;
     position: absolute;
-    
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     clip-path: inset(0 0 -5% 0); 
+    overflow: hidden;
   }
+
   .box {
     @apply w-full h-[90%] absolute rounded-full;
     animation: spin 30s infinite linear;
-    bottom: 0; 
-     }
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 
   .ball {
     @apply absolute w-[110px] h-[110px] rounded-full blur-[5em];
   }
 
-  .ball1 { background-color: rgba(42, 41, 120, 0.601); top: 30%; left: 20%; }
-  .ball2 { background-color: rgba(42, 41, 120, 0.601); top: 35%; right: 15%; }
-  .ball3 { background-color: rgba(42, 41, 120, 0.601); bottom: 25%; left: 50%; }
-  .ball4 { background-color: rgba(42, 41, 120, 0.601); bottom: 10%; left: 15%; }
-  .ball5 { background-color: rgba(42, 41, 120, 0.601); bottom: 30%; right: 10%; }
+  /* Ajustes para posiciones más centradas en dispositivos móviles */
+  .ball1 { background-color: rgb(120, 41, 41); top: 35%; left: 35%; }
+  .ball2 { background-color: rgb(54, 120, 41); top: 35%; right: 35%; }
+  .ball3 { background-color: rgb(120, 41, 110); bottom: 35%; left: 50%; transform: translateX(-50%); }
+  .ball4 { background-color: rgb(42, 41, 120); bottom: 25%; left: 25%; }
+  .ball5 { background-color: rgba(42, 41, 120, 0.601); bottom: 25%; right: 25%; }
 }
 
 

@@ -69,10 +69,10 @@ const AboutUs = () => {
         </FlyerTrabajo>
       </div>
 
-      <div className="  text-black dark:text-white pt-5">
-      <div className="rs-wrapper-v4 w-full max-w-screen-xs:w-[90%] mx-auto text-center">
+      <div className=" mx-auto  text-black dark:text-white pt-5">
+      <div className="  mx-auto text-center">
   <div className="container-text text-xl sm:text-2xl lg:text-4xl pt-10 sm:pt-20 pb-12 sm:pb-24">
-    <h1 className="max-w-[1000px] lg:text-4xl sm:w-[80%] text-left mx-auto">
+    <h1 className="max-w-[1000px]  lg:text-4xl sm:w-[80%] text-left mx-auto">
       En SwaplyAr, garantizamos un intercambio seguro y confiable de tu
       dinero de PayPal. Estamos comprometidos con tu seguridad y
       satisfacción.
@@ -81,9 +81,9 @@ const AboutUs = () => {
   <AnimatedBlurredCircles topOffset={bannerHeight} />
 </div>
 
-<div className="rs-wrapper-v4 w-full max-w-screen-xs:w-[90%] max-w-[1000px] mx-auto lg:mt-8 mb-12 sm:mt-4 md:mt-8 text-justify">
+<div className="w-full  max-w-[1000px] mx-auto lg:mt-8 mb-12 sm:mt-4 md:mt-8 text-justify">
   <h2 className="text-xl sm:text-4xl">Nuestra misión y valores</h2>
-  <h5 className="text-lg md:text-base sm:text-base lg:text-xl mt-4 md:mt-4 sm:mt-6 mx-auto">
+  <h5 className="text-lg md:text-base  sm:text-base lg:text-xl mt-4 md:mt-4 sm:mt-6 mx-auto">
     SwaplyAr nació de una simple necesidad, intercambiar saldo y que cada
     persona que lo utiliza reciba lo pactado, acompañándolo en todo el
     proceso. Pronto su crecimiento fue exponencial debido a la
