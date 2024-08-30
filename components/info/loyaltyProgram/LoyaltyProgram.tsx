@@ -29,7 +29,7 @@ function LoyaltyProgram() {
         <div className="mt-4">
           <button
             id="submit-25456"
-            className="rounded bg-blue-600 text-darkText px-4 py-2"
+            className="rounded bg-blue-600 px-4 py-2 text-darkText"
             onClick={() => handleChange()}
           >
             ¡Únete ya!
@@ -37,7 +37,7 @@ function LoyaltyProgram() {
         </div>
       </div>
 
-      <div className=" py-10 ">
+      <div className="py-10">
         <div className="text-center">
           <h2 className="mb-4 text-2xl font-bold">
             Obtén beneficios exclusivos cada vez que realices intercambio de
