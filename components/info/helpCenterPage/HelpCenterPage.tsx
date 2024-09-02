@@ -49,7 +49,7 @@ const HelpCenterPage = () => {
               height={300}
             />
           </span>
-          <span className=' flex flex-col items-center text-center'>
+          <span className="flex flex-col items-center text-center">
             <h2 className="text-2xl font-bold">
               SwaplyAr Plus Rewards™ premia tu fidelidad, con el programa de
               fidelización

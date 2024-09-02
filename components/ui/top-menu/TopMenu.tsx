@@ -50,15 +50,13 @@ export function TopMenu() {
     <Navbar
       fluid
       rounded
-      className={`sticky top-0 z-50 w-full p-6 dark:bg-lightText shadow-md transition-opacity duration-200 ${
+      className={`sticky top-0 z-50 w-full p-6 shadow-md transition-opacity duration-200 dark:bg-lightText ${
         bgOpacity
           ? 'bg-opacity-80 dark:bg-opacity-80'
           : 'bg-opacity-100 dark:bg-opacity-100'
       }`}
     >
-      <div
-        className="m-auto flex w-full max-w-screen-2xl flex-row-reverse justify-between gap-4 lg:flex-row"
-      >
+      <div className="m-auto flex w-full max-w-screen-2xl flex-row-reverse justify-between gap-4 lg:flex-row">
         <Link
           key="Iniciar sesión"
           href="/auth/login-register"
