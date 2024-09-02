@@ -77,33 +77,6 @@ const AboutUs = () => {
         </FlyerTrabajo>
       </div>
 
-<<<<<<< HEAD
-      <div className=" mx-auto  text-black dark:text-white pt-5">
-      <div className="  mx-auto text-center">
-  <div className="container-text text-xl sm:text-2xl lg:text-4xl pt-10 sm:pt-20 pb-12 sm:pb-24">
-    <h1 className="max-w-[1000px]  lg:text-4xl sm:w-[80%] text-left mx-auto">
-      En SwaplyAr, garantizamos un intercambio seguro y confiable de tu
-      dinero de PayPal. Estamos comprometidos con tu seguridad y
-      satisfacción.
-    </h1>
-  </div>
-  <AnimatedBlurredCircles topOffset={bannerHeight} />
-</div>
-
-<div className="w-full  max-w-[1000px] mx-auto lg:mt-8 mb-12 sm:mt-4 md:mt-8 text-justify">
-  <h2 className="text-xl sm:text-4xl">Nuestra misión y valores</h2>
-  <h5 className="text-lg md:text-base  sm:text-base lg:text-xl mt-4 md:mt-4 sm:mt-6 mx-auto">
-    SwaplyAr nació de una simple necesidad, intercambiar saldo y que cada
-    persona que lo utiliza reciba lo pactado, acompañándolo en todo el
-    proceso. Pronto su crecimiento fue exponencial debido a la
-    confiabilidad, seguridad y velocidad en cada operación. Somos una
-    empresa en la que las personas usuarias confían plenamente, ya que
-    la importancia de ser transparente hacia ellos, es uno de nuestros
-    pilares fundamentales. Ayudamos a que cada persona consiga, lo que
-    está buscando de una manera fácil y protegida.
-  </h5>
-</div>
-=======
       <div className="pt-5 text-black dark:text-white">
         <div className="rs-wrapper-v4 max-w-screen-xs:w-[90%] mx-auto w-full text-center">
           <div className="container-text pb-12 pt-10 text-xl sm:pb-24 sm:pt-20 sm:text-2xl lg:text-4xl">
@@ -129,7 +102,6 @@ const AboutUs = () => {
             está buscando de una manera fácil y protegida.
           </h5>
         </div>
->>>>>>> 9970c73a91b31f79284a47baf7ccef00a893adaf
 
         <div className="mx-auto w-full max-w-[1000px]">
           <CaedAboutUs cardsData={cardsData} />
