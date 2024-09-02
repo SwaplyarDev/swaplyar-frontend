@@ -20,6 +20,8 @@ interface SystemSelectProps {
   label: string;
   inputId: string;
   isSending: boolean;
+  showOptions: boolean;
+  toggleSelect: () => void;
 }
 
 export default function SystemSelect({
@@ -29,17 +31,29 @@ export default function SystemSelect({
   label,
   inputId,
   isSending,
+  showOptions,
+  toggleSelect,
 }: SystemSelectProps) {
-  const [showOptions, setShowOptions] = useState(false);
   const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [showOptionsInternal, setShowOptionsInternal] = useState(false);
 
-  // Zustand Store
   const {
     selectedSendingSystem,
     selectedReceivingSystem,
-    setSelectedSendingSystem,
-    setSelectedReceivingSystem,
+    activeSelect,
+    setActiveSelect,
   } = useSystemStore();
+
+  const handleClick = () => {
+    if (activeSelect === (isSending ? 'send' : 'receive')) {
+      // Si el select activo es el que estamos haciendo clic, simplemente cierra el menú
+      setShowOptionsInternal((prev) => !prev);
+    } else {
+      // Si no es el select activo, asegúrate de cerrar el menú del select previo y abrir el actual
+      setActiveSelect(isSending ? 'send' : 'receive');
+      setShowOptionsInternal(true);
+    }
+  };
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -60,13 +74,9 @@ export default function SystemSelect({
   }, [darkMode]);
 
   const handleOptionClick = (system: System) => {
-    if (isSending) {
-      setSelectedSendingSystem(system);
-    } else {
-      setSelectedReceivingSystem(system);
-    }
     onSystemSelect(system);
-    setShowOptions(false);
+    setShowOptionsInternal(false);
+    setActiveSelect(null); // Opcional: cierra el menú después de seleccionar una opción
   };
 
   const updatedSystems = systems.map((system) => ({
@@ -78,14 +88,11 @@ export default function SystemSelect({
 
   return (
     <div className="relative mt-4">
-      <span className="text-lg">
-        {isSending ? 'Envías' : 'Recibes'} {selectedSystem?.coin}
-      </span>
       <button
-        className={`border-[#012c8a] dark:border-gray-200 rounded-br-none rounded-tr-none w-64 system-input-select flex h-28 border-r-0 items-center justify-start rounded border p-2 ${
+        className={`system-input-select flex h-[7.4rem] w-64 items-center justify-start rounded-2xl rounded-bl-none rounded-tl-none border border-l-0 border-[#012c8a] p-2 dark:border-gray-200 ${
           isSending ? 'animation-system-send' : 'animation-system-receive'
         } ${darkMode ? 'dark' : ''}`}
-        onClick={() => setShowOptions(!showOptions)}
+        onClick={handleClick}
       >
         {selectedSystem ? (
           <>
@@ -95,17 +102,14 @@ export default function SystemSelect({
               width={200}
               height={70}
             />
-            {/* <span className="w-full px-1 text-start">
-              {selectedSystem.name}
-            </span> */}
           </>
         ) : (
           <></>
         )}
         <FontAwesomeIcon icon={faChevronDown} width={32} height={16} />
       </button>
-      {showOptions && (
-        <ul className="scrollable-list w-64 absolute z-10 rounded max-h-64 overflow-y-auto border bg-white shadow-md dark:bg-gray-800">
+      {showOptionsInternal && (
+        <ul className="scrollable-list absolute z-10 max-h-64 w-64 overflow-y-auto rounded border bg-white shadow-md dark:bg-gray-800">
           {updatedSystems.map((system) => (
             <li
               key={system.id}
@@ -120,7 +124,6 @@ export default function SystemSelect({
                 width={200}
                 height={70}
               />
-              {/* <span className="px-1">{system.name}</span> */}
             </li>
           ))}
         </ul>
@@ -128,3 +131,4 @@ export default function SystemSelect({
     </div>
   );
 }
+

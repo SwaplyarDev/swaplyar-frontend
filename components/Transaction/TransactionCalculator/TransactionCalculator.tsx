@@ -26,6 +26,8 @@ export default function TransactionCalculator() {
     selectedReceivingSystem,
     setSelectedSendingSystem,
     setSelectedReceivingSystem,
+    activeSelect,
+    setActiveSelect,
   } = useSystemStore();
   const [exchangeRate, setExchangeRate] = useState<number>(0);
   const [sendAmount, setSendAmount] = useState(0);
@@ -95,14 +97,14 @@ export default function TransactionCalculator() {
   const findExchangeRate = useCallback(async () => {
     if (selectedSendingSystem && selectedReceivingSystem) {
       let rate = 0;
-  
+
       // Busca la fórmula adecuada en el array de exchangeRates
       const rateInfo = exchangeRates.find(
         (r) =>
           r.from === selectedSendingSystem.id &&
-          r.to === selectedReceivingSystem.id
+          r.to === selectedReceivingSystem.id,
       );
-  
+
       if (rateInfo) {
         let apiRate = 0;
         if (selectedSendingSystem.coin === selectedReceivingSystem.coin) {
@@ -116,10 +118,16 @@ export default function TransactionCalculator() {
           }
         } else {
           // Obtén el valor de la API y aplica la fórmula del exchangeRates
-          if (selectedSendingSystem.coin === 'USD' && selectedReceivingSystem.coin === 'EUR') {
+          if (
+            selectedSendingSystem.coin === 'USD' &&
+            selectedReceivingSystem.coin === 'EUR'
+          ) {
             const { currentValueUSDToEUR } = await updateCurrentValueUSDToEUR();
             apiRate = currentValueUSDToEUR;
-          } else if (selectedSendingSystem.coin === 'EUR' && selectedReceivingSystem.coin === 'USD') {
+          } else if (
+            selectedSendingSystem.coin === 'EUR' &&
+            selectedReceivingSystem.coin === 'USD'
+          ) {
             const { currentValueEURToUSD } = await updateCurrentValueUSDToEUR();
             apiRate = currentValueEURToUSD;
           } else if (selectedSendingSystem.coin === 'USD') {
@@ -129,30 +137,33 @@ export default function TransactionCalculator() {
             const { currentValueEURBlueSale } = await updateCurrentValueEUR();
             apiRate = currentValueEURBlueSale;
           }
-  
+
           // Aplica la fórmula para calcular la tasa de cambio
           rate = rateInfo.formula(1, apiRate); // Usa 1 como cantidad para obtener el valor de tasa
         }
-  
+
         console.log('Rate Info:', rateInfo);
         console.log('API Rate:', apiRate);
         console.log('Calculated Rate:', rate);
-        
+
         setExchangeRate(rate);
       }
     }
-  }, [selectedSendingSystem, selectedReceivingSystem]);  
+  }, [selectedSendingSystem, selectedReceivingSystem]);
 
   useEffect(() => {
     findExchangeRate();
   }, [findExchangeRate]);
 
-  const calculateReceiveAmount = useCallback((amount: number) => {
-    if (exchangeRate) {
-      return amount * exchangeRate;
-    }
-    return 0;
-  }, [exchangeRate]);  
+  const calculateReceiveAmount = useCallback(
+    (amount: number) => {
+      if (exchangeRate) {
+        return amount * exchangeRate;
+      }
+      return 0;
+    },
+    [exchangeRate],
+  );
 
   useEffect(() => {
     setReceiveAmount(calculateReceiveAmount(sendAmount));
@@ -171,8 +182,10 @@ export default function TransactionCalculator() {
   const handleSystemSelection = (system: System, isSending: boolean) => {
     if (isSending) {
       setSelectedSendingSystem(system);
+      setSelectedReceivingSystem(system.id === selectedReceivingSystem?.id ? null : selectedReceivingSystem);
     } else {
       setSelectedReceivingSystem(system);
+      setSelectedSendingSystem(system.id === selectedSendingSystem?.id ? null : selectedSendingSystem);
     }
   };
 
@@ -183,10 +196,19 @@ export default function TransactionCalculator() {
     const tempAmount = sendAmount;
     setSendAmount(receiveAmount);
     setReceiveAmount(tempAmount);
+
+    // Espera a que las actualizaciones de estado se completen
+    setActiveSelect(null);
   };
 
   const handleDirection = () => {
     router.push('/request');
+  };
+
+  const toggleSelect = (selectType: 'send' | 'receive') => {
+    const newValue = activeSelect === selectType ? null : selectType;
+
+    setActiveSelect(newValue);
   };
 
   console.log('Selected Sending System:', selectedSendingSystem);
@@ -198,27 +220,45 @@ export default function TransactionCalculator() {
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
       <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-white p-8 shadow-md dark:bg-gray-800 dark:text-white">
-        <p className="w-full max-w-lg text-2xl text-[#012c8a] dark:text-darkText">
-          1 {selectedSendingSystem?.coin} / {exchangeRate.toFixed(4)} {selectedReceivingSystem?.coin}
+        <p className="w-full max-w-lg text-[2rem] text-[#012c8a] dark:text-darkText">
+          1 {selectedSendingSystem?.coin} / {exchangeRate.toFixed(4)}{' '}
+          {selectedReceivingSystem?.coin}
         </p>
 
-        <div className="flex w-full max-w-lg items-center text-[#012c8a] dark:text-darkText">
+        <div className="flex w-full max-w-lg flex-row-reverse items-end text-[#012c8a] dark:text-darkText">
           <SystemSelect
             systems={systems}
             selectedSystem={selectedSendingSystem}
             onSystemSelect={(system) => handleSystemSelection(system, true)}
-            label=""
+            label="Selecciona un sistema de envío"
             inputId="sendInputUniqueID"
             isSending={true}
+            showOptions={activeSelect === 'send'}
+            toggleSelect={() => toggleSelect('send')}
           />
-          <div className="mt-11 flex h-28 w-full items-center justify-between rounded rounded-bl-none rounded-tl-none border border-l-0 border-[#012c8a] p-2 dark:border-gray-200">
+
+          <div className="flex h-[7.4rem] flex-col justify-between">
+            <div className="h-[1px] w-[1px] bg-[#012c8a] dark:bg-gray-200"></div>
+            <div className="bg h-24 bg-[#012c8a] dark:bg-gray-200"></div>
+            <div className="h-[1px] w-[1px] bg-[#012c8a] dark:bg-gray-200"></div>
+          </div>
+
+          <div className="relative flex h-32 w-full items-center rounded rounded-br-none rounded-tr-none">
             <input
               type="text"
-              className="h-full w-full border-transparent bg-transparent p-2 text-xl focus:border-transparent focus:ring-transparent"
+              className="peer h-full w-full border-0 bg-transparent p-2 text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0"
               id="sendInputUniqueID"
               value={sendAmount}
               onChange={(e) => setSendAmount(parseFloat(e.target.value) || 0)}
             />
+            <fieldset
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 rounded-bl-2xl rounded-tl-2xl border-y border-l border-[#012c8a] dark:border-gray-200"
+            >
+              <legend className="mx-4 px-1 text-sm">
+                <span>Envías {selectedSendingSystem?.coin}</span>
+              </legend>
+            </fieldset>
           </div>
         </div>
         <div className="mt-4 flex h-full items-center justify-center">
@@ -227,28 +267,51 @@ export default function TransactionCalculator() {
         <SystemInfo pointBorder="border" linePosition="up">
           <p>Información del sistema de recepción</p>
         </SystemInfo>
-        <div className="flex w-full max-w-lg items-center text-[#012c8a] dark:text-darkText">
-          <SystemSelect
-            systems={systems}
-            selectedSystem={selectedReceivingSystem}
-            onSystemSelect={(system) => handleSystemSelection(system, false)}
-            label=""
-            inputId="receptionInputUniqueID"
-            isSending={false}
-          />
-          <div className="mt-11 flex h-28 w-full items-center justify-between rounded rounded-bl-none rounded-tl-none border border-l-0 border-[#012c8a] p-2 dark:border-gray-200">
-            <input
-              type="text"
-              className="h-full w-full border-transparent bg-transparent p-2 text-xl focus:border-transparent focus:ring-transparent"
-              id="receptionInputUniqueID"
-              value={receiveAmount}
-              onChange={handleReceiveAmountChange}
+        <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
+          {/* Contenedor del input y SystemSelect */}
+          <div className="flex w-full flex-row-reverse items-end">
+            <SystemSelect
+              systems={systems}
+              selectedSystem={selectedReceivingSystem}
+              onSystemSelect={(system) => handleSystemSelection(system, false)}
+              label=""
+              inputId="receptionInputUniqueID"
+              isSending={false}
+              showOptions={activeSelect === 'receive'}
+              toggleSelect={() => toggleSelect('receive')}
             />
+
+            <div className="flex h-[7.4rem] flex-col justify-between">
+              <div className="h-[1px] w-[1px] bg-[#012c8a] dark:bg-gray-200"></div>
+              <div className="bg h-24 bg-[#012c8a] dark:bg-gray-200"></div>
+              <div className="h-[1px] w-[1px] bg-[#012c8a] dark:bg-gray-200"></div>
+            </div>
+
+            <div className="relative mt-[0.4rem] flex h-32 w-full items-center rounded rounded-bl-none rounded-tl-none">
+              <input
+                type="text"
+                className="peer h-full w-full border-0 bg-transparent p-2 text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0"
+                id="receptionInputUniqueID"
+                value={receiveAmount}
+                onChange={handleReceiveAmountChange}
+              />
+
+              {/* Fieldset para el borde del input */}
+              <fieldset
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 rounded-bl-2xl rounded-tl-2xl border-y border-l border-[#012c8a] dark:border-gray-200"
+              >
+                <legend className="mx-4 px-1 text-sm">
+                  <span>Recibes {selectedReceivingSystem?.coin}</span>
+                </legend>
+              </fieldset>
+            </div>
           </div>
         </div>
-        <div id="goToPayPalButton" className="mt-4">
+
+        <div id="goToPayPalButton" className="mt-8">
           <button
-            className="bg- buttonPay rounded-md bg-blue-500 p-2 px-10 text-darkText hover:bg-blue-700 focus:outline-none"
+            className="bg- buttonPay rounded-3xl bg-blue-500 p-2 px-10 py-3 text-darkText hover:bg-blue-700 focus:outline-none"
             onClick={handleDirection}
           >
             Realizar el pago

@@ -20,15 +20,51 @@ const defaultReceivingSystem: System = {
 interface SystemStore {
   selectedSendingSystem: System | null;
   selectedReceivingSystem: System | null;
+  activeSelect: 'send' | 'receive' | null;
+  disabledSystems: Set<string>;
   setSelectedSendingSystem: (system: System | null) => void;
   setSelectedReceivingSystem: (system: System | null) => void;
+  setActiveSelect: (selectType: 'send' | 'receive' | null) => void;
+  disableSystem: (systemId: string) => void;
+  enableSystem: (systemId: string) => void;
 }
 
 export const useSystemStore = create<SystemStore>((set) => ({
   selectedSendingSystem: defaultSendingSystem,
   selectedReceivingSystem: defaultReceivingSystem,
-  setSelectedSendingSystem: (system) =>
-    set((state) => ({ selectedSendingSystem: system })),
-  setSelectedReceivingSystem: (system) =>
-    set((state) => ({ selectedReceivingSystem: system })),
+  activeSelect: null,
+  disabledSystems: new Set(),
+  setSelectedSendingSystem: (system) => {
+    set({ selectedSendingSystem: system });
+    set({ activeSelect: 'send' });
+    set((state) => {
+      const newDisabledSystems = new Set(state.disabledSystems);
+      if (system) {
+        newDisabledSystems.add(system.id);
+      }
+      return { disabledSystems: newDisabledSystems };
+    });
+  },
+  setSelectedReceivingSystem: (system) => {
+    set({ selectedReceivingSystem: system });
+    set({ activeSelect: 'receive' });
+    set((state) => {
+      const newDisabledSystems = new Set(state.disabledSystems);
+      if (system) {
+        newDisabledSystems.add(system.id);
+      }
+      return { disabledSystems: newDisabledSystems };
+    });
+  },
+  setActiveSelect: (selectType: 'send' | 'receive' | null) => set({ activeSelect: selectType }),
+  disableSystem: (systemId) => set((state) => {
+    const newDisabledSystems = new Set(state.disabledSystems);
+    newDisabledSystems.add(systemId);
+    return { disabledSystems: newDisabledSystems };
+  }),
+  enableSystem: (systemId) => set((state) => {
+    const newDisabledSystems = new Set(state.disabledSystems);
+    newDisabledSystems.delete(systemId);
+    return { disabledSystems: newDisabledSystems };
+  }),
 }));
