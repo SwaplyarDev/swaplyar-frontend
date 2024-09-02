@@ -11,7 +11,7 @@ import { Dropdown, Navbar } from 'flowbite-react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { BsChevronRight } from 'react-icons/bs';
 
-import NavLinks from '@/components/ui/nav-links';
+import NavLinks from '@/components/ui/top-menu/nav-links';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './switchStyle.module.css';
@@ -50,15 +50,13 @@ export function TopMenu() {
     <Navbar
       fluid
       rounded
-      className={`sticky top-0 z-50 w-full bg-inherit p-4 shadow-md transition-opacity duration-200 dark:bg-inherit ${
+      className={`sticky top-0 z-50 w-full p-6 shadow-md transition-opacity duration-200 dark:bg-lightText ${
         bgOpacity
-          ? 'bg-opacity-90 dark:bg-opacity-90'
+          ? 'bg-opacity-80 dark:bg-opacity-80'
           : 'bg-opacity-100 dark:bg-opacity-100'
       }`}
     >
-      <div
-        className={`m-auto flex w-full max-w-screen-2xl flex-row-reverse justify-between gap-4 lg:flex-row`}
-      >
+      <div className="m-auto flex w-full max-w-screen-2xl flex-row-reverse justify-between gap-4 lg:flex-row">
         <Link
           key="Iniciar sesión"
           href="/auth/login-register"
@@ -87,7 +85,7 @@ export function TopMenu() {
 
         <nav className="flex flex-row-reverse items-center justify-center lg:flex-row">
           <section className="flex items-center justify-end">
-            <label className={`${styles.switch} ml-3`}>
+            <label className={`${styles.switch} mx-2`}>
               <input type="checkbox" onClick={changeTheme} />
               <span
                 className={isDark ? styles.sliderDark : styles.sliderLight}
@@ -185,11 +183,9 @@ export function TopMenu() {
             </Dropdown>
           </section>
 
-          <Navbar.Collapse>
-            <section className="hidden lg:flex">
-              <NavLinks />
-            </section>
-          </Navbar.Collapse>
+          <section className="hidden lg:flex">
+            <NavLinks />
+          </section>
         </nav>
       </div>
     </Navbar>
