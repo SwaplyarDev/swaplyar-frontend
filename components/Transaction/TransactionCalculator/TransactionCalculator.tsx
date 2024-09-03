@@ -246,7 +246,7 @@ export default function TransactionCalculator() {
           <div className="relative flex h-32 w-full items-center rounded rounded-br-none rounded-tr-none">
             <input
               type="text"
-              className="peer h-full w-full border-0 bg-transparent p-2 text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0"
+              className="peer h-full w-full border-0 bg-transparent p-2 text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0 text-center"
               id="sendInputUniqueID"
               value={sendAmount}
               onChange={(e) => setSendAmount(parseFloat(e.target.value) || 0)}
@@ -290,7 +290,7 @@ export default function TransactionCalculator() {
             <div className="relative mt-[0.4rem] flex h-32 w-full items-center rounded rounded-bl-none rounded-tl-none">
               <input
                 type="text"
-                className="peer h-full w-full border-0 bg-transparent p-2 text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0"
+                className="peer h-full w-full border-0 bg-transparent p-2 text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0 text-center"
                 id="receptionInputUniqueID"
                 value={receiveAmount}
                 onChange={handleReceiveAmountChange}

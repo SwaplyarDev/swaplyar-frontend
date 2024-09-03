@@ -46,10 +46,9 @@ export default function SystemSelect({
 
   const handleClick = () => {
     if (activeSelect === (isSending ? 'send' : 'receive')) {
-      // Si el select activo es el que estamos haciendo clic, simplemente cierra el menú
       setShowOptionsInternal((prev) => !prev);
     } else {
-      // Si no es el select activo, asegúrate de cerrar el menú del select previo y abrir el actual
+      // Cierra cualquier otro select abierto antes de abrir este
       setActiveSelect(isSending ? 'send' : 'receive');
       setShowOptionsInternal(true);
     }
@@ -73,10 +72,17 @@ export default function SystemSelect({
     }
   }, [darkMode]);
 
+  useEffect(() => {
+    // Si cambia `activeSelect`, asegúrate de cerrar el menú si este no es el select activo
+    if (activeSelect !== (isSending ? 'send' : 'receive')) {
+      setShowOptionsInternal(false);
+    }
+  }, [activeSelect, isSending]);
+
   const handleOptionClick = (system: System) => {
     onSystemSelect(system);
     setShowOptionsInternal(false);
-    setActiveSelect(null); // Opcional: cierra el menú después de seleccionar una opción
+    setActiveSelect(null); // Cierra el select después de seleccionar una opción
   };
 
   const updatedSystems = systems.map((system) => ({
@@ -131,4 +137,3 @@ export default function SystemSelect({
     </div>
   );
 }
-

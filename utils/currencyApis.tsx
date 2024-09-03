@@ -1,3 +1,4 @@
+import { exchangeRates } from "./exchangeRates";
 
 const apiKey = process.env.NEXT_PUBLIC_FREE_CURRENCY_APY_KEY;
 
@@ -54,3 +55,72 @@ export async function updateCurrentValueEUR() {
         throw new Error('Network response was not ok');
     }
 }
+
+async function getExchangeRates() {
+    const { currentValueEURToUSD, currentValueUSDToEUR } = await updateCurrentValueUSDToEUR();
+    const { currentValueUSDBlueSale, currentValueUSDBluePurchase } = await updateCurrentValueUSD();
+    const { currentValueEURBlueSale, currentValueEURBluePurchase } = await updateCurrentValueEUR();
+
+    return {
+        currentValueEURToUSD,
+        currentValueUSDToEUR,
+        currentValueUSDBlueSale,
+        currentValueUSDBluePurchase,
+        currentValueEURBlueSale,
+        currentValueEURBluePurchase,
+    };
+}
+
+async function calculateAmount(from: string, to: string, amount: number) {
+    const rates = await getExchangeRates();
+
+    // Encuentra la fórmula correspondiente en exchangeRates
+    const exchangeRate = exchangeRates.find(rate => rate.from === from && rate.to === to);
+
+    if (!exchangeRate) {
+        throw new Error(`No se encontró una fórmula para convertir de ${from} a ${to}`);
+    }
+
+    // Determina qué tasa de cambio se debe usar dependiendo de 'from' y 'to'
+    let rate = 1; // Default rate
+
+    switch (from) {
+        case 'bank':
+            if (to === 'payoneer_usd' || to === 'paypal' || to === 'wise_usd') {
+                rate = rates.currentValueUSDBlueSale;
+            } else if (to === 'payoneer_eur' || to === 'wise_eur') {
+                rate = rates.currentValueEURBlueSale;
+            }
+            break;
+        case 'paypal':
+        case 'payoneer_usd':
+        case 'wise_usd':
+            if (to === 'bank') {
+                rate = rates.currentValueUSDBluePurchase;
+            } else if (to === 'payoneer_eur' || to === 'wise_eur') {
+                rate = rates.currentValueUSDToEUR;
+            }
+            break;
+        case 'payoneer_eur':
+        case 'wise_eur':
+            if (to === 'bank') {
+                rate = rates.currentValueEURBluePurchase;
+            } else if (to === 'payoneer_usd' || to === 'wise_usd') {
+                rate = rates.currentValueEURToUSD;
+            }
+            break;
+        default:
+            throw new Error(`Conversión de ${from} a ${to} no soportada.`);
+    }
+
+    // Aplica la fórmula
+    const convertedAmount = exchangeRate.formula(amount, rate);
+    return convertedAmount;
+}
+
+// Ejemplo de uso:
+(async () => {
+    const result = await calculateAmount('bank', 'payoneer_usd', 10000);
+    console.log(`Resultado de la conversión: ${result}`);
+})();
+
