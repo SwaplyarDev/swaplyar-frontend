@@ -1,8 +1,7 @@
-// components/InfoBlock/InfoBlock.tsx
-
 'use client';
 
 import Image from 'next/image';
+import './shadow.css';
 
 interface InfoBlockProps {
   title: string;
@@ -20,26 +19,28 @@ export default function InfoBlock({
   contentNode,
 }: InfoBlockProps) {
   return (
-    <div className="flex max-w-3xl flex-col items-center p-8 md:flex-row">
-      <div className="info-image-container mb-4 w-full md:mb-0 md:mr-8 md:w-1/2">
+    <div className="mb-12 mt-16 flex w-full max-w-4xl flex-col items-center justify-center md:flex-row">
+      <div className="info-image-container mb-4 flex w-full justify-center md:mb-0 md:mr-8 md:w-1/2">
         <Image
           src={imageSrc}
           alt={imageAlt}
-          width={750}
-          height={750}
-          className="rounded-lg shadow-md"
+          width={350}
+          height={350}
+          className="drop-shadow-light dark:drop-shadow-darkmode md:ml-16"
         />
       </div>
       <div className="info-content-container w-full md:w-1/2">
-        <div className="flex flex-col items-start">
-          <h2 className="dark-title mb-4 text-2xl font-semibold">{title}</h2>
+        <div className="flex flex-col items-center md:items-start">
+          <h2 className="dark-title mb-4 text-center text-4xl text-gray-blue dark:text-white md:text-left">
+            {title}
+          </h2>
         </div>
-        <div className="info-content pl-2">
+        <div className="info-content text-center text-xl text-gray-blue dark:text-white md:text-left">
           {contentNode ? (
             contentNode
           ) : (
             <p
-              className="text-gray-700"
+              className="text-gray-700 dark:text-white"
               dangerouslySetInnerHTML={{ __html: content || '' }}
             ></p>
           )}

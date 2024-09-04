@@ -4,7 +4,7 @@
 
 /* :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
+  --background-start-rgb: 255, 255, 255;
   --background-end-rgb: 255, 255, 255;
 }
 
@@ -18,17 +18,147 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-} */
+  background: #252526;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .w-90{
+    width: 98%;
+    margin: auto;
+    margin-top: 0;
+    
+    }
+
+    .pt-20{
+      padding-top: 10%;
+    }
+
+    
+
+}
+
+
+.container-blur {
+  @apply w-full h-[1200px] overflow-hidden flex justify-center relative left-0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  clip-path: inset(0 0 -10% 0); /* Ajusta este valor si es necesario } */
+
+/* Caja */
+.box {
+  @apply absolute w-full rounded-full;
+  animation: spin 30s infinite linear;
+}
+
+#bannerHTUButton {
+  border: none;
+  width: 200px;
+  margin: auto;
+  background-color: #012d8a;
+  color: #ffffff;
+  padding-left: 20px;
+  padding-right: 20px;
+  min-width: 150px;
+  border-radius: 5px;
+  transition: transform 0.2s ease-in-out;
+  font-size: 16px;
+  margin-top: 2%;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.ball {
+  @apply absolute h-[130px] w-[130px] rounded-full blur-[5em];
+}
+
+.ball1 {
+  background-color: rgba(42, 41, 120, 0.601);
+  top: 10%;
+  left: 25%;
+}
+.ball2 {
+  background-color: rgba(42, 41, 120, 0.601);
+  top: 10%;
+  right: 10%;
+}
+.ball3 {
+  background-color: rgba(42, 41, 120, 0.601);
+  bottom: 10%;
+  left: 50%;
+}
+.ball4 {
+  background-color: rgba(42, 41, 120, 0.601);
+  bottom: 0;
+  left: 10%;
+}
+.ball5 {
+  background-color: rgba(42, 41, 120, 0.601);
+  bottom: 50%;
+  right: 15%;
+}
+
+@media (max-width: 640px) {
+  .container-blur {
+    @apply relative left-0 flex h-[200vh] w-full justify-center overflow-hidden;
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    clip-path: inset(0 0 -5% 0);
+  }
+  .box {
+    @apply absolute h-[90%] w-full rounded-full;
+    animation: spin 30s infinite linear;
+    bottom: 0;
+  }
+
+  .ball {
+    @apply absolute h-[110px] w-[110px] rounded-full blur-[5em];
+  }
+
+  .ball1 {
+    background-color: rgba(42, 41, 120, 0.601);
+    top: 30%;
+    left: 20%;
+  }
+  .ball2 {
+    background-color: rgba(42, 41, 120, 0.601);
+    top: 35%;
+    right: 15%;
+  }
+  .ball3 {
+    background-color: rgba(42, 41, 120, 0.601);
+    bottom: 25%;
+    left: 50%;
+  }
+  .ball4 {
+    background-color: rgba(42, 41, 120, 0.601);
+    bottom: 10%;
+    left: 15%;
+  }
+  .ball5 {
+    background-color: rgba(42, 41, 120, 0.601);
+    bottom: 30%;
+    right: 10%;
   }
 }
 

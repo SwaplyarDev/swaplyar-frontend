@@ -1,12 +1,14 @@
 // /tailwind.config.ts
 
 import type { Config } from 'tailwindcss';
+import flowbite from 'flowbite-react/tailwind';
 
 const config: Config = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
+    flowbite.content(),
   ],
   darkMode: 'class',
   theme: {
@@ -28,18 +30,34 @@ const config: Config = {
       },
       colors: {
         'nav-blue': '#012D8A',
+        'gray-blue': '#020919',
         blue: {
           400: '#2589FE',
           500: '#0070F3',
           600: '#2F6FEB',
         },
-        'darkText':'#ebe7e0',
-        'lightText':'#252526',
+        darkText: '#ebe7e0',
+        lightText: '#252526',
+      },
+      width: {
+        '9/10': '90%',
       },
       dropShadow: {
-        light: '4px 4px 10px rgba(0, 0, 0, 0.9)',
-        dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',
+        light: '0 5px 4px rgba(0, 0, 0, 0.400)',
+        darkmode: '0 4px 5px rgba(187, 187, 187, 0.400)',
       },
+      boxShadow: {
+        'custom-blue': '0 5px 10px #012a8d',
+        'custom-black': '0 5px 10px #000',
+      },
+
+      backgroundColor: {
+        'dark-blue': 'rgb(3, 35, 54)',
+      },
+      top: {
+        '57': '57%',
+      },
+
       textShadow: {
         light: '4px 4px 10px rgba(0, 0, 0, 0.9)',
         dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',
@@ -53,6 +71,10 @@ const config: Config = {
       },
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('tailwindcss-textshadow')],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('tailwindcss-textshadow'),
+    flowbite.plugin(),
+  ],
 };
 export default config;

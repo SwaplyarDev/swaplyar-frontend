@@ -1,0 +1,23 @@
+name: Notify Discord on PR Merge
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
+    steps:
+      - name: Send notification to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_USER: ${{ github.event.pull_request.user.login }}
+          PR_BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d "{\"content\": \":rocket: **Actualización en la rama \`$PR_BASE_BRANCH\`** :rocket:\n\nSe realizaron actualizaciones en la rama \`$PR_BASE_BRANCH\`. La rama ha sido actualizada con los cambios de la siguiente PR: [Ver detalles]($PR_URL).\"}" \
+          $DISCORD_WEBHOOK_URL

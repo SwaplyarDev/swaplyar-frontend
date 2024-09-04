@@ -129,6 +129,7 @@ swaplyar-frontend/
    NEXT_PUBLIC_API_URL=[https://api.swaplyar.com](https://api.swaplyar.com)
    NEXTAUTH_URL=http://localhost:3000
    NEXTAUTH_SECRET=your-secret-key
+   NEXT_PUBLIC_FREE_CURRENCY_APY_KEY=api-key-exchange-rate
    ```
 
 4. **Ejecutar el Proyecto**
@@ -144,7 +145,7 @@ swaplyar-frontend/
 - `npm run lint`: Ejecuta ESLint para analizar el código.
 - `npm run format`: Formatea el código utilizando Prettier.
 - `npm run dev`: Inicia el entorno de desarrollo.
-- `npm run build`: Compila la aplicación para producción.
+- `npm run build --clean`: Compila la aplicación para producción.
 - `npm run start`: Inicia el servidor de la aplicación compilada.
 
 ---
@@ -202,7 +203,9 @@ swaplyar-frontend/
    ```
 
 8. **Fusionar el PR::**
-    - Después de fusionar, puedes eliminar la rama `feature/nueva-funcionalidad` tanto localmente como en el repositorio remoto.
+
+   - Después de fusionar, puedes eliminar la rama `feature/nueva-funcionalidad` tanto localmente como en el repositorio remoto.
+
    ```bash
    git checkout developer
    git pull origin developer
@@ -210,8 +213,9 @@ swaplyar-frontend/
    ```
 
 9. **Eliminar la Rama Temporal:**
+
    - Después de fusionar, puedes eliminar la rama `feature/nueva-funcionalidad` tanto localmente como en el repositorio remoto.
-   
+
    ```bash
    git branch -d feature/nueva-funcionalidad
    git push origin --delete feature/nueva-funcionalidad
