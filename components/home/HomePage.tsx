@@ -77,7 +77,6 @@ export default function HomePage() {
           </div>
         </FlyerTrabajo>
       </div>
-      <ButtonTest /> {/*  Borrar */}
     </main>
   );
 }
