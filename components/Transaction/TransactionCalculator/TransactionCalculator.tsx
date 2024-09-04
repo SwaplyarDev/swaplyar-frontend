@@ -8,6 +8,7 @@ import { useSystemStore } from '@/store/useSystemStore';
 import { useRouter } from 'next/navigation';
 import { exchangeRates } from '@/utils/exchangeRates';
 import {
+  calculateAmount,
   updateCurrentValueEUR,
   updateCurrentValueUSD,
   updateCurrentValueUSDToEUR,
@@ -29,9 +30,10 @@ export default function TransactionCalculator() {
     activeSelect,
     setActiveSelect,
   } = useSystemStore();
-  const [exchangeRate, setExchangeRate] = useState<number>(0);
   const [sendAmount, setSendAmount] = useState(0);
   const [receiveAmount, setReceiveAmount] = useState(0);
+  const [exchangeRate, setExchangeRate] = useState<number>(0);
+  const [rateForOne, setRateForOne] = useState<number>(0);
   const [darkMode, setDarkMode] = useState<boolean>(false);
 
   // Datos de sistemas de pago
@@ -44,14 +46,14 @@ export default function TransactionCalculator() {
       coin: 'USD',
     },
     {
-      id: 'payoneer-usd',
+      id: 'payoneer_usd',
       name: 'Payoneer USD',
       logo: '/images/payoneer.usd.big.png',
       isDisabled: false,
       coin: 'USD',
     },
     {
-      id: 'payoneer-eur',
+      id: 'payoneer_eur',
       name: 'Payoneer EUR',
       logo: '/images/payoneer.eur.big.png',
       isDisabled: false,
@@ -65,14 +67,14 @@ export default function TransactionCalculator() {
       coin: 'ARS',
     },
     {
-      id: 'wise-usd',
+      id: 'wise_usd',
       name: 'Wise USD',
       logo: '/images/wise.usd.big.png',
       isDisabled: false,
       coin: 'USD',
     },
     {
-      id: 'wise-eur',
+      id: 'wise_eur',
       name: 'Wise EUR',
       logo: '/images/wise.eur.big.png',
       isDisabled: false,
@@ -98,7 +100,6 @@ export default function TransactionCalculator() {
     if (selectedSendingSystem && selectedReceivingSystem) {
       let rate = 0;
 
-      // Busca la fórmula adecuada en el array de exchangeRates
       const rateInfo = exchangeRates.find(
         (r) =>
           r.from === selectedSendingSystem.id &&
@@ -108,7 +109,6 @@ export default function TransactionCalculator() {
       if (rateInfo) {
         let apiRate = 0;
         if (selectedSendingSystem.coin === selectedReceivingSystem.coin) {
-          // Si la moneda de envío y recepción es la misma, solo usa el valor de la API
           if (selectedSendingSystem.coin === 'USD') {
             const { currentValueUSDBlueSale } = await updateCurrentValueUSD();
             rate = currentValueUSDBlueSale;
@@ -117,7 +117,6 @@ export default function TransactionCalculator() {
             rate = currentValueEURBlueSale;
           }
         } else {
-          // Obtén el valor de la API y aplica la fórmula del exchangeRates
           if (
             selectedSendingSystem.coin === 'USD' &&
             selectedReceivingSystem.coin === 'EUR'
@@ -138,36 +137,49 @@ export default function TransactionCalculator() {
             apiRate = currentValueEURBlueSale;
           }
 
-          // Aplica la fórmula para calcular la tasa de cambio
-          rate = rateInfo.formula(1, apiRate); // Usa 1 como cantidad para obtener el valor de tasa
+          rate = rateInfo.formula(1, apiRate);
         }
 
-        console.log('Rate Info:', rateInfo);
-        console.log('API Rate:', apiRate);
-        console.log('Calculated Rate:', rate);
-
         setExchangeRate(rate);
+
+        // Espera a que se resuelva la promesa antes de actualizar el estado
+        const rateOneUnit = await calculateAmount(
+          selectedSendingSystem.id,
+          selectedReceivingSystem.id,
+          1,
+        );
+        setRateForOne(rateOneUnit);
       }
     }
   }, [selectedSendingSystem, selectedReceivingSystem]);
 
   useEffect(() => {
-    findExchangeRate();
+    const fetchExchangeRate = async () => {
+      await findExchangeRate();
+    };
+
+    fetchExchangeRate();
   }, [findExchangeRate]);
 
-  const calculateReceiveAmount = useCallback(
-    (amount: number) => {
-      if (exchangeRate) {
-        return amount * exchangeRate;
-      }
-      return 0;
-    },
-    [exchangeRate],
-  );
-
   useEffect(() => {
-    setReceiveAmount(calculateReceiveAmount(sendAmount));
-  }, [sendAmount, calculateReceiveAmount]);
+    const fetchReceiveAmount = async () => {
+      if (selectedSendingSystem?.id && selectedReceivingSystem?.id) {
+        try {
+          const amount = await calculateAmount(
+            selectedSendingSystem.id,
+            selectedReceivingSystem.id,
+            sendAmount,
+          );
+          setReceiveAmount(amount);
+        } catch (error) {
+          console.error('Error calculating amount:', error);
+          // Maneja el error de la manera que consideres apropiada
+        }
+      }
+    };
+
+    fetchReceiveAmount();
+  }, [sendAmount, selectedSendingSystem, selectedReceivingSystem]);
 
   const handleReceiveAmountChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -182,10 +194,16 @@ export default function TransactionCalculator() {
   const handleSystemSelection = (system: System, isSending: boolean) => {
     if (isSending) {
       setSelectedSendingSystem(system);
-      setSelectedReceivingSystem(system.id === selectedReceivingSystem?.id ? null : selectedReceivingSystem);
+      setSelectedReceivingSystem(
+        system.id === selectedReceivingSystem?.id
+          ? null
+          : selectedReceivingSystem,
+      );
     } else {
       setSelectedReceivingSystem(system);
-      setSelectedSendingSystem(system.id === selectedSendingSystem?.id ? null : selectedSendingSystem);
+      setSelectedSendingSystem(
+        system.id === selectedSendingSystem?.id ? null : selectedSendingSystem,
+      );
     }
   };
 
@@ -197,7 +215,6 @@ export default function TransactionCalculator() {
     setSendAmount(receiveAmount);
     setReceiveAmount(tempAmount);
 
-    // Espera a que las actualizaciones de estado se completen
     setActiveSelect(null);
   };
 
@@ -211,17 +228,13 @@ export default function TransactionCalculator() {
     setActiveSelect(newValue);
   };
 
-  console.log('Selected Sending System:', selectedSendingSystem);
-  console.log('Selected Receiving System:', selectedReceivingSystem);
-  console.log('Exchange Rate:', exchangeRate);
-  console.log('Send Amount:', sendAmount);
-  console.log('Receive Amount:', receiveAmount);
+  console.log(rateForOne);
 
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
       <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-white p-8 shadow-md dark:bg-gray-800 dark:text-white">
         <p className="w-full max-w-lg text-[2rem] text-[#012c8a] dark:text-darkText">
-          1 {selectedSendingSystem?.coin} / {exchangeRate.toFixed(4)}{' '}
+          1 {selectedSendingSystem?.coin} = {rateForOne.toFixed(2)}{' '}
           {selectedReceivingSystem?.coin}
         </p>
 
@@ -246,7 +259,7 @@ export default function TransactionCalculator() {
           <div className="relative flex h-32 w-full items-center rounded rounded-br-none rounded-tr-none">
             <input
               type="text"
-              className="peer h-full w-full border-0 bg-transparent p-2 text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0 text-center"
+              className="peer h-full w-full border-0 bg-transparent p-2 text-center text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0"
               id="sendInputUniqueID"
               value={sendAmount}
               onChange={(e) => setSendAmount(parseFloat(e.target.value) || 0)}
@@ -268,7 +281,6 @@ export default function TransactionCalculator() {
           <p>Información del sistema de recepción</p>
         </SystemInfo>
         <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
-          {/* Contenedor del input y SystemSelect */}
           <div className="flex w-full flex-row-reverse items-end">
             <SystemSelect
               systems={systems}
@@ -290,13 +302,12 @@ export default function TransactionCalculator() {
             <div className="relative mt-[0.4rem] flex h-32 w-full items-center rounded rounded-bl-none rounded-tl-none">
               <input
                 type="text"
-                className="peer h-full w-full border-0 bg-transparent p-2 text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0 text-center"
+                className="peer h-full w-full border-0 bg-transparent p-2 text-center text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0"
                 id="receptionInputUniqueID"
                 value={receiveAmount}
                 onChange={handleReceiveAmountChange}
               />
 
-              {/* Fieldset para el borde del input */}
               <fieldset
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 rounded-bl-2xl rounded-tl-2xl border-y border-l border-[#012c8a] dark:border-gray-200"
@@ -307,15 +318,15 @@ export default function TransactionCalculator() {
               </fieldset>
             </div>
           </div>
-        </div>
 
-        <div id="goToPayPalButton" className="mt-8">
-          <button
-            className="bg- buttonPay rounded-3xl bg-blue-500 p-2 px-10 py-3 text-darkText hover:bg-blue-700 focus:outline-none"
-            onClick={handleDirection}
-          >
-            Realizar el pago
-          </button>
+          <div id="goToPayPalButton" className="mt-8">
+            <button
+              className="bg- buttonPay rounded-3xl bg-blue-500 p-2 px-10 py-3 text-darkText hover:bg-blue-700 focus:outline-none"
+              onClick={handleDirection}
+            >
+              Realizar el pago
+            </button>
+          </div>
         </div>
       </div>
     </div>

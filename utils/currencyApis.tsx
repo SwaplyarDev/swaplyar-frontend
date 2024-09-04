@@ -71,7 +71,7 @@ async function getExchangeRates() {
     };
 }
 
-async function calculateAmount(from: string, to: string, amount: number) {
+export async function calculateAmount(from: string, to: string, amount: number): Promise<number> {
     const rates = await getExchangeRates();
 
     // Encuentra la fórmula correspondiente en exchangeRates
@@ -115,12 +115,12 @@ async function calculateAmount(from: string, to: string, amount: number) {
 
     // Aplica la fórmula
     const convertedAmount = exchangeRate.formula(amount, rate);
-    return convertedAmount;
+    return parseFloat(convertedAmount.toFixed(2));
 }
 
 // Ejemplo de uso:
 (async () => {
-    const result = await calculateAmount('bank', 'payoneer_usd', 10000);
+    const result = await calculateAmount('payoneer_eur', 'bank', 1);
     console.log(`Resultado de la conversión: ${result}`);
 })();
 
