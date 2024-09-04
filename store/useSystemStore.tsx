@@ -6,7 +6,7 @@ const defaultSendingSystem: System = {
   name: 'PayPal',
   logo: '/images/paypal.big.png',
   isDisabled: false,
-  coin: 'USD'
+  coin: 'USD',
 };
 
 const defaultReceivingSystem: System = {
@@ -14,7 +14,7 @@ const defaultReceivingSystem: System = {
   name: 'Banco',
   logo: '/images/banco.medium.webp',
   isDisabled: false,
-  coin: 'ARS'
+  coin: 'ARS',
 };
 
 interface SystemStore {
@@ -56,15 +56,18 @@ export const useSystemStore = create<SystemStore>((set) => ({
       return { disabledSystems: newDisabledSystems };
     });
   },
-  setActiveSelect: (selectType: 'send' | 'receive' | null) => set({ activeSelect: selectType }),
-  disableSystem: (systemId) => set((state) => {
-    const newDisabledSystems = new Set(state.disabledSystems);
-    newDisabledSystems.add(systemId);
-    return { disabledSystems: newDisabledSystems };
-  }),
-  enableSystem: (systemId) => set((state) => {
-    const newDisabledSystems = new Set(state.disabledSystems);
-    newDisabledSystems.delete(systemId);
-    return { disabledSystems: newDisabledSystems };
-  }),
+  setActiveSelect: (selectType: 'send' | 'receive' | null) =>
+    set({ activeSelect: selectType }),
+  disableSystem: (systemId) =>
+    set((state) => {
+      const newDisabledSystems = new Set(state.disabledSystems);
+      newDisabledSystems.add(systemId);
+      return { disabledSystems: newDisabledSystems };
+    }),
+  enableSystem: (systemId) =>
+    set((state) => {
+      const newDisabledSystems = new Set(state.disabledSystems);
+      newDisabledSystems.delete(systemId);
+      return { disabledSystems: newDisabledSystems };
+    }),
 }));

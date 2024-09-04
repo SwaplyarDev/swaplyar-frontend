@@ -15,8 +15,8 @@ export default function InvertSystems({ onInvert }: InvertSystemsProps) {
       className="big-icon-button rounded-3xl bg-blue-500 text-white hover:bg-blue-700 focus:outline-none"
       onClick={onInvert}
       aria-label="Invertir sistemas"
-    >      
-      <SwapVertIcon className='my-1.5 mx-5'/>
+    >
+      <SwapVertIcon className="mx-5 my-1.5" />
     </button>
   );
 }

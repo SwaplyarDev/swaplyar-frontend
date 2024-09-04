@@ -162,7 +162,7 @@ body {
   }
 }
 
-.p-revert{
+.p-revert {
   padding: revert;
 }
 /* Spinner */
@@ -338,7 +338,6 @@ body.swal2-shown {
   padding-right: 6px !important;
 }
 
-
 body {
   --sb-track-color: #232e33;
   --sb-thumb-color: #75bfff;
@@ -389,11 +388,11 @@ ul.scrollable-list::-webkit-scrollbar-thumb {
 
 /* boton de pago */
 
-.buttonPay{
+.buttonPay {
   -webkit-transition: all 0.4s cubic-bezier(0.5, 0.24, 0, 1);
   transition: all 0.4s cubic-bezier(0.5, 0.24, 0, 1);
 }
 
-.buttonPay:hover{
+.buttonPay:hover {
   background-color: #6098ff;
 }
