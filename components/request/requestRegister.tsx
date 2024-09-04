@@ -10,15 +10,19 @@ import { requestRegister } from '@/actions/request/action.requestRegister';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 type FormInputs = {
-  name: string;
-  surname: string;
-  whatsappNumber: string;
-  cbuAlias: string;
-  cuil: string;
+  first_name: string;
+  last_name: string;
+  amount_sent: string;
+  amount_received: string;
+  phone: string;
+  identifier: string;
+  payment_method: string;
+  document: string;
   email: string;
-  comprobante: FileList;
+  proof_of_payment: FileList;
   note: string;
   country: string;
+  type_of_document: string;
 };
 
 type CountryOption = {
@@ -28,12 +32,10 @@ type CountryOption = {
 };
 
 export const RequestRegisterForm = () => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
-  const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(
-    null,
-  );
+  const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(null);
 
   const {
     register,
@@ -53,7 +55,7 @@ export const RequestRegisterForm = () => {
             : '';
           return {
             value: country.name.common,
-            label: `${country.name.common} (${callingCode ? `${callingCode}` : 'Sin código'})`,
+            label: `${country.name.common} (${callingCode ? callingCode : 'Sin código'})`,
             callingCode: callingCode,
           };
         });
@@ -72,36 +74,40 @@ export const RequestRegisterForm = () => {
     setErrorMessage('');
     setLoading(true);
 
-    // Verifica que todos los datos estén presentes
     console.log('Datos del formulario:', data);
 
     const {
-      name,
-      surname,
-      whatsappNumber,
-      cbuAlias,
-      cuil,
+      first_name,
+      last_name,
+      amount_sent,
+      amount_received,
+      phone,
+      identifier,
+      payment_method,
+      document,
       email,
-      comprobante,
+      proof_of_payment,
       note,
       country,
+      type_of_document,
     } = data;
 
-    // Combina el callingCode con el whatsappNumber
-    const fullWhatsappNumber = `${selectedCountry?.callingCode} ${whatsappNumber}`;
+    const fullPhoneNumber = `${selectedCountry?.callingCode} ${phone}`;
 
-    // Crea el FormData y añade los campos
     const formData = new FormData();
-    formData.append('name', name || '');
-    formData.append('surname', surname || '');
-    formData.append('whatsappNumber', fullWhatsappNumber || '');
-    formData.append('cbuAlias', cbuAlias || '');
-    formData.append('cuil', cuil || '');
+    formData.append('first_name', first_name || '');
+    formData.append('last_name', last_name || '');
+    formData.append('amount_sent', amount_sent || '');
+    formData.append('amount_received', amount_received || '');
+    formData.append('phone', fullPhoneNumber || '');
+    formData.append('identifier', identifier || '');
+    formData.append('payment_method', payment_method || '');
+    formData.append('document', document || '');
     formData.append('email', email || '');
+    formData.append('type_of_document', type_of_document || '');
 
-    // Verifica que comprobante tenga al menos un archivo antes de añadirlo
-    if (comprobante && comprobante.length > 0) {
-      formData.append('comprobante', comprobante[0]);
+    if (proof_of_payment && proof_of_payment.length > 0) {
+      formData.append('comprobante', proof_of_payment[0]);
     } else {
       console.warn('No se ha proporcionado un archivo de comprobante');
     }
@@ -143,9 +149,9 @@ export const RequestRegisterForm = () => {
         </h2>
 
         <label
-          htmlFor="name"
+          htmlFor="first_name"
           className={clsx(
-            errors.name ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
+            errors.first_name ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
           )}
         >
           Nombre
@@ -153,19 +159,19 @@ export const RequestRegisterForm = () => {
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.name ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
+            errors.first_name ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
           )}
           type="text"
-          {...register('name', { required: 'El nombre es obligatorio' })}
+          {...register('first_name', { required: 'El nombre es obligatorio' })}
         />
-        {errors.name && (
-          <p className="mb-5 text-sm text-red-500">• {errors.name.message}</p>
+        {errors.first_name && (
+          <p className="mb-5 text-sm text-red-500">• {errors.first_name.message}</p>
         )}
 
         <label
-          htmlFor="surname"
+          htmlFor="last_name"
           className={clsx(
-            errors.surname
+            errors.last_name
               ? 'text-red-500'
               : 'text-gray-900 dark:text-gray-300',
           )}
@@ -175,16 +181,16 @@ export const RequestRegisterForm = () => {
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.surname
+            errors.last_name
               ? 'mb-0 border-red-500'
               : 'mb-5 hover:border-blue-600',
           )}
           type="text"
-          {...register('surname', { required: 'El apellido es obligatorio' })}
+          {...register('last_name', { required: 'El apellido es obligatorio' })}
         />
-        {errors.surname && (
+        {errors.last_name && (
           <p className="mb-5 text-sm text-red-500">
-            • {errors.surname.message}
+            • {errors.last_name.message}
           </p>
         )}
 
@@ -272,10 +278,10 @@ export const RequestRegisterForm = () => {
                 border: 'none',
                 boxShadow: 'none',
               },
-              '& input:focus': {
-                border: 'none',
-                boxShadow: 'none',
-              },
+            }),
+            clearIndicator: (provided) => ({
+              ...provided,
+              color: 'inherit',
             }),
           }}
         />
@@ -286,171 +292,274 @@ export const RequestRegisterForm = () => {
         )}
 
         <label
-          htmlFor="whatsappNumber"
+          htmlFor="phone"
           className={clsx(
-            errors.whatsappNumber
+            errors.phone
               ? 'text-red-500'
               : 'text-gray-900 dark:text-gray-300',
           )}
         >
-          Número de WhatsApp
+          Teléfono
         </label>
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.whatsappNumber
+            errors.phone
               ? 'mb-0 border-red-500'
               : 'mb-5 hover:border-blue-600',
           )}
-          type="text"
-          {...register('whatsappNumber', {
-            required: 'El número de WhatsApp es obligatorio',
-            validate: (value) => {
-              // Eliminar espacios y comprobar que solo contiene números
-              const cleanedValue = value.replace(/\s+/g, '');
-              return (
-                /^[0-9]+$/.test(cleanedValue) || 'Solo se permiten números'
-              );
-            },
-            setValueAs: (value) => {
-              // Eliminar espacios y devolver el valor limpio
-              return value.replace(/\s+/g, '');
+          type="tel"
+          {...register('phone', {
+            required: 'El número de teléfono es obligatorio',
+            pattern: {
+              value: /^\d{10,14}$/,
+              message: 'Introduce un número válido de entre 10 y 14 dígitos',
             },
           })}
         />
-        {errors.whatsappNumber && (
+        {errors.phone && (
           <p className="mb-5 text-sm text-red-500">
-            • {errors.whatsappNumber.message}
+            • {errors.phone.message}
           </p>
         )}
 
         <label
-          htmlFor="cbuAlias"
+          htmlFor="amount_sent"
           className={clsx(
-            errors.cbuAlias
+            errors.amount_sent
               ? 'text-red-500'
               : 'text-gray-900 dark:text-gray-300',
           )}
         >
-          CBU o Alias
+          Monto Enviado
         </label>
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.cbuAlias
+            errors.amount_sent
               ? 'mb-0 border-red-500'
               : 'mb-5 hover:border-blue-600',
           )}
-          type="text"
-          {...register('cbuAlias', { required: 'CBU o Alias es obligatorio' })}
+          type="number"
+          {...register('amount_sent', { required: 'El monto enviado es obligatorio' })}
         />
-        {errors.cbuAlias && (
+        {errors.amount_sent && (
           <p className="mb-5 text-sm text-red-500">
-            • {errors.cbuAlias.message}
+            • {errors.amount_sent.message}
           </p>
         )}
 
         <label
-          htmlFor="cuil"
+          htmlFor="amount_received"
           className={clsx(
-            errors.cuil ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
+            errors.amount_received
+              ? 'text-red-500'
+              : 'text-gray-900 dark:text-gray-300',
           )}
         >
-          CUIL
+          Monto Recibido
         </label>
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.cuil ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
+            errors.amount_received
+              ? 'mb-0 border-red-500'
+              : 'mb-5 hover:border-blue-600',
+          )}
+          type="number"
+          {...register('amount_received', { required: 'El monto recibido es obligatorio' })}
+        />
+        {errors.amount_received && (
+          <p className="mb-5 text-sm text-red-500">
+            • {errors.amount_received.message}
+          </p>
+        )}
+
+        <label
+          htmlFor="identifier"
+          className={clsx(
+            errors.identifier
+              ? 'text-red-500'
+              : 'text-gray-900 dark:text-gray-300',
+          )}
+        >
+          Identificador de Transacción
+        </label>
+        <input
+          className={clsx(
+            'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
+            errors.identifier
+              ? 'mb-0 border-red-500'
+              : 'mb-5 hover:border-blue-600',
           )}
           type="text"
-          {...register('cuil', { required: 'El CUIL es obligatorio' })}
+          {...register('identifier', { required: 'El identificador es obligatorio' })}
         />
-        {errors.cuil && (
-          <p className="mb-5 text-sm text-red-500">• {errors.cuil.message}</p>
+        {errors.identifier && (
+          <p className="mb-5 text-sm text-red-500">
+            • {errors.identifier.message}
+          </p>
+        )}
+
+        <label
+          htmlFor="payment_method"
+          className={clsx(
+            errors.payment_method
+              ? 'text-red-500'
+              : 'text-gray-900 dark:text-gray-300',
+          )}
+        >
+          Método de Pago
+        </label>
+        <input
+          className={clsx(
+            'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
+            errors.payment_method
+              ? 'mb-0 border-red-500'
+              : 'mb-5 hover:border-blue-600',
+          )}
+          type="text"
+          {...register('payment_method', { required: 'El método de pago es obligatorio' })}
+        />
+        {errors.payment_method && (
+          <p className="mb-5 text-sm text-red-500">
+            • {errors.payment_method.message}
+          </p>
+        )}
+
+        <label
+          htmlFor="document"
+          className={clsx(
+            errors.document
+              ? 'text-red-500'
+              : 'text-gray-900 dark:text-gray-300',
+          )}
+        >
+          Número de Documento
+        </label>
+        <input
+          className={clsx(
+            'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
+            errors.document
+              ? 'mb-0 border-red-500'
+              : 'mb-5 hover:border-blue-600',
+          )}
+          type="text"
+          {...register('document', { required: 'El número de documento es obligatorio' })}
+        />
+        {errors.document && (
+          <p className="mb-5 text-sm text-red-500">
+            • {errors.document.message}
+          </p>
+        )}
+
+        <label
+          htmlFor="type_of_document"
+          className={clsx(
+            errors.type_of_document
+              ? 'text-red-500'
+              : 'text-gray-900 dark:text-gray-300',
+          )}
+        >
+          Tipo de Documento
+        </label>
+        <input
+          className={clsx(
+            'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
+            errors.type_of_document
+              ? 'mb-0 border-red-500'
+              : 'mb-5 hover:border-blue-600',
+          )}
+          type="text"
+          {...register('type_of_document', { required: 'El tipo de documento es obligatorio' })}
+        />
+        {errors.type_of_document && (
+          <p className="mb-5 text-sm text-red-500">
+            • {errors.type_of_document.message}
+          </p>
         )}
 
         <label
           htmlFor="email"
           className={clsx(
-            errors.email ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
+            errors.email
+              ? 'text-red-500'
+              : 'text-gray-900 dark:text-gray-300',
           )}
         >
-          Correo electrónico
+          Email
         </label>
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.email ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
+            errors.email
+              ? 'mb-0 border-red-500'
+              : 'mb-5 hover:border-blue-600',
           )}
           type="email"
           {...register('email', {
             required: 'El correo electrónico es obligatorio',
             pattern: {
-              value: /^\S+@\S+$/i,
-              message: 'El formato del correo electrónico es inválido',
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+              message: 'Introduce un correo electrónico válido',
             },
           })}
         />
         {errors.email && (
-          <p className="mb-5 text-sm text-red-500">• {errors.email.message}</p>
+          <p className="mb-5 text-sm text-red-500">
+            • {errors.email.message}
+          </p>
         )}
 
         <label
-          htmlFor="comprobante"
+          htmlFor="proof_of_payment"
           className={clsx(
-            errors.comprobante
+            errors.proof_of_payment
               ? 'text-red-500'
               : 'text-gray-900 dark:text-gray-300',
           )}
         >
-          Comprobante
+          Comprobante de Pago
         </label>
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.comprobante
+            errors.proof_of_payment
               ? 'mb-0 border-red-500'
               : 'mb-5 hover:border-blue-600',
           )}
           type="file"
-          {...register('comprobante', {
-            required: 'El comprobante es obligatorio',
-          })}
+          {...register('proof_of_payment', { required: 'El comprobante de pago es obligatorio' })}
         />
-        {errors.comprobante && (
+        {errors.proof_of_payment && (
           <p className="mb-5 text-sm text-red-500">
-            • {errors.comprobante.message}
+            • {errors.proof_of_payment.message}
           </p>
         )}
 
         <label
           htmlFor="note"
           className={clsx(
-            errors.note ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
+            errors.note
+              ? 'text-red-500'
+              : 'text-gray-900 dark:text-gray-300',
           )}
         >
-          Nota
+          Nota (Opcional)
         </label>
         <textarea
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.note ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
+            errors.note
+              ? 'mb-0 border-red-500'
+              : 'mb-5 hover:border-blue-600',
           )}
           {...register('note')}
-        ></textarea>
+        />
         {errors.note && (
-          <p className="mb-5 text-sm text-red-500">• {errors.note.message}</p>
-        )}
-
-        {errorMessage && (
-          <div className="mb-5 flex w-full rounded border-2 border-red-500 bg-transparent p-4">
-            <ErrorOutlineIcon className="text-red-500" />
-            <div className="ml-2">
-              <p className="text-base text-red-500">Error</p>
-              <p className="text-sm font-light text-red-500">{errorMessage}</p>
-            </div>
-          </div>
+          <p className="mb-5 text-sm text-red-500">
+            • {errors.note.message}
+          </p>
         )}
 
         <SendButton pending={loading} />
