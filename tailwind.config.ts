@@ -1,4 +1,4 @@
-// /tailwind.config.ts
+// tailwind.config.ts
 
 import type { Config } from 'tailwindcss';
 
@@ -48,27 +48,49 @@ const config: Config = {
         'custom-blue': '0 5px 10px #012a8d',
         'custom-black': '0 5px 10px #000',
       },
-
       backgroundColor: {
         'dark-blue': 'rgb(3, 35, 54)',
       },
       top: {
         '57': '57%',
       },
-
       textShadow: {
         light: '4px 4px 10px rgba(0, 0, 0, 0.9)',
         dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',
       },
-    },
-    keyframes: {
-      shimmer: {
-        '100%': {
-          transform: 'translateX(100%)',
+      animation: {
+        'rotate': 'rotate 5s cubic-bezier(0.4, 0, 0.2, 1)',
+        'change-color': 'change-color 2.5s cubic-bezier(0.4, 0, 0.2, 1)'
+      },
+      keyframes: {
+        rotate: {
+          '0%': {
+            clipPath: 'ellipse(1% 100% at 43% 81%)',
+          },
+          '50%': {
+            clipPath: 'ellipse(90% 0% at 99% 100%)',
+          },
+          '100%': {
+            clipPath: 'ellipse(100% 100% at 43% 81%)',
+          }
+        },
+        'change-color': {
+          'from': {
+            color: '#012c8a',
+          },
+          'to': {
+            color: '#fff',
+          }
+        },
+        shimmer: {
+          '100%': {
+            transform: 'translateX(100%)',
+          },
         },
       },
     },
   },
   plugins: [require('@tailwindcss/forms'), require('tailwindcss-textshadow')],
 };
+
 export default config;
