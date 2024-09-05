@@ -7,11 +7,11 @@ import { usePathname } from 'next/navigation';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import useStore from '@/store/authViewStore';
 
-import { Dropdown, Navbar } from 'flowbite-react';
+import { Drawer, Sidebar, Navbar } from 'flowbite-react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { BsChevronRight } from 'react-icons/bs';
 
-import NavLinks from '@/components/ui/nav-links';
+import NavLinks from '@/components/ui/top-menu/nav-links';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './switchStyle.module.css';
@@ -21,6 +21,8 @@ export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
   const [bgOpacity, setBgOpacity] = useState(false);
+
+  const [drawerMenu, setDrawerMenu] = useState(false);
 
   const { setView } = useStore();
 
@@ -50,15 +52,13 @@ export function TopMenu() {
     <Navbar
       fluid
       rounded
-      className={`sticky top-0 z-50 w-full bg-inherit p-4 shadow-md transition-opacity duration-200 dark:bg-inherit ${
+      className={`sticky top-0 z-50 py-6 shadow-md transition-opacity duration-200 dark:bg-lightText ${
         bgOpacity
-          ? 'bg-opacity-90 dark:bg-opacity-90'
+          ? 'bg-opacity-80 dark:bg-opacity-80'
           : 'bg-opacity-100 dark:bg-opacity-100'
       }`}
     >
-      <div
-        className={`m-auto flex w-full max-w-screen-2xl flex-row-reverse justify-between gap-4 lg:flex-row`}
-      >
+      <div className="m-auto flex w-full max-w-screen-2xl flex-row justify-between">
         <Link
           key="Iniciar sesión"
           href="/auth/login-register"
@@ -85,111 +85,105 @@ export function TopMenu() {
           />
         </Navbar.Brand>
 
-        <nav className="flex flex-row-reverse items-center justify-center lg:flex-row">
+        <nav className="flex flex-row items-center justify-center">
           <section className="flex items-center justify-end">
-            <label className={`${styles.switch} ml-3`}>
+            <label className={`${styles.switch} mx-2`}>
               <input type="checkbox" onClick={changeTheme} />
               <span
                 className={isDark ? styles.sliderDark : styles.sliderLight}
               ></span>
             </label>
-          </section>
-
-          <section className="flex lg:hidden">
-            <Dropdown
-              arrowIcon={false}
-              inline
-              label={
-                <GiHamburgerMenu className="size-8 text-gray-800 dark:text-gray-200" />
-              }
+            <button
+              onClick={() => setDrawerMenu(true)}
+              className="block lg:hidden"
             >
-              <Dropdown.Item
-                className={`cursor-pointer ${
-                  selectedItem === 'about-us'
-                    ? 'bg-blue-500 text-white'
-                    : 'hover:bg-gray-100 dark:hover:bg-gray-600'
-                }`}
-                onClick={() => handleSelect('about-us')}
-              >
-                <Link href="/info/about-us" className="flex items-center">
-                  <BsChevronRight />
-                  Quienes Somos
-                </Link>
-              </Dropdown.Item>
-              <Dropdown.Item
-                className={`cursor-pointer ${
-                  selectedItem === 'how-to-use'
-                    ? 'bg-blue-500 text-white'
-                    : 'hover:bg-gray-100 dark:hover:bg-gray-600'
-                }`}
-                onClick={() => handleSelect('how-to-use')}
-              >
-                <Link href="/info/how-to-use" className="flex items-center">
-                  <BsChevronRight />
-                  Como Usar Swaplyar
-                </Link>
-              </Dropdown.Item>
-              <Dropdown.Item
-                className={`cursor-pointer ${
-                  selectedItem === 'loyalty-program'
-                    ? 'bg-blue-500 text-white'
-                    : 'hover:bg-gray-100 dark:hover:bg-gray-600'
-                }`}
-                onClick={() => handleSelect('loyalty-program')}
-              >
-                <Link
-                  href="/info/loyalty-program"
-                  className="flex items-center"
-                >
-                  <BsChevronRight />
-                  Programa de Fidelización
-                </Link>
-              </Dropdown.Item>
-              <Dropdown.Divider />
-              <section className="md:hidden">
-                <Dropdown.Item
-                  className={`cursor-pointer ${
-                    selectedItem === 'login'
-                      ? 'bg-blue-500 text-white'
-                      : 'hover:bg-gray-100 dark:hover:bg-gray-600'
-                  }`}
-                  onClick={() => handleSelect('login')}
-                >
-                  <Link
-                    href="/auth/login-register"
-                    onClick={() => setView('login')}
-                    className="flex items-center"
-                  >
-                    <BsChevronRight />
-                    Login
-                  </Link>
-                </Dropdown.Item>
-                <Dropdown.Item
-                  className={`cursor-pointer ${
-                    selectedItem === 'register'
-                      ? 'bg-blue-500 text-white'
-                      : 'hover:bg-gray-100 dark:hover:bg-gray-600'
-                  }`}
-                  onClick={() => handleSelect('register')}
-                >
-                  <Link
-                    href="/auth/login-register"
-                    onClick={() => setView('register')}
-                    className="flex items-center"
-                  >
-                    <BsChevronRight />
-                    Register
-                  </Link>
-                </Dropdown.Item>
-              </section>
-            </Dropdown>
+              <GiHamburgerMenu className="size-8 text-lightText dark:text-darkText" />
+            </button>
           </section>
 
-          <Navbar.Collapse>
-            <section className="hidden lg:flex">
-              <NavLinks />
-            </section>
-          </Navbar.Collapse>
+          <Drawer
+            open={drawerMenu}
+            onClose={() => setDrawerMenu(false)}
+            position="right"
+          >
+            <Drawer.Header title="Menu" titleIcon={() => <></>} />
+            <Drawer.Items className="h-[90vh]">
+              <Sidebar aria-label="Sidebar with content separator example">
+                <Sidebar.Items className="flex h-full flex-col justify-between">
+                  <Sidebar.ItemGroup>
+                    <Sidebar.Item
+                      className={`cursor-pointer ${
+                        selectedItem === 'about-us'
+                          ? 'bg-blue-500 text-white'
+                          : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+                      }`}
+                      onClick={() => handleSelect('about-us')}
+                      href="/info/about-us"
+                      icon={BsChevronRight}
+                    >
+                      Quienes Somos
+                    </Sidebar.Item>
+
+                    <Sidebar.Item
+                      className={`cursor-pointer ${
+                        selectedItem === 'how-to-use'
+                          ? 'bg-blue-500 text-white'
+                          : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+                      }`}
+                      onClick={() => handleSelect('how-to-use')}
+                      href="/info/how-to-use"
+                      icon={BsChevronRight}
+                    >
+                      Como Usar Swaplyar
+                    </Sidebar.Item>
+
+                    <Sidebar.Item
+                      className={`cursor-pointer ${
+                        selectedItem === 'loyalty-program'
+                          ? 'bg-blue-500 text-white'
+                          : 'hover:bg-gray-100 dark:hover:bg-gray-600'
+                      }`}
+                      onClick={() => handleSelect('loyalty-program')}
+                      href="/info/loyalty-program"
+                      icon={BsChevronRight}
+                    >
+                      Programa de Fidelización
+                    </Sidebar.Item>
+                  </Sidebar.ItemGroup>
+
+                  <Sidebar.ItemGroup className="block md:hidden">
+                    <Sidebar.Item
+                      className={`flex cursor-pointer items-center gap-2 rounded-3xl border border-lightText p-3 text-center dark:border-darkText`}
+                      onClick={() => {
+                        handleSelect('login');
+                        setView('login');
+                        setDrawerMenu(false);
+                      }}
+                      href="/auth/login-register"
+                    >
+                      Iniciar sesión
+                    </Sidebar.Item>
+
+                    <Sidebar.Item
+                      className={`flex cursor-pointer items-center gap-2 rounded-3xl border border-lightText bg-lightText p-3 text-center text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText`}
+                      onClick={() => {
+                        handleSelect('register');
+                        setView('register');
+                        setDrawerMenu(false);
+                      }}
+                      href="/auth/login-register"
+                    >
+                      Registrarse
+                    </Sidebar.Item>
+                  </Sidebar.ItemGroup>
+                </Sidebar.Items>
+              </Sidebar>
+            </Drawer.Items>
+          </Drawer>
+
+          <section className="hidden lg:flex">
+            <NavLinks />
+          </section>
         </nav>
       </div>
     </Navbar>

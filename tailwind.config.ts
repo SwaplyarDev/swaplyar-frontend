@@ -1,12 +1,14 @@
 // tailwind.config.ts
 
 import type { Config } from 'tailwindcss';
+import flowbite from 'flowbite-react/tailwind';
 
 const config: Config = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
+    flowbite.content(),
   ],
   darkMode: 'class',
   theme: {
@@ -90,7 +92,11 @@ const config: Config = {
       },
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('tailwindcss-textshadow')],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('tailwindcss-textshadow'),
+    flowbite.plugin(),
+  ],
 };
 
 export default config;

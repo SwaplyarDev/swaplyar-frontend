@@ -14,11 +14,12 @@ import Link from 'next/link';
 
 const HelpCenterPage = () => {
   return (
-    <div className="py-9">
+    <main className="flex w-full flex-col gap-20 py-10">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-      <div className="space-y-8 p-4">
+
+      <div className="m-auto grid w-[90%] max-w-screen-lg items-center justify-center gap-12">
         <section className="rs-wrapper-v4 p-4">
           <h1 className="text-3xl font-bold">
             Bienvenido al Centro de Ayuda de SwaplyAr
@@ -28,24 +29,27 @@ const HelpCenterPage = () => {
             tengas
           </h3>
         </section>
+
         <section className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          <div>
+          <span>
             <ContactForm />
-          </div>
-          <div className="flex items-center justify-center">
+          </span>
+
+          <span className="flex items-center justify-center">
             <Image src={Contacto} alt="Contáctanos" width={400} height={300} />
-          </div>
+          </span>
         </section>
+
         <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
-          <div className="flex items-center justify-center">
+          <span className="flex items-center justify-center">
             <Image
               src={PlusRewardsGif}
               alt="SwaplyAr Plus Rewards™"
               width={400}
               height={300}
             />
-          </div>
-          <div>
+          </span>
+          <span className="flex flex-col items-center text-center">
             <h2 className="text-2xl font-bold">
               SwaplyAr Plus Rewards™ premia tu fidelidad, con el programa de
               fidelización
@@ -62,10 +66,11 @@ const HelpCenterPage = () => {
             >
               Plus Rewards™
             </button>
-          </div>
+          </span>
         </section>
+
         <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
-          <div className="card-rawe rounded bg-gray-200 p-4 dark:bg-gray-800">
+          <span className="card-rawe rounded bg-gray-200 p-4 dark:bg-gray-800">
             <Image
               src={Ayuda1}
               alt="paso 1 de como cambiar tu dinero en SwaplyAr"
@@ -86,8 +91,8 @@ const HelpCenterPage = () => {
               </Link>
               .
             </p>
-          </div>
-          <div className="card-rawe rounded bg-gray-200 p-4 dark:bg-gray-800">
+          </span>
+          <span className="card-rawe rounded bg-gray-200 p-4 dark:bg-gray-800">
             <Image
               src={Ayuda2}
               alt="paso 2 de como cambiar tu dinero en SwaplyAr"
@@ -108,15 +113,14 @@ const HelpCenterPage = () => {
               </Link>
               .
             </p>
-          </div>
+          </span>
         </section>
       </div>
-      <div className="flex justify-center py-10">
-        <FlyerTrabajo imageSrc={CentroDeAyuda}>
-          <></>
-        </FlyerTrabajo>
-      </div>
-    </div>
+
+      <FlyerTrabajo imageSrc={CentroDeAyuda}>
+        <></>
+      </FlyerTrabajo>
+    </main>
   );
 };
 

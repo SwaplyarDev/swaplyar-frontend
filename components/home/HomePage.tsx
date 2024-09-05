@@ -72,14 +72,15 @@ export default function HomePage() {
       </div>
       <div className="mt-10">
         <FlyerTrabajo imageSrc={FlyerGif}>
-          ¿Nuevo en SwaplyAr? Haz clic en &quot;Cómo usar SwaplyAr&quot; y aprendé a operar fácilmente. ¡Empezá ahora!
+          ¿Nuevo en SwaplyAr? Haz clic en &quot;Cómo usar SwaplyAr&quot; y
+          aprendé a operar fácilmente. ¡Empezá ahora!
           <div>
             <button id="bannerHTUButton">
-              <a href='/info/how-to-use'>Cómo usar SwaplyAr</a>
+              <a href="/info/how-to-use">Cómo usar SwaplyAr</a>
             </button>
           </div>
         </FlyerTrabajo>
-    </div>
+      </div>
     </main>
   );
 }
