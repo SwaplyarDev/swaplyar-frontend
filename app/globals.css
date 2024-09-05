@@ -65,13 +65,13 @@ body {
 }
 
 .ball {
-  @apply absolute w-[110px] h-[110px] blur-[4.3em] rounded-full;
+  @apply absolute w-[110px] h-[110px] blur-[4.5em] rounded-full;
 }
 
 /* Círculos con mayor extensión lateral */
 .ball1 { 
   background-color: rgba(42, 41, 120, 0.601); 
-  transform: rotate(0deg) translateX(280px); /* Se extiende más hacia la derecha */
+  transform: rotate(0deg) translateX(260px); /* Se extiende más hacia la derecha */
 }
 
 .ball2 { 
