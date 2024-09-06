@@ -16,6 +16,6 @@ export const configRoutes: ConfigRoutes = {
     '/request',
   ],
   authRoutes: ['/auth/login-register'],
-  apiRoutes: ['/api/login', '/api/users', '/api/company', '/api/roles'],
+  apiRoutes: ['/api/login', '/api/users', '/api/company', '/api/roles', '/api/paypal'],
   protectedRoutes: ['/auth/settings', '/products/:path*'],
 };

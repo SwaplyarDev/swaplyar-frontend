@@ -14,11 +14,12 @@ import {
   updateCurrentValueUSDToEUR,
 } from '@/utils/currencyApis';
 
-declare global {
-  interface Window {
-    paypal: any;
-  }
-}
+import Paypal from '../PayPal/Paypal';
+// declare global {
+//   interface Window {
+//     paypal: any;
+//   }
+// }
 
 export default function TransactionCalculator() {
   const router = useRouter();
@@ -319,14 +320,15 @@ export default function TransactionCalculator() {
             </div>
           </div>
 
-          <div id="goToPayPalButton" className="mt-8">
+          {/* <div id="goToPayPalButton" className="mt-8">
             <button
               className="bg- buttonPay rounded-3xl bg-blue-500 p-2 px-10 py-3 text-darkText hover:bg-blue-700 focus:outline-none"
               onClick={handleDirection}
             >
               Realizar el pago
             </button>
-          </div>
+          </div> */}
+          <Paypal/>
         </div>
       </div>
     </div>
