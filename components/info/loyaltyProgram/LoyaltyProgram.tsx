@@ -101,7 +101,7 @@ function LoyaltyProgram() {
             .
           </p>
           <p>
-            <a className="text-blue-800" href="/centro-de-ayuda.html">
+            <a className="text-blue-800" href="/info/help-center">
               ¿Necesitas ayuda?
             </a>
           </p>
