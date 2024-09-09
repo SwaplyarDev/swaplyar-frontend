@@ -9,10 +9,8 @@ export async function POST(req: Request) {
   try {
     const { currency, amount } = await req.json();
 
-    // Autenticación base64
     const auth = Buffer.from(`${clientId}:${secretKey}`).toString('base64');
 
-    // Solicitud para obtener el token de acceso
     const authResponse = await fetch(getToken as string, {
       method: 'POST',
       headers: {
@@ -28,7 +26,6 @@ export async function POST(req: Request) {
 
     const { access_token } = await authResponse.json();
 
-    // Solicitud para crear la orden
     const orderResponse = await fetch(paypalURL as string, {
       method: 'POST',
       headers: {

@@ -1,9 +1,20 @@
 'use client'
 import {PayPalScriptProvider, PayPalButtons} from '@paypal/react-paypal-js'
+import { useEffect } from 'react';
 
 const client = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
 
-export default function Paypal() {
+
+interface PayPalProps{
+ amount: string;
+ currency: string;
+}
+export default function Paypal({currency, amount}:PayPalProps) {
+
+  useEffect(()=>{
+    console.log(amount, currency);
+    
+  },[amount, currency]);
   return (
     <>
         <PayPalScriptProvider options={{
@@ -17,19 +28,18 @@ export default function Paypal() {
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                  amount: "100.00",
-                  currency: 'USD',
+                  amount,
+                  currency,
                 }),
               });
                const data = await res.json();
-               console.log(data);
                return data.orderID;
             }}
-            onApprove={async (data, actions) => {
+            onApprove={async (_data, actions) => {
               try {
                 const capture = await actions.order?.capture();
-                console.log(data);
-                console.log('Pago aprobado:', capture); 
+                
+                console.log('Pago aprobado:', capture?.payer); 
               } catch (error) {
                 console.error('Error al capturar el pago:', error);
               }

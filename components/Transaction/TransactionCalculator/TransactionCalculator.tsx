@@ -328,7 +328,7 @@ export default function TransactionCalculator() {
               Realizar el pago
             </button>
           </div> */}
-          <Paypal/>
+          <Paypal currency={selectedSendingSystem?.coin as string} amount={`${sendAmount.toString()}.00`}/>
         </div>
       </div>
     </div>
