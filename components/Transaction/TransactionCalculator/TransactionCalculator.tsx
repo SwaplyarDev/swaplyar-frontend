@@ -15,6 +15,7 @@ import {
 } from '@/utils/currencyApis';
 
 import Paypal from '../PayPal/Paypal';
+import { paypalPaymentStore } from '@/store/paypalPaymetStore';
 // declare global {
 //   interface Window {
 //     paypal: any;
@@ -31,11 +32,14 @@ export default function TransactionCalculator() {
     activeSelect,
     setActiveSelect,
   } = useSystemStore();
+
+  const {paypal, setPaypal} = paypalPaymentStore();
   const [sendAmount, setSendAmount] = useState(0);
   const [receiveAmount, setReceiveAmount] = useState(0);
   const [exchangeRate, setExchangeRate] = useState<number>(0);
   const [rateForOne, setRateForOne] = useState<number>(0);
-  const [darkMode, setDarkMode] = useState<boolean>(false);
+  // const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [exchange, setExchange] = useState({currency: "USD", amount:0});
 
   // Datos de sistemas de pago
   const systems: System[] = [
@@ -83,20 +87,21 @@ export default function TransactionCalculator() {
     },
   ];
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setDarkMode(mediaQuery.matches);
-    const handleChange = (e: MediaQueryListEvent) => {
-      setDarkMode(e.matches);
-    };
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
+  // useEffect(() => {
+  //   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  //   setDarkMode(mediaQuery.matches);
+  //   const handleChange = (e: MediaQueryListEvent) => {
+  //     setDarkMode(e.matches);
+  //   };
+  //   mediaQuery.addEventListener('change', handleChange);
+  //   return () => mediaQuery.removeEventListener('change', handleChange);
+  // }, []);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', darkMode);
-  }, [darkMode]);
+  // useEffect(() => {
+  //   document.documentElement.classList.toggle('dark', darkMode);
+  // }, [darkMode]);
 
+  
   const findExchangeRate = useCallback(async () => {
     if (selectedSendingSystem && selectedReceivingSystem) {
       let rate = 0;
@@ -214,6 +219,7 @@ export default function TransactionCalculator() {
 
     const tempAmount = sendAmount;
     setSendAmount(receiveAmount);
+    
     setReceiveAmount(tempAmount);
 
     setActiveSelect(null);
@@ -230,6 +236,15 @@ export default function TransactionCalculator() {
   };
 
   console.log(rateForOne);
+
+  const handleExchange = ()=>{
+    setExchange({
+      currency: selectedSendingSystem?.coin as string,
+      amount: sendAmount
+    }
+    );
+    setPaypal();
+  };
 
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
@@ -263,7 +278,10 @@ export default function TransactionCalculator() {
               className="peer h-full w-full border-0 bg-transparent p-2 text-center text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0"
               id="sendInputUniqueID"
               value={sendAmount}
-              onChange={(e) => setSendAmount(parseFloat(e.target.value) || 0)}
+              onChange={(e) => {
+              e.preventDefault();
+              setSendAmount(parseFloat(e.target.value ) || 0);
+              }}
             />
             <fieldset
               aria-hidden="true"
@@ -328,7 +346,12 @@ export default function TransactionCalculator() {
               Realizar el pago
             </button>
           </div> */}
-          <Paypal currency={selectedSendingSystem?.coin as string} amount={`${sendAmount.toString()}.00`}/>
+          <div onClick={handleExchange}>
+            {paypal ?
+            <Paypal currency={exchange.currency} amount={exchange.amount} />:
+            "SELECCIONAR"
+            }
+          </div>
         </div>
       </div>
     </div>
