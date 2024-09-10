@@ -33,13 +33,14 @@ export default function TransactionCalculator() {
     setActiveSelect,
   } = useSystemStore();
 
-  const {paypal, setPaypal} = paypalPaymentStore();
+  const { paypal, setPaypal } = paypalPaymentStore();
+
   const [sendAmount, setSendAmount] = useState(0);
   const [receiveAmount, setReceiveAmount] = useState(0);
   const [exchangeRate, setExchangeRate] = useState<number>(0);
   const [rateForOne, setRateForOne] = useState<number>(0);
   // const [darkMode, setDarkMode] = useState<boolean>(false);
-  const [exchange, setExchange] = useState({currency: "USD", amount:0});
+  const [exchange, setExchange] = useState({ currency: 'USD', amount: 0 });
 
   // Datos de sistemas de pago
   const systems: System[] = [
@@ -101,7 +102,6 @@ export default function TransactionCalculator() {
   //   document.documentElement.classList.toggle('dark', darkMode);
   // }, [darkMode]);
 
-  
   const findExchangeRate = useCallback(async () => {
     if (selectedSendingSystem && selectedReceivingSystem) {
       let rate = 0;
@@ -219,7 +219,7 @@ export default function TransactionCalculator() {
 
     const tempAmount = sendAmount;
     setSendAmount(receiveAmount);
-    
+
     setReceiveAmount(tempAmount);
 
     setActiveSelect(null);
@@ -237,12 +237,11 @@ export default function TransactionCalculator() {
 
   console.log(rateForOne);
 
-  const handleExchange = ()=>{
+  const handleExchange = () => {
     setExchange({
       currency: selectedSendingSystem?.coin as string,
-      amount: sendAmount
-    }
-    );
+      amount: sendAmount,
+    });
     setPaypal();
   };
 
@@ -279,8 +278,8 @@ export default function TransactionCalculator() {
               id="sendInputUniqueID"
               value={sendAmount}
               onChange={(e) => {
-              e.preventDefault();
-              setSendAmount(parseFloat(e.target.value ) || 0);
+                e.preventDefault();
+                setSendAmount(parseFloat(e.target.value) || 0);
               }}
             />
             <fieldset
@@ -338,19 +337,14 @@ export default function TransactionCalculator() {
             </div>
           </div>
 
-          {/* <div id="goToPayPalButton" className="mt-8">
-            <button
-              className="bg- buttonPay rounded-3xl bg-blue-500 p-2 px-10 py-3 text-darkText hover:bg-blue-700 focus:outline-none"
-              onClick={handleDirection}
-            >
-              Realizar el pago
-            </button>
-          </div> */}
-          <div onClick={handleExchange}>
-            {paypal ?
-            <Paypal currency={exchange.currency} amount={exchange.amount} />:
-            "SELECCIONAR"
-            }
+          <div className="mt-8" >
+            {paypal ? (
+              <Paypal currency={exchange.currency} amount={exchange.amount} handleDirection={handleDirection} />
+            ) : (
+              <button className=" bg-buttonPay rounded-3xl bg-blue-500 px-10 py-3 text-darkText hover:bg-blue-700 focus:outline-none disabled:bg-gray-400" onClick={handleExchange} disabled={ sendAmount < 1 }> 
+                Procesar pago
+              </button>
+            )}
           </div>
         </div>
       </div>

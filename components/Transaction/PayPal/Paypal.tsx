@@ -8,12 +8,13 @@ const client = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
 interface PayPalProps {
   currency: string;
   amount: number;
+  handleDirection: () => void;
 }
-export default function Paypal({ currency, amount }: PayPalProps) {
+
+export default function Paypal({ currency, amount, handleDirection }: PayPalProps) {
   const [exchange, setExchange] = useState({ amount, currency });
 
-  const { setPaypal } = paypalPaymentStore();
-
+  const { setPaypal, setPayer } = paypalPaymentStore();
 
   useEffect(() => {
     if (currency && amount) setExchange({ amount, currency });
@@ -28,6 +29,12 @@ export default function Paypal({ currency, amount }: PayPalProps) {
         }}
       >
         <PayPalButtons
+          style={{
+            color: 'blue',
+            layout: 'horizontal',
+            shape: 'pill',
+            height: 45,
+          }}
           createOrder={async () => {
             const res = await fetch('/api/paypal', {
               method: 'POST',
@@ -43,8 +50,9 @@ export default function Paypal({ currency, amount }: PayPalProps) {
             try {
               const capture = await actions.order?.get();
 
-              console.log('Pago aprobado 1:', capture?.payer);
               setPaypal();
+              setPayer(capture?.payer);
+              handleDirection();
             } catch (error) {
               console.error('Error al capturar el pago:', error);
             }
