@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import Select from 'react-select';
+import { paypalPaymentStore } from '@/store/paypalPaymetStore';
 import { requestRegister } from '@/actions/request/action.requestRegister';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
@@ -37,6 +38,9 @@ export const RequestRegisterForm = () => {
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(null);
 
+  const { payer } = paypalPaymentStore();
+
+
   const {
     register,
     handleSubmit,
@@ -45,6 +49,7 @@ export const RequestRegisterForm = () => {
   } = useForm<FormInputs>();
 
   useEffect(() => {
+    console.log(payer);
     const fetchCountries = async () => {
       try {
         const response = await fetch('https://restcountries.com/v3.1/all');
@@ -66,7 +71,7 @@ export const RequestRegisterForm = () => {
     };
 
     fetchCountries();
-  }, []);
+  }, [payer]);
 
   console.log(selectedCountry);
 
@@ -96,7 +101,7 @@ export const RequestRegisterForm = () => {
 
     const formData = new FormData();
     formData.append('first_name', first_name || '');
-    formData.append('last_name', last_name || '');
+    formData.append('last_name', last_name ||'');
     formData.append('amount_sent', amount_sent || '');
     formData.append('amount_received', amount_received || '');
     formData.append('phone', fullPhoneNumber || '');
@@ -162,6 +167,7 @@ export const RequestRegisterForm = () => {
             errors.first_name ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
           )}
           type="text"
+          value={payer.name.given_name}
           {...register('first_name', { required: 'El nombre es obligatorio' })}
         />
         {errors.first_name && (
@@ -186,6 +192,7 @@ export const RequestRegisterForm = () => {
               : 'mb-5 hover:border-blue-600',
           )}
           type="text"
+          value={ payer.name.surname }
           {...register('last_name', { required: 'El apellido es obligatorio' })}
         />
         {errors.last_name && (
@@ -497,6 +504,7 @@ export const RequestRegisterForm = () => {
               : 'mb-5 hover:border-blue-600',
           )}
           type="email"
+          value={payer.email_address}
           {...register('email', {
             required: 'El correo electrónico es obligatorio',
             pattern: {

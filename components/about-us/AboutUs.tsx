@@ -78,7 +78,7 @@ const AboutUs = () => {
       </div>
 
       <div className="pt-5 text-black dark:text-white">
-        <div className="rs-wrapper-v4 max-w-screen-xs:w-[90%] mx-auto w-full text-center">
+        <div className="rs-wrapper-v4 w-[90%] md:w-full mx-auto text-center">
           <div className="container-text pb-12 pt-10 text-xl sm:pb-24 sm:pt-20 sm:text-2xl lg:text-4xl">
             <h1 className="mx-auto max-w-[1000px] text-left sm:w-[80%] lg:text-4xl">
               En SwaplyAr, garantizamos un intercambio seguro y confiable de tu
@@ -89,7 +89,7 @@ const AboutUs = () => {
           <AnimatedBlurredCircles topOffset={bannerHeight} />
         </div>
 
-        <div className="rs-wrapper-v4 max-w-screen-xs:w-[90%] mx-auto mb-12 w-full max-w-[1000px] text-justify sm:mt-4 md:mt-8 lg:mt-8">
+        <div className="rs-wrapper-v4 w-[90%]  md:w-full max-w-[1000px] mx-auto mb-12  text-justify sm:mt-4 md:mt-8 lg:mt-8">
           <h2 className="text-xl sm:text-4xl">Nuestra misión y valores</h2>
           <h5 className="mx-auto mt-4 text-lg sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
             SwaplyAr nació de una simple necesidad, intercambiar saldo y que

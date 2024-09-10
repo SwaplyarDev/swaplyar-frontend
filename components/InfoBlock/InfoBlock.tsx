@@ -20,7 +20,7 @@ export default function InfoBlock({
 }: InfoBlockProps) {
   return (
     <div className="mb-12 mt-16 flex w-full max-w-4xl flex-col items-center justify-center md:flex-row">
-      <div className="info-image-container mb-4 flex w-full justify-center md:mb-0 md:mr-8 md:w-1/2">
+      <div className="info-image-container mb-4 flex w-[90%] justify-center md:mb-0 md:mr-8 md:w-1/2">
         <Image
           src={imageSrc}
           alt={imageAlt}
@@ -29,9 +29,9 @@ export default function InfoBlock({
           className="drop-shadow-light dark:drop-shadow-darkmode md:ml-16"
         />
       </div>
-      <div className="info-content-container w-full md:w-1/2">
+      <div className="info-content-container w-[90%] md:w-1/2">
         <div className="flex flex-col items-center md:items-start">
-          <h2 className="dark-title mb-4 text-center text-4xl text-gray-blue dark:text-white md:text-left">
+          <h2 className="dark-title mb-4 text-center text-3xl text-gray-blue dark:text-white md:text-4xl md:text-left">
             {title}
           </h2>
         </div>

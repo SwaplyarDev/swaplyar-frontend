@@ -42,37 +42,56 @@ body {
 
     
 
-}
+}*/
+
+
 
 
 .container-blur {
-  @apply w-full h-[1200px] overflow-hidden flex justify-center relative left-0;
+  @apply w-full h-[150vh] overflow-hidden flex justify-center relative; 
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  clip-path: inset(0 0 -10% 0); /* Ajusta este valor si es necesario } */
-
-/* Caja */
-.box {
-  @apply absolute w-full rounded-full;
-  animation: spin 30s infinite linear;
+  top: 20%;
+  right: 5%;
+  overflow: hidden;
 }
 
-#bannerHTUButton {
-  border: none;
-  width: 200px;
-  margin: auto;
-  background-color: #012d8a;
-  color: #ffffff;
-  padding-left: 20px;
-  padding-right: 20px;
-  min-width: 150px;
-  border-radius: 5px;
-  transition: transform 0.2s ease-in-out;
-  font-size: 16px;
-  margin-top: 2%;
+.box {
+  @apply w-full h-full absolute rounded-full;
+  animation: spin 30s infinite linear; /* Hace que los círculos giren */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.ball {
+  @apply absolute w-[110px] h-[110px] blur-[4.5em] rounded-full;
+}
+
+/* Círculos con mayor extensión lateral */
+.ball1 { 
+  background-color: rgba(42, 41, 120, 0.601); 
+  transform: rotate(0deg) translateX(260px); /* Se extiende más hacia la derecha */
+}
+
+.ball2 { 
+  background-color: rgba(42, 41, 120, 0.601); 
+  transform: rotate(72deg) translateX(200px); /* Un poco más cerca */
+}
+
+.ball3 { 
+  background-color: rgba(42, 41, 120, 0.601);  
+  transform: rotate(144deg) translateX(250px); /* Se extiende más hacia la izquierda */
+}
+
+.ball4 { 
+  background-color: rgba(42, 41, 120, 0.601);   
+  transform: rotate(216deg) translateX(280px); 
+}
+
+.ball5 { 
+  background-color: rgba(42, 41, 120, 0.601); 
+  transform: rotate(288deg) translateX(230px); /* Un poco más al centro */
 }
 
 @keyframes spin {
@@ -80,86 +99,41 @@ body {
     transform: rotate(0deg);
   }
   100% {
-    transform: rotate(360deg);
+    transform: rotate(360deg); /* Animación para girar en círculo */
   }
 }
 
-.ball {
-  @apply absolute h-[130px] w-[130px] rounded-full blur-[5em];
-}
-
-.ball1 {
-  background-color: rgba(42, 41, 120, 0.601);
-  top: 10%;
-  left: 25%;
-}
-.ball2 {
-  background-color: rgba(42, 41, 120, 0.601);
-  top: 10%;
-  right: 10%;
-}
-.ball3 {
-  background-color: rgba(42, 41, 120, 0.601);
-  bottom: 10%;
-  left: 50%;
-}
-.ball4 {
-  background-color: rgba(42, 41, 120, 0.601);
-  bottom: 0;
-  left: 10%;
-}
-.ball5 {
-  background-color: rgba(42, 41, 120, 0.601);
-  bottom: 50%;
-  right: 15%;
-}
 
 @media (max-width: 640px) {
   .container-blur {
-    @apply relative left-0 flex h-[200vh] w-full justify-center overflow-hidden;
+    @apply w-full h-[200vh] overflow-hidden flex justify-center relative;
     position: absolute;
-
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    clip-path: inset(0 0 -5% 0);
+    clip-path: inset(0 0 -5% 0); 
+    overflow: hidden;
   }
+
   .box {
     @apply absolute h-[90%] w-full rounded-full;
     animation: spin 30s infinite linear;
     bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .ball {
-    @apply absolute h-[110px] w-[110px] rounded-full blur-[5em];
+    @apply absolute w-[110px] h-[110px] rounded-full blur-[5em];
   }
 
-  .ball1 {
-    background-color: rgba(42, 41, 120, 0.601);
-    top: 30%;
-    left: 20%;
-  }
-  .ball2 {
-    background-color: rgba(42, 41, 120, 0.601);
-    top: 35%;
-    right: 15%;
-  }
-  .ball3 {
-    background-color: rgba(42, 41, 120, 0.601);
-    bottom: 25%;
-    left: 50%;
-  }
-  .ball4 {
-    background-color: rgba(42, 41, 120, 0.601);
-    bottom: 10%;
-    left: 15%;
-  }
-  .ball5 {
-    background-color: rgba(42, 41, 120, 0.601);
-    bottom: 30%;
-    right: 10%;
-  }
+  /* Ajustes para posiciones más centradas en dispositivos móviles */
+  .ball1 { background-color: rgba(42, 41, 120, 0.601); top: 35%; left: 35%; }
+  .ball2 { background-color: rgba(42, 41, 120, 0.601);  top: 35%; right: 35%; }
+  .ball3 { background-color: rgba(42, 41, 120, 0.601); bottom: 35%; left: 50%; transform: translateX(-50%); }
+  .ball4 { background-color: rgb(42, 41, 120); bottom: 25%; left: 25%; }
+  .ball5 { background-color: rgba(42, 41, 120, 0.601); bottom: 25%; right: 25%; }
 }
 
 .p-revert {
