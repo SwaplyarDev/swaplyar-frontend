@@ -11,7 +11,7 @@ import {
   OaSuarez,
   Simplicidad,
   Transparencia,
-} from '@/utils/assets/img-database';
+} from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 
 const cardsData = [

@@ -8,7 +8,7 @@ import {
   LideresenCambio,
   Porqueelegirnos,
   SeguridadySatisfaccion,
-} from '@/utils/assets/img-database';
+} from '@/utils/assets/imgDatabaseCloudinary';
 
 const mainStyles = {
   infoBlocksContainer: 'flex flex-col items-center justify-center',

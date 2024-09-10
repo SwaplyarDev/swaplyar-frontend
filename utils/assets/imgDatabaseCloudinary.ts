@@ -19,13 +19,18 @@ export const Apoyo = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725222
 export const Transparencia = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225387/Transparencia_yfhdn8.png';
 export const Simplicidad = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225345/Simplicidad_ltbxqp.png';
 export const Eficiencia = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224259/Eficiencia_w20tlq.png';
-export const OaSuarez = '/https://res.cloudinary.com/dwrhturiy/image/upload/v1725224837/oa-suarez_vqtic6.png';
+export const OaSuarez = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224837/oa-suarez_vqtic6.png';
 
 /**how-to-use**/
 export const Paso1Gif = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224847/paso1_ucrl1d.gif';
 export const Paso2Gif = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224867/paso2_mfi4q3.gif';
 export const Paso3Gif = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224873/paso3_aednuk.gif';
 export const Paso4Gif = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224880/paso4_xwdvlp.gif';
+
+/**loyalty-program**/
+export const Rewards1 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225314/rewards1_hme3sh.png';
+export const Rewards2 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225322/rewards2_xxnfbs.png';
+export const Rewards3 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225330/rewards3_hnwcgy.png';
 
 /** Terms-and-Conditions **/
 export const TerminosCondiciones = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225370/terminos-y-condiciones_hebdux.png';
@@ -50,4 +55,3 @@ export const ElegirSwaplyAr = 'https://res.cloudinary.com/dwrhturiy/image/upload
 export const Porqueelegirnos = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224950/porqueelegirnos_xj64ck.png';
 export const LideresenCambio = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224626/lideresencambio_zdakrx.png';
 export const SeguridadySatisfaccion = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225337/seguridadysatisfaccion_c0pgcf.png';
-
