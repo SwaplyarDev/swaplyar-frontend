@@ -83,19 +83,19 @@ export default function TransactionCalculator() {
     },
   ];
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setDarkMode(mediaQuery.matches);
-    const handleChange = (e: MediaQueryListEvent) => {
-      setDarkMode(e.matches);
-    };
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
+  // useEffect(() => {
+  //   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  //   setDarkMode(mediaQuery.matches);
+  //   const handleChange = (e: MediaQueryListEvent) => {
+  //     setDarkMode(e.matches);
+  //   };
+  //   mediaQuery.addEventListener('change', handleChange);
+  //   return () => mediaQuery.removeEventListener('change', handleChange);
+  // }, []);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', darkMode);
-  }, [darkMode]);
+  // useEffect(() => {
+  //   document.documentElement.classList.toggle('dark', darkMode);
+  // }, [darkMode]);
 
   const findExchangeRate = useCallback(async () => {
     if (selectedSendingSystem && selectedReceivingSystem) {
