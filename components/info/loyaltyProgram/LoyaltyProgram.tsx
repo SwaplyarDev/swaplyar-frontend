@@ -1,6 +1,6 @@
 'use client';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
-import RewardCard from '@/reward-card/RewardCard';
+import RewardCard from '@/components/ui/reward-card/RewardCard';
 import useStore from '@/store/authViewStore';
 
 import {
