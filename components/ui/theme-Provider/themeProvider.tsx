@@ -35,6 +35,9 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
         currentTheme === 'dark',
       );
       setIsDark(currentTheme === 'dark');
+    }else{
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setIsDark(systemPrefersDark);
     }
   }, []);
 
