@@ -61,8 +61,8 @@ const config: Config = {
         dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',
       },
       animation: {
-        'rotate': 'rotate 5s cubic-bezier(0.4, 0, 0.2, 1)',
-        'change-color': 'change-color 2.5s cubic-bezier(0.4, 0, 0.2, 1)'
+        rotate: 'rotate 5s cubic-bezier(0.4, 0, 0.2, 1)',
+        'change-color': 'change-color 2.5s cubic-bezier(0.4, 0, 0.2, 1)',
       },
       keyframes: {
         rotate: {
@@ -74,15 +74,15 @@ const config: Config = {
           },
           '100%': {
             clipPath: 'ellipse(100% 100% at 43% 81%)',
-          }
+          },
         },
         'change-color': {
-          'from': {
+          from: {
             color: '#012c8a',
           },
-          'to': {
+          to: {
             color: '#fff',
-          }
+          },
         },
         shimmer: {
           '100%': {
