@@ -31,7 +31,7 @@ export default function InfoBlock({
       </div>
       <div className="info-content-container w-[90%] md:w-1/2">
         <div className="flex flex-col items-center md:items-start">
-          <h2 className="dark-title mb-4 text-center text-3xl text-gray-blue dark:text-white md:text-4xl md:text-left">
+          <h2 className="dark-title mb-4 text-center text-3xl text-gray-blue dark:text-white md:text-left md:text-4xl">
             {title}
           </h2>
         </div>

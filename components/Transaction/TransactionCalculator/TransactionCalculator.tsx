@@ -337,11 +337,19 @@ export default function TransactionCalculator() {
             </div>
           </div>
 
-          <div className="mt-8" >
+          <div className="mt-8">
             {paypal ? (
-              <Paypal currency={exchange.currency} amount={exchange.amount} handleDirection={handleDirection} />
+              <Paypal
+                currency={exchange.currency}
+                amount={exchange.amount}
+                handleDirection={handleDirection}
+              />
             ) : (
-              <button className=" bg-buttonPay rounded-3xl bg-blue-500 px-10 py-3 text-darkText hover:bg-blue-700 focus:outline-none disabled:bg-gray-400" onClick={handleExchange} disabled={ sendAmount < 1 }> 
+              <button
+                className="bg-buttonPay rounded-3xl bg-blue-500 px-10 py-3 text-darkText hover:bg-blue-700 focus:outline-none disabled:bg-gray-400"
+                onClick={handleExchange}
+                disabled={sendAmount < 1}
+              >
                 Procesar pago
               </button>
             )}

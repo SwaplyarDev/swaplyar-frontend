@@ -11,7 +11,11 @@ interface PayPalProps {
   handleDirection: () => void;
 }
 
-export default function Paypal({ currency, amount, handleDirection }: PayPalProps) {
+export default function Paypal({
+  currency,
+  amount,
+  handleDirection,
+}: PayPalProps) {
   const [exchange, setExchange] = useState({ amount, currency });
 
   const { setPaypal } = paypalPaymentStore();

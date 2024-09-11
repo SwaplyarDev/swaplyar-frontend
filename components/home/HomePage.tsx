@@ -40,20 +40,16 @@ export default function HomePage() {
 
   return (
     <main className={mainStyles.main}>
-      <div className="shadow-custom-blue bg-white relative" ref={bannerRef}  >
-        <FlyerTrabajo imageSrc='/images/need-help.png'>
+      <div className="relative bg-white shadow-custom-blue" ref={bannerRef}>
+        <FlyerTrabajo imageSrc="/images/need-help.png">
           Estamos trabajando en las funciones de inicio de sesión y registro.
         </FlyerTrabajo>
-     
       </div>
       <AnimatedBlurredCircles topOffset={bannerHeight} />
-      <div className='flex flex-col items-center justify-center' > 
-      
-      <div className={mainStyles.instructionsCalculatorContainer}  >
-        <ConversionInstructions />
-      </div>
-      
-
+      <div className="flex flex-col items-center justify-center">
+        <div className={mainStyles.instructionsCalculatorContainer}>
+          <ConversionInstructions />
+        </div>
 
         <div className={mainStyles.infoBlocksContainer}>
           <InfoBlock

@@ -22,7 +22,10 @@ export async function updateCurrentValueUSDToEUR() {
 
     if (!response.ok) {
       const errorMessage = `Error: ${response.status} ${response.statusText}`;
-      console.error('Error fetching currency data from FreeCurrencyAPI:', errorMessage);
+      console.error(
+        'Error fetching currency data from FreeCurrencyAPI:',
+        errorMessage,
+      );
       throw new Error(errorMessage);
     }
 
@@ -34,9 +37,15 @@ export async function updateCurrentValueUSDToEUR() {
     return { currentValueEURToUSD, currentValueUSDToEUR };
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error fetching currency data from FreeCurrencyAPI:', error.message);
+      console.error(
+        'Error fetching currency data from FreeCurrencyAPI:',
+        error.message,
+      );
     } else {
-      console.error('Unknown error fetching currency data from FreeCurrencyAPI:', error);
+      console.error(
+        'Unknown error fetching currency data from FreeCurrencyAPI:',
+        error,
+      );
     }
     throw new Error('Failed to fetch currency data from FreeCurrencyAPI');
   }
@@ -48,7 +57,10 @@ export async function updateCurrentValueUSD() {
     const response = await fetch(`${bluelyticsApiUrl}`);
     if (!response.ok) {
       const errorMessage = `Error: ${response.status} ${response.statusText}`;
-      console.error('Error fetching Blue USD data from Bluelytics:', errorMessage);
+      console.error(
+        'Error fetching Blue USD data from Bluelytics:',
+        errorMessage,
+      );
       throw new Error(errorMessage);
     }
 
@@ -60,9 +72,15 @@ export async function updateCurrentValueUSD() {
     return { currentValueUSDBlueSale, currentValueUSDBluePurchase };
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error fetching Blue USD data from Bluelytics:', error.message);
+      console.error(
+        'Error fetching Blue USD data from Bluelytics:',
+        error.message,
+      );
     } else {
-      console.error('Unknown error fetching Blue USD data from Bluelytics:', error);
+      console.error(
+        'Unknown error fetching Blue USD data from Bluelytics:',
+        error,
+      );
     }
     throw new Error('Failed to fetch Blue USD data from Bluelytics');
   }
@@ -74,7 +92,10 @@ export async function updateCurrentValueEUR() {
     const response = await fetch(`${bluelyticsApiUrl}`);
     if (!response.ok) {
       const errorMessage = `Error: ${response.status} ${response.statusText}`;
-      console.error('Error fetching Blue EUR data from Bluelytics:', errorMessage);
+      console.error(
+        'Error fetching Blue EUR data from Bluelytics:',
+        errorMessage,
+      );
       throw new Error(errorMessage);
     }
 
@@ -86,9 +107,15 @@ export async function updateCurrentValueEUR() {
     return { currentValueEURBlueSale, currentValueEURBluePurchase };
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error fetching Blue EUR data from Bluelytics:', error.message);
+      console.error(
+        'Error fetching Blue EUR data from Bluelytics:',
+        error.message,
+      );
     } else {
-      console.error('Unknown error fetching Blue EUR data from Bluelytics:', error);
+      console.error(
+        'Unknown error fetching Blue EUR data from Bluelytics:',
+        error,
+      );
     }
     throw new Error('Failed to fetch Blue EUR data from Bluelytics');
   }
@@ -97,9 +124,12 @@ export async function updateCurrentValueEUR() {
 //* Función para obtener todas las tasas de cambio
 async function getExchangeRates() {
   try {
-    const { currentValueEURToUSD, currentValueUSDToEUR } = await updateCurrentValueUSDToEUR();
-    const { currentValueUSDBlueSale, currentValueUSDBluePurchase } = await updateCurrentValueUSD();
-    const { currentValueEURBlueSale, currentValueEURBluePurchase } = await updateCurrentValueEUR();
+    const { currentValueEURToUSD, currentValueUSDToEUR } =
+      await updateCurrentValueUSDToEUR();
+    const { currentValueUSDBlueSale, currentValueUSDBluePurchase } =
+      await updateCurrentValueUSD();
+    const { currentValueEURBlueSale, currentValueEURBluePurchase } =
+      await updateCurrentValueEUR();
 
     return {
       currentValueEURToUSD,
@@ -134,7 +164,9 @@ export async function calculateAmount(
     );
 
     if (!exchangeRate) {
-      throw new Error(`No se encontró una fórmula para convertir de ${from} a ${to}`);
+      throw new Error(
+        `No se encontró una fórmula para convertir de ${from} a ${to}`,
+      );
     }
 
     // Determina qué tasa de cambio se debe usar dependiendo de 'from' y 'to'

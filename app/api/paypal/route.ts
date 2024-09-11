@@ -72,14 +72,13 @@ export async function POST(req: Request) {
     return NextResponse.json({
       orderID,
     });
-
   } catch (error) {
     console.error('Error creating PayPal order:', error);
     return NextResponse.json(
       {
         error: 'Error creating PayPal order',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
