@@ -14,11 +14,10 @@ interface PayPalProps {
 export default function Paypal({ currency, amount, handleDirection }: PayPalProps) {
   const [exchange, setExchange] = useState({ amount, currency });
 
-  const { setPaypal, setPayer } = paypalPaymentStore();
+  const { setPaypal } = paypalPaymentStore();
 
   useEffect(() => {
     if (currency && amount) setExchange({ amount, currency });
-    console.log(amount, currency);
   }, [currency, amount]);
 
   return (
@@ -51,7 +50,14 @@ export default function Paypal({ currency, amount, handleDirection }: PayPalProp
               const capture = await actions.order?.get();
 
               setPaypal();
-              setPayer(capture?.payer);
+
+              const client = {
+                first_name: capture?.payer?.name?.given_name,
+                surname: capture?.payer?.name?.surname,
+                email: capture?.payer?.email_address,
+              };
+              localStorage.setItem('payer', JSON.stringify(client));
+
               handleDirection();
             } catch (error) {
               console.error('Error al capturar el pago:', error);

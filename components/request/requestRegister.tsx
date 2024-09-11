@@ -32,14 +32,24 @@ type CountryOption = {
   callingCode: string;
 };
 
+interface payerOptions {
+  first_name: string;
+  surname: string;
+  email: string;
+}
+
 export const RequestRegisterForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
-  const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(null);
-
-  const { payer } = paypalPaymentStore();
-
+  const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(
+    null,
+  );
+  const [payer, setPayer] = useState<payerOptions>({
+    first_name: '',
+    surname: '',
+    email: '',
+  });
 
   const {
     register,
@@ -49,7 +59,12 @@ export const RequestRegisterForm = () => {
   } = useForm<FormInputs>();
 
   useEffect(() => {
-    console.log(payer);
+    const storedClient = localStorage.getItem('payer');
+
+    if (storedClient) {
+      const client = JSON.parse(storedClient);
+      setPayer(client);
+    }
     const fetchCountries = async () => {
       try {
         const response = await fetch('https://restcountries.com/v3.1/all');
@@ -71,7 +86,7 @@ export const RequestRegisterForm = () => {
     };
 
     fetchCountries();
-  }, [payer]);
+  }, []);
 
   console.log(selectedCountry);
 
@@ -80,7 +95,7 @@ export const RequestRegisterForm = () => {
     setLoading(true);
 
     console.log('Datos del formulario:', data);
-
+    localStorage.removeItem('payer');
     const {
       first_name,
       last_name,
@@ -101,7 +116,7 @@ export const RequestRegisterForm = () => {
 
     const formData = new FormData();
     formData.append('first_name', first_name || '');
-    formData.append('last_name', last_name ||'');
+    formData.append('last_name', last_name || '');
     formData.append('amount_sent', amount_sent || '');
     formData.append('amount_received', amount_received || '');
     formData.append('phone', fullPhoneNumber || '');
@@ -156,7 +171,9 @@ export const RequestRegisterForm = () => {
         <label
           htmlFor="first_name"
           className={clsx(
-            errors.first_name ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
+            errors.first_name
+              ? 'text-red-500'
+              : 'text-gray-900 dark:text-gray-300',
           )}
         >
           Nombre
@@ -164,14 +181,18 @@ export const RequestRegisterForm = () => {
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.first_name ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
+            errors.first_name
+              ? 'mb-0 border-red-500'
+              : 'mb-5 hover:border-blue-600',
           )}
           type="text"
-          value={payer.name.given_name}
+          value={payer.first_name}
           {...register('first_name', { required: 'El nombre es obligatorio' })}
         />
         {errors.first_name && (
-          <p className="mb-5 text-sm text-red-500">• {errors.first_name.message}</p>
+          <p className="mb-5 text-sm text-red-500">
+            • {errors.first_name.message}
+          </p>
         )}
 
         <label
@@ -192,7 +213,7 @@ export const RequestRegisterForm = () => {
               : 'mb-5 hover:border-blue-600',
           )}
           type="text"
-          value={ payer.name.surname }
+          value={payer.surname}
           {...register('last_name', { required: 'El apellido es obligatorio' })}
         />
         {errors.last_name && (
@@ -301,9 +322,7 @@ export const RequestRegisterForm = () => {
         <label
           htmlFor="phone"
           className={clsx(
-            errors.phone
-              ? 'text-red-500'
-              : 'text-gray-900 dark:text-gray-300',
+            errors.phone ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
           )}
         >
           Teléfono
@@ -311,9 +330,7 @@ export const RequestRegisterForm = () => {
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.phone
-              ? 'mb-0 border-red-500'
-              : 'mb-5 hover:border-blue-600',
+            errors.phone ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
           )}
           type="tel"
           {...register('phone', {
@@ -325,9 +342,7 @@ export const RequestRegisterForm = () => {
           })}
         />
         {errors.phone && (
-          <p className="mb-5 text-sm text-red-500">
-            • {errors.phone.message}
-          </p>
+          <p className="mb-5 text-sm text-red-500">• {errors.phone.message}</p>
         )}
 
         <label
@@ -348,7 +363,9 @@ export const RequestRegisterForm = () => {
               : 'mb-5 hover:border-blue-600',
           )}
           type="number"
-          {...register('amount_sent', { required: 'El monto enviado es obligatorio' })}
+          {...register('amount_sent', {
+            required: 'El monto enviado es obligatorio',
+          })}
         />
         {errors.amount_sent && (
           <p className="mb-5 text-sm text-red-500">
@@ -374,7 +391,9 @@ export const RequestRegisterForm = () => {
               : 'mb-5 hover:border-blue-600',
           )}
           type="number"
-          {...register('amount_received', { required: 'El monto recibido es obligatorio' })}
+          {...register('amount_received', {
+            required: 'El monto recibido es obligatorio',
+          })}
         />
         {errors.amount_received && (
           <p className="mb-5 text-sm text-red-500">
@@ -400,7 +419,9 @@ export const RequestRegisterForm = () => {
               : 'mb-5 hover:border-blue-600',
           )}
           type="text"
-          {...register('identifier', { required: 'El identificador es obligatorio' })}
+          {...register('identifier', {
+            required: 'El identificador es obligatorio',
+          })}
         />
         {errors.identifier && (
           <p className="mb-5 text-sm text-red-500">
@@ -426,7 +447,9 @@ export const RequestRegisterForm = () => {
               : 'mb-5 hover:border-blue-600',
           )}
           type="text"
-          {...register('payment_method', { required: 'El método de pago es obligatorio' })}
+          {...register('payment_method', {
+            required: 'El método de pago es obligatorio',
+          })}
         />
         {errors.payment_method && (
           <p className="mb-5 text-sm text-red-500">
@@ -452,7 +475,9 @@ export const RequestRegisterForm = () => {
               : 'mb-5 hover:border-blue-600',
           )}
           type="text"
-          {...register('document', { required: 'El número de documento es obligatorio' })}
+          {...register('document', {
+            required: 'El número de documento es obligatorio',
+          })}
         />
         {errors.document && (
           <p className="mb-5 text-sm text-red-500">
@@ -478,7 +503,9 @@ export const RequestRegisterForm = () => {
               : 'mb-5 hover:border-blue-600',
           )}
           type="text"
-          {...register('type_of_document', { required: 'El tipo de documento es obligatorio' })}
+          {...register('type_of_document', {
+            required: 'El tipo de documento es obligatorio',
+          })}
         />
         {errors.type_of_document && (
           <p className="mb-5 text-sm text-red-500">
@@ -489,9 +516,7 @@ export const RequestRegisterForm = () => {
         <label
           htmlFor="email"
           className={clsx(
-            errors.email
-              ? 'text-red-500'
-              : 'text-gray-900 dark:text-gray-300',
+            errors.email ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
           )}
         >
           Email
@@ -499,12 +524,10 @@ export const RequestRegisterForm = () => {
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.email
-              ? 'mb-0 border-red-500'
-              : 'mb-5 hover:border-blue-600',
+            errors.email ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
           )}
           type="email"
-          value={payer.email_address}
+          value={payer.email}
           {...register('email', {
             required: 'El correo electrónico es obligatorio',
             pattern: {
@@ -514,9 +537,7 @@ export const RequestRegisterForm = () => {
           })}
         />
         {errors.email && (
-          <p className="mb-5 text-sm text-red-500">
-            • {errors.email.message}
-          </p>
+          <p className="mb-5 text-sm text-red-500">• {errors.email.message}</p>
         )}
 
         <label
@@ -537,7 +558,9 @@ export const RequestRegisterForm = () => {
               : 'mb-5 hover:border-blue-600',
           )}
           type="file"
-          {...register('proof_of_payment', { required: 'El comprobante de pago es obligatorio' })}
+          {...register('proof_of_payment', {
+            required: 'El comprobante de pago es obligatorio',
+          })}
         />
         {errors.proof_of_payment && (
           <p className="mb-5 text-sm text-red-500">
@@ -548,9 +571,7 @@ export const RequestRegisterForm = () => {
         <label
           htmlFor="note"
           className={clsx(
-            errors.note
-              ? 'text-red-500'
-              : 'text-gray-900 dark:text-gray-300',
+            errors.note ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
           )}
         >
           Nota (Opcional)
@@ -558,16 +579,12 @@ export const RequestRegisterForm = () => {
         <textarea
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.note
-              ? 'mb-0 border-red-500'
-              : 'mb-5 hover:border-blue-600',
+            errors.note ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
           )}
           {...register('note')}
         />
         {errors.note && (
-          <p className="mb-5 text-sm text-red-500">
-            • {errors.note.message}
-          </p>
+          <p className="mb-5 text-sm text-red-500">• {errors.note.message}</p>
         )}
 
         <SendButton pending={loading} />
