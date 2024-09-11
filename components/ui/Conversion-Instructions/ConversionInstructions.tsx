@@ -14,6 +14,7 @@ const ConversionInstructions = () => {
                 <div className="relative mr-2 flex h-6 w-fit items-center justify-center">
                   <div className="absolute flex items-center justify-center rounded-full">
                     <div className="flex h-7 w-7 rotate-[-33deg] animate-rotate items-center justify-center rounded-full bg-[#f9f9f9] text-center text-lg text-black transition-all duration-300">
+
                       <span className="rotate-[33deg] text-[#001748]">
                         {number}
                       </span>
