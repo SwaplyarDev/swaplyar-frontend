@@ -13,7 +13,7 @@ const ConversionInstructions = () => {
               <div key={number} className="step flex items-center mb-4">
                 <div className="relative flex items-center justify-center mr-2 w-fit h-6">
                   <div className="absolute rounded-full flex items-center justify-center">
-                    <div className="bg-[#f9f9f9]  w-7 h-7 rounded-full text-black text-center text-lg rotate-[-33deg] flex items-center justify-center w-6 h-6 animate-rotate transition-all duration-300">
+                    <div className="bg-[#f9f9f9]  w-7 h-7 rounded-full text-black text-center text-lg rotate-[-33deg] flex items-center justify-center animate-rotate transition-all duration-300">
                       <span className="rotate-[33deg] text-[#001748]">{number}</span>
                     </div>
                   </div>
