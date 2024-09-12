@@ -1,4 +1,14 @@
 {
   "extends": "next/core-web-vitals",
-  "rules": { "react/no-unescaped-entities": "off" }
+  "rules": {
+    "react/no-unescaped-entities": ["error", { "forbid": [">", "}", "'"] }]
+  },
+  "overrides": [
+    {
+      "files": ["components/home/HomePage.tsx"],
+      "rules": {
+        "react/no-unescaped-entities": "off"
+      }
+    }
+  ]
 }
