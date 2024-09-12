@@ -11,7 +11,7 @@ import {
   Paso2Gif,
   Paso3Gif,
   Paso4Gif,
-} from '@/utils/assets/img-database';
+} from '@/utils/assets/imgDatabaseCloudinary';
 
 export default function SwaplyArInstructions() {
   return (

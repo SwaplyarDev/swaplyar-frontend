@@ -9,7 +9,7 @@ import {
   FlyerGif,
   RecargaPaypal,
   UsdArs,
-} from '@/utils/assets/img-database';
+} from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 
 const mainStyles = {

@@ -11,7 +11,7 @@ import {
   Garantizamos,
   Transacciones,
   Ventajaalelegirswaplyar,
-} from '@/utils/assets/img-database';
+} from '@/utils/assets/imgDatabaseCloudinary';
 
 const cardsData = [
   {
