@@ -63,16 +63,14 @@ export default function Paypal({
               localStorage.setItem('payer', JSON.stringify(client));
 
               handleDirection();
-
-      
             } catch (error) {
               console.error('Error al capturar el pago:', error);
             }
           }}
-          onCancel={()=>{
+          onCancel={() => {
             setPaypal();
           }}
-          onError={()=>{
+          onError={() => {
             setPaypal();
           }}
         />
