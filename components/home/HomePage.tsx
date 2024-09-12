@@ -66,6 +66,7 @@ export default function HomePage() {
           />
         </div>
       </div>
+      {/* eslint-disable react/no-unescaped-entities */}
       <div className="mt-10">
         <FlyerTrabajo imageSrc={FlyerGif}>
           ¿Nuevo en SwaplyAr? Haz clic en &quot;Cómo usar SwaplyAr&quot; y aprendé a operar fácilmente. ¡Empezá ahora!
@@ -76,6 +77,7 @@ export default function HomePage() {
           </div>
         </FlyerTrabajo>
       </div>
+      {/* eslint-enable react/no-unescaped-entities */}
     </main>
   );
 }
