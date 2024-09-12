@@ -44,7 +44,8 @@
 swaplyar-frontend/
 ├── app/               # (Nuevo) Directorio App Router (Next.js 13)
 │   ├── api/           # Rutas de API
-│   │   └── auth/      # Rutas de NextAuth.js
+│   │   ├── auth/      # Rutas de NextAuth.js
+│   │   └── paypal     # Rutas para la transaccion con PayPal
 │   ├── info/          # Rutas relacionadas con información
 │   │   ├── about-us/  # Página "Quienes Somos"
 │   │   ├── help-center/ # Página de centro de ayuda
@@ -64,7 +65,9 @@ swaplyar-frontend/
 │   ├── auth/          # Componentes relacionados con la autenticación
 │   ├── clientWrapper/ # Componente para envolver vistas y gestionar estados de carga
 │   ├── skeleton/      # Componentes Skeleton para estados de carga
-│   └── request/       # Componentes relacionados con solicitudes de intercambio
+│   ├── request/       # Componentes relacionados con solicitudes de intercambio
+│   └── transactions   # Componentes relacionados con la calculadora
+│        └── PayPal    # Componente principal donde se hace la transaccion con PayPal
 ├── hooks/             # Hooks personalizados
 ├── store/             # Configuración del store global
 ├── public/            # Archivos estáticos (imágenes, fuentes, etc.)
@@ -106,6 +109,32 @@ swaplyar-frontend/
 - `/info/why-choose-swaplyar`: Página "Por qué elegir Swaplyar".
 - `/request`: Página principal de solicitudes de intercambio.
 
+## 💲 PayPal
+
+### Componente PayPal
+
+- **Props Dinámicos**: El componente acepta los siguientes props:
+
+  - `currency`: Moneda en la que se realiza el pago.
+  - `amount`: Monto que se desea pagar.
+  - `handleDirection`: Función callback que se ejecuta tras la aprobación del pago.
+
+- **Creación de Ordenes**: El componente envía una solicitud `POST` a la API `/api/paypal` para crear una orden en PayPal utilizando los valores de `currency` y `amount`.
+
+- **Captura de Pago**: Cuando el pago es aprobado (`onApprove`), se captura la información del pagador (nombre y correo) y se almacena en `localStorage`. Después, se ejecuta la función `handleDirection`.
+
+- **Manejo de Errores y Cancelaciones**: En caso de que el usuario cancele el pago o haya algún error, se llama a la función `setPaypal()` para gestionar estos eventos.
+
+### API de PayPal
+
+La ruta `/api/paypal` en el servidor maneja la creación de órdenes en PayPal. Estos son los pasos que sigue:
+
+- **Autenticación**: Se obtiene un token de acceso de PayPal utilizando las credenciales `clientId` y `secretKey`.
+
+- **Creación de Orden**: Con el token, se crea una orden de compra a través de la API de PayPal, incluyendo la moneda y el monto proporcionado por el usuario.
+
+- **Manejo de Errores**: Si ocurre algún problema al obtener el token o crear la orden, se devuelve un mensaje de error.
+
 ## 🚀 Configuración Inicial
 
 1. **Clonar el Repositorio**
@@ -129,34 +158,37 @@ swaplyar-frontend/
         # Authjs
         AUTH_SECRET='your_auth_secret'
         NEXTAUTH_SECRET='your_nextauth_secret'
-        
+
         NEXTAUTH_URL="http://localhost:8080/api/v1/login"
-        
+
         # AUTH_LOGIN_REDIRECT
         AUTH_LOGIN_REDIRECT="/products/company"
         APP_ENV="development"
         PROJECT_DIR="/ruta/al/directorio/del/proyecto"
-        
+
         # GOOGLE
         AUTH_GOOGLE_ID="your_google_id"
         AUTH_GOOGLE_SECRET="your_google_secret"
-        
+
         # GITHUB
         AUTH_GITHUB_ID="your_github_id"
         AUTH_GITHUB_SECRET="your_github_secret"
-        
+
         # Resend
         AUTH_RESEND_KEY="your_resend_key"
-        
+
         # FreeCurrencyAPI
         NEXT_PUBLIC_FREE_CURRENCY_API_KEY="fca_live_jDqUTcYj3stjWVDFqGZCmIBAt3hIEEtiTBPSMD3N"
-        
+
         # Bluelytics
         NEXT_PUBLIC_BLUELYTICS_API_URL="https://api.bluelytics.com.ar/v2/latest"
         NEXT_PUBLIC_FREE_CURRENCY_APY_KEY=fca_live_jDqUTcYj3stjWVDFqGZCmIBAt3hIEEtiTBPSMD3N
+
+
+FqGZCmIBAt3hIEEtiTBPSMD3N
         
         
-        NEXT_PUBLIC_PAYPAL_CLIENT_ID="Acdb_cNhM35Qa7UNeEpdSePRS6Oswvx5ohLo1KEC04ADt64RGPUuOMUZXN_Kt84b93RXFFujqDKjB8u1"
+o1KEC04ADt64RGPUuOMUZXN_Kt84b93RXFFujqDKjB8u1"
    ```
 
 4. **Ejecutar el Proyecto**

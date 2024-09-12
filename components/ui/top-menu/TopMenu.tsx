@@ -4,7 +4,6 @@
 
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import useStore from '@/store/authViewStore';
 
 import { Drawer, Sidebar, Navbar } from 'flowbite-react';
@@ -12,9 +11,9 @@ import { GiHamburgerMenu } from 'react-icons/gi';
 import { BsChevronRight } from 'react-icons/bs';
 
 import NavLinks from '@/components/ui/top-menu/nav-links';
+import Switch from './switch';
 import Image from 'next/image';
 import Link from 'next/link';
-import styles from './switchStyle.module.css';
 import S from '../../../public/images/logo-solo.png';
 
 export function TopMenu() {
@@ -46,7 +45,6 @@ export function TopMenu() {
     };
   }, []);
 
-  const { changeTheme, isDark } = useDarkTheme();
 
   return (
     <Navbar
@@ -86,13 +84,8 @@ export function TopMenu() {
         </Navbar.Brand>
 
         <nav className="flex flex-row items-center justify-center">
-          <section className="flex items-center justify-end">
-            <label className={`${styles.switch} mx-2`}>
-              <input type="checkbox" onClick={changeTheme} />
-              <span
-                className={isDark ? styles.sliderDark : styles.sliderLight}
-              ></span>
-            </label>
+          <section className="flex items-center justify-end gap-5">
+            <Switch/>
             <button
               onClick={() => setDrawerMenu(true)}
               className="block lg:hidden"
@@ -119,7 +112,6 @@ export function TopMenu() {
                       }`}
                       onClick={() => handleSelect('about-us')}
                       href="/info/about-us"
-                      icon={BsChevronRight}
                     >
                       Quienes Somos
                     </Sidebar.Item>
@@ -132,7 +124,6 @@ export function TopMenu() {
                       }`}
                       onClick={() => handleSelect('how-to-use')}
                       href="/info/how-to-use"
-                      icon={BsChevronRight}
                     >
                       Como Usar Swaplyar
                     </Sidebar.Item>
@@ -145,7 +136,6 @@ export function TopMenu() {
                       }`}
                       onClick={() => handleSelect('loyalty-program')}
                       href="/info/loyalty-program"
-                      icon={BsChevronRight}
                     >
                       Programa de Fidelización
                     </Sidebar.Item>
