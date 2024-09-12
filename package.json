@@ -7,8 +7,8 @@
     "dev": "next dev",
     "format": "prettier --write .",
     "lint": "next lint",
-    "tsc": "tsc --noEmit",
-    "start": "next start"
+    "start": "next start",
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@emotion/react": "^11.13.0",
