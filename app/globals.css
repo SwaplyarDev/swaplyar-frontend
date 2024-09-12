@@ -44,11 +44,8 @@ body {
 
 }*/
 
-
-
-
 .container-blur {
-  @apply w-full h-[150vh] overflow-hidden flex justify-center relative; 
+  @apply relative flex h-[150vh] w-full justify-center overflow-hidden;
   position: absolute;
   top: 20%;
   right: 5%;
@@ -56,7 +53,7 @@ body {
 }
 
 .box {
-  @apply w-full h-full absolute rounded-full;
+  @apply absolute h-full w-full rounded-full;
   animation: spin 30s infinite linear; /* Hace que los círculos giren */
   display: flex;
   justify-content: center;
@@ -65,32 +62,32 @@ body {
 }
 
 .ball {
-  @apply absolute w-[110px] h-[110px] blur-[4.5em] rounded-full;
+  @apply absolute h-[110px] w-[110px] rounded-full blur-[4.5em];
 }
 
 /* Círculos con mayor extensión lateral */
-.ball1 { 
-  background-color: rgba(42, 41, 120, 0.601); 
+.ball1 {
+  background-color: rgba(42, 41, 120, 0.601);
   transform: rotate(0deg) translateX(260px); /* Se extiende más hacia la derecha */
 }
 
-.ball2 { 
-  background-color: rgba(42, 41, 120, 0.601); 
+.ball2 {
+  background-color: rgba(42, 41, 120, 0.601);
   transform: rotate(72deg) translateX(200px); /* Un poco más cerca */
 }
 
-.ball3 { 
-  background-color: rgba(42, 41, 120, 0.601);  
+.ball3 {
+  background-color: rgba(42, 41, 120, 0.601);
   transform: rotate(144deg) translateX(250px); /* Se extiende más hacia la izquierda */
 }
 
-.ball4 { 
-  background-color: rgba(42, 41, 120, 0.601);   
-  transform: rotate(216deg) translateX(280px); 
+.ball4 {
+  background-color: rgba(42, 41, 120, 0.601);
+  transform: rotate(216deg) translateX(280px);
 }
 
-.ball5 { 
-  background-color: rgba(42, 41, 120, 0.601); 
+.ball5 {
+  background-color: rgba(42, 41, 120, 0.601);
   transform: rotate(288deg) translateX(230px); /* Un poco más al centro */
 }
 
@@ -103,16 +100,15 @@ body {
   }
 }
 
-
 @media (max-width: 640px) {
   .container-blur {
-    @apply w-full h-[200vh] overflow-hidden flex justify-center relative;
+    @apply relative flex h-[200vh] w-full justify-center overflow-hidden;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    clip-path: inset(0 0 -5% 0); 
+    clip-path: inset(0 0 -5% 0);
     overflow: hidden;
   }
 
@@ -125,15 +121,36 @@ body {
   }
 
   .ball {
-    @apply absolute w-[110px] h-[110px] rounded-full blur-[5em];
+    @apply absolute h-[110px] w-[110px] rounded-full blur-[5em];
   }
 
   /* Ajustes para posiciones más centradas en dispositivos móviles */
-  .ball1 { background-color: rgba(42, 41, 120, 0.601); top: 35%; left: 35%; }
-  .ball2 { background-color: rgba(42, 41, 120, 0.601);  top: 35%; right: 35%; }
-  .ball3 { background-color: rgba(42, 41, 120, 0.601); bottom: 35%; left: 50%; transform: translateX(-50%); }
-  .ball4 { background-color: rgb(42, 41, 120); bottom: 25%; left: 25%; }
-  .ball5 { background-color: rgba(42, 41, 120, 0.601); bottom: 25%; right: 25%; }
+  .ball1 {
+    background-color: rgba(42, 41, 120, 0.601);
+    top: 35%;
+    left: 35%;
+  }
+  .ball2 {
+    background-color: rgba(42, 41, 120, 0.601);
+    top: 35%;
+    right: 35%;
+  }
+  .ball3 {
+    background-color: rgba(42, 41, 120, 0.601);
+    bottom: 35%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .ball4 {
+    background-color: rgb(42, 41, 120);
+    bottom: 25%;
+    left: 25%;
+  }
+  .ball5 {
+    background-color: rgba(42, 41, 120, 0.601);
+    bottom: 25%;
+    right: 25%;
+  }
 }
 
 /* Spinner */
