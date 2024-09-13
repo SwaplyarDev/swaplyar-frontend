@@ -101,8 +101,7 @@ export const RegisterForm = () => {
                   ? 'mb-0 border-red-500'
                   : 'mb-5 hover:border-blue-600',
               )}
-              type="text"
-              autoFocus
+              type="text"              
               {...register('firstName', {
                 required: 'El nombre es obligatorio',
               })}
@@ -263,7 +262,7 @@ export const RegisterForm = () => {
 
         <div className="mb-5 flex items-center">
           <input
-            id="rememberMe"
+            id="rememberMeRegister"
             type="checkbox"
             className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
             {...register('rememberMe')}

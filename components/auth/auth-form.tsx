@@ -18,8 +18,8 @@ const AuthForm: React.FC = () => {
   const swiperRef = useRef<SwiperType | null>(null);
 
   useEffect(() => {
-    if (swiperRef.current && typeof swiperRef.current.slideTo === 'function') {
-      swiperRef.current.slideTo(view === 'login' ? 0 : 1);
+    if (swiperRef.current) {
+      swiperRef.current.slideTo(view === 'login' ? 0 : 1);    
     }
   }, [view]);
 
@@ -31,7 +31,10 @@ const AuthForm: React.FC = () => {
       <section className='flex flex-col items-center'>
         <div className="h-screen w-[512px]">
           <Swiper
-            onSwiper={(swiper) => (swiperRef.current = swiper)}
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper; 
+              swiper.slideTo(view === 'login' ? 0 : 1);
+            }}
             modules={[Pagination]}
             spaceBetween={50}
             slidesPerView={1}

@@ -122,7 +122,7 @@ export const LoginForm = () => {
 
         <div className="mb-5 flex items-center">
           <input
-            id="rememberMe"
+            id="rememberMeLogin"
             type="checkbox"
             className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
             {...register('rememberMe')}
