@@ -238,7 +238,7 @@ export default function TransactionCalculator() {
           {selectedReceivingSystem?.coin}
         </p>
 
-        <div className="flex w-full max-w-lg flex-row-reverse items-end text-[#012c8a] dark:text-darkText">
+        <div className="sm:flex-row-reverse flex w-full max-w-lg flex-col-reverse items-end text-[#012c8a] dark:text-darkText">
           <SystemSelect
             systems={systems}
             selectedSystem={selectedSendingSystem}
@@ -250,13 +250,13 @@ export default function TransactionCalculator() {
             toggleSelect={() => toggleSelect('send')}
           />
 
-          <div className="flex h-[7.4rem] flex-col justify-between">
+          <div className="sm:flex hidden h-[7.4rem] flex-col justify-between">
             <div className="h-[1px] w-[1px] bg-[#012c8a] dark:bg-gray-200"></div>
             <div className="bg h-24 bg-[#012c8a] dark:bg-gray-200"></div>
             <div className="h-[1px] w-[1px] bg-[#012c8a] dark:bg-gray-200"></div>
           </div>
 
-          <div className="relative flex h-32 w-full items-center rounded rounded-br-none rounded-tr-none">
+          <div className="relative flex h-32 w-full items-center">
             <input
               type="text"
               className="peer h-full w-full border-0 bg-transparent p-2 text-center text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0"
@@ -266,7 +266,7 @@ export default function TransactionCalculator() {
             />
             <fieldset
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 rounded-bl-2xl rounded-tl-2xl border-y border-l border-[#012c8a] dark:border-gray-200"
+              className="pointer-events-none absolute inset-0 rounded-bl-2xl rounded-tl-2xl rounded-br-2xl rounded-tr-2xl sm:rounded-tr-none sm:rounded-br-none border-y border-l sm:border-r-0 border-r  border-[#012c8a] dark:border-gray-200"
             >
               <legend className="mx-4 px-1 text-sm">
                 <span>Envías {selectedSendingSystem?.coin}</span>
@@ -281,7 +281,7 @@ export default function TransactionCalculator() {
           <p>Información del sistema de recepción</p>
         </SystemInfo>
         <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
-          <div className="flex w-full flex-row-reverse items-end">
+          <div className="sm:flex-row-reverse flex w-full max-w-lg flex-col-reverse items-end">
             <SystemSelect
               systems={systems}
               selectedSystem={selectedReceivingSystem}
@@ -293,13 +293,13 @@ export default function TransactionCalculator() {
               toggleSelect={() => toggleSelect('receive')}
             />
 
-            <div className="flex h-[7.4rem] flex-col justify-between">
+            <div className="sm:flex hidden h-[7.4rem] flex-col justify-between">
               <div className="h-[1px] w-[1px] bg-[#012c8a] dark:bg-gray-200"></div>
               <div className="bg h-24 bg-[#012c8a] dark:bg-gray-200"></div>
               <div className="h-[1px] w-[1px] bg-[#012c8a] dark:bg-gray-200"></div>
             </div>
 
-            <div className="relative mt-[0.4rem] flex h-32 w-full items-center rounded rounded-bl-none rounded-tl-none">
+            <div className="relative mt-[0.4rem] flex h-32 w-full items-center">
               <input
                 type="text"
                 className="peer h-full w-full border-0 bg-transparent p-2 text-center text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0"
@@ -310,7 +310,7 @@ export default function TransactionCalculator() {
 
               <fieldset
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-bl-2xl rounded-tl-2xl border-y border-l border-[#012c8a] dark:border-gray-200"
+                className="pointer-events-none absolute inset-0 rounded-bl-2xl rounded-tl-2xl rounded-br-2xl rounded-tr-2xl sm:rounded-tr-none sm:rounded-br-none border-y border-l sm:border-r-0 border-r border-[#012c8a] dark:border-gray-200"
               >
                 <legend className="mx-4 px-1 text-sm">
                   <span>Recibes {selectedReceivingSystem?.coin}</span>

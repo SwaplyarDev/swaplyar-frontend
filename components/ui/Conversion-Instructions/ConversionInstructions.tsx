@@ -2,8 +2,8 @@ import TransactionCalculator from '@/components/Transaction/TransactionCalculato
 
 const ConversionInstructions = () => {
   return (
-    <div className="lazyload-user-social mx-auto flex w-full max-w-7xl flex-col items-center justify-between space-y-4 px-4 py-8 md:flex-row md:space-x-4 md:space-y-0">
-      <div className="steps flex max-w-xl flex-1 flex-col items-start pt-6 md:pt-8">
+    <div className="gap-4 lazyload-user-social mx-auto flex w-full max-w-7xl flex-col items-center justify-between space-y-4 px-4 py-8 lg-tablet:flex-row lg-tablet:space-x-4 lg-tablet:space-y-0">
+      <div className="steps flex max-w-xl flex-1 flex-col items-start pt-6 lg-tablet:pt-8">
         <h2 className="text-4xl">
           Convertí y enviá tu dinero de PayPal a tu cuenta bancaria
         </h2>
@@ -13,7 +13,7 @@ const ConversionInstructions = () => {
               <div key={number} className="step mb-4 flex items-center">
                 <div className="relative mr-2 flex h-6 w-fit items-center justify-center">
                   <div className="absolute flex items-center justify-center rounded-full">
-                    <div className="flex h-6 h-7 w-6 w-7 rotate-[-33deg] animate-rotate items-center justify-center rounded-full bg-[#f9f9f9] text-center text-lg text-black transition-all duration-300">
+                    <div className="flex h-7 w-7 rotate-[-33deg] animate-rotate items-center justify-center rounded-full bg-[#f9f9f9] text-center text-lg text-black transition-all duration-300">
                       <span className="rotate-[33deg] text-[#001748]">
                         {number}
                       </span>

@@ -93,9 +93,9 @@ export default function SystemSelect({
   }));
 
   return (
-    <div className="relative mt-4">
+    <div className="relative mt-4 w-full">
       <button
-        className={`system-input-select flex h-[7.4rem] w-64 items-center justify-start rounded-2xl rounded-bl-none rounded-tl-none border border-l-0 border-[#012c8a] p-2 dark:border-gray-200 ${
+        className={`system-input-select flex h-[7.4rem] w-full items-center justify-between rounded-2xl border border-[#012c8a] p-2 dark:border-gray-200 sm:w-64 sm:justify-start sm:rounded-bl-none sm:rounded-tl-none sm:border-l-0 ${
           isSending ? 'animation-system-send' : 'animation-system-receive'
         } ${darkMode ? 'dark' : ''}`}
         onClick={handleClick}
@@ -115,7 +115,7 @@ export default function SystemSelect({
         <FontAwesomeIcon icon={faChevronDown} width={32} height={16} />
       </button>
       {showOptionsInternal && (
-        <ul className="scrollable-list absolute z-10 max-h-64 w-64 overflow-y-auto rounded border bg-white shadow-md dark:bg-gray-800">
+        <ul className="border-[#012c8a] scrollable-list absolute z-10 max-h-64 sm:w-64 w-full overflow-y-auto overflow-x-hidden rounded-2xl border bg-white shadow-md dark:bg-gray-800">
           {updatedSystems.map((system) => (
             <li
               key={system.id}
