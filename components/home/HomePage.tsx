@@ -68,10 +68,15 @@ export default function HomePage() {
       </div>
       <div className="mt-10">
         <FlyerTrabajo imageSrc={FlyerGif}>
-          ¿Nuevo en SwaplyAr? Haz clic en &quot;Cómo usar SwaplyAr&quot; y aprendé a operar fácilmente. ¡Empezá ahora!
+          <p>
+            {/* eslint-disable-next-line react/no-unescaped-entities */}
+            ¿Nuevo en SwaplyAr? Haz clic en &quot;Cómo usar SwaplyAr&quot; y
+            aprendé a operar fácilmente. ¡Empezá ahora!
+          </p>
           <div>
             <button id="bannerHTUButton">
-              <a href="/info/how-to-use">Cómo usar SwaplyAr</a>
+              {/* eslint-disable-next-line react/no-unescaped-entities */}
+              <a href="/info/how-to-use">&quot;Cómo usar SwaplyAr&quot;</a>
             </button>
           </div>
         </FlyerTrabajo>
