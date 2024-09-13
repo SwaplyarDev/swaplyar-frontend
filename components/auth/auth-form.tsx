@@ -13,7 +13,7 @@ import 'swiper/css/pagination';
 import { Swiper as SwiperType } from 'swiper/types';
 
 const AuthForm: React.FC = () => {
-  const { view } = useStore();
+  const { view, setView } = useStore();
 
   const swiperRef = useRef<SwiperType | null>(null);
 
@@ -28,17 +28,18 @@ const AuthForm: React.FC = () => {
 
   return (
     <ClientWrapper>
-      <section className='flex flex-col items-center'>
-        <div className="h-screen w-[512px]">
-          <Swiper
+      <section className='h-full min-h-screen flex flex-col items-center py-5'>
+        <div className=" max-w-[552px] w-full hover:cursor-grab active:cursor-grabbing px-5">
+        <Swiper
             onSwiper={(swiper) => {
               swiperRef.current = swiper; 
               swiper.slideTo(view === 'login' ? 0 : 1);
             }}
-            modules={[Pagination]}
+            onSlideChange={(swiper) => {
+              setView(swiper.activeIndex === 0 ? 'login' : 'register');
+            }}
             spaceBetween={50}
             slidesPerView={1}
-            pagination={{ clickable: true }}
           >
             <SwiperSlide>
               <LoginForm />

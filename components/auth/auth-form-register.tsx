@@ -9,6 +9,7 @@ import useStore from '@/store/authViewStore';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import Link from 'next/link';
 
 type FormInputs = {
   firstName: string;
@@ -17,6 +18,7 @@ type FormInputs = {
   password: string;
   confirmPassword: string;
   rememberMe: boolean;
+  termsConditions: boolean;
 };
 
 export const RegisterForm = () => {
@@ -40,7 +42,7 @@ export const RegisterForm = () => {
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setErrorMessage('');
     setLoading(true);
-    const { firstName, lastName, email, password, rememberMe } = data;
+    const { firstName, lastName, email, password, rememberMe, termsConditions } = data;
     const name = `${firstName} ${lastName}`;
 
     localStorage.setItem('rememberMe', JSON.stringify(rememberMe));
@@ -58,6 +60,7 @@ export const RegisterForm = () => {
       email,
       password,
       rememberMe: toString(),
+      termsConditions: toString(),
     });
 
     if (result?.error) {
@@ -74,10 +77,10 @@ export const RegisterForm = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
+    <div className="h-full min-h-[800px] flex flex-col items-center justify-center py-5 my-5">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="relative flex w-full max-w-lg flex-col rounded bg-white p-8 shadow-md dark:bg-gray-800"
+        className="rounded-2xl relative flex w-full max-w-lg flex-col bg-white p-8 shadow-md dark:bg-gray-800"
       >
         <h2 className="mb-5 text-center text-2xl font-bold">Crear Cuenta</h2>
 
@@ -101,7 +104,7 @@ export const RegisterForm = () => {
                   ? 'mb-0 border-red-500'
                   : 'mb-5 hover:border-blue-600',
               )}
-              type="text"              
+              type="text"
               {...register('firstName', {
                 required: 'El nombre es obligatorio',
               })}
@@ -202,7 +205,7 @@ export const RegisterForm = () => {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 right-0 mb-5 flex items-center px-3"
+            className={clsx("absolute inset-y-0 right-0 flex items-center px-3", errors.password ? 'mb-0' : 'mb-5')}
           >
             {showPassword ? (
               <VisibilityOffOutlinedIcon />
@@ -245,7 +248,7 @@ export const RegisterForm = () => {
           <button
             type="button"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute inset-y-0 right-0 mb-5 flex items-center px-3"
+            className={clsx("absolute inset-y-0 right-0 flex items-center px-3", errors.confirmPassword ? 'mb-0' : 'mb-5')}
           >
             {showConfirmPassword ? (
               <VisibilityOffOutlinedIcon />
@@ -264,11 +267,23 @@ export const RegisterForm = () => {
           <input
             id="rememberMeRegister"
             type="checkbox"
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
             {...register('rememberMe')}
           />
           <label htmlFor="rememberMe" className="ml-2">
             Recordar esta cuenta
+          </label>
+        </div>
+
+        <div className="mb-5 flex items-center">
+          <input
+            id="termsConditions"
+            type="checkbox"
+            className=" h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
+            {...register('termsConditions')}
+          />
+          <label htmlFor="termsConditions" className="ml-2">
+            <Link href="/info/terms-and-conditions" className='underline'>Acepto Términos & Condiciones</Link> 
           </label>
         </div>
 
