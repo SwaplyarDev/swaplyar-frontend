@@ -5,6 +5,7 @@ const defaultSendingSystem: System = {
   id: 'paypal',
   name: 'PayPal',
   logo: '/images/paypal.big.png',
+  logoDark: '/images/paypal.dark.png',
   isDisabled: false,
   coin: 'USD',
 };
@@ -13,6 +14,7 @@ const defaultReceivingSystem: System = {
   id: 'bank',
   name: 'Banco',
   logo: '/images/banco.medium.webp',
+  logoDark: '/images/banco.dark.png',
   isDisabled: false,
   coin: 'ARS',
 };

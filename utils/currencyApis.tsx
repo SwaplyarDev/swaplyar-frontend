@@ -1,6 +1,6 @@
 import { exchangeRates } from './exchangeRates';
 
-const apiKey = process.env.NEXT_PUBLIC_FREE_CURRENCY_APY_KEY;
+const apiKey = process.env.NEXT_PUBLIC_FREE_CURRENCY_API_KEY;
 
 //* Función para calcular precio del dolar/euro
 export async function updateCurrentValueUSDToEUR() {

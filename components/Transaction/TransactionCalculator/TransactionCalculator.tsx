@@ -30,8 +30,8 @@ export default function TransactionCalculator() {
     activeSelect,
     setActiveSelect,
   } = useSystemStore();
-  const [sendAmount, setSendAmount] = useState(0);
-  const [receiveAmount, setReceiveAmount] = useState(0);
+  const [sendAmount, setSendAmount] = useState<string>('');
+  const [receiveAmount, setReceiveAmount] = useState<string>('');
   const [exchangeRate, setExchangeRate] = useState<number>(0);
   const [rateForOne, setRateForOne] = useState<number>(0);
   const [darkMode, setDarkMode] = useState<boolean>(false);
@@ -42,6 +42,7 @@ export default function TransactionCalculator() {
       id: 'paypal',
       name: 'PayPal',
       logo: '/images/paypal.big.png',
+      logoDark: '/images/paypal.dark.png',
       isDisabled: false,
       coin: 'USD',
     },
@@ -49,6 +50,7 @@ export default function TransactionCalculator() {
       id: 'payoneer_usd',
       name: 'Payoneer USD',
       logo: '/images/payoneer.usd.big.png',
+      logoDark: '/images/payoneer.usd.dark.png',
       isDisabled: false,
       coin: 'USD',
     },
@@ -56,6 +58,7 @@ export default function TransactionCalculator() {
       id: 'payoneer_eur',
       name: 'Payoneer EUR',
       logo: '/images/payoneer.eur.big.png',
+      logoDark: '/images/payoneer.eur.dark.png',
       isDisabled: false,
       coin: 'EUR',
     },
@@ -63,6 +66,7 @@ export default function TransactionCalculator() {
       id: 'bank',
       name: 'Banco',
       logo: '/images/banco.medium.webp',
+      logoDark: '/images/banco.dark.png',
       isDisabled: false,
       coin: 'ARS',
     },
@@ -70,6 +74,7 @@ export default function TransactionCalculator() {
       id: 'wise_usd',
       name: 'Wise USD',
       logo: '/images/wise.usd.big.png',
+      logoDark: '/images/wise.usd.dark.png',
       isDisabled: false,
       coin: 'USD',
     },
@@ -77,6 +82,7 @@ export default function TransactionCalculator() {
       id: 'wise_eur',
       name: 'Wise EUR',
       logo: '/images/wise.eur.big.png',
+      logoDark: '/images/wise.eur.dark.png',
       isDisabled: false,
       coin: 'EUR',
     },
@@ -108,13 +114,14 @@ export default function TransactionCalculator() {
 
       if (rateInfo) {
         let apiRate = 0;
+        // Validación de monedas
         if (selectedSendingSystem.coin === selectedReceivingSystem.coin) {
           if (selectedSendingSystem.coin === 'USD') {
             const { currentValueUSDBlueSale } = await updateCurrentValueUSD();
-            rate = currentValueUSDBlueSale;
+            rate = currentValueUSDBlueSale || 0; // Validar si el valor es undefined o null
           } else if (selectedSendingSystem.coin === 'EUR') {
             const { currentValueEURBlueSale } = await updateCurrentValueEUR();
-            rate = currentValueEURBlueSale;
+            rate = currentValueEURBlueSale || 0;
           }
         } else {
           if (
@@ -122,19 +129,19 @@ export default function TransactionCalculator() {
             selectedReceivingSystem.coin === 'EUR'
           ) {
             const { currentValueUSDToEUR } = await updateCurrentValueUSDToEUR();
-            apiRate = currentValueUSDToEUR;
+            apiRate = currentValueUSDToEUR || 0;
           } else if (
             selectedSendingSystem.coin === 'EUR' &&
             selectedReceivingSystem.coin === 'USD'
           ) {
             const { currentValueEURToUSD } = await updateCurrentValueUSDToEUR();
-            apiRate = currentValueEURToUSD;
+            apiRate = currentValueEURToUSD || 0;
           } else if (selectedSendingSystem.coin === 'USD') {
             const { currentValueUSDBlueSale } = await updateCurrentValueUSD();
-            apiRate = currentValueUSDBlueSale;
+            apiRate = currentValueUSDBlueSale || 0;
           } else if (selectedSendingSystem.coin === 'EUR') {
             const { currentValueEURBlueSale } = await updateCurrentValueEUR();
-            apiRate = currentValueEURBlueSale;
+            apiRate = currentValueEURBlueSale || 0;
           }
 
           rate = rateInfo.formula(1, apiRate);
@@ -142,13 +149,12 @@ export default function TransactionCalculator() {
 
         setExchangeRate(rate);
 
-        // Espera a que se resuelva la promesa antes de actualizar el estado
         const rateOneUnit = await calculateAmount(
           selectedSendingSystem.id,
           selectedReceivingSystem.id,
           1,
         );
-        setRateForOne(rateOneUnit);
+        setRateForOne(rateOneUnit || 0); // Validación por defecto si el valor no es válido
       }
     }
   }, [selectedSendingSystem, selectedReceivingSystem]);
@@ -164,16 +170,26 @@ export default function TransactionCalculator() {
   useEffect(() => {
     const fetchReceiveAmount = async () => {
       if (selectedSendingSystem?.id && selectedReceivingSystem?.id) {
+        // Si sendAmount está vacío, establecer receiveAmount como vacío
+        if (sendAmount === '') {
+          setReceiveAmount('');
+          return;
+        }
+
         try {
+          const parsedSendAmount = parseFloat(sendAmount);
+          if (isNaN(parsedSendAmount)) {
+            setReceiveAmount('0');
+            return;
+          }
           const amount = await calculateAmount(
             selectedSendingSystem.id,
             selectedReceivingSystem.id,
-            sendAmount,
+            parsedSendAmount,
           );
-          setReceiveAmount(amount);
+          setReceiveAmount(amount.toString());
         } catch (error) {
           console.error('Error calculating amount:', error);
-          // Maneja el error de la manera que consideres apropiada
         }
       }
     };
@@ -184,10 +200,30 @@ export default function TransactionCalculator() {
   const handleReceiveAmountChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const value = event.target.value;
-    const isValidInput = /^[0-9]*\.?[0-9]*$/.test(value);
+    let value = event.target.value;
+
+    // Validar que solo contenga números, una coma o un punto para los decimales
+    const isValidInput = /^[0-9]*[.,]?[0-9]*$/.test(value);
+
     if (isValidInput) {
-      setReceiveAmount(parseFloat(value) || 0);
+      // Reemplazar la coma por un punto para poder usar parseFloat
+      value = value.replace(',', '.');
+      setReceiveAmount(value);
+    }
+  };
+
+  const handleSendAmount = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let value = event.target.value;
+
+    // Validar que solo contenga números, una coma o un punto para los decimales
+    const isValidInput = /^[0-9]*[.,]?[0-9]*$/.test(value);
+
+    if (isValidInput) {
+      // Reemplazar la coma por un punto para mantener consistencia
+      value = value.replace(',', '.');
+
+      // Actualizar el estado como string, sin convertirlo a número aún
+      setSendAmount(value);
     }
   };
 
@@ -211,9 +247,15 @@ export default function TransactionCalculator() {
     setSelectedSendingSystem(selectedReceivingSystem);
     setSelectedReceivingSystem(selectedSendingSystem);
 
-    const tempAmount = sendAmount;
-    setSendAmount(receiveAmount);
-    setReceiveAmount(tempAmount);
+    // Guardar el valor actual de sendAmount y receiveAmount
+    const tempSendAmount = sendAmount; // String
+    const tempReceiveAmount = receiveAmount; // Number
+
+    // Convertir receiveAmount a cadena para setSendAmount
+    setSendAmount(tempReceiveAmount.toString());
+
+    // Convertir sendAmount a número para setReceiveAmount
+    setReceiveAmount(tempSendAmount);
 
     setActiveSelect(null);
   };
@@ -228,8 +270,6 @@ export default function TransactionCalculator() {
     setActiveSelect(newValue);
   };
 
-  console.log(rateForOne);
-
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
       <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-white p-8 shadow-md dark:bg-gray-800 dark:text-white">
@@ -238,7 +278,7 @@ export default function TransactionCalculator() {
           {selectedReceivingSystem?.coin}
         </p>
 
-        <div className="sm:flex-row-reverse flex w-full max-w-lg flex-col-reverse items-end text-[#012c8a] dark:text-darkText">
+        <div className="flex w-full max-w-lg flex-col-reverse items-end text-[#012c8a] dark:text-darkText sm:flex-row-reverse">
           <SystemSelect
             systems={systems}
             selectedSystem={selectedSendingSystem}
@@ -250,7 +290,7 @@ export default function TransactionCalculator() {
             toggleSelect={() => toggleSelect('send')}
           />
 
-          <div className="sm:flex hidden h-[7.4rem] flex-col justify-between">
+          <div className="hidden h-[7.4rem] flex-col justify-between sm:flex">
             <div className="h-[1px] w-[1px] bg-[#012c8a] dark:bg-gray-200"></div>
             <div className="bg h-24 bg-[#012c8a] dark:bg-gray-200"></div>
             <div className="h-[1px] w-[1px] bg-[#012c8a] dark:bg-gray-200"></div>
@@ -259,14 +299,15 @@ export default function TransactionCalculator() {
           <div className="relative flex h-32 w-full items-center">
             <input
               type="text"
-              className="peer h-full w-full border-0 bg-transparent p-2 text-center text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0"
+              className="peer h-full w-full border-0 bg-transparent px-12 py-2 text-end text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0 sm:text-center"
               id="sendInputUniqueID"
+              placeholder="0"
               value={sendAmount}
-              onChange={(e) => setSendAmount(parseFloat(e.target.value) || 0)}
+              onChange={handleSendAmount}
             />
             <fieldset
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 rounded-bl-2xl rounded-tl-2xl rounded-br-2xl rounded-tr-2xl sm:rounded-tr-none sm:rounded-br-none border-y border-l sm:border-r-0 border-r  border-[#012c8a] dark:border-gray-200"
+              className="pointer-events-none absolute inset-0 rounded-b-none rounded-tl-2xl rounded-tr-2xl border-y border-l border-r border-[#012c8a] dark:border-gray-200 sm:rounded-bl-2xl sm:rounded-br-none sm:rounded-tr-none sm:border-r-0"
             >
               <legend className="mx-4 px-1 text-sm">
                 <span>Envías {selectedSendingSystem?.coin}</span>
@@ -281,7 +322,7 @@ export default function TransactionCalculator() {
           <p>Información del sistema de recepción</p>
         </SystemInfo>
         <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
-          <div className="sm:flex-row-reverse flex w-full max-w-lg flex-col-reverse items-end">
+          <div className="flex w-full max-w-lg flex-col-reverse items-end sm:flex-row-reverse">
             <SystemSelect
               systems={systems}
               selectedSystem={selectedReceivingSystem}
@@ -293,7 +334,7 @@ export default function TransactionCalculator() {
               toggleSelect={() => toggleSelect('receive')}
             />
 
-            <div className="sm:flex hidden h-[7.4rem] flex-col justify-between">
+            <div className="hidden h-[7.4rem] flex-col justify-between sm:flex">
               <div className="h-[1px] w-[1px] bg-[#012c8a] dark:bg-gray-200"></div>
               <div className="bg h-24 bg-[#012c8a] dark:bg-gray-200"></div>
               <div className="h-[1px] w-[1px] bg-[#012c8a] dark:bg-gray-200"></div>
@@ -302,15 +343,16 @@ export default function TransactionCalculator() {
             <div className="relative mt-[0.4rem] flex h-32 w-full items-center">
               <input
                 type="text"
-                className="peer h-full w-full border-0 bg-transparent p-2 text-center text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0"
+                className="peer h-full w-full border-0 bg-transparent px-12 py-2 text-end text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0 sm:text-center"
                 id="receptionInputUniqueID"
+                placeholder="0"
                 value={receiveAmount}
                 onChange={handleReceiveAmountChange}
               />
 
               <fieldset
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-bl-2xl rounded-tl-2xl rounded-br-2xl rounded-tr-2xl sm:rounded-tr-none sm:rounded-br-none border-y border-l sm:border-r-0 border-r border-[#012c8a] dark:border-gray-200"
+                className="pointer-events-none absolute inset-0 rounded-b-none rounded-tl-2xl rounded-tr-2xl border-y border-l border-r border-[#012c8a] dark:border-gray-200 sm:rounded-bl-2xl sm:rounded-br-none sm:rounded-tr-none sm:border-r-0"
               >
                 <legend className="mx-4 px-1 text-sm">
                   <span>Recibes {selectedReceivingSystem?.coin}</span>

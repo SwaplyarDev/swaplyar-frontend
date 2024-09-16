@@ -9,6 +9,7 @@ interface System {
   id: string;
   name: string;
   logo: string;
+  logoDark: string;
   isDisabled: boolean;
   coin: string;
 }
@@ -93,39 +94,39 @@ export default function SystemSelect({
   }));
 
   return (
-    <div className="relative mt-4 w-full">
+    <div className="relative sm:mt-4 w-full">
       <button
-        className={`system-input-select flex h-[7.4rem] w-full items-center justify-between rounded-2xl border border-[#012c8a] p-2 dark:border-gray-200 sm:w-64 sm:justify-start sm:rounded-bl-none sm:rounded-tl-none sm:border-l-0 ${
+        className={`system-input-select flex h-[7.4rem] w-full items-center justify-between rounded-2xl border border-[#012c8a] p-2 dark:border-gray-200 sm:w-64 sm:justify-start sm:rounded-bl-none rounded-t-none sm:rounded-tr-2xl sm:rounded-tl-none sm:border-l-0 ${
           isSending ? 'animation-system-send' : 'animation-system-receive'
         } ${darkMode ? 'dark' : ''}`}
         onClick={handleClick}
       >
         {selectedSystem ? (
-          <>
+          <div className='w-full flex justify-center'>
             <Image
-              src={selectedSystem.logo}
+              src={darkMode == true ? selectedSystem.logoDark : selectedSystem.logo}
               alt={selectedSystem.name}
               width={200}
               height={70}
             />
-          </>
+          </div>
         ) : (
           <></>
         )}
         <FontAwesomeIcon icon={faChevronDown} width={32} height={16} />
       </button>
       {showOptionsInternal && (
-        <ul className="border-[#012c8a] scrollable-list absolute z-10 max-h-64 sm:w-64 w-full overflow-y-auto overflow-x-hidden rounded-2xl border bg-white shadow-md dark:bg-gray-800">
+        <ul className="border-[#012c8a] dark:border-white scrollable-list absolute z-10 max-h-64 sm:w-64 w-full overflow-y-auto overflow-x-hidden rounded-2xl border bg-white shadow-md dark:bg-gray-800">
           {updatedSystems.map((system) => (
             <li
               key={system.id}
               onClick={() => !system.isDisabled && handleOptionClick(system)}
-              className={`flex cursor-pointer items-center px-5 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
+              className={`justify-center flex cursor-pointer items-center px-5 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
                 system.isDisabled ? 'cursor-not-allowed opacity-50' : ''
               }`}
             >
               <Image
-                src={system.logo}
+                src={darkMode == true ? system.logoDark : system.logo}
                 alt={system.name}
                 width={200}
                 height={70}
