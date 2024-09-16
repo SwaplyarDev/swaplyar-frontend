@@ -129,33 +129,33 @@ swaplyar-frontend/
         # Authjs
         AUTH_SECRET='your_auth_secret'
         NEXTAUTH_SECRET='your_nextauth_secret'
-        
+
         NEXTAUTH_URL="http://localhost:8080/api/v1/login"
-        
+
         # AUTH_LOGIN_REDIRECT
         AUTH_LOGIN_REDIRECT="/products/company"
         APP_ENV="development"
         PROJECT_DIR="/ruta/al/directorio/del/proyecto"
-        
+
         # GOOGLE
         AUTH_GOOGLE_ID="your_google_id"
         AUTH_GOOGLE_SECRET="your_google_secret"
-        
+
         # GITHUB
         AUTH_GITHUB_ID="your_github_id"
         AUTH_GITHUB_SECRET="your_github_secret"
-        
+
         # Resend
         AUTH_RESEND_KEY="your_resend_key"
-        
+
         # FreeCurrencyAPI
         NEXT_PUBLIC_FREE_CURRENCY_API_KEY="fca_live_jDqUTcYj3stjWVDFqGZCmIBAt3hIEEtiTBPSMD3N"
-        
+
         # Bluelytics
         NEXT_PUBLIC_BLUELYTICS_API_URL="https://api.bluelytics.com.ar/v2/latest"
         NEXT_PUBLIC_FREE_CURRENCY_APY_KEY=fca_live_jDqUTcYj3stjWVDFqGZCmIBAt3hIEEtiTBPSMD3N
-        
-        
+
+
         NEXT_PUBLIC_PAYPAL_CLIENT_ID="Acdb_cNhM35Qa7UNeEpdSePRS6Oswvx5ohLo1KEC04ADt64RGPUuOMUZXN_Kt84b93RXFFujqDKjB8u1"
    ```
 
