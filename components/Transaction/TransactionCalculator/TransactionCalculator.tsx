@@ -14,11 +14,13 @@ import {
   updateCurrentValueUSDToEUR,
 } from '@/utils/currencyApis';
 
-declare global {
-  interface Window {
-    paypal: any;
-  }
-}
+import Paypal from '../PayPal/Paypal';
+import { paypalPaymentStore } from '@/store/paypalPaymetStore';
+// declare global {
+//   interface Window {
+//     paypal: any;
+//   }
+// }
 
 export default function TransactionCalculator() {
   const router = useRouter();
@@ -32,9 +34,12 @@ export default function TransactionCalculator() {
   } = useSystemStore();
   const [sendAmount, setSendAmount] = useState<string>('');
   const [receiveAmount, setReceiveAmount] = useState<string>('');
+
+  const { paypal, setPaypal } = paypalPaymentStore();
   const [exchangeRate, setExchangeRate] = useState<number>(0);
   const [rateForOne, setRateForOne] = useState<number>(0);
-  const [darkMode, setDarkMode] = useState<boolean>(false);
+  // const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [exchange, setExchange] = useState({ currency: 'USD', amount: 0 });
 
   // Datos de sistemas de pago
   const systems: System[] = [
@@ -88,19 +93,19 @@ export default function TransactionCalculator() {
     },
   ];
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setDarkMode(mediaQuery.matches);
-    const handleChange = (e: MediaQueryListEvent) => {
-      setDarkMode(e.matches);
-    };
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
+  // useEffect(() => {
+  //   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  //   setDarkMode(mediaQuery.matches);
+  //   const handleChange = (e: MediaQueryListEvent) => {
+  //     setDarkMode(e.matches);
+  //   };
+  //   mediaQuery.addEventListener('change', handleChange);
+  //   return () => mediaQuery.removeEventListener('change', handleChange);
+  // }, []);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', darkMode);
-  }, [darkMode]);
+  // useEffect(() => {
+  //   document.documentElement.classList.toggle('dark', darkMode);
+  // }, [darkMode]);
 
   const findExchangeRate = useCallback(async () => {
     if (selectedSendingSystem && selectedReceivingSystem) {
@@ -252,7 +257,7 @@ export default function TransactionCalculator() {
     const tempReceiveAmount = receiveAmount; // Number
 
     // Convertir receiveAmount a cadena para setSendAmount
-    setSendAmount(tempReceiveAmount.toString());
+    setSendAmount(tempReceiveAmount);
 
     // Convertir sendAmount a número para setReceiveAmount
     setReceiveAmount(tempSendAmount);
@@ -268,6 +273,14 @@ export default function TransactionCalculator() {
     const newValue = activeSelect === selectType ? null : selectType;
 
     setActiveSelect(newValue);
+  };
+
+  const handleExchange = () => {
+    setExchange({
+      currency: selectedSendingSystem?.coin as string,
+      amount: parseInt(sendAmount),
+    });
+    setPaypal();
   };
 
   return (
@@ -361,13 +374,22 @@ export default function TransactionCalculator() {
             </div>
           </div>
 
-          <div id="goToPayPalButton" className="mt-8">
-            <button
-              className="bg- buttonPay rounded-3xl bg-blue-500 p-2 px-10 py-3 text-darkText hover:bg-blue-700 focus:outline-none"
-              onClick={handleDirection}
-            >
-              Realizar el pago
-            </button>
+          <div className="mt-8">
+            {paypal ? (
+              <Paypal
+                currency={exchange.currency}
+                amount={exchange.amount}
+                handleDirection={handleDirection}
+              />
+            ) : (
+              <button
+                className="bg-buttonPay rounded-3xl bg-blue-500 px-10 py-3 text-darkText hover:bg-blue-700 focus:outline-none disabled:bg-gray-400"
+                onClick={handleExchange}
+                disabled={parseInt(sendAmount) < 1}
+              >
+                Procesar pago
+              </button>
+            )}
           </div>
         </div>
       </div>
