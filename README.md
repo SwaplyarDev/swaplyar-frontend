@@ -183,21 +183,21 @@ La ruta `/api/paypal` en el servidor maneja la creación de órdenes en PayPal. 
         # Bluelytics
         NEXT_PUBLIC_BLUELYTICS_API_URL="https://api.bluelytics.com.ar/v2/latest"
         NEXT_PUBLIC_FREE_CURRENCY_APY_KEY=fca_live_jDqUTcYj3stjWVDFqGZCmIBAt3hIEEtiTBPSMD3N
-
+   ```
 
 FqGZCmIBAt3hIEEtiTBPSMD3N
-        
-        
+
 o1KEC04ADt64RGPUuOMUZXN_Kt84b93RXFFujqDKjB8u1"
-   ```
+
+````
 
 4. **Ejecutar el Proyecto**
 
-   ```bash
-   npm run dev
-   ```
+```bash
+npm run dev
+````
 
-   Accede al proyecto en [http://localhost:3000](http://localhost:3000).
+Accede al proyecto en [http://localhost:3000](http://localhost:3000).
 
 ## 🤖 Scripts Disponibles
 

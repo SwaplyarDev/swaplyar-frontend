@@ -15,8 +15,7 @@ import Switch from './switch';
 import Image from 'next/image';
 import Link from 'next/link';
 import S from '../../../public/images/logo-solo.png';
-import style from './sidebar.module.css';
-import { blue } from '@mui/material/colors';
+import LogInButton from './log-register-bt/LogInButton/logiInButton';
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -58,14 +57,9 @@ export function TopMenu() {
       }`}
     >
       <div className="m-auto flex w-[95%] max-w-screen-2xl flex-row justify-between">
-        <Link
-          key="Iniciar sesión"
-          href="/auth/login-register"
-          onClick={() => setView('login')}
-          className={`relative m-1 hidden h-[48px] items-center gap-2 rounded-3xl border border-lightText p-3 transition-transform duration-300 ease-in-out hover:scale-105 dark:border-darkText md:flex lg:hidden ${pathname === '/auth/login-register' ? 'underline decoration-lightText dark:decoration-darkText' : ''} `}
-        >
-          <p className="font-bold">Iniciar sesión</p>
-        </Link>
+        <span className="hidden md:flex lg:hidden">
+          <LogInButton />
+        </span>
 
         <Navbar.Brand href="/">
           <Image
@@ -85,7 +79,7 @@ export function TopMenu() {
         </Navbar.Brand>
 
         <nav className="flex flex-row items-center justify-center">
-          <section className="flex items-center justify-end gap-5">
+          <section className="flex items-center justify-end gap-4 lg:pr-2">
             <Switch />
             <button
               onClick={() => setDrawerMenu(true)}
@@ -104,7 +98,9 @@ export function TopMenu() {
             <Drawer.Header
               title="Menu"
               titleIcon={() => <></>}
-              closeIcon={() => <MdOutlineClose className="size-7 text-blue-800 dark:text-sky-500" />}
+              closeIcon={() => (
+                <MdOutlineClose className="size-7 text-blue-800 dark:text-sky-500" />
+              )}
               className="flex items-center text-lg font-bold"
             />
             <Drawer.Items>
@@ -117,7 +113,7 @@ export function TopMenu() {
                     <Sidebar.Item
                       className={`${
                         selectedItem === 'about-us'
-                          ? 'bg-gray-100 dark:bg-gray-700 h-10'
+                          ? 'h-10 bg-gray-100 dark:bg-gray-700'
                           : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                       }`}
                       onClick={() => handleSelect('about-us')}
@@ -125,48 +121,54 @@ export function TopMenu() {
                     >
                       <div
                         className={`${
-                          selectedItem === 'about-us' ? 'bg-blue-800 dark:bg-sky-500' : ''
-                        } absolute rounded-r-md left-0.5 -mt-2 h-10 w-2`}
+                          selectedItem === 'about-us'
+                            ? 'bg-blue-800 dark:bg-sky-500'
+                            : ''
+                        } absolute left-0 -mt-2 h-10 w-2 rounded-r-md`}
                       ></div>
                       Quienes Somos
                     </Sidebar.Item>
 
                     <Sidebar.Item
-                         className={`${
-                          selectedItem === 'how-to-use'
-                            ? 'bg-gray-100 dark:bg-gray-700 h-10'
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                        }`}
+                      className={`${
+                        selectedItem === 'how-to-use'
+                          ? 'h-10 bg-gray-100 dark:bg-gray-700'
+                          : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                      }`}
                       onClick={() => handleSelect('how-to-use')}
                       href="/info/how-to-use"
                     >
-                       <div
+                      <div
                         className={`${
-                          selectedItem === 'how-to-use' ? 'bg-blue-800 dark:bg-sky-500' : ''
-                        } absolute rounded-r-md left-0.5 -mt-2 h-10 w-2`}
+                          selectedItem === 'how-to-use'
+                            ? 'bg-blue-800 dark:bg-sky-500'
+                            : ''
+                        } absolute left-0 -mt-2 h-10 w-2 rounded-r-md`}
                       ></div>
                       Como Usar Swaplyar
                     </Sidebar.Item>
 
                     <Sidebar.Item
-                         className={`${
-                          selectedItem === 'loyalty-program'
-                            ? 'bg-gray-100 dark:bg-gray-700 h-10'
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                        }`}
+                      className={`${
+                        selectedItem === 'loyalty-program'
+                          ? 'h-10 bg-gray-100 dark:bg-gray-700'
+                          : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                      }`}
                       onClick={() => handleSelect('loyalty-program')}
                       href="/info/loyalty-program"
                     >
-                       <div
+                      <div
                         className={`${
-                          selectedItem === 'loyalty-program' ? 'bg-blue-800 dark:bg-sky-500' : ''
-                        } absolute rounded-r-md left-0.5 -mt-2 h-10 w-2`}
+                          selectedItem === 'loyalty-program'
+                            ? 'bg-blue-800 dark:bg-sky-500'
+                            : ''
+                        } absolute left-0 -mt-2 h-10 w-2 rounded-r-md`}
                       ></div>
                       Programa de Fidelización
                     </Sidebar.Item>
                   </Sidebar.ItemGroup>
 
-                  <Sidebar.ItemGroup className="block px-2 md:hidden border-t-2 border-blue-800 dark:border-sky-500">
+                  <Sidebar.ItemGroup className="block border-t-2 border-blue-800 px-2 dark:border-sky-500 md:hidden">
                     <Sidebar.Item
                       className={`flex cursor-pointer items-center gap-2 rounded-3xl border border-lightText p-3 text-center dark:border-darkText`}
                       onClick={() => {
@@ -196,7 +198,7 @@ export function TopMenu() {
             </Drawer.Items>
           </Drawer>
 
-          <section className="hidden lg:flex">
+          <section className="hidden lg:flex lg:gap-2">
             <NavLinks />
           </section>
         </nav>

@@ -36,6 +36,8 @@ const config: Config = {
           500: '#0070F3',
           600: '#2F6FEB',
         },
+        buttonsLigth: '#012c8a',
+        selectBtsLight: '#91aeec',
         darkText: '#ebe7e0',
         lightText: '#252526',
       },
