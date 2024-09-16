@@ -275,12 +275,17 @@ export default function TransactionCalculator() {
     setActiveSelect(newValue);
   };
 
-  const handleExchange = () => {
+  const handleExchangePaypal = () => {
     setExchange({
       currency: selectedSendingSystem?.coin as string,
       amount: parseInt(sendAmount),
     });
     setPaypal();
+  };
+  
+
+  const handleExchange = () => {
+    router.push('/request');
   };
 
   return (
@@ -291,7 +296,7 @@ export default function TransactionCalculator() {
           {selectedReceivingSystem?.coin}
         </p>
 
-        <div className="flex w-full max-w-lg flex-col-reverse items-end text-[#012c8a] dark:text-darkText sm:flex-row-reverse">
+        <div className="relative flex w-full max-w-lg flex-col-reverse items-end text-[#012c8a] dark:text-darkText sm:flex-row-reverse">
           <SystemSelect
             systems={systems}
             selectedSystem={selectedSendingSystem}
@@ -303,10 +308,8 @@ export default function TransactionCalculator() {
             toggleSelect={() => toggleSelect('send')}
           />
 
-          <div className="hidden h-[7.4rem] flex-col justify-between sm:flex">
-            <div className="h-[1px] w-[1px] bg-[#012c8a] dark:bg-gray-200"></div>
-            <div className="bg h-24 bg-[#012c8a] dark:bg-gray-200"></div>
-            <div className="h-[1px] w-[1px] bg-[#012c8a] dark:bg-gray-200"></div>
+          <div className="absolute top-0 mt-32 w-full flex-col justify-center px-6 sm:right-0 sm:top-[inherit] sm:mr-64 sm:mt-0 sm:flex sm:h-[7.4rem] sm:w-0 sm:px-0">
+            <div className="bg h-[1px] w-full bg-[#012c8a] dark:bg-gray-200 sm:h-24 sm:w-[2px]"></div>
           </div>
 
           <div className="relative flex h-32 w-full items-center">
@@ -320,7 +323,7 @@ export default function TransactionCalculator() {
             />
             <fieldset
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 rounded-b-none rounded-tl-2xl rounded-tr-2xl border-y border-l border-r border-[#012c8a] dark:border-gray-200 sm:rounded-bl-2xl sm:rounded-br-none sm:rounded-tr-none sm:border-r-0"
+              className="pointer-events-none absolute inset-0 mt-[1px] rounded-b-none rounded-tl-2xl rounded-tr-2xl border-y-2 border-b-0 border-l-2 border-r-2 border-[#012c8a] dark:border-gray-200 sm:rounded-bl-2xl sm:rounded-br-none sm:rounded-tr-none sm:border-b-2 sm:border-r-0"
             >
               <legend className="mx-4 px-1 text-sm">
                 <span>Envías {selectedSendingSystem?.coin}</span>
@@ -347,10 +350,8 @@ export default function TransactionCalculator() {
               toggleSelect={() => toggleSelect('receive')}
             />
 
-            <div className="hidden h-[7.4rem] flex-col justify-between sm:flex">
-              <div className="h-[1px] w-[1px] bg-[#012c8a] dark:bg-gray-200"></div>
-              <div className="bg h-24 bg-[#012c8a] dark:bg-gray-200"></div>
-              <div className="h-[1px] w-[1px] bg-[#012c8a] dark:bg-gray-200"></div>
+            <div className="absolute top-0 mt-[8.4rem] w-full flex-col justify-center px-6 sm:right-0 sm:top-[inherit] sm:mr-64 sm:mt-0 sm:flex sm:h-[7.4rem] sm:w-0 sm:px-0">
+              <div className="bg h-[1px] w-full bg-[#012c8a] dark:bg-gray-200 sm:h-24 sm:w-[2px]"></div>
             </div>
 
             <div className="relative mt-[0.4rem] flex h-32 w-full items-center">
@@ -365,7 +366,7 @@ export default function TransactionCalculator() {
 
               <fieldset
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-b-none rounded-tl-2xl rounded-tr-2xl border-y border-l border-r border-[#012c8a] dark:border-gray-200 sm:rounded-bl-2xl sm:rounded-br-none sm:rounded-tr-none sm:border-r-0"
+                className="pointer-events-none absolute inset-0 rounded-b-none rounded-tl-2xl rounded-tr-2xl border-y-2 border-b-0 border-l-2 border-r-2 border-[#012c8a] dark:border-gray-200 sm:rounded-bl-2xl sm:rounded-br-none sm:rounded-tr-none sm:border-b-2 sm:border-r-0"
               >
                 <legend className="mx-4 px-1 text-sm">
                   <span>Recibes {selectedReceivingSystem?.coin}</span>
@@ -375,17 +376,19 @@ export default function TransactionCalculator() {
           </div>
 
           <div className="mt-8">
-            {paypal ? (
-              <Paypal
-                currency={exchange.currency}
-                amount={exchange.amount}
-                handleDirection={handleDirection}
-              />
+            {(parseInt(sendAmount) >= 1 || sendAmount != '') && selectedSendingSystem?.name == 'PayPal' ? (
+              <div onClick={handleExchangePaypal}>
+                <Paypal
+                  currency={exchange.currency}
+                  amount={exchange.amount}
+                  handleDirection={handleDirection}
+                />
+              </div>
             ) : (
               <button
                 className="bg-buttonPay rounded-3xl bg-blue-500 px-10 py-3 text-darkText hover:bg-blue-700 focus:outline-none disabled:bg-gray-400"
                 onClick={handleExchange}
-                disabled={parseInt(sendAmount) < 1}
+                disabled={parseInt(sendAmount) < 1 || sendAmount === ''}
               >
                 Procesar pago
               </button>
