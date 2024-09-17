@@ -16,11 +16,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import S from '../../../public/images/logo-solo.png';
 import LogInButton from './log-register-bt/LogInButton/logiInButton';
+import logStyles from './log-register-bt/LogInButton/logInButtonAnimation.module.css'
+import rgStyles from './log-register-bt/RegisterButton/registerButton.module.css'
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
-
-  const [bgOpacity, setBgOpacity] = useState(false);
 
   const [drawerMenu, setDrawerMenu] = useState(false);
 
@@ -36,25 +36,13 @@ export function TopMenu() {
   useEffect(() => {
     const storage = sessionStorage.getItem('currentView');
     setSelectedItem(storage);
-
-    const handleScroll = () => {
-      setBgOpacity(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
   }, []);
 
   return (
     <Navbar
       fluid
       rounded
-      className={`sticky top-0 z-50 py-6 shadow-md transition-opacity duration-200 dark:bg-lightText ${
-        bgOpacity
-          ? 'bg-opacity-80 dark:bg-opacity-80'
-          : 'bg-opacity-100 dark:bg-opacity-100'
-      }`}
+      className={`sticky top-0 z-[1000] py-3 shadow-md transition-opacity duration-200 dark:bg-lightText`}
     >
       <div className="m-auto flex w-[95%] max-w-screen-2xl flex-row justify-between">
         <span className="hidden md:flex lg:hidden">
@@ -93,20 +81,22 @@ export function TopMenu() {
             open={drawerMenu}
             onClose={() => setDrawerMenu(false)}
             position="right"
-            className="transform transition-all duration-500 ease-in-out"
+            className="max-w-[80%] h-full transform transition-all duration-500 ease-in-out"
           >
             <Drawer.Header
-              title="Menu"
-              titleIcon={() => <></>}
+              title=""
+              titleIcon={() => (
+                <></>
+              )}
               closeIcon={() => (
                 <MdOutlineClose className="size-7 text-blue-800 dark:text-sky-500" />
               )}
-              className="flex items-center text-lg font-bold"
+              className="flex items-center text-lg pt-4 font-bold"
             />
             <Drawer.Items>
               <Sidebar
                 aria-label="Sidebar with content separator example"
-                className="m-auto h-[90vh] text-center [&>div]:bg-transparent [&>div]:p-0"
+                className="m-auto h-[92vh] text-center [&>div]:bg-transparent [&>div]:p-0"
               >
                 <Sidebar.Items className="flex h-full w-full flex-col justify-between pt-5">
                   <Sidebar.ItemGroup className="w-full bg-inherit text-left">
@@ -206,3 +196,29 @@ export function TopMenu() {
     </Navbar>
   );
 }
+
+// <Sidebar.ItemGroup className="block border-t-2 border-blue-800 px-2 dark:border-sky-500 md:hidden">
+//                     <Sidebar.Item
+//                       className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth dark:border-darkText ${logStyles.buttonLight}`}
+//                       onClick={() => {
+//                         handleSelect('login');
+//                         setView('login');
+//                         setDrawerMenu(false);
+//                       }}
+//                       href="/auth/login-register"
+//                     >
+//                       Iniciar sesión
+//                     </Sidebar.Item>
+
+//                     <Sidebar.Item
+//                       className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white dark:border-darkText dark:bg-darkText dark:text-lightText`}
+//                       onClick={() => {
+//                         handleSelect('register');
+//                         setView('register');
+//                         setDrawerMenu(false);
+//                       }}
+//                       href="/auth/login-register"
+//                     >
+//                       Registrarse
+//                     </Sidebar.Item>
+//                   </Sidebar.ItemGroup>

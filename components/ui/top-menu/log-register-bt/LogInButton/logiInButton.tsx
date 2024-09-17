@@ -13,10 +13,9 @@ function LogInButton() {
       <Link
         href="/auth/login-register"
         onClick={() => setView('login')}
-        className={`relative m-1 hidden h-[48px] w-36 items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth dark:border-darkText md:flex ${style.buttonLight} ${pathname === '/auth/login-register' && view === 'login' ? 'underline decoration-buttonsLigth dark:decoration-darkText' : ''} `}
+        className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth dark:border-darkText ${style.buttonLight} ${pathname === '/auth/login-register' && view === 'login' ? 'underline decoration-buttonsLigth dark:decoration-darkText' : ''} `}
       >
-        <span className="font-bold">Iniciar sesión</span>
-        <span></span>
+        <p className="font-bold">Iniciar sesión</p>
       </Link>
     </>
   );
