@@ -55,3 +55,20 @@ export const ElegirSwaplyAr = '/images/elegirSwaplyAr.png';
 export const Porqueelegirnos = '/images/porqueelegirnos.png';
 export const LideresenCambio = '/images/lideresencambio.png';
 export const SeguridadySatisfaccion = '/images/seguridadysatisfaccion.png';
+
+/**transaction-calculator**/
+export const PaypalImg = '/images/paypal.big.png';
+export const PaypalDarkImg = '/images/paypal.dark.png';
+
+export const PayoneerUsdImg = '/images/payoneer.usd.big.png';
+export const PayoneerUsdDarkImg = '/images/payoneer.usd.dark.png';
+export const PayoneerEurImg = '/images/payoneer.eur.big.png';
+export const PayoneerEurDarkImg = '/images/payoneer.eur.dark.png';
+
+export const BankImg = '/images/banco.medium.webp';
+export const BankDarkImg = '/images/banco.dark.png';
+
+export const WiseUsdImg = '/images/wise.usd.big.png';
+export const WiseUsdDarkImg = '/images/wise.usd.dark.png';
+export const WiseEurImg = '/images/wise.eur.big.png';
+export const WiseEurDarkImg = '/images/wise.eur.dark.png';

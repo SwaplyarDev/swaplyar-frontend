@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useSystemStore } from '@/store/useSystemStore';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 interface System {
   id: string;
@@ -35,7 +36,7 @@ export default function SystemSelect({
   showOptions,
   toggleSelect,
 }: SystemSelectProps) {
-  const [darkMode, setDarkMode] = useState<boolean>(false);
+  const { isDark } = useDarkTheme();
   const [showOptionsInternal, setShowOptionsInternal] = useState(false);
 
   const {
@@ -96,16 +97,16 @@ export default function SystemSelect({
   return (
     <div className="relative w-full sm:mt-4">
       <button
-        className={`system-input-select flex h-[7.4rem] w-full items-center justify-between rounded-2xl rounded-t-none border-2 border-t-0 sm:border-t-2 border-[#012c8a] p-2 dark:border-gray-200 sm:w-64 sm:justify-start sm:rounded-bl-none sm:rounded-tl-none sm:rounded-tr-2xl sm:border-l-0 ${
+        className={`system-input-select flex h-16 xs:h-[7.4rem] w-full items-center justify-between rounded-2xl rounded-t-none border-2 border-t-0 border-[#012c8a] p-2 dark:border-gray-200 sm:w-64 sm:justify-start sm:rounded-bl-none sm:rounded-tl-none sm:rounded-tr-2xl sm:border-l-0 sm:border-t-2 ${
           isSending ? 'animation-system-send' : 'animation-system-receive'
-        } ${darkMode ? 'dark' : ''}`}
+        } ${isDark ? 'dark' : ''}`}
         onClick={handleClick}
       >
         {selectedSystem ? (
           <div className="flex w-full justify-center">
             <Image
               src={
-                darkMode == true ? selectedSystem.logoDark : selectedSystem.logo
+                isDark == true ? selectedSystem.logoDark : selectedSystem.logo
               }
               alt={selectedSystem.name}
               width={200}
@@ -118,7 +119,7 @@ export default function SystemSelect({
         <FontAwesomeIcon icon={faChevronDown} width={32} height={16} />
       </button>
       {showOptionsInternal && (
-        <ul className="scrollable-list absolute z-10 max-h-64 w-full overflow-y-auto overflow-x-hidden rounded-2xl border border-[#012c8a] bg-white shadow-md dark:border-white dark:bg-gray-800 sm:w-64">
+        <ul className="scrollable-list absolute z-[500] max-h-64 w-full overflow-y-auto overflow-x-hidden rounded-2xl border border-[#012c8a] bg-white shadow-md dark:border-white dark:bg-gray-800 sm:w-64">
           {updatedSystems.map((system) => (
             <li
               key={system.id}
@@ -128,7 +129,7 @@ export default function SystemSelect({
               }`}
             >
               <Image
-                src={darkMode == true ? system.logoDark : system.logo}
+                src={isDark == true ? system.logoDark : system.logo}
                 alt={system.name}
                 width={200}
                 height={70}

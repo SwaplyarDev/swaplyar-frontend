@@ -16,6 +16,24 @@ import {
 
 import Paypal from '../PayPal/Paypal';
 import { paypalPaymentStore } from '@/store/paypalPaymetStore';
+import {
+  BankDarkImg,
+  BankImg,
+  PayoneerEurDarkImg,
+  PayoneerEurImg,
+  PayoneerUsdDarkImg,
+  PayoneerUsdImg,
+  PaypalDarkImg,
+  PaypalImg,
+  WiseEurDarkImg,
+  WiseEurImg,
+  WiseUsdDarkImg,
+  WiseUsdImg,
+} from '@/utils/assets/img-database';
+import Swal from 'sweetalert2';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import { createRoot } from 'react-dom/client';
+
 // declare global {
 //   interface Window {
 //     paypal: any;
@@ -38,7 +56,7 @@ export default function TransactionCalculator() {
   const { paypal, setPaypal } = paypalPaymentStore();
   const [exchangeRate, setExchangeRate] = useState<number>(0);
   const [rateForOne, setRateForOne] = useState<number>(0);
-  // const [darkMode, setDarkMode] = useState<boolean>(false);
+  const { isDark } = useDarkTheme();
   const [exchange, setExchange] = useState({ currency: 'USD', amount: 0 });
 
   // Datos de sistemas de pago
@@ -46,48 +64,48 @@ export default function TransactionCalculator() {
     {
       id: 'paypal',
       name: 'PayPal',
-      logo: '/images/paypal.big.png',
-      logoDark: '/images/paypal.dark.png',
+      logo: PaypalImg,
+      logoDark: PaypalDarkImg,
       isDisabled: false,
       coin: 'USD',
     },
     {
       id: 'payoneer_usd',
       name: 'Payoneer USD',
-      logo: '/images/payoneer.usd.big.png',
-      logoDark: '/images/payoneer.usd.dark.png',
+      logo: PayoneerUsdImg,
+      logoDark: PayoneerUsdDarkImg,
       isDisabled: false,
       coin: 'USD',
     },
     {
       id: 'payoneer_eur',
       name: 'Payoneer EUR',
-      logo: '/images/payoneer.eur.big.png',
-      logoDark: '/images/payoneer.eur.dark.png',
+      logo: PayoneerEurImg,
+      logoDark: PayoneerEurDarkImg,
       isDisabled: false,
       coin: 'EUR',
     },
     {
       id: 'bank',
       name: 'Banco',
-      logo: '/images/banco.medium.webp',
-      logoDark: '/images/banco.dark.png',
+      logo: BankImg,
+      logoDark: BankDarkImg,
       isDisabled: false,
       coin: 'ARS',
     },
     {
       id: 'wise_usd',
       name: 'Wise USD',
-      logo: '/images/wise.usd.big.png',
-      logoDark: '/images/wise.usd.dark.png',
+      logo: WiseUsdImg,
+      logoDark: WiseUsdDarkImg,
       isDisabled: false,
       coin: 'USD',
     },
     {
       id: 'wise_eur',
       name: 'Wise EUR',
-      logo: '/images/wise.eur.big.png',
-      logoDark: '/images/wise.eur.dark.png',
+      logo: WiseEurImg,
+      logoDark: WiseEurDarkImg,
       isDisabled: false,
       coin: 'EUR',
     },
@@ -275,14 +293,44 @@ export default function TransactionCalculator() {
     setActiveSelect(newValue);
   };
 
-  const handleExchangePaypal = () => {
+  useEffect(() => {
     setExchange({
       currency: selectedSendingSystem?.coin as string,
       amount: parseInt(sendAmount),
     });
-    setPaypal();
+  }, [sendAmount, selectedSendingSystem]);
+
+  const handleExchangePaypal = () => {
+    Swal.fire({
+      title: 'Procesar pago con PayPal',
+      html: `
+        <p>¿Estás seguro de que deseas procesar el pago de ${exchange.amount} ${exchange.currency} con PayPal?</p>
+        <div style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
+          <div id="paypal-button-container" style="width: 150px; margin-top: 20px;"></div>
+        </div>
+      `,
+      icon: 'warning',
+      confirmButtonText: 'Cancelar',
+      background: isDark ? '#1f2937' : '#ffffff',
+      color: isDark ? '#ffffff' : '#000000',
+      didRender: () => {
+        // Renderizar el componente Paypal en el contenedor después de que se haya mostrado el SweetAlert
+        const paypalElement = document.getElementById(
+          'paypal-button-container',
+        );
+        if (paypalElement) {
+          const root = createRoot(paypalElement); // Crear un root para el renderizado
+          root.render(
+            <Paypal
+              currency={exchange.currency}
+              amount={exchange.amount}
+              handleDirection={handleDirection}
+            />,
+          );
+        }
+      },
+    });
   };
-  
 
   const handleExchange = () => {
     router.push('/request');
@@ -291,7 +339,7 @@ export default function TransactionCalculator() {
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
       <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-white p-8 shadow-md dark:bg-gray-800 dark:text-white">
-        <p className="w-full max-w-lg text-[2rem] text-[#012c8a] dark:text-darkText">
+        <p className="w-full max-w-lg text-2xl text-[#012c8a] dark:text-darkText xs:text-[2rem]">
           1 {selectedSendingSystem?.coin} = {rateForOne.toFixed(2)}{' '}
           {selectedReceivingSystem?.coin}
         </p>
@@ -308,14 +356,14 @@ export default function TransactionCalculator() {
             toggleSelect={() => toggleSelect('send')}
           />
 
-          <div className="absolute top-0 mt-32 w-full flex-col justify-center px-6 sm:right-0 sm:top-[inherit] sm:mr-64 sm:mt-0 sm:flex sm:h-[7.4rem] sm:w-0 sm:px-0">
+          <div className="absolute top-0 mt-20 w-full flex-col justify-center px-6 xs:mt-[7.6rem] sm:right-0 sm:top-[inherit] sm:mr-64 sm:mt-0 sm:flex sm:h-[7.4rem] sm:w-0 sm:px-0">
             <div className="bg h-[1px] w-full bg-[#012c8a] dark:bg-gray-200 sm:h-24 sm:w-[2px]"></div>
           </div>
 
-          <div className="relative flex h-32 w-full items-center">
+          <div className="relative flex h-20 w-full items-center xs:h-32">
             <input
               type="text"
-              className="peer h-full w-full border-0 bg-transparent px-12 py-2 text-end text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0 sm:text-center"
+              className="peer h-full w-full border-0 bg-transparent py-2 text-end text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0 sm:text-center"
               id="sendInputUniqueID"
               placeholder="0"
               value={sendAmount}
@@ -335,7 +383,9 @@ export default function TransactionCalculator() {
           <InvertSystems onInvert={handleInvertSystemsClick} />
         </div>
         <SystemInfo pointBorder="border" linePosition="up">
-          <p>Información del sistema de recepción</p>
+          <p className="text-xs xs:text-base">
+            Información del sistema de recepción
+          </p>
         </SystemInfo>
         <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
           <div className="flex w-full max-w-lg flex-col-reverse items-end sm:flex-row-reverse">
@@ -350,14 +400,14 @@ export default function TransactionCalculator() {
               toggleSelect={() => toggleSelect('receive')}
             />
 
-            <div className="absolute top-0 mt-[8.4rem] w-full flex-col justify-center px-6 sm:right-0 sm:top-[inherit] sm:mr-64 sm:mt-0 sm:flex sm:h-[7.4rem] sm:w-0 sm:px-0">
+            <div className="absolute top-0 mt-20 w-full flex-col justify-center px-6 xs:mt-32 sm:right-0 sm:top-[inherit] sm:mr-64 sm:mt-0 sm:flex sm:h-[7.4rem] sm:w-0 sm:px-0">
               <div className="bg h-[1px] w-full bg-[#012c8a] dark:bg-gray-200 sm:h-24 sm:w-[2px]"></div>
             </div>
 
-            <div className="relative mt-[0.4rem] flex h-32 w-full items-center">
+            <div className="relative mt-[0.4rem] flex h-20 w-full items-center xs:h-32">
               <input
                 type="text"
-                className="peer h-full w-full border-0 bg-transparent px-12 py-2 text-end text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0 sm:text-center"
+                className="peer h-full w-full border-0 bg-transparent py-2 text-end text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0 sm:text-center"
                 id="receptionInputUniqueID"
                 placeholder="0"
                 value={receiveAmount}
@@ -376,23 +426,18 @@ export default function TransactionCalculator() {
           </div>
 
           <div className="mt-8">
-            {(parseInt(sendAmount) >= 1 || sendAmount != '') && selectedSendingSystem?.name == 'PayPal' ? (
-              <div onClick={handleExchangePaypal}>
-                <Paypal
-                  currency={exchange.currency}
-                  amount={exchange.amount}
-                  handleDirection={handleDirection}
-                />
-              </div>
-            ) : (
-              <button
-                className="bg-buttonPay rounded-3xl bg-blue-500 px-10 py-3 text-darkText hover:bg-blue-700 focus:outline-none disabled:bg-gray-400"
-                onClick={handleExchange}
-                disabled={parseInt(sendAmount) < 1 || sendAmount === ''}
-              >
-                Procesar pago
-              </button>
-            )}
+            <button
+              className="bg-buttonPay rounded-3xl bg-blue-500 px-10 py-3 text-darkText hover:bg-blue-700 focus:outline-none disabled:bg-gray-400"
+              onClick={
+                (parseInt(sendAmount) >= 1 || sendAmount != '') &&
+                selectedSendingSystem?.name == 'PayPal'
+                  ? handleExchangePaypal
+                  : handleExchange
+              }
+              disabled={parseInt(sendAmount) < 1 || sendAmount === ''}
+            >
+              Procesar pago
+            </button>
           </div>
         </div>
       </div>
