@@ -75,7 +75,7 @@ export default function SystemInfo({
                 className="more-info-icon show-tooltip flex"
                 onClick={() => setIsTooltipVisible(true)}
               >
-                <InfoOutlinedIcon className="mr-2 h-6 w-6 text-[#012c8a] dark:text-white" />
+                <InfoOutlinedIcon className="mr-2 h-6 w-6 text-blue-800 dark:text-white" />
               </button>
             </div>
           )}
