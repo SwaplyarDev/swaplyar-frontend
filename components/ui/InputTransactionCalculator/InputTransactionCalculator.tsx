@@ -10,10 +10,15 @@ interface InputTransactionCalculatorProps {
 export const InputTransactionCalculator: React.FC<
   InputTransactionCalculatorProps
 > = ({ id, value, onChange, placeholder, label }) => (
-  <div className={clsx("relative mt-[0.4rem] flex h-20 w-full items-center", id != 'sendInputUniqueID' ? 'xs:h-32' : 'xs:h-[7.96rem]')}>
+  <div
+    className={clsx(
+      'relative mt-[0.4rem] flex h-20 w-full items-center',
+      id != 'sendInputUniqueID' ? 'xs:h-32' : 'xs:h-[7.96rem]',
+    )}
+  >
     <input
       type="text"
-      className="text-blue-800 dark:text-white peer h-full w-full border-0 bg-transparent py-2 text-end text-[2.8rem] focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0 sm:text-center"
+      className="peer h-full w-full border-0 bg-transparent py-2 text-end text-[2.8rem] text-blue-800 focus:border-inherit focus:shadow-none focus:outline-none focus:ring-0 dark:text-white sm:text-center"
       id={id}
       placeholder={placeholder}
       value={value}

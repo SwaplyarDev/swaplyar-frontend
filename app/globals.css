@@ -401,20 +401,20 @@ ul.scrollable-list::-webkit-scrollbar-thumb {
   display: none !important;
 }
 
-div:where(.swal2-container) div:where(.swal2-popup){
-  border-radius: 1rem!important;
+div:where(.swal2-container) div:where(.swal2-popup) {
+  border-radius: 1rem !important;
 }
 
 div:where(.swal2-icon).swal2-info {
-  color: #012c8a!important;
-  border-color: #012c8a!important;
+  color: #012c8a !important;
+  border-color: #012c8a !important;
 }
 
 div:where(.swal2-icon).swal2-warning {
-  color: #012c8a!important;
-  border-color: #012c8a!important;
+  color: #012c8a !important;
+  border-color: #012c8a !important;
 }
 
-div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm){
-  background-color: #012c8a!important;
+div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm) {
+  background-color: #012c8a !important;
 }
