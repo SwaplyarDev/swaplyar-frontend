@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
+import Link from 'next/link';
 import ConversionInstructions from '../ui/Conversion-Instructions/ConversionInstructions';
 import {
   CentroDeAyuda,
@@ -11,6 +12,7 @@ import {
   UsdArs,
 } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
+import EscapedText from '../ui/EscapedText/EscapedText';
 
 const mainStyles = {
   main: ' py-10  min-h-screen', // Centrado tanto vertical como horizontalmente
@@ -68,11 +70,15 @@ export default function HomePage() {
       </div>
       <div className="mt-10">
         <FlyerTrabajo imageSrc={FlyerGif}>
-          ¿Nuevo en SwaplyAr? Haz clic en &quot;Cómo usar SwaplyAr&quot; y
-          aprendé a operar fácilmente. ¡Empezá ahora!
+          <EscapedText
+            text='¿Nuevo en SwaplyAr? Haz clic en &quot;Cómo usar SwaplyAr&quot; y aprendé a operar fácilmente. ¡Empezá ahora!'
+          />
           <div>
             <button id="bannerHTUButton">
-              <a href="/info/how-to-use">Cómo usar SwaplyAr</a>
+              <Link href="/info/how-to-use">
+                {/* Texto escapado */}
+                &quot;Cómo usar SwaplyAr&quot;
+              </Link>
             </button>
           </div>
         </FlyerTrabajo>

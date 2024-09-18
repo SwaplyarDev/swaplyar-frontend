@@ -183,13 +183,10 @@ La ruta `/api/paypal` en el servidor maneja la creación de órdenes en PayPal. 
         # Bluelytics
         NEXT_PUBLIC_BLUELYTICS_API_URL="https://api.bluelytics.com.ar/v2/latest"
         NEXT_PUBLIC_FREE_CURRENCY_APY_KEY=fca_live_jDqUTcYj3stjWVDFqGZCmIBAt3hIEEtiTBPSMD3N
+        
+        
+        NEXT_PUBLIC_PAYPAL_CLIENT_ID="Acdb_cNhM35Qa7UNeEpdSePRS6Oswvx5ohLo1KEC04ADt64RGPUuOMUZXN_Kt84b93RXFFujqDKjB8u1"
    ```
-
-FqGZCmIBAt3hIEEtiTBPSMD3N
-
-o1KEC04ADt64RGPUuOMUZXN_Kt84b93RXFFujqDKjB8u1"
-
-````
 
 4. **Ejecutar el Proyecto**
 
@@ -202,8 +199,10 @@ Accede al proyecto en [http://localhost:3000](http://localhost:3000).
 ## 🤖 Scripts Disponibles
 
 - `npm run lint`: Ejecuta ESLint para analizar el código.
-- `npm run format`: Formatea el código utilizando Prettier.
 - `npm run dev`: Inicia el entorno de desarrollo.
+- `npm run tsc`: Para chequear errores de tipado (TypeScript)
+- `npm run format`: Formatea el código utilizando Prettier.
+- `npm audit`: Para revisar vulnerabilidades de dependencias
 - `npm run build --clean`: Compila la aplicación para producción.
 - `npm run start`: Inicia el servidor de la aplicación compilada.
 
