@@ -13,22 +13,24 @@ const TermsAndConditions = () => {
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
 
-      <div className="rs-wrapper-v4 my-8 flex flex-col items-center justify-center text-center md:flex-row md:items-center">
-        <div className="container-text flex h-full items-center justify-center md:ml-8">
-          <h1 className="mb-6 text-3xl font-bold">
-            Términos y Condiciones de Uso y Navegación del Sitio SwaplyAr
-          </h1>
-        </div>
-        <div className="flex w-full flex-shrink-0 items-center justify-center md:w-auto">
-          <Image
-            className="hero-img"
-            src={TerminosCondiciones}
-            alt="terminos-y-condiciones"
-            width={500}
-            height={500}
-          />
-        </div>
-      </div>
+      <div className="w-full flex flex-col max-w-[80%] mx-auto items-center justify-center text-left space-x-2 md:flex-row md:items-center"> 
+  <div className="w-full max-w-[600px] p-0  flex items-center justify-center"> 
+    <h1 className="mb-6 text-4xl ">
+      Términos y Condiciones de Uso y Navegación del Sitio SwaplyAr
+    </h1>
+  </div>
+  <div className="flex w-full max-w-[300px] flex-shrink-0 items-center justify-center"> 
+    <Image
+      className="hero-img"
+      src={TerminosCondiciones}
+      alt="terminos-y-condiciones"
+      width={300}
+      height={300}
+    />
+  </div>
+</div>
+
+
 
       <div className="my-10 w-full max-w-3xl px-4">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-1">
