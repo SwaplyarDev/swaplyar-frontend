@@ -1,6 +1,11 @@
 import { create } from 'zustand';
 import { System } from '@/types/data';
-import { BankDarkImg, BankImg, PaypalDarkImg, PaypalImg } from '@/utils/assets/img-database';
+import {
+  BankDarkImg,
+  BankImg,
+  PaypalDarkImg,
+  PaypalImg,
+} from '@/utils/assets/img-database';
 
 const defaultSendingSystem: System = {
   id: 'paypal',
