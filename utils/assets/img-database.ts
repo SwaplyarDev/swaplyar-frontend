@@ -65,7 +65,7 @@ export const PayoneerUsdDarkImg = '/images/payoneer.usd.dark.png';
 export const PayoneerEurImg = '/images/payoneer.eur.big.png';
 export const PayoneerEurDarkImg = '/images/payoneer.eur.dark.png';
 
-export const BankImg = '/images/banco.medium.webp';
+export const BankImg = '/images/banco.medium.png';
 export const BankDarkImg = '/images/banco.dark.png';
 
 export const WiseUsdImg = '/images/wise.usd.big.png';

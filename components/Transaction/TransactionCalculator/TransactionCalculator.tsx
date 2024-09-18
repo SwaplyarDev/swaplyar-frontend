@@ -16,23 +16,10 @@ import {
 
 import Paypal from '../PayPal/Paypal';
 import { paypalPaymentStore } from '@/store/paypalPaymetStore';
-import {
-  BankDarkImg,
-  BankImg,
-  PayoneerEurDarkImg,
-  PayoneerEurImg,
-  PayoneerUsdDarkImg,
-  PayoneerUsdImg,
-  PaypalDarkImg,
-  PaypalImg,
-  WiseEurDarkImg,
-  WiseEurImg,
-  WiseUsdDarkImg,
-  WiseUsdImg,
-} from '@/utils/assets/img-database';
 import Swal from 'sweetalert2';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { createRoot } from 'react-dom/client';
+import { systems } from '@/utils/dataCoins';
 
 // declare global {
 //   interface Window {
@@ -52,78 +39,10 @@ export default function TransactionCalculator() {
   } = useSystemStore();
   const [sendAmount, setSendAmount] = useState<string>('');
   const [receiveAmount, setReceiveAmount] = useState<string>('');
-
-  const { paypal, setPaypal } = paypalPaymentStore();
   const [exchangeRate, setExchangeRate] = useState<number>(0);
   const [rateForOne, setRateForOne] = useState<number>(0);
   const { isDark } = useDarkTheme();
   const [exchange, setExchange] = useState({ currency: 'USD', amount: 0 });
-
-  // Datos de sistemas de pago
-  const systems: System[] = [
-    {
-      id: 'paypal',
-      name: 'PayPal',
-      logo: PaypalImg,
-      logoDark: PaypalDarkImg,
-      isDisabled: false,
-      coin: 'USD',
-    },
-    {
-      id: 'payoneer_usd',
-      name: 'Payoneer USD',
-      logo: PayoneerUsdImg,
-      logoDark: PayoneerUsdDarkImg,
-      isDisabled: false,
-      coin: 'USD',
-    },
-    {
-      id: 'payoneer_eur',
-      name: 'Payoneer EUR',
-      logo: PayoneerEurImg,
-      logoDark: PayoneerEurDarkImg,
-      isDisabled: false,
-      coin: 'EUR',
-    },
-    {
-      id: 'bank',
-      name: 'Banco',
-      logo: BankImg,
-      logoDark: BankDarkImg,
-      isDisabled: false,
-      coin: 'ARS',
-    },
-    {
-      id: 'wise_usd',
-      name: 'Wise USD',
-      logo: WiseUsdImg,
-      logoDark: WiseUsdDarkImg,
-      isDisabled: false,
-      coin: 'USD',
-    },
-    {
-      id: 'wise_eur',
-      name: 'Wise EUR',
-      logo: WiseEurImg,
-      logoDark: WiseEurDarkImg,
-      isDisabled: false,
-      coin: 'EUR',
-    },
-  ];
-
-  // useEffect(() => {
-  //   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-  //   setDarkMode(mediaQuery.matches);
-  //   const handleChange = (e: MediaQueryListEvent) => {
-  //     setDarkMode(e.matches);
-  //   };
-  //   mediaQuery.addEventListener('change', handleChange);
-  //   return () => mediaQuery.removeEventListener('change', handleChange);
-  // }, []);
-
-  // useEffect(() => {
-  //   document.documentElement.classList.toggle('dark', darkMode);
-  // }, [darkMode]);
 
   const findExchangeRate = useCallback(async () => {
     if (selectedSendingSystem && selectedReceivingSystem) {
