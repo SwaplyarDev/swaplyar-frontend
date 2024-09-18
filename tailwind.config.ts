@@ -23,6 +23,7 @@ const config: Config = {
         xs: '480px',
         sm: '640px',
         md: '768px',
+        'lg-tablet': '960px',
         lg: '1170px',
         xl: '1280px',
         '2k': '2048px',

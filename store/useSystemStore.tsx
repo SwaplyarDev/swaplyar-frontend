@@ -1,10 +1,17 @@
 import { create } from 'zustand';
 import { System } from '@/types/data';
+import {
+  BankDarkImg,
+  BankImg,
+  PaypalDarkImg,
+  PaypalImg,
+} from '@/utils/assets/img-database';
 
 const defaultSendingSystem: System = {
   id: 'paypal',
   name: 'PayPal',
-  logo: '/images/paypal.big.png',
+  logo: PaypalImg,
+  logoDark: PaypalDarkImg,
   isDisabled: false,
   coin: 'USD',
 };
@@ -12,7 +19,8 @@ const defaultSendingSystem: System = {
 const defaultReceivingSystem: System = {
   id: 'bank',
   name: 'Banco',
-  logo: '/images/banco.medium.webp',
+  logo: BankImg,
+  logoDark: BankDarkImg,
   isDisabled: false,
   coin: 'ARS',
 };
