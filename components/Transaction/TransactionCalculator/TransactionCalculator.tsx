@@ -51,22 +51,13 @@ export default function TransactionCalculator() {
         <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px; gap: 40px">
           <div id="paypal-button-container" style="width: 150px;"></div>
           <div style="height: 49px;">   
-          <button id="cancel-button" style="
-            border-radius: 23px;
-            height: 45px;
-            min-width: 150px;
-            background-color: #f44336; 
-            color: white; 
-            border: none; 
-            padding: 10px 20px; 
-            cursor: pointer;
-          ">Cancelar</button></div>
+          <button id="cancel-button" class="rounded-[23px] h-[45px] min-w-[150px] bg-[#f44336] text-white border-none px-5 py-2.5 cursor-pointer hover:filter  hover:brightness-75">Cancelar</button></div>
         </div>
       `,
       icon: 'info',
       showConfirmButton: false, // Desactivar el botón de confirmación predeterminado
       showCancelButton: false, // Desactivar el botón de cancelar predeterminado
-      background: isDark ? '#1f2937' : '#ffffff',
+      background: isDark ? 'rgb(69 69 69)' : '#ffffff',
       color: isDark ? '#ffffff' : '#000000',
       didRender: () => {
         // Renderizar el componente Paypal en el contenedor después de que se haya mostrado el SweetAlert
@@ -106,7 +97,7 @@ export default function TransactionCalculator() {
 
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
-      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-gray-800 dark:text-white">
+      <div className="mat-card calculator-container dark:bg-calculatorDark flex w-full flex-col items-center rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:text-white">
         <p className="w-full max-w-lg text-2xl text-blue-800 dark:text-darkText xs:text-[2rem]">
           1 {selectedSendingSystem?.coin} = {rateForOne.toFixed(2)}{' '}
           {selectedReceivingSystem?.coin}
@@ -143,10 +134,28 @@ export default function TransactionCalculator() {
             label={`Recibes ${selectedReceivingSystem?.coin}`}
             isSending={false}
           />
-
           <div className="mt-8">
             <button
-              className="bg-buttonPay rounded-3xl bg-blue-800 px-10 py-3 text-darkText transition-all duration-300 ease-in-out hover:bg-blue-700 focus:outline-none disabled:bg-gray-400"
+              className={clsx(
+                'border-buttonsLigth bg-buttonsLigth relative items-center justify-center rounded-3xl border px-10 py-3 text-white disabled:bg-gray-400 dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400',
+                {
+                  buttonSecond: !(
+                    sendAmount === '' ||
+                    (selectedSendingSystem?.id === 'paypal' &&
+                      parseInt(sendAmount) < 5) ||
+                    (selectedSendingSystem?.id === 'payoneer_usd' &&
+                      parseInt(sendAmount) < 50) ||
+                    (selectedSendingSystem?.id === 'payoneer_eur' &&
+                      parseInt(sendAmount) < 50) ||
+                    (selectedReceivingSystem?.id === 'paypal' &&
+                      parseInt(receiveAmount) < 5) ||
+                    (selectedReceivingSystem?.id === 'payoneer_usd' &&
+                      parseInt(receiveAmount) < 50) ||
+                    (selectedReceivingSystem?.id === 'payoneer_eur' &&
+                      parseInt(receiveAmount) < 50)
+                  ),
+                },
+              )}
               onClick={handleSubmit}
               disabled={
                 sendAmount === '' ||
@@ -155,43 +164,67 @@ export default function TransactionCalculator() {
                 (selectedSendingSystem?.id === 'payoneer_usd' &&
                   parseInt(sendAmount) < 50) ||
                 (selectedSendingSystem?.id === 'payoneer_eur' &&
-                  parseInt(sendAmount) < 50)
+                  parseInt(sendAmount) < 50) ||
+                (selectedReceivingSystem?.id === 'paypal' &&
+                  parseInt(receiveAmount) < 5) ||
+                (selectedReceivingSystem?.id === 'payoneer_usd' &&
+                  parseInt(receiveAmount) < 50) ||
+                (selectedReceivingSystem?.id === 'payoneer_eur' &&
+                  parseInt(receiveAmount) < 50)
               }
             >
               Procesar pago
             </button>
           </div>
-          <div className='mt-8'>
-            {sendAmount === '' ? (
-              ''
-            ) : (
-              <>
-                <p
-                  className={clsx(
-                    selectedSendingSystem?.id === 'paypal' &&
-                      parseInt(sendAmount) < 5
-                      ? 'block'
-                      : 'hidden',
-                    'text-[#f44336]',
-                  )}
-                >
-                  La transferencia minima es de 5 USD en PayPal
-                </p>
-                <p
-                  className={clsx(
-                    selectedSendingSystem?.id ===
+          {sendAmount === '' ? (
+            ''
+          ) : (
+            <div
+              className={clsx(
+                (selectedSendingSystem?.id ===
+                  ('payoneer_usd' || 'payoneer_eur') &&
+                  parseInt(sendAmount) < 50) ||
+                  (selectedSendingSystem?.id === 'paypal' &&
+                    parseInt(sendAmount) < 5) ||
+                  (selectedReceivingSystem?.id ===
+                    ('payoneer_usd' || 'payoneer_eur') &&
+                    parseInt(receiveAmount) < 50) ||
+                  (selectedReceivingSystem?.id === 'paypal' &&
+                    parseInt(receiveAmount) < 5)
+                  ? 'mt-8'
+                  : 'hidden',
+              )}
+            >
+              <p
+                className={clsx(
+                  (selectedSendingSystem?.id === 'paypal' &&
+                    parseInt(sendAmount) < 5) ||
+                    (selectedReceivingSystem?.id === 'paypal' &&
+                      parseInt(receiveAmount) < 5)
+                    ? 'block'
+                    : 'hidden',
+                  'text-[#f44336]',
+                )}
+              >
+                La transferencia minima es de 5 USD en PayPal
+              </p>
+              <p
+                className={clsx(
+                  (selectedSendingSystem?.id ===
+                    ('payoneer_usd' || 'payoneer_eur') &&
+                    parseInt(sendAmount) < 50) ||
+                    (selectedReceivingSystem?.id ===
                       ('payoneer_usd' || 'payoneer_eur') &&
-                      parseInt(sendAmount) < 50
-                      ? 'block'
-                      : 'hidden',
-                    'text-[#f44336]',
-                  )}
-                >
-                  La transferencia minima es de 50 USD en Payoneer
-                </p>
-              </>
-            )}
-          </div>
+                      parseInt(receiveAmount) < 50)
+                    ? 'block'
+                    : 'hidden',
+                  'text-[#f44336]',
+                )}
+              >
+                La transferencia minima es de 50 USD en Payoneer
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
