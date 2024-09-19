@@ -45,15 +45,15 @@ body {
 }*/
 
 .container-blur {
-  @apply relative flex h-[150vh] w-full justify-center overflow-hidden;
-  position: absolute;
-  top: 20%;
-  right: 5%;
-  overflow: hidden;
+  @apply absolute flex h-[150vh] w-full justify-center overflow-hidden;
+  
 }
 
+
+
+
 .box {
-  @apply absolute h-full w-full rounded-full;
+  @apply  h-full w-full rounded-full;
   animation: spin 30s infinite linear; /* Hace que los círculos giren */
   display: flex;
   justify-content: center;

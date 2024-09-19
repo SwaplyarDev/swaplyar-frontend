@@ -5,16 +5,11 @@ interface AnimatedBlurredCirclesProps {
   topOffset: number;
 }
 
-const AnimatedBlurredCircles: React.FC<AnimatedBlurredCirclesProps> = ({
-  topOffset,
-}) => {
+const AnimatedBlurredCircles: React.FC<AnimatedBlurredCirclesProps> = ({ topOffset }) => {
   return (
     <div
       className="container-blur"
-      style={{
-        top: `${topOffset}px`,
-        zIndex: -1,
-      }} /* Asegúrate de que el zIndex esté por detrás */
+ 
     >
       <Box className="box">
         <div className="ball ball1"></div>
