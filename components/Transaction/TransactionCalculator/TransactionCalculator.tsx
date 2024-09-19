@@ -1,275 +1,154 @@
-// /TransactionCalculator
-
 'use client';
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import SystemSelect from '../SystemSelect/SystemSelect';
+import { useState, useEffect, useCallback } from 'react';
 import SystemInfo from '../SystemInfo/SystemInfo';
 import InvertSystems from '../InvertSystems/InvertSystems';
-import { ExchangeRate, System } from '@/types/data';
-
-// Extender el objeto Window para incluir paypal
-declare global {
-  interface Window {
-    paypal: any;
-  }
-}
+import { useSystemStore } from '@/store/useSystemStore';
+import { useRouter } from 'next/navigation';
+import Paypal from '../PayPal/Paypal';
+import Swal from 'sweetalert2';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import { createRoot } from 'react-dom/client';
+import { systems } from '@/utils/dataCoins';
+import { useExchangeRate } from '@/hooks/useExchangeRates';
+import { useAmountCalculator } from '@/hooks/useAmountCalculator';
+import { useSystemSelection } from '@/hooks/useSystemSelection';
+import TransactionSection from '@/components/ui/TransactionSection/TransactionSection';
 
 export default function TransactionCalculator() {
-  const [exchangeRate, setExchangeRate] = useState<number>(0);
-  const [selectedSendingSystem, setSelectedSendingSystem] =
-    useState<System | null>(null);
-  const [selectedReceivingSystem, setSelectedReceivingSystem] =
-    useState<System | null>(null);
-  const [showSendingSystemOptions, setShowSendingSystemOptions] =
-    useState(false);
-  const [showReceivingSystemOptions, setShowReceivingSystemOptions] =
-    useState(false);
-  const [sendAmount, setSendAmount] = useState(0);
-  const [receiveAmount, setReceiveAmount] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [darkMode, setDarkMode] = useState<boolean>(false);
+  const router = useRouter();
+  const { activeSelect } = useSystemStore();
+  const { isDark } = useDarkTheme();
+  const [exchange, setExchange] = useState({ currency: 'USD', amount: 0 });
+  const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } =
+    useSystemSelection();
+  const {
+    sendAmount,
+    receiveAmount,
+    handleSendAmountChange,
+    handleReceiveAmountChange,
+  } = useAmountCalculator();
+  const { rateForOne } = useExchangeRate();
+  const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setDarkMode(mediaQuery.matches);
-    const handleChange = (e: MediaQueryListEvent) => {
-      setDarkMode(e.matches);
-    };
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
+    setExchange({
+      currency: selectedSendingSystem?.coin as string,
+      amount: parseInt(sendAmount),
+    });
+  }, [sendAmount, selectedSendingSystem]);
 
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [darkMode]);
-
-  const handleSendAmountChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setSendAmount(parseFloat(event.target.value) || 0); // Asegura que sea un número válido
+  const handleDirection = () => {
+    router.push('/request');
   };
 
-  const handleReceiveAmountChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setReceiveAmount(parseFloat(event.target.value) || 0);
-  };
-
-  const handleSystemSelection = (system: System, isSending: boolean) => {
-    if (isSending) {
-      setSelectedSendingSystem(system);
-    } else {
-      setSelectedReceivingSystem(system);
-    }
-  };
-
-  const toggleTooltip = () => {
-    setIsTooltipVisible(!isTooltipVisible);
-  };
-
-  useEffect(() => {
-    async function fetchExchangeRate() {
-      try {
-        const response = await fetch('https://api.bluelytics.com.ar/v2/latest');
-        const data: ExchangeRate = await response.json();
-        setExchangeRate(data.blue.value_buy);
-      } catch (error) {
-        console.error('Error fetching exchange rate:', error);
-      }
-    }
-    fetchExchangeRate();
-  }, []);
-
-  useEffect(() => {
-    setReceiveAmount(sendAmount * exchangeRate);
-  }, [sendAmount, exchangeRate]);
-
-  // Datos de sistemas de pago
-  const systems: System[] = [
-    { id: 'paypal', name: 'PayPal', logo: '/images/paypal.big.png' },
-    {
-      id: 'payoneer-usd',
-      name: 'Payoneer USD',
-      logo: '/images/payoneer.usd.big.png',
-    },
-    {
-      id: 'payoneer-eur',
-      name: 'Payoneer EUR',
-      logo: '/images/payoneer.eur.big.png',
-    },
-    { id: 'banco', name: 'Banco', logo: '/images/banco.medium.webp' },
-    { id: 'wise-usd', name: 'Wise USD', logo: '/images/wise.usd.big.png' },
-    { id: 'wise-eur', name: 'Wise EUR', logo: '/images/wise.eur.big.png' },
-  ];
-
-  const handleInvertSystemsClick = () => {
-    setSelectedSendingSystem(selectedReceivingSystem);
-    setSelectedReceivingSystem(selectedSendingSystem);
-
-    const tempAmount = sendAmount;
-    setSendAmount(receiveAmount);
-    setReceiveAmount(tempAmount);
-  };
-
-  // Lógica para redirigir a PayPal
-  const goToPayPal = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
-    if (!selectedSendingSystem || !selectedReceivingSystem) {
-      setError('Por favor, selecciona los sistemas de envío y recepción.');
-      return;
-    }
-
-    if (sendAmount <= 0) {
-      setError('Por favor, ingresa un monto válido a enviar.');
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      // 1. Crear un pedido en tu backend
-      const orderResponse = await fetch('/api/paypal/create-order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          amount: sendAmount,
-          currency: 'USD',
-        }),
-      });
-
-      const order = await orderResponse.json();
-
-      if (!order.id) {
-        setError('Error al crear el pedido en PayPal.');
-        setIsLoading(false);
-        return;
-      }
-
-      // Asegúrate de que el SDK de PayPal esté cargado
-      if (window.paypal) {
-        window.paypal
-          .Buttons({
-            createOrder: function (data: any, actions: any) {
-              return actions.order.create({
-                purchase_units: [
-                  {
-                    amount: {
-                      value: sendAmount.toString(),
-                    },
-                  },
-                ],
-              });
-            },
-
-            onApprove: async function (data: any, actions: any) {
-              const captureResponse = await actions.order.capture();
-
-              // 3. Manejar la aprobación del pago en tu backend
-              const captureOrderResponse = await fetch(
-                '/api/paypal/capture-order',
-                {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    orderID: data.orderID,
-                  }),
-                },
-              );
-              const captureResult = await captureOrderResponse.json();
-
-              if (captureResult.success) {
-                // Pago exitoso
-                alert('¡Pago exitoso!');
-                // Redirige o haz lo que necesites después del pago
-              } else {
-                // Error en el pago
-                setError('Error al procesar el pago.');
-              }
-            },
-            onError: function (err: any) {
-              setError('Error al cargar el botón de PayPal.');
-            },
-          })
-          .render('#goToPayPalButton');
-      } else {
-        console.error('PayPal SDK not loaded.');
-        setError('Error al cargar el SDK de PayPal.');
-      }
-    } catch (error) {
-      console.error('Error en la transacción:', error);
-      setError('Ocurrió un error en la transacción.');
-    } finally {
-      setIsLoading(false);
-    }
+  const handleExchangePaypal = () => {
+    Swal.fire({
+      title: 'Procesar pago con PayPal',
+      html: `
+        <p>¿Estás seguro de que deseas procesar el pago de ${exchange.amount} ${exchange.currency} con PayPal?</p>
+        <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px; gap: 40px">
+          <div id="paypal-button-container" style="width: 150px;"></div>
+          <div style="height: 49px;">   
+          <button id="cancel-button" style="
+            border-radius: 23px;
+            height: 45px;
+            min-width: 150px;
+            background-color: #f44336; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            cursor: pointer;
+          ">Cancelar</button></div>
+        </div>
+      `,
+      icon: 'warning',
+      showConfirmButton: false, // Desactivar el botón de confirmación predeterminado
+      showCancelButton: false, // Desactivar el botón de cancelar predeterminado
+      background: isDark ? '#1f2937' : '#ffffff',
+      color: isDark ? '#ffffff' : '#000000',
+      didRender: () => {
+        // Renderizar el componente Paypal en el contenedor después de que se haya mostrado el SweetAlert
+        const paypalElement = document.getElementById(
+          'paypal-button-container',
+        );
+        if (paypalElement) {
+          const root = createRoot(paypalElement); // Crear un root para el renderizado
+          root.render(
+            <Paypal
+              currency={exchange.currency}
+              amount={exchange.amount}
+              handleDirection={handleDirection}
+            />,
+          );
+        }
+      },
+      didOpen: () => {
+        // Añadir evento al botón de cancelar
+        const cancelButton = document.getElementById('cancel-button');
+        if (cancelButton) {
+          cancelButton.addEventListener('click', () => {
+            Swal.close(); // Cerrar el alert al hacer clic en cancelar
+          });
+        }
+      },
+    });
   };
 
   return (
-    <div className={`not-design-system mt-8 flex flex-col items-center`}>
-      <div className="mat-card calculator-container flex flex-col items-center rounded-md bg-white p-8 shadow-md dark:bg-gray-800 dark:text-white">
-        {error && (
-          <div className="error-message mb-4 text-red-500">{error}</div>
-        )}
-        <SystemInfo pointBorder="border" linePosition="up">
-          <p>Información del sistema de envío</p>
-        </SystemInfo>
-        <div className="space-x-4">
-          <SystemSelect
-            systems={systems}
-            selectedSystem={selectedSendingSystem}
-            onSystemSelect={(system) => handleSystemSelection(system, true)}
-            label="Envías USD"
-            inputId="usdInputUniqueID"
-            isSending={true}
-          />
-          <div className="input-box mt-4">
-            <input
-              type="number"
-              className="input-field w-full rounded border bg-white p-2 dark:border-gray-600 dark:bg-gray-700"
-              placeholder="Monto a recibir (ARS)"
-              id="usdInputUniqueID"
-              value={receiveAmount.toFixed(2)}
-              onChange={handleReceiveAmountChange}
-            />
-          </div>
-        </div>
+    <div className={`not-design-system flex w-full flex-col items-center`}>
+      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-gray-800 dark:text-white">
+        <p className="w-full max-w-lg text-2xl text-blue-800 dark:text-darkText xs:text-[2rem]">
+          1 {selectedSendingSystem?.coin} = {rateForOne.toFixed(2)}{' '}
+          {selectedReceivingSystem?.coin}
+        </p>
+
+        <TransactionSection
+          systems={systems}
+          selectedSystem={selectedSendingSystem}
+          onSystemSelect={(system) => handleSystemSelection(system, true)}
+          showOptions={activeSelect === 'send'}
+          toggleSelect={() => toggleSelect('send')}
+          value={sendAmount}
+          onChange={handleSendAmountChange}
+          label={`Envías ${selectedSendingSystem?.coin}`}
+          isSending={true}
+        />
         <div className="mt-4 flex h-full items-center justify-center">
           <InvertSystems onInvert={handleInvertSystemsClick} />
         </div>
         <SystemInfo pointBorder="border" linePosition="up">
-          <p>Información del sistema de recepción</p>
+          <p className="text-xs xs:text-base">
+            Información del sistema de recepción
+          </p>
         </SystemInfo>
-        <SystemSelect
-          systems={systems}
-          selectedSystem={selectedReceivingSystem}
-          onSystemSelect={(system) => handleSystemSelection(system, false)}
-          label="Recibes ARS"
-          inputId="arsInputUniqueID"
-          isSending={false}
-        />
-        <div className="input-box mt-4">
-          <input
-            type="number"
-            className="input-field w-full rounded border bg-white p-2 dark:border-gray-600 dark:bg-gray-700"
-            placeholder="Monto a recibir (ARS)"
-            id="arsInputUniqueID"
-            value={receiveAmount.toFixed(2)}
+        <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
+          <TransactionSection
+            systems={systems}
+            selectedSystem={selectedReceivingSystem}
+            onSystemSelect={(system) => handleSystemSelection(system, false)}
+            showOptions={activeSelect === 'receive'}
+            toggleSelect={() => toggleSelect('receive')}
+            value={receiveAmount}
             onChange={handleReceiveAmountChange}
+            label={`Recibes ${selectedReceivingSystem?.coin}`}
+            isSending={false}
           />
+
+          <div className="mt-8">
+            <button
+              className="bg-buttonPay rounded-3xl bg-blue-800 px-10 py-3 text-darkText transition-all duration-300 ease-in-out hover:bg-blue-700 focus:outline-none disabled:bg-gray-400"
+              onClick={
+                (parseInt(sendAmount) >= 1 || sendAmount != '') &&
+                selectedSendingSystem?.name == 'PayPal'
+                  ? handleExchangePaypal
+                  : handleDirection
+              }
+              disabled={parseInt(sendAmount) < 1 || sendAmount === ''}
+            >
+              Procesar pago
+            </button>
+          </div>
         </div>
-        <div id="goToPayPalButton" className="mt-4"></div>
       </div>
     </div>
   );

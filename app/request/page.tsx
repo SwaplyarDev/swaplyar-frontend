@@ -6,7 +6,7 @@ import { RequestRegisterForm } from '@/components/request/requestRegister';
 import {
   FormularioDeSolicitud,
   FormularioDeSolicitudMovil,
-} from '@/utils/assets/img-database';
+} from '@/utils/assets/imgDatabaseCloudinary';
 import RequestInfoBlock from '@/components/ui/RequestInfoBlock/RequestInfoBlock';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';

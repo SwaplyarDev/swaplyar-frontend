@@ -3,14 +3,16 @@
 import React, { useEffect, useState, useRef } from 'react';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
+import Link from 'next/link';
 import ConversionInstructions from '../ui/Conversion-Instructions/ConversionInstructions';
 import {
   CentroDeAyuda,
   FlyerGif,
   RecargaPaypal,
   UsdArs,
-} from '@/utils/assets/img-database';
+} from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
+import EscapedText from '../ui/EscapedText/EscapedText';
 
 const mainStyles = {
   main: ' py-10  min-h-screen', // Centrado tanto vertical como horizontalmente
@@ -40,20 +42,16 @@ export default function HomePage() {
 
   return (
     <main className={mainStyles.main}>
-      <div className="shadow-custom-blue bg-white relative" ref={bannerRef}  >
-        <FlyerTrabajo imageSrc='/images/need-help.png'>
+      <div className="relative bg-white shadow-custom-blue" ref={bannerRef}>
+        <FlyerTrabajo imageSrc="/images/need-help.png">
           Estamos trabajando en las funciones de inicio de sesión y registro.
         </FlyerTrabajo>
-     
       </div>
       <AnimatedBlurredCircles topOffset={bannerHeight} />
-      <div className='flex flex-col items-center justify-center' > 
-      
-      <div className={mainStyles.instructionsCalculatorContainer}  >
-        <ConversionInstructions />
-      </div>
-      
-
+      <div className="flex flex-col items-center justify-center">
+        <div className={mainStyles.instructionsCalculatorContainer}>
+          <ConversionInstructions />
+        </div>
 
         <div className={mainStyles.infoBlocksContainer}>
           <InfoBlock
@@ -76,7 +74,10 @@ export default function HomePage() {
           aprendé a operar fácilmente. ¡Empezá ahora!
           <div>
             <button id="bannerHTUButton">
-              <a href="/info/how-to-use">Cómo usar SwaplyAr</a>
+              <Link href="/info/how-to-use">
+                {/* Texto escapado */}
+                &quot;Cómo usar SwaplyAr&quot;
+              </Link>
             </button>
           </div>
         </FlyerTrabajo>

@@ -3,7 +3,7 @@ import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 import {
   CentroDeAyuda,
   TerminosCondiciones,
-} from '@/utils/assets/img-database';
+} from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 
 const TermsAndConditions = () => {

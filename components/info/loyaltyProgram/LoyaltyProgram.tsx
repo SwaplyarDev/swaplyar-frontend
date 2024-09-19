@@ -8,7 +8,7 @@ import {
   Rewards1,
   Rewards2,
   Rewards3,
-} from '@/utils/assets/img-database';
+} from '@/utils/assets/imgDatabaseCloudinary';
 
 function LoyaltyProgram() {
   const { setView } = useStore();

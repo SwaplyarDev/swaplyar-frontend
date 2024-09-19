@@ -4,6 +4,8 @@ import type { Metadata } from 'next';
 import Footer from '@/components/footer/Footer';
 import { TopMenu } from '@/components/ui/top-menu/TopMenu';
 import ThemeProvider from '../components/ui/theme-Provider/themeProvider';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from '@vercel/analytics/react';
 import { inter } from '@/config/fonts/fonts';
 import './globals.css';
 
@@ -37,6 +39,8 @@ export default function RootLayout({
         className={`${inter.className} bg-white text-lightText dark:bg-lightText dark:text-darkText`}
       >
         <ThemeProvider>
+          <SpeedInsights />
+          <Analytics />
           <TopMenu />
           {children}
           <Footer />
