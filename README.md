@@ -192,7 +192,7 @@ La ruta `/api/paypal` en el servidor maneja la creación de órdenes en PayPal. 
 
 ```bash
 npm run dev
-````
+```
 
 Accede al proyecto en [http://localhost:3000](http://localhost:3000).
 

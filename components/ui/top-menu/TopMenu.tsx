@@ -157,9 +157,9 @@ export function TopMenu() {
                       </Sidebar.Item>
                     </Sidebar.ItemGroup>
 
-                    <Sidebar.ItemGroup className=" border-t-2 border-blue-800 px-2 dark:border-sky-500 ">
+                    <Sidebar.ItemGroup className="border-t-2 border-blue-800 px-2 dark:border-sky-500">
                       <Sidebar.Item
-                        className={`relative md:hidden m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:hover:bg-transparent ${logStyles.buttonLight}`}
+                        className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:hover:bg-transparent md:hidden ${logStyles.buttonLight}`}
                         onClick={() => {
                           handleSelect('login');
                           setView('login');
