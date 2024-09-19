@@ -12,7 +12,7 @@ interface InvertSystemsProps {
 export default function InvertSystems({ onInvert }: InvertSystemsProps) {
   return (
     <button
-      className="big-icon-button rounded-3xl bg-blue-500 text-white hover:bg-blue-700 focus:outline-none"
+      className="big-icon-button rounded-3xl bg-blue-800 text-white transition-all duration-300 ease-in-out hover:bg-blue-700 focus:outline-none"
       onClick={onInvert}
       aria-label="Invertir sistemas"
     >

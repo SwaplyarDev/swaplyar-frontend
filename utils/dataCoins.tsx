@@ -1,0 +1,66 @@
+import { System } from '@/types/data';
+import {
+  BankDarkImg,
+  BankImg,
+  PayoneerEurDarkImg,
+  PayoneerEurImg,
+  PayoneerUsdDarkImg,
+  PayoneerUsdImg,
+  PaypalDarkImg,
+  PaypalImg,
+  WiseEurDarkImg,
+  WiseEurImg,
+  WiseUsdDarkImg,
+  WiseUsdImg,
+} from './assets/img-database';
+
+export const systems: System[] = [
+  {
+    id: 'paypal',
+    name: 'PayPal',
+    logo: PaypalImg,
+    logoDark: PaypalDarkImg,
+    isDisabled: false,
+    coin: 'USD',
+  },
+  {
+    id: 'payoneer_usd',
+    name: 'Payoneer USD',
+    logo: PayoneerUsdImg,
+    logoDark: PayoneerUsdDarkImg,
+    isDisabled: false,
+    coin: 'USD',
+  },
+  {
+    id: 'payoneer_eur',
+    name: 'Payoneer EUR',
+    logo: PayoneerEurImg,
+    logoDark: PayoneerEurDarkImg,
+    isDisabled: false,
+    coin: 'EUR',
+  },
+  {
+    id: 'bank',
+    name: 'Banco',
+    logo: BankImg,
+    logoDark: BankDarkImg,
+    isDisabled: false,
+    coin: 'ARS',
+  },
+  {
+    id: 'wise_usd',
+    name: 'Wise USD',
+    logo: WiseUsdImg,
+    logoDark: WiseUsdDarkImg,
+    isDisabled: false,
+    coin: 'USD',
+  },
+  {
+    id: 'wise_eur',
+    name: 'Wise EUR',
+    logo: WiseEurImg,
+    logoDark: WiseEurDarkImg,
+    isDisabled: false,
+    coin: 'EUR',
+  },
+];

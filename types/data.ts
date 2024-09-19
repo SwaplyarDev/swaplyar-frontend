@@ -11,6 +11,7 @@ export interface System {
   id: string; // Identificador único del sistema (paypal, payoneer-usd, etc.)
   name: string; // Nombre del sistema de pago
   logo: string; // Ruta a la imagen del logo
+  logoDark: string; // Ruta a la imagen del logo en modo oscuro
   isDisabled: boolean; // Indica si el sistema de pago es deshabilitado
   coin: string; // Indica el tipo de moneda
 }

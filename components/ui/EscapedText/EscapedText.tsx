@@ -1,10 +1,8 @@
 // app/components/ui/EscapedText.tsx
 interface EscapedTextProps {
-    text: string;
+  text: string;
 }
 
 export default function EscapedText({ text }: EscapedTextProps) {
-    return (
-        <p dangerouslySetInnerHTML={{ __html: text }} />
-    );
+  return <p dangerouslySetInnerHTML={{ __html: text }} />;
 }

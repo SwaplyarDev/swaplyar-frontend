@@ -31,7 +31,7 @@ export default function StepBlock({
       </section>
       <section className="info-content-container w-full lg:w-1/2">
         <span className="flex flex-col items-start">
-          <h2 className="dark-title mb-4 flex items-center text-2xl font-semibold lg:text-3xl">
+          <h2 className="dark-title mb-1 flex items-center text-2xl font-semibold lg:text-3xl">
             {' '}
             <BsCaretRightFill className="hidden sm:block" />
             {title}

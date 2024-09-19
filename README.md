@@ -44,7 +44,8 @@
 swaplyar-frontend/
 ├── app/               # (Nuevo) Directorio App Router (Next.js 13)
 │   ├── api/           # Rutas de API
-│   │   └── auth/      # Rutas de NextAuth.js
+│   │   ├── auth/      # Rutas de NextAuth.js
+│   │   └── paypal     # Rutas para la transaccion con PayPal
 │   ├── info/          # Rutas relacionadas con información
 │   │   ├── about-us/  # Página "Quienes Somos"
 │   │   ├── help-center/ # Página de centro de ayuda
@@ -64,7 +65,9 @@ swaplyar-frontend/
 │   ├── auth/          # Componentes relacionados con la autenticación
 │   ├── clientWrapper/ # Componente para envolver vistas y gestionar estados de carga
 │   ├── skeleton/      # Componentes Skeleton para estados de carga
-│   └── request/       # Componentes relacionados con solicitudes de intercambio
+│   ├── request/       # Componentes relacionados con solicitudes de intercambio
+│   └── transactions   # Componentes relacionados con la calculadora
+│        └── PayPal    # Componente principal donde se hace la transaccion con PayPal
 ├── hooks/             # Hooks personalizados
 ├── store/             # Configuración del store global
 ├── public/            # Archivos estáticos (imágenes, fuentes, etc.)
@@ -105,6 +108,32 @@ swaplyar-frontend/
 - `/info/warranty`: Página de garantía.
 - `/info/why-choose-swaplyar`: Página "Por qué elegir Swaplyar".
 - `/request`: Página principal de solicitudes de intercambio.
+
+## 💲 PayPal
+
+### Componente PayPal
+
+- **Props Dinámicos**: El componente acepta los siguientes props:
+
+  - `currency`: Moneda en la que se realiza el pago.
+  - `amount`: Monto que se desea pagar.
+  - `handleDirection`: Función callback que se ejecuta tras la aprobación del pago.
+
+- **Creación de Ordenes**: El componente envía una solicitud `POST` a la API `/api/paypal` para crear una orden en PayPal utilizando los valores de `currency` y `amount`.
+
+- **Captura de Pago**: Cuando el pago es aprobado (`onApprove`), se captura la información del pagador (nombre y correo) y se almacena en `localStorage`. Después, se ejecuta la función `handleDirection`.
+
+- **Manejo de Errores y Cancelaciones**: En caso de que el usuario cancele el pago o haya algún error, se llama a la función `setPaypal()` para gestionar estos eventos.
+
+### API de PayPal
+
+La ruta `/api/paypal` en el servidor maneja la creación de órdenes en PayPal. Estos son los pasos que sigue:
+
+- **Autenticación**: Se obtiene un token de acceso de PayPal utilizando las credenciales `clientId` y `secretKey`.
+
+- **Creación de Orden**: Con el token, se crea una orden de compra a través de la API de PayPal, incluyendo la moneda y el monto proporcionado por el usuario.
+
+- **Manejo de Errores**: Si ocurre algún problema al obtener el token o crear la orden, se devuelve un mensaje de error.
 
 ## 🚀 Configuración Inicial
 
@@ -161,11 +190,11 @@ swaplyar-frontend/
 
 4. **Ejecutar el Proyecto**
 
-   ```bash
-   npm run dev
-   ```
+```bash
+npm run dev
+```
 
-   Accede al proyecto en [http://localhost:3000](http://localhost:3000).
+Accede al proyecto en [http://localhost:3000](http://localhost:3000).
 
 ## 🤖 Scripts Disponibles
 

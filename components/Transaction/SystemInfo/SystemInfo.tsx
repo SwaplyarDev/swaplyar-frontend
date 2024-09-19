@@ -1,3 +1,4 @@
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useState, useEffect, useCallback } from 'react';
 import Swal from 'sweetalert2';
@@ -14,25 +15,7 @@ export default function SystemInfo({
   children,
 }: SystemInfoProps) {
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
-  const [darkMode, setDarkMode] = useState<boolean>(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setDarkMode(mediaQuery.matches);
-    const handleChange = (e: MediaQueryListEvent) => {
-      setDarkMode(e.matches);
-    };
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [darkMode]);
+  const { isDark } = useDarkTheme();
 
   const toggleTooltip = useCallback(() => {
     setIsTooltipVisible((prev) => !prev);
@@ -55,13 +38,15 @@ export default function SystemInfo({
           `,
           icon: 'info',
           confirmButtonText: 'Aceptar',
-          background: darkMode ? '#1f2937' : '#ffffff',
-          color: darkMode ? '#ffffff' : '#000000',
+          background: isDark ? '#1f2937' : '#ffffff',
+          color: isDark ? '#ffffff' : '#000000',
           preConfirm: () => {
             // Llama a toggleTooltip al hacer clic en "Aceptar"
             toggleTooltip();
           },
           willClose: () => {
+            // Asegurarse de que se actualice el estado al cerrar el modal
+            setIsTooltipVisible(false);
             // Restaurar el padding y quitar no-scroll
             document.body.style.paddingRight = '0px';
             document.body.classList.remove('no-scroll');
@@ -75,7 +60,7 @@ export default function SystemInfo({
       document.body.style.paddingRight = '0px';
       document.body.classList.remove('no-scroll');
     }
-  }, [isTooltipVisible, darkMode, toggleTooltip]);
+  }, [isTooltipVisible, isDark, toggleTooltip]);
 
   return (
     <div className={`system-info-${linePosition}`}>
@@ -90,7 +75,7 @@ export default function SystemInfo({
                 className="more-info-icon show-tooltip flex"
                 onClick={() => setIsTooltipVisible(true)}
               >
-                <InfoOutlinedIcon className="mr-2 h-6 w-6 text-[#012c8a] dark:text-white" />
+                <InfoOutlinedIcon className="mr-2 h-6 w-6 text-blue-800 dark:text-white" />
               </button>
             </div>
           )}
