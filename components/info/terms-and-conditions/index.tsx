@@ -3,7 +3,7 @@ import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 import {
   CentroDeAyuda,
   TerminosCondiciones,
-} from '@/utils/assets/imgDatabaseCloudinary';
+} from '@/utils/assets/img-database';
 import Image from 'next/image';
 
 const TermsAndConditions = () => {
@@ -13,9 +13,9 @@ const TermsAndConditions = () => {
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
 
-      <div className="w-full flex flex-col max-w-[80%] mx-auto items-center justify-center text-left space-x-2 md:flex-row md:items-center"> 
+      <div className="w-full flex flex-col max-w-[80%] mx-auto items-center justify-center text-center md:text-left space-x-2 md:flex-row md:items-center"> 
   <div className="w-full max-w-[600px] p-0  flex items-center justify-center"> 
-    <h1 className="mb-6 text-4xl ">
+    <h1 className="mb-6 text-3xl md:text-4xl ">
       Términos y Condiciones de Uso y Navegación del Sitio SwaplyAr
     </h1>
   </div>
@@ -32,12 +32,12 @@ const TermsAndConditions = () => {
 
 
 
-      <div className="my-10 w-full max-w-3xl px-4">
+      <div className="my-10 w-full max-w-5xl px-3">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-1">
           {/* <!--1--> */}
-          <div className="rounded-lg bg-gray-100 p-6 text-gray-900 shadow-md dark:bg-gray-800 dark:text-gray-100">
+          <div className="rounded-lg bg-gray-100 p-6 text-gray-900 shadow-md dark:bg-[#27272A] dark:text-gray-100">
             <h2
-              className="mb-4 text-2xl font-semibold"
+              className="mb-4 text-2xl md:text-3xl "
               id="primera-aceptacion-de-los-t&c"
             >
               Primera. Aceptación de los T&C:
@@ -55,9 +55,9 @@ const TermsAndConditions = () => {
           </div>
 
           {/* <!--2--> */}
-          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-gray-800">
+          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
             <h2
-              className="mb-4 text-2xl font-semibold"
+              className="mb-4 text-2xl md:text-3xl"
               id="segunda-funcionamiento-del-sitio-y-servicios"
             >
               Segunda. Funcionamiento del Sitio y Servicios:
@@ -84,9 +84,9 @@ const TermsAndConditions = () => {
             </p>
           </div>
           {/* <!--3--> */}
-          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-gray-800">
+          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
             <h2
-              className="mb-4 text-2xl font-semibold"
+              className="mb-4 text-2xl md:text-3xl"
               id="segunda-funcionamiento-del-sitio-y-servicios"
             >
               Tercera. Capacidad Legal:
@@ -111,9 +111,9 @@ const TermsAndConditions = () => {
 
           {/* <!--4--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-gray-800">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
               <h2
-                className="mb-4 text-2xl font-semibold"
+                className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
               >
                 Cuarta. Comisiones y Operativa:
@@ -155,9 +155,9 @@ const TermsAndConditions = () => {
 
           {/* <!--5--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-gray-800">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
               <h2
-                className="mb-4 text-2xl font-semibold"
+                className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
               >
                 Quinta. Procesos y Conflictos:
@@ -208,9 +208,9 @@ const TermsAndConditions = () => {
 
           {/* <!--6--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-gray-800">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
               <h2
-                className="mb-4 text-2xl font-semibold"
+                className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
               >
                 Sexta. Seguridad y Protección de Datos:
@@ -259,9 +259,9 @@ const TermsAndConditions = () => {
 
           {/* <!--7--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-gray-800">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
               <h2
-                className="mb-4 text-2xl font-semibold"
+                className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
               >
                 Séptima. Uso del Sitio y Prohibiciones:
@@ -307,9 +307,9 @@ const TermsAndConditions = () => {
 
           {/* <!--8--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-gray-800">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
               <h2
-                className="mb-4 text-2xl font-semibold"
+                className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
               >
                 Octava. Seguridad y Manejo de Información de Acceso:
@@ -332,9 +332,9 @@ const TermsAndConditions = () => {
 
           {/* <!--9--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-gray-800">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
               <h2
-                className="mb-4 text-2xl font-semibold"
+                className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
               >
                 Novena. Garantía a Clientes, Bonificaciones y Seguros:
@@ -350,9 +350,9 @@ const TermsAndConditions = () => {
 
           {/* <!--10--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-gray-800">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
               <h2
-                className="mb-4 text-2xl font-semibold"
+                className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
               >
                 Décima. Indemnidad:
@@ -370,9 +370,9 @@ const TermsAndConditions = () => {
 
           {/* <!--11--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-gray-800">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
               <h2
-                className="mb-4 text-2xl font-semibold"
+                className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
               >
                 Décima primera. Transferencia de Derechos y Uso Personal de la
@@ -390,9 +390,9 @@ const TermsAndConditions = () => {
 
           {/* <!--12--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-gray-800">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
               <h2
-                className="mb-4 text-2xl font-semibold"
+                className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
               >
                 Décima segunda. Contacto sobre Operaciones y Soporte Técnico:
@@ -410,9 +410,9 @@ const TermsAndConditions = () => {
 
           {/* <!--13--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-gray-800">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
               <h2
-                className="mb-4 text-2xl font-semibold"
+                className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
               >
                 Décima tercera. Datos Personales y Políticas de Privacidad:
@@ -429,9 +429,9 @@ const TermsAndConditions = () => {
           </div>
 
           {/* <!--14--> */}
-          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-gray-800">
+          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
             <h2
-              className="mb-4 text-2xl font-semibold"
+              className="mb-4 text-2xl md:text-3xl"
               id="decima-cuarta-defensa-al-consumidor"
             >
               Décima cuarta. Defensa al Consumidor:
