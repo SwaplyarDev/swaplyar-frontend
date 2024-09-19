@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation';
 
 import Link from 'next/link';
 import useStore from '@/store/authViewStore';
-import LogInButton from './log-register-bt/LogInButton/logiInButton';
-import RegisterButton from './log-register-bt/RegisterButton/registerButton';
+import LogInButton from './log-register-bt/logiInButton';
+import RegisterButton from './log-register-bt/registerButton';
 
 export const Links = [
   { name: 'Quienes Somos', href: '/info/about-us' },
@@ -40,7 +40,7 @@ export default function NavLinks() {
           key={link.name}
           href={link.href}
           onClick={() => handleLogView(link.name)}
-          className={`relative m-1 flex h-[48px] items-center gap-2 text-buttonsLigth dark:text-sky-500 transition-transform duration-300 ease-in-out hover:scale-105 ${
+          className={`relative m-1 flex h-[48px] items-center gap-2 text-buttonsLigth dark:text-sky-500 transition-transform duration-300 ease-in-out hover:scale-105 hover:text-blue-700 dark:hover:text-sky-600 ${
             currentView === link.name && pathname !== '/auth/login-register'
               ? 'underline decoration-buttonsLigth dark:decoration-sky-500'
               : ''

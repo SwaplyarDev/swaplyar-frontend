@@ -25,7 +25,7 @@ function FooterLink({ href, children, view }: FooterLinkProps) {
     <Link
       href={href}
       {...(view ? { onClick: () => setView(view) } : {})}
-      className="rs-link text-base text-buttonsLigth transition duration-200 ease-in-out hover:text-blue-700 dark:text-sky-500"
+      className="rs-link text-base text-buttonsLigth transition duration-300 ease-in-out hover:scale-105 hover:text-blue-700 dark:text-sky-500 dark:hover:text-sky-600"
     >
       {children}
     </Link>
