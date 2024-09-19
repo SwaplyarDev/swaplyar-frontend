@@ -13,6 +13,8 @@ import { useExchangeRate } from '@/hooks/useExchangeRates';
 import { useAmountCalculator } from '@/hooks/useAmountCalculator';
 import { useSystemSelection } from '@/hooks/useSystemSelection';
 import TransactionSection from '@/components/ui/TransactionSection/TransactionSection';
+import clsx from 'clsx';
+import { parse } from 'path';
 
 export default function TransactionCalculator() {
   const router = useRouter();
@@ -61,7 +63,7 @@ export default function TransactionCalculator() {
           ">Cancelar</button></div>
         </div>
       `,
-      icon: 'warning',
+      icon: 'info',
       showConfirmButton: false, // Desactivar el botón de confirmación predeterminado
       showCancelButton: false, // Desactivar el botón de cancelar predeterminado
       background: isDark ? '#1f2937' : '#ffffff',
@@ -92,6 +94,14 @@ export default function TransactionCalculator() {
         }
       },
     });
+  };
+
+  const handleSubmit = () => {
+    if (selectedSendingSystem?.id === 'paypal') {
+      handleExchangePaypal();
+    } else {
+      handleDirection();
+    }
   };
 
   return (
@@ -137,16 +147,50 @@ export default function TransactionCalculator() {
           <div className="mt-8">
             <button
               className="bg-buttonPay rounded-3xl bg-blue-800 px-10 py-3 text-darkText transition-all duration-300 ease-in-out hover:bg-blue-700 focus:outline-none disabled:bg-gray-400"
-              onClick={
-                (parseInt(sendAmount) >= 1 || sendAmount != '') &&
-                selectedSendingSystem?.name == 'PayPal'
-                  ? handleExchangePaypal
-                  : handleDirection
+              onClick={handleSubmit}
+              disabled={
+                sendAmount === '' ||
+                (selectedSendingSystem?.id === 'paypal' &&
+                  parseInt(sendAmount) < 5) ||
+                (selectedSendingSystem?.id === 'payoneer_usd' &&
+                  parseInt(sendAmount) < 50) ||
+                (selectedSendingSystem?.id === 'payoneer_eur' &&
+                  parseInt(sendAmount) < 50)
               }
-              disabled={parseInt(sendAmount) < 1 || sendAmount === ''}
             >
               Procesar pago
             </button>
+          </div>
+          <div className='mt-8'>
+            {sendAmount === '' ? (
+              ''
+            ) : (
+              <>
+                <p
+                  className={clsx(
+                    selectedSendingSystem?.id === 'paypal' &&
+                      parseInt(sendAmount) < 5
+                      ? 'block'
+                      : 'hidden',
+                    'text-[#f44336]',
+                  )}
+                >
+                  La transferencia minima es de 5 USD en PayPal
+                </p>
+                <p
+                  className={clsx(
+                    selectedSendingSystem?.id ===
+                      ('payoneer_usd' || 'payoneer_eur') &&
+                      parseInt(sendAmount) < 50
+                      ? 'block'
+                      : 'hidden',
+                    'text-[#f44336]',
+                  )}
+                >
+                  La transferencia minima es de 50 USD en Payoneer
+                </p>
+              </>
+            )}
           </div>
         </div>
       </div>
