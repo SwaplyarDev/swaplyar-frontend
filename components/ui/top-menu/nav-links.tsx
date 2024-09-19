@@ -40,9 +40,9 @@ export default function NavLinks() {
           key={link.name}
           href={link.href}
           onClick={() => handleLogView(link.name)}
-          className={`relative m-1 flex h-[48px] items-center gap-2 text-blue-500 transition-transform duration-300 ease-in-out hover:scale-105 ${
+          className={`relative m-1 flex h-[48px] items-center gap-2 text-buttonsLigth dark:text-sky-500 transition-transform duration-300 ease-in-out hover:scale-105 ${
             currentView === link.name && pathname !== '/auth/login-register'
-              ? 'underline decoration-blue-500 dark:decoration-darkText'
+              ? 'underline decoration-buttonsLigth dark:decoration-sky-500'
               : ''
           } `}
         >

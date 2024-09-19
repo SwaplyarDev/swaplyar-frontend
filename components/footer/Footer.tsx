@@ -12,7 +12,6 @@ import {
   faWhatsapp,
 } from '@fortawesome/free-brands-svg-icons';
 import useStore from '@/store/authViewStore';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider'; // Asegúrate de importar el hook useDarkTheme
 
 interface FooterLinkProps {
   href: string;
@@ -26,7 +25,7 @@ function FooterLink({ href, children, view }: FooterLinkProps) {
     <Link
       href={href}
       {...(view ? { onClick: () => setView(view) } : {})}
-      className="rs-link text-base text-blue-500 transition duration-200 ease-in-out hover:text-blue-700 dark:text-sky-500"
+      className="rs-link text-base text-buttonsLigth transition duration-200 ease-in-out hover:text-blue-700 dark:text-sky-500"
     >
       {children}
     </Link>
@@ -34,7 +33,6 @@ function FooterLink({ href, children, view }: FooterLinkProps) {
 }
 
 export default function Footer() {
-  const { isDark } = useDarkTheme();
 
   return (
     <footer className="rs-wrapper-v4 mx-auto max-w-screen-2xl px-4 py-8">
@@ -132,7 +130,7 @@ export default function Footer() {
         <div className="mb-4 flex flex-grow justify-center filter dark:brightness-[0%] dark:invert sm:mb-0 sm:w-1/3 sm:justify-center">
           <Link href="/">
             <Image
-              src={isDark ? SDark : S}
+              src={S}
               alt="Cambiar saldo online"
               width={65}
               height={70}
