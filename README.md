@@ -190,17 +190,19 @@ La ruta `/api/paypal` en el servidor maneja la creación de órdenes en PayPal. 
 
 4. **Ejecutar el Proyecto**
 
-   ```bash
-   npm run dev
-   ```
+```bash
+npm run dev
+````
 
-   Accede al proyecto en [http://localhost:3000](http://localhost:3000).
+Accede al proyecto en [http://localhost:3000](http://localhost:3000).
 
 ## 🤖 Scripts Disponibles
 
 - `npm run lint`: Ejecuta ESLint para analizar el código.
-- `npm run format`: Formatea el código utilizando Prettier.
 - `npm run dev`: Inicia el entorno de desarrollo.
+- `npm run tsc`: Para chequear errores de tipado (TypeScript)
+- `npm run format`: Formatea el código utilizando Prettier.
+- `npm audit`: Para revisar vulnerabilidades de dependencias
 - `npm run build --clean`: Compila la aplicación para producción.
 - `npm run start`: Inicia el servidor de la aplicación compilada.
 
