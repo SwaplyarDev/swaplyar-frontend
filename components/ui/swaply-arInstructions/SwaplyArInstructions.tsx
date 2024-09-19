@@ -19,7 +19,7 @@ export default function SwaplyArInstructions() {
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-
+      <div className=' w-[95%] m-auto'>
       <section className="text-center">
         <article className="container-text space-y-2">
           <h1 className="text-4xl font-bold">
@@ -37,7 +37,7 @@ export default function SwaplyArInstructions() {
         </article>
       </section>
 
-      <section className="flex flex-col items-center">
+      <section className="flex flex-col w-full items-center">
         <StepBlock
           title="Paso 1:"
           imageSrc={Paso1Gif}
@@ -69,11 +69,11 @@ export default function SwaplyArInstructions() {
                         solicitud'. ¡Listo!"
         />
 
-        <h1 className="flex items-center gap-1 text-lg font-semibold md:text-2xl">
-          {' '}
-          <BsCheck2Circle /> En menos de 5 minutos, tu depósito será procesado.
+        <h1 className="flex items-center text-center gap-1 text-2xl font-semibold">
+          <BsCheck2Circle className='hidden md:block' /> En menos de 5 minutos, tu depósito será procesado.
         </h1>
       </section>
+      </div>
     </main>
   );
 }

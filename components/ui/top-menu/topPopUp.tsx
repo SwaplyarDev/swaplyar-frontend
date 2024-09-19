@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { MdOutlineClose } from 'react-icons/md';
 
 function TopPopUp() {
-  const [isClosed, setIsClosed] = useState(false);
+  const [isClosed, setIsClosed] = useState(true);
 
   const handleClose = () => {
     sessionStorage.setItem('isClosed', JSON.stringify(true));
@@ -15,6 +15,9 @@ function TopPopUp() {
     if (closed) {
       setIsClosed(closed);
     }
+    else{
+      setIsClosed(false);
+    }
   }, []);
 
   if (isClosed) {
@@ -23,7 +26,7 @@ function TopPopUp() {
 
   return (
     <main className="w-full bg-violet-700 py-2">
-      <div className="m-auto flex w-[95%] max-w-screen-xl items-start justify-center gap-3">
+      <div className="m-auto flex w-[90%] max-w-screen-2xl items-start lg:items-center justify-center md:gap-3">
         <p className="text-center text-xs font-bold text-darkText md:text-sm lg:text-lg">
           ¡Llegaron los Yenes a SwaplyAr! Aprovecha nuestras nuevas promociones
           y disfruta de los mejores beneficios. ¡No te lo pierdas!
