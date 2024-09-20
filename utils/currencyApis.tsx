@@ -214,16 +214,97 @@ export async function calculateAmount(
   }
 }
 
-// Ejemplo de uso:
-(async () => {
+export async function calculateInverseAmount(
+  from: string,
+  to: string,
+  amountToReceive: number,
+): Promise<number> {
   try {
-    const result = await calculateAmount('payoneer_eur', 'bank', 1);
-    console.log(`Resultado de la conversión: ${result}`);
+    const rates = await getExchangeRates();
+
+    // Encuentra la fórmula correspondiente en exchangeRates
+    const exchangeRate = exchangeRates.find(
+      (rate) => rate.from === from && rate.to === to,
+    );
+
+    if (!exchangeRate) {
+      throw new Error(
+        `No se encontró una fórmula para convertir de ${from} a ${to}`,
+      );
+    }
+
+    // Determina qué tasa de cambio se debe usar dependiendo de 'from' y 'to'
+    let rate = 1; // Tasa por defecto
+
+    switch (from) {
+      case 'bank':
+        if (to === 'payoneer_usd' || to === 'paypal' || to === 'wise_usd') {
+          rate = rates.currentValueUSDBlueSale;
+        } else if (to === 'payoneer_eur' || to === 'wise_eur') {
+          rate = rates.currentValueEURBlueSale;
+        }
+        break;
+      case 'paypal':
+      case 'payoneer_usd':
+      case 'wise_usd':
+        if (to === 'bank') {
+          rate = rates.currentValueUSDBluePurchase;
+        } else if (to === 'payoneer_eur' || to === 'wise_eur') {
+          rate = rates.currentValueUSDToEUR;
+        }
+        break;
+      case 'payoneer_eur':
+      case 'wise_eur':
+        if (to === 'bank') {
+          rate = rates.currentValueEURBluePurchase;
+        } else if (to === 'payoneer_usd' || to === 'wise_usd') {
+          rate = rates.currentValueEURToUSD;
+        }
+        break;
+      default:
+        throw new Error(`Conversión de ${from} a ${to} no soportada.`);
+    }
+
+    // Ahora calculamos el valor inverso usando la fórmula inversa.
+    // La mayoría de las fórmulas tienen un formato (amount / rate),
+    // para invertir eso simplemente multiplicamos por la tasa.
+
+    const inverseAmount =
+      (amountToReceive * rate) / (1 - obtenerPorcentajeDescuento(from, to));
+
+    return parseFloat(inverseAmount.toFixed(2));
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error en la conversión:', error.message);
+      console.error('Error calculating inverse amount:', error.message);
     } else {
-      console.error('Error desconocido en la conversión:', error);
+      console.error('Unknown error calculating inverse amount:', error);
     }
+    throw new Error('Failed to calculate inverse amount');
   }
-})();
+}
+
+// Esta función auxiliar obtiene el porcentaje de descuento aplicado en las conversiones
+function obtenerPorcentajeDescuento(from: string, to: string): number {
+  const exchangeRate = exchangeRates.find(
+    (rate) => rate.from === from && rate.to === to,
+  );
+
+  if (!exchangeRate) {
+    throw new Error(
+      `No se encontró una fórmula para obtener el descuento de ${from} a ${to}`,
+    );
+  }
+
+  // En lugar de deducirlo manualmente, podrías mejorar esta función
+  // extrayendo el valor real en base a las fórmulas usadas.
+  if (exchangeRate.formula.toString().includes('1 - 0.04')) {
+    return 0.04;
+  } else if (exchangeRate.formula.toString().includes('1 - 0.05')) {
+    return 0.05;
+  } else if (exchangeRate.formula.toString().includes('1 - 0.12')) {
+    return 0.12;
+  } else if (exchangeRate.formula.toString().includes('1 - 0.14')) {
+    return 0.14;
+  }
+  return 0;
+}

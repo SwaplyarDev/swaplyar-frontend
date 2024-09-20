@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 
-// Define el tipo de estado
 interface RequestTransactionStore {
   nameStore: string;
   lastNameStore: string;
@@ -16,8 +15,8 @@ interface RequestTransactionStore {
   selectCountryStore: string;
   telephoneStore: string;
   emailStore: string;
-  emailOfPayoneerStore?: string; // Opcional
-  emailOfPayPalStore?: string; // Opcional
+  emailOfPayoneerStore?: string; 
+  emailOfPayPalStore?: string; 
   idOfPayPalTransactionStore: string;
   nameAndLastNameOfWiseStore: string;
   nameOfWiseStore: string;
@@ -48,13 +47,12 @@ interface RequestTransactionStore {
   clearData: () => void;
 }
 
-// Carga los datos del localStorage al inicializar el estado
+
 const loadFromLocalStorage = (): Partial<RequestTransactionStore> => {
   const storedData = localStorage.getItem('requestTransactionStore');
   return storedData ? JSON.parse(storedData) : {};
 };
 
-// Guarda los datos en localStorage
 const saveToLocalStorage = (state: RequestTransactionStore) => {
   localStorage.setItem('requestTransactionStore', JSON.stringify(state));
 };
