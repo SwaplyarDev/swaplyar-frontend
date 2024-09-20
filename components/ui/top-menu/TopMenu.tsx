@@ -3,6 +3,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useDarkTheme } from '../theme-Provider/themeProvider';
 import useStore from '@/store/authViewStore';
 
 import { Drawer, Sidebar, Navbar } from 'flowbite-react';
@@ -15,9 +16,8 @@ import Image from 'next/image';
 import S from '../../../public/images/logo-solo.png';
 import TopPopUp from './topPopUp';
 
-import LogInButton from './log-register-bt/LogInButton/logiInButton';
-import logStyles from './log-register-bt/LogInButton/logInButtonAnimation.module.css';
-import rgStyles from './log-register-bt/RegisterButton/registerButton.module.css';
+import LogInButton from './log-register-bt/logiInButton';
+import style from './log-register-bt/buttonStyle.module.css';
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -25,6 +25,7 @@ export function TopMenu() {
   const [drawerMenu, setDrawerMenu] = useState(false);
 
   const { setView } = useStore();
+  const { isDark } = useDarkTheme();
 
   const handleSelect = (item: string) => {
     sessionStorage.setItem('currentView', item);
@@ -100,7 +101,7 @@ export function TopMenu() {
                   <Sidebar.Items className="flex h-full w-full flex-col justify-between pt-5">
                     <Sidebar.ItemGroup className="w-full bg-inherit text-left">
                       <Sidebar.Item
-                        className={`text-blue-500 ${
+                        className={`text-buttonsLigth ${
                           selectedItem === 'about-us'
                             ? 'h-10 bg-gray-100 dark:bg-gray-700'
                             : 'hover:bg-gray-100 dark:hover:bg-gray-700'
@@ -119,7 +120,7 @@ export function TopMenu() {
                       </Sidebar.Item>
 
                       <Sidebar.Item
-                        className={`text-blue-500 ${
+                        className={`text-buttonsLigth ${
                           selectedItem === 'how-to-use'
                             ? 'h-10 bg-gray-100 dark:bg-gray-700'
                             : 'hover:bg-gray-100 dark:hover:bg-gray-700'
@@ -138,7 +139,7 @@ export function TopMenu() {
                       </Sidebar.Item>
 
                       <Sidebar.Item
-                        className={`text-blue-500 ${
+                        className={`text-buttonsLigth ${
                           selectedItem === 'loyalty-program'
                             ? 'h-10 bg-gray-100 dark:bg-gray-700'
                             : 'hover:bg-gray-100 dark:hover:bg-gray-700'
@@ -157,9 +158,9 @@ export function TopMenu() {
                       </Sidebar.Item>
                     </Sidebar.ItemGroup>
 
-                    <Sidebar.ItemGroup className="border-t-2 border-blue-800 px-2 dark:border-sky-500">
+                    <Sidebar.ItemGroup className="border-t-2 border-buttonsLigth px-2 dark:border-sky-500">
                       <Sidebar.Item
-                        className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:hover:bg-transparent md:hidden ${logStyles.buttonLight}`}
+                        className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:hover:bg-transparent md:hidden ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
                         onClick={() => {
                           handleSelect('login');
                           setView('login');
@@ -171,7 +172,7 @@ export function TopMenu() {
                       </Sidebar.Item>
 
                       <Sidebar.Item
-                        className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${rgStyles.buttonSecond} `}
+                        className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
                         onClick={() => {
                           handleSelect('register');
                           setView('register');
