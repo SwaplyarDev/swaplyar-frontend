@@ -2,8 +2,8 @@
 
 import { exchangeRates } from './exchangeRates';
 
-const apiKey = "fca_live_jDqUTcYj3stjWVDFqGZCmIBAt3hIEEtiTBPSMD3N";
-const bluelyticsApiUrl = "https://api.bluelytics.com.ar/v2/latest";
+const apiKey = process.env.NEXT_PUBLIC_FREE_CURRENCY_API_KEY;
+const bluelyticsApiUrl = process.env.NEXT_PUBLIC_BLUELYTICS_API_URL;
 
 if (!apiKey) {
   throw new Error('Missing FreeCurrencyAPI Key');
