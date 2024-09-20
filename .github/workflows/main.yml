@@ -2,6 +2,8 @@ name: Notify Discord on PR Merge
 
 on:
   pull_request:
+    branches:
+      - developer
     types: [closed]
 
 jobs:
