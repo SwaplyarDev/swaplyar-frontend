@@ -59,7 +59,7 @@ function LoyaltyProgram() {
         </div>
       </div>
 
-      <div className="flex flex-wrap justify-center py-10">
+      <div className="flex flex-wrap justify-center py-10"> checkout
         <RewardCard
           imageSrc={Rewards1}
           imageAlt="paso 1 de como cambiar tu dinero en SwaplyAr"
