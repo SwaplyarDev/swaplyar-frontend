@@ -432,7 +432,6 @@ div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm) {
     0px 0px 0px 4px #91aeec;
 }
 
-
 .buttonSecondDark {
   outline: none;
   transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
