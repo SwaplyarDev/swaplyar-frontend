@@ -14,6 +14,7 @@ export const configRoutes: ConfigRoutes = {
     '/info/warranty',
     '/info/why-choose-swaplyar',
     '/request',
+    '/info/sapr-terms-conditions'
   ],
   authRoutes: ['/auth/login-register'],
   apiRoutes: [
