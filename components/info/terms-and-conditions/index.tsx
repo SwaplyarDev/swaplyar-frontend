@@ -35,7 +35,7 @@ const TermsAndConditions = () => {
       <div className="my-10 w-full max-w-5xl px-3">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-1">
           {/* <!--1--> */}
-          <div className="rounded-lg bg-gray-100 p-6 text-gray-900 shadow-md dark:bg-[#27272A] dark:text-gray-100">
+          <div className="rounded-lg bg-gray-100 p-6 text-gray-900 shadow-md dark:bg-graytyc dark:text-gray-100">
             <h2
               className="mb-4 text-2xl md:text-3xl "
               id="primera-aceptacion-de-los-t&c"
@@ -55,7 +55,7 @@ const TermsAndConditions = () => {
           </div>
 
           {/* <!--2--> */}
-          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc ">
             <h2
               className="mb-4 text-2xl md:text-3xl"
               id="segunda-funcionamiento-del-sitio-y-servicios"
@@ -84,7 +84,7 @@ const TermsAndConditions = () => {
             </p>
           </div>
           {/* <!--3--> */}
-          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc ">
             <h2
               className="mb-4 text-2xl md:text-3xl"
               id="segunda-funcionamiento-del-sitio-y-servicios"
@@ -111,7 +111,7 @@ const TermsAndConditions = () => {
 
           {/* <!--4--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc ">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -155,7 +155,7 @@ const TermsAndConditions = () => {
 
           {/* <!--5--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc ">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -208,7 +208,7 @@ const TermsAndConditions = () => {
 
           {/* <!--6--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc ">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -259,7 +259,7 @@ const TermsAndConditions = () => {
 
           {/* <!--7--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc ">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -307,7 +307,7 @@ const TermsAndConditions = () => {
 
           {/* <!--8--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -332,7 +332,7 @@ const TermsAndConditions = () => {
 
           {/* <!--9--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc ">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -350,7 +350,7 @@ const TermsAndConditions = () => {
 
           {/* <!--10--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc ">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -370,7 +370,7 @@ const TermsAndConditions = () => {
 
           {/* <!--11--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc ">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -390,7 +390,7 @@ const TermsAndConditions = () => {
 
           {/* <!--12--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc ">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -410,7 +410,7 @@ const TermsAndConditions = () => {
 
           {/* <!--13--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc ">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -429,7 +429,7 @@ const TermsAndConditions = () => {
           </div>
 
           {/* <!--14--> */}
-          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc ">
             <h2
               className="mb-4 text-2xl md:text-3xl"
               id="decima-cuarta-defensa-al-consumidor"
