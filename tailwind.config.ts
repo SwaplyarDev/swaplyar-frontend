@@ -41,7 +41,6 @@ const config: Config = {
         selectBtsLight: '#91aeec',
         darkText: '#ebe7e0',
         lightText: '#252526',
-        
       },
       width: {
         '9/10': '90%',
@@ -56,7 +55,7 @@ const config: Config = {
       },
       backgroundColor: {
         'dark-blue': 'rgb(3, 35, 54)',
-        'graytyc': 'rgb(69, 69, 69)',
+        graytyc: 'rgb(69, 69, 69)',
       },
       top: {
         '57': '57%',
