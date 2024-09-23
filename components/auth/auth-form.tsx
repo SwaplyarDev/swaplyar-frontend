@@ -19,7 +19,7 @@ const AuthForm: React.FC = () => {
 
   useEffect(() => {
     if (swiperRef.current) {
-      swiperRef.current.slideTo(view === 'login' ? 0 : 1);    
+      swiperRef.current.slideTo(view === 'login' ? 0 : 1);
     }
   }, [view]);
 
@@ -28,11 +28,11 @@ const AuthForm: React.FC = () => {
 
   return (
     <ClientWrapper>
-      <section className='h-full min-h-screen flex flex-col items-center py-5'>
-        <div className=" max-w-[552px] w-full hover:cursor-grab active:cursor-grabbing px-5">
-        <Swiper
+      <section className="flex h-full min-h-screen flex-col items-center py-5">
+        <div className="w-full max-w-[552px] px-5 hover:cursor-grab active:cursor-grabbing">
+          <Swiper
             onSwiper={(swiper) => {
-              swiperRef.current = swiper; 
+              swiperRef.current = swiper;
               swiper.slideTo(view === 'login' ? 0 : 1);
             }}
             onSlideChange={(swiper) => {
@@ -55,4 +55,3 @@ const AuthForm: React.FC = () => {
 };
 
 export default AuthForm;
-

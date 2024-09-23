@@ -42,7 +42,14 @@ export const RegisterForm = () => {
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setErrorMessage('');
     setLoading(true);
-    const { firstName, lastName, email, password, rememberMe, termsConditions } = data;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      rememberMe,
+      termsConditions,
+    } = data;
     const name = `${firstName} ${lastName}`;
 
     localStorage.setItem('rememberMe', JSON.stringify(rememberMe));
@@ -77,10 +84,10 @@ export const RegisterForm = () => {
   };
 
   return (
-    <div className="h-full min-h-[800px] flex flex-col items-center justify-center py-5 my-5">
+    <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-center py-5">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="rounded-2xl relative flex w-full max-w-lg flex-col bg-white p-8 shadow-md dark:bg-gray-800"
+        className="relative flex w-full max-w-lg flex-col rounded-2xl bg-white p-8 shadow-md dark:bg-gray-800"
       >
         <h2 className="mb-5 text-center text-2xl font-bold">Crear Cuenta</h2>
 
@@ -205,7 +212,10 @@ export const RegisterForm = () => {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className={clsx("absolute inset-y-0 right-0 flex items-center px-3", errors.password ? 'mb-0' : 'mb-5')}
+            className={clsx(
+              'absolute inset-y-0 right-0 flex items-center px-3',
+              errors.password ? 'mb-0' : 'mb-5',
+            )}
           >
             {showPassword ? (
               <VisibilityOffOutlinedIcon />
@@ -248,7 +258,10 @@ export const RegisterForm = () => {
           <button
             type="button"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className={clsx("absolute inset-y-0 right-0 flex items-center px-3", errors.confirmPassword ? 'mb-0' : 'mb-5')}
+            className={clsx(
+              'absolute inset-y-0 right-0 flex items-center px-3',
+              errors.confirmPassword ? 'mb-0' : 'mb-5',
+            )}
           >
             {showConfirmPassword ? (
               <VisibilityOffOutlinedIcon />
@@ -279,11 +292,13 @@ export const RegisterForm = () => {
           <input
             id="termsConditions"
             type="checkbox"
-            className=" h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
             {...register('termsConditions')}
           />
           <label htmlFor="termsConditions" className="ml-2">
-            <Link href="/info/terms-and-conditions" className='underline'>Acepto Términos & Condiciones</Link> 
+            <Link href="/info/terms-and-conditions" className="underline">
+              Acepto Términos & Condiciones
+            </Link>
           </label>
         </div>
 

@@ -60,10 +60,10 @@ export const LoginForm = () => {
   };
 
   return (
-    <div className="h-full min-h-[800px] py-5 my-5 flex flex-col items-center justify-start xs:justify-center xs:mt-0">
+    <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-start py-5 xs:mt-0 xs:justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="rounded-2xl flex w-full max-w-lg flex-col  bg-white p-8 shadow-md dark:bg-gray-800"
+        className="flex w-full max-w-lg flex-col rounded-2xl bg-white p-8 shadow-md dark:bg-gray-800"
       >
         <h2 className="mb-5 text-center text-2xl font-bold">Iniciar Sesión</h2>
 
@@ -125,14 +125,16 @@ export const LoginForm = () => {
           <input
             id="rememberMeLogin"
             type="checkbox"
-            className="hover:cursor-pointer h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
             {...register('rememberMe')}
           />
           <label htmlFor="rememberMe" className="ml-2">
             Recordar esta cuenta
           </label>
         </div>
-        <Link href={'/auth/forgot-password'} className='hover:underline mb-5'>¿Olvidaste tu contraseña?</Link>
+        <Link href={'/auth/forgot-password'} className="mb-5 hover:underline">
+          ¿Olvidaste tu contraseña?
+        </Link>
 
         {authState === 'CredentialsSignin' && (
           <div className="mb-5 flex w-full rounded border-2 border-red-500 bg-transparent p-4">
