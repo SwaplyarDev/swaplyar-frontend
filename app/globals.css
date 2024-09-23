@@ -357,6 +357,15 @@ body::-webkit-scrollbar-thumb {
 }
 
 /* Estilos del scrollbar usando variables definidas en el body */
+ul.scrollable-list {
+  margin-top: 5px;
+  clip-path: inset(
+    0 round 16px
+  ); /* Ajusta el valor según el borde redondeado */
+}
+ul.scrollable-list {
+  padding-right: 0.5rem; /* Ajusta según sea necesario */
+}
 ul.scrollable-list::-webkit-scrollbar {
   width: var(--sb-size);
 }
@@ -386,4 +395,50 @@ ul.scrollable-list::-webkit-scrollbar-thumb {
 
 .buttonPay:hover {
   background-color: #6098ff;
+}
+
+.paypal-button-tagline {
+  display: none !important;
+}
+
+div:where(.swal2-container) div:where(.swal2-popup) {
+  border-radius: 1rem !important;
+}
+
+div:where(.swal2-icon).swal2-info {
+  color: #012c8a !important;
+  border-color: #012c8a !important;
+}
+
+div:where(.swal2-icon).swal2-warning {
+  color: #012c8a !important;
+  border-color: #012c8a !important;
+}
+
+div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm) {
+  background-color: #012c8a !important;
+}
+
+/*  animaciones de los botones */
+
+.buttonSecond {
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+}
+
+.buttonSecond:hover {
+  box-shadow:
+    0px 0px 0px 2px #ffffff,
+    0px 0px 0px 4px #91aeec;
+}
+
+.buttonSecondDark {
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+}
+
+.buttonSecondDark:hover {
+  box-shadow:
+    0px 0px 0px 2px #252526,
+    0px 0px 0px 4px #ebe7e0;
 }

@@ -8,7 +8,7 @@ import {
   CentroDeAyuda,
   Contacto,
   PlusRewardsGif,
-} from '@/utils/assets/img-database';
+} from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import Link from 'next/link';
 

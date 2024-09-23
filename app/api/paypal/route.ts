@@ -48,8 +48,8 @@ export async function POST(req: Request) {
             },
             items: [
               {
-                name: 'example',
-                description: 'example',
+                name: 'Transferencia SwaplyAr',
+                description: 'Transferencia desde la aplicacion de SwaplyAr ',
                 quantity: '1',
                 category: 'DIGITAL_GOODS',
                 unit_amount: {

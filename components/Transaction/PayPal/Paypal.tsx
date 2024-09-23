@@ -39,6 +39,7 @@ export default function Paypal({
             height: 45,
           }}
           createOrder={async () => {
+            console.log('exchange: ', exchange);
             const res = await fetch('/api/paypal', {
               method: 'POST',
               headers: {
@@ -47,6 +48,7 @@ export default function Paypal({
               body: JSON.stringify(exchange),
             });
             const data = await res.json();
+            console.log('data: ', data);
             return data.orderID;
           }}
           onApprove={async (_data, actions) => {
@@ -66,6 +68,12 @@ export default function Paypal({
             } catch (error) {
               console.error('Error al capturar el pago:', error);
             }
+          }}
+          onCancel={() => {
+            setPaypal();
+          }}
+          onError={() => {
+            setPaypal();
           }}
         />
       </PayPalScriptProvider>

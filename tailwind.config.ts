@@ -23,6 +23,7 @@ const config: Config = {
         xs: '480px',
         sm: '640px',
         md: '768px',
+        'lg-tablet': '960px',
         lg: '1170px',
         xl: '1280px',
         '2k': '2048px',
@@ -36,6 +37,8 @@ const config: Config = {
           500: '#0070F3',
           600: '#2F6FEB',
         },
+        buttonsLigth: '#012c8a',
+        selectBtsLight: '#91aeec',
         darkText: '#ebe7e0',
         lightText: '#252526',
       },
@@ -52,6 +55,7 @@ const config: Config = {
       },
       backgroundColor: {
         'dark-blue': 'rgb(3, 35, 54)',
+        graytyc: 'rgb(69, 69, 69)',
       },
       top: {
         '57': '57%',
