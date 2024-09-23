@@ -13,31 +13,29 @@ const TermsAndConditions = () => {
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
 
-      <div className="w-full flex flex-col max-w-[80%] mx-auto items-center justify-center text-center md:text-left space-x-2 md:flex-row md:items-center"> 
-  <div className="w-full max-w-[600px] p-0  flex items-center justify-center"> 
-    <h1 className="mb-6 text-3xl md:text-4xl ">
-      Términos y Condiciones de Uso y Navegación del Sitio SwaplyAr
-    </h1>
-  </div>
-  <div className="flex w-full max-w-[300px] flex-shrink-0 items-center justify-center"> 
-    <Image
-      className="hero-img"
-      src={TerminosCondiciones}
-      alt="terminos-y-condiciones"
-      width={300}
-      height={300}
-    />
-  </div>
-</div>
-
-
+      <div className="mx-auto flex w-full max-w-[80%] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left">
+        <div className="flex w-full max-w-[600px] items-center justify-center p-0">
+          <h1 className="mb-6 text-3xl md:text-4xl">
+            Términos y Condiciones de Uso y Navegación del Sitio SwaplyAr
+          </h1>
+        </div>
+        <div className="flex w-full max-w-[300px] flex-shrink-0 items-center justify-center">
+          <Image
+            className="hero-img"
+            src={TerminosCondiciones}
+            alt="terminos-y-condiciones"
+            width={300}
+            height={300}
+          />
+        </div>
+      </div>
 
       <div className="my-10 w-full max-w-5xl px-3">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-1">
           {/* <!--1--> */}
-          <div className="rounded-lg bg-gray-100 p-6 text-gray-900 shadow-md dark:bg-[#27272A] dark:text-gray-100">
+          <div className="rounded-lg bg-gray-100 p-6 text-gray-900 shadow-md dark:bg-graytyc dark:text-gray-100">
             <h2
-              className="mb-4 text-2xl md:text-3xl "
+              className="mb-4 text-2xl md:text-3xl"
               id="primera-aceptacion-de-los-t&c"
             >
               Primera. Aceptación de los T&C:
@@ -55,7 +53,7 @@ const TermsAndConditions = () => {
           </div>
 
           {/* <!--2--> */}
-          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
             <h2
               className="mb-4 text-2xl md:text-3xl"
               id="segunda-funcionamiento-del-sitio-y-servicios"
@@ -84,7 +82,7 @@ const TermsAndConditions = () => {
             </p>
           </div>
           {/* <!--3--> */}
-          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
             <h2
               className="mb-4 text-2xl md:text-3xl"
               id="segunda-funcionamiento-del-sitio-y-servicios"
@@ -111,7 +109,7 @@ const TermsAndConditions = () => {
 
           {/* <!--4--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -155,7 +153,7 @@ const TermsAndConditions = () => {
 
           {/* <!--5--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -208,7 +206,7 @@ const TermsAndConditions = () => {
 
           {/* <!--6--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -259,7 +257,7 @@ const TermsAndConditions = () => {
 
           {/* <!--7--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -307,7 +305,7 @@ const TermsAndConditions = () => {
 
           {/* <!--8--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -332,7 +330,7 @@ const TermsAndConditions = () => {
 
           {/* <!--9--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -350,7 +348,7 @@ const TermsAndConditions = () => {
 
           {/* <!--10--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -370,7 +368,7 @@ const TermsAndConditions = () => {
 
           {/* <!--11--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -390,7 +388,7 @@ const TermsAndConditions = () => {
 
           {/* <!--12--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -410,7 +408,7 @@ const TermsAndConditions = () => {
 
           {/* <!--13--> */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
                 id="cuarta-comisiones-y-operativa"
@@ -429,7 +427,7 @@ const TermsAndConditions = () => {
           </div>
 
           {/* <!--14--> */}
-          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-[#27272A] ">
+          <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
             <h2
               className="mb-4 text-2xl md:text-3xl"
               id="decima-cuarta-defensa-al-consumidor"

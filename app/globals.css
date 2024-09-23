@@ -310,7 +310,7 @@ body {
   }
 }
 
-/* Button Auth Form */
+/* Button Auth Form
 .btnAuthForm {
   border: 1px solid transparent;
   -webkit-transition: all 0.4s cubic-bezier(0.5, 0.24, 0, 1);
@@ -321,7 +321,7 @@ body {
 .btnAuthForm:hover {
   border: 1px solid #6098ff;
   color: #6098ff;
-}
+} */
 
 /*Scrollbar*/
 
