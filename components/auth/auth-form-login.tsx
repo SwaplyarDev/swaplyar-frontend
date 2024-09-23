@@ -67,7 +67,7 @@ export const LoginForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
       >
-        <h2 className="mb-5 text-center text-2xl font-bold">Iniciar Sesión</h2>
+        <h2 className="mb-5 text-center text-2xl font-bold text-buttonsLigth dark:text-darkText">Iniciar Sesión</h2>
 
         <label
           htmlFor="email"
@@ -155,9 +155,9 @@ export const LoginForm = () => {
         <LoginButton pending={loading} />
 
         <div className="my-5 flex items-center">
-          <div className="flex-1 border-t border-gray-500"></div>
-          <div className="px-2 text-gray-800 dark:text-gray-300">O</div>
-          <div className="flex-1 border-t border-gray-500"></div>
+          <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
+          <div className="px-2 text-buttonsLigth dark:text-darkText">O</div>
+          <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
         </div>
 
         <button

@@ -91,7 +91,7 @@ export const RegisterForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="relative flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
       >
-        <h2 className="mb-5 text-center text-2xl font-bold">Crear Cuenta</h2>
+        <h2 className="mb-5 text-center text-2xl font-bold text-buttonsLigth dark:text-darkText">Crear Cuenta</h2>
 
         <div className="flex flex-col justify-between xs:flex-row">
           <div className="flex flex-col xs:max-w-48">
@@ -325,9 +325,9 @@ export const RegisterForm = () => {
         </button>
 
         <div className="my-5 flex items-center">
-          <div className="flex-1 border-t border-gray-500"></div>
-          <div className="px-2 text-gray-800 dark:text-gray-300">O</div>
-          <div className="flex-1 border-t border-gray-500"></div>
+          <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
+          <div className="px-2 text-buttonsLigth dark:text-darkText">O</div>
+          <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
         </div>
 
         <button
