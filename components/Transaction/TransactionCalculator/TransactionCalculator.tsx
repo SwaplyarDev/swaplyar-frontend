@@ -95,6 +95,12 @@ export default function TransactionCalculator() {
     }
   };
 
+  console.log( 'Envio: ',sendAmount)
+  console.log( 'Recibo: ', receiveAmount)
+  console.log( 'Rate: ', rateForOne)
+  console.log( 'Coin Sending: ', selectedSendingSystem?.coin)
+  console.log( 'Coin Receiving: ', selectedReceivingSystem?.coin)
+
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
       <div className="mat-card calculator-container dark:bg-calculatorDark flex w-full flex-col items-center rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:text-white">
