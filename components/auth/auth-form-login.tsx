@@ -79,8 +79,10 @@ export const LoginForm = () => {
         </label>
         <input
           className={clsx(
-            'rounded border bg-gray-200 px-5 py-2 dark:bg-gray-700',
-            errors.email ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
+            'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
+            errors.email
+              ? 'mb-0 border-red-500'
+              : 'mb-5 hover:border-blue-600 dark:hover:border-white',
           )}
           type="email"
           {...register('email', {
@@ -107,10 +109,10 @@ export const LoginForm = () => {
         </label>
         <input
           className={clsx(
-            'rounded border bg-gray-200 px-5 py-2 dark:bg-gray-700',
+            'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
             errors.password
               ? 'mb-0 border-red-500'
-              : 'mb-5 hover:border-blue-600',
+              : 'mb-5 hover:border-blue-600 dark:hover:border-white',
           )}
           type="password"
           {...register('password', {
@@ -127,7 +129,7 @@ export const LoginForm = () => {
           <input
             id="rememberMeLogin"
             type="checkbox"
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer hover:border-blue-600 dark:border-gray-600 dark:bg-lightText dark:ring-blue-500 dark:hover:border-white"
             {...register('rememberMe')}
           />
           <label htmlFor="rememberMe" className="ml-2">

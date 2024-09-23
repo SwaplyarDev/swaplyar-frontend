@@ -108,10 +108,10 @@ export const RegisterForm = () => {
             <input
               id="firstName"
               className={clsx(
-                'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-gray-700',
+                'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
                 errors.firstName
                   ? 'mb-0 border-red-500'
-                  : 'mb-5 hover:border-blue-600',
+                  : 'mb-5 hover:border-blue-600 dark:hover:border-white',
               )}
               type="text"
               {...register('firstName', {
@@ -138,10 +138,10 @@ export const RegisterForm = () => {
             <input
               id="lastName"
               className={clsx(
-                'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-gray-700',
+                'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
                 errors.lastName
                   ? 'mb-0 border-red-500'
-                  : 'mb-5 hover:border-blue-600',
+                  : 'mb-5 hover:border-blue-600 dark:hover:border-white',
               )}
               type="text"
               {...register('lastName', {
@@ -167,8 +167,10 @@ export const RegisterForm = () => {
         <input
           id="email"
           className={clsx(
-            'rounded border bg-gray-200 px-5 py-2 dark:bg-gray-700',
-            errors.email ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
+            'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
+            errors.email
+              ? 'mb-0 border-red-500'
+              : 'mb-5 hover:border-blue-600 dark:hover:border-white',
           )}
           type="email"
           {...register('email', {
@@ -197,10 +199,10 @@ export const RegisterForm = () => {
           <input
             id="password"
             className={clsx(
-              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 dark:bg-gray-700',
+              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 dark:bg-lightText',
               errors.password
                 ? 'mb-0 border-red-500'
-                : 'mb-5 hover:border-blue-600',
+                : 'mb-5 hover:border-blue-600 dark:hover:border-white',
             )}
             type={showPassword ? 'text' : 'password'}
             {...register('password', {
@@ -246,10 +248,10 @@ export const RegisterForm = () => {
           <input
             id="confirmPassword"
             className={clsx(
-              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 dark:bg-gray-700',
+              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 dark:bg-lightText',
               errors.confirmPassword
                 ? 'mb-0 border-red-500'
-                : 'mb-5 hover:border-blue-600',
+                : 'mb-5 hover:border-blue-600 dark:hover:border-white',
             )}
             type={showConfirmPassword ? 'text' : 'password'}
             {...register('confirmPassword', {
@@ -282,7 +284,7 @@ export const RegisterForm = () => {
           <input
             id="rememberMeRegister"
             type="checkbox"
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer hover:border-blue-600 dark:border-gray-600 dark:bg-lightText dark:ring-blue-500 dark:hover:border-white"
             {...register('rememberMe')}
           />
           <label htmlFor="rememberMe" className="ml-2">
@@ -294,7 +296,7 @@ export const RegisterForm = () => {
           <input
             id="termsConditions"
             type="checkbox"
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer hover:border-blue-600 dark:border-gray-600 dark:bg-lightText dark:ring-blue-500 dark:hover:border-white"
             {...register('termsConditions')}
           />
           <label htmlFor="termsConditions" className="ml-2">
