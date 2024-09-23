@@ -39,7 +39,6 @@ export default function Paypal({
             height: 45,
           }}
           createOrder={async () => {
-            console.log('exchange: ', exchange);
             const res = await fetch('/api/paypal', {
               method: 'POST',
               headers: {
@@ -48,7 +47,6 @@ export default function Paypal({
               body: JSON.stringify(exchange),
             });
             const data = await res.json();
-            console.log('data: ', data);
             return data.orderID;
           }}
           onApprove={async (_data, actions) => {
@@ -56,11 +54,16 @@ export default function Paypal({
               const capture = await actions.order?.get();
 
               setPaypal();
-
+              console.log("datos paypal", capture )
               const client = {
+                transactionId: capture?.id ,
                 first_name: capture?.payer?.name?.given_name,
-                surname: capture?.payer?.name?.surname,
+                last_name: capture?.payer?.name?.surname,
                 email: capture?.payer?.email_address,
+                sendAmount: exchange.amount,
+                sendCurrency: exchange.currency,
+                payment_method: "PayPal",
+                identifier: capture?.payer?.payer_id,
               };
               localStorage.setItem('payer', JSON.stringify(client));
 

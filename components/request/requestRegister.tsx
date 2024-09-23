@@ -3,12 +3,14 @@
 'use client';
 
 import clsx from 'clsx';
+import SelectCountry from './selectCountry';
+
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState, useEffect } from 'react';
-import Select from 'react-select';
 import { paypalPaymentStore } from '@/store/paypalPaymetStore';
 import { requestRegister } from '@/actions/request/action.requestRegister';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import { useRequestTransactionStore } from '@/store/useResquestTransaction';
 
 type FormInputs = {
   first_name: string;
@@ -33,24 +35,34 @@ type CountryOption = {
 };
 
 interface payerOptions {
+  transactionId: string;
   first_name: string;
-  surname: string;
+  last_name: string;
   email: string;
+  sendAmount: number;
+  sendCurrency: string;
+  payment_method: string;
+  identifier: string;
 }
 
 export const RequestRegisterForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
-  const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(
+  const [currentCountry, setCurrentCountry] = useState<CountryOption | null>(
     null,
   );
   const [payer, setPayer] = useState<payerOptions>({
-    first_name: '',
-    surname: '',
-    email: '',
+    transactionId: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    sendAmount: 0,
+    sendCurrency: "",
+    payment_method: "",
+    identifier: ""
   });
-
+  const [currentDate, setCurrentDate] = useState<string>('');
+  const { receiveAmountStore } = useRequestTransactionStore();
   const {
     register,
     handleSubmit,
@@ -60,35 +72,18 @@ export const RequestRegisterForm = () => {
 
   useEffect(() => {
     const storedClient = localStorage.getItem('payer');
+    const today = new Date();
+    const day = today.getDate();
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+
+    setCurrentDate(`${day}/${month}/${year}`);
 
     if (storedClient) {
       const client = JSON.parse(storedClient);
       setPayer(client);
     }
-    const fetchCountries = async () => {
-      try {
-        const response = await fetch('https://restcountries.com/v3.1/all');
-        const countries = await response.json();
-        const options: CountryOption[] = countries.map((country: any) => {
-          const callingCode = country.idd?.root
-            ? `${country.idd.root}${country.idd.suffixes?.[0] || ''}`
-            : '';
-          return {
-            value: country.name.common,
-            label: `${country.name.common} (${callingCode ? callingCode : 'Sin código'})`,
-            callingCode: callingCode,
-          };
-        });
-        setCountryOptions(options);
-      } catch (error) {
-        console.error('Error fetching countries:', error);
-      }
-    };
-
-    fetchCountries();
   }, []);
-
-  console.log(selectedCountry);
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setErrorMessage('');
@@ -112,9 +107,11 @@ export const RequestRegisterForm = () => {
       type_of_document,
     } = data;
 
-    const fullPhoneNumber = `${selectedCountry?.callingCode} ${phone}`;
+    const fullPhoneNumber = `${currentCountry?.callingCode} ${phone}`;
 
     const formData = new FormData();
+    formData.append('date', currentDate);
+    formData.append('transactionId', payer.transactionId);
     formData.append('first_name', first_name || '');
     formData.append('last_name', last_name || '');
     formData.append('amount_sent', amount_sent || '');
@@ -165,7 +162,7 @@ export const RequestRegisterForm = () => {
         className="flex min-h-screen w-full max-w-xs flex-col justify-center rounded-lg bg-white p-8 shadow-md dark:bg-gray-800 xs:max-w-lg"
       >
         <h2 className="mb-5 text-center text-2xl font-bold text-gray-900 dark:text-white">
-          Formulario de Solicitud de Transferencia Bancaria
+          Formulario de Solicitud de Transferencia Bancaria {currentDate}
         </h2>
 
         <label
@@ -213,7 +210,7 @@ export const RequestRegisterForm = () => {
               : 'mb-5 hover:border-blue-600',
           )}
           type="text"
-          value={payer.surname}
+          value={payer.last_name}
           {...register('last_name', { required: 'El apellido es obligatorio' })}
         />
         {errors.last_name && (
@@ -222,102 +219,7 @@ export const RequestRegisterForm = () => {
           </p>
         )}
 
-        <label
-          htmlFor="country"
-          className={clsx(
-            errors.country
-              ? 'text-red-500'
-              : 'text-gray-900 dark:text-gray-300',
-          )}
-        >
-          País
-        </label>
-        <Select
-          id="country"
-          options={countryOptions}
-          value={selectedCountry}
-          onChange={(option) => {
-            setSelectedCountry(option);
-            setValue('country', option?.value ?? '');
-          }}
-          isClearable
-          isSearchable
-          classNamePrefix="custom-select"
-          className={clsx(
-            'rounded border border-[#6b7280] bg-gray-200 py-px text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.country
-              ? 'mb-0 border-red-500'
-              : 'mb-5 hover:border-blue-600',
-          )}
-          placeholder="Selecciona un país"
-          theme={(theme) => ({
-            ...theme,
-            borderRadius: 0,
-            colors: {
-              ...theme.colors,
-              primary25: 'rgba(59, 130, 246, 0.1)',
-              primary: 'rgb(59, 130, 246)',
-              neutral0: 'rgb(255, 255, 255)',
-              neutral20: 'rgb(209, 213, 219)',
-              neutral30: 'rgba(209, 213, 219, 0.5)',
-              neutral50: 'rgba(255, 255, 255, 0.5)',
-            },
-          })}
-          styles={{
-            control: (provided) => ({
-              ...provided,
-              border: 'none',
-              boxShadow: 'none',
-              backgroundColor: 'transparent',
-            }),
-            menu: (provided) => ({
-              ...provided,
-              backgroundColor: 'rgb(209, 213, 219)',
-            }),
-            option: (provided, state) => ({
-              ...provided,
-              backgroundColor: state.isSelected
-                ? 'rgb(59, 130, 246)'
-                : state.isFocused
-                  ? 'rgba(59, 130, 246, 0.1)'
-                  : 'rgb(209, 213, 219)',
-              color: state.isSelected ? 'white' : 'rgb(59, 130, 246)',
-              padding: '5px 10px',
-              cursor: 'pointer',
-              userSelect: 'text',
-              '&:hover': {
-                backgroundColor: 'rgba(59, 130, 246, 0.1)',
-              },
-            }),
-            singleValue: (provided) => ({
-              ...provided,
-              color: 'text-gray-900 dark:text-white',
-              userSelect: 'text',
-            }),
-            input: (provided) => ({
-              ...provided,
-              color: 'inherit',
-              background: 'none',
-              boxShadow: 'none',
-              '& input': {
-                font: 'inherit',
-                color: 'inherit',
-                userSelect: 'text',
-                border: 'none',
-                boxShadow: 'none',
-              },
-            }),
-            clearIndicator: (provided) => ({
-              ...provided,
-              color: 'inherit',
-            }),
-          }}
-        />
-        {errors.country && (
-          <p className="mb-5 text-sm text-red-500">
-            • {errors.country.message}
-          </p>
-        )}
+        <SelectCountry errors={errors} setValue={setValue} setCurrentCountry={setCurrentCountry}/>
 
         <label
           htmlFor="phone"
@@ -363,6 +265,7 @@ export const RequestRegisterForm = () => {
               : 'mb-5 hover:border-blue-600',
           )}
           type="number"
+          value={payer.sendAmount}
           {...register('amount_sent', {
             required: 'El monto enviado es obligatorio',
           })}
@@ -391,6 +294,7 @@ export const RequestRegisterForm = () => {
               : 'mb-5 hover:border-blue-600',
           )}
           type="number"
+          value={receiveAmountStore}
           {...register('amount_received', {
             required: 'El monto recibido es obligatorio',
           })}
@@ -419,6 +323,7 @@ export const RequestRegisterForm = () => {
               : 'mb-5 hover:border-blue-600',
           )}
           type="text"
+          value={payer.identifier}
           {...register('identifier', {
             required: 'El identificador es obligatorio',
           })}
@@ -447,6 +352,7 @@ export const RequestRegisterForm = () => {
               : 'mb-5 hover:border-blue-600',
           )}
           type="text"
+          value={payer.payment_method}
           {...register('payment_method', {
             required: 'El método de pago es obligatorio',
           })}
