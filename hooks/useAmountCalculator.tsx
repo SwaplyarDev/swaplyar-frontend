@@ -1,3 +1,4 @@
+// hooks/useAmountCalculator.tsx
 import { useState, useEffect } from 'react';
 import { calculateAmount, calculateInverseAmount } from '@/utils/currencyApis';
 import { useSystemStore } from '@/store/useSystemStore';
@@ -12,7 +13,10 @@ export const useAmountCalculator = () => {
   useEffect(() => {
     const updateAmounts = async () => {
       if (selectedSendingSystem && selectedReceivingSystem) {
-        if (sendAmount !== '' && isSendActive) {
+        if ((sendAmount === '' || sendAmount === '0') && isSendActive) {
+          // Reiniciar receiveAmount cuando sendAmount es 0 o vacío
+          setReceiveAmount('');
+        } else if (sendAmount !== '' && sendAmount !== '0' && isSendActive) {
           const parsedSendAmount = parseFloat(sendAmount);
           if (!isNaN(parsedSendAmount)) {
             const amount = await calculateAmount(
@@ -22,7 +26,10 @@ export const useAmountCalculator = () => {
             );
             setReceiveAmount(amount.toString());
           }
-        } else if (receiveAmount !== '' && !isSendActive) {
+        } else if ((receiveAmount === '' || receiveAmount === '0') && !isSendActive) {
+          // Reiniciar sendAmount cuando receiveAmount es 0 o vacío
+          setSendAmount('');
+        } else if (receiveAmount !== '' && receiveAmount !== '0' && !isSendActive) {
           const parsedReceiveAmount = parseFloat(receiveAmount);
           if (!isNaN(parsedReceiveAmount)) {
             const amount = await calculateInverseAmount(
@@ -42,7 +49,7 @@ export const useAmountCalculator = () => {
   // Efecto para calcular el monto recibido
   useEffect(() => {
     const fetchReceiveAmount = async () => {
-      if (selectedSendingSystem && selectedReceivingSystem && sendAmount !== '' && isSendActive) {
+      if (selectedSendingSystem && selectedReceivingSystem && sendAmount !== '' && sendAmount !== '0' && isSendActive) {
         try {
           const parsedSendAmount = parseFloat(sendAmount);
           if (!isNaN(parsedSendAmount)) {
@@ -65,7 +72,7 @@ export const useAmountCalculator = () => {
   // Efecto para calcular el monto enviado
   useEffect(() => {
     const fetchSendAmount = async () => {
-      if (selectedSendingSystem && selectedReceivingSystem && receiveAmount !== '' && !isSendActive) {
+      if (selectedSendingSystem && selectedReceivingSystem && receiveAmount !== '' && receiveAmount !== '0' && !isSendActive) {
         try {
           const parsedReceiveAmount = parseFloat(receiveAmount);
           if (!isNaN(parsedReceiveAmount)) {
@@ -85,19 +92,31 @@ export const useAmountCalculator = () => {
     fetchSendAmount();
   }, [receiveAmount, selectedSendingSystem, selectedReceivingSystem, isSendActive]);
 
+  // Función para manejar el cambio en el monto de envío
   const handleSendAmountChange = (value: string) => {
     if (/^[0-9]*[.,]?[0-9]{0,2}$/.test(value)) {
       setIsSendActive(true);
       const formattedValue = value.replace(',', '.');
-      setSendAmount(formattedValue);
+      if (formattedValue === '' || formattedValue === '0') {
+        setSendAmount('');
+        setReceiveAmount('');
+      } else {
+        setSendAmount(formattedValue);
+      }
     }
   };
 
+  // Función para manejar el cambio en el monto de recepción
   const handleReceiveAmountChange = (value: string) => {
     if (/^[0-9]*[.,]?[0-9]{0,2}$/.test(value)) {
       setIsSendActive(false);
       const formattedValue = value.replace(',', '.');
-      setReceiveAmount(formattedValue);
+      if (formattedValue === '' || formattedValue === '0') {
+        setReceiveAmount('');
+        setSendAmount('');
+      } else {
+        setReceiveAmount(formattedValue);
+      }
     }
   };
 

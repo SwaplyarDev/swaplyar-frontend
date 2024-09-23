@@ -1,3 +1,4 @@
+// hooks/useExchangeRates.tsx
 import { useState, useEffect, useCallback } from 'react';
 import { useSystemStore } from '@/store/useSystemStore';
 import { exchangeRates } from '@/utils/exchangeRates';

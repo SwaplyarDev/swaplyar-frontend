@@ -95,15 +95,15 @@ export default function TransactionCalculator() {
     }
   };
 
-  console.log( 'Rate: ', rateForOne)
-  console.log( 'Rate Bank: ', rateForOneBank)
-
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
       <div className="mat-card calculator-container dark:bg-calculatorDark flex w-full flex-col items-center rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:text-white">
         <p className="w-full max-w-lg text-2xl text-blue-800 dark:text-darkText xs:text-[2rem]">
-          1 {selectedSendingSystem?.coin} = {rateForOne.toFixed(2)}{' '}
-          {selectedReceivingSystem?.coin}
+          {selectedSendingSystem?.id === 'bank'
+            ? `${rateForOneBank.toFixed(2)} ${selectedSendingSystem?.coin} = 1
+          ${selectedReceivingSystem?.coin}`
+            : `1 ${selectedSendingSystem?.coin} = ${rateForOne.toFixed(2)}
+          ${selectedReceivingSystem?.coin}`}
         </p>
 
         <TransactionSection
@@ -140,7 +140,7 @@ export default function TransactionCalculator() {
           <div className="mt-8">
             <button
               className={clsx(
-                'border-buttonsLigth bg-buttonsLigth relative items-center justify-center rounded-3xl border px-10 py-3 text-white disabled:bg-gray-400 dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400',
+                'relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-10 py-3 text-white disabled:bg-gray-400 dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400',
                 {
                   buttonSecond: !(
                     sendAmount === '' ||
