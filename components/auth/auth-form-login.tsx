@@ -7,6 +7,8 @@ import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import useStore from '@/store/authViewStore';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import Link from 'next/link';
+import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 
 type FormInputs = {
   email: string;
@@ -24,6 +26,7 @@ export const LoginForm = () => {
   const { view, setView } = useStore();
   const [loading, setLoading] = useState(false);
   const [authState, setAuthState] = useState<string | null>(null);
+  const { isDark } = useDarkTheme();
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setLoading(true);
@@ -59,10 +62,10 @@ export const LoginForm = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
+    <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-start py-5 xs:mt-0 xs:justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex w-full max-w-lg flex-col rounded bg-white p-8 shadow-md dark:bg-gray-800"
+        className="flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
       >
         <h2 className="mb-5 text-center text-2xl font-bold">Iniciar Sesión</h2>
 
@@ -76,8 +79,10 @@ export const LoginForm = () => {
         </label>
         <input
           className={clsx(
-            'rounded border bg-gray-200 px-5 py-2 dark:bg-gray-700',
-            errors.email ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
+            'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
+            errors.email
+              ? 'mb-0 border-red-500'
+              : 'mb-5 hover:border-blue-600 dark:hover:border-white',
           )}
           type="email"
           {...register('email', {
@@ -104,10 +109,10 @@ export const LoginForm = () => {
         </label>
         <input
           className={clsx(
-            'rounded border bg-gray-200 px-5 py-2 dark:bg-gray-700',
+            'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
             errors.password
               ? 'mb-0 border-red-500'
-              : 'mb-5 hover:border-blue-600',
+              : 'mb-5 hover:border-blue-600 dark:hover:border-white',
           )}
           type="password"
           {...register('password', {
@@ -122,15 +127,18 @@ export const LoginForm = () => {
 
         <div className="mb-5 flex items-center">
           <input
-            id="rememberMe"
+            id="rememberMeLogin"
             type="checkbox"
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer hover:border-blue-600 dark:border-gray-600 dark:bg-lightText dark:ring-blue-500 dark:hover:border-white"
             {...register('rememberMe')}
           />
           <label htmlFor="rememberMe" className="ml-2">
             Recordar esta cuenta
           </label>
         </div>
+        <Link href={'/auth/forgot-password'} className="mb-5 hover:underline">
+          ¿Olvidaste tu contraseña?
+        </Link>
 
         {authState === 'CredentialsSignin' && (
           <div className="mb-5 flex w-full rounded border-2 border-red-500 bg-transparent p-4">
@@ -154,7 +162,7 @@ export const LoginForm = () => {
 
         <button
           onClick={handleChange}
-          className="btn-secondary btnAuthForm text-center"
+          className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
           type="button"
         >
           Crear una nueva cuenta
@@ -165,14 +173,11 @@ export const LoginForm = () => {
 };
 
 function LoginButton({ pending }: { pending: boolean }) {
+  const { isDark } = useDarkTheme();
   return (
     <button
       type="submit"
-      className={clsx({
-        'btn-primary': !pending,
-        'btn-disabled': pending,
-        btnAuthForm: true,
-      })}
+      className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
       disabled={pending}
     >
       {pending ? 'Ingresando...' : 'Ingresar'}

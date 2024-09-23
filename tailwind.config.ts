@@ -38,6 +38,7 @@ const config: Config = {
           600: '#2F6FEB',
         },
         buttonsLigth: '#012c8a',
+        calculatorDark: 'rgb(69 69 69 / 48%)',
         selectBtsLight: '#91aeec',
         darkText: '#ebe7e0',
         lightText: '#252526',
