@@ -316,7 +316,7 @@ export const RegisterForm = () => {
 
         <button
           type="submit"
-          className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 dark:text-darkText text-buttonsLigth hover:bg-transparent dark:border-darkText dark:hover:bg-transparent`}
+          className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
           disabled={loading}
         >
           {loading ? 'Creando cuenta...' : 'Crear cuenta'}

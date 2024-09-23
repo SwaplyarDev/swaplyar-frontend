@@ -27,7 +27,7 @@ export const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const [authState, setAuthState] = useState<string | null>(null);
   const { isDark } = useDarkTheme();
-  
+
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setLoading(true);
     const { email, password, rememberMe } = data;
@@ -65,7 +65,7 @@ export const LoginForm = () => {
     <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-start py-5 xs:mt-0 xs:justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="dark:bg-calculatorDark flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md"
+        className="flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
       >
         <h2 className="mb-5 text-center text-2xl font-bold">Iniciar Sesión</h2>
 
@@ -175,7 +175,7 @@ function LoginButton({ pending }: { pending: boolean }) {
   return (
     <button
       type="submit"
-      className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 dark:text-darkText text-buttonsLigth hover:bg-transparent dark:border-darkText dark:hover:bg-transparent`}
+      className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
       disabled={pending}
     >
       {pending ? 'Ingresando...' : 'Ingresar'}
