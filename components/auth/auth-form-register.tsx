@@ -91,7 +91,9 @@ export const RegisterForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="relative flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
       >
-        <h2 className="mb-5 text-center text-2xl font-bold text-buttonsLigth dark:text-darkText">Crear Cuenta</h2>
+        <h2 className="mb-5 text-center text-2xl font-bold text-buttonsLigth dark:text-darkText">
+          Crear Cuenta
+        </h2>
 
         <div className="flex flex-col justify-between xs:flex-row">
           <div className="flex flex-col xs:max-w-48">
