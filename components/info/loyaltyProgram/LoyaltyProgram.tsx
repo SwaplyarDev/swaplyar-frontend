@@ -2,7 +2,7 @@
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import RewardCard from '@/components/ui/reward-card/RewardCard';
 import useStore from '@/store/authViewStore';
-import Link from 'next/link'
+import Link from 'next/link';
 
 import {
   CentroDeAyuda,
@@ -59,7 +59,9 @@ function LoyaltyProgram() {
         </div>
       </div>
 
-      <div className="flex flex-wrap justify-center py-10"> checkout
+      <div className="flex flex-wrap justify-center py-10">
+        {' '}
+        checkout
         <RewardCard
           imageSrc={Rewards1}
           imageAlt="paso 1 de como cambiar tu dinero en SwaplyAr"
