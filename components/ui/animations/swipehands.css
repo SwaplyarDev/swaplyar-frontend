@@ -90,5 +90,5 @@
 }
 
 .touch-hand {
-  animation: touch-gesture 1.5s infinite ease-in-out;
+  animation: touch-gesture 1.5s infinite ;
 }

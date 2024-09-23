@@ -14,7 +14,7 @@ const SwipeHands: React.FC = () => {
         pathElement.style.animation = "swipe-dot 2s 0.5s infinite";
       }
       if (handIconElement) {
-        handIconElement.style.animation = "swipe-hand 2s infinite ease-in-out ";
+        handIconElement.style.animation = "swipe-hand 2s infinite  ";
       }
       if (touchHandElement) {
         touchHandElement.style.animation = "touch-gesture 1.5s infinite";
