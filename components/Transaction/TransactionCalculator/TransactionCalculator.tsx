@@ -29,7 +29,7 @@ export default function TransactionCalculator() {
     handleSendAmountChange,
     handleReceiveAmountChange,
   } = useAmountCalculator();
-  const { rateForOne } = useExchangeRate();
+  const { rateForOne, rateForOneBank } = useExchangeRate();
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
 
   useEffect(() => {
@@ -95,11 +95,8 @@ export default function TransactionCalculator() {
     }
   };
 
-  console.log( 'Envio: ',sendAmount)
-  console.log( 'Recibo: ', receiveAmount)
   console.log( 'Rate: ', rateForOne)
-  console.log( 'Coin Sending: ', selectedSendingSystem?.coin)
-  console.log( 'Coin Receiving: ', selectedReceivingSystem?.coin)
+  console.log( 'Rate Bank: ', rateForOneBank)
 
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
