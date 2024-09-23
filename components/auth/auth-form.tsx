@@ -23,9 +23,6 @@ const AuthForm: React.FC = () => {
     }
   }, [view]);
 
-  console.log(view);
-  console.log(swiperRef.current);
-
   return (
     <ClientWrapper>
       <section className="flex h-full min-h-screen flex-col items-center py-5">

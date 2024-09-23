@@ -10,6 +10,7 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import Link from 'next/link';
+import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 
 type FormInputs = {
   firstName: string;
@@ -26,6 +27,7 @@ export const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { isDark } = useDarkTheme();
 
   const {
     register,
@@ -87,7 +89,7 @@ export const RegisterForm = () => {
     <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-center py-5">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="relative flex w-full max-w-lg flex-col rounded-2xl bg-white p-8 shadow-md dark:bg-gray-800"
+        className="relative flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
       >
         <h2 className="mb-5 text-center text-2xl font-bold">Crear Cuenta</h2>
 
@@ -314,11 +316,7 @@ export const RegisterForm = () => {
 
         <button
           type="submit"
-          className={clsx({
-            'btn-primary': !loading,
-            'btn-disabled': loading,
-            btnAuthForm: true,
-          })}
+          className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 dark:text-darkText text-buttonsLigth hover:bg-transparent dark:border-darkText dark:hover:bg-transparent`}
           disabled={loading}
         >
           {loading ? 'Creando cuenta...' : 'Crear cuenta'}
@@ -332,7 +330,7 @@ export const RegisterForm = () => {
 
         <button
           onClick={handleChange}
-          className="btn-secondary btnAuthForm text-center"
+          className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
           type="button"
         >
           Ingresar

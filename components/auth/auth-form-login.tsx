@@ -8,6 +8,7 @@ import { useState } from 'react';
 import useStore from '@/store/authViewStore';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import Link from 'next/link';
+import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 
 type FormInputs = {
   email: string;
@@ -25,7 +26,8 @@ export const LoginForm = () => {
   const { view, setView } = useStore();
   const [loading, setLoading] = useState(false);
   const [authState, setAuthState] = useState<string | null>(null);
-
+  const { isDark } = useDarkTheme();
+  
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setLoading(true);
     const { email, password, rememberMe } = data;
@@ -63,7 +65,7 @@ export const LoginForm = () => {
     <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-start py-5 xs:mt-0 xs:justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex w-full max-w-lg flex-col rounded-2xl bg-white p-8 shadow-md dark:bg-gray-800"
+        className="dark:bg-calculatorDark flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md"
       >
         <h2 className="mb-5 text-center text-2xl font-bold">Iniciar Sesión</h2>
 
@@ -158,7 +160,7 @@ export const LoginForm = () => {
 
         <button
           onClick={handleChange}
-          className="btn-secondary btnAuthForm text-center"
+          className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
           type="button"
         >
           Crear una nueva cuenta
@@ -169,14 +171,11 @@ export const LoginForm = () => {
 };
 
 function LoginButton({ pending }: { pending: boolean }) {
+  const { isDark } = useDarkTheme();
   return (
     <button
       type="submit"
-      className={clsx({
-        'btn-primary': !pending,
-        'btn-disabled': pending,
-        btnAuthForm: true,
-      })}
+      className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 dark:text-darkText text-buttonsLigth hover:bg-transparent dark:border-darkText dark:hover:bg-transparent`}
       disabled={pending}
     >
       {pending ? 'Ingresando...' : 'Ingresar'}
