@@ -9,6 +9,8 @@ import useStore from '@/store/authViewStore';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import Link from 'next/link';
+import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 
 type FormInputs = {
   firstName: string;
@@ -17,6 +19,7 @@ type FormInputs = {
   password: string;
   confirmPassword: string;
   rememberMe: boolean;
+  termsConditions: boolean;
 };
 
 export const RegisterForm = () => {
@@ -24,6 +27,7 @@ export const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { isDark } = useDarkTheme();
 
   const {
     register,
@@ -40,7 +44,14 @@ export const RegisterForm = () => {
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setErrorMessage('');
     setLoading(true);
-    const { firstName, lastName, email, password, rememberMe } = data;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      rememberMe,
+      termsConditions,
+    } = data;
     const name = `${firstName} ${lastName}`;
 
     localStorage.setItem('rememberMe', JSON.stringify(rememberMe));
@@ -58,6 +69,7 @@ export const RegisterForm = () => {
       email,
       password,
       rememberMe: toString(),
+      termsConditions: toString(),
     });
 
     if (result?.error) {
@@ -74,12 +86,14 @@ export const RegisterForm = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
+    <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-center py-5">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="relative flex w-full max-w-lg flex-col rounded bg-white p-8 shadow-md dark:bg-gray-800"
+        className="relative flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
       >
-        <h2 className="mb-5 text-center text-2xl font-bold">Crear Cuenta</h2>
+        <h2 className="mb-5 text-center text-2xl font-bold text-buttonsLigth dark:text-darkText">
+          Crear Cuenta
+        </h2>
 
         <div className="flex flex-col justify-between xs:flex-row">
           <div className="flex flex-col xs:max-w-48">
@@ -96,13 +110,12 @@ export const RegisterForm = () => {
             <input
               id="firstName"
               className={clsx(
-                'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-gray-700',
+                'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
                 errors.firstName
                   ? 'mb-0 border-red-500'
-                  : 'mb-5 hover:border-blue-600',
+                  : 'mb-5 hover:border-blue-600 dark:hover:border-white',
               )}
               type="text"
-              autoFocus
               {...register('firstName', {
                 required: 'El nombre es obligatorio',
               })}
@@ -127,10 +140,10 @@ export const RegisterForm = () => {
             <input
               id="lastName"
               className={clsx(
-                'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-gray-700',
+                'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
                 errors.lastName
                   ? 'mb-0 border-red-500'
-                  : 'mb-5 hover:border-blue-600',
+                  : 'mb-5 hover:border-blue-600 dark:hover:border-white',
               )}
               type="text"
               {...register('lastName', {
@@ -156,8 +169,10 @@ export const RegisterForm = () => {
         <input
           id="email"
           className={clsx(
-            'rounded border bg-gray-200 px-5 py-2 dark:bg-gray-700',
-            errors.email ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
+            'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
+            errors.email
+              ? 'mb-0 border-red-500'
+              : 'mb-5 hover:border-blue-600 dark:hover:border-white',
           )}
           type="email"
           {...register('email', {
@@ -186,10 +201,10 @@ export const RegisterForm = () => {
           <input
             id="password"
             className={clsx(
-              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 dark:bg-gray-700',
+              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 dark:bg-lightText',
               errors.password
                 ? 'mb-0 border-red-500'
-                : 'mb-5 hover:border-blue-600',
+                : 'mb-5 hover:border-blue-600 dark:hover:border-white',
             )}
             type={showPassword ? 'text' : 'password'}
             {...register('password', {
@@ -203,7 +218,10 @@ export const RegisterForm = () => {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 right-0 mb-5 flex items-center px-3"
+            className={clsx(
+              'absolute inset-y-0 right-0 flex items-center px-3',
+              errors.password ? 'mb-0' : 'mb-5',
+            )}
           >
             {showPassword ? (
               <VisibilityOffOutlinedIcon />
@@ -232,10 +250,10 @@ export const RegisterForm = () => {
           <input
             id="confirmPassword"
             className={clsx(
-              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 dark:bg-gray-700',
+              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 dark:bg-lightText',
               errors.confirmPassword
                 ? 'mb-0 border-red-500'
-                : 'mb-5 hover:border-blue-600',
+                : 'mb-5 hover:border-blue-600 dark:hover:border-white',
             )}
             type={showConfirmPassword ? 'text' : 'password'}
             {...register('confirmPassword', {
@@ -246,7 +264,10 @@ export const RegisterForm = () => {
           <button
             type="button"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute inset-y-0 right-0 mb-5 flex items-center px-3"
+            className={clsx(
+              'absolute inset-y-0 right-0 flex items-center px-3',
+              errors.confirmPassword ? 'mb-0' : 'mb-5',
+            )}
           >
             {showConfirmPassword ? (
               <VisibilityOffOutlinedIcon />
@@ -263,13 +284,27 @@ export const RegisterForm = () => {
 
         <div className="mb-5 flex items-center">
           <input
-            id="rememberMe"
+            id="rememberMeRegister"
             type="checkbox"
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-blue-500 dark:focus:ring-blue-500"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer hover:border-blue-600 dark:border-gray-600 dark:bg-lightText dark:ring-blue-500 dark:hover:border-white"
             {...register('rememberMe')}
           />
           <label htmlFor="rememberMe" className="ml-2">
             Recordar esta cuenta
+          </label>
+        </div>
+
+        <div className="mb-5 flex items-center">
+          <input
+            id="termsConditions"
+            type="checkbox"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer hover:border-blue-600 dark:border-gray-600 dark:bg-lightText dark:ring-blue-500 dark:hover:border-white"
+            {...register('termsConditions')}
+          />
+          <label htmlFor="termsConditions" className="ml-2">
+            <Link href="/info/terms-and-conditions" className="underline">
+              Acepto Términos & Condiciones
+            </Link>
           </label>
         </div>
 
@@ -285,25 +320,21 @@ export const RegisterForm = () => {
 
         <button
           type="submit"
-          className={clsx({
-            'btn-primary': !loading,
-            'btn-disabled': loading,
-            btnAuthForm: true,
-          })}
+          className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
           disabled={loading}
         >
           {loading ? 'Creando cuenta...' : 'Crear cuenta'}
         </button>
 
         <div className="my-5 flex items-center">
-          <div className="flex-1 border-t border-gray-500"></div>
-          <div className="px-2 text-gray-800 dark:text-gray-300">O</div>
-          <div className="flex-1 border-t border-gray-500"></div>
+          <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
+          <div className="px-2 text-buttonsLigth dark:text-darkText">O</div>
+          <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
         </div>
 
         <button
           onClick={handleChange}
-          className="btn-secondary btnAuthForm text-center"
+          className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
           type="button"
         >
           Ingresar
