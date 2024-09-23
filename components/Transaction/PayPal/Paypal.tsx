@@ -54,15 +54,15 @@ export default function Paypal({
               const capture = await actions.order?.get();
 
               setPaypal();
-              console.log("datos paypal", capture )
+              console.log('datos paypal', capture);
               const client = {
-                transactionId: capture?.id ,
+                transactionId: capture?.id,
                 first_name: capture?.payer?.name?.given_name,
                 last_name: capture?.payer?.name?.surname,
                 email: capture?.payer?.email_address,
                 sendAmount: exchange.amount,
                 sendCurrency: exchange.currency,
-                payment_method: "PayPal",
+                payment_method: 'PayPal',
                 identifier: capture?.payer?.payer_id,
               };
               localStorage.setItem('payer', JSON.stringify(client));

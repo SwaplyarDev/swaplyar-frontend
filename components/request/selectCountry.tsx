@@ -18,9 +18,15 @@ type SelectCountryProps = {
   setCurrentCountry: any;
 };
 
-export default function SelectCountry({ errors, setValue, setCurrentCountry}: SelectCountryProps) {
+export default function SelectCountry({
+  errors,
+  setValue,
+  setCurrentCountry,
+}: SelectCountryProps) {
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
-  const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(
+    null,
+  );
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -47,13 +53,11 @@ export default function SelectCountry({ errors, setValue, setCurrentCountry}: Se
   }, []);
 
   return (
-    <div>
+    <>
       <label
         htmlFor="country"
         className={clsx(
-          errors.country
-            ? 'text-red-500'
-            : 'text-gray-900 dark:text-gray-300',
+          errors.country ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
         )}
       >
         País
@@ -72,9 +76,7 @@ export default function SelectCountry({ errors, setValue, setCurrentCountry}: Se
         classNamePrefix="custom-select"
         className={clsx(
           'rounded border border-[#6b7280] bg-gray-200 py-px text-gray-900 dark:bg-gray-700 dark:text-white',
-          errors.country
-            ? 'mb-0 border-red-500'
-            : 'mb-5 hover:border-blue-600',
+          errors.country ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
         )}
         placeholder="Selecciona un país"
         theme={(theme) => ({
@@ -145,7 +147,6 @@ export default function SelectCountry({ errors, setValue, setCurrentCountry}: Se
           • {errors.country.message as string}
         </p>
       )}
-    </div>
+    </>
   );
 }
-
