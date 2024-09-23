@@ -67,69 +67,70 @@ export const RequestRegisterForm = () => {
     setLoading(true);
 
     console.log('Datos del formulario:', data);
-    localStorage.removeItem('payer');
-    const {
-      first_name,
-      last_name,
-      amount_sent,
-      amount_received,
-      phone,
-      identifier,
-      payment_method,
-      document,
-      email,
-      proof_of_payment,
-      note,
-      country,
-      type_of_document,
-    } = data;
+    console.log('id de transaccion:', transactionId);
+    // localStorage.removeItem('payer');
+    // const {
+    //   first_name,
+    //   last_name,
+    //   amount_sent,
+    //   amount_received,
+    //   phone,
+    //   identifier,
+    //   payment_method,
+    //   document,
+    //   email,
+    //   proof_of_payment,
+    //   note,
+    //   country,
+    //   type_of_document,
+    // } = data;
 
-    const fullPhoneNumber = `${currentCountry?.callingCode} ${phone}`;
+    // const fullPhoneNumber = `${currentCountry?.callingCode} ${phone}`;
 
-    const formData = new FormData();
-    formData.append('date', currentDate);
-    formData.append('transactionId', transactionId);
-    formData.append('first_name', first_name || '');
-    formData.append('last_name', last_name || '');
-    formData.append('amount_sent', amount_sent || '');
-    formData.append('amount_received', amount_received || '');
-    formData.append('phone', fullPhoneNumber || '');
-    formData.append('identifier', identifier || '');
-    formData.append('payment_method', payment_method || '');
-    formData.append('document', document || '');
-    formData.append('email', email || '');
-    formData.append('type_of_document', type_of_document || '');
+    // const formData = new FormData();
+    // formData.append('date', currentDate);
+    // formData.append('transactionId', transactionId);
+    // formData.append('first_name', first_name || '');
+    // formData.append('last_name', last_name || '');
+    // formData.append('amount_sent', amount_sent || '');
+    // formData.append('amount_received', amount_received || '');
+    // formData.append('phone', fullPhoneNumber || '');
+    // formData.append('identifier', identifier || '');
+    // formData.append('payment_method', payment_method || '');
+    // formData.append('document', document || '');
+    // formData.append('email', email || '');
+    // formData.append('type_of_document', type_of_document || '');
 
-    if (proof_of_payment && proof_of_payment.length > 0) {
-      formData.append('comprobante', proof_of_payment[0]);
-    } else {
-      console.warn('No se ha proporcionado un archivo de comprobante');
-    }
+    // if (proof_of_payment && proof_of_payment.length > 0) {
+    //   formData.append('comprobante', proof_of_payment[0]);
+    // } else {
+    //   console.warn('No se ha proporcionado un archivo de comprobante');
+    // }
 
-    formData.append('note', note || '');
-    formData.append('country', country || '');
+    // formData.append('note', note || '');
+    // formData.append('country', country || '');
 
-    const entries = formData.entries();
-    let entry = entries.next();
-    while (!entry.done) {
-      console.log(`${entry.value[0]}: ${entry.value[1]}`);
-      entry = entries.next();
-    }
+    // const entries = formData.entries();
+    // let entry = entries.next();
+    // while (!entry.done) {
+    //   console.log(`${entry.value[0]}: ${entry.value[1]}`);
+    //   entry = entries.next();
+    // }
 
-    try {
-      const resp = await requestRegister(formData);
+    // try {
+    //   const resp = await requestRegister(formData);
 
-      setLoading(false);
+    //   setLoading(false);
 
-      if (!resp.ok) {
-        setErrorMessage(resp.message);
-        return;
-      }
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
-      setErrorMessage('Ha ocurrido un error al enviar la solicitud.');
-      setLoading(false);
-    }
+    //   if (!resp.ok) {
+    //     setErrorMessage(resp.message);
+    //     return;
+    //   }
+    // } catch (error) {
+    //   console.error('Error en la solicitud:', error);
+    //   setErrorMessage('Ha ocurrido un error al enviar la solicitud.');
+    //   setLoading(false);
+    // }
   };
 
   return (
@@ -142,7 +143,7 @@ export const RequestRegisterForm = () => {
           Formulario de Solicitud de Transferencia Bancaria {currentDate}
         </h2>
 
-        <PayerInfo errors={errors} register={register} />
+        <PayerInfo errors={errors} register={register} setValue={setValue} />
 
         <SelectCountry
           errors={errors}

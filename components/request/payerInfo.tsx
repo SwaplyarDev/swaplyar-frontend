@@ -1,11 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import { useRequestTransactionStore } from '@/store/useResquestTransaction';
 
 type payerOptions = {
-  transactionId: string;
   first_name: string;
   last_name: string;
   email: string;
@@ -18,11 +17,15 @@ type payerOptions = {
 type PayerInfoProps = {
   errors: FieldErrors;
   register: UseFormRegister<any>;
+  setValue: UseFormSetValue<any>;
 };
 
-export default function PayerInfo({ register, errors }: PayerInfoProps) {
+export default function PayerInfo({
+  register,
+  errors,
+  setValue,
+}: PayerInfoProps) {
   const [payer, setPayer] = useState<payerOptions>({
-    transactionId: '',
     first_name: '',
     last_name: '',
     email: '',
@@ -40,8 +43,15 @@ export default function PayerInfo({ register, errors }: PayerInfoProps) {
     if (storedClient) {
       const client = JSON.parse(storedClient);
       setPayer(client);
+
+      setValue('first_name', client.first_name);
+      setValue('last_name', client.last_name);
+      setValue('amount_sent', client.sendAmount);
+      setValue('payment_method', client.payment_method);
+      setValue('identifier', client.identifier);
+      setValue('email', client.email);
     }
-  }, []);
+  }, [setValue]);
 
   return (
     <>
@@ -145,7 +155,7 @@ export default function PayerInfo({ register, errors }: PayerInfoProps) {
             : 'mb-5 hover:border-blue-600',
         )}
         type="number"
-        value={receiveAmountStore}
+        value={1000000}
         {...register('amount_received', {
           required: 'El monto recibido es obligatorio',
         })}
