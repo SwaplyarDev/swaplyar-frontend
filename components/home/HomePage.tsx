@@ -6,13 +6,11 @@ import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import Link from 'next/link';
 import ConversionInstructions from '../ui/Conversion-Instructions/ConversionInstructions';
 import {
-  CentroDeAyuda,
   FlyerGif,
   RecargaPaypal,
   UsdArs,
 } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
-import EscapedText from '../ui/EscapedText/EscapedText';
 
 const mainStyles = {
   main: ' py-10  min-h-screen', // Centrado tanto vertical como horizontalmente

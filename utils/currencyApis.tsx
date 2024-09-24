@@ -1,5 +1,6 @@
 // /utils/currencyApis.tsx
 
+import { useExchangeRateStore } from '@/store/exchangeRateStore';
 import { exchangeRates } from './exchangeRates';
 
 const apiKey = process.env.NEXT_PUBLIC_FREE_CURRENCY_API_KEY;
@@ -122,7 +123,7 @@ export async function updateCurrentValueEUR() {
 }
 
 //* Función para obtener todas las tasas de cambio
-async function getExchangeRates() {
+export async function getExchangeRates() {
   try {
     const { currentValueEURToUSD, currentValueUSDToEUR } =
       await updateCurrentValueUSDToEUR();
@@ -149,59 +150,55 @@ async function getExchangeRates() {
   }
 }
 
-//* Función para calcular el monto convertido entre diferentes monedas
-export async function calculateAmount(
+// Función para calcular el monto convertido entre diferentes monedas
+export function calculateAmount(
   from: string,
   to: string,
   amount: number,
-): Promise<number> {
+): number {
+  console.log(from, to, amount);
   try {
-    const rates = await getExchangeRates();
-
-    // Encuentra la fórmula correspondiente en exchangeRates
+    const { rates } = useExchangeRateStore.getState(); 
+    if (!rates || Object.keys(rates).length === 0) {
+      throw new Error('Las tasas de cambio no están disponibles.');
+    }
     const exchangeRate = exchangeRates.find(
       (rate) => rate.from === from && rate.to === to,
     );
-
     if (!exchangeRate) {
       throw new Error(
         `No se encontró una fórmula para convertir de ${from} a ${to}`,
       );
     }
 
-    // Determina qué tasa de cambio se debe usar dependiendo de 'from' y 'to'
     let rate = 1; // Tasa por defecto
 
     switch (from) {
       case 'bank':
-        if (to === 'payoneer_usd' || to === 'paypal' || to === 'wise_usd') {
-          rate = rates.currentValueUSDBlueSale;
-        } else if (to === 'payoneer_eur' || to === 'wise_eur') {
-          rate = rates.currentValueEURBlueSale;
-        }
+        rate =
+          to === 'payoneer_usd' || to === 'paypal' || to === 'wise_usd'
+            ? rates.currentValueUSDBlueSale
+            : rates.currentValueEURBlueSale;
         break;
       case 'paypal':
       case 'payoneer_usd':
       case 'wise_usd':
-        if (to === 'bank') {
-          rate = rates.currentValueUSDBluePurchase;
-        } else if (to === 'payoneer_eur' || to === 'wise_eur') {
-          rate = rates.currentValueUSDToEUR;
-        }
+        rate =
+          to === 'bank'
+            ? rates.currentValueUSDBluePurchase
+            : rates.currentValueUSDToEUR;
         break;
       case 'payoneer_eur':
       case 'wise_eur':
-        if (to === 'bank') {
-          rate = rates.currentValueEURBluePurchase;
-        } else if (to === 'payoneer_usd' || to === 'wise_usd') {
-          rate = rates.currentValueEURToUSD;
-        }
+        rate =
+          to === 'bank'
+            ? rates.currentValueEURBluePurchase
+            : rates.currentValueEURToUSD;
         break;
       default:
         throw new Error(`Conversión de ${from} a ${to} no soportada.`);
     }
 
-    // Aplica la fórmula de conversión
     const convertedAmount = exchangeRate.formula(amount, rate);
     return parseFloat(convertedAmount.toFixed(2));
   } catch (error) {
@@ -220,7 +217,7 @@ export async function calculateInverseAmount(
   amountToReceive: number,
 ): Promise<number> {
   try {
-    const rates = await getExchangeRates();
+    const { rates } = useExchangeRateStore.getState(); // Accede a las tasas almacenadas
 
     // Encuentra la fórmula correspondiente en exchangeRates
     const exchangeRate = exchangeRates.find(
@@ -266,9 +263,6 @@ export async function calculateInverseAmount(
     }
 
     // Ahora calculamos el valor inverso usando la fórmula inversa.
-    // La mayoría de las fórmulas tienen un formato (amount / rate),
-    // para invertir eso simplemente multiplicamos por la tasa.
-
     const inverseAmount =
       (amountToReceive * rate) / (1 - obtenerPorcentajeDescuento(from, to));
 
@@ -295,8 +289,6 @@ function obtenerPorcentajeDescuento(from: string, to: string): number {
     );
   }
 
-  // En lugar de deducirlo manualmente, podrías mejorar esta función
-  // extrayendo el valor real en base a las fórmulas usadas.
   if (exchangeRate.formula.toString().includes('1 - 0.04')) {
     return 0.04;
   } else if (exchangeRate.formula.toString().includes('1 - 0.05')) {

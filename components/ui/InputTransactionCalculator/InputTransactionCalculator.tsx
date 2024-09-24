@@ -11,7 +11,6 @@ interface InputTransactionCalculatorProps {
 export const InputTransactionCalculator: React.FC<
   InputTransactionCalculatorProps
 > = ({ id, value, onChange, placeholder, label }) => {
-  console.log('Input ID:', id); // Consola para verificar el valor de id
   
   return (
     <div
