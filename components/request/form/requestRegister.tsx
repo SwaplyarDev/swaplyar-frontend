@@ -3,8 +3,9 @@
 'use client';
 
 import clsx from 'clsx';
-import SelectCountry from './selectCountry';
-import PayerInfo from './payerInfo';
+import SelectCountry from './inputs/selectCountry';
+import PayerInfo from './inputs/payerInfo';
+import ReceiverInfo from './inputs/receiverInfo';
 
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState, useEffect } from 'react';
@@ -35,10 +36,10 @@ type CountryOption = {
 export const RequestRegisterForm = () => {
   const [_errorMessage, setErrorMessage] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [paymentMethod, setPaymentMethod] = useState<string>('');
   const [currentCountry, setCurrentCountry] = useState<CountryOption | null>(
     null,
   );
-  const [currentDate, setCurrentDate] = useState<string>('');
   const [transactionId, setTransactionId] = useState<string>('');
   const {
     register,
@@ -48,17 +49,11 @@ export const RequestRegisterForm = () => {
   } = useForm<FormInputs>();
 
   useEffect(() => {
-    const today = new Date();
-    const day = today.getDate();
-    const month = today.getMonth() + 1;
-    const year = today.getFullYear();
-
-    setCurrentDate(`${day}/${month}/${year}`);
-
     const storedClient = localStorage.getItem('payer');
     if (storedClient) {
       const client = JSON.parse(storedClient);
       setTransactionId(client.transactionId);
+      setPaymentMethod(client.payment_method);
     }
   }, []);
 
@@ -134,13 +129,13 @@ export const RequestRegisterForm = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-transparent">
+    <div className="flex items-center justify-center bg-transparent">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex min-h-screen w-full max-w-xs flex-col justify-center rounded-lg bg-white p-8 shadow-md dark:bg-gray-800 xs:max-w-lg"
+        className="flex w-full max-w-xs flex-col justify-center rounded-lg bg-white p-8 shadow-md dark:bg-gray-800 xs:max-w-lg"
       >
         <h2 className="mb-5 text-center text-2xl font-bold text-gray-900 dark:text-white">
-          Formulario de Solicitud de Transferencia Bancaria {currentDate}
+          Formulario de Solicitud de Transferencia Bancaria mediante {paymentMethod}
         </h2>
 
         <PayerInfo errors={errors} register={register} setValue={setValue} />
@@ -234,6 +229,9 @@ export const RequestRegisterForm = () => {
             • {errors.type_of_document.message}
           </p>
         )}
+
+        <ReceiverInfo errors={errors} register={register} />
+
         <label
           htmlFor="proof_of_payment"
           className={clsx(

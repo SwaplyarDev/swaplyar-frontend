@@ -8,8 +8,8 @@ export const SwaplyArlogoWhite = '/images/SwaplyAr-Logo-White.png';
 
 /**request**/
 export const FormularioDeSolicitud = '/images/Formulario-de-Solicitud.png';
-export const FormularioDeSolicitudMovil =
-  '/images/Formulario-de-Solicitud-Movil.png';
+export const FormularioDeSolicitudMovil = '/images/Formulario-de-Solicitud-Movil.png';
+export const PaypaltoArs = '/images/request-ars-pp.png'
 
 /**home**/
 export const RecargaPaypal = '/images/recarga-paypal.png';
@@ -72,3 +72,4 @@ export const WiseUsdImg = '/images/wise.usd.big.png';
 export const WiseUsdDarkImg = '/images/wise.usd.dark.png';
 export const WiseEurImg = '/images/wise.eur.big.png';
 export const WiseEurDarkImg = '/images/wise.eur.dark.png';
+

@@ -195,7 +195,7 @@ export default function PayerInfo({
         </p>
       )}
 
-      <label
+      {/* <label
         htmlFor="payment_method"
         className={clsx(
           errors.payment_method
@@ -222,7 +222,7 @@ export default function PayerInfo({
         <p className="mb-5 text-sm text-red-500">
           • {errors.payment_method.message as string}
         </p>
-      )}
+      )} */}
       <label
         htmlFor="email"
         className={clsx(
