@@ -11,6 +11,7 @@ import {
   UsdArs,
 } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
+import { useSystemStore } from '@/store/useSystemStore';
 
 const mainStyles = {
   main: ' py-10  min-h-screen', // Centrado tanto vertical como horizontalmente
@@ -20,6 +21,11 @@ const mainStyles = {
 };
 
 export default function HomePage() {
+  const resetToDefault = useSystemStore((state) => state.resetToDefault);
+  useEffect(() => {
+    resetToDefault();
+  }, [resetToDefault]);
+
   const [bannerHeight, setBannerHeight] = useState(0);
   const bannerRef = useRef<HTMLDivElement>(null);
 

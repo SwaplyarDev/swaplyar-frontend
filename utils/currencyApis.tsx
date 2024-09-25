@@ -159,12 +159,7 @@ export function calculateAmount(
   amount: number,
 ): number {
   try {
-    const { rates, isLoading } = useExchangeRateStore.getState();
-
-    // Verifica si aún se están cargando las tasas
-    if (isLoading) {
-      throw new Error('Las tasas de cambio aún se están cargando.');
-    }
+    const { rates } = useExchangeRateStore.getState();
 
     // Verifica si las tasas están disponibles
     if (!rates || Object.keys(rates).length === 0) {
@@ -228,11 +223,7 @@ export async function calculateInverseAmount(
   amountToReceive: number,
 ): Promise<number> {
   try {
-    const { rates, isLoading } = useExchangeRateStore.getState();
-
-    if (isLoading) {
-      throw new Error('Las tasas de cambio aún se están cargando.');
-    }
+    const { rates } = useExchangeRateStore.getState();
 
     if (!rates || Object.keys(rates).length === 0) {
       throw new Error('Las tasas de cambio no están disponibles.');

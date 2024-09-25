@@ -43,7 +43,7 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
       if (intervalId) return;
       console.log('Iniciando la actualización periódica de tasas de cambio...');
       fetchAndUpdateRates();
-      intervalId = setInterval(fetchAndUpdateRates, 600000); 
+      intervalId = setInterval(fetchAndUpdateRates, 1000); 
     },
     stopUpdatingRates: () => {
       if (intervalId) {

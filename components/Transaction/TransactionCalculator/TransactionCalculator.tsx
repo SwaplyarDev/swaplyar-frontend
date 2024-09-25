@@ -89,6 +89,7 @@ export default function TransactionCalculator() {
               currency={exchange.currency}
               amount={exchange.amount}
               handleDirection={handleDirection}
+              handleClose={Swal.close}
             />,
           );
         }

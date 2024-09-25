@@ -19,6 +19,8 @@ export const useAmountCalculator = () => {
         try {
           if ((sendAmount === '' || sendAmount === '0') && isSendActive) {
             setReceiveAmount('');
+            localStorage.setItem('receiveAmount', '');
+            localStorage.setItem('sendAmount', '');
           } else if (sendAmount !== '' && sendAmount !== '0' && isSendActive) {
             const parsedSendAmount = parseFloat(sendAmount);
             if (!isNaN(parsedSendAmount)) {
@@ -27,13 +29,16 @@ export const useAmountCalculator = () => {
                 selectedReceivingSystem.id,
                 parsedSendAmount,
               );
+              localStorage.setItem('sendAmount', parsedSendAmount.toString());
               setReceiveAmount(amount.toString());
+              localStorage.setItem('receiveAmount', amount.toString());
             }
           } else if (
             (receiveAmount === '' || receiveAmount === '0') &&
             !isSendActive
           ) {
             setSendAmount('');
+            localStorage.setItem('sendAmount', '');
           } else if (
             receiveAmount !== '' &&
             receiveAmount !== '0' &&
@@ -47,6 +52,7 @@ export const useAmountCalculator = () => {
                 parsedReceiveAmount,
               );
               setSendAmount(amount.toString());
+              localStorage.setItem('sendAmount', amount.toString());
             }
           }
         } catch (error) {
