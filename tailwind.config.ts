@@ -39,6 +39,7 @@ const config: Config = {
         },
         calculatorDark: 'rgb(69 69 69 / 48%)',
         buttonsLigth: '#012c8a',
+        calculatorDark: 'rgb(69 69 69 / 48%)',
         selectBtsLight: '#91aeec',
         darkText: '#ebe7e0',
         lightText: '#252526',
@@ -59,6 +60,7 @@ const config: Config = {
       },
       backgroundColor: {
         'dark-blue': 'rgb(3, 35, 54)',
+        graytyc: 'rgb(69, 69, 69)',
       },
       top: {
         '57': '57%',
