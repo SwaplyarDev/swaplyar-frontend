@@ -51,7 +51,7 @@ export const useSystemStore = create<SystemStore>((set) => {
         const newDisabledSystems = new Set(state.disabledSystems);
         if (system) {
           newDisabledSystems.add(system.id);
-          localStorage.setItem('selectedSendingSystem', JSON.stringify(system)); 
+          localStorage.setItem('selectedSendingSystem', JSON.stringify(system));
         } else {
           localStorage.removeItem('selectedSendingSystem');
         }
@@ -65,7 +65,10 @@ export const useSystemStore = create<SystemStore>((set) => {
         const newDisabledSystems = new Set(state.disabledSystems);
         if (system) {
           newDisabledSystems.add(system.id);
-          localStorage.setItem('selectedReceivingSystem', JSON.stringify(system)); 
+          localStorage.setItem(
+            'selectedReceivingSystem',
+            JSON.stringify(system),
+          );
         } else {
           localStorage.removeItem('selectedReceivingSystem');
         }
@@ -87,9 +90,18 @@ export const useSystemStore = create<SystemStore>((set) => {
         return { disabledSystems: newDisabledSystems };
       }),
     resetToDefault: () => {
-      set({ selectedSendingSystem: defaultSendingSystem, selectedReceivingSystem: defaultReceivingSystem });
-      localStorage.setItem('selectedSendingSystem', JSON.stringify(defaultSendingSystem));
-      localStorage.setItem('selectedReceivingSystem', JSON.stringify(defaultReceivingSystem));
+      set({
+        selectedSendingSystem: defaultSendingSystem,
+        selectedReceivingSystem: defaultReceivingSystem,
+      });
+      localStorage.setItem(
+        'selectedSendingSystem',
+        JSON.stringify(defaultSendingSystem),
+      );
+      localStorage.setItem(
+        'selectedReceivingSystem',
+        JSON.stringify(defaultReceivingSystem),
+      );
     },
   };
 });

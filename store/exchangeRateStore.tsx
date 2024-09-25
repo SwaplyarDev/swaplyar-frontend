@@ -6,19 +6,19 @@ interface ExchangeRateStore {
   isLoading: boolean; // Nuevo estado de carga
   error: string | null; // Nuevo estado de error
   updateRates: (newRates: any) => void;
-  startUpdatingRates: () => void; 
-  stopUpdatingRates: () => void;  
+  startUpdatingRates: () => void;
+  stopUpdatingRates: () => void;
 }
 
-let intervalId: NodeJS.Timeout | null = null; 
+let intervalId: NodeJS.Timeout | null = null;
 
 export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
   const fetchAndUpdateRates = async () => {
     set({ isLoading: true, error: null });
-    
+
     try {
       const rates = await getExchangeRates();
-      
+
       if (Object.keys(rates).length > 0) {
         set({ rates, isLoading: false });
       } else {
@@ -35,7 +35,7 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
     isLoading: false,
     error: null,
     updateRates: (newRates) => {
-      console.log('Actualizando tasas de cambio con:', newRates); 
+      console.log('Actualizando tasas de cambio con:', newRates);
       set({ rates: newRates });
     },
     startUpdatingRates: () => {
@@ -43,11 +43,11 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
       if (intervalId) return;
       console.log('Iniciando la actualización periódica de tasas de cambio...');
       fetchAndUpdateRates();
-      intervalId = setInterval(fetchAndUpdateRates, 1000); 
+      intervalId = setInterval(fetchAndUpdateRates, 1000);
     },
     stopUpdatingRates: () => {
       if (intervalId) {
-        clearInterval(intervalId); 
+        clearInterval(intervalId);
         intervalId = null;
       }
     },

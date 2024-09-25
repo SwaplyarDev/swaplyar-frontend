@@ -15,7 +15,11 @@ export const useAmountCalculator = () => {
   // Efecto para actualizar montos al cambiar el sistema de envío o recepción
   useEffect(() => {
     const updateAmounts = async () => {
-      if (selectedSendingSystem && selectedReceivingSystem && Object.keys(rates).length > 0) {
+      if (
+        selectedSendingSystem &&
+        selectedReceivingSystem &&
+        Object.keys(rates).length > 0
+      ) {
         try {
           if ((sendAmount === '' || sendAmount === '0') && isSendActive) {
             setReceiveAmount('');
@@ -74,7 +78,11 @@ export const useAmountCalculator = () => {
   // Efecto para calcular la tasa por una unidad
   useEffect(() => {
     const fetchRates = async () => {
-      if (selectedSendingSystem && selectedReceivingSystem && Object.keys(rates).length > 0) {
+      if (
+        selectedSendingSystem &&
+        selectedReceivingSystem &&
+        Object.keys(rates).length > 0
+      ) {
         try {
           const rateOneUnit = await calculateAmount(
             selectedSendingSystem.id,

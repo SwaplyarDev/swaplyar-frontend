@@ -426,7 +426,8 @@ div:where(.swal2-icon).swal2-info {
     0px 0px 0px 4px #91aeec;
 }
 
-div:where(.swal2-container).swal2-backdrop-show, div:where(.swal2-container).swal2-noanimation{
+div:where(.swal2-container).swal2-backdrop-show,
+div:where(.swal2-container).swal2-noanimation {
   backdrop-filter: blur(5px);
 }
 
