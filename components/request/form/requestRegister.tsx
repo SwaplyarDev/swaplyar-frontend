@@ -135,7 +135,8 @@ export const RequestRegisterForm = () => {
         className="flex w-full max-w-xs flex-col justify-center rounded-lg bg-white p-8 shadow-md dark:bg-gray-800 xs:max-w-lg"
       >
         <h2 className="mb-5 text-center text-2xl font-bold text-gray-900 dark:text-white">
-          Formulario de Solicitud de Transferencia Bancaria mediante {paymentMethod}
+          Formulario de Solicitud de Transferencia Bancaria mediante{' '}
+          {paymentMethod}
         </h2>
 
         <PayerInfo errors={errors} register={register} setValue={setValue} />

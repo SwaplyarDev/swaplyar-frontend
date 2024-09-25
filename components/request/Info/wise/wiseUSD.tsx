@@ -1,19 +1,35 @@
-import RequestInfoBlock from "@/components/ui/RequestInfoBlock/RequestInfoBlock";
-import Image from "next/image";
-import { PaypaltoArs } from "@/utils/assets/img-database";
+import RequestInfoBlock from '@/components/ui/RequestInfoBlock/RequestInfoBlock';
+import Image from 'next/image';
+import {
+  WsUSDtoArs,
+  WsUSDtoPayPal,
+  WsUSDtoPyEUR,
+  WsUSDtoPyUSD,
+  WsUSDtoWsEUR,
+} from '@/utils/assets/img-database';
+import { useEffect, useState } from 'react';
 
-export function PaypalToArs (){
+export default function WiseUSD() {
+  const [payerBank, setPayerBank] = useState<string>('');
 
-    return(
+  useEffect(() => {
+    const data = localStorage.getItem('');
+    if (data) {
+      const bank = JSON.parse(data);
+      setPayerBank(bank);
+    }
+  }, []);
+  return (
     <>
-     <RequestInfoBlock
+      <RequestInfoBlock
         title="Complete el formulario para procesar su transferencia bancaria."
         content={
           <>
             <p className="mb-4 text-center text-lg md:text-left">
               Ingrese sus datos personales en el formulario: Nombre, Apellido,
               Número de WhatsApp, CBU o Alias, CUIL, Correo Electrónico y
-              Comprobante.
+              Comprobante. Realice la transferencia al banco ICBC Alias:
+              suarez.ICBC a nombre de Johan Suarez.
               <span className="bg-yellow-400 px-1 text-black">
                 Luego de realizar la transferencia o el pago, por favor suba el
                 comprobante de la misma (captura de pantalla) para completar su
@@ -21,15 +37,8 @@ export function PaypalToArs (){
               </span>
               Una vez recibido, procesaremos su transferencia.
             </p>
-            {/* <Image
-                src={FormularioDeSolicitudMovil}
-                alt="Formulario-de-Solicitud"
-                width={500}
-                height={350}
-                className="w-full lg:hidden"
-              /> */}
             <Image
-              src={PaypaltoArs}
+              src={WsUSDtoArs}
               alt="Formulario-de-Solicitud"
               width={500}
               height={350}
@@ -39,5 +48,5 @@ export function PaypalToArs (){
         }
       />
     </>
-    )
-};
+  );
+}
