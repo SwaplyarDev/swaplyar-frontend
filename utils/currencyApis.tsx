@@ -127,8 +127,10 @@ export async function getExchangeRates() {
   try {
     const { currentValueEURToUSD, currentValueUSDToEUR } =
       await updateCurrentValueUSDToEUR();
+
     const { currentValueUSDBlueSale, currentValueUSDBluePurchase } =
       await updateCurrentValueUSD();
+
     const { currentValueEURBlueSale, currentValueEURBluePurchase } =
       await updateCurrentValueEUR();
 
@@ -156,15 +158,23 @@ export function calculateAmount(
   to: string,
   amount: number,
 ): number {
-  console.log(from, to, amount);
   try {
-    const { rates } = useExchangeRateStore.getState(); 
+    const { rates, isLoading } = useExchangeRateStore.getState();
+
+    // Verifica si aún se están cargando las tasas
+    if (isLoading) {
+      throw new Error('Las tasas de cambio aún se están cargando.');
+    }
+
+    // Verifica si las tasas están disponibles
     if (!rates || Object.keys(rates).length === 0) {
       throw new Error('Las tasas de cambio no están disponibles.');
     }
+
     const exchangeRate = exchangeRates.find(
       (rate) => rate.from === from && rate.to === to,
     );
+
     if (!exchangeRate) {
       throw new Error(
         `No se encontró una fórmula para convertir de ${from} a ${to}`,
@@ -173,6 +183,7 @@ export function calculateAmount(
 
     let rate = 1; // Tasa por defecto
 
+    // Determina qué tasa de cambio se debe usar dependiendo de 'from' y 'to'
     switch (from) {
       case 'bank':
         rate =
@@ -217,9 +228,16 @@ export async function calculateInverseAmount(
   amountToReceive: number,
 ): Promise<number> {
   try {
-    const { rates } = useExchangeRateStore.getState(); // Accede a las tasas almacenadas
+    const { rates, isLoading } = useExchangeRateStore.getState();
 
-    // Encuentra la fórmula correspondiente en exchangeRates
+    if (isLoading) {
+      throw new Error('Las tasas de cambio aún se están cargando.');
+    }
+
+    if (!rates || Object.keys(rates).length === 0) {
+      throw new Error('Las tasas de cambio no están disponibles.');
+    }
+
     const exchangeRate = exchangeRates.find(
       (rate) => rate.from === from && rate.to === to,
     );
@@ -230,7 +248,6 @@ export async function calculateInverseAmount(
       );
     }
 
-    // Determina qué tasa de cambio se debe usar dependiendo de 'from' y 'to'
     let rate = 1; // Tasa por defecto
 
     switch (from) {
@@ -262,7 +279,6 @@ export async function calculateInverseAmount(
         throw new Error(`Conversión de ${from} a ${to} no soportada.`);
     }
 
-    // Ahora calculamos el valor inverso usando la fórmula inversa.
     const inverseAmount =
       (amountToReceive * rate) / (1 - obtenerPorcentajeDescuento(from, to));
 

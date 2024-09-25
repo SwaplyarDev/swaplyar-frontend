@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, use } from 'react';
 import SystemInfo from '../SystemInfo/SystemInfo';
 import InvertSystems from '../InvertSystems/InvertSystems';
 import { useSystemStore } from '@/store/useSystemStore';
@@ -18,7 +18,7 @@ import { useExchangeRate } from '@/hooks/useExchangeRates';
 
 export default function TransactionCalculator() {
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
-  const { startUpdatingRates, stopUpdatingRates } = useExchangeRateStore();
+  const { startUpdatingRates, stopUpdatingRates, isLoading } = useExchangeRateStore();
   const { findExchangeRate } = useExchangeRate();
   const hasRun = useRef(false);
 
@@ -35,6 +35,7 @@ export default function TransactionCalculator() {
       };
     }
   }, [selectedSendingSystem, selectedReceivingSystem, startUpdatingRates, stopUpdatingRates, findExchangeRate]);
+
   const { activeSelect } = useSystemStore();
   const router = useRouter();
   const { isDark } = useDarkTheme();

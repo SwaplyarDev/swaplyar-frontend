@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSystemStore } from '@/store/useSystemStore';
-import { useExchangeRateStore } from '@/store/exchangeRateStore';
 import { exchangeRates } from '@/utils/exchangeRates';
 import {
   updateCurrentValueEUR,
@@ -10,7 +9,6 @@ import {
 
 export const useExchangeRate = () => {
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
-  const { startUpdatingRates, stopUpdatingRates } = useExchangeRateStore();
   const [exchangeRate, setExchangeRate] = useState<number>(0);
 
   const findExchangeRate = useCallback(async () => {
