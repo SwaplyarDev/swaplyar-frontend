@@ -6,13 +6,12 @@ import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import Link from 'next/link';
 import ConversionInstructions from '../ui/Conversion-Instructions/ConversionInstructions';
 import {
-  CentroDeAyuda,
   FlyerGif,
   RecargaPaypal,
   UsdArs,
 } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
-import EscapedText from '../ui/EscapedText/EscapedText';
+import { useSystemStore } from '@/store/useSystemStore';
 
 const mainStyles = {
   main: 'py-10 min-h-screen', // Centrado tanto vertical como horizontalmente
@@ -25,9 +24,15 @@ export default function HomePage() {
   const [instructionsOffset, setInstructionsOffset] = useState(0);
   const instructionsRef = useRef<HTMLDivElement>(null);
 
+  const resetToDefault = useSystemStore((state) => state.resetToDefault);
+  useEffect(() => {
+    resetToDefault();
+  }, [resetToDefault]);
+
+
   const calculateInstructionsOffset = () => {
     if (instructionsRef.current) {
-      // Calcular la posición de ConversionInstructions
+
       setInstructionsOffset(instructionsRef.current.offsetTop);
     }
   };
@@ -49,7 +54,7 @@ export default function HomePage() {
         </FlyerTrabajo>
       </div>
 
-      {/* Aquí posicionamos la animación justo detrás de ConversionInstructions */}
+      
       <div className="relative flex flex-col items-center justify-center">
         <div
           className={mainStyles.instructionsCalculatorContainer}

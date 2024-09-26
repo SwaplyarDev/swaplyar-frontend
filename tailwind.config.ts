@@ -37,6 +37,7 @@ const config: Config = {
           500: '#0070F3',
           600: '#2F6FEB',
         },
+        calculatorDark: 'rgb(69 69 69 / 48%)',
         buttonsLigth: '#012c8a',
         calculatorDark: 'rgb(69 69 69 / 48%)',
         selectBtsLight: '#91aeec',
@@ -45,6 +46,9 @@ const config: Config = {
       },
       width: {
         '9/10': '90%',
+      },
+      brightness: {
+        '95': '0.95',
       },
       dropShadow: {
         light: '0 5px 4px rgba(0, 0, 0, 0.400)',
