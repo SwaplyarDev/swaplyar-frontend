@@ -6,13 +6,12 @@ import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import Link from 'next/link';
 import ConversionInstructions from '../ui/Conversion-Instructions/ConversionInstructions';
 import {
-  CentroDeAyuda,
   FlyerGif,
   RecargaPaypal,
   UsdArs,
 } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
-import EscapedText from '../ui/EscapedText/EscapedText';
+import { useSystemStore } from '@/store/useSystemStore';
 
 const mainStyles = {
   main: ' py-10  min-h-screen', // Centrado tanto vertical como horizontalmente
@@ -22,6 +21,11 @@ const mainStyles = {
 };
 
 export default function HomePage() {
+  const resetToDefault = useSystemStore((state) => state.resetToDefault);
+  useEffect(() => {
+    resetToDefault();
+  }, [resetToDefault]);
+
   const [bannerHeight, setBannerHeight] = useState(0);
   const bannerRef = useRef<HTMLDivElement>(null);
 
