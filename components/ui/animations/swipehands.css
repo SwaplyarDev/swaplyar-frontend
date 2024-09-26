@@ -82,10 +82,10 @@
 /* Animación de toque */
 @keyframes touch-gesture {
   0%, 100% {
-    transform: translateY(0) scale(1);
+    transform: translateY(0) scale(o.5);
   }
   50% {
-    transform: translateY(2px) scale(0.8); /* Gesto de tocar */
+    transform: translateY(0.5px) scale(0.8); /* Gesto de tocar */
   }
 }
 
