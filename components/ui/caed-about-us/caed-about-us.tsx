@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import Image from 'next/image';
 import './CaedAboutUs.css';
-import SwipeHands from '../animations/SwipeHands'; // Importa el componente de las manitos
+import SwipeHands from '../animations/SwipeHands'; 
 
 interface CardData {
   src: string;
@@ -20,7 +20,7 @@ interface CaedAboutUsProps {
 const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showSwipeHands, setShowSwipeHands] = useState(false);
-  const sectionRef = useRef(null); // Referencia al componente
+  const sectionRef = useRef(null); 
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
@@ -41,16 +41,16 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
     trackMouse: true,
   });
 
-  // Usa IntersectionObserver para detectar cuando el componente está visible
+  
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        console.log('IntersectionObserver triggered:', entry.isIntersecting); // Agrega este log
+        console.log('IntersectionObserver triggered:', entry.isIntersecting);
         if (entry.isIntersecting) {
           setShowSwipeHands(true);
         }
       },
-      { threshold: 1 }, // Aparecerá cuando el 50% del componente sea visible
+      { threshold: 1 }, 
     );
 
     if (sectionRef.current) {
@@ -66,7 +66,7 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
 
   return (
     <div ref={sectionRef} className="relative h-full w-full">
-      {/* Mostrar las manitos solo en móvil y cuando sea visible */}
+      
       {showSwipeHands && (
         <div className="block md:hidden">
           <SwipeHands />
