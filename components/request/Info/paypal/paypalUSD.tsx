@@ -13,10 +13,10 @@ export default function PaypalUSD() {
   const [payerBank, setPayerBank] = useState<string>('');
 
   useEffect(() => {
-    const data = localStorage.getItem('');
+    const data = localStorage.getItem('selectedReceivingSystem');
     if (data) {
       const bank = JSON.parse(data);
-      setPayerBank(bank);
+      setPayerBank(bank.name);
     }
   }, []);
   return (
@@ -46,13 +46,51 @@ export default function PaypalUSD() {
                 </li>
               </ul>
             </p>
-            <Image
-              src={PaypalToArs}
-              alt="Formulario-de-Solicitud"
-              width={500}
-              height={350}
-              className="hidden w-full lg:block"
-            />
+            {payerBank === 'Banco' && 
+              <Image
+                src={PaypalToArs}
+                alt="Formulario-de-Solicitud"
+                width={500}
+                height={350}
+                className="hidden w-full lg:block"
+              />
+            }
+            {payerBank === 'Payoneer EUR' && 
+              <Image
+                src={PaypalToPyEUR}
+                alt="Formulario-de-Solicitud"
+                width={500}
+                height={350}
+                className="hidden w-full lg:block"
+              />
+            }
+            {payerBank === 'Payoneer USD' && 
+              <Image
+                src={PaypalToPyUSD}
+                alt="Formulario-de-Solicitud"
+                width={500}
+                height={350}
+                className="hidden w-full lg:block"
+              />
+            }
+            {payerBank === 'Wise EUR' &&
+              <Image
+                src={PaypalToWsEUR}
+                alt="Formulario-de-Solicitud"
+                width={500}
+                height={350}
+                className="hidden w-full lg:block"
+              />
+            }
+            {payerBank === 'Wise USD' &&
+              <Image
+                src={PaypalToWsUSD}
+                alt="Formulario-de-Solicitud"
+                width={500}
+                height={350}
+                className="hidden w-full lg:block"
+              />
+            }
           </>
         }
       />

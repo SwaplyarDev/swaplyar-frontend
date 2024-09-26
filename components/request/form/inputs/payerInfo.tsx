@@ -5,9 +5,7 @@ import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
 type payerOptions = {
   sendAmount: number;
-  sendCurrency: string;
   recibeAmount: number;
-  recibeCurrency: string;
 };
 
 type PayerInfoProps = {
@@ -22,14 +20,15 @@ export default function PayerInfo({
   setValue,
 }: PayerInfoProps) {
   const [amounts, setAmounts] = useState<payerOptions>({
-    sendAmount: 1,
-    sendCurrency: '',
-    recibeAmount: 16000,
-    recibeCurrency: '',
+    sendAmount: 0,
+    recibeAmount: 0,
   });
 
   useEffect(() => {
     const storedClient = localStorage.getItem('payer');
+    const storedSendAmount = localStorage.getItem('sendAmount');
+    const storedReciveAmount = localStorage.getItem('receiveAmount');
+
 
     if (storedClient) {
       const client = JSON.parse(storedClient);
@@ -40,6 +39,15 @@ export default function PayerInfo({
       setValue('identifier', client.identifier);
       setValue('email', client.email);
     }
+
+    let preAmounts = {
+      sendAmount: parseInt(storedSendAmount as string),
+      recibeAmount: parseInt(storedReciveAmount as string),
+    };
+
+    setAmounts(preAmounts);
+    
+
   }, [setValue]);
 
   return (

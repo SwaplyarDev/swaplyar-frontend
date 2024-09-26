@@ -13,10 +13,10 @@ export default function PaypalEUR() {
   const [payerBank, setPayerBank] = useState<string>('');
 
   useEffect(() => {
-    const data = localStorage.getItem('');
+    const data = localStorage.getItem('selectedReceivingSystem');
     if (data) {
       const bank = JSON.parse(data);
-      setPayerBank(bank);
+      setPayerBank(bank.name);
     }
   }, []);
   return (

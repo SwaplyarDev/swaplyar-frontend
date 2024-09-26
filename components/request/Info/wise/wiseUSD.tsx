@@ -13,10 +13,10 @@ export default function WiseUSD() {
   const [payerBank, setPayerBank] = useState<string>('');
 
   useEffect(() => {
-    const data = localStorage.getItem('');
+    const data = localStorage.getItem('selectedReceivingSystem');
     if (data) {
       const bank = JSON.parse(data);
-      setPayerBank(bank);
+      setPayerBank(bank.name);
     }
   }, []);
   return (
@@ -58,13 +58,51 @@ export default function WiseUSD() {
                 </li>
               </ul>
             </p>
-            <Image
-              src={WsUSDtoArs}
-              alt="Formulario-de-Solicitud"
-              width={500}
-              height={350}
-              className="hidden w-full lg:block"
-            />
+            {payerBank === 'Banco' && 
+              <Image
+                src={WsUSDtoArs}
+                alt="Formulario-de-Solicitud"
+                width={500}
+                height={350}
+                className="hidden w-full lg:block"
+              />
+            }
+            {payerBank === 'PayPal' && 
+              <Image
+                src={WsUSDtoPayPal}
+                alt="Formulario-de-Solicitud"
+                width={500}
+                height={350}
+                className="hidden w-full lg:block"
+              />
+            }
+            {payerBank === 'Payoneer EUR' && 
+              <Image
+                src={WsUSDtoPyEUR}
+                alt="Formulario-de-Solicitud"
+                width={500}
+                height={350}
+                className="hidden w-full lg:block"
+              />
+            }
+            {payerBank === 'Payoneer USD' &&
+              <Image
+                src={WsUSDtoPyUSD}
+                alt="Formulario-de-Solicitud"
+                width={500}
+                height={350}
+                className="hidden w-full lg:block"
+              />
+            }
+            {payerBank === 'Wise EUR' &&
+              <Image
+                src={WsUSDtoWsEUR}
+                alt="Formulario-de-Solicitud"
+                width={500}
+                height={350}
+                className="hidden w-full lg:block"
+              />
+            }
           </>
         }
       />
