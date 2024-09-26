@@ -26,7 +26,7 @@ const SwipeHands: React.FC = () => {
     }
 
     const timer = setTimeout(() => {
-      setShowHands(false); // Oculta las manos después de 4 segundos
+      setShowHands(false); 
     }, 4000);
 
     return () => clearTimeout(timer);

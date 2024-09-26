@@ -1,23 +1,23 @@
-/* Overlay que cubre toda la pantalla */
+
 .overlay {
   position: absolute;
   width: 90%;
   left: 5%;
   border-radius: 10px;
   height: 30vh;
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo negro semitransparente */
+  background-color: rgba(0, 0, 0, 0.5); 
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Asegura que esté por encima de otros elementos */
+  z-index: 1000; 
 }
 
-/* Contenedor de las animaciones de las manos */
+
 .swipe {
   position: relative;
 }
 
-/* Animación del camino del swipe */
+
 .path {
   width: 20px;
   height: 20px;
@@ -29,7 +29,7 @@
   visibility: hidden;
 }
 
-/* Mano haciendo el gesto de swipe */
+
 .hand-icon {
   position: relative;
   background-image: url('../../../public/images/hand.png');
@@ -67,7 +67,7 @@
   }
 }
 
-/* Nueva mano para el gesto de toque */
+
 .touch-hand {
   position: relative;
   background-image: url('../../../public/images/hand.png');
@@ -78,14 +78,14 @@
   transform-origin: 50% 80%;
 }
 
-/* Animación de toque */
+
 @keyframes touch-gesture {
   0%,
   100% {
     transform: translateY(0) scale(o.5);
   }
   50% {
-    transform: translateY(0.5px) scale(0.8); /* Gesto de tocar */
+    transform: translateY(0.5px) scale(0.8); 
   }
 }
 
