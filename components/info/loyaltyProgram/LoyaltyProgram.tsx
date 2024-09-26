@@ -2,7 +2,9 @@
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import RewardCard from '@/components/ui/reward-card/RewardCard';
 import useStore from '@/store/authViewStore';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 
 import {
   CentroDeAyuda,
@@ -17,13 +19,36 @@ function LoyaltyProgram() {
     setView('register');
     window.location.href = '/auth/login-register';
   };
+
+
+  const [bannerHeight, setBannerHeight] = useState(0);
+  const bannerRef = useRef<HTMLDivElement>(null);
+
+  const calculateBannerHeight = () => {
+    if (bannerRef.current) {
+      setBannerHeight(bannerRef.current.offsetHeight);
+    }
+  };
+
+  useEffect(() => {
+    calculateBannerHeight();
+
+    window.addEventListener('resize', calculateBannerHeight);
+
+    return () => {
+      window.removeEventListener('resize', calculateBannerHeight);
+    };
+  }, []);
+
+
   return (
-    <div className="py-10">
-      <FlyerTrabajo imageSrc={CentroDeAyuda}>
+    <div className="py-10" ref={bannerRef} >
+      <FlyerTrabajo imageSrc={CentroDeAyuda} >
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-
-      <div className="text-center">
+      <AnimatedBlurredCircles topOffset={bannerHeight} />
+      <div className="text-center" >
+     
         <h1 className="mb-4 text-4xl font-bold">
           SwaplyAr Plus Rewards™ premia tu fidelidad
         </h1>

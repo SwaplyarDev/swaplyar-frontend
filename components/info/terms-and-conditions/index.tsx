@@ -1,19 +1,43 @@
+"use client"
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
+import { useState, useEffect, useRef } from 'react';
 import {
   CentroDeAyuda,
   TerminosCondiciones,
 } from '@/utils/assets/img-database';
 import Image from 'next/image';
+import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 
 const TermsAndConditions = () => {
+  const [bannerHeight, setBannerHeight] = useState(0);
+  const bannerRef = useRef<HTMLDivElement>(null);
+
+  const calculateBannerHeight = () => {
+    if (bannerRef.current) {
+      setBannerHeight(bannerRef.current.offsetHeight);
+    }
+  };
+
+  useEffect(() => {
+    calculateBannerHeight();
+
+    window.addEventListener('resize', calculateBannerHeight);
+
+    return () => {
+      window.removeEventListener('resize', calculateBannerHeight);
+    };
+  }, []);
+
   return (
+
     <div className="flex flex-col items-center py-10">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
 
-      <div className="mx-auto flex w-full max-w-[80%] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left">
+      <div className="mx-auto flex w-full max-w-[80%] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left"  ref={bannerRef}>
+      <AnimatedBlurredCircles topOffset={bannerHeight} />
         <div className="flex w-full max-w-[600px] items-center justify-center p-0">
           <h1 className="mb-6 text-3xl md:text-4xl">
             Términos y Condiciones de Uso y Navegación del Sitio SwaplyAr

@@ -46,14 +46,10 @@ body {
 
 .container-blur {
   @apply absolute flex h-[150vh] w-full justify-center overflow-hidden;
-  
 }
 
-
-
-
 .box {
-  @apply  h-full w-full rounded-full;
+  @apply h-full w-full rounded-full;
   animation: spin 30s infinite linear; /* Hace que los círculos giren */
   display: flex;
   justify-content: center;
@@ -62,7 +58,7 @@ body {
 }
 
 .ball {
-  @apply absolute h-[110px] w-[110px] rounded-full blur-[4.5em];
+  @apply absolute h-[110px] w-[110px] rounded-full blur-[5em];
 }
 
 /* Círculos con mayor extensión lateral */
