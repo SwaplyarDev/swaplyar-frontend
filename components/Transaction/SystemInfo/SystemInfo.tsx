@@ -38,16 +38,18 @@ export default function SystemInfo({
           `,
           icon: 'info',
           confirmButtonText: 'Aceptar',
-          background: isDark ? '#1f2937' : '#ffffff',
+          background: isDark ? 'rgb(69 69 69)' : '#ffffff',
           color: isDark ? '#ffffff' : '#000000',
+          customClass: {
+            confirmButton:
+              'bg-[#0070ba] rounded-[23px] h-[45px] min-w-[150px] text-white border-none px-5 py-2.5 cursor-pointer hover:filter hover:brightness-95',
+            container: 'custom-sw-container',
+          },
           preConfirm: () => {
-            // Llama a toggleTooltip al hacer clic en "Aceptar"
             toggleTooltip();
           },
           willClose: () => {
-            // Asegurarse de que se actualice el estado al cerrar el modal
             setIsTooltipVisible(false);
-            // Restaurar el padding y quitar no-scroll
             document.body.style.paddingRight = '0px';
             document.body.classList.remove('no-scroll');
           },

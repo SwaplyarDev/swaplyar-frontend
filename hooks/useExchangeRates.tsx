@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { useSystemStore } from '@/store/useSystemStore';
 import { exchangeRates } from '@/utils/exchangeRates';
 import {
-  calculateAmount,
   updateCurrentValueEUR,
   updateCurrentValueUSD,
   updateCurrentValueUSDToEUR,
@@ -11,7 +10,6 @@ import {
 export const useExchangeRate = () => {
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
   const [exchangeRate, setExchangeRate] = useState<number>(0);
-  const [rateForOne, setRateForOne] = useState<number>(0);
 
   const findExchangeRate = useCallback(async () => {
     if (selectedSendingSystem && selectedReceivingSystem) {
@@ -35,21 +33,11 @@ export const useExchangeRate = () => {
         }
 
         setExchangeRate(rate);
-        const rateOneUnit = await calculateAmount(
-          selectedSendingSystem.id,
-          selectedReceivingSystem.id,
-          1,
-        );
-        setRateForOne(rateOneUnit || 0);
       }
     }
   }, [selectedSendingSystem, selectedReceivingSystem]);
 
-  useEffect(() => {
-    findExchangeRate();
-  }, [findExchangeRate]);
-
-  return { exchangeRate, rateForOne };
+  return { exchangeRate, findExchangeRate };
 };
 
 const handleSameCurrencyRate = async (coin: string) => {

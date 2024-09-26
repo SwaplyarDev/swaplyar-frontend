@@ -9,12 +9,14 @@ interface PayPalProps {
   currency: string;
   amount: number;
   handleDirection: () => void;
+  handleClose: () => void;
 }
 
 export default function Paypal({
   currency,
   amount,
   handleDirection,
+  handleClose,
 }: PayPalProps) {
   const [exchange, setExchange] = useState({ amount, currency });
 
@@ -68,6 +70,7 @@ export default function Paypal({
               localStorage.setItem('payer', JSON.stringify(client));
 
               handleDirection();
+              handleClose();
             } catch (error) {
               console.error('Error al capturar el pago:', error);
             }
