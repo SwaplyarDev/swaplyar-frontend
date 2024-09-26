@@ -26,15 +26,25 @@ export default function PaypalUSD() {
         content={
           <>
             <p className="mb-4 text-center text-lg md:text-left">
-              Ingrese sus datos personales en el formulario: Nombre, Apellido,
-              Número de WhatsApp, CBU o Alias, CUIL, Correo Electrónico y
-              Comprobante.
-              <span className="bg-yellow-400 px-1 text-black">
-                Luego de realizar la transferencia o el pago, por favor suba el
-                comprobante de la misma (captura de pantalla) para completar su
-                solicitud.
-              </span>
-              Una vez recibido, procesaremos su transferencia.
+              <ul className='space-y-2'>
+                <li>
+                  Ingrese sus datos personales en el formulario: Nombre,
+                  Apellido, Número de WhatsApp, CBU o Alias, CUIL, Correo
+                  Electrónico y Comprobante.
+                </li>
+                <li>
+                  <span className="bg-yellow-400 px-1 text-black">
+                    Luego de realizar la transferencia o el pago, por favor suba
+                    el comprobante de la misma (captura de pantalla) para
+                    completar su solicitud.
+                  </span>
+                </li>
+                <li>
+                  Una vez recibido, procesaremos su transferencia. No nos
+                  hacemos responsable si envias a otro correo que no sea el
+                  proporcionado por SwaplyAr
+                </li>
+              </ul>
             </p>
             <Image
               src={PaypalToArs}

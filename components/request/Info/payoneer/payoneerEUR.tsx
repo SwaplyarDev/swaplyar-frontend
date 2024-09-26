@@ -26,16 +26,36 @@ export default function PayoneerEUR() {
         content={
           <>
             <p className="mb-4 text-center text-lg md:text-left">
-              La cuenta de Payoneer en EUR € esta a nombre de Johan Suarez,
-              <span className="bg-yellow-400 px-1 text-black">
-                Suba el comprobante (captura de pantalla) para completar su
-                solicitud.
-              </span>
-              y proporcione el ID de la transacción de Payoneer Realice la
-              transferencia al correo JOHANSUAREZ90@GMAIL.COM Johan Javier
-              Suarez Merchan Una vez recibido, procesaremos su transferencia. no
-              nos hacemos responsable si envias a otro correo que no sea el
-              proporcionado por SwaplyAr
+              <ul className='space-y-2'>
+                <li>
+                  La cuenta de Payoneer en EUR € esta a nombre de Johan Suarez.
+                </li>
+                <li>
+                  Proporcione el ID de la transacción de Payoneer y realice la
+                  transferencia al correo: {''}
+                  <span className="font-semibold text-buttonsLigth dark:text-sky-500">
+                    JOHANSUAREZ90@GMAIL.COM
+                  </span>
+                </li>
+                <li>
+                  Con el nombre de: {''}
+                  <span className="font-semibold text-buttonsLigth dark:text-sky-500">
+                    Johan Javier Suarez Merchan
+                  </span>
+                </li>
+                <li>
+                  <span className="bg-yellow-400 px-1 text-black">
+                    Luego de realizar la transferencia o el pago, por favor suba
+                    el comprobante de la misma (captura de pantalla) para
+                    completar su solicitud.
+                  </span>
+                </li>
+                <li>
+                  Una vez recibido, procesaremos su transferencia. No nos
+                  hacemos responsable si envias a otro correo que no sea el
+                  proporcionado por SwaplyAr.
+                </li>
+              </ul>
             </p>
             <Image
               src={PyEURtoArs}

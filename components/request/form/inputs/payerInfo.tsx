@@ -2,16 +2,12 @@
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
-import { useRequestTransactionStore } from '@/store/useResquestTransaction';
 
 type payerOptions = {
-  first_name: string;
-  last_name: string;
-  email: string;
   sendAmount: number;
   sendCurrency: string;
-  payment_method: string;
-  identifier: string;
+  recibeAmount: number;
+  recibeCurrency: string;
 };
 
 type PayerInfoProps = {
@@ -25,25 +21,18 @@ export default function PayerInfo({
   errors,
   setValue,
 }: PayerInfoProps) {
-  const [payer, setPayer] = useState<payerOptions>({
-    first_name: '',
-    last_name: '',
-    email: '',
-    sendAmount: 0,
+  const [amounts, setAmounts] = useState<payerOptions>({
+    sendAmount: 1,
     sendCurrency: '',
-    payment_method: '',
-    identifier: '',
+    recibeAmount: 16000,
+    recibeCurrency: '',
   });
-
-  const { receiveAmountStore } = useRequestTransactionStore();
 
   useEffect(() => {
     const storedClient = localStorage.getItem('payer');
 
     if (storedClient) {
       const client = JSON.parse(storedClient);
-      setPayer(client);
-
       setValue('first_name', client.first_name);
       setValue('last_name', client.last_name);
       setValue('amount_sent', client.sendAmount);
@@ -73,7 +62,6 @@ export default function PayerInfo({
             : 'mb-5 hover:border-blue-600',
         )}
         type="text"
-        value={payer.first_name}
         {...register('first_name', { required: 'El nombre es obligatorio' })}
       />
       {errors.first_name && (
@@ -100,7 +88,6 @@ export default function PayerInfo({
             : 'mb-5 hover:border-blue-600',
         )}
         type="text"
-        value={payer.last_name}
         {...register('last_name', { required: 'El apellido es obligatorio' })}
       />
       {errors.last_name && (
@@ -126,7 +113,7 @@ export default function PayerInfo({
             : 'mb-5 hover:border-blue-600',
         )}
         type="number"
-        value={payer.sendAmount}
+        value={amounts.sendAmount}
         {...register('amount_sent', {
           required: 'El monto enviado es obligatorio',
         })}
@@ -155,7 +142,7 @@ export default function PayerInfo({
             : 'mb-5 hover:border-blue-600',
         )}
         type="number"
-        value={1000000}
+        value={amounts.recibeAmount}
         {...register('amount_received', {
           required: 'El monto recibido es obligatorio',
         })}
@@ -184,7 +171,6 @@ export default function PayerInfo({
             : 'mb-5 hover:border-blue-600',
         )}
         type="text"
-        value={payer.identifier}
         {...register('identifier', {
           required: 'El identificador es obligatorio',
         })}
@@ -237,7 +223,6 @@ export default function PayerInfo({
           errors.email ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
         )}
         type="email"
-        value={payer.email}
         {...register('email', {
           required: 'El correo electrónico es obligatorio',
           pattern: {

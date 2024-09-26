@@ -29,39 +29,41 @@ export default function Ars() {
         content={
           <>
             <p className="mb-4 text-center text-lg md:text-left">
-               Ingrese sus datos personales en el formulario: Nombre, Apellido,
-              Número de WhatsApp, CBU o Alias, CUIL, Correo Electrónico y
-              Comprobante.
-              <ul>
+              <ul className="space-y-2">
                 <li>
-                  Cuenta en Pesos Argentinos a transferir:
+                  Ingrese sus datos personales en el formulario: Nombre,
+                  Apellido, Número de WhatsApp, CBU o Alias, CUIL, Correo
+                  Electrónico y Comprobante.
+                </li>
+                <li>
+                  Cuenta en Pesos Argentinos a transferir: {''}
                   <span className="font-bold text-buttonsLigth dark:text-sky-500">
-                   0150804601000139382113
+                    0150804601000139382113
                   </span>
                 </li>
                 <li>
-                  CUIL:
-                  <span className="font-bold text-buttonsLigth dark:text-sky-500">
-                   20-1913601-9
+                  CUIL: {''}
+                  <span className="font-semibold text-buttonsLigth dark:text-sky-500">
+                    20-1913601-9
                   </span>
                 </li>
                 <li>
-                  Usuario:
-                  <span className="font-bold text-buttonsLigth dark:text-sky-500">
-                   Johan Javier Suarez Merchan
+                  Usuario: {''}
+                  <span className="font-semibold text-buttonsLigth dark:text-sky-500">
+                    Johan Javier Suarez Merchan
                   </span>
                 </li>
                 <li>
                   <span className="bg-yellow-400 px-1 text-black">
-                     Luego de realizar la transferencia o el pago, por favor suba
+                    Luego de realizar la transferencia o el pago, por favor suba
                     el comprobante de la misma (captura de pantalla) para
                     completar su solicitud.
                   </span>
                 </li>
                 <li>
-                   Una vez recibido, procesaremos su transferencia. no nos
-                  hacemos responsable si envias a otra cuenta que no sea el
-                  proporcionado por SwaplyAr
+                  Una vez recibido, procesaremos su transferencia. No nos
+                  hacemos responsable si envias a otra cuenta que no sea la
+                  proporcionada por SwaplyAr.
                 </li>
               </ul>
             </p>
