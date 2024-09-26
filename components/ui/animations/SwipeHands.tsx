@@ -6,18 +6,22 @@ const SwipeHands: React.FC = () => {
 
   useEffect(() => {
     if (showHands) {
-      const pathElement = document.querySelector(".path") as HTMLElement | null;
-      const handIconElement = document.querySelector(".hand-icon") as HTMLElement | null;
-      const touchHandElement = document.querySelector(".touch-hand") as HTMLElement | null;
+      const pathElement = document.querySelector('.path') as HTMLElement | null;
+      const handIconElement = document.querySelector(
+        '.hand-icon',
+      ) as HTMLElement | null;
+      const touchHandElement = document.querySelector(
+        '.touch-hand',
+      ) as HTMLElement | null;
 
       if (pathElement) {
-        pathElement.style.animation = "swipe-dot 2s 0.5s infinite";
+        pathElement.style.animation = 'swipe-dot 2s 0.5s infinite';
       }
       if (handIconElement) {
-        handIconElement.style.animation = "swipe-hand 2s infinite  ";
+        handIconElement.style.animation = 'swipe-hand 2s infinite  ';
       }
       if (touchHandElement) {
-        touchHandElement.style.animation = "touch-gesture 1.5s infinite";
+        touchHandElement.style.animation = 'touch-gesture 1.5s infinite';
       }
     }
 

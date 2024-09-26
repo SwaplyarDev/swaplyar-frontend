@@ -76,12 +76,12 @@
   width: 80px;
   height: 80px;
   transform-origin: 50% 80%;
-
 }
 
 /* Animación de toque */
 @keyframes touch-gesture {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) scale(o.5);
   }
   50% {
@@ -90,5 +90,5 @@
 }
 
 .touch-hand {
-  animation: touch-gesture 1.5s infinite ;
+  animation: touch-gesture 1.5s infinite;
 }

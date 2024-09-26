@@ -45,35 +45,33 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        console.log("IntersectionObserver triggered:", entry.isIntersecting); // Agrega este log
+        console.log('IntersectionObserver triggered:', entry.isIntersecting); // Agrega este log
         if (entry.isIntersecting) {
           setShowSwipeHands(true);
         }
       },
-      { threshold: 1} // Aparecerá cuando el 50% del componente sea visible
+      { threshold: 1 }, // Aparecerá cuando el 50% del componente sea visible
     );
-  
+
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
     }
-  
+
     return () => {
       if (sectionRef.current) {
         observer.unobserve(sectionRef.current);
       }
     };
   }, []);
-  
+
   return (
     <div ref={sectionRef} className="relative h-full w-full">
       {/* Mostrar las manitos solo en móvil y cuando sea visible */}
       {showSwipeHands && (
-  <div className="block md:hidden">
-    <SwipeHands />
-  </div>
-)}
-
-
+        <div className="block md:hidden">
+          <SwipeHands />
+        </div>
+      )}
 
       <div
         {...swipeHandlers}

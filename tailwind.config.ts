@@ -98,7 +98,6 @@ const config: Config = {
             transform: 'translateX(100%)',
           },
         },
-        
       },
     },
   },
