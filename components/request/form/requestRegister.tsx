@@ -69,7 +69,11 @@ export const RequestRegisterForm = () => {
     setErrorMessage('');
     setLoading(true);
 
-    // localStorage.removeItem('payer');
+    localStorage.removeItem('payer');
+    localStorage.removeItem('sendAmount');
+    localStorage.removeItem('selectedSendingSystem');
+    localStorage.removeItem('receiveAmount');
+    localStorage.removeItem('selectedReceivingSystem');
     const {
       sender_first_name,
       sender_last_name,

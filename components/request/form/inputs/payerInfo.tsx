@@ -33,9 +33,7 @@ export default function PayerInfo({
     const storedSendAmount = localStorage.getItem('sendAmount');
     const storedSendCurrency = localStorage.getItem('selectedSendingSystem');
     const storedReciveAmount = localStorage.getItem('receiveAmount');
-    const storedReciveCurrency = localStorage.getItem(
-      'selectedReceivingSystem',
-    );
+    const storedReciveCurrency = localStorage.getItem('selectedReceivingSystem');
 
     if (storedClient) {
       const client = JSON.parse(storedClient);
