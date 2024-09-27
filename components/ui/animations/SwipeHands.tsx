@@ -1,45 +1,31 @@
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image'; // Importa el componente Image de Next.js
+import { swipeGif } from '@/utils/assets/img-database';
 import './swipehands.css';
 
 const SwipeHands: React.FC = () => {
   const [showHands, setShowHands] = useState(true);
 
   useEffect(() => {
-    if (showHands) {
-      const pathElement = document.querySelector('.path') as HTMLElement | null;
-      const handIconElement = document.querySelector(
-        '.hand-icon',
-      ) as HTMLElement | null;
-      const touchHandElement = document.querySelector(
-        '.touch-hand',
-      ) as HTMLElement | null;
-
-      if (pathElement) {
-        pathElement.style.animation = 'swipe-dot 2s 0.5s infinite';
-      }
-      if (handIconElement) {
-        handIconElement.style.animation = 'swipe-hand 2s infinite  ';
-      }
-      if (touchHandElement) {
-        touchHandElement.style.animation = 'touch-gesture 1.5s infinite';
-      }
-    }
-
     const timer = setTimeout(() => {
-      setShowHands(false); 
+      setShowHands(false);
     }, 4000);
 
     return () => clearTimeout(timer);
-  }, [showHands]);
+  }, []);
 
   return (
     <>
       {showHands && (
         <div className="overlay">
-          <div className="swipe flex">
-            <div className="path"></div>
-            <div className="hand-icon"></div>
-            <div className="touch-hand"></div>
+          <div className="swipe">
+            <Image
+              src={swipeGif}
+              alt="Swipe Hands"
+              width={175} // Ancho deseado
+              height={75} // Alto deseado
+              className="gif-image" // Clase adicional si necesitas
+            />
           </div>
         </div>
       )}
