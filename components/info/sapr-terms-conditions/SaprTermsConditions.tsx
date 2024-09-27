@@ -97,6 +97,11 @@ const SaprTermsConditions = () => {
                     Este Acuerdo y la relación entre las partes se regirán e interpretarán de acuerdo con las leyes de la Ciudad de Buenos Aires y resto de la República de Argentina. Las partes se someten irrevocablemente a la jurisdicción de los tribunales situados en Buenos Aires, Argentina o donde corresponda.
                 </p>
             </div>
+            <div className="flex justify-center mb-4">
+             <a href="https://swaplyar.com/SAPR-Terms-Conditions-ES%20.pdf" target="_blank" className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white dark:border-darkText dark:bg-darkText dark:text-lightText`}>
+             BotonDescarga
+             </a>
+            </div>
         </div>
   );
 };
