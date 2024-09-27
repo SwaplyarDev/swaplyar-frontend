@@ -68,7 +68,7 @@ export default function Ars() {
               </ul>
             </p>
 
-            {payerBank === 'PayPal' && 
+            {payerBank === 'PayPal' && (
               <Image
                 src={ArsToPayPal}
                 alt="Formulario-de-Solicitud"
@@ -76,8 +76,8 @@ export default function Ars() {
                 height={350}
                 className="hidden w-full lg:block"
               />
-            }
-            {payerBank === 'Payoneer EUR' && 
+            )}
+            {payerBank === 'Payoneer EUR' && (
               <Image
                 src={ArsToPyEUR}
                 alt="Formulario-de-Solicitud"
@@ -85,8 +85,8 @@ export default function Ars() {
                 height={350}
                 className="hidden w-full lg:block"
               />
-            }
-            {payerBank === 'Payoneer USD' && 
+            )}
+            {payerBank === 'Payoneer USD' && (
               <Image
                 src={ArsToPyUSD}
                 alt="Formulario-de-Solicitud"
@@ -94,8 +94,8 @@ export default function Ars() {
                 height={350}
                 className="hidden w-full lg:block"
               />
-            }
-            {payerBank === 'Wise EUR' &&
+            )}
+            {payerBank === 'Wise EUR' && (
               <Image
                 src={ArsToWsEUR}
                 alt="Formulario-de-Solicitud"
@@ -103,8 +103,8 @@ export default function Ars() {
                 height={350}
                 className="hidden w-full lg:block"
               />
-            }
-            {payerBank === 'Wise USD' &&
+            )}
+            {payerBank === 'Wise USD' && (
               <Image
                 src={ArsToWsUSD}
                 alt="Formulario-de-Solicitud"
@@ -112,7 +112,7 @@ export default function Ars() {
                 height={350}
                 className="hidden w-full lg:block"
               />
-            }
+            )}
           </>
         }
       />

@@ -5,7 +5,9 @@ import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
 type payerOptions = {
   sendAmount: number;
+  sendCurrency: string;
   recibeAmount: number;
+  recibeCurrency: string;
 };
 
 type PayerInfoProps = {
@@ -21,41 +23,71 @@ export default function PayerInfo({
 }: PayerInfoProps) {
   const [amounts, setAmounts] = useState<payerOptions>({
     sendAmount: 0,
+    sendCurrency: '',
     recibeAmount: 0,
+    recibeCurrency: '',
   });
 
   useEffect(() => {
     const storedClient = localStorage.getItem('payer');
     const storedSendAmount = localStorage.getItem('sendAmount');
+    const storedSendCurrency = localStorage.getItem('selectedSendingSystem');
     const storedReciveAmount = localStorage.getItem('receiveAmount');
-
+    const storedReciveCurrency = localStorage.getItem(
+      'selectedReceivingSystem',
+    );
 
     if (storedClient) {
       const client = JSON.parse(storedClient);
-      setValue('first_name', client.first_name);
-      setValue('last_name', client.last_name);
-      setValue('amount_sent', client.sendAmount);
-      setValue('payment_method', client.payment_method);
-      setValue('identifier', client.identifier);
-      setValue('email', client.email);
+      setValue('sender_first_name', client.first_name);
+      setValue('sender_last_name', client.last_name);
+      setValue('transfer_code', client.identifier);
+      setValue('sender_email', client.email);
     }
 
-    let preAmounts = {
-      sendAmount: parseInt(storedSendAmount as string),
-      recibeAmount: parseInt(storedReciveAmount as string),
-    };
+    if (
+      storedSendCurrency &&
+      storedReciveCurrency &&
+      storedSendAmount &&
+      storedReciveAmount
+    ) {
+      const preSendCurrency = JSON.parse(storedSendCurrency);
+      const preReciveCurrency = JSON.parse(storedReciveCurrency);
 
-    setAmounts(preAmounts);
-    
+      const preAmounts = {
+        sendAmount: parseInt(storedSendAmount),
+        recibeAmount: parseInt(storedReciveAmount),
+        sendCurrency: preSendCurrency.coin as string,
+        recibeCurrency: preReciveCurrency.coin as string,
+      };
 
+      setAmounts((prevAmounts) => {
+        //comprueba si los valores cambian realmente esto se hace para eviar advertencias y bucles
+        if (
+          prevAmounts.sendAmount !== preAmounts.sendAmount ||
+          prevAmounts.recibeAmount !== preAmounts.recibeAmount ||
+          prevAmounts.sendCurrency !== preAmounts.sendCurrency ||
+          prevAmounts.recibeCurrency !== preAmounts.recibeCurrency
+        ) {
+          setValue('amount_sent', preAmounts.sendAmount);
+          setValue('amount_received', preAmounts.recibeAmount);
+          setValue('currency_sent', preAmounts.sendCurrency);
+          setValue('currency_received', preAmounts.recibeCurrency);
+          setValue('payment_bank', preSendCurrency.name);
+          setValue('reciver_bank', preReciveCurrency.name);
+          return preAmounts;
+        }
+        return prevAmounts;
+      });
+    }
   }, [setValue]);
 
   return (
     <>
       <label
-        htmlFor="first_name"
+        htmlFor="sender_first_name"
         className={clsx(
-          errors.first_name
+          errors.sender_first_name
             ? 'text-red-500'
             : 'text-gray-900 dark:text-gray-300',
         )}
@@ -65,23 +97,25 @@ export default function PayerInfo({
       <input
         className={clsx(
           'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-          errors.first_name
+          errors.sender_first_name
             ? 'mb-0 border-red-500'
             : 'mb-5 hover:border-blue-600',
         )}
         type="text"
-        {...register('first_name', { required: 'El nombre es obligatorio' })}
+        {...register('sender_first_name', {
+          required: 'El nombre es obligatorio',
+        })}
       />
-      {errors.first_name && (
+      {errors.sender_first_name && (
         <p className="mb-5 text-sm text-red-500">
-          • {errors.first_name.message as string}
+          • {errors.sender_first_name.message as string}
         </p>
       )}
 
       <label
-        htmlFor="last_name"
+        htmlFor="sender_last_name"
         className={clsx(
-          errors.last_name
+          errors.sender_last_name
             ? 'text-red-500'
             : 'text-gray-900 dark:text-gray-300',
         )}
@@ -96,11 +130,13 @@ export default function PayerInfo({
             : 'mb-5 hover:border-blue-600',
         )}
         type="text"
-        {...register('last_name', { required: 'El apellido es obligatorio' })}
+        {...register('sender_last_name', {
+          required: 'El apellido es obligatorio',
+        })}
       />
-      {errors.last_name && (
+      {errors.sender_last_name && (
         <p className="mb-5 text-sm text-red-500">
-          • {errors.last_name.message as string}
+          • {errors.sender_last_name.message as string}
         </p>
       )}
       <label
@@ -162,9 +198,9 @@ export default function PayerInfo({
       )}
 
       <label
-        htmlFor="identifier"
+        htmlFor="transfer_code"
         className={clsx(
-          errors.identifier
+          errors.transfer_code
             ? 'text-red-500'
             : 'text-gray-900 dark:text-gray-300',
         )}
@@ -174,53 +210,26 @@ export default function PayerInfo({
       <input
         className={clsx(
           'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-          errors.identifier
+          errors.transfer_code
             ? 'mb-0 border-red-500'
             : 'mb-5 hover:border-blue-600',
         )}
         type="text"
-        {...register('identifier', {
+        {...register('transfer_code', {
           required: 'El identificador es obligatorio',
         })}
       />
-      {errors.identifier && (
+      {errors.transfer_code && (
         <p className="mb-5 text-sm text-red-500">
-          • {errors.identifier.message as string}
+          • {errors.transfer_code.message as string}
         </p>
       )}
-
-      {/* <label
-        htmlFor="payment_method"
+      <label
+        htmlFor="sender_email"
         className={clsx(
-          errors.payment_method
+          errors.sender_email
             ? 'text-red-500'
             : 'text-gray-900 dark:text-gray-300',
-        )}
-      >
-        Método de Pago
-      </label>
-      <input
-        className={clsx(
-          'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-          errors.payment_method
-            ? 'mb-0 border-red-500'
-            : 'mb-5 hover:border-blue-600',
-        )}
-        type="text"
-        value={payer.payment_method}
-        {...register('payment_method', {
-          required: 'El método de pago es obligatorio',
-        })}
-      />
-      {errors.payment_method && (
-        <p className="mb-5 text-sm text-red-500">
-          • {errors.payment_method.message as string}
-        </p>
-      )} */}
-      <label
-        htmlFor="email"
-        className={clsx(
-          errors.email ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
         )}
       >
         Email
@@ -228,10 +237,12 @@ export default function PayerInfo({
       <input
         className={clsx(
           'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-          errors.email ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
+          errors.sender_email
+            ? 'mb-0 border-red-500'
+            : 'mb-5 hover:border-blue-600',
         )}
         type="email"
-        {...register('email', {
+        {...register('sender_email', {
           required: 'El correo electrónico es obligatorio',
           pattern: {
             value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
@@ -239,9 +250,9 @@ export default function PayerInfo({
           },
         })}
       />
-      {errors.email && (
+      {errors.sender_email && (
         <p className="mb-5 text-sm text-red-500">
-          • {errors.email.message as string}
+          • {errors.sender_email.message as string}
         </p>
       )}
     </>

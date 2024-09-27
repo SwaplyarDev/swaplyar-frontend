@@ -12,9 +12,9 @@ export default function ReceiverInfo({ register, errors }: RecibeInfoProps) {
   return (
     <>
       <label
-        htmlFor="receiver_name"
+        htmlFor="receiver_first_name"
         className={clsx(
-          errors.receiver_name
+          errors.receiver_first_name
             ? 'text-red-500'
             : 'text-gray-900 dark:text-gray-300',
         )}
@@ -24,16 +24,16 @@ export default function ReceiverInfo({ register, errors }: RecibeInfoProps) {
       <input
         className={clsx(
           'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-          errors.receiver_name
+          errors.receiver_first_name
             ? 'mb-0 border-red-500'
             : 'mb-5 hover:border-blue-600',
         )}
         type="text"
         {...register('receiver_name', { required: 'El nombre es obligatorio' })}
       />
-      {errors.receiver_name && (
+      {errors.receiver_first_name && (
         <p className="mb-5 text-sm text-red-500">
-          • {errors.receiver_name.message as string}
+          • {errors.receiver_first_name.message as string}
         </p>
       )}
       <label
@@ -64,30 +64,34 @@ export default function ReceiverInfo({ register, errors }: RecibeInfoProps) {
         </p>
       )}
       <label
-        htmlFor="receiver_identifier"
+        htmlFor="receiver_email"
         className={clsx(
           errors.receiver_identifier
             ? 'text-red-500'
             : 'text-gray-900 dark:text-gray-300',
         )}
       >
-        Dni de quien va a recibir la transaccion
+        Email de quien va a recibir la transaccion
       </label>
       <input
         className={clsx(
           'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-          errors.document
+          errors.receiver_email
             ? 'mb-0 border-red-500'
             : 'mb-5 hover:border-blue-600',
         )}
-        type="text"
-        {...register('receiver_identifier', {
-          required: 'El número de documento es obligatorio',
+        type="email"
+        {...register('receiver_email', {
+          required: 'El correo electrónico es obligatorio',
+          pattern: {
+            value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+            message: 'Introduce un correo electrónico válido',
+          },
         })}
       />
-      {errors.receiver_identifier && (
+      {errors.receiver_email && (
         <p className="mb-5 text-sm text-red-500">
-          • {errors.receiver_identifier.message as string}
+          • {errors.receiver_email.message as string}
         </p>
       )}
       <label

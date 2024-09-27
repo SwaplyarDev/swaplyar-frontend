@@ -26,7 +26,7 @@ export default function PayoneerEUR() {
         content={
           <>
             <p className="mb-4 text-center text-lg md:text-left">
-              <ul className='space-y-2'>
+              <ul className="space-y-2">
                 <li>
                   La cuenta de Payoneer en EUR € esta a nombre de Johan Suarez.
                 </li>
@@ -57,7 +57,7 @@ export default function PayoneerEUR() {
                 </li>
               </ul>
             </p>
-            {payerBank === 'Banco' && 
+            {payerBank === 'Banco' && (
               <Image
                 src={PyEURtoArs}
                 alt="Formulario-de-Solicitud"
@@ -65,8 +65,8 @@ export default function PayoneerEUR() {
                 height={350}
                 className="hidden w-full lg:block"
               />
-            }
-            {payerBank === 'PayPal' && 
+            )}
+            {payerBank === 'PayPal' && (
               <Image
                 src={PyEURtoPayPal}
                 alt="Formulario-de-Solicitud"
@@ -74,8 +74,8 @@ export default function PayoneerEUR() {
                 height={350}
                 className="hidden w-full lg:block"
               />
-            }
-            {payerBank === 'Payoneer USD' && 
+            )}
+            {payerBank === 'Payoneer USD' && (
               <Image
                 src={PyEURtoPyUSD}
                 alt="Formulario-de-Solicitud"
@@ -83,8 +83,8 @@ export default function PayoneerEUR() {
                 height={350}
                 className="hidden w-full lg:block"
               />
-            }
-            {payerBank === 'Wise EUR' &&
+            )}
+            {payerBank === 'Wise EUR' && (
               <Image
                 src={PyEURtoWsEUR}
                 alt="Formulario-de-Solicitud"
@@ -92,8 +92,8 @@ export default function PayoneerEUR() {
                 height={350}
                 className="hidden w-full lg:block"
               />
-            }
-            {payerBank === 'Wise USD' &&
+            )}
+            {payerBank === 'Wise USD' && (
               <Image
                 src={PyEURtoWsUSD}
                 alt="Formulario-de-Solicitud"
@@ -101,7 +101,7 @@ export default function PayoneerEUR() {
                 height={350}
                 className="hidden w-full lg:block"
               />
-            }
+            )}
           </>
         }
       />

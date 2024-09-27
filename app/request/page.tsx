@@ -36,7 +36,7 @@ const RequestPage = () => {
       {payerBank === 'Payoneer USD' && <PayoneerUSD />}
       {/* {payerBank === 'Paypal EUR' && <PaypalEUR />} */}
       {payerBank === 'Wise EUR' && <WiseEUR />}
-      {payerBank === 'Wise USD' && <WiseUSD />} 
+      {payerBank === 'Wise USD' && <WiseUSD />}
     </div>
   );
 };

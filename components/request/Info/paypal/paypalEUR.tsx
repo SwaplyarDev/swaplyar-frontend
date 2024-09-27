@@ -26,7 +26,7 @@ export default function PaypalEUR() {
         content={
           <>
             <p className="mb-4 text-center text-lg md:text-left">
-              <ul className='space-y-2'>
+              <ul className="space-y-2">
                 <li>
                   Ingrese sus datos personales en el formulario: Nombre,
                   Apellido, Número de WhatsApp, CBU o Alias, CUIL, Correo

@@ -26,7 +26,7 @@ export default function PaypalUSD() {
         content={
           <>
             <p className="mb-4 text-center text-lg md:text-left">
-              <ul className='space-y-2'>
+              <ul className="space-y-2">
                 <li>
                   Ingrese sus datos personales en el formulario: Nombre,
                   Apellido, Número de WhatsApp, CBU o Alias, CUIL, Correo
@@ -46,7 +46,7 @@ export default function PaypalUSD() {
                 </li>
               </ul>
             </p>
-            {payerBank === 'Banco' && 
+            {payerBank === 'Banco' && (
               <Image
                 src={PaypalToArs}
                 alt="Formulario-de-Solicitud"
@@ -54,8 +54,8 @@ export default function PaypalUSD() {
                 height={350}
                 className="hidden w-full lg:block"
               />
-            }
-            {payerBank === 'Payoneer EUR' && 
+            )}
+            {payerBank === 'Payoneer EUR' && (
               <Image
                 src={PaypalToPyEUR}
                 alt="Formulario-de-Solicitud"
@@ -63,8 +63,8 @@ export default function PaypalUSD() {
                 height={350}
                 className="hidden w-full lg:block"
               />
-            }
-            {payerBank === 'Payoneer USD' && 
+            )}
+            {payerBank === 'Payoneer USD' && (
               <Image
                 src={PaypalToPyUSD}
                 alt="Formulario-de-Solicitud"
@@ -72,8 +72,8 @@ export default function PaypalUSD() {
                 height={350}
                 className="hidden w-full lg:block"
               />
-            }
-            {payerBank === 'Wise EUR' &&
+            )}
+            {payerBank === 'Wise EUR' && (
               <Image
                 src={PaypalToWsEUR}
                 alt="Formulario-de-Solicitud"
@@ -81,8 +81,8 @@ export default function PaypalUSD() {
                 height={350}
                 className="hidden w-full lg:block"
               />
-            }
-            {payerBank === 'Wise USD' &&
+            )}
+            {payerBank === 'Wise USD' && (
               <Image
                 src={PaypalToWsUSD}
                 alt="Formulario-de-Solicitud"
@@ -90,7 +90,7 @@ export default function PaypalUSD() {
                 height={350}
                 className="hidden w-full lg:block"
               />
-            }
+            )}
           </>
         }
       />

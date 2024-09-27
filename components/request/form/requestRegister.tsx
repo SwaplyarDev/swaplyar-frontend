@@ -12,15 +12,22 @@ import { useState, useEffect } from 'react';
 import { requestRegister } from '@/actions/request/action.requestRegister';
 
 type FormInputs = {
-  first_name: string;
-  last_name: string;
-  amount_sent: string;
-  amount_received: string;
+  sender_first_name: string;
+  sender_last_name: string;
+  receiver_first_name: string;
+  receiver_last_name: string;
+  amount_sent: number;
+  currency_sent: string;
+  amount_received: number;
+  currency_received: string;
   phone: string;
-  identifier: string;
-  payment_method: string;
+  receiver_email: string;
+  transfer_code: string;
+  transaction_destination: string;
+  payment_bank: string;
+  reciver_bank: string;
   document: string;
-  email: string;
+  sender_email: string;
   proof_of_payment: FileList;
   note: string;
   country: string;
@@ -41,6 +48,7 @@ export const RequestRegisterForm = () => {
     null,
   );
   const [transactionId, setTransactionId] = useState<string>('');
+
   const {
     register,
     handleSubmit,
@@ -63,16 +71,21 @@ export const RequestRegisterForm = () => {
 
     // localStorage.removeItem('payer');
     const {
-      first_name,
-      last_name,
+      sender_first_name,
+      sender_last_name,
       amount_sent,
+      currency_sent,
       amount_received,
+      currency_received,
       phone,
-      identifier,
-      payment_method,
+      transfer_code,
+      payment_bank,
+      reciver_bank,
       document,
-      email,
+      sender_email,
+      receiver_email,
       proof_of_payment,
+      transaction_destination,
       note,
       country,
       type_of_document,
@@ -81,59 +94,63 @@ export const RequestRegisterForm = () => {
     const fullPhoneNumber = `${currentCountry?.callingCode} ${phone}`;
 
     const transactions = {
-      sender_first_name: '',
-      sender_last_name: '',
-      sender_identification: '',
-      sender_phone_number: '',
-      sender_email: '',
+      sender_first_name: sender_first_name || '',
+      sender_last_name: sender_last_name || '',
+      sender_identification: document || '',
+      sender_phone_number: fullPhoneNumber || '',
+      sender_email: sender_email || '',
       receiver_first_name: '',
       receiver_last_name: '',
-      transfer_code: '',
-      country_transaction: '',
-      message: '',
+      transfer_code: transactionId || '',
+      country_transaction: country || '',
+      message: note || '',
     };
-
+    // las peticiones del local storage se hacen en inputs/payerInfo en su use effect y se setean en el formulario tanto els montos, tipos de moneda y bancos
     const amounts = {
-      amount_sent: 0,
-      currency_sent: '',
-      amount_received: 0,
-      currency_received: '',
+      amount_sent: amount_sent || 0,
+      currency_sent: currency_sent || '',
+      amount_received: amount_received || 0,
+      currency_received: currency_received || '',
     };
 
     const sender_bank_accounts = {
-      email_account: '',
-      payment_method: '',
-      number_account: '',
+      email_account: sender_email || '',
+      payment_method: payment_bank || '',
+      number_account: transfer_code || '',
     };
+
     const receiver_bank_accounts = {
-      email_account: '',
-      payment_method: '',
-      number_account: '',
+      email_account: receiver_email || '',
+      payment_method: reciver_bank || '',
+      number_account: transaction_destination || '',
     };
 
     const formData = new FormData();
 
-    formData.append('transactions',JSON.stringify(transactions));
-    formData.append('amounts',JSON.stringify(amounts));
-    formData.append('sender_bank_accounts',JSON.stringify(sender_bank_accounts));
-    formData.append('receiver_bank_accounts',JSON.stringify(receiver_bank_accounts));
+    formData.append('transactions', JSON.stringify(transactions));
+    formData.append('amounts', JSON.stringify(amounts));
+    formData.append(
+      'sender_bank_accounts',
+      JSON.stringify(sender_bank_accounts),
+    );
+    formData.append(
+      'receiver_bank_accounts',
+      JSON.stringify(receiver_bank_accounts),
+    );
 
     if (proof_of_payment && proof_of_payment.length > 0) {
-      const proof_of_payments = {
-        img_transaction: proof_of_payment[0] || '',
-      };
-      formData.append('proof_of_payments', JSON.stringify(proof_of_payments));
+      formData.append('proof_of_payments', proof_of_payment[0]);
     } else {
       console.warn('No se ha proporcionado un archivo de comprobante');
     }
 
-
     const entries = formData.entries();
     let entry = entries.next();
+
     while (!entry.done) {
+      console.log(`${entry.value[0]}: ${entry.value[1]}`); // Console.log par ver como se manda el formulario
       entry = entries.next();
     }
-
 
     // try {
     //   const resp = await requestRegister(formData);
