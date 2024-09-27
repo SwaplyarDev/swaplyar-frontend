@@ -61,56 +61,79 @@ export const RequestRegisterForm = () => {
     setErrorMessage('');
     setLoading(true);
 
-    console.log('Datos del formulario:', data);
-    console.log('id de transaccion:', transactionId);
     // localStorage.removeItem('payer');
-    // const {
-    //   first_name,
-    //   last_name,
-    //   amount_sent,
-    //   amount_received,
-    //   phone,
-    //   identifier,
-    //   payment_method,
-    //   document,
-    //   email,
-    //   proof_of_payment,
-    //   note,
-    //   country,
-    //   type_of_document,
-    // } = data;
+    const {
+      first_name,
+      last_name,
+      amount_sent,
+      amount_received,
+      phone,
+      identifier,
+      payment_method,
+      document,
+      email,
+      proof_of_payment,
+      note,
+      country,
+      type_of_document,
+    } = data;
 
-    // const fullPhoneNumber = `${currentCountry?.callingCode} ${phone}`;
+    const fullPhoneNumber = `${currentCountry?.callingCode} ${phone}`;
 
-    // const formData = new FormData();
-    // formData.append('date', currentDate);
-    // formData.append('transactionId', transactionId);
-    // formData.append('first_name', first_name || '');
-    // formData.append('last_name', last_name || '');
-    // formData.append('amount_sent', amount_sent || '');
-    // formData.append('amount_received', amount_received || '');
-    // formData.append('phone', fullPhoneNumber || '');
-    // formData.append('identifier', identifier || '');
-    // formData.append('payment_method', payment_method || '');
-    // formData.append('document', document || '');
-    // formData.append('email', email || '');
-    // formData.append('type_of_document', type_of_document || '');
+    const transactions = {
+      sender_first_name: '',
+      sender_last_name: '',
+      sender_identification: '',
+      sender_phone_number: '',
+      sender_email: '',
+      receiver_first_name: '',
+      receiver_last_name: '',
+      transfer_code: '',
+      country_transaction: '',
+      message: '',
+    };
 
-    // if (proof_of_payment && proof_of_payment.length > 0) {
-    //   formData.append('comprobante', proof_of_payment[0]);
-    // } else {
-    //   console.warn('No se ha proporcionado un archivo de comprobante');
-    // }
+    const amounts = {
+      amount_sent: 0,
+      currency_sent: '',
+      amount_received: 0,
+      currency_received: '',
+    };
 
-    // formData.append('note', note || '');
-    // formData.append('country', country || '');
+    const sender_bank_accounts = {
+      email_account: '',
+      payment_method: '',
+      number_account: '',
+    };
+    const receiver_bank_accounts = {
+      email_account: '',
+      payment_method: '',
+      number_account: '',
+    };
 
-    // const entries = formData.entries();
-    // let entry = entries.next();
-    // while (!entry.done) {
-    //   console.log(`${entry.value[0]}: ${entry.value[1]}`);
-    //   entry = entries.next();
-    // }
+    const formData = new FormData();
+
+    formData.append('transactions',JSON.stringify(transactions));
+    formData.append('amounts',JSON.stringify(amounts));
+    formData.append('sender_bank_accounts',JSON.stringify(sender_bank_accounts));
+    formData.append('receiver_bank_accounts',JSON.stringify(receiver_bank_accounts));
+
+    if (proof_of_payment && proof_of_payment.length > 0) {
+      const proof_of_payments = {
+        img_transaction: proof_of_payment[0] || '',
+      };
+      formData.append('proof_of_payments', JSON.stringify(proof_of_payments));
+    } else {
+      console.warn('No se ha proporcionado un archivo de comprobante');
+    }
+
+
+    const entries = formData.entries();
+    let entry = entries.next();
+    while (!entry.done) {
+      entry = entries.next();
+    }
+
 
     // try {
     //   const resp = await requestRegister(formData);
