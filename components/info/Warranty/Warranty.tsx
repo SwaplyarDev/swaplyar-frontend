@@ -1,5 +1,5 @@
 // /components/about-us/AboutUs.tsx
-'use client'
+'use client';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import CaedAboutUs from '@/components/ui/caed-about-us/caed-about-us';
@@ -42,7 +42,6 @@ const cardsData = [
 ];
 
 const Warranty = () => {
-
   const [bannerHeight, setBannerHeight] = useState(0);
   const bannerRef = useRef<HTMLDivElement>(null);
 
@@ -68,8 +67,7 @@ const Warranty = () => {
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
       <AnimatedBlurredCircles topOffset={bannerHeight} />
-      <div className="rs-wrapper-v4 m-auto flex w-[90%] flex-col items-center justify-center gap-12" >
-     
+      <div className="rs-wrapper-v4 m-auto flex w-[90%] flex-col items-center justify-center gap-12">
         <GuaranteeSection
           title="Garantizamos Tu Tranquilidad en Cada Transacción"
           text="En SwaplyAr, nos comprometemos a que cada cambio de divisas sea seguro y confiable. Con nuestra garantía de satisfacción, podés estar seguro de que tus operaciones se manejarán con la mayor eficiencia y cuidado. ¡Confiá en nosotros para una experiencia sin preocupaciones!"

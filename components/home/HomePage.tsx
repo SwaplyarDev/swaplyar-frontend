@@ -29,10 +29,8 @@ export default function HomePage() {
     resetToDefault();
   }, [resetToDefault]);
 
-
   const calculateInstructionsOffset = () => {
     if (instructionsRef.current) {
-
       setInstructionsOffset(instructionsRef.current.offsetTop);
     }
   };
@@ -54,7 +52,6 @@ export default function HomePage() {
         </FlyerTrabajo>
       </div>
 
-      
       <div className="relative flex flex-col items-center justify-center">
         <div
           className={mainStyles.instructionsCalculatorContainer}

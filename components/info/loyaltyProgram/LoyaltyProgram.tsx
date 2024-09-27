@@ -20,7 +20,6 @@ function LoyaltyProgram() {
     window.location.href = '/auth/login-register';
   };
 
-
   const [bannerHeight, setBannerHeight] = useState(0);
   const bannerRef = useRef<HTMLDivElement>(null);
 
@@ -40,15 +39,13 @@ function LoyaltyProgram() {
     };
   }, []);
 
-
   return (
-    <div className="py-10" ref={bannerRef} >
-      <FlyerTrabajo imageSrc={CentroDeAyuda} >
+    <div className="py-10" ref={bannerRef}>
+      <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
       <AnimatedBlurredCircles topOffset={bannerHeight} />
-      <div className="text-center" >
-     
+      <div className="text-center">
         <h1 className="mb-4 text-4xl font-bold">
           SwaplyAr Plus Rewards™ premia tu fidelidad
         </h1>

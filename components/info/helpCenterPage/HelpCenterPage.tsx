@@ -14,7 +14,6 @@ import Link from 'next/link';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 
 const HelpCenterPage = () => {
-
   const [bannerHeight, setBannerHeight] = useState(0);
   const bannerRef = useRef<HTMLDivElement>(null);
 
@@ -33,7 +32,6 @@ const HelpCenterPage = () => {
       window.removeEventListener('resize', calculateBannerHeight);
     };
   }, []);
-
 
   return (
     <main className="flex w-full flex-col gap-20 py-10" ref={bannerRef}>

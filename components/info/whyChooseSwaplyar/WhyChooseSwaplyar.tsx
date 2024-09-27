@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import GuaranteeSection from '@/components/ui/warranty-section/WarrantySection';
@@ -19,7 +19,6 @@ const mainStyles = {
 };
 
 const WhyChooseSwaplyar: React.FC = () => {
-
   const [bannerHeight, setBannerHeight] = useState(0);
   const bannerRef = useRef<HTMLDivElement>(null);
 
@@ -40,7 +39,7 @@ const WhyChooseSwaplyar: React.FC = () => {
   }, []);
 
   return (
-    <main className="flex w-full flex-col gap-20 py-10"  ref={bannerRef}>
+    <main className="flex w-full flex-col gap-20 py-10" ref={bannerRef}>
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>

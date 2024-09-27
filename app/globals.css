@@ -50,7 +50,7 @@ body {
 
 .box {
   @apply h-full w-full rounded-full;
-  animation: spin 30s infinite linear; 
+  animation: spin 30s infinite linear;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,20 +61,19 @@ body {
   @apply absolute h-[110px] w-[110px] rounded-full blur-[5em];
 }
 
-
 .ball1 {
   background-color: rgba(42, 41, 120, 0.601);
-  transform: rotate(0deg) translateX(260px); 
+  transform: rotate(0deg) translateX(260px);
 }
 
 .ball2 {
   background-color: rgba(42, 41, 120, 0.601);
-  transform: rotate(72deg) translateX(200px); 
+  transform: rotate(72deg) translateX(200px);
 }
 
 .ball3 {
   background-color: rgba(42, 41, 120, 0.601);
-  transform: rotate(144deg) translateX(250px); 
+  transform: rotate(144deg) translateX(250px);
 }
 
 .ball4 {
@@ -84,7 +83,7 @@ body {
 
 .ball5 {
   background-color: rgba(42, 41, 120, 0.601);
-  transform: rotate(288deg) translateX(230px); 
+  transform: rotate(288deg) translateX(230px);
 }
 
 @keyframes spin {
@@ -92,7 +91,7 @@ body {
     transform: rotate(0deg);
   }
   100% {
-    transform: rotate(360deg); 
+    transform: rotate(360deg);
   }
 }
 
@@ -120,7 +119,6 @@ body {
     @apply absolute h-[110px] w-[110px] rounded-full blur-[5em];
   }
 
-  
   .ball1 {
     background-color: rgba(42, 41, 120, 0.601);
     top: 35%;
