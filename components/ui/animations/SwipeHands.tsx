@@ -9,7 +9,7 @@ const SwipeHands: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowHands(false);
-    }, 4000);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, []);
