@@ -68,7 +68,9 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
     startUpdatingRates: () => {
       if (intervalId) return;
 
-      console.log('Iniciando la actualización automática de tasas de cambio...');
+      console.log(
+        'Iniciando la actualización automática de tasas de cambio...',
+      );
 
       const ratesLoaded = loadRatesFromLocalStorage();
 
@@ -84,10 +86,14 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
           const { timestamp } = JSON.parse(storedData);
 
           if (now - timestamp >= expirationTime) {
-            console.log(`Tasas expiradas (timestamp: ${timestamp}, now: ${now}), actualizando...`);
+            console.log(
+              `Tasas expiradas (timestamp: ${timestamp}, now: ${now}), actualizando...`,
+            );
             fetchAndUpdateRates();
           } else {
-            console.log(`Tasas aún válidas (timestamp: ${timestamp}, now: ${now}).`);
+            console.log(
+              `Tasas aún válidas (timestamp: ${timestamp}, now: ${now}).`,
+            );
           }
         } else {
           console.log('No hay tasas en localStorage, actualizando...');
