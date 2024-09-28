@@ -18,29 +18,23 @@ import { useExchangeRate } from '@/hooks/useExchangeRates';
 
 export default function TransactionCalculator() {
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
-  const { startUpdatingRates, stopUpdatingRates, isLoading } =
-    useExchangeRateStore();
-  const { findExchangeRate } = useExchangeRate();
-  const hasRun = useRef(false);
+  const { startUpdatingRates, stopUpdatingRates } = useExchangeRateStore();
 
   useEffect(() => {
     if (selectedSendingSystem && selectedReceivingSystem) {
-      if (!hasRun.current) {
-        hasRun.current = true;
-        startUpdatingRates();
-        findExchangeRate();
-      }
-
-      return () => {
-        stopUpdatingRates();
-      };
+      console.log('Iniciando el proceso de actualización de tasas.');
+      startUpdatingRates();
     }
+
+    return () => {
+      console.log('Deteniendo el proceso de actualización de tasas.');
+      stopUpdatingRates();
+    };
   }, [
     selectedSendingSystem,
     selectedReceivingSystem,
     startUpdatingRates,
     stopUpdatingRates,
-    findExchangeRate,
   ]);
 
   const { activeSelect } = useSystemStore();
