@@ -2,6 +2,9 @@
 export const CentroDeAyuda = '/images/centro-ayuda.png';
 export const FlyerGif = '/gif/flyer.gif';
 
+//gif animacion swipe
+export const swipeGif = '/gif/swipe.gif';
+
 /**Logo SwaplyAr White**/
 export const SwaplyArlogoMobileWhite = '/images/SwaplyAr-logo-Mobile-White.png';
 export const SwaplyArlogoWhite = '/images/SwaplyAr-Logo-White.png';

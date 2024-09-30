@@ -1,0 +1,33 @@
+.overlay {
+  position: absolute;
+  width: 90%;
+  height: 110%;
+  top: -15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  border-radius: 10px;
+  backdrop-filter: blur(4px);
+}
+
+.swipe {
+  position: relative;
+}
+
+.gif-image {
+  opacity: 0; /* Inicialmente invisible */
+  border-radius: 10px;
+  transition: opacity 0.5s ease-in-out; /* Aparece con una transición suave */
+}
+
+.gif-loaded { /* Clase que se agregará cuando el GIF esté cargado */
+  opacity: 0.8; /* Aparece el GIF cuando se cargue completamente */
+}
+
+@media (max-width: 768px) {
+  .overlay {
+    width: 100%;
+    left: 0;
+  }
+}

@@ -1,8 +1,10 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import Image from 'next/image';
 import './CaedAboutUs.css';
+import SwipeHands from '../animations/SwipeHands';
+
 interface CardData {
   src: string;
   alt: string;
@@ -17,6 +19,8 @@ interface CaedAboutUsProps {
 
 const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showSwipeHands, setShowSwipeHands] = useState(false);
+  const sectionRef = useRef(null);
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
@@ -37,8 +41,36 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
     trackMouse: true,
   });
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        console.log('IntersectionObserver triggered:', entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setShowSwipeHands(true);
+        }
+      },
+      { threshold: 1 },
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <div className="relative h-full w-full">
+    <div ref={sectionRef} className="relative h-full w-full">
+      {showSwipeHands && (
+        <div className="block md:hidden">
+          <SwipeHands />
+        </div>
+      )}
+
       <div
         {...swipeHandlers}
         className="relative block h-64 w-full overflow-hidden md:hidden"
