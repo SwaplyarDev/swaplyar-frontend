@@ -4,10 +4,11 @@ import { useExchangeRateStore } from '@/store/exchangeRateStore';
 import { exchangeRates } from './exchangeRates';
 
 const apiKey = process.env.NEXT_PUBLIC_FREE_CURRENCY_API_KEY;
+const apiKey2 = process.env.NEXT_PUBLIC_FREE_CURRENCY_API_KEY2;
 const bluelyticsApiUrl = process.env.NEXT_PUBLIC_BLUELYTICS_API_URL;
 
-if (!apiKey) {
-  throw new Error('Missing FreeCurrencyAPI Key');
+if (!apiKey && !apiKey2) {
+  throw new Error('Missing both FreeCurrencyAPI Keys');
 }
 
 if (!bluelyticsApiUrl) {
@@ -16,9 +17,9 @@ if (!bluelyticsApiUrl) {
 
 //* Función para calcular el precio del dolar/euro usando FreeCurrencyAPI
 export async function updateCurrentValueUSDToEUR() {
-  try {
+  const fetchCurrencyData = async (key: string) => {
     const response = await fetch(
-      `https://api.freecurrencyapi.com/v1/latest?apikey=${apiKey}`,
+      `https://api.freecurrencyapi.com/v1/latest?apikey=${key}`,
     );
 
     if (!response.ok) {
@@ -30,25 +31,41 @@ export async function updateCurrentValueUSDToEUR() {
       throw new Error(errorMessage);
     }
 
-    const data = await response.json();
+    return response.json();
+  };
+
+  try {
+    const data = await fetchCurrencyData(apiKey!);
 
     let currentValueEURToUSD = 1 / data.data.EUR;
     let currentValueUSDToEUR = data.data.EUR;
 
     return { currentValueEURToUSD, currentValueUSDToEUR };
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(
-        'Error fetching currency data from FreeCurrencyAPI:',
-        error.message,
-      );
-    } else {
-      console.error(
-        'Unknown error fetching currency data from FreeCurrencyAPI:',
-        error,
-      );
+    console.error(
+      'Error with the first API key, trying with the second key...',
+    );
+
+    try {
+      const data = await fetchCurrencyData(apiKey2!);
+      let currentValueEURToUSD = 1 / data.data.EUR;
+      let currentValueUSDToEUR = data.data.EUR;
+
+      return { currentValueEURToUSD, currentValueUSDToEUR };
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(
+          'Error fetching currency data from FreeCurrencyAPI with the second API key:',
+          error.message,
+        );
+      } else {
+        console.error(
+          'Unknown error fetching currency data from FreeCurrencyAPI with the second API key:',
+          error,
+        );
+      }
+      throw new Error('Failed to fetch currency data from both API keys');
     }
-    throw new Error('Failed to fetch currency data from FreeCurrencyAPI');
   }
 }
 
