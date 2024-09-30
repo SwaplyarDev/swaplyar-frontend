@@ -201,14 +201,16 @@ export default function TransactionCalculator() {
           ) : (
             <div
               className={clsx(
-                (selectedSendingSystem?.id ===
-                  ('payoneer_usd' || 'payoneer_eur') &&
+                (selectedSendingSystem?.id === 'payoneer_usd' &&
                   parseInt(sendAmount) < 50) ||
+                  (selectedSendingSystem?.id === 'payoneer_eur' &&
+                    parseInt(sendAmount) < 50) ||
+                  (selectedReceivingSystem?.id === 'payoneer_usd' &&
+                    parseInt(receiveAmount) < 50) ||
+                  (selectedReceivingSystem?.id === 'payoneer_eur' &&
+                    parseInt(receiveAmount) < 50) ||
                   (selectedSendingSystem?.id === 'paypal' &&
                     parseInt(sendAmount) < 5) ||
-                  (selectedReceivingSystem?.id ===
-                    ('payoneer_usd' || 'payoneer_eur') &&
-                    parseInt(receiveAmount) < 50) ||
                   (selectedReceivingSystem?.id === 'paypal' &&
                     parseInt(receiveAmount) < 5)
                   ? 'mt-8'
