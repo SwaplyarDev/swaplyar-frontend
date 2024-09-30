@@ -1,13 +1,15 @@
 .overlay {
   position: absolute;
   width: 90%;
-  left: 5%;
-  height: 30vh;
+  height: 110%;
+  top: -15px;
   display: flex;
-  background-color: rgba(0, 0, 0, 0.466);
+  background-color: rgba(112, 112, 112, 0.466);
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  border-radius: 10px;
+  backdrop-filter: blur(4px);
 }
 
 .swipe {

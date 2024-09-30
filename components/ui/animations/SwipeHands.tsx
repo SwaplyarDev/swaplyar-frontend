@@ -30,17 +30,16 @@ const SwipeHands: React.FC = () => {
       {showHands && gifLoaded && (
         <div className="overlay">
           <div className="swipe">
-          <Image
-  src={swipeGif}
-  alt="Swipe Hands"
-  width={175}
-  height={75}
-  unoptimized={true}
-  priority={true} // Asegura que esta imagen se cargue con mayor prioridad
-  className={`gif-image ${gifLoaded ? 'gif-loaded' : ''}`}
-  loading="eager"
-/>
-
+            <Image
+              src={swipeGif}
+              alt="Swipe Hands"
+              width={175}
+              height={75}
+              unoptimized={true}
+              priority={true} // Asegura que esta imagen se cargue con mayor prioridad
+              className={`gif-image ${gifLoaded ? 'gif-loaded' : ''}`}
+              loading="eager"
+            />
           </div>
         </div>
       )}
