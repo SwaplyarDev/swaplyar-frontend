@@ -8,7 +8,6 @@ const SwipeHands: React.FC = () => {
   const [gifLoaded, setGifLoaded] = useState(false);
 
   useEffect(() => {
-  
     const img = new window.Image(); 
     img.src = swipeGif; 
     img.onload = () => setGifLoaded(true); 
@@ -33,8 +32,8 @@ const SwipeHands: React.FC = () => {
             <Image
               src={swipeGif}
               alt="Swipe Hands"
-              width={175}
-              height={75}
+              width={375}
+              height={175}
               unoptimized={true}
               priority={true} // Asegura que esta imagen se cargue con mayor prioridad
               className={`gif-image ${gifLoaded ? 'gif-loaded' : ''}`}
