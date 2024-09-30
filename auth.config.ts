@@ -4,7 +4,8 @@ import Credentials from 'next-auth/providers/credentials';
 import Github from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
 import { InvalidCredentials, UserNotFound } from './lib/auth/index';
-const BASE_URL = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+
+const BASE_URL = process.env.NEXTAUTH_URL || 'http://localhost:8080';
 
 export default {
   providers: [
@@ -20,16 +21,16 @@ export default {
       async authorize(credentials) {
         try {
           const email = credentials.email as string;
-          const password = credentials.password as string;
+          const verificationCode = credentials.verificationCode as string;
 
-          const response = await fetch(`${BASE_URL}/api/login`, {
+          const response = await fetch(`${BASE_URL}/api/v1/login/email/verify-code`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
               email,
-              password,
+              code: verificationCode,
             }),
           });
 
@@ -37,9 +38,8 @@ export default {
           console.log('data', data);
 
           if (data && data.token) {
-            // Desestructura la respuesta
+            // Si la validación es exitosa, se retorna el usuario autenticado
             const { user, role } = data;
-            // Retorna un objeto de usuario con los datos necesarios
             return {
               id: user.id,
               name: user.name,
