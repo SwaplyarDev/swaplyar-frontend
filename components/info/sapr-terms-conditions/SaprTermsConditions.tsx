@@ -1,7 +1,11 @@
+import Link from 'next/link'
+
 const SaprTermsConditions = () => {
   return (
     <div className="max-w-3xl mx-auto p-4">
-    
+          <h2 className="mb-6 text-2xl font-bold">
+          Términos y Condiciones de Programa de Fidelización
+          </h2>
             <div className="mb-4 p-4 bg-white shadow rounded dark:bg-gray-800">
             <h2 className="text-3xl font-bold mb-6">1. Membresía</h2>
                 <h2 className="text-2xl font-semibold mb-2">a. Elegibilidad</h2>
@@ -66,7 +70,7 @@ const SaprTermsConditions = () => {
             <div className="mb-4 p-4 bg-white shadow rounded dark:bg-gray-800">
                 <h2 className="text-2xl font-semibold mb-2">5. Contacto con SwaplyAr</h2>
                 <p className="text-gray-700 dark:text-gray-100">
-                    Puede contactar a SwaplyAr en línea en <a href="https://www.swaplyar.com/ayuda" className="text-blue-600">https://www.swaplyar.com/ayuda</a>, por WhatsApp al +5491123832198, o por correo de atención: <a href="mailto:centrodeayuda@swaplyar.com" className="text-blue-600">centrodeayuda@swaplyar.com</a>.
+                    Puede contactar a SwaplyAr en línea en <a href="https://www.swaplyar.com/ayuda" className="text-blue-600 dark:text-gray-100">https://www.swaplyar.com/ayuda</a>, por WhatsApp al +5491123832198, o por correo de atención: <a href="mailto:centrodeayuda@swaplyar.com" className="text-blue-600 dark:text-sky-500">centrodeayuda@swaplyar.com</a>.
                 </p>
             </div>
 
@@ -98,9 +102,9 @@ const SaprTermsConditions = () => {
                 </p>
             </div>
             <div className="flex justify-center mb-4">
-             <a href="https://swaplyar.com/SAPR-Terms-Conditions-ES%20.pdf" target="_blank" className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white dark:border-darkText dark:bg-darkText dark:text-lightText`}>
-             BotonDescarga
-             </a>
+             <Link href="https://swaplyar.com/SAPR-Terms-Conditions-ES%20.pdf" target="_blank" className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white dark:border-darkText dark:bg-darkText dark:text-lightText`}>
+               Descargar Términos
+             </Link>
             </div>
         </div>
   );
