@@ -70,7 +70,8 @@ const AboutUs = () => {
   }, []);
 
   return (
-    <div className="py-10">
+    <div className="py-10 relative">
+      <AnimatedBlurredCircles topOffset={bannerHeight} tope='top-[-375px]'/>
       <div className="shadow-custom-blue" ref={bannerRef}>
         <FlyerTrabajo imageSrc="/images/need-help.png">
           Estamos trabajando en las funciones de inicio de sesión y registro.
@@ -86,7 +87,6 @@ const AboutUs = () => {
               satisfacción.
             </h1>
           </div>
-          <AnimatedBlurredCircles topOffset={bannerHeight} />
         </div>
 
         <div className="rs-wrapper-v4 mx-auto mb-12 w-[90%] max-w-[1000px] text-justify sm:mt-4 md:mt-8 md:w-full lg:mt-8">

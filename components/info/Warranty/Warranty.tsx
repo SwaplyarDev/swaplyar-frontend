@@ -62,11 +62,11 @@ const Warranty = () => {
   }, []);
 
   return (
-    <main className="flex w-full flex-col gap-20 py-10" ref={bannerRef}>
+    <main className="flex w-full flex-col gap-20 py-10 relative" ref={bannerRef}>
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-      <AnimatedBlurredCircles topOffset={bannerHeight} />
+      <AnimatedBlurredCircles topOffset={bannerHeight} tope='top-[-250px]'/>
       <div className="rs-wrapper-v4 m-auto flex w-[90%] flex-col items-center justify-center gap-12">
         <GuaranteeSection
           title="Garantizamos Tu Tranquilidad en Cada Transacción"

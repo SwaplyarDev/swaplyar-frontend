@@ -34,11 +34,11 @@ const HelpCenterPage = () => {
   }, []);
 
   return (
-    <main className="flex w-full flex-col gap-20 py-10" ref={bannerRef}>
+    <main className="flex w-full flex-col gap-20 py-10 relative" ref={bannerRef}>
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-      <AnimatedBlurredCircles topOffset={bannerHeight} />
+      <AnimatedBlurredCircles topOffset={bannerHeight} tope='top-[-360px]'/>
       <div className="m-auto grid w-[90%] max-w-screen-lg items-center justify-center gap-12">
         <section className="rs-wrapper-v4 p-4">
           <h1 className="text-3xl font-bold">
