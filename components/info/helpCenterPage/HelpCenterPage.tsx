@@ -14,6 +14,7 @@ import Link from 'next/link';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 
 const HelpCenterPage = () => {
+  
   const [bannerHeight, setBannerHeight] = useState(0);
   const bannerRef = useRef<HTMLDivElement>(null);
 
@@ -34,12 +35,12 @@ const HelpCenterPage = () => {
   }, []);
 
   return (
-    <main className="flex w-full flex-col gap-20 py-10" ref={bannerRef}>
+    <main className="flex w-full  flex-col gap-20 py-10" >
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
+      <div className="m-auto grid w-[90%] relative max-w-screen-lg items-center justify-center gap-12"  ref={bannerRef}>
       <AnimatedBlurredCircles topOffset={bannerHeight} />
-      <div className="m-auto grid w-[90%] max-w-screen-lg items-center justify-center gap-12">
         <section className="rs-wrapper-v4 p-4">
           <h1 className="text-3xl font-bold">
             Bienvenido al Centro de Ayuda de SwaplyAr

@@ -36,7 +36,7 @@ const TermsAndConditions = () => {
       </FlyerTrabajo>
 
       <div
-        className="mx-auto flex w-full max-w-[80%] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left"
+        className="mx-auto flex w-full max-w-[80%] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left relative"
         ref={bannerRef}
       >
         <AnimatedBlurredCircles topOffset={bannerHeight} />

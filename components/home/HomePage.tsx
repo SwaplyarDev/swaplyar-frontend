@@ -13,11 +13,11 @@ import {
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
 
+
 const mainStyles = {
   main: 'py-10 min-h-screen', // Centrado tanto vertical como horizontalmente
   infoBlocksContainer: 'flex flex-col items-center justify-center mt-8',
-  instructionsCalculatorContainer:
-    'relative flex space-x-4 items-center justify-center mt-8', // Añadimos `relative`
+  instructionsCalculatorContainer: 'relative flex space-x-4 items-center justify-center mt-8', // Añadimos `relative`
 };
 
 export default function HomePage() {
