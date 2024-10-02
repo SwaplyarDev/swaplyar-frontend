@@ -19,7 +19,7 @@ export default function ReceiverInfo({ register, errors }: RecibeInfoProps) {
             : 'text-gray-900 dark:text-gray-300',
         )}
       >
-        Nombre de quien va a recibir la transaccion
+        Nombre de quien va a recibir la transacción
       </label>
       <input
         className={clsx(
@@ -29,7 +29,7 @@ export default function ReceiverInfo({ register, errors }: RecibeInfoProps) {
             : 'mb-5 hover:border-blue-600',
         )}
         type="text"
-        {...register('receiver_name', { required: 'El nombre es obligatorio' })}
+        {...register('receiver_first_name', { required: 'El nombre es obligatorio' })}
       />
       {errors.receiver_first_name && (
         <p className="mb-5 text-sm text-red-500">
@@ -44,7 +44,7 @@ export default function ReceiverInfo({ register, errors }: RecibeInfoProps) {
             : 'text-gray-900 dark:text-gray-300',
         )}
       >
-        Apellido de quien va a recibir la transaccion
+        Apellido de quien va a recibir la transacción
       </label>
       <input
         className={clsx(
@@ -66,12 +66,12 @@ export default function ReceiverInfo({ register, errors }: RecibeInfoProps) {
       <label
         htmlFor="receiver_email"
         className={clsx(
-          errors.receiver_identifier
+          errors.receiver_email
             ? 'text-red-500'
             : 'text-gray-900 dark:text-gray-300',
         )}
       >
-        Email de quien va a recibir la transaccion
+        Email de quien va a recibir la transacción
       </label>
       <input
         className={clsx(
@@ -102,7 +102,7 @@ export default function ReceiverInfo({ register, errors }: RecibeInfoProps) {
             : 'text-gray-900 dark:text-gray-300',
         )}
       >
-        CVU de quien va a recibir la transaccion
+        CVU de quien va a recibir la transacción
       </label>
       <input
         className={clsx(
@@ -113,7 +113,7 @@ export default function ReceiverInfo({ register, errors }: RecibeInfoProps) {
         )}
         type="text"
         {...register('transaction_destination', {
-          required: 'El apellido es obligatorio',
+          required: 'El CVU es obligatorio',
         })}
       />
       {errors.transaction_destination && (

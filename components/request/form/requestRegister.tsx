@@ -10,6 +10,8 @@ import ReceiverInfo from './inputs/receiverInfo';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import { requestRegister } from '@/actions/request/action.requestRegister';
+import Swal from 'sweetalert2';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 type FormInputs = {
   sender_first_name: string;
@@ -48,6 +50,8 @@ export const RequestRegisterForm = () => {
     null,
   );
   const [transactionId, setTransactionId] = useState<string>('');
+  const { isDark } = useDarkTheme();
+  const [progress, setProgress] = useState(0);
 
   const {
     register,
@@ -69,107 +73,120 @@ export const RequestRegisterForm = () => {
     setErrorMessage('');
     setLoading(true);
 
+    // Limpiar datos del localStorage
     localStorage.removeItem('payer');
     localStorage.removeItem('sendAmount');
     localStorage.removeItem('selectedSendingSystem');
     localStorage.removeItem('receiveAmount');
     localStorage.removeItem('selectedReceivingSystem');
-    const {
-      sender_first_name,
-      sender_last_name,
-      amount_sent,
-      currency_sent,
-      amount_received,
-      currency_received,
-      phone,
-      transfer_code,
-      payment_bank,
-      reciver_bank,
-      document,
-      sender_email,
-      receiver_email,
-      proof_of_payment,
-      transaction_destination,
-      note,
-      country,
-      type_of_document,
-    } = data;
 
-    const fullPhoneNumber = `${currentCountry?.callingCode} ${phone}`;
+    const fullPhoneNumber = `${currentCountry?.callingCode} ${data.phone}`;
 
-    const transactions = {
-      sender_first_name: sender_first_name || '',
-      sender_last_name: sender_last_name || '',
-      sender_identification: document || '',
-      sender_phone_number: fullPhoneNumber || '',
-      sender_email: sender_email || '',
-      receiver_first_name: '',
-      receiver_last_name: '',
-      transfer_code: transactionId || '',
-      country_transaction: country || '',
-      message: note || '',
-    };
-    // las peticiones del local storage se hacen en inputs/payerInfo en su use effect y se setean en el formulario tanto els montos, tipos de moneda y bancos
-    const amounts = {
-      amount_sent: amount_sent || 0,
-      currency_sent: currency_sent || '',
-      amount_received: amount_received || 0,
-      currency_received: currency_received || '',
-    };
-
-    const sender_bank_accounts = {
-      email_account: sender_email || '',
-      payment_method: payment_bank || '',
-      number_account: transfer_code || '',
+    const transaction = {
+      transaction: {
+        sender: {
+          first_name: data.sender_first_name || '',
+          last_name: data.sender_last_name || '',
+          identification: data.document || '',
+          phone_number: fullPhoneNumber || '',
+          email: data.sender_email || '',
+          bank_account: {
+            email_account: data.sender_email || '',
+            payment_method: data.payment_bank || '',
+            number_account: data.transfer_code || '',
+          },
+        },
+        receiver: {
+          first_name: data.receiver_first_name || '',
+          last_name: data.receiver_last_name || '',
+          bank_account: {
+            email_account: data.receiver_email || '',
+            payment_method: data.reciver_bank || '',
+            number_account: data.transaction_destination || '',
+          },
+        },
+        transfer: {
+          transfer_code: transactionId || '',
+          country_transaction: data.country || '',
+          message: data.note || '',
+        },
+        amounts: {
+          amount_sent: data.amount_sent || 0,
+          currency_sent: data.currency_sent || '',
+          amount_received: data.amount_received || 0,
+          currency_received: data.currency_received || '',
+        },
+        proof_of_payment: {
+          img_transaction: await convertToBase64(data.proof_of_payment),
+        },
+      },
     };
 
-    const receiver_bank_accounts = {
-      email_account: receiver_email || '',
-      payment_method: reciver_bank || '',
-      number_account: transaction_destination || '',
-    };
+    // Comienza a mostrar la barra de carga
+    setLoading(true);
+    setProgress(0); // Reiniciar progreso
 
-    const formData = new FormData();
+    // Guardar el tiempo de inicio
+    const startTime = Date.now();
 
-    formData.append('transactions', JSON.stringify(transactions));
-    formData.append('amounts', JSON.stringify(amounts));
-    formData.append(
-      'sender_bank_accounts',
-      JSON.stringify(sender_bank_accounts),
-    );
-    formData.append(
-      'receiver_bank_accounts',
-      JSON.stringify(receiver_bank_accounts),
-    );
+    try {
+      console.log(transaction);
+      const resp = await requestRegister(transaction);
+      // Calcular el tiempo total que tomó la solicitud
+      const duration = Date.now() - startTime;
 
-    if (proof_of_payment && proof_of_payment.length > 0) {
-      formData.append('proof_of_payments', proof_of_payment[0]);
-    } else {
-      console.warn('No se ha proporcionado un archivo de comprobante');
+      // Llenar la barra de carga proporcionalmente
+      setProgress(100); // Alcanza el 100% al final de la solicitud
+
+      if (resp.ok) {
+        // Muestra SweetAlert de éxito
+        await Swal.fire({
+          title: '¡Transacción realizada!',
+          html: `
+            <p><b>La transacción se ha realizado correctamente.</b></p>
+          `,
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+          background: isDark ? 'rgb(69 69 69)' : '#ffffff',
+          color: isDark ? '#ffffff' : '#000000',
+          customClass: {
+            confirmButton:
+              'bg-[#0070ba] rounded-[23px] h-[45px] min-w-[150px] text-white border-none px-5 py-2.5 cursor-pointer hover:filter hover:brightness-95',
+            container: 'custom-sw-container',
+          },
+          allowOutsideClick: true, // Permite cerrar haciendo clic fuera
+        }).then(() => {
+          // Redirige al home
+          window.location.href = '/'; // Cambia esto a la ruta de tu página de inicio
+        });
+      } else {
+        setErrorMessage(resp.message);
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+      setErrorMessage('Ha ocurrido un error al enviar la solicitud.');
+    } finally {
+      setLoading(false); // Asegúrate de que loading se establezca en false en todos los casos
+      setProgress(0); // Reinicia el progreso después de que la transacción haya terminado
     }
+  };
 
-    const entries = formData.entries();
-    let entry = entries.next();
-
-    while (!entry.done) {
-      console.log(`${entry.value[0]}: ${entry.value[1]}`); // Console.log par ver como se manda el formulario
-      entry = entries.next();
-    }
-
-    // try {
-    //   const resp = await requestRegister(formData);
-
-    //   setLoading(false);
-
-    //   if (!resp.ok) {
-    //     setErrorMessage(resp.message);
-    //     return;
-    //   }
-    // } catch (error) {
-    //   console.error('Error en la solicitud:', error);
-    //   setErrorMessage('Ha ocurrido un error al enviar la solicitud.');
-    //   setLoading(false);
-    // }
+  const convertToBase64 = (fileList: FileList): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      if (fileList && fileList.length > 0) {
+        const file = fileList[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          resolve(reader.result as string);
+        };
+        reader.onerror = (error) => {
+          reject(error);
+        };
+      } else {
+        resolve('');
+      }
+    });
   };
 
   return (
@@ -320,28 +337,37 @@ export const RequestRegisterForm = () => {
           )}
           {...register('note')}
         />
-        {errors.note && (
-          <p className="mb-5 text-sm text-red-500">• {errors.note.message}</p>
+
+        {loading ? (
+          <div className="relative">
+            <button
+              disabled
+              className="flex h-12 w-full justify-center rounded bg-gray-400 px-4 text-lg font-semibold text-white hover:bg-gray-500"
+            >
+              Enviando...
+            </button>
+            <div className="absolute left-0 top-0 w-full bg-gray-200">
+              <div
+                className="h-1 bg-blue-500"
+                style={{ width: `${progress}%`, transition: 'width 0.3s' }} // Estilo dinámico para el ancho
+              />
+            </div>
+          </div>
+        ) : (
+          <button
+            type="submit"
+            className="flex h-12 w-full justify-center rounded bg-blue-500 px-4 text-lg font-semibold text-white hover:bg-blue-600"
+          >
+            Enviar Solicitud
+          </button>
         )}
 
-        <SendButton pending={loading} />
+        {_errorMessage && (
+          <p className="mt-5 text-center text-red-500">{_errorMessage}</p>
+        )}
       </form>
     </div>
   );
 };
 
-function SendButton({ pending }: { pending: boolean }) {
-  return (
-    <button
-      type="submit"
-      className={clsx({
-        'btn-primary': !pending,
-        'btn-disabled': pending,
-        btnAuthForm: true,
-      })}
-      disabled={pending}
-    >
-      {pending ? 'Enviando...' : 'Enviar solicitud'}
-    </button>
-  );
-}
+export default RequestRegisterForm;

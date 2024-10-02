@@ -140,6 +140,11 @@ export default function SelectCountry({
             ...provided,
             color: 'inherit',
           }),
+          placeholder: (provided) => ({
+            ...provided,
+            color: 'gray', // Cambia este color al que desees
+            opacity: 0.7, // Puedes ajustar la opacidad si lo deseas
+          }),
         }}
       />
       {errors.country && (
