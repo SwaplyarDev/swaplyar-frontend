@@ -14,7 +14,7 @@ import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
 
 const mainStyles = {
-  main: ' py-10  min-h-screen', // Centrado tanto vertical como horizontalmente
+  main: ' py-10  min-h-screen', 
   infoBlocksContainer: 'flex flex-col items-center justify-center mt-8',
   instructionsCalculatorContainer:
     'flex space-x-4 items-center justify-center mt-8',
@@ -79,7 +79,7 @@ export default function HomePage() {
           <div>
             <button id="bannerHTUButton">
               <Link href="/info/how-to-use">
-                {/* Texto escapado */}
+              
                 &quot;Cómo usar SwaplyAr&quot;
               </Link>
             </button>
