@@ -39,13 +39,12 @@ const WhyChooseSwaplyar: React.FC = () => {
   }, []);
 
   return (
-    <main className="flex w-full flex-col gap-20 py-10" >
+    <main className="flex w-full flex-col gap-20 py-10 relative" ref={bannerRef}>
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-      
-      <div className="m-auto grid w-[90%] items-center justify-center gap-12 relative " ref={bannerRef}>
-      <AnimatedBlurredCircles topOffset={bannerHeight} />
+      <AnimatedBlurredCircles topOffset={bannerHeight} tope='top-[-650px]'/>
+      <div className="m-auto grid w-[90%] items-center justify-center gap-12">
         <section>
           <GuaranteeSection
             title="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"

@@ -1,15 +1,18 @@
 import React from 'react';
 import { Box } from '@mui/material';
+import clsx from 'clsx';
 
 interface AnimatedBlurredCirclesProps {
   topOffset: number;
+  tope: string;
 }
 
 const AnimatedBlurredCircles: React.FC<AnimatedBlurredCirclesProps> = ({
-  topOffset,
+  topOffset, 
+  tope
 }) => {
   return (
-    <div className="container-blur">
+    <div className={`container-blur ${tope}`}>
       <Box className="box">
         <div className="ball ball1"></div>
         <div className="ball ball2"></div>

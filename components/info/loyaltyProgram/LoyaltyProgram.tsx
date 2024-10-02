@@ -44,9 +44,8 @@ function LoyaltyProgram() {
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-      
-      <div className="text-center relative" ref={bannerRef}>
-      <AnimatedBlurredCircles topOffset={bannerHeight} />
+      <AnimatedBlurredCircles topOffset={bannerHeight} tope={"top-[220px]"}/>
+      <div className="text-center">
         <h1 className="mb-4 text-4xl font-bold">
           SwaplyAr Plus Rewards™ premia tu fidelidad
         </h1>

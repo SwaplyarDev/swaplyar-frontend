@@ -62,13 +62,12 @@ const Warranty = () => {
   }, []);
 
   return (
-    <main className="flex w-full flex-col gap-20 py-10" >
+    <main className="flex w-full flex-col gap-20 py-10 relative" ref={bannerRef}>
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-     
-      <div className="rs-wrapper-v4 m-auto flex w-[90%] flex-col items-center justify-center gap-12 relative" ref={bannerRef}>
-      <AnimatedBlurredCircles topOffset={bannerHeight} />
+      <AnimatedBlurredCircles topOffset={bannerHeight} tope='top-[-250px]'/>
+      <div className="rs-wrapper-v4 m-auto flex w-[90%] flex-col items-center justify-center gap-12">
         <GuaranteeSection
           title="Garantizamos Tu Tranquilidad en Cada Transacción"
           text="En SwaplyAr, nos comprometemos a que cada cambio de divisas sea seguro y confiable. Con nuestra garantía de satisfacción, podés estar seguro de que tus operaciones se manejarán con la mayor eficiencia y cuidado. ¡Confiá en nosotros para una experiencia sin preocupaciones!"

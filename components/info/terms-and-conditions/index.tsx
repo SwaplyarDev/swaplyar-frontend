@@ -30,7 +30,8 @@ const TermsAndConditions = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center py-10">
+    <div className="flex flex-col items-center py-10 relative">
+      <AnimatedBlurredCircles topOffset={bannerHeight} tope='top-[-1675px]'/>
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
@@ -39,7 +40,6 @@ const TermsAndConditions = () => {
         className="mx-auto flex w-full max-w-[80%] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left relative"
         ref={bannerRef}
       >
-        <AnimatedBlurredCircles topOffset={bannerHeight} />
         <div className="flex w-full max-w-[600px] items-center justify-center p-0">
           <h1 className="mb-6 text-3xl md:text-4xl">
             Términos y Condiciones de Uso y Navegación del Sitio SwaplyAr

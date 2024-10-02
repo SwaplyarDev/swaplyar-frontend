@@ -45,10 +45,9 @@ const AboutUs = () => {
   
 
   return (
-    <div className="relative py-10">
-      
-      <div className="relative shadow-custom-blue " ref={flyerRef}>
-      <AnimatedBlurredCircles topOffset={flyerTop} />
+    <div className="py-10 relative">
+      <AnimatedBlurredCircles topOffset={flyerTop} tope='top-[-375px]'/>
+      <div className="shadow-custom-blue" ref={flyerRef}>
         <FlyerTrabajo imageSrc="/images/need-help.png">
           Estamos trabajando en las funciones de inicio de sesión y registro.
         </FlyerTrabajo>
