@@ -45,7 +45,7 @@ body {
 }*/
 
 .container-blur {
-  @apply absolute flex h-[150vh] w-full justify-center overflow-hidden;
+  @apply absolute flex h-full w-full justify-center overflow-hidden;
 }
 
 .box {
