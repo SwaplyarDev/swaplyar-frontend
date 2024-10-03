@@ -12,6 +12,7 @@ import { useState, useEffect } from 'react';
 import { requestRegister } from '@/actions/request/action.requestRegister';
 import Swal from 'sweetalert2';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import Image from 'next/image';
 
 type FormInputs = {
   sender_first_name: string;
@@ -51,7 +52,6 @@ export const RequestRegisterForm = () => {
   );
   const [transactionId, setTransactionId] = useState<string>('');
   const { isDark } = useDarkTheme();
-  const [progress, setProgress] = useState(0);
 
   const {
     register,
@@ -122,24 +122,11 @@ export const RequestRegisterForm = () => {
       },
     };
 
-    // Comienza a mostrar la barra de carga
-    setLoading(true);
-    setProgress(0); // Reiniciar progreso
-
-    // Guardar el tiempo de inicio
-    const startTime = Date.now();
-
     try {
       console.log(transaction);
       const resp = await requestRegister(transaction);
-      // Calcular el tiempo total que tomó la solicitud
-      const duration = Date.now() - startTime;
-
-      // Llenar la barra de carga proporcionalmente
-      setProgress(100); // Alcanza el 100% al final de la solicitud
 
       if (resp.ok) {
-        // Muestra SweetAlert de éxito
         await Swal.fire({
           title: '¡Transacción realizada!',
           html: `
@@ -154,10 +141,9 @@ export const RequestRegisterForm = () => {
               'bg-[#0070ba] rounded-[23px] h-[45px] min-w-[150px] text-white border-none px-5 py-2.5 cursor-pointer hover:filter hover:brightness-95',
             container: 'custom-sw-container',
           },
-          allowOutsideClick: true, // Permite cerrar haciendo clic fuera
+          allowOutsideClick: true,
         }).then(() => {
-          // Redirige al home
-          window.location.href = '/'; // Cambia esto a la ruta de tu página de inicio
+          window.location.href = '/';
         });
       } else {
         setErrorMessage(resp.message);
@@ -166,8 +152,7 @@ export const RequestRegisterForm = () => {
       console.error('Error en la solicitud:', error);
       setErrorMessage('Ha ocurrido un error al enviar la solicitud.');
     } finally {
-      setLoading(false); // Asegúrate de que loading se establezca en false en todos los casos
-      setProgress(0); // Reinicia el progreso después de que la transacción haya terminado
+      setLoading(false);
     }
   };
 
@@ -188,7 +173,6 @@ export const RequestRegisterForm = () => {
       }
     });
   };
-
   return (
     <div className="flex items-center justify-center bg-transparent">
       <form
@@ -339,20 +323,12 @@ export const RequestRegisterForm = () => {
         />
 
         {loading ? (
-          <div className="relative">
-            <button
-              disabled
-              className="flex h-12 w-full justify-center rounded bg-gray-400 px-4 text-lg font-semibold text-white hover:bg-gray-500"
-            >
-              Enviando...
-            </button>
-            <div className="absolute left-0 top-0 w-full bg-gray-200">
-              <div
-                className="h-1 bg-blue-500"
-                style={{ width: `${progress}%`, transition: 'width 0.3s' }} // Estilo dinámico para el ancho
-              />
-            </div>
-          </div>
+          <button
+            disabled
+            className="gap-2 flex h-12 w-full items-center justify-center rounded bg-gray-400 px-4 text-lg font-semibold text-white hover:bg-gray-500"
+          >
+            <Image src="/gif/cargando.gif" width={20} height={20} alt="loading" className="mr-1 mb-0.5"/> Enviando...
+          </button>
         ) : (
           <button
             type="submit"
