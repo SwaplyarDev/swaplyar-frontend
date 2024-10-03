@@ -29,7 +29,9 @@ export default function ReceiverInfo({ register, errors }: RecibeInfoProps) {
             : 'mb-5 hover:border-blue-600',
         )}
         type="text"
-        {...register('receiver_first_name', { required: 'El nombre es obligatorio' })}
+        {...register('receiver_first_name', {
+          required: 'El nombre es obligatorio',
+        })}
       />
       {errors.receiver_first_name && (
         <p className="mb-5 text-sm text-red-500">

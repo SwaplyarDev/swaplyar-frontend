@@ -325,9 +325,16 @@ export const RequestRegisterForm = () => {
         {loading ? (
           <button
             disabled
-            className="gap-2 flex h-12 w-full items-center justify-center rounded bg-gray-400 px-4 text-lg font-semibold text-white hover:bg-gray-500"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded bg-gray-400 px-4 text-lg font-semibold text-white hover:bg-gray-500"
           >
-            <Image src="/gif/cargando.gif" width={20} height={20} alt="loading" className="mr-1 mb-0.5"/> Enviando...
+            <Image
+              src="/gif/cargando.gif"
+              width={20}
+              height={20}
+              alt="loading"
+              className="mb-0.5 mr-1"
+            />{' '}
+            Enviando...
           </button>
         ) : (
           <button
