@@ -3,9 +3,10 @@ import type { NextAuthConfig } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import Github from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
-import { InvalidCredentials, UserNotFound } from './lib/auth/index';
+import { InvalidCredentials} from './lib/auth/index';
 
-const BASE_URL = process.env.NEXTAUTH_URL || 'http://localhost:8080';
+const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api/v1';
+
 
 export default {
   providers: [
@@ -21,28 +22,36 @@ export default {
       async authorize(credentials) {
         try {
           const email = credentials.email as string;
-          const verificationCode = credentials.verificationCode as string;
+          const code = credentials.verificationCode as string;
 
-          const response = await fetch(`${BASE_URL}/api/v1/login/email/verify-code`, {
+          console.log(`Email: ${email} Code: ${code}`);
+
+          const response = await fetch(`${BASE_URL}/login/email/verify-code`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              email,
-              code: verificationCode,
+              email: email,
+              code: code
             }),
           });
 
+          if (!response.ok) {
+            if (response.status === 401 || response.status === 403) {
+              throw new InvalidCredentials();
+            } else {
+              throw new Error('Error inesperado durante la autenticación');
+            }
+          }
+
           const data = await response.json();
-          console.log('data', data);
 
           if (data && data.token) {
-            // Si la validación es exitosa, se retorna el usuario autenticado
-            const { user, role } = data;
+            const { user } = data;
             return {
               id: user.id,
-              name: user.name,
+              fullName: user.fullName,
               email: user.email,
               role: user.role,
             };
@@ -50,16 +59,8 @@ export default {
             throw new InvalidCredentials();
           }
         } catch (error) {
-          const e = error as Error;
-          if (e instanceof UserNotFound || e instanceof InvalidCredentials) {
-            throw e;
-          } else {
-            // Errores inesperados
-            console.error('Error inesperado durante la autorización:', e);
-            throw new Error(
-              'Error de autenticación. Por favor, inténtalo de nuevo.',
-            );
-          }
+            console.error('Authentication error:', error instanceof InvalidCredentials ? error.message : error);
+            throw new Error('Authentication failed. Please try again.');
         }
       },
     }),

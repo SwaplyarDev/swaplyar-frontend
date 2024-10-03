@@ -5,6 +5,7 @@
 import { useState, useEffect } from 'react';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
 import useStore from '@/store/authViewStore';
+import { useSession, signOut } from 'next-auth/react';
 
 import { Drawer, Sidebar, Navbar } from 'flowbite-react';
 import { GiHamburgerMenu } from 'react-icons/gi';
@@ -26,6 +27,9 @@ export function TopMenu() {
 
   const { setView } = useStore();
   const { isDark } = useDarkTheme();
+  const { data: session } = useSession();
+
+  console.log(`secssion:`, session)
 
   const handleSelect = (item: string) => {
     sessionStorage.setItem('currentView', item);
@@ -44,11 +48,20 @@ export function TopMenu() {
       <Navbar
         fluid
         rounded
-        className={`sticky py-3 dark:bg-lightText`} // dejar el sticky para no romper la animacion del log in
+        className={`sticky py-3 dark:bg-lightText`}
       >
         <div className="m-auto flex w-[95%] max-w-screen-2xl flex-row justify-between">
           <span className="hidden md:flex lg:hidden">
+            { session? (
+              <button
+                onClick={ ()=> signOut()}
+                className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+              >
+                Salir
+              </button>
+            ): (
             <LogInButton />
+            )}
           </span>
 
           <Navbar.Brand href="/">
@@ -159,29 +172,40 @@ export function TopMenu() {
                     </Sidebar.ItemGroup>
 
                     <Sidebar.ItemGroup className="border-t-2 border-buttonsLigth px-2 dark:border-sky-500">
-                      <Sidebar.Item
-                        className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:hover:bg-transparent md:hidden ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-                        onClick={() => {
-                          handleSelect('login');
-                          setView('login');
-                          setDrawerMenu(false);
-                        }}
-                        href="/auth/login-register"
-                      >
-                        Iniciar sesión
-                      </Sidebar.Item>
+                      {session? (
+                        <Sidebar.Item
+                          className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+                          onClick={() => signOut()}
+                        >
+                          Salir
+                        </Sidebar.Item>
+                      ) : (
+                        <>
+                          <Sidebar.Item
+                            className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:hover:bg-transparent md:hidden ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+                            onClick={() => {
+                              handleSelect('login');
+                              setView('login');
+                              setDrawerMenu(false);
+                            }}
+                            href="/auth/login-register"
+                          >
+                            Iniciar sesión
+                          </Sidebar.Item>
 
-                      <Sidebar.Item
-                        className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
-                        onClick={() => {
-                          handleSelect('register');
-                          setView('register');
-                          setDrawerMenu(false);
-                        }}
-                        href="/auth/login-register"
-                      >
-                        Registrarse
-                      </Sidebar.Item>
+                          <Sidebar.Item
+                            className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+                            onClick={() => {
+                              handleSelect('register');
+                              setView('register');
+                              setDrawerMenu(false);
+                            }}
+                            href="/auth/login-register"
+                          >
+                            Registrarse
+                          </Sidebar.Item>
+                        </>
+                      )}
                     </Sidebar.ItemGroup>
                   </Sidebar.Items>
                 </Sidebar>
