@@ -135,6 +135,14 @@ La ruta `/api/paypal` en el servidor maneja la creación de órdenes en PayPal. 
 
 - **Manejo de Errores**: Si ocurre algún problema al obtener el token o crear la orden, se devuelve un mensaje de error.
 
+### Documentación y ayuda para entender PayPal
+
+- **Documentación**: [PayPal REST API](https://developer.paypal.com/api/rest/)
+
+- **Dashboard de desarrollo**: [PayPal Developer](https://developer.paypal.com/home/) aquí se obtienen tanto las cuentas de prueba y se registra la aplicación para su uso, cambiando el entorno de desarrollo a uno de producción.
+
+- **Video explicativo**: [PayPal y Next.js](https://www.youtube.com/watch?v=ouqcQunk0fU&t=438s&ab_channel=FaztCode) un video explicativo en donde, si bien esta algo desactualizado ya que algunos parámetros cambian sirve para entender como funciona en general el comportamiento del código.
+
 ## 🚀 Configuración Inicial
 
 1. **Clonar el Repositorio**
