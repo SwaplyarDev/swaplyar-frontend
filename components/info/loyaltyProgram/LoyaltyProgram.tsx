@@ -19,7 +19,7 @@ function LoyaltyProgram() {
   };
   return (
     <div className="py-10">
-      <div className='pb-20'>
+      <div className="pb-20">
         <div className="text-center">
           <h1 className="mb-4 text-4xl font-bold">
             SwaplyAr Plus Rewards™ premia tu fidelidad
@@ -27,7 +27,7 @@ function LoyaltyProgram() {
           <div className="mt-4">
             <button
               id="submit-25456"
-              className="bg-[#0070ba] rounded-[23px] h-[45px] min-w-[150px] text-white border-none px-5 py-2.5 cursor-pointer hover:filter hover:brightness-95"
+              className="h-[45px] min-w-[150px] cursor-pointer rounded-[23px] border-none bg-[#0070ba] px-5 py-2.5 text-white hover:brightness-95 hover:filter"
               onClick={() => handleChange()}
             >
               ¡Únete ya!
@@ -43,11 +43,17 @@ function LoyaltyProgram() {
             </h2>
             <p className="">
               ¿No estás inscrito todavía?&nbsp;
-              <Link className="text-buttonsLigth transition duration-300 ease-in-out hover:text-blue-700 dark:text-sky-500 dark:hover:text-sky-600" href="/">
+              <Link
+                className="text-buttonsLigth transition duration-300 ease-in-out hover:text-blue-700 dark:text-sky-500 dark:hover:text-sky-600"
+                href="/"
+              >
                 Crea
               </Link>
               &nbsp;un perfil SwaplyAr o&nbsp;
-              <Link className="text-buttonsLigth transition duration-300 ease-in-out hover:text-blue-700 dark:text-sky-500 dark:hover:text-sky-600" href="/">
+              <Link
+                className="text-buttonsLigth transition duration-300 ease-in-out hover:text-blue-700 dark:text-sky-500 dark:hover:text-sky-600"
+                href="/"
+              >
                 inicia
               </Link>
               &nbsp;sesión en tu perfil, y haz clic en &quot;inscríbite&quot;
@@ -90,7 +96,7 @@ function LoyaltyProgram() {
             Para conocer los Términos y Condiciones del programa SwaplyAr Plus
             Rewards, haz
             <Link
-              className="transition duration-300 ease-in-out text-sky-500 hover:text-sky-600"
+              className="text-sky-500 transition duration-300 ease-in-out hover:text-sky-600"
               href="/SAPR-Terms-Conditions-ES.pdf"
               target="_blank"
             >
@@ -100,7 +106,10 @@ function LoyaltyProgram() {
             .
           </p>
           <p>
-            <a className="transition duration-300 ease-in-out text-sky-500 hover:text-sky-600" href="/info/help-center">
+            <a
+              className="text-sky-500 transition duration-300 ease-in-out hover:text-sky-600"
+              href="/info/help-center"
+            >
               ¿Necesitas ayuda?
             </a>
           </p>
