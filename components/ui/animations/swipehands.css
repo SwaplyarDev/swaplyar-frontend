@@ -10,24 +10,26 @@
   border-radius: 10px;
   backdrop-filter: blur(4px);
 
-  opacity: 0; 
-  visibility: hidden; 
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.5s ease,
+    visibility 0.5s ease;
 }
 
 .overlay.show {
-  opacity: 1; 
-  visibility: visible; 
+  opacity: 1;
+  visibility: visible;
 }
 
 .gif-image {
-  opacity: 0; 
+  opacity: 0;
   border-radius: 10px;
-  transition: opacity 0.5s ease-in-out; 
+  transition: opacity 0.5s ease-in-out;
 }
 
 .gif-loaded {
-  opacity: 0.8; 
+  opacity: 0.8;
 }
 
 @media (max-width: 768px) {

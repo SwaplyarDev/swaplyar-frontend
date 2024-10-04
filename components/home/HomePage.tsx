@@ -35,7 +35,7 @@ export default function HomePage() {
       setBannerHeight(bannerRef.current.offsetHeight);
     }
   };
-    const { data: session } = useSession();
+  const { data: session } = useSession();
   useEffect(() => {
     calculateBannerHeight();
     window.addEventListener('resize', calculateBannerHeight);
@@ -55,7 +55,6 @@ export default function HomePage() {
       <AnimatedBlurredCircles topOffset={bannerHeight} />
       <div className="flex flex-col items-center justify-center">
         <div className={mainStyles.instructionsCalculatorContainer}>
-
           <ConversionInstructions />
         </div>
         <div className={mainStyles.infoBlocksContainer}>

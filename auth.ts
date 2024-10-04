@@ -18,15 +18,18 @@ export const {
   },
 
   callbacks: {
-		async signIn({ user, account }) {
-			if (account && (account.provider === "google" || account.provider === "github")) {
-				return true;
-			}
-			if (user.email) {
-				return false
-			}
-			return true;
-		},
+    async signIn({ user, account }) {
+      if (
+        account &&
+        (account.provider === 'google' || account.provider === 'github')
+      ) {
+        return true;
+      }
+      if (user.email) {
+        return false;
+      }
+      return true;
+    },
     async redirect({ url, baseUrl }) {
       console.log('redirect callback:', { url, baseUrl });
       return baseUrl;
@@ -54,8 +57,6 @@ export const {
       }
       return session;
     },
-
-
   },
   ...authConfig,
 });
