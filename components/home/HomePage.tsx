@@ -12,6 +12,7 @@ import {
 } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
+import { useSession } from 'next-auth/react';
 
 const mainStyles = {
   main: ' py-10', // Centrado tanto vertical como horizontalmente
@@ -34,7 +35,7 @@ export default function HomePage() {
       setBannerHeight(bannerRef.current.offsetHeight);
     }
   };
-
+    const { data: session } = useSession();
   useEffect(() => {
     calculateBannerHeight();
     window.addEventListener('resize', calculateBannerHeight);
@@ -54,9 +55,9 @@ export default function HomePage() {
       <AnimatedBlurredCircles topOffset={bannerHeight} />
       <div className="flex flex-col items-center justify-center">
         <div className={mainStyles.instructionsCalculatorContainer}>
+
           <ConversionInstructions />
         </div>
-
         <div className={mainStyles.infoBlocksContainer}>
           <InfoBlock
             title="Cambia USD de PayPal por ARS con SwaplyAr"
