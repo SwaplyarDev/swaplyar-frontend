@@ -100,7 +100,7 @@ export const LoginForm = () => {
         });
       } else {
         setAuthState('Success');
-        window.location.href = '/'; 
+        window.location.href = '/';
       }
     } catch (error) {
       console.error('Error durante la verificación del código:', error);
@@ -239,7 +239,7 @@ function LoginButton({
       disabled={pending}
     >
       {pending ? (
-        <div className='flex items-center justify-center'>
+        <div className="flex items-center justify-center">
           <Image
             src="/gif/cargando.gif"
             width={20}

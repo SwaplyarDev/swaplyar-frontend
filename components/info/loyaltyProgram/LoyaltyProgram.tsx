@@ -40,7 +40,7 @@ function LoyaltyProgram() {
   }, []);
 
   return (
-    <div className=" relative py-10">
+    <div className="relative py-10">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
@@ -82,7 +82,6 @@ function LoyaltyProgram() {
       </div>
 
       <div className="flex flex-wrap justify-center py-10">
- 
         <RewardCard
           imageSrc={Rewards1}
           imageAlt="paso 1 de como cambiar tu dinero en SwaplyAr"
