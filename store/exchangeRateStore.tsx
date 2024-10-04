@@ -1,5 +1,8 @@
 import { create } from 'zustand';
-import { getExchangeRates } from '@/utils/currencyApis';
+import {
+  getExchangeRates,
+  getExchangeRatesUSD_EUR,
+} from '@/utils/currencyApis';
 
 interface ExchangeRateStore {
   rates: any;
@@ -21,12 +24,11 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
     console.log('Haciendo petición a la API para actualizar las tasas...');
 
     try {
+      // Obtener tasas de cambio regulares (2 minutos)
       const rates = await getExchangeRates();
-
       if (Object.keys(rates).length > 0) {
         const timestamp = Date.now();
         const dataToStore = { rates, timestamp };
-
         localStorage.setItem(localStorageKey, JSON.stringify(dataToStore));
 
         set({ rates, isLoading: false });
@@ -38,6 +40,35 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
     } catch (error) {
       console.error('Error actualizando tasas de cambio:', error);
       set({ isLoading: false, error: 'Error al obtener las tasas.' });
+    }
+  };
+
+  const fetchAndUpdateUSDToEURRates = async () => {
+    set({ isLoading: true, error: null });
+    console.log(
+      'Haciendo petición a la API para actualizar las tasas de USD a EUR...',
+    );
+
+    try {
+      // Obtener tasas de cambio USD a EUR (10 minutos)
+      const ratesUSD_EUR = await getExchangeRatesUSD_EUR();
+      if (Object.keys(ratesUSD_EUR).length > 0) {
+        // Puedes guardar estas tasas también si lo deseas
+        set((state) => ({
+          rates: { ...state.rates, ...ratesUSD_EUR },
+          isLoading: false,
+        }));
+        console.log('Tasas USD a EUR actualizadas:', ratesUSD_EUR);
+      } else {
+        set({
+          isLoading: false,
+          error: 'No se obtuvieron tasas válidas para USD a EUR.',
+        });
+        console.log('Error: No se obtuvieron tasas válidas para USD a EUR.');
+      }
+    } catch (error) {
+      console.error('Error actualizando tasas USD a EUR:', error);
+      set({ isLoading: false, error: 'Error al obtener las tasas USD a EUR.' });
     }
   };
 
@@ -75,31 +106,25 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
       const ratesLoaded = loadRatesFromLocalStorage();
 
       if (!ratesLoaded) {
-        fetchAndUpdateRates();
+        fetchAndUpdateRates(); // Llama a la función de tasas cada 2 minutos
+        fetchAndUpdateUSDToEURRates(); // Llama a la función de tasas cada 10 minutos
       }
 
-      intervalId = setInterval(() => {
-        const storedData = localStorage.getItem(localStorageKey);
-        const now = Date.now();
+      // Actualización cada 2 minutos
+      intervalId = setInterval(
+        () => {
+          fetchAndUpdateRates(); // Cada 2 minutos
+        },
+        2 * 60 * 1000,
+      ); // 120000 ms
 
-        if (storedData) {
-          const { timestamp } = JSON.parse(storedData);
-
-          if (now - timestamp >= expirationTime) {
-            console.log(
-              `Tasas expiradas (timestamp: ${timestamp}, now: ${now}), actualizando...`,
-            );
-            fetchAndUpdateRates();
-          } else {
-            console.log(
-              `Tasas aún válidas (timestamp: ${timestamp}, now: ${now}).`,
-            );
-          }
-        } else {
-          console.log('No hay tasas en localStorage, actualizando...');
-          fetchAndUpdateRates();
-        }
-      }, expirationTime);
+      // Actualización cada 10 minutos
+      setInterval(
+        () => {
+          fetchAndUpdateUSDToEURRates(); // Cada 10 minutos
+        },
+        10 * 60 * 1000,
+      ); // 600000 ms
     },
     stopUpdatingRates: () => {
       if (intervalId) {

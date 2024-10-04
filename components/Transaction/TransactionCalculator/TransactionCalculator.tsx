@@ -157,7 +157,7 @@ export default function TransactionCalculator() {
           <div className="mt-8">
             <button
               className={clsx(
-                'relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-10 py-3 text-white disabled:bg-gray-400 dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400',
+                'relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-10 py-3 text-white disabled:border-gray-400 disabled:bg-gray-400 dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400',
                 {
                   buttonSecond: !(
                     sendAmount === '' ||
@@ -201,14 +201,16 @@ export default function TransactionCalculator() {
           ) : (
             <div
               className={clsx(
-                (selectedSendingSystem?.id ===
-                  ('payoneer_usd' || 'payoneer_eur') &&
+                (selectedSendingSystem?.id === 'payoneer_usd' &&
                   parseInt(sendAmount) < 50) ||
+                  (selectedSendingSystem?.id === 'payoneer_eur' &&
+                    parseInt(sendAmount) < 50) ||
+                  (selectedReceivingSystem?.id === 'payoneer_usd' &&
+                    parseInt(receiveAmount) < 50) ||
+                  (selectedReceivingSystem?.id === 'payoneer_eur' &&
+                    parseInt(receiveAmount) < 50) ||
                   (selectedSendingSystem?.id === 'paypal' &&
                     parseInt(sendAmount) < 5) ||
-                  (selectedReceivingSystem?.id ===
-                    ('payoneer_usd' || 'payoneer_eur') &&
-                    parseInt(receiveAmount) < 50) ||
                   (selectedReceivingSystem?.id === 'paypal' &&
                     parseInt(receiveAmount) < 5)
                   ? 'mt-8'

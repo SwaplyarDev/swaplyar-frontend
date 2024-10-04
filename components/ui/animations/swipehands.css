@@ -9,16 +9,23 @@
   z-index: 1000;
   border-radius: 10px;
   backdrop-filter: blur(4px);
+
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.5s ease,
+    visibility 0.5s ease;
 }
 
-.swipe {
-  position: relative;
+.overlay.show {
+  opacity: 1;
+  visibility: visible;
 }
 
 .gif-image {
-  opacity: 0; /* Inicialmente invisible */
+  opacity: 0;
   border-radius: 10px;
-  transition: opacity 0.5s ease-in-out; /* Aparece con una transición suave */
+  transition: opacity 0.5s ease-in-out;
 }
 
 .gif-loaded {

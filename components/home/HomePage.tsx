@@ -12,6 +12,7 @@ import {
 } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
+import { useSession } from 'next-auth/react';
 
 const mainStyles = {
   main: 'py-10 relative', // Centrado tanto vertical como horizontalmente
@@ -34,7 +35,7 @@ export default function HomePage() {
       setInstructionsOffset(instructionsRef.current.offsetTop);
     }
   };
-
+  const { data: session } = useSession();
   useEffect(() => {
     calculateInstructionsOffset();
     window.addEventListener('resize', calculateInstructionsOffset);
@@ -63,7 +64,6 @@ export default function HomePage() {
         >
           <ConversionInstructions />
         </div>
-
         <div className={mainStyles.infoBlocksContainer}>
           <InfoBlock
             title="Cambia USD de PayPal por ARS con SwaplyAr"

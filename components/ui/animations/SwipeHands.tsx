@@ -6,6 +6,7 @@ import './swipehands.css';
 const SwipeHands: React.FC = () => {
   const [showHands, setShowHands] = useState(true);
   const [gifLoaded, setGifLoaded] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     const img = new window.Image();
@@ -19,14 +20,16 @@ const SwipeHands: React.FC = () => {
         setShowHands(false);
       }, 3000);
 
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(timer);
+      };
     }
   }, [gifLoaded]);
 
   return (
     <>
-      {showHands && gifLoaded && (
-        <div className="overlay">
+      {gifLoaded && (
+        <div className={`overlay ${isMounted && showHands ? 'show' : ''}`}>
           <div className="swipe">
             <Image
               src={swipeGif}
@@ -34,7 +37,7 @@ const SwipeHands: React.FC = () => {
               width={375}
               height={175}
               unoptimized={true}
-              priority={true} // Asegura que esta imagen se cargue con mayor prioridad
+              priority={true}
               className={`gif-image ${gifLoaded ? 'gif-loaded' : ''}`}
               loading="eager"
             />

@@ -22,12 +22,15 @@ function RewardCard({
   linkHref,
 }: RewardCardProps) {
   return (
-    <div className="m-4 max-w-sm transform rounded bg-white p-6 shadow-md transition-transform hover:scale-105 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600">
+    <div className="m-4 max-w-sm transform rounded p-6">
       <Image src={imageSrc} alt={imageAlt} width={210} height={150} />
       <h3 className="mt-4 text-xl font-bold">{title}</h3>
       <p className="mt-2">
         <strong>{description}</strong>{' '}
-        <a href={linkHref} className="text-blue-800">
+        <a
+          href={linkHref}
+          className="text-buttonsLigth transition duration-300 ease-in-out hover:text-blue-700 dark:text-sky-500 dark:hover:text-sky-600"
+        >
           {linkText}
         </a>
         .

@@ -1,91 +1,42 @@
 // /app/request/page.tsx
-
 'use client';
 
-import { RequestRegisterForm } from '@/components/request/requestRegister';
-import {
-  FormularioDeSolicitud,
-  FormularioDeSolicitudMovil,
-} from '@/utils/assets/imgDatabaseCloudinary';
-import RequestInfoBlock from '@/components/ui/RequestInfoBlock/RequestInfoBlock';
-import Image from 'next/image';
+import { RequestRegisterForm } from '@/components/request/form/requestRegister';
 import { useEffect, useState } from 'react';
 
+import Ars from '@/components/request/Info/ars/ars';
+
+import PayoneerEUR from '@/components/request/Info/payoneer/payoneerEUR';
+import PayoneerUSD from '@/components/request/Info/payoneer/payoneerUSD';
+
+import PaypalEUR from '@/components/request/Info/paypal/paypalEUR';
+import PaypalUSD from '@/components/request/Info/paypal/paypalUSD';
+
+import WiseEUR from '@/components/request/Info/wise/wiseEUR';
+import WiseUSD from '@/components/request/Info/wise/wiseUSD';
+
 const RequestPage = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [payerBank, setPayerBank] = useState<string>('');
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 1170);
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    const data = localStorage.getItem('selectedSendingSystem');
+    if (data) {
+      const bank = JSON.parse(data);
+      setPayerBank(bank.name);
+    }
   }, []);
 
   return (
-    <div
-      className={`flex flex-col ${isMobile ? '' : 'lg:flex-row'} items-center justify-center gap-8 p-10`}
-    >
-      {isMobile && (
-        <RequestInfoBlock
-          title="Complete el formulario para procesar su transferencia bancaria."
-          content={
-            <>
-              <p className="mb-4 text-center text-lg md:text-left">
-                Ingrese sus datos personales en el formulario: Nombre, Apellido,
-                Número de WhatsApp, CBU o Alias, CUIL, Correo Electrónico y
-                Comprobante.
-                <span className="bg-yellow-400 px-1 text-black">
-                  Luego de realizar la transferencia o el pago, por favor suba
-                  el comprobante de la misma (captura de pantalla) para
-                  completar su solicitud.
-                </span>
-                Una vez recibido, procesaremos su transferencia.
-              </p>
-              <Image
-                src={FormularioDeSolicitudMovil}
-                alt="Formulario-de-Solicitud"
-                width={500}
-                height={350}
-                className="w-full"
-              />
-            </>
-          }
-        />
-      )}
+    <div className="flex flex-col-reverse items-center justify-center p-10 lg:flex-row lg:gap-8">
       <RequestRegisterForm />
-      {!isMobile && (
-        <RequestInfoBlock
-          title="Complete el formulario para procesar su transferencia bancaria."
-          content={
-            <>
-              <p className="mb-4 text-lg">
-                Ingrese sus datos personales en el formulario: Nombre, Apellido,
-                Número de WhatsApp, CBU o Alias, CUIL, Correo Electrónico y
-                Comprobante.
-                <span className="bg-yellow-400 px-1 text-black">
-                  Luego de realizar la transferencia o el pago, por favor suba
-                  el comprobante de la misma (captura de pantalla) para
-                  completar su solicitud.
-                </span>
-                Una vez recibido, procesaremos su transferencia.
-              </p>
-              <Image
-                src={FormularioDeSolicitud}
-                alt="Formulario-de-Solicitud"
-                width={500}
-                height={350}
-                className="w-full"
-              />
-            </>
-          }
-        />
-      )}
+
+      {payerBank === 'PayPal' && <PaypalUSD />}
+      {payerBank === 'Banco' && <Ars />}
+      {payerBank === 'Payoneer EUR' && <PayoneerEUR />}
+      {payerBank === 'Payoneer USD' && <PayoneerUSD />}
+      {/* {payerBank === 'Paypal EUR' && <PaypalEUR />} */}
+      {payerBank === 'Wise EUR' && <WiseEUR />}
+      {payerBank === 'Wise USD' && <WiseUSD />}
     </div>
   );
 };
