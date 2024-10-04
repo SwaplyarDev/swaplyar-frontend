@@ -13,11 +13,11 @@ import {
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
 
-
 const mainStyles = {
   main: 'py-10 relative', // Centrado tanto vertical como horizontalmente
   infoBlocksContainer: 'flex flex-col items-center justify-center mt-8',
-  instructionsCalculatorContainer: 'relative flex space-x-4 items-center justify-center mt-8', // Añadimos `relative`
+  instructionsCalculatorContainer:
+    'relative flex space-x-4 items-center justify-center mt-8', // Añadimos `relative`
 };
 
 export default function HomePage() {
@@ -46,7 +46,10 @@ export default function HomePage() {
 
   return (
     <main className={mainStyles.main}>
-      <AnimatedBlurredCircles topOffset={instructionsOffset} tope='top-[-375px]'/>
+      <AnimatedBlurredCircles
+        topOffset={instructionsOffset}
+        tope="top-[-375px]"
+      />
       <div className="relative bg-white shadow-custom-blue">
         <FlyerTrabajo imageSrc="/images/need-help.png">
           Estamos trabajando en las funciones de inicio de sesión y registro.

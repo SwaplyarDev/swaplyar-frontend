@@ -40,11 +40,11 @@ function LoyaltyProgram() {
   }, []);
 
   return (
-    <div className="py-10" >
+    <div className="py-10">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-      <AnimatedBlurredCircles topOffset={bannerHeight} tope={"top-[220px]"}/>
+      <AnimatedBlurredCircles topOffset={bannerHeight} tope={'top-[220px]'} />
       <div className="text-center">
         <h1 className="mb-4 text-4xl font-bold">
           SwaplyAr Plus Rewards™ premia tu fidelidad

@@ -8,8 +8,8 @@ interface AnimatedBlurredCirclesProps {
 }
 
 const AnimatedBlurredCircles: React.FC<AnimatedBlurredCirclesProps> = ({
-  topOffset, 
-  tope
+  topOffset,
+  tope,
 }) => {
   return (
     <div className={`container-blur ${tope}`}>

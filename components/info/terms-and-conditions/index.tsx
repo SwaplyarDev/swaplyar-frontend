@@ -30,14 +30,14 @@ const TermsAndConditions = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center py-10 relative">
-      <AnimatedBlurredCircles topOffset={bannerHeight} tope='top-[-1675px]'/>
+    <div className="relative flex flex-col items-center py-10">
+      <AnimatedBlurredCircles topOffset={bannerHeight} tope="top-[-1675px]" />
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
 
       <div
-        className="mx-auto flex w-full max-w-[80%] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left relative"
+        className="relative mx-auto flex w-full max-w-[80%] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left"
         ref={bannerRef}
       >
         <div className="flex w-full max-w-[600px] items-center justify-center p-0">

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image'; 
+import Image from 'next/image';
 import { swipeGif } from '@/utils/assets/img-database';
 import './swipehands.css';
 
@@ -8,14 +8,13 @@ const SwipeHands: React.FC = () => {
   const [gifLoaded, setGifLoaded] = useState(false);
 
   useEffect(() => {
-    const img = new window.Image(); 
-    img.src = swipeGif; 
-    img.onload = () => setGifLoaded(true); 
+    const img = new window.Image();
+    img.src = swipeGif;
+    img.onload = () => setGifLoaded(true);
   }, []);
 
   useEffect(() => {
     if (gifLoaded) {
-      
       const timer = setTimeout(() => {
         setShowHands(false);
       }, 3000);
