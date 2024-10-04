@@ -40,7 +40,7 @@ function LoyaltyProgram() {
   }, []);
 
   return (
-    <div className="py-10">
+    <div className=" relative py-10">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
