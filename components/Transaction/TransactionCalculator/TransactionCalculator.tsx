@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef, use } from 'react';
 import SystemInfo from '../SystemInfo/SystemInfo';
 import InvertSystems from '../InvertSystems/InvertSystems';
 import { useSystemStore } from '@/store/useSystemStore';
@@ -9,14 +9,36 @@ import Swal from 'sweetalert2';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { createRoot } from 'react-dom/client';
 import { systems } from '@/utils/dataCoins';
-import { useExchangeRate } from '@/hooks/useExchangeRates';
 import { useAmountCalculator } from '@/hooks/useAmountCalculator';
 import { useSystemSelection } from '@/hooks/useSystemSelection';
 import TransactionSection from '@/components/ui/TransactionSection/TransactionSection';
+import clsx from 'clsx';
+import { useExchangeRateStore } from '@/store/exchangeRateStore';
+import { useExchangeRate } from '@/hooks/useExchangeRates';
 
 export default function TransactionCalculator() {
-  const router = useRouter();
+  const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
+  const { startUpdatingRates, stopUpdatingRates } = useExchangeRateStore();
+
+  useEffect(() => {
+    if (selectedSendingSystem && selectedReceivingSystem) {
+      console.log('Iniciando el proceso de actualización de tasas.');
+      startUpdatingRates();
+    }
+
+    return () => {
+      console.log('Deteniendo el proceso de actualización de tasas.');
+      stopUpdatingRates();
+    };
+  }, [
+    selectedSendingSystem,
+    selectedReceivingSystem,
+    startUpdatingRates,
+    stopUpdatingRates,
+  ]);
+
   const { activeSelect } = useSystemStore();
+  const router = useRouter();
   const { isDark } = useDarkTheme();
   const [exchange, setExchange] = useState({ currency: 'USD', amount: 0 });
   const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } =
@@ -26,9 +48,9 @@ export default function TransactionCalculator() {
     receiveAmount,
     handleSendAmountChange,
     handleReceiveAmountChange,
+    rateForOne,
+    rateForOneBank,
   } = useAmountCalculator();
-  const { rateForOne } = useExchangeRate();
-  const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
 
   useEffect(() => {
     setExchange({
@@ -49,57 +71,56 @@ export default function TransactionCalculator() {
         <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px; gap: 40px">
           <div id="paypal-button-container" style="width: 150px;"></div>
           <div style="height: 49px;">   
-          <button id="cancel-button" style="
-            border-radius: 23px;
-            height: 45px;
-            min-width: 150px;
-            background-color: #f44336; 
-            color: white; 
-            border: none; 
-            padding: 10px 20px; 
-            cursor: pointer;
-          ">Cancelar</button></div>
+          <button id="cancel-button" class="rounded-[23px] h-[45px] min-w-[150px] bg-[#f44336] text-white border-none px-5 py-2.5 cursor-pointer hover:filter  hover:brightness-75">Cancelar</button></div>
         </div>
       `,
-      icon: 'warning',
-      showConfirmButton: false, // Desactivar el botón de confirmación predeterminado
-      showCancelButton: false, // Desactivar el botón de cancelar predeterminado
-      background: isDark ? '#1f2937' : '#ffffff',
+      icon: 'info',
+      showConfirmButton: false,
+      showCancelButton: false,
+      background: isDark ? 'rgb(69 69 69)' : '#ffffff',
       color: isDark ? '#ffffff' : '#000000',
       didRender: () => {
-        // Renderizar el componente Paypal en el contenedor después de que se haya mostrado el SweetAlert
         const paypalElement = document.getElementById(
           'paypal-button-container',
         );
         if (paypalElement) {
-          const root = createRoot(paypalElement); // Crear un root para el renderizado
+          const root = createRoot(paypalElement);
           root.render(
             <Paypal
               currency={exchange.currency}
               amount={exchange.amount}
               handleDirection={handleDirection}
+              handleClose={Swal.close}
             />,
           );
         }
       },
       didOpen: () => {
-        // Añadir evento al botón de cancelar
         const cancelButton = document.getElementById('cancel-button');
         if (cancelButton) {
           cancelButton.addEventListener('click', () => {
-            Swal.close(); // Cerrar el alert al hacer clic en cancelar
+            Swal.close();
           });
         }
       },
     });
   };
 
+  const handleSubmit = () => {
+    if (selectedSendingSystem?.id === 'paypal') {
+      handleExchangePaypal();
+    } else {
+      handleDirection();
+    }
+  };
+
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
-      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-gray-800 dark:text-white">
+      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark dark:text-white">
         <p className="w-full max-w-lg text-2xl text-blue-800 dark:text-darkText xs:text-[2rem]">
-          1 {selectedSendingSystem?.coin} = {rateForOne.toFixed(2)}{' '}
-          {selectedReceivingSystem?.coin}
+          {selectedSendingSystem?.id === 'bank'
+            ? `${rateForOneBank.toFixed(2)} ${selectedSendingSystem?.coin} = 1 ${selectedReceivingSystem?.coin}`
+            : `1 ${selectedSendingSystem?.coin} = ${rateForOne.toFixed(2)} ${selectedReceivingSystem?.coin}`}
         </p>
 
         <TransactionSection
@@ -133,21 +154,110 @@ export default function TransactionCalculator() {
             label={`Recibes ${selectedReceivingSystem?.coin}`}
             isSending={false}
           />
-
           <div className="mt-8">
             <button
-              className="bg-buttonPay rounded-3xl bg-blue-800 px-10 py-3 text-darkText transition-all duration-300 ease-in-out hover:bg-blue-700 focus:outline-none disabled:bg-gray-400"
-              onClick={
-                (parseInt(sendAmount) >= 1 || sendAmount != '') &&
-                selectedSendingSystem?.name == 'PayPal'
-                  ? handleExchangePaypal
-                  : handleDirection
+              className={clsx(
+                'relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-10 py-3 text-white disabled:border-gray-400 disabled:bg-gray-400 dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400',
+                {
+                  buttonSecond: !(
+                    sendAmount === '' ||
+                    (selectedSendingSystem?.id === 'paypal' &&
+                      parseInt(sendAmount) < 5) ||
+                    (selectedSendingSystem?.id === 'payoneer_usd' &&
+                      parseInt(sendAmount) < 50) ||
+                    (selectedSendingSystem?.id === 'payoneer_eur' &&
+                      parseInt(sendAmount) < 50) ||
+                    (selectedReceivingSystem?.id === 'paypal' &&
+                      parseInt(receiveAmount) < 5) ||
+                    (selectedReceivingSystem?.id === 'payoneer_usd' &&
+                      parseInt(receiveAmount) < 50) ||
+                    (selectedReceivingSystem?.id === 'payoneer_eur' &&
+                      parseInt(receiveAmount) < 50)
+                  ),
+                },
+              )}
+              onClick={handleSubmit}
+              disabled={
+                sendAmount === '' ||
+                (selectedSendingSystem?.id === 'paypal' &&
+                  parseInt(sendAmount) < 5) ||
+                (selectedSendingSystem?.id === 'payoneer_usd' &&
+                  parseInt(sendAmount) < 50) ||
+                (selectedSendingSystem?.id === 'payoneer_eur' &&
+                  parseInt(sendAmount) < 50) ||
+                (selectedReceivingSystem?.id === 'paypal' &&
+                  parseInt(receiveAmount) < 5) ||
+                (selectedReceivingSystem?.id === 'payoneer_usd' &&
+                  parseInt(receiveAmount) < 50) ||
+                (selectedReceivingSystem?.id === 'payoneer_eur' &&
+                  parseInt(receiveAmount) < 50)
               }
-              disabled={parseInt(sendAmount) < 1 || sendAmount === ''}
             >
               Procesar pago
             </button>
           </div>
+          {sendAmount === '' ? (
+            ''
+          ) : (
+            <div
+              className={clsx(
+                (selectedSendingSystem?.id === 'payoneer_usd' &&
+                  parseInt(sendAmount) < 50) ||
+                  (selectedSendingSystem?.id === 'payoneer_eur' &&
+                    parseInt(sendAmount) < 50) ||
+                  (selectedReceivingSystem?.id === 'payoneer_usd' &&
+                    parseInt(receiveAmount) < 50) ||
+                  (selectedReceivingSystem?.id === 'payoneer_eur' &&
+                    parseInt(receiveAmount) < 50) ||
+                  (selectedSendingSystem?.id === 'paypal' &&
+                    parseInt(sendAmount) < 5) ||
+                  (selectedReceivingSystem?.id === 'paypal' &&
+                    parseInt(receiveAmount) < 5)
+                  ? 'mt-8'
+                  : 'hidden',
+              )}
+            >
+              <p
+                className={clsx(
+                  (selectedSendingSystem?.id === 'paypal' &&
+                    parseInt(sendAmount) < 5) ||
+                    (selectedReceivingSystem?.id === 'paypal' &&
+                      parseInt(receiveAmount) < 5)
+                    ? 'block'
+                    : 'hidden',
+                  'text-[#f44336]',
+                )}
+              >
+                La transferencia mínima es de 5 USD en PayPal
+              </p>
+              <p
+                className={clsx(
+                  (selectedSendingSystem?.id === 'payoneer_usd' &&
+                    parseInt(sendAmount) < 50) ||
+                    (selectedReceivingSystem?.id === 'payoneer_usd' &&
+                      parseInt(receiveAmount) < 50)
+                    ? 'block'
+                    : 'hidden',
+                  'text-[#f44336]',
+                )}
+              >
+                La transferencia mínima es de 50 USD en Payoneer
+              </p>
+              <p
+                className={clsx(
+                  (selectedSendingSystem?.id === 'payoneer_eur' &&
+                    parseInt(sendAmount) < 50) ||
+                    (selectedReceivingSystem?.id === 'payoneer_eur' &&
+                      parseInt(receiveAmount) < 50)
+                    ? 'block'
+                    : 'hidden',
+                  'text-[#f44336]',
+                )}
+              >
+                La transferencia mínima es de 50 EUR en Payoneer
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -2,6 +2,9 @@
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import RewardCard from '@/components/ui/reward-card/RewardCard';
 import useStore from '@/store/authViewStore';
+import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 
 import {
   CentroDeAyuda,
@@ -16,12 +19,32 @@ function LoyaltyProgram() {
     setView('register');
     window.location.href = '/auth/login-register';
   };
+
+  const [bannerHeight, setBannerHeight] = useState(0);
+  const bannerRef = useRef<HTMLDivElement>(null);
+
+  const calculateBannerHeight = () => {
+    if (bannerRef.current) {
+      setBannerHeight(bannerRef.current.offsetHeight);
+    }
+  };
+
+  useEffect(() => {
+    calculateBannerHeight();
+
+    window.addEventListener('resize', calculateBannerHeight);
+
+    return () => {
+      window.removeEventListener('resize', calculateBannerHeight);
+    };
+  }, []);
+
   return (
-    <div className="py-10">
+    <div className=" relative py-10">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-
+      <AnimatedBlurredCircles topOffset={bannerHeight} tope={'top-[220px]'} />
       <div className="text-center">
         <h1 className="mb-4 text-4xl font-bold">
           SwaplyAr Plus Rewards™ premia tu fidelidad
@@ -45,13 +68,13 @@ function LoyaltyProgram() {
           </h2>
           <p className="">
             ¿No estás inscrito todavía?&nbsp;
-            <a className="text-blue-800" href="/">
+            <Link className="text-blue-800" href="/">
               Crea
-            </a>
+            </Link>
             &nbsp;un perfil SwaplyAr o&nbsp;
-            <a className="text-blue-800" href="/">
+            <Link className="text-blue-800" href="/">
               inicia
-            </a>
+            </Link>
             &nbsp;sesión en tu perfil, y haz clic en &quot;inscríbite&quot; para
             unirte.&nbsp;
           </p>
@@ -59,6 +82,7 @@ function LoyaltyProgram() {
       </div>
 
       <div className="flex flex-wrap justify-center py-10">
+ 
         <RewardCard
           imageSrc={Rewards1}
           imageAlt="paso 1 de como cambiar tu dinero en SwaplyAr"
@@ -90,14 +114,14 @@ function LoyaltyProgram() {
           <p>
             Para conocer los Términos y Condiciones del programa MoneyGram Plus
             Rewards, haz
-            <a
+            <Link
               className="text-blue-800"
               href="/SAPR-Terms-Conditions-ES.pdf"
               target="_blank"
             >
               {' '}
               clic aquí
-            </a>
+            </Link>
             .
           </p>
           <p>

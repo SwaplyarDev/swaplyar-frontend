@@ -1,6 +1,9 @@
+'use client';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import GuaranteeSection from '@/components/ui/warranty-section/WarrantySection';
+import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
+import { useState, useEffect, useRef } from 'react';
 import {
   CentroDeAyuda,
   ElegirSwaplyAr,
@@ -16,12 +19,34 @@ const mainStyles = {
 };
 
 const WhyChooseSwaplyar: React.FC = () => {
+  const [bannerHeight, setBannerHeight] = useState(0);
+  const bannerRef = useRef<HTMLDivElement>(null);
+
+  const calculateBannerHeight = () => {
+    if (bannerRef.current) {
+      setBannerHeight(bannerRef.current.offsetHeight);
+    }
+  };
+
+  useEffect(() => {
+    calculateBannerHeight();
+
+    window.addEventListener('resize', calculateBannerHeight);
+
+    return () => {
+      window.removeEventListener('resize', calculateBannerHeight);
+    };
+  }, []);
+
   return (
-    <main className="flex w-full flex-col gap-20 py-10">
+    <main
+      className="relative flex w-full flex-col gap-20 py-10"
+      ref={bannerRef}
+    >
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-
+      <AnimatedBlurredCircles topOffset={bannerHeight} tope="top-[-650px]" />
       <div className="m-auto grid w-[90%] items-center justify-center gap-12">
         <section>
           <GuaranteeSection
