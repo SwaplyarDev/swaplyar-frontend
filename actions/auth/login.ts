@@ -9,16 +9,16 @@ export async function authenticate(formData: FormData) {
   try {
     const result = await signIn('credentials', {
       ...Object.fromEntries(formData),
-      redirect: false, 
+      redirect: false,
     });
 
     if (result?.error) {
-      throw new Error(result.error); 
+      throw new Error(result.error);
     }
 
     return 'Success';
   } catch (error) {
-    console.log(error);
+    console.error('Authentication error:', error);
     return 'CredentialsSignin';
   }
 }

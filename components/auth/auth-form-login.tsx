@@ -50,7 +50,9 @@ export const LoginForm = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        const errorMessage = errorData?.message || 'Error al enviar el código. Por favor, inténtalo de nuevo.';
+        const errorMessage =
+          errorData?.message ||
+          'Error al enviar el código. Por favor, inténtalo de nuevo.';
         throw new Error(errorMessage);
       }
 
@@ -58,15 +60,16 @@ export const LoginForm = () => {
       setUseEmail(email); // Guardar el correo electrónico
     } catch (error) {
       console.error('Error al enviar el código:', error);
-      alert(error || 'Ocurrió un error inesperado.'); 
+      alert(error || 'Ocurrió un error inesperado.');
     } finally {
       setLoading(false);
     }
   };
 
   // Función para manejar la verificación del código
-  const verifyCode: SubmitHandler<FormInputs> = async ({ verificationCode }) => {
-    
+  const verifyCode: SubmitHandler<FormInputs> = async ({
+    verificationCode,
+  }) => {
     setLoading(true);
 
     // Validación simple del código de verificación
@@ -78,31 +81,35 @@ export const LoginForm = () => {
       setLoading(false);
       return;
     }
-    
+
     try {
       // Llamada a NextAuth usando 'credentials' como el método de inicio de sesión
-      console.log(`email: ${useEmail}`, `verificationCode: ${verificationCode}`);
-      
+      console.log(
+        `email: ${useEmail}`,
+        `verificationCode: ${verificationCode}`,
+      );
+
       const result = await login(useEmail || '', verificationCode);
 
-      if (!result.ok){
+      if (!result.ok) {
         setAuthState('CodeInvalid');
         setError('verificationCode', {
           type: 'manual',
-          message: 'El código ingresado es incorrecto. Por favor, inténtalo de nuevo.',
+          message:
+            'El código ingresado es incorrecto. Por favor, inténtalo de nuevo.',
         });
       } else {
         setAuthState('Success');
       }
     } catch (error) {
       console.error('Error durante la verificación del código:', error);
-      alert('Ocurrió un error inesperado. Por favor, intenta de nuevo más tarde.');
+      alert(
+        'Ocurrió un error inesperado. Por favor, intenta de nuevo más tarde.',
+      );
     } finally {
       setLoading(false);
     }
   };
-
-
 
   // Cambiar vista a 'register'
   const handleChange = () => {
@@ -112,7 +119,9 @@ export const LoginForm = () => {
   return (
     <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-start py-5 xs:mt-0 xs:justify-center">
       <form
-        onSubmit={handleSubmit(codeSent ? verifyCode : ({ email }) => sendCode(email))}
+        onSubmit={handleSubmit(
+          codeSent ? verifyCode : ({ email }) => sendCode(email),
+        )}
         className="flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
       >
         <h2 className="mb-5 text-center text-2xl font-bold text-buttonsLigth dark:text-darkText">
@@ -177,8 +186,14 @@ export const LoginForm = () => {
               type="text"
               {...register('verificationCode', {
                 required: 'El código de verificación es obligatorio',
-                minLength: { value: 6, message: 'El código debe tener 6 dígitos' },
-                maxLength: { value: 6, message: 'El código debe tener 6 dígitos' },
+                minLength: {
+                  value: 6,
+                  message: 'El código debe tener 6 dígitos',
+                },
+                maxLength: {
+                  value: 6,
+                  message: 'El código debe tener 6 dígitos',
+                },
               })}
             />
             {errors.verificationCode && (
@@ -208,7 +223,13 @@ export const LoginForm = () => {
   );
 };
 
-function LoginButton({ pending, codeSent }: { pending: boolean; codeSent: boolean }) {
+function LoginButton({
+  pending,
+  codeSent,
+}: {
+  pending: boolean;
+  codeSent: boolean;
+}) {
   const { isDark } = useDarkTheme();
   return (
     <button
@@ -219,8 +240,8 @@ function LoginButton({ pending, codeSent }: { pending: boolean; codeSent: boolea
       {pending
         ? 'Procesando...'
         : codeSent
-        ? 'Verificar código'
-        : 'Enviar código'}
+          ? 'Verificar código'
+          : 'Enviar código'}
     </button>
   );
 }

@@ -1,5 +1,8 @@
 import { create } from 'zustand';
-import { getExchangeRates, getExchangeRatesUSD_EUR } from '@/utils/currencyApis';
+import {
+  getExchangeRates,
+  getExchangeRatesUSD_EUR,
+} from '@/utils/currencyApis';
 
 interface ExchangeRateStore {
   rates: any;
@@ -42,7 +45,9 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
 
   const fetchAndUpdateUSDToEURRates = async () => {
     set({ isLoading: true, error: null });
-    console.log('Haciendo petición a la API para actualizar las tasas de USD a EUR...');
+    console.log(
+      'Haciendo petición a la API para actualizar las tasas de USD a EUR...',
+    );
 
     try {
       // Obtener tasas de cambio USD a EUR (10 minutos)
@@ -55,7 +60,10 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
         }));
         console.log('Tasas USD a EUR actualizadas:', ratesUSD_EUR);
       } else {
-        set({ isLoading: false, error: 'No se obtuvieron tasas válidas para USD a EUR.' });
+        set({
+          isLoading: false,
+          error: 'No se obtuvieron tasas válidas para USD a EUR.',
+        });
         console.log('Error: No se obtuvieron tasas válidas para USD a EUR.');
       }
     } catch (error) {
@@ -91,7 +99,9 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
     startUpdatingRates: () => {
       if (intervalId) return;
 
-      console.log('Iniciando la actualización automática de tasas de cambio...');
+      console.log(
+        'Iniciando la actualización automática de tasas de cambio...',
+      );
 
       const ratesLoaded = loadRatesFromLocalStorage();
 
@@ -101,14 +111,20 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
       }
 
       // Actualización cada 2 minutos
-      intervalId = setInterval(() => {
-        fetchAndUpdateRates(); // Cada 2 minutos
-      }, 2 * 60 * 1000); // 120000 ms
+      intervalId = setInterval(
+        () => {
+          fetchAndUpdateRates(); // Cada 2 minutos
+        },
+        2 * 60 * 1000,
+      ); // 120000 ms
 
       // Actualización cada 10 minutos
-      setInterval(() => {
-        fetchAndUpdateUSDToEURRates(); // Cada 10 minutos
-      }, 10 * 60 * 1000); // 600000 ms
+      setInterval(
+        () => {
+          fetchAndUpdateUSDToEURRates(); // Cada 10 minutos
+        },
+        10 * 60 * 1000,
+      ); // 600000 ms
     },
     stopUpdatingRates: () => {
       if (intervalId) {

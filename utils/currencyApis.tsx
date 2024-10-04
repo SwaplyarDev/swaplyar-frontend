@@ -206,9 +206,8 @@ function obtenerPorcentajeDescuento(from: string, to: string): number {
   return 0;
 }
 
-
 export {
-    updateCurrentValueUSDToEUR,
-    updateCurrentValueUSD,
-    updateCurrentValueEUR,
-}
+  updateCurrentValueUSDToEUR,
+  updateCurrentValueUSD,
+  updateCurrentValueEUR,
+};

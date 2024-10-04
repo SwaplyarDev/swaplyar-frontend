@@ -3,7 +3,6 @@
 import NextAuth from 'next-auth';
 import authConfig from './auth.config';
 
-
 export const {
   handlers: { GET, POST },
   auth,
@@ -18,12 +17,11 @@ export const {
     signIn: '/auth/login',
   },
   callbacks: {
-    async signIn({ user, account, profile}) {
-
+    async signIn({ user, account, profile }) {
       // Validación de datos del usuario
       if (!user || !user.email) {
         console.error('Error: User or email is missing during sign-in.');
-        return false; 
+        return false;
       }
 
       // console.log('signIn callback:', {
@@ -36,34 +34,31 @@ export const {
     },
     async redirect({ url, baseUrl }) {
       console.log('redirect callback:', { url, baseUrl });
-      return baseUrl; 
+      return baseUrl;
     },
-    async session({ session, token  }) {
+    async session({ session, token }) {
       console.log('session callback:', { session, token });
       if (token) {
-        session.user.id = token.id; 
-        session.user.role = token.role; 
+        session.user.id = token.id;
+        session.user.role = token.role;
         session.user.name = token.fullName;
         session.user.email = token.email!;
-
       }
       return session;
     },
 
-
     async jwt({ token, user }) {
       // Verificación de propiedades de `user`
-      if (user && user.id ) {
+      if (user && user.id) {
         token.id = user.id;
         token.role = user.role;
-        token.fullName = user.fullName;
+        token.name = user.name;
         token.email = user.email;
-        token.accessToken = (user as any).token; 
+        token.accessToken = (user as any).token;
       }
-      console.log('jwt callback:', {token, user });
+      console.log('jwt callback:', { token, user });
       return token;
-    }
-
+    },
   },
   ...authConfig,
 });

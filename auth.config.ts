@@ -3,10 +3,9 @@ import type { NextAuthConfig } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import Github from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
-import { InvalidCredentials} from './lib/auth/index';
+import { InvalidCredentials } from './lib/auth/index';
 
 const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api/v1';
-
 
 export default {
   providers: [
@@ -33,7 +32,7 @@ export default {
             },
             body: JSON.stringify({
               email: email,
-              code: code
+              code: code,
             }),
           });
 
@@ -51,7 +50,7 @@ export default {
             const { user } = data;
             return {
               id: user.id,
-              fullName: user.fullName,
+              name: user.fullName,
               email: user.email,
               role: user.role,
             };
@@ -59,8 +58,11 @@ export default {
             throw new InvalidCredentials();
           }
         } catch (error) {
-            console.error('Authentication error:', error instanceof InvalidCredentials ? error.message : error);
-            throw new Error('Authentication failed. Please try again.');
+          console.error(
+            'Authentication error:',
+            error instanceof InvalidCredentials ? error.message : error,
+          );
+          throw new Error('Authentication failed. Please try again.');
         }
       },
     }),

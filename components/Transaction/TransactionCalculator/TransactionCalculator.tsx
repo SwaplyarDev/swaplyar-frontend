@@ -157,7 +157,7 @@ export default function TransactionCalculator() {
           <div className="mt-8">
             <button
               className={clsx(
-                'relative items-center justify-center rounded-3xl border border-buttonsLigth disabled:border-gray-400 bg-buttonsLigth px-10 py-3 text-white disabled:bg-gray-400 dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400',
+                'relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-10 py-3 text-white disabled:border-gray-400 disabled:bg-gray-400 dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400',
                 {
                   buttonSecond: !(
                     sendAmount === '' ||
