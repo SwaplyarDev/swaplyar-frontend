@@ -29,8 +29,7 @@
 }
 
 .gif-loaded {
-  /* Clase que se agregará cuando el GIF esté cargado */
-  opacity: 0.8; /* Aparece el GIF cuando se cargue completamente */
+  opacity: 0.8;
 }
 
 @media (max-width: 768px) {

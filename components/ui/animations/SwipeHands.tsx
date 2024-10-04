@@ -16,6 +16,8 @@ const SwipeHands: React.FC = () => {
 
   useEffect(() => {
     if (gifLoaded) {
+      setTimeout(() => setIsMounted(true), 100);
+
       const timer = setTimeout(() => {
         setShowHands(false);
       }, 3000);
