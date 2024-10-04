@@ -15,46 +15,53 @@ import { useSystemStore } from '@/store/useSystemStore';
 import { useSession } from 'next-auth/react';
 
 const mainStyles = {
-  main: ' py-10', // Centrado tanto vertical como horizontalmente
+  main: 'py-10 relative', // Centrado tanto vertical como horizontalmente
   infoBlocksContainer: 'flex flex-col items-center justify-center mt-8',
   instructionsCalculatorContainer:
-    'flex space-x-4 items-center justify-center mt-8',
+    'relative flex space-x-4 items-center justify-center mt-8', // Añadimos `relative`
 };
 
 export default function HomePage() {
+  const [instructionsOffset, setInstructionsOffset] = useState(0);
+  const instructionsRef = useRef<HTMLDivElement>(null);
+
   const resetToDefault = useSystemStore((state) => state.resetToDefault);
   useEffect(() => {
     resetToDefault();
   }, [resetToDefault]);
 
-  const [bannerHeight, setBannerHeight] = useState(0);
-  const bannerRef = useRef<HTMLDivElement>(null);
-
-  const calculateBannerHeight = () => {
-    if (bannerRef.current) {
-      setBannerHeight(bannerRef.current.offsetHeight);
+  const calculateInstructionsOffset = () => {
+    if (instructionsRef.current) {
+      setInstructionsOffset(instructionsRef.current.offsetTop);
     }
   };
   const { data: session } = useSession();
   useEffect(() => {
-    calculateBannerHeight();
-    window.addEventListener('resize', calculateBannerHeight);
+    calculateInstructionsOffset();
+    window.addEventListener('resize', calculateInstructionsOffset);
 
     return () => {
-      window.removeEventListener('resize', calculateBannerHeight);
+      window.removeEventListener('resize', calculateInstructionsOffset);
     };
   }, []);
 
   return (
     <main className={mainStyles.main}>
-      <div className="relative bg-white shadow-custom-blue" ref={bannerRef}>
+      <AnimatedBlurredCircles
+        topOffset={instructionsOffset}
+        tope="top-[-375px]"
+      />
+      <div className="relative bg-white shadow-custom-blue">
         <FlyerTrabajo imageSrc="/images/need-help.png">
           Estamos trabajando en las funciones de inicio de sesión y registro.
         </FlyerTrabajo>
       </div>
-      <AnimatedBlurredCircles topOffset={bannerHeight} />
-      <div className="flex flex-col items-center justify-center">
-        <div className={mainStyles.instructionsCalculatorContainer}>
+
+      <div className="relative flex flex-col items-center justify-center">
+        <div
+          className={mainStyles.instructionsCalculatorContainer}
+          ref={instructionsRef}
+        >
           <ConversionInstructions />
         </div>
         <div className={mainStyles.infoBlocksContainer}>
@@ -72,6 +79,7 @@ export default function HomePage() {
           />
         </div>
       </div>
+
       <div className="mt-10">
         <FlyerTrabajo imageSrc={FlyerGif}>
           ¿Nuevo en SwaplyAr? Haz clic en &quot;Cómo usar SwaplyAr&quot; y
@@ -79,7 +87,6 @@ export default function HomePage() {
           <div>
             <button id="bannerHTUButton">
               <Link href="/info/how-to-use">
-                {/* Texto escapado */}
                 &quot;Cómo usar SwaplyAr&quot;
               </Link>
             </button>
