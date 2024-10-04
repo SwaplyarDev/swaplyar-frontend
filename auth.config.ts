@@ -9,22 +9,12 @@ const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api/v1';
 
 export default {
   providers: [
-    Github({
-      clientId: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    }),
-    Google({
-      clientId: process.env.AUTH_GOOGLE_ID,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET,
-    }),
     Credentials({
       async authorize(credentials) {
         try {
           const email = credentials.email as string;
           const code = credentials.verificationCode as string;
-
-          console.log(`Email: ${email} Code: ${code}`);
-
+          
           const response = await fetch(`${BASE_URL}/login/email/verify-code`, {
             method: 'POST',
             headers: {
@@ -65,6 +55,14 @@ export default {
           throw new Error('Authentication failed. Please try again.');
         }
       },
+    }),
+    Github({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    }),
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
   ],
   trustHost: true,

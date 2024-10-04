@@ -14,39 +14,23 @@ export const {
     strategy: 'jwt',
   },
   pages: {
-    signIn: '/auth/login',
+    signIn: '/auth/login-register',
   },
+
   callbacks: {
-    async signIn({ user, account, profile }) {
-      // Validación de datos del usuario
-      if (!user || !user.email) {
-        console.error('Error: User or email is missing during sign-in.');
-        return false;
-      }
-
-      // console.log('signIn callback:', {
-      //   user: { id: user.id, email: user.email, fullName: user.fullName, role: user.role },
-      //   account,
-      //   profile,
-      // });
-
-      return true;
-    },
+		async signIn({ user, account }) {
+			if (account && (account.provider === "google" || account.provider === "github")) {
+				return true;
+			}
+			if (user.email) {
+				return false
+			}
+			return true;
+		},
     async redirect({ url, baseUrl }) {
       console.log('redirect callback:', { url, baseUrl });
       return baseUrl;
     },
-    async session({ session, token }) {
-      console.log('session callback:', { session, token });
-      if (token) {
-        session.user.id = token.id;
-        session.user.role = token.role;
-        session.user.name = token.fullName;
-        session.user.email = token.email!;
-      }
-      return session;
-    },
-
     async jwt({ token, user }) {
       // Verificación de propiedades de `user`
       if (user && user.id) {
@@ -59,6 +43,19 @@ export const {
       console.log('jwt callback:', { token, user });
       return token;
     },
+
+    async session({ session, token }) {
+      console.log('session callback:', { session, token });
+      if (session.user && token) {
+        session.user.id = token.id;
+        session.user.role = token.role;
+        session.user.name = token.fullName;
+        session.user.email = token.email!;
+      }
+      return session;
+    },
+
+
   },
   ...authConfig,
 });

@@ -58,16 +58,6 @@ export default function HomePage() {
 
           <ConversionInstructions />
         </div>
-
-        <div>
-          {
-            session ? 
-            <p>{session.user.email}</p>
-            :
-            <></>
-          }
-        </div>
-
         <div className={mainStyles.infoBlocksContainer}>
           <InfoBlock
             title="Cambia USD de PayPal por ARS con SwaplyAr"

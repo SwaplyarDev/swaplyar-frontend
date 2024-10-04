@@ -5,7 +5,6 @@
 import { useState, useEffect } from 'react';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
 import useStore from '@/store/authViewStore';
-import { useSession, signOut } from 'next-auth/react';
 
 import { Drawer, Sidebar, Navbar } from 'flowbite-react';
 import { GiHamburgerMenu } from 'react-icons/gi';
@@ -19,6 +18,7 @@ import TopPopUp from './topPopUp';
 
 import LogInButton from './log-register-bt/logiInButton';
 import style from './log-register-bt/buttonStyle.module.css';
+import { signOut, useSession } from 'next-auth/react';
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -27,7 +27,6 @@ export function TopMenu() {
 
   const { setView } = useStore();
   const { isDark } = useDarkTheme();
-  const { data: session } = useSession();
   
 
   const handleSelect = (item: string) => {
@@ -39,6 +38,8 @@ export function TopMenu() {
     const storage = sessionStorage.getItem('currentView');
     setSelectedItem(storage);
   }, []);
+
+  const session = useSession();
 
   return (
     <main className="sticky top-0 z-[1000] flex flex-col shadow-md">
@@ -168,6 +169,13 @@ export function TopMenu() {
 
                     <Sidebar.ItemGroup className="border-t-2 border-buttonsLigth px-2 dark:border-sky-500">
                       {session ? 
+                        <Sidebar.Item
+                        className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+                        onClick={() => signOut()}
+                        >
+                          Salir
+                        </Sidebar.Item>
+                          : 
                         <>
                           <Sidebar.Item
                             className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:hover:bg-transparent md:hidden ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
@@ -193,13 +201,6 @@ export function TopMenu() {
                             Registrarse
                           </Sidebar.Item>
                         </>
-                          : 
-                        <Sidebar.Item
-                          className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-                          onClick={() => signOut()}
-                        >
-                          Salir
-                        </Sidebar.Item>
                       }
                     </Sidebar.ItemGroup>
                   </Sidebar.Items>
