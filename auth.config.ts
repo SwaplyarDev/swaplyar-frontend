@@ -14,7 +14,7 @@ export default {
         try {
           const email = credentials.email as string;
           const code = credentials.verificationCode as string;
-          
+
           const response = await fetch(`${BASE_URL}/login/email/verify-code`, {
             method: 'POST',
             headers: {

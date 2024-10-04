@@ -15,7 +15,7 @@ import { useSystemStore } from '@/store/useSystemStore';
 import { useSession } from 'next-auth/react';
 
 const mainStyles = {
-  main: ' py-10  min-h-screen', // Centrado tanto vertical como horizontalmente
+  main: ' py-10', // Centrado tanto vertical como horizontalmente
   infoBlocksContainer: 'flex flex-col items-center justify-center mt-8',
   instructionsCalculatorContainer:
     'flex space-x-4 items-center justify-center mt-8',
@@ -35,7 +35,7 @@ export default function HomePage() {
       setBannerHeight(bannerRef.current.offsetHeight);
     }
   };
-    const { data: session } = useSession();
+  const { data: session } = useSession();
   useEffect(() => {
     calculateBannerHeight();
     window.addEventListener('resize', calculateBannerHeight);
@@ -55,7 +55,6 @@ export default function HomePage() {
       <AnimatedBlurredCircles topOffset={bannerHeight} />
       <div className="flex flex-col items-center justify-center">
         <div className={mainStyles.instructionsCalculatorContainer}>
-
           <ConversionInstructions />
         </div>
         <div className={mainStyles.infoBlocksContainer}>

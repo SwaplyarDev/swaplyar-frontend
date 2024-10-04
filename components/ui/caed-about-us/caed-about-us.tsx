@@ -1,8 +1,11 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import Image from 'next/image';
 import './CaedAboutUs.css';
+import SwipeHands from '../animations/SwipeHands';
+import clsx from 'clsx';
+
 interface CardData {
   src: string;
   alt: string;
@@ -17,6 +20,19 @@ interface CaedAboutUsProps {
 
 const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showSwipeHands, setShowSwipeHands] = useState(false);
+  const sectionRef = useRef(null);
+  const [activeCards, setActiveCards] = useState<{ [key: number]: boolean }>(
+    {},
+  );
+
+  const handleToggle = (index: number) => {
+    // Alternar el estado de la tarjeta al hacer clic
+    setActiveCards((prev: any) => ({
+      ...prev,
+      [index]: !prev[index], // Cambiar el estado para la tarjeta correspondiente
+    }));
+  };
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
@@ -37,8 +53,36 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
     trackMouse: true,
   });
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        console.log('IntersectionObserver triggered:', entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setShowSwipeHands(true);
+        }
+      },
+      { threshold: 1 },
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <div className="relative h-full w-full">
+    <div ref={sectionRef} className="relative h-full w-full">
+      {showSwipeHands && (
+        <div className="block md:hidden">
+          <SwipeHands />
+        </div>
+      )}
+
       <div
         {...swipeHandlers}
         className="relative block h-64 w-full overflow-hidden md:hidden"
@@ -51,12 +95,21 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
               index ===
               (currentIndex - 1 + cardsData.length) % cardsData.length;
 
+            const isClick = !!activeCards[index];
+
             return (
               <div
                 key={index}
-                className={`absolute transition-transform duration-700 ease-in-out ${isCurrent ? 'z-20 scale-100' : 'z-10 scale-90 blur-sm'} ${isPrev ? '-translate-x-20' : ''} ${isNext ? 'translate-x-20' : ''} `}
+                className={`absolute transition-transform duration-700 ease-in-out ${isCurrent ? 'z-20 scale-100' : 'z-10 scale-90 blur-sm'} ${isPrev ? '-translate-x-20' : ''} ${isNext ? 'translate-x-20' : ''}`}
               >
-                <div className="card relative h-64 w-52">
+                <div
+                  className={clsx(
+                    isClick
+                      ? 'card-active relative h-64 w-52'
+                      : 'relative h-64 w-52',
+                  )}
+                  onClick={() => handleToggle(index)}
+                >
                   <div className="card-inner h-full w-full duration-700">
                     <div className="card-front backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-lg bg-white text-black shadow-lg dark:bg-gray-800 dark:text-white">
                       <Image
