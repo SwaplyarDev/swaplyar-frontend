@@ -11,15 +11,20 @@ import {
 } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useMargins } from '@/context/MarginProvider'; 
+import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook'; 
 
 const HelpCenterPage = () => {
+  const { margins } = useMargins(); 
+  const currentMargin = ResponsiveMarginHook(margins); 
+
   return (
-    <main className="flex w-full flex-col gap-20 py-10">
+    <main className="flex w-full flex-col items-center justify-center gap-20 py-10">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
 
-      <div className="m-auto grid w-[90%] max-w-screen-lg items-center justify-center gap-12">
+      <div className=" mx-auto grid max-w-[1000px] items-center justify-center gap-12" style={{margin: currentMargin}}>
         <section className="rs-wrapper-v4 p-4">
           <h1 className="text-3xl font-bold">
             Bienvenido al Centro de Ayuda de SwaplyAr

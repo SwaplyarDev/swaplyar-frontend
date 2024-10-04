@@ -7,7 +7,7 @@ import ThemeProvider from '../components/ui/theme-Provider/themeProvider';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
 import { inter } from '@/config/fonts/fonts';
-import { MarginProvider } from '@/context/MarginContext';
+import { MarginProvider } from '@/context/MarginProvider';
 import './globals.css';
 
 export const metadata: Metadata = {

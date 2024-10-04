@@ -5,23 +5,23 @@ import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import Link from 'next/link';
 import ConversionInstructions from '../ui/Conversion-Instructions/ConversionInstructions';
-import {
-  FlyerGif,
-  RecargaPaypal,
-  UsdArs,
-} from '@/utils/assets/imgDatabaseCloudinary';
+import { FlyerGif, RecargaPaypal, UsdArs } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
+import { useMargins } from '@/context/MarginProvider';
+import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 
 const mainStyles = {
-  main: ' py-10  min-h-screen', 
+  main: 'py-10 min-h-screen',
   infoBlocksContainer: 'flex flex-col items-center justify-center mt-8',
-  instructionsCalculatorContainer:
-    'flex space-x-4 items-center justify-center mt-8',
+  instructionsCalculatorContainer: 'flex space-x-4 items-center justify-center mt-8',
 };
 
 export default function HomePage() {
   const resetToDefault = useSystemStore((state) => state.resetToDefault);
+  const { margins } = useMargins(); // Usamos el contexto de márgenes
+  const currentMargin = ResponsiveMarginHook(margins); // Aplicamos el hook para márgenes responsivos
+
   useEffect(() => {
     resetToDefault();
   }, [resetToDefault]);
@@ -46,13 +46,17 @@ export default function HomePage() {
 
   return (
     <main className={mainStyles.main}>
+     
       <div className="relative bg-white shadow-custom-blue" ref={bannerRef}>
         <FlyerTrabajo imageSrc="/images/need-help.png">
           Estamos trabajando en las funciones de inicio de sesión y registro.
         </FlyerTrabajo>
       </div>
+
       <AnimatedBlurredCircles topOffset={bannerHeight} />
-      <div className="flex flex-col items-center justify-center">
+
+     
+      <div className="flex flex-col items-center justify-center" style={{ margin: currentMargin }}>
         <div className={mainStyles.instructionsCalculatorContainer}>
           <ConversionInstructions />
         </div>
@@ -72,14 +76,14 @@ export default function HomePage() {
           />
         </div>
       </div>
+
+      {/* Sección FlyerTrabajo sin márgenes */}
       <div className="mt-10">
         <FlyerTrabajo imageSrc={FlyerGif}>
-          ¿Nuevo en SwaplyAr? Haz clic en &quot;Cómo usar SwaplyAr&quot; y
-          aprendé a operar fácilmente. ¡Empezá ahora!
+          ¿Nuevo en SwaplyAr? Haz clic en &quot;Cómo usar SwaplyAr&quot; y aprendé a operar fácilmente. ¡Empezá ahora!
           <div>
             <button id="bannerHTUButton">
               <Link href="/info/how-to-use">
-              
                 &quot;Cómo usar SwaplyAr&quot;
               </Link>
             </button>
@@ -89,3 +93,4 @@ export default function HomePage() {
     </main>
   );
 }
+

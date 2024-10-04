@@ -1,5 +1,5 @@
 // /components/about-us/AboutUs.tsx
-
+'use client'
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import CaedAboutUs from '@/components/ui/caed-about-us/caed-about-us';
@@ -12,7 +12,8 @@ import {
   Transacciones,
   Ventajaalelegirswaplyar,
 } from '@/utils/assets/imgDatabaseCloudinary';
-
+import { useMargins } from '@/context/MarginProvider'; 
+import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook'; 
 const cardsData = [
   {
     src: Transacciones,
@@ -41,6 +42,8 @@ const cardsData = [
 ];
 
 const Warranty = () => {
+  const { margins } = useMargins(); 
+  const currentMargin = ResponsiveMarginHook(margins); 
   return (
     <main className="flex w-full flex-col gap-20 py-10">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>

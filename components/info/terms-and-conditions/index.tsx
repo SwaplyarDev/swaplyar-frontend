@@ -1,3 +1,4 @@
+'use client'
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 import {
@@ -5,15 +6,19 @@ import {
   TerminosCondiciones,
 } from '@/utils/assets/img-database';
 import Image from 'next/image';
+import { useMargins } from '@/context/MarginProvider'; 
+import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook'; 
 
 const TermsAndConditions = () => {
+  const { margins } = useMargins(); 
+  const currentMargin = ResponsiveMarginHook(margins); 
   return (
     <div className="flex flex-col items-center py-10">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-
-      <div className="mx-auto flex w-full max-w-[80%] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left">
+ <div style={{margin: currentMargin}}>
+ <div className=" flex max-w-[1000px] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left">
         <div className="flex w-full max-w-[600px] items-center justify-center p-0">
           <h1 className="mb-6 text-3xl md:text-4xl">
             Términos y Condiciones de Uso y Navegación del Sitio SwaplyAr
@@ -30,7 +35,7 @@ const TermsAndConditions = () => {
         </div>
       </div>
 
-      <div className="my-10 w-full max-w-5xl px-3">
+      <div className="my-10 w-full max-w-5xl ">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-1">
           {/* <!--1--> */}
           <div className="rounded-lg bg-gray-100 p-6 text-gray-900 shadow-md dark:bg-graytyc dark:text-gray-100">
@@ -328,7 +333,7 @@ const TermsAndConditions = () => {
             </div>
           </div>
 
-          {/* <!--9--> */}
+       
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
             <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
               <h2
@@ -426,7 +431,7 @@ const TermsAndConditions = () => {
             </div>
           </div>
 
-          {/* <!--14--> */}
+          
           <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
             <h2
               className="mb-4 text-2xl md:text-3xl"
@@ -455,9 +460,11 @@ const TermsAndConditions = () => {
             </p>
           </div>
 
-          {/* Aquí puedes agregar más secciones siguiendo la misma estructura */}
+          
         </div>
       </div>
+ </div>
+
     </div>
   );
 };

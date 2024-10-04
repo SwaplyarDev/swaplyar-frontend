@@ -10,8 +10,14 @@ import {
   Rewards2,
   Rewards3,
 } from '@/utils/assets/imgDatabaseCloudinary';
+import { useMargins } from '@/context/MarginProvider'; 
+import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook'; 
 
 function LoyaltyProgram() {
+
+  const { margins } = useMargins(); 
+  const currentMargin = ResponsiveMarginHook(margins); 
+
   const { setView } = useStore();
   const handleChange = () => {
     setView('register');
@@ -22,8 +28,7 @@ function LoyaltyProgram() {
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-
-      <div className="text-center">
+      <div  style={{ margin: currentMargin }}>     <div className="text-center">
         <h1 className="mb-4 text-4xl font-bold">
           SwaplyAr Plus Rewards™ premia tu fidelidad
         </h1>
@@ -87,6 +92,9 @@ function LoyaltyProgram() {
           linkHref=""
         />
       </div>
+
+      </div>
+ 
 
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         <div>
