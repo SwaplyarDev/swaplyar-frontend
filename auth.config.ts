@@ -3,46 +3,44 @@ import type { NextAuthConfig } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import Github from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
-import { InvalidCredentials, UserNotFound } from './lib/auth/index';
-const BASE_URL = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+import { InvalidCredentials } from './lib/auth/index';
+
+const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api/v1';
 
 export default {
   providers: [
-    Github({
-      clientId: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    }),
-    Google({
-      clientId: process.env.AUTH_GOOGLE_ID,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET,
-    }),
     Credentials({
       async authorize(credentials) {
         try {
           const email = credentials.email as string;
-          const password = credentials.password as string;
-
-          const response = await fetch(`${BASE_URL}/api/login`, {
+          const code = credentials.verificationCode as string;
+          
+          const response = await fetch(`${BASE_URL}/login/email/verify-code`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              email,
-              password,
+              email: email,
+              code: code,
             }),
           });
 
+          if (!response.ok) {
+            if (response.status === 401 || response.status === 403) {
+              throw new InvalidCredentials();
+            } else {
+              throw new Error('Error inesperado durante la autenticación');
+            }
+          }
+
           const data = await response.json();
-          console.log('data', data);
 
           if (data && data.token) {
-            // Desestructura la respuesta
-            const { user, role } = data;
-            // Retorna un objeto de usuario con los datos necesarios
+            const { user } = data;
             return {
               id: user.id,
-              name: user.name,
+              name: user.fullName,
               email: user.email,
               role: user.role,
             };
@@ -50,18 +48,21 @@ export default {
             throw new InvalidCredentials();
           }
         } catch (error) {
-          const e = error as Error;
-          if (e instanceof UserNotFound || e instanceof InvalidCredentials) {
-            throw e;
-          } else {
-            // Errores inesperados
-            console.error('Error inesperado durante la autorización:', e);
-            throw new Error(
-              'Error de autenticación. Por favor, inténtalo de nuevo.',
-            );
-          }
+          console.error(
+            'Authentication error:',
+            error instanceof InvalidCredentials ? error.message : error,
+          );
+          throw new Error('Authentication failed. Please try again.');
         }
       },
+    }),
+    Github({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    }),
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
   ],
   trustHost: true,

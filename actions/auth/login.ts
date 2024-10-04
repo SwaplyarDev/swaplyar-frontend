@@ -1,37 +1,47 @@
+// /auth/login.ts
+
 'use server';
 
 import { signIn } from '@/auth';
-// import { sleep } from '@/utils';
 
-// ...
-
-export async function authenticate(
-  prevState: string | undefined,
-  formData: FormData,
-) {
+// Función para autenticar al usuario
+export async function authenticate(formData: FormData) {
   try {
-    // await sleep(2);FFD
-
-    await signIn('credentials', {
+    const result = await signIn('credentials', {
       ...Object.fromEntries(formData),
       redirect: false,
     });
 
+    if (result?.error) {
+      throw new Error(result.error);
+    }
+
     return 'Success';
   } catch (error) {
-    console.log(error);
-
+    console.error('Authentication error:', error);
     return 'CredentialsSignin';
   }
 }
 
-export const login = async (email: string, password: string) => {
+// Función para manejar el inicio de sesión
+export const login = async (email: string, verificationCode: string) => {
   try {
-    await signIn('credentials', { email, password });
+    const result = await signIn('credentials', {
+      email,
+      verificationCode,
+      redirect: false,
+    });
+
+    if (result?.error) {
+      return {
+        ok: false,
+        message: result.error,
+      };
+    }
 
     return { ok: true };
   } catch (error) {
-    console.log(error);
+    console.error('Login error:', error);
     return {
       ok: false,
       message: 'No se pudo iniciar sesión',

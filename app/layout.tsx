@@ -8,6 +8,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
 import { inter } from '@/config/fonts/fonts';
 import './globals.css';
+import { SessionProvider} from 'next-auth/react';
 
 export const metadata: Metadata = {
   title: 'SwaplyAr | Pasar dólares de PayPal a pesos argentinos',
@@ -38,13 +39,15 @@ export default function RootLayout({
       <body
         className={`${inter.className} bg-white text-lightText dark:bg-lightText dark:text-darkText`}
       >
-        <ThemeProvider>
-          <SpeedInsights />
-          <Analytics />
-          <TopMenu />
-          {children}
-          <Footer />
-        </ThemeProvider>
+        <SessionProvider>
+          <ThemeProvider>
+              <SpeedInsights />
+              <Analytics />
+              <TopMenu />
+              {children}
+              <Footer />
+          </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );
