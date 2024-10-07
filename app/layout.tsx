@@ -9,6 +9,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { inter } from '@/config/fonts/fonts';
 import { MarginProvider } from '@/context/MarginProvider';
 import './globals.css';
+import { SessionProvider } from 'next-auth/react';
 
 export const metadata: Metadata = {
   title: 'SwaplyAr | Pasar dólares de PayPal a pesos argentinos',
@@ -39,6 +40,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} bg-white text-lightText dark:bg-lightText dark:text-darkText`}
       >
+        <SessionProvider>
         <ThemeProvider>
           <MarginProvider>
           <SpeedInsights />
@@ -47,8 +49,10 @@ export default function RootLayout({
           {children}
           <Footer />
           </MarginProvider>
-
         </ThemeProvider>
+        </SessionProvider>
+        
+        
       </body>
     </html>
   );

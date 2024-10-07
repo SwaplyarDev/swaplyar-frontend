@@ -3,8 +3,6 @@ import type { ConfigRoutes } from '@/types/routes';
 export const configRoutes: ConfigRoutes = {
   publicRoutes: [
     '/',
-    '/auth/login',
-    '/auth/login-register',
     '/auth/change-password',
     '/info/about-us',
     '/info/help-center',
@@ -14,6 +12,7 @@ export const configRoutes: ConfigRoutes = {
     '/info/warranty',
     '/info/why-choose-swaplyar',
     '/request',
+    // '/auth/login-register',
   ],
   authRoutes: ['/auth/login-register'],
   apiRoutes: [
@@ -23,5 +22,5 @@ export const configRoutes: ConfigRoutes = {
     '/api/roles',
     '/api/paypal',
   ],
-  protectedRoutes: ['/auth/settings', '/products/:path*'],
+  protectedRoutes: ['/products/:path*'],
 };

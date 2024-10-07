@@ -5,17 +5,17 @@ import CaedAboutUs from '../ui/caed-about-us/caed-about-us';
 import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
 import {
   Apoyo,
-  CentroDeAyuda,
-  Eficiencia,
-  FlyerGif,
-  OaSuarez,
-  Simplicidad,
   Transparencia,
+  Simplicidad,
+  Eficiencia,
+  OaSuarez,
+  FlyerGif,
 } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useMargins } from '@/context/MarginProvider'; 
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook'; 
 
+import './about.css';
 
 const cardsData = [
   {
@@ -56,30 +56,32 @@ const AboutUs = () => {
   const { margins } = useMargins(); 
   const currentMargin = ResponsiveMarginHook(margins); 
 
-  const [bannerHeight, setBannerHeight] = useState(0);
-  const bannerRef = useRef<HTMLDivElement>(null);
 
-  const calculateBannerHeight = () => {
-    if (bannerRef.current) {
-      setBannerHeight(bannerRef.current.offsetHeight);
-    }
-  };
+  const [flyerTop, setFlyerTop] = useState(0);
+  const flyerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    calculateBannerHeight();
+    const position = () => {
+      if (flyerRef.current) {
+        const flyerOffsetTop =
+          flyerRef.current.getBoundingClientRect().top + window.scrollY;
+        setFlyerTop(flyerOffsetTop);
+      }
+    };
 
-    window.addEventListener('resize', calculateBannerHeight);
+    position();
+    window.addEventListener('resize', position);
 
     return () => {
-      window.removeEventListener('resize', calculateBannerHeight);
+      window.removeEventListener('resize', position);
     };
   }, []);
 
   return (
     <>
-      <div className="py-10">
-        
-      <div className="shadow-custom-blue" ref={bannerRef}  >
+    <div className="relative py-10">
+      <AnimatedBlurredCircles topOffset={flyerTop} tope="top-[-375px]" />
+      <div className="shadow-custom-blue" ref={flyerRef}>
         <FlyerTrabajo imageSrc="/images/need-help.png">
           Estamos trabajando en las funciones de inicio de sesión y registro.
         </FlyerTrabajo>
@@ -94,7 +96,6 @@ const AboutUs = () => {
               satisfacción.
             </h1>
           </div>
-          <AnimatedBlurredCircles topOffset={bannerHeight} />
         </div>
 
         <div className="rs-wrapper-v4 mx-auto mb-12  max-w-[1000px] text-center sm:mt-4 md:mt-8 md:w-full lg:mt-8">
@@ -103,11 +104,7 @@ const AboutUs = () => {
             SwaplyAr nació de una simple necesidad, intercambiar saldo y que
             cada persona que lo utiliza reciba lo pactado, acompañándolo en todo
             el proceso. Pronto su crecimiento fue exponencial debido a la
-            confiabilidad, seguridad y velocidad en cada operación. Somos una
-            empresa en la que las personas usuarias confían plenamente, ya que
-            la importancia de ser transparente hacia ellos, es uno de nuestros
-            pilares fundamentales. Ayudamos a que cada persona consiga, lo que
-            está buscando de una manera fácil y protegida.
+            confiabilidad, seguridad y velocidad en cada operación.
           </h5>
         </div>
 
@@ -143,6 +140,8 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
+
+      {/* Footer con llamada a la acción */}
       <div className="mt-10 text-center">
         <FlyerTrabajo imageSrc={FlyerGif}>
           <span>

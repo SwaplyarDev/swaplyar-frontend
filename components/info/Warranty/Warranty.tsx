@@ -1,9 +1,10 @@
 // /components/about-us/AboutUs.tsx
-'use client'
+'use client';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import CaedAboutUs from '@/components/ui/caed-about-us/caed-about-us';
 import GuaranteeSection from '@/components/ui/warranty-section/WarrantySection';
+import { useState, useEffect, useRef } from 'react';
 import {
   Aumeno,
   Caida,
@@ -14,6 +15,7 @@ import {
 } from '@/utils/assets/imgDatabaseCloudinary';
 import { useMargins } from '@/context/MarginProvider'; 
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook'; 
+import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 const cardsData = [
   {
     src: Transacciones,
@@ -44,12 +46,34 @@ const cardsData = [
 const Warranty = () => {
   const { margins } = useMargins(); 
   const currentMargin = ResponsiveMarginHook(margins); 
+  const [bannerHeight, setBannerHeight] = useState(0);
+  const bannerRef = useRef<HTMLDivElement>(null);
+
+  const calculateBannerHeight = () => {
+    if (bannerRef.current) {
+      setBannerHeight(bannerRef.current.offsetHeight);
+    }
+  };
+
+  useEffect(() => {
+    calculateBannerHeight();
+
+    window.addEventListener('resize', calculateBannerHeight);
+
+    return () => {
+      window.removeEventListener('resize', calculateBannerHeight);
+    };
+  }, []);
+
   return (
-    <main className="flex w-full flex-col gap-20 py-10">
+    <main
+      className="relative flex w-full flex-col gap-20 py-10"
+      ref={bannerRef}
+    >
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-  
+    <AnimatedBlurredCircles topOffset={bannerHeight} tope="top-[-250px]" />
       <div className="rs-wrapper-v4  flex-col items-center justify-center gap-12" style={{margin: currentMargin}}>
         <GuaranteeSection
           title="Garantizamos Tu Tranquilidad en Cada Transacción"

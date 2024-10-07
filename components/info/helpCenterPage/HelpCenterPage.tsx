@@ -1,5 +1,5 @@
 'use client';
-
+import { useState, useEffect, useRef } from 'react';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import ContactForm from '@/components/ui/contact-form/ContactForm';
 import {
@@ -11,19 +11,42 @@ import {
 } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import Link from 'next/link';
+import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 import { useMargins } from '@/context/MarginProvider'; 
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook'; 
 
 const HelpCenterPage = () => {
+  const [bannerHeight, setBannerHeight] = useState(0);
+  const bannerRef = useRef<HTMLDivElement>(null);
   const { margins } = useMargins(); 
   const currentMargin = ResponsiveMarginHook(margins); 
 
+
+  const calculateBannerHeight = () => {
+    if (bannerRef.current) {
+      setBannerHeight(bannerRef.current.offsetHeight);
+    }
+  };
+
+  useEffect(() => {
+    calculateBannerHeight();
+
+    window.addEventListener('resize', calculateBannerHeight);
+
+    return () => {
+      window.removeEventListener('resize', calculateBannerHeight);
+    };
+  }, []);
+
   return (
-    <main className="flex w-full flex-col items-center justify-center gap-20 py-10">
+    <main
+      className="relative flex w-full flex-col gap-20 py-10"
+      ref={bannerRef}
+    >
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-
+      <AnimatedBlurredCircles topOffset={bannerHeight} tope="top-[-360px]" />
       <div className=" mx-auto grid max-w-[1000px] items-center justify-center gap-12" style={{margin: currentMargin}}>
         <section className="rs-wrapper-v4 p-4">
           <h1 className="text-3xl font-bold">

@@ -1,19 +1,24 @@
+// /auth-form-login.tsx
+
 'use client';
 
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { IoInformationOutline } from 'react-icons/io5';
-import clsx from 'clsx';
-import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import useStore from '@/store/authViewStore';
+import { signIn } from '@/auth';
+import { useRouter } from 'next/navigation';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import Link from 'next/link';
+import clsx from 'clsx';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
+import { login } from '@/actions/auth/login';
+import Image from 'next/image';
+
+const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api/v1';
 
 type FormInputs = {
   email: string;
-  password: string;
-  rememberMe: boolean;
+  verificationCode: string;
 };
 
 export const LoginForm = () => {
@@ -25,38 +30,89 @@ export const LoginForm = () => {
   } = useForm<FormInputs>({});
   const { view, setView } = useStore();
   const [loading, setLoading] = useState(false);
+  const [codeSent, setCodeSent] = useState(false);
+  const [useEmail, setUseEmail] = useState<string | null>(null); // Estado para almacenar el correo del usuario
   const [authState, setAuthState] = useState<string | null>(null);
   const { isDark } = useDarkTheme();
 
-  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+  // Función para manejar el envío del código
+  const sendCode = async (email: string) => {
     setLoading(true);
-    const { email, password, rememberMe } = data;
-
     try {
-      const result = await signIn('credentials', {
-        redirect: false,
-        email,
-        password,
-        rememberMe,
+      // Llamar a la API que envía el código al email
+      const response = await fetch(`${BASE_URL}/login/email/send`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
       });
 
-      if (result?.error) {
-        setAuthState('CredentialsSignin');
-        setError('email', {
-          type: 'manual',
-          message: 'Las credenciales son incorrectas',
-        });
-      } else {
-        setAuthState('Success');
-        window.location.replace('/');
+      if (!response.ok) {
+        const errorData = await response.json();
+        const errorMessage =
+          errorData?.message ||
+          'Error al enviar el código. Por favor, inténtalo de nuevo.';
+        throw new Error(errorMessage);
       }
+
+      setCodeSent(true); // Código enviado correctamente
+      setUseEmail(email); // Guardar el correo electrónico
     } catch (error) {
-      console.error('Error during sign in:', error);
+      console.error('Error al enviar el código:', error);
+      alert(error || 'Ocurrió un error inesperado.');
     } finally {
       setLoading(false);
     }
   };
 
+  // Función para manejar la verificación del código
+  const verifyCode: SubmitHandler<FormInputs> = async ({
+    verificationCode,
+  }) => {
+    setLoading(true);
+
+    // Validación simple del código de verificación
+    if (verificationCode.length !== 6 || !/^\d+$/.test(verificationCode)) {
+      setError('verificationCode', {
+        type: 'manual',
+        message: 'El código debe ser un número de 6 dígitos.',
+      });
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // Llamada a NextAuth usando 'credentials' como el método de inicio de sesión
+      // console.log(
+      //   `email: ${useEmail}`,
+      //   `verificationCode: ${verificationCode}`,
+      // );
+
+      const result = await login(useEmail || '', verificationCode);
+
+      if (!result.ok) {
+        setAuthState('CodeInvalid');
+        setError('verificationCode', {
+          type: 'manual',
+          message:
+            'El código ingresado es incorrecto. Por favor, inténtalo de nuevo.',
+        });
+      } else {
+        setAuthState('Success');
+        window.location.href = '/';
+      }
+    } catch (error) {
+      console.error('Error durante la verificación del código:', error);
+      alert(
+        'Ocurrió un error inesperado. Por favor, intenta de nuevo más tarde.',
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Cambiar vista a 'register'
   const handleChange = () => {
     setView('register');
   };
@@ -64,13 +120,16 @@ export const LoginForm = () => {
   return (
     <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-start py-5 xs:mt-0 xs:justify-center">
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(
+          codeSent ? verifyCode : ({ email }) => sendCode(email),
+        )}
         className="flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
       >
         <h2 className="mb-5 text-center text-2xl font-bold text-buttonsLigth dark:text-darkText">
           Iniciar Sesión
         </h2>
 
+        {/* Campo de correo electrónico */}
         <label
           htmlFor="email"
           className={clsx(
@@ -79,88 +138,79 @@ export const LoginForm = () => {
         >
           Correo electrónico
         </label>
-        <input
-          className={clsx(
-            'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-            errors.email
-              ? 'mb-0 border-red-500'
-              : 'mb-5 hover:border-blue-600 dark:hover:border-white',
-          )}
-          type="email"
-          {...register('email', {
-            required: 'El correo electrónico es obligatorio',
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: 'El formato del correo electrónico es inválido',
-            },
-          })}
-        />
+        {codeSent ? (
+          // Mostrar email como texto si el código fue enviado
+          <p className="mb-5 text-gray-600 dark:text-lightText">{useEmail}</p>
+        ) : (
+          <input
+            className={clsx(
+              'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
+              errors.email
+                ? 'mb-0 border-red-500'
+                : 'mb-5 hover:border-blue-600 dark:hover:border-white',
+            )}
+            type="email"
+            {...register('email', {
+              required: 'El correo electrónico es obligatorio',
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: 'El formato del correo electrónico es inválido',
+              },
+            })}
+            disabled={codeSent} // Deshabilitar input si el código ya fue enviado
+          />
+        )}
         {errors.email && (
           <p className="mb-5 text-sm text-red-500">• {errors.email.message}</p>
         )}
 
-        <label
-          htmlFor="password"
-          className={clsx(
-            errors.password
-              ? 'text-red-500'
-              : 'text-lightText dark:text-darkText',
-          )}
-        >
-          Contraseña
-        </label>
-        <input
-          className={clsx(
-            'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-            errors.password
-              ? 'mb-0 border-red-500'
-              : 'mb-5 hover:border-blue-600 dark:hover:border-white',
-          )}
-          type="password"
-          {...register('password', {
-            required: 'La contraseña es obligatoria',
-          })}
-        />
-        {errors.password && (
-          <p className="mb-5 text-sm text-red-500">
-            • {errors.password.message}
-          </p>
-        )}
-
-        <div className="mb-5 flex items-center">
-          <input
-            id="rememberMeLogin"
-            type="checkbox"
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer hover:border-blue-600 dark:border-gray-600 dark:bg-lightText dark:ring-blue-500 dark:hover:border-white"
-            {...register('rememberMe')}
-          />
-          <label htmlFor="rememberMe" className="ml-2">
-            Recordar esta cuenta
-          </label>
-        </div>
-        <Link href={'/auth/forgot-password'} className="mb-5 hover:underline">
-          ¿Olvidaste tu contraseña?
-        </Link>
-
-        {authState === 'CredentialsSignin' && (
-          <div className="mb-5 flex w-full rounded border-2 border-red-500 bg-transparent p-4">
-            <ErrorOutlineIcon className="text-red-500" />
-            <div className="ml-2">
-              <p className="text-base text-red-500">Error</p>
-              <p className="text-sm font-light text-red-500">
-                Las credenciales son incorrectas
+        {/* Campo de código de verificación */}
+        {codeSent && (
+          <>
+            <label
+              htmlFor="verificationCode"
+              className={clsx(
+                errors.verificationCode
+                  ? 'text-red-500'
+                  : 'text-lightText dark:text-darkText',
+              )}
+            >
+              Código de verificación
+            </label>
+            <input
+              className={clsx(
+                'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
+                errors.verificationCode
+                  ? 'mb-0 border-red-500'
+                  : 'mb-5 hover:border-blue-600 dark:hover:border-white',
+              )}
+              type="text"
+              {...register('verificationCode', {
+                required: 'El código de verificación es obligatorio',
+                minLength: {
+                  value: 6,
+                  message: 'El código debe tener 6 dígitos',
+                },
+                maxLength: {
+                  value: 6,
+                  message: 'El código debe tener 6 dígitos',
+                },
+              })}
+            />
+            {errors.verificationCode && (
+              <p className="mb-5 text-sm text-red-500">
+                • {errors.verificationCode.message}
               </p>
-            </div>
-          </div>
+            )}
+          </>
         )}
 
-        <LoginButton pending={loading} />
+        {/* Botón para enviar código o verificarlo */}
+        <LoginButton pending={loading} codeSent={codeSent} />
 
-        <div className="my-5 flex items-center">
-          <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
-          <div className="px-2 text-buttonsLigth dark:text-darkText">O</div>
-          <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
-        </div>
+        {/* <Link href={'/auth/forgot-password'} className="mb-5 hover:underline">
+          ¿Olvidaste tu contraseña?
+        </Link> */}
 
         <button
           onClick={handleChange}
@@ -174,7 +224,13 @@ export const LoginForm = () => {
   );
 };
 
-function LoginButton({ pending }: { pending: boolean }) {
+function LoginButton({
+  pending,
+  codeSent,
+}: {
+  pending: boolean;
+  codeSent: boolean;
+}) {
   const { isDark } = useDarkTheme();
   return (
     <button
@@ -182,7 +238,22 @@ function LoginButton({ pending }: { pending: boolean }) {
       className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
       disabled={pending}
     >
-      {pending ? 'Ingresando...' : 'Ingresar'}
+      {pending ? (
+        <div className="flex items-center justify-center">
+          <Image
+            src="/gif/cargando.gif"
+            width={20}
+            height={20}
+            alt="loading"
+            className="mb-0.5 mr-1"
+          />
+          Procesando...
+        </div>
+      ) : codeSent ? (
+        'Verificar código'
+      ) : (
+        'Enviar código'
+      )}
     </button>
   );
 }
