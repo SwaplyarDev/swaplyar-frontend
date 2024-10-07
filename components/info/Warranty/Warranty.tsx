@@ -4,7 +4,6 @@ import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import CaedAboutUs from '@/components/ui/caed-about-us/caed-about-us';
 import GuaranteeSection from '@/components/ui/warranty-section/WarrantySection';
-import { useState, useEffect, useRef } from 'react';
 import {
   Aumeno,
   Caida,
@@ -46,34 +45,14 @@ const cardsData = [
 const Warranty = () => {
   const { margins } = useMargins();
   const currentMargin = ResponsiveMarginHook(margins);
-  const [bannerHeight, setBannerHeight] = useState(0);
-  const bannerRef = useRef<HTMLDivElement>(null);
-
-  const calculateBannerHeight = () => {
-    if (bannerRef.current) {
-      setBannerHeight(bannerRef.current.offsetHeight);
-    }
-  };
-
-  useEffect(() => {
-    calculateBannerHeight();
-
-    window.addEventListener('resize', calculateBannerHeight);
-
-    return () => {
-      window.removeEventListener('resize', calculateBannerHeight);
-    };
-  }, []);
 
   return (
     <main
-      className="relative flex w-full flex-col gap-20 py-10"
-      ref={bannerRef}
-    >
+      className="relative flex w-full flex-col gap-20 py-10" >
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-      <AnimatedBlurredCircles topOffset={bannerHeight} tope="top-[-250px]" />
+      <AnimatedBlurredCircles tope="top-[-250px]" />
       <div
         className="rs-wrapper-v4 flex-col items-center justify-center gap-12"
         style={{ margin: currentMargin }}

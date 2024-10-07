@@ -3,7 +3,6 @@ import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import GuaranteeSection from '@/components/ui/warranty-section/WarrantySection';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
-import { useState, useEffect, useRef } from 'react';
 import {
   CentroDeAyuda,
   ElegirSwaplyAr,
@@ -23,34 +22,14 @@ const mainStyles = {
 const WhyChooseSwaplyar: React.FC = () => {
   const { margins } = useMargins();
   const currentMargin = ResponsiveMarginHook(margins);
-  const [bannerHeight, setBannerHeight] = useState(0);
-  const bannerRef = useRef<HTMLDivElement>(null);
-
-  const calculateBannerHeight = () => {
-    if (bannerRef.current) {
-      setBannerHeight(bannerRef.current.offsetHeight);
-    }
-  };
-
-  useEffect(() => {
-    calculateBannerHeight();
-
-    window.addEventListener('resize', calculateBannerHeight);
-
-    return () => {
-      window.removeEventListener('resize', calculateBannerHeight);
-    };
-  }, []);
 
   return (
     <main
-      className="relative flex w-full flex-col gap-20 py-10"
-      ref={bannerRef}
-    >
+      className="relative flex w-full flex-col gap-20 py-10">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-      <AnimatedBlurredCircles topOffset={bannerHeight} tope="top-[-650px]" />
+      <AnimatedBlurredCircles  tope="top-[-650px]" />
       <div
         className="m-auto grid items-center justify-center gap-12"
         style={{ padding: currentMargin }}

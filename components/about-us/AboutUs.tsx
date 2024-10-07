@@ -1,6 +1,5 @@
 'use client';
 import Image from 'next/image';
-import { useState, useEffect, useRef } from 'react';
 import CaedAboutUs from '../ui/caed-about-us/caed-about-us';
 import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
 import {
@@ -56,31 +55,12 @@ const AboutUs = () => {
   const { margins } = useMargins();
   const currentMargin = ResponsiveMarginHook(margins);
 
-  const [flyerTop, setFlyerTop] = useState(0);
-  const flyerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const position = () => {
-      if (flyerRef.current) {
-        const flyerOffsetTop =
-          flyerRef.current.getBoundingClientRect().top + window.scrollY;
-        setFlyerTop(flyerOffsetTop);
-      }
-    };
-
-    position();
-    window.addEventListener('resize', position);
-
-    return () => {
-      window.removeEventListener('resize', position);
-    };
-  }, []);
 
   return (
     <>
       <div className="relative py-10">
-        <AnimatedBlurredCircles topOffset={flyerTop} tope="top-[-375px]" />
-        <div className="shadow-custom-blue" ref={flyerRef}>
+        <AnimatedBlurredCircles tope="top-[-375px]" />
+        <div className="shadow-custom-blue" >
           <FlyerTrabajo imageSrc="/images/need-help.png">
             Estamos trabajando en las funciones de inicio de sesión y registro.
           </FlyerTrabajo>
@@ -143,7 +123,7 @@ const AboutUs = () => {
           </div>
         </div>
 
-        {/* Footer con llamada a la acción */}
+       
         <div className="mt-10 text-center">
           <FlyerTrabajo imageSrc={FlyerGif}>
             <span>

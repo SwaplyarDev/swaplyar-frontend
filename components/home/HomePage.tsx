@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect} from 'react';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import Link from 'next/link';
@@ -24,8 +24,7 @@ const mainStyles = {
 };
 
 export default function HomePage() {
-  const [instructionsOffset, setInstructionsOffset] = useState(0);
-  const instructionsRef = useRef<HTMLDivElement>(null);
+
 
   const resetToDefault = useSystemStore((state) => state.resetToDefault);
   const { margins } = useMargins(); 
@@ -35,25 +34,12 @@ export default function HomePage() {
     resetToDefault();
   }, [resetToDefault]);
 
-  const calculateInstructionsOffset = () => {
-    if (instructionsRef.current) {
-      setInstructionsOffset(instructionsRef.current.offsetTop);
-    }
-  };
   const { data: session } = useSession();
-  useEffect(() => {
-    calculateInstructionsOffset();
-    window.addEventListener('resize', calculateInstructionsOffset);
 
-    return () => {
-      window.removeEventListener('resize', calculateInstructionsOffset);
-    };
-  }, []);
 
   return (
     <main className={mainStyles.main}>
       <AnimatedBlurredCircles
-        topOffset={instructionsOffset}
         tope="top-[-375px]"
       />
       <div className="relative bg-white shadow-custom-blue">
@@ -68,7 +54,7 @@ export default function HomePage() {
       >
         <div
           className={mainStyles.instructionsCalculatorContainer}
-          ref={instructionsRef}
+        
         >
           <ConversionInstructions />
         </div>

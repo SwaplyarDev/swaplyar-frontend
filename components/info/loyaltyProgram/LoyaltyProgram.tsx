@@ -2,7 +2,6 @@
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import RewardCard from '@/components/ui/reward-card/RewardCard';
 import useStore from '@/store/authViewStore';
-import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 
@@ -16,9 +15,6 @@ import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 
 function LoyaltyProgram() {
-  
-  const [bannerHeight, setBannerHeight] = useState(0);
-  const bannerRef = useRef<HTMLDivElement>(null);
   const { margins } = useMargins();
   const currentMargin = ResponsiveMarginHook(margins);
 
@@ -28,30 +24,13 @@ function LoyaltyProgram() {
     window.location.href = '/auth/login-register';
   };
 
-
-  const calculateBannerHeight = () => {
-    if (bannerRef.current) {
-      setBannerHeight(bannerRef.current.offsetHeight);
-    }
-  };
-
-  useEffect(() => {
-    calculateBannerHeight();
-
-    window.addEventListener('resize', calculateBannerHeight);
-
-    return () => {
-      window.removeEventListener('resize', calculateBannerHeight);
-    };
-  }, []);
-
   return (
     <div className="relative py-10">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
       <div style={{ margin: currentMargin }}>
-        <AnimatedBlurredCircles topOffset={bannerHeight} tope={'top-[220px]'} />
+        <AnimatedBlurredCircles  tope={'top-[220px]'} />
         <div className="text-center">
           <h1 className="mb-4 text-4xl font-bold">
             SwaplyAr Plus Rewards™ premia tu fidelidad

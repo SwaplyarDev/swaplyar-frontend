@@ -1,7 +1,6 @@
 'use client';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
-import { useState, useEffect, useRef } from 'react';
 import {
   CentroDeAyuda,
   TerminosCondiciones,
@@ -12,38 +11,20 @@ import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 
 const TermsAndConditions = () => {
-  const [bannerHeight, setBannerHeight] = useState(0);
-  const bannerRef = useRef<HTMLDivElement>(null);
   const { margins } = useMargins();
   const currentMargin = ResponsiveMarginHook(margins);
 
-  const calculateBannerHeight = () => {
-    if (bannerRef.current) {
-      setBannerHeight(bannerRef.current.offsetHeight);
-    }
-  };
 
-  useEffect(() => {
-    calculateBannerHeight();
-
-    window.addEventListener('resize', calculateBannerHeight);
-
-    return () => {
-      window.removeEventListener('resize', calculateBannerHeight);
-    };
-  }, []);
 
   return (
     <div className="relative flex flex-col items-center py-10">
-      <AnimatedBlurredCircles topOffset={bannerHeight} tope="top-[-1675px]" />
+      <AnimatedBlurredCircles  tope="top-[-1675px]" />
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
       <div style={{ margin: currentMargin }}>
         <div
-          className="flex max-w-[1000px] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left"
-          ref={bannerRef}
-        >
+          className="flex max-w-[1000px] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left">
           <div className="flex w-full max-w-[600px] items-center justify-center p-0">
             <h1 className="mb-6 text-3xl md:text-4xl">
               Términos y Condiciones de Uso y Navegación del Sitio SwaplyAr
