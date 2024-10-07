@@ -25,16 +25,18 @@ const HelpCenterPage = () => {
 
 
   return (
-    <main
-      className="relative flex w-full flex-col gap-20 py-10"
-     
-    >
-      <FlyerTrabajo imageSrc={CentroDeAyuda}>
+    <>
+          <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
+    <main
+      className="relative flex w-full flex-col  items-center justify-center gap-20 py-10 "
+     
+    >
+
       <AnimatedBlurredCircles  tope="top-[-360px]" />
       <div
-        className="mx-auto grid max-w-[1000px] items-center justify-center gap-12"
+        className="mx-auto grid max-w-[1000px] gap-12"
         style={{ margin: currentMargin }}
       >
         <section className="rs-wrapper-v4 p-4">
@@ -134,10 +136,12 @@ const HelpCenterPage = () => {
         </section>
       </div>
 
-      <FlyerTrabajo imageSrc={CentroDeAyuda}>
+ 
+    </main>
+    <FlyerTrabajo imageSrc={CentroDeAyuda}>
         <></>
       </FlyerTrabajo>
-    </main>
+    </>
   );
 };
 

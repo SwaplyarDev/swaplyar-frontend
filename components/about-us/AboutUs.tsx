@@ -58,19 +58,18 @@ const AboutUs = () => {
 
   return (
     <>
-      <div className="relative py-10">
-        <AnimatedBlurredCircles tope="top-[-375px]" />
         <div className="shadow-custom-blue" >
           <FlyerTrabajo imageSrc="/images/need-help.png">
             Estamos trabajando en las funciones de inicio de sesión y registro.
           </FlyerTrabajo>
         </div>
-
+      <div className="relative flex flex-col items-center justify-center py-10">
+        <AnimatedBlurredCircles tope="top-[-375px]" />
         <div
-          className="pt-5 text-black dark:text-white"
+          className=" w-full pt-5 text-black dark:text-white flex flex-col items-center justify-center max-w-[1000px]"
           style={{ margin: currentMargin }}
         >
-          <div className="rs-wrapper-v4 mx-auto text-center md:w-full">
+          <div className="rs-wrapper-v4 mx-auto text-center items-center justify-center md:w-full">
             <div className="container-text pb-12 pt-10 text-xl sm:pb-24 sm:pt-20 sm:text-2xl lg:text-4xl">
               <h1 className="max-w-[1000px] text-left lg:text-4xl">
                 En SwaplyAr, garantizamos un intercambio seguro y confiable de
@@ -122,9 +121,8 @@ const AboutUs = () => {
             </div>
           </div>
         </div>
-
-       
-        <div className="mt-10 text-center">
+      </div>
+      <div className="mt-10 text-center">
           <FlyerTrabajo imageSrc={FlyerGif}>
             <span>
               &iquest;Nuevo en SwaplyAr? Hac&eacute; clic en &quot;C&oacute;mo
@@ -138,7 +136,6 @@ const AboutUs = () => {
             </div>
           </FlyerTrabajo>
         </div>
-      </div>
     </>
   );
 };

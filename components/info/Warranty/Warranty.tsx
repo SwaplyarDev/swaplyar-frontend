@@ -47,16 +47,15 @@ const Warranty = () => {
   const currentMargin = ResponsiveMarginHook(margins);
 
   return (
-    <main
-      className="relative flex w-full flex-col gap-20 py-10" >
-      <FlyerTrabajo imageSrc={CentroDeAyuda}>
+    <>
+          <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
+    <main
+      className="relative flex w-full flex-col gap-20 py-10 items-center justify-center "  >
+
       <AnimatedBlurredCircles tope="top-[-250px]" />
-      <div
-        className="rs-wrapper-v4 flex-col items-center justify-center gap-12"
-        style={{ margin: currentMargin }}
-      >
+      <div className="rs-wrapper-v4 flex-col items-center justify-center gap-12 max-w-[1000px]" style={{ margin: currentMargin }}>
         <GuaranteeSection
           title="Garantizamos Tu Tranquilidad en Cada Transacción"
           text="En SwaplyAr, nos comprometemos a que cada cambio de divisas sea seguro y confiable. Con nuestra garantía de satisfacción, podés estar seguro de que tus operaciones se manejarán con la mayor eficiencia y cuidado. ¡Confiá en nosotros para una experiencia sin preocupaciones!"
@@ -64,7 +63,7 @@ const Warranty = () => {
           imageAlt="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
         />
 
-        <section className="mx-auto mb-6 mt-12 w-full max-w-screen-md">
+        <section className="mx-auto mb-6 mt-12 md:mt-24 md:mb-24 w-full max-w-screen-md">
           <CaedAboutUs cardsData={cardsData} />
         </section>
 
@@ -97,6 +96,7 @@ const Warranty = () => {
         <footer>{/* <div id="footer-placeholder"></div> */}</footer>
       </div>
     </main>
+    </>
   );
 };
 
