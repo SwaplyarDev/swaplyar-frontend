@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { createContext, useContext, ReactNode } from 'react';
 
 interface MarginContextProps {
@@ -20,13 +20,12 @@ interface MarginProviderProps {
 }
 
 export const MarginProvider: React.FC<MarginProviderProps> = ({ children }) => {
-
   const margins = {
-    xs: '5%',   
-    sm: '10%',  
-    md: '40px', 
-    lg: '24px',  
-    xl: '32px',  
+    xs: '5%',
+    sm: '10%',
+    md: '40px',
+    lg: '24px',
+    xl: '32px',
   };
 
   return (

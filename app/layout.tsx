@@ -41,18 +41,16 @@ export default function RootLayout({
         className={`${inter.className} bg-white text-lightText dark:bg-lightText dark:text-darkText`}
       >
         <SessionProvider>
-        <ThemeProvider>
-          <MarginProvider>
-          <SpeedInsights />
-          <Analytics />
-          <TopMenu />
-          {children}
-          <Footer />
-          </MarginProvider>
-        </ThemeProvider>
+          <ThemeProvider>
+            <MarginProvider>
+              <SpeedInsights />
+              <Analytics />
+              <TopMenu />
+              {children}
+              <Footer />
+            </MarginProvider>
+          </ThemeProvider>
         </SessionProvider>
-        
-        
       </body>
     </html>
   );

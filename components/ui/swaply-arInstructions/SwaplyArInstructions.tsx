@@ -2,7 +2,7 @@
 
 'use client';
 
-import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo'; 
+import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import StepBlock from '@/components/stepBlock/stepBlock';
 import { BsCheck2Circle } from 'react-icons/bs';
 import {
@@ -12,14 +12,12 @@ import {
   Paso3Gif,
   Paso4Gif,
 } from '@/utils/assets/imgDatabaseCloudinary';
-import { useMargins } from '@/context/MarginProvider'; 
-import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook'; 
+import { useMargins } from '@/context/MarginProvider';
+import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 
 export default function SwaplyArInstructions() {
-
-  const { margins } = useMargins(); 
-  const currentMargin = ResponsiveMarginHook(margins); 
-
+  const { margins } = useMargins();
+  const currentMargin = ResponsiveMarginHook(margins);
 
   return (
     <main className="py-10">
@@ -27,8 +25,8 @@ export default function SwaplyArInstructions() {
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
       <div className=" " style={{ margin: currentMargin }}>
-        <section className="text-center pb-16">
-          <article className="container-text  space-y-2">
+        <section className="pb-16 text-center">
+          <article className="container-text space-y-2">
             <h1 className="text-2xl font-bold">
               El Cómo para Operar en SwaplyAr
             </h1>
@@ -36,7 +34,7 @@ export default function SwaplyArInstructions() {
               Seguí estos 4 sencillos pasos para realizar una operación exitosa:
             </h3>
             <p>
-              <span className="bg-[#fbff27]  text-lightText">
+              <span className="bg-[#fbff27] text-lightText">
                 Ejemplo Ilustrativo: En este caso se utilizó un ejemplo de 100
                 USD. Los datos presentados son ficticios.
               </span>

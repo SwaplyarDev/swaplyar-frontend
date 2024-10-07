@@ -12,15 +12,14 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
-import { useMargins } from '@/context/MarginProvider'; 
-import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook'; 
+import { useMargins } from '@/context/MarginProvider';
+import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 
 const HelpCenterPage = () => {
   const [bannerHeight, setBannerHeight] = useState(0);
   const bannerRef = useRef<HTMLDivElement>(null);
-  const { margins } = useMargins(); 
-  const currentMargin = ResponsiveMarginHook(margins); 
-
+  const { margins } = useMargins();
+  const currentMargin = ResponsiveMarginHook(margins);
 
   const calculateBannerHeight = () => {
     if (bannerRef.current) {
@@ -47,7 +46,10 @@ const HelpCenterPage = () => {
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
       <AnimatedBlurredCircles topOffset={bannerHeight} tope="top-[-360px]" />
-      <div className=" mx-auto grid max-w-[1000px] items-center justify-center gap-12" style={{margin: currentMargin}}>
+      <div
+        className="mx-auto grid max-w-[1000px] items-center justify-center gap-12"
+        style={{ margin: currentMargin }}
+      >
         <section className="rs-wrapper-v4 p-4">
           <h1 className="text-3xl font-bold">
             Bienvenido al Centro de Ayuda de SwaplyAr

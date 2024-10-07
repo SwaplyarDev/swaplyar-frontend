@@ -21,8 +21,8 @@ const mainStyles = {
 };
 
 const WhyChooseSwaplyar: React.FC = () => {
-  const { margins } = useMargins(); 
-  const currentMargin = ResponsiveMarginHook(margins); 
+  const { margins } = useMargins();
+  const currentMargin = ResponsiveMarginHook(margins);
   const [bannerHeight, setBannerHeight] = useState(0);
   const bannerRef = useRef<HTMLDivElement>(null);
 
@@ -50,8 +50,11 @@ const WhyChooseSwaplyar: React.FC = () => {
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
- <AnimatedBlurredCircles topOffset={bannerHeight} tope="top-[-650px]" />
-      <div className="m-auto grid items-center justify-center gap-12"  style={{padding: currentMargin}}>
+      <AnimatedBlurredCircles topOffset={bannerHeight} tope="top-[-650px]" />
+      <div
+        className="m-auto grid items-center justify-center gap-12"
+        style={{ padding: currentMargin }}
+      >
         <section>
           <GuaranteeSection
             title="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
@@ -79,8 +82,8 @@ const WhyChooseSwaplyar: React.FC = () => {
             contentNode={
               <>
                 <p>Las razones para elegirnos incluyen:</p>
-                <span className="mx-auto flex  justify-center p-3">
-                  <ol className="mt-4 list-decimal w-[90%] space-y-1 text-pretty text-left">
+                <span className="mx-auto flex justify-center p-3">
+                  <ol className="mt-4 w-[90%] list-decimal space-y-1 text-pretty text-left">
                     <li>Más rápido, más fácil y la mejor tasa del mercado.</li>
                     <li>Los Pedidos son completados en menos de 1 hora.</li>
                     <li>Soporte mediante Chat en WhatsApp.</li>

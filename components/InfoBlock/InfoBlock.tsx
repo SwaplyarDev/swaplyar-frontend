@@ -19,7 +19,7 @@ export default function InfoBlock({
   contentNode,
 }: InfoBlockProps) {
   return (
-    <div className=" flex mb-12 mt-16  max-w-4xl flex-col items-center justify-center md:flex-row">
+    <div className="mb-12 mt-16 flex max-w-4xl flex-col items-center justify-center md:flex-row">
       <div className="info-image-container mb-4 flex justify-center md:mb-0 md:mr-8 md:w-1/2">
         <Image
           src={imageSrc}
@@ -35,7 +35,7 @@ export default function InfoBlock({
             {title}
           </h2>
         </div>
-        <div className="info-content text-center text-xl text-gray-blue dark:text-white ">
+        <div className="info-content text-center text-xl text-gray-blue dark:text-white">
           {contentNode ? (
             contentNode
           ) : (

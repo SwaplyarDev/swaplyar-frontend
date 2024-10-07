@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 
 export const ResponsiveMarginHook = (margins: { [key: string]: string }) => {
@@ -20,7 +19,7 @@ export const ResponsiveMarginHook = (margins: { [key: string]: string }) => {
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
-    handleResize(); 
+    handleResize();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 

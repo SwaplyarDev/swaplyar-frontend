@@ -5,7 +5,11 @@ import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import Link from 'next/link';
 import ConversionInstructions from '../ui/Conversion-Instructions/ConversionInstructions';
-import { FlyerGif, RecargaPaypal, UsdArs } from '@/utils/assets/imgDatabaseCloudinary';
+import {
+  FlyerGif,
+  RecargaPaypal,
+  UsdArs,
+} from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
 import { useMargins } from '@/context/MarginProvider';
@@ -58,9 +62,14 @@ export default function HomePage() {
         </FlyerTrabajo>
       </div>
 
-     
-      <div className="flex flex-col items-center justify-center" style={{ margin: currentMargin }}>
-        <div className={mainStyles.instructionsCalculatorContainer}  ref={instructionsRef}>
+      <div
+        className="flex flex-col items-center justify-center"
+        style={{ margin: currentMargin }}
+      >
+        <div
+          className={mainStyles.instructionsCalculatorContainer}
+          ref={instructionsRef}
+        >
           <ConversionInstructions />
         </div>
         <div className={mainStyles.infoBlocksContainer}>
@@ -81,7 +90,8 @@ export default function HomePage() {
 
       <div className="mt-10">
         <FlyerTrabajo imageSrc={FlyerGif}>
-          ¿Nuevo en SwaplyAr? Haz clic en &quot;Cómo usar SwaplyAr&quot; y aprendé a operar fácilmente. ¡Empezá ahora!
+          ¿Nuevo en SwaplyAr? Haz clic en &quot;Cómo usar SwaplyAr&quot; y
+          aprendé a operar fácilmente. ¡Empezá ahora!
           <div>
             <button id="bannerHTUButton">
               <Link href="/info/how-to-use">
@@ -94,4 +104,3 @@ export default function HomePage() {
     </main>
   );
 }
-
