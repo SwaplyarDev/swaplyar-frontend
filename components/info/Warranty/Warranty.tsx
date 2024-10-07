@@ -49,7 +49,8 @@ const Warranty = () => {
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-      <div className="rs-wrapper-v4  flex-col items-center justify-center gap-12" >
+  
+      <div className="rs-wrapper-v4  flex-col items-center justify-center gap-12" style={{margin: currentMargin}}>
         <GuaranteeSection
           title="Garantizamos Tu Tranquilidad en Cada Transacción"
           text="En SwaplyAr, nos comprometemos a que cada cambio de divisas sea seguro y confiable. Con nuestra garantía de satisfacción, podés estar seguro de que tus operaciones se manejarán con la mayor eficiencia y cuidado. ¡Confiá en nosotros para una experiencia sin preocupaciones!"
@@ -57,7 +58,7 @@ const Warranty = () => {
           imageAlt="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
         />
 
-        <section className="mx-auto w-full max-w-screen-md">
+        <section className="mx-auto w-full max-w-screen-md mt-12 mb-6">
           <CaedAboutUs cardsData={cardsData} />
         </section>
 
@@ -72,7 +73,7 @@ const Warranty = () => {
               beneficios adicionales. Para nuestros usuarios registrados,
               disponemos de promociones exclusivas y asumimos las comisiones por
               vos.
-              <span style={{ backgroundColor: 'yellow', color: 'black' }}>
+              <span style={{ backgroundColor: 'yellow', color: 'black', marginTop:'1%' }}>
                 Mientras que otros servicios pueden incluir una comisión de
                 PayPal del 5.6% + $0.30 USD, en SwaplyAr, nosotros absorbemos
                 esos costos para ofrecerte el mejor valor.

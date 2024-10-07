@@ -22,7 +22,7 @@ interface MarginProviderProps {
 export const MarginProvider: React.FC<MarginProviderProps> = ({ children }) => {
 
   const margins = {
-    xs: '8%',   
+    xs: '5%',   
     sm: '10%',  
     md: '40px', 
     lg: '24px',  
