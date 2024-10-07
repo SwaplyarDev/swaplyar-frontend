@@ -28,8 +28,8 @@ export default function HomePage() {
   const instructionsRef = useRef<HTMLDivElement>(null);
 
   const resetToDefault = useSystemStore((state) => state.resetToDefault);
-  const { margins } = useMargins(); // Usamos el contexto de márgenes
-  const currentMargin = ResponsiveMarginHook(margins); // Aplicamos el hook para márgenes responsivos
+  const { margins } = useMargins(); 
+  const currentMargin = ResponsiveMarginHook(margins); 
 
   useEffect(() => {
     resetToDefault();

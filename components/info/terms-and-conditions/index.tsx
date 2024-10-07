@@ -62,7 +62,7 @@ const TermsAndConditions = () => {
 
         <div className="my-10 w-full max-w-5xl">
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-1">
-            {/* <!--1--> */}
+           
             <div className="rounded-lg bg-gray-100 p-6 text-gray-900 shadow-md dark:bg-graytyc dark:text-gray-100">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
@@ -82,7 +82,7 @@ const TermsAndConditions = () => {
               </p>
             </div>
 
-            {/* <!--2--> */}
+            
             <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
@@ -111,7 +111,7 @@ const TermsAndConditions = () => {
                 aplicable a dichas entidades.
               </p>
             </div>
-            {/* <!--3--> */}
+          
             <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
               <h2
                 className="mb-4 text-2xl md:text-3xl"
@@ -137,7 +137,7 @@ const TermsAndConditions = () => {
               </p>
             </div>
 
-            {/* <!--4--> */}
+           
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
               <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
                 <h2
@@ -181,7 +181,7 @@ const TermsAndConditions = () => {
               </div>
             </div>
 
-            {/* <!--5--> */}
+           
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
               <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
                 <h2
@@ -234,7 +234,7 @@ const TermsAndConditions = () => {
               </div>
             </div>
 
-            {/* <!--6--> */}
+           
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
               <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
                 <h2
@@ -285,7 +285,7 @@ const TermsAndConditions = () => {
               </div>
             </div>
 
-            {/* <!--7--> */}
+    
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
               <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
                 <h2
@@ -334,7 +334,7 @@ const TermsAndConditions = () => {
               </div>
             </div>
 
-            {/* <!--8--> */}
+   
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
               <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
                 <h2
@@ -377,7 +377,6 @@ const TermsAndConditions = () => {
               </div>
             </div>
 
-            {/* <!--10--> */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
               <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
                 <h2
@@ -397,7 +396,6 @@ const TermsAndConditions = () => {
               </div>
             </div>
 
-            {/* <!--11--> */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
               <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
                 <h2
@@ -417,7 +415,7 @@ const TermsAndConditions = () => {
               </div>
             </div>
 
-            {/* <!--12--> */}
+            
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
               <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
                 <h2
@@ -438,7 +436,7 @@ const TermsAndConditions = () => {
               </div>
             </div>
 
-            {/* <!--13--> */}
+          
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
               <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
                 <h2

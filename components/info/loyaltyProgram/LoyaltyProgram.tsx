@@ -16,6 +16,9 @@ import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 
 function LoyaltyProgram() {
+  
+  const [bannerHeight, setBannerHeight] = useState(0);
+  const bannerRef = useRef<HTMLDivElement>(null);
   const { margins } = useMargins();
   const currentMargin = ResponsiveMarginHook(margins);
 
@@ -25,8 +28,6 @@ function LoyaltyProgram() {
     window.location.href = '/auth/login-register';
   };
 
-  const [bannerHeight, setBannerHeight] = useState(0);
-  const bannerRef = useRef<HTMLDivElement>(null);
 
   const calculateBannerHeight = () => {
     if (bannerRef.current) {
