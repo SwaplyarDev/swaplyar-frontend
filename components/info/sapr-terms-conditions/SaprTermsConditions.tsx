@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 
 const SaprTermsConditions = () => {
   return (
@@ -6,7 +7,7 @@ const SaprTermsConditions = () => {
           <h1 className="mb-6 text-[28px] font-bold">
           Términos y Condiciones de Programa de Fidelización
           </h1>
-            <div className="mb-4 p-4 bg-white shadow rounded dark:bg-[rgb(69,69,69)]">
+            <div className="mb-4 p-4 shadow rounded bg-gray-100 dark:bg-[rgb(69,69,69)]">
             <h2 className="text-2xl mb-4">1. Membresía</h2>
                 <h2 className="text-2xl mb-4">a. Elegibilidad</h2>
                 <p className="text-[16px] text-gray-700 dark:text-gray-100">
@@ -24,7 +25,7 @@ const SaprTermsConditions = () => {
                 </p>
             </div>
 
-            <div className="mb-4 p-4 bg-white shadow rounded dark:bg-[rgb(69,69,69)]">
+            <div className="mb-4 p-4 shadow rounded bg-gray-100 dark:bg-[rgb(69,69,69)]">
             <h2 className="text-2xl mb-4">2. Beneficios y Recompensas</h2>
             
                 <h3 className="text-2xl mb-4">a. Descuento de Bienvenida</h3>
@@ -53,49 +54,49 @@ const SaprTermsConditions = () => {
                 </p>    
             </div>
 
-            <div className="mb-4 p-4 bg-white shadow rounded dark:bg-[rgb(69,69,69)]">
+            <div className="mb-4 p-4 shadow rounded bg-gray-100 dark:bg-[rgb(69,69,69)]">
                 <h2 className="text-2xl mb-4">3. Comunicaciones de Marketing</h2>
                 <p className="text-[16px] text-gray-700 dark:text-gray-100">
                     SwaplyAr o sus terceros pueden contactarlo ocasionalmente por correo electrónico con noticias, ofertas, servicios, promociones y otras comunicaciones relacionadas con nuestros productos o servicios. Puede optar por no recibir comunicaciones de marketing de nosotros en cualquier momento enviando un correo electrónico al centrodeayuda@swaplyar.com.
                 </p>
             </div>
 
-            <div className="mb-4 p-4 bg-white shadow rounded dark:bg-[rgb(69,69,69)]">
+            <div className="mb-4 p-4 shadow rounded bg-gray-100 dark:bg-[rgb(69,69,69)]">
                 <h2 className="text-2xl mb-4">4. Privacidad</h2>
                 <p className="text-[16px] text-gray-700 dark:text-gray-100">
                     Su privacidad es importante para nosotros. Por favor, revise nuestro Aviso de Privacidad sobre cómo recopilamos, usamos, divulgamos o transferimos su información personal, o sus Derechos de Privacidad para ejercer cualquiera de sus derechos de privacidad.
                 </p>
             </div>
 
-            <div className="mb-4 p-4 bg-white shadow rounded dark:bg-[rgb(69,69,69)]">
+            <div className="mb-4 p-4 shadow rounded bg-gray-100 dark:bg-[rgb(69,69,69)]">
                 <h2 className="text-2xl mb-4">5. Contacto con SwaplyAr</h2>
                 <p className="text-[16px] text-gray-700 dark:text-gray-100">
-                    Puede contactar a SwaplyAr en línea en <a href="https://www.swaplyar.com/ayuda" className="dark:text-[#0EA5E9]">https://www.swaplyar.com/ayuda</a>, por WhatsApp al +5491123832198, o por correo de atención: <a href="mailto:centrodeayuda@swaplyar.com" className="dark:text-[#0EA5E9]">centrodeayuda@swaplyar.com</a>.
+                    Puede contactar a SwaplyAr en línea en <LinkWithHover href="https://www.swaplyar.com/ayuda">https://www.swaplyar.com/ayuda</LinkWithHover>, por WhatsApp al +5491123832198, o por correo de atención: <LinkWithHover href="mailto:centrodeayuda@swaplyar.com">centrodeayuda@swaplyar.com</LinkWithHover>.
                 </p>
             </div>
 
-            <div className="mb-4 p-4 bg-white shadow rounded dark:bg-[rgb(69,69,69)]">
+            <div className="mb-4 p-4 shadow rounded bg-gray-100 dark:bg-[rgb(69,69,69)]">
                 <h2 className="text-2xl mb-4">6. Marcas Registradas</h2>
                 <p className="text-[16px] text-gray-700 dark:text-gray-100">
                     SwaplyAr, SwaplyAr Rewards y cualquier otra marca registrada asociada con SwaplyAr o SwaplyAr Rewards son marcas registradas de SwaplyAr o sus afiliados y no pueden ser reproducidas o utilizadas de ninguna manera sin el consentimiento previo por escrito de SwaplyAr.
                 </p>
             </div>
 
-            <div className="mb-4 p-4 bg-white shadow rounded dark:bg-[rgb(69,69,69)]">
+            <div className="mb-4 p-4 shadow rounded bg-gray-100 dark:bg-[rgb(69,69,69)]">
                 <h2 className="text-2xl mb-4">7. Sujeto a Cambios o Cancelación</h2>
                 <p className="text-[16px] text-gray-700 dark:text-gray-100">
                     SwaplyAr Rewards, y cualquier beneficio o recompensa asociada, están sujetos a cambios en cualquier momento a la discreción exclusiva de SwaplyAr. Podemos suspender su membresía en SwaplyAr Rewards, y/o cancelar sus beneficios y recompensas, por cualquier razón, incluidas representaciones fraudulentas por su parte, o si está prohibido por la ley aplicable. Los beneficios y recompensas no tienen valor en efectivo, no generan intereses y no están asegurados contra pérdida. Los beneficios y recompensas no pueden ser comprados, vendidos, combinados o transferidos de ninguna manera.
                 </p>
             </div>
 
-            <div className="mb-4 p-4 bg-white shadow rounded dark:bg-[rgb(69,69,69)]">
+            <div className="mb-4 p-4 shadow rounded bg-gray-100 dark:bg-[rgb(69,69,69)]">
                 <h2 className="text-2xl mb-4">8. Cesión</h2>
                 <p className="text-[16px] text-gray-700 dark:text-gray-100">
                     No puede ceder, transferir o permitir que nadie más use su membresía en SwaplyAr Plus Rewards. SwaplyAr puede ceder sus derechos o delegar sus deberes bajo este Acuerdo a su entera discreción.
                 </p>
             </div>
 
-            <div className="mb-4 p-4 bg-white shadow rounded dark:bg-[rgb(69,69,69)]">
+            <div className="mb-4 p-4 shadow rounded bg-gray-100 dark:bg-[rgb(69,69,69)]">
                 <h2 className="text-2xl mb-4">9. Ley Aplicable</h2>
                 <p className="text-[16px] text-gray-700 dark:text-gray-100">
                     Este Acuerdo y la relación entre las partes se regirán e interpretarán de acuerdo con las leyes de la Ciudad de Buenos Aires y resto de la República de Argentina. Las partes se someten irrevocablemente a la jurisdicción de los tribunales situados en Buenos Aires, Argentina o donde corresponda.
