@@ -56,21 +56,20 @@ const AboutUs = () => {
   const { margins } = useMargins();
   const currentMargin = ResponsiveMarginHook(margins);
 
-
   return (
     <>
-        <div className="shadow-custom-blue" >
-          <FlyerTrabajo imageSrc="/images/need-help.png">
-            Estamos trabajando en las funciones de inicio de sesión y registro.
-          </FlyerTrabajo>
-        </div>
+      <div className="shadow-custom-blue">
+        <FlyerTrabajo imageSrc="/images/need-help.png">
+          Estamos trabajando en las funciones de inicio de sesión y registro.
+        </FlyerTrabajo>
+      </div>
       <div className="relative flex flex-col items-center justify-center py-10">
         <AnimatedBlurredCircles tope="top-[-375px]" />
         <div
-          className=" w-full pt-5 text-black dark:text-white flex flex-col items-center justify-center max-w-[1000px]"
+          className="flex w-full max-w-[1000px] flex-col items-center justify-center pt-5 text-black dark:text-white"
           style={{ margin: currentMargin }}
         >
-          <div className="rs-wrapper-v4 mx-auto text-center items-center justify-center md:w-full">
+          <div className="rs-wrapper-v4 mx-auto items-center justify-center text-center md:w-full">
             <div className="container-text pb-12 pt-10 text-xl sm:pb-24 sm:pt-20 sm:text-2xl lg:text-4xl">
               <h1 className="max-w-[1000px] text-left lg:text-4xl">
                 En SwaplyAr, garantizamos un intercambio seguro y confiable de
@@ -133,20 +132,19 @@ const AboutUs = () => {
           <div>
             <button
               id="bannerHTUButton"
-              className='group border-2 text-lg border-buttonsLigth bg-buttonsLigth hover:bg-transparent py-2 px-4 rounded-full mt-6 trasntition-transform hover:border-selectBtsLight hover:scale-105 ease duration-300'
+              className="trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:scale-105 hover:border-selectBtsLight hover:bg-transparent"
             >
-             <Link
-              href={'/info/how-to-use'}
-              className='text-darkText font-bold transition-colors ease duration-300'
-            >
-              Como usar Swaplyar
-             </Link>
+              <Link
+                href={'/info/how-to-use'}
+                className="ease font-bold text-darkText transition-colors duration-300"
+              >
+                Como usar Swaplyar
+              </Link>
             </button>
           </div>
         </FlyerTrabajo>
       </div>
-    
-  </>
+    </>
   );
 };
 

@@ -25,12 +25,12 @@ function LoyaltyProgram() {
   };
 
   return (
-    <div className="relative py-10 overflow-hidden ">
+    <div className="relative overflow-hidden py-10">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-      <div >
-        <AnimatedBlurredCircles  tope={'top-[220px]'} />
+      <div>
+        <AnimatedBlurredCircles tope={'top-[220px]'} />
         <div className="text-center">
           <h1 className="mb-4 text-4xl font-bold">
             SwaplyAr Plus Rewards™ premia tu fidelidad

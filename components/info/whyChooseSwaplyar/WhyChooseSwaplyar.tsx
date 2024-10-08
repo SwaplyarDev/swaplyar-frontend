@@ -24,12 +24,11 @@ const WhyChooseSwaplyar: React.FC = () => {
   const currentMargin = ResponsiveMarginHook(margins);
 
   return (
-    <main
-      className="relative flex w-full flex-col gap-20 py-10">
+    <main className="relative flex w-full flex-col gap-20 py-10">
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-      <AnimatedBlurredCircles  tope="top-[-650px]" />
+      <AnimatedBlurredCircles tope="top-[-650px]" />
       <div
         className="m-auto grid items-center justify-center gap-12"
         style={{ padding: currentMargin }}
