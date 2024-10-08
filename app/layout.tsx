@@ -7,6 +7,7 @@ import ThemeProvider from '../components/ui/theme-Provider/themeProvider';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
 import { inter } from '@/config/fonts/fonts';
+import { MarginProvider } from '@/context/MarginProvider';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 
@@ -41,11 +42,13 @@ export default function RootLayout({
       >
         <SessionProvider>
           <ThemeProvider>
-            <SpeedInsights />
-            <Analytics />
-            <TopMenu />
-            {children}
-            <Footer />
+            <MarginProvider>
+              <SpeedInsights />
+              <Analytics />
+              <TopMenu />
+              {children}
+              <Footer />
+            </MarginProvider>
           </ThemeProvider>
         </SessionProvider>
       </body>
