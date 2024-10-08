@@ -26,7 +26,7 @@ const GuaranteeSection: React.FC<GuaranteeSectionProps> = ({
         {contentNode ? (
           contentNode
         ) : (
-          <p className="text-pretty text-center text-xl md:text-left">{text}</p>
+          <p className="text-pretty text-left text-xl">{text}</p>
         )}
       </div>
       <div className="h-1/2 flex-shrink-0 md:h-auto md:w-[35%]">

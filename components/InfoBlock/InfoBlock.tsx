@@ -35,7 +35,7 @@ export default function InfoBlock({
             {title}
           </h2>
         </div>
-        <div className="info-content text-center text-xl text-gray-blue dark:text-white md:text-left">
+        <div className="info-content text-left text-xl text-gray-blue dark:text-white md:text-left">
           {contentNode ? (
             contentNode
           ) : (
