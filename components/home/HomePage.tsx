@@ -79,10 +79,16 @@ export default function HomePage() {
           ¿Nuevo en SwaplyAr? Haz clic en &quot;Cómo usar SwaplyAr&quot; y
           aprendé a operar fácilmente. ¡Empezá ahora!
           <div>
-            <button id="bannerHTUButton">
-              <Link href="/info/how-to-use">
-                &quot;Cómo usar SwaplyAr&quot;
-              </Link>
+            <button
+              id="bannerHTUButton"
+              className='group border-2 text-lg border-buttonsLigth bg-buttonsLigth hover:bg-transparent py-2 px-4 rounded-full mt-6 trasntition-transform hover:border-selectBtsLight hover:scale-105 ease duration-300'
+            >
+             <Link
+              href={'/info/how-to-use'}
+              className='text-darkText font-bold transition-colors ease duration-300'
+            >
+              Como usar Swaplyar
+             </Link>
             </button>
           </div>
         </FlyerTrabajo>

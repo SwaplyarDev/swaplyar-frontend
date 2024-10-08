@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import CaedAboutUs from '../ui/caed-about-us/caed-about-us';
 import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
+import Link from 'next/link';
 import {
   Apoyo,
   Transparencia,
@@ -123,20 +124,29 @@ const AboutUs = () => {
         </div>
       </div>
       <div className="mt-10 text-center">
-          <FlyerTrabajo imageSrc={FlyerGif}>
-            <span>
-              &iquest;Nuevo en SwaplyAr? Hac&eacute; clic en &quot;C&oacute;mo
-              usar SwaplyAr&quot; y aprend&eacute; a operar f&aacute;cilmente.
-              &iexcl;Empez&aacute; ahora!
-            </span>
-            <div>
-              <button id="bannerHTUButton">
-                <a href="/info/how-to-use">Como usar Swaplyar</a>
-              </button>
-            </div>
-          </FlyerTrabajo>
-        </div>
-    </>
+        <FlyerTrabajo imageSrc={FlyerGif}>
+          <span>
+            &iquest;Nuevo en SwaplyAr? Hac&eacute; clic en &quot;C&oacute;mo
+            usar SwaplyAr&quot; y aprend&eacute; a operar f&aacute;cilmente.
+            &iexcl;Empez&aacute; ahora!
+          </span>
+          <div>
+            <button
+              id="bannerHTUButton"
+              className='group border-2 text-lg border-buttonsLigth bg-buttonsLigth hover:bg-transparent py-2 px-4 rounded-full mt-6 trasntition-transform hover:border-selectBtsLight hover:scale-105 ease duration-300'
+            >
+             <Link
+              href={'/info/how-to-use'}
+              className='text-darkText font-bold transition-colors ease duration-300'
+            >
+              Como usar Swaplyar
+             </Link>
+            </button>
+          </div>
+        </FlyerTrabajo>
+      </div>
+    
+  </>
   );
 };
 
