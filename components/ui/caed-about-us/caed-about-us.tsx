@@ -64,13 +64,15 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
       { threshold: 1 },
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    const currentSectionRef = sectionRef.current; // Copia la referencia a una variable
+
+    if (currentSectionRef) {
+      observer.observe(currentSectionRef);
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (currentSectionRef) {
+        observer.unobserve(currentSectionRef); // Usa la variable en lugar de sectionRef.current
       }
     };
   }, []);
