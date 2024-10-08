@@ -28,10 +28,10 @@ export const LoginForm = () => {
     formState: { errors },
     setError,
   } = useForm<FormInputs>({});
-  const { view, setView } = useStore();
+  const { setView } = useStore();
   const [loading, setLoading] = useState(false);
   const [codeSent, setCodeSent] = useState(false);
-  const [useEmail, setUseEmail] = useState<string | null>(null); // Estado para almacenar el correo del usuario
+  const [useEmail, setUseEmail] = useState<string | null>(null); 
   const [authState, setAuthState] = useState<string | null>(null);
   const { isDark } = useDarkTheme();
 
@@ -48,13 +48,13 @@ export const LoginForm = () => {
         body: JSON.stringify({ email }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        const errorMessage =
-          errorData?.message ||
-          'Error al enviar el código. Por favor, inténtalo de nuevo.';
-        throw new Error(errorMessage);
-      }
+      // if (!response.ok) {
+      //   const errorData = await response.json();
+      //   const errorMessage =
+      //     errorData?.message ||
+      //     'Error al enviar el código. Por favor, inténtalo de nuevo.';
+      //   throw new Error(errorMessage);
+      // }
 
       setCodeSent(true); // Código enviado correctamente
       setUseEmail(email); // Guardar el correo electrónico
@@ -208,9 +208,17 @@ export const LoginForm = () => {
         {/* Botón para enviar código o verificarlo */}
         <LoginButton pending={loading} codeSent={codeSent} />
 
-        {/* <Link href={'/auth/forgot-password'} className="mb-5 hover:underline">
-          ¿Olvidaste tu contraseña?
-        </Link> */}
+        {codeSent ? (
+          <ReLoginButton pending={loading} codeSent={codeSent} />
+        ) : (
+          ''
+        )}
+
+        <div className="my-5 flex items-center">
+          <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
+          <div className="px-2 text-buttonsLigth dark:text-darkText">O</div>
+          <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
+        </div>
 
         <button
           onClick={handleChange}
@@ -252,7 +260,39 @@ function LoginButton({
       ) : codeSent ? (
         'Verificar código'
       ) : (
-        'Enviar código'
+        'Ingresar'
+      )}
+    </button>
+  );
+}
+
+function ReLoginButton({
+  pending,
+  codeSent,
+}: {
+  pending: boolean;
+  codeSent: boolean;
+}) {
+  const { isDark } = useDarkTheme();
+  return (
+    <button
+      type="submit"
+      className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
+      disabled={pending}
+    >
+      {pending ? (
+        <div className="flex items-center justify-center">
+          <Image
+            src="/gif/cargando.gif"
+            width={20}
+            height={20}
+            alt="loading"
+            className="mb-0.5 mr-1"
+          />
+          Procesando...
+        </div>
+      ) : (
+        codeSent && 'Reenviar codigo'
       )}
     </button>
   );

@@ -7,8 +7,6 @@ import { registerUser } from '@/actions/auth/register';
 import { signIn } from 'next-auth/react';
 import useStore from '@/store/authViewStore';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import Link from 'next/link';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 
@@ -16,29 +14,60 @@ type FormInputs = {
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
-  confirmPassword: string;
   rememberMe: boolean;
   termsConditions: boolean;
+  verificationCode: string;
 };
+
+const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api/v1';
 
 export const RegisterForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { isDark } = useDarkTheme();
+  const [codeSent, setCodeSent] = useState(false);
+  const [useEmail, setUseEmail] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
+    setError,
   } = useForm<FormInputs>();
 
-  const { view, setView } = useStore();
+  const { setView } = useStore();
   const handleChange = () => {
     setView('login');
+  };
+
+  const sendCode = async (email: string) => {
+    setLoading(true);
+    try {
+      // Llamar a la API que envía el código al email
+      const response = await fetch(`${BASE_URL}/register/email/send`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        const errorMessage =
+          errorData?.message ||
+          'Error al enviar el código. Por favor, inténtalo de nuevo.';
+        throw new Error(errorMessage);
+      }
+
+      setCodeSent(true); // Código enviado correctamente
+      setUseEmail(email); // Guardar el correo electrónico
+    } catch (error) {
+      console.error('Error al enviar el código:', error);
+      alert(error || 'Ocurrió un error inesperado.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
@@ -48,7 +77,6 @@ export const RegisterForm = () => {
       firstName,
       lastName,
       email,
-      password,
       rememberMe,
       termsConditions,
     } = data;
@@ -56,7 +84,7 @@ export const RegisterForm = () => {
 
     localStorage.setItem('rememberMe', JSON.stringify(rememberMe));
 
-    const resp = await registerUser(name, email, password);
+    const resp = await registerUser(name, email, termsConditions);
 
     if (!resp.ok) {
       setErrorMessage(resp.message);
@@ -67,7 +95,6 @@ export const RegisterForm = () => {
     const result = await signIn('credentials', {
       redirect: false,
       email,
-      password,
       rememberMe: toString(),
       termsConditions: toString(),
     });
@@ -78,11 +105,6 @@ export const RegisterForm = () => {
       window.location.replace('/dashboard');
     }
     setLoading(false);
-  };
-
-  const validatePasswordMatch = (value: string) => {
-    const password = getValues('password');
-    return password === value || 'Las contraseñas no coinciden';
   };
 
   return (
@@ -185,101 +207,6 @@ export const RegisterForm = () => {
         />
         {errors.email && (
           <p className="mb-5 text-sm text-red-500">• {errors.email.message}</p>
-        )}
-
-        <label
-          htmlFor="password"
-          className={clsx(
-            errors.password
-              ? 'text-red-500'
-              : 'text-lightText dark:text-darkText',
-          )}
-        >
-          Contraseña
-        </label>
-        <div className="relative">
-          <input
-            id="password"
-            className={clsx(
-              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 dark:bg-lightText',
-              errors.password
-                ? 'mb-0 border-red-500'
-                : 'mb-5 hover:border-blue-600 dark:hover:border-white',
-            )}
-            type={showPassword ? 'text' : 'password'}
-            {...register('password', {
-              required: 'La contraseña es obligatoria',
-              minLength: {
-                value: 6,
-                message: 'La contraseña debe tener al menos 6 caracteres',
-              },
-            })}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className={clsx(
-              'absolute inset-y-0 right-0 flex items-center px-3',
-              errors.password ? 'mb-0' : 'mb-5',
-            )}
-          >
-            {showPassword ? (
-              <VisibilityOffOutlinedIcon />
-            ) : (
-              <VisibilityOutlinedIcon />
-            )}
-          </button>
-        </div>
-        {errors.password && (
-          <p className="mb-5 text-sm text-red-500">
-            • {errors.password.message}
-          </p>
-        )}
-
-        <label
-          htmlFor="confirmPassword"
-          className={clsx(
-            errors.confirmPassword
-              ? 'text-red-500'
-              : 'text-lightText dark:text-darkText',
-          )}
-        >
-          Repetir contraseña
-        </label>
-        <div className="relative">
-          <input
-            id="confirmPassword"
-            className={clsx(
-              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 dark:bg-lightText',
-              errors.confirmPassword
-                ? 'mb-0 border-red-500'
-                : 'mb-5 hover:border-blue-600 dark:hover:border-white',
-            )}
-            type={showConfirmPassword ? 'text' : 'password'}
-            {...register('confirmPassword', {
-              required: 'La confirmación de la contraseña es obligatoria',
-              validate: validatePasswordMatch,
-            })}
-          />
-          <button
-            type="button"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className={clsx(
-              'absolute inset-y-0 right-0 flex items-center px-3',
-              errors.confirmPassword ? 'mb-0' : 'mb-5',
-            )}
-          >
-            {showConfirmPassword ? (
-              <VisibilityOffOutlinedIcon />
-            ) : (
-              <VisibilityOutlinedIcon />
-            )}
-          </button>
-        </div>
-        {errors.confirmPassword && (
-          <p className="mb-5 text-sm text-red-500">
-            • {errors.confirmPassword.message}
-          </p>
         )}
 
         <div className="mb-5 flex items-center">
