@@ -14,7 +14,7 @@ import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import { login } from '@/actions/auth/login';
 import Image from 'next/image';
 
-const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api/v1';
+const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api';
 
 type FormInputs = {
   email: string;
@@ -40,7 +40,7 @@ export const LoginForm = () => {
     setLoading(true);
     try {
       // Llamar a la API que envía el código al email
-      const response = await fetch(`${BASE_URL}/login/email/send`, {
+      const response = await fetch(`${BASE_URL}/v1/login/email/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
