@@ -14,7 +14,7 @@ export const configRoutes: ConfigRoutes = {
     '/request',
     // '/auth/login-register',
   ],
-  authRoutes: ['/auth/login-register'],
+  authRoutes: ['/auth/login-register', '/auth/login-register/email-verification'],
   apiRoutes: [
     '/api/login',
     '/api/users',

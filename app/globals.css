@@ -447,3 +447,7 @@ div:where(.swal2-container).swal2-noanimation {
     0px 0px 0px 2px #252526,
     0px 0px 0px 4px #ebe7e0;
 }
+
+.buttonSecondDarkDisabled:hover {
+  box-shadow: inherit;
+}
