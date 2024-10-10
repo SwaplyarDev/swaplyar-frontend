@@ -12,7 +12,7 @@ type FormInputs = {
   verificationCode: string[];
 };
 
-const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api/v1';
+const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api';
 
 export const VerifyCodePage = () => {
   const {
@@ -82,7 +82,7 @@ export const VerifyCodePage = () => {
     if (timer === 0) {
       setReLoading(true);
       try {
-        await fetch(`${BASE_URL}/login/email/send`, {
+        await fetch(`${BASE_URL}/v1/login/email/send`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email }),

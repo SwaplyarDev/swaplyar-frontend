@@ -51,7 +51,7 @@ export const {
       if (session.user && token) {
         session.user.id = token.id;
         session.user.role = token.role;
-        session.user.name = token.fullName;
+        session.user.name = token.name;
         session.user.email = token.email!;
       }
       return session;

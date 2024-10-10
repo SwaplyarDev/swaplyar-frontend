@@ -19,7 +19,7 @@ type FormInputs = {
   verificationCode: string;
 };
 
-const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api/v1';
+const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api';
 
 export const RegisterForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
@@ -44,7 +44,7 @@ export const RegisterForm = () => {
     setLoading(true);
     try {
       // Llamar a la API que envía el código al email
-      const response = await fetch(`${BASE_URL}/register/email/send`, {
+      const response = await fetch(`${BASE_URL}/v1/register/email/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
