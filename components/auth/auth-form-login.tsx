@@ -14,7 +14,7 @@ import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import { login } from '@/actions/auth/login';
 import Image from 'next/image';
 
-const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api';
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
 
 type FormInputs = {
   email: string;
