@@ -5,7 +5,7 @@ import Github from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
 import { InvalidCredentials } from './lib/auth/index';
 
-const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api/v1';
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
 
 export default {
   providers: [
@@ -15,7 +15,7 @@ export default {
           const email = credentials.email as string;
           const code = credentials.verificationCode as string;
 
-          const response = await fetch(`${BASE_URL}/login/email/verify-code`, {
+          const response = await fetch(`${BASE_URL}/v1/login/email/verify-code`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

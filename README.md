@@ -163,37 +163,46 @@ La ruta `/api/paypal` en el servidor maneja la creación de órdenes en PayPal. 
    Crea un archivo `.env.local` en la raíz del proyecto y agrega las variables de entorno necesarias.
 
    ```env
-        # Authjs
-        AUTH_SECRET='your_auth_secret'
-        NEXTAUTH_SECRET='your_nextauth_secret'
-
-        NEXTAUTH_URL="http://localhost:8080/api/v1/login"
-
-        # AUTH_LOGIN_REDIRECT
-        AUTH_LOGIN_REDIRECT="/products/company"
-        APP_ENV="development"
+        # /.env
+        
+        # Environment Configuration
+        APP_ENV=development
+        
+        # Authentication Secrets
+        AUTH_SECRET='xiqS6G4DXQaH1Wc79cPhm0WhpMS6x2p7mEh3z+7/s9i52e8hz3tiUmfi1Fc='
+        NEXTAUTH_SECRET='cB9cQQRXYKn5/ptRnpPhZ2QHHqAIlwMAUh7Lmi4IU+ovkhKZNHhxN6Ki9lw='
+        
+        # URLs
+        NEXTAUTH_URL="http://localhost:3000" # Local development URL
+        NEXT_PUBLIC_BACKEND_URL="https://swaplyar-back.vercel.app/api" # Production backend URL
+        # NEXT_PUBLIC_BACKEND_URL="http://localhost:8080/api" # Uncomment for local backend testing
+        # NEXTAUTH_URL="https://swaplyar.vercel.app" # Uncomment for production
+        
+        # Redirects
+        AUTH_LOGIN_REDIRECT="/"
+        
+        # Project Directory
         PROJECT_DIR="/ruta/al/directorio/del/proyecto"
-
-        # GOOGLE
+        
+        # Google Authentication
         AUTH_GOOGLE_ID="your_google_id"
         AUTH_GOOGLE_SECRET="your_google_secret"
-
-        # GITHUB
+        
+        # GitHub Authentication
         AUTH_GITHUB_ID="your_github_id"
         AUTH_GITHUB_SECRET="your_github_secret"
-
-        # Resend
+        
+        # Resend Configuration
         AUTH_RESEND_KEY="your_resend_key"
-
-        # FreeCurrencyAPI
-        NEXT_PUBLIC_FREE_CURRENCY_API_KEY="fca_live_jDqUTcYj3stjWVDFqGZCmIBAt3hIEEtiTBPSMD3N"
-
-        # Bluelytics
+        
+        # Currency APIs
+        NEXT_PUBLIC_FREE_CURRENCY_API_KEY="fca_live_YXQDkCwBwblsav5Dpe7zG0Rl1k6Nl4WuMEd1jHco&currencies=EUR%2CUSD%2CCAD"
         NEXT_PUBLIC_BLUELYTICS_API_URL="https://api.bluelytics.com.ar/v2/latest"
         NEXT_PUBLIC_FREE_CURRENCY_APY_KEY=fca_live_jDqUTcYj3stjWVDFqGZCmIBAt3hIEEtiTBPSMD3N
-
-
+        
+        # PayPal Client ID
         NEXT_PUBLIC_PAYPAL_CLIENT_ID="Acdb_cNhM35Qa7UNeEpdSePRS6Oswvx5ohLo1KEC04ADt64RGPUuOMUZXN_Kt84b93RXFFujqDKjB8u1"
+        
    ```
 
 4. **Ejecutar el Proyecto**
@@ -202,7 +211,8 @@ La ruta `/api/paypal` en el servidor maneja la creación de órdenes en PayPal. 
 npm run dev
 ```
 
-Accede al proyecto en [http://localhost:3000](http://localhost:3000).
+- Accede al proyecto en wep [https://swaplyar.vercel.app](https://swaplyar.vercel.app).
+- Accede al proyecto en [http://localhost:3000](http://localhost:3000).
 
 ## 🤖 Scripts Disponibles
 
@@ -294,7 +304,7 @@ Accede al proyecto en [http://localhost:3000](http://localhost:3000).
 ## 🚀 Despliegue
 
 progreso...
-
+- Accede al proyecto en wep [https://swaplyar.vercel.app](https://swaplyar.vercel.app).
 ---
 
 **¡Gracias por leer!** Esperamos que esta documentación te sea útil. Si tienes alguna pregunta o necesitas más información, no dudes en contactarnos. 😊

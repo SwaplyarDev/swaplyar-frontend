@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
 import Image from 'next/image';
 
-const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api/v1';
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
 
 type FormInputs = {
   email: string;
@@ -30,7 +30,8 @@ export const LoginForm = () => {
   const submitEmail: SubmitHandler<FormInputs> = async ({ email }) => {
     setLoading(true);
     try {
-      await fetch(`${BASE_URL}/login/email/send`, {
+      // Llamar a la API que envía el código al email
+      const response = await fetch(`${BASE_URL}/v1/login/email/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

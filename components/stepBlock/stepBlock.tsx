@@ -19,7 +19,7 @@ export default function StepBlock({
   contentNode,
 }: StepBlockProps) {
   return (
-    <main className="flex max-w-screen-xl flex-col items-center p-8 lg:flex-row">
+    <main className="flex max-w-screen-xl flex-col items-center pb-8 pt-8 lg:flex-row">
       <section className="info-image-container mb-4 w-full md:w-1/2 lg:mb-0 lg:mr-8">
         <Image
           src={imageSrc}

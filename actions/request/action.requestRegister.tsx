@@ -42,9 +42,10 @@ type TransactionRequest = {
   };
 };
 
+
 export const requestRegister = async (transaction: TransactionRequest) => {
   try {
-    const response = await fetch('http://localhost:8080/api/v1/transactions', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/transactions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
