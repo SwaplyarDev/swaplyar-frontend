@@ -7,6 +7,7 @@ import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
+import Image from 'next/image';
 
 const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api/v1';
 
@@ -29,7 +30,7 @@ export const LoginForm = () => {
   const submitEmail: SubmitHandler<FormInputs> = async ({ email }) => {
     setLoading(true);
     try {
-      const response = await fetch(`${BASE_URL}/login/email/send`, {
+      await fetch(`${BASE_URL}/login/email/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,12 +39,14 @@ export const LoginForm = () => {
       });
 
       setEmail(email); // Guardar el email en Zustand
-      router.push('/auth/login-register/email-verification'); // Redirigir a la página de verificación
+      setTimeout(() => {
+        setLoading(false)
+        router.push('/auth/login-register/email-verification');
+      }, 6000); // Redirigir a la página de verificación
     } catch (error) {
+      setLoading(false)
       console.error('Error al enviar el código:', error);
       alert('Ocurrió un error inesperado.');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -94,7 +97,20 @@ export const LoginForm = () => {
           className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
           disabled={loading} // Desactivar el botón si está cargando
         >
-          {loading ? 'Procesando...' : 'Ingresar'}
+          {loading ? (
+            <div className="flex items-center justify-center">
+              <Image
+                src="/gif/cargando.gif"
+                width={20}
+                height={20}
+                alt="loading"
+                className="mb-0.5 mr-1"
+              />
+              Procesando...
+            </div>
+          ) : (
+            'Ingresar'
+          )}
         </button>
 
         <div className="my-5 flex items-center">

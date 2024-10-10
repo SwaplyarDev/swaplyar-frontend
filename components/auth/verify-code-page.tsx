@@ -6,6 +6,7 @@ import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import clsx from 'clsx';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
 import { useRouter } from 'next/navigation';
+import Arrow from '../ui/Arrow/Arrow';
 
 type FormInputs = {
   verificationCode: string[];
@@ -63,16 +64,6 @@ export const VerifyCodePage = () => {
     try {
       const result = await login(email || '', code);
       if (!result.ok) {
-        setAttempts((prev) => {
-          if (prev <= 1) {
-            setError('verificationCode', {
-              type: 'manual',
-              message: 'Máximo de intentos alcanzados.',
-            });
-            return 0;
-          }
-          return prev - 1;
-        });
         setError('verificationCode', {
           type: 'manual',
           message: 'El código ingresado es incorrecto.',
@@ -97,6 +88,12 @@ export const VerifyCodePage = () => {
           body: JSON.stringify({ email }),
         });
         setTimer(10);
+        setAttempts((prev) => {
+          if (prev <= 1) {
+            return 0;
+          }
+          return prev - 1;
+        });
       } catch (error) {
         console.error('Error al reenviar el código:', error);
       } finally {
@@ -148,7 +145,7 @@ export const VerifyCodePage = () => {
     <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-start py-5 xs:mt-0 xs:justify-center">
       <form
         onSubmit={handleSubmit(verifyCode)} // Esta línea se mantiene pero el botón de verificación se elimina
-        className="flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
+        className="flex w-full max-w-xl flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
       >
         <h2 className="mb-5 text-center text-2xl font-bold text-buttonsLigth dark:text-darkText">
           Verificar Código
@@ -169,21 +166,28 @@ export const VerifyCodePage = () => {
 
         <div className="mb-5 flex justify-between">
           {[...Array(6)].map((_, index) => (
-            <input
-              key={index}
-              id={`code-${index}`}
-              type="text"
-              maxLength={1}
-              className={clsx(
-                'h-12 w-12 rounded border text-center dark:bg-lightText',
-                errors.verificationCode
-                  ? 'border-red-500'
-                  : 'hover:border-blue-600 dark:hover:border-white',
+            <>
+              <input
+                key={index}
+                id={`code-${index}`}
+                type="text"
+                maxLength={1}
+                className={clsx(
+                  'h-16 w-16 rounded-full border text-center dark:bg-lightText text-xl',
+                  errors.verificationCode
+                    ? 'border-red-500'
+                    : 'hover:border-blue-600 dark:hover:border-white',
+                )}
+                {...register(`verificationCode.${index}`)} // Registro correcto aquí
+                onChange={(event) => handleInputChange(index, event)} // Manejador de cambios
+                onKeyDown={(event) => handleInputKeyDown(index, event)}
+              />
+              {index < 5 && (
+                <div className="flex min-h-full min-w-[0.7rem] items-center justify-center">
+                  <div className="w-full h-[1px] flex-1 bg-buttonsLigth dark:bg-darkText"></div>
+                </div>
               )}
-              {...register(`verificationCode.${index}`)} // Registro correcto aquí
-              onChange={(event) => handleInputChange(index, event)} // Manejador de cambios
-              onKeyDown={(event) => handleInputKeyDown(index, event)}
-            />
+            </>
           ))}
         </div>
 
@@ -193,16 +197,18 @@ export const VerifyCodePage = () => {
           </p>
         )}
 
-        <p className="mb-5 text-sm text-red-500">
-          {attempts <= 0 && 'Máximo de intentos alcanzados.'}
-        </p>
-
         <div className="my-5 flex justify-between text-buttonsLigth dark:text-darkText">
-          <p>Puede reenviar el código</p>
+          <button
+            onClick={() => router.push('/auth/login-register')}
+            className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent flex gap-2 min-w-[150px]`}
+          >
+            <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
+            Volver
+          </button>
           <button
             onClick={resendCode}
-            disabled={timer > 0 || reLoading}
-            className={`ml-2 font-bold ${timer > 0 ? 'cursor-not-allowed text-gray-500' : 'hover:underline'}`}
+            disabled={timer > 0 || reLoading || attempts <= 0}
+            className={`min-w-[150px] disabled:shadow-none dark:disabled:bg-gray-400 disabled:border-gray-400 disabled:bg-gray-400 dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} ${timer > 0 || attempts <= 0 ? 'text-gray-500' : ''}`}
           >
             {reLoading
               ? 'Enviando...'
@@ -211,15 +217,12 @@ export const VerifyCodePage = () => {
                 : 'Reenviar código'}
           </button>
         </div>
-
-        <button
-          onClick={() => router.push('/auth/login-register')}
-          className="mt-5 text-blue-600 hover:underline"
-        >
-          Volver al inicio de sesión
-        </button>
+        <p className='w-full text-center'>
+          {attempts <= 0
+            ? 'Máximo de intentos alcanzados.'
+            : `Te quedan ${attempts} intentos.`}
+        </p>
       </form>
     </div>
   );
 };
-
