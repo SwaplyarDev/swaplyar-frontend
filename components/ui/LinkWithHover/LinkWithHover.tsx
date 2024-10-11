@@ -7,7 +7,6 @@ interface LinkWithHoverProps {
   href: string;
   children: React.ReactNode;
 }
-
 const LinkWithHover: FC<LinkWithHoverProps> = ({ href, children }) => {
   const handleMouseOver = (e: MouseEvent<HTMLAnchorElement>) => {
     e.currentTarget.style.textDecoration = 'underline';
@@ -24,6 +23,7 @@ const LinkWithHover: FC<LinkWithHoverProps> = ({ href, children }) => {
       style={{ color: '#012a8d', textDecoration: 'none' }}
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
+      className="relative m-1 flex h-[48px] items-center gap-2 transition-transform duration-300 ease-in-out hover:scale-105 hover:text-blue-700 dark:text-sky-500 dark:hover:text-sky-600"
     >
       {children}
     </a>
