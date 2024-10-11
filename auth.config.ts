@@ -5,7 +5,8 @@ import Github from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
 import { InvalidCredentials } from './lib/auth/index';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
+const BASE_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
 
 export default {
   providers: [
