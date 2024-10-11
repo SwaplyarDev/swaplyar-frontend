@@ -12,36 +12,9 @@ import { useState, useEffect } from 'react';
 import { requestRegister } from '@/actions/request/action.requestRegister';
 import Swal from 'sweetalert2';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import { CountryOption, FormInputs } from '@/types/request/request';
 import Image from 'next/image';
 
-type FormInputs = {
-  sender_first_name: string;
-  sender_last_name: string;
-  receiver_first_name: string;
-  receiver_last_name: string;
-  amount_sent: number;
-  currency_sent: string;
-  amount_received: number;
-  currency_received: string;
-  phone: string;
-  receiver_email: string;
-  transfer_code: string;
-  transaction_destination: string;
-  payment_bank: string;
-  reciver_bank: string;
-  document: string;
-  sender_email: string;
-  proof_of_payment: FileList;
-  note: string;
-  country: string;
-  type_of_document: string;
-};
-
-type CountryOption = {
-  value: string;
-  label: string;
-  callingCode: string;
-};
 
 export const RequestRegisterForm = () => {
   const [_errorMessage, setErrorMessage] = useState<string>('');
