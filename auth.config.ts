@@ -39,10 +39,11 @@ export default {
           if (data && data.token) {
             const { user } = data;
             return {
-              id: user.id,
-              name: user.fullName,
+              id: user.user_id,
+              name: user.full_name,
               email: user.email,
               role: user.role,
+              token: data.token,
             };
           } else {
             throw new InvalidCredentials();
