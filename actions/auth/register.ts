@@ -5,7 +5,7 @@
 export const registerUser = async (
   name: string,
   email: string,
-  termsConditions: boolean
+  termsConditions: boolean,
 ) => {
   try {
     const response = await fetch('https://your-api-endpoint.com/register', {

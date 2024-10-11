@@ -9,7 +9,8 @@ import { useRouter } from 'next/navigation';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
 import Image from 'next/image';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
+const BASE_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
 
 type FormInputs = {
   email: string;
@@ -41,11 +42,11 @@ export const LoginForm = () => {
 
       setEmail(email); // Guardar el email en Zustand
       setTimeout(() => {
-        setLoading(false)
+        setLoading(false);
         router.push('/auth/login-register/email-verification');
       }, 6000); // Redirigir a la página de verificación
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       console.error('Error al enviar el código:', error);
       alert('Ocurrió un error inesperado.');
     }

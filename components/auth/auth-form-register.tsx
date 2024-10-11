@@ -73,13 +73,7 @@ export const RegisterForm = () => {
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setErrorMessage('');
     setLoading(true);
-    const {
-      firstName,
-      lastName,
-      email,
-      rememberMe,
-      termsConditions,
-    } = data;
+    const { firstName, lastName, email, rememberMe, termsConditions } = data;
     const name = `${firstName} ${lastName}`;
 
     localStorage.setItem('rememberMe', JSON.stringify(rememberMe));
