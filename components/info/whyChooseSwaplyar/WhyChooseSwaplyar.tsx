@@ -41,7 +41,7 @@ const WhyChooseSwaplyar: React.FC = () => {
             imageAlt="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
             contentNode={
               <>
-                <p className="text-pretty text-xl text-left">
+                <p className="text-pretty text-left text-xl">
                   Si estás buscando seguridad y confiabilidad en el intercambio
                   de tu dinero digital, SwaplyAr es tu mejor opción. Descubre
                   por qué somos la elección preferida para cambiar divisas de
@@ -107,18 +107,18 @@ const WhyChooseSwaplyar: React.FC = () => {
         SwaplyAr&quot; y aprend&eacute; a operar f&aacute;cilmente.
         &iexcl;Empez&aacute; ahora!
         <div>
-            <button
-              id="bannerHTUButton"
-              className="trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:scale-105 hover:border-selectBtsLight hover:bg-transparent"
+          <button
+            id="bannerHTUButton"
+            className="trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:scale-105 hover:border-selectBtsLight hover:bg-transparent"
+          >
+            <Link
+              href={'/info/how-to-use'}
+              className="ease font-bold text-darkText transition-colors duration-300"
             >
-              <Link
-                href={'/info/how-to-use'}
-                className="ease font-bold text-darkText transition-colors duration-300"
-              >
-                Como usar Swaplyar
-              </Link>
-            </button>
-          </div>
+              Como usar Swaplyar
+            </Link>
+          </button>
+        </div>
       </FlyerTrabajo>
     </main>
   );
