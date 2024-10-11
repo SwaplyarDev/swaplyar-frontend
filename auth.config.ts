@@ -15,16 +15,19 @@ export default {
           const email = credentials.email as string;
           const code = credentials.verificationCode as string;
 
-          const response = await fetch(`${BASE_URL}/v1/login/email/verify-code`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
+          const response = await fetch(
+            `${BASE_URL}/v1/login/email/verify-code`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                email: email,
+                code: code,
+              }),
             },
-            body: JSON.stringify({
-              email: email,
-              code: code,
-            }),
-          });
+          );
 
           if (!response.ok) {
             if (response.status === 401 || response.status === 403) {
