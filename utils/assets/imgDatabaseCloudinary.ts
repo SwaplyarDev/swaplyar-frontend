@@ -87,3 +87,21 @@ export const LideresenCambio =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224626/lideresencambio_zdakrx.png';
 export const SeguridadySatisfaccion =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225337/seguridadysatisfaccion_c0pgcf.png';
+
+
+/**transaction-calculator**/
+export const PaypalImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224913/paypal.big_phrzvb.png';
+export const PaypalDarkImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1726600628/paypal.dark_lgvm7j.png';
+
+export const PayoneerUsdImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224899/payoneer.usd.big_djd07t.png';
+export const PayoneerUsdDarkImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1728738344/payoneer.usd.dark_ze1ud4.png';
+export const PayoneerEurImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224887/payoneer.eur.big_xxdjxd.png';
+export const PayoneerEurDarkImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1728738608/payoneer.eur.dark_rfeaaa.png';
+
+export const BankImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725223550/banco.medium_vy2eqp.webp';
+export const BankDarkImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1726600167/banco.dark_pxblpl.png';
+
+export const WiseUsdImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225432/wise.usd.big_yvnpez.png';
+export const WiseUsdDarkImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1726600631/wise.usd.dark_s8bmil.png';
+export const WiseEurImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225416/wise.eur.big_etdolw.png';
+export const WiseEurDarkImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1726600630/wise.eur.dark_zkxrnp.png';
