@@ -3,12 +3,13 @@
 import clsx from 'clsx';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { registerUser } from '@/actions/auth/register';
-import { signIn } from 'next-auth/react';
 import useStore from '@/store/authViewStore';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import Link from 'next/link';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
+import useEmailVerificationStore from '@/store/emailVerificationStore';
+import { useRouter } from 'next/navigation';
+import userInfoStore from '@/store/userInfoStore';
 
 type FormInputs = {
   firstName: string;
@@ -19,14 +20,13 @@ type FormInputs = {
   verificationCode: string;
 };
 
-const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api';
-
 export const RegisterForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const { isDark } = useDarkTheme();
-  const [codeSent, setCodeSent] = useState(false);
-  const [useEmail, setUseEmail] = useState<string | null>(null);
+  const { setEmail } = useEmailVerificationStore();
+  const router = useRouter();
+  const { setUser } = userInfoStore();
 
   const {
     register,
@@ -40,65 +40,46 @@ export const RegisterForm = () => {
     setView('login');
   };
 
-  const sendCode = async (email: string) => {
-    setLoading(true);
-    try {
-      // Llamar a la API que envía el código al email
-      const response = await fetch(`${BASE_URL}/v1/register/email/send`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        const errorMessage =
-          errorData?.message ||
-          'Error al enviar el código. Por favor, inténtalo de nuevo.';
-        throw new Error(errorMessage);
-      }
-
-      setCodeSent(true); // Código enviado correctamente
-      setUseEmail(email); // Guardar el correo electrónico
-    } catch (error) {
-      console.error('Error al enviar el código:', error);
-      alert(error || 'Ocurrió un error inesperado.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api';
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setErrorMessage('');
     setLoading(true);
-    const { firstName, lastName, email, rememberMe, termsConditions } = data;
+    const { firstName, lastName, email, termsConditions } = data;
     const name = `${firstName} ${lastName}`;
 
-    localStorage.setItem('rememberMe', JSON.stringify(rememberMe));
-
-    const resp = await registerUser(name, email, termsConditions);
-
-    if (!resp.ok) {
-      setErrorMessage(resp.message);
+    try {
+      const response = await fetch(`${BASE_URL}/v1/users`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          full_name: name,
+          email: email,
+          // termsConditions: termsConditions,
+          role: 'admin',
+        }),
+      });
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        console.error('Error en la respuesta:', errorResponse);
+        throw new Error(errorResponse.message || 'Error al crear el usuario');
+      }
+      const responseData = await response.json();
+      console.log('Respuesta del servidor:', responseData);
+      setUser(responseData.user);
       setLoading(false);
-      return;
+      setEmail(email);
+      setTimeout(() => {
+        setLoading(false);
+        router.push('/auth/login-register/email-verification');
+      }, 6000);
+    } catch (error) {
+      setLoading(false);
+      console.error('Error al enviar el código:', error);
+      alert('Ocurrió un error inesperado.');
     }
-
-    const result = await signIn('credentials', {
-      redirect: false,
-      email,
-      rememberMe: toString(),
-      termsConditions: toString(),
-    });
-
-    if (result?.error) {
-      setErrorMessage(result.error);
-    } else {
-      window.location.replace('/dashboard');
-    }
-    setLoading(false);
   };
 
   return (
@@ -202,18 +183,6 @@ export const RegisterForm = () => {
         {errors.email && (
           <p className="mb-5 text-sm text-red-500">• {errors.email.message}</p>
         )}
-
-        <div className="mb-5 flex items-center">
-          <input
-            id="rememberMeRegister"
-            type="checkbox"
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer hover:border-blue-600 dark:border-gray-600 dark:bg-lightText dark:ring-blue-500 dark:hover:border-white"
-            {...register('rememberMe')}
-          />
-          <label htmlFor="rememberMe" className="ml-2">
-            Recordar esta cuenta
-          </label>
-        </div>
 
         <div className="mb-5 flex items-center">
           <input

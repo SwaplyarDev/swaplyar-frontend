@@ -15,18 +15,29 @@ export default {
         try {
           const email = credentials.email as string;
           const code = credentials.verificationCode as string;
+          const user_id = credentials.user_id as string;
+          let URL_VERIFICATION = ""
+          if (email) {
+            URL_VERIFICATION = "login/email/verify-code"
+          }
+          if (user_id) {
+            URL_VERIFICATION = "users/email-validation/validate"
+          }
+
+          const bodyData = {
+            code: code,
+            ...(email ? { email } : {}), 
+            ...(user_id ? { user_id } : {}), 
+          };
 
           const response = await fetch(
-            `${BASE_URL}/v1/login/email/verify-code`,
+            `${BASE_URL}/v1/${URL_VERIFICATION}`,
             {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({
-                email: email,
-                code: code,
-              }),
+              body: JSON.stringify(bodyData),
             },
           );
 
