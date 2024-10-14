@@ -45,9 +45,9 @@ export default function Footer() {
           <FooterLink href="/auth/login-register" view="register">
             Registrarse
           </FooterLink>
-          <FooterLink href="/info/loyalty-program">
+          <Link href="/info/loyalty-program">
             Programa de Fidelización
-          </FooterLink>
+          </Link>
         </section>
         <section className="mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-center sm:text-center">
           <h4 className="mb-2 text-xl font-bold">Normativa</h4>
