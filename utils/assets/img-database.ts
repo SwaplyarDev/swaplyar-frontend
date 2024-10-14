@@ -95,8 +95,13 @@ export const Caida = '/images/caida.png';
 /**help-center**/
 export const Contacto = '/images/contacto.png';
 export const PlusRewardsGif = '/gif/plus-rewards.gif';
+export const PlusRewards = '/gif/plus-rewards.png';
+export const PlusRewardsDark = '/gif/plus-rewards-dark.png';
 export const Ayuda1 = '/images/ayuda1.png';
 export const Ayuda2 = '/images/ayuda2.png';
+export const Ayuda1Dark = '/images/ayuda1-dark.png';
+export const Ayuda2Dark = '/images/ayuda2-dark.png';
+
 
 /**why-choose-swaplyar**/
 export const ElegirSwaplyAr = '/images/elegirSwaplyAr.png';

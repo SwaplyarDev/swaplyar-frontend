@@ -73,10 +73,18 @@ export const Caida =
 export const Contacto =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1725223701/contacto_b70jit.png';
 export const PlusRewardsGif = '/gif/plus-rewards.gif';
+export const PlusRewards = 
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225314/rewards1_hme3sh.png';
+export const PlusRewardsDark = 
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1726601342/reward1.dark_xsutks.png';
 export const Ayuda1 =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1725223376/ayuda1_sp859a.png';
 export const Ayuda2 =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1725223422/ayuda2_xmn7wd.png';
+export const Ayuda1Dark =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1726601291/ayuda1.dark_setspr.png';
+export const Ayuda2Dark =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1726601340/ayuda2.dark_yhbltd.png';
 
 /**Why-Choose-Us-and-Key-Benefits**/
 export const ElegirSwaplyAr =

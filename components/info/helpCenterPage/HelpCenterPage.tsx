@@ -8,12 +8,17 @@ import {
   CentroDeAyuda,
   Contacto,
   PlusRewardsGif,
+  PlusRewards,
+  PlusRewardsDark,
+  Ayuda1Dark,
+  Ayuda2Dark,
 } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import Link from 'next/link';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
+import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 
 const HelpCenterPage = () => {
   const { margins } = useMargins();
@@ -31,7 +36,7 @@ const HelpCenterPage = () => {
           style={{ margin: currentMargin }}
         >
           <section className="rs-wrapper-v4 p-4">
-            <h1 className="text-3xl font-bold">
+            <h1 className="text-3xl font-bold text-center">
               Bienvenido al Centro de Ayuda de SwaplyAr
             </h1>
             <h3 className="text-xl">
@@ -57,11 +62,26 @@ const HelpCenterPage = () => {
 
           <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
             <span className="flex items-center justify-center">
-              <Image
+              {/* <Image
                 src={PlusRewardsGif}
                 alt="SwaplyAr Plus Rewards™"
                 width={400}
                 height={300}
+              /> */}
+              <Image
+                // src={PlusRewards}
+                src="/images/plus-rewards.png"
+                alt="SwaplyAr Plus Rewards™"
+                width={400}
+                height={300}
+                className='inline-block dark:hidden'
+              />
+              <Image
+                src={PlusRewardsDark}
+                alt="SwaplyAr Plus Rewards™ tema oscuro"
+                width={400}
+                height={300}
+                className='hidden dark:inline-block'
               />
             </span>
             <span className="flex flex-col items-center text-center">
@@ -69,7 +89,7 @@ const HelpCenterPage = () => {
                 SwaplyAr Plus Rewards™ premia tu fidelidad, con el programa de
                 fidelización
               </h2>
-              <h5 className="mt-4 text-lg">
+              <h5 className="mt-4 text-lg text-left">
                 Obtené beneficios exclusivos cada vez que realices un cambio de
                 divisas con SwaplyAr Plus Rewards™.
               </h5>
@@ -85,47 +105,59 @@ const HelpCenterPage = () => {
           </section>
 
           <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
-            <span className="card-rawe rounded bg-gray-200 p-4 dark:bg-gray-800">
+            <span className="card-rawe rounded p-4 bg-gray-100 dark:bg-graytyc">
               <Image
                 src={Ayuda1}
                 alt="paso 1 de como cambiar tu dinero en SwaplyAr"
                 width={210}
                 height={150}
+                className='inline-block dark:hidden'
+              />
+              <Image
+                src={Ayuda1Dark}
+                alt="paso 1 de como cambiar tu dinero en SwaplyAr tema oscuro"
+                width={210}
+                height={150}
+                className='hidden dark:inline-block'
               />
               <h3 className="text-xl font-bold">Chateá con nosotros</h3>
               <p className="text-lg">
                 Comunicate con nuestro representante de Atención al Cliente para
                 recibir ayuda.
                 <br />
-                <Link
+                <LinkWithHover
                   href="https://wa.me/+5491123832198"
-                  target="_blank"
-                  className="text-blue-600"
                 >
                   WhatsApp
-                </Link>
+                </LinkWithHover>
                 .
               </p>
             </span>
-            <span className="card-rawe rounded bg-gray-200 p-4 dark:bg-gray-800">
+            <span className="card-rawe rounded p-4 bg-gray-100 dark:bg-graytyc">
               <Image
                 src={Ayuda2}
                 alt="paso 2 de como cambiar tu dinero en SwaplyAr"
                 width={210}
                 height={150}
+                className='inline-block dark:hidden'
+              />
+              <Image
+                src={Ayuda2Dark}
+                alt="paso 2 de como cambiar tu dinero en SwaplyAr tema oscuro"
+                width={210}
+                height={150}
+                className='hidden dark:inline-block'
               />
               <h3 className="text-xl font-bold">Otro motivo...</h3>
               <p className="text-lg">
                 Si necesitás contactarnos por otro motivo, simplemente envianos
                 un email y atenderemos tu solicitud.
                 <br />
-                <Link
+                <LinkWithHover
                   href="mailto:centrodeayuda@swaplyar.com"
-                  target="_blank"
-                  className="text-blue-600"
                 >
                   Email
-                </Link>
+                </LinkWithHover>
                 .
               </p>
             </span>
