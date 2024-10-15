@@ -173,7 +173,7 @@ export const VerifyCodePage = () => {
                 type="text"
                 maxLength={1}
                 className={clsx(
-                  'h-16 w-16 rounded-full border text-center dark:bg-lightText text-xl',
+                  'h-16 w-16 rounded-full border text-center text-xl dark:bg-lightText',
                   errors.verificationCode
                     ? 'border-red-500'
                     : 'hover:border-blue-600 dark:hover:border-white',
@@ -184,7 +184,7 @@ export const VerifyCodePage = () => {
               />
               {index < 5 && (
                 <div className="flex min-h-full min-w-[0.7rem] items-center justify-center">
-                  <div className="w-full h-[1px] flex-1 bg-buttonsLigth dark:bg-darkText"></div>
+                  <div className="h-[1px] w-full flex-1 bg-buttonsLigth dark:bg-darkText"></div>
                 </div>
               )}
             </>
@@ -200,7 +200,7 @@ export const VerifyCodePage = () => {
         <div className="my-5 flex justify-between text-buttonsLigth dark:text-darkText">
           <button
             onClick={() => router.push('/auth/login-register')}
-            className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent flex gap-2 min-w-[150px]`}
+            className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 flex h-[48px] min-w-[150px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
           >
             <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
             Volver
@@ -208,7 +208,7 @@ export const VerifyCodePage = () => {
           <button
             onClick={resendCode}
             disabled={timer > 0 || reLoading || attempts <= 0}
-            className={`min-w-[150px] disabled:shadow-none dark:disabled:bg-gray-400 disabled:border-gray-400 disabled:bg-gray-400 dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} ${timer > 0 || attempts <= 0 ? 'text-gray-500' : ''}`}
+            className={`dark:hover:bg- relative m-1 h-[48px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth disabled:border-gray-400 disabled:bg-gray-400 disabled:shadow-none dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400 ${isDark ? 'buttonSecondDark' : 'buttonSecond'} ${timer > 0 || attempts <= 0 ? 'text-gray-500' : ''}`}
           >
             {reLoading
               ? 'Enviando...'
@@ -217,7 +217,7 @@ export const VerifyCodePage = () => {
                 : 'Reenviar código'}
           </button>
         </div>
-        <p className='w-full text-center'>
+        <p className="w-full text-center">
           {attempts <= 0
             ? 'Máximo de intentos alcanzados.'
             : `Te quedan ${attempts} intentos.`}

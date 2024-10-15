@@ -102,7 +102,6 @@ export const Ayuda2 = '/images/ayuda2.png';
 export const Ayuda1Dark = '/images/ayuda1-dark.png';
 export const Ayuda2Dark = '/images/ayuda2-dark.png';
 
-
 /**why-choose-swaplyar**/
 export const ElegirSwaplyAr = '/images/elegirSwaplyAr.png';
 export const Porqueelegirnos = '/images/porqueelegirnos.png';
