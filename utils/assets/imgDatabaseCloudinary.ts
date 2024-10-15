@@ -130,44 +130,74 @@ export const WiseEurDarkImg =
 /** Exchange Routes **/
 
 // ARS to PayPal, Payoneer, Wise
-export const ArsToPayPal = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225073/request-ars-pp_zqjih3.png';
-export const ArsToPyEUR = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225081/request-ars-py-eur_ldqgk0.png';
-export const ArsToPyUSD = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1728740880/request-ars-py-usd_mufmqy.png';
-export const ArsToWsEUR = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225098/request-ars-ws-eur_v75ozr.png';
-export const ArsToWsUSD = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225106/request-ars-ws-usd_ucbixc.png';
+export const ArsToPayPal =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225073/request-ars-pp_zqjih3.png';
+export const ArsToPyEUR =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225081/request-ars-py-eur_ldqgk0.png';
+export const ArsToPyUSD =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1728740880/request-ars-py-usd_mufmqy.png';
+export const ArsToWsEUR =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225098/request-ars-ws-eur_v75ozr.png';
+export const ArsToWsUSD =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225106/request-ars-ws-usd_ucbixc.png';
 
 // PayPal to ARS, Payoneer, Wise
-export const PaypalToArs = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225073/request-ars-pp_zqjih3.png';
-export const PaypalToPyEUR = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225114/request-pp-py-eur_klpnbb.png';
-export const PaypalToPyUSD = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225122/request-pp-py-usd_ywl8zu.png';
-export const PaypalToWsEUR = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225130/request-pp-ws-eur_wizob8.png';
-export const PaypalToWsUSD = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225140/request-pp-ws-usd_ii2f2m.png';
+export const PaypalToArs =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225073/request-ars-pp_zqjih3.png';
+export const PaypalToPyEUR =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225114/request-pp-py-eur_klpnbb.png';
+export const PaypalToPyUSD =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225122/request-pp-py-usd_ywl8zu.png';
+export const PaypalToWsEUR =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225130/request-pp-ws-eur_wizob8.png';
+export const PaypalToWsUSD =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225140/request-pp-ws-usd_ii2f2m.png';
 
 // Payoneer EUR to ARS, PayPal, Wise
-export const PyEURtoArs = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225148/request-py-eur-arg_gf1yvh.png';
-export const PyEURtoPayPal = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225155/request-py-eur-pp_okqwdb.png';
-export const PyEURtoPyUSD = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225163/request-py-eur-py-usd_lmmu5q.png';
-export const PyEURtoWsEUR = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225171/request-py-eur-ws-eur_fxfiz6.png';
-export const PyEURtoWsUSD = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225179/request-py-eur-ws-usd_dznt7r.png';
+export const PyEURtoArs =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225148/request-py-eur-arg_gf1yvh.png';
+export const PyEURtoPayPal =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225155/request-py-eur-pp_okqwdb.png';
+export const PyEURtoPyUSD =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225163/request-py-eur-py-usd_lmmu5q.png';
+export const PyEURtoWsEUR =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225171/request-py-eur-ws-eur_fxfiz6.png';
+export const PyEURtoWsUSD =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225179/request-py-eur-ws-usd_dznt7r.png';
 
 // Payoneer USD to ARS, PayPal, Wise
-export const PyUSDtoArs = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225188/request-py-usd-arg_kfhnkc.png';
-export const PyUSDtoPayPal = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225196/request-py-usd-pp_duabde.png';
-export const PyUSDtoPyEUR = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225204/request-py-usd-py-eur_rpau5y.png';
-export const PyUSDtoWsEUR = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225212/request-py-usd-ws-eur_ij73pd.png';
-export const PyUSDtoWsUSD = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225220/request-py-usd-ws-usd_smjxig.png';
+export const PyUSDtoArs =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225188/request-py-usd-arg_kfhnkc.png';
+export const PyUSDtoPayPal =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225196/request-py-usd-pp_duabde.png';
+export const PyUSDtoPyEUR =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225204/request-py-usd-py-eur_rpau5y.png';
+export const PyUSDtoWsEUR =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225212/request-py-usd-ws-eur_ij73pd.png';
+export const PyUSDtoWsUSD =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225220/request-py-usd-ws-usd_smjxig.png';
 
 // Wise EUR to ARS, PayPal, Payoneer, Wise USD
-export const WsEURtoArs = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225228/request-ws-eur-arg_iigf5j.png';
-export const WsEURtoPayPal = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225238/request-ws-eur-pp_kwt0wc.png';
-export const WsEURtoPyEUR = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225246/request-ws-eur-py-eur_qsnzif.png';
-export const WsEURtoPyUSD = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225255/request-ws-eur-py-usd_rfnuaq.png';
-export const WsEURtoWsUSD = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225265/request-ws-eur-ws-usd_ooneru.png';
+export const WsEURtoArs =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225228/request-ws-eur-arg_iigf5j.png';
+export const WsEURtoPayPal =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225238/request-ws-eur-pp_kwt0wc.png';
+export const WsEURtoPyEUR =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225246/request-ws-eur-py-eur_qsnzif.png';
+export const WsEURtoPyUSD =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225255/request-ws-eur-py-usd_rfnuaq.png';
+export const WsEURtoWsUSD =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225265/request-ws-eur-ws-usd_ooneru.png';
 
 // Wise USD to ARS, PayPal, Payoneer, Wise EUR
-export const WsUSDtoArs = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225272/request-ws-usd-arg_sn0jhb.png';
-export const WsUSDtoPayPal = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225280/request-ws-usd-pp_nmghuk.png';
-export const WsUSDtoPyEUR = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225287/request-ws-usd-py-eur_g6ym4f.png';
-export const WsUSDtoPyUSD = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225296/request-ws-usd-py-usd_qhzgtu.png';
-export const WsUSDtoWsEUR = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225306/request-ws-usd-ws-eur_pypjax.png';
+export const WsUSDtoArs =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225272/request-ws-usd-arg_sn0jhb.png';
+export const WsUSDtoPayPal =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225280/request-ws-usd-pp_nmghuk.png';
+export const WsUSDtoPyEUR =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225287/request-ws-usd-py-eur_g6ym4f.png';
+export const WsUSDtoPyUSD =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225296/request-ws-usd-py-usd_qhzgtu.png';
+export const WsUSDtoWsEUR =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225306/request-ws-usd-ws-eur_pypjax.png';
 export const WsUSDtoWsUSD = '/images/request-ws-usd-ws-usd.png';
