@@ -2,7 +2,7 @@
 
 'use server';
 
-import { signIn } from "next-auth/react";
+import { signIn } from "@/auth";
 
 export const registerUser = async (user_id: string, verificationCode: string) => {
   try {
