@@ -6,6 +6,7 @@ import Image from 'next/image';
 import InputField from './InputField';
 import { FormValues } from '@/types/data';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
+import clsx from 'clsx';
 
 export const FORM_URL =
   'https://script.google.com/macros/s/AKfycbzu28sDyTnLsc6Aq2sdAegdhQwA3Uud_Gq_Dgb6BEPIXsg0vPEVlsGqXGrEaY4WhSWq/exec';
@@ -78,11 +79,14 @@ const ContactForm = () => {
           id="message"
           rows={7}
           placeholder="Mensaje"
-          className="rounded border p-2 dark:border-gray-600 dark:bg-gray-700"
+          className={clsx(
+            'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
+            errors.message
+              ? 'border-red-500'
+              : 'hover:border-blue-600 dark:hover:border-white',
+          )}
         ></textarea>
-        {errors.message && (
-          <span className="text-red-500">Este campo es obligatorio</span>
-        )}
+        {errors.message && <p className="text-sm text-red-500">Este campo es obligatorio</p>}
       </div>
 
       <button
