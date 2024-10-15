@@ -6,7 +6,7 @@ import {
   PaypalToPyUSD,
   PaypalToWsEUR,
   PaypalToWsUSD,
-} from '@/utils/assets/img-database';
+} from '@/utils/assets/imgDatabaseCloudinary';
 import { useEffect, useState } from 'react';
 
 export default function PaypalUSD() {

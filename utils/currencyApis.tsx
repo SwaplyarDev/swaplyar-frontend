@@ -35,6 +35,8 @@ export async function getExchangeRatesUSD_EUR() {
   try {
     const { currentValueEURToUSD, currentValueUSDToEUR } =
       await updateCurrentValueUSDToEUR();
+    console.log('Tasas de USD a EUR actualizadas:', currentValueUSDToEUR);
+    console.log('Tasas de EUR a USD actualizadas:', currentValueEURToUSD);
 
     return {
       currentValueEURToUSD,
@@ -58,6 +60,7 @@ export function calculateAmount(
 ): number {
   try {
     const { rates } = useExchangeRateStore.getState();
+    console.log('Las tasas de cambio son:', rates);
 
     // Verifica si las tasas están disponibles
     if (!rates || Object.keys(rates).length === 0) {
@@ -211,3 +214,27 @@ export {
   updateCurrentValueUSD,
   updateCurrentValueEUR,
 };
+
+// (async function testCalculateAmount() {
+//   const from = 'paypal'; // Cambia esto según tu prueba
+//   const to = 'wise_eur'; // Cambia esto según tu prueba
+//   const amount = 1; // Monto que deseas convertir
+
+//   // Usa setTimeout para esperar 10 segundos antes de ejecutar el código
+//   setTimeout(async () => {
+//     try {
+//       // Asegúrate de que las tasas están actualizadas
+//       await getExchangeRates(); // Asegúrate de llamar a la función para obtener tasas antes de calcular
+//       await getExchangeRatesUSD_EUR();
+
+//       const convertedAmount = calculateAmount(from, to, amount);
+//       console.log(`Convertido: ${amount} ${from} a ${to} = ${convertedAmount}`);
+//     } catch (error) {
+//       if (error instanceof Error) {
+//         console.error('Error al calcular el monto:', error.message);
+//       } else {
+//         console.error('Error desconocido al calcular el monto:', error);
+//       }
+//     }
+//   }, 10000); // 10 segundos = 10000 milisegundos
+// })();

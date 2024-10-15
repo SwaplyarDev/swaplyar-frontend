@@ -7,6 +7,10 @@ import clsx from 'clsx';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
 import { useRouter } from 'next/navigation';
 import Arrow from '../ui/Arrow/Arrow';
+import useCodeVerificationStore from '@/store/codeVerificationStore';
+import useStore from '@/store/authViewStore';
+import userInfoStore from '@/store/userInfoStore';
+import { registerUser } from '@/actions/auth/register';
 
 type FormInputs = {
   verificationCode: string[];
@@ -24,27 +28,52 @@ export const VerifyCodePage = () => {
     watch,
     setValue,
   } = useForm<FormInputs>({});
+
   const [loading, setLoading] = useState(false);
-  const [timer, setTimer] = useState(10);
   const [reLoading, setReLoading] = useState(false);
-  const [attempts, setAttempts] = useState(3);
   const { email } = useEmailVerificationStore();
   const { isDark } = useDarkTheme();
   const router = useRouter();
+  const { view } = useStore();
+  const { user } = userInfoStore();
+  console.log('User id: ', user?.id);
+  console.log('View: ', view);
+
+  const {
+    attempts,
+    lockUntil,
+    decrementAttempts,
+    setLockUntil,
+    resetAttempts,
+  } = useCodeVerificationStore();
+
+  const isLocked = lockUntil && lockUntil > Date.now();
+  const [timer, setTimer] = useState(0);
 
   useEffect(() => {
     if (email === '') {
       router.push('/auth/login-register');
     }
-    let interval: NodeJS.Timeout | undefined;
 
+    if (isLocked) {
+      const timer = setTimeout(() => {
+        setLockUntil(null);
+        resetAttempts();
+      }, lockUntil - Date.now());
+      return () => clearTimeout(timer);
+    }
+  }, [email, router, isLocked, lockUntil, setLockUntil, resetAttempts]);
+
+  // Temporizador para el reenvío
+  useEffect(() => {
     if (timer > 0) {
-      interval = setInterval(() => {
+      const interval = setInterval(() => {
         setTimer((prev) => prev - 1);
       }, 1000);
+
+      return () => clearInterval(interval);
     }
-    return () => clearInterval(interval);
-  }, [timer, email, router]);
+  }, [timer]);
 
   const verifyCode: SubmitHandler<FormInputs> = async ({
     verificationCode,
@@ -62,12 +91,19 @@ export const VerifyCodePage = () => {
     }
 
     try {
-      const result = await login(email || '', code);
+      let result: { ok: boolean; message?: any } = { ok: false };
+      if (view === 'login') {
+        result = await login(email || '', code);
+      } else if (view === 'register') {
+        result = await registerUser(user?.id || '', code);
+      }
+
       if (!result.ok) {
         setError('verificationCode', {
           type: 'manual',
           message: 'El código ingresado es incorrecto.',
         });
+        clearVerificationInputs(); // Limpiar campos si es incorrecto
       } else {
         window.location.href = '/';
       }
@@ -79,21 +115,30 @@ export const VerifyCodePage = () => {
   };
 
   const resendCode = async () => {
-    if (timer === 0) {
+    if (!isLocked && attempts > 0 && timer === 0) {
       setReLoading(true);
+      let URL_VERIFICATION = '';
+      if (email) {
+        URL_VERIFICATION = 'login/email/verify-code';
+      }
+      if (user?.id) {
+        URL_VERIFICATION = 'users/email-validation/send';
+      }
+      const bodyData = {
+        email: email,
+        ...(user?.id && { user_id: user.id }),
+      };
       try {
-        await fetch(`${BASE_URL}/v1/login/email/send`, {
+        await fetch(`${BASE_URL}/v1/${URL_VERIFICATION}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email }),
+          body: JSON.stringify(bodyData),
         });
-        setTimer(10);
-        setAttempts((prev) => {
-          if (prev <= 1) {
-            return 0;
-          }
-          return prev - 1;
-        });
+        decrementAttempts(); // Reducir intentos después del reenvío
+        setTimer(10); // Reiniciar el temporizador a 10 segundos
+        if (attempts <= 1) {
+          setLockUntil(Date.now() + 5 * 60 * 1000); // Bloquear por 5 minutos si no hay intentos
+        }
       } catch (error) {
         console.error('Error al reenviar el código:', error);
       } finally {
@@ -102,12 +147,17 @@ export const VerifyCodePage = () => {
     }
   };
 
+  const clearVerificationInputs = () => {
+    for (let i = 0; i < 6; i++) {
+      setValue(`verificationCode.${i}`, '');
+    }
+  };
+
   const handleInputChange = (
     index: number,
     event: ChangeEvent<HTMLInputElement>,
   ) => {
     const { value } = event.target;
-
     if (/^\d*$/.test(value)) {
       clearErrors('verificationCode');
       const newVerificationCode = [
@@ -116,15 +166,13 @@ export const VerifyCodePage = () => {
       newVerificationCode[index] = value;
       setValue('verificationCode', newVerificationCode);
 
-      // Si el valor tiene un dígito, enfocar el siguiente input
       if (value.length === 1 && index < 5) {
         const nextInput = document.getElementById(`code-${index + 1}`);
         nextInput?.focus();
       }
 
-      // Autoverificación si todos los campos están llenos
       if (newVerificationCode.every((code) => code.length === 1)) {
-        handleSubmit(verifyCode)(); // Llamar a la función de verificación automáticamente
+        handleSubmit(verifyCode)();
       }
     }
   };
@@ -144,24 +192,19 @@ export const VerifyCodePage = () => {
   return (
     <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-start py-5 xs:mt-0 xs:justify-center">
       <form
-        onSubmit={handleSubmit(verifyCode)} // Esta línea se mantiene pero el botón de verificación se elimina
+        onSubmit={handleSubmit(verifyCode)}
         className="flex w-full max-w-xl flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
       >
-        <h2 className="mb-5 text-center text-2xl font-bold text-buttonsLigth dark:text-darkText">
-          Verificar Código
+        <h2 className="mb-5 text-center text-5xl font-bold text-buttonsLigth dark:text-darkText">
+          Verificación
         </h2>
 
         <label
           htmlFor="verificationCode"
-          className={clsx(
-            errors.verificationCode
-              ? 'text-red-500'
-              : 'text-lightText dark:text-darkText',
-            'mb-8 text-center',
-          )}
+          className={'mb-8 text-center text-lightText dark:text-darkText'}
         >
-          Si tienes una cuenta, te hemos enviado un código a {email}.
-          Introdúcelo a continuación
+          Si tienes una cuenta, te hemos enviado un código a{' '}
+          <span className="font-bold">{email}</span>. Introdúcelo a continuación
         </label>
 
         <div className="mb-5 flex justify-between">
@@ -172,14 +215,15 @@ export const VerifyCodePage = () => {
                 id={`code-${index}`}
                 type="text"
                 maxLength={1}
+                disabled={isLocked || loading} // Deshabilitar si está bloqueado o verificando
                 className={clsx(
                   'h-16 w-16 rounded-full border text-center text-xl dark:bg-lightText',
                   errors.verificationCode
                     ? 'border-red-500'
                     : 'hover:border-blue-600 dark:hover:border-white',
                 )}
-                {...register(`verificationCode.${index}`)} // Registro correcto aquí
-                onChange={(event) => handleInputChange(index, event)} // Manejador de cambios
+                {...register(`verificationCode.${index}`)}
+                onChange={(event) => handleInputChange(index, event)}
                 onKeyDown={(event) => handleInputKeyDown(index, event)}
               />
               {index < 5 && (
@@ -206,22 +250,28 @@ export const VerifyCodePage = () => {
             Volver
           </button>
           <button
+            type="button"
             onClick={resendCode}
-            disabled={timer > 0 || reLoading || attempts <= 0}
-            className={`dark:hover:bg- relative m-1 h-[48px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth disabled:border-gray-400 disabled:bg-gray-400 disabled:shadow-none dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400 ${isDark ? 'buttonSecondDark' : 'buttonSecond'} ${timer > 0 || attempts <= 0 ? 'text-gray-500' : ''}`}
+            disabled={timer > 0 || reLoading || !!isLocked}
+            className={`dark:hover:bg- relative m-1 h-[48px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth disabled:border-gray-400 disabled:bg-gray-400 disabled:shadow-none dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400 ${isDark ? 'buttonSecondDark' : 'buttonSecond'}${timer > 0 || attempts <= 0 ? 'text-gray-500' : ''}`}
           >
             {reLoading
               ? 'Enviando...'
-              : timer > 0
+              : timer > 0 && attempts > 0
                 ? `Reenviar en ${timer}s`
                 : 'Reenviar código'}
           </button>
         </div>
-        <p className="w-full text-center">
-          {attempts <= 0
-            ? 'Máximo de intentos alcanzados.'
-            : `Te quedan ${attempts} intentos.`}
-        </p>
+
+        {attempts > 0 && !isLocked ? (
+          <p className="mt-2 text-center text-xs text-buttonsLigth dark:text-darkText">
+            Tienes {attempts} intentos para reenviar el código
+          </p>
+        ) : (
+          <p className="mt-2 text-center text-xs text-red-500">
+            Estás bloqueado por 5 minutos.
+          </p>
+        )}
       </form>
     </div>
   );
