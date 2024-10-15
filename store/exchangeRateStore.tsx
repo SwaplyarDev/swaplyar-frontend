@@ -22,7 +22,7 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
   const fetchAndUpdateRates = async () => {
     set({ isLoading: true, error: null });
     console.log('Haciendo petición a la API para actualizar las tasas...');
-  
+
     try {
       // Obtener tasas de cambio regulares (2 minutos)
       const rates = await getExchangeRates();
@@ -33,11 +33,11 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
             ...state.rates,
             ...rates,
           };
-  
+
           const timestamp = Date.now();
           const dataToStore = { rates: combinedRates, timestamp };
           localStorage.setItem(localStorageKey, JSON.stringify(dataToStore));
-  
+
           return {
             rates: combinedRates,
             isLoading: false,
@@ -53,11 +53,13 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
       set({ isLoading: false, error: 'Error al obtener las tasas.' });
     }
   };
-  
+
   const fetchAndUpdateUSDToEURRates = async () => {
     set({ isLoading: true, error: null });
-    console.log('Haciendo petición a la API para actualizar las tasas de USD a EUR...');
-  
+    console.log(
+      'Haciendo petición a la API para actualizar las tasas de USD a EUR...',
+    );
+
     try {
       // Obtener tasas de cambio USD a EUR (10 minutos)
       const ratesUSD_EUR = await getExchangeRatesUSD_EUR();
@@ -68,12 +70,12 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
             ...state.rates,
             ...ratesUSD_EUR,
           };
-  
+
           // Guardamos el objeto combinado en localStorage
           const timestamp = Date.now();
           const dataToStore = { rates: combinedRates, timestamp };
           localStorage.setItem(localStorageKey, JSON.stringify(dataToStore));
-  
+
           return {
             rates: combinedRates,
             isLoading: false,
@@ -91,16 +93,16 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
       console.error('Error actualizando tasas USD a EUR:', error);
       set({ isLoading: false, error: 'Error al obtener las tasas USD a EUR.' });
     }
-  };   
-  
+  };
+
   const loadRatesFromLocalStorage = () => {
     const storedData = localStorage.getItem(localStorageKey);
-  
+
     if (storedData) {
       const { rates, timestamp } = JSON.parse(storedData);
       const now = Date.now();
       console.log(`Cargando tasas desde localStorage. Timestamp: ${timestamp}`);
-  
+
       if (now - timestamp < expirationTime) {
         set({ rates, isLoading: false });
         console.log('Tasas cargadas desde localStorage.');
@@ -112,7 +114,6 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
     }
     return false;
   };
-  
 
   return {
     rates: {},
