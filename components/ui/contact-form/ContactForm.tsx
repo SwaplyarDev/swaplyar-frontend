@@ -8,8 +8,8 @@ import { FormValues } from '@/types/data';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
 import clsx from 'clsx';
 
-export const FORM_URL =
-  'https://script.google.com/macros/s/AKfycbzu28sDyTnLsc6Aq2sdAegdhQwA3Uud_Gq_Dgb6BEPIXsg0vPEVlsGqXGrEaY4WhSWq/exec';
+const BASE_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
 
 const ContactForm = () => {
   const {
@@ -23,12 +23,24 @@ const ContactForm = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     setLoading(true);
-
+    // console.log(data);
+    // console.log('nombre', data.Nombre);
+    // console.log('email', data.email);
+    // console.log('message', data.message);
+    // console.log('apellido', data.Apellido);
     try {
-      const response = await fetch(FORM_URL, {
+      const response = await fetch(`${BASE_URL}/v1/contacts`, {
         method: 'POST',
-        body: new URLSearchParams(data as any),
+        body: JSON.stringify({
+          name: data.Nombre,
+          lastname: data.Apellido,
+          email: data.email,
+          message: data.message,
+          user_id: "-",
+        }),
       });
+
+      console.log(response);
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -86,7 +98,9 @@ const ContactForm = () => {
               : 'hover:border-blue-600 dark:hover:border-white',
           )}
         ></textarea>
-        {errors.message && <p className="text-sm text-red-500">Este campo es obligatorio</p>}
+        {errors.message && (
+          <p className="text-sm text-red-500">Este campo es obligatorio</p>
+        )}
       </div>
 
       <button
