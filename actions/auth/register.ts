@@ -2,9 +2,12 @@
 
 'use server';
 
-import { signIn } from "@/auth";
+import { signIn } from '@/auth';
 
-export const registerUser = async (user_id: string, verificationCode: string) => {
+export const registerUser = async (
+  user_id: string,
+  verificationCode: string,
+) => {
   try {
     const result = await signIn('credentials', {
       user_id,

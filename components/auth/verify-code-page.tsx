@@ -36,8 +36,8 @@ export const VerifyCodePage = () => {
   const router = useRouter();
   const { view } = useStore();
   const { user } = userInfoStore();
-  console.log('User id: ',user?.id)
-  console.log('View: ',view)
+  console.log('User id: ', user?.id);
+  console.log('View: ', view);
 
   const {
     attempts,
@@ -117,15 +117,15 @@ export const VerifyCodePage = () => {
   const resendCode = async () => {
     if (!isLocked && attempts > 0 && timer === 0) {
       setReLoading(true);
-      let URL_VERIFICATION = ""
+      let URL_VERIFICATION = '';
       if (email) {
-        URL_VERIFICATION = "login/email/verify-code"
+        URL_VERIFICATION = 'login/email/verify-code';
       }
       if (user?.id) {
-        URL_VERIFICATION = "users/email-validation/send"
+        URL_VERIFICATION = 'users/email-validation/send';
       }
       const bodyData = {
-        email: email, 
+        email: email,
         ...(user?.id && { user_id: user.id }),
       };
       try {

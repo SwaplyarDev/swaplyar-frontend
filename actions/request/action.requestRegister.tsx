@@ -2,7 +2,7 @@
 
 'use server';
 
-import { TransactionRequest } from "@/types/request/request";
+import { TransactionRequest } from '@/types/request/request';
 
 export const requestRegister = async (transaction: TransactionRequest) => {
   try {
