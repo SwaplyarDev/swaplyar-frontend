@@ -5,6 +5,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import Image from 'next/image';
 import InputField from './InputField';
 import { FormValues } from '@/types/data';
+import { useDarkTheme } from '../theme-Provider/themeProvider';
 
 export const FORM_URL =
   'https://script.google.com/macros/s/AKfycbzu28sDyTnLsc6Aq2sdAegdhQwA3Uud_Gq_Dgb6BEPIXsg0vPEVlsGqXGrEaY4WhSWq/exec';
@@ -17,6 +18,7 @@ const ContactForm = () => {
     reset,
   } = useForm<FormValues>();
   const [loading, setLoading] = useState(false);
+  const { isDark } = useDarkTheme();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     setLoading(true);
@@ -85,7 +87,7 @@ const ContactForm = () => {
 
       <button
         type="submit"
-        className="rounded bg-blue-600 p-2 text-white hover:bg-blue-700"
+        className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
       >
         {loading ? 'Enviando...' : 'Enviar Mensaje'}
       </button>
