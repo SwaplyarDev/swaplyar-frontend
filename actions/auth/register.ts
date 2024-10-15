@@ -2,41 +2,32 @@
 
 'use server';
 
+import { signIn } from '@/auth';
+
 export const registerUser = async (
-  name: string,
-  email: string,
-  termsConditions: boolean,
+  user_id: string,
+  verificationCode: string,
 ) => {
   try {
-    const response = await fetch('https://your-api-endpoint.com/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: name,
-        email: email.toLowerCase(),
-        termsConditions: termsConditions,
-      }),
+    const result = await signIn('credentials', {
+      user_id,
+      verificationCode,
+      redirect: false,
     });
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Error en el registro');
+    if (result?.error) {
+      return {
+        ok: false,
+        message: result.error,
+      };
     }
 
-    return {
-      ok: true,
-      user: data.user,
-      message: 'Usuario creado',
-    };
-  } catch (error: any) {
-    console.log(error);
-
+    return { ok: true };
+  } catch (error) {
+    console.error('Login error:', error);
     return {
       ok: false,
-      message: error.message || 'No se pudo crear el usuario',
+      message: 'No se pudo iniciar sesión',
     };
   }
 };
