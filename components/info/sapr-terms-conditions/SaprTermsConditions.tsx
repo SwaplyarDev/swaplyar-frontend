@@ -4,7 +4,7 @@ import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 const SaprTermsConditions = () => {
   return (
     <div className="max-w-3xl mx-auto p-4">
-          <h1 className="mb-6 text-[28px] font-bold">
+          <h1 className="mb-6 text-[28px] font-sans">
           Términos y Condiciones de Programa de Fidelización
           </h1>
             <div className="mb-4 p-4 shadow rounded bg-gray-100 dark:bg-[rgb(69,69,69)]">
