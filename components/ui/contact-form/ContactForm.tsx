@@ -48,10 +48,10 @@ const ContactForm = () => {
 
   return (
     // <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4 w-full">
       <h4 className="text-xl font-semibold">Contáctanos</h4>
-      <div className='flex justify-between'>
-        <div className='flex flex-col justify-between'>
+      <div className='flex gap-16'>
+        <div className='flex flex-col justify-between w-full'>
           <InputField
             id="Nombre"
             placeholder="Nombre completo"
@@ -75,7 +75,7 @@ const ContactForm = () => {
           />
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
           <textarea
             {...register('message', { required: true })}
             id="message"
@@ -91,7 +91,7 @@ const ContactForm = () => {
 
       <button
         type="submit"
-        className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+        className={`w-6/12 dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
       >
         {loading ? 'Enviando...' : 'Enviar Mensaje'}
       </button>

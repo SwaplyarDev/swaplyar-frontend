@@ -48,9 +48,7 @@ const HelpCenterPage = () => {
 
           {/* <section className="grid grid-cols-1 gap-8 md:grid-cols-2"> */}
           <section className="flex flex-col items-center">
-            <span>
               <ContactForm />
-            </span>
 
             {/* <span className="flex items-center justify-center">
               <Image
@@ -101,7 +99,7 @@ const HelpCenterPage = () => {
           </section> */}
 
           <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
-            <span className="card-rawe flex flex-col rounded bg-gray-100 p-4 dark:bg-graytyc">
+            <span className="card-rawe flex flex-col rounded p-4 bg-[#e6e8ef62] dark:bg-calculatorDark">
               <Image
                 // src={Ayuda1}
                 src="/images/ayuda1.png"
@@ -131,7 +129,7 @@ const HelpCenterPage = () => {
                 </p>
               </div>
             </span>
-            <span className="card-rawe flex flex-col rounded bg-gray-100 p-4 dark:bg-graytyc">
+            <span className="card-rawe flex flex-col rounded p-4 bg-[#e6e8ef62] dark:bg-calculatorDark">
               <Image
                 // src={Ayuda2}
                 src="/images/ayuda2.png"
