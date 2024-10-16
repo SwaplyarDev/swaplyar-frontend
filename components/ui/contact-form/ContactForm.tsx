@@ -23,14 +23,17 @@ const ContactForm = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     setLoading(true);
-    // console.log(data);
-    // console.log('nombre', data.Nombre);
-    // console.log('email', data.email);
-    // console.log('message', data.message);
-    // console.log('apellido', data.Apellido);
+    console.log(data);
+    console.log('nombre', data.Nombre);
+    console.log('email', data.email);
+    console.log('message', data.message);
+    console.log('apellido', data.Apellido);
     try {
       const response = await fetch(`${BASE_URL}/v1/contacts`, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
           name: data.Nombre,
           lastname: data.Apellido,
