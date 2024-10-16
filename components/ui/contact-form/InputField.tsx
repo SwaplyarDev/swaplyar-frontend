@@ -24,13 +24,13 @@ const InputField: FC<InputFieldProps> = ({
       className={clsx(
         'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
         error
-          ? ' border-red-500'
-          : ' hover:border-blue-600 dark:hover:border-white',
+          ? 'border-red-500'
+          : 'hover:border-blue-600 dark:hover:border-white',
       )}
       type={type}
       {...register}
     />
-    {error && <p className=" text-sm text-red-500">• {error}</p>}
+    {error && <p className="text-sm text-red-500">• {error}</p>}
   </div>
 );
 

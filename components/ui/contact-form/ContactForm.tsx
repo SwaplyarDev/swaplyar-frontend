@@ -14,11 +14,11 @@ const BASE_URL =
 
 const ContactForm = () => {
   const { data: session, status } = useSession();
-  const { 
-    register, 
-    handleSubmit, 
-    formState: { errors }, 
-    reset 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
   } = useForm<FormValues>({
     defaultValues: {
       Nombre: session?.user?.name.split(' ')[0] || '',
@@ -26,7 +26,7 @@ const ContactForm = () => {
       email: session?.user?.email || '',
     },
   });
-  
+
   const [loading, setLoading] = useState(false);
   const { isDark } = useDarkTheme();
 
@@ -41,14 +41,14 @@ const ContactForm = () => {
       const response = await fetch(`${BASE_URL}/v1/contacts`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           name: data.Nombre,
           lastname: data.Apellido,
           email: data.email,
           message: data.message,
-          user_id: "-",
+          user_id: '-',
         }),
       });
 
@@ -70,7 +70,6 @@ const ContactForm = () => {
       setLoading(false);
     }
   };
-
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
