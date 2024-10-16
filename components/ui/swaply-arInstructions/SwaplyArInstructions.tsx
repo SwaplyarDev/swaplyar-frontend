@@ -1,8 +1,6 @@
 // /components/ui/swaply-arInstructions/SwaplyArInstructions.tsx
 
 'use client';
-
-import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import StepBlock from '@/components/stepBlock/stepBlock';
 import { BsCheck2Circle } from 'react-icons/bs';
 import {
@@ -20,7 +18,7 @@ export default function SwaplyArInstructions() {
   const currentMargin = ResponsiveMarginHook(margins);
 
   return (
-    <main className="py-10">
+    <div className="py-10">
       <div className=" " style={{ margin: currentMargin }}>
         <section className="pb-16 text-center">
           <article className="container-text space-y-2">
@@ -77,6 +75,6 @@ export default function SwaplyArInstructions() {
           </h1>
         </section>
       </div>
-    </main>
+    </div>
   );
 }
