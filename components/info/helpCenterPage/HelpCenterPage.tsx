@@ -46,22 +46,23 @@ const HelpCenterPage = () => {
             </h3>
           </section>
 
-          <section className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          {/* <section className="grid grid-cols-1 gap-8 md:grid-cols-2"> */}
+          <section className="flex flex-col items-center">
             <span>
               <ContactForm />
             </span>
 
-            <span className="flex items-center justify-center">
+            {/* <span className="flex items-center justify-center">
               <Image
                 src={Contacto}
                 alt="Contáctanos"
                 width={400}
                 height={300}
               />
-            </span>
+            </span> */}
           </section>
 
-          <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
+          {/* <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
             <span className="flex items-center justify-center">
               <Image
                 // src={PlusRewards}
@@ -95,21 +96,23 @@ const HelpCenterPage = () => {
                 className={`dark:hover:bg- relative m-1 mt-4 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
               >
                 Plus Rewards™
-              </button>
+              </button> 
             </span>
-          </section>
+          </section> */}
 
           <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
             <span className="card-rawe flex flex-col rounded bg-gray-100 p-4 dark:bg-graytyc">
               <Image
-                src={Ayuda1}
+                // src={Ayuda1}
+                src="/images/ayuda1.png"
                 alt="paso 1 de como cambiar tu dinero en SwaplyAr"
                 width={210}
                 height={150}
                 className="inline-block dark:hidden"
               />
               <Image
-                src={Ayuda1Dark}
+                // src={Ayuda1Dark}
+                src="/images/ayuda1-dark.png"
                 alt="paso 1 de como cambiar tu dinero en SwaplyAr tema oscuro"
                 width={210}
                 height={150}
@@ -121,7 +124,7 @@ const HelpCenterPage = () => {
                   Comunicate con nuestro representante de Atención al Cliente
                   para recibir ayuda.
                 </p>
-                <p className="text-lg">
+                <p className="text-xl text-right mr-8">
                   <LinkWithHover href="https://wa.me/+5491123832198">
                     WhatsApp.
                   </LinkWithHover>
@@ -130,14 +133,16 @@ const HelpCenterPage = () => {
             </span>
             <span className="card-rawe flex flex-col rounded bg-gray-100 p-4 dark:bg-graytyc">
               <Image
-                src={Ayuda2}
+                // src={Ayuda2}
+                src="/images/ayuda2.png"
                 alt="paso 2 de como cambiar tu dinero en SwaplyAr"
                 width={210}
                 height={150}
                 className="inline-block dark:hidden"
               />
               <Image
-                src={Ayuda2Dark}
+                // src={Ayuda2Dark}
+                src="/images/ayuda2-dark.png"
                 alt="paso 2 de como cambiar tu dinero en SwaplyAr tema oscuro"
                 width={210}
                 height={150}
@@ -149,7 +154,7 @@ const HelpCenterPage = () => {
                   Si necesitás contactarnos por otro motivo, simplemente
                   envianos un email y atenderemos tu solicitud.
                 </p>
-                <p className="text-lg">
+                <p className="text-xl text-right mr-8">
                   <LinkWithHover href="mailto:centrodeayuda@swaplyar.com">
                     Email.
                   </LinkWithHover>

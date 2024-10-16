@@ -47,43 +47,47 @@ const ContactForm = () => {
   };
 
   return (
+    // <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
       <h4 className="text-xl font-semibold">Contáctanos</h4>
+      <div className='flex justify-between'>
+        <div className='flex flex-col justify-between'>
+          <InputField
+            id="Nombre"
+            placeholder="Nombre completo"
+            register={register('Nombre', { required: true })}
+            error={errors.Nombre && 'Este campo es obligatorio'}
+          />
 
-      <InputField
-        id="Nombre"
-        placeholder="Nombre completo"
-        register={register('Nombre', { required: true })}
-        error={errors.Nombre && 'Este campo es obligatorio'}
-      />
+          <InputField
+            id="Apellido"
+            placeholder="Apellido Completo"
+            register={register('Apellido', { required: true })}
+            error={errors.Apellido && 'Este campo es obligatorio'}
+          />
 
-      <InputField
-        id="Apellido"
-        placeholder="Apellido Completo"
-        register={register('Apellido', { required: true })}
-        error={errors.Apellido && 'Este campo es obligatorio'}
-      />
+          <InputField
+            id="email"
+            type="email"
+            placeholder="Email"
+            register={register('email', { required: true })}
+            error={errors.email && 'Este campo es obligatorio'}
+          />
+        </div>
 
-      <InputField
-        id="email"
-        type="email"
-        placeholder="Email"
-        register={register('email', { required: true })}
-        error={errors.email && 'Este campo es obligatorio'}
-      />
-
-      <div className="flex flex-col">
-        <textarea
-          {...register('message', { required: true })}
-          id="message"
-          rows={7}
-          placeholder="Mensaje"
-          className="rounded border p-2 dark:border-gray-600 dark:bg-gray-700"
-        ></textarea>
-        {errors.message && (
-          <span className="text-red-500">Este campo es obligatorio</span>
-        )}
-      </div>
+        <div className="flex flex-col">
+          <textarea
+            {...register('message', { required: true })}
+            id="message"
+            rows={7}
+            placeholder="Mensaje"
+            className="rounded border p-2 dark:border-gray-600 dark:bg-gray-700"
+          ></textarea>
+          {errors.message && (
+            <span className="text-red-500">Este campo es obligatorio</span>
+          )}
+        </div>
+      </div>  
 
       <button
         type="submit"
