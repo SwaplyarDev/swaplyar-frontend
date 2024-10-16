@@ -2,7 +2,7 @@ import TransactionCalculator from '@/components/Transaction/TransactionCalculato
 
 const ConversionInstructions = () => {
   return (
-    <div className="lazyload-user-social flex w-full max-w-7xl flex-col-reverse md:flex-col items-center justify-between gap-4 space-y-4 py-8 lg-tablet:flex-row lg-tablet:space-x-4 lg-tablet:space-y-0">
+    <div className="lazyload-user-social flex w-full max-w-7xl flex-col-reverse items-center justify-between gap-4 space-y-4 py-8 md:flex-col lg-tablet:flex-row lg-tablet:space-x-4 lg-tablet:space-y-0">
       <div className="steps flex max-w-xl flex-1 flex-col items-start pt-6 lg-tablet:pt-8">
         <h2 className="text-4xl">
           Convertí y enviá tu dinero de PayPal a tu cuenta bancaria
