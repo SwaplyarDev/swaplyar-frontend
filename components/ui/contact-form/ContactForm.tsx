@@ -7,17 +7,26 @@ import InputField from './InputField';
 import { FormValues } from '@/types/data';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
 import clsx from 'clsx';
+import { useSession } from 'next-auth/react';
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
 
 const ContactForm = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<FormValues>();
+  const { data: session, status } = useSession();
+  const { 
+    register, 
+    handleSubmit, 
+    formState: { errors }, 
+    reset 
+  } = useForm<FormValues>({
+    defaultValues: {
+      Nombre: session?.user?.name.split(' ')[0] || '',
+      Apellido: session?.user?.name.split(' ')[1] || '',
+      email: session?.user?.email || '',
+    },
+  });
+  
   const [loading, setLoading] = useState(false);
   const { isDark } = useDarkTheme();
 
@@ -61,6 +70,7 @@ const ContactForm = () => {
       setLoading(false);
     }
   };
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
