@@ -8,6 +8,9 @@ import useEmailVerificationStore from '@/store/emailVerificationStore';
 import { useRouter } from 'next/navigation';
 import Arrow from '../ui/Arrow/Arrow';
 import useCodeVerificationStore from '@/store/codeVerificationStore';
+import useStore from '@/store/authViewStore';
+import userInfoStore from '@/store/userInfoStore';
+import { registerUser } from '@/actions/auth/register';
 
 type FormInputs = {
   verificationCode: string[];
@@ -31,6 +34,10 @@ export const VerifyCodePage = () => {
   const { email } = useEmailVerificationStore();
   const { isDark } = useDarkTheme();
   const router = useRouter();
+  const { view } = useStore();
+  const { user } = userInfoStore();
+  console.log('User id: ', user?.id);
+  console.log('View: ', view);
 
   const {
     attempts,
@@ -84,7 +91,13 @@ export const VerifyCodePage = () => {
     }
 
     try {
-      const result = await login(email || '', code);
+      let result: { ok: boolean; message?: any } = { ok: false };
+      if (view === 'login') {
+        result = await login(email || '', code);
+      } else if (view === 'register') {
+        result = await registerUser(user?.id || '', code);
+      }
+
       if (!result.ok) {
         setError('verificationCode', {
           type: 'manual',
@@ -104,11 +117,22 @@ export const VerifyCodePage = () => {
   const resendCode = async () => {
     if (!isLocked && attempts > 0 && timer === 0) {
       setReLoading(true);
+      let URL_VERIFICATION = '';
+      if (email) {
+        URL_VERIFICATION = 'login/email/verify-code';
+      }
+      if (user?.id) {
+        URL_VERIFICATION = 'users/email-validation/send';
+      }
+      const bodyData = {
+        email: email,
+        ...(user?.id && { user_id: user.id }),
+      };
       try {
-        await fetch(`${BASE_URL}/v1/login/email/send`, {
+        await fetch(`${BASE_URL}/v1/${URL_VERIFICATION}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email }),
+          body: JSON.stringify(bodyData),
         });
         decrementAttempts(); // Reducir intentos después del reenvío
         setTimer(10); // Reiniciar el temporizador a 10 segundos
