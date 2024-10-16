@@ -21,9 +21,6 @@ export default function SwaplyArInstructions() {
 
   return (
     <main className="py-10">
-      <FlyerTrabajo imageSrc={CentroDeAyuda}>
-        Estamos trabajando en las funciones de inicio de sesión y registro.
-      </FlyerTrabajo>
       <div className=" " style={{ margin: currentMargin }}>
         <section className="pb-16 text-center">
           <article className="container-text space-y-2">
