@@ -57,7 +57,7 @@ export function calculateAmount(
   from: string,
   to: string,
   amount: number,
-  inverse: boolean = false // Parámetro para usar fórmula inversa
+  inverse: boolean = false, // Parámetro para usar fórmula inversa
 ): number {
   try {
     const { rates } = useExchangeRateStore.getState();
@@ -68,12 +68,12 @@ export function calculateAmount(
     }
 
     const exchangeRate = exchangeRates.find(
-      (rate) => rate.from === from && rate.to === to
+      (rate) => rate.from === from && rate.to === to,
     );
 
     if (!exchangeRate) {
       throw new Error(
-        `No se encontró una fórmula para convertir de ${from} a ${to}`
+        `No se encontró una fórmula para convertir de ${from} a ${to}`,
       );
     }
 
@@ -124,7 +124,6 @@ export function calculateAmount(
     throw new Error('Failed to calculate amount');
   }
 }
-
 
 // export async function calculateInverseAmount(
 //   from: string,
@@ -231,19 +230,24 @@ export function calculateAmount(
   // Usa setTimeout para esperar 10 segundos antes de ejecutar el cálculo
   setTimeout(async () => {
     try {
-      console.log("Iniciando cálculo inverso...");
+      console.log('Iniciando cálculo inverso...');
 
       // Asegúrate de tener tasas actualizadas antes del cálculo
       await getExchangeRates();
       await getExchangeRatesUSD_EUR();
 
       // Llamada al cálculo inverso
-      const inverseAmount = await calculateAmount(from, to, amountToReceive, true);
+      const inverseAmount = await calculateAmount(
+        from,
+        to,
+        amountToReceive,
+        true,
+      );
 
       console.log(
         `Para recibir ${amountToReceive} ${to}, debes enviar ${inverseAmount.toFixed(
-          2
-        )} ${from}.`
+          2,
+        )} ${from}.`,
       );
     } catch (error) {
       if (error instanceof Error) {
