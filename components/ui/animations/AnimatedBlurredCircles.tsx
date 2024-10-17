@@ -19,6 +19,8 @@ const AnimatedBlurredCircles: React.FC<AnimatedBlurredCirclesProps> = ({
         <div className={clsx(isDark ? ' ball3Dark' : "ball3", "ball")}></div>
         <div className={clsx(isDark ? ' ball4Dark' : "ball4", "ball")}></div>
         <div className={clsx(isDark ? ' ball5Dark' : "ball5", "ball")}></div>
+        <div className={clsx(isDark ? ' ball6Dark' : "ball6", "ball")}></div>
+        <div className={clsx(isDark ? ' ball7Dark' : "ball7", "ball")}></div>
       </Box>
     </div>
   );

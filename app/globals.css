@@ -110,6 +110,16 @@ body {
   transform: rotate(288deg) translateX(330px);
 }
 
+/* .ball6Dark {
+  background-color: rgba(233, 233, 240, 0.601);
+  transform: rotate(368deg) translateX(330px);
+}
+
+.ball7Dark {
+  background-color: rgba(233, 233, 240, 0.601);
+  transform: rotate(288deg) translateX(330px);
+} */
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
