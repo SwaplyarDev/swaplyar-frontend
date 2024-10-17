@@ -26,9 +26,6 @@ function LoyaltyProgram() {
 
   return (
     <div className="relative overflow-hidden py-10">
-      <FlyerTrabajo imageSrc={CentroDeAyuda}>
-        Estamos trabajando en las funciones de inicio de sesión y registro.
-      </FlyerTrabajo>
       <div>
         <AnimatedBlurredCircles tope={'top-[220px]'} />
         <div className="text-center">

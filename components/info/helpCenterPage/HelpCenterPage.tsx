@@ -27,9 +27,6 @@ const HelpCenterPage = () => {
 
   return (
     <>
-      <FlyerTrabajo imageSrc={CentroDeAyuda}>
-        Estamos trabajando en las funciones de inicio de sesión y registro.
-      </FlyerTrabajo>
       <main className="relative flex w-full flex-col items-center justify-center gap-20 py-10">
         <AnimatedBlurredCircles tope="top-[-360px]" />
         <div
