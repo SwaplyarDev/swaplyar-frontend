@@ -5,6 +5,8 @@ import { usePathname } from 'next/navigation';
 
 import Link from 'next/link';
 import useStore from '@/store/authViewStore';
+import LogInButton from './log-register-bt/logiInButton';
+import RegisterButton from './log-register-bt/registerButton';
 
 export const Links = [
   { name: 'Quienes Somos', href: '/info/about-us' },
@@ -51,6 +53,8 @@ export default function NavLinks() {
           </p>
         </Link>
       ))}
+      <LogInButton />
+      <RegisterButton />
     </>
   );
 }
