@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { calculateAmount, calculateInverseAmount } from '@/utils/currencyApis';
+import { calculateAmount } from '@/utils/currencyApis';
 import { useSystemStore } from '@/store/useSystemStore';
 import { useExchangeRateStore } from '@/store/exchangeRateStore';
 
@@ -50,10 +50,11 @@ export const useAmountCalculator = () => {
           ) {
             const parsedReceiveAmount = parseFloat(receiveAmount);
             if (!isNaN(parsedReceiveAmount)) {
-              const amount = await calculateInverseAmount(
+              const amount = await calculateAmount(
                 selectedSendingSystem.id,
                 selectedReceivingSystem.id,
                 parsedReceiveAmount,
+                true,
               );
               setSendAmount(amount.toString());
               localStorage.setItem('sendAmount', amount.toString());
@@ -89,10 +90,11 @@ export const useAmountCalculator = () => {
             selectedReceivingSystem.id,
             1,
           );
-          const rateOneUnitBank = await calculateInverseAmount(
+          const rateOneUnitBank = await calculateAmount(
             selectedSendingSystem.id,
             selectedReceivingSystem.id,
             1,
+            true,
           );
           setRateForOne(rateOneUnit || 0);
           setRateForOneBank(rateOneUnitBank || 0);
