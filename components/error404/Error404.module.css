@@ -68,7 +68,6 @@
     left: calc(50% - 610px); 
   }
   
-  /* Pantallas entre 769px y 1024px (pantallas divididas o tablets) */
   @media (min-width: 769px) and (max-width: 1024px) {
     .container {
       margin-bottom: -100px;
