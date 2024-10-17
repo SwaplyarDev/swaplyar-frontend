@@ -214,7 +214,7 @@ body {
 }
 
 .loaderLogin {
-  height: 480px;
+  height: 378px;
 }
 
 .loader {
@@ -223,7 +223,7 @@ body {
   max-width: 512px; /* Igual al tamaño máximo del formulario */
   padding: 15px;
   background: #ffffff; /* Fondo blanco similar al del formulario */
-  border-radius: 0.375rem; /* Bordes redondeados del formulario */
+  border-radius: 1rem; /* Bordes redondeados del formulario */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra del formulario */
   overflow: hidden;
 }
@@ -446,4 +446,8 @@ div:where(.swal2-container).swal2-noanimation {
   box-shadow:
     0px 0px 0px 2px #252526,
     0px 0px 0px 4px #ebe7e0;
+}
+
+.buttonSecondDarkDisabled {
+  box-shadow: inherit;
 }

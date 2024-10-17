@@ -5,7 +5,8 @@ import Github from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
 import { InvalidCredentials } from './lib/auth/index';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
+const BASE_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
 
 export default {
   providers: [
@@ -14,16 +15,27 @@ export default {
         try {
           const email = credentials.email as string;
           const code = credentials.verificationCode as string;
+          const user_id = credentials.user_id as string;
+          let URL_VERIFICATION = '';
+          if (email) {
+            URL_VERIFICATION = 'login/email/verify-code';
+          }
+          if (user_id) {
+            URL_VERIFICATION = 'users/email-validation/validate';
+          }
 
-          const response = await fetch(`${BASE_URL}/v1/login/email/verify-code`, {
+          const bodyData = {
+            code: code,
+            ...(email ? { email } : {}),
+            ...(user_id ? { user_id } : {}),
+          };
+
+          const response = await fetch(`${BASE_URL}/v1/${URL_VERIFICATION}`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              email: email,
-              code: code,
-            }),
+            body: JSON.stringify(bodyData),
           });
 
           if (!response.ok) {
@@ -39,10 +51,11 @@ export default {
           if (data && data.token) {
             const { user } = data;
             return {
-              id: user.id,
-              name: user.fullName,
+              id: user.user_id,
+              name: user.full_name,
               email: user.email,
               role: user.role,
+              token: data.token,
             };
           } else {
             throw new InvalidCredentials();

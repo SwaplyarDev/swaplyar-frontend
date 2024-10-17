@@ -13,8 +13,9 @@ import {
 } from '@/utils/assets/imgDatabaseCloudinary';
 import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
+import Link from 'next/link';
 
-const mainStyles = {
+const divStyles = {
   infoBlocksContainer: 'flex flex-col items-center justify-center',
   instructionsCalculatorContainer: 'flex space-x-4 justify-center',
 };
@@ -24,10 +25,7 @@ const WhyChooseSwaplyar: React.FC = () => {
   const currentMargin = ResponsiveMarginHook(margins);
 
   return (
-    <main className="relative flex w-full flex-col gap-20 py-10">
-      <FlyerTrabajo imageSrc={CentroDeAyuda}>
-        Estamos trabajando en las funciones de inicio de sesión y registro.
-      </FlyerTrabajo>
+    <div className="relative flex w-full flex-col gap-20 py-10">
       <AnimatedBlurredCircles tope="top-[-650px]" />
       <div
         className="m-auto grid items-center justify-center gap-12"
@@ -40,7 +38,7 @@ const WhyChooseSwaplyar: React.FC = () => {
             imageAlt="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
             contentNode={
               <>
-                <p className="text-pretty text-center text-xl md:text-left">
+                <p className="text-pretty text-left text-xl">
                   Si estás buscando seguridad y confiabilidad en el intercambio
                   de tu dinero digital, SwaplyAr es tu mejor opción. Descubre
                   por qué somos la elección preferida para cambiar divisas de
@@ -105,8 +103,21 @@ const WhyChooseSwaplyar: React.FC = () => {
         &iquest;Nuevo en SwaplyAr? Hac&eacute; clic en &quot;C&oacute;mo usar
         SwaplyAr&quot; y aprend&eacute; a operar f&aacute;cilmente.
         &iexcl;Empez&aacute; ahora!
+        <div>
+          <button
+            id="bannerHTUButton"
+            className="trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:scale-105 hover:border-selectBtsLight hover:bg-transparent"
+          >
+            <Link
+              href={'/info/how-to-use'}
+              className="ease font-bold text-darkText transition-colors duration-300"
+            >
+              Como usar Swaplyar
+            </Link>
+          </button>
+        </div>
       </FlyerTrabajo>
-    </main>
+    </div>
   );
 };
 

@@ -3,86 +3,83 @@
 import clsx from 'clsx';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { registerUser } from '@/actions/auth/register';
-import { signIn } from 'next-auth/react';
 import useStore from '@/store/authViewStore';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import Link from 'next/link';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
+import useEmailVerificationStore from '@/store/emailVerificationStore';
+import { useRouter } from 'next/navigation';
+import userInfoStore from '@/store/userInfoStore';
 
 type FormInputs = {
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
-  confirmPassword: string;
   rememberMe: boolean;
   termsConditions: boolean;
+  verificationCode: string;
 };
 
 export const RegisterForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { isDark } = useDarkTheme();
+  const { setEmail } = useEmailVerificationStore();
+  const router = useRouter();
+  const { setUser } = userInfoStore();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
+    setError,
   } = useForm<FormInputs>();
 
-  const { view, setView } = useStore();
+  const { setView } = useStore();
   const handleChange = () => {
     setView('login');
   };
 
+  const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api';
+
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setErrorMessage('');
     setLoading(true);
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      rememberMe,
-      termsConditions,
-    } = data;
+    const { firstName, lastName, email, termsConditions } = data;
     const name = `${firstName} ${lastName}`;
 
-    localStorage.setItem('rememberMe', JSON.stringify(rememberMe));
-
-    const resp = await registerUser(name, email, password);
-
-    if (!resp.ok) {
-      setErrorMessage(resp.message);
+    try {
+      const response = await fetch(`${BASE_URL}/v1/users`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          full_name: name,
+          email: email,
+          // termsConditions: termsConditions,
+          role: 'admin',
+        }),
+      });
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        console.error('Error en la respuesta:', errorResponse);
+        throw new Error(errorResponse.message || 'Error al crear el usuario');
+      }
+      const responseData = await response.json();
+      console.log('Respuesta del servidor:', responseData);
+      setUser(responseData.user);
       setLoading(false);
-      return;
+      setEmail(email);
+      setTimeout(() => {
+        setLoading(false);
+        router.push('/auth/login-register/email-verification');
+      }, 6000);
+    } catch (error) {
+      setLoading(false);
+      console.error('Error al enviar el código:', error);
+      alert('Ocurrió un error inesperado.');
     }
-
-    const result = await signIn('credentials', {
-      redirect: false,
-      email,
-      password,
-      rememberMe: toString(),
-      termsConditions: toString(),
-    });
-
-    if (result?.error) {
-      setErrorMessage(result.error);
-    } else {
-      window.location.replace('/dashboard');
-    }
-    setLoading(false);
-  };
-
-  const validatePasswordMatch = (value: string) => {
-    const password = getValues('password');
-    return password === value || 'Las contraseñas no coinciden';
   };
 
   return (
@@ -186,113 +183,6 @@ export const RegisterForm = () => {
         {errors.email && (
           <p className="mb-5 text-sm text-red-500">• {errors.email.message}</p>
         )}
-
-        <label
-          htmlFor="password"
-          className={clsx(
-            errors.password
-              ? 'text-red-500'
-              : 'text-lightText dark:text-darkText',
-          )}
-        >
-          Contraseña
-        </label>
-        <div className="relative">
-          <input
-            id="password"
-            className={clsx(
-              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 dark:bg-lightText',
-              errors.password
-                ? 'mb-0 border-red-500'
-                : 'mb-5 hover:border-blue-600 dark:hover:border-white',
-            )}
-            type={showPassword ? 'text' : 'password'}
-            {...register('password', {
-              required: 'La contraseña es obligatoria',
-              minLength: {
-                value: 6,
-                message: 'La contraseña debe tener al menos 6 caracteres',
-              },
-            })}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className={clsx(
-              'absolute inset-y-0 right-0 flex items-center px-3',
-              errors.password ? 'mb-0' : 'mb-5',
-            )}
-          >
-            {showPassword ? (
-              <VisibilityOffOutlinedIcon />
-            ) : (
-              <VisibilityOutlinedIcon />
-            )}
-          </button>
-        </div>
-        {errors.password && (
-          <p className="mb-5 text-sm text-red-500">
-            • {errors.password.message}
-          </p>
-        )}
-
-        <label
-          htmlFor="confirmPassword"
-          className={clsx(
-            errors.confirmPassword
-              ? 'text-red-500'
-              : 'text-lightText dark:text-darkText',
-          )}
-        >
-          Repetir contraseña
-        </label>
-        <div className="relative">
-          <input
-            id="confirmPassword"
-            className={clsx(
-              'w-full rounded border bg-gray-200 px-5 py-2 pr-10 dark:bg-lightText',
-              errors.confirmPassword
-                ? 'mb-0 border-red-500'
-                : 'mb-5 hover:border-blue-600 dark:hover:border-white',
-            )}
-            type={showConfirmPassword ? 'text' : 'password'}
-            {...register('confirmPassword', {
-              required: 'La confirmación de la contraseña es obligatoria',
-              validate: validatePasswordMatch,
-            })}
-          />
-          <button
-            type="button"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className={clsx(
-              'absolute inset-y-0 right-0 flex items-center px-3',
-              errors.confirmPassword ? 'mb-0' : 'mb-5',
-            )}
-          >
-            {showConfirmPassword ? (
-              <VisibilityOffOutlinedIcon />
-            ) : (
-              <VisibilityOutlinedIcon />
-            )}
-          </button>
-        </div>
-        {errors.confirmPassword && (
-          <p className="mb-5 text-sm text-red-500">
-            • {errors.confirmPassword.message}
-          </p>
-        )}
-
-        <div className="mb-5 flex items-center">
-          <input
-            id="rememberMeRegister"
-            type="checkbox"
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer hover:border-blue-600 dark:border-gray-600 dark:bg-lightText dark:ring-blue-500 dark:hover:border-white"
-            {...register('rememberMe')}
-          />
-          <label htmlFor="rememberMe" className="ml-2">
-            Recordar esta cuenta
-          </label>
-        </div>
 
         <div className="mb-5 flex items-center">
           <input
