@@ -116,7 +116,7 @@ export default function TransactionCalculator() {
 
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
-      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark dark:text-white">
+      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark dark:text-white lg-tablet:min-w-[500px]">
         <p className="w-full max-w-lg text-2xl text-blue-800 dark:text-darkText xs:text-[2rem]">
           {selectedSendingSystem?.id === 'bank'
             ? `${rateForOneBank.toFixed(2)} ${selectedSendingSystem?.coin} = 1 ${selectedReceivingSystem?.coin}`
