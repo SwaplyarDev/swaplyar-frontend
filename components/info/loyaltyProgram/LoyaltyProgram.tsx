@@ -25,9 +25,10 @@ function LoyaltyProgram() {
   };
 
   return (
-    <div className="relative overflow-hidden py-10">
+    <div className="relative py-20">
+      <AnimatedBlurredCircles tope={'top-[20px]'} />
       <div>
-        <AnimatedBlurredCircles tope={'top-[220px]'} />
+        
         <div className="text-center">
           <h1 className="mb-4 text-4xl font-bold">
             SwaplyAr Plus Rewards™ premia tu fidelidad
