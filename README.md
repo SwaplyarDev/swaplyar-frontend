@@ -319,9 +319,7 @@ git checkout developer        # Cambia a la rama developer
 git pull origin developer     # Obtén los últimos cambios que incluyen la fusión del PR
 ```
 
-
-**¡Gracias por contribuir a SwaplyAr!** 😊
----
+## **¡Gracias por contribuir a SwaplyAr!** 😊
 
 ## 🚀 Despliegue
 
