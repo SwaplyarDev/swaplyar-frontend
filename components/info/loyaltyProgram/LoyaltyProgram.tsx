@@ -43,7 +43,7 @@ function LoyaltyProgram() {
           <div className="mt-4">
             <button
               id="submit-25456"
-              className={`font-bold dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+              className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
               onClick={() => handleChange()}
             >
               ¡Únete ya!
@@ -59,11 +59,11 @@ function LoyaltyProgram() {
             </h2>
             <p className="">
               ¿No estás inscrito todavía?&nbsp;
-              <Link className="dark:text-sky-500 text-buttonsLigth" href="/">
+              <Link className="text-buttonsLigth dark:text-sky-500" href="/">
                 Crea
               </Link>
               &nbsp;un perfil SwaplyAr o&nbsp;
-              <Link className="dark:text-sky-500 text-buttonsLigth" href="/">
+              <Link className="text-buttonsLigth dark:text-sky-500" href="/">
                 inicia
               </Link>
               &nbsp;sesión en tu perfil, y haz clic en &quot;inscríbite&quot;

@@ -202,7 +202,7 @@ export default function TransactionCalculator() {
                           parseInt(receiveAmount) < 50)
                       ),
                     },
-                'relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-10 py-3 font-bold text-white disabled:border-gray-400 disabled:text-lightText disabled:bg-calculatorLight2 dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2',
+                'relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-10 py-3 font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2',
               )}
               onClick={handleSubmit}
               disabled={

@@ -161,37 +161,36 @@ body {
     background-color: rgba(42, 41, 120, 0.601);
     transform: rotate(33deg) translateX(429px);
   }
-  
+
   .ball2 {
     background-color: rgba(42, 41, 120, 0.601);
     transform: rotate(72deg) translateX(264px);
   }
-  
+
   .ball3 {
     background-color: rgba(42, 41, 120, 0.601);
     transform: rotate(134deg) translateX(252px);
   }
-  
+
   .ball4 {
     background-color: rgba(42, 41, 120, 0.601);
     transform: rotate(234deg) translateX(302px);
   }
-  
+
   .ball5 {
     background-color: rgba(42, 41, 120, 0.601);
     transform: rotate(308deg) translateX(225px);
   }
-  
+
   .ball6 {
     background-color: rgba(42, 41, 120, 0.601);
     transform: rotate(-6deg) translateX(420px);
   }
-  
+
   .ball7 {
     background-color: rgba(42, 41, 120, 0.601);
     transform: rotate(189deg) translateX(368px);
   }
-  
 
   .ball6Dark {
     background-color: rgba(117, 117, 119, 0.601);
