@@ -6,28 +6,53 @@ import Image from 'next/image';
 import InputField from './InputField';
 import { FormValues } from '@/types/data';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
+import clsx from 'clsx';
+import { useSession } from 'next-auth/react';
 
-export const FORM_URL =
-  'https://script.google.com/macros/s/AKfycbzu28sDyTnLsc6Aq2sdAegdhQwA3Uud_Gq_Dgb6BEPIXsg0vPEVlsGqXGrEaY4WhSWq/exec';
+const BASE_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
 
 const ContactForm = () => {
+  const { data: session, status } = useSession();
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    defaultValues: {
+      Nombre: session?.user?.name.split(' ')[0] || '',
+      Apellido: session?.user?.name.split(' ')[1] || '',
+      email: session?.user?.email || '',
+    },
+  });
+
   const [loading, setLoading] = useState(false);
   const { isDark } = useDarkTheme();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     setLoading(true);
-
+    console.log(data);
+    console.log('nombre', data.Nombre);
+    console.log('email', data.email);
+    console.log('message', data.message);
+    console.log('apellido', data.Apellido);
     try {
-      const response = await fetch(FORM_URL, {
+      const response = await fetch(`${BASE_URL}/v1/contacts`, {
         method: 'POST',
-        body: new URLSearchParams(data as any),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: data.Nombre,
+          lastname: data.Apellido,
+          email: data.email,
+          message: data.message,
+          user_id: '-',
+        }),
       });
+
+      console.log(response);
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -74,20 +99,32 @@ const ContactForm = () => {
             error={errors.email && 'Este campo es obligatorio'}
           />
         </div>
+      </div>
+      <InputField
+        id="email"
+        type="email"
+        placeholder="Email"
+        register={register('email', { required: true })}
+        error={errors.email && 'Este campo es obligatorio'}
+      />
 
-        <div className="flex flex-col w-full">
-          <textarea
-            {...register('message', { required: true })}
-            id="message"
-            rows={7}
-            placeholder="Mensaje"
-            className="rounded border p-2 dark:border-gray-600 dark:bg-gray-700"
-          ></textarea>
-          {errors.message && (
-            <span className="text-red-500">Este campo es obligatorio</span>
+      <div className="flex flex-col">
+        <textarea
+          {...register('message', { required: true })}
+          id="message"
+          rows={7}
+          placeholder="Mensaje"
+          className={clsx(
+            'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
+            errors.message
+              ? 'border-red-500'
+              : 'hover:border-blue-600 dark:hover:border-white',
           )}
-        </div>
-      </div>  
+        ></textarea>
+        {errors.message && (
+          <p className="text-sm text-red-500">Este campo es obligatorio</p>
+        )}
+      </div>
 
       <button
         type="submit"
