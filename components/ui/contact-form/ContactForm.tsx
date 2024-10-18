@@ -72,25 +72,22 @@ const ContactForm = () => {
   };
 
   return (
-    // <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4 w-full">
       <h4 className="text-xl font-semibold">Contáctanos</h4>
-      <div className='flex gap-16'>
-        <div className='flex flex-col justify-between w-full'>
+      <div className='flex flex-col md:flex-row md:gap-16 gap-10 p-8 bg-[#e6e8ef62] dark:bg-calculatorDark rounded-2xl'>
+        <div className='flex flex-col gap-4 w-full'>
           <InputField
             id="Nombre"
             placeholder="Nombre completo"
             register={register('Nombre', { required: true })}
             error={errors.Nombre && 'Este campo es obligatorio'}
           />
-
           <InputField
             id="Apellido"
             placeholder="Apellido Completo"
             register={register('Apellido', { required: true })}
             error={errors.Apellido && 'Este campo es obligatorio'}
           />
-
           <InputField
             id="email"
             type="email"
@@ -99,40 +96,32 @@ const ContactForm = () => {
             error={errors.email && 'Este campo es obligatorio'}
           />
         </div>
-      </div>
-      <InputField
-        id="email"
-        type="email"
-        placeholder="Email"
-        register={register('email', { required: true })}
-        error={errors.email && 'Este campo es obligatorio'}
-      />
-
-      <div className="flex flex-col">
-        <textarea
-          {...register('message', { required: true })}
-          id="message"
-          rows={7}
-          placeholder="Mensaje"
-          className={clsx(
-            'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-            errors.message
-              ? 'border-red-500'
-              : 'hover:border-blue-600 dark:hover:border-white',
+        <div className="flex flex-col w-full">
+          <textarea
+            {...register('message', { required: true })}
+            id="message"
+            rows={7}
+            placeholder="Mensaje"
+            className={clsx(
+              'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
+              errors.message
+                ? 'border-red-500'
+                : 'hover:border-blue-600 dark:hover:border-white',
+            )}
+          ></textarea>
+          {errors.message && (
+            <p className="text-sm text-red-500">Este campo es obligatorio</p>
           )}
-        ></textarea>
-        {errors.message && (
-          <p className="text-sm text-red-500">Este campo es obligatorio</p>
-        )}
+        </div>
+      </div>  
+      <div className='flex justify-center'>
+        <button
+          type="submit"
+          className={`w-6/12 dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+        >
+          {loading ? 'Enviando...' : 'Enviar Mensaje'}
+        </button>  
       </div>
-
-      <button
-        type="submit"
-        className={`w-6/12 dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
-      >
-        {loading ? 'Enviando...' : 'Enviar Mensaje'}
-      </button>
-
       {loading && (
         <div id="loading" className="flex justify-center">
           <Image
