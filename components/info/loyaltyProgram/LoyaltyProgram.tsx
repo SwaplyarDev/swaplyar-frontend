@@ -51,11 +51,11 @@ function LoyaltyProgram() {
             </h2>
             <p className="">
               ¿No estás inscrito todavía?&nbsp;
-              <Link className="dark:text-sky-500 text-buttonsLigth" href="/">
+              <Link className="text-buttonsLigth dark:text-sky-500" href="/">
                 Crea
               </Link>
               &nbsp;un perfil SwaplyAr o&nbsp;
-              <Link className="dark:text-sky-500 text-buttonsLigth" href="/">
+              <Link className="text-buttonsLigth dark:text-sky-500" href="/">
                 inicia
               </Link>
               &nbsp;sesión en tu perfil, y haz clic en &quot;inscríbite&quot;
