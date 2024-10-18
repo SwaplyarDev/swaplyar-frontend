@@ -1,19 +1,19 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import error_404_clear from '@/public/images/clear-404.png';
-import error_404_dark from '@/public/images/dark-404.png';
-import post1_404 from '@/public/images/post1-404.png';
-import post2_404 from '@/public/images/post2-404.png';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import styles from './Error404.module.css'; 
+import styles from '@/components/error404/error404.module.css';
 import { useRouter } from 'next/navigation';
+import { Error_404_clear } from '@/utils/assets/img-database';
+import { Error_404_dark } from '@/utils/assets/img-database';
+import { Post1_404 } from '@/utils/assets/img-database';
+import { Post2_404 } from '@/utils/assets/img-database';
 
 const Error_404 = () => {
   const { isDark } = useDarkTheme();
-  const [counter, setCounter] = useState(10); 
+  const [counter, setCounter] = useState(10);
   const router = useRouter();
-  
+
   useEffect(() => {
     
     if (counter === 0) {
@@ -26,8 +26,7 @@ const Error_404 = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [counter, router]); 
-  
+  }, [counter, router]);
 
   return (
     <div className={styles.container}>
@@ -35,7 +34,7 @@ const Error_404 = () => {
         <>
           <div className={styles.image}>
             <Image
-              src={error_404_dark}
+              src={Error_404_dark}
               alt="Descripción de la imagen 1"
               width={2400}
               height={1000}
@@ -43,16 +42,29 @@ const Error_404 = () => {
             />
           </div>
           <div className={styles.message}>
-            <p className="text-white text-3xl font-normal ">Ups..</p> 
-            <p className="text-white text-3xl font-normal">La pagina no</p>
-            <p className="text-white text-3xl font-normal">ha sido encontrada</p>
+            <p className="text-3xl font-normal text-white">Ups..</p>
+            <p className="text-3xl font-normal text-white">La pagina no</p>
+            <p className="text-3xl font-normal text-white">
+              ha sido encontrada
+            </p>
           </div>
           <div className={styles.redirectButton}>
-            <h1 className="text-white font-bold " style={{ border: '2px solid white', borderRadius: '20px', width: '200px', height: '60px', padding: '12px'}}>Redireccion en {counter}</h1> 
+            <h1
+              className="font-bold text-white"
+              style={{
+                border: '2px solid white',
+                borderRadius: '20px',
+                width: '200px',
+                height: '60px',
+                padding: '12px',
+              }}
+            >
+              Redireccion en {counter}
+            </h1>
           </div>
           <div className={styles.postImage1}>
             <Image
-              src={post1_404}
+              src={Post1_404}
               alt="Descripción de la imagen 1"
               width={460}
               height={380}
@@ -61,7 +73,7 @@ const Error_404 = () => {
           </div>
           <div className={styles.postImage2}>
             <Image
-              src={post2_404}
+              src={Post2_404}
               alt="Descripción de la imagen 2"
               width={465}
               height={350}
@@ -74,7 +86,7 @@ const Error_404 = () => {
         <>
           <div className={styles.image}>
             <Image
-              src={error_404_clear}
+              src={Error_404_clear}
               alt="Descripción de la imagen 1"
               width={2400}
               height={1000}
@@ -82,16 +94,29 @@ const Error_404 = () => {
             />
           </div>
           <div className={styles.message}>
-            <p className="text-black text-3xl font-normal ">Ups..</p> 
-            <p className="text-black text-3xl font-normal">La pagina no</p>
-            <p className="text-black text-3xl font-normal">ha sido encontrada</p>
+            <p className="text-3xl font-normal text-black">Ups..</p>
+            <p className="text-3xl font-normal text-black">La pagina no</p>
+            <p className="text-3xl font-normal text-black">
+              ha sido encontrada
+            </p>
           </div>
           <div className={styles.redirectButton}>
-          <h1 className="text-black font-bold " style={{ border: '2px solid blue', borderRadius: '20px', width: '200px', height: '60px', padding: '12px'}}>Redireccion en {counter}</h1>
+            <h1
+              className="font-bold text-black"
+              style={{
+                border: '2px solid blue',
+                borderRadius: '20px',
+                width: '200px',
+                height: '60px',
+                padding: '12px',
+              }}
+            >
+              Redireccion en {counter}
+            </h1>
           </div>
           <div className={styles.postImage1}>
             <Image
-              src={post1_404}
+              src={Post1_404}
               alt="Descripción de la imagen 1"
               width={460}
               height={380}
@@ -100,7 +125,7 @@ const Error_404 = () => {
           </div>
           <div className={styles.postImage2}>
             <Image
-              src={post2_404}
+              src={Post2_404}
               alt="Descripción de la imagen 2"
               width={465}
               height={350}
