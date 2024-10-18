@@ -11,8 +11,14 @@ import {
   Rewards2,
   Rewards3,
 } from '@/utils/assets/imgDatabaseCloudinary';
+import {
+  Rewards1Dark,
+  Rewards2Dark,
+  Rewards3Dark,
+} from '@/utils/assets/img-database';
 import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 function LoyaltyProgram() {
   const { margins } = useMargins();
@@ -23,6 +29,8 @@ function LoyaltyProgram() {
     setView('register');
     window.location.href = '/auth/login-register';
   };
+
+  const { isDark } = useDarkTheme();
 
   return (
     <div className="relative py-20">
@@ -35,7 +43,7 @@ function LoyaltyProgram() {
           <div className="mt-4">
             <button
               id="submit-25456"
-              className="rounded bg-blue-600 px-4 py-2 text-darkText"
+              className={`font-bold dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
               onClick={() => handleChange()}
             >
               ¡Únete ya!
@@ -66,7 +74,7 @@ function LoyaltyProgram() {
 
         <div className="flex flex-wrap justify-center py-10">
           <RewardCard
-            imageSrc={Rewards1}
+            imageSrc={isDark ? Rewards1Dark : Rewards1}
             imageAlt="paso 1 de como cambiar tu dinero en SwaplyAr"
             title="Regalo de Bienvenida"
             description="Únete a SwaplyAr Plus Rewards™ y recibe 10 pesos por cada dólar en el cargo de tu segunda solicitud"
@@ -74,7 +82,7 @@ function LoyaltyProgram() {
             linkHref="/"
           />
           <RewardCard
-            imageSrc={Rewards2}
+            imageSrc={isDark ? Rewards2Dark : Rewards2}
             imageAlt="paso 2 de como cambiar tu dinero en SwaplyAr"
             title="Los premios nunca terminan"
             description="Recompensas Continuas: Gana 15 pesos por cada dólar en el cargo después de completar 5 solicitudes"
@@ -82,7 +90,7 @@ function LoyaltyProgram() {
             linkHref="/"
           />
           <RewardCard
-            imageSrc={Rewards3}
+            imageSrc={isDark ? Rewards3Dark : Rewards3}
             imageAlt="paso 3 de como cambiar tu dinero en SwaplyAr"
             title="Exclusivo"
             description="¡Promociones exclusivas y acceso a ofertas únicas!"
@@ -95,7 +103,7 @@ function LoyaltyProgram() {
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         <div>
           <p>
-            Para conocer los Términos y Condiciones del programa MoneyGram Plus
+            Para conocer los Términos y Condiciones del programa SwaplyAr Plus
             Rewards, haz
             <Link
               className="text-blue-800"
