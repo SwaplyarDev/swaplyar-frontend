@@ -24,19 +24,22 @@ function TopPopUp() {
   }
 
   return (
-    <main className="w-full bg-violet-700 py-2">
-      <div className="m-auto flex w-[90%] max-w-screen-2xl items-start justify-center md:gap-3 lg:items-center">
-        <p className="text-center text-xs font-bold text-darkText md:text-sm lg:text-lg">
+    <main className="w-full bg-violet-700 py-2 relative">
+  <div className="m-auto flex w-[90%] max-w-screen-2xl items-center justify-center relative">
+  <p className="text-center text-xs font-bold text-darkText md:text-sm lg:text-lg">
             Estamos trabajando en las funciones de inicio de sesión y registro
         </p>
-        <button
-          className="text-lg font-extrabold text-darkText lg:text-2xl"
-          onClick={handleClose}
-        >
-          <MdOutlineClose />
-        </button>
-      </div>
-    </main>
+    <button
+      className="absolute top-1/2 right-0 transform -translate-y-1/2 text-lg font-extrabold text-darkText lg:text-2xl"
+      onClick={handleClose}
+      style={{ marginRight: '2rem' }}  // Ajusta este margen según sea necesario
+    >
+      <MdOutlineClose />
+    </button>
+  </div>
+</main>
+
+
   );
 }
 
