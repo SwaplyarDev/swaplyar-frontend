@@ -58,13 +58,8 @@ const AboutUs = () => {
 
   return (
     <>
-      <div className="shadow-custom-blue">
-        <FlyerTrabajo imageSrc="/images/need-help.png">
-          Estamos trabajando en las funciones de inicio de sesión y registro.
-        </FlyerTrabajo>
-      </div>
       <div className="relative flex flex-col items-center justify-center py-10">
-        <AnimatedBlurredCircles tope="top-[-375px]" />
+        <AnimatedBlurredCircles tope="top-[-175px]" />
         <div
           className="flex w-full max-w-[1000px] flex-col items-center justify-center pt-5 text-black dark:text-white"
           style={{ margin: currentMargin }}

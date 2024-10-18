@@ -25,12 +25,9 @@ function LoyaltyProgram() {
   };
 
   return (
-    <div className="relative overflow-hidden py-10">
-      <FlyerTrabajo imageSrc={CentroDeAyuda}>
-        Estamos trabajando en las funciones de inicio de sesión y registro.
-      </FlyerTrabajo>
+    <div className="relative py-20">
+      <AnimatedBlurredCircles tope={'top-[20px]'} />
       <div>
-        <AnimatedBlurredCircles tope={'top-[220px]'} />
         <div className="text-center">
           <h1 className="mb-4 text-4xl font-bold">
             SwaplyAr Plus Rewards™ premia tu fidelidad
@@ -54,11 +51,11 @@ function LoyaltyProgram() {
             </h2>
             <p className="">
               ¿No estás inscrito todavía?&nbsp;
-              <Link className="text-blue-800" href="/">
+              <Link className="dark:text-sky-500 text-buttonsLigth" href="/">
                 Crea
               </Link>
               &nbsp;un perfil SwaplyAr o&nbsp;
-              <Link className="text-blue-800" href="/">
+              <Link className="dark:text-sky-500 text-buttonsLigth" href="/">
                 inicia
               </Link>
               &nbsp;sesión en tu perfil, y haz clic en &quot;inscríbite&quot;

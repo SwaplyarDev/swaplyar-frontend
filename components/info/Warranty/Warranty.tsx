@@ -48,11 +48,8 @@ const Warranty = () => {
 
   return (
     <>
-      <FlyerTrabajo imageSrc={CentroDeAyuda}>
-        Estamos trabajando en las funciones de inicio de sesión y registro.
-      </FlyerTrabajo>
-      <main className="relative flex w-full flex-col items-center justify-center gap-20 py-10">
-        <AnimatedBlurredCircles tope="top-[-250px]" />
+      <div className="relative flex w-full flex-col items-center justify-center gap-20 py-10">
+        <AnimatedBlurredCircles tope="top-[-150px]" />
         <div
           className="rs-wrapper-v4 max-w-[1000px] flex-col items-center justify-center gap-12"
           style={{ margin: currentMargin }}
@@ -96,7 +93,7 @@ const Warranty = () => {
           {/* <div id="flyer-container"></div> */}
           <footer>{/* <div id="footer-placeholder"></div> */}</footer>
         </div>
-      </main>
+      </div>
     </>
   );
 };

@@ -37,12 +37,6 @@ export default function HomePage() {
   return (
     <main className={mainStyles.main}>
       <AnimatedBlurredCircles tope="top-[-375px]" />
-      <div className="relative bg-white shadow-custom-blue">
-        <FlyerTrabajo imageSrc="/images/need-help.png">
-          Estamos trabajando en las funciones de inicio de sesión y registro.
-        </FlyerTrabajo>
-      </div>
-
       <div
         className="flex flex-col items-center justify-center"
         style={{ margin: currentMargin }}

@@ -15,7 +15,7 @@ import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import Link from 'next/link';
 
-const mainStyles = {
+const divStyles = {
   infoBlocksContainer: 'flex flex-col items-center justify-center',
   instructionsCalculatorContainer: 'flex space-x-4 justify-center',
 };
@@ -25,10 +25,7 @@ const WhyChooseSwaplyar: React.FC = () => {
   const currentMargin = ResponsiveMarginHook(margins);
 
   return (
-    <main className="relative flex w-full flex-col gap-20 py-10">
-      <FlyerTrabajo imageSrc={CentroDeAyuda}>
-        Estamos trabajando en las funciones de inicio de sesión y registro.
-      </FlyerTrabajo>
+    <div className="relative flex w-full flex-col gap-20 py-10">
       <AnimatedBlurredCircles tope="top-[-650px]" />
       <div
         className="m-auto grid items-center justify-center gap-12"
@@ -120,7 +117,7 @@ const WhyChooseSwaplyar: React.FC = () => {
           </button>
         </div>
       </FlyerTrabajo>
-    </main>
+    </div>
   );
 };
 

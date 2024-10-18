@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
+import clsx from 'clsx';
 
 interface InputFieldProps {
   id: string;
@@ -18,13 +19,18 @@ const InputField: FC<InputFieldProps> = ({
 }) => (
   <div className="flex flex-col">
     <input
-      id={id}
-      type={type}
       placeholder={placeholder}
+      id={id}
+      className={clsx(
+        'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
+        error
+          ? 'border-red-500'
+          : 'hover:border-blue-600 dark:hover:border-white',
+      )}
+      type={type}
       {...register}
-      className="rounded border p-2 dark:border-gray-600 dark:bg-gray-700"
     />
-    {error && <span className="text-red-500">{error}</span>}
+    {error && <p className="text-sm text-red-500">• {error}</p>}
   </div>
 );
 

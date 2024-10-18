@@ -57,33 +57,68 @@ body {
 }
 
 .ball {
-  @apply absolute h-[110px] w-[110px] rounded-full blur-[5em];
+  @apply absolute h-[110px] w-[110px] rounded-full blur-[3em];
 }
 
 .ball1 {
   background-color: rgba(42, 41, 120, 0.601);
-  transform: rotate(0deg) translateX(260px);
+  transform: rotate(0deg) translateX(360px);
 }
 
 .ball2 {
   background-color: rgba(42, 41, 120, 0.601);
-  transform: rotate(72deg) translateX(200px);
+  transform: rotate(72deg) translateX(300px);
 }
 
 .ball3 {
   background-color: rgba(42, 41, 120, 0.601);
-  transform: rotate(144deg) translateX(250px);
+  transform: rotate(144deg) translateX(350px);
 }
 
 .ball4 {
   background-color: rgba(42, 41, 120, 0.601);
-  transform: rotate(216deg) translateX(280px);
+  transform: rotate(216deg) translateX(380px);
 }
 
 .ball5 {
   background-color: rgba(42, 41, 120, 0.601);
-  transform: rotate(288deg) translateX(230px);
+  transform: rotate(288deg) translateX(330px);
 }
+
+.ball1Dark {
+  background-color: rgba(233, 233, 240, 0.601);
+  transform: rotate(0deg) translateX(360px);
+}
+
+.ball2Dark {
+  background-color: rgba(233, 233, 240, 0.601);
+  transform: rotate(72deg) translateX(300px);
+}
+
+.ball3Dark {
+  background-color: rgba(233, 233, 240, 0.601);
+  transform: rotate(144deg) translateX(350px);
+}
+
+.ball4Dark {
+  background-color: rgba(233, 233, 240, 0.601);
+  transform: rotate(216deg) translateX(380px);
+}
+
+.ball5Dark {
+  background-color: rgba(233, 233, 240, 0.601);
+  transform: rotate(288deg) translateX(330px);
+}
+
+/* .ball6Dark {
+  background-color: rgba(233, 233, 240, 0.601);
+  transform: rotate(368deg) translateX(330px);
+}
+
+.ball7Dark {
+  background-color: rgba(233, 233, 240, 0.601);
+  transform: rotate(288deg) translateX(330px);
+} */
 
 @keyframes spin {
   0% {
