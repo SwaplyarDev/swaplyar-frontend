@@ -72,56 +72,61 @@ const ContactForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
-      <h4 className="text-xl font-semibold">Contáctanos</h4>
-
-      <InputField
-        id="Nombre"
-        placeholder="Nombre completo"
-        register={register('Nombre', { required: true })}
-        error={errors.Nombre && 'Este campo es obligatorio'}
-      />
-
-      <InputField
-        id="Apellido"
-        placeholder="Apellido Completo"
-        register={register('Apellido', { required: true })}
-        error={errors.Apellido && 'Este campo es obligatorio'}
-      />
-
-      <InputField
-        id="email"
-        type="email"
-        placeholder="Email"
-        register={register('email', { required: true })}
-        error={errors.email && 'Este campo es obligatorio'}
-      />
-
-      <div className="flex flex-col">
-        <textarea
-          {...register('message', { required: true })}
-          id="message"
-          rows={7}
-          placeholder="Mensaje"
-          className={clsx(
-            'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-            errors.message
-              ? 'border-red-500'
-              : 'hover:border-blue-600 dark:hover:border-white',
-          )}
-        ></textarea>
-        {errors.message && (
-          <p className="text-sm text-red-500">Este campo es obligatorio</p>
-        )}
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex w-full flex-col space-y-4"
+    >
+      <div className="rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark">
+        <h4 className="mb-7 text-xl font-semibold">Contáctanos</h4>
+        <div className="flex flex-col gap-10 md:flex-row md:gap-16">
+          <div className="flex w-full flex-col gap-4">
+            <InputField
+              id="Nombre"
+              placeholder="Nombre completo"
+              register={register('Nombre', { required: true })}
+              error={errors.Nombre && 'Este campo es obligatorio'}
+            />
+            <InputField
+              id="Apellido"
+              placeholder="Apellido Completo"
+              register={register('Apellido', { required: true })}
+              error={errors.Apellido && 'Este campo es obligatorio'}
+            />
+            <InputField
+              id="email"
+              type="email"
+              placeholder="Email"
+              register={register('email', { required: true })}
+              error={errors.email && 'Este campo es obligatorio'}
+            />
+          </div>
+          <div className="flex w-full flex-col">
+            <textarea
+              {...register('message', { required: true })}
+              id="message"
+              rows={7}
+              placeholder="Mensaje"
+              className={clsx(
+                'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
+                errors.message
+                  ? 'border-red-500'
+                  : 'hover:border-blue-600 dark:hover:border-white',
+              )}
+            ></textarea>
+            {errors.message && (
+              <p className="text-sm text-red-500">Este campo es obligatorio</p>
+            )}
+          </div>
+        </div>
       </div>
-
-      <button
-        type="submit"
-        className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
-      >
-        {loading ? 'Enviando...' : 'Enviar Mensaje'}
-      </button>
-
+      <div className="flex justify-center">
+        <button
+          type="submit"
+          className={`dark:hover:bg- relative m-1 h-[48px] w-[200px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText xs:w-[330px] ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+        >
+          {loading ? 'Enviando...' : 'Enviar Mensaje'}
+        </button>
+      </div>
       {loading && (
         <div id="loading" className="flex justify-center">
           <Image
