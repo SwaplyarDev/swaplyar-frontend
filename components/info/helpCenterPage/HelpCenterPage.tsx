@@ -26,16 +26,16 @@ const HelpCenterPage = () => {
             <h1 className="text-center text-3xl font-bold md:text-left">
               Bienvenido al Centro de Ayuda de SwaplyAr
             </h1>
-            <h3 className="text-xl">
+            <p className="text-xl">
               Comunicate con nosotros y responderemos cualquier consulta que
               tengas
-            </h3>
+            </p>
           </section>
           <section className="flex flex-col items-center">
             <ContactForm />
           </section>
           <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
-            <span className="card-rawe flex flex-col rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark">
+            <span className="card-rawe flex flex-col rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark items-center md:items-start">
               {isDark ? (
                 <Image
                   // src={Ayuda1Dark}
@@ -55,18 +55,18 @@ const HelpCenterPage = () => {
               )}
               <h3 className="text-xl font-bold">Chateá con nosotros</h3>
               <div className="flex h-full flex-col justify-between">
-                <p className="text-lg">
+                <p className="text-lg text-center md:text-left mb-6 md:mb-0">
                   Comunicate con nuestro representante de Atención al Cliente
                   para recibir ayuda.
                 </p>
-                <p className="text-right text-xl">
+                <p className="text-right text-2xl">
                   <LinkWithHover href="https://wa.me/+5491123832198">
                     WhatsApp.
                   </LinkWithHover>
                 </p>
               </div>
             </span>
-            <span className="card-rawe flex flex-col rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark">
+            <span className="card-rawe flex flex-col rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark items-center md:items-start">
               {isDark ? (
                 <Image
                   // src={Ayuda2Dark}
@@ -86,11 +86,11 @@ const HelpCenterPage = () => {
               )}
               <h3 className="text-xl font-bold">Otro motivo...</h3>
               <div className="flex flex-col justify-between">
-                <p className="text-lg">
+                <p className="text-lg text-center md:text-left mb-6 md:mb-0">
                   Si necesitás contactarnos por otro motivo, simplemente
                   envianos un email y atenderemos tu solicitud.
                 </p>
-                <p className="text-right text-xl">
+                <p className="text-right text-2xl">
                   <LinkWithHover href="mailto:centrodeayuda@swaplyar.com">
                     Email.
                   </LinkWithHover>
