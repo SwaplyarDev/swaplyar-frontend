@@ -74,9 +74,10 @@ const ContactForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex w-full flex-col space-y-4">
-      <div className='rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark'>
-        <h4 className="text-xl font-semibold mb-7">Contáctanos</h4>
+      className="flex w-full flex-col space-y-4"
+    >
+      <div className="rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark">
+        <h4 className="mb-7 text-xl font-semibold">Contáctanos</h4>
         <div className="flex flex-col gap-10 md:flex-row md:gap-16">
           <div className="flex w-full flex-col gap-4">
             <InputField
@@ -121,7 +122,7 @@ const ContactForm = () => {
       <div className="flex justify-center">
         <button
           type="submit"
-          className={`dark:hover:bg- relative m-1 h-[48px] w-[200px] xs:w-[330px]  items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+          className={`dark:hover:bg- relative m-1 h-[48px] w-[200px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText xs:w-[330px] ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
         >
           {loading ? 'Enviando...' : 'Enviar Mensaje'}
         </button>

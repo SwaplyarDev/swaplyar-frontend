@@ -35,7 +35,7 @@ const HelpCenterPage = () => {
             <ContactForm />
           </section>
           <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
-            <span className="card-rawe flex flex-col rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark items-center md:items-start">
+            <span className="card-rawe flex flex-col items-center rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark md:items-start">
               {isDark ? (
                 <Image
                   // src={Ayuda1Dark}
@@ -55,7 +55,7 @@ const HelpCenterPage = () => {
               )}
               <h3 className="text-xl font-bold">Chateá con nosotros</h3>
               <div className="flex h-full flex-col justify-between">
-                <p className="text-lg text-center md:text-left mb-6 md:mb-0">
+                <p className="mb-6 text-center text-lg md:mb-0 md:text-left">
                   Comunicate con nuestro representante de Atención al Cliente
                   para recibir ayuda.
                 </p>
@@ -66,7 +66,7 @@ const HelpCenterPage = () => {
                 </p>
               </div>
             </span>
-            <span className="card-rawe flex flex-col rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark items-center md:items-start">
+            <span className="card-rawe flex flex-col items-center rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark md:items-start">
               {isDark ? (
                 <Image
                   // src={Ayuda2Dark}
@@ -86,7 +86,7 @@ const HelpCenterPage = () => {
               )}
               <h3 className="text-xl font-bold">Otro motivo...</h3>
               <div className="flex flex-col justify-between">
-                <p className="text-lg text-center md:text-left mb-6 md:mb-0">
+                <p className="mb-6 text-center text-lg md:mb-0 md:text-left">
                   Si necesitás contactarnos por otro motivo, simplemente
                   envianos un email y atenderemos tu solicitud.
                 </p>
