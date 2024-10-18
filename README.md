@@ -226,79 +226,101 @@ npm run dev
 
 ---
 
-## 💪 Contribución
+## 💪 Contribuir
 
-1. **Crea una nueva rama para tu funcionalidad o corrección desde la rama principal `developer`:**
+Gracias por tu interés en contribuir al proyecto. A continuación, te mostramos los pasos recomendados para agregar nuevas funcionalidades o corregir errores en el código de manera colaborativa y eficiente.
 
-   ```bash
-   git checkout developer
-   git pull origin developer
-   git checkout -b feature/nueva-funcionalidad
-   ```
+### 1. **Actualiza la rama `developer` local**
 
-2. **Realiza tus cambios.**
+Antes de comenzar, asegúrate de que tu copia local de la rama `developer` esté actualizada con los últimos cambios del repositorio remoto:
 
-3. **Ejecuta pruebas y asegúrate de que todo funcione correctamente:**
+```bash
+git checkout developer        # Cambia a la rama developer
+git pull origin developer     # Actualiza la rama developer con los últimos cambios
+```
 
-   ```bash
-   npm run lint
-   npm run format
-   npm run build --clean
-   ```
+### 2. **Crea una nueva rama para tu funcionalidad o corrección**
 
-4. **Confirma tus cambios y empuja la rama a tu repositorio:**
+Crea una nueva rama a partir de `developer` para trabajar en tu funcionalidad o corrección:
 
-   ```bash
-   git add .
-   git commit -m "Descripción de los cambios"
-   git push origin feature/nueva-funcionalidad
-   ```
+```bash
+git checkout -b feature/nueva-funcionalidad  # Crea una nueva rama basada en developer
+```
 
-5. **Crea un Pull Request (PR) desde tu rama hacia la rama `developer`.**
+### 3. **Realiza los cambios necesarios**
 
-6. **Antes de realizar el Pull Request, actualiza tu rama con los últimos cambios de `developer`:**
+Haz las modificaciones relacionadas con la nueva funcionalidad o corrección de errores en tu código.
 
-   ```bash
-   git checkout developer
-   git pull origin developer
-   git checkout feature/nueva-funcionalidad
-   git rebase developer
-   ```
+### 4. **Verifica el código y ejecuta pruebas**
 
-   **Si hay conflictos, resuélvelos y continua con el rebase:**
+Es importante que antes de confirmar los cambios, verifiques que el código cumpla con los estándares del proyecto y que pase las pruebas:
 
-   ```bash
-   git add .
-   git rebase --continue
-   ```
+```bash
+npm run lint     # Verifica que el código cumpla con las reglas de estilo
+npm run format   # Formatea el código de acuerdo a las reglas del proyecto
+npm run build --clean  # Realiza la compilación para asegurarte de que no haya errores
+```
 
-7. **Finalmente, empuja los cambios a tu rama remota:**
+### 5. **Confirma tus cambios y súbelos al repositorio remoto**
 
-   ```bash
-   git push origin feature/nueva-funcionalidad --force-with-lease
-   ```
+Cuando hayas verificado que los cambios están listos, confirma y sube la rama al repositorio remoto:
 
-8. **Fusionar el PR::**
+```bash
+git add .                          # Añade los archivos modificados
+git commit -m "Descripción clara de los cambios realizados"
+git push origin feature/nueva-funcionalidad  # Sube la nueva rama al repositorio remoto
+```
 
-   - Después de fusionar, puedes eliminar la rama `feature/nueva-funcionalidad` tanto localmente como en el repositorio remoto.
+### 6. **Crea un Pull Request (PR)**
 
-   ```bash
-   git checkout developer
-   git pull origin developer
-   git merge feature/nueva-funcionalidad
-   ```
+Crea un PR hacia la rama `developer` desde tu rama de trabajo. Si tienes la GitHub CLI instalada, puedes hacerlo desde la terminal:
 
-9. **Eliminar la Rama Temporal:**
+```bash
+gh pr create --base developer --head feature/nueva-funcionalidad --repo git@github.com:SwaplyAr/swaplyar-frontend.git --title "Título del PR" --body "Descripción clara y detallada de los cambios propuestos"
+```
 
-   - Después de fusionar, puedes eliminar la rama `feature/nueva-funcionalidad` tanto localmente como en el repositorio remoto.
+Este comando creará el PR hacia la rama `developer` del repositorio `git@github.com:SwaplyAr/swaplyar-frontend.git`.
 
-   ```bash
-   git branch -d feature/nueva-funcionalidad
-   git push origin --delete feature/nueva-funcionalidad
-   ```
+### 7. **Mantén tu rama actualizada con los últimos cambios de `developer`**
+
+Mientras esperas la revisión de tu PR, asegúrate de que tu rama esté actualizada con los últimos cambios de `developer` para evitar conflictos:
+
+```bash
+git checkout developer        # Cambia a la rama developer
+git pull origin developer     # Obtén los últimos cambios de developer
+git checkout feature/nueva-funcionalidad  # Vuelve a tu rama de trabajo
+git rebase developer          # Integra los últimos cambios de developer en tu rama
+```
+
+Si ocurren conflictos durante el rebase, resuélvelos manualmente:
+
+```bash
+git add .                       # Añade los archivos que resolviste
+git rebase --continue           # Continúa el rebase después de resolver los conflictos
+```
+
+### 8. **Sube los cambios actualizados**
+
+Después de realizar el rebase y resolver posibles conflictos, sube nuevamente tu rama al repositorio remoto:
+
+```bash
+git push origin feature/nueva-funcionalidad --force-with-lease  # Fuerza el push de los cambios rebased sin sobrescribir los cambios remotos
+```
+
+### 9. **Fusionar el PR**
+
+Una vez que tu PR haya sido revisado y aprobado:
+
+- Fusiona el PR a la rama `developer` usando la interfaz de GitHub (o mediante CLI, si lo prefieres).
+- Actualiza tu rama `developer` local después de la fusión:
+
+```bash
+git checkout developer        # Cambia a la rama developer
+git pull origin developer     # Obtén los últimos cambios que incluyen la fusión del PR
+```
+
 
 **¡Gracias por contribuir a SwaplyAr!** 😊
-
 ---
 
 ## 🚀 Despliegue
