@@ -1,11 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSystemStore } from '@/store/useSystemStore';
 import { exchangeRates } from '@/utils/exchangeRates';
-import {
-  updateCurrentValueEUR,
-  updateCurrentValueUSD,
-  updateCurrentValueUSDToEUR,
-} from '@/utils/currencyApis';
+import { updateCurrentValueUSD } from '@/utils/conversion/convArs_Usd';
+import { updateCurrentValueEUR } from '@/utils/conversion/convArs_Eur';
+import { updateCurrentValueUSDToEUR } from '@/utils/conversion/convUsd_Eur';
 
 export const useExchangeRate = () => {
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
