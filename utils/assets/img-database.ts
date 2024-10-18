@@ -127,3 +127,8 @@ export const WiseUsdImg = '/images/wise.usd.big.png';
 export const WiseUsdDarkImg = '/images/wise.usd.dark.png';
 export const WiseEurImg = '/images/wise.eur.big.png';
 export const WiseEurDarkImg = '/images/wise.eur.dark.png';
+
+export const Error_404_clear = '/images/clear-404.png';
+export const Error_404_dark = '/images/dark-404.png';
+export const Post1_404 = '/images/post1-404.png';
+export const Post2_404 = '/images/post2-404.png';

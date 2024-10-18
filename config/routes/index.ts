@@ -11,6 +11,7 @@ export const configRoutes: ConfigRoutes = {
     '/info/terms-and-conditions',
     '/info/warranty',
     '/info/why-choose-swaplyar',
+    '/error404',
     '/request',
     // '/auth/login-register',
   ],
