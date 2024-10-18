@@ -72,10 +72,13 @@ const ContactForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4 w-full">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex w-full flex-col space-y-4"
+    >
       <h4 className="text-xl font-semibold">Contáctanos</h4>
-      <div className='flex flex-col md:flex-row md:gap-16 gap-10 p-8 bg-[#e6e8ef62] dark:bg-calculatorDark rounded-2xl'>
-        <div className='flex flex-col gap-4 w-full'>
+      <div className="flex flex-col gap-10 rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark md:flex-row md:gap-16">
+        <div className="flex w-full flex-col gap-4">
           <InputField
             id="Nombre"
             placeholder="Nombre completo"
@@ -96,7 +99,7 @@ const ContactForm = () => {
             error={errors.email && 'Este campo es obligatorio'}
           />
         </div>
-        <div className="flex flex-col w-full">
+        <div className="flex w-full flex-col">
           <textarea
             {...register('message', { required: true })}
             id="message"
@@ -113,14 +116,14 @@ const ContactForm = () => {
             <p className="text-sm text-red-500">Este campo es obligatorio</p>
           )}
         </div>
-      </div>  
-      <div className='flex justify-center'>
+      </div>
+      <div className="flex justify-center">
         <button
           type="submit"
-          className={`w-6/12 dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+          className={`dark:hover:bg- relative m-1 h-[48px] w-6/12 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
         >
           {loading ? 'Enviando...' : 'Enviar Mensaje'}
-        </button>  
+        </button>
       </div>
       {loading && (
         <div id="loading" className="flex justify-center">

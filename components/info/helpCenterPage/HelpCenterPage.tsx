@@ -1,9 +1,7 @@
 'use client';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import ContactForm from '@/components/ui/contact-form/ContactForm';
-import {
-  CentroDeAyuda,
-} from '@/utils/assets/imgDatabaseCloudinary';
+import { CentroDeAyuda } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 import { useMargins } from '@/context/MarginProvider';
@@ -34,61 +32,65 @@ const HelpCenterPage = () => {
             </h3>
           </section>
           <section className="flex flex-col items-center">
-              <ContactForm />
+            <ContactForm />
           </section>
           <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
-            <span className="card-rawe flex flex-col rounded-2xl p-8 bg-[#e6e8ef62] dark:bg-calculatorDark">
-              {isDark ? 
-                (<Image
+            <span className="card-rawe flex flex-col rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark">
+              {isDark ? (
+                <Image
                   // src={Ayuda1Dark}
                   src="/images/ayuda1-dark.png"
                   alt="paso 1 de como cambiar tu dinero en SwaplyAr tema oscuro"
                   width={210}
                   height={150}
-                />)
-                : (<Image
+                />
+              ) : (
+                <Image
                   // src={Ayuda1}
                   src="/images/ayuda1.png"
                   alt="paso 1 de como cambiar tu dinero en SwaplyAr"
                   width={210}
                   height={150}
-              />)}
+                />
+              )}
               <h3 className="text-xl font-bold">Chateá con nosotros</h3>
               <div className="flex h-full flex-col justify-between">
                 <p className="text-lg">
                   Comunicate con nuestro representante de Atención al Cliente
                   para recibir ayuda.
                 </p>
-                <p className="text-xl text-right">
+                <p className="text-right text-xl">
                   <LinkWithHover href="https://wa.me/+5491123832198">
                     WhatsApp.
                   </LinkWithHover>
                 </p>
               </div>
             </span>
-            <span className="card-rawe flex flex-col rounded-2xl p-8 bg-[#e6e8ef62] dark:bg-calculatorDark">
-              {isDark ? 
-                (<Image
+            <span className="card-rawe flex flex-col rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark">
+              {isDark ? (
+                <Image
                   // src={Ayuda2Dark}
                   src="/images/ayuda2-dark.png"
                   alt="paso 2 de como cambiar tu dinero en SwaplyAr tema oscuro"
                   width={210}
                   height={150}
-                />)
-                : (<Image
+                />
+              ) : (
+                <Image
                   // src={Ayuda2}
                   src="/images/ayuda2.png"
                   alt="paso 2 de como cambiar tu dinero en SwaplyAr"
                   width={210}
                   height={150}
-              />)}
+                />
+              )}
               <h3 className="text-xl font-bold">Otro motivo...</h3>
               <div className="flex flex-col justify-between">
                 <p className="text-lg">
                   Si necesitás contactarnos por otro motivo, simplemente
                   envianos un email y atenderemos tu solicitud.
                 </p>
-                <p className="text-xl text-right">
+                <p className="text-right text-xl">
                   <LinkWithHover href="mailto:centrodeayuda@swaplyar.com">
                     Email.
                   </LinkWithHover>
