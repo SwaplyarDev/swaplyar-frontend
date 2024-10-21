@@ -1,0 +1,158 @@
+/* error404.css */
+.container {
+  text-align: center;
+  padding: 10px;
+  height: 750px;
+  margin-bottom: 170px;
+}
+
+.image {
+  position: relative;
+  top: calc(50% - 155px);
+  left: calc(50% - 30px);
+  transform: translate(-50%, -50%);
+  width: 1800px;
+  height: 680px;
+}
+
+.message {
+  position: relative;
+  width: 310px;
+  padding: 10px;
+  text-align: left;
+  top: calc(50% + -495px);
+  left: calc(50% - 590px);
+}
+
+.redirectButton {
+  position: relative;
+  top: calc(50% + -475px);
+  left: calc(50% - 495px);
+  transform: translate(-50%, -50%);
+  border-radius: 35px;
+  width: 180px;
+  height: 75px;
+  padding: 20px;
+  text-align: center;
+}
+
+.postImage1 {
+  position: relative;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  top: calc(50% - 750px);
+  left: calc(50% - -220px);
+}
+.postImage2 {
+  position: relative;
+  transform: translate(-50%, -50%);
+  width: 415px;
+  top: calc(50% - 1130px);
+  left: calc(50% - -460px);
+}
+.lineaVertical1 {
+  background-color: white;
+  width: 2px;
+  height: 195px;
+  position: relative;
+  top: calc(50% - 1555px);
+  left: calc(50% - 610px);
+}
+.lineaVertical2 {
+  background-color: blue;
+  width: 2px;
+  height: 195px;
+  position: relative;
+  top: calc(50% - 1555px);
+  left: calc(50% - 610px);
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    margin-bottom: -100px;
+  }
+  .image {
+    width: 100%;
+    height: auto;
+  }
+  .message {
+    width: 80%;
+    top: calc(50% + -700px);
+    left: calc(50% - 360px);
+  }
+  .redirectButton {
+    top: calc(50% + -680px);
+    left: calc(50% - 260px);
+  }
+  .postImage1 {
+    width: 32%;
+    top: calc(50% - 910px);
+    left: calc(50% - -70px);
+  }
+  .postImage2 {
+    width: 32%;
+    top: calc(50% - 1200px);
+    left: calc(50% - -240px);
+  }
+  .lineaVertical1 {
+    background-color: white;
+    width: 2px;
+    height: 195px;
+    position: relative;
+    top: calc(50% - 1525px);
+    left: calc(50% - 370px);
+  }
+  .lineaVertical2 {
+    background-color: blue;
+    width: 2px;
+    height: 195px;
+    position: relative;
+    top: calc(50% - 1525px);
+    left: calc(50% - 370px);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin-bottom: -150px;
+  }
+  .image {
+    width: 100%;
+    height: auto;
+  }
+  .message {
+    width: 80%;
+    top: calc(50% + -550px);
+    left: calc(50% - 280px);
+  }
+  .redirectButton {
+    top: calc(50% + -520px);
+    left: calc(50% - 180px);
+  }
+  .postImage1 {
+    width: 32%;
+    top: calc(50% - 755px);
+    left: calc(50% - -40px);
+  }
+  .postImage2 {
+    width: 32%;
+    top: calc(50% - 970px);
+    left: calc(50% - -165px);
+  }
+  .lineaVertical1 {
+    background-color: white;
+    width: 2px;
+    height: 195px;
+    position: relative;
+    top: calc(50% - 1200px);
+    left: calc(50% - 280px);
+  }
+  .lineaVertical2 {
+    background-color: blue;
+    width: 2px;
+    height: 195px;
+    position: relative;
+    top: calc(50% - 1200px);
+    left: calc(50% - 280px);
+  }
+}
