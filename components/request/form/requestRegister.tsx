@@ -149,14 +149,79 @@ export const RequestRegisterForm = () => {
     <div className="flex items-center justify-center bg-transparent">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex w-full max-w-xs flex-col justify-center rounded-lg bg-white p-8 shadow-md dark:bg-gray-800 xs:max-w-lg"
+        className="flex flex-col justify-center rounded-lg bg-white p-8 shadow-md dark:bg-gray-800 "
       >
-        <h2 className="mb-5 text-center text-2xl font-bold text-gray-900 dark:text-white">
+        {/* <h2 className="mb-5 text-center text-2xl font-bold text-gray-900 dark:text-white">
           Formulario de Solicitud de Transferencia Bancaria mediante{' '}
           {paymentMethod}
         </h2>
 
-        <PayerInfo errors={errors} register={register} setValue={setValue} />
+        <PayerInfo errors={errors} register={register} setValue={setValue} /> */}
+
+        <div className='flex justify-between '>
+          <h2 className='text-xl font-bold'>
+            Formulario de Solicitud
+          </h2>
+          <p className='text-xs mt-2'>
+            Tiempo Restante
+          </p>  
+        </div>
+        <div className='bg-[#e6e8ef62] p-2 dark:bg-calculatorDark rounded-2xl'>
+          <div className='flex relative flex-col items-center'>
+            <p className='absolute left-0'>
+              Mis Datos
+            </p>
+            <p>
+              step
+            </p>
+          </div>    
+          <div className='flex flex-col'>
+            <div className='flex gap-5'>
+              <div>
+                <label htmlFor="Nombre" className='text-xs block'>Nombre</label>
+                <input type="text" />
+              </div>
+              <div>
+                <label htmlFor="Email" className='text-xs block'>Email</label>
+                <input type="email" />
+              </div>
+            </div>
+            <div className='flex gap-5'>
+              <div>
+                <label htmlFor="Apellido" className='text-xs block'>Apellido</label>
+                <input type="text" />
+              </div>
+              <div>
+                <label htmlFor="Telefono" className='text-xs block'>Telefono</label>
+                <input type="number" />
+              </div>
+            </div>
+          </div>
+          <div className='flex justify-between'>
+            <p>
+              ¿Se transfiere a una cuenta propia?
+            </p>
+            <select name="Seleccione" id="Seleccione" className='text-black'>
+            <option value="Seleccion" selected disabled>Seleccione</option>
+              <option value="Si">Si</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div className='flex justify-end'>
+          <button className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}>
+            siguiente
+          </button>
+          </div>
+        </div>
+        <div>
+          
+        </div>
+        <div>
+          
+        </div>
+        <div>
+          
+        </div>
 
         <SelectCountry
           errors={errors}

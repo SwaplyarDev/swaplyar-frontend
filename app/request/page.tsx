@@ -29,14 +29,6 @@ const RequestPage = () => {
   return (
     <div className="flex flex-col-reverse items-center justify-center p-10 lg:flex-row lg:gap-8">
       <RequestRegisterForm />
-
-      {payerBank === 'PayPal' && <PaypalUSD />}
-      {payerBank === 'Banco' && <Ars />}
-      {payerBank === 'Payoneer EUR' && <PayoneerEUR />}
-      {payerBank === 'Payoneer USD' && <PayoneerUSD />}
-      {/* {payerBank === 'Paypal EUR' && <PaypalEUR />} */}
-      {payerBank === 'Wise EUR' && <WiseEUR />}
-      {payerBank === 'Wise USD' && <WiseUSD />}
     </div>
   );
 };
