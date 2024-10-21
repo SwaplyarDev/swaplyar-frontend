@@ -96,17 +96,17 @@ export const LoginForm = () => {
 
         <button
           type="submit"
-          className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
+          className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 min-h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth px-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
           disabled={loading} // Desactivar el botón si está cargando
         >
           {loading ? (
             <div className="flex items-center justify-center">
               <Image
                 src="/gif/cargando.gif"
-                width={20}
-                height={20}
+                width={30}
+                height={30}
                 alt="loading"
-                className="mb-0.5 mr-1"
+                className="mb-0.5 mr-2"
               />
               Procesando...
             </div>
