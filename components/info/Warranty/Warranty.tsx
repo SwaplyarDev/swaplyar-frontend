@@ -49,7 +49,7 @@ const Warranty = () => {
   return (
     <>
       <div className="relative flex w-full flex-col items-center justify-center gap-20 py-10">
-        <AnimatedBlurredCircles tope="top-[-250px]" />
+        <AnimatedBlurredCircles tope="top-[-150px]" />
         <div
           className="rs-wrapper-v4 max-w-[1000px] flex-col items-center justify-center gap-12"
           style={{ margin: currentMargin }}

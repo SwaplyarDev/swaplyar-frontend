@@ -11,6 +11,7 @@ import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Swiper as SwiperType } from 'swiper/types';
+import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 
 const AuthForm: React.FC = () => {
   const { view, setView } = useStore();
@@ -25,7 +26,8 @@ const AuthForm: React.FC = () => {
 
   return (
     <ClientWrapper>
-      <section className="flex h-full min-h-screen flex-col items-center py-5">
+      <AnimatedBlurredCircles tope="top-[124px]" />
+      <section className="flex h-full flex-col items-center py-5">
         <div className="w-full max-w-[552px] px-5 hover:cursor-grab active:cursor-grabbing">
           <Swiper
             onSwiper={(swiper) => {

@@ -15,8 +15,10 @@ import TransactionSection from '@/components/ui/TransactionSection/TransactionSe
 import clsx from 'clsx';
 import { useExchangeRateStore } from '@/store/exchangeRateStore';
 import { useExchangeRate } from '@/hooks/useExchangeRates';
+import Image from 'next/image';
 
 export default function TransactionCalculator() {
+  const [isProcessing, setIsProcessing] = useState(false);
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
   const { startUpdatingRates, stopUpdatingRates } = useExchangeRateStore();
 
@@ -64,6 +66,7 @@ export default function TransactionCalculator() {
   };
 
   const handleExchangePaypal = () => {
+    setIsProcessing(true);
     Swal.fire({
       title: 'Procesar pago con PayPal',
       html: `
@@ -99,6 +102,7 @@ export default function TransactionCalculator() {
         const cancelButton = document.getElementById('cancel-button');
         if (cancelButton) {
           cancelButton.addEventListener('click', () => {
+            setIsProcessing(false);
             Swal.close();
           });
         }
@@ -110,13 +114,17 @@ export default function TransactionCalculator() {
     if (selectedSendingSystem?.id === 'paypal') {
       handleExchangePaypal();
     } else {
-      handleDirection();
+      setIsProcessing(true);
+      setInterval(() => {
+        handleDirection();
+        setIsProcessing(false);
+      }, 3000);
     }
   };
 
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
-      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark dark:text-white lg-tablet:min-w-[500px]">
+      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight p-8 shadow-md dark:bg-calculatorDark dark:text-white lg-tablet:min-w-[500px]">
         <p className="w-full max-w-lg text-2xl text-blue-800 dark:text-darkText xs:text-[2rem]">
           {selectedSendingSystem?.id === 'bank'
             ? `${rateForOneBank.toFixed(2)} ${selectedSendingSystem?.coin} = 1 ${selectedReceivingSystem?.coin}`
@@ -157,27 +165,48 @@ export default function TransactionCalculator() {
           <div className="mt-8">
             <button
               className={clsx(
-                'relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-10 py-3 text-white disabled:border-gray-400 disabled:bg-gray-400 dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400',
-                {
-                  buttonSecond: !(
-                    sendAmount === '' ||
-                    (selectedSendingSystem?.id === 'paypal' &&
-                      parseInt(sendAmount) < 5) ||
-                    (selectedSendingSystem?.id === 'payoneer_usd' &&
-                      parseInt(sendAmount) < 50) ||
-                    (selectedSendingSystem?.id === 'payoneer_eur' &&
-                      parseInt(sendAmount) < 50) ||
-                    (selectedReceivingSystem?.id === 'paypal' &&
-                      parseInt(receiveAmount) < 5) ||
-                    (selectedReceivingSystem?.id === 'payoneer_usd' &&
-                      parseInt(receiveAmount) < 50) ||
-                    (selectedReceivingSystem?.id === 'payoneer_eur' &&
-                      parseInt(receiveAmount) < 50)
-                  ),
-                },
+                isDark
+                  ? {
+                      buttonSecondDark: !(
+                        isProcessing ||
+                        sendAmount === '' ||
+                        (selectedSendingSystem?.id === 'paypal' &&
+                          parseInt(sendAmount) < 5) ||
+                        (selectedSendingSystem?.id === 'payoneer_usd' &&
+                          parseInt(sendAmount) < 50) ||
+                        (selectedSendingSystem?.id === 'payoneer_eur' &&
+                          parseInt(sendAmount) < 50) ||
+                        (selectedReceivingSystem?.id === 'paypal' &&
+                          parseInt(receiveAmount) < 5) ||
+                        (selectedReceivingSystem?.id === 'payoneer_usd' &&
+                          parseInt(receiveAmount) < 50) ||
+                        (selectedReceivingSystem?.id === 'payoneer_eur' &&
+                          parseInt(receiveAmount) < 50)
+                      ),
+                    }
+                  : {
+                      buttonSecond: !(
+                        isProcessing ||
+                        sendAmount === '' ||
+                        (selectedSendingSystem?.id === 'paypal' &&
+                          parseInt(sendAmount) < 5) ||
+                        (selectedSendingSystem?.id === 'payoneer_usd' &&
+                          parseInt(sendAmount) < 50) ||
+                        (selectedSendingSystem?.id === 'payoneer_eur' &&
+                          parseInt(sendAmount) < 50) ||
+                        (selectedReceivingSystem?.id === 'paypal' &&
+                          parseInt(receiveAmount) < 5) ||
+                        (selectedReceivingSystem?.id === 'payoneer_usd' &&
+                          parseInt(receiveAmount) < 50) ||
+                        (selectedReceivingSystem?.id === 'payoneer_eur' &&
+                          parseInt(receiveAmount) < 50)
+                      ),
+                    },
+                'relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-10 py-3 font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2',
               )}
               onClick={handleSubmit}
               disabled={
+                isProcessing ||
                 sendAmount === '' ||
                 (selectedSendingSystem?.id === 'paypal' &&
                   parseInt(sendAmount) < 5) ||
@@ -193,7 +222,20 @@ export default function TransactionCalculator() {
                   parseInt(receiveAmount) < 50)
               }
             >
-              Procesar pago
+              {isProcessing ? (
+                <div className="flex items-center justify-center">
+                  <Image
+                    src="/gif/cargando.gif"
+                    width={20}
+                    height={20}
+                    alt="loading"
+                    className="mb-0.5 mr-1"
+                  />
+                  Procesando...
+                </div>
+              ) : (
+                'Procesar pago'
+              )}
             </button>
           </div>
           {sendAmount === '' ? (
