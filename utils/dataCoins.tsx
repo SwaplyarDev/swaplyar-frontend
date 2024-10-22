@@ -12,7 +12,7 @@ import {
   WiseEurImg,
   WiseUsdDarkImg,
   WiseUsdImg,
-} from './assets/img-database';
+} from '@/utils/assets/imgDatabaseCloudinary';
 
 export const systems: System[] = [
   {

@@ -5,7 +5,7 @@ import {
   BankImg,
   PaypalDarkImg,
   PaypalImg,
-} from '@/utils/assets/img-database';
+} from '@/utils/assets/imgDatabaseCloudinary';
 
 const defaultSendingSystem: System = {
   id: 'paypal',

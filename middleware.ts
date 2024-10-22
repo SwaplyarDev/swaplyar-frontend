@@ -25,7 +25,7 @@ export default auth((req) => {
 
   // Redirigir a /dashboard si el usuario está logueado y trata de acceder a rutas de autenticación
   if (isLoggedIn && configRoutes.authRoutes.includes(nextUrl.pathname)) {
-    return NextResponse.redirect(new URL('/', nextUrl));
+    return NextResponse.redirect(new URL('/error404', nextUrl));
   }
 
   // Redirigir a /auth/login si el usuario no está logueado y trata de acceder a una ruta protegida
@@ -34,7 +34,7 @@ export default auth((req) => {
     !configRoutes.authRoutes.includes(nextUrl.pathname) &&
     !configRoutes.publicRoutes.includes(nextUrl.pathname)
   ) {
-    return NextResponse.redirect(new URL('/auth/login-register', nextUrl));
+    return NextResponse.redirect(new URL('/error404', nextUrl));
   }
 
   return NextResponse.next();

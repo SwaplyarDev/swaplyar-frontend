@@ -4,7 +4,7 @@ import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 import {
   CentroDeAyuda,
   TerminosCondiciones,
-} from '@/utils/assets/img-database';
+} from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
@@ -17,9 +17,6 @@ const TermsAndConditions = () => {
   return (
     <div className="relative flex flex-col items-center py-10">
       <AnimatedBlurredCircles tope="top-[-1675px]" />
-      <FlyerTrabajo imageSrc={CentroDeAyuda}>
-        Estamos trabajando en las funciones de inicio de sesión y registro.
-      </FlyerTrabajo>
       <div style={{ margin: currentMargin }}>
         <div className="flex max-w-[1000px] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left">
           <div className="flex w-full max-w-[600px] items-center justify-center p-0">

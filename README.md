@@ -163,37 +163,46 @@ La ruta `/api/paypal` en el servidor maneja la creación de órdenes en PayPal. 
    Crea un archivo `.env.local` en la raíz del proyecto y agrega las variables de entorno necesarias.
 
    ```env
-        # Authjs
-        AUTH_SECRET='your_auth_secret'
-        NEXTAUTH_SECRET='your_nextauth_secret'
+        # /.env
 
-        NEXTAUTH_URL="http://localhost:8080/api/"
+        # Environment Configuration
+        APP_ENV=development
 
-        # AUTH_LOGIN_REDIRECT
-        AUTH_LOGIN_REDIRECT="/products/company"
-        APP_ENV="development"
+        # Authentication Secrets
+        AUTH_SECRET='xiqS6G4DXQaH1Wc79cPhm0WhpMS6x2p7mEh3z+7/s9i52e8hz3tiUmfi1Fc='
+        NEXTAUTH_SECRET='cB9cQQRXYKn5/ptRnpPhZ2QHHqAIlwMAUh7Lmi4IU+ovkhKZNHhxN6Ki9lw='
+
+        # URLs
+        NEXTAUTH_URL="http://localhost:3000" # Local development URL
+        NEXT_PUBLIC_BACKEND_URL="https://swaplyar-back.vercel.app/api" # Production backend URL
+        # NEXT_PUBLIC_BACKEND_URL="http://localhost:8080/api" # Uncomment for local backend testing
+        # NEXTAUTH_URL="https://swaplyar.vercel.app" # Uncomment for production
+
+        # Redirects
+        AUTH_LOGIN_REDIRECT="/"
+
+        # Project Directory
         PROJECT_DIR="/ruta/al/directorio/del/proyecto"
 
-        # GOOGLE
+        # Google Authentication
         AUTH_GOOGLE_ID="your_google_id"
         AUTH_GOOGLE_SECRET="your_google_secret"
 
-        # GITHUB
+        # GitHub Authentication
         AUTH_GITHUB_ID="your_github_id"
         AUTH_GITHUB_SECRET="your_github_secret"
 
-        # Resend
+        # Resend Configuration
         AUTH_RESEND_KEY="your_resend_key"
 
-        # FreeCurrencyAPI
-        NEXT_PUBLIC_FREE_CURRENCY_API_KEY="fca_live_jDqUTcYj3stjWVDFqGZCmIBAt3hIEEtiTBPSMD3N"
-
-        # Bluelytics
+        # Currency APIs
+        NEXT_PUBLIC_FREE_CURRENCY_API_KEY="fca_live_YXQDkCwBwblsav5Dpe7zG0Rl1k6Nl4WuMEd1jHco&currencies=EUR%2CUSD%2CCAD"
         NEXT_PUBLIC_BLUELYTICS_API_URL="https://api.bluelytics.com.ar/v2/latest"
         NEXT_PUBLIC_FREE_CURRENCY_APY_KEY=fca_live_jDqUTcYj3stjWVDFqGZCmIBAt3hIEEtiTBPSMD3N
 
-
+        # PayPal Client ID
         NEXT_PUBLIC_PAYPAL_CLIENT_ID="Acdb_cNhM35Qa7UNeEpdSePRS6Oswvx5ohLo1KEC04ADt64RGPUuOMUZXN_Kt84b93RXFFujqDKjB8u1"
+
    ```
 
 4. **Ejecutar el Proyecto**
@@ -202,7 +211,8 @@ La ruta `/api/paypal` en el servidor maneja la creación de órdenes en PayPal. 
 npm run dev
 ```
 
-Accede al proyecto en [http://localhost:3000](http://localhost:3000).
+- Accede al proyecto en wep [https://swaplyar.vercel.app](https://swaplyar.vercel.app).
+- Accede al proyecto en [http://localhost:3000](http://localhost:3000).
 
 ## 🤖 Scripts Disponibles
 
@@ -216,84 +226,106 @@ Accede al proyecto en [http://localhost:3000](http://localhost:3000).
 
 ---
 
-## 💪 Contribución
+## 💪 Contribuir
 
-1. **Crea una nueva rama para tu funcionalidad o corrección desde la rama principal `developer`:**
+Gracias por tu interés en contribuir al proyecto. A continuación, te mostramos los pasos recomendados para agregar nuevas funcionalidades o corregir errores en el código de manera colaborativa y eficiente.
 
-   ```bash
-   git checkout developer
-   git pull origin developer
-   git checkout -b feature/nueva-funcionalidad
-   ```
+### 1. **Actualiza la rama `developer` local**
 
-2. **Realiza tus cambios.**
+Antes de comenzar, asegúrate de que tu copia local de la rama `developer` esté actualizada con los últimos cambios del repositorio remoto:
 
-3. **Ejecuta pruebas y asegúrate de que todo funcione correctamente:**
+```bash
+git checkout developer        # Cambia a la rama developer
+git pull origin developer     # Actualiza la rama developer con los últimos cambios
+```
 
-   ```bash
-   npm run lint
-   npm run format
-   npm run build --clean
-   ```
+### 2. **Crea una nueva rama para tu funcionalidad o corrección**
 
-4. **Confirma tus cambios y empuja la rama a tu repositorio:**
+Crea una nueva rama a partir de `developer` para trabajar en tu funcionalidad o corrección:
 
-   ```bash
-   git add .
-   git commit -m "Descripción de los cambios"
-   git push origin feature/nueva-funcionalidad
-   ```
+```bash
+git checkout -b feature/nueva-funcionalidad  # Crea una nueva rama basada en developer
+```
 
-5. **Crea un Pull Request (PR) desde tu rama hacia la rama `developer`.**
+### 3. **Realiza los cambios necesarios**
 
-6. **Antes de realizar el Pull Request, actualiza tu rama con los últimos cambios de `developer`:**
+Haz las modificaciones relacionadas con la nueva funcionalidad o corrección de errores en tu código.
 
-   ```bash
-   git checkout developer
-   git pull origin developer
-   git checkout feature/nueva-funcionalidad
-   git rebase developer
-   ```
+### 4. **Verifica el código y ejecuta pruebas**
 
-   **Si hay conflictos, resuélvelos y continua con el rebase:**
+Es importante que antes de confirmar los cambios, verifiques que el código cumpla con los estándares del proyecto y que pase las pruebas:
 
-   ```bash
-   git add .
-   git rebase --continue
-   ```
+```bash
+npm run lint     # Verifica que el código cumpla con las reglas de estilo
+npm run format   # Formatea el código de acuerdo a las reglas del proyecto
+npm run build --clean  # Realiza la compilación para asegurarte de que no haya errores
+```
 
-7. **Finalmente, empuja los cambios a tu rama remota:**
+### 5. **Confirma tus cambios y súbelos al repositorio remoto**
 
-   ```bash
-   git push origin feature/nueva-funcionalidad --force-with-lease
-   ```
+Cuando hayas verificado que los cambios están listos, confirma y sube la rama al repositorio remoto:
 
-8. **Fusionar el PR::**
+```bash
+git add .                          # Añade los archivos modificados
+git commit -m "Descripción clara de los cambios realizados"
+git push origin feature/nueva-funcionalidad  # Sube la nueva rama al repositorio remoto
+```
 
-   - Después de fusionar, puedes eliminar la rama `feature/nueva-funcionalidad` tanto localmente como en el repositorio remoto.
+### 6. **Crea un Pull Request (PR)**
 
-   ```bash
-   git checkout developer
-   git pull origin developer
-   git merge feature/nueva-funcionalidad
-   ```
+Crea un PR hacia la rama `developer` desde tu rama de trabajo. Si tienes la GitHub CLI instalada, puedes hacerlo desde la terminal:
 
-9. **Eliminar la Rama Temporal:**
+```bash
+gh pr create --base developer --head feature/nueva-funcionalidad --repo git@github.com:SwaplyAr/swaplyar-frontend.git --title "Título del PR" --body "Descripción clara y detallada de los cambios propuestos"
+```
 
-   - Después de fusionar, puedes eliminar la rama `feature/nueva-funcionalidad` tanto localmente como en el repositorio remoto.
+Este comando creará el PR hacia la rama `developer` del repositorio `git@github.com:SwaplyAr/swaplyar-frontend.git`.
 
-   ```bash
-   git branch -d feature/nueva-funcionalidad
-   git push origin --delete feature/nueva-funcionalidad
-   ```
+### 7. **Mantén tu rama actualizada con los últimos cambios de `developer`**
 
-**¡Gracias por contribuir a SwaplyAr!** 😊
+Mientras esperas la revisión de tu PR, asegúrate de que tu rama esté actualizada con los últimos cambios de `developer` para evitar conflictos:
 
----
+```bash
+git checkout developer        # Cambia a la rama developer
+git pull origin developer     # Obtén los últimos cambios de developer
+git checkout feature/nueva-funcionalidad  # Vuelve a tu rama de trabajo
+git rebase developer          # Integra los últimos cambios de developer en tu rama
+```
+
+Si ocurren conflictos durante el rebase, resuélvelos manualmente:
+
+```bash
+git add .                       # Añade los archivos que resolviste
+git rebase --continue           # Continúa el rebase después de resolver los conflictos
+```
+
+### 8. **Sube los cambios actualizados**
+
+Después de realizar el rebase y resolver posibles conflictos, sube nuevamente tu rama al repositorio remoto:
+
+```bash
+git push origin feature/nueva-funcionalidad --force-with-lease  # Fuerza el push de los cambios rebased sin sobrescribir los cambios remotos
+```
+
+### 9. **Fusionar el PR**
+
+Una vez que tu PR haya sido revisado y aprobado:
+
+- Fusiona el PR a la rama `developer` usando la interfaz de GitHub (o mediante CLI, si lo prefieres).
+- Actualiza tu rama `developer` local después de la fusión:
+
+```bash
+git checkout developer        # Cambia a la rama developer
+git pull origin developer     # Obtén los últimos cambios que incluyen la fusión del PR
+```
+
+## **¡Gracias por contribuir a SwaplyAr!** 😊
 
 ## 🚀 Despliegue
 
 progreso...
+
+- Accede al proyecto en wep [https://swaplyar.vercel.app](https://swaplyar.vercel.app).
 
 ---
 

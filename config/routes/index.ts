@@ -11,10 +11,14 @@ export const configRoutes: ConfigRoutes = {
     '/info/terms-and-conditions',
     '/info/warranty',
     '/info/why-choose-swaplyar',
+    '/error404',
     '/request',
     // '/auth/login-register',
   ],
-  authRoutes: ['/auth/login-register'],
+  authRoutes: [
+    '/auth/login-register',
+    '/auth/login-register/email-verification',
+  ],
   apiRoutes: [
     '/api/login',
     '/api/users',
