@@ -14,6 +14,8 @@ import PaypalUSD from '@/components/request/Info/paypal/paypalUSD';
 
 import WiseEUR from '@/components/request/Info/wise/wiseEUR';
 import WiseUSD from '@/components/request/Info/wise/wiseUSD';
+import { Form } from 'react-hook-form';
+import FormRequest from '@/components/request/form/FormRequest';
 
 const RequestPage = () => {
   const [payerBank, setPayerBank] = useState<string>('');
@@ -28,7 +30,7 @@ const RequestPage = () => {
 
   return (
     <div className="flex flex-col-reverse items-center justify-center p-10 lg:flex-row lg:gap-8">
-      <RequestRegisterForm />
+      <FormRequest/>
     </div>
   );
 };

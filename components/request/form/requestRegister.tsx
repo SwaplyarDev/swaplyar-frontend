@@ -223,7 +223,7 @@ export const RequestRegisterForm = () => {
           
         </div>
 
-        <SelectCountry
+        {/* <SelectCountry
           errors={errors}
           setValue={setValue}
           setCurrentCountry={setCurrentCountry}
@@ -384,7 +384,7 @@ export const RequestRegisterForm = () => {
 
         {_errorMessage && (
           <p className="mt-5 text-center text-red-500">{_errorMessage}</p>
-        )}
+        )} */}
       </form>
     </div>
   );
