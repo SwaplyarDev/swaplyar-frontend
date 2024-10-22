@@ -3,12 +3,10 @@ import { Box } from '@mui/material';
 import clsx from 'clsx';
 
 interface AnimatedBlurredCirclesProps {
-  topOffset: number;
   tope: string;
 }
 
 const AnimatedBlurredCircles: React.FC<AnimatedBlurredCirclesProps> = ({
-  topOffset,
   tope,
 }) => {
   return (

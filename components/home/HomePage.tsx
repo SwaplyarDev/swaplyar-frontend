@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect } from 'react';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import Link from 'next/link';
@@ -12,6 +12,8 @@ import {
 } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
+import { useMargins } from '@/context/MarginProvider';
+import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import { useSession } from 'next-auth/react';
 
 const mainStyles = {
@@ -22,46 +24,30 @@ const mainStyles = {
 };
 
 export default function HomePage() {
-  const [instructionsOffset, setInstructionsOffset] = useState(0);
-  const instructionsRef = useRef<HTMLDivElement>(null);
-
   const resetToDefault = useSystemStore((state) => state.resetToDefault);
+  const { margins } = useMargins();
+  const currentMargin = ResponsiveMarginHook(margins);
+
   useEffect(() => {
     resetToDefault();
   }, [resetToDefault]);
 
-  const calculateInstructionsOffset = () => {
-    if (instructionsRef.current) {
-      setInstructionsOffset(instructionsRef.current.offsetTop);
-    }
-  };
   const { data: session } = useSession();
-  useEffect(() => {
-    calculateInstructionsOffset();
-    window.addEventListener('resize', calculateInstructionsOffset);
-
-    return () => {
-      window.removeEventListener('resize', calculateInstructionsOffset);
-    };
-  }, []);
 
   return (
     <main className={mainStyles.main}>
-      <AnimatedBlurredCircles
-        topOffset={instructionsOffset}
-        tope="top-[-375px]"
-      />
+      <AnimatedBlurredCircles tope="top-[-375px]" />
       <div className="relative bg-white shadow-custom-blue">
         <FlyerTrabajo imageSrc="/images/need-help.png">
           Estamos trabajando en las funciones de inicio de sesión y registro.
         </FlyerTrabajo>
       </div>
 
-      <div className="relative flex flex-col items-center justify-center">
-        <div
-          className={mainStyles.instructionsCalculatorContainer}
-          ref={instructionsRef}
-        >
+      <div
+        className="flex flex-col items-center justify-center"
+        style={{ margin: currentMargin }}
+      >
+        <div className={mainStyles.instructionsCalculatorContainer}>
           <ConversionInstructions />
         </div>
         <div className={mainStyles.infoBlocksContainer}>
@@ -85,12 +71,12 @@ export default function HomePage() {
           ¿Nuevo en SwaplyAr? Haz clic en &quot;Cómo usar SwaplyAr&quot; y
           aprendé a operar fácilmente. ¡Empezá ahora!
           <div>
-          <button
+            <button
               id="bannerHTUButton"
               className="trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:scale-105 hover:border-selectBtsLight hover:bg-transparent"
             >
               <Link
-                href={'/info/sapr-terms-conditions'}
+                href={'/info/how-to-use'}
                 className="ease font-bold text-darkText transition-colors duration-300"
               >
                 Como usar Swaplyar

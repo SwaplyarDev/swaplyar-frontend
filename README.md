@@ -167,7 +167,7 @@ La ruta `/api/paypal` en el servidor maneja la creación de órdenes en PayPal. 
         AUTH_SECRET='your_auth_secret'
         NEXTAUTH_SECRET='your_nextauth_secret'
 
-        NEXTAUTH_URL="http://localhost:8080/api/v1/login"
+        NEXTAUTH_URL="http://localhost:8080/api/"
 
         # AUTH_LOGIN_REDIRECT
         AUTH_LOGIN_REDIRECT="/products/company"

@@ -12,8 +12,9 @@ import Link from 'next/link';
 import clsx from 'clsx';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import { login } from '@/actions/auth/login';
+import Image from 'next/image';
 
-const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api/v1';
+const BASE_URL = process.env.BACKEND_API_URL || 'http://localhost:8080/api';
 
 type FormInputs = {
   email: string;
@@ -33,14 +34,13 @@ export const LoginForm = () => {
   const [useEmail, setUseEmail] = useState<string | null>(null); // Estado para almacenar el correo del usuario
   const [authState, setAuthState] = useState<string | null>(null);
   const { isDark } = useDarkTheme();
-  const router = useRouter();
 
   // Función para manejar el envío del código
   const sendCode = async (email: string) => {
     setLoading(true);
     try {
       // Llamar a la API que envía el código al email
-      const response = await fetch(`${BASE_URL}/login/email/send`, {
+      const response = await fetch(`${BASE_URL}/v1/login/email/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,10 +84,10 @@ export const LoginForm = () => {
 
     try {
       // Llamada a NextAuth usando 'credentials' como el método de inicio de sesión
-      console.log(
-        `email: ${useEmail}`,
-        `verificationCode: ${verificationCode}`,
-      );
+      // console.log(
+      //   `email: ${useEmail}`,
+      //   `verificationCode: ${verificationCode}`,
+      // );
 
       const result = await login(useEmail || '', verificationCode);
 
@@ -100,6 +100,7 @@ export const LoginForm = () => {
         });
       } else {
         setAuthState('Success');
+        window.location.href = '/';
       }
     } catch (error) {
       console.error('Error durante la verificación del código:', error);
@@ -237,11 +238,22 @@ function LoginButton({
       className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
       disabled={pending}
     >
-      {pending
-        ? 'Procesando...'
-        : codeSent
-          ? 'Verificar código'
-          : 'Enviar código'}
+      {pending ? (
+        <div className="flex items-center justify-center">
+          <Image
+            src="/gif/cargando.gif"
+            width={20}
+            height={20}
+            alt="loading"
+            className="mb-0.5 mr-1"
+          />
+          Procesando...
+        </div>
+      ) : codeSent ? (
+        'Verificar código'
+      ) : (
+        'Enviar código'
+      )}
     </button>
   );
 }

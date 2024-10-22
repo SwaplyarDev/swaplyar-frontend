@@ -19,6 +19,7 @@ import TopPopUp from './topPopUp';
 import LogInButton from './log-register-bt/logiInButton';
 import style from './log-register-bt/buttonStyle.module.css';
 import { signOut, useSession } from 'next-auth/react';
+import RegisterButton from './log-register-bt/registerButton';
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -38,7 +39,7 @@ export function TopMenu() {
     setSelectedItem(storage);
   }, []);
 
-  const session = useSession();
+  const { data: session, status } = useSession();
 
   return (
     <main className="sticky top-0 z-[1000] flex flex-col shadow-md">
@@ -47,7 +48,7 @@ export function TopMenu() {
       <Navbar fluid rounded className={`sticky py-3 dark:bg-lightText`}>
         <div className="m-auto flex w-[95%] max-w-screen-2xl flex-row justify-between">
           <span className="hidden md:flex lg:hidden">
-            {session ? (
+            {status === 'authenticated' ? (
               <button
                 onClick={() => signOut()}
                 className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
@@ -167,7 +168,7 @@ export function TopMenu() {
                     </Sidebar.ItemGroup>
 
                     <Sidebar.ItemGroup className="border-t-2 border-buttonsLigth px-2 dark:border-sky-500">
-                      {session ? (
+                      {status === 'authenticated' ? (
                         <Sidebar.Item
                           className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
                           onClick={() => signOut()}
@@ -209,6 +210,25 @@ export function TopMenu() {
 
             <section className="hidden lg:flex lg:gap-2">
               <NavLinks />
+              {status === 'authenticated' ? (
+                <>
+                  <div>
+                    <p>Bienvenido!</p>
+                    <p>{session?.user?.email}</p>
+                  </div>
+                  <button
+                    onClick={() => signOut()}
+                    className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+                  >
+                    Salir
+                  </button>
+                </>
+              ) : (
+                <>
+                  <LogInButton />
+                  <RegisterButton />
+                </>
+              )}
             </section>
           </nav>
         </div>

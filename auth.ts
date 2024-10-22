@@ -18,17 +18,16 @@ export const {
   },
 
   callbacks: {
-    async signIn({ user, account }) {
-      if (
-        account &&
-        (account.provider === 'google' || account.provider === 'github')
-      ) {
-        return true;
-      }
-      if (user.email) {
-        return false;
-      }
-      return true;
+    async signIn({ user, account, profile, email, credentials }) {
+      // Aquí puedes realizar verificaciones adicionales durante el sign-in
+      console.log('signIn callback:', {
+        user,
+        account,
+        profile,
+        email,
+        credentials,
+      });
+      return true; // Si retorna false, el sign-in fallará
     },
     async redirect({ url, baseUrl }) {
       console.log('redirect callback:', { url, baseUrl });

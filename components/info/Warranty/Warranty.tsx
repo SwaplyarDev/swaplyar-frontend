@@ -4,7 +4,6 @@ import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import CaedAboutUs from '@/components/ui/caed-about-us/caed-about-us';
 import GuaranteeSection from '@/components/ui/warranty-section/WarrantySection';
-import { useState, useEffect, useRef } from 'react';
 import {
   Aumeno,
   Caida,
@@ -13,6 +12,8 @@ import {
   Transacciones,
   Ventajaalelegirswaplyar,
 } from '@/utils/assets/imgDatabaseCloudinary';
+import { useMargins } from '@/context/MarginProvider';
+import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 const cardsData = [
   {
@@ -42,69 +43,61 @@ const cardsData = [
 ];
 
 const Warranty = () => {
-  const [bannerHeight, setBannerHeight] = useState(0);
-  const bannerRef = useRef<HTMLDivElement>(null);
-
-  const calculateBannerHeight = () => {
-    if (bannerRef.current) {
-      setBannerHeight(bannerRef.current.offsetHeight);
-    }
-  };
-
-  useEffect(() => {
-    calculateBannerHeight();
-
-    window.addEventListener('resize', calculateBannerHeight);
-
-    return () => {
-      window.removeEventListener('resize', calculateBannerHeight);
-    };
-  }, []);
+  const { margins } = useMargins();
+  const currentMargin = ResponsiveMarginHook(margins);
 
   return (
-    <main
-      className="relative flex w-full flex-col gap-20 py-10"
-      ref={bannerRef}
-    >
+    <>
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         Estamos trabajando en las funciones de inicio de sesión y registro.
       </FlyerTrabajo>
-      <AnimatedBlurredCircles topOffset={bannerHeight} tope="top-[-250px]" />
-      <div className="rs-wrapper-v4 m-auto flex w-[90%] flex-col items-center justify-center gap-12">
-        <GuaranteeSection
-          title="Garantizamos Tu Tranquilidad en Cada Transacción"
-          text="En SwaplyAr, nos comprometemos a que cada cambio de divisas sea seguro y confiable. Con nuestra garantía de satisfacción, podés estar seguro de que tus operaciones se manejarán con la mayor eficiencia y cuidado. ¡Confiá en nosotros para una experiencia sin preocupaciones!"
-          imageSrc={Garantizamos}
-          imageAlt="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
-        />
+      <main className="relative flex w-full flex-col items-center justify-center gap-20 py-10">
+        <AnimatedBlurredCircles tope="top-[-250px]" />
+        <div
+          className="rs-wrapper-v4 max-w-[1000px] flex-col items-center justify-center gap-12"
+          style={{ margin: currentMargin }}
+        >
+          <GuaranteeSection
+            title="Garantizamos Tu Tranquilidad en Cada Transacción"
+            text="En SwaplyAr, nos comprometemos a que cada cambio de divisas sea seguro y confiable. Con nuestra garantía de satisfacción, podés estar seguro de que tus operaciones se manejarán con la mayor eficiencia y cuidado. ¡Confiá en nosotros para una experiencia sin preocupaciones!"
+            imageSrc={Garantizamos}
+            imageAlt="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
+          />
 
-        <section className="mx-auto w-full max-w-screen-md">
-          <CaedAboutUs cardsData={cardsData} />
-        </section>
+          <section className="mx-auto mb-6 mt-12 w-full max-w-screen-md md:mb-24 md:mt-24">
+            <CaedAboutUs cardsData={cardsData} />
+          </section>
 
-        <InfoBlock
-          title="Ventajas Exclusivas al Elegir SwaplyAr para tus Transacciones"
-          imageSrc={Ventajaalelegirswaplyar}
-          imageAlt="Cambia USD de PayPal por ARS"
-          contentNode={
-            <>
-              En SwaplyAr, no solo garantizamos total seguridad y atención
-              personalizada durante cada transacción, sino que también ofrecemos
-              beneficios adicionales. Para nuestros usuarios registrados,
-              disponemos de promociones exclusivas y asumimos las comisiones por
-              vos.
-              <span style={{ backgroundColor: 'yellow', color: 'black' }}>
-                Mientras que otros servicios pueden incluir una comisión de
-                PayPal del 5.6% + $0.30 USD, en SwaplyAr, nosotros absorbemos
-                esos costos para ofrecerte el mejor valor.
-              </span>
-            </>
-          }
-        />
-        {/* <div id="flyer-container"></div> */}
-        <footer>{/* <div id="footer-placeholder"></div> */}</footer>
-      </div>
-    </main>
+          <InfoBlock
+            title="Ventajas Exclusivas al Elegir SwaplyAr para tus Transacciones"
+            imageSrc={Ventajaalelegirswaplyar}
+            imageAlt="Cambia USD de PayPal por ARS"
+            contentNode={
+              <>
+                En SwaplyAr, no solo garantizamos total seguridad y atención
+                personalizada durante cada transacción, sino que también
+                ofrecemos beneficios adicionales. Para nuestros usuarios
+                registrados, disponemos de promociones exclusivas y asumimos las
+                comisiones por vos.
+                <span
+                  style={{
+                    backgroundColor: 'yellow',
+                    color: 'black',
+                    marginTop: '1%',
+                  }}
+                >
+                  Mientras que otros servicios pueden incluir una comisión de
+                  PayPal del 5.6% + $0.30 USD, en SwaplyAr, nosotros absorbemos
+                  esos costos para ofrecerte el mejor valor.
+                </span>
+              </>
+            }
+          />
+          {/* <div id="flyer-container"></div> */}
+          <footer>{/* <div id="footer-placeholder"></div> */}</footer>
+        </div>
+      </main>
+    </>
   );
 };
 
