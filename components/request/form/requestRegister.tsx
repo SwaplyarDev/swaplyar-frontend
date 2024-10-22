@@ -232,11 +232,11 @@
           
 //         </div>
 
-//         <SelectCountry
-//           errors={errors}
-//           setValue={setValue}
-//           setCurrentCountry={setCurrentCountry}
-//         />
+        // <SelectCountry
+        //   errors={errors}
+        //   setValue={setValue}
+        //   setCurrentCountry={setCurrentCountry}
+        // />
 
 //         <label
 //           htmlFor="phone"
@@ -391,12 +391,12 @@
 //           </button>
 //         )}
 
-//         {_errorMessage && (
-//           <p className="mt-5 text-center text-red-500">{_errorMessage}</p>
-//         )}
-//       </form>
-//     </div>
-//   );
-// };
+        {_errorMessage && (
+          <p className="mt-5 text-center text-red-500">{_errorMessage}</p>
+        )}
+      </form>
+    </div>
+  );
+};
 
 // export default RequestRegisterForm;

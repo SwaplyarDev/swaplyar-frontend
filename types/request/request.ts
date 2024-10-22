@@ -2,6 +2,14 @@ export type FormInputs = {
   sender_first_name: string;
   sender_last_name: string;
   email: string;
+  addressee_first_name: string;
+  addressee_last_name: string;
+  wise_email: string;
+  re_enter_wise_email: string;
+  monto_enviar: string;
+  monto_recibir: string;
+  comprobante: FileList;
+  nota: string;
   receiver_first_name: string;
   receiver_last_name: string;
   amount_sent: number;
