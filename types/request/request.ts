@@ -1,6 +1,7 @@
 export type FormInputs = {
   sender_first_name: string;
   sender_last_name: string;
+  email: string;
   receiver_first_name: string;
   receiver_last_name: string;
   amount_sent: number;
