@@ -69,7 +69,7 @@ export default function Footer() {
 
       <div className="two-info-footer mt-5 flex flex-col items-center justify-between px-4 pt-4 sm:flex-row">
         <section className="container-footer-icon-social mb-4 flex justify-center space-x-4 sm:mb-0 sm:w-1/3 sm:justify-start">
-          <a
+          <Link
             href="https://www.linkedin.com/company/swaplyar/"
             target="_blank"
             rel="noopener noreferrer"
@@ -81,8 +81,8 @@ export default function Footer() {
               icon={faLinkedin}
               className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]"
             />
-          </a>
-          <a
+          </Link>
+          <Link
             href="https://www.instagram.com/swaplyar/"
             target="_blank"
             rel="noopener noreferrer"
@@ -94,8 +94,8 @@ export default function Footer() {
               icon={faInstagram}
               className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]"
             />
-          </a>
-          <a
+          </Link>
+          <Link
             href="https://www.facebook.com/swaplyar/"
             target="_blank"
             rel="noopener noreferrer"
@@ -107,8 +107,8 @@ export default function Footer() {
               icon={faFacebook}
               className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]"
             />
-          </a>
-          <a
+          </Link>
+          <Link
             href="https://wa.me/5491123832198"
             target="_blank"
             rel="noopener noreferrer"
@@ -120,7 +120,7 @@ export default function Footer() {
               icon={faWhatsapp}
               className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]"
             />
-          </a>
+          </Link>
         </section>
         <section className="mb-4 flex flex-grow justify-center filter dark:brightness-[0%] dark:invert sm:mb-0 sm:w-1/3 sm:justify-center">
           <Link href="/">
