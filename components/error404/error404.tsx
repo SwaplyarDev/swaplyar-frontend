@@ -15,10 +15,9 @@ const Error_404 = () => {
   const router = useRouter();
 
   useEffect(() => {
-    
     if (counter === 0) {
-      router.push('/'); 
-      return; 
+      router.push('/');
+      return;
     }
 
     const timer = setInterval(() => {
