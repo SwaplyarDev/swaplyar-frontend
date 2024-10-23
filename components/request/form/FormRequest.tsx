@@ -98,9 +98,9 @@ export const FormRequest = () => {
         </div>
       </section>
 
-      <section className="flex w-full flex-col gap-2 rounded-2xl bg-[#e6e8ef62] p-4 dark:bg-calculatorDark">
-        <div className="relative flex flex-col items-center">
-          <h3 className="absolute left-0 text-xl">
+      <section className="flex w-full flex-col sm-phone:gap-2 gap-4 rounded-2xl bg-[#e6e8ef62] p-4 dark:bg-calculatorDark">
+        <div className="md-tablet:relative xs-phone:flex md-tablet:flex-col md-tablet:items-center justify-between ">
+          <h3 className="md-tablet:absolute md-tablet:left-0 text-xl text-center mb-2 xs-phone:mb-0 xs-phone:text-left ">
             Información del destinatario
           </h3>
           <div className="flex items-center justify-center">
@@ -115,13 +115,13 @@ export const FormRequest = () => {
             <div className="h-7 w-7 rounded-full border-[3px] border-lightText dark:border-darkText"></div>
           </div>
         </div>
-        <div className="flex gap-8">
-          <div className="w-full">
-            <div>
+        <div className="flex sm-phone:gap-8 sm-phone:flex-row flex-col gap-4 mx-0 xs:mx-6 sm-phone:mx-0 ">
+          <div className="w-full flex gap-4 sm-phone:gap-3 flex-col sm-phone:justify-center">
+            <div className='flex flex-col'>
               <label
                 htmlFor="receiver_first_name"
                 className={clsx(
-                  "text-xs m-2",
+                  "text-xs ml-1",
                   errors.receiver_first_name
                     ? 'text-red-500'
                     : 'text-lightText dark:text-darkText',
@@ -139,11 +139,11 @@ export const FormRequest = () => {
                 }
               />
             </div>
-            <div>
+            <div className='flex flex-col'>
               <label
                 htmlFor="receiver_last_name"
                 className={clsx(
-                  "text-xs m-2",
+                  "text-xs ml-1",
                   errors.receiver_last_name
                     ? 'text-red-500'
                     : 'text-lightText dark:text-darkText',
@@ -160,12 +160,12 @@ export const FormRequest = () => {
               />
             </div>
           </div>
-          <div className="w-full">
-            <div>
+          <div className="w-full flex gap-4 sm-phone:gap-3 flex-col sm-phone:justify-center">
+            <div className='flex flex-col'>
               <label
                 htmlFor="wise_email"
                 className={clsx(
-                  "text-xs m-2",
+                  "text-xs ml-1",
                   errors.wise_email
                     ? 'text-red-500'
                     : 'text-lightText dark:text-darkText',
@@ -181,11 +181,11 @@ export const FormRequest = () => {
                 error={errors.wise_email && 'Este campo es obligatorio'}
               />
             </div>
-            <div>
+            <div className='flex flex-col'>
               <label
                 htmlFor="re_enter_wise_email"
                 className={clsx(
-                  "text-xs m-2",
+                  "text-xs ml-1",
                   errors.re_enter_wise_email
                     ? 'text-red-500'
                     : 'text-lightText dark:text-darkText',
@@ -207,7 +207,7 @@ export const FormRequest = () => {
         </div>
         <div className="flex justify-end">
           <button
-            className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+            className={`m-1 flex items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-1 text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
           >
             Siguiente
           </button>
@@ -236,7 +236,7 @@ export const FormRequest = () => {
           concepto de ''PAGO'' para enviarte el dinero a la cuenta
           00000@00000000.com
         </p>
-        <div className="flex flex-col gap-10 md:flex-row md:gap-16">
+        <div className="flex flex-col gap-10 md:flex-row md:gap-8">
           <div className="flex w-full flex-col">
             <label
               htmlFor="send_amount"

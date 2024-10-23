@@ -21,8 +21,11 @@ const config: Config = {
       },
       screens: {
         xs: '480px',
+        'xs-phone': '550px',
         sm: '640px',
+        'sm-phone': '660px',
         md: '768px',
+        'md-tablet': '850px',
         'lg-tablet': '960px',
         lg: '1170px',
         xl: '1280px',
