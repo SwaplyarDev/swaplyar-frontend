@@ -42,107 +42,109 @@ const FormRequestBank = () => {
             <div className="h-7 w-7 rounded-full border-[3px] border-lightText dark:border-darkText"></div>
           </div>
         </div>
-        <div>
-          <div>
-            <label
-              htmlFor="name"
-              className={clsx(
-                errors.sender_first_name
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
+        <div className='flex gap-8'>
+          <div className='w-full'>
+            <div className="flex flex-col">
+              <label
+                htmlFor="name"
+                className={clsx(
+                  errors.sender_first_name
+                    ? 'text-red-500'
+                    : 'text-lightText dark:text-darkText',
+                )}
+              >
+                Nombre
+              </label>
+              <input
+                className={clsx(
+                  'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
+                  errors.sender_first_name
+                    ? 'mb-0 border-red-500'
+                    : 'mb-5 hover:border-blue-600 dark:hover:border-white',
+                )}
+                type="text"
+                {...register('sender_first_name', {
+                  required: 'El nombre es obligatorio',
+                })}
+              />
+              {errors.sender_first_name && (
+                <p className="mb-5 text-sm text-red-500">
+                  • {errors.sender_first_name.message}
+                </p>
               )}
-            >
-              Nombre
-            </label>
-            <input
-              className={clsx(
-                'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-                errors.sender_first_name
-                  ? 'mb-0 border-red-500'
-                  : 'mb-5 hover:border-blue-600 dark:hover:border-white',
-              )}
-              type="text"
-              {...register('sender_first_name', {
-                required: 'El nombre es obligatorio',
-              })}
-            />
-            {errors.sender_first_name && (
-              <p className="mb-5 text-sm text-red-500">
-                • {errors.sender_first_name.message}
-              </p>
-            )}
-          </div>
+            </div>
 
-          <div>
-            <label
-              htmlFor="sender_last_name"
-              className={clsx(
-                errors.sender_last_name
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
+            <div className="flex flex-col">
+              <label
+                htmlFor="sender_last_name"
+                className={clsx(
+                  errors.sender_last_name
+                    ? 'text-red-500'
+                    : 'text-lightText dark:text-darkText',
+                )}
+              >
+                Apellido
+              </label>
+              <input
+                className={clsx(
+                  'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
+                  errors.sender_last_name
+                    ? 'mb-0 border-red-500'
+                    : 'mb-5 hover:border-blue-600 dark:hover:border-white',
+                )}
+                type="text"
+                {...register('sender_last_name', {
+                  required: 'El apellido es obligatorio',
+                })}
+              />
+              {errors.sender_last_name && (
+                <p className="mb-5 text-sm text-red-500">
+                  • {errors.sender_last_name.message}
+                </p>
               )}
-            >
-              Apellido
-            </label>
-            <input
-              className={clsx(
-                'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-                errors.sender_last_name
-                  ? 'mb-0 border-red-500'
-                  : 'mb-5 hover:border-blue-600 dark:hover:border-white',
-              )}
-              type="text"
-              {...register('sender_last_name', {
-                required: 'El apellido es obligatorio',
-              })}
-            />
-            {errors.sender_last_name && (
-              <p className="mb-5 text-sm text-red-500">
-                • {errors.sender_last_name.message}
-              </p>
-            )}
+            </div>
           </div>
-        </div>
-        <div>
-          <div>
-            <label
-              htmlFor="email"
-              className={clsx(
-                errors.email
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
+          <div className='w-full'>
+            <div className="flex flex-col">
+              <label
+                htmlFor="email"
+                className={clsx(
+                  errors.email
+                    ? 'text-red-500'
+                    : 'text-lightText dark:text-darkText',
+                )}
+              >
+                Correo electrónico
+              </label>
+              <input
+                className={clsx(
+                  'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
+                  errors.email
+                    ? 'mb-0 border-red-500'
+                    : 'mb-5 hover:border-blue-600 dark:hover:border-white',
+                )}
+                type="email"
+                {...register('email', {
+                  required: 'El correo electrónico es obligatorio',
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: 'El formato del correo electrónico es inválido',
+                  },
+                })}
+              />
+              {errors.email && (
+                <p className="mb-5 text-sm text-red-500">
+                  • {errors.email.message}
+                </p>
               )}
-            >
-              Correo electrónico
-            </label>
-            <input
-              className={clsx(
-                'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-                errors.email
-                  ? 'mb-0 border-red-500'
-                  : 'mb-5 hover:border-blue-600 dark:hover:border-white',
-              )}
-              type="email"
-              {...register('email', {
-                required: 'El correo electrónico es obligatorio',
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: 'El formato del correo electrónico es inválido',
-                },
-              })}
+            </div>
+            <CountrySelect
+              errors={errors}
+              setValue={setValue}
+              setCurrentCountry={setCurrentCountry}
+              register={register}
             />
-            {errors.email && (
-              <p className="mb-5 text-sm text-red-500">
-                • {errors.email.message}
-              </p>
-            )}
           </div>
-          <CountrySelect
-            errors={errors}
-            setValue={setValue}
-            setCurrentCountry={setCurrentCountry}
-            register={register}
-          />
         </div>
         <div>
           <p>¿Se transfiere a una cuenta propia?</p>

@@ -23,11 +23,18 @@ export default function SelectCountry({
   errors,
   setValue,
   setCurrentCountry,
-  register
+  register,
 }: SelectCountryProps) {
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
   const [countryValues, setCountryValues] = useState<CountryOption[]>([]);
-  const [selectedOption, setSelectedOption] = useState<SingleValue<CountryOption>>(null);
+  const [selectedOption, setSelectedOption] = useState<
+    SingleValue<CountryOption>
+  >({
+    value: 'AR',
+    label: 'AR',
+    callingCode: '+54',
+  });
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -74,30 +81,50 @@ export default function SelectCountry({
       >
         Telefono
       </label>
-      <div className='flex gap-1'>
+      <div
+        className={clsx(
+          'flex items-center rounded border border-[#6B7280] bg-gray-200 dark:bg-lightText',
+          errors.phone
+            ? 'mb-0 border-red-500'
+            : isFocused
+              ? 'border-blue-600'
+              : 'mb-5 hover:border-blue-600 dark:hover:border-white',
+        )}
+        onFocus={() => setIsFocused(true)} // Manejador de foco en el contenedor
+        onBlur={() => setIsFocused(false)} // Manejador de desenfoque en el contenedor
+        tabIndex={0} // Asegúrate de que el div pueda recibir el enfoque
+      >
         <Select
           id="country"
           options={countryOptions}
-          value={countryValues.find(option => option.value === selectedOption?.value) || null}
-          onChange={(option) => setSelectedOption(option)} // Establecer la opción seleccionada
-          // Formatear las opciones para mostrar país + código de área en la lista
+          value={
+            countryValues.find(
+              (option) => option.value === selectedOption?.value,
+            ) || null
+          }
+          onChange={(option) => setSelectedOption(option)}
+          onFocus={() => setIsFocused(true)} // Agrega onFocus
+          onBlur={() => setIsFocused(false)} // Agrega onBlur
           formatOptionLabel={({ label }: CountryOption) => (
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <span>{label}</span>
             </div>
           )}
-          isClearable
+          filterOption={(option, inputValue) => {
+            const search = inputValue.toLowerCase();
+            return (
+              option.data.value.toLowerCase().includes(search) ||
+              option.data.callingCode.includes(search)
+            );
+          }}
           isSearchable
           classNamePrefix="custom-select"
           className={clsx(
-            'rounded border border-[#6b7280] bg-gray-200 py-px text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.country
-              ? 'mb-0 border-red-500'
-              : 'mb-5 hover:border-blue-600',
+            'w-full max-w-24 rounded py-px text-gray-900 dark:text-white',
           )}
           getOptionLabel={(option: CountryOption) => option.value}
           getOptionValue={(option: CountryOption) => option.value}
-          placeholder="Selecciona un país"
+          placeholder="AR"
           theme={(theme) => ({
             ...theme,
             borderRadius: 0,
@@ -155,9 +182,15 @@ export default function SelectCountry({
                 boxShadow: 'none',
               },
             }),
-            clearIndicator: (provided) => ({
+            clearIndicator: () => ({
+              display: 'none', // Ocultar la X
+            }),
+            dropdownIndicator: (provided) => ({
               ...provided,
-              color: 'inherit',
+              padding: '0 8px', // Asegura espacio para la flecha desplegable
+            }),
+            indicatorSeparator: () => ({
+              display: 'none', // Elimina el separador vertical "|"
             }),
             placeholder: (provided) => ({
               ...provided,
@@ -166,13 +199,16 @@ export default function SelectCountry({
             }),
           }}
         />
-        <p>{selectedOption?.callingCode}</p>
+
+        <p className="flex h-full items-center justify-center">
+          {selectedOption?.callingCode}
+        </p>
         <input
-          className={clsx(
-            'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.phone ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
-          )}
+          placeholder="Telefono"
+          className="w-full border-none bg-transparent focus:border-none focus:outline-none focus:ring-0"
           type="tel"
+          onFocus={() => setIsFocused(true)} // Agrega onFocus
+          onBlur={() => setIsFocused(false)} // Agrega onBlur
           {...register('phone', {
             required: 'El número de teléfono es obligatorio',
             pattern: {
