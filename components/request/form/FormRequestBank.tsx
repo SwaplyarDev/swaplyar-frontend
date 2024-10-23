@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form';
 import clsx from 'clsx';
 import SelectCountry from './inputs/selectCountry';
 import CountrySelect from './inputs/selectCountry';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import SelectBoolean from './inputs/selectBoolean';
 
 const FormRequestBank = () => {
   const {
@@ -17,6 +19,7 @@ const FormRequestBank = () => {
   const [currentCountry, setCurrentCountry] = useState<CountryOption | null>(
     null,
   );
+  const { isDark } = useDarkTheme();
   return (
     <form className="flex w-full max-w-[1000px] flex-col gap-5">
       <div className="flex justify-between px-2">
@@ -42,12 +45,13 @@ const FormRequestBank = () => {
             <div className="h-7 w-7 rounded-full border-[3px] border-lightText dark:border-darkText"></div>
           </div>
         </div>
-        <div className='flex gap-8'>
-          <div className='w-full'>
+        <div className="flex gap-8">
+          <div className="w-full">
             <div className="flex flex-col">
               <label
                 htmlFor="name"
                 className={clsx(
+                  'ml-1',
                   errors.sender_first_name
                     ? 'text-red-500'
                     : 'text-lightText dark:text-darkText',
@@ -78,6 +82,7 @@ const FormRequestBank = () => {
               <label
                 htmlFor="sender_last_name"
                 className={clsx(
+                  'ml-1',
                   errors.sender_last_name
                     ? 'text-red-500'
                     : 'text-lightText dark:text-darkText',
@@ -104,11 +109,12 @@ const FormRequestBank = () => {
               )}
             </div>
           </div>
-          <div className='w-full'>
+          <div className="w-full">
             <div className="flex flex-col">
               <label
                 htmlFor="email"
                 className={clsx(
+                  'ml-1',
                   errors.email
                     ? 'text-red-500'
                     : 'text-lightText dark:text-darkText',
@@ -146,12 +152,27 @@ const FormRequestBank = () => {
             />
           </div>
         </div>
-        <div>
-          <p>¿Se transfiere a una cuenta propia?</p>
-          <select></select>
+        <div className="flex gap-8">
+          <div className="flex w-full items-center justify-center">
+            <p className="text-lg text-lightText dark:text-darkText">
+              ¿Se transfiere a una cuenta propia?
+            </p>
+          </div>
+          <div className="flex w-full">
+            <SelectBoolean
+              errors={errors}
+              setValue={setValue}
+              setCurrentCountry={setCurrentCountry}
+              register={register}
+            />
+          </div>
         </div>
-        <div>
-          <button>Siguente</button>
+        <div className="flex justify-end">
+          <button
+            className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+          >
+            Siguiente
+          </button>
         </div>
       </section>
 

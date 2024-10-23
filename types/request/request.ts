@@ -8,6 +8,7 @@ export type FormInputs = {
   receive_amount: string;
   comprobante: FileList;
   nota: string;
+  own_account: boolean
   receiver_first_name: string;
   receiver_last_name: string;
   amount_sent: number;
