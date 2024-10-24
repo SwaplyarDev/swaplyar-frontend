@@ -98,9 +98,9 @@ export const FormRequest = () => {
         </div>
       </section>
 
-      <section className="flex w-full flex-col sm-phone:gap-2 gap-4 rounded-2xl bg-[#e6e8ef62] p-4 dark:bg-calculatorDark">
-        <div className="md-tablet:relative xs-phone:flex md-tablet:flex-col md-tablet:items-center justify-between ">
-          <h3 className="md-tablet:absolute md-tablet:left-0 text-xl text-center mb-2 xs-phone:mb-0 xs-phone:text-left ">
+      <section className="flex w-full flex-col gap-4 rounded-2xl bg-[#e6e8ef62] p-4 dark:bg-calculatorDark">
+        <div className="justify-between xs-phone:flex md-tablet:relative md-tablet:flex-col md-tablet:items-center">
+          <h3 className="mb-2 text-center text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0">
             Información del destinatario
           </h3>
           <div className="flex items-center justify-center">
@@ -115,13 +115,13 @@ export const FormRequest = () => {
             <div className="h-7 w-7 rounded-full border-[3px] border-lightText dark:border-darkText"></div>
           </div>
         </div>
-        <div className="flex sm-phone:gap-8 sm-phone:flex-row flex-col gap-4 mx-0 xs:mx-6 sm-phone:mx-0 ">
-          <div className="w-full flex gap-4 sm-phone:gap-3 flex-col sm-phone:justify-center">
-            <div className='flex flex-col'>
+        <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
+          <div className="flex w-full flex-col gap-4 sm-phone:justify-center">
+            <div className="flex flex-col">
               <label
                 htmlFor="receiver_first_name"
                 className={clsx(
-                  "text-xs ml-1",
+                  'ml-1 text-xs',
                   errors.receiver_first_name
                     ? 'text-red-500'
                     : 'text-lightText dark:text-darkText',
@@ -139,11 +139,11 @@ export const FormRequest = () => {
                 }
               />
             </div>
-            <div className='flex flex-col'>
+            <div className="flex flex-col">
               <label
                 htmlFor="receiver_last_name"
                 className={clsx(
-                  "text-xs ml-1",
+                  'ml-1 text-xs',
                   errors.receiver_last_name
                     ? 'text-red-500'
                     : 'text-lightText dark:text-darkText',
@@ -160,12 +160,12 @@ export const FormRequest = () => {
               />
             </div>
           </div>
-          <div className="w-full flex gap-4 sm-phone:gap-3 flex-col sm-phone:justify-center">
-            <div className='flex flex-col'>
+          <div className="flex w-full flex-col gap-4 sm-phone:justify-center">
+            <div className="flex flex-col">
               <label
                 htmlFor="wise_email"
                 className={clsx(
-                  "text-xs ml-1",
+                  'ml-1 text-xs',
                   errors.wise_email
                     ? 'text-red-500'
                     : 'text-lightText dark:text-darkText',
@@ -181,11 +181,11 @@ export const FormRequest = () => {
                 error={errors.wise_email && 'Este campo es obligatorio'}
               />
             </div>
-            <div className='flex flex-col'>
+            <div className="flex flex-col">
               <label
                 htmlFor="re_enter_wise_email"
                 className={clsx(
-                  "text-xs ml-1",
+                  'ml-1 text-xs',
                   errors.re_enter_wise_email
                     ? 'text-red-500'
                     : 'text-lightText dark:text-darkText',
@@ -214,9 +214,11 @@ export const FormRequest = () => {
         </div>
       </section>
 
-      <section className="w-full rounded-2xl bg-[#e6e8ef62] p-4 dark:bg-calculatorDark">
-        <div className="relative flex flex-col items-center">
-          <h3 className="absolute left-0 text-xl">Pago</h3>
+      <section className="flex w-full flex-col gap-4 rounded-2xl bg-[#e6e8ef62] p-4 dark:bg-calculatorDark sm-phone:gap-2">
+        <div className="justify-between xs-phone:flex md-tablet:relative md-tablet:flex-col md-tablet:items-center">
+          <h3 className="mb-2 text-center text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0">
+            Pago
+          </h3>
           <div className="flex items-center justify-center">
             <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
               <Tick />
@@ -226,101 +228,109 @@ export const FormRequest = () => {
               <Tick />
             </div>
             <div className="h-[3px] w-6 bg-lightText dark:bg-darkText"></div>
-            <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
-              <Tick />
-            </div>
+            <div className="h-7 w-7 rounded-full border-[3px] border-lightText dark:border-darkText"></div>
           </div>
         </div>
-        <p>
+        <p className="text-center xs-phone:text-left">
           tienes que realizar el pago de $000 al email asdfgh@asdfgh.com con el
-          concepto de ''PAGO'' para enviarte el dinero a la cuenta
+          concepto de "PAGO" para enviarte el dinero a la cuenta
           00000@00000000.com
         </p>
-        <div className="flex flex-col gap-10 md:flex-row md:gap-8">
-          <div className="flex w-full flex-col">
-            <label
-              htmlFor="send_amount"
-              className={clsx(
-                'block',
-                errors.send_amount
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
-              )}
-            >
-              Monto a pagar
-            </label>
-            <InputField
-              id="send_amount"
-              type="number"
-              placeholder="Monto Enviar"
-              register={register('send_amount', { required: true })}
-              error={errors.send_amount && 'Este campo es obligatorio'}
-            />
-            <label
-              htmlFor="receive_amount"
-              className={clsx(
-                'block',
-                errors.receive_amount
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
-              )}
-            >
-              Monto a Recibir
-            </label>
-            <InputField
-              id="receive_amount"
-              type="number"
-              placeholder="Monto a Recibir"
-              register={register('receive_amount', { required: true })}
-              error={errors.receive_amount && 'Este campo es obligatorio'}
-            />
-            <label
-              htmlFor="comprobante"
-              className={clsx(
-                'block',
-                errors.comprobante
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
-              )}
-            >
-              Comprobante
-            </label>
-            <InputField
-              id="comprobante"
-              type="file"
-              //   accept="image/*"
-              placeholder="SUBIR COMPROBANTE"
-              register={register('comprobante', { required: true })}
-              error={errors.comprobante && 'Este campo es obligatorio'}
-            />
+        <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
+          <div className="flex w-full flex-col gap-4 sm-phone:justify-center sm-phone:gap-3">
+            <div className="flex flex-col">
+              <label
+                htmlFor="send_amount"
+                className={clsx(
+                  'ml-1 text-xs',
+                  errors.send_amount
+                    ? 'text-red-500'
+                    : 'text-lightText dark:text-darkText',
+                )}
+              >
+                Monto a pagar
+              </label>
+              <InputField
+                id="send_amount"
+                type="number"
+                placeholder="Monto Enviar"
+                register={register('send_amount', { required: true })}
+                error={errors.send_amount && 'Este campo es obligatorio'}
+              />
+            </div>
+            <div className="flex flex-col">
+              <label
+                htmlFor="receive_amount"
+                className={clsx(
+                  'ml-1 text-xs',
+                  errors.receive_amount
+                    ? 'text-red-500'
+                    : 'text-lightText dark:text-darkText',
+                )}
+              >
+                Monto a Recibir
+              </label>
+              <InputField
+                id="receive_amount"
+                type="number"
+                placeholder="Monto a Recibir"
+                register={register('receive_amount', { required: true })}
+                error={errors.receive_amount && 'Este campo es obligatorio'}
+              />
+            </div>
+            <div className="flex flex-col h-[38px]">
+              <label
+                htmlFor="comprobante"
+                className={clsx(
+                  'ml-1 text-xs',
+                  errors.comprobante
+                    ? 'text-red-500'
+                    : 'text-lightText dark:text-darkText',
+                )}
+              >
+                Comprobante
+              </label>
+              <InputField
+                id="comprobante"
+                type="file"
+                //   accept="image/*"
+                placeholder="SUBIR COMPROBANTE"
+                register={register('comprobante', { required: true })}
+                error={errors.comprobante && 'Este campo es obligatorio'}
+              />
+            </div>
           </div>
-          <div className="flex w-full flex-col">
-            <label
-              htmlFor="nota"
-              className={clsx(
-                'block',
-                errors.nota
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
+          <div className='w-full'>
+            <div className="flex flex-col">
+              <label
+                htmlFor="nota"
+                className={clsx(
+                  'ml-1 text-xs',
+                  errors.nota
+                    ? 'text-red-500'
+                    : 'text-lightText dark:text-darkText',
+                )}
+              >
+                Nota (opcional)
+              </label>
+              <textarea
+                {...register('nota', { required: true })}
+                id="nota"
+                rows={7}
+                placeholder="Añade una nota si lo deseas ;)"
+                className={clsx(
+                  'w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
+                  errors.nota
+                    ? 'border-red-500'
+                    : 'hover:border-blue-600 dark:hover:border-white',
+                )}
+              ></textarea>
+              {errors.nota && (
+                <p className="text-sm text-red-500">
+                  Este campo es obligatorio
+                </p>
               )}
-            >
-              Nota (opcional)
-            </label>
-            <textarea
-              {...register('nota', { required: true })}
-              id="nota"
-              rows={7}
-              placeholder="Añade una nota si lo deseas ;)"
-              className={clsx(
-                'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-                errors.nota
-                  ? 'border-red-500'
-                  : 'hover:border-blue-600 dark:hover:border-white',
-              )}
-            ></textarea>
-            {errors.nota && (
-              <p className="text-sm text-red-500">Este campo es obligatorio</p>
-            )}
+            </div>
           </div>
         </div>
       </section>
