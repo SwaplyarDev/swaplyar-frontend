@@ -1,19 +1,8 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import ContactForm from '@/components/ui/contact-form/ContactForm';
-import {
-  Ayuda1,
-  Ayuda2,
-  CentroDeAyuda,
-  Contacto,
-  PlusRewards,
-  PlusRewardsDark,
-  Ayuda1Dark,
-  Ayuda2Dark,
-} from '@/utils/assets/imgDatabaseCloudinary';
+import { CentroDeAyuda } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
-import Link from 'next/link';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
@@ -37,28 +26,16 @@ const HelpCenterPage = () => {
             <h1 className="text-center text-3xl font-bold md:text-left">
               Bienvenido al Centro de Ayuda de SwaplyAr
             </h1>
-            <h3 className="text-xl">
+            <p className="text-xl">
               Comunicate con nosotros y responderemos cualquier consulta que
               tengas
-            </h3>
+            </p>
           </section>
-
-          <section className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            <span>
-              <ContactForm />
-            </span>
-
-            <span className="flex items-center justify-center">
-              <Image
-                src={Contacto}
-                alt="Contáctanos"
-                width={400}
-                height={300}
-              />
-            </span>
+          <section className="flex flex-col items-center">
+            <ContactForm />
           </section>
-
           <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
+<<<<<<< HEAD
             <span className="flex items-center justify-center">
               <Image
                 // src={PlusRewards}
@@ -112,41 +89,64 @@ const HelpCenterPage = () => {
                 height={150}
                 className="hidden dark:inline-block"
               />
+=======
+            <span className="card-rawe flex flex-col items-center rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark md:items-start">
+              {isDark ? (
+                <Image
+                  // src={Ayuda1Dark}
+                  src="/images/ayuda1-dark.png"
+                  alt="paso 1 de como cambiar tu dinero en SwaplyAr tema oscuro"
+                  width={210}
+                  height={150}
+                />
+              ) : (
+                <Image
+                  // src={Ayuda1}
+                  src="/images/ayuda1.png"
+                  alt="paso 1 de como cambiar tu dinero en SwaplyAr"
+                  width={210}
+                  height={150}
+                />
+              )}
+>>>>>>> d5babf4c44068f482699f83fce88ebab97a540a5
               <h3 className="text-xl font-bold">Chateá con nosotros</h3>
               <div className="flex h-full flex-col justify-between">
-                <p className="text-lg">
+                <p className="mb-6 text-center text-lg md:mb-0 md:text-left">
                   Comunicate con nuestro representante de Atención al Cliente
                   para recibir ayuda.
                 </p>
-                <p className="text-lg">
+                <p className="text-right text-2xl">
                   <LinkWithHover href="https://wa.me/+5491123832198">
                     WhatsApp.
                   </LinkWithHover>
                 </p>
               </div>
             </span>
-            <span className="card-rawe flex flex-col rounded bg-gray-100 p-4 dark:bg-graytyc">
-              <Image
-                src={Ayuda2}
-                alt="paso 2 de como cambiar tu dinero en SwaplyAr"
-                width={210}
-                height={150}
-                className="inline-block dark:hidden"
-              />
-              <Image
-                src={Ayuda2Dark}
-                alt="paso 2 de como cambiar tu dinero en SwaplyAr tema oscuro"
-                width={210}
-                height={150}
-                className="hidden dark:inline-block"
-              />
+            <span className="card-rawe flex flex-col items-center rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark md:items-start">
+              {isDark ? (
+                <Image
+                  // src={Ayuda2Dark}
+                  src="/images/ayuda2-dark.png"
+                  alt="paso 2 de como cambiar tu dinero en SwaplyAr tema oscuro"
+                  width={210}
+                  height={150}
+                />
+              ) : (
+                <Image
+                  // src={Ayuda2}
+                  src="/images/ayuda2.png"
+                  alt="paso 2 de como cambiar tu dinero en SwaplyAr"
+                  width={210}
+                  height={150}
+                />
+              )}
               <h3 className="text-xl font-bold">Otro motivo...</h3>
               <div className="flex flex-col justify-between">
-                <p className="text-lg">
+                <p className="mb-6 text-center text-lg md:mb-0 md:text-left">
                   Si necesitás contactarnos por otro motivo, simplemente
                   envianos un email y atenderemos tu solicitud.
                 </p>
-                <p className="text-lg">
+                <p className="text-right text-2xl">
                   <LinkWithHover href="mailto:centrodeayuda@swaplyar.com">
                     Email.
                   </LinkWithHover>

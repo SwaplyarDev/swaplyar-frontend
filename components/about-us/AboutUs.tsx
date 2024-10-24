@@ -59,7 +59,7 @@ const AboutUs = () => {
   return (
     <>
       <div className="relative flex flex-col items-center justify-center py-10">
-        <AnimatedBlurredCircles tope="top-[-175px]" />
+        <AnimatedBlurredCircles tope="top-[0px]" />
         <div
           className="flex w-full max-w-[1000px] flex-col items-center justify-center pt-5 text-black dark:text-white"
           style={{ margin: currentMargin }}
