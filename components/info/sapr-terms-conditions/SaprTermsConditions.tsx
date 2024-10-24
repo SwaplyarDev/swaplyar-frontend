@@ -169,7 +169,7 @@ const SaprTermsConditions = () => {
         <Link
           href="https://swaplyar.com/SAPR-Terms-Conditions-ES%20.pdf"
           target="_blank"
-          className={`buttonSecond relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText`}
+          className={`buttonSecond relative m-1 h-[48px] items-center justify-center rounded-3xl border-2 border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white dark:bg-darkText dark:text-lightText`}
         >
           Descargar Términos
         </Link>
