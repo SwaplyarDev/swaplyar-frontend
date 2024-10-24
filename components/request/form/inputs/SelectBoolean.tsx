@@ -42,10 +42,10 @@ const SelectBoolean = ({
       classNamePrefix="custom-select"
       isSearchable={false}
       className={clsx(
-        'w-full focus:border-blue-600 rounded border border-[#6B7280] bg-gray-200 dark:bg-lightText text-gray-900 dark:bg- dark:text-white',
+        'w-full focus:border-blue-600 rounded border border-[#6B7280] bg-gray-200 dark:bg-lightText text-gray-900 dark:bg- dark:text-white h-[38px] ',
         errors.own_account
-          ? 'mb-0 border-red-500'
-          : 'mb-5 hover:border-blue-600 dark:hover:border-white',
+          ? ' border-red-500'
+          : ' hover:border-blue-600 dark:hover:border-white',
       )}
       theme={(theme) => ({
         ...theme,
@@ -66,6 +66,7 @@ const SelectBoolean = ({
           border: 'none',
           boxShadow: 'none',
           backgroundColor: 'transparent',
+          cursor: 'pointer',
         }),
         menu: (provided) => ({
           ...provided,
@@ -96,10 +97,12 @@ const SelectBoolean = ({
           color: 'inherit',
           background: 'none',
           boxShadow: 'none',
+          cursor: 'pointer',
           '& input': {
             font: 'inherit',
             color: 'inherit',
             userSelect: 'text',
+            cursor: 'pointer',
             border: 'none',
             boxShadow: 'none',
           },

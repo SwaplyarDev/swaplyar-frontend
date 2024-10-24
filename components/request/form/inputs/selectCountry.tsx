@@ -72,10 +72,10 @@ export default function SelectCountry({
   }, []);
 
   return (
-    <>
+    <div className='flex flex-col'>
       <label
         htmlFor="phone"
-        className={clsx('ml-1',
+        className={clsx('text-xs ml-1',
           errors.country ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
         )}
       >
@@ -83,12 +83,12 @@ export default function SelectCountry({
       </label>
       <div
         className={clsx(
-          'flex items-center rounded border border-[#6B7280] bg-gray-200 dark:bg-lightText',
+          'flex items-center rounded border border-[#6B7280] bg-gray-200 dark:bg-lightText h-[38px]',
           errors.phone
-            ? 'mb-0 border-red-500'
+            ? ' border-red-500'
             : isFocused
               ? 'border-blue-600'
-              : 'mb-5 hover:border-blue-600 dark:hover:border-white',
+              : ' hover:border-blue-600 dark:hover:border-white',
         )}
         onFocus={() => setIsFocused(true)} // Manejador de foco en el contenedor
         onBlur={() => setIsFocused(false)} // Manejador de desenfoque en el contenedor
@@ -223,6 +223,6 @@ export default function SelectCountry({
           • {errors.phone.message as string}
         </p>
       )}
-    </>
+    </div>
   );
 }
