@@ -4,7 +4,6 @@
   text-align: center;
   padding: 10px;
   height: 790px;
-  margin: auto;
 }
 
 .image {
@@ -18,11 +17,12 @@
 
 .message {
   position: relative;
-  width: 310px;
+  width: 315px;
   padding: 10px;
   text-align: left;
   top: calc(50% + -535px);
   left: calc(50% - 590px);
+  font-size: 32px;
 }
 
 .redirectButton {
@@ -30,44 +30,54 @@
   top: calc(50% + -520px);
   left: calc(50% - 495px);
   transform: translate(-50%, -50%);
-  border-radius: 35px;
+  border-radius: 50px;
   width: 180px;
   height: 75px;
   padding: 20px;
   text-align: center;
+  font-size: 15px;
 }
 
 .postImage1 {
   position: relative;
   transform: translate(-50%, -50%);
   width: 600px;
-  top: calc(50% - 790px);
+  top: calc(50% - 830px); 
   left: calc(50% - -220px);
 }
 .postImage2 {
   position: relative;
   transform: translate(-50%, -50%);
   width: 415px;
-  top: calc(50% - 1180px);
+  top: calc(50% - 1200px); 
   left: calc(50% - -460px);
 }
 .lineaVertical1 {
   background-color: white;
-  width: 2px;
-  height: 175px;
+  width: 20px;
+  height: 190px;
   position: relative;
-  top: calc(50% - 1595px);
+  top: calc(50% - 1630px);
   left: calc(50% - 610px);
+  border-radius: 12px;
 }
 .lineaVertical2 {
   background-color: blue;
-  width: 2px;
-  height: 175px;
+  width: 20px;
+  height: 190px;
   position: relative;
-  top: calc(50% - 1595px);
+  top: calc(50% - 1630px);
   left: calc(50% - 610px);
+  border-radius: 12px;
 }
-.enchufe{
+.enchufe1{
+  width: 1700px;
+  position: relative;
+  top: calc(50% - 1670px);
+  left: calc(50% - 1100px);
+  
+}
+.enchufe2{
   width: 1700px;
   position: relative;
   top: calc(50% - 1670px);
@@ -76,13 +86,12 @@
 }
 } 
 
-@media (max-width: 1024px) {
+@media (max-width: 1325px) {
   .container {
     text-align: center;
     padding: 10px;
     height: 650px;
-    background-color: blue;
-    margin: auto;
+   
   }
   
   .image {
@@ -96,7 +105,7 @@
   
   .message {
     position: relative;
-    width: 310px;
+    width: 330px;
     padding: 10px;
     text-align: left;
     top: calc(50% + -700px);
@@ -119,33 +128,39 @@
     position: relative;
     transform: translate(-50%, -50%);
     width: 300px;
-    top: calc(50% - 930px);
-    left: calc(50% - -60px);
+    top: calc(50% - 960px);
+    left: calc(50% - -80px);
   }
   .postImage2 {
     position: relative;
     transform: translate(-50%, -50%);
     width: 305px;
-    top: calc(50% - 1190px);
+    top: calc(50% - 1230px);
     left: calc(50% - -265px);
   }
   .lineaVertical1 {
     background-color: white;
-    width: 2px;
-    height: 185px;
+    width: 20px;
+    height: 200px;
     position: relative;
-    top: calc(50% - 1500px);
-    left: calc(50% - 380px);
+    top: calc(50% - 1530px);
+    left: calc(50% - 395px);
   }
   .lineaVertical2 {
     background-color: blue;
-    width: 2px;
-    height: 185px;
+    width: 20px;
+    height: 200px;
     position: relative;
-    top: calc(50% - 1500px);
-    left: calc(50% - 380px);
+    top: calc(50% - 1530px);
+    left: calc(50% - 395px);
   }
-  .enchufe{
+  .enchufe1{
+    width: 1700px;
+    position: relative;
+    top: calc(50% - 1550px);
+    left: calc(50% - 1100px);
+  }
+  .enchufe2{
     width: 1700px;
     position: relative;
     top: calc(50% - 1550px);
@@ -153,47 +168,82 @@
   }
 } 
 
-@media (max-width: 768px) {
+@media (min-width: 550px) and (max-width: 768px) {
   .container {
-    margin-bottom: 700px;
+    text-align: center;
+    padding: 10px;
+    height: 650px;
   }
   .image {
-    width: 100%;
-    height: auto;
+    position: relative;
+    top: calc(50% - 220px);
+    left: calc(50% - 10px);
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 220px;
   }
   .message {
-    width: 80%;
-    top: calc(50% + -550px);
-    left: calc(50% - 280px);
+    position: relative;
+    width: 310px;
+    padding: 10px;
+    text-align: left;
+    top: calc(50% + -295px);
+    left: calc(50% - 240px);
+    font-size: 20px;
   }
   .redirectButton {
-    top: calc(50% + -520px);
-    left: calc(50% - 180px);
+    position: relative;
+    top: calc(50% + -280px);
+    left: calc(50% - 160px); 
+    transform: translate(-50%, -50%);
+    border-radius: 30px;
+    width: 170px;
+    height: 75px;
+    padding: 20px;
+    text-align: center;
   }
   .postImage1 {
-    width: 32%;
-    top: calc(50% - 755px);
-    left: calc(50% - -40px);
+    position: relative;
+    transform: translate(-50%, -50%);
+    width: 250px;
+    top: calc(50% - 460px); 
+    left: calc(50% - -60px);
   }
   .postImage2 {
-    width: 32%;
-    top: calc(50% - 970px);
-    left: calc(50% - -165px);
+    position: relative;
+    transform: translate(-50%, -50%);
+    width: 250px;
+    top: calc(50% - 690px); 
+    left: calc(50% - -180px);
   }
   .lineaVertical1 {
     background-color: white;
-    width: 2px;
-    height: 195px;
+    width: 20px;
+    height: 165px;
     position: relative;
-    top: calc(50% - 1200px);
-    left: calc(50% - 280px);
+    top: calc(50% - 975px);
+    left: calc(50% - 255px);
+    border-radius: 12px;
   }
   .lineaVertical2 {
     background-color: blue;
-    width: 2px;
-    height: 195px;
+    width: 20px;
+    height: 165px;
     position: relative;
-    top: calc(50% - 1200px);
-    left: calc(50% - 280px);
+    top: calc(50% - 975px);
+    left: calc(50% - 255px);
+    border-radius: 12px;
+  }
+  .enchufe1{
+    width: 1710px;
+    position: relative;
+    top: calc(50% - 1020px); 
+    left: calc(50% - 1050px);
+  }
+  .enchufe2{
+    width: 1710px;
+    position: relative;
+    top: calc(50% - 1020px); 
+    left: calc(50% - 1050px);
   }
 } 

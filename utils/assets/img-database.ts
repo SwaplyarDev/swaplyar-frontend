@@ -130,4 +130,4 @@ export const Error_404_dark = '/images/dark-404.png';
 export const Post1_404 = '/images/post1-404.png';
 export const Post2_404 = '/images/post2-404.png';
 export const Enchufe_dark = '/images/enchufe_dark.png';
-export const Enchufe_clear = '/images/encufe_clear.png';
+export const Enchufe_clear = '/images/enchufe_clear.png';

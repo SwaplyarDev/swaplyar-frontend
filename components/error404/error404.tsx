@@ -43,21 +43,22 @@ const Error_404 = () => {
             />
           </div>
           <div className={styles.message}>
-            <h1 className="text-3xl font-normal text-white">Ups..</h1>
-            <h1 className="text-3xl font-normal text-white">La pagina no</h1>
-            <h1 className="text-3xl font-normal text-white">
+            <h1 className="font-normal text-white">Ups..</h1>
+            <h1 className="font-normal text-white">La pagina no</h1>
+            <h1 className="font-normal text-white">
               ha sido encontrada
             </h1>
           </div>
           <div className={styles.redirectButton}>
             <h2
-              className="font-bold text-white"
+              className="font-bold text-black bg-white"
               style={{
-                border: '2px solid white',
-                borderRadius: '20px',
-                width: '200px',
+                fontSize: '20px',
+                textAlign: 'center',
+                borderRadius: '28px',
+                width: '210px',
                 height: '60px',
-                padding: '12px',
+                padding: '16px',
               }}
             >
               Redireccion en {counter}
@@ -83,7 +84,7 @@ const Error_404 = () => {
           </div>
           <div className={styles.lineaVertical1}></div>
 
-          <div className={styles.enchufe}>
+          <div className={styles.enchufe1}>
             <Image
               src={Enchufe_dark}
               alt="Descripción de la imagen enchufe"
@@ -104,21 +105,23 @@ const Error_404 = () => {
             />
           </div>
           <div className={styles.message}>
-            <p className="text-3xl font-normal text-black">Ups..</p>
-            <p className="text-3xl font-normal text-black">La pagina no</p>
-            <p className="text-3xl font-normal text-black">
+            <p className="font-normal text-black">Ups..</p>
+            <p className="font-normal text-black">La pagina no</p>
+            <p className="font-normal text-black">
               ha sido encontrada
             </p>
           </div>
           <div className={styles.redirectButton}>
             <h1
-              className="font-bold text-black"
+              className="font-bold text-blue-950"
               style={{
-                border: '2px solid blue',
-                borderRadius: '20px',
-                width: '200px',
+                border: '3px solid blue',
+                fontSize: '20px',
+                textAlign: 'center',
+                borderRadius: '28px',
+                width: '210px',
                 height: '60px',
-                padding: '12px',
+                padding: '14px',
               }}
             >
               Redireccion en {counter}
@@ -142,7 +145,17 @@ const Error_404 = () => {
               style={{ borderRadius: '8px' }}
             />
           </div>
+
           <div className={styles.lineaVertical2}></div>
+
+          <div className={styles.enchufe2}>
+            <Image
+              src={Enchufe_clear}
+              alt="Descripción de la imagen enchufe"
+              width={1600}
+              height={50}
+            />
+          </div>
         </>
       )}
     </div>
