@@ -30,7 +30,7 @@ const HelpCenterPage = () => {
       <main className="relative flex w-full flex-col items-center justify-center gap-20 py-10">
         <AnimatedBlurredCircles tope="top-[-260px]" />
         <div
-          className="mx-auto grid max-w-[1000px] gap-12"
+          className="mx-auto grid max-w-[1000px] gap-12 "
           style={{ margin: currentMargin }}
         >
           <section className="rs-wrapper-v4 p-4">
@@ -76,7 +76,7 @@ const HelpCenterPage = () => {
                 className="hidden dark:inline-block"
               />
             </span>
-            <span className="flex flex-col items-center text-center">
+            <span className="flex flex-col items-center text-center ">
               <h2 className="text-2xl font-bold">
                 SwaplyAr Plus Rewards™ premia tu fidelidad, con el programa de
                 fidelización

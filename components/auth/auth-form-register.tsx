@@ -83,7 +83,7 @@ export const RegisterForm = () => {
   };
 
   return (
-    <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-center py-5">
+    <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-center py-5 ">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="relative flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"

@@ -8,13 +8,14 @@ import { Error_404_clear } from '@/utils/assets/img-database';
 import { Error_404_dark } from '@/utils/assets/img-database';
 import { Post1_404 } from '@/utils/assets/img-database';
 import { Post2_404 } from '@/utils/assets/img-database';
+import { Enchufe_dark, Enchufe_clear } from '@/utils/assets/img-database';
 
 const Error_404 = () => {
   const { isDark } = useDarkTheme();
   const [counter, setCounter] = useState(10);
   const router = useRouter();
 
-  useEffect(() => {
+/*   useEffect(() => {
     
     if (counter === 0) {
       router.push('/'); 
@@ -26,10 +27,10 @@ const Error_404 = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [counter, router]);
+  }, [counter, router]); */
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={{marginBottom: '80px'}}>
       {isDark ? (
         <>
           <div className={styles.image}>
@@ -42,14 +43,14 @@ const Error_404 = () => {
             />
           </div>
           <div className={styles.message}>
-            <p className="text-3xl font-normal text-white">Ups..</p>
-            <p className="text-3xl font-normal text-white">La pagina no</p>
-            <p className="text-3xl font-normal text-white">
+            <h1 className="text-3xl font-normal text-white">Ups..</h1>
+            <h1 className="text-3xl font-normal text-white">La pagina no</h1>
+            <h1 className="text-3xl font-normal text-white">
               ha sido encontrada
-            </p>
+            </h1>
           </div>
           <div className={styles.redirectButton}>
-            <h1
+            <h2
               className="font-bold text-white"
               style={{
                 border: '2px solid white',
@@ -60,7 +61,7 @@ const Error_404 = () => {
               }}
             >
               Redireccion en {counter}
-            </h1>
+            </h2>
           </div>
           <div className={styles.postImage1}>
             <Image
@@ -81,6 +82,15 @@ const Error_404 = () => {
             />
           </div>
           <div className={styles.lineaVertical1}></div>
+
+          <div className={styles.enchufe}>
+            <Image
+              src={Enchufe_dark}
+              alt="Descripción de la imagen enchufe"
+              width={1600}
+              height={50}
+            />
+          </div>
         </>
       ) : (
         <>
