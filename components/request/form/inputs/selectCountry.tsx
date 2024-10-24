@@ -83,7 +83,7 @@ export default function SelectCountry({
       </label>
       <div
         className={clsx(
-          'flex items-center rounded border border-[#6B7280] bg-gray-200 dark:bg-lightText h-[38px]',
+          'flex items-center rounded border border-[#6B7280] bg-gray-200 dark:bg-lightText max-h-[38px]',
           errors.phone
             ? ' border-red-500'
             : isFocused

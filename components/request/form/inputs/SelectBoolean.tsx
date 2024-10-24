@@ -119,8 +119,7 @@ const SelectBoolean = ({
         }),
         placeholder: (provided) => ({
           ...provided,
-          color: 'gray',
-          opacity: 0.7,
+          color: "#6B7280",
         }),
       }}
     />

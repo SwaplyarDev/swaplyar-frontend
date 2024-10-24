@@ -1,16 +1,18 @@
 'use client';
-
 import clsx from 'clsx';
 import CountrySelect from './inputs/selectCountry';
-import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { CountryOption, FormInputs } from '@/types/request/request';
 import Tick from '@/components/ui/Tick/Tick';
 import InputField from '@/components/ui/contact-form/InputField';
 import SelectBoolean from './inputs/SelectBoolean';
+import { useForm } from 'react-hook-form';
+import { useSystemStore } from '@/store/useSystemStore';
+import SectionBank from './sections/SectionBank';
+import SectionOther from './sections/SectionOther';
 
-export const FormRequest = () => {
+const RequestRegisterForm = () => {
   const {
     register,
     handleSubmit,
@@ -26,6 +28,9 @@ export const FormRequest = () => {
       event.target.files[0]?.name || 'No hay archivo seleccionado';
     document.getElementById('file-name')!.textContent = fileName;
   }
+  const{
+    selectedReceivingSystem
+  } = useSystemStore();
   return (
     <form className="flex w-full max-w-[1000px] flex-col gap-5">
       <div className="flex justify-between px-2">
@@ -141,7 +146,7 @@ export const FormRequest = () => {
             />
           </div>
         </div>
-        <div className="flex justify-center sm-phone:justify-end">
+        <div className="flex justify-end">
           <button
             className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
           >
@@ -150,7 +155,8 @@ export const FormRequest = () => {
         </div>
       </section>
 
-      <section className="flex w-full flex-col gap-4 rounded-2xl bg-calculatorDark p-4 dark:bg-calculatorLight">
+      {/* Seccion 2 del formulaio */}
+      {/* <section className="flex w-full flex-col gap-4 rounded-2xl bg-calculatorDark p-4 dark:bg-calculatorLight sm-phone:gap-2">
         <div className="justify-between xs-phone:flex md-tablet:relative md-tablet:flex-col md-tablet:items-center">
           <h3 className="mb-2 text-center text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0">
             Información del destinatario
@@ -211,61 +217,113 @@ export const FormRequest = () => {
                 error={errors.receiver_last_name && 'Este campo es obligatorio'}
               />
             </div>
+            <div className="flex flex-col">
+              <label
+                htmlFor="tax_identification"
+                className={clsx(
+                  'ml-1 text-xs',
+                  errors.tax_identification
+                    ? 'text-red-500'
+                    : 'text-lightText dark:text-darkText',
+                )}
+              >
+                TAX ID/CUIT/CUIL
+              </label>
+              <InputField
+                id="tax_identification"
+                type="text"
+                placeholder="TAX ID/CUIT/CUIL"
+                register={register('tax_identification', { required: true })}
+                error={errors.tax_identification && 'Este campo es obligatorio'}
+              />
+            </div>
           </div>
           <div className="flex w-full flex-col gap-4">
             <div className="flex flex-col">
               <label
-                htmlFor="wise_email"
+                htmlFor="transfer_identification"
                 className={clsx(
                   'ml-1 text-xs',
-                  errors.wise_email
+                  errors.transfer_identification
                     ? 'text-red-500'
                     : 'text-lightText dark:text-darkText',
                 )}
               >
-                Email de Wise
+                CBU/CVU/ALIAS
               </label>
               <InputField
-                id="wise_email"
+                id="transfer_identification"
                 type="email"
-                placeholder="Email de wise"
-                register={register('wise_email', { required: true })}
-                error={errors.wise_email && 'Este campo es obligatorio'}
+                placeholder="CBU/CVU/ALIAS"
+                register={register('transfer_identification', {
+                  required: true,
+                })}
+                error={
+                  errors.transfer_identification && 'Este campo es obligatorio'
+                }
               />
             </div>
             <div className="flex flex-col">
               <label
-                htmlFor="re_enter_wise_email"
+                htmlFor="re_transfer_identification"
                 className={clsx(
                   'ml-1 text-xs',
-                  errors.re_enter_wise_email
+                  errors.re_transfer_identification
                     ? 'text-red-500'
                     : 'text-lightText dark:text-darkText',
                 )}
               >
-                RE-ENTER Email de Wise
+                RE-ENTER CBU/CVU/ALIAS
               </label>
               <InputField
-                id="re_enter_wise_email"
+                id="re_transfer_identification"
                 type="email"
-                placeholder="RE-ENTER Email de Wise"
-                register={register('re_enter_wise_email', { required: true })}
+                placeholder="RE-ENTER CBU/CVU/ALIAS"
+                register={register('re_transfer_identification', {
+                  required: true,
+                })}
                 error={
-                  errors.re_enter_wise_email && 'Este campo es obligatorio'
+                  errors.re_transfer_identification &&
+                  'Este campo es obligatorio'
                 }
+              />
+            </div>
+            <div className="flex flex-col">
+              <label
+                htmlFor="name_of_bank"
+                className={clsx(
+                  'ml-1 text-xs',
+                  errors.name_of_bank
+                    ? 'text-red-500'
+                    : 'text-lightText dark:text-darkText',
+                )}
+              >
+                Nombre del Banco
+              </label>
+              <InputField
+                id="name_of_bank"
+                type="email"
+                placeholder="Nombre del Banco"
+                register={register('name_of_bank', {
+                  required: true,
+                })}
+                error={errors.name_of_bank && 'Este campo es obligatorio'}
               />
             </div>
           </div>
         </div>
-        <div className="flex justify-center sm-phone:justify-end">
+        <div className="flex justify-end">
           <button
             className={`m-1 flex items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-1 text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
           >
             Siguiente
           </button>
         </div>
-      </section>
+      </section> */}
 
+      {selectedReceivingSystem?.id == "bank" ? (<SectionBank/>) : (<SectionOther/>)}
+
+      {/* Seccion 3 del formulaio */}
       <section className="flex w-full flex-col gap-4 rounded-2xl bg-calculatorDark p-4 dark:bg-calculatorLight">
         <div className="justify-between xs-phone:flex md-tablet:relative md-tablet:flex-col md-tablet:items-center">
           <h3 className="mb-2 text-center text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0">
@@ -424,4 +482,4 @@ export const FormRequest = () => {
   );
 };
 
-export default FormRequest;
+export default RequestRegisterForm;
