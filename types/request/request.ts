@@ -27,6 +27,10 @@ export type FormInputs = {
   note: string;
   country: string;
   type_of_document: string;
+  tax_identification: string;
+  transfer_identification: string;
+  re_transfer_identification: string;
+  name_of_bank: string;
 };
 
 export type CountryOption = {
