@@ -115,10 +115,10 @@ export default function TransactionCalculator() {
       handleExchangePaypal();
     } else {
       setIsProcessing(true);
-      setInterval(() => {
+      // setInterval(() => {
         handleDirection();
         setIsProcessing(false);
-      }, 3000);
+      // }, 3000);
     }
   };
 

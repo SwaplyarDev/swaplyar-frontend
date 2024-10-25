@@ -1,36 +1,31 @@
 export type FormInputs = {
+  //SECTION 1
   sender_first_name: string;
   sender_last_name: string;
   email: string;
-  wise_email: string;
-  re_enter_wise_email: string;
-  send_amount: string;
-  receive_amount: string;
-  comprobante: FileList;
-  nota: string;
-  own_account: boolean
+  phone: string;
+  own_account: boolean;
+
+  //SECTION 2
+  //bank
+  //repiten en other
   receiver_first_name: string;
   receiver_last_name: string;
-  amount_sent: number;
-  currency_sent: string;
-  amount_received: number;
-  currency_received: string;
-  phone: string;
-  receiver_email: string;
-  transfer_code: string;
-  transaction_destination: string;
-  payment_bank: string;
-  reciver_bank: string;
-  document: string;
-  sender_email: string;
-  proof_of_payment: FileList;
-  note: string;
-  country: string;
-  type_of_document: string;
+  //unicos bank
   tax_identification: string;
   transfer_identification: string;
   re_transfer_identification: string;
   name_of_bank: string;
+  //other
+  wise_email: string;
+  re_enter_wise_email: string;
+
+  //SECTION 3
+  pay_email: string;
+  send_amount: string;
+  receive_amount: string;
+  proof_of_payment: FileList;
+  note: string;
 };
 
 export type CountryOption = {

@@ -9,6 +9,8 @@ interface InputFieldProps {
   register: UseFormRegisterReturn;
   error?: string;
   file?: boolean;
+  value?: string;
+  disabled?: boolean;
   onCustomChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -19,6 +21,8 @@ const InputField: FC<InputFieldProps> = ({
   register,
   error,
   file,
+  value,
+  disabled,
   onCustomChange,
 }) => {
   // Sobrescribimos el onChange del register
@@ -34,6 +38,8 @@ const InputField: FC<InputFieldProps> = ({
       <input
         id={id}
         type={type}
+        value={value}
+        disabled={disabled}
         placeholder={placeholder}
         onChange={handleChange} // Usamos la función combinada
         {...restRegister} // Usamos el resto de las props del register
