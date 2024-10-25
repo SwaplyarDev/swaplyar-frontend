@@ -8,7 +8,7 @@ import { Error_404_clear } from '@/utils/assets/img-database';
 import { Error_404_dark } from '@/utils/assets/img-database';
 import { Post1_404 } from '@/utils/assets/img-database';
 import { Post2_404 } from '@/utils/assets/img-database';
-import { Enchufe_dark, Enchufe_clear } from '@/utils/assets/img-database';
+import { Enchufe_dark, Enchufe_clear, tlf_404_dark, tlf_404_clear, post3_404 } from '@/utils/assets/img-database';
 
 const Error_404 = () => {
   const { isDark } = useDarkTheme();
@@ -42,7 +42,23 @@ const Error_404 = () => {
               style={{ borderRadius: '8px' }}
             />
           </div>
+          <div className={styles.image_tlf}>
+            <Image
+              src={tlf_404_dark}
+              alt="Descripción de la imagen 1"
+              width={2200}
+              height={1000}
+              style={{ borderRadius: '8px' }}
+            />
+          </div>
           <div className={styles.message}>
+            <h1 className="font-normal text-white">Ups..</h1>
+            <h1 className="font-normal text-white">La pagina no</h1>
+            <h1 className="font-normal text-white">
+              ha sido encontrada
+            </h1>
+          </div>
+          <div className={styles.tlf_message}>
             <h1 className="font-normal text-white">Ups..</h1>
             <h1 className="font-normal text-white">La pagina no</h1>
             <h1 className="font-normal text-white">
@@ -59,6 +75,21 @@ const Error_404 = () => {
                 width: '210px',
                 height: '60px',
                 padding: '16px',
+              }}
+            >
+              Redireccion en {counter}
+            </h2>
+          </div>
+          <div className={styles.tlf_redirectButton}>
+            <h2
+              className="font-bold text-black bg-white"
+              style={{
+                fontSize: '9px',
+                textAlign: 'center',
+                borderRadius: '28px',
+                width: '105px',
+                height: '35px',
+                padding: '10px'
               }}
             >
               Redireccion en {counter}
@@ -82,14 +113,31 @@ const Error_404 = () => {
               style={{ borderRadius: '8px' }}
             />
           </div>
+          <div className={styles.postImage3}>
+            <Image
+              src={post3_404}
+              alt="Descripción de la imagen 1"
+              width={1200}
+              height={500}
+              style={{ borderRadius: '8px' }}
+            />
+          </div>
           <div className={styles.lineaVertical1}></div>
-
+          <div className={styles.tlf_lineaVertical1}></div>
           <div className={styles.enchufe1}>
             <Image
               src={Enchufe_dark}
               alt="Descripción de la imagen enchufe"
               width={1600}
               height={50}
+            />
+          </div>
+          <div className={styles.tlf_enchufe1}>
+            <Image
+              src={Enchufe_dark}
+              alt="Descripción de la imagen enchufe"
+              width={400}
+              height={30}
             />
           </div>
         </>
@@ -104,12 +152,28 @@ const Error_404 = () => {
               style={{ borderRadius: '8px' }}
             />
           </div>
+          <div className={styles.image_tlf}>
+            <Image
+              src={tlf_404_clear}
+              alt="Descripción de la imagen 1"
+              width={2200}
+              height={1000}
+              style={{ borderRadius: '8px' }}
+            />
+          </div>
           <div className={styles.message}>
             <p className="font-normal text-black">Ups..</p>
             <p className="font-normal text-black">La pagina no</p>
             <p className="font-normal text-black">
               ha sido encontrada
             </p>
+          </div>
+          <div className={styles.tlf_message}>
+            <h1 className="font-normal text-black">Ups..</h1>
+            <h1 className="font-normal text-black">La pagina no</h1>
+            <h1 className="font-normal text-black">
+              ha sido encontrada
+            </h1>
           </div>
           <div className={styles.redirectButton}>
             <h1
@@ -126,6 +190,22 @@ const Error_404 = () => {
             >
               Redireccion en {counter}
             </h1>
+          </div>
+          <div className={styles.tlf_redirectButton}>
+            <h2
+              className="font-bold text-blue-950"
+              style={{
+                border: '3px solid blue',
+                fontSize: '9px',
+                textAlign: 'center',
+                borderRadius: '28px',
+                width: '105px',
+                height: '35px',
+                padding: '10px'
+              }}
+            >
+              Redireccion en {counter}
+            </h2>
           </div>
           <div className={styles.postImage1}>
             <Image
@@ -145,8 +225,18 @@ const Error_404 = () => {
               style={{ borderRadius: '8px' }}
             />
           </div>
+          <div className={styles.postImage3}>
+            <Image
+              src={post3_404}
+              alt="Descripción de la imagen 1"
+              width={1200}
+              height={500}
+              style={{ borderRadius: '8px' }}
+            />
+          </div>
 
           <div className={styles.lineaVertical2}></div>
+          <div className={styles.tlf_lineaVertical2}></div>
 
           <div className={styles.enchufe2}>
             <Image
@@ -154,6 +244,14 @@ const Error_404 = () => {
               alt="Descripción de la imagen enchufe"
               width={1600}
               height={50}
+            />
+          </div>
+          <div className={styles.tlf_enchufe2}>
+            <Image
+              src={Enchufe_clear}
+              alt="Descripción de la imagen enchufe"
+              width={400}
+              height={30}
             />
           </div>
         </>

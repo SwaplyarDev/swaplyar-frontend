@@ -172,7 +172,7 @@
   .container {
     text-align: center;
     padding: 10px;
-    height: 650px;
+    height: 450px;
   }
   .image {
     position: relative;
@@ -181,6 +181,7 @@
     transform: translate(-50%, -50%);
     width: 700px;
     height: 220px;
+    margin-top: 100px;
   }
   .message {
     position: relative;
@@ -235,15 +236,158 @@
     border-radius: 12px;
   }
   .enchufe1{
-    width: 1710px;
+    object-fit: cover;
+    width: 600px;
     position: relative;
-    top: calc(50% - 1020px); 
-    left: calc(50% - 1050px);
+    top: calc(50% - 960px); 
+    left: calc(50% - 400px);
   }
   .enchufe2{
-    width: 1710px;
+    object-fit: cover;
+    width: 600px;
     position: relative;
-    top: calc(50% - 1020px); 
-    left: calc(50% - 1050px);
+    top: calc(50% - 960px); 
+    left: calc(50% - 400px);
   }
 } 
+
+
+.image_tlf {
+  display: none;
+}
+.postImage3{
+  display: none;
+}
+.tlf_message{
+  display: none;
+}
+.tlf_redirectButton{
+  display: none;
+}
+.tlf_lineaVertical1{
+  display: none;
+}
+.tlf_lineaVertical2{
+  display: none;
+}
+.tlf_enchufe1{
+  display: none;
+}
+.tlf_enchufe2{
+  display: none;
+}
+
+
+@media (max-width: 549px) {
+  .container {
+    text-align: center;
+    padding: 10px;
+    height: 300px;
+    position: relative; 
+    margin-top: 180px;
+  }
+
+  .image_tlf {
+    display: block; 
+    position: absolute;
+    top: calc(50% - 190px);
+    left: calc(50% - 10px);
+    transform: translate(-50%, -50%);
+    width: 250px;
+    height: 220px;
+  }
+
+  .postImage3{
+    display: block; 
+    position: absolute;
+    top: calc(50% - 40px);
+    left: calc(50% - -45px);
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 220px;
+  }
+
+  .tlf_message{
+    display: block; 
+    position: absolute;
+    width: 310px;
+    padding: 10px;
+    text-align: left;
+    top: calc(50% + -85px);
+    left: calc(50% - 142px);
+    font-size: 13px;
+  }
+
+  .tlf_redirectButton{
+    display: block; 
+    position: absolute;
+    top: calc(50% + -5px);
+    left: calc(50% - 130px);
+  }
+
+  .tlf_lineaVertical1{
+    background-color: white;
+    width: 8px;
+    height: 110px;
+    display: block; 
+    position: absolute;
+    top: calc(50% - 75px); 
+    left: calc(50% - 150px);
+    border-radius: 12px;
+  }
+
+  .tlf_lineaVertical2{
+    background-color: blue;
+    width: 8px;
+    height: 110px;
+    display: block; 
+    position: absolute;
+    top: calc(50% - 75px); 
+    left: calc(50% - 150px);
+    border-radius: 12px;
+  }
+
+  .tlf_enchufe1{
+    object-fit: cover;
+    display: block; 
+    position: absolute;
+    top: calc(50% - -50px); 
+    left: calc(50% - 270px);
+  }
+
+  .tlf_enchufe2{
+    object-fit: cover;
+    display: block; 
+    position: absolute;
+    top: calc(50% - -50px); 
+    left: calc(50% - 270px);
+  }
+
+  .image {
+    display: none; 
+  }
+  .message {
+    display: none; 
+  }
+  .redirectButton {
+    display: none; 
+  }
+  .postImage1 {
+    display: none; 
+  }
+  .postImage2 {
+    display: none; 
+  }
+  .lineaVertical1 {
+    display: none; 
+  }
+  .lineaVertical2 {
+    display: none; 
+  }
+  .enchufe1{
+    display: none; 
+  }
+  .enchufe2{
+    display: none; 
+  }
+}
