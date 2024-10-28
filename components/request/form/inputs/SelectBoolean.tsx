@@ -1,65 +1,54 @@
-import React, { useState } from 'react';
-import { FieldErrors, UseFormSetValue } from 'react-hook-form';
-import Select, { SingleValue, MultiValue, StylesConfig } from 'react-select';
+import React from 'react';
+import Select from 'react-select';
 import clsx from 'clsx';
 
-interface Option {
-  value: string;
-  label: string;
-}
-
-const options: Option[] = [
-  { value: 'si', label: 'Sí' },
-  { value: 'no', label: 'No' },
-];
-
-type SelectBooleanProps = {
-  errors: FieldErrors;
-  setValue: UseFormSetValue<any>;
-  setCurrentCountry: any;
-  register: any;
-  setSelectedOption: (option: Option | null) => void;
-  selectedOption: Option | null;
+type FieldError = {
+  message: string;
 };
 
-const SelectBoolean = ({
-  errors,
-  setValue,
-  setCurrentCountry,
-  register,
-  setSelectedOption,
+type SelectBooleanProps = {
+  selectedOption: boolean | undefined;
+  setSelectedOption: (option: boolean | undefined) => void;
+  errors: { [key: string]: FieldError } | {}; // Tipado explícito
+};
+
+const SelectBoolean: React.FC<SelectBooleanProps> = ({
   selectedOption,
-}: SelectBooleanProps) => {
-  // Cambiamos el tipo de la función handleChange
-  // const handleChange = (
-  //   newValue: SingleValue<Option> | MultiValue<Option>,
-  //   actionMeta: any, // Puedes tipar esto más específicamente si lo deseas
-  // ) => {
-  //   console.log('Opción seleccionada:', newValue);
-  // };
+  setSelectedOption,
+  errors,
+}) => {
+  const fieldName = 'own_account';
+  const errorMessage = (errors as { [key: string]: FieldError })[fieldName]
+    ?.message;
 
   return (
     <>
       <label
-        htmlFor="own_account"
+        htmlFor={fieldName}
         className={clsx(
-          errors.own_account ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
+          errorMessage ? 'text-red-500' : 'text-gray-900 dark:text-gray-300', 'hidden'
         )}
-      ></label>
+      >
+        ¿Tienes cuenta propia?
+      </label>
       <Select
-        id="own_account"
-        options={options}
-        value={selectedOption}
-        onChange={(option) => {
-          setSelectedOption(option);
-          setValue('own_account', option?.value);
-        }}
+        id={fieldName}
+        options={[
+          { value: true, label: 'Sí' },
+          { value: false, label: 'No' },
+        ]}
+        value={
+          selectedOption !== undefined
+            ? { value: selectedOption, label: selectedOption ? 'Sí' : 'No' }
+            : null
+        }
+        onChange={(option) => setSelectedOption(option?.value)}
         placeholder="Selecciona una opción"
         classNamePrefix="custom-select"
         isSearchable={false}
         className={clsx(
           'dark:bg- h-[38px] w-full rounded border bg-gray-200 text-gray-900 focus:border-blue-600 dark:bg-lightText dark:text-white',
-          errors.own_account
+          errorMessage
             ? 'border-red-500'
             : 'border-[#6B7280] hover:border-blue-600 dark:hover:border-white',
         )}
@@ -139,9 +128,9 @@ const SelectBoolean = ({
           }),
         }}
       />
-      {errors.own_account && (
-        <p className="mb-5 text-sm text-red-500">
-          • {errors.own_account.message as string}
+      {errorMessage && (
+        <p className="text-sm text-red-500">
+          • {errorMessage}
         </p>
       )}
     </>
