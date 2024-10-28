@@ -13,6 +13,7 @@ import SectionBank from './sections/SectionBank';
 import SectionOther from './sections/SectionOther';
 import { useAmountCalculator } from '@/hooks/useAmountCalculator';
 import useDataRequestStore from '@/store/dataRequestStore';
+import InputCopy from './inputs/InputCopy';
 
 interface Option {
   value: string;
@@ -388,7 +389,7 @@ const RequestRegisterForm = () => {
                   >
                     Monto a pagar
                   </label>
-                  <InputField
+                  <InputCopy
                     id="send_amount"
                     type="number"
                     value={sendAmount?.toString()}

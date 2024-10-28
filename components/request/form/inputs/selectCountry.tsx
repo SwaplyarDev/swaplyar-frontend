@@ -88,7 +88,7 @@ export default function SelectCountry({
             ? ' border-red-500'
             : isFocused
               ? 'border-blue-600'
-              : ' hover:border-blue-600 dark:hover:border-white',
+              : 'hover:border-blue-600 dark:hover:border-white',
         )}
         onFocus={() => setIsFocused(true)} // Manejador de foco en el contenedor
         onBlur={() => setIsFocused(false)} // Manejador de desenfoque en el contenedor
