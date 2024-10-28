@@ -58,7 +58,7 @@ const SelectBoolean = ({
         classNamePrefix="custom-select"
         isSearchable={false}
         className={clsx(
-          'dark:bg- h-[38px] w-full rounded border bg-gray-200 text-gray-900 focus:border-blue-600 dark:bg-lightText dark:text-white',
+          'h-[38px] w-full rounded border bg-gray-200 text-gray-900 focus:border-blue-600 dark:bg-lightText dark:text-white',
           errors.own_account
             ? 'border-red-500'
             : 'border-[#6B7280] hover:border-blue-600 dark:hover:border-white',

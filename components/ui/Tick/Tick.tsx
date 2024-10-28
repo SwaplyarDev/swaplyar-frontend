@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
 
-const Tick = () => {
+type TickProps = {
+  copy?: boolean;
+}
+
+const Tick: FC<TickProps> = ({
+  copy = false,
+}) => {
   const { isDark } = useDarkTheme();
   return (
     <svg
@@ -12,7 +18,7 @@ const Tick = () => {
     >
       <path
         fill="none"
-        stroke={isDark ? "#414244" : "#FCFBFA"}
+        stroke={copy ? "#12C971" : isDark ? "#414244" : "#FCFBFA"}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="1.5"

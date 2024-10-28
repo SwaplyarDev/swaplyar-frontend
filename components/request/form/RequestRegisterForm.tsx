@@ -12,6 +12,7 @@ import { useSystemStore } from '@/store/useSystemStore';
 import SectionBank from './sections/SectionBank';
 import SectionOther from './sections/SectionOther';
 import { useAmountCalculator } from '@/hooks/useAmountCalculator';
+import InputCopy from './inputs/InputCopy';
 
 interface Option {
   value: string;
@@ -250,7 +251,7 @@ const RequestRegisterForm = () => {
           <h3 className="mb-2 text-center text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0">
             Pago
           </h3>
-          {currentStep == 3 && (
+          {currentStep == 1 && (
             <div className="flex items-center justify-center">
               <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
                 <Tick />
@@ -264,7 +265,7 @@ const RequestRegisterForm = () => {
             </div>
           )}
         </div>
-        {currentStep == 3 && (
+        {currentStep == 1 && (
           <>
             {' '}
             <p className="text-left">
@@ -308,7 +309,7 @@ const RequestRegisterForm = () => {
                   >
                     Monto a pagar
                   </label>
-                  <InputField
+                  <InputCopy
                     id="send_amount"
                     type="number"
                     value={sendAmount?.toString()}
