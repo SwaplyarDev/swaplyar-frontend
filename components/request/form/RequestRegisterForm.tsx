@@ -7,7 +7,7 @@ import { CountryOption, FormInputs } from '@/types/request/request';
 import Tick from '@/components/ui/Tick/Tick';
 import InputField from '@/components/ui/contact-form/InputField';
 import SelectBoolean from './inputs/SelectBoolean';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useSystemStore } from '@/store/useSystemStore';
 import SectionBank from './sections/SectionBank';
 import SectionOther from './sections/SectionOther';
@@ -25,11 +25,12 @@ const RequestRegisterForm = () => {
     setValue,
     formState: { errors },
     trigger,
+    control,
   } = useForm<FormInputs>({});
   const [currentCountry, setCurrentCountry] = useState<CountryOption | null>(
     null,
   );
-  
+
   const [selectedOption, setSelectedOption] = useState<Option | null>(null);
 
   // const [section1, setSection1] = useState<boolean>(false);
@@ -195,7 +196,7 @@ const RequestRegisterForm = () => {
                   <InputField
                     id="email"
                     type="email"
-                    placeholder="Email de wise"
+                    placeholder="Email"
                     register={register('email', { required: true })}
                     error={errors.email && 'Este campo es obligatorio'}
                   />
@@ -214,14 +215,25 @@ const RequestRegisterForm = () => {
                   ¿Se transfiere a una cuenta propia?
                 </p>
               </div>
-              <div className="flex w-full">
-                <SelectBoolean
-                  errors={errors}
-                  setValue={setValue}
-                  setCurrentCountry={setCurrentCountry}
-                  register={register}
-                  setSelectedOption={setSelectedOption}
-                  selectedOption={selectedOption}
+              <div className="flex w-full flex-col">
+                <Controller
+                  name="own_account"
+                  control={control}
+                  defaultValue={undefined} // Valor inicial compatible
+                  rules={{
+                    required: 'Este campo es obligatorio', // Validación requerida
+                  }}
+                  render={({ field, fieldState }) => (
+                    <SelectBoolean
+                      selectedOption={field.value}
+                      setSelectedOption={(option) => field.onChange(option)}
+                      errors={
+                        fieldState.error
+                          ? { [field.name]: fieldState.error }
+                          : {}
+                      } // Pasamos errores
+                    />
+                  )}
                 />
               </div>
             </div>

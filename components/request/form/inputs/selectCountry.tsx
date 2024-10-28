@@ -76,7 +76,7 @@ export default function SelectCountry({
       <label
         htmlFor="phone"
         className={clsx('text-xs ml-1',
-          errors.country ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
+          errors.phone ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
         )}
       >
         Telefono
