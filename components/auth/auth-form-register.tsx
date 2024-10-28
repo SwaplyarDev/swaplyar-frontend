@@ -10,6 +10,7 @@ import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
 import { useRouter } from 'next/navigation';
 import userInfoStore from '@/store/userInfoStore';
+import Image from 'next/image';
 
 type FormInputs = {
   firstName: string;
@@ -57,10 +58,11 @@ export const RegisterForm = () => {
         body: JSON.stringify({
           full_name: name,
           email: email,
-          // termsConditions: termsConditions,
+          terms: termsConditions,
           role: 'admin',
         }),
       });
+      console.log(response)
       if (!response.ok) {
         const errorResponse = await response.json();
         console.error('Error en la respuesta:', errorResponse);
@@ -210,10 +212,23 @@ export const RegisterForm = () => {
 
         <button
           type="submit"
-          className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
+          className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 min-h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
           disabled={loading}
         >
-          {loading ? 'Creando cuenta...' : 'Crear cuenta'}
+          {loading ? (
+            <div className="flex items-center justify-center">
+              <Image
+                src="/gif/cargando.gif"
+                width={30}
+                height={30}
+                alt="loading"
+                className="mb-0.5 mr-2"
+              />
+              Creando cuenta...
+            </div>
+          ) : (
+            'Crear cuenta'
+          )}
         </button>
 
         <div className="my-5 flex items-center">
