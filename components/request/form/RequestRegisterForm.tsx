@@ -1,17 +1,18 @@
 'use client';
 import clsx from 'clsx';
 import CountrySelect from './inputs/selectCountry';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { CountryOption, FormInputs } from '@/types/request/request';
 import Tick from '@/components/ui/Tick/Tick';
 import InputField from '@/components/ui/contact-form/InputField';
 import SelectBoolean from './inputs/SelectBoolean';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, set, useForm } from 'react-hook-form';
 import { useSystemStore } from '@/store/useSystemStore';
 import SectionBank from './sections/SectionBank';
 import SectionOther from './sections/SectionOther';
 import { useAmountCalculator } from '@/hooks/useAmountCalculator';
+import useDataRequestStore from '@/store/dataRequestStore';
 
 interface Option {
   value: string;
@@ -25,21 +26,21 @@ const RequestRegisterForm = () => {
     formState: { errors },
     trigger,
     control,
+    watch,
   } = useForm<FormInputs>({});
   const [currentCountry, setCurrentCountry] = useState<CountryOption | null>(
     null,
   );
 
-  const [selectedOption, setSelectedOption] = useState<Option | null>(null);
-
-  // const [section1, setSection1] = useState<boolean>(false);
-  // const [section2, setSection2] = useState<boolean>(false);
-  // const [section3, setSection3] = useState<boolean>(false);
-  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [currentStep, setCurrentStep] = useState<number[]>([1]);
+  const [openSection1, setOpenSection1] = useState<boolean>(false);
+  const [openSection2, setOpenSection2] = useState<boolean>(false);
+  const [openSection3, setOpenSection3] = useState<boolean>(false);
 
   const receiveAmount = localStorage.getItem('receiveAmount');
   const sendAmount = localStorage.getItem('sendAmount');
   const { isDark } = useDarkTheme();
+  const { section1, setSection1 } = useDataRequestStore();
 
   function showFileName(event: any) {
     const fileName =
@@ -82,7 +83,7 @@ const RequestRegisterForm = () => {
       case 1:
         return fieldsStep1;
       case 2:
-        return selectedReceivingSystem?.id == 'bank'
+        return selectedReceivingSystem?.id === 'bank'
           ? fieldsBankStep2
           : fieldsOtherStep2;
       case 3:
@@ -93,12 +94,53 @@ const RequestRegisterForm = () => {
   };
 
   const nextStep = async () => {
-    const valid = await trigger(getFieldsForStep(currentStep));
-    if (valid) setCurrentStep((prev) => prev + 1);
+    const lastStep = currentStep[currentStep.length - 1];
+    const valid = await trigger(getFieldsForStep(lastStep));
+
+    if (valid) {
+      setCurrentStep((prev) => [lastStep + 1]);
+    }
+  };
+  console.log(currentStep);
+  const closeStep = async (step: number) => {
+    const valid = await trigger(getFieldsForStep(step));
+    if (valid) {
+      switch (step) {
+        case 1:
+          setOpenSection1(false);
+          break;
+        case 2:
+          setOpenSection2(false);
+          break;
+        case 3:
+          setOpenSection3(false);
+          break;
+        default:
+      }
+    }
   };
 
-  const prevStep = () => setCurrentStep((prev) => prev - 1);
+  const handleOpenSection = (step: number) => {
+    switch (step) {
+      case 1:
+        setOpenSection1(!openSection1);
+        break;
+      case 2:
+        setOpenSection2(!openSection2);
+        break;
+      case 3:
+        setOpenSection3(!openSection3);
+        break;
+      default:
+    }
+  };
+  const senderFirstName = watch('sender_first_name');
+  const senderLastName = watch('sender_last_name');
+  const email = watch('email');
+  const phone = watch('phone');
+  const ownAccount = watch('own_account');
 
+  console.log(section1);
   return (
     <form className="flex min-h-screen w-full max-w-[1000px] flex-col gap-5">
       <div className="flex justify-between px-2">
@@ -116,7 +158,7 @@ const RequestRegisterForm = () => {
           <h3 className="mb-2 text-center text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0">
             Mis Datos
           </h3>
-          {currentStep == 1 && (
+          {currentStep.find((step) => step == 1) && (
             <div className="flex items-center justify-center">
               <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
                 <Tick />
@@ -127,10 +169,23 @@ const RequestRegisterForm = () => {
               <div className="h-7 w-7 rounded-full border-[3px] border-lightText dark:border-darkText"></div>
             </div>
           )}
+          {currentStep.find((step) => step != 1) && (
+            <div className="flex w-full flex-col items-end justify-end">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
+                <Tick />
+              </div>
+              <button
+                onClick={() => handleOpenSection(1)}
+                className={clsx("text-base text-lightText underline dark:text-darkText", senderFirstName != section1.sender_first_name && "hidden")}
+                type="button"
+              >
+                Tratar
+              </button>
+            </div>
+          )}
         </div>
-        {currentStep == 1 && (
+        {(currentStep.find((step) => step == 1) || openSection1 == true) && (
           <>
-            {' '}
             <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
               <div className="flex w-full flex-col gap-4">
                 <div className="flex flex-col">
@@ -218,9 +273,9 @@ const RequestRegisterForm = () => {
                 <Controller
                   name="own_account"
                   control={control}
-                  defaultValue={undefined} // Valor inicial compatible
+                  defaultValue={undefined}
                   rules={{
-                    required: 'Este campo es obligatorio', // Validación requerida
+                    required: 'Este campo es obligatorio',
                   }}
                   render={({ field, fieldState }) => (
                     <SelectBoolean
@@ -230,7 +285,7 @@ const RequestRegisterForm = () => {
                         fieldState.error
                           ? { [field.name]: fieldState.error }
                           : {}
-                      } // Pasamos errores
+                      }
                     />
                   )}
                 />
@@ -239,7 +294,20 @@ const RequestRegisterForm = () => {
             <div className="flex justify-end">
               <button
                 type="button"
-                onClick={nextStep}
+                onClick={
+                  openSection1
+                    ? () => closeStep(1)
+                    : () => {
+                        nextStep();
+                        setSection1({
+                          sender_first_name: senderFirstName,
+                          sender_last_name: senderLastName,
+                          email: email,
+                          phone: phone,
+                          own_account: ownAccount,
+                        });
+                      }
+                }
                 className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
               >
                 Siguiente
@@ -262,7 +330,7 @@ const RequestRegisterForm = () => {
           <h3 className="mb-2 text-center text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0">
             Pago
           </h3>
-          {currentStep == 3 && (
+          {currentStep.find((step) => step == 3) && (
             <div className="flex items-center justify-center">
               <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
                 <Tick />
@@ -276,7 +344,7 @@ const RequestRegisterForm = () => {
             </div>
           )}
         </div>
-        {currentStep == 3 && (
+        {currentStep.find((step) => step == 3) && (
           <>
             {' '}
             <p className="text-left">

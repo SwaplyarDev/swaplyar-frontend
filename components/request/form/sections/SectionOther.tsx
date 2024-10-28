@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import clsx from 'clsx';
 
 interface Props {
-  currentStep: number;
+  currentStep: number[];
   nextStep: () => void;
 }
 
@@ -25,7 +25,7 @@ const SectionOther = ({ currentStep, nextStep }: Props) => {
         <h3 className="mb-2 text-center text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0">
           Información del destinatario
         </h3>
-        {currentStep == 2 && (
+        {currentStep.find((step) => step == 2) && (
           <div className="flex items-center justify-center">
             <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
               <Tick />
@@ -39,7 +39,7 @@ const SectionOther = ({ currentStep, nextStep }: Props) => {
           </div>
         )}
       </div>
-      {currentStep == 2 && (
+      {currentStep.find((step) => step == 2) && (
         <>
           {' '}
           <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">

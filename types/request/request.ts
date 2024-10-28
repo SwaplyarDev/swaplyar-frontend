@@ -19,6 +19,8 @@ export type FormInputs = {
   //other
   wise_email: string;
   re_enter_wise_email: string;
+  payoneer_email: string;
+  re_enter_payoneer_email: string;
 
   //SECTION 3
   pay_email: string;
