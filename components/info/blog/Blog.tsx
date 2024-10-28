@@ -22,7 +22,13 @@ interface Blog {
 const BlogPostCard: React.FC<{ title: string; content: string; imageUrl: string; publishedAt: string }> = ({ title, content, imageUrl, publishedAt }) => {
   return (
     <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
-      <img src={imageUrl} alt={title} className="w-full h-48 object-cover" />
+      <Image 
+        src={imageUrl} 
+        alt={title} 
+        className="w-full h-48 object-cover" 
+        width={800}
+        height={400}
+      />
       <div className="p-4">
         <h3 className="text-xl font-semibold mb-2">{title}</h3>
         <p className="text-gray-700 mb-4">{content}</p>
@@ -48,7 +54,13 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
       <Slider {...settings}>
         {images.map((image, index) => (
           <div key={index}>
-            <Image src={image} alt={`Slide ${index + 1}`} className="w-full h-60 object-cover" />
+            <Image 
+              src={image}
+              alt={`Slide ${index + 1}`} 
+              className="w-full h-60 object-cover" 
+              width={800}
+              height={400}
+            />
           </div>
         ))}
       </Slider>
@@ -112,8 +124,8 @@ const Blog: React.FC = () => {
       console.log("Blogs structure:", blogs);
       
       const images = blogs.map(el => {
-        console.log(`Processing blog with id: ${el.id}, imageUrl: ${el.imageUrl}`);
-        return el.imageUrl; // Verifica si imageUrl está definido
+        console.log(`Processing blog with id: ${el.id}, imageUrl: ${el.url_image}`);
+        return el.url_image; // Verifica si imageUrl está definido
       });
       
       setRandomImages(images);
