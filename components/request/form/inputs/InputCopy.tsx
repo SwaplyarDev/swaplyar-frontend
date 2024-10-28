@@ -47,7 +47,7 @@ const InputCopy: FC<InputCopyProps> = ({
         //     : 'border-[#6B7280] hover:border-blue-600 dark:hover:border-white',
         error
         ? 'border-red-500'
-        : 'border-[#6B7280]',
+        : 'border-[#6B7280] hover:border-blue-600 dark:hover:border-white',
       )}
     //   onFocus={() => setIsFocused(true)} // Manejador de foco en el contenedor
     //   onBlur={() => setIsFocused(false)} // Manejador de desenfoque en el contenedor
