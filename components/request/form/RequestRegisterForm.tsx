@@ -201,7 +201,7 @@ const RequestRegisterForm = () => {
                   >
                     Nombre
                   </label>
-                  <InputField
+                  <InputCopy
                     id="sender_first_name"
                     type="text"
                     placeholder="Nombre"
@@ -331,7 +331,7 @@ const RequestRegisterForm = () => {
           <h3 className="mb-2 text-center text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0">
             Pago
           </h3>
-          {currentStep.find((step) => step == 3) && (
+          {currentStep.find((step) => step == 1) && (
             <div className="flex items-center justify-center">
               <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
                 <Tick />
@@ -345,7 +345,7 @@ const RequestRegisterForm = () => {
             </div>
           )}
         </div>
-        {currentStep.find((step) => step == 3) && (
+        {currentStep.find((step) => step == 1) && (
           <>
             {' '}
             <p className="text-left">
