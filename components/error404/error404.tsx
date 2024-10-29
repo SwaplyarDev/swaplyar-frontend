@@ -8,6 +8,7 @@ import { Error_404_clear } from '@/utils/assets/img-database';
 import { Error_404_dark } from '@/utils/assets/img-database';
 import { Post1_404 } from '@/utils/assets/img-database';
 import { Post2_404 } from '@/utils/assets/img-database';
+import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { Enchufe_dark, Enchufe_clear, tlf_404_dark, tlf_404_clear, post3_404 } from '@/utils/assets/img-database';
 
 const Error_404 = () => {
@@ -30,9 +31,14 @@ const Error_404 = () => {
   }, [counter, router]); */
 
   return (
-    <div className={styles.container} style={{marginBottom: '80px'}}>
+    <div className={styles.container}>
       {isDark ? (
         <>
+          <div className=" md:hidden w-[420px] h-[300px] scale-75 -mt-44 overflow-hidden flex items-center justify-center">
+              <AnimatedBlurredCircles tope="top-[30px]" />
+          </div>
+
+
           <div className={styles.image}>
             <Image
               src={Error_404_dark}
@@ -66,8 +72,8 @@ const Error_404 = () => {
             </h1>
           </div>
           <div className={styles.redirectButton}>
-            <h2
-              className="font-bold text-black bg-white"
+            <p
+              className="dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText font-bold"
               style={{
                 fontSize: '20px',
                 textAlign: 'center',
@@ -78,10 +84,10 @@ const Error_404 = () => {
               }}
             >
               Redireccion en {counter}
-            </h2>
+            </p>
           </div>
           <div className={styles.tlf_redirectButton}>
-            <h2
+            <p
               className="font-bold text-black bg-white"
               style={{
                 fontSize: '9px',
@@ -93,7 +99,7 @@ const Error_404 = () => {
               }}
             >
               Redireccion en {counter}
-            </h2>
+            </p>
           </div>
           <div className={styles.postImage1}>
             <Image
@@ -128,8 +134,8 @@ const Error_404 = () => {
             <Image
               src={Enchufe_dark}
               alt="Descripción de la imagen enchufe"
-              width={1600}
-              height={50}
+              layout="fill"       
+              objectFit="cover" 
             />
           </div>
           <div className={styles.tlf_enchufe1}>
@@ -143,6 +149,10 @@ const Error_404 = () => {
         </>
       ) : (
         <>
+          <div className=" md:hidden w-[420px] h-[350px] scale-75 -mt-44 overflow-hidden flex items-center justify-center">
+              <AnimatedBlurredCircles tope="top-[-50px]" />
+          </div>
+
           <div className={styles.image}>
             <Image
               src={Error_404_clear}
@@ -176,23 +186,21 @@ const Error_404 = () => {
             </h1>
           </div>
           <div className={styles.redirectButton}>
-            <h1
-              className="font-bold text-blue-950"
+            <p
+              className="relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:hover:bg-transparent font-bold"
               style={{
-                border: '3px solid blue',
                 fontSize: '20px',
                 textAlign: 'center',
                 borderRadius: '28px',
                 width: '210px',
                 height: '60px',
-                padding: '14px',
               }}
             >
               Redireccion en {counter}
-            </h1>
+            </p>
           </div>
           <div className={styles.tlf_redirectButton}>
-            <h2
+            <p
               className="font-bold text-blue-950"
               style={{
                 border: '3px solid blue',
@@ -205,7 +213,7 @@ const Error_404 = () => {
               }}
             >
               Redireccion en {counter}
-            </h2>
+            </p>
           </div>
           <div className={styles.postImage1}>
             <Image
