@@ -66,7 +66,7 @@ function LoyaltyProgram() {
               <Link className="text-buttonsLigth dark:text-sky-500" href="/">
                 inicia
               </Link>
-              &nbsp;sesión en tu perfil, y haz clic en &quot;inscríbite&quot;
+              &nbsp;sesión en tu perfil, y hacé clic en &quot;inscríbite&quot;
               para unirte.&nbsp;
             </p>
           </div>
@@ -104,22 +104,36 @@ function LoyaltyProgram() {
         <div>
           <p>
             Para conocer los Términos y Condiciones del programa SwaplyAr Plus
-            Rewards, haz
+            Rewards, hacé
             <Link
               className="text-blue-800"
               href="/SAPR-Terms-Conditions-ES.pdf"
               target="_blank"
             >
               {' '}
+            </Link>
+            <Link
+              href="https://swaplyar.com/SAPR-Terms-Conditions-ES%20.pdf"
+              target="_blank"
+              className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-1 font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+            >
               clic aquí
             </Link>
             .
           </p>
-          <p>
-            <a className="text-blue-800" href="/info/help-center">
-              ¿Necesitas ayuda?
-            </a>
-          </p>
+          <div>
+            <button
+              id="bannerHTUButton"
+              className={`trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:border-selectBtsLight dark:border-darkText dark:bg-darkText dark:text-black ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+            >
+              <Link
+                href={'/info/how-to-use'}
+                className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'} `}
+              >
+                ¿Necesitás ayuda?
+              </Link>
+            </button>
+          </div>
         </div>
       </FlyerTrabajo>
     </div>

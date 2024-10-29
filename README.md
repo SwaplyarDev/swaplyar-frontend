@@ -257,8 +257,8 @@ Es importante que antes de confirmar los cambios, verifiques que el código cump
 
 ```bash
 npm run lint     # Verifica que el código cumpla con las reglas de estilo
-npm run format   # Formatea el código de acuerdo a las reglas del proyecto
 npm run build --clean  # Realiza la compilación para asegurarte de que no haya errores
+npm run format   # Formatea el código de acuerdo a las reglas del proyecto
 ```
 
 ### 5. **Confirma tus cambios y súbelos al repositorio remoto**

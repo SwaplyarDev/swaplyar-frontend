@@ -14,6 +14,7 @@ import {
 import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import Link from 'next/link';
+import { useDarkTheme } from '../../ui/theme-Provider/themeProvider';
 
 const divStyles = {
   infoBlocksContainer: 'flex flex-col items-center justify-center',
@@ -23,6 +24,8 @@ const divStyles = {
 const WhyChooseSwaplyar: React.FC = () => {
   const { margins } = useMargins();
   const currentMargin = ResponsiveMarginHook(margins);
+
+  const { isDark } = useDarkTheme();
 
   return (
     <div className="relative flex w-full flex-col gap-20 py-10">
@@ -106,11 +109,11 @@ const WhyChooseSwaplyar: React.FC = () => {
         <div>
           <button
             id="bannerHTUButton"
-            className="trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:scale-105 hover:border-selectBtsLight hover:bg-transparent"
+            className={`trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:border-selectBtsLight dark:border-darkText dark:bg-darkText dark:text-black ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
           >
             <Link
               href={'/info/how-to-use'}
-              className="ease font-bold text-darkText transition-colors duration-300"
+              className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'} `}
             >
               Como usar Swaplyar
             </Link>
