@@ -125,7 +125,6 @@ const AboutUs = () => {
             usar SwaplyAr&quot; y aprend&eacute; a operar f&aacute;cilmente.
             &iexcl;Empez&aacute; ahora!
           </span>
-<<<<<<< HEAD
           <div>
             <button
               id="bannerHTUButton"
@@ -139,15 +138,6 @@ const AboutUs = () => {
               </Link>
             </button>
           </div>
-=======
-          <Link
-            href={'/info/how-to-use'}
-            onClick={() => {}}
-            className="relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white dark:border-darkText dark:bg-darkText dark:text-lightText"
-          >
-            <p className="font-bold">Como usar Swaplyar</p>
-          </Link>
->>>>>>> 688373d1f0f89f52895f188190f0858f65f128d9
         </FlyerTrabajo>
       </div>
     </>

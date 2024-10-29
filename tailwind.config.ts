@@ -46,7 +46,6 @@ const config: Config = {
         selectBtsLight: '#91aeec',
         darkText: '#ebe7e0',
         lightText: '#252526',
-        transparent: 'transparent',
       },
       width: {
         '9/10': '90%',
