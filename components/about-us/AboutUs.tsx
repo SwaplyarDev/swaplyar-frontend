@@ -1,3 +1,4 @@
+// AboutUs.tsx
 'use client';
 import Image from 'next/image';
 import CaedAboutUs from '../ui/caed-about-us/caed-about-us';
@@ -59,7 +60,7 @@ const AboutUs = () => {
   return (
     <>
       <div className="relative flex flex-col items-center justify-center py-10">
-        <AnimatedBlurredCircles tope="top-[124px]" />
+        <AnimatedBlurredCircles tope="top-[0px]" />
         <div
           className="flex w-full max-w-[1000px] flex-col items-center justify-center pt-5 text-black dark:text-white"
           style={{ margin: currentMargin }}
@@ -124,6 +125,7 @@ const AboutUs = () => {
             usar SwaplyAr&quot; y aprend&eacute; a operar f&aacute;cilmente.
             &iexcl;Empez&aacute; ahora!
           </span>
+<<<<<<< HEAD
           <div>
             <button
               id="bannerHTUButton"
@@ -137,6 +139,15 @@ const AboutUs = () => {
               </Link>
             </button>
           </div>
+=======
+          <Link
+            href={'/info/how-to-use'}
+            onClick={() => {}}
+            className="relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white dark:border-darkText dark:bg-darkText dark:text-lightText"
+          >
+            <p className="font-bold">Como usar Swaplyar</p>
+          </Link>
+>>>>>>> 688373d1f0f89f52895f188190f0858f65f128d9
         </FlyerTrabajo>
       </div>
     </>
