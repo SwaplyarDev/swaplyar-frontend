@@ -9,6 +9,8 @@ import 'slick-carousel/slick/slick-theme.css';
 import useBlogStore from '@/store/useBlogStore'; 
 import Image from 'next/image';
 
+const {NEXT_PUBLIC_BACKEND_URL} =   process.env;
+
 interface Blog {
   id: number;
   title: string;
@@ -100,7 +102,7 @@ const Blog: React.FC = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch('https://swaplyar-back.vercel.app/api/v1/blogs');
+        const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/blogs`);
         
         if (!response.ok) {
           throw new Error('Network response was not ok');
