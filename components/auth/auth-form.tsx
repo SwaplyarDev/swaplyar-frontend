@@ -26,7 +26,7 @@ const AuthForm: React.FC = () => {
 
   return (
     <ClientWrapper>
-      <AnimatedBlurredCircles tope="top-[0px]" />
+      <AnimatedBlurredCircles tope="top-[124px]" />
       <section className="flex h-full flex-col items-center py-5">
         <div className="w-full max-w-[552px] px-5 hover:cursor-grab active:cursor-grabbing">
           <Swiper
