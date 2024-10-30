@@ -63,7 +63,7 @@
   border-radius: 12px;
 }
 .lineaVertical2 {
-  background: rgb(35, 35, 160);
+  background: rgb(0, 23, 89);
   width: 3px;
   height: 190px;
   position: relative;
@@ -147,7 +147,7 @@
     left: calc(50% - 395px);
   }
   .lineaVertical2 {
-    background: rgb(35, 35, 160);
+    background: rgb(0, 23, 89);
     width: 3px;
     height: 200px;
     position: relative;
@@ -227,7 +227,7 @@
     border-radius: 12px;
   }
   .lineaVertical2 {
-    background: rgb(35, 35, 160);
+    background: rgb(0, 23, 89);
     width: 3px;
     height: 165px;
     position: relative;
@@ -278,7 +278,122 @@
 }
 
 
-@media (max-width: 549px) {
+@media (min-width: 395px) and (max-width: 549px) {
+  .container {
+    text-align: center;
+    padding: 10px;
+    height: 300px;
+    position: relative; 
+    margin-top: 180px;
+    margin-bottom: 100px;
+  }
+
+  .image_tlf {
+    display: block; 
+    position: absolute;
+    top: calc(50% - 190px);
+    left: calc(50% - 10px);
+    transform: translate(-50%, -50%);
+    width: 380px;
+    height: 220px;
+  }
+
+  .postImage3{
+    display: block; 
+    position: absolute;
+    top: calc(50% - -70px);
+    left: calc(50% - -80px);
+    transform: translate(-50%, -50%);
+    width: 190px;
+    height: 260px;
+  }
+
+  .tlf_message{
+    display: block; 
+    position: absolute;
+    width: 310px;
+    padding: 10px;
+    text-align: left;
+    top: calc(50% + 50px);
+    left: calc(50% - 182px);
+    font-size: 20px;
+  }
+
+  .tlf_redirectButton{
+    display: block; 
+    position: absolute;
+    top: calc(50% + 160px);
+    left: calc(50% - 150px);
+  }
+
+  .tlf_lineaVertical1{
+    background-color: white;
+    width: 2px;
+    height: 125px;
+    display: block; 
+    position: absolute;
+    top: calc(50% - -70px); 
+    left: calc(50% - 190px);
+    border-radius: 12px;
+  }
+
+  .tlf_lineaVertical2{
+    background: rgb(0, 23, 89);
+    width: 2px;
+    height: 125px;
+    display: block; 
+    position: absolute;
+    top: calc(50% - -70px); 
+    left: calc(50% - 190px);
+    border-radius: 12px;
+  }
+
+  .tlf_enchufe1{
+    object-fit: cover;
+    display: block; 
+    position: absolute;
+    top: calc(50% - -220px); 
+    left: calc(50% - 270px);
+  }
+
+  .tlf_enchufe2{
+    object-fit: cover;
+    display: block; 
+    position: absolute;
+    top: calc(50% - -220px); 
+    left: calc(50% - 270px);
+  }
+
+  .image {
+    display: none; 
+  }
+  .message {
+    display: none; 
+  }
+  .redirectButton {
+    display: none; 
+  }
+  .postImage1 {
+    display: none; 
+  }
+  .postImage2 {
+    display: none; 
+  }
+  .lineaVertical1 {
+    display: none; 
+  }
+  .lineaVertical2 {
+    display: none; 
+  }
+  .enchufe1{
+    display: none; 
+  }
+  .enchufe2{
+    display: none; 
+  }
+}
+
+@media (max-width: 394px) {
   .container {
     text-align: center;
     padding: 10px;
@@ -338,7 +453,7 @@
   }
 
   .tlf_lineaVertical2{
-    background: rgb(35, 35, 160);
+    background: rgb(0, 23, 89);
     width: 2px;
     height: 110px;
     display: block; 
@@ -392,3 +507,5 @@
     display: none; 
   }
 }
+
+
