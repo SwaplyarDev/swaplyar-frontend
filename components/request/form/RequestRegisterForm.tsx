@@ -14,6 +14,8 @@ import SectionOther from './sections/SectionOther';
 import { useAmountCalculator } from '@/hooks/useAmountCalculator';
 import useDataRequestStore from '@/store/dataRequestStore';
 import InputCopy from './inputs/InputCopy';
+import ArrowUp from '@/components/ui/ArrowUp/ArrowUp';
+import ArrowDown from '@/components/ui/ArrowDown/ArrowDown';
 
 interface Option {
   value: string;
@@ -38,10 +40,15 @@ const RequestRegisterForm = () => {
   const [openSection2, setOpenSection2] = useState<boolean>(false);
   const [openSection3, setOpenSection3] = useState<boolean>(false);
 
+  const [showTicks1, setShowTicks1] = useState<boolean>(false);
+  const [showTicks2, setShowTicks2] = useState<boolean>(false);
+  const [showTicks3, setShowTicks3] = useState<boolean>(false);
+
   const receiveAmount = localStorage.getItem('receiveAmount');
   const sendAmount = localStorage.getItem('sendAmount');
   const { isDark } = useDarkTheme();
-  const { section1, setSection1 } = useDataRequestStore();
+  const { section1, setSection1, setSection2, section3, setSection3 } =
+    useDataRequestStore();
 
   function showFileName(event: any) {
     const fileName =
@@ -94,15 +101,20 @@ const RequestRegisterForm = () => {
     }
   };
 
-  const nextStep = async () => {
-    const lastStep = currentStep[currentStep.length - 1];
-    const valid = await trigger(getFieldsForStep(lastStep));
+  const nextStep = async (step: number) => {
+    const valid = await trigger(getFieldsForStep(step));
 
     if (valid) {
-      setCurrentStep((prev) => [lastStep + 1]);
+      setCurrentStep(() => [step + 1]);
     }
   };
-  console.log(currentStep);
+  const prevStep = async (step: number) => {
+    const valid = await trigger(getFieldsForStep(step));
+    if (valid) {
+      setCurrentStep(() => [step - 1]);
+    }
+  };
+  // console.log('RequestRegisterForm: ', currentStep);
   const closeStep = async (step: number) => {
     const valid = await trigger(getFieldsForStep(step));
     if (valid) {
@@ -141,9 +153,72 @@ const RequestRegisterForm = () => {
   const phone = watch('phone');
   const ownAccount = watch('own_account');
 
-  console.log(section1);
+  const handleControlButton = (
+    step: number,
+    stepContainer1?: {
+      sender_first_name: string;
+      sender_last_name: string;
+      email: string;
+      phone: string;
+      own_account: boolean;
+    },
+    stepContainer2?: {
+      receiver_first_name: string;
+      receiver_last_name: string;
+      tax_identification?: string;
+      re_transfer_identification?: string;
+      name_of_bank?: string;
+      wise_email?: string;
+      re_enter_wise_email?: string;
+    },
+    stepContainer3?: {
+      send_amount: string;
+      receive_amount: string;
+      pay_email: string;
+      proof_of_payment: FileList;
+      note: string;
+    },
+  ) => {
+    console.log('step: ', step);
+    console.log('stepContainer2: ', stepContainer2);
+    switch (step) {
+      case 1:
+        if (openSection1) {
+          closeStep(1);
+        }
+        nextStep(1);
+        if (stepContainer1) {
+          setSection1(stepContainer1);
+        }
+        setShowTicks1(true);
+        break;
+      case 2:
+        if (openSection2) {
+          closeStep(2);
+        }
+        nextStep(2);
+        if (stepContainer2) {
+          setSection2(stepContainer2);
+        }
+        setShowTicks2(true);
+        break;
+      case 3:
+        if (openSection3) {
+          closeStep(3);
+        }
+        nextStep(3);
+        if (stepContainer3) {
+          setSection3(stepContainer3);
+        }
+        setShowTicks3(true);
+        break;
+      default:
+    }
+  };
+
+  // console.log('section1: ', section1);
   return (
-    <form className="flex min-h-screen w-full max-w-[1000px] flex-col gap-5">
+    <form className="flex w-full max-w-[1000px] flex-col gap-5">
       <div className="flex justify-between px-2">
         <h2 className="text-2xl font-bold text-lightText dark:text-darkText">
           Formulario de Solicitud
@@ -159,7 +234,7 @@ const RequestRegisterForm = () => {
           <h3 className="mb-2 text-center text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0">
             Mis Datos
           </h3>
-          {currentStep.find((step) => step == 1) && (
+          {!showTicks1 && (
             <div className="flex items-center justify-center">
               <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
                 <Tick />
@@ -170,17 +245,24 @@ const RequestRegisterForm = () => {
               <div className="h-7 w-7 rounded-full border-[3px] border-lightText dark:border-darkText"></div>
             </div>
           )}
-          {currentStep.find((step) => step != 1) && (
+          {showTicks1 && (
             <div className="flex w-full flex-col items-end justify-end">
               <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
                 <Tick />
               </div>
               <button
-                onClick={() => handleOpenSection(1)}
-                className={clsx("text-base text-lightText underline dark:text-darkText", senderFirstName != section1.sender_first_name && "hidden")}
+                onClick={() => {
+                  prevStep(2);
+                  handleOpenSection(1);
+                }}
+                className={clsx(
+                  'flex items-center justify-center gap-1 text-base text-lightText underline dark:text-darkText',
+                  openSection1 && 'hidden',
+                )}
                 type="button"
               >
                 Tratar
+                <ArrowDown />
               </button>
             </div>
           )}
@@ -293,26 +375,42 @@ const RequestRegisterForm = () => {
               </div>
             </div>
             <div className="flex justify-end">
-              <button
-                type="button"
-                onClick={
-                  openSection1
-                    ? () => closeStep(1)
-                    : () => {
-                        nextStep();
-                        setSection1({
-                          sender_first_name: senderFirstName,
-                          sender_last_name: senderLastName,
-                          email: email,
-                          phone: phone,
-                          own_account: ownAccount,
-                        });
-                      }
-                }
-                className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-              >
-                Siguiente
-              </button>
+              {openSection1 &&
+              senderFirstName == section1.sender_first_name &&
+              senderLastName == section1.sender_last_name &&
+              email == section1.email &&
+              phone == section1.phone &&
+              ownAccount == section1.own_account ? (
+                <button
+                  onClick={() => {
+                    handleOpenSection(1);
+                    nextStep(1);
+                  }}
+                  className={clsx(
+                    'flex items-center justify-center gap-1 text-base text-lightText underline dark:text-darkText',
+                  )}
+                  type="button"
+                >
+                  Tratar
+                  <ArrowUp />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleControlButton(1, {
+                      sender_first_name: senderFirstName,
+                      sender_last_name: senderLastName,
+                      email: email,
+                      phone: phone,
+                      own_account: ownAccount,
+                    })
+                  }
+                  className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+                >
+                  Siguiente
+                </button>
+              )}
             </div>
           </>
         )}
@@ -320,9 +418,25 @@ const RequestRegisterForm = () => {
 
       {/* Seccion 2 del formulaio */}
       {selectedReceivingSystem?.id == 'bank' ? (
-        <SectionBank currentStep={currentStep} nextStep={nextStep} />
+        <SectionBank
+          currentStep={currentStep}
+          nextStep={nextStep}
+          showTicks2={showTicks2}
+          prevStep={prevStep}
+          handleOpenSection={handleOpenSection}
+          openSection2={openSection2}
+          handleControlButton={handleControlButton}
+        />
       ) : (
-        <SectionOther currentStep={currentStep} nextStep={nextStep} />
+        <SectionOther
+          currentStep={currentStep}
+          nextStep={nextStep}
+          showTicks2={showTicks2}
+          prevStep={prevStep}
+          handleOpenSection={handleOpenSection}
+          openSection2={openSection2}
+          handleControlButton={handleControlButton}
+        />
       )}
 
       {/* Seccion 3 del formulaio */}
@@ -500,7 +614,7 @@ const RequestRegisterForm = () => {
             <div className="flex justify-center sm-phone:justify-end">
               <button
                 type="button"
-                onClick={nextStep}
+                onClick={() => nextStep(3)}
                 className={`m-1 flex items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-1 text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
               >
                 Siguiente
