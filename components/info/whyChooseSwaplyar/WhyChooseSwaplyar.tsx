@@ -103,9 +103,11 @@ const WhyChooseSwaplyar: React.FC = () => {
       </div>
 
       <FlyerTrabajo imageSrc={FlyerGif}>
-        &iquest;Nuevo en SwaplyAr? Hac&eacute; clic en &quot;C&oacute;mo usar
-        SwaplyAr&quot; y aprend&eacute; a operar f&aacute;cilmente.
-        &iexcl;Empez&aacute; ahora!
+        <p>
+          ¿Nuevo en SwaplyAr? <br /> Conoce cómo funciona nuestra plataforma y
+          comienza a transferir dinero de forma sencilla y segura. Haz click y
+          aprende cómo usar SwaplyAr{' '}
+        </p>
         <div>
           <button
             id="bannerHTUButton"
@@ -115,7 +117,7 @@ const WhyChooseSwaplyar: React.FC = () => {
               href={'/info/how-to-use'}
               className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'} `}
             >
-              Como usar Swaplyar
+              <h3>Como usar Swaplyar</h3>
             </Link>
           </button>
         </div>

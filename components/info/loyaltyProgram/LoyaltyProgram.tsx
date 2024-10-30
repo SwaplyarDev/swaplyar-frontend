@@ -104,7 +104,7 @@ function LoyaltyProgram() {
         <div>
           <p>
             Para conocer los Términos y Condiciones del programa SwaplyAr Plus
-            Rewards, hacé
+            Rewards, haz
             <Link
               className="text-blue-800"
               href="/SAPR-Terms-Conditions-ES.pdf"
@@ -113,11 +113,11 @@ function LoyaltyProgram() {
               {' '}
             </Link>
             <Link
-              href="https://swaplyar.com/SAPR-Terms-Conditions-ES%20.pdf"
+              href="./sapr-terms-conditions"
               target="_blank"
-              className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-1 font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+              className="underline"
             >
-              clic aquí
+              click aquí
             </Link>
             .
           </p>
@@ -130,7 +130,7 @@ function LoyaltyProgram() {
                 href={'/info/how-to-use'}
                 className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'} `}
               >
-                ¿Necesitás ayuda?
+                <h3>¿Necesitás ayuda?</h3>
               </Link>
             </button>
           </div>

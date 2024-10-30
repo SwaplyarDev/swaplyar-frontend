@@ -64,18 +64,21 @@ export default function HomePage() {
 
       <div className="mt-10">
         <FlyerTrabajo imageSrc={FlyerGif}>
-          ¿Nuevo en SwaplyAr? Hacé clic en &quot;Cómo usar SwaplyAr&quot; y
-          aprendé a operar fácilmente. ¡Empezá ahora!
+          <p>
+            ¿Nuevo en SwaplyAr? <br /> Conoce cómo funciona nuestra plataforma y
+            comienza a transferir dinero de forma sencilla y segura. Haz click y
+            aprende cómo usar SwaplyAr{' '}
+          </p>
           <div>
             <button
               id="bannerHTUButton"
-              className={`trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:border-selectBtsLight dark:border-darkText dark:bg-darkText dark:text-black ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+              className={`ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-black ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
             >
               <Link
                 href={'/info/how-to-use'}
                 className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'} `}
               >
-                Como usar Swaplyar
+                <h3>Como usar Swaplyar</h3>
               </Link>
             </button>
           </div>
