@@ -152,6 +152,11 @@ const RequestRegisterForm = () => {
   const email = watch('email');
   const phone = watch('phone');
   const ownAccount = watch('own_account');
+  const sendAmountValue = watch('send_amount');
+  const receiveAmountValue = watch('receive_amount');
+  const payEmail = watch('pay_email');
+  const proofOfPayment = watch('proof_of_payment');
+  const note = watch('note');
 
   const handleControlButton = (
     step: number,
@@ -445,7 +450,7 @@ const RequestRegisterForm = () => {
           <h3 className="mb-2 text-center text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0">
             Pago
           </h3>
-          {currentStep.find((step) => step == 1) && (
+          {currentStep.find((step) => step == 3) && !showTicks3 && (
             <div className="flex items-center justify-center">
               <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
                 <Tick />
@@ -455,11 +460,34 @@ const RequestRegisterForm = () => {
                 <Tick />
               </div>
               <div className="h-[3px] w-6 bg-lightText dark:bg-darkText"></div>
-              <div className="h-7 w-7 rounded-full border-[3px] border-lightText dark:border-darkText"></div>
+              <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
+                <Tick />
+              </div>
+            </div>
+          )}
+          {showTicks3 && (
+            <div className="flex w-full flex-col items-end justify-end">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
+                <Tick />
+              </div>
+              <button
+                onClick={() => {
+                  prevStep(4);
+                  handleOpenSection(3);
+                }}
+                className={clsx(
+                  'flex items-center justify-center gap-1 text-base text-lightText underline dark:text-darkText',
+                  openSection1 && 'hidden',
+                )}
+                type="button"
+              >
+                Tratar
+                <ArrowDown />
+              </button>
             </div>
           )}
         </div>
-        {currentStep.find((step) => step == 1) && (
+        {(currentStep.find((step) => step == 3) || openSection3 == true) && (
           <>
             {' '}
             <p className="text-left">
@@ -612,13 +640,42 @@ const RequestRegisterForm = () => {
               </div>
             </div>
             <div className="flex justify-center sm-phone:justify-end">
-              <button
-                type="button"
-                onClick={() => nextStep(3)}
-                className={`m-1 flex items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-1 text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-              >
-                Siguiente
-              </button>
+              {openSection3 &&
+              sendAmountValue == section3.send_amount &&
+              receiveAmountValue == section3.receive_amount &&
+              proofOfPayment == section3.proof_of_payment &&
+              note == section3.note &&
+              payEmail == section3.pay_email ? (
+                <button
+                  onClick={() => {
+                    handleOpenSection(3);
+                    nextStep(3);
+                  }}
+                  className={clsx(
+                    'flex items-center justify-center gap-1 text-base text-lightText underline dark:text-darkText',
+                  )}
+                  type="button"
+                >
+                  Tratar
+                  <ArrowUp />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleControlButton(3, undefined, undefined, {
+                      send_amount: sendAmountValue,
+                      receive_amount: receiveAmountValue,
+                      proof_of_payment: proofOfPayment,
+                      note: note,
+                      pay_email: payEmail,
+                    })
+                  }
+                  className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+                >
+                  Siguiente
+                </button>
+              )}
             </div>
           </>
         )}
