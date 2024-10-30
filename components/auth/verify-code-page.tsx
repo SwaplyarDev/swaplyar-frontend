@@ -225,7 +225,7 @@ export const VerifyCodePage = () => {
               <>
                 <div
                   className={clsx(
-                    `w-[46px] rounded-full border-[0.5px] p-[3px] xs:w-[57px] sm:w-full border-buttonsLigth dark:border-darkText`,
+                    `w-[46px] rounded-full border-[0.5px] border-buttonsLigth p-[3px] dark:border-darkText xs:w-[57px] sm:w-full`,
                   )}
                 >
                   <input
@@ -235,10 +235,8 @@ export const VerifyCodePage = () => {
                     maxLength={1}
                     disabled={isLocked || loading}
                     className={clsx(
-                      'h-full w-full rounded-full text-center border-0 dark:border-[0.5px] text-base sm:text-[2.5rem] dark:bg-lightText focus:outline-none',
-                      errors.verificationCode
-                        ? 'border-red-500'
-                        : '',
+                      'h-full w-full rounded-full border-0 text-center text-base focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem]',
+                      errors.verificationCode ? 'border-red-500' : '',
                     )}
                     {...register(`verificationCode.${index}`)}
                     onChange={(event) => handleInputChange(index, event)}
@@ -246,7 +244,7 @@ export const VerifyCodePage = () => {
                   />
                 </div>
                 {index < 5 && (
-                  <div className="xs:flex min-h-full min-w-[0.5rem] items-center justify-center hidden">
+                  <div className="hidden min-h-full min-w-[0.5rem] items-center justify-center xs:flex">
                     <div className="h-[2px] w-full flex-1 bg-buttonsLigth dark:bg-darkText"></div>
                   </div>
                 )}
@@ -295,7 +293,7 @@ export const VerifyCodePage = () => {
           </div>
 
           {attempts > 0 && !isLocked ? (
-            <p className="mt-2 text-center text-base sm:text-lg text-buttonsLigth dark:text-darkText">
+            <p className="mt-2 text-center text-base text-buttonsLigth dark:text-darkText sm:text-lg">
               Tienes {attempts} intentos para reenviar el código
             </p>
           ) : (

@@ -1,3 +1,4 @@
+// AboutUs.tsx
 'use client';
 import Image from 'next/image';
 import CaedAboutUs from '../ui/caed-about-us/caed-about-us';
@@ -14,7 +15,7 @@ import {
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
-
+import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import './about.css';
 
 const cardsData = [
@@ -55,11 +56,11 @@ const cardsData = [
 const AboutUs = () => {
   const { margins } = useMargins();
   const currentMargin = ResponsiveMarginHook(margins);
-
+  const { isDark } = useDarkTheme();
   return (
     <>
       <div className="relative flex flex-col items-center justify-center py-10">
-        <AnimatedBlurredCircles tope="top-[124px]" />
+        <AnimatedBlurredCircles tope="top-[0px]" />
         <div
           className="flex w-full max-w-[1000px] flex-col items-center justify-center pt-5 text-black dark:text-white"
           style={{ margin: currentMargin }}
@@ -119,21 +120,23 @@ const AboutUs = () => {
       </div>
       <div className="mt-10 text-center">
         <FlyerTrabajo imageSrc={FlyerGif}>
-          <span>
-            &iquest;Nuevo en SwaplyAr? Hac&eacute; clic en &quot;C&oacute;mo
-            usar SwaplyAr&quot; y aprend&eacute; a operar f&aacute;cilmente.
-            &iexcl;Empez&aacute; ahora!
+          <span className="">
+            <p>
+              ¿Nuevo en SwaplyAr? <br /> Conoce cómo funciona nuestra plataforma
+              y comienza a transferir dinero de forma sencilla y segura. Haz
+              click y aprende cómo usar SwaplyAr{' '}
+            </p>
           </span>
           <div>
             <button
               id="bannerHTUButton"
-              className="trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:scale-105 hover:border-selectBtsLight hover:bg-transparent"
+              className={`trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:border-selectBtsLight dark:border-darkText dark:bg-darkText dark:text-black ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
             >
               <Link
                 href={'/info/how-to-use'}
-                className="ease font-bold text-darkText transition-colors duration-300"
+                className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'}`}
               >
-                Como usar Swaplyar
+                <h3>Como usar Swaplyar</h3>
               </Link>
             </button>
           </div>
