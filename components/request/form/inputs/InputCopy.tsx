@@ -48,19 +48,24 @@ const InputCopy: FC<InputCopyProps> = ({
       <div
         className={clsx(
           //focus:border-blue-600
-          'flex max-h-[38px] rounded border border-[#6B7280] bg-gray-200 dark:bg-lightText focus:border-x-blue-600',
-          error
-            ? 'border-red-500'
+          'flex max-h-[38px] rounded border border-[#6B7280] bg-gray-200 dark:bg-lightText',
+          // error
+          //   ? 'border-red-500'
+          //   : isFocused
+          //     ? 'outline-none border-blue-600 ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
+          //     : 'hover:border-blue-600 dark:hover:border-white',
+          error && !isFocused
+            ? 'border border-red-500'
             : isFocused
-              ? 'border-blue-600'
+              ? 'outline-none border-blue-600 ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
               : 'hover:border-blue-600 dark:hover:border-white',
           // error
           //   ? 'border-red-500'
           //   : 'border-[#6B7280] hover:border-blue-600 dark:hover:border-white',
         )}
-          onFocus={() => setIsFocused(true)} // Manejador de foco en el contenedor
-          onBlur={() => setIsFocused(false)} // Manejador de desenfoque en el contenedor
-          tabIndex={0} // Asegúrate de que el div pueda recibir el enfoque
+          // onFocus={() => setIsFocused(true)} // Manejador de foco en el contenedor
+          // onBlur={() => setIsFocused(false)} // Manejador de desenfoque en el contenedor
+          // tabIndex={0} // Asegúrate de que el div pueda recibir el enfoque
       >
         <input
           id={id}

@@ -288,7 +288,7 @@ const RequestRegisterForm = () => {
                   >
                     Nombre
                   </label>
-                  <InputCopy
+                  <InputField
                     id="sender_first_name"
                     type="text"
                     placeholder="Nombre"
