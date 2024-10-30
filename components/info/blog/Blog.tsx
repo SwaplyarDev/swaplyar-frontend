@@ -11,30 +11,19 @@ import Image from 'next/image';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL
 
-interface Blog {
-  id: number;
-  title: string;
-  content: string;
-  author: string;
-  imageUrl: string;
-  publishedAt: string;
-}
-
 // Componente para la tarjeta de cada publicación del blog
-const BlogPostCard: React.FC<{ title: string; content: string; imageUrl: string; publishedAt: string }> = ({ title, content, imageUrl, publishedAt }) => {
+const BlogPostCard: React.FC<{ title: string; body: string; url_image: string; created_at: string }> = ({ title, body, url_image, created_at }) => {
   return (
     <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
-      <Image 
-        src={imageUrl} 
+      <img 
+        src={url_image} 
         alt={title} 
         className="w-full h-48 object-cover" 
-        width={800}
-        height={400}
       />
       <div className="p-4">
         <h3 className="text-xl font-semibold mb-2">{title}</h3>
-        <p className="text-gray-700 mb-4">{content}</p>
-        <p className="text-sm text-gray-500 mt-2">{new Date(publishedAt).toLocaleDateString()}</p>
+        <p className="text-gray-700 mb-4">{body}</p>
+        <p className="text-sm text-gray-500 mt-2">{new Date(created_at).toLocaleDateString()}</p>
       </div>
     </div>
   );
@@ -42,19 +31,25 @@ const BlogPostCard: React.FC<{ title: string; content: string; imageUrl: string;
 
 // Componente para el carrusel de imágenes aleatorias
 const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
   const settings = {
-    dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    dotsClass: 'slick-dots slick-thumb',
+    beforeChange: (current: number, next: number) => setActiveIndex(next),
+    autoplay: true,
+    autoplaySpeed: 5000,
   };
 
+  // Limitar a solo 3 imágenes
+  const limitedImages = images.slice(0, 3);
+
   return (
-    <div className="border-4 border-[#012C8A] rounded-[20px] overflow-hidden">
+    <div className="border-4 border-[#012C8A] rounded-[20px] overflow-hidden relative">
       <Slider {...settings}>
-        {images.map((image, index) => (
+        {limitedImages.map((image, index) => (
           <div key={index}>
             <Image 
               src={image}
@@ -66,25 +61,16 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
           </div>
         ))}
       </Slider>
-      <style jsx>{`
-        .slick-dots {
-          bottom: 10px;
-        }
-        .slick-dots li {
-          width: 20px;
-          height: 20px;
-        }
-        .slick-dots li button {
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: white;
-          border: 2px solid #012C8A;
-        }
-        .slick-dots li.slick-active button {
-          background: #012C8A;
-        }
-      `}</style>
+      
+      {/* Custom Dots */}
+      <div className="absolute bottom-4 w-full flex justify-center space-x-2">
+        {limitedImages.map((_, index) => (
+          <div
+            key={index}
+            className={`w-4 h-4 rounded-full transition-all duration-300 ${activeIndex === index ? 'bg-[#012C8A]' : 'bg-white border-2 border-[#012C8A] opacity-50'}`}
+          ></div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -99,28 +85,29 @@ const Blog: React.FC = () => {
   const [randomImages, setRandomImages] = useState<string[]>([]);
 
   // Fetch blog posts
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const response = await fetch(`${BASE_URL}/v1/blogs`);
-        
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        
-        const data = await response.json();
-        console.log('Data received from API:', data.blogsPerPage);
-        setBlogs(data.blogsPerPage); // Actualiza el estado de la tienda
-      } catch (error) {
-        console.error('Error fetching blogs:', error);
+ useEffect(() => {
+  const fetchBlogs = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/blogs`);
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-    };
-    
-    fetchBlogs();
-  }, [setBlogs]);
+      
+      const data = await response.json();
+      console.log('Data received from API:', data.blogsPerPage);
+      setBlogs(data.blogsPerPage); // Actualiza el estado de la tienda
+    } catch (error) {
+      console.error('Error fetching blogs:', error);
+    }
+  };
+  
+  fetchBlogs();
+}, [setBlogs]);
 
   // Actualiza las imágenes aleatorias cada vez que blogs cambia
   useEffect(() => {
+    console.log("randomImages:", blogs);
     if (Array.isArray(blogs)) {
       // Agregar un console log para ver la estructura de blogs
       console.log("Blogs structure:", blogs);
@@ -134,7 +121,6 @@ const Blog: React.FC = () => {
     }
   }, [blogs]);
 
-  console.log("randomImages:", randomImages);
 
   // Lógica de paginación
   const indexOfLastPost = currentPage * postsPerPage;
@@ -179,14 +165,14 @@ const Blog: React.FC = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
         {currentPosts.map(post => (
-          <BlogPostCard 
-          key={post.id}  
+         <BlogPostCard 
+          key={post.blog_id}  
           title={post.title} 
-          content={post.content} 
-          imageUrl={post.imageUrl} 
-          publishedAt={post.publishedAt} 
-          />
-        ))}
+          body={post.body} 
+          url_image={post.url_image} 
+          created_at={post.created_at} 
+           />
+))}
       </div>
 
       <div className="flex justify-center mt-8 space-x-4">

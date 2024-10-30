@@ -1,14 +1,13 @@
 import { create } from 'zustand';
 
 interface Blog {
-  id: number;
+  blog_id: string;
   title: string;
-  content: string;
-  author: string;
-  imageUrl: string;
-  publishedAt: string;
+  body: string;
+  url_image: string;
+  created_at: string;
+  status: string;
 }
-
 interface BlogStore {
   blogs: Blog[];
   setBlogs: (blogs: Blog[]) => void; // Función para actualizar el estado
