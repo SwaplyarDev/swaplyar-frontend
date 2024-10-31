@@ -1,17 +1,15 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-// Solución temporal react-slick;
 // @ts-ignore
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import useBlogStore from '@/store/useBlogStore'; 
+import useBlogStore from '@/store/useBlogStore';
 import Image from 'next/image';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-// Componente para la tarjeta de cada publicación del blog
 const BlogPostCard: React.FC<{ title: string; body: string; url_image: string; created_at: string }> = ({ title, body, url_image, created_at }) => {
   return (
     <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
@@ -29,7 +27,6 @@ const BlogPostCard: React.FC<{ title: string; body: string; url_image: string; c
   );
 };
 
-// Componente para el carrusel de imágenes aleatorias
 const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -43,7 +40,6 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
     autoplaySpeed: 5000,
   };
 
-  // Limitar a solo 3 imágenes
   const limitedImages = images.slice(0, 3);
 
   return (
@@ -61,8 +57,6 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
           </div>
         ))}
       </Slider>
-      
-      {/* Custom Dots */}
       <div className="absolute bottom-4 w-full flex justify-center space-x-2">
         {limitedImages.map((_, index) => (
           <div
@@ -75,61 +69,38 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
   );
 };
 
-// Componente principal del Blog
 const Blog: React.FC = () => {
   const { blogs, setBlogs } = useBlogStore();
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 9;
 
-  // Estado local para las imágenes aleatorias
   const [randomImages, setRandomImages] = useState<string[]>([]);
 
-  // Fetch blog posts
- useEffect(() => {
-  const fetchBlogs = async () => {
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/blogs`);
-      
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      
-      const data = await response.json();
-      console.log('Data received from API:', data.blogsPerPage);
-      setBlogs(data.blogsPerPage); // Actualiza el estado de la tienda
-    } catch (error) {
-      console.error('Error fetching blogs:', error);
-    }
-  };
-  
-  fetchBlogs();
-}, [setBlogs]);
-
-  // Actualiza las imágenes aleatorias cada vez que blogs cambia
   useEffect(() => {
-    console.log("randomImages:", blogs);
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/v1/blogs?page=${currentPage}`);
+      
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        
+        const data = await response.json();
+        setBlogs(data.blogsPerPage);
+      } catch (error) {
+        console.error('Error fetching blogs:', error);
+      }
+    };
+    
+    fetchBlogs();
+  }, [currentPage, setBlogs]);
+
+  useEffect(() => {
     if (Array.isArray(blogs)) {
-      // Agregar un console log para ver la estructura de blogs
-      console.log("Blogs structure:", blogs);
-      
-      const images = blogs.map(el => {
-        console.log(`Processing blog with id: ${el.id}, imageUrl: ${el.url_image}`);
-        return el.url_image; // Verifica si imageUrl está definido
-      });
-      
+      const images = blogs.map(el => el.url_image);
       setRandomImages(images);
     }
   }, [blogs]);
-
-
-  // Lógica de paginación
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  
-  // Verifica si blogs es un array antes de usar slice
-  const currentPosts = Array.isArray(blogs) ? blogs.slice(indexOfFirstPost, indexOfLastPost) : [];
-
-  const totalPages = Math.ceil((Array.isArray(blogs) ? blogs.length : 0) / postsPerPage);
 
   return (
     <div className="max-w-7xl mx-auto p-6">
@@ -164,43 +135,41 @@ const Blog: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
-        {currentPosts.map(post => (
-         <BlogPostCard 
-          key={post.blog_id}  
-          title={post.title} 
-          body={post.body} 
-          url_image={post.url_image} 
-          created_at={post.created_at} 
-           />
-))}
+        {blogs.map(post => (
+          <BlogPostCard 
+            key={post.blog_id}  
+            title={post.title} 
+            body={post.body} 
+            url_image={post.url_image} 
+            created_at={post.created_at} 
+          />
+        ))}
       </div>
-
       <div className="flex justify-center mt-8 space-x-4">
         <button
-          className={`flex items-center justify-center w-10 h-10 border rounded-full ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
-          onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
+          className={`w-10 h-10 border rounded-full ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
         >
           &lt;
         </button>
-        {Array.from({ length: totalPages }, (_, index) => (
+        {[...Array(3)].map((_, index) => (
           <button
             key={index}
-            className={`flex items-center justify-center w-10 h-10 border rounded-full ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-white'}`}
+            className={`w-10 h-10 border rounded-full ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-white'}`}
             onClick={() => setCurrentPage(index + 1)}
           >
             {index + 1}
           </button>
         ))}
         <button
-          className={`flex items-center justify-center w-10 h-10 border rounded-full ${currentPage === totalPages ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
-          onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)}
-          disabled={currentPage === totalPages}
+          className={`w-10 h-10 border rounded-full ${currentPage === 3 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, 3))}
+          disabled={currentPage === 3}
         >
           &gt;
         </button>
       </div>
-      
     </div>
   );
 };
