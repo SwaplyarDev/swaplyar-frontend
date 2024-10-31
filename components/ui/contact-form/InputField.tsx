@@ -46,7 +46,7 @@ const InputField: FC<InputFieldProps> = ({
         className={clsx(
           file ? 'hidden' : '',
           'h-full w-full rounded border border-[#6B7280] bg-gray-200 px-5 py-2 dark:bg-lightText',
-          error ? 'border-red-500' : 'hover:border-blue-600 dark:hover:border-white',
+          error ? 'border-red-500 hover:border-blue-600 dark:hover:border-white' : 'hover:border-blue-600 dark:hover:border-white',
         )}
       />
       {error && <p className="text-sm text-red-500">• {error}</p>}

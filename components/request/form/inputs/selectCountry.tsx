@@ -84,15 +84,15 @@ export default function SelectCountry({
       <div
         className={clsx(
           'flex items-center rounded border border-[#6B7280] bg-gray-200 dark:bg-lightText max-h-[38px]',
-          errors.phone
-            ? ' border-red-500'
+          errors.phone && !isFocused
+            ? ' border border-red-500 hover:border-blue-600 dark:hover:border-white'
             : isFocused
-              ? 'border-blue-600'
+              ? 'outline-none border-blue-600 ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
               : 'hover:border-blue-600 dark:hover:border-white',
         )}
         onFocus={() => setIsFocused(true)} // Manejador de foco en el contenedor
         onBlur={() => setIsFocused(false)} // Manejador de desenfoque en el contenedor
-        tabIndex={0} // Asegúrate de que el div pueda recibir el enfoque
+        // tabIndex={0} // Asegúrate de que el div pueda recibir el enfoque
       >
         <Select
           id="country"
@@ -207,8 +207,8 @@ export default function SelectCountry({
           placeholder="Telefono"
           className="w-full border-none bg-transparent focus:border-none focus:outline-none focus:ring-0"
           type="tel"
-          onFocus={() => setIsFocused(true)} // Agrega onFocus
-          onBlur={() => setIsFocused(false)} // Agrega onBlur
+          // onFocus={() => setIsFocused(true)} // Agrega onFocus
+          // onBlur={() => setIsFocused(false)} // Agrega onBlur
           {...register('phone', {
             required: 'El número de teléfono es obligatorio',
             pattern: {

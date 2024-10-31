@@ -55,7 +55,7 @@ const InputCopy: FC<InputCopyProps> = ({
           //     ? 'outline-none border-blue-600 ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
           //     : 'hover:border-blue-600 dark:hover:border-white',
           error && !isFocused
-            ? 'border border-red-500'
+            ? 'border border-red-500 hover:border-blue-600 dark:hover:border-white'
             : isFocused
               ? 'outline-none border-blue-600 ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
               : 'hover:border-blue-600 dark:hover:border-white',

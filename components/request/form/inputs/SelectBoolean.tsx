@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import Select from 'react-select';
 import clsx from 'clsx';
+import { set } from 'react-hook-form';
 
 type FieldError = {
   message: string;
@@ -9,7 +10,7 @@ type FieldError = {
 type SelectBooleanProps = {
   selectedOption: boolean | undefined;
   setSelectedOption: (option: boolean | undefined) => void;
-  errors: { [key: string]: FieldError } | {}; // Tipado explícito
+  errors: { [key: string]: FieldError } | {};
 };
 
 const SelectBoolean: React.FC<SelectBooleanProps> = ({
@@ -18,21 +19,31 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
   errors,
 }) => {
   const fieldName = 'own_account';
-  const errorMessage = (errors as { [key: string]: FieldError })[fieldName]
-    ?.message;
+  const errorMessage = (errors as { [key: string]: FieldError })[fieldName]?.message;
+  const [isFocused, setIsFocused] = useState(false);
+  const handleFocus = () => {
+    setIsFocused(!isFocused);
+  }
+  const botonRef = useRef<HTMLButtonElement>(null);
 
+  const simularClic = () => {
+    botonRef.current?.click();
+  };
   return (
     <>
       <label
         htmlFor={fieldName}
         className={clsx(
-          errorMessage ? 'text-red-500' : 'text-gray-900 dark:text-gray-300', 'hidden'
+          errorMessage ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
+          'hidden',
         )}
       >
         ¿Tienes cuenta propia?
       </label>
       <Select
         id={fieldName}
+        onFocus={() => handleFocus()} // Activa el enfoque
+        // onBlur={() => handleFocus()} // Desactiva el enfoque
         options={[
           { value: true, label: 'Sí' },
           { value: false, label: 'No' },
@@ -42,15 +53,23 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
             ? { value: selectedOption, label: selectedOption ? 'Sí' : 'No' }
             : null
         }
-        onChange={(option) => setSelectedOption(option?.value)}
+        onChange={(option) => {
+          setSelectedOption(option?.value);
+          setIsFocused(false); // Desactiva el enfoque al seleccionar
+          // setTimeout(() => {
+          //   setIsFocused(false);
+          // }, 100)
+        }}
         placeholder="Selecciona una opción"
         classNamePrefix="custom-select"
         isSearchable={false}
         className={clsx(
-          'h-[38px] w-full rounded border bg-gray-200 text-gray-900 focus:border-blue-600 dark:bg-lightText dark:text-white',
-          errorMessage
-            ? 'border-red-500'
-            : 'border-[#6B7280] hover:border-blue-600 dark:hover:border-white',
+          'h-[38px] w-full rounded border border-[#6B7280] bg-gray-200 text-gray-900 dark:bg-lightText dark:text-white',
+          errorMessage && !isFocused
+            ? 'border border-red-500 hover:border-blue-600 dark:hover:border-white'
+            : isFocused
+              ? 'border-blue-600 outline-none ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
+              : 'hover:border-blue-600 dark:hover:border-white',
         )}
         theme={(theme) => ({
           ...theme,
@@ -113,14 +132,14 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
             },
           }),
           clearIndicator: () => ({
-            display: 'none', // Ocultar la X
+            display: 'none',
           }),
           dropdownIndicator: (provided) => ({
             ...provided,
-            padding: '0 8px', // Asegura espacio para la flecha desplegable
+            padding: '0 8px',
           }),
           indicatorSeparator: () => ({
-            display: 'none', // Elimina el separador vertical "|"
+            display: 'none',
           }),
           placeholder: (provided) => ({
             ...provided,
@@ -128,11 +147,7 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
           }),
         }}
       />
-      {errorMessage && (
-        <p className="text-sm text-red-500">
-          • {errorMessage}
-        </p>
-      )}
+      {errorMessage && <p className="text-sm text-red-500">• {errorMessage}</p>}
     </>
   );
 };
