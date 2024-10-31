@@ -7,8 +7,8 @@ type FieldError = {
 };
 
 type SelectBooleanProps = {
-  selectedOption: boolean | undefined;
-  setSelectedOption: (option: boolean | undefined) => void;
+  selectedOption: string | undefined;
+  setSelectedOption: (option: string | undefined) => void;
   errors: { [key: string]: FieldError } | {}; // Tipado explícito
 };
 
@@ -34,15 +34,15 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
       <Select
         id={fieldName}
         options={[
-          { value: true, label: 'Sí' },
-          { value: false, label: 'No' },
+          { value: 'Sí', label: 'Sí' },
+          { value: 'No', label: 'No' },
         ]}
         value={
           selectedOption !== undefined
-            ? { value: selectedOption, label: selectedOption ? 'Sí' : 'No' }
+            ? { value: selectedOption, label: selectedOption }
             : null
         }
-        onChange={(option) => setSelectedOption(option?.value)}
+        onChange={(option) => setSelectedOption(option?.value || undefined)}
         placeholder="Selecciona una opción"
         classNamePrefix="custom-select"
         isSearchable={false}

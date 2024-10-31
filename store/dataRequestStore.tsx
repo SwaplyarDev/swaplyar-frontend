@@ -5,7 +5,7 @@ interface DataSection1 {
   sender_last_name: string;
   email: string;
   phone: string;
-  own_account: boolean;
+  own_account: string;
 }
 
 interface DataSection2 {
@@ -42,7 +42,7 @@ const useDataRequestStore = create<DataRequestState>((set) => ({
     sender_last_name: '',
     email: '',
     phone: '',
-    own_account: false,
+    own_account: '',
   },
   setSection1: (data) =>
     set((state) => ({
