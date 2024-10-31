@@ -8,9 +8,9 @@ type FieldError = {
 };
 
 type SelectBooleanProps = {
-  selectedOption: boolean | undefined;
-  setSelectedOption: (option: boolean | undefined) => void;
-  errors: { [key: string]: FieldError } | {};
+  selectedOption: string | undefined;
+  setSelectedOption: (option: string | undefined) => void;
+  errors: { [key: string]: FieldError } | {}; // Tipado explícito
 };
 
 const SelectBoolean: React.FC<SelectBooleanProps> = ({
@@ -45,21 +45,15 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
         onFocus={() => handleFocus()} // Activa el enfoque
         // onBlur={() => handleFocus()} // Desactiva el enfoque
         options={[
-          { value: true, label: 'Sí' },
-          { value: false, label: 'No' },
+          { value: 'Sí', label: 'Sí' },
+          { value: 'No', label: 'No' },
         ]}
         value={
           selectedOption !== undefined
-            ? { value: selectedOption, label: selectedOption ? 'Sí' : 'No' }
+            ? { value: selectedOption, label: selectedOption }
             : null
         }
-        onChange={(option) => {
-          setSelectedOption(option?.value);
-          setIsFocused(false); // Desactiva el enfoque al seleccionar
-          // setTimeout(() => {
-          //   setIsFocused(false);
-          // }, 100)
-        }}
+        onChange={(option) => setSelectedOption(option?.value || undefined)}
         placeholder="Selecciona una opción"
         classNamePrefix="custom-select"
         isSearchable={false}

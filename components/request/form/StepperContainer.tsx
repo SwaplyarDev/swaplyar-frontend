@@ -3,7 +3,7 @@ import { useStepperStore } from '@/store/stateStepperStore';
 import StepOne from './steps/StepOne';
 import StepTwo from './steps/StepTwo';
 import StepThree from './steps/StepThree';
-import StepIndicator from './realSteps/StepIndicator';
+import StepIndicator from './steps/StepIndicator';
 import Tick from '@/components/ui/Tick/Tick';
 import ArrowDown from '@/components/ui/ArrowDown/ArrowDown';
 
@@ -11,9 +11,9 @@ const StepperContainer = () => {
   const { activeStep, completedSteps, setActiveStep } = useStepperStore();
 
   const steps = [
-    { title: 'Paso 1: Mis Datos', component: <StepOne /> },
-    { title: 'Paso 2: Información del Destinatario', component: <StepTwo /> },
-    { title: 'Paso 3: Pago', component: <StepThree /> },
+    { title: 'Mis Datos', component: <StepOne /> },
+    { title: 'Información del Destinatario', component: <StepTwo /> },
+    { title: 'Pago', component: <StepThree /> },
   ];
 
   const handleStepClick = (index: number) => {
@@ -33,7 +33,6 @@ const StepperContainer = () => {
         </div>
       </div>
       {steps.map((step, index) => {
-        console.log(completedSteps[index]);
         return (
           <section
             key={index}

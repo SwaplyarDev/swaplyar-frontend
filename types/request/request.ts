@@ -4,7 +4,7 @@ export type FormInputs = {
   sender_last_name: string;
   email: string;
   phone: string;
-  own_account: boolean;
+  own_account: string;
 
   //SECTION 2
   //bank

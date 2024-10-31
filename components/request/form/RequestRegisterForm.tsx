@@ -1,6 +1,6 @@
 'use client';
 import clsx from 'clsx';
-import CountrySelect from './inputs/selectCountry';
+
 import { useEffect, useState } from 'react';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { CountryOption, FormInputs } from '@/types/request/request';
@@ -16,6 +16,7 @@ import useDataRequestStore from '@/store/dataRequestStore';
 import InputCopy from './inputs/InputCopy';
 import ArrowUp from '@/components/ui/ArrowUp/ArrowUp';
 import ArrowDown from '@/components/ui/ArrowDown/ArrowDown';
+import SelectCountry from './inputs/SelectCountry';
 
 interface Option {
   value: string;
@@ -165,7 +166,7 @@ const RequestRegisterForm = () => {
       sender_last_name: string;
       email: string;
       phone: string;
-      own_account: boolean;
+      own_account: string;
     },
     stepContainer2?: {
       receiver_first_name: string;
@@ -343,7 +344,7 @@ const RequestRegisterForm = () => {
                     error={errors.email && 'Este campo es obligatorio'}
                   />
                 </div>
-                <CountrySelect
+                <SelectCountry
                   errors={errors}
                   setValue={setValue}
                   setCurrentCountry={setCurrentCountry}
@@ -361,7 +362,7 @@ const RequestRegisterForm = () => {
                 <Controller
                   name="own_account"
                   control={control}
-                  defaultValue={undefined}
+                  defaultValue={''}
                   rules={{
                     required: 'Este campo es obligatorio',
                   }}
