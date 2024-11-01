@@ -1,7 +1,11 @@
+'use client';
 import Link from 'next/link';
 import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
+import { useDarkTheme } from '../../ui/theme-Provider/themeProvider';
+import { MdDownloadForOffline } from 'react-icons/md';
 
 const SaprTermsConditions = () => {
+  const { isDark } = useDarkTheme();
   return (
     <div className="mx-auto my-10 w-full max-w-5xl px-3">
       <h1 className="mb-6 font-sans text-3xl md:text-4xl">
@@ -169,9 +173,10 @@ const SaprTermsConditions = () => {
         <Link
           href="https://swaplyar.com/SAPR-Terms-Conditions-ES%20.pdf"
           target="_blank"
-          className={`buttonSecond relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText`}
+          className={`relative m-1 flex h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
         >
-          Descargar Términos
+          <MdDownloadForOffline className="h-7 w-7" />
+          <h3>Descargar Términos</h3>
         </Link>
       </div>
     </div>
