@@ -8,6 +8,9 @@ import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import { PlusRewardsDark } from '@/utils/assets/img-database';
+import { Ayuda1 } from '@/utils/assets/img-database';
+import { Ayuda1Dark } from '@/utils/assets/img-database';
 
 const HelpCenterPage = () => {
   const { margins } = useMargins();
@@ -35,7 +38,6 @@ const HelpCenterPage = () => {
             <ContactForm />
           </section>
           <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
-<<<<<<< HEAD
             <span className="flex items-center justify-center">
               <Image
                 // src={PlusRewards}
@@ -89,26 +91,6 @@ const HelpCenterPage = () => {
                 height={150}
                 className="hidden dark:inline-block"
               />
-=======
-            <span className="card-rawe flex flex-col items-center rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark md:items-start">
-              {isDark ? (
-                <Image
-                  // src={Ayuda1Dark}
-                  src="/images/ayuda1-dark.png"
-                  alt="paso 1 de como cambiar tu dinero en SwaplyAr tema oscuro"
-                  width={210}
-                  height={150}
-                />
-              ) : (
-                <Image
-                  // src={Ayuda1}
-                  src="/images/ayuda1.png"
-                  alt="paso 1 de como cambiar tu dinero en SwaplyAr"
-                  width={210}
-                  height={150}
-                />
-              )}
->>>>>>> d5babf4c44068f482699f83fce88ebab97a540a5
               <h3 className="text-xl font-bold">Chateá con nosotros</h3>
               <div className="flex h-full flex-col justify-between">
                 <p className="mb-6 text-center text-lg md:mb-0 md:text-left">

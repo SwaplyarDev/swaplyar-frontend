@@ -14,10 +14,11 @@ const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 const BlogPostCard: React.FC<{ title: string; body: string; url_image: string; created_at: string }> = ({ title, body, url_image, created_at }) => {
   return (
     <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
-      <img 
+      <Image
         src={url_image} 
         alt={title} 
         className="w-full h-48 object-cover" 
+        width={300} height={160}
       />
       <div className="p-4">
         <h3 className="text-xl font-semibold mb-2">{title}</h3>
@@ -73,6 +74,7 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
 const Blog: React.FC = () => {
   const { blogs, setBlogs } = useBlogStore();
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
   const postsPerPage = 9;
   const [randomImages, setRandomImages] = useState<string[]>([]);
 
@@ -118,6 +120,10 @@ const Blog: React.FC = () => {
       setRandomImages(images);
     }
   }, [blogs]);
+  // filtra una card
+  const filteredBlogs = blogs.filter((post) =>
+    post.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="max-w-7xl mx-auto p-6">
@@ -131,6 +137,8 @@ const Blog: React.FC = () => {
             placeholder="Buscar en..."
             className="w-full pl-4 pr-10 p-2 border border-gray-300 rounded-2xl focus:outline-none focus:ring-0"
             style={{ color: 'black', backgroundColor: 'white' }}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
           <span className="absolute right-3 top-2 text-gray-500">
             <svg
@@ -152,15 +160,19 @@ const Blog: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
-        {blogs.map(post => (
-          <BlogPostCard 
-            key={post.blog_id}  
-            title={post.title} 
-            body={post.body} 
-            url_image={post.url_image} 
-            created_at={post.created_at} 
-          />
-        ))}
+      {filteredBlogs.length > 0 ? (
+          filteredBlogs.map((post) => (
+            <BlogPostCard
+              key={post.blog_id}
+              title={post.title}
+              body={post.body}
+              url_image={post.url_image}
+              created_at={post.created_at}
+            />
+          ))
+        ) : (
+          <p>No se encontraron resultados.</p>
+        )}
       </div>
       <div className="flex justify-center mt-8 space-x-4">
         <button

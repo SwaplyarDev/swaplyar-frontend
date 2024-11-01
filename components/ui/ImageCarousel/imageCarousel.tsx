@@ -2,6 +2,7 @@
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import Image from 'next/image';
 
 const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
     const settings = {
@@ -18,7 +19,7 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
         <Slider {...settings}>
           {images.map((image, index) => (
             <div key={index}>
-              <img src={image} alt={`Slide ${index + 1}`} className="w-full h-60 object-cover" />
+              <Image src={image} alt={`Slide ${index + 1}`} className="w-full h-60 object-cover" />
             </div>
           ))}
         </Slider>
