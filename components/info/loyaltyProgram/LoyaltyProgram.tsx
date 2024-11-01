@@ -66,7 +66,7 @@ function LoyaltyProgram() {
               <Link className="text-buttonsLigth dark:text-sky-500" href="/">
                 inicia
               </Link>
-              &nbsp;sesión en tu perfil, y haz clic en &quot;inscríbite&quot;
+              &nbsp;sesión en tu perfil, y hacé clic en &quot;inscríbite&quot;
               para unirte.&nbsp;
             </p>
           </div>
@@ -111,15 +111,29 @@ function LoyaltyProgram() {
               target="_blank"
             >
               {' '}
-              clic aquí
+            </Link>
+            <Link
+              href="./sapr-terms-conditions"
+              target="_blank"
+              className="underline"
+            >
+              click aquí
             </Link>
             .
           </p>
-          <p>
-            <a className="text-blue-800" href="/info/help-center">
-              ¿Necesitas ayuda?
-            </a>
-          </p>
+          <div>
+            <button
+              id="bannerHTUButton"
+              className={`trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:border-selectBtsLight dark:border-darkText dark:bg-darkText dark:text-black ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+            >
+              <Link
+                href={'/info/how-to-use'}
+                className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'} `}
+              >
+                <h3>¿Necesitás ayuda?</h3>
+              </Link>
+            </button>
+          </div>
         </div>
       </FlyerTrabajo>
     </div>

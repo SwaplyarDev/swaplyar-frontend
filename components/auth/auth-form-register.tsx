@@ -62,7 +62,7 @@ export const RegisterForm = () => {
           role: 'admin',
         }),
       });
-      console.log(response)
+      console.log(response);
       if (!response.ok) {
         const errorResponse = await response.json();
         console.error('Error en la respuesta:', errorResponse);

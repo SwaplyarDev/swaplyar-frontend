@@ -24,9 +24,9 @@ function TopPopUp() {
   }
 
   return (
-    <main className="w-full bg-violet-700 py-2 relative">
-      <div className="m-auto flex w-[90%] max-w-screen-2xl items-center justify-between relative">
-        <p className="text-center text-xs font-bold text-darkText md:text-sm lg:text-lg flex-grow">
+    <main className="relative w-full bg-violet-700 py-2">
+      <div className="relative m-auto flex w-[90%] max-w-screen-2xl items-center justify-between">
+        <p className="flex-grow text-center text-xs font-bold text-darkText md:text-sm lg:text-lg">
           Estamos trabajando en las funciones de inicio de sesión y registro
         </p>
         <button
