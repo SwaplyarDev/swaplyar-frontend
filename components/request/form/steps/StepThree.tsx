@@ -40,11 +40,23 @@ const StepThree = () => {
 
   const receiveAmount = localStorage.getItem('receiveAmount');
   const sendAmount = localStorage.getItem('sendAmount');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   function showFileName(event: any) {
-    const fileName =
-      event.target.files[0]?.name || 'No hay archivo seleccionado';
-    document.getElementById('file-name')!.textContent = fileName;
+    // Tomar el archivo del evento y asignarlo a `selectedFile`
+    const file = event.target.files[0] || null;
+    
+    // Si hay un archivo seleccionado, actualizar el estado y mostrar el nombre
+    if (file) {
+      setSelectedFile(file);
+      document.getElementById('file-name')!.textContent = file.name;
+    } else if (selectedFile) {
+      // Si no hay nuevo archivo y ya había uno cargado, mostrar el archivo anterior
+      document.getElementById('file-name')!.textContent = selectedFile.name;
+    } else {
+      // Si no hay archivo cargado, mostrar mensaje predeterminado
+      document.getElementById('file-name')!.textContent = 'No hay archivo seleccionado';
+    }
   }
 
   useEffect(() => {
@@ -63,6 +75,11 @@ const StepThree = () => {
     setValue('note', note);
 
     setInitialValues(newValues);
+
+    if (proof_of_payment && proof_of_payment.length > 0) {
+      setSelectedFile(proof_of_payment[0]);
+      document.getElementById('file-name')!.textContent = proof_of_payment[0].name;
+    }
   }, [formData.stepThree, setValue, receiveAmount, sendAmount]);
 
   const onSubmit = (data: FormData) => {
