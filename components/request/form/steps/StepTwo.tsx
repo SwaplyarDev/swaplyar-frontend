@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import clsx from 'clsx';
 import InputField from '@/components/ui/contact-form/InputField';
+import { error } from 'console';
 
 interface FormData {
   receiver_first_name: string;
@@ -113,9 +114,15 @@ const StepTwo = () => {
                 id="receiver_first_name"
                 type="text"
                 placeholder="Nombre"
-                register={register('receiver_first_name', { required: true })}
+                register={register('receiver_first_name', { 
+                  required: 'El nombre es obligatorio',
+                  pattern: {
+                    value: /^[A-Za-z\s]{1,50}$/i,
+                    message: 'El nombre solo puede contener letras y espacios',
+                  }
+                })}
                 error={
-                  errors.receiver_first_name && 'Este campo es obligatorio'
+                  errors.receiver_first_name && errors.receiver_first_name.message
                 }
               />
             </div>
@@ -135,8 +142,14 @@ const StepTwo = () => {
                 id="receiver_last_name"
                 type="text"
                 placeholder="Apellido"
-                register={register('receiver_last_name', { required: true })}
-                error={errors.receiver_last_name && 'Este campo es obligatorio'}
+                register={register('receiver_last_name', { 
+                  required: 'El apellido es obligatorio',
+                  pattern: {
+                    value: /^[A-Za-z\s]{1,50}$/i,
+                    message: 'El apellido acepta maximo 50 caracteres de letras y espacios',
+                  }
+                })}
+                error={errors.receiver_last_name && errors.receiver_last_name.message}
               />
             </div>
             <div className="flex flex-col">
@@ -178,10 +191,14 @@ const StepTwo = () => {
                 type="text"
                 placeholder="CBU/CVU/ALIAS"
                 register={register('transfer_identification', {
-                  required: true,
+                  required: 'El CBU/CVU/ALIAS es obligatorio',
+                  pattern: {
+                    value: /^(?:\d{22}|[a-zA-Z0-9._-]{3,22})$/,
+                    message: 'El formato de CBU/CVU/ALIAS es inválido',
+                  }
                 })}
                 error={
-                  errors.transfer_identification && 'Este campo es obligatorio'
+                  errors.transfer_identification && errors.transfer_identification.message
                 }
               />
             </div>
@@ -202,11 +219,14 @@ const StepTwo = () => {
                 type="text"
                 placeholder="RE-ENTER CBU/CVU/ALIAS"
                 register={register('re_transfer_identification', {
-                  required: true,
+                  required: 'El CBU/CVU/ALIAS es obligatorio',
+                  pattern: {
+                    value: /^(?:\d{22}|[a-zA-Z0-9._-]{3,22})$/,
+                    message: 'El formato de CBU/CVU/ALIAS debe ser igual al ingresado anteriormente',
+                  }
                 })}
                 error={
-                  errors.re_transfer_identification &&
-                  'Este campo es obligatorio'
+                  errors.re_transfer_identification && errors.re_transfer_identification.message
                 }
               />
             </div>
@@ -228,6 +248,10 @@ const StepTwo = () => {
                 placeholder="Nombre del Banco"
                 register={register('name_of_bank', {
                   required: true,
+                  pattern: {
+                    value: /^[\w\W]{1,60}$/,
+                    message: 'El nombre solo puede contener 60 caracteres',
+                  }
                 })}
                 error={errors.name_of_bank && 'Este campo es obligatorio'}
               />
@@ -253,9 +277,15 @@ const StepTwo = () => {
                 id="receiver_first_name"
                 type="text"
                 placeholder="Nombre"
-                register={register('receiver_first_name', { required: true })}
+                register={register('receiver_first_name', { 
+                  required: 'El nombre es obligatorio',
+                  pattern: {
+                    value: /^[A-Za-z\s]{1,50}$/i,
+                    message: 'El nombre solo puede contener letras y espacios',
+                  }
+                 })}
                 error={
-                  errors.receiver_first_name && 'Este campo es obligatorio'
+                  errors.receiver_first_name && errors.receiver_first_name.message
                 }
               />
             </div>
@@ -275,8 +305,14 @@ const StepTwo = () => {
                 id="receiver_last_name"
                 type="text"
                 placeholder="Apellido"
-                register={register('receiver_last_name', { required: true })}
-                error={errors.receiver_last_name && 'Este campo es obligatorio'}
+                register={register('receiver_last_name', { 
+                  required: 'El apellido es obligatorio',
+                  pattern: {
+                    value: /^[A-Za-z\s]{1,50}$/i,
+                    message: 'El apellido solo puede contener letras y espacios',
+                  }
+                })}
+                error={errors.receiver_last_name && errors.receiver_last_name.message}
               />
             </div>
           </div>

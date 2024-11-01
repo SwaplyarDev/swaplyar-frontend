@@ -19,11 +19,12 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
   errors,
 }) => {
   const fieldName = 'own_account';
-  const errorMessage = (errors as { [key: string]: FieldError })[fieldName]?.message;
+  const errorMessage = (errors as { [key: string]: FieldError })[fieldName]
+    ?.message;
   const [isFocused, setIsFocused] = useState(false);
   const handleFocus = () => {
     setIsFocused(!isFocused);
-  }
+  };
   const botonRef = useRef<HTMLButtonElement>(null);
 
   const simularClic = () => {
@@ -42,8 +43,8 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
       </label>
       <Select
         id={fieldName}
-        onFocus={() => handleFocus()} // Activa el enfoque
-        // onBlur={() => handleFocus()} // Desactiva el enfoque
+        onFocus={() => setIsFocused(true)} // Activa el enfoque
+        onBlur={() => setIsFocused(false)} // Desactiva el enfoque
         options={[
           { value: 'Sí', label: 'Sí' },
           { value: 'No', label: 'No' },
@@ -53,7 +54,10 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
             ? { value: selectedOption, label: selectedOption }
             : null
         }
-        onChange={(option) => setSelectedOption(option?.value || undefined)}
+        onChange={(option) => {
+          setSelectedOption(option?.value || undefined);
+          setIsFocused(false);
+        }}
         placeholder="Selecciona una opción"
         classNamePrefix="custom-select"
         isSearchable={false}
