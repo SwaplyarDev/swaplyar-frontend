@@ -17,7 +17,7 @@ interface FormData {
   own_account: string | undefined;
 }
 
-const StepOne = () => {
+const StepOne = ({blockAll}: {blockAll: boolean}) => {
   const {
     register,
     handleSubmit,
@@ -103,6 +103,7 @@ const StepOne = () => {
               placeholder="Nombre"
               register={register('sender_first_name', { required: true })}
               error={errors.sender_first_name && 'Este campo es obligatorio'}
+              disabled={blockAll}
             />
           </div>
 
@@ -124,6 +125,7 @@ const StepOne = () => {
               placeholder="Apellido"
               register={register('sender_last_name', { required: true })}
               error={errors.sender_last_name && 'Este campo es obligatorio'}
+              disabled={blockAll}
             />
           </div>
         </div>
@@ -146,6 +148,7 @@ const StepOne = () => {
               placeholder="Email"
               register={register('email', { required: true })}
               error={errors.email && 'Este campo es obligatorio'}
+              disabled={blockAll}
             />
           </div>
           <SelectCountry
@@ -153,6 +156,7 @@ const StepOne = () => {
             setValue={setValue}
             setCurrentCountry={setCurrentCountry}
             register={register}
+            blockALl={blockAll}
           />
         </div>
       </div>
@@ -167,6 +171,7 @@ const StepOne = () => {
             name="own_account"
             control={control}
             defaultValue={undefined}
+            disabled={blockAll}
             rules={{
               required: 'Este campo es obligatorio',
             }}
@@ -189,7 +194,7 @@ const StepOne = () => {
             <button
               type="submit"
               className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-              disabled={!isValid}
+              disabled={!isValid || blockAll}
             >
               Siguiente
             </button>
@@ -197,6 +202,7 @@ const StepOne = () => {
             <button
               className="flex items-center justify-center gap-1 text-base text-lightText underline dark:text-darkText"
               type="submit"
+              disabled={blockAll}
             >
               Tratar
               <ArrowUp />
@@ -205,8 +211,8 @@ const StepOne = () => {
         ) : (
           <button
             type="submit"
-            className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-            disabled={!isValid}
+            className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
+            disabled={!isValid || blockAll}
           >
             Siguiente
           </button>

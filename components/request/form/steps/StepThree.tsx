@@ -15,7 +15,7 @@ interface FormData {
   note: string;
 }
 
-const StepThree = () => {
+const StepThree = ({blockAll}: {blockAll: boolean}) => {
   const {
     register,
     handleSubmit,
@@ -212,6 +212,7 @@ const StepThree = () => {
               placeholder="SUBIR COMPROBANTE"
               register={register('proof_of_payment', { required: true })}
               error={errors.proof_of_payment && 'Este campo es obligatorio'}
+              disabled={blockAll}
             />
           </div>
         </div>
@@ -231,6 +232,7 @@ const StepThree = () => {
             <textarea
               {...register('note', { required: true })}
               id="note"
+              disabled={blockAll}
               placeholder="Añade una nota si lo deseas ;)"
               className={clsx(
                 'h-full w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
@@ -252,7 +254,7 @@ const StepThree = () => {
             <button
               type="submit"
               className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-              disabled={!isValid}
+              disabled={!isValid || blockAll}
             >
               Siguiente
             </button>
@@ -260,6 +262,7 @@ const StepThree = () => {
             <button
               className="flex items-center justify-center gap-1 text-base text-lightText underline dark:text-darkText"
               type="submit"
+              disabled={blockAll}
             >
               Tratar
               <ArrowUp />
@@ -268,8 +271,8 @@ const StepThree = () => {
         ) : (
           <button
             type="submit"
-            className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-            disabled={!isValid}
+            className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
+            disabled={!isValid || blockAll}
           >
             Siguiente
           </button>

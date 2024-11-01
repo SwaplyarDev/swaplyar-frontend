@@ -17,6 +17,7 @@ type SelectCountryProps = {
   setValue: UseFormSetValue<any>;
   setCurrentCountry: any;
   register: any;
+  blockALl: boolean;
 };
 
 export default function SelectCountry({
@@ -24,6 +25,7 @@ export default function SelectCountry({
   setValue,
   setCurrentCountry,
   register,
+  blockALl,
 }: SelectCountryProps) {
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
   const [countryValues, setCountryValues] = useState<CountryOption[]>([]);
@@ -118,6 +120,7 @@ export default function SelectCountry({
             );
           }}
           isSearchable
+          isDisabled={blockALl}
           classNamePrefix="custom-select"
           className={clsx(
             'w-full max-w-24 rounded py-px text-gray-900 dark:text-white',

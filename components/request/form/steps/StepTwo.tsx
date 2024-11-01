@@ -18,7 +18,7 @@ interface FormData {
   re_enter_wise_email: string;
 }
 
-const StepTwo = () => {
+const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   const {
     register,
     handleSubmit,
@@ -52,7 +52,7 @@ const StepTwo = () => {
       name_of_bank,
       wise_email,
       re_enter_wise_email,
-    } = formData.stepTwo; 
+    } = formData.stepTwo;
     const newValues = {
       receiver_first_name,
       receiver_last_name,
@@ -62,7 +62,7 @@ const StepTwo = () => {
       name_of_bank,
       wise_email,
       re_enter_wise_email,
-    }; 
+    };
 
     setValue('receiver_first_name', receiver_first_name);
     setValue('receiver_last_name', receiver_last_name);
@@ -117,6 +117,7 @@ const StepTwo = () => {
                 error={
                   errors.receiver_first_name && 'Este campo es obligatorio'
                 }
+                disabled={blockAll}
               />
             </div>
             <div className="flex flex-col">
@@ -132,6 +133,7 @@ const StepTwo = () => {
                 Apellido
               </label>
               <InputField
+                disabled={blockAll}
                 id="receiver_last_name"
                 type="text"
                 placeholder="Apellido"
@@ -152,6 +154,7 @@ const StepTwo = () => {
                 TAX ID/CUIT/CUIL
               </label>
               <InputField
+                disabled={blockAll}
                 id="tax_identification"
                 type="text"
                 placeholder="TAX ID/CUIT/CUIL"
@@ -174,6 +177,7 @@ const StepTwo = () => {
                 CBU/CVU/ALIAS
               </label>
               <InputField
+                disabled={blockAll}
                 id="transfer_identification"
                 type="text"
                 placeholder="CBU/CVU/ALIAS"
@@ -198,6 +202,7 @@ const StepTwo = () => {
                 RE-ENTER CBU/CVU/ALIAS
               </label>
               <InputField
+                disabled={blockAll}
                 id="re_transfer_identification"
                 type="text"
                 placeholder="RE-ENTER CBU/CVU/ALIAS"
@@ -223,6 +228,7 @@ const StepTwo = () => {
                 Nombre del Banco
               </label>
               <InputField
+                disabled={blockAll}
                 id="name_of_bank"
                 type="text"
                 placeholder="Nombre del Banco"
@@ -250,6 +256,7 @@ const StepTwo = () => {
                 Nombre
               </label>
               <InputField
+                disabled={blockAll}
                 id="receiver_first_name"
                 type="text"
                 placeholder="Nombre"
@@ -272,6 +279,7 @@ const StepTwo = () => {
                 Apellido
               </label>
               <InputField
+                disabled={blockAll}
                 id="receiver_last_name"
                 type="text"
                 placeholder="Apellido"
@@ -294,6 +302,7 @@ const StepTwo = () => {
                 Email de Wise
               </label>
               <InputField
+                disabled={blockAll}
                 id="wise_email"
                 type="email"
                 placeholder="Email de wise"
@@ -314,6 +323,7 @@ const StepTwo = () => {
                 RE-ENTER Email de Wise
               </label>
               <InputField
+                disabled={blockAll}
                 id="re_enter_wise_email"
                 type="email"
                 placeholder="RE-ENTER Email de Wise"
@@ -333,7 +343,7 @@ const StepTwo = () => {
             <button
               type="submit"
               className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-              disabled={!isValid}
+              disabled={!isValid || blockAll}
             >
               Siguiente
             </button>
@@ -341,6 +351,7 @@ const StepTwo = () => {
             <button
               className="flex items-center justify-center gap-1 text-base text-lightText underline dark:text-darkText"
               type="submit"
+              disabled={blockAll}
             >
               Tratar
               <ArrowUp />
@@ -349,8 +360,8 @@ const StepTwo = () => {
         ) : (
           <button
             type="submit"
-            className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-            disabled={!isValid}
+            className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
+            disabled={!isValid || blockAll}
           >
             Siguiente
           </button>

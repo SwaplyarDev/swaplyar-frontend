@@ -1,6 +1,9 @@
 import { CountryOption } from '@/types/request/request';
 import { create } from 'zustand';
 
+const BASE_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
+
 interface StepOneData {
   sender_first_name: string;
   sender_last_name: string;
@@ -94,9 +97,78 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       },
     }));
   },
-  submitAllData: () => {
+  submitAllData: async () => {
     const state = get(); // Obtener el estado actual
-    console.log('Todos los datos del formulario:', state.formData);
-    // Aquí puedes agregar la lógica para enviar los datos a tu servidor
+    const { stepOne, stepTwo, stepThree } = state.formData;
+
+    const fileToBase64 = (file: File): Promise<string> =>
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (error) => reject(error);
+      });
+
+    const payload = {
+      transaction: {
+        sender: {
+          first_name: stepOne.sender_first_name,
+          last_name: stepOne.sender_last_name,
+          identification: stepTwo.tax_identification,
+          phone_number: stepOne.phone,
+          email: stepOne.email,
+          bank_account: {
+            email_account: stepThree.pay_email,
+            payment_method: 'paypal',
+            number_account: stepOne.own_account || '',
+          },
+        },
+        receiver: {
+          first_name: stepTwo.receiver_first_name,
+          last_name: stepTwo.receiver_last_name,
+          bank_account: {
+            email_account: stepTwo.wise_email,
+            payment_method: 'paypal',
+            number_account: stepTwo.transfer_identification,
+          },
+        },
+        transfer: {
+          transfer_code: 'TRX202409300001',
+          country_transaction: 'USA', 
+          message: stepThree.note,
+          created_at: new Date().toISOString(), 
+        },
+        amounts: {
+          amount_sent: parseFloat(stepThree.send_amount),
+          currency_sent: 'USD',
+          amount_received: parseFloat(stepThree.receive_amount),
+          currency_received: 'EUR', 
+        },
+        proof_of_payment: {
+          img_transaction: stepThree.proof_of_payment
+            ? await fileToBase64(stepThree.proof_of_payment[0])
+            : '',
+        },
+      },
+    };
+
+    try {
+      const response = await fetch(`${BASE_URL}/v1/transactions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar los datos al servidor');
+      }
+
+      const data = await response.json();
+      console.log('Respuesta del servidor:', data);
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
   },
 }));
