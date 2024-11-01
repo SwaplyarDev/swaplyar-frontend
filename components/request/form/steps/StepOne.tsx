@@ -8,6 +8,7 @@ import InputField from '@/components/ui/contact-form/InputField';
 import SelectBoolean from '../inputs/SelectBoolean';
 import SelectCountry from '../inputs/SelectCountry';
 import { CountryOption } from '@/types/request/request';
+import InputCopy from '../inputs/InputCopy';
 
 interface FormData {
   sender_first_name: string;
@@ -101,12 +102,19 @@ const StepOne = ({blockAll}: {blockAll: boolean}) => {
               id="sender_first_name"
               type="text"
               placeholder="Nombre"
-              register={register('sender_first_name', { required: true })}
-              error={errors.sender_first_name && 'Este campo es obligatorio'}
               disabled={blockAll}
+              register={register('sender_first_name', {
+                required: 'El nombre es obligatorio',
+                pattern: {
+                  value: /^[A-Za-z\s]+$/i,
+                  message: 'El nombre solo puede contener letras y espacios',
+                },
+              })}
+              error={
+                errors.sender_first_name && errors.sender_first_name.message
+              }
             />
           </div>
-
           <div className="flex flex-col">
             <label
               htmlFor="sender_last_name"
@@ -123,9 +131,15 @@ const StepOne = ({blockAll}: {blockAll: boolean}) => {
               id="sender_last_name"
               type="text"
               placeholder="Apellido"
-              register={register('sender_last_name', { required: true })}
-              error={errors.sender_last_name && 'Este campo es obligatorio'}
               disabled={blockAll}
+              register={register('sender_last_name', {
+                required: 'El apellido es obligatorio',
+                pattern: {
+                  value: /^[A-Za-z\s]+$/i,
+                  message: 'El apellido solo puede contener letras y espacios',
+                },
+              })}
+              error={errors.sender_last_name && errors.sender_last_name.message}
             />
           </div>
         </div>
@@ -146,9 +160,16 @@ const StepOne = ({blockAll}: {blockAll: boolean}) => {
               id="email"
               type="email"
               placeholder="Email"
-              register={register('email', { required: true })}
-              error={errors.email && 'Este campo es obligatorio'}
               disabled={blockAll}
+              register={register('email', {
+                required: 'El correo es obligatorio',
+                pattern: {
+                  // value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: 'El formato del correo electrónico es inválido',
+                },
+              })}
+              error={errors.email && errors.email.message}
             />
           </div>
           <SelectCountry
