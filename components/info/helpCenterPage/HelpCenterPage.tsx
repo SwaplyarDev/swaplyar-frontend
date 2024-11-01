@@ -19,7 +19,7 @@ const HelpCenterPage = () => {
       <main className="relative flex w-full flex-col items-center justify-center gap-20 py-10">
         <AnimatedBlurredCircles tope="top-[-260px]" />
         <div
-          className="mx-auto grid max-w-[1000px] gap-12"
+          className="mx-auto grid max-w-[1000px] gap-12 "
           style={{ margin: currentMargin }}
         >
           <section className="rs-wrapper-v4 p-4">
@@ -35,6 +35,61 @@ const HelpCenterPage = () => {
             <ContactForm />
           </section>
           <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
+<<<<<<< HEAD
+            <span className="flex items-center justify-center">
+              <Image
+                // src={PlusRewards}
+                src="/images/plus-rewards.png"
+                alt="SwaplyAr Plus Rewards™"
+                width={400}
+                height={300}
+                className="inline-block dark:hidden"
+              />
+              <Image
+                src={PlusRewardsDark}
+                alt="SwaplyAr Plus Rewards™ tema oscuro"
+                width={400}
+                height={300}
+                className="hidden dark:inline-block"
+              />
+            </span>
+            <span className="flex flex-col items-center text-center ">
+              <h2 className="text-2xl font-bold">
+                SwaplyAr Plus Rewards™ premia tu fidelidad, con el programa de
+                fidelización
+              </h2>
+              <h5 className="mt-4 text-left text-lg md:text-center">
+                Obtené beneficios exclusivos cada vez que realices un cambio de
+                divisas con SwaplyAr Plus Rewards™.
+              </h5>
+              <button
+                onClick={() =>
+                  (window.location.href = 'programa-de-fidelizacion')
+                }
+                className={`dark:hover:bg- relative m-1 mt-4 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+              >
+                Plus Rewards™
+              </button>
+            </span>
+          </section>
+
+          <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
+            <span className="card-rawe flex flex-col rounded bg-gray-100 p-4 dark:bg-graytyc">
+              <Image
+                src={Ayuda1}
+                alt="paso 1 de como cambiar tu dinero en SwaplyAr"
+                width={210}
+                height={150}
+                className="inline-block dark:hidden"
+              />
+              <Image
+                src={Ayuda1Dark}
+                alt="paso 1 de como cambiar tu dinero en SwaplyAr tema oscuro"
+                width={210}
+                height={150}
+                className="hidden dark:inline-block"
+              />
+=======
             <span className="card-rawe flex flex-col items-center rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark md:items-start">
               {isDark ? (
                 <Image
@@ -53,6 +108,7 @@ const HelpCenterPage = () => {
                   height={150}
                 />
               )}
+>>>>>>> d5babf4c44068f482699f83fce88ebab97a540a5
               <h3 className="text-xl font-bold">Chateá con nosotros</h3>
               <div className="flex h-full flex-col justify-between">
                 <p className="mb-6 text-center text-lg md:mb-0 md:text-left">
