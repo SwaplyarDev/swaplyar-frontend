@@ -7,6 +7,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import useBlogStore from '@/store/useBlogStore';
 import Image from 'next/image';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -73,8 +74,24 @@ const Blog: React.FC = () => {
   const { blogs, setBlogs } = useBlogStore();
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 9;
-
   const [randomImages, setRandomImages] = useState<string[]>([]);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const handlePageChange = (page: number) => {
+    if (page !== currentPage) {
+      setCurrentPage(page);
+      router.replace(`/info/blog?page=${page}`, { scroll: false });
+    }
+  };
+
+  useEffect(() => {
+    const pageParam = parseInt(searchParams.get("page") || "1", 10);
+    if (pageParam !== currentPage) {
+      setCurrentPage(pageParam);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -148,7 +165,7 @@ const Blog: React.FC = () => {
       <div className="flex justify-center mt-8 space-x-4">
         <button
           className={`w-10 h-10 border rounded-full ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
           disabled={currentPage === 1}
         >
           &lt;
@@ -157,14 +174,14 @@ const Blog: React.FC = () => {
           <button
             key={index}
             className={`w-10 h-10 border rounded-full ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-white'}`}
-            onClick={() => setCurrentPage(index + 1)}
+            onClick={() => handlePageChange(index + 1)}
           >
             {index + 1}
           </button>
         ))}
         <button
           className={`w-10 h-10 border rounded-full ${currentPage === 3 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, 3))}
+          onClick={() => handlePageChange(Math.min(currentPage + 1, 3))}
           disabled={currentPage === 3}
         >
           &gt;
