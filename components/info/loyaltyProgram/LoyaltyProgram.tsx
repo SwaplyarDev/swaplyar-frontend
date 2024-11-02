@@ -51,7 +51,7 @@ function LoyaltyProgram() {
           </div>
         </div>
 
-        <div className="py-10 ">
+        <div className="py-10">
           <div className="text-center">
             <h2 className="mb-4 text-2xl font-bold">
               Obtén beneficios exclusivos cada vez que realices intercambio de
