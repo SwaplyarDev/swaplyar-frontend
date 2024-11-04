@@ -12,6 +12,14 @@ import { useRouter, useSearchParams } from 'next/navigation';
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const BlogPostCard: React.FC<{ title: string; body: string; url_image: string; created_at: string }> = ({ title, body, url_image, created_at }) => {
+  
+  const [showFullText, setShowFullText] = useState(false); //Maneja estado para el boton Leer mas o Leer menos. 
+
+  const handleToggleText = () => {
+    setShowFullText(!showFullText);
+  };
+
+  console.log(body.slice(0,-135))
   return (
     <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
       <Image
@@ -22,7 +30,15 @@ const BlogPostCard: React.FC<{ title: string; body: string; url_image: string; c
       />
       <div className="p-4">
         <h3 className="text-xl font-semibold mb-2">{title}</h3>
-        <p className="text-gray-700 mb-4">{body}</p>
+        <p className="text-gray-700 mb-4">
+        {showFullText ? body : `${body.slice(0, -135)}`}
+          <button
+            onClick={handleToggleText}
+            className="text-blue-500 font-semibold hover:underline inline"
+          >
+            {showFullText ? 'Leer menos' : '....Leer más'}
+          </button>
+        </p>
         <p className="text-sm text-gray-500 mt-2">{new Date(created_at).toLocaleDateString()}</p>
       </div>
     </div>
@@ -42,7 +58,7 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
     autoplaySpeed: 5000,
   };
 
-  const limitedImages = images.slice(0, 3);
+  const limitedImages = images.slice(0, 6);
 
   return (
     <div className="border-4 border-[#012C8A] rounded-[20px] overflow-hidden relative">
