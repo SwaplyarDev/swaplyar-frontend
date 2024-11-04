@@ -16,6 +16,7 @@
 ### Frontend
 
 - **Next.js 14.2.5:** Framework de React para aplicaciones web.
+- **zustand": "^4.5.5:** Biblioteca ligera de gestión de estado.
 - **TypeScript 5:** Lenguaje de programación tipado.
 - **Tailwind CSS 3.4.1:** Framework de utilidades CSS para diseñar rápidamente.
 - **React 18:** Librería de JavaScript para construir interfaces de usuario.
