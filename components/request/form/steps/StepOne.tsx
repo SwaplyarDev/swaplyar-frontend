@@ -104,10 +104,10 @@ const StepOne = ({blockAll}: {blockAll: boolean}) => {
               placeholder="Nombre"
               disabled={blockAll}
               register={register('sender_first_name', {
-                required: 'El nombre es obligatorio',
+                required: 'El Nombre es obligatorio',
                 pattern: {
-                  value: /^[A-Za-z\s]+$/i,
-                  message: 'El nombre solo puede contener letras y espacios',
+                  value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                  message: 'El Nombre solo puede contener letras y espacios',
                 },
               })}
               error={
@@ -133,10 +133,10 @@ const StepOne = ({blockAll}: {blockAll: boolean}) => {
               placeholder="Apellido"
               disabled={blockAll}
               register={register('sender_last_name', {
-                required: 'El apellido es obligatorio',
+                required: 'El Apellido es obligatorio',
                 pattern: {
-                  value: /^[A-Za-z\s]+$/i,
-                  message: 'El apellido solo puede contener letras y espacios',
+                  value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                  message: 'El Apellido solo puede contener letras y espacios',
                 },
               })}
               error={errors.sender_last_name && errors.sender_last_name.message}
@@ -164,9 +164,9 @@ const StepOne = ({blockAll}: {blockAll: boolean}) => {
               register={register('email', {
                 required: 'El correo es obligatorio',
                 pattern: {
-                  // value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: 'El formato del correo electrónico es inválido',
+                  // value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+                  message: 'El formato del Correo electrónico es inválido',
                 },
               })}
               error={errors.email && errors.email.message}

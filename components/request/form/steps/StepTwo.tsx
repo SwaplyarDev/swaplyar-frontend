@@ -26,6 +26,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     control,
     formState: { errors, isValid },
     setValue,
+    getValues,
   } = useForm<FormData>({ mode: 'onChange' });
   const {
     markStepAsCompleted,
@@ -114,15 +115,16 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
                 id="receiver_first_name"
                 type="text"
                 placeholder="Nombre"
-                register={register('receiver_first_name', { 
-                  required: 'El nombre es obligatorio',
+                register={register('receiver_first_name', {
+                  required: 'El Nombre es obligatorio',
                   pattern: {
-                    value: /^[A-Za-z\s]{1,50}$/i,
-                    message: 'El nombre solo puede contener letras y espacios',
-                  }
+                    value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                    message: 'El Nombre solo puede contener letras y espacios',
+                  },
                 })}
                 error={
-                  errors.receiver_first_name && errors.receiver_first_name.message
+                  errors.receiver_first_name &&
+                  errors.receiver_first_name.message
                 }
                 disabled={blockAll}
               />
@@ -144,14 +146,17 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
                 id="receiver_last_name"
                 type="text"
                 placeholder="Apellido"
-                register={register('receiver_last_name', { 
-                  required: 'El apellido es obligatorio',
+                register={register('receiver_last_name', {
+                  required: 'El Apellido es obligatorio',
                   pattern: {
-                    value: /^[A-Za-z\s]{1,50}$/i,
-                    message: 'El apellido acepta maximo 50 caracteres de letras y espacios',
-                  }
+                    value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                    message:
+                      'El Apellido solo puede contener letras y espacios',
+                  },
                 })}
-                error={errors.receiver_last_name && errors.receiver_last_name.message}
+                error={
+                  errors.receiver_last_name && errors.receiver_last_name.message
+                }
               />
             </div>
             <div className="flex flex-col">
@@ -171,8 +176,16 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
                 id="tax_identification"
                 type="text"
                 placeholder="TAX ID/CUIT/CUIL"
-                register={register('tax_identification', { required: true })}
-                error={errors.tax_identification && 'Este campo es obligatorio'}
+                register={register('tax_identification', {
+                  required: 'El TAX ID/CUIT/CUIL es obligatorio',
+                  pattern: {
+                    value: /^(?:\d{9}|\d{11}|\d{2}-\d{8}-\d{1})$/,  //valida 11 caracteres o 14 pero con guiones
+                    message: 'El formato de TAX ID/CUIT/CUIL es inválido',
+                  },
+                })}
+                error={
+                  errors.tax_identification && errors.tax_identification.message
+                }
               />
             </div>
           </div>
@@ -197,12 +210,13 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
                 register={register('transfer_identification', {
                   required: 'El CBU/CVU/ALIAS es obligatorio',
                   pattern: {
-                    value: /^(?:\d{22}|[a-zA-Z0-9._-]{3,22})$/,
+                    value: /^(?:\d{22}|[a-zA-Z0-9._-]{3,30})$/i,
                     message: 'El formato de CBU/CVU/ALIAS es inválido',
-                  }
+                  },
                 })}
                 error={
-                  errors.transfer_identification && errors.transfer_identification.message
+                  errors.transfer_identification &&
+                  errors.transfer_identification.message
                 }
               />
             </div>
@@ -224,14 +238,18 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
                 type="text"
                 placeholder="RE-ENTER CBU/CVU/ALIAS"
                 register={register('re_transfer_identification', {
-                  required: 'El CBU/CVU/ALIAS es obligatorio',
-                  pattern: {
-                    value: /^(?:\d{22}|[a-zA-Z0-9._-]{3,22})$/,
-                    message: 'El formato de CBU/CVU/ALIAS debe ser igual al ingresado anteriormente',
-                  }
+                  required: 'El RE-ENTER CBU/CVU/ALIAS es obligatorio',
+                  validate: (value) => {
+                    const originalValue = getValues('transfer_identification');
+                    return (
+                      value === originalValue ||
+                      'Debe coincidir con el CBU/CVU/ALIAS ingresado anteriormente'
+                    );
+                  },
                 })}
                 error={
-                  errors.re_transfer_identification && errors.re_transfer_identification.message
+                  errors.re_transfer_identification &&
+                  errors.re_transfer_identification.message
                 }
               />
             </div>
@@ -253,13 +271,14 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
                 type="text"
                 placeholder="Nombre del Banco"
                 register={register('name_of_bank', {
-                  required: true,
+                  required: 'El Nombre del Banco es obligatorio',
                   pattern: {
-                    value: /^[\w\W]{1,60}$/,
-                    message: 'El nombre solo puede contener 60 caracteres',
-                  }
+                    value: /^[A-Za-z0-9\s&.'-_]{1,60}$/i,
+                    message:
+                      'El Nombre del Banco solo puede contener 60 caracteres',
+                  },
                 })}
-                error={errors.name_of_bank && 'Este campo es obligatorio'}
+                error={errors.name_of_bank && errors.name_of_bank.message}
               />
             </div>
           </div>
@@ -284,15 +303,16 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
                 id="receiver_first_name"
                 type="text"
                 placeholder="Nombre"
-                register={register('receiver_first_name', { 
-                  required: 'El nombre es obligatorio',
+                register={register('receiver_first_name', {
+                  required: 'El Nombre es obligatorio',
                   pattern: {
-                    value: /^[A-Za-z\s]{1,50}$/i,
-                    message: 'El nombre solo puede contener letras y espacios',
-                  }
-                 })}
+                    value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                    message: 'El Nombre solo puede contener letras y espacios',
+                  },
+                })}
                 error={
-                  errors.receiver_first_name && errors.receiver_first_name.message
+                  errors.receiver_first_name &&
+                  errors.receiver_first_name.message
                 }
               />
             </div>
@@ -313,14 +333,17 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
                 id="receiver_last_name"
                 type="text"
                 placeholder="Apellido"
-                register={register('receiver_last_name', { 
-                  required: 'El apellido es obligatorio',
+                register={register('receiver_last_name', {
+                  required: 'El Apellido es obligatorio',
                   pattern: {
-                    value: /^[A-Za-z\s]{1,50}$/i,
-                    message: 'El apellido solo puede contener letras y espacios',
-                  }
+                    value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                    message:
+                      'El Apellido solo puede contener letras y espacios',
+                  },
                 })}
-                error={errors.receiver_last_name && errors.receiver_last_name.message}
+                error={
+                  errors.receiver_last_name && errors.receiver_last_name.message
+                }
               />
             </div>
           </div>
@@ -342,8 +365,15 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
                 id="wise_email"
                 type="email"
                 placeholder="Email de wise"
-                register={register('wise_email', { required: true })}
-                error={errors.wise_email && 'Este campo es obligatorio'}
+                register={register('wise_email', {
+                  required: 'El Email de Wise es obligatorio',
+                  pattern: {
+                    // value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+                    message: 'El formato del Email de Wise es inválido',
+                  },
+                })}
+                error={errors.wise_email && errors.wise_email.message}
               />
             </div>
             <div className="flex flex-col">
@@ -363,9 +393,19 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
                 id="re_enter_wise_email"
                 type="email"
                 placeholder="RE-ENTER Email de Wise"
-                register={register('re_enter_wise_email', { required: true })}
+                register={register('re_enter_wise_email', {
+                  required: 'El RE-ENTER Email de Wise es obligatorio',
+                  validate: (value) => {
+                    const originalValue = getValues('wise_email');
+                    return (
+                      value === originalValue ||
+                      'Debe coincidir con el Email de Wise ingresado anteriormente'
+                    );
+                  },
+                })}
                 error={
-                  errors.re_enter_wise_email && 'Este campo es obligatorio'
+                  errors.re_enter_wise_email &&
+                  errors.re_enter_wise_email.message
                 }
               />
             </div>
