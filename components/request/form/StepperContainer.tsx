@@ -13,16 +13,21 @@ import Arrow from '@/components/ui/Arrow/Arrow';
 import { useRouter } from 'next/navigation';
 import { set } from 'react-hook-form';
 import { useState } from 'react';
+import clsx from 'clsx';
+import Link from 'next/link';
 
 const StepperContainer = () => {
   const { activeStep, completedSteps, setActiveStep } = useStepperStore();
-  const [ blockAll , setBlockAll ] = useState(false);
+  const [blockAll, setBlockAll] = useState(false);
   const navigation = useRouter();
 
   const steps = [
-    { title: 'Mis Datos', component: <StepOne blockAll={blockAll}/> },
-    { title: 'Información del Destinatario', component: <StepTwo blockAll={blockAll}/> },
-    { title: 'Pago', component: <StepThree blockAll={blockAll}/> },
+    { title: 'Mis Datos', component: <StepOne blockAll={blockAll} /> },
+    {
+      title: 'Información del Destinatario',
+      component: <StepTwo blockAll={blockAll} />,
+    },
+    { title: 'Pago', component: <StepThree blockAll={blockAll} /> },
   ];
 
   const handleStepClick = (index: number) => {
@@ -80,7 +85,55 @@ const StepperContainer = () => {
   };
 
   return (
-    <div className="flex w-full max-w-[1000px] flex-col gap-5">
+    <div
+      className={clsx(
+        'flex w-full max-w-[1000px] flex-col gap-5',
+        blockAll && 'mt-72 xs:mt-52',
+      )}
+    >
+      {blockAll && (
+        <div className="absolute left-0 top-36 flex w-full justify-center bg-[#9F412E]">
+          <div className="flex w-full max-w-[1000px] flex-col gap-2 px-5 py-5 xs-phone:px-10">
+            <h2 className="w-full text-center text-3xl font-bold text-lightText dark:text-darkText sm-phone:text-end">
+              Solicitud cancelada.
+            </h2>
+            <p className="w-full text-center text-lightText dark:text-darkText sm-phone:hidden">
+              Puedes crear uno nuevo, y si tienes alguna pregunta o necesitas
+              ayuda, estamos aquí para ti.
+            </p>
+            <div className='w-full'>
+              <p className="hidden w-full text-end text-lightText dark:text-darkText sm-phone:block">
+                Puedes crear uno nuevo, y si tienes alguna pregunta
+              </p>
+              <p className="hidden w-full text-end text-lightText dark:text-darkText sm-phone:block">
+                o necesitas ayuda, estamos aquí para ti.
+              </p>
+            </div>
+            <div className="flex w-full justify-between xs:flex-row flex-col-reverse items-center gap-2">
+              <Link
+                className="group flex items-center gap-1 text-center text-lightText dark:text-darkText sm-phone:text-start"
+                href="/"
+              >
+                <div className="relative h-[15px] w-[15px] overflow-hidden">
+                  <div className="absolute left-0 top-0 transition-all duration-200 group-hover:left-1">
+                    <Arrow
+                      color={isDark ? '#ebe7e0' : '#012c8a'}
+                      backRequest={true}
+                    />
+                  </div>
+                </div>
+                Volver al home
+              </Link>
+              <Link
+                className="text-center text-lightText underline dark:text-darkText sm-phone:text-start"
+                href="/info/help-center"
+              >
+                ¡No dudes en contactarnos!
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="flex justify-between px-2">
         <h1 className="text-2xl font-bold text-lightText dark:text-darkText">
           Formulario de Solicitud
@@ -140,12 +193,16 @@ const StepperContainer = () => {
         );
       })}
       <div className="flex flex-col items-center gap-4 sm-phone:flex-row sm-phone:justify-between sm-phone:gap-0">
-        <button className="text-2xl font-light" onClick={handleCancelRequest} disabled={blockAll}>
+        <button
+          className="text-2xl font-light"
+          onClick={handleCancelRequest}
+          disabled={blockAll}
+        >
           Cancelar esta Solicitud
         </button>
         <button
           disabled={completedSteps[2] == false || blockAll}
-          className={`h-12 relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-9 py-[3px] font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? completedSteps[2] == true && 'buttonSecondDark' : completedSteps[2] == true && 'buttonSecond'}`}
+          className={`relative h-12 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-9 py-[3px] font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? completedSteps[2] == true && 'buttonSecondDark' : completedSteps[2] == true && 'buttonSecond'}`}
         >
           ENVIAR
         </button>

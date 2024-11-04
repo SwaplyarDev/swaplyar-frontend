@@ -11,11 +11,11 @@ interface FormData {
   send_amount: string;
   receive_amount: string;
   pay_email: string;
-  proof_of_payment: FileList | null;
+  proof_of_payment: File | null;
   note: string;
 }
 
-const StepThree = ({blockAll}: {blockAll: boolean}) => {
+const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   const {
     register,
     handleSubmit,
@@ -45,17 +45,16 @@ const StepThree = ({blockAll}: {blockAll: boolean}) => {
   function showFileName(event: any) {
     // Tomar el archivo del evento y asignarlo a `selectedFile`
     const file = event.target.files[0] || null;
-    
+
     // Si hay un archivo seleccionado, actualizar el estado y mostrar el nombre
+    console.log(file)
     if (file) {
       setSelectedFile(file);
       document.getElementById('file-name')!.textContent = file.name;
-    } else if (selectedFile) {
-      // Si no hay nuevo archivo y ya había uno cargado, mostrar el archivo anterior
-      document.getElementById('file-name')!.textContent = selectedFile.name;
     } else {
       // Si no hay archivo cargado, mostrar mensaje predeterminado
-      document.getElementById('file-name')!.textContent = 'No hay archivo seleccionado';
+      document.getElementById('file-name')!.textContent =
+        'No hay archivo seleccionado';
     }
   }
 
@@ -76,10 +75,10 @@ const StepThree = ({blockAll}: {blockAll: boolean}) => {
 
     setInitialValues(newValues);
 
-    if (proof_of_payment && proof_of_payment.length > 0) {
-      setSelectedFile(proof_of_payment[0]);
-      document.getElementById('file-name')!.textContent = proof_of_payment[0].name;
-    }
+    // if (proof_of_payment) {
+    //   setSelectedFile(proof_of_payment);
+    //   document.getElementById('file-name')!.textContent = proof_of_payment.name;
+    // }
   }, [formData.stepThree, setValue, receiveAmount, sendAmount]);
 
   const onSubmit = (data: FormData) => {
@@ -97,7 +96,14 @@ const StepThree = ({blockAll}: {blockAll: boolean}) => {
         formValues[key as keyof FormData],
     );
 
-  console.log(formValues);
+  const { onChange, ...restRegister } = register('proof_of_payment', {
+    required: true,
+  });
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(event); // Llamamos al onChange de register
+    if (showFileName) showFileName(event); // Ejecutamos la función personalizada si existe
+  };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <p className="text-left">
@@ -203,17 +209,27 @@ const StepThree = ({blockAll}: {blockAll: boolean}) => {
                 </span>
               </div>
             </label>
-            <InputField
-              id="proof_of_payment"
-              type="file"
-              file={true}
-              onCustomChange={showFileName}
-              // accept="image/*"
-              placeholder="SUBIR COMPROBANTE"
-              register={register('proof_of_payment', { required: true })}
-              error={errors.proof_of_payment && 'Este campo es obligatorio'}
-              disabled={blockAll}
-            />
+            <div className="flex h-full flex-col">
+              <input
+                id="proof_of_payment"
+                type="file"
+                disabled={blockAll}
+                placeholder="SUBIR COMPROBANTE"
+                onChange={handleChange}
+                {...restRegister}
+                className={clsx(
+                  'hidden h-full w-full rounded border border-[#6B7280] bg-gray-200 px-5 py-2 dark:bg-lightText',
+                  errors.proof_of_payment && 'Este campo es obligatorio'
+                    ? 'border-red-500 hover:border-blue-600 dark:hover:border-white'
+                    : 'hover:border-blue-600 dark:hover:border-white',
+                )}
+              />
+              {errors.proof_of_payment && 'Este campo es obligatorio' && (
+                <p className="text-sm text-red-500">
+                  • Este campo es obligatorio
+                </p>
+              )}
+            </div>
           </div>
         </div>
         <div className="flex w-full flex-col gap-4">

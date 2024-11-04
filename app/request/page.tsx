@@ -6,7 +6,7 @@ import { Form } from "react-hook-form";
 
 const RequestPage = () => {
   return (
-    <div className="flex items-center justify-center p-10">
+    <div className="flex items-center justify-center  xs-phone:px-10 py-10 px-5">
       <StepperContainer/>
     </div>
   );

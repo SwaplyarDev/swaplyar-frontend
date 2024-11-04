@@ -27,7 +27,7 @@ interface StepThreeData {
   send_amount: string;
   receive_amount: string;
   pay_email: string;
-  proof_of_payment: FileList | null;
+  proof_of_payment: File | null;
   note: string;
 }
 
@@ -146,7 +146,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         },
         proof_of_payment: {
           img_transaction: stepThree.proof_of_payment
-            ? await fileToBase64(stepThree.proof_of_payment[0])
+            ? await fileToBase64(stepThree.proof_of_payment)
             : '',
         },
       },

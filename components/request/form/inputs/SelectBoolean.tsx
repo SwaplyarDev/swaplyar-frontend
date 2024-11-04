@@ -11,12 +11,14 @@ type SelectBooleanProps = {
   selectedOption: string | undefined;
   setSelectedOption: (option: string | undefined) => void;
   errors: { [key: string]: FieldError } | {}; // Tipado explícito
+  blockAll: boolean;
 };
 
 const SelectBoolean: React.FC<SelectBooleanProps> = ({
   selectedOption,
   setSelectedOption,
   errors,
+  blockAll,
 }) => {
   const fieldName = 'own_account';
   const errorMessage = (errors as { [key: string]: FieldError })[fieldName]
@@ -42,6 +44,7 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
         ¿Tienes cuenta propia?
       </label>
       <Select
+        isDisabled={blockAll}
         id={fieldName}
         onFocus={() => setIsFocused(true)} // Activa el enfoque
         onBlur={() => setIsFocused(false)} // Desactiva el enfoque

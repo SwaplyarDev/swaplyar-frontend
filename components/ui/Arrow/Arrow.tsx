@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Arrow = ({ color, backRequest }: { color: string, backRequest: boolean }) => {
+const Arrow = ({ color, backRequest }: { color: string, backRequest?: boolean }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

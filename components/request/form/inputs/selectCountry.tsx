@@ -210,6 +210,7 @@ export default function SelectCountry({
           placeholder="Telefono"
           className="w-full border-none bg-transparent focus:border-none focus:outline-none focus:ring-0"
           type="tel"
+          disabled={blockALl}
           // onFocus={() => setIsFocused(true)} // Agrega onFocus
           // onBlur={() => setIsFocused(false)} // Agrega onBlur
           {...register('phone', {

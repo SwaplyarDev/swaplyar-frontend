@@ -26,7 +26,7 @@ export type FormInputs = {
   pay_email: string;
   send_amount: string;
   receive_amount: string;
-  proof_of_payment: FileList;
+  proof_of_payment: File;
   note: string;
 };
 

@@ -192,12 +192,12 @@ const StepOne = ({blockAll}: {blockAll: boolean}) => {
             name="own_account"
             control={control}
             defaultValue={undefined}
-            disabled={blockAll}
             rules={{
               required: 'Este campo es obligatorio',
             }}
             render={({ field, fieldState }) => (
               <SelectBoolean
+                blockAll={blockAll}
                 selectedOption={field.value}
                 setSelectedOption={(option) => field.onChange(option)}
                 errors={
