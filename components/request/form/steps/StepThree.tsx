@@ -125,7 +125,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
             >
               Email a pagar
             </label>
-            <InputField
+            <InputCopy
               id="pay_email"
               type="text"
               value={'00000@00000000.com'}

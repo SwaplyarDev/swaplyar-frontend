@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Select, { SingleValue } from 'react-select';
 import clsx from 'clsx';
 import { FieldErrors, UseFormSetValue } from 'react-hook-form';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 type CountryOption = {
   value: string; // Sigla del país
@@ -72,12 +73,13 @@ export default function SelectCountry({
 
     fetchCountries();
   }, []);
-
+  const { isDark } = useDarkTheme();
   return (
-    <div className='flex flex-col'>
+    <div className="flex flex-col">
       <label
         htmlFor="phone"
-        className={clsx('text-xs ml-1',
+        className={clsx(
+          'ml-1 text-xs',
           errors.phone ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
         )}
       >
@@ -85,11 +87,11 @@ export default function SelectCountry({
       </label>
       <div
         className={clsx(
-          'flex items-center rounded border border-[#6B7280] bg-gray-200 dark:bg-lightText max-h-[38px]',
+          'flex max-h-[38px] items-center rounded border border-[#6B7280] bg-gray-200 dark:bg-lightText',
           errors.phone && !isFocused
-            ? ' border border-red-500 hover:border-blue-600 dark:hover:border-white'
+            ? 'border border-red-500 hover:border-blue-600 dark:hover:border-white'
             : isFocused
-              ? 'outline-none border-blue-600 ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
+              ? 'border-blue-600 outline-none ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
               : 'hover:border-blue-600 dark:hover:border-white',
         )}
         onFocus={() => setIsFocused(true)} // Manejador de foco en el contenedor
@@ -108,7 +110,13 @@ export default function SelectCountry({
           onFocus={() => setIsFocused(true)} // Agrega onFocus
           onBlur={() => setIsFocused(false)} // Agrega onBlur
           formatOptionLabel={({ label }: CountryOption) => (
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginLeft: '10px',
+              }}
+            >
               <span>{label}</span>
             </div>
           )}
@@ -191,6 +199,7 @@ export default function SelectCountry({
             dropdownIndicator: (provided) => ({
               ...provided,
               padding: '0 8px', // Asegura espacio para la flecha desplegable
+              color: isDark ? '#FFFFFF' : '#111827',
             }),
             indicatorSeparator: () => ({
               display: 'none', // Elimina el separador vertical "|"

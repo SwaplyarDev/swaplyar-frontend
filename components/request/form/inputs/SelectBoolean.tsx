@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Select from 'react-select';
 import clsx from 'clsx';
-import { set } from 'react-hook-form';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 type FieldError = {
   message: string;
@@ -27,11 +27,7 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
   const handleFocus = () => {
     setIsFocused(!isFocused);
   };
-  const botonRef = useRef<HTMLButtonElement>(null);
-
-  const simularClic = () => {
-    botonRef.current?.click();
-  };
+  const { isDark } = useDarkTheme();
   return (
     <>
       <label
@@ -65,7 +61,7 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
         classNamePrefix="custom-select"
         isSearchable={false}
         className={clsx(
-          'h-[38px] w-full rounded border border-[#6B7280] bg-gray-200 text-gray-900 dark:bg-lightText dark:text-white',
+          'h-[38px] w-full rounded border border-[#6B7280] bg-gray-200 px-[10px] text-gray-900 dark:bg-lightText dark:text-white',
           errorMessage && !isFocused
             ? 'border border-red-500 hover:border-blue-600 dark:hover:border-white'
             : isFocused
@@ -138,6 +134,7 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
           dropdownIndicator: (provided) => ({
             ...provided,
             padding: '0 8px',
+            color: isDark ? '#FFFFFF' : '#111827',
           }),
           indicatorSeparator: () => ({
             display: 'none',
