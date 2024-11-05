@@ -15,10 +15,10 @@ import { set } from 'react-hook-form';
 import { useState } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
-import CountdownTimer from './CountdownTimer';
 
 const StepperContainer = () => {
-  const { activeStep, completedSteps, setActiveStep } = useStepperStore();
+  const { activeStep, completedSteps, setActiveStep, submitAllData } =
+    useStepperStore();
   const [blockAll, setBlockAll] = useState(false);
   const navigation = useRouter();
 
@@ -85,53 +85,6 @@ const StepperContainer = () => {
     });
   };
 
-  const handleSendRequest = () => {
-    Swal.fire({
-      title:
-        '<h2 style="font-size: 24px;">Solicitud realizada con éxito</h2>',
-      icon: 'info',
-      html: `
-        <a href="https://www.paypal.com/myaccount/transfer/funds" target="_blank" style="font-size: 16px; color: #012c8a">¿tuviste algún problema con la tranferencia?</a>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; gap: 40px; padding: 0 13px">
-          <div id="back-button-container"></div>
-          <div style="height: 49px;" class="flex items-center justify-center">   
-          <button id="cancel-button" class="m-1 text-base h-[42px] min-w-[110px] flex relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white dark:border-darkText dark:bg-darkText dark:text-lightText  ${isDark ? 'buttonSecondDark' : 'buttonSecond'}">Cancelar</button></div>
-        </div>
-      `,
-      showConfirmButton: false,
-      showCancelButton: false,
-      background: isDark ? 'rgb(69 69 69)' : '#ffffff',
-      color: isDark ? '#ffffff' : '#000000',
-      didRender: () => {
-        const backElement = document.getElementById('back-button-container');
-        if (backElement) {
-          const root = createRoot(backElement);
-          root.render(
-            <button
-              onClick={() => Swal.close()}
-              className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 flex h-[42px] min-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-sm text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
-            >
-              <Arrow
-                color={isDark ? '#ebe7e0' : '#012c8a'}
-                backRequest={true}
-              />
-              Volver
-            </button>,
-          );
-        }
-      },
-      didOpen: () => {
-        const cancelButton = document.getElementById('cancel-button');
-        if (cancelButton) {
-          cancelButton.addEventListener('click', () => {
-            setBlockAll(true);
-            Swal.close();
-          });
-        }
-      },
-    });
-  };
-
   return (
     <div
       className={clsx(
@@ -149,7 +102,7 @@ const StepperContainer = () => {
               Puedes crear uno nuevo, y si tienes alguna pregunta o necesitas
               ayuda, estamos aquí para ti.
             </p>
-            <div className='w-full'>
+            <div className="w-full">
               <p className="hidden w-full text-end text-lightText dark:text-darkText sm-phone:block">
                 Puedes crear uno nuevo, y si tienes alguna pregunta
               </p>
@@ -157,7 +110,7 @@ const StepperContainer = () => {
                 o necesitas ayuda, estamos aquí para ti.
               </p>
             </div>
-            <div className="flex w-full justify-between xs:flex-row flex-col-reverse items-center gap-2">
+            <div className="flex w-full flex-col-reverse items-center justify-between gap-2 xs:flex-row">
               <Link
                 className="group flex items-center gap-1 text-center text-lightText dark:text-darkText sm-phone:text-start"
                 href="/"
@@ -251,10 +204,22 @@ const StepperContainer = () => {
         </button>
         <button
           disabled={completedSteps[2] == false || blockAll}
-          onClick={handleSendRequest}
           className={`relative h-12 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-9 py-[3px] font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? completedSteps[2] == true && 'buttonSecondDark' : completedSteps[2] == true && 'buttonSecond'}`}
         >
-          ENVIAR
+          {loading ? (
+            <div id="loading" className="flex justify-center items-center gap-2">
+              <Image
+                src="/gif/cargando.gif"
+                alt="Cargando..."
+                width={25}
+                height={25}
+                className='mb-0.5'
+              />
+              <span>Procesando...</span>
+            </div>
+          ) : (
+            'ENVIAR'
+          )}
         </button>
       </div>
     </div>

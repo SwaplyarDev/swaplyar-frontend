@@ -1,3 +1,4 @@
+import { System } from '@/types/data';
 import { CountryOption } from '@/types/request/request';
 import { create } from 'zustand';
 
@@ -47,7 +48,11 @@ interface StepperState {
     step: number,
     data: Partial<FormData[keyof FormData]>,
   ) => void; // Permite actualizaciones parciales
-  submitAllData: () => void;
+  submitAllData: (
+    selectedSendingSystem: System | null,
+    selectedReceivingSystem: System | null,
+  ) => void;
+  resetToDefault: () => void;
 }
 
 export const useStepperStore = create<StepperState>((set, get) => ({
@@ -97,17 +102,9 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       },
     }));
   },
-  submitAllData: async () => {
+  submitAllData: async (selectedSendingSystem, selectedReceivingSystem) => {
     const state = get(); // Obtener el estado actual
     const { stepOne, stepTwo, stepThree } = state.formData;
-
-    const fileToBase64 = (file: File): Promise<string> =>
-      new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = (error) => reject(error);
-      });
 
     const payload = {
       transaction: {
@@ -118,9 +115,9 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           phone_number: stepOne.phone,
           email: stepOne.email,
           bank_account: {
-            email_account: stepThree.pay_email,
-            payment_method: 'paypal',
-            number_account: stepOne.own_account || '',
+            email_account: '',
+            payment_method: selectedSendingSystem?.name || '',
+            number_account: '',
           },
         },
         receiver: {
@@ -128,26 +125,24 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           last_name: stepTwo.receiver_last_name,
           bank_account: {
             email_account: stepTwo.wise_email,
-            payment_method: 'paypal',
+            payment_method: selectedReceivingSystem?.name || '',
             number_account: stepTwo.transfer_identification,
           },
         },
         transfer: {
-          transfer_code: 'TRX202409300001',
-          country_transaction: 'USA', 
+          transfer_code: '',
+          country_transaction: 'USA',
           message: stepThree.note,
-          created_at: new Date().toISOString(), 
+          created_at: new Date().toISOString(),
         },
         amounts: {
           amount_sent: parseFloat(stepThree.send_amount),
-          currency_sent: 'USD',
+          currency_sent: selectedSendingSystem?.coin || '',
           amount_received: parseFloat(stepThree.receive_amount),
-          currency_received: 'EUR', 
+          currency_received: selectedReceivingSystem?.coin || '',
         },
         proof_of_payment: {
-          img_transaction: stepThree.proof_of_payment
-            ? await fileToBase64(stepThree.proof_of_payment)
-            : '',
+          img_transaction: 'iVBORw0KGgoAAAANSUhEUgAAAXsAAALCCAYAAAA',
         },
       },
     };
@@ -171,4 +166,35 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       console.error('Error en la solicitud:', error);
     }
   },
+  resetToDefault: () =>
+    set((state) => ({
+      activeStep: 0,
+      completedSteps: [false, false, false],
+      formData: {
+        stepOne: {
+          sender_first_name: '',
+          sender_last_name: '',
+          phone: '',
+          email: '',
+          own_account: undefined,
+        },
+        stepTwo: {
+          receiver_first_name: '',
+          receiver_last_name: '',
+          tax_identification: '',
+          transfer_identification: '',
+          re_transfer_identification: '',
+          name_of_bank: '',
+          wise_email: '',
+          re_enter_wise_email: '',
+        },
+        stepThree: {
+          send_amount: '',
+          receive_amount: '',
+          pay_email: '',
+          proof_of_payment: null,
+          note: '',
+        },
+        },
+    })),
 }));

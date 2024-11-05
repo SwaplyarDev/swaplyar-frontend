@@ -66,8 +66,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
       re_enter_wise_email,
     };
 
-    setValue('receiver_first_name', receiver_first_name);
-    setValue('receiver_last_name', receiver_last_name);
+    setValue('receiver_first_name', formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_first_name : receiver_first_name);
+    setValue('receiver_last_name', formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_last_name : receiver_last_name);
     setValue('tax_identification', tax_identification);
     setValue('transfer_identification', transfer_identification);
     setValue('re_transfer_identification', re_transfer_identification);
@@ -77,7 +77,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
 
     // Guardar los valores iniciales al montar el componente
     setInitialValues(newValues);
-  }, [formData.stepTwo, setValue]);
+    console.log(newValues);
+  }, [formData.stepTwo, setValue, formData.stepOne?.own_account, formData.stepOne?.sender_first_name, formData.stepOne?.sender_last_name]);
 
   const onSubmit = (data: FormData) => {
     updateFormData(1, data); // Actualiza los datos del formulario en Zustand
@@ -114,6 +115,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
               <InputField
                 id="receiver_first_name"
                 type="text"
+                value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_first_name : undefined}
+                defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
                 placeholder="Nombre"
                 register={register('receiver_first_name', {
                   required: 'El Nombre es obligatorio',
@@ -126,7 +129,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
                   errors.receiver_first_name &&
                   errors.receiver_first_name.message
                 }
-                disabled={blockAll}
+                disabled={blockAll || formData.stepOne?.own_account === 'Si'}
               />
             </div>
             <div className="flex flex-col">
@@ -142,8 +145,10 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
                 Apellido
               </label>
               <InputField
-                disabled={blockAll}
+                disabled={blockAll || formData.stepOne?.own_account === 'Si'}
                 id="receiver_last_name"
+                value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_last_name : undefined}
+                defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
                 type="text"
                 placeholder="Apellido"
                 register={register('receiver_last_name', {
@@ -299,9 +304,11 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
                 Nombre
               </label>
               <InputField
-                disabled={blockAll}
+                disabled={blockAll || formData.stepOne?.own_account === 'Si'}
                 id="receiver_first_name"
                 type="text"
+                value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_first_name : undefined}
+                defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
                 placeholder="Nombre"
                 register={register('receiver_first_name', {
                   required: 'El Nombre es obligatorio',
@@ -329,9 +336,11 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
                 Apellido
               </label>
               <InputField
-                disabled={blockAll}
+                disabled={blockAll || formData.stepOne?.own_account === 'Si'}
                 id="receiver_last_name"
                 type="text"
+                value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_last_name : undefined}
+                defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
                 placeholder="Apellido"
                 register={register('receiver_last_name', {
                   required: 'El Apellido es obligatorio',
