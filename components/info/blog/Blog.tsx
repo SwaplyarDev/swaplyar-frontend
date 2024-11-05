@@ -18,8 +18,6 @@ const BlogPostCard: React.FC<{ title: string; body: string; url_image: string; c
   const handleToggleText = () => {
     setShowFullText(!showFullText);
   };
-
-  console.log(body.slice(0,-135))
   return (
     <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
       <Image
@@ -91,6 +89,7 @@ const Blog: React.FC = () => {
   const { blogs, setBlogs } = useBlogStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const [data, setData] = useState(null);
   const postsPerPage = 9;
   const [randomImages, setRandomImages] = useState<string[]>([]);
 
@@ -110,18 +109,20 @@ const Blog: React.FC = () => {
       setCurrentPage(pageParam);
     }
   }, [searchParams]);
-
+  
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
         const response = await fetch(`${BASE_URL}/v1/blogs?page=${currentPage}`);
-      
+        
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         
-        const data = await response.json();
+       const data = await response.json();
+       // console.log(data.meta.totalPages)
         setBlogs(data.blogsPerPage);
+        setData(data.meta.totalPages);
       } catch (error) {
         console.error('Error fetching blogs:', error);
       }
@@ -191,30 +192,45 @@ const Blog: React.FC = () => {
         )}
       </div>
       <div className="flex justify-center mt-8 space-x-4">
-        <button
-          className={`w-10 h-10 border rounded-full ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
-          onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
-          disabled={currentPage === 1}
-        >
-          &lt;
-        </button>
-        {[...Array(3)].map((_, index) => (
-          <button
-            key={index}
-            className={`w-10 h-10 border rounded-full ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-white'}`}
-            onClick={() => handlePageChange(index + 1)}
-          >
-            {index + 1}
-          </button>
-        ))}
-        <button
-          className={`w-10 h-10 border rounded-full ${currentPage === 3 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
-          onClick={() => handlePageChange(Math.min(currentPage + 1, 3))}
-          disabled={currentPage === 3}
-        >
-          &gt;
-        </button>
-      </div>
+  {/* Botón de retroceso */}
+  <button
+    className={`w-10 h-10 border rounded-full ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+    onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+    disabled={currentPage === 1}
+  >
+    &lt;
+  </button>
+
+  {/* Botones de paginación dinámicos */}
+  {[...Array(data)].map((_, index) => index + 1)
+    .filter((page) => {
+      if (currentPage <= 2) {
+        return page <= 3; // Mostrar 1, 2, 3 al inicio
+      } else if (currentPage >= Number(data) - 1) {
+        return page >= Number(data) - 2; // Mostrar las últimas tres páginas al final
+      }
+      return Math.abs(currentPage - page) <= 1; // Rango dinámico en medio
+    })
+    .map((page) => (
+      <button
+        key={page}
+        className={`w-10 h-10 border rounded-full ${currentPage === page ? 'bg-blue-500 text-white' : 'bg-white'}`}
+        onClick={() => handlePageChange(page)}
+      >
+        {page}
+      </button>
+    ))
+  }
+
+  {/* Botón de avance */}
+  <button
+    className={`w-10 h-10 border rounded-full ${currentPage === data ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+    onClick={() => handlePageChange(Math.min(currentPage + 1, Number(data)))}
+    disabled={currentPage === data}
+  >
+    &gt;
+  </button>
+</div>
     </div>
   );
 };
