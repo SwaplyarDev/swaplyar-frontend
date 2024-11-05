@@ -15,6 +15,8 @@ import { set } from 'react-hook-form';
 import { useState } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
+import { useSystemStore } from '@/store/useSystemStore';
+import Image from 'next/image';
 
 const StepperContainer = () => {
   const { activeStep, completedSteps, setActiveStep, submitAllData } =
@@ -86,8 +88,7 @@ const StepperContainer = () => {
   };
   const handleSendRequest = () => {
     Swal.fire({
-      title:
-        '<h2 style="font-size: 24px;">Solicitud realizada con éxito</h2>',
+      title: '<h2 style="font-size: 24px;">Solicitud realizada con éxito</h2>',
       icon: 'info',
       html: `
         <a href="https://www.paypal.com/myaccount/transfer/funds" target="_blank" style="font-size: 16px; color: #012c8a">¿tuviste algún problema con la tranferencia?</a>
@@ -129,6 +130,13 @@ const StepperContainer = () => {
         }
       },
     });
+  };
+  const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
+  const [loading, setLoading] = useState(false);
+  const handleSubmit = () => {
+    setLoading(true);
+    submitAllData(selectedSendingSystem, selectedReceivingSystem);
+    setLoading(false);
   };
 
   return (
@@ -187,7 +195,6 @@ const StepperContainer = () => {
         </h1>
         <div>
           <p>Tiempo Restante</p>
-          {/* <CountdownTimer /> */}
         </div>
       </div>
       {steps.map((step, index) => {
@@ -249,17 +256,21 @@ const StepperContainer = () => {
           Cancelar esta Solicitud
         </button>
         <button
-          disabled={completedSteps[2] == false || blockAll}
+          disabled={completedSteps[2] == false || blockAll || loading}
+          onClick={handleSubmit}
           className={`relative h-12 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-9 py-[3px] font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? completedSteps[2] == true && 'buttonSecondDark' : completedSteps[2] == true && 'buttonSecond'}`}
         >
           {loading ? (
-            <div id="loading" className="flex justify-center items-center gap-2">
+            <div
+              id="loading"
+              className="flex items-center justify-center gap-2"
+            >
               <Image
                 src="/gif/cargando.gif"
                 alt="Cargando..."
                 width={25}
                 height={25}
-                className='mb-0.5'
+                className="mb-0.5"
               />
               <span>Procesando...</span>
             </div>
