@@ -39,7 +39,7 @@ export default function TransactionCalculator() {
     stopUpdatingRates,
   ]);
 
-  const { activeSelect } = useSystemStore();
+  const { activeSelect, resetToDefault } = useSystemStore();
   const router = useRouter();
   const { isDark } = useDarkTheme();
   const [exchange, setExchange] = useState({ currency: 'USD', amount: 0 });
@@ -116,8 +116,9 @@ export default function TransactionCalculator() {
     } else {
       setIsProcessing(true);
       // setInterval(() => {
-        handleDirection();
-        setIsProcessing(false);
+      handleDirection();
+      resetToDefault();
+      setIsProcessing(false);
       // }, 3000);
     }
   };

@@ -76,6 +76,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
     setValue('note', note);
 
     setInitialValues(newValues);
+    console.log(proof_of_payment)
 
     // if (proof_of_payment) {
     //   setSelectedFile(proof_of_payment);
