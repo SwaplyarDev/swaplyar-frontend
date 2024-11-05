@@ -6,6 +6,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import clsx from 'clsx';
 import InputField from '@/components/ui/contact-form/InputField';
 import InputCopy from '../inputs/InputCopy';
+import { useSystemStore } from '@/store/useSystemStore';
 
 interface FormData {
   send_amount: string;
@@ -41,13 +42,14 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   const receiveAmount = localStorage.getItem('receiveAmount');
   const sendAmount = localStorage.getItem('sendAmount');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const { selectedSendingSystem } = useSystemStore();
 
   function showFileName(event: any) {
     // Tomar el archivo del evento y asignarlo a `selectedFile`
     const file = event.target.files[0] || null;
 
     // Si hay un archivo seleccionado, actualizar el estado y mostrar el nombre
-    console.log(file)
+    console.log(file);
     if (file) {
       setSelectedFile(file);
       document.getElementById('file-name')!.textContent = file.name;
@@ -107,9 +109,22 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <p className="text-left">
-        tienes que realizar el pago de $000 al email asdfgh@asdfgh.com con el
-        concepto de "PAGO" para enviarte el dinero a la cuenta
-        00000@00000000.com
+        tienes que realizar el pago de{' '}
+        <span className="font-semibold underline">
+          {sendAmount}
+          {' '}
+          {selectedSendingSystem?.coin}
+        </span>{' '}
+        al email asdfgh@asdfgh.com con el concepto de "PAGO" para enviarte el
+        dinero a la cuenta{' '}
+        <span className="font-semibold underline">
+          {' '}
+          {formData.stepTwo.re_enter_wise_email == '' &&
+            `${formData.stepTwo.receiver_first_name} ${formData.stepTwo.receiver_last_name}`}{' '}
+          {formData.stepTwo.re_enter_wise_email == ''
+            ? formData.stepTwo.re_transfer_identification
+            : formData.stepTwo.re_enter_wise_email}
+        </span>
       </p>
       <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
         <div className="flex w-full flex-col gap-4">
@@ -128,7 +143,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
             <InputCopy
               id="pay_email"
               type="text"
-              value={'00000@00000000.com'}
+              value={'asdfgh@asdfgh.com'}
               disabled={true}
               placeholder=""
               register={register('pay_email', { required: true })}

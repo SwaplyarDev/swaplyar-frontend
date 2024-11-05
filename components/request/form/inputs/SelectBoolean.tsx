@@ -45,7 +45,7 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
         onFocus={() => setIsFocused(true)} // Activa el enfoque
         onBlur={() => setIsFocused(false)} // Desactiva el enfoque
         options={[
-          { value: 'Sí', label: 'Sí' },
+          { value: 'Si', label: 'Si' },
           { value: 'No', label: 'No' },
         ]}
         value={

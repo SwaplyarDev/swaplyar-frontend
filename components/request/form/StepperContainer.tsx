@@ -15,9 +15,12 @@ import { set } from 'react-hook-form';
 import { useState } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
+import { useSystemStore } from '@/store/useSystemStore';
+import Image from 'next/image';
 
 const StepperContainer = () => {
-  const { activeStep, completedSteps, setActiveStep } = useStepperStore();
+  const { activeStep, completedSteps, setActiveStep, submitAllData } =
+    useStepperStore();
   const [blockAll, setBlockAll] = useState(false);
   const navigation = useRouter();
 
@@ -83,6 +86,13 @@ const StepperContainer = () => {
       },
     });
   };
+  const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
+  const [loading, setLoading] = useState(false);
+  const handleSubmit = () => {
+    setLoading(true);
+    submitAllData(selectedSendingSystem, selectedReceivingSystem);
+    setLoading(false);
+  };
 
   return (
     <div
@@ -101,7 +111,7 @@ const StepperContainer = () => {
               Puedes crear uno nuevo, y si tienes alguna pregunta o necesitas
               ayuda, estamos aquí para ti.
             </p>
-            <div className='w-full'>
+            <div className="w-full">
               <p className="hidden w-full text-end text-lightText dark:text-darkText sm-phone:block">
                 Puedes crear uno nuevo, y si tienes alguna pregunta
               </p>
@@ -109,7 +119,7 @@ const StepperContainer = () => {
                 o necesitas ayuda, estamos aquí para ti.
               </p>
             </div>
-            <div className="flex w-full justify-between xs:flex-row flex-col-reverse items-center gap-2">
+            <div className="flex w-full flex-col-reverse items-center justify-between gap-2 xs:flex-row">
               <Link
                 className="group flex items-center gap-1 text-center text-lightText dark:text-darkText sm-phone:text-start"
                 href="/"
@@ -201,10 +211,24 @@ const StepperContainer = () => {
           Cancelar esta Solicitud
         </button>
         <button
-          disabled={completedSteps[2] == false || blockAll}
+          disabled={completedSteps[2] == false || blockAll || loading}
+          onClick={handleSubmit}
           className={`relative h-12 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-9 py-[3px] font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? completedSteps[2] == true && 'buttonSecondDark' : completedSteps[2] == true && 'buttonSecond'}`}
         >
-          ENVIAR
+          {loading ? (
+            <div id="loading" className="flex justify-center items-center gap-2">
+              <Image
+                src="/gif/cargando.gif"
+                alt="Cargando..."
+                width={25}
+                height={25}
+                className='mb-0.5'
+              />
+              <span>Procesando...</span>
+            </div>
+          ) : (
+            'ENVIAR'
+          )}
         </button>
       </div>
     </div>

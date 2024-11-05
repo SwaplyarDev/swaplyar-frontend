@@ -1,3 +1,4 @@
+import { System } from '@/types/data';
 import { CountryOption } from '@/types/request/request';
 import { create } from 'zustand';
 
@@ -47,7 +48,10 @@ interface StepperState {
     step: number,
     data: Partial<FormData[keyof FormData]>,
   ) => void; // Permite actualizaciones parciales
-  submitAllData: () => void;
+  submitAllData: (
+    selectedSendingSystem: System | null,
+    selectedReceivingSystem: System | null,
+  ) => void;
 }
 
 export const useStepperStore = create<StepperState>((set, get) => ({
@@ -97,7 +101,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       },
     }));
   },
-  submitAllData: async () => {
+  submitAllData: async (selectedSendingSystem, selectedReceivingSystem) => {
     const state = get(); // Obtener el estado actual
     const { stepOne, stepTwo, stepThree } = state.formData;
 
@@ -119,7 +123,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           email: stepOne.email,
           bank_account: {
             email_account: stepThree.pay_email,
-            payment_method: 'paypal',
+            payment_method: selectedSendingSystem?.name || '',
             number_account: stepOne.own_account || '',
           },
         },
@@ -128,21 +132,21 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           last_name: stepTwo.receiver_last_name,
           bank_account: {
             email_account: stepTwo.wise_email,
-            payment_method: 'paypal',
+            payment_method: selectedReceivingSystem?.name || '',
             number_account: stepTwo.transfer_identification,
           },
         },
         transfer: {
           transfer_code: 'TRX202409300001',
-          country_transaction: 'USA', 
+          country_transaction: 'USA',
           message: stepThree.note,
-          created_at: new Date().toISOString(), 
+          created_at: new Date().toISOString(),
         },
         amounts: {
           amount_sent: parseFloat(stepThree.send_amount),
-          currency_sent: 'USD',
+          currency_sent: selectedSendingSystem?.coin || '',
           amount_received: parseFloat(stepThree.receive_amount),
-          currency_received: 'EUR', 
+          currency_received: selectedReceivingSystem?.coin || '',
         },
         proof_of_payment: {
           img_transaction: stepThree.proof_of_payment

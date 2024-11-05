@@ -10,6 +10,7 @@ interface InputFieldProps {
   error?: string;
   file?: boolean;
   value?: string;
+  defaultValue?: string;
   disabled?: boolean;
   onCustomChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -22,6 +23,7 @@ const InputField: FC<InputFieldProps> = ({
   error,
   file,
   value,
+  defaultValue,
   disabled,
   onCustomChange,
 }) => {
@@ -39,6 +41,7 @@ const InputField: FC<InputFieldProps> = ({
         id={id}
         type={type}
         value={value}
+        defaultValue={defaultValue}
         disabled={disabled}
         placeholder={placeholder}
         onChange={handleChange} // Usamos la función combinada
