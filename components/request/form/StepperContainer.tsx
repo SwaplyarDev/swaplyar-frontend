@@ -15,6 +15,8 @@ import { set } from 'react-hook-form';
 import { useState } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
+import { useSystemStore } from '@/store/useSystemStore';
+import Image from 'next/image';
 
 const StepperContainer = () => {
   const { activeStep, completedSteps, setActiveStep, submitAllData } =
@@ -84,6 +86,13 @@ const StepperContainer = () => {
       },
     });
   };
+  const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
+  const [loading, setLoading] = useState(false);
+  const handleSubmit = () => {
+    setLoading(true);
+    submitAllData(selectedSendingSystem, selectedReceivingSystem);
+    setLoading(false);
+  };
 
   return (
     <div
@@ -141,7 +150,6 @@ const StepperContainer = () => {
         </h1>
         <div>
           <p>Tiempo Restante</p>
-          {/* <CountdownTimer /> */}
         </div>
       </div>
       {steps.map((step, index) => {
@@ -203,7 +211,8 @@ const StepperContainer = () => {
           Cancelar esta Solicitud
         </button>
         <button
-          disabled={completedSteps[2] == false || blockAll}
+          disabled={completedSteps[2] == false || blockAll || loading}
+          onClick={handleSubmit}
           className={`relative h-12 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-9 py-[3px] font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? completedSteps[2] == true && 'buttonSecondDark' : completedSteps[2] == true && 'buttonSecond'}`}
         >
           {loading ? (
