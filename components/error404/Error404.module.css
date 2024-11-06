@@ -43,14 +43,14 @@
   position: relative;
   transform: translate(-50%, -50%);
   width: 600px;
-  top: calc(50% - 830px); 
+  top: calc(50% - 910px); 
   left: calc(50% - -220px);
 }
 .postImage2 {
   position: relative;
   transform: translate(-50%, -50%);
   width: 415px;
-  top: calc(50% - 1200px); 
+  top: calc(50% - 1280px); 
   left: calc(50% - -460px);
 }
 .lineaVertical1 {
@@ -207,14 +207,14 @@
     position: relative;
     transform: translate(-50%, -50%);
     width: 250px;
-    top: calc(50% - 480px); 
+    top: calc(50% - 420px); 
     left: calc(50% - -60px);
   }
   .postImage2 {
     position: relative;
     transform: translate(-50%, -50%);
     width: 250px;
-    top: calc(50% - 690px); 
+    top: calc(50% - 660px); 
     left: calc(50% - -180px);
   }
   .lineaVertical1 {
