@@ -16,6 +16,7 @@ import clsx from 'clsx';
 import { useExchangeRateStore } from '@/store/exchangeRateStore';
 import { useExchangeRate } from '@/hooks/useExchangeRates';
 import Image from 'next/image';
+import { useStepperStore } from '@/store/stateStepperStore';
 
 export default function TransactionCalculator() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -39,7 +40,8 @@ export default function TransactionCalculator() {
     stopUpdatingRates,
   ]);
 
-  const { activeSelect, resetToDefault } = useSystemStore();
+  const { activeSelect } = useSystemStore();
+  const { resetToDefault} = useStepperStore();
   const router = useRouter();
   const { isDark } = useDarkTheme();
   const [exchange, setExchange] = useState({ currency: 'USD', amount: 0 });

@@ -3,6 +3,7 @@ import { UseFormRegisterReturn } from 'react-hook-form';
 import clsx from 'clsx';
 import Copy from '@/components/ui/Copy/Copy';
 import Tick from '@/components/ui/Tick/Tick';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 interface InputCopyProps {
   id: string;
@@ -43,6 +44,7 @@ const InputCopy: FC<InputCopyProps> = ({
       setTimeout(() => setCopied(false), 2000);
     }
   };
+  const { isDark } = useDarkTheme();
   return (
     <div className="flex h-full flex-col">
       <div
@@ -88,7 +90,7 @@ const InputCopy: FC<InputCopyProps> = ({
           disabled={copied}
           onClick={() => handleCopy()}
         >
-          {copied ? <Tick copy={true} /> : <Copy />}
+          {copied ? <Tick copy={true} color={isDark ? '#414244' : '#FCFBFA'}/> : <Copy />}
         </button>
       </div>
       {error && <p className="text-sm text-red-500">• {error}</p>}
