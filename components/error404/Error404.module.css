@@ -2,9 +2,9 @@
 @media (max-width: 7680px) {
 .container {
   text-align: center;
-  padding: 10px;
-  height: 850px;
+  height: 950px;
   margin-bottom: 300px;
+  position: relative;
 }
 
 .image {
@@ -76,6 +76,7 @@
   position: relative;
   top: calc(50% - 1670px);
   left: calc(50% - 2750px);
+
 }
 .enchufe2{
   width: 2800px;
@@ -88,7 +89,6 @@
 @media (max-width: 1325px) {
   .container {
     text-align: center;
-    padding: 10px;
     height: 650px;
     margin-bottom: 100px;
   }
@@ -170,7 +170,6 @@
 @media (min-width: 550px) and (max-width: 768px) {
   .container {
     text-align: center;
-    padding: 10px;
     height: 450px;
   }
   .image {
@@ -281,7 +280,6 @@
 @media (min-width: 395px) and (max-width: 549px) {
   .container {
     text-align: center;
-    padding: 10px;
     height: 300px;
     position: relative; 
     margin-top: 180px;
@@ -396,7 +394,6 @@
 @media (max-width: 394px) {
   .container {
     text-align: center;
-    padding: 10px;
     height: 300px;
     position: relative; 
     margin-top: 180px;

@@ -34,7 +34,7 @@ const Error_404 = () => {
   return (
     
     <div className={styles.container}>
-      <AnimatedBlurredCircles tope="top-[100px]"/>
+      <AnimatedBlurredCircles tope="top-[10px]"/>
       {isDark ? (
         <>
           
@@ -73,7 +73,6 @@ const Error_404 = () => {
           <div className={styles.redirectButton}>
             <Link
               href="/"
-              target="_blank"
               className={`relative m-1 flex h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
             >
               <p>Redireccion en {counter}</p>
@@ -181,7 +180,6 @@ const Error_404 = () => {
           <div className={styles.redirectButton}>
             <Link
               href="/"
-              target="_blank"
               className={`relative m-1 flex h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-white p-3 font-bold text-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
             >
               <p>Redireccion en {counter}</p>
