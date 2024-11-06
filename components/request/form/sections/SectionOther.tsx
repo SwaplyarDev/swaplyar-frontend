@@ -83,11 +83,11 @@ const SectionOther = ({
         {currentStep.find((step) => step == 2) && !showTicks2 && (
           <div className="flex items-center justify-center">
             <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
-              <Tick />
+              <Tick color={isDark ? '#414244' : '#FCFBFA'}/>
             </div>
             <div className="h-[3px] w-6 bg-lightText dark:bg-darkText"></div>
             <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
-              <Tick />
+              <Tick color={isDark ? '#414244' : '#FCFBFA'}/>
             </div>
             <div className="h-[3px] w-6 bg-lightText dark:bg-darkText"></div>
             <div className="h-7 w-7 rounded-full border-[3px] border-lightText dark:border-darkText"></div>
@@ -96,7 +96,7 @@ const SectionOther = ({
         {showTicks2 && (
           <div className="flex w-full flex-col items-end justify-end">
             <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
-              <Tick />
+              <Tick color={isDark ? '#414244' : '#FCFBFA'}/>
             </div>
             <button
               onClick={() => {
