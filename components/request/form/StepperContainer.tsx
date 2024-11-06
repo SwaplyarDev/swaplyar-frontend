@@ -12,15 +12,21 @@ import { createRoot } from 'react-dom/client';
 import Arrow from '@/components/ui/Arrow/Arrow';
 import { useRouter } from 'next/navigation';
 import { set } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useSystemStore } from '@/store/useSystemStore';
 import Image from 'next/image';
+import { get } from 'http';
 
 const StepperContainer = () => {
-  const { activeStep, completedSteps, setActiveStep, submitAllData } =
-    useStepperStore();
+  const {
+    activeStep,
+    completedSteps,
+    setActiveStep,
+    submitAllData,
+    getOneStep,
+  } = useStepperStore();
   const [blockAll, setBlockAll] = useState(false);
   const navigation = useRouter();
 
@@ -138,6 +144,25 @@ const StepperContainer = () => {
     submitAllData(selectedSendingSystem, selectedReceivingSystem);
     setLoading(false);
   };
+
+  // const [data, setData] = useState(null);
+  // const [error, setError] = useState(null);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const result = await getOneStep();
+  //     if (result.error) {
+  //       setError(result.error); // Guarda el error en el estado si ocurre
+  //     } else {
+  //       setData(result); // Guarda los datos en el estado si la solicitud fue exitosa
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [setError, setData, getOneStep]);
+
+  // console.log('Data: ', data);
+  // console.log('Error: ', error);
 
   return (
     <div

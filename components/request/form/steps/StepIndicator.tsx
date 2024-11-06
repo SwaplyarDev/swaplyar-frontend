@@ -12,7 +12,7 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep, completedSte
     <div className="flex items-center justify-center">
       {completedSteps.map((completed, index) => (
         <React.Fragment key={index}>
-          {index <= currentStep ? ( // Mostrar tick si el índice es menor o igual al paso actual
+          {index < currentStep ? ( // Mostrar tick si el índice es menor o igual al paso actual
             <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
               <Tick />
             </div>

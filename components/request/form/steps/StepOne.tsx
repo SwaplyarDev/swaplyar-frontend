@@ -37,6 +37,7 @@ const StepOne = ({blockAll}: {blockAll: boolean}) => {
     formData,
     updateFormData,
     completedSteps,
+    submitOneStep
   } = useStepperStore();
   const { isDark } = useDarkTheme();
 
@@ -69,6 +70,7 @@ const StepOne = ({blockAll}: {blockAll: boolean}) => {
 
   const onSubmit = (data: FormData) => {
     updateFormData(0, data); // Actualiza los datos del formulario en Zustand
+    submitOneStep();
     markStepAsCompleted(0); // Marcar este paso como completado
     setActiveStep(1); // Ir al siguiente paso
   };

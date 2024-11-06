@@ -52,6 +52,9 @@ interface StepperState {
     selectedSendingSystem: System | null,
     selectedReceivingSystem: System | null,
   ) => void;
+  submitOneStep: () => void;
+  updateOneStep: (id: string) => void;
+  getOneStep: () => Promise<any>;
   resetToDefault: () => void;
 }
 
@@ -166,6 +169,80 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       console.error('Error en la solicitud:', error);
     }
   },
+  submitOneStep: async () => {
+    const state = get(); // Obtener el estado actual
+    const { stepOne } = state.formData;
+
+    const payload = {
+      full_name: `${stepOne.sender_first_name} ${stepOne.sender_last_name}`,
+      email: stepOne.email,
+      phone_number: stepOne.phone,
+    };
+
+    try {
+      const response = await fetch(`${BASE_URL}/v1/canceled_transactions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar los datos al servidor');
+      }
+
+      const data = await response.json();
+      console.log('Respuesta del servidor:', data);
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
+  },
+  updateOneStep: async (id: string) => {
+    const state = get(); // Obtener el estado actual
+    const { stepOne } = state.formData;
+
+    const payload = {
+      full_name: `${stepOne.sender_first_name} ${stepOne.sender_last_name}`,
+      email: stepOne.email,
+      phone_number: stepOne.phone,
+    };
+
+    try {
+      const response = await fetch(`${BASE_URL}/v1/canceled_transactions/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar los datos al servidor');
+      }
+
+      const data = await response.json();
+      console.log('Respuesta del servidor:', data);
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
+  },
+  getOneStep: async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/v1/canceled_transactions`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await response.json();
+      console.log('Respuesta del servidor:', data); // Mueve el console.log antes del return
+      return data;
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+      return { error: 'Error en la solicitud' }; // Devuelve un valor de error en caso de fallo
+    }
+  },  
   resetToDefault: () =>
     set((state) => ({
       activeStep: 0,
@@ -195,6 +272,6 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           proof_of_payment: null,
           note: '',
         },
-        },
+      },
     })),
 }));
