@@ -96,32 +96,36 @@ const StepperContainer = () => {
     Swal.fire({
       title: '',
       html: `
-      <div class="flex items-center justify-center bg-[#ffffff] dark:bg-[#454545] gap-[15px] rounded-xl px-[15px] py-5 xs-phone:py-[10px] max-w-[467.45px] w-full xs-phone:flex-row flex-col-reverse">
-        <h2 class="text-2xl text-[#252526] dark:text-[#ebe7e0]">Solicitud realizada con éxito</h2>
+      <div class="flex bg-[#ffffff] dark:bg-[#454545] rounded-xl px-[15px] py-5 xs-phone:py-[10px] max-w-[500px] w-full xs-phone:flex-row flex-col-reverse gap-3 justify-between items-center">
+        <div class="flex items-center justify-center gap-1 flex-col">
+          <h2 class="text-2xl xs-phone:text-left text-center w-full text-[#252526] dark:text-[#ebe7e0]">Solicitud realizada con éxito</h2>
+          <a href="#" target="_blank" class="text-base w-full xs-phone:text-left text-center text-[#012c8a] dark:text-[#0ea5e9]">¿Tuviste algún problema con la transferencia?</a>
+        </div>
         <div id="tick-container" class="flex justify-center items-center h-[100px] w-[100px] rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText"></div>
       </div>
-      <p class="xs-phone:text-left text-center mt-2">
-        <a href="#" target="_blank" class="text-base text-[#012c8a] dark:text-[#0ea5e9]">¿Tuviste algún problema con la transferencia?</a>
-      </p>
       `,
       customClass: {
-        popup: 'confirmAlert',
+        htmlContainer: 'confirmAlert',
       },
       showConfirmButton: false,
       showCancelButton: false,
       background: 'transparent',
       color: isDark ? '#ffffff' : '#000000',
-      allowOutsideClick: true, // Deshabilita hacer clic fuera de la alerta
-      allowEscapeKey: false, // Deshabilita cerrar con tecla ESC
-      allowEnterKey: false, // Deshabilita cerrar con tecla Enter
+      allowOutsideClick: true,
+      allowEscapeKey: true,
+      allowEnterKey: false,
       didRender: () => {
         const tickContainer = document.getElementById('tick-container');
         if (tickContainer) {
           const root = createRoot(tickContainer);
           root.render(
-            <Tick color={isDark ? '#414244' : '#FCFBFA'} size='70px'/>
+            <Tick color={isDark ? '#414244' : '#FCFBFA'} size="70px" />,
           );
         }
+      },
+      willClose: () => {
+        //Redirigir al home cuando se cierre la alerta
+        navigation.push('/');
       },
     });
   };
@@ -132,26 +136,6 @@ const StepperContainer = () => {
     submitAllData(selectedSendingSystem, selectedReceivingSystem);
     setLoading(false);
   };
-
-  // const [data, setData] = useState(null);
-  // const [error, setError] = useState(null);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const result = await getOneStep();
-  //     if (result.error) {
-  //       setError(result.error); // Guarda el error en el estado si ocurre
-  //     } else {
-  //       setData(result); // Guarda los datos en el estado si la solicitud fue exitosa
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [setError, setData, getOneStep]);
-
-  // console.log('Data: ', data);
-  // console.log('Error: ', error);
-
   return (
     <div
       className={clsx(
@@ -237,7 +221,7 @@ const StepperContainer = () => {
               {(index < activeStep || completedSteps[index]) && (
                 <div className="flex w-full flex-col items-end justify-end">
                   <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
-                    <Tick color={isDark ? '#414244' : '#FCFBFA'}/>
+                    <Tick color={isDark ? '#414244' : '#FCFBFA'} />
                   </div>
                   {index != activeStep && (
                     <button
