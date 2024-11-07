@@ -15,8 +15,8 @@ interface FormData {
   transfer_identification: string;
   re_transfer_identification: string;
   name_of_bank: string;
-  wise_email: string;
-  re_enter_wise_email: string;
+  bank_email: string;
+  re_enter_bank_email: string;
 }
 
 const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
@@ -35,7 +35,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     updateFormData,
     completedSteps,
   } = useStepperStore();
-  const { selectedReceivingSystem } = useSystemStore();
+  const { selectedReceivingSystem, selectedSendingSystem } = useSystemStore();
   const { isDark } = useDarkTheme();
 
   // Estado para guardar los valores iniciales
@@ -52,8 +52,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
       transfer_identification,
       re_transfer_identification,
       name_of_bank,
-      wise_email,
-      re_enter_wise_email,
+      bank_email,
+      re_enter_bank_email,
     } = formData.stepTwo;
     const newValues = {
       receiver_first_name,
@@ -62,23 +62,39 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
       transfer_identification,
       re_transfer_identification,
       name_of_bank,
-      wise_email,
-      re_enter_wise_email,
+      bank_email,
+      re_enter_bank_email,
     };
 
-    setValue('receiver_first_name', formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_first_name : receiver_first_name);
-    setValue('receiver_last_name', formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_last_name : receiver_last_name);
+    setValue(
+      'receiver_first_name',
+      formData.stepOne?.own_account === 'Si'
+        ? formData.stepOne?.sender_first_name
+        : receiver_first_name,
+    );
+    setValue(
+      'receiver_last_name',
+      formData.stepOne?.own_account === 'Si'
+        ? formData.stepOne?.sender_last_name
+        : receiver_last_name,
+    );
     setValue('tax_identification', tax_identification);
     setValue('transfer_identification', transfer_identification);
     setValue('re_transfer_identification', re_transfer_identification);
     setValue('name_of_bank', name_of_bank);
-    setValue('wise_email', wise_email);
-    setValue('re_enter_wise_email', re_enter_wise_email);
+    setValue('bank_email', bank_email);
+    setValue('re_enter_bank_email', re_enter_bank_email);
 
     // Guardar los valores iniciales al montar el componente
     setInitialValues(newValues);
     console.log(newValues);
-  }, [formData.stepTwo, setValue, formData.stepOne?.own_account, formData.stepOne?.sender_first_name, formData.stepOne?.sender_last_name]);
+  }, [
+    formData.stepTwo,
+    setValue,
+    formData.stepOne?.own_account,
+    formData.stepOne?.sender_first_name,
+    formData.stepOne?.sender_last_name,
+  ]);
 
   const onSubmit = (data: FormData) => {
     updateFormData(1, data); // Actualiza los datos del formulario en Zustand
@@ -94,6 +110,9 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
         initialValues[key as keyof FormData] ===
         formValues[key as keyof FormData],
     );
+
+  const fullName = selectedReceivingSystem?.name;
+  const firstPart = fullName ? fullName.split(' ')[0] : '';
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -115,8 +134,14 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
               <InputField
                 id="receiver_first_name"
                 type="text"
-                value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_first_name : undefined}
-                defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
+                value={
+                  formData.stepOne?.own_account === 'Si'
+                    ? formData.stepOne?.sender_first_name
+                    : undefined
+                }
+                defaultValue={
+                  formData.stepOne?.own_account !== 'Si' ? undefined : ''
+                }
                 placeholder="Nombre"
                 register={register('receiver_first_name', {
                   required: 'El Nombre es obligatorio',
@@ -147,8 +172,14 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
               <InputField
                 disabled={blockAll || formData.stepOne?.own_account === 'Si'}
                 id="receiver_last_name"
-                value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_last_name : undefined}
-                defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
+                value={
+                  formData.stepOne?.own_account === 'Si'
+                    ? formData.stepOne?.sender_last_name
+                    : undefined
+                }
+                defaultValue={
+                  formData.stepOne?.own_account !== 'Si' ? undefined : ''
+                }
                 type="text"
                 placeholder="Apellido"
                 register={register('receiver_last_name', {
@@ -184,7 +215,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
                 register={register('tax_identification', {
                   required: 'El TAX ID/CUIT/CUIL es obligatorio',
                   pattern: {
-                    value: /^(?:\d{9}|\d{11}|\d{2}-\d{8}-\d{1})$/,  //valida 11 caracteres o 14 pero con guiones
+                    value: /^(?:\d{9}|\d{11}|\d{2}-\d{8}-\d{1})$/, //valida 11 caracteres o 14 pero con guiones
                     message: 'El formato de TAX ID/CUIT/CUIL es inválido',
                   },
                 })}
@@ -307,8 +338,14 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
                 disabled={blockAll || formData.stepOne?.own_account === 'Si'}
                 id="receiver_first_name"
                 type="text"
-                value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_first_name : undefined}
-                defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
+                value={
+                  formData.stepOne?.own_account === 'Si'
+                    ? formData.stepOne?.sender_first_name
+                    : undefined
+                }
+                defaultValue={
+                  formData.stepOne?.own_account !== 'Si' ? undefined : ''
+                }
                 placeholder="Nombre"
                 register={register('receiver_first_name', {
                   required: 'El Nombre es obligatorio',
@@ -339,8 +376,14 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
                 disabled={blockAll || formData.stepOne?.own_account === 'Si'}
                 id="receiver_last_name"
                 type="text"
-                value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_last_name : undefined}
-                defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
+                value={
+                  formData.stepOne?.own_account === 'Si'
+                    ? formData.stepOne?.sender_last_name
+                    : undefined
+                }
+                defaultValue={
+                  formData.stepOne?.own_account !== 'Si' ? undefined : ''
+                }
                 placeholder="Apellido"
                 register={register('receiver_last_name', {
                   required: 'El Apellido es obligatorio',
@@ -359,62 +402,63 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
           <div className="flex w-full flex-col gap-4">
             <div className="flex flex-col">
               <label
-                htmlFor="wise_email"
+                htmlFor="bank_email"
                 className={clsx(
                   'ml-1 text-xs',
-                  errors.wise_email
+                  errors.bank_email
                     ? 'text-red-500'
                     : 'text-lightText dark:text-darkText',
                 )}
               >
-                Email de Wise
+                Email de {firstPart}
               </label>
               <InputField
                 disabled={blockAll}
-                id="wise_email"
+                id="bank_email"
                 type="email"
-                placeholder="Email de wise"
-                register={register('wise_email', {
-                  required: 'El Email de Wise es obligatorio',
+                placeholder={`Email de ${firstPart}`}
+                register={register('bank_email', {
+                  required: `El Email de ${firstPart} es obligatorio`,
                   pattern: {
                     // value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                     value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
-                    message: 'El formato del Email de Wise es inválido',
+                    message: `El Email de ${firstPart} no es valido`,
                   },
                 })}
-                error={errors.wise_email && errors.wise_email.message}
+                error={errors.bank_email && errors.bank_email.message}
               />
             </div>
             <div className="flex flex-col">
               <label
-                htmlFor="re_enter_wise_email"
+                htmlFor="re_enter_bank_email"
                 className={clsx(
                   'ml-1 text-xs',
-                  errors.re_enter_wise_email
+                  errors.re_enter_bank_email
                     ? 'text-red-500'
                     : 'text-lightText dark:text-darkText',
                 )}
               >
-                RE-ENTER Email de Wise
+                RE-ENTER Email de {firstPart}
               </label>
               <InputField
                 disabled={blockAll}
-                id="re_enter_wise_email"
+                id="re_enter_bank_email"
                 type="email"
-                placeholder="RE-ENTER Email de Wise"
-                register={register('re_enter_wise_email', {
-                  required: 'El RE-ENTER Email de Wise es obligatorio',
+                placeholder={`RE-ENTER Email de ${firstPart}`}
+                register={register('re_enter_bank_email', {
+                  required: `El Email de ${firstPart} es obligatorio`,
                   validate: (value) => {
-                    const originalValue = getValues('wise_email');
+                    const originalValue = getValues('bank_email');
                     return (
                       value === originalValue ||
-                      'Debe coincidir con el Email de Wise ingresado anteriormente'
+                      'Debe coincidir con el Email de ' +
+                        firstPart
                     );
                   },
                 })}
                 error={
-                  errors.re_enter_wise_email &&
-                  errors.re_enter_wise_email.message
+                  errors.re_enter_bank_email &&
+                  errors.re_enter_bank_email.message
                 }
               />
             </div>
