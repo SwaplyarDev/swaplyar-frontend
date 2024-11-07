@@ -1,0 +1,41 @@
+.espejo {
+    transform: scaleX(-1); /* Refleja la imagen horizontalmente */
+  }
+  .btn {
+    display: inline-block;
+    padding: 10px 10px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: 2px solid transparent; /* Bordes transparentes para el efecto de bordes cuando el botón está en hover */
+    /* border-radius: 5px; Bordes redondeados */
+    background-color: white; /* Color de fondo */
+    color: black; /* Color del texto */
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Transición suave */
+  }
+  
+  /* Hover - Cuando el usuario pasa el ratón sobre el botón */
+  .btn:hover {
+    background-color: #0056b3; /* Color de fondo más oscuro */
+    border-color: #0056b3; /* Cambia el color del borde */
+  }
+  
+  /* Foco - Cuando el botón está seleccionado */
+  .btn:focus {
+    outline: none; /* Quitar el borde del foco predeterminado */
+    box-shadow: 0 0 0 3px rgba(38, 143, 255, 0.5); /* Sombra de foco */
+  }
+  
+  /* Botón de tamaño pequeño */
+  /* .btn-sm {
+    padding: 5px 5px;
+    font-size: 14px;
+  } */
+  
+  /* Botón de tamaño grande */
+  .btn-lg {
+    padding: 15px 20px;
+    font-size: 18px;
+  }
