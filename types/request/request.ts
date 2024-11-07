@@ -17,8 +17,8 @@ export type FormInputs = {
   re_transfer_identification: string;
   name_of_bank: string;
   //other
-  wise_email: string;
-  re_enter_wise_email: string;
+  bank_email: string;
+  re_enter_bank_email: string;
   payoneer_email: string;
   re_enter_payoneer_email: string;
 

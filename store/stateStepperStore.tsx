@@ -20,8 +20,8 @@ interface StepTwoData {
   transfer_identification: string;
   re_transfer_identification: string;
   name_of_bank: string;
-  wise_email: string;
-  re_enter_wise_email: string;
+  bank_email: string;
+  re_enter_bank_email: string;
 }
 
 interface StepThreeData {
@@ -76,8 +76,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       transfer_identification: '',
       re_transfer_identification: '',
       name_of_bank: '',
-      wise_email: '',
-      re_enter_wise_email: '',
+      bank_email: '',
+      re_enter_bank_email: '',
     },
     stepThree: {
       send_amount: '',
@@ -127,7 +127,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           first_name: stepTwo.receiver_first_name,
           last_name: stepTwo.receiver_last_name,
           bank_account: {
-            email_account: stepTwo.wise_email,
+            email_account: stepTwo.bank_email,
             payment_method: selectedReceivingSystem?.name || '',
             number_account: stepTwo.transfer_identification,
           },
@@ -209,13 +209,16 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     };
 
     try {
-      const response = await fetch(`${BASE_URL}/v1/canceled_transactions/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `${BASE_URL}/v1/canceled_transactions/${id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
         },
-        body: JSON.stringify(payload),
-      });
+      );
 
       if (!response.ok) {
         throw new Error('Error al enviar los datos al servidor');
@@ -242,7 +245,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       console.error('Error en la solicitud:', error);
       return { error: 'Error en la solicitud' }; // Devuelve un valor de error en caso de fallo
     }
-  },  
+  },
   resetToDefault: () =>
     set((state) => ({
       activeStep: 0,
@@ -262,8 +265,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           transfer_identification: '',
           re_transfer_identification: '',
           name_of_bank: '',
-          wise_email: '',
-          re_enter_wise_email: '',
+          bank_email: '',
+          re_enter_bank_email: '',
         },
         stepThree: {
           send_amount: '',

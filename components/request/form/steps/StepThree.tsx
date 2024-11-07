@@ -76,7 +76,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
     setValue('note', note);
 
     setInitialValues(newValues);
-    console.log(proof_of_payment)
+    console.log(proof_of_payment);
 
     // if (proof_of_payment) {
     //   setSelectedFile(proof_of_payment);
@@ -112,19 +112,17 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
       <p className="text-left">
         tienes que realizar el pago de{' '}
         <span className="font-semibold underline">
-          {sendAmount}
-          {' '}
-          {selectedSendingSystem?.coin}
+          {sendAmount} {selectedSendingSystem?.coin}
         </span>{' '}
         al email asdfgh@asdfgh.com con el concepto de "PAGO" para enviarte el
         dinero a la cuenta{' '}
         <span className="font-semibold underline">
           {' '}
-          {formData.stepTwo.re_enter_wise_email == '' &&
+          {formData.stepTwo.re_enter_bank_email == '' &&
             `${formData.stepTwo.receiver_first_name} ${formData.stepTwo.receiver_last_name}`}{' '}
-          {formData.stepTwo.re_enter_wise_email == ''
+          {formData.stepTwo.re_enter_bank_email == ''
             ? formData.stepTwo.re_transfer_identification
-            : formData.stepTwo.re_enter_wise_email}
+            : formData.stepTwo.re_enter_bank_email}
         </span>
       </p>
       <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
