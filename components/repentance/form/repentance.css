@@ -1,5 +1,5 @@
 .espejo {
-    transform: scaleX(-1); /* Refleja la imagen horizontalmente */
+    transform: scaleX(-1);
   }
   .btn {
     display: inline-block;
@@ -9,23 +9,22 @@
     text-align: center;
     text-decoration: none;
     cursor: pointer;
-    border: 2px solid transparent; /* Bordes transparentes para el efecto de bordes cuando el botón está en hover */
-    /* border-radius: 5px; Bordes redondeados */
-    background-color: white; /* Color de fondo */
-    color: black; /* Color del texto */
+    border: 2px solid transparent;
+    background-color: white; 
+    color: black; 
     transition: background-color 0.3s ease, border-color 0.3s ease; /* Transición suave */
   }
   
-  /* Hover - Cuando el usuario pasa el ratón sobre el botón */
+  
   .btn:hover {
-    background-color: #0056b3; /* Color de fondo más oscuro */
-    border-color: #0056b3; /* Cambia el color del borde */
+    background-color: #0056b3; 
+    border-color: #0056b3; 
   }
   
-  /* Foco - Cuando el botón está seleccionado */
+ 
   .btn:focus {
-    outline: none; /* Quitar el borde del foco predeterminado */
-    box-shadow: 0 0 0 3px rgba(38, 143, 255, 0.5); /* Sombra de foco */
+    outline: none; 
+    box-shadow: 0 0 0 3px rgba(38, 143, 255, 0.5);
   }
   
   /* Botón de tamaño pequeño */
@@ -34,8 +33,39 @@
     font-size: 14px;
   } */
   
-  /* Botón de tamaño grande */
+ 
   .btn-lg {
     padding: 15px 20px;
     font-size: 18px;
+  }
+
+  input[type="text"], input[type="email"], textarea {
+    background-color: transparent; 
+    color: #ffffff; 
+    border: none;
+    border-bottom: 2px solid #ffffff;
+    padding: 10px 0; 
+    width: 100%; 
+    font-size: 16px; 
+    outline: none;
+}
+  
+  
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  textarea:focus {
+    outline: none; 
+    border-bottom:2px solid #ffffff; 
+  }
+  input[type="text"]::placeholder,
+  input[type="email"]::placeholder,
+  textarea::placeholder {
+    color: white;
+    opacity: 1;
+  }
+  textarea{
+    min-height: 45px; 
+    max-height: 500px; 
+    overflow-y: auto; 
+    resize: none; 
   }
