@@ -16,6 +16,7 @@ import clsx from 'clsx';
 import { useExchangeRateStore } from '@/store/exchangeRateStore';
 import { useExchangeRate } from '@/hooks/useExchangeRates';
 import Image from 'next/image';
+import { useStepperStore } from '@/store/stateStepperStore';
 
 export default function TransactionCalculator() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -40,6 +41,7 @@ export default function TransactionCalculator() {
   ]);
 
   const { activeSelect } = useSystemStore();
+  const { resetToDefault } = useStepperStore();
   const router = useRouter();
   const { isDark } = useDarkTheme();
   const [exchange, setExchange] = useState({ currency: 'USD', amount: 0 });
@@ -115,10 +117,11 @@ export default function TransactionCalculator() {
       handleExchangePaypal();
     } else {
       setIsProcessing(true);
-      setInterval(() => {
-        handleDirection();
-        setIsProcessing(false);
-      }, 3000);
+      // setInterval(() => {
+      handleDirection();
+      resetToDefault();
+      setIsProcessing(false);
+      // }, 3000);
     }
   };
 

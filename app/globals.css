@@ -545,3 +545,9 @@ div:where(.swal2-container).swal2-noanimation {
 .buttonSecondDarkDisabled {
   box-shadow: inherit;
 }
+
+.confirmAlert {
+  max-width: 525.05px;
+  width: 100%;
+  padding: 0px !important;
+}
