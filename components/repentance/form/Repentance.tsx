@@ -3,9 +3,17 @@ import React, { useState } from 'react';
 import { Post1_404 } from '@/../../utils/assets/img-database';
 import SelectCountry from '@/components/request/form/inputs/selectCountry';
 import Image from 'next/image';
-import './repentance.css';
 import Link from 'next/link';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import { useForm, SubmitHandler } from 'react-hook-form';
+
+type FormData = {
+  referenceNumber: string;
+  firstLastName: string;
+  email: string;
+  telephone: number;
+  note: string;
+};
 
 const RepentanceForm = () => {
   const { isDark } = useDarkTheme();
@@ -18,7 +26,16 @@ const RepentanceForm = () => {
     note: '',
   });
 
-  const [errors, setErrors] = useState({});
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
+  const onSubmit: SubmitHandler<FormData> = (data) => {
+    // Aquí puedes manejar el envío del formulario
+  };
+
+  const [error, setErrors] = useState({});
   const [currentCountry, setCurrentCountry] = useState('AR');
   const blockALl = false;
 
@@ -32,7 +49,7 @@ const RepentanceForm = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmitForm = (e: React.FormEvent) => {
     e.preventDefault();
   };
 
@@ -41,10 +58,6 @@ const RepentanceForm = () => {
       ...prevData,
       [name]: value,
     }));
-  };
-
-  const register = () => {
-    // lógica de registro (si usas react-hook-form, pasará aquí la función `register`)
   };
 
   return (
@@ -64,75 +77,140 @@ const RepentanceForm = () => {
           />
         </div>
       </div>
-      <div className={`mr-3 flex h-full w-2/5 flex-col justify-center border-l-2 align-baseline ${isDark ? 'border-l-white':'border-l-buttonsLigth'} `}>
+      <div
+        className={`mr-3 flex h-full w-2/5 flex-col justify-center border-l-2 align-baseline ${isDark ? 'border-l-white' : 'border-l-buttonsLigth'} `}
+      >
         <form
-          onSubmit={handleSubmit}
+           onSubmit={handleSubmit(onSubmit)}
           className="ml-7 mt-3 flex h-full flex-col flex-wrap justify-evenly"
         >
           <div>
             <label>
               NUMERO DE REFERENCIA
               <input
-                // arreglar el diseño de los inputs
-                className={`w-full border-0 border-b-4 border-solid ${isDark ? 'border-b-white bg-transparent p-0 text-base text-white placeholder-white placeholder-opacity-80 outline-none  focus:border-white focus:outline-none' : 'border-b-buttonsLigth bg-transparent p-0 text-base text-buttonsLigth placeholder-buttonsLigth placeholder-opacity-80 outline-none  focus:border-buttonsLigth focus:outline-none'}`}
+                className={`w-full border-0 border-b-4 border-solid ${
+                  isDark
+                    ? 'border-b-white bg-transparent p-0 text-base text-white placeholder-white placeholder-opacity-80 outline-none focus:border-white focus:outline-none'
+                    : 'border-b-buttonsLigth bg-transparent p-0 text-base text-buttonsLigth placeholder-buttonsLigth placeholder-opacity-80 outline-none focus:border-buttonsLigth focus:outline-none'
+                }`}
                 type="text"
-                name="referenceNumber"
-                value={formData.referenceNumber}
-                onChange={handleChange}
                 placeholder="como figura en el recibo"
+                {...register('referenceNumber', {
+                  required: '• El número de referencia es obligatorio',
+                  pattern: {
+                    value: /^[A-Za-z0-9]{20,40}$/,
+                    message:
+                      '• El número de referencia debe tener entre 20 y 40 caracteres alfanuméricos',
+                  },
+                })}
+                onChange={handleChange}
                 required
               />
             </label>
+            {errors.referenceNumber && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.referenceNumber.message}
+              </p>
+            )}
           </div>
           <div>
             <label>
               Nombre y apellido
               <input
-                className={`w-full border-0 border-b-4 border-solid ${isDark ? 'border-b-white bg-transparent p-0 text-base text-white placeholder-white placeholder-opacity-80 outline-none  focus:border-white focus:outline-none' : 'border-b-buttonsLigth bg-transparent p-0 text-base text-buttonsLigth placeholder-buttonsLigth placeholder-opacity-80 outline-none  focus:border-buttonsLigth focus:outline-none'}`}
+                className={`w-full border-0 border-b-4 border-solid ${isDark ? 'border-b-white bg-transparent p-0 text-base text-white placeholder-white placeholder-opacity-80 outline-none focus:border-white focus:outline-none' : 'border-b-buttonsLigth bg-transparent p-0 text-base text-buttonsLigth placeholder-buttonsLigth placeholder-opacity-80 outline-none focus:border-buttonsLigth focus:outline-none'}`}
                 type="text"
-                name="firstLastName"
                 value={formData.firstLastName}
-                onChange={handleChange}
                 placeholder="como figura en el recibo"
+                {...register('firstLastName', {
+                  required: '• El Nombre y Apellido es obligatorio',
+                  minLength: {
+                    value: 6,
+                    message: '• Debe ingresar máximo 6 caracteres',
+                  },
+                  maxLength: {
+                    value: 50,
+                    message: '• Debe ingresar como máximo 500 caracteres',
+                  },
+                })}
+                onChange={handleChange}
                 required
               />
             </label>
+            {errors.firstLastName && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.firstLastName.message}
+              </p>
+            )}
           </div>
           <div>
             <label>
               Email
               <input
-                className={`w-full border-0 border-b-4 border-solid ${isDark ? 'border-b-white bg-transparent p-0 text-base text-white placeholder-white placeholder-opacity-80 outline-none  focus:border-white focus:outline-none' : 'border-b-buttonsLigth bg-transparent p-0 text-base text-buttonsLigth placeholder-buttonsLigth placeholder-opacity-80 outline-none  focus:border-buttonsLigth focus:outline-none'}`}
+                className={`w-full border-0 border-b-4 border-solid ${isDark ? 'border-b-white bg-transparent p-0 text-base text-white placeholder-white placeholder-opacity-80 outline-none focus:border-white focus:outline-none' : 'border-b-buttonsLigth bg-transparent p-0 text-base text-buttonsLigth placeholder-buttonsLigth placeholder-opacity-80 outline-none focus:border-buttonsLigth focus:outline-none'}`}
                 type="email"
-                name="email"
-                value={formData.email}
+                {...register('email', {
+                  required: '• El Email es obligatorio',
+                  minLength: {
+                    value: 5,
+                    message: '• Debe ingresar máximo 5 caracteres',
+                  },
+                  maxLength: {
+                    value: 254,
+                    message: '• Debe ingresar como máximo 254 caracteres',
+                  },
+                  pattern: {
+                    value:
+                      /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/,
+                    message:
+                      '• Ingresa un formato valido de email.Ej: Ejemplo@gmail.com',
+                  },
+                })}
                 onChange={handleChange}
+                value={formData.email}
                 placeholder="el mismo email que colocaste en el formulario"
                 required
               />
             </label>
+            {errors.email && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.email.message}
+              </p>
+            )}
           </div>
-          <div className={`w-full border-0 border-b-4 border-solid ${isDark ? 'border-b-white bg-transparent p-0 text-base text-white placeholder-white placeholder-opacity-80 outline-none  focus:border-white focus:outline-none' : 'border-b-buttonsLigth bg-transparent p-0 text-base text-buttonsLigth placeholder-buttonsLigth placeholder-opacity-80 outline-none  focus:border-buttonsLigth focus:outline-none'}`}>
+          <div
+            className={`w-full border-0 border-b-4 border-solid ${isDark ? 'border-b-white bg-transparent p-0 text-base text-white placeholder-white placeholder-opacity-80 outline-none focus:border-white focus:outline-none' : 'border-b-buttonsLigth bg-transparent p-0 text-base text-buttonsLigth placeholder-buttonsLigth placeholder-opacity-80 outline-none focus:border-buttonsLigth focus:outline-none'}`}
+          >
             <SelectCountry
               errors={errors}
               setValue={setValue}
               setCurrentCountry={setCurrentCountry}
               register={register}
-              blockALl={blockALl} 
+              blockALl={blockALl}
             />
           </div>
           <div>
             <label>
               NOTA OPCIONAL
               <textarea
-                className={`max-h-[500px] min-h-[45px] w-full resize-none overflow-y-auto border-b-2 border-0
-                ${isDark ? 'border-white bg-transparent p-0 text-base text-white placeholder-white placeholder-opacity-100 outline-none focus:border-b-2 focus:border-white focus:outline-none' : 'border-buttonsLigth bg-transparent p-0 text-base text-buttonsLigth placeholder-buttonsLigth placeholder-opacity-100 outline-none focus:border-b-2 focus:border-buttonsLigth focus:outline-none'} `}
-                name="note"
+                className={`max-h-[500px] min-h-[45px] w-full resize-none overflow-y-auto border-0 border-b-2 ${isDark ? 'border-white bg-transparent p-0 text-base text-white placeholder-white placeholder-opacity-100 outline-none focus:border-b-2 focus:border-white focus:outline-none' : 'border-buttonsLigth bg-transparent p-0 text-base text-buttonsLigth placeholder-buttonsLigth placeholder-opacity-100 outline-none focus:border-b-2 focus:border-buttonsLigth focus:outline-none'} `}
+                {...register('note', {
+                  minLength: {
+                    value: 6,
+                    message: '• Debe ingresar máximo 6 caracteres',
+                  },
+                  maxLength: {
+                    value: 50,
+                    message: '• Debe ingresar como máximo 500 caracteres',
+                  },
+                })}
                 value={formData.note}
-                onChange={handleChange}
                 placeholder="Añade una nota mencionando el motivo del reembolso"
+                onChange={handleChange}
               />
             </label>
+            {errors.note && (
+              <p className="mt-1 text-sm text-red-500">{errors.note.message}</p>
+            )}
           </div>
           <div className="flex justify-center text-center">
             <div className="flex w-2/4 flex-col flex-wrap content-center items-center justify-center text-center">
@@ -147,11 +225,12 @@ const RepentanceForm = () => {
         </form>
         <div className="text-center">
           <button>
-            <Link
-              href={'/'}
-              
-            >
-              <h3 className={` ${isDark ? 'w-fit border- border-b border-b-white text-center text-white' : 'text w-fit border-b border-black text-center'} `}>Salir</h3>
+            <Link href={'/'}>
+              <h3
+                className={` ${isDark ? 'border- w-fit border-b border-b-white text-center text-white' : 'text w-fit border-b border-black text-center'} `}
+              >
+                Salir
+              </h3>
             </Link>
           </button>
         </div>
