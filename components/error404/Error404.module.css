@@ -2,9 +2,11 @@
 @media (max-width: 7680px) {
 .container {
   text-align: center;
-  height: 950px;
+  height: 1000px;
   margin-bottom: 300px;
   position: relative;
+  background-color: transparent;
+  
 }
 
 .image {
@@ -86,11 +88,14 @@
 }
 } 
 
-@media (max-width: 1325px) {
+@media (max-width: 1740px) {
   .container {
     text-align: center;
-    height: 650px;
-    margin-bottom: 100px;
+    height: 1100px;
+    margin-bottom: 20px;
+    margin-top: -100px;
+    position: relative;
+    background-color: transparent;
   }
   
   .image {
@@ -170,7 +175,11 @@
 @media (min-width: 550px) and (max-width: 768px) {
   .container {
     text-align: center;
-    height: 450px;
+    height: 1100px;
+    position: relative;
+    background-color: transparent;
+    margin-top: -300px;
+    margin-bottom: -250px;
   }
   .image {
     position: relative;
@@ -280,10 +289,11 @@
 @media (min-width: 395px) and (max-width: 549px) {
   .container {
     text-align: center;
-    height: 300px;
-    position: relative; 
-    margin-top: 180px;
-    margin-bottom: 100px;
+    height: 1100px;
+    position: relative;
+    background-color: transparent;
+    margin-top: -200px;
+    margin-bottom: -150px;
   }
 
   .image_tlf {
@@ -394,10 +404,11 @@
 @media (max-width: 394px) {
   .container {
     text-align: center;
-    height: 300px;
-    position: relative; 
-    margin-top: 180px;
-    margin-bottom: -50px;
+    height: 1500px;
+    position: relative;
+    background-color: transparent;
+    margin-top: -400px;
+    margin-bottom: -550px; 
   }
 
   .image_tlf {

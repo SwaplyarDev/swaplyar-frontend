@@ -34,7 +34,7 @@ const Error_404 = () => {
   return (
     
     <div className={styles.container}>
-      <AnimatedBlurredCircles tope="top-[10px]"/>
+      <AnimatedBlurredCircles tope="top-[0px]"/>
       {isDark ? (
         <>
           
