@@ -1,5 +1,4 @@
-"use client";
-
+'use client';
 import React, { useEffect, useState } from 'react';
 // @ts-ignore
 import Slider from 'react-slick';
@@ -12,28 +11,20 @@ import { useRouter, useSearchParams } from 'next/navigation';
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const BlogPostCard: React.FC<{ title: string; body: string; url_image: string; created_at: string }> = ({ title, body, url_image, created_at }) => {
-  
-  const [showFullText, setShowFullText] = useState(false); //Maneja estado para el boton Leer mas o Leer menos. 
+  const [showFullText, setShowFullText] = useState(false);
 
   const handleToggleText = () => {
     setShowFullText(!showFullText);
   };
+
   return (
     <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
-      <Image
-        src={url_image} 
-        alt={title} 
-        className="w-full h-48 object-cover" 
-        width={300} height={160}
-      />
+      <Image src={url_image} alt={title} className="w-full h-48 object-cover" width={300} height={160} />
       <div className="p-4">
         <h3 className="text-xl font-semibold mb-2">{title}</h3>
         <p className="text-gray-700 mb-4">
-        {showFullText ? body : `${body.slice(0, -135)}`}
-          <button
-            onClick={handleToggleText}
-            className="text-blue-500 font-semibold hover:underline inline"
-          >
+          {showFullText ? body : `${body.slice(0, -135)}`}
+          <button onClick={handleToggleText} className="text-blue-500 font-semibold hover:underline inline">
             {showFullText ? 'Leer menos' : '....Leer más'}
           </button>
         </p>
@@ -63,22 +54,13 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
       <Slider {...settings}>
         {limitedImages.map((image, index) => (
           <div key={index}>
-            <Image 
-              src={image}
-              alt={`Slide ${index + 1}`} 
-              className="w-full h-60 object-cover" 
-              width={800}
-              height={400}
-            />
+            <Image src={image} alt={`Slide ${index + 1}`} className="w-full h-60 object-cover" width={800} height={400} />
           </div>
         ))}
       </Slider>
       <div className="absolute bottom-4 w-full flex justify-center space-x-2">
         {limitedImages.map((_, index) => (
-          <div
-            key={index}
-            className={`w-4 h-4 rounded-full transition-all duration-300 ${activeIndex === index ? 'bg-[#012C8A]' : 'bg-white border-2 border-[#012C8A] opacity-50'}`}
-          ></div>
+          <div key={index} className={`w-4 h-4 rounded-full transition-all duration-300 ${activeIndex === index ? 'bg-[#012C8A]' : 'bg-white border-2 border-[#012C8A] opacity-50'}`}></div>
         ))}
       </div>
     </div>
@@ -89,9 +71,20 @@ const Blog: React.FC = () => {
   const { blogs, setBlogs } = useBlogStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<number | null>(null);
   const postsPerPage = 9;
   const [randomImages, setRandomImages] = useState<string[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(0);
+
+  let pageButtons: (number | string)[] = [];
+
+  if (currentPage <= 2) {
+    pageButtons = [1, 2, 3, '...', totalPages];
+  } else if (currentPage >= totalPages - 2) {
+    pageButtons = [1, '...', totalPages - 2, totalPages - 1, totalPages];
+  } else {
+    pageButtons = [currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+  }
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -109,27 +102,35 @@ const Blog: React.FC = () => {
       setCurrentPage(pageParam);
     }
   }, [searchParams]);
-  
+
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch(`${BASE_URL}/v1/blogs?page=${currentPage}`);
+        let url = `${BASE_URL}/v1/blogs?page=${currentPage}`;
         
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+        if (searchTerm) {
+          url += `&search=${encodeURIComponent(searchTerm)}`;
         }
         
-       const data = await response.json();
-       // console.log(data.meta.totalPages)
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Network response was not ok');
+        
+        const data = await response.json();
         setBlogs(data.blogsPerPage);
         setData(data.meta.totalPages);
+        setTotalPages(data.meta.totalPages);
       } catch (error) {
         console.error('Error fetching blogs:', error);
       }
     };
-    
+  
     fetchBlogs();
-  }, [currentPage, setBlogs]);
+  }, [currentPage, searchTerm, setBlogs]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1); // Reiniciar a la primera página en cada nueva búsqueda
+  };
 
   useEffect(() => {
     if (Array.isArray(blogs)) {
@@ -137,10 +138,8 @@ const Blog: React.FC = () => {
       setRandomImages(images);
     }
   }, [blogs]);
-  // filtra una card
-  const filteredBlogs = blogs.filter((post) =>
-    post.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+
+  const filteredBlogs = blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <div className="max-w-7xl mx-auto p-6">
@@ -155,29 +154,18 @@ const Blog: React.FC = () => {
             className="w-full pl-4 pr-10 p-2 border border-gray-300 rounded-2xl focus:outline-none focus:ring-0"
             style={{ color: 'black', backgroundColor: 'white' }}
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchChange} // Cambié aquí para usar la función manejadora correcta
           />
           <span className="absolute right-3 top-2 text-gray-500">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M11 2a9 9 0 100 18 9 9 0 000-18zM21 21l-6-6"
-              />
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 2a9 9 0 100 18 9 9 0 000-18zM21 21l-6-6" />
             </svg>
           </span>
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
-      {filteredBlogs.length > 0 ? (
+        {filteredBlogs.length > 0 ? (
           filteredBlogs.map((post) => (
             <BlogPostCard
               key={post.blog_id}
@@ -191,46 +179,38 @@ const Blog: React.FC = () => {
           <p>No se encontraron resultados.</p>
         )}
       </div>
+
       <div className="flex justify-center mt-8 space-x-4">
-  {/* Botón de retroceso */}
-  <button
-    className={`w-10 h-10 border rounded-full ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
-    onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
-    disabled={currentPage === 1}
-  >
-    &lt;
-  </button>
+        <button
+          className={`w-10 h-10 border rounded-full ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+          onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+          disabled={currentPage === 1}
+        >
+          &lt;
+        </button>
 
-  {/* Botones de paginación dinámicos */}
-  {[...Array(data)].map((_, index) => index + 1)
-    .filter((page) => {
-      if (currentPage <= 2) {
-        return page <= 3; // Mostrar 1, 2, 3 al inicio
-      } else if (currentPage >= Number(data) - 1) {
-        return page >= Number(data) - 2; // Mostrar las últimas tres páginas al final
-      }
-      return Math.abs(currentPage - page) <= 1; // Rango dinámico en medio
-    })
-    .map((page) => (
-      <button
-        key={page}
-        className={`w-10 h-10 border rounded-full ${currentPage === page ? 'bg-blue-500 text-white' : 'bg-white'}`}
-        onClick={() => handlePageChange(page)}
-      >
-        {page}
-      </button>
-    ))
-  }
+        {pageButtons.map((pageNumber, index) => (
+          typeof pageNumber === 'number' ? (
+            <button
+              key={index}
+              className={`w-10 h-10 border rounded-full ${currentPage === pageNumber ? 'bg-blue-500 text-white' : 'bg-white'}`}
+              onClick={() => handlePageChange(pageNumber)}
+            >
+              {pageNumber}
+            </button>
+          ) : (
+            <span key={index} className="w-10 h-10 flex items-center justify-center text-gray-500">...</span>
+          )
+        ))}
 
-  {/* Botón de avance */}
-  <button
-    className={`w-10 h-10 border rounded-full ${currentPage === data ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
-    onClick={() => handlePageChange(Math.min(currentPage + 1, Number(data)))}
-    disabled={currentPage === data}
-  >
-    &gt;
-  </button>
-</div>
+        <button
+          className={`w-10 h-10 border rounded-full ${currentPage === totalPages ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+          onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
+          disabled={currentPage === totalPages}
+        >
+          &gt;
+        </button>
+      </div>
     </div>
   );
 };
