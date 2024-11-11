@@ -529,7 +529,16 @@ div:where(.swal2-container).swal2-noanimation {
 }
 
 .confirmAlert {
-  max-width: 525.05px;
+  max-width: 650px;
   width: 100%;
-  padding: 0px !important;
+  padding: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+@media (min-width: 550px) {
+  .confirmAlert {
+    padding: 0px !important;
+  }
 }
