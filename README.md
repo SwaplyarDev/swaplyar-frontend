@@ -110,6 +110,11 @@ swaplyar-frontend/
 - `/info/why-choose-swaplyar`: Página "Por qué elegir Swaplyar".
 - `/request`: Página principal de solicitudes de intercambio.
 
+**Convenciones de Confirmaciones**
+
+📄 **Conventional Commits**
+La Conventional Commits es una convención liviana que se basa en los mensajes de confirmación. Proporciona un conjunto sencillo de reglas para crear un historial de confirmaciones explícito, lo que facilita la escritura de herramientas automatizadas. Esta convención encaja con SemVer, ya que describe las características, las correcciones y los cambios importantes que se realizan en los mensajes de confirmación. Puedes consultar más en [Convenciones de Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+
 ## 💲 PayPal
 
 ### Componente PayPal
