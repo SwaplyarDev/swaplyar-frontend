@@ -6,14 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useForm, SubmitHandler } from 'react-hook-form';
-
-type FormData = {
-  referenceNumber: string;
-  firstLastName: string;
-  email: string;
-  telephone: string;
-  note: string;
-};
+import { FormData } from '@/types/repentance/repentance';
 
 const RepentanceForm = () => {
   const { isDark } = useDarkTheme();
@@ -21,7 +14,7 @@ const RepentanceForm = () => {
     referenceNumber: '',
     firstLastName: '',
     email: '',
-    telephone: '',
+    phone_number: '',
     note: '',
   });
 
@@ -44,7 +37,7 @@ const RepentanceForm = () => {
   };
 
   return (
-    <div className="flex min-h-full flex-grow justify-start py-20">
+    <div className="flex min-h-full flex-grow justify-evenly py-20">
       <div className="my-20 ml-20 w-1/4">
         <h2 className="text-center text-xl">Buscar una transferencia</h2>
         <p className="text-center">
@@ -60,15 +53,15 @@ const RepentanceForm = () => {
           />
         </div>
       </div>
-      <div className={`mr-3 flex h-full w-2/5 flex-col justify-center border-l-2 ${isDark ? 'border-l-white' : 'border-l-buttonsLigth'}`}>
+      <div className={`mr-3 flex h-full w-2/4 flex-col justify-center border-l-2 ${isDark ? 'border-l-white' : 'border-l-buttonsLigth'}`}>
         <form onSubmit={handleSubmit(onSubmit)} className="ml-7 mt-3 flex h-full flex-col justify-evenly">
           <div>
             <label>
               NUMERO DE REFERENCIA
               <input
-                className={`w-full border-0 border-b-4 border-solid ${isDark ? 'border-b-white bg-transparent text-white placeholder-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth'} outline-none focus:border focus:outline-none`}
+                className={`w-full border-0 border-b-4 border-solid ps-0 ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
                 type="text"
-                placeholder="como figura en el recibo"
+                placeholder="Como figura en el recibo"
                 {...register('referenceNumber', {
                   required: '• El número de referencia es obligatorio',
                   pattern: {
@@ -86,9 +79,9 @@ const RepentanceForm = () => {
             <label>
               Nombre y apellido
               <input
-                className={`w-full border-0 border-b-4 border-solid ${isDark ? 'border-b-white bg-transparent text-white placeholder-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth'} outline-none focus:border focus:outline-none`}
+                className={`w-full border-0 border-b-4 border-solid ps-0 ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
                 type="text"
-                placeholder="como figura en el recibo"
+                placeholder="Como figura en el recibo"
                 {...register('firstLastName', {
                   required: '• El Nombre y Apellido es obligatorio',
                   minLength: { value: 6, message: '• Debe ingresar mínimo 6 caracteres' },
@@ -104,7 +97,7 @@ const RepentanceForm = () => {
             <label>
               Email
               <input
-                className={`w-full border-0 border-b-4 border-solid ${isDark ? 'border-b-white bg-transparent text-white placeholder-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth'} outline-none focus:border focus:outline-none`}
+                className={`w-full border-0 border-b-4 border-solid ps-0 ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white dark:hover:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
                 type="email"
                 {...register('email', {
                   required: '• El Email es obligatorio',
@@ -114,7 +107,7 @@ const RepentanceForm = () => {
                   },
                 })}
                 onChange={handleChange}
-                placeholder="el mismo email que colocaste en el formulario"
+                placeholder="El mismo email que colocaste en el formulario"
                 required
               />
             </label>
@@ -124,7 +117,7 @@ const RepentanceForm = () => {
             <SelectCountry
               errors={errors}
               setValue={(name, value) => setFormData((prevData) => ({ ...prevData, [name]: value }))}
-              setCurrentCountry={(country) => setFormData((prevData) => ({ ...prevData, currentCountry: country }))}
+              setCurrentCountry={(country: string) => setFormData((prevData) => ({ ...prevData, currentCountry: country }))}
               register={register}
               blockALl={false}
             />
@@ -133,7 +126,7 @@ const RepentanceForm = () => {
             <label>
               NOTA OPCIONAL
               <textarea
-                className={`max-h-[500px] min-h-[45px] w-full resize-none border-0 border-b-2 ${isDark ? 'border-white bg-transparent text-white placeholder-white' : 'border-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth'} outline-none focus:border focus:outline-none`}
+                className={`max-h-[500px] min-h-[45px] w-full resize-none border-0 border-b-2 ps-0 ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
                 {...register('note', {
                   minLength: { value: 6, message: '• Debe ingresar mínimo 6 caracteres' },
                   maxLength: { value: 500, message: '• Debe ingresar como máximo 500 caracteres' },
