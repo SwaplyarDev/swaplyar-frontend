@@ -8,6 +8,7 @@ const BASE_URL =
 interface StepOneData {
   sender_first_name: string;
   sender_last_name: string;
+  calling_code: CountryOption | null;
   phone: string;
   email: string;
   own_account: string | undefined;
@@ -54,7 +55,7 @@ interface StepperState {
   ) => void;
   submitOneStep: () => void;
   updateOneStep: (id: string) => void;
-  getOneStep: () => Promise<any>;
+  // getOneStep: () => Promise<any>;
   resetToDefault: () => void;
 }
 
@@ -65,6 +66,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     stepOne: {
       sender_first_name: '',
       sender_last_name: '',
+      calling_code: { value: '', label: '', callingCode: '' },
       phone: '',
       email: '',
       own_account: undefined,
@@ -115,7 +117,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           first_name: stepOne.sender_first_name,
           last_name: stepOne.sender_last_name,
           identification: stepTwo.tax_identification,
-          phone_number: stepOne.phone,
+          phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
           email: stepOne.email,
           bank_account: {
             email_account: '',
@@ -176,7 +178,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     const payload = {
       full_name: `${stepOne.sender_first_name} ${stepOne.sender_last_name}`,
       email: stepOne.email,
-      phone_number: stepOne.phone,
+      phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
     };
 
     try {
@@ -230,22 +232,22 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       console.error('Error en la solicitud:', error);
     }
   },
-  getOneStep: async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/v1/canceled_transactions`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await response.json();
-      console.log('Respuesta del servidor:', data); // Mueve el console.log antes del return
-      return data;
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
-      return { error: 'Error en la solicitud' }; // Devuelve un valor de error en caso de fallo
-    }
-  },
+  // getOneStep: async () => {
+  //   try {
+  //     const response = await fetch(`${BASE_URL}/v1/canceled_transactions`, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+  //     const data = await response.json();
+  //     console.log('Respuesta del servidor:', data); // Mueve el console.log antes del return
+  //     return data;
+  //   } catch (error) {
+  //     console.error('Error en la solicitud:', error);
+  //     return { error: 'Error en la solicitud' }; // Devuelve un valor de error en caso de fallo
+  //   }
+  // },
   resetToDefault: () =>
     set((state) => ({
       activeStep: 0,
@@ -254,6 +256,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         stepOne: {
           sender_first_name: '',
           sender_last_name: '',
+          calling_code: { value: '', label: '', callingCode: '' },
           phone: '',
           email: '',
           own_account: undefined,

@@ -25,7 +25,7 @@ const StepperContainer = () => {
     completedSteps,
     setActiveStep,
     submitAllData,
-    getOneStep,
+    // getOneStep,
   } = useStepperStore();
   const [blockAll, setBlockAll] = useState(false);
   const navigation = useRouter();

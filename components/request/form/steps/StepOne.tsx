@@ -6,19 +6,19 @@ import { Controller, useForm, useWatch } from 'react-hook-form';
 import clsx from 'clsx';
 import InputField from '@/components/ui/contact-form/InputField';
 import SelectBoolean from '../inputs/SelectBoolean';
+import SelectCodeCountry from '../inputs/SelectCodeCountry';
 import { CountryOption } from '@/types/request/request';
-import InputCopy from '../inputs/InputCopy';
-import SelectCountry from '../inputs/selectCountry';
 
 interface FormData {
   sender_first_name: string;
   sender_last_name: string;
+  calling_code: CountryOption | null;
   phone: string;
   email: string;
   own_account: string | undefined;
 }
 
-const StepOne = ({blockAll}: {blockAll: boolean}) => {
+const StepOne = ({ blockAll }: { blockAll: boolean }) => {
   const {
     register,
     handleSubmit,
@@ -27,9 +27,9 @@ const StepOne = ({blockAll}: {blockAll: boolean}) => {
     setValue,
   } = useForm<FormData>({ mode: 'onChange' });
 
-  const [currentCountry, setCurrentCountry] = useState<CountryOption | null>(
-    null,
-  );
+  // const [currentCountry, setCurrentCountry] = useState<CountryOption | null>(
+  //   null,
+  // );
 
   const {
     markStepAsCompleted,
@@ -37,7 +37,7 @@ const StepOne = ({blockAll}: {blockAll: boolean}) => {
     formData,
     updateFormData,
     completedSteps,
-    submitOneStep
+    submitOneStep,
   } = useStepperStore();
   const { isDark } = useDarkTheme();
 
@@ -49,22 +49,31 @@ const StepOne = ({blockAll}: {blockAll: boolean}) => {
 
   // Cargar los datos del formulario al montar el componente
   useEffect(() => {
-    const { sender_first_name, sender_last_name, phone, email, own_account } =
-      formData.stepOne;
+    const {
+      sender_first_name,
+      sender_last_name,
+      calling_code,
+      phone,
+      email,
+      own_account,
+    } = formData.stepOne;
     const newValues = {
       sender_first_name,
       sender_last_name,
+      calling_code,
       phone,
       email,
       own_account,
     };
     setValue('sender_first_name', sender_first_name);
     setValue('sender_last_name', sender_last_name);
+    setValue('calling_code', calling_code);
     setValue('phone', phone);
     setValue('email', email);
     setValue('own_account', own_account);
 
     // Guardar los valores iniciales al montar el componente
+    console.log(newValues);
     setInitialValues(newValues);
   }, [formData.stepOne, setValue]);
 
@@ -76,13 +85,26 @@ const StepOne = ({blockAll}: {blockAll: boolean}) => {
   };
 
   // Determinar si se han hecho cambios en el formulario
-  const hasChanges =
-    initialValues &&
-    !Object.keys(initialValues).every(
-      (key) =>
-        initialValues[key as keyof FormData] ===
-        formValues[key as keyof FormData],
-    );
+  const deepEqual = (obj1: any, obj2: any): boolean => {
+    if (obj1 === obj2) return true;
+    if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) return false;
+  
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+  
+    if (keys1.length !== keys2.length) return false;
+  
+    for (let key of keys1) {
+      if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) return false;
+    }
+  
+    return true;
+  };
+  
+  // Usar la función deepEqual para hasChanges
+  const hasChanges = initialValues && !deepEqual(initialValues, formValues);
+
+  const [isFocused, setIsFocused] = useState(false);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
@@ -174,13 +196,81 @@ const StepOne = ({blockAll}: {blockAll: boolean}) => {
               error={errors.email && errors.email.message}
             />
           </div>
-          <SelectCountry
+          {/* <SelectCountry
             errors={errors}
             setValue={setValue}
-            setCurrentCountry={setCurrentCountry}
             register={register}
             blockALl={blockAll}
-          />
+          /> */}
+          <div className="flex flex-col">
+            <label
+              htmlFor="phone"
+              className={clsx(
+                'ml-1 text-xs',
+                errors.phone
+                  ? 'text-red-500'
+                  : 'text-gray-900 dark:text-gray-300',
+              )}
+            >
+              Telefono
+            </label>
+            <div
+              className={clsx(
+                'flex max-h-[38px] items-center rounded border border-[#6B7280] bg-gray-200 dark:bg-lightText',
+                errors.phone && !isFocused
+                  ? 'border border-red-500 hover:border-blue-600 dark:hover:border-white'
+                  : isFocused
+                    ? 'border-blue-600 outline-none ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
+                    : 'hover:border-blue-600 dark:hover:border-white',
+              )}
+              onFocus={() => setIsFocused(true)} // Manejador de foco en el contenedor
+              onBlur={() => setIsFocused(false)} // Manejador de desenfoque en el contenedor
+              // tabIndex={0} // Asegúrate de que el div pueda recibir el enfoque
+            >
+              <Controller
+                name="calling_code"
+                control={control}
+                defaultValue={undefined}
+                rules={{
+                  required: 'Este campo es obligatorio',
+                }}
+                render={({ field, fieldState }) => (
+                  <SelectCodeCountry
+                    blockAll={blockAll}
+                    selectedCodeCountry={field.value}
+                    setSelectedCodeCountry={(option) => field.onChange(option)}
+                    errors={
+                      fieldState.error ? { [field.name]: fieldState.error } : {}
+                    }
+                  />
+                )}
+              />
+              <p className="flex h-full items-center justify-center">
+                {formValues.calling_code?.callingCode}
+              </p>
+              <input
+                placeholder="Telefono"
+                className="w-full border-none bg-transparent focus:border-none focus:outline-none focus:ring-0"
+                type="tel"
+                disabled={blockAll}
+                // onFocus={() => setIsFocused(true)} // Agrega onFocus
+                // onBlur={() => setIsFocused(false)} // Agrega onBlur
+                {...register('phone', {
+                  required: 'El número de teléfono es obligatorio',
+                  pattern: {
+                    value: /^\d{9,11}$/,
+                    message:
+                      'Introduce un número válido de entre 9 y 11 dígitos',
+                  },
+                })}
+              />
+            </div>
+            {errors.phone && (
+              <p className="mb-5 text-sm text-red-500">
+                • {errors.phone.message as string}
+              </p>
+            )}
+          </div>
         </div>
       </div>
       <div className="mx-0 flex flex-col gap-0 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
