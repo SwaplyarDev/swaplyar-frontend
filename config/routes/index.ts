@@ -4,7 +4,7 @@ export const configRoutes: ConfigRoutes = {
   publicRoutes: [
     '/',
     '/auth/change-password',
-    '/info/about-us', 
+    '/info/about-us',
     '/info/blog',
     '/info/help-center',
     '/info/how-to-use',

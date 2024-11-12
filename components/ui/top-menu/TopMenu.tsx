@@ -145,7 +145,7 @@ export function TopMenu() {
                               : ''
                           } absolute left-0 -mt-2 h-10 w-2 rounded-r-md`}
                         ></div>
-                        Como Usar Swaplyar
+                        Como Usar SwaplyAr
                       </Sidebar.Item>
 
                       <Sidebar.Item

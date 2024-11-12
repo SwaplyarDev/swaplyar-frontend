@@ -143,7 +143,7 @@ const Blog: React.FC = () => {
   };
 
   useEffect(() => {
-    const pageParam = parseInt(searchParams.get("page") || "1", 10);
+    const pageParam = parseInt(searchParams.get('page') || '1', 10);
     if (pageParam !== currentPage) {
       setCurrentPage(pageParam);
     }
@@ -180,7 +180,7 @@ const Blog: React.FC = () => {
 
   useEffect(() => {
     if (Array.isArray(blogs)) {
-      const images = blogs.map(el => el.url_image);
+      const images = blogs.map((el) => el.url_image);
       setRandomImages(images);
     }
   }, [blogs]);
@@ -188,16 +188,16 @@ const Blog: React.FC = () => {
   const filteredBlogs = blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-8 text-left">Blog</h1>
+    <div className="mx-auto max-w-7xl p-6">
+      <h1 className="mb-8 text-left text-3xl font-bold">Blog</h1>
 
       <ImageCarousel images={randomImages} />
-      <div className="flex justify-end mt-4">
+      <div className="mt-4 flex justify-end">
         <div className="relative w-1/3">
           <input
             type="text"
             placeholder="Buscar en..."
-            className="w-full pl-4 pr-10 p-2 border border-gray-300 rounded-2xl focus:outline-none focus:ring-0"
+            className="w-full rounded-2xl border border-gray-300 p-2 pl-4 pr-10 focus:outline-none focus:ring-0"
             style={{ color: 'black', backgroundColor: 'white' }}
             value={searchTerm}
             onChange={handleSearchChange} // Cambié aquí para usar la función manejadora correcta
@@ -228,7 +228,7 @@ const Blog: React.FC = () => {
 
       <div className="flex justify-center mt-8 space-x-4">
         <button
-          className={`w-10 h-10 border rounded-full ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+          className={`h-10 w-10 rounded-full border ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
           onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
           disabled={currentPage === 1}
         >

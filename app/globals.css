@@ -134,37 +134,34 @@ body {
 }
 
 @media (max-width: 640px) {
-/* Contenedor estilo móvil */
-.mobile-container {
-  @apply relative flex h-[70vh] w-full justify-center overflow-hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  clip-path: inset(0 0 -5% 0);
-  overflow: hidden;
-}
+  /* Contenedor estilo móvil */
+  .mobile-container {
+    @apply relative flex h-[70vh] w-full justify-center overflow-hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    clip-path: inset(0 0 -5% 0);
+    overflow: hidden;
+  }
 
-/* Caja interna estilo móvil */
-.mobile-box {
-  @apply absolute h-[60%] w-full rounded-full;
-  animation: spin 30s infinite linear;
-  bottom: 0;
-  left: 0%;
-  transform: translateX(-50%);
-}
+  /* Caja interna estilo móvil */
+  .mobile-box {
+    @apply absolute h-[60%] w-full rounded-full;
+    animation: spin 30s infinite linear;
+    bottom: 0;
+    left: 0%;
+    transform: translateX(-50%);
+  }
 
-/* Bolas más pequeñas */
-.small-ball {
-  width: 10px;
-  height: 10px;
-  margin: 5px;
-  filter: blur(1em);
-}
-
-
-
+  /* Bolas más pequeñas */
+  .small-ball {
+    width: 10px;
+    height: 10px;
+    margin: 5px;
+    filter: blur(1em);
+  }
 
   .container-blur {
     @apply relative flex h-[200vh] w-full justify-center overflow-hidden;

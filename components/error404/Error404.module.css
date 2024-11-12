@@ -2,55 +2,55 @@
 @media (max-width: 7680px) {
 .container {
   text-align: center;
-  padding: 10px;
-  height: 790px;
-  margin-bottom: 120px;
+  height: 950px;
+  margin-bottom: 300px;
+  position: relative;
 }
 
-.image {
-  position: relative;
-  top: calc(50% - 195px);
-  left: calc(50% - 30px);
-  transform: translate(-50%, -50%);
-  width: 1800px;
-  height: 680px;
-}
+  .image {
+    position: relative;
+    top: calc(50% - 195px);
+    left: calc(50% - 30px);
+    transform: translate(-50%, -50%);
+    width: 1800px;
+    height: 680px;
+  }
 
-.message {
-  position: relative;
-  width: 315px;
-  padding: 10px;
-  text-align: left;
-  top: calc(50% + -535px);
-  left: calc(50% - 590px);
-  font-size: 32px;
-}
+  .message {
+    position: relative;
+    width: 315px;
+    padding: 10px;
+    text-align: left;
+    top: calc(50% + -535px);
+    left: calc(50% - 590px);
+    font-size: 32px;
+  }
 
 .redirectButton {
   position: relative;
-  top: calc(50% + -520px);
-  left: calc(50% - 495px);
+  top: calc(50% + -480px);
+  left: calc(50% - 450px);
   transform: translate(-50%, -50%);
   border-radius: 50px;
-  width: 180px;
-  height: 75px;
+  width: 280px;
+  height: 150px;
   padding: 20px;
   text-align: center;
-  font-size: 15px;
+  font-size: 20px;
 }
 
 .postImage1 {
   position: relative;
   transform: translate(-50%, -50%);
   width: 600px;
-  top: calc(50% - 830px); 
+  top: calc(50% - 910px); 
   left: calc(50% - -220px);
 }
 .postImage2 {
   position: relative;
   transform: translate(-50%, -50%);
   width: 415px;
-  top: calc(50% - 1200px); 
+  top: calc(50% - 1280px); 
   left: calc(50% - -460px);
 }
 .lineaVertical1 {
@@ -58,7 +58,7 @@
   width: 3px;
   height: 190px;
   position: relative;
-  top: calc(50% - 1630px);
+  top: calc(50% - 1700px);
   left: calc(50% - 610px);
   border-radius: 12px;
 }
@@ -67,33 +67,32 @@
   width: 3px;
   height: 190px;
   position: relative;
-  top: calc(50% - 1630px);
+  top: calc(50% - 1700px);
   left: calc(50% - 610px);
   border-radius: 12px;
 }
 .enchufe1{
-  width: 1700px;
+  width: 2800px;
   position: relative;
   top: calc(50% - 1670px);
-  left: calc(50% - 1100px);
-  
+  left: calc(50% - 2750px);
+
 }
 .enchufe2{
-  width: 1700px;
+  width: 2800px;
   position: relative;
   top: calc(50% - 1670px);
-  left: calc(50% - 1100px);
+  left: calc(50% - 2750px);
 }
 } 
 
 @media (max-width: 1325px) {
   .container {
     text-align: center;
-    padding: 10px;
     height: 650px;
-   
+    margin-bottom: 100px;
   }
-  
+
   .image {
     position: relative;
     top: calc(50% - 100px);
@@ -102,7 +101,7 @@
     width: 1100px;
     height: 680px;
   }
-  
+
   .message {
     position: relative;
     width: 330px;
@@ -111,19 +110,19 @@
     top: calc(50% + -700px);
     left: calc(50% - 375px);
   }
-  
+
   .redirectButton {
     position: relative;
     top: calc(50% + -680px);
-    left: calc(50% - 280px);
+    left: calc(50% - 240px);
     transform: translate(-50%, -50%);
     border-radius: 35px;
-    width: 180px;
+    width: 280px;
     height: 75px;
     padding: 20px;
     text-align: center;
   }
-  
+
   .postImage1 {
     position: relative;
     transform: translate(-50%, -50%);
@@ -154,24 +153,23 @@
     top: calc(50% - 1530px);
     left: calc(50% - 395px);
   }
-  .enchufe1{
+  .enchufe1 {
     width: 1700px;
     position: relative;
     top: calc(50% - 1550px);
-    left: calc(50% - 1100px);
+    left: calc(50% - 1600px);
   }
-  .enchufe2{
+  .enchufe2 {
     width: 1700px;
     position: relative;
     top: calc(50% - 1550px);
-    left: calc(50% - 1100px);
+    left: calc(50% - 1600px);
   }
-} 
+}
 
 @media (min-width: 550px) and (max-width: 768px) {
   .container {
     text-align: center;
-    padding: 10px;
     height: 450px;
   }
   .image {
@@ -194,102 +192,100 @@
   }
   .redirectButton {
     position: relative;
-    top: calc(50% + -280px);
-    left: calc(50% - 160px); 
+    top: calc(50% + -295px);
+    left: calc(50% - 140px); 
     transform: translate(-50%, -50%);
     border-radius: 30px;
-    width: 170px;
-    height: 75px;
+    width: 200px;
+    height: 30px;
     padding: 20px;
     text-align: center;
+    font-size: 12px;
   }
   .postImage1 {
     position: relative;
     transform: translate(-50%, -50%);
     width: 250px;
-    top: calc(50% - 460px); 
+    top: calc(50% - 420px); 
     left: calc(50% - -60px);
   }
   .postImage2 {
     position: relative;
     transform: translate(-50%, -50%);
     width: 250px;
-    top: calc(50% - 690px); 
+    top: calc(50% - 660px); 
     left: calc(50% - -180px);
   }
   .lineaVertical1 {
     background-color: white;
     width: 3px;
-    height: 165px;
+    height: 160px;
     position: relative;
-    top: calc(50% - 975px);
+    top: calc(50% - 940px);
     left: calc(50% - 255px);
     border-radius: 12px;
   }
   .lineaVertical2 {
     background: rgb(0, 23, 89);
     width: 3px;
-    height: 165px;
+    height: 160px;
     position: relative;
-    top: calc(50% - 975px);
+    top: calc(50% - 940px);
     left: calc(50% - 255px);
     border-radius: 12px;
   }
-  .enchufe1{
+  .enchufe1 {
     object-fit: cover;
-    width: 600px;
+    width: 680px;
     position: relative;
     top: calc(50% - 960px); 
-    left: calc(50% - 400px);
+    left: calc(50% - 600px);
   }
-  .enchufe2{
+  .enchufe2 {
     object-fit: cover;
-    width: 600px;
+    width: 680px;
     position: relative;
     top: calc(50% - 960px); 
-    left: calc(50% - 400px);
+    left: calc(50% - 600px);
   }
-} 
-
+}
 
 .image_tlf {
   display: none;
 }
-.postImage3{
+.postImage3 {
   display: none;
 }
-.tlf_message{
+.tlf_message {
   display: none;
 }
-.tlf_redirectButton{
+.tlf_redirectButton {
   display: none;
 }
-.tlf_lineaVertical1{
+.tlf_lineaVertical1 {
   display: none;
 }
-.tlf_lineaVertical2{
+.tlf_lineaVertical2 {
   display: none;
 }
-.tlf_enchufe1{
+.tlf_enchufe1 {
   display: none;
 }
-.tlf_enchufe2{
+.tlf_enchufe2 {
   display: none;
 }
-
 
 @media (min-width: 395px) and (max-width: 549px) {
   .container {
     text-align: center;
-    padding: 10px;
     height: 300px;
-    position: relative; 
+    position: relative;
     margin-top: 180px;
     margin-bottom: 100px;
   }
 
   .image_tlf {
-    display: block; 
+    display: block;
     position: absolute;
     top: calc(50% - 190px);
     left: calc(50% - 10px);
@@ -298,8 +294,8 @@
     height: 220px;
   }
 
-  .postImage3{
-    display: block; 
+  .postImage3 {
+    display: block;
     position: absolute;
     top: calc(50% - -70px);
     left: calc(50% - -80px);
@@ -308,8 +304,8 @@
     height: 260px;
   }
 
-  .tlf_message{
-    display: block; 
+  .tlf_message {
+    display: block;
     position: absolute;
     width: 310px;
     padding: 10px;
@@ -319,92 +315,91 @@
     font-size: 20px;
   }
 
-  .tlf_redirectButton{
-    display: block; 
+  .tlf_redirectButton {
+    display: block;
     position: absolute;
     top: calc(50% + 160px);
     left: calc(50% - 150px);
   }
 
-  .tlf_lineaVertical1{
+  .tlf_lineaVertical1 {
     background-color: white;
     width: 2px;
     height: 125px;
-    display: block; 
+    display: block;
     position: absolute;
-    top: calc(50% - -70px); 
+    top: calc(50% - -70px);
     left: calc(50% - 190px);
     border-radius: 12px;
   }
 
-  .tlf_lineaVertical2{
+  .tlf_lineaVertical2 {
     background: rgb(0, 23, 89);
     width: 2px;
     height: 125px;
-    display: block; 
+    display: block;
     position: absolute;
-    top: calc(50% - -70px); 
+    top: calc(50% - -70px);
     left: calc(50% - 190px);
     border-radius: 12px;
   }
 
-  .tlf_enchufe1{
+  .tlf_enchufe1 {
     object-fit: cover;
-    display: block; 
+    display: block;
     position: absolute;
-    top: calc(50% - -220px); 
+    top: calc(50% - -220px);
     left: calc(50% - 270px);
   }
 
-  .tlf_enchufe2{
+  .tlf_enchufe2 {
     object-fit: cover;
-    display: block; 
+    display: block;
     position: absolute;
-    top: calc(50% - -220px); 
+    top: calc(50% - -220px);
     left: calc(50% - 270px);
   }
 
   .image {
-    display: none; 
+    display: none;
   }
   .message {
-    display: none; 
+    display: none;
   }
   .redirectButton {
-    display: none; 
+    display: none;
   }
   .postImage1 {
-    display: none; 
+    display: none;
   }
   .postImage2 {
-    display: none; 
+    display: none;
   }
   .lineaVertical1 {
-    display: none; 
+    display: none;
   }
   .lineaVertical2 {
-    display: none; 
+    display: none;
   }
-  .enchufe1{
-    display: none; 
+  .enchufe1 {
+    display: none;
   }
-  .enchufe2{
-    display: none; 
+  .enchufe2 {
+    display: none;
   }
 }
 
 @media (max-width: 394px) {
   .container {
     text-align: center;
-    padding: 10px;
     height: 300px;
-    position: relative; 
+    position: relative;
     margin-top: 180px;
     margin-bottom: -50px;
   }
 
   .image_tlf {
-    display: block; 
+    display: block;
     position: absolute;
     top: calc(50% - 190px);
     left: calc(50% - 10px);
@@ -413,8 +408,8 @@
     height: 220px;
   }
 
-  .postImage3{
-    display: block; 
+  .postImage3 {
+    display: block;
     position: absolute;
     top: calc(50% - 40px);
     left: calc(50% - -45px);
@@ -423,8 +418,8 @@
     height: 220px;
   }
 
-  .tlf_message{
-    display: block; 
+  .tlf_message {
+    display: block;
     position: absolute;
     width: 310px;
     padding: 10px;
@@ -434,78 +429,76 @@
     font-size: 13px;
   }
 
-  .tlf_redirectButton{
-    display: block; 
+  .tlf_redirectButton {
+    display: block;
     position: absolute;
     top: calc(50% + -5px);
     left: calc(50% - 130px);
   }
 
-  .tlf_lineaVertical1{
+  .tlf_lineaVertical1 {
     background-color: white;
     width: 2px;
     height: 110px;
-    display: block; 
+    display: block;
     position: absolute;
-    top: calc(50% - 75px); 
+    top: calc(50% - 75px);
     left: calc(50% - 150px);
     border-radius: 12px;
   }
 
-  .tlf_lineaVertical2{
+  .tlf_lineaVertical2 {
     background: rgb(0, 23, 89);
     width: 2px;
     height: 110px;
-    display: block; 
+    display: block;
     position: absolute;
-    top: calc(50% - 75px); 
+    top: calc(50% - 75px);
     left: calc(50% - 150px);
     border-radius: 12px;
   }
 
-  .tlf_enchufe1{
+  .tlf_enchufe1 {
     object-fit: cover;
-    display: block; 
+    display: block;
     position: absolute;
-    top: calc(50% - -50px); 
+    top: calc(50% - -50px);
     left: calc(50% - 270px);
   }
 
-  .tlf_enchufe2{
+  .tlf_enchufe2 {
     object-fit: cover;
-    display: block; 
+    display: block;
     position: absolute;
-    top: calc(50% - -50px); 
+    top: calc(50% - -50px);
     left: calc(50% - 270px);
   }
 
   .image {
-    display: none; 
+    display: none;
   }
   .message {
-    display: none; 
+    display: none;
   }
   .redirectButton {
-    display: none; 
+    display: none;
   }
   .postImage1 {
-    display: none; 
+    display: none;
   }
   .postImage2 {
-    display: none; 
+    display: none;
   }
   .lineaVertical1 {
-    display: none; 
+    display: none;
   }
   .lineaVertical2 {
-    display: none; 
+    display: none;
   }
-  .enchufe1{
-    display: none; 
+  .enchufe1 {
+    display: none;
   }
-  .enchufe2{
-    display: none; 
+  .enchufe2 {
+    display: none;
   }
 }
-
-
