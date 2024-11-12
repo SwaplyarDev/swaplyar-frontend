@@ -1,155 +1,323 @@
 'use client';
 import React, { useState } from 'react';
+import  ReactDOM  from 'react-dom';
 import { Post1_404 } from '@/../../utils/assets/img-database';
-import SelectCountry from '@/components/request/form/inputs/selectCountry';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller, useWatch } from 'react-hook-form';
 import { FormData } from '@/types/repentance/repentance';
+import clsx from 'clsx';
+import SelectCodeCountry from '@/components/request/form/inputs/SelectCodeCountry';
+import Swal from 'sweetalert2';
+import Arrow from '@/components/ui/Arrow/Arrow';
+import { createRoot } from 'react-dom/client';
 
 const RepentanceForm = () => {
   const { isDark } = useDarkTheme();
+
+  const [isFocused, setIsFocused] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     referenceNumber: '',
-    firstLastName: '',
+    lastName: '',
     email: '',
     phone_number: '',
     note: '',
+    calling_code: { value: '', label: '', callingCode: '' },
   });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm<FormData>();
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    
-  };
+  const onSubmit: SubmitHandler<FormData> = (data) => {};
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
+  const handleSendClick = () => {
+    // Swal.fire({
+    //   title: `<h1 style="color:white; ${isDark ? 'color: white;' : 'color: black;'}" >La solicitud #123456789 se encuentra en proceso</h1>`,
+    //   html: `<div style="text-align: left; ${isDark ? 'color: white;' : 'color: black;'}">
+    //            <p>¿Desea cancelarla? El reembolso se devolverá a la cuenta de origen utilizada para esta operación.</p>
+    //            <p style="padding-top: 10px;">Nota: Si la transferencia ya se ha completado, no será posible procesar un reembolso.</p>
+    //          </div>`,
+    //   icon: 'warning',
+    //   background: isDark ? 'rgb(69 69 69)' : '#ffffff',
+    //   showCancelButton: true,
+    //   showConfirmButton: true,
+    //   buttonsStyling: false, // desactivar estilos predeterminados de SweetAlert
+    //   customClass: {
+    //     actions: 'flex justify-between w-full px-4', // posición de botones
+    //     confirmButton: `${isDark ? 'buttonSecondDark text-white' : 'buttonSecond text-buttonsLigth '} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3  hover:bg-transparent dark:border-darkText dark:hover:bg-transparent md:hidden  `, // botón Volver con fondo del modal y letras blancas
+    //     cancelButton: `${isDark ? 'buttonSecondDark' : 'buttonSecond'} dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText `, // botón Cancelar con fondo blanco y letras negras
+    //   },
+    //   confirmButtonText: '<- Volver',
+    //   cancelButtonText: 'Cancelar',
+    // });
+    Swal.fire({
+      title: `<h1 style="color:${isDark ? 'white' : 'black'};">Solicitud realizada con exito</h1>`,
+      html: `
+        <div id="back-button-container" style="display: inline-block;"></div> <!-- Contenedor del botón Volver -->
+        
+      `,
+      background: isDark ? 'rgb(69 69 69)' : '#ffffff',
+      showConfirmButton: false, // Ocultar el botón de confirmación de SweetAlert2
+      buttonsStyling: false, // Desactivar estilos predeterminados de SweetAlert
+      customClass: {
+        actions: 'flex justify-between w-full px-4', // Posición de botones
+        confirmButton: `${isDark ? 'buttonSecondDark text-white' : 'buttonSecond text-buttonsLigth'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 hover:bg-transparent dark:border-darkText dark:hover:bg-transparent md:hidden`,
+      },
+      didRender: () => {
+        // Renderizar el ícono personalizado (Arrow) en el contenedor de ícono
+        const iconContainer = document.getElementById('custom-icon-container');
+        if (iconContainer) {
+          const iconRoot = createRoot(iconContainer);
+          iconRoot.render(<Arrow color={isDark ? '#ffffff' : '#000000'} />);
+        }
+    
+        // Renderizar el botón Volver usando React con el componente Arrow
+        const backElement = document.getElementById('back-button-container');
+        if (backElement) {
+          const root = createRoot(backElement);
+          root.render(
+            <button
+              onClick={() => Swal.close()}
+              className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 flex h-[42px] min-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-sm text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
+            >
+              <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} backRequest={true} />
+              Volver
+            </button>
+          );
+        }
+      },
+      
+    });
+  };
 
+  const formValues = useWatch({ control });
   return (
-    <div className="flex min-h-full flex-grow justify-evenly py-20">
-      <div className="my-20 ml-20 w-1/4">
-        <h2 className="text-center text-xl">Buscar una transferencia</h2>
-        <p className="text-center">
-          Ingresa los datos tal cual aparece en el email enviado
-        </p>
-        <div className="flex justify-center">
+    <div className="my-7 flex flex-col items-center justify-center">
+      <div className="flex w-full flex-row">
+        <div className="flex w-2/6 flex-col items-start">
+          <h1 className="text-center text-xl">Cancelacion o Reembolso</h1>
+          <p className="mt-2 text-justify">
+            Ingresa los datos tal cual aparece en el email enviado
+          </p>
+        </div>
+      </div>
+      <div className="w-100 flex">
+        <div className="flex min-h-full flex-wrap justify-center">
           <Image
             src={Post1_404}
             alt="post1"
-            width={400}
-            height={500}
-            className="-scale-x-100"
+            width={650}
+            height={0}
+            className="-scale-x-100 object-cover"
           />
         </div>
-      </div>
-      <div className={`mr-3 flex h-full w-2/4 flex-col justify-center border-l-2 ${isDark ? 'border-l-white' : 'border-l-buttonsLigth'}`}>
-        <form onSubmit={handleSubmit(onSubmit)} className="ml-7 mt-3 flex h-full flex-col justify-evenly">
-          <div>
-            <label>
-              NUMERO DE REFERENCIA
-              <input
-                className={`w-full border-0 border-b-4 border-solid ps-0 ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
-                type="text"
-                placeholder="Como figura en el recibo"
-                {...register('referenceNumber', {
-                  required: '• El número de referencia es obligatorio',
-                  pattern: {
-                    value: /^[A-Za-z0-9]{20,40}$/,
-                    message: '• El número de referencia debe tener entre 20 y 40 caracteres alfanuméricos',
-                  },
-                })}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            {errors.referenceNumber && <p className="mt-1 text-sm text-red-500">{errors.referenceNumber.message}</p>}
+
+        <div
+          className={`mr-3 flex h-full w-full flex-col justify-center border-l-4 ${isDark ? 'border-l-white' : 'border-l-buttonsLigth'}`}
+        >
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="ml-7 mt-3 flex h-full flex-col justify-evenly"
+          >
+            <div className="mt-2 w-full">
+              <label className="text-lg">
+                NUMERO DE SOLICITUD
+                <input
+                  className={`w-full border-0 border-b-4 border-solid ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
+                  type="text"
+                  placeholder="Como figura en el recibo"
+                  {...register('referenceNumber', {
+                    required: '• El número de referencia es obligatorio',
+                    pattern: {
+                      value: /^[A-Za-z0-9]{20,40}$/,
+                      message:
+                        '• El número de referencia debe tener entre 20 y 40 caracteres alfanuméricos',
+                    },
+                  })}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              {errors.referenceNumber && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.referenceNumber.message}
+                </p>
+              )}
+            </div>
+            <div className="mt-2">
+              <label className="text-lg">
+                Apellido
+                <input
+                  className={`w-full border-0 border-b-4 border-solid ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
+                  type="text"
+                  placeholder="Como figura en el recibo"
+                  {...register('lastName', {
+                    required: '• El Nombre y Apellido es obligatorio',
+                    minLength: {
+                      value: 6,
+                      message: '• Debe ingresar mínimo 6 caracteres',
+                    },
+                    maxLength: {
+                      value: 50,
+                      message: '• Debe ingresar como máximo 50 caracteres',
+                    },
+                  })}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              {errors.lastName && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.lastName.message}
+                </p>
+              )}
+            </div>
+            <div className="mt-2">
+              <label className="text-lg">
+                Email
+                <input
+                  className={`w-full border-0 border-b-4 border-solid ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white dark:hover:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
+                  type="email"
+                  {...register('email', {
+                    required: '• El Email es obligatorio',
+                    pattern: {
+                      value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                      message:
+                        '• Ingresa un formato válido de email. Ej: Ejemplo@gmail.com',
+                    },
+                  })}
+                  onChange={handleChange}
+                  placeholder="El mismo email que colocaste en el formulario"
+                  required
+                />
+              </label>
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+            <div className="mt-2 w-full">
+              <div className="flex flex-col">
+                <label htmlFor="phone_number">Telefono</label>
+                <div
+                  className={clsx(
+                    `flex w-full items-center border-0 border-b-4 border-solid ps-0 text-center text-lg ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`,
+                    errors.phone_number && !isFocused
+                      ? 'border border-red-500 hover:border-blue-600 dark:hover:border-white'
+                      : isFocused
+                        ? 'border-blue-600 outline-none ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
+                        : 'hover:border-blue-600 dark:hover:border-white',
+                  )}
+                  onFocus={() => setIsFocused(true)} // Manejador de foco en el contenedor
+                  onBlur={() => setIsFocused(false)} // Manejador de desenfoque en el contenedor
+                  // tabIndex={0} // Asegúrate de que el div pueda recibir el enfoque
+                >
+                  <Controller
+                    name="calling_code"
+                    control={control}
+                    defaultValue={undefined}
+                    rules={{
+                      required: 'Este campo es obligatorio',
+                    }}
+                    render={({ field, fieldState }) => (
+                      <SelectCodeCountry
+                        selectedCodeCountry={field.value}
+                        setSelectedCodeCountry={(option) =>
+                          field.onChange(option)
+                        }
+                        errors={
+                          fieldState.error
+                            ? { [field.name]: fieldState.error }
+                            : {}
+                        }
+                      />
+                    )}
+                  />
+                  <p className="flex h-full items-center justify-center">
+                    {formValues.calling_code?.callingCode}
+                  </p>
+                  <input
+                    placeholder="Telefono"
+                    className="${isDark ? 'border-b-white focus:border-white' : 'border-b-buttonsLigth focus:border-buttonsLigth'} w-full border-none bg-transparent text-lg  focus:border-none focus:outline-none focus:ring-0"
+                    type="tel"
+                    // onFocus={() => setIsFocused(true)} // Agrega onFocus
+                    // onBlur={() => setIsFocused(false)} // Agrega onBlur
+                    {...register('phone_number', {
+                      required: 'El número de teléfono es obligatorio',
+                      pattern: {
+                        value: /^\d{9,11}$/,
+                        message:
+                          'Introduce un número válido de entre 9 y 11 dígitos',
+                      },
+                    })}
+                  />
+                </div>
+                {errors.phone_number && (
+                  <p className="mb-5 text-sm text-red-500">
+                    • {errors.phone_number.message as string}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="mt-2">
+              <label className="text-lg">
+                NOTA OPCIONAL
+                <textarea
+                  className={`max-h-[500px] min-h-[45px] w-full resize-none border-0 border-b-2 ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
+                  {...register('note', {
+                    minLength: {
+                      value: 6,
+                      message: '• Debe ingresar mínimo 6 caracteres',
+                    },
+                    maxLength: {
+                      value: 500,
+                      message: '• Debe ingresar como máximo 500 caracteres',
+                    },
+                  })}
+                  placeholder="Añade una nota mencionando el motivo del reembolso"
+                  onChange={handleChange}
+                />
+              </label>
+              {errors.note && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.note.message}
+                </p>
+              )}
+            </div>
+            <div className="mt-5 flex justify-center text-center">
+              <button
+                type="submit"
+                onClick={handleSendClick}
+                className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+              >
+                Enviar Solicitud
+              </button>
+            </div>
+          </form>
+          <div className="ml-7 mt-5 flex justify-center text-center">
+            <Link href={'/'}>
+              <h3
+                className={`w-fit border-b font-bold ${isDark ? 'border-b-white text-white' : 'border-black text-black'} `}
+              >
+                Salir
+              </h3>
+            </Link>
           </div>
-          <div>
-            <label>
-              Nombre y apellido
-              <input
-                className={`w-full border-0 border-b-4 border-solid ps-0 ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
-                type="text"
-                placeholder="Como figura en el recibo"
-                {...register('firstLastName', {
-                  required: '• El Nombre y Apellido es obligatorio',
-                  minLength: { value: 6, message: '• Debe ingresar mínimo 6 caracteres' },
-                  maxLength: { value: 50, message: '• Debe ingresar como máximo 50 caracteres' },
-                })}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            {errors.firstLastName && <p className="mt-1 text-sm text-red-500">{errors.firstLastName.message}</p>}
-          </div>
-          <div>
-            <label>
-              Email
-              <input
-                className={`w-full border-0 border-b-4 border-solid ps-0 ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white dark:hover:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
-                type="email"
-                {...register('email', {
-                  required: '• El Email es obligatorio',
-                  pattern: {
-                    value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-                    message: '• Ingresa un formato válido de email. Ej: Ejemplo@gmail.com',
-                  },
-                })}
-                onChange={handleChange}
-                placeholder="El mismo email que colocaste en el formulario"
-                required
-              />
-            </label>
-            {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
-          </div>
-          <div className="w-full">
-            <SelectCountry
-              errors={errors}
-              setValue={(name, value) => setFormData((prevData) => ({ ...prevData, [name]: value }))}
-              setCurrentCountry={(country: string) => setFormData((prevData) => ({ ...prevData, currentCountry: country }))}
-              register={register}
-              blockALl={false}
-            />
-          </div>
-          <div>
-            <label>
-              NOTA OPCIONAL
-              <textarea
-                className={`max-h-[500px] min-h-[45px] w-full resize-none border-0 border-b-2 ps-0 ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
-                {...register('note', {
-                  minLength: { value: 6, message: '• Debe ingresar mínimo 6 caracteres' },
-                  maxLength: { value: 500, message: '• Debe ingresar como máximo 500 caracteres' },
-                })}
-                placeholder="Añade una nota mencionando el motivo del reembolso"
-                onChange={handleChange}
-              />
-            </label>
-            {errors.note && <p className="mt-1 text-sm text-red-500">{errors.note.message}</p>}
-          </div>
-          <div className="flex justify-center text-center">
-            <button
-              type="submit"
-              className={`mt-6 rounded-full border-2 ${isDark ? 'border-darkText bg-darkText text-black' : 'border-buttonsLigth bg-buttonsLigth text-darkText'} px-4 py-2 text-lg font-bold`}
-            >
-              Buscar Transferencia
-            </button>
-          </div>
-        </form>
-        <div className="text-center flex justify-center">
-          <Link href={'/'} >
-            <h3 className={` w-fit border-b ${isDark ? '  border-b-white  text-white' : 'text-black  border-black '}  `}>Salir</h3>
-          </Link>
         </div>
       </div>
     </div>
