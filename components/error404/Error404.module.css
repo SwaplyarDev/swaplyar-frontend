@@ -44,23 +44,23 @@
 .postImage1 {
   position: relative;
   transform: translate(-50%, -50%);
-  width: 600px;
-  top: calc(50% - 910px); 
-  left: calc(50% - -220px);
+  width: 650px;
+  top: calc(50% - 840px); 
+  left: calc(50% - -200px);
 }
 .postImage2 {
   position: relative;
   transform: translate(-50%, -50%);
-  width: 415px;
-  top: calc(50% - 1280px); 
-  left: calc(50% - -460px);
+  width: 650px;
+  top: calc(50% - 1380px); 
+  left: calc(50% - -525px);
 }
 .lineaVertical1 {
   background-color: white;
   width: 3px;
   height: 190px;
   position: relative;
-  top: calc(50% - 1700px);
+  top: calc(50% - 1900px);
   left: calc(50% - 610px);
   border-radius: 12px;
 }
@@ -69,22 +69,22 @@
   width: 3px;
   height: 190px;
   position: relative;
-  top: calc(50% - 1700px);
+  top: calc(50% - 1900px);
   left: calc(50% - 610px);
   border-radius: 12px;
 }
 .enchufe1{
-  width: 2800px;
+  width: 3700px;
   position: relative;
-  top: calc(50% - 1670px);
-  left: calc(50% - 2750px);
+  top: calc(50% - 1900px);
+  left: calc(50% - 3500px);
 
 }
 .enchufe2{
-  width: 2800px;
+  width: 3700px;
   position: relative;
-  top: calc(50% - 1670px);
-  left: calc(50% - 2750px);
+  top: calc(50% - 1900px);
+  left: calc(50% - 3500px);
 }
 } 
 

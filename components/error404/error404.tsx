@@ -99,8 +99,8 @@ const Error_404 = () => {
             <Image
               src={Post1_404}
               alt="Descripción de la imagen 1"
-              width={460}
-              height={380}
+              width={550}
+              height={450}
               style={{ borderRadius: '8px' }}
             />
           </div>
@@ -108,8 +108,8 @@ const Error_404 = () => {
             <Image
               src={Post2_404}
               alt="Descripción de la imagen 2"
-              width={465}
-              height={350}
+              width={520}
+              height={450}
               style={{ borderRadius: '8px' }}
             />
           </div>
@@ -129,7 +129,7 @@ const Error_404 = () => {
             <Image
               src={Enchufe_dark_largo}
               alt="Descripción de la imagen enchufe"
-              width={2800}
+              width={3700}
               height={50}
             />
           </div>
@@ -207,8 +207,8 @@ const Error_404 = () => {
             <Image
               src={Post1_404}
               alt="Descripción de la imagen 1"
-              width={460}
-              height={380}
+              width={550}
+              height={450}
               style={{ borderRadius: '8px' }}
             />
           </div>
@@ -216,8 +216,8 @@ const Error_404 = () => {
             <Image
               src={Post2_404}
               alt="Descripción de la imagen 2"
-              width={465}
-              height={350}
+              width={520}
+              height={450}
               style={{ borderRadius: '8px' }}
             />
           </div>
@@ -238,7 +238,7 @@ const Error_404 = () => {
             <Image
               src={Enchufe_clear_largo}
               alt="Descripción de la imagen enchufe"
-              width={2800}
+              width={3700}
               height={50}
             />
           </div>
