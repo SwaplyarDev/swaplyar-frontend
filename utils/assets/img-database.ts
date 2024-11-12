@@ -11,8 +11,7 @@ export const SwaplyArlogoWhite = '/images/SwaplyAr-Logo-White.png';
 
 /**request**/
 export const FormularioDeSolicitud = '/images/Formulario-de-Solicitud.png';
-export const FormularioDeSolicitudMovil =
-  '/images/Formulario-de-Solicitud-Movil.png';
+export const FormularioDeSolicitudMovil = '/images/Formulario-de-Solicitud-Movil.png';
 
 /**Ars**/
 

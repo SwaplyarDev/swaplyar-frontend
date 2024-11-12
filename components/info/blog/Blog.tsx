@@ -19,19 +19,11 @@ const BlogPostCard: React.FC<{
 }> = ({ title, body, url_image, created_at }) => {
   return (
     <div className="transform overflow-hidden rounded-lg border border-gray-300 bg-white shadow-lg transition-transform hover:scale-105">
-      <Image
-        src={url_image}
-        alt={title}
-        className="h-48 w-full object-cover"
-        width={300}
-        height={160}
-      />
+      <Image src={url_image} alt={title} className="h-48 w-full object-cover" width={300} height={160} />
       <div className="p-4">
         <h3 className="mb-2 text-xl font-semibold">{title}</h3>
         <p className="mb-4 text-gray-700">{body}</p>
-        <p className="mt-2 text-sm text-gray-500">
-          {new Date(created_at).toLocaleDateString()}
-        </p>
+        <p className="mt-2 text-sm text-gray-500">{new Date(created_at).toLocaleDateString()}</p>
       </div>
     </div>
   );
@@ -106,9 +98,7 @@ const Blog: React.FC = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch(
-          `${BASE_URL}/v1/blogs?page=${currentPage}`,
-        );
+        const response = await fetch(`${BASE_URL}/v1/blogs?page=${currentPage}`);
 
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -131,9 +121,7 @@ const Blog: React.FC = () => {
     }
   }, [blogs]);
   // filtra una card
-  const filteredBlogs = blogs.filter((post) =>
-    post.title.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  const filteredBlogs = blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <div className="mx-auto max-w-7xl p-6">

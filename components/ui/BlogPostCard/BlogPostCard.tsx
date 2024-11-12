@@ -12,9 +12,7 @@ const BlogPostCard: React.FC<{
       <div className="p-4">
         <h3 className="mb-2 text-xl font-semibold">{title}</h3>
         <p className="mb-4 text-gray-700">{content}</p>
-        <p className="mt-2 text-sm text-gray-500">
-          {new Date(publishedAt).toLocaleDateString()}
-        </p>
+        <p className="mt-2 text-sm text-gray-500">{new Date(publishedAt).toLocaleDateString()}</p>
       </div>
     </div>
   );

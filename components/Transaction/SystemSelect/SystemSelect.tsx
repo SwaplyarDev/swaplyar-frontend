@@ -39,12 +39,7 @@ export default function SystemSelect({
   const { isDark } = useDarkTheme();
   const [showOptionsInternal, setShowOptionsInternal] = useState(false);
 
-  const {
-    selectedSendingSystem,
-    selectedReceivingSystem,
-    activeSelect,
-    setActiveSelect,
-  } = useSystemStore();
+  const { selectedSendingSystem, selectedReceivingSystem, activeSelect, setActiveSelect } = useSystemStore();
 
   const handleClick = () => {
     if (activeSelect === (isSending ? 'send' : 'receive')) {
@@ -89,9 +84,7 @@ export default function SystemSelect({
 
   const updatedSystems = systems.map((system) => ({
     ...system,
-    isDisabled:
-      system.id === selectedSendingSystem?.id ||
-      system.id === selectedReceivingSystem?.id,
+    isDisabled: system.id === selectedSendingSystem?.id || system.id === selectedReceivingSystem?.id,
   }));
 
   return (
@@ -105,9 +98,7 @@ export default function SystemSelect({
         {selectedSystem ? (
           <div className="flex w-full justify-center">
             <Image
-              src={
-                isDark == true ? selectedSystem.logoDark : selectedSystem.logo
-              }
+              src={isDark == true ? selectedSystem.logoDark : selectedSystem.logo}
               alt={selectedSystem.name}
               width={200}
               height={70}
@@ -128,12 +119,7 @@ export default function SystemSelect({
                 system.isDisabled ? 'cursor-not-allowed opacity-50' : ''
               }`}
             >
-              <Image
-                src={isDark == true ? system.logoDark : system.logo}
-                alt={system.name}
-                width={200}
-                height={70}
-              />
+              <Image src={isDark == true ? system.logoDark : system.logo} alt={system.name} width={200} height={70} />
             </li>
           ))}
         </ul>

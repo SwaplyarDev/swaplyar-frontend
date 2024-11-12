@@ -457,9 +457,7 @@ body::-webkit-scrollbar-thumb {
 /* Estilos del scrollbar usando variables definidas en el body */
 ul.scrollable-list {
   margin-top: 5px;
-  clip-path: inset(
-    0 round 16px
-  ); /* Ajusta el valor según el borde redondeado */
+  clip-path: inset(0 round 16px); /* Ajusta el valor según el borde redondeado */
 }
 ul.scrollable-list {
   padding-right: 0.5rem; /* Ajusta según sea necesario */

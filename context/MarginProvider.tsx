@@ -28,9 +28,5 @@ export const MarginProvider: React.FC<MarginProviderProps> = ({ children }) => {
     xl: '32px',
   };
 
-  return (
-    <MarginContext.Provider value={{ margins }}>
-      {children}
-    </MarginContext.Provider>
-  );
+  return <MarginContext.Provider value={{ margins }}>{children}</MarginContext.Provider>;
 };

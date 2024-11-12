@@ -19,11 +19,7 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
       <Slider {...settings}>
         {images.map((image, index) => (
           <div key={index}>
-            <Image
-              src={image}
-              alt={`Slide ${index + 1}`}
-              className="h-60 w-full object-cover"
-            />
+            <Image src={image} alt={`Slide ${index + 1}`} className="h-60 w-full object-cover" />
           </div>
         ))}
       </Slider>

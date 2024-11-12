@@ -9,11 +9,9 @@ import { updateCurrentValueEUR } from './conversion/convArs_Eur';
 //* Función para obtener todas las tasas de cambio
 export async function getExchangeRates() {
   try {
-    const { currentValueUSDBlueSale, currentValueUSDBluePurchase } =
-      await updateCurrentValueUSD();
+    const { currentValueUSDBlueSale, currentValueUSDBluePurchase } = await updateCurrentValueUSD();
 
-    const { currentValueEURBlueSale, currentValueEURBluePurchase } =
-      await updateCurrentValueEUR();
+    const { currentValueEURBlueSale, currentValueEURBluePurchase } = await updateCurrentValueEUR();
 
     return {
       currentValueUSDBlueSale,
@@ -33,8 +31,7 @@ export async function getExchangeRates() {
 
 export async function getExchangeRatesUSD_EUR() {
   try {
-    const { currentValueEURToUSD, currentValueUSDToEUR } =
-      await updateCurrentValueUSDToEUR();
+    const { currentValueEURToUSD, currentValueUSDToEUR } = await updateCurrentValueUSDToEUR();
     console.log('Tasas de USD a EUR actualizadas:', currentValueUSDToEUR);
     console.log('Tasas de EUR a USD actualizadas:', currentValueEURToUSD);
 
@@ -67,14 +64,10 @@ export function calculateAmount(
       throw new Error('Las tasas de cambio no están disponibles.');
     }
 
-    const exchangeRate = exchangeRates.find(
-      (rate) => rate.from === from && rate.to === to,
-    );
+    const exchangeRate = exchangeRates.find((rate) => rate.from === from && rate.to === to);
 
     if (!exchangeRate) {
-      throw new Error(
-        `No se encontró una fórmula para convertir de ${from} a ${to}`,
-      );
+      throw new Error(`No se encontró una fórmula para convertir de ${from} a ${to}`);
     }
 
     // Determina la tasa adecuada según el tipo de conversión
@@ -89,17 +82,11 @@ export function calculateAmount(
       case 'paypal':
       case 'payoneer_usd':
       case 'wise_usd':
-        rate =
-          to === 'bank'
-            ? rates.currentValueUSDBluePurchase
-            : rates.currentValueUSDToEUR;
+        rate = to === 'bank' ? rates.currentValueUSDBluePurchase : rates.currentValueUSDToEUR;
         break;
       case 'payoneer_eur':
       case 'wise_eur':
-        rate =
-          to === 'bank'
-            ? rates.currentValueEURBluePurchase
-            : rates.currentValueEURToUSD;
+        rate = to === 'bank' ? rates.currentValueEURBluePurchase : rates.currentValueEURToUSD;
         break;
       default:
         throw new Error(`Conversión de ${from} a ${to} no soportada.`);
@@ -237,18 +224,9 @@ export function calculateAmount(
       await getExchangeRatesUSD_EUR();
 
       // Llamada al cálculo inverso
-      const inverseAmount = await calculateAmount(
-        from,
-        to,
-        amountToReceive,
-        true,
-      );
+      const inverseAmount = await calculateAmount(from, to, amountToReceive, true);
 
-      console.log(
-        `Para recibir ${amountToReceive} ${to}, debes enviar ${inverseAmount.toFixed(
-          2,
-        )} ${from}.`,
-      );
+      console.log(`Para recibir ${amountToReceive} ${to}, debes enviar ${inverseAmount.toFixed(2)} ${from}.`);
     } catch (error) {
       if (error instanceof Error) {
         console.error('Error al calcular el monto inverso:', error.message);

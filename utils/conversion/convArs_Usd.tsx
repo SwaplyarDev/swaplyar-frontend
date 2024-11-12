@@ -10,10 +10,7 @@ export async function updateCurrentValueUSD() {
     const response = await fetch(`${bluelyticsApiUrl}`);
     if (!response.ok) {
       const errorMessage = `Error: ${response.status} ${response.statusText}`;
-      console.error(
-        'Error fetching Blue USD data from Bluelytics:',
-        errorMessage,
-      );
+      console.error('Error fetching Blue USD data from Bluelytics:', errorMessage);
       throw new Error(errorMessage);
     }
 
@@ -25,15 +22,9 @@ export async function updateCurrentValueUSD() {
     return { currentValueUSDBlueSale, currentValueUSDBluePurchase };
   } catch (error) {
     if (error instanceof Error) {
-      console.error(
-        'Error fetching Blue USD data from Bluelytics:',
-        error.message,
-      );
+      console.error('Error fetching Blue USD data from Bluelytics:', error.message);
     } else {
-      console.error(
-        'Unknown error fetching Blue USD data from Bluelytics:',
-        error,
-      );
+      console.error('Unknown error fetching Blue USD data from Bluelytics:', error);
     }
     throw new Error('Failed to fetch Blue USD data from Bluelytics');
   }

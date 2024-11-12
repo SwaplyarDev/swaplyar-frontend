@@ -1,11 +1,11 @@
 /* error404.css */
 @media (max-width: 7680px) {
-.container {
-  text-align: center;
-  height: 950px;
-  margin-bottom: 300px;
-  position: relative;
-}
+  .container {
+    text-align: center;
+    height: 950px;
+    margin-bottom: 300px;
+    position: relative;
+  }
 
   .image {
     position: relative;
@@ -26,65 +26,64 @@
     font-size: 32px;
   }
 
-.redirectButton {
-  position: relative;
-  top: calc(50% + -480px);
-  left: calc(50% - 450px);
-  transform: translate(-50%, -50%);
-  border-radius: 50px;
-  width: 280px;
-  height: 150px;
-  padding: 20px;
-  text-align: center;
-  font-size: 20px;
-}
+  .redirectButton {
+    position: relative;
+    top: calc(50% + -480px);
+    left: calc(50% - 450px);
+    transform: translate(-50%, -50%);
+    border-radius: 50px;
+    width: 280px;
+    height: 150px;
+    padding: 20px;
+    text-align: center;
+    font-size: 20px;
+  }
 
-.postImage1 {
-  position: relative;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  top: calc(50% - 910px); 
-  left: calc(50% - -220px);
+  .postImage1 {
+    position: relative;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    top: calc(50% - 910px);
+    left: calc(50% - -220px);
+  }
+  .postImage2 {
+    position: relative;
+    transform: translate(-50%, -50%);
+    width: 415px;
+    top: calc(50% - 1280px);
+    left: calc(50% - -460px);
+  }
+  .lineaVertical1 {
+    background-color: white;
+    width: 3px;
+    height: 190px;
+    position: relative;
+    top: calc(50% - 1700px);
+    left: calc(50% - 610px);
+    border-radius: 12px;
+  }
+  .lineaVertical2 {
+    background: rgb(0, 23, 89);
+    width: 3px;
+    height: 190px;
+    position: relative;
+    top: calc(50% - 1700px);
+    left: calc(50% - 610px);
+    border-radius: 12px;
+  }
+  .enchufe1 {
+    width: 2800px;
+    position: relative;
+    top: calc(50% - 1670px);
+    left: calc(50% - 2750px);
+  }
+  .enchufe2 {
+    width: 2800px;
+    position: relative;
+    top: calc(50% - 1670px);
+    left: calc(50% - 2750px);
+  }
 }
-.postImage2 {
-  position: relative;
-  transform: translate(-50%, -50%);
-  width: 415px;
-  top: calc(50% - 1280px); 
-  left: calc(50% - -460px);
-}
-.lineaVertical1 {
-  background-color: white;
-  width: 3px;
-  height: 190px;
-  position: relative;
-  top: calc(50% - 1700px);
-  left: calc(50% - 610px);
-  border-radius: 12px;
-}
-.lineaVertical2 {
-  background: rgb(0, 23, 89);
-  width: 3px;
-  height: 190px;
-  position: relative;
-  top: calc(50% - 1700px);
-  left: calc(50% - 610px);
-  border-radius: 12px;
-}
-.enchufe1{
-  width: 2800px;
-  position: relative;
-  top: calc(50% - 1670px);
-  left: calc(50% - 2750px);
-
-}
-.enchufe2{
-  width: 2800px;
-  position: relative;
-  top: calc(50% - 1670px);
-  left: calc(50% - 2750px);
-}
-} 
 
 @media (max-width: 1325px) {
   .container {
@@ -193,7 +192,7 @@
   .redirectButton {
     position: relative;
     top: calc(50% + -295px);
-    left: calc(50% - 140px); 
+    left: calc(50% - 140px);
     transform: translate(-50%, -50%);
     border-radius: 30px;
     width: 200px;
@@ -206,14 +205,14 @@
     position: relative;
     transform: translate(-50%, -50%);
     width: 250px;
-    top: calc(50% - 420px); 
+    top: calc(50% - 420px);
     left: calc(50% - -60px);
   }
   .postImage2 {
     position: relative;
     transform: translate(-50%, -50%);
     width: 250px;
-    top: calc(50% - 660px); 
+    top: calc(50% - 660px);
     left: calc(50% - -180px);
   }
   .lineaVertical1 {
@@ -238,14 +237,14 @@
     object-fit: cover;
     width: 680px;
     position: relative;
-    top: calc(50% - 960px); 
+    top: calc(50% - 960px);
     left: calc(50% - 600px);
   }
   .enchufe2 {
     object-fit: cover;
     width: 680px;
     position: relative;
-    top: calc(50% - 960px); 
+    top: calc(50% - 960px);
     left: calc(50% - 600px);
   }
 }
