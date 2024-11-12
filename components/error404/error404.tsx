@@ -9,14 +9,21 @@ import { Error_404_dark } from '@/utils/assets/img-database';
 import { Post1_404 } from '@/utils/assets/img-database';
 import { Post2_404 } from '@/utils/assets/img-database';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
-import { Enchufe_dark, Enchufe_clear, tlf_404_dark, tlf_404_clear, post3_404, Enchufe_dark_largo, Enchufe_clear_largo } from '@/utils/assets/img-database';
+import {
+  Enchufe_dark,
+  Enchufe_clear,
+  tlf_404_dark,
+  tlf_404_clear,
+  post3_404,
+  Enchufe_dark_largo,
+  Enchufe_clear_largo,
+} from '@/utils/assets/img-database';
 import Link from 'next/link';
 
 const Error_404 = () => {
   const { isDark } = useDarkTheme();
   const [counter, setCounter] = useState(10);
   const router = useRouter();
-
 
   useEffect(() => {
     if (counter === 0) {
@@ -29,15 +36,13 @@ const Error_404 = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [counter, router]);  
+  }, [counter, router]);
 
   return (
-    
     <div className={styles.container}>
-      <AnimatedBlurredCircles tope="top-[0px]"/>
+      <AnimatedBlurredCircles tope="top-[0px]" />
       {isDark ? (
         <>
-          
           <div className={styles.image}>
             <Image
               src={Error_404_dark}
@@ -59,16 +64,12 @@ const Error_404 = () => {
           <div className={styles.message}>
             <h1 className="font-normal text-white">Ups..</h1>
             <h1 className="font-normal text-white">La pagina no</h1>
-            <h1 className="font-normal text-white">
-              ha sido encontrada
-            </h1>
+            <h1 className="font-normal text-white">ha sido encontrada</h1>
           </div>
           <div className={styles.tlf_message}>
             <h1 className="font-normal text-white">Ups..</h1>
             <h1 className="font-normal text-white">La pagina no</h1>
-            <h1 className="font-normal text-white">
-              ha sido encontrada
-            </h1>
+            <h1 className="font-normal text-white">ha sido encontrada</h1>
           </div>
           <div className={styles.redirectButton}>
             <Link
@@ -80,19 +81,19 @@ const Error_404 = () => {
           </div>
           <div className={styles.tlf_redirectButton}>
             <Link href="/">
-            <p
-              className="font-bold text-black bg-white"
-              style={{
-                fontSize: '9px',
-                textAlign: 'center',
-                borderRadius: '28px',
-                width: '105px',
-                height: '35px',
-                padding: '10px'
-              }}
-            >
-              Redireccion en {counter}
-            </p>
+              <p
+                className="bg-white font-bold text-black"
+                style={{
+                  fontSize: '9px',
+                  textAlign: 'center',
+                  borderRadius: '28px',
+                  width: '105px',
+                  height: '35px',
+                  padding: '10px',
+                }}
+              >
+                Redireccion en {counter}
+              </p>
             </Link>
           </div>
           <div className={styles.postImage1}>
@@ -144,7 +145,6 @@ const Error_404 = () => {
         </>
       ) : (
         <>
-          
           <div className={styles.image}>
             <Image
               src={Error_404_clear}
@@ -166,16 +166,12 @@ const Error_404 = () => {
           <div className={styles.message}>
             <p className="font-normal text-black">Ups..</p>
             <p className="font-normal text-black">La pagina no</p>
-            <p className="font-normal text-black">
-              ha sido encontrada
-            </p>
+            <p className="font-normal text-black">ha sido encontrada</p>
           </div>
           <div className={styles.tlf_message}>
             <h1 className="font-normal text-black">Ups..</h1>
             <h1 className="font-normal text-black">La pagina no</h1>
-            <h1 className="font-normal text-black">
-              ha sido encontrada
-            </h1>
+            <h1 className="font-normal text-black">ha sido encontrada</h1>
           </div>
           <div className={styles.redirectButton}>
             <Link
@@ -187,20 +183,20 @@ const Error_404 = () => {
           </div>
           <div className={styles.tlf_redirectButton}>
             <Link href="/">
-            <p
-              className="font-bold text-blue-950"
-              style={{
-                border: '1.5px solid blue',
-                fontSize: '10px',
-                textAlign: 'center',
-                borderRadius: '28px',
-                width: '115px',
-                height: '42px',
-                padding: '10px'
-              }}
-            >
-              Redireccion en {counter}
-            </p>
+              <p
+                className="font-bold text-blue-950"
+                style={{
+                  border: '1.5px solid blue',
+                  fontSize: '10px',
+                  textAlign: 'center',
+                  borderRadius: '28px',
+                  width: '115px',
+                  height: '42px',
+                  padding: '10px',
+                }}
+              >
+                Redireccion en {counter}
+              </p>
             </Link>
           </div>
           <div className={styles.postImage1}>

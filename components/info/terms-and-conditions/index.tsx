@@ -15,9 +15,9 @@ const TermsAndConditions = () => {
   const currentMargin = ResponsiveMarginHook(margins);
 
   return (
-    <div className="relative flex flex-col items-center py-10 ">
+    <div className="relative flex flex-col items-center py-10">
       <AnimatedBlurredCircles tope="top-[-1675px]" />
-      <div style={{ margin: currentMargin }} >
+      <div style={{ margin: currentMargin }}>
         <div className="flex max-w-[1000px] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left">
           <div className="flex w-full max-w-[600px] items-center justify-center p-0">
             <h1 className="mb-6 text-3xl md:text-4xl">
