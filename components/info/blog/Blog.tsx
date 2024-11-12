@@ -120,7 +120,6 @@ const Blog: React.FC = () => {
       setRandomImages(images);
     }
   }, [blogs]);
-  // filtra una card
   const filteredBlogs = blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
