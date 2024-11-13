@@ -2,13 +2,15 @@ import Clock from '@/components/ui/Clock/Clock';
 import { useState, useEffect, useRef } from 'react';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import useChronometerState from '@/store/chronometerStore';
+import { Reloj } from '@/utils/assets/img-database';
+import Image from 'next/image';
 
 type CronometroProps = {
   setBlockAll: (value: boolean) => void;
 };
 
 const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
-  const [segundos, setSegundos] = useState<number>(30 * 60); // Inicializamos en 30 minutos (30 * 60 segundos)
+  const [segundos, setSegundos] = useState<number>(10); // Inicializamos en 30 minutos (30 * 60 segundos)
   const intervaloRef = useRef<NodeJS.Timeout | null>(null); // Referencia para el intervalo de tiempo
   // const [stop, setStop] = useState(false);
   const { isStopped, stop, setisStopped, setStop } = useChronometerState();
@@ -77,7 +79,7 @@ const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
       <div
         style={{
           fontSize: '18px',
-          marginBottom: '7px',
+          // marginBottom: '7px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -87,32 +89,40 @@ const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
       >
         Tiempo Restante{' '}
         <Clock color={isDark ? '#ebe7e0' : '#252526'} stopRequest={stop} />
+        {/* <Image
+          src={Reloj}
+          alt="Reloj"
+          width={18}
+          height={18}
+        /> */}
         <span className="w-[52px] text-center">
           {formatTiempo(segundos)} {/* Mostrar el tiempo en formato mm:ss */}
         </span>
       </div>
 
       {/* Barra de progreso */}
-      <div
-        style={{
-          width: '100%',
-          height: '3px',
-          backgroundColor: 'transparent', // Color de fondo de la barra
-          //   borderRadius: '5px',
-          //   marginTop: '10px',
-          position: 'relative',
-        }}
-      >
+      {!isStopped && (
         <div
           style={{
-            width: `${porcentajeProgreso(segundos)}%`, // Progreso calculado
-            height: '100%',
-            backgroundColor: obtenerColorBarra(segundos), // Color de la barra (puedes cambiarlo)
-            borderRadius: '1px',
-            transition: 'width 1s ease-out', // Transición suave para el cambio de la barra
+            width: '100%',
+            height: '3px',
+            backgroundColor: 'transparent', // Color de fondo de la barra
+            //   borderRadius: '5px',
+            marginTop: '7px',
+            position: 'relative',
           }}
-        ></div>
-      </div>
+        >
+          <div
+            style={{
+              width: `${porcentajeProgreso(segundos)}%`, // Progreso calculado
+              height: '100%',
+              backgroundColor: obtenerColorBarra(segundos), // Color de la barra (puedes cambiarlo)
+              borderRadius: '1px',
+              transition: 'width 1s ease-out', // Transición suave para el cambio de la barra
+            }}
+          ></div>
+        </div>
+      )}
     </div>
   );
 };
