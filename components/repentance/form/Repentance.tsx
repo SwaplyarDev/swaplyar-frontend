@@ -12,6 +12,8 @@ import SelectCodeCountry from '@/components/request/form/inputs/SelectCodeCountr
 import Swal from 'sweetalert2';
 import Arrow from '@/components/ui/Arrow/Arrow';
 import { createRoot } from 'react-dom/client';
+import Tick from '@/components/ui/Tick/Tick';
+import WarningIcon from '@/components/ui/WarningIcon/WarningIcon';
 
 const RepentanceForm = () => {
   const { isDark } = useDarkTheme();
@@ -45,6 +47,8 @@ const RepentanceForm = () => {
     }));
   };
   const handleSendClick = () => {
+    // PROCESO
+
     // Swal.fire({
     //   title: `<h1 style="color:white; ${isDark ? 'color: white;' : 'color: black;'}" >La solicitud #123456789 se encuentra en proceso</h1>`,
     //   html: `<div style="text-align: left; ${isDark ? 'color: white;' : 'color: black;'}">
@@ -64,44 +68,88 @@ const RepentanceForm = () => {
     //   confirmButtonText: '<- Volver',
     //   cancelButtonText: 'Cancelar',
     // });
-    Swal.fire({
-      title: `<h1 style="color:${isDark ? 'white' : 'black'};">Solicitud realizada con exito</h1>`,
-      html: `
-        <div id="back-button-container" style="display: inline-block;"></div> <!-- Contenedor del botón Volver -->
-        
-      `,
-      background: isDark ? 'rgb(69 69 69)' : '#ffffff',
-      showConfirmButton: false, // Ocultar el botón de confirmación de SweetAlert2
-      buttonsStyling: false, // Desactivar estilos predeterminados de SweetAlert
-      customClass: {
-        actions: 'flex justify-between w-full px-4', // Posición de botones
-        confirmButton: `${isDark ? 'buttonSecondDark text-white' : 'buttonSecond text-buttonsLigth'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 hover:bg-transparent dark:border-darkText dark:hover:bg-transparent md:hidden`,
-      },
-      didRender: () => {
-        // Renderizar el ícono personalizado (Arrow) en el contenedor de ícono
-        const iconContainer = document.getElementById('custom-icon-container');
-        if (iconContainer) {
-          const iconRoot = createRoot(iconContainer);
-          iconRoot.render(<Arrow color={isDark ? '#ffffff' : '#000000'} />);
-        }
+
+    // EXITO
+
+    // Swal.fire({
+    //   didRender: () => {
+    //     const tickContainer = document.getElementById('tick-container');
+    //     if (tickContainer) {
+    //       const root = createRoot(tickContainer);
+    //       root.render(
+    //         <div style={{ backgroundColor: isDark ? '#FCFBFA' : '#414244', borderRadius: '50%', padding: '10px' }}>
+    //           <Tick color={isDark ? '#414244' : '#FCFBFA'} size="70px" />
+    //         </div>
+    //       );
+    //     }
+    //   },
+    //   title: "",
+    //   html: `
+    //     <div class="flex flex-col items-center justify-center bg-[#ffffff] dark:bg-[#454545] gap-[15px] rounded-xl px-[15px] py-5 xs-phone:py-[10px] max-w-[467.45px] w-full">
+    //       <div id="tick-container" class="flex items-center justify-center mb-4"></div>
+    //       <h2 class="text-2xl text-[#252526] dark:text-[#ebe7e0] mb-4">Solicitud realizada con éxito</h2>
+    //       <button id="back-button" class="${isDark ? 'buttonSecondDark text-white' : 'buttonSecond text-buttonsLigth'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 hover:bg-transparent dark:border-darkText dark:hover:bg-transparent">
+    //         ← Volver
+    //       </button>
+    //     </div>
+    //   `,
+    //   customClass: {
+    //     popup: 'confirmAlert',
+    //   },
+    //   showConfirmButton: false,
+    //   showCancelButton: false,
+    //   background: 'transparent',
+    //   color: isDark ? '#ffffff' : '#000000',
+    //   allowOutsideClick: true,
+    //   allowEscapeKey: false,
+    //   allowEnterKey: false,
+    // });
+    // document.addEventListener('click', (e) => {
+    //   if ((e.target as HTMLElement).id === 'back-button') {
+    //     Swal.close();
+    //   }
+    // });
+
+    // DUPLICACION
     
-        // Renderizar el botón Volver usando React con el componente Arrow
-        const backElement = document.getElementById('back-button-container');
-        if (backElement) {
-          const root = createRoot(backElement);
-          root.render(
-            <button
-              onClick={() => Swal.close()}
-              className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 flex h-[42px] min-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-sm text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
-            >
-              <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} backRequest={true} />
-              Volver
-            </button>
-          );
-        }
-      },
-      
-    });
+    // Swal.fire({
+    //   didRender: () => {
+    //     const warningContainer = document.getElementById('warning-container');
+    //     if (warningContainer) {
+    //       const root = createRoot(warningContainer);
+    //       root.render(
+            
+    //         <WarningIcon isDark={isDark} />
+            
+    //       );
+    //     }
+    //   },
+    //   title: "",
+    //   html: `
+    //     <div class="flex flex-col items-center justify-center bg-[#ffffff] dark:bg-[#454545] gap-[15px] rounded-xl px-[15px] py-5 xs-phone:py-[10px] max-w-[467.45px] w-full">
+    //       <div id="warning-container" class="flex items-center justify-center mb-4"></div>
+    //       <h2 class="text-2xl text-[#252526] dark:text-[#ebe7e0] mb-4">Esta solicitud ya genero una alerta de cancelación o reembolso</h2>
+    //       <button id="back-button" class="${isDark ? 'buttonSecondDark text-white' : 'buttonSecond text-buttonsLigth'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 hover:bg-transparent dark:border-darkText dark:hover:bg-transparent">
+    //         ← Volver
+    //       </button>
+    //     </div>
+    //   `,
+    //   customClass: {
+    //     popup: 'confirmAlert',
+    //   },
+    //   showConfirmButton: false,
+    //   showCancelButton: false,
+    //   background: 'transparent',
+    //   color: isDark ? '#ffffff' : '#000000',
+    //   allowOutsideClick: true,
+    //   allowEscapeKey: false,
+    //   allowEnterKey: false,
+    // });
+    // document.addEventListener('click', (e) => {
+    //   if ((e.target as HTMLElement).id === 'back-button') {
+    //     Swal.close();
+    //   }
+    // });
   };
 
   const formValues = useWatch({ control });

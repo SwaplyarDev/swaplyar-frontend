@@ -13,6 +13,9 @@ const config: Config = {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        playfair: ['Playfair Display', 'serif'],
+      },
       backgroundImage: {
         'need-help': "url('/images/need-help.png')",
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
