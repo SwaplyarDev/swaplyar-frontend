@@ -60,10 +60,7 @@ export default {
             throw new InvalidCredentials();
           }
         } catch (error) {
-          console.error(
-            'Authentication error:',
-            error instanceof InvalidCredentials ? error.message : error,
-          );
+          console.error('Authentication error:', error instanceof InvalidCredentials ? error.message : error);
           throw new Error('Authentication failed. Please try again.');
         }
       },

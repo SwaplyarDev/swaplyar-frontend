@@ -11,10 +11,7 @@ interface ClientWrapperProps {
   loadingDelay?: number;
 }
 
-const ClientWrapper: React.FC<ClientWrapperProps> = ({
-  children,
-  loadingDelay = 300,
-}) => {
+const ClientWrapper: React.FC<ClientWrapperProps> = ({ children, loadingDelay = 300 }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useHydrateStore();

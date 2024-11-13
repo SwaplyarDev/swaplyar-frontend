@@ -9,20 +9,11 @@ const Switch = () => {
   return (
     <StyledWrapper isDark={isDark}>
       <label className="theme-switch">
-        <input
-          type="checkbox"
-          className="theme-switch__checkbox"
-          checked={isDark}
-          onChange={changeTheme}
-        />
+        <input type="checkbox" className="theme-switch__checkbox" checked={isDark} onChange={changeTheme} />
         <div className="theme-switch__container">
           <div className="theme-switch__clouds" />
           <div className="theme-switch__stars-container">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 144 55"
-              fill="none"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 55" fill="none">
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -63,9 +54,7 @@ const StyledWrapper = styled.div<{ isDark: boolean }>`
     --sun-bg: #ecca2f;
     --moon-bg: #c4c9d1;
     --spot-color: #959db1;
-    --circle-container-offset: calc(
-      (var(--circle-container-diameter) - var(--container-height)) / 2 * -1
-    );
+    --circle-container-offset: calc((var(--circle-container-diameter) - var(--container-height)) / 2 * -1);
     --stars-color: #fff;
     --clouds-color: #f3fdff;
     --back-clouds-color: #aacadf;
@@ -282,44 +271,29 @@ const StyledWrapper = styled.div<{ isDark: boolean }>`
     background-color: var(--container-night-bg);
   }
 
-  .theme-switch__checkbox:checked
-    + .theme-switch__container
-    .theme-switch__circle-container {
-    left: calc(
-      100% - var(--circle-container-offset) - var(--circle-container-diameter)
-    );
+  .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__circle-container {
+    left: calc(100% - var(--circle-container-offset) - var(--circle-container-diameter));
   }
 
-  .theme-switch__checkbox:checked
-    + .theme-switch__container
-    .theme-switch__circle-container:hover {
-    left: calc(
-      100% - var(--circle-container-offset) - var(--circle-container-diameter) -
-        0.187em
-    );
+  .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__circle-container:hover {
+    left: calc(100% - var(--circle-container-offset) - var(--circle-container-diameter) - 0.187em);
   }
 
   .theme-switch__circle-container:hover {
     left: calc(var(--circle-container-offset) + 0.187em);
   }
 
-  .theme-switch__checkbox:checked
-    + .theme-switch__container
-    .theme-switch__moon {
+  .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__moon {
     -webkit-transform: translate(0);
     -ms-transform: translate(0);
     transform: translate(0);
   }
 
-  .theme-switch__checkbox:checked
-    + .theme-switch__container
-    .theme-switch__clouds {
+  .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__clouds {
     bottom: -4.062em;
   }
 
-  .theme-switch__checkbox:checked
-    + .theme-switch__container
-    .theme-switch__stars-container {
+  .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__stars-container {
     top: 50%;
     -webkit-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
@@ -327,20 +301,17 @@ const StyledWrapper = styled.div<{ isDark: boolean }>`
   }
 
   theme-switch__container {
-    background-color: ${(props) =>
-      props.isDark ? 'var(--container-night-bg)' : 'var(--container-light-bg)'};
+    background-color: ${(props) => (props.isDark ? 'var(--container-night-bg)' : 'var(--container-light-bg)')};
     transition: background-color 0.3s ease-in-out;
   }
 
   .theme-switch__sun-moon-container {
-    background-color: ${(props) =>
-      props.isDark ? 'var(--moon-bg)' : 'var(--sun-bg)'};
+    background-color: ${(props) => (props.isDark ? 'var(--moon-bg)' : 'var(--sun-bg)')};
     transition: background-color 0.3s ease-in-out;
   }
 
   .theme-switch__moon {
-    transform: ${(props) =>
-      props.isDark ? 'translateX(0)' : 'translateX(100%)'};
+    transform: ${(props) => (props.isDark ? 'translateX(0)' : 'translateX(100%)')};
     transition: transform 0.3s ease-in-out;
   }
 `;

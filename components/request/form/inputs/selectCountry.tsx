@@ -18,15 +18,9 @@ type SelectCountryProps = {
   setCurrentCountry: any;
 };
 
-export default function SelectCountry({
-  errors,
-  setValue,
-  setCurrentCountry,
-}: SelectCountryProps) {
+export default function SelectCountry({ errors, setValue, setCurrentCountry }: SelectCountryProps) {
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
-  const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(
-    null,
-  );
+  const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(null);
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -34,9 +28,7 @@ export default function SelectCountry({
         const response = await fetch('https://restcountries.com/v3.1/all');
         const countries = await response.json();
         const options: CountryOption[] = countries.map((country: any) => {
-          const callingCode = country.idd?.root
-            ? `${country.idd.root}${country.idd.suffixes?.[0] || ''}`
-            : '';
+          const callingCode = country.idd?.root ? `${country.idd.root}${country.idd.suffixes?.[0] || ''}` : '';
           return {
             value: country.name.common,
             label: `${country.name.common} (${callingCode ? callingCode : 'Sin código'})`,
@@ -54,12 +46,7 @@ export default function SelectCountry({
 
   return (
     <>
-      <label
-        htmlFor="country"
-        className={clsx(
-          errors.country ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
-        )}
-      >
+      <label htmlFor="country" className={clsx(errors.country ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}>
         País
       </label>
       <Select
@@ -147,11 +134,7 @@ export default function SelectCountry({
           }),
         }}
       />
-      {errors.country && (
-        <p className="mb-5 text-sm text-red-500">
-          • {errors.country.message as string}
-        </p>
-      )}
+      {errors.country && <p className="mb-5 text-sm text-red-500">• {errors.country.message as string}</p>}
     </>
   );
 }

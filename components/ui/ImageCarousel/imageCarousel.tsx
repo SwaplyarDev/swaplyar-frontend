@@ -21,25 +21,36 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
   const limitedImages = images.slice(0, 6);
 
   return (
-    <div className="border-4 border-[#012C8A] rounded-[20px] overflow-hidden relative">
+    <div className="relative overflow-hidden rounded-[20px] border-4 border-[#012C8A]">
       <Slider {...settings}>
         {limitedImages.map((image, index) => (
           <div key={index}>
+<<<<<<< HEAD
             <Image 
               src={image}
               alt={`Slide ${index + 1}`} 
               className="w-full h-60 object-cover" 
+=======
+            <Image
+              src={image}
+              alt={`Slide ${index + 1}`}
+              className="h-60 w-full object-cover"
+>>>>>>> 392b8378f978bb7c3bba95f60bb4b9d5d72bd705
               width={800}
               height={400}
             />
           </div>
         ))}
       </Slider>
+<<<<<<< HEAD
       <div className="absolute bottom-4 w-full flex justify-center space-x-2">
+=======
+      <div className="absolute bottom-4 flex w-full justify-center space-x-2">
+>>>>>>> 392b8378f978bb7c3bba95f60bb4b9d5d72bd705
         {limitedImages.map((_, index) => (
           <div
             key={index}
-            className={`w-4 h-4 rounded-full transition-all duration-300 ${activeIndex === index ? 'bg-[#012C8A]' : 'bg-white border-2 border-[#012C8A] opacity-50'}`}
+            className={`h-4 w-4 rounded-full transition-all duration-300 ${activeIndex === index ? 'bg-[#012C8A]' : 'border-2 border-[#012C8A] bg-white opacity-50'}`}
           ></div>
         ))}
       </div>

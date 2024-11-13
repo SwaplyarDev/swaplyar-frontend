@@ -81,10 +81,7 @@ export function TopMenu() {
           <nav className="flex flex-row items-center justify-center">
             <section className="flex items-center justify-end gap-4 lg:pr-2">
               <Switch />
-              <button
-                onClick={() => setDrawerMenu(true)}
-                className="block lg:hidden"
-              >
+              <button onClick={() => setDrawerMenu(true)} className="block lg:hidden">
                 <GiHamburgerMenu className="size-8 text-lightText dark:text-darkText" />
               </button>
             </section>
@@ -98,9 +95,7 @@ export function TopMenu() {
               <Drawer.Header
                 title=""
                 titleIcon={() => <></>}
-                closeIcon={() => (
-                  <MdOutlineClose className="size-7 text-blue-800 dark:text-sky-500" />
-                )}
+                closeIcon={() => <MdOutlineClose className="size-7 text-blue-800 dark:text-sky-500" />}
                 className="flex items-center text-lg font-bold [&>button]:top-4"
               />
               <Drawer.Items>
@@ -121,9 +116,7 @@ export function TopMenu() {
                       >
                         <div
                           className={`${
-                            selectedItem === 'about-us'
-                              ? 'bg-blue-800 dark:bg-sky-500'
-                              : ''
+                            selectedItem === 'about-us' ? 'bg-blue-800 dark:bg-sky-500' : ''
                           } absolute left-0 -mt-2 h-10 w-2 rounded-r-md`}
                         ></div>
                         Quienes Somos
@@ -140,9 +133,7 @@ export function TopMenu() {
                       >
                         <div
                           className={`${
-                            selectedItem === 'how-to-use'
-                              ? 'bg-blue-800 dark:bg-sky-500'
-                              : ''
+                            selectedItem === 'how-to-use' ? 'bg-blue-800 dark:bg-sky-500' : ''
                           } absolute left-0 -mt-2 h-10 w-2 rounded-r-md`}
                         ></div>
                         Como Usar SwaplyAr
@@ -159,9 +150,7 @@ export function TopMenu() {
                       >
                         <div
                           className={`${
-                            selectedItem === 'loyalty-program'
-                              ? 'bg-blue-800 dark:bg-sky-500'
-                              : ''
+                            selectedItem === 'loyalty-program' ? 'bg-blue-800 dark:bg-sky-500' : ''
                           } absolute left-0 -mt-2 h-10 w-2 rounded-r-md`}
                         ></div>
                         Programa de Fidelización

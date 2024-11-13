@@ -21,18 +21,10 @@ const HelpCenterPage = () => {
     <>
       <main className="relative flex w-full flex-col items-center justify-center gap-20 py-10">
         <AnimatedBlurredCircles tope="top-[-260px]" />
-        <div
-          className="mx-auto grid max-w-[1000px] gap-12"
-          style={{ margin: currentMargin }}
-        >
+        <div className="mx-auto grid max-w-[1000px] gap-12" style={{ margin: currentMargin }}>
           <section className="rs-wrapper-v4 p-4">
-            <h1 className="text-center text-3xl font-bold md:text-left">
-              Bienvenido al Centro de Ayuda de SwaplyAr
-            </h1>
-            <p className="text-xl">
-              Comunicate con nosotros y responderemos cualquier consulta que
-              tengas
-            </p>
+            <h1 className="text-center text-3xl font-bold md:text-left">Bienvenido al Centro de Ayuda de SwaplyAr</h1>
+            <p className="text-xl">Comunicate con nosotros y responderemos cualquier consulta que tengas</p>
           </section>
           <section className="flex flex-col items-center">
             <ContactForm />
@@ -57,17 +49,13 @@ const HelpCenterPage = () => {
             </span>
             <span className="flex flex-col items-center text-center">
               <h2 className="text-2xl font-bold">
-                SwaplyAr Plus Rewards™ premia tu fidelidad, con el programa de
-                fidelización
+                SwaplyAr Plus Rewards™ premia tu fidelidad, con el programa de fidelización
               </h2>
               <h5 className="mt-4 text-left text-lg md:text-center">
-                Obtené beneficios exclusivos cada vez que realices un cambio de
-                divisas con SwaplyAr Plus Rewards™.
+                Obtené beneficios exclusivos cada vez que realices un cambio de divisas con SwaplyAr Plus Rewards™.
               </h5>
               <button
-                onClick={() =>
-                  (window.location.href = 'programa-de-fidelizacion')
-                }
+                onClick={() => (window.location.href = 'programa-de-fidelizacion')}
                 className={`dark:hover:bg- relative m-1 mt-4 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
               >
                 Plus Rewards™
@@ -94,13 +82,10 @@ const HelpCenterPage = () => {
               <h3 className="text-xl font-bold">Chateá con nosotros</h3>
               <div className="flex h-full flex-col justify-between">
                 <p className="mb-6 text-center text-lg md:mb-0 md:text-left">
-                  Comunicate con nuestro representante de Atención al Cliente
-                  para recibir ayuda.
+                  Comunicate con nuestro representante de Atención al Cliente para recibir ayuda.
                 </p>
                 <p className="text-right text-2xl">
-                  <LinkWithHover href="https://wa.me/+5491123832198">
-                    WhatsApp.
-                  </LinkWithHover>
+                  <LinkWithHover href="https://wa.me/+5491123832198">WhatsApp.</LinkWithHover>
                 </p>
               </div>
             </span>
@@ -125,13 +110,10 @@ const HelpCenterPage = () => {
               <h3 className="text-xl font-bold">Otro motivo...</h3>
               <div className="flex flex-col justify-between">
                 <p className="mb-6 text-center text-lg md:mb-0 md:text-left">
-                  Si necesitás contactarnos por otro motivo, simplemente
-                  envianos un email y atenderemos tu solicitud.
+                  Si necesitás contactarnos por otro motivo, simplemente envianos un email y atenderemos tu solicitud.
                 </p>
                 <p className="text-right text-2xl">
-                  <LinkWithHover href="mailto:centrodeayuda@swaplyar.com">
-                    Email.
-                  </LinkWithHover>
+                  <LinkWithHover href="mailto:centrodeayuda@swaplyar.com">Email.</LinkWithHover>
                 </p>
               </div>
             </span>

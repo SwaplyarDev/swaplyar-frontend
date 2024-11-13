@@ -9,8 +9,7 @@ import { useRouter } from 'next/navigation';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
 import Image from 'next/image';
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
 
 type FormInputs = {
   email: string;
@@ -62,24 +61,15 @@ export const LoginForm = () => {
         onSubmit={handleSubmit(submitEmail)}
         className="flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
       >
-        <h2 className="mb-5 text-center text-2xl font-bold text-buttonsLigth dark:text-darkText">
-          Iniciar Sesión
-        </h2>
+        <h2 className="mb-5 text-center text-2xl font-bold text-buttonsLigth dark:text-darkText">Iniciar Sesión</h2>
 
-        <label
-          htmlFor="email"
-          className={clsx(
-            errors.email ? 'text-red-500' : 'text-lightText dark:text-darkText',
-          )}
-        >
+        <label htmlFor="email" className={clsx(errors.email ? 'text-red-500' : 'text-lightText dark:text-darkText')}>
           Correo electrónico
         </label>
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-            errors.email
-              ? 'mb-0 border-red-500'
-              : 'mb-5 hover:border-blue-600 dark:hover:border-white',
+            errors.email ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600 dark:hover:border-white',
           )}
           type="email"
           {...register('email', {
@@ -90,9 +80,7 @@ export const LoginForm = () => {
             },
           })}
         />
-        {errors.email && (
-          <p className="mb-5 text-sm text-red-500">• {errors.email.message}</p>
-        )}
+        {errors.email && <p className="mb-5 text-sm text-red-500">• {errors.email.message}</p>}
 
         <button
           type="submit"
@@ -101,13 +89,7 @@ export const LoginForm = () => {
         >
           {loading ? (
             <div className="flex items-center justify-center">
-              <Image
-                src="/gif/cargando.gif"
-                width={30}
-                height={30}
-                alt="loading"
-                className="mb-0.5 mr-2"
-              />
+              <Image src="/gif/cargando.gif" width={30} height={30} alt="loading" className="mb-0.5 mr-2" />
               Procesando...
             </div>
           ) : (

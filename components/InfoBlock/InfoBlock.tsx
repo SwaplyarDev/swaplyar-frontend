@@ -11,13 +11,7 @@ interface InfoBlockProps {
   contentNode?: React.ReactNode;
 }
 
-export default function InfoBlock({
-  title,
-  imageSrc,
-  imageAlt,
-  content,
-  contentNode,
-}: InfoBlockProps) {
+export default function InfoBlock({ title, imageSrc, imageAlt, content, contentNode }: InfoBlockProps) {
   return (
     <div className="mb-12 mt-16 flex max-w-4xl flex-col items-center justify-center md:flex-row">
       <div className="info-image-container mb-4 flex justify-center md:mb-0 md:mr-8 md:w-1/2">
@@ -39,10 +33,7 @@ export default function InfoBlock({
           {contentNode ? (
             contentNode
           ) : (
-            <p
-              className="text-gray-700 dark:text-white"
-              dangerouslySetInnerHTML={{ __html: content || '' }}
-            ></p>
+            <p className="text-gray-700 dark:text-white" dangerouslySetInnerHTML={{ __html: content || '' }}></p>
           )}
         </div>
       </div>

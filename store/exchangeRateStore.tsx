@@ -1,8 +1,5 @@
 import { create } from 'zustand';
-import {
-  getExchangeRates,
-  getExchangeRatesUSD_EUR,
-} from '@/utils/currencyApis';
+import { getExchangeRates, getExchangeRatesUSD_EUR } from '@/utils/currencyApis';
 
 interface ExchangeRateStore {
   rates: any;
@@ -56,9 +53,7 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
 
   const fetchAndUpdateUSDToEURRates = async () => {
     set({ isLoading: true, error: null });
-    console.log(
-      'Haciendo petición a la API para actualizar las tasas de USD a EUR...',
-    );
+    console.log('Haciendo petición a la API para actualizar las tasas de USD a EUR...');
 
     try {
       // Obtener tasas de cambio USD a EUR (10 minutos)
@@ -122,9 +117,7 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
     startUpdatingRates: () => {
       if (intervalId) return;
 
-      console.log(
-        'Iniciando la actualización automática de tasas de cambio...',
-      );
+      console.log('Iniciando la actualización automática de tasas de cambio...');
 
       const ratesLoaded = loadRatesFromLocalStorage();
 

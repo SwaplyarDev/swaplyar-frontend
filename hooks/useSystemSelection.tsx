@@ -15,16 +15,10 @@ export const useSystemSelection = () => {
   const handleSystemSelection = (system: System, isSending: boolean) => {
     if (isSending) {
       setSelectedSendingSystem(system);
-      setSelectedReceivingSystem(
-        system.id === selectedReceivingSystem?.id
-          ? null
-          : selectedReceivingSystem,
-      );
+      setSelectedReceivingSystem(system.id === selectedReceivingSystem?.id ? null : selectedReceivingSystem);
     } else {
       setSelectedReceivingSystem(system);
-      setSelectedSendingSystem(
-        system.id === selectedSendingSystem?.id ? null : selectedSendingSystem,
-      );
+      setSelectedSendingSystem(system.id === selectedSendingSystem?.id ? null : selectedSendingSystem);
     }
   };
 
