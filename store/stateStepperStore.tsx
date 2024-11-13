@@ -121,14 +121,15 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     console.log(stepThree.proof_of_payment);
 
     const payload = {
+      transaction: {
         sender: {
           first_name: stepOne.sender_first_name,
           last_name: stepOne.sender_last_name,
-          identification: stepTwo.tax_identification,
+          identification: stepTwo.tax_identification, // por ahora
           phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
           email: stepOne.email,
           bank_account: {
-            email_account: '',
+            email_account: stepOne.email, // por ahora
             payment_method: selectedSendingSystem?.name || '',
             number_account: '',
           },
@@ -137,7 +138,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           first_name: stepTwo.receiver_first_name,
           last_name: stepTwo.receiver_last_name,
           bank_account: {
-            email_account: stepTwo.bank_email,
+            email_account: stepOne.email,
             payment_method: selectedReceivingSystem?.name || '',
             number_account: stepTwo.transfer_identification,
           },
@@ -154,8 +155,11 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           amount_received: parseFloat(stepThree.receive_amount),
           currency_received: selectedReceivingSystem?.coin || '',
         },
+      },
     };
+
     const formDataPayload = new FormData();
+
     if (stepThree.proof_of_payment && stepThree.proof_of_payment.length > 0) {
       const realFile = stepThree.proof_of_payment[0];
       formDataPayload.append('file', realFile);
@@ -166,12 +170,14 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     formDataPayload.append('transactions', JSON.stringify(payload));
 
     try {
-      console.log(formDataPayload);
+      // for (let pair of formDataPayload.entries()) {
+      //   console.log(pair[0] + ', ' + pair[1]);
+      // }
       const response = await fetch(`${BASE_URL}/v1/transactions`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        // headers: {
+        //   'Content-Type': 'multipart/form-data',
+        // },
         body: formDataPayload,
       });
 

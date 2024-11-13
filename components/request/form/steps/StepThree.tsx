@@ -261,7 +261,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
               Nota (opcional)
             </label>
             <textarea
-              {...register('note', { required: true })}
+              {...register('note', { required: false })}
               id="note"
               disabled={blockAll}
               placeholder="Añade una nota si lo deseas ;)"
