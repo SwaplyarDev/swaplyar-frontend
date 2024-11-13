@@ -19,9 +19,7 @@ export const RequestRegisterForm = () => {
   const [_errorMessage, setErrorMessage] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [paymentMethod, setPaymentMethod] = useState<string>('');
-  const [currentCountry, setCurrentCountry] = useState<CountryOption | null>(
-    null,
-  );
+  const [currentCountry, setCurrentCountry] = useState<CountryOption | null>(null);
   const [transactionId, setTransactionId] = useState<string>('');
   const { isDark } = useDarkTheme();
 
@@ -152,24 +150,14 @@ export const RequestRegisterForm = () => {
         className="flex w-full max-w-xs flex-col justify-center rounded-lg bg-white p-8 shadow-md dark:bg-gray-800 xs:max-w-lg"
       >
         <h2 className="mb-5 text-center text-2xl font-bold text-gray-900 dark:text-white">
-          Formulario de Solicitud de Transferencia Bancaria mediante{' '}
-          {paymentMethod}
+          Formulario de Solicitud de Transferencia Bancaria mediante {paymentMethod}
         </h2>
 
         <PayerInfo errors={errors} register={register} setValue={setValue} />
 
-        <SelectCountry
-          errors={errors}
-          setValue={setValue}
-          setCurrentCountry={setCurrentCountry}
-        />
+        <SelectCountry errors={errors} setValue={setValue} setCurrentCountry={setCurrentCountry} />
 
-        <label
-          htmlFor="phone"
-          className={clsx(
-            errors.phone ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
-          )}
-        >
+        <label htmlFor="phone" className={clsx(errors.phone ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}>
           Teléfono
         </label>
         <input
@@ -186,104 +174,65 @@ export const RequestRegisterForm = () => {
             },
           })}
         />
-        {errors.phone && (
-          <p className="mb-5 text-sm text-red-500">
-            • {errors.phone.message as string}
-          </p>
-        )}
+        {errors.phone && <p className="mb-5 text-sm text-red-500">• {errors.phone.message as string}</p>}
 
         <label
           htmlFor="document"
-          className={clsx(
-            errors.document
-              ? 'text-red-500'
-              : 'text-gray-900 dark:text-gray-300',
-          )}
+          className={clsx(errors.document ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
         >
           Número de Documento
         </label>
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.document
-              ? 'mb-0 border-red-500'
-              : 'mb-5 hover:border-blue-600',
+            errors.document ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
           )}
           type="text"
           {...register('document', {
             required: 'El número de documento es obligatorio',
           })}
         />
-        {errors.document && (
-          <p className="mb-5 text-sm text-red-500">
-            • {errors.document.message}
-          </p>
-        )}
+        {errors.document && <p className="mb-5 text-sm text-red-500">• {errors.document.message}</p>}
 
         <label
           htmlFor="type_of_document"
-          className={clsx(
-            errors.type_of_document
-              ? 'text-red-500'
-              : 'text-gray-900 dark:text-gray-300',
-          )}
+          className={clsx(errors.type_of_document ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
         >
           Tipo de Documento
         </label>
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.type_of_document
-              ? 'mb-0 border-red-500'
-              : 'mb-5 hover:border-blue-600',
+            errors.type_of_document ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
           )}
           type="text"
           {...register('type_of_document', {
             required: 'El tipo de documento es obligatorio',
           })}
         />
-        {errors.type_of_document && (
-          <p className="mb-5 text-sm text-red-500">
-            • {errors.type_of_document.message}
-          </p>
-        )}
+        {errors.type_of_document && <p className="mb-5 text-sm text-red-500">• {errors.type_of_document.message}</p>}
 
         <ReceiverInfo errors={errors} register={register} />
 
         <label
           htmlFor="proof_of_payment"
-          className={clsx(
-            errors.proof_of_payment
-              ? 'text-red-500'
-              : 'text-gray-900 dark:text-gray-300',
-          )}
+          className={clsx(errors.proof_of_payment ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
         >
           Comprobante de Pago
         </label>
         <input
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-            errors.proof_of_payment
-              ? 'mb-0 border-red-500'
-              : 'mb-5 hover:border-blue-600',
+            errors.proof_of_payment ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
           )}
           type="file"
           {...register('proof_of_payment', {
             required: 'El comprobante de pago es obligatorio',
           })}
         />
-        {errors.proof_of_payment && (
-          <p className="mb-5 text-sm text-red-500">
-            • {errors.proof_of_payment.message}
-          </p>
-        )}
+        {errors.proof_of_payment && <p className="mb-5 text-sm text-red-500">• {errors.proof_of_payment.message}</p>}
 
-        <label
-          htmlFor="note"
-          className={clsx(
-            errors.note ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
-          )}
-        >
+        <label htmlFor="note" className={clsx(errors.note ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}>
           Nota (Opcional)
         </label>
         <textarea
@@ -299,14 +248,7 @@ export const RequestRegisterForm = () => {
             disabled
             className="flex h-12 w-full items-center justify-center gap-2 rounded bg-gray-400 px-4 text-lg font-semibold text-white hover:bg-gray-500"
           >
-            <Image
-              src="/gif/cargando.gif"
-              width={20}
-              height={20}
-              alt="loading"
-              className="mb-0.5 mr-1"
-            />{' '}
-            Enviando...
+            <Image src="/gif/cargando.gif" width={20} height={20} alt="loading" className="mb-0.5 mr-1" /> Enviando...
           </button>
         ) : (
           <button
@@ -317,9 +259,7 @@ export const RequestRegisterForm = () => {
           </button>
         )}
 
-        {_errorMessage && (
-          <p className="mt-5 text-center text-red-500">{_errorMessage}</p>
-        )}
+        {_errorMessage && <p className="mt-5 text-center text-red-500">{_errorMessage}</p>}
       </form>
     </div>
   );

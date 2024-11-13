@@ -48,8 +48,7 @@ const cardsData = [
     alt: 'Imagen de Eficiencia',
     title: 'Eficiencia',
     backTitle: 'Eficiencia en Cada Transacción',
-    backText:
-      'Garantizamos intercambios rápidos y precisos para que accedas a tus fondos sin demoras.',
+    backText: 'Garantizamos intercambios rápidos y precisos para que accedas a tus fondos sin demoras.',
   },
 ];
 
@@ -68,9 +67,8 @@ const AboutUs = () => {
           <div className="rs-wrapper-v4 mx-auto items-center justify-center text-center md:w-full">
             <div className="container-text pb-12 pt-10 text-xl sm:pb-24 sm:pt-20 sm:text-2xl lg:text-4xl">
               <h1 className="max-w-[1000px] text-left lg:text-4xl">
-                En SwaplyAr, garantizamos un intercambio seguro y confiable de
-                tu dinero de PayPal. Estamos comprometidos con tu seguridad y
-                satisfacción.
+                En SwaplyAr, garantizamos un intercambio seguro y confiable de tu dinero de PayPal. Estamos
+                comprometidos con tu seguridad y satisfacción.
               </h1>
             </div>
           </div>
@@ -78,9 +76,8 @@ const AboutUs = () => {
           <div className="rs-wrapper-v4 mx-auto mb-12 max-w-[1000px] text-center sm:mt-4 md:mt-8 md:w-full lg:mt-8">
             <h2 className="text-2xl font-semibold">Nuestra misión y valores</h2>
             <h5 className="mx-auto mt-4 text-lg sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
-              SwaplyAr nació de una simple necesidad, intercambiar saldo y que
-              cada persona que lo utiliza reciba lo pactado, acompañándolo en
-              todo el proceso. Pronto su crecimiento fue exponencial debido a la
+              SwaplyAr nació de una simple necesidad, intercambiar saldo y que cada persona que lo utiliza reciba lo
+              pactado, acompañándolo en todo el proceso. Pronto su crecimiento fue exponencial debido a la
               confiabilidad, seguridad y velocidad en cada operación.
             </h5>
           </div>
@@ -93,9 +90,8 @@ const AboutUs = () => {
             <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
               <div className="col-right order-1 text-center text-lg text-black dark:text-white sm:text-left sm:text-4xl md:order-2">
                 <h2>
-                  &quot;Buscamos solucionar los problemas de las personas
-                  implementando las &uacute;ltimas tecnolog&iacute;as y sistemas
-                  de pago.&quot;
+                  &quot;Buscamos solucionar los problemas de las personas implementando las &uacute;ltimas
+                  tecnolog&iacute;as y sistemas de pago.&quot;
                 </h2>
               </div>
 
@@ -108,9 +104,7 @@ const AboutUs = () => {
                   className="sm:h-[300px] sm:w-[350px]"
                 />
                 <div className="text-team mt-4 text-center text-black dark:text-white">
-                  <h4 className="text-lg sm:text-2xl">
-                    Oa Johan Javier Suarez Merchan
-                  </h4>
+                  <h4 className="text-lg sm:text-2xl">Oa Johan Javier Suarez Merchan</h4>
                   <h5>Founder &amp; Chief Executive Officer (CEO)</h5>
                 </div>
               </div>
@@ -122,9 +116,8 @@ const AboutUs = () => {
         <FlyerTrabajo imageSrc={FlyerGif}>
           <span className="">
             <p>
-              ¿Nuevo en SwaplyAr? <br /> Conoce cómo funciona nuestra plataforma
-              y comienza a transferir dinero de forma sencilla y segura. Haz
-              click y aprende cómo usar SwaplyAr{' '}
+              ¿Nuevo en SwaplyAr? <br /> Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma
+              sencilla y segura. Haz click y aprende cómo usar SwaplyAr{' '}
             </p>
           </span>
           <div>

@@ -16,8 +16,7 @@ const config: Config = {
       backgroundImage: {
         'need-help': "url('/images/need-help.png')",
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       screens: {
         xs: '480px',
@@ -104,11 +103,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-    require('tailwindcss-textshadow'),
-    flowbite.plugin(),
-  ],
+  plugins: [require('@tailwindcss/forms'), require('tailwindcss-textshadow'), flowbite.plugin()],
 };
 
 export default config;

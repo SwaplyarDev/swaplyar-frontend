@@ -4,9 +4,7 @@ const ConversionInstructions = () => {
   return (
     <div className="lazyload-user-social flex w-full max-w-7xl flex-col-reverse items-center justify-between gap-4 space-y-4 py-8 md:flex-col lg-tablet:flex-row lg-tablet:space-x-4 lg-tablet:space-y-0">
       <div className="steps flex max-w-xl flex-1 flex-col items-start pt-6 lg-tablet:pt-8">
-        <h2 className="text-4xl">
-          Convertí y enviá tu dinero de PayPal a tu cuenta bancaria
-        </h2>
+        <h2 className="text-4xl">Convertí y enviá tu dinero de PayPal a tu cuenta bancaria</h2>
         <div className="not-ssr mt-2">
           <div className="container-steps mt-2">
             {['1', '2', '3'].map((number, index) => (
@@ -14,9 +12,7 @@ const ConversionInstructions = () => {
                 <div className="relative mr-2 flex h-6 w-fit items-center justify-center">
                   <div className="absolute flex items-center justify-center rounded-full">
                     <div className="flex h-7 w-7 rotate-[-33deg] animate-rotate items-center justify-center rounded-full bg-[#f9f9f9] text-center text-lg text-black transition-all duration-300">
-                      <span className="rotate-[33deg] text-[#001748]">
-                        {number}
-                      </span>
+                      <span className="rotate-[33deg] text-[#001748]">{number}</span>
                     </div>
                   </div>
                   <div className="flex h-6 w-6 items-center justify-center rounded-full border-0 bg-[#012c8a] shadow-none ring-0">

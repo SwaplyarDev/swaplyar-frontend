@@ -1,13 +1,7 @@
 // /components/ui/theme-Provider/themeProvider.tsx
 
 'use client';
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface ThemeContextProps {
   isDark: boolean;
@@ -30,15 +24,10 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const currentTheme = localStorage.getItem('theme');
     if (currentTheme) {
-      document.documentElement.classList.toggle(
-        'dark',
-        currentTheme === 'dark',
-      );
+      document.documentElement.classList.toggle('dark', currentTheme === 'dark');
       setIsDark(currentTheme === 'dark');
     } else {
-      const systemPrefersDark = window.matchMedia(
-        '(prefers-color-scheme: dark)',
-      ).matches;
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       setIsDark(systemPrefersDark);
     }
   }, []);
@@ -50,9 +39,5 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('theme', newTheme);
   };
 
-  return (
-    <ThemeContext.Provider value={{ isDark, changeTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={{ isDark, changeTheme }}>{children}</ThemeContext.Provider>;
 }

@@ -51,9 +51,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body
-        className={`${inter.className} bg-white text-lightText dark:bg-lightText dark:text-darkText`}
-      >
+      <body className={`${inter.className} bg-white text-lightText dark:bg-lightText dark:text-darkText`}>
         <SessionProvider>
           <ThemeProvider>
             <MarginProvider>

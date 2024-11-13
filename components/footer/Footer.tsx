@@ -4,12 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import S from '../../public/images/logo-solo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faLinkedin,
-  faInstagram,
-  faFacebook,
-  faWhatsapp,
-} from '@fortawesome/free-brands-svg-icons';
+import { faLinkedin, faInstagram, faFacebook, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import useStore from '@/store/authViewStore';
 
 interface FooterLinkProps {
@@ -36,37 +31,28 @@ export default function Footer() {
     <footer className="rs-wrapper-v4 mx-auto max-w-screen-2xl px-4 py-8">
       <div className="one-info-footer flex w-full flex-col items-center gap-4 px-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0">
         <section className="mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-start">
-          <h4 className="mb-2 text-pretty text-center text-xl font-bold">
-            Regístrate y disfruta de beneficios
-          </h4>
+          <h4 className="mb-2 text-pretty text-center text-xl font-bold">Regístrate y disfruta de beneficios</h4>
           <FooterLink href="/auth/login-register" view="login">
             Iniciar Sesión
           </FooterLink>
           <FooterLink href="/auth/login-register" view="register">
             Registrarse
           </FooterLink>
-          <FooterLink href="/info/loyalty-program">
-            Programa de Fidelización
-          </FooterLink>
+          <FooterLink href="/info/loyalty-program">Programa de Fidelización</FooterLink>
         </section>
         <section className="mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-center sm:text-center">
           <h4 className="mb-2 text-xl font-bold">Normativa</h4>
           <FooterLink href="/info/warranty">Garantía</FooterLink>
-          <FooterLink href="/info/terms-and-conditions">
-            Términos y condiciones
-          </FooterLink>
-          <FooterLink href="/info/sapr-terms-conditions">
-            Programa de Fidelización
-          </FooterLink>
+          <FooterLink href="/info/terms-and-conditions">Términos y condiciones</FooterLink>
+          <FooterLink href="/info/sapr-terms-conditions">T&C Plus Rewards</FooterLink>
+          <FooterLink href="/info/arepentimiento">SwaplyAr Solicitud</FooterLink>
         </section>
 
         <section className="flex flex-col items-center text-left sm:w-1/3 sm:items-end sm:text-right">
           <h4 className="mb-2 text-xl font-bold">Atención al Cliente</h4>
           <FooterLink href="/info/help-center">Centro de Ayuda</FooterLink>
-          <FooterLink href="/info/about-us">Quienes Somos</FooterLink>
-          <FooterLink href="/info/why-choose-swaplyar">
-            ¿Por qué Elegir SwaplyAr?
-          </FooterLink>
+          <FooterLink href="/info/about-us">Preguntas y Respuestas</FooterLink>
+          <FooterLink href="/info/blog">SwaplyAr Blog</FooterLink>
         </section>
       </div>
 
@@ -80,10 +66,7 @@ export default function Footer() {
             title="SwaplyAr CEO en LinkedIn"
             className="transition-opacity duration-200 hover:opacity-75"
           >
-            <FontAwesomeIcon
-              icon={faLinkedin}
-              className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]"
-            />
+            <FontAwesomeIcon icon={faLinkedin} className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]" />
           </Link>
           <Link
             href="https://www.instagram.com/swaplyar/"
@@ -93,10 +76,7 @@ export default function Footer() {
             title="SwaplyAr en Instagram"
             className="transition-opacity duration-200 hover:opacity-75"
           >
-            <FontAwesomeIcon
-              icon={faInstagram}
-              className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]"
-            />
+            <FontAwesomeIcon icon={faInstagram} className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]" />
           </Link>
           <Link
             href="https://www.facebook.com/swaplyar/"
@@ -106,10 +86,7 @@ export default function Footer() {
             title="SwaplyAr en Facebook"
             className="transition-opacity duration-200 hover:opacity-75"
           >
-            <FontAwesomeIcon
-              icon={faFacebook}
-              className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]"
-            />
+            <FontAwesomeIcon icon={faFacebook} className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]" />
           </Link>
           <Link
             href="https://wa.me/5491123832198"
@@ -119,10 +96,7 @@ export default function Footer() {
             title="SwaplyAr en WhatsApp"
             className="transition-opacity duration-200 hover:opacity-75"
           >
-            <FontAwesomeIcon
-              icon={faWhatsapp}
-              className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]"
-            />
+            <FontAwesomeIcon icon={faWhatsapp} className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]" />
           </Link>
         </section>
         <section className="mb-4 flex flex-grow justify-center filter dark:brightness-[0%] dark:invert sm:mb-0 sm:w-1/3 sm:justify-center">

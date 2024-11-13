@@ -29,10 +29,7 @@ function TopPopUp() {
         <p className="flex-grow text-center text-xs font-bold text-darkText md:text-sm lg:text-lg">
           Estamos trabajando en las funciones de inicio de sesión y registro
         </p>
-        <button
-          className="ml-2 text-lg font-extrabold text-darkText lg:text-2xl"
-          onClick={handleClose}
-        >
+        <button className="ml-2 text-lg font-extrabold text-darkText lg:text-2xl" onClick={handleClose}>
           <MdOutlineClose />
         </button>
       </div>

@@ -13,9 +13,7 @@ export const useExchangeRate = () => {
     if (selectedSendingSystem && selectedReceivingSystem) {
       let rate = 0;
       const rateInfo = exchangeRates.find(
-        (r) =>
-          r.from === selectedSendingSystem.id &&
-          r.to === selectedReceivingSystem.id,
+        (r) => r.from === selectedSendingSystem.id && r.to === selectedReceivingSystem.id,
       );
 
       if (rateInfo) {
@@ -23,10 +21,7 @@ export const useExchangeRate = () => {
         if (selectedSendingSystem.coin === selectedReceivingSystem.coin) {
           rate = await handleSameCurrencyRate(selectedSendingSystem.coin);
         } else {
-          apiRate = await handleDifferentCurrencyRate(
-            selectedSendingSystem.coin,
-            selectedReceivingSystem.coin,
-          );
+          apiRate = await handleDifferentCurrencyRate(selectedSendingSystem.coin, selectedReceivingSystem.coin);
           rate = rateInfo.formula(1, apiRate);
         }
 
@@ -49,10 +44,7 @@ const handleSameCurrencyRate = async (coin: string) => {
   return 0;
 };
 
-const handleDifferentCurrencyRate = async (
-  fromCoin: string,
-  toCoin: string,
-) => {
+const handleDifferentCurrencyRate = async (fromCoin: string, toCoin: string) => {
   if (fromCoin === 'USD' && toCoin === 'EUR') {
     const { currentValueUSDToEUR } = await updateCurrentValueUSDToEUR();
     return currentValueUSDToEUR || 0;

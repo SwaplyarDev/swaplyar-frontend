@@ -30,10 +30,7 @@ const WhyChooseSwaplyar: React.FC = () => {
   return (
     <div className="relative flex w-full flex-col gap-20 py-10">
       <AnimatedBlurredCircles tope="top-[-650px]" />
-      <div
-        className="m-auto grid items-center justify-center gap-12"
-        style={{ padding: currentMargin }}
-      >
+      <div className="m-auto grid items-center justify-center gap-12" style={{ padding: currentMargin }}>
         <section>
           <GuaranteeSection
             title="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
@@ -42,11 +39,9 @@ const WhyChooseSwaplyar: React.FC = () => {
             contentNode={
               <>
                 <p className="text-pretty text-left text-xl">
-                  Si estás buscando seguridad y confiabilidad en el intercambio
-                  de tu dinero digital, SwaplyAr es tu mejor opción. Descubre
-                  por qué somos la elección preferida para cambiar divisas de
-                  PayPal, con las mejores tasas del mercado y una plataforma
-                  fácil de usar.
+                  Si estás buscando seguridad y confiabilidad en el intercambio de tu dinero digital, SwaplyAr es tu
+                  mejor opción. Descubre por qué somos la elección preferida para cambiar divisas de PayPal, con las
+                  mejores tasas del mercado y una plataforma fácil de usar.
                 </p>
               </>
             }
@@ -104,9 +99,8 @@ const WhyChooseSwaplyar: React.FC = () => {
 
       <FlyerTrabajo imageSrc={FlyerGif}>
         <p>
-          ¿Nuevo en SwaplyAr? <br /> Conoce cómo funciona nuestra plataforma y
-          comienza a transferir dinero de forma sencilla y segura. Haz click y
-          aprende cómo usar SwaplyAr{' '}
+          ¿Nuevo en SwaplyAr? <br /> Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma
+          sencilla y segura. Haz click y aprende cómo usar SwaplyAr{' '}
         </p>
         <div>
           <button

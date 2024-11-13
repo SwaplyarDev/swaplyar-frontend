@@ -127,20 +127,10 @@ const Error_404 = () => {
           <div className={styles.tlf_lineaVertical1}></div>
 
           <div className={styles.enchufe1}>
-            <Image
-              src={Enchufe_dark_largo}
-              alt="Descripción de la imagen enchufe"
-              width={3700}
-              height={50}
-            />
+            <Image src={Enchufe_dark_largo} alt="Descripción de la imagen enchufe" width={3700} height={50} />
           </div>
           <div className={styles.tlf_enchufe1}>
-            <Image
-              src={Enchufe_dark}
-              alt="Descripción de la imagen enchufe"
-              width={400}
-              height={30}
-            />
+            <Image src={Enchufe_dark} alt="Descripción de la imagen enchufe" width={400} height={30} />
           </div>
         </>
       ) : (
@@ -231,20 +221,10 @@ const Error_404 = () => {
           <div className={styles.tlf_lineaVertical2}></div>
 
           <div className={styles.enchufe2}>
-            <Image
-              src={Enchufe_clear_largo}
-              alt="Descripción de la imagen enchufe"
-              width={3700}
-              height={50}
-            />
+            <Image src={Enchufe_clear_largo} alt="Descripción de la imagen enchufe" width={3700} height={50} />
           </div>
           <div className={styles.tlf_enchufe2}>
-            <Image
-              src={Enchufe_clear}
-              alt="Descripción de la imagen enchufe"
-              width={400}
-              height={30}
-            />
+            <Image src={Enchufe_clear} alt="Descripción de la imagen enchufe" width={400} height={30} />
           </div>
         </>
       )}
