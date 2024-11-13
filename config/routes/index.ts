@@ -4,7 +4,7 @@ export const configRoutes: ConfigRoutes = {
   publicRoutes: [
     '/',
     '/auth/change-password',
-    '/info/about-us', 
+    '/info/about-us',
     '/info/blog',
     '/info/help-center',
     '/info/how-to-use',
@@ -16,16 +16,7 @@ export const configRoutes: ConfigRoutes = {
     '/error404',
     '/request',
   ],
-  authRoutes: [
-    '/auth/login-register',
-    '/auth/login-register/email-verification',
-  ],
-  apiRoutes: [
-    '/api/login',
-    '/api/users',
-    '/api/company',
-    '/api/roles',
-    '/api/paypal',
-  ],
+  authRoutes: ['/auth/login-register', '/auth/login-register/email-verification'],
+  apiRoutes: ['/api/login', '/api/users', '/api/company', '/api/roles', '/api/paypal'],
   protectedRoutes: ['/products/:path*'],
 };

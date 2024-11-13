@@ -5,11 +5,7 @@ import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import Link from 'next/link';
 import ConversionInstructions from '../ui/Conversion-Instructions/ConversionInstructions';
-import {
-  FlyerGif,
-  RecargaPaypal,
-  UsdArs,
-} from '@/utils/assets/imgDatabaseCloudinary';
+import { FlyerGif, RecargaPaypal, UsdArs } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
 import { useMargins } from '@/context/MarginProvider';
@@ -20,8 +16,7 @@ import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 const mainStyles = {
   main: 'py-10 relative', // Centrado tanto vertical como horizontalmente
   infoBlocksContainer: 'flex flex-col items-center justify-center mt-8',
-  instructionsCalculatorContainer:
-    'relative flex space-x-4 items-center justify-center mt-8', // Añadimos `relative`
+  instructionsCalculatorContainer: 'relative flex space-x-4 items-center justify-center mt-8', // Añadimos `relative`
 };
 
 export default function HomePage() {
@@ -39,10 +34,7 @@ export default function HomePage() {
   return (
     <main className={mainStyles.main}>
       <AnimatedBlurredCircles tope="top-[-375px]" />
-      <div
-        className="flex flex-col items-center justify-center"
-        style={{ margin: currentMargin }}
-      >
+      <div className="flex flex-col items-center justify-center" style={{ margin: currentMargin }}>
         <div className={mainStyles.instructionsCalculatorContainer}>
           <ConversionInstructions />
         </div>
@@ -65,9 +57,8 @@ export default function HomePage() {
       <div className="mt-10">
         <FlyerTrabajo imageSrc={FlyerGif}>
           <p>
-            ¿Nuevo en SwaplyAr? <br /> Conoce cómo funciona nuestra plataforma y
-            comienza a transferir dinero de forma sencilla y segura. Haz click y
-            aprende cómo usar SwaplyAr{' '}
+            ¿Nuevo en SwaplyAr? <br /> Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma
+            sencilla y segura. Haz click y aprende cómo usar SwaplyAr{' '}
           </p>
           <div>
             <button

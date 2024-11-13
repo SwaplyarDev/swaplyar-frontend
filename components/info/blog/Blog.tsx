@@ -9,7 +9,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-const BlogPostCard: React.FC<{ title: string; body: string; url_image: string; created_at: string }> = ({ title, body, url_image, created_at }) => {
+const BlogPostCard: React.FC<{ title: string; body: string; url_image: string; created_at: string }> = ({
+  title,
+  body,
+  url_image,
+  created_at,
+}) => {
   const [showFullText, setShowFullText] = useState(false);
 
   const handleToggleText = () => {
@@ -17,17 +22,17 @@ const BlogPostCard: React.FC<{ title: string; body: string; url_image: string; c
   };
 
   return (
-    <div className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105">
-      <Image src={url_image} alt={title} className="w-full h-48 object-cover" width={300} height={160} />
+    <div className="transform overflow-hidden rounded-lg border border-gray-300 bg-white shadow-lg transition-transform hover:scale-105">
+      <Image src={url_image} alt={title} className="h-48 w-full object-cover" width={300} height={160} />
       <div className="p-4">
-        <h3 className="text-xl font-semibold mb-2">{title}</h3>
-        <p className="text-gray-700 mb-4">
+        <h3 className="mb-2 text-xl font-semibold">{title}</h3>
+        <p className="mb-4 text-gray-700">
           {showFullText ? body : `${body.slice(0, -135)}`}
-          <button onClick={handleToggleText} className="text-blue-500 font-semibold hover:underline inline">
+          <button onClick={handleToggleText} className="inline font-semibold text-blue-500 hover:underline">
             {showFullText ? 'Leer menos' : '....Leer más'}
           </button>
         </p>
-        <p className="text-sm text-gray-500 mt-2">{new Date(created_at).toLocaleDateString()}</p>
+        <p className="mt-2 text-sm text-gray-500">{new Date(created_at).toLocaleDateString()}</p>
       </div>
     </div>
   );
@@ -61,14 +66,14 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
   };
 
   return (
-    <div className="relative group border-4 border-[#012C8A] rounded-[20px] overflow-hidden">
+    <div className="group relative overflow-hidden rounded-[20px] border-4 border-[#012C8A]">
       <Slider {...settings}>
         {limitedImages.map((image, index) => (
           <div key={index}>
             <Image
               src={image}
               alt={`Slide ${index + 1}`}
-              className="w-full h-60 object-cover"
+              className="h-60 w-full object-cover"
               width={800}
               height={400}
             />
@@ -78,7 +83,7 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
 
       {/* Botón de navegación izquierda */}
       <button
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        className="absolute left-4 top-1/2 -translate-y-1/2 transform rounded-full bg-gray-700 bg-opacity-50 p-2 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         onClick={goToPreviousSlide}
       >
         &lt;
@@ -86,18 +91,18 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
 
       {/* Botón de navegación derecha */}
       <button
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        className="absolute right-4 top-1/2 -translate-y-1/2 transform rounded-full bg-gray-700 bg-opacity-50 p-2 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         onClick={goToNextSlide}
       >
         &gt;
       </button>
 
-      <div className="absolute bottom-4 w-full flex justify-center space-x-2">
+      <div className="absolute bottom-4 flex w-full justify-center space-x-2">
         {limitedImages.map((_, index) => (
           <div
             key={index}
-            className={`w-4 h-4 rounded-full transition-all duration-300 ${
-              activeIndex === index ? "bg-[#012C8A]" : "bg-white border-2 border-[#012C8A] opacity-50"
+            className={`h-4 w-4 rounded-full transition-all duration-300 ${
+              activeIndex === index ? 'bg-[#012C8A]' : 'border-2 border-[#012C8A] bg-white opacity-50'
             }`}
           ></div>
         ))}
@@ -109,7 +114,7 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
 const Blog: React.FC = () => {
   const { blogs, setBlogs } = useBlogStore();
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [data, setData] = useState<number | null>(null);
   const postsPerPage = 9;
   const [randomImages, setRandomImages] = useState<string[]>([]);
@@ -130,10 +135,9 @@ const Blog: React.FC = () => {
 
   const handlePageChange = (page: number) => {
     if (page !== currentPage) {
-
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
 
       setCurrentPage(page);
@@ -142,7 +146,7 @@ const Blog: React.FC = () => {
   };
 
   useEffect(() => {
-    const pageParam = parseInt(searchParams.get("page") || "1", 10);
+    const pageParam = parseInt(searchParams.get('page') || '1', 10);
     if (pageParam !== currentPage) {
       setCurrentPage(pageParam);
     }
@@ -152,14 +156,14 @@ const Blog: React.FC = () => {
     const fetchBlogs = async () => {
       try {
         let url = `${BASE_URL}/v1/blogs?page=${currentPage}`;
-        
+
         if (searchTerm) {
           url += `&search=${encodeURIComponent(searchTerm)}`;
         }
-        
+
         const response = await fetch(url);
         if (!response.ok) throw new Error('Network response was not ok');
-        
+
         const data = await response.json();
         setBlogs(data.blogsPerPage);
         setData(data.meta.totalPages);
@@ -168,7 +172,7 @@ const Blog: React.FC = () => {
         console.error('Error fetching blogs:', error);
       }
     };
-  
+
     fetchBlogs();
   }, [currentPage, searchTerm, setBlogs]);
 
@@ -179,37 +183,47 @@ const Blog: React.FC = () => {
 
   useEffect(() => {
     if (Array.isArray(blogs)) {
-      const images = blogs.map(el => el.url_image);
+      const images = blogs.map((el) => el.url_image);
       setRandomImages(images);
     }
   }, [blogs]);
-
   const filteredBlogs = blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-8 text-left">Blog</h1>
+    <div className="mx-auto max-w-7xl p-6">
+      <h1 className="mb-8 text-left text-3xl font-bold">Blog</h1>
 
       <ImageCarousel images={randomImages} />
-      <div className="flex justify-end mt-4">
+      <div className="mt-4 flex justify-end">
         <div className="relative w-1/3">
           <input
             type="text"
             placeholder="Buscar en..."
-            className="w-full pl-4 pr-10 p-2 border border-gray-300 rounded-2xl focus:outline-none focus:ring-0"
+            className="w-full rounded-2xl border border-gray-300 p-2 pl-4 pr-10 focus:outline-none focus:ring-0"
             style={{ color: 'black', backgroundColor: 'white' }}
             value={searchTerm}
             onChange={handleSearchChange} // Cambié aquí para usar la función manejadora correcta
           />
           <span className="absolute right-3 top-2 text-gray-500">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 2a9 9 0 100 18 9 9 0 000-18zM21 21l-6-6" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M11 2a9 9 0 100 18 9 9 0 000-18zM21 21l-6-6"
+              />
             </svg>
           </span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
+      <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
         {filteredBlogs.length > 0 ? (
           filteredBlogs.map((post) => (
             <BlogPostCard
@@ -225,31 +239,33 @@ const Blog: React.FC = () => {
         )}
       </div>
 
-      <div className="flex justify-center mt-8 space-x-4">
+      <div className="mt-8 flex justify-center space-x-4">
         <button
-          className={`w-10 h-10 border rounded-full ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+          className={`h-10 w-10 rounded-full border ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
           onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
           disabled={currentPage === 1}
         >
           &lt;
         </button>
 
-        {pageButtons.map((pageNumber, index) => (
+        {pageButtons.map((pageNumber, index) =>
           typeof pageNumber === 'number' ? (
             <button
               key={index}
-              className={`w-10 h-10 border rounded-full ${currentPage === pageNumber ? 'bg-blue-500 text-white' : 'bg-white'}`}
+              className={`h-10 w-10 rounded-full border ${currentPage === pageNumber ? 'bg-blue-500 text-white' : 'bg-white'}`}
               onClick={() => handlePageChange(pageNumber)}
             >
               {pageNumber}
             </button>
           ) : (
-            <span key={index} className="w-10 h-10 flex items-center justify-center text-gray-500">...</span>
-          )
-        ))}
+            <span key={index} className="flex h-10 w-10 items-center justify-center text-gray-500">
+              ...
+            </span>
+          ),
+        )}
 
         <button
-          className={`w-10 h-10 border rounded-full ${currentPage === totalPages ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+          className={`h-10 w-10 rounded-full border ${currentPage === totalPages ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
           onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
           disabled={currentPage === totalPages}
         >

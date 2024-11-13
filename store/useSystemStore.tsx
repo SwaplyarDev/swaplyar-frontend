@@ -1,11 +1,6 @@
 import { create } from 'zustand';
 import { System } from '@/types/data';
-import {
-  BankDarkImg,
-  BankImg,
-  PaypalDarkImg,
-  PaypalImg,
-} from '@/utils/assets/imgDatabaseCloudinary';
+import { BankDarkImg, BankImg, PaypalDarkImg, PaypalImg } from '@/utils/assets/imgDatabaseCloudinary';
 
 const defaultSendingSystem: System = {
   id: 'paypal',
@@ -65,18 +60,14 @@ export const useSystemStore = create<SystemStore>((set) => {
         const newDisabledSystems = new Set(state.disabledSystems);
         if (system) {
           newDisabledSystems.add(system.id);
-          localStorage.setItem(
-            'selectedReceivingSystem',
-            JSON.stringify(system),
-          );
+          localStorage.setItem('selectedReceivingSystem', JSON.stringify(system));
         } else {
           localStorage.removeItem('selectedReceivingSystem');
         }
         return { disabledSystems: newDisabledSystems };
       });
     },
-    setActiveSelect: (selectType: 'send' | 'receive' | null) =>
-      set({ activeSelect: selectType }),
+    setActiveSelect: (selectType: 'send' | 'receive' | null) => set({ activeSelect: selectType }),
     disableSystem: (systemId) =>
       set((state) => {
         const newDisabledSystems = new Set(state.disabledSystems);
@@ -94,14 +85,8 @@ export const useSystemStore = create<SystemStore>((set) => {
         selectedSendingSystem: defaultSendingSystem,
         selectedReceivingSystem: defaultReceivingSystem,
       });
-      localStorage.setItem(
-        'selectedSendingSystem',
-        JSON.stringify(defaultSendingSystem),
-      );
-      localStorage.setItem(
-        'selectedReceivingSystem',
-        JSON.stringify(defaultReceivingSystem),
-      );
+      localStorage.setItem('selectedSendingSystem', JSON.stringify(defaultSendingSystem));
+      localStorage.setItem('selectedReceivingSystem', JSON.stringify(defaultReceivingSystem));
     },
   };
 });

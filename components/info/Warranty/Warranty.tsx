@@ -48,7 +48,7 @@ const Warranty = () => {
 
   return (
     <>
-      <div className="relative flex w-full flex-col items-center justify-center gap-20 py-10 ">
+      <div className="relative flex w-full flex-col items-center justify-center gap-20 py-10">
         <AnimatedBlurredCircles tope="top-[-150px]" />
         <div
           className="rs-wrapper-v4 max-w-[1000px] flex-col items-center justify-center gap-12"
@@ -71,11 +71,9 @@ const Warranty = () => {
             imageAlt="Cambia USD de PayPal por ARS"
             contentNode={
               <>
-                En SwaplyAr, no solo garantizamos total seguridad y atención
-                personalizada durante cada transacción, sino que también
-                ofrecemos beneficios adicionales. Para nuestros usuarios
-                registrados, disponemos de promociones exclusivas y asumimos las
-                comisiones por vos.
+                En SwaplyAr, no solo garantizamos total seguridad y atención personalizada durante cada transacción,
+                sino que también ofrecemos beneficios adicionales. Para nuestros usuarios registrados, disponemos de
+                promociones exclusivas y asumimos las comisiones por vos.
                 <span
                   style={{
                     backgroundColor: 'yellow',
@@ -83,9 +81,8 @@ const Warranty = () => {
                     marginTop: '1%',
                   }}
                 >
-                  Mientras que otros servicios pueden incluir una comisión de
-                  PayPal del 5.6% + $0.30 USD, en SwaplyAr, nosotros absorbemos
-                  esos costos para ofrecerte el mejor valor.
+                  Mientras que otros servicios pueden incluir una comisión de PayPal del 5.6% + $0.30 USD, en SwaplyAr,
+                  nosotros absorbemos esos costos para ofrecerte el mejor valor.
                 </span>
               </>
             }

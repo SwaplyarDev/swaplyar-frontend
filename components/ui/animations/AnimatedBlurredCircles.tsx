@@ -7,9 +7,7 @@ interface AnimatedBlurredCirclesProps {
   tope: string;
 }
 
-const AnimatedBlurredCircles: React.FC<AnimatedBlurredCirclesProps> = ({
-  tope,
-}) => {
+const AnimatedBlurredCircles: React.FC<AnimatedBlurredCirclesProps> = ({ tope }) => {
   const { isDark } = useDarkTheme();
   return (
     <div className={`container-blur ${tope} -z-10`}>

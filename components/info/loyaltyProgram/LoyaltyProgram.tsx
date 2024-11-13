@@ -5,17 +5,8 @@ import useStore from '@/store/authViewStore';
 import Link from 'next/link';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 
-import {
-  CentroDeAyuda,
-  Rewards1,
-  Rewards2,
-  Rewards3,
-} from '@/utils/assets/imgDatabaseCloudinary';
-import {
-  Rewards1Dark,
-  Rewards2Dark,
-  Rewards3Dark,
-} from '@/utils/assets/img-database';
+import { CentroDeAyuda, Rewards1, Rewards2, Rewards3 } from '@/utils/assets/imgDatabaseCloudinary';
+import { Rewards1Dark, Rewards2Dark, Rewards3Dark } from '@/utils/assets/img-database';
 import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
@@ -37,9 +28,7 @@ function LoyaltyProgram() {
       <AnimatedBlurredCircles tope={'top-[20px]'} />
       <div>
         <div className="text-center">
-          <h1 className="mb-4 text-4xl font-bold">
-            SwaplyAr Plus Rewards™ premia tu fidelidad
-          </h1>
+          <h1 className="mb-4 text-4xl font-bold">SwaplyAr Plus Rewards™ premia tu fidelidad</h1>
           <div className="mt-4">
             <button
               id="submit-25456"
@@ -51,11 +40,10 @@ function LoyaltyProgram() {
           </div>
         </div>
 
-        <div className="py-10 ">
+        <div className="py-10">
           <div className="text-center">
             <h2 className="mb-4 text-2xl font-bold">
-              Obtén beneficios exclusivos cada vez que realices intercambio de
-              divisa con SwaplyAr Plus Rewards.
+              Obtén beneficios exclusivos cada vez que realices intercambio de divisa con SwaplyAr Plus Rewards.
             </h2>
             <p className="">
               ¿No estás inscrito todavía?&nbsp;
@@ -66,8 +54,7 @@ function LoyaltyProgram() {
               <Link className="text-buttonsLigth dark:text-sky-500" href="/">
                 inicia
               </Link>
-              &nbsp;sesión en tu perfil, y hacé clic en &quot;inscríbite&quot;
-              para unirte.&nbsp;
+              &nbsp;sesión en tu perfil, y hacé clic en &quot;inscríbite&quot; para unirte.&nbsp;
             </p>
           </div>
         </div>
@@ -103,20 +90,11 @@ function LoyaltyProgram() {
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         <div>
           <p>
-            Para conocer los Términos y Condiciones del programa SwaplyAr Plus
-            Rewards, haz
-            <Link
-              className="text-blue-800"
-              href="/SAPR-Terms-Conditions-ES.pdf"
-              target="_blank"
-            >
+            Para conocer los Términos y Condiciones del programa SwaplyAr Plus Rewards, haz
+            <Link className="text-blue-800" href="/SAPR-Terms-Conditions-ES.pdf" target="_blank">
               {' '}
             </Link>
-            <Link
-              href="./sapr-terms-conditions"
-              target="_blank"
-              className="underline"
-            >
+            <Link href="./sapr-terms-conditions" target="_blank" className="underline">
               click aquí
             </Link>
             .
