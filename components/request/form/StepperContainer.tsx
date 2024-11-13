@@ -18,6 +18,8 @@ import { useSystemStore } from '@/store/useSystemStore';
 import Image from 'next/image';
 import { get } from 'http';
 import Tick from '@/components/ui/Tick/Tick';
+import Cronometro from './Cronometro';
+import useChronometerState from '@/store/chronometerStore';
 
 const StepperContainer = () => {
   const {
@@ -29,6 +31,8 @@ const StepperContainer = () => {
   } = useStepperStore();
   const [blockAll, setBlockAll] = useState(false);
   const navigation = useRouter();
+
+  const { isStopped, stop, setisStopped, setStop } = useChronometerState();
 
   const steps = [
     { title: 'Mis Datos', component: <StepOne blockAll={blockAll} /> },
@@ -86,6 +90,7 @@ const StepperContainer = () => {
         if (cancelButton) {
           cancelButton.addEventListener('click', () => {
             setBlockAll(true);
+            setStop(true);
             Swal.close();
           });
         }
@@ -163,30 +168,36 @@ const StepperContainer = () => {
       {blockAll && (
         <div className="absolute left-0 top-36 flex w-full justify-center bg-[#9F412E]">
           <div className="flex w-full max-w-[1000px] flex-col gap-2 px-5 py-5 xs-phone:px-10">
-            <h2 className="w-full text-center text-3xl font-bold text-lightText dark:text-darkText sm-phone:text-end">
-              Solicitud cancelada.
-            </h2>
-            <p className="w-full text-center text-lightText dark:text-darkText sm-phone:hidden">
-              Puedes crear uno nuevo, y si tienes alguna pregunta o necesitas
+            {isStopped ? (
+              <h2 className="w-full text-center text-3xl font-bold text-darkText sm-phone:text-end">
+                Solicitud cancelada, te quedaste sin tiempo.
+              </h2>
+            ) : (
+              <h2 className="w-full text-center text-3xl font-bold text-darkText sm-phone:text-end">
+                Solicitud cancelada.
+              </h2>
+            )}
+            <p className="w-full text-center text-darkText sm-phone:hidden">
+              Puedes crear una nueva, y si tienes alguna pregunta o necesitas
               ayuda, estamos aquí para ti.
             </p>
             <div className="w-full">
-              <p className="hidden w-full text-end text-lightText dark:text-darkText sm-phone:block">
-                Puedes crear uno nuevo, y si tienes alguna pregunta
+              <p className="hidden w-full text-end text-darkText sm-phone:block">
+                Puedes crear una nueva, y si tienes alguna pregunta
               </p>
-              <p className="hidden w-full text-end text-lightText dark:text-darkText sm-phone:block">
+              <p className="hidden w-full text-end text-darkText sm-phone:block">
                 o necesitas ayuda, estamos aquí para ti.
               </p>
             </div>
             <div className="flex w-full flex-col-reverse items-center justify-between gap-2 xs:flex-row">
               <Link
-                className="group flex items-center gap-1 text-center text-lightText dark:text-darkText sm-phone:text-start"
+                className="group flex items-center gap-1 text-center text-darkText sm-phone:text-start"
                 href="/"
               >
                 <div className="relative h-[15px] w-[15px] overflow-hidden">
                   <div className="absolute left-0 top-0 transition-all duration-200 group-hover:left-1">
                     <Arrow
-                      color={isDark ? '#ebe7e0' : '#012c8a'}
+                      color='#ebe7e0'
                       backRequest={true}
                     />
                   </div>
@@ -194,7 +205,7 @@ const StepperContainer = () => {
                 Volver al home
               </Link>
               <Link
-                className="text-center text-lightText underline dark:text-darkText sm-phone:text-start"
+                className="text-center underline text-darkText sm-phone:text-start"
                 href="/info/help-center"
               >
                 ¡No dudes en contactarnos!
@@ -203,12 +214,12 @@ const StepperContainer = () => {
           </div>
         </div>
       )}
-      <div className="flex justify-between px-2">
+      <div className="flex items-center justify-between px-2">
         <h1 className="text-2xl font-bold text-lightText dark:text-darkText">
           Formulario de Solicitud
         </h1>
         <div>
-          <p>Tiempo Restante</p>
+          <Cronometro setBlockAll={setBlockAll} />
         </div>
       </div>
       {steps.map((step, index) => {
