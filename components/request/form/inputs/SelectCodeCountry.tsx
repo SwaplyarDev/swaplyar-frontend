@@ -15,8 +15,8 @@ type FieldError = {
 };
 
 type SelectCodeCountryProps = {
-  selectedCodeCountry: CountryOption | null;
-  setSelectedCodeCountry: (option: CountryOption | null) => void;
+  selectedCodeCountry: CountryOption | undefined;
+  setSelectedCodeCountry: (option: CountryOption | undefined) => void;
   errors: { [key: string]: FieldError } | {}; // Tipado explícito
   blockAll?: boolean;
 };

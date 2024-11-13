@@ -12,7 +12,7 @@ interface FormData {
   send_amount: string;
   receive_amount: string;
   pay_email: string;
-  proof_of_payment: File | null;
+  proof_of_payment: FileList | null;
   note: string;
 }
 
@@ -85,6 +85,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   }, [formData.stepThree, setValue, receiveAmount, sendAmount]);
 
   const onSubmit = (data: FormData) => {
+    console.log(data)
     updateFormData(2, data); // Actualiza los datos del formulario en Zustand
     markStepAsCompleted(2); // Marcar este paso como completado
     setActiveStep(3); // Aquí podrías finalizar el proceso o realizar una acción adicional

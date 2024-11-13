@@ -131,11 +131,28 @@ const StepperContainer = () => {
   };
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
   const [loading, setLoading] = useState(false);
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true);
-    submitAllData(selectedSendingSystem, selectedReceivingSystem);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+
+      const isSuccess = await submitAllData(
+        selectedSendingSystem,
+        selectedReceivingSystem,
+      );
+
+      if (isSuccess) {
+        console.log('Datos enviados correctamente');
+        handleSendRequest();
+      } else {
+        console.error('Hubo un error al enviar los datos');
+      }
+    } catch (error) {
+      console.error('Error en el proceso de envío:', error);
+    }
     setLoading(false);
   };
+
   return (
     <div
       className={clsx(
@@ -256,7 +273,6 @@ const StepperContainer = () => {
           disabled={completedSteps[2] == false || blockAll || loading}
           onClick={() => {
             handleSubmit();
-            handleSendRequest();
           }}
           className={`relative h-12 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-9 py-[3px] font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? completedSteps[2] == true && 'buttonSecondDark' : completedSteps[2] == true && 'buttonSecond'}`}
         >

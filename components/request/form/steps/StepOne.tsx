@@ -12,7 +12,7 @@ import { CountryOption } from '@/types/request/request';
 interface FormData {
   sender_first_name: string;
   sender_last_name: string;
-  calling_code: CountryOption | null;
+  calling_code: CountryOption | undefined;
   phone: string;
   email: string;
   own_account: string | undefined;
@@ -38,6 +38,9 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     updateFormData,
     completedSteps,
     submitOneStep,
+    updateOneStep,
+    idTransaction,
+    setIdTransaction,
   } = useStepperStore();
   const { isDark } = useDarkTheme();
 
@@ -77,30 +80,51 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     setInitialValues(newValues);
   }, [formData.stepOne, setValue]);
 
-  const onSubmit = (data: FormData) => {
-    updateFormData(0, data); // Actualiza los datos del formulario en Zustand
-    submitOneStep();
-    markStepAsCompleted(0); // Marcar este paso como completado
-    setActiveStep(1); // Ir al siguiente paso
+  const onSubmit = async (data: FormData) => {
+    updateFormData(0, data);
+
+    if (idTransaction) {
+      updateOneStep(idTransaction);
+      markStepAsCompleted(0); // Marcar este paso como completado
+      setActiveStep(1); // Ir al siguiente paso
+    } else {
+      const responseData = await submitOneStep();
+
+      if (responseData) {
+        console.log('Datos enviados y respuesta recibida:', responseData);
+        setIdTransaction(responseData.transaction_id);
+        markStepAsCompleted(0); // Marcar este paso como completado
+        setActiveStep(1); // Ir al siguiente paso
+      } else {
+        console.error('No se pudo completar el envío de los datos');
+      }
+    }
   };
 
   // Determinar si se han hecho cambios en el formulario
   const deepEqual = (obj1: any, obj2: any): boolean => {
     if (obj1 === obj2) return true;
-    if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) return false;
-  
+    if (
+      typeof obj1 !== 'object' ||
+      obj1 === null ||
+      typeof obj2 !== 'object' ||
+      obj2 === null
+    )
+      return false;
+
     const keys1 = Object.keys(obj1);
     const keys2 = Object.keys(obj2);
-  
+
     if (keys1.length !== keys2.length) return false;
-  
+
     for (let key of keys1) {
-      if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) return false;
+      if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key]))
+        return false;
     }
-  
+
     return true;
   };
-  
+
   // Usar la función deepEqual para hasChanges
   const hasChanges = initialValues && !deepEqual(initialValues, formValues);
 
