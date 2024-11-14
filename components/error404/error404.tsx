@@ -180,8 +180,8 @@ const Error_404 = () => {
                   fontSize: '10px',
                   textAlign: 'center',
                   borderRadius: '28px',
-                  width: '115px',
-                  height: '42px',
+                  width: '109px',
+                  height: 'auto',
                   padding: '10px',
                 }}
               >
