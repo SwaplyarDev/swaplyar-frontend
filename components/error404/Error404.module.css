@@ -73,16 +73,16 @@
     border-radius: 12px;
   }
   .enchufe1 {
-    width: 3700px;
+    width: 4100px;
     position: relative;
     top: calc(50% - 1900px);
-    left: calc(50% - 3500px);
+    left: calc(50% - 3900px);
   }
   .enchufe2 {
-    width: 3700px;
+    width: 4100px;
     position: relative;
     top: calc(50% - 1900px);
-    left: calc(50% - 3500px);
+    left: calc(50% - 3900px);
   }
 }
 
