@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import  ReactDOM  from 'react-dom';
-import { Post1_404 } from '@/../../utils/assets/img-database';
+import { regretsPc, regretsPhone } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
@@ -154,28 +154,46 @@ const RepentanceForm = () => {
 
   const formValues = useWatch({ control });
   return (
-    <div className="my-7 flex flex-col items-center justify-center">
-      <div className="flex w-full flex-row">
-        <div className="flex w-2/6 flex-col items-start">
-          <h1 className="text-center text-xl">Cancelacion o Reembolso</h1>
-          <p className="mt-2 text-justify">
+    <div className="my-7 mx-5 lg:mx-0 flex flex-col items-center justify-center ">
+      <div className="flex w-full flex-col md:flex-row">
+        <div className="hidden md:block md:w-3/7 flex-col items-start mb-4">
+          <h1 className="text-start text-xl w-full">Cancelacion o Reembolso</h1>
+          <p className="mt-2 text-justify ">
             Ingresa los datos tal cual aparece en el email enviado
           </p>
         </div>
       </div>
-      <div className="w-100 flex">
-        <div className="flex min-h-full flex-wrap justify-center">
-          <Image
-            src={Post1_404}
-            alt="post1"
-            width={650}
-            height={0}
-            className="-scale-x-100 object-cover"
-          />
+    <div className="w-full flex flex-col md:flex-row">
+    <div className="min-h-full flex-wrap justify-center hidden md:block ">
+    <Image
+      src={regretsPc}
+      alt="regretsPc"
+      width={650}
+      height={0}
+      className="object-cover h-full"
+    />
+  </div>
+  <div>
+  <div className="min-h-full flex flex-wrap justify-center block md:hidden w-72">
+    <Image
+      src={regretsPhone}
+      alt="regretsPhone"
+      width={200}
+      height={0}
+      className='object-contain h-full'
+      
+    />
+    <div className={` min-w-full flex-wrap justify-center block md:hidden border-t-4  ${isDark ? 'border-t-white' : 'border-t-buttonsLigth'}`}></div>
+  </div>
+  <div className="block w-72 md:hidden md:w-2/6 flex-col items-start">
+          <p className="mt-2 text-lg text-center">
+            Ingresa los datos tal cual aparece en el email enviado
+          </p>
         </div>
-
+  </div>
+  
         <div
-          className={`mr-3 flex h-full w-full flex-col justify-center border-l-4 ${isDark ? 'border-l-white' : 'border-l-buttonsLigth'}`}
+          className={`mr-0 md:mr-3 h-full w-full flex flex-col justify-center border-0 md:border-l-4 ${isDark ? 'border-l-white' : 'border-l-buttonsLigth'}`}
         >
           <form
             onSubmit={handleSubmit(onSubmit)}
