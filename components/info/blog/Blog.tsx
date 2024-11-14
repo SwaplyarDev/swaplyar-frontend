@@ -34,6 +34,26 @@ const Blog: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+
+  const datas = {
+    content: 'Titulo Editado 3'
+  };
+
+  fetch(`${BASE_URL}/v1/blogs/content`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(datas)
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Success:', data);
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+  
   const handlePageChange = (page: number) => {
     if (page !== currentPage) {
 
