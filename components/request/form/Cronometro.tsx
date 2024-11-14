@@ -10,7 +10,7 @@ type CronometroProps = {
 };
 
 const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
-  const [segundos, setSegundos] = useState<number>(10); // Inicializamos en 30 minutos (30 * 60 segundos)
+  const [segundos, setSegundos] = useState<number>(30 * 60); // Inicializamos en 30 minutos (30 * 60 segundos)
   const intervaloRef = useRef<NodeJS.Timeout | null>(null); // Referencia para el intervalo de tiempo
   // const [stop, setStop] = useState(false);
   const { isStopped, stop, setisStopped, setStop } = useChronometerState();

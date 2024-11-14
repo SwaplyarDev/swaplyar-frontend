@@ -7,6 +7,10 @@ import { useForm, useWatch } from 'react-hook-form';
 import clsx from 'clsx';
 import InputField from '@/components/ui/contact-form/InputField';
 import { error } from 'console';
+import StepTwoBank from './stepsTwoOptions/StepTwoBank';
+import StepTwoPayoneer from './stepsTwoOptions/StepTwoPayoneer';
+import StepTwoPaypal from './stepsTwoOptions/StepTwoPaypal';
+import StepTwoWise from './stepsTwoOptions/StepTwoWise';
 
 interface FormData {
   receiver_first_name: string;
@@ -111,12 +115,59 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
         formValues[key as keyof FormData],
     );
 
-  const fullName = selectedReceivingSystem?.name;
-  const firstPart = fullName ? fullName.split(' ')[0] : '';
+  // const fullName = selectedReceivingSystem?.name;
+  // const firstPart = fullName ? fullName.split(' ')[0] : '';
+
+  const renderSelectedSystem = () => {
+    switch (selectedReceivingSystem?.id) {
+      case 'bank':
+        return (
+          <StepTwoBank
+            register={register}
+            errors={errors}
+            getValues={getValues}
+            blockAll={blockAll}
+            formData={formData}
+          />
+        );
+      case 'payoneer':
+        return (
+          <StepTwoPayoneer
+            register={register}
+            errors={errors}
+            getValues={getValues}
+            blockAll={blockAll}
+            formData={formData}
+          />
+        );
+      case 'paypal':
+        return (
+          <StepTwoPaypal
+            register={register}
+            errors={errors}
+            getValues={getValues}
+            blockAll={blockAll}
+            formData={formData}
+          />
+        );
+      case 'wise':
+        return (
+          <StepTwoWise
+            register={register}
+            errors={errors}
+            getValues={getValues}
+            blockAll={blockAll}
+            formData={formData}
+          />
+        );
+      default:
+        return '';
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-      {selectedReceivingSystem?.id == 'bank' ? (
+      {/* {selectedReceivingSystem?.id == 'bank' ? (
         <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
           <div className="flex w-full flex-col gap-4">
             <div className="flex flex-col">
@@ -464,7 +515,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
+      {renderSelectedSystem()}
 
       <div className="flex justify-end">
         {completedSteps[1] ? (
