@@ -9,13 +9,7 @@ import { Error_404_dark } from '@/utils/assets/img-database';
 import { Post1_404 } from '@/utils/assets/img-database';
 import { Post2_404 } from '@/utils/assets/img-database';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
-import {
-  Enchufe_dark,
-  Enchufe_clear,
-  tlf_404_dark,
-  tlf_404_clear,
-  post3_404,
-} from '@/utils/assets/img-database';
+import { Enchufe_dark, Enchufe_clear, tlf_404_dark, tlf_404_clear, post3_404, Enchufe_dark_largo, Enchufe_clear_largo } from '@/utils/assets/img-database';
 import Link from 'next/link';
 
 const Error_404 = () => {
@@ -23,7 +17,9 @@ const Error_404 = () => {
   const [counter, setCounter] = useState(10);
   const router = useRouter();
 
-  useEffect(() => {
+
+
+/*   useEffect(() => {
     if (counter === 0) {
       router.push('/');
       return;
@@ -34,11 +30,13 @@ const Error_404 = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [counter, router]);
+
+  }, [counter, router]);  */
+
 
   return (
     <div className={styles.container}>
-      <AnimatedBlurredCircles tope="top-[100px]" />;
+      <AnimatedBlurredCircles tope="top-[10px]"/>
       {isDark ? (
         <>
           <div className={styles.image}>
@@ -70,20 +68,11 @@ const Error_404 = () => {
             <h1 className="font-normal text-white">ha sido encontrada</h1>
           </div>
           <div className={styles.redirectButton}>
-            <Link href="/">
-              <p
-                className="dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText"
-                style={{
-                  fontSize: '20px',
-                  textAlign: 'center',
-                  borderRadius: '28px',
-                  width: '210px',
-                  height: '60px',
-                  padding: '16px',
-                }}
-              >
-                Redireccion en {counter}
-              </p>
+            <Link
+              href="/"
+              className={`relative m-1 flex h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+            >
+              <p>Redireccion en {counter}</p>
             </Link>
           </div>
           <div className={styles.tlf_redirectButton}>
@@ -135,9 +124,9 @@ const Error_404 = () => {
 
           <div className={styles.enchufe1}>
             <Image
-              src={Enchufe_dark}
+              src={Enchufe_dark_largo}
               alt="Descripción de la imagen enchufe"
-              width={1600}
+              width={2800}
               height={50}
             />
           </div>
@@ -181,19 +170,13 @@ const Error_404 = () => {
             <h1 className="font-normal text-black">ha sido encontrada</h1>
           </div>
           <div className={styles.redirectButton}>
-            <Link href="/">
-              <p
-                className="relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 font-bold text-buttonsLigth hover:bg-transparent dark:border-darkText dark:hover:bg-transparent"
-                style={{
-                  fontSize: '20px',
-                  textAlign: 'center',
-                  borderRadius: '28px',
-                  width: '210px',
-                  height: '60px',
-                }}
-              >
-                Redireccion en {counter}
-              </p>
+
+            <Link
+              href="/"
+              className={`relative m-1 flex h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-white p-3 font-bold text-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+            >
+              <p>Redireccion en {counter}</p>
+
             </Link>
           </div>
           <div className={styles.tlf_redirectButton}>
@@ -247,9 +230,9 @@ const Error_404 = () => {
 
           <div className={styles.enchufe2}>
             <Image
-              src={Enchufe_clear}
+              src={Enchufe_clear_largo}
               alt="Descripción de la imagen enchufe"
-              width={1600}
+              width={2800}
               height={50}
             />
           </div>

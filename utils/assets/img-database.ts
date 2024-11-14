@@ -136,6 +136,9 @@ export const Post2_404 = '/images/post2-404.png';
 export const Enchufe_dark = '/images/enchufe_dark.png';
 export const Enchufe_clear = '/images/enchufe_clear.png';
 
+export const Enchufe_dark_largo = '/images/enchufe_dark_largo.png';
+export const Enchufe_clear_largo = '/images/enchufe_clear_largo.png';
+
 export const tlf_404_dark = '/images/tlf_404_dark.png';
 export const tlf_404_clear = '/images/tlf_404_clear.png';
 export const post3_404 = '/images/post3_404.png';

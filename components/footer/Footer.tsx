@@ -56,16 +56,23 @@ export default function Footer() {
             Términos y condiciones
           </FooterLink>
           <FooterLink href="/info/sapr-terms-conditions">
-            Programa de Fidelización
+            T&C Plus Rewards
+          </FooterLink>
+          <FooterLink href="/info/arepentimiento">
+            SwaplyAr Solicitud
           </FooterLink>
         </section>
 
         <section className="flex flex-col items-center text-left sm:w-1/3 sm:items-end sm:text-right">
           <h4 className="mb-2 text-xl font-bold">Atención al Cliente</h4>
-          <FooterLink href="/info/help-center">Centro de Ayuda</FooterLink>
-          <FooterLink href="/info/about-us">Quienes Somos</FooterLink>
-          <FooterLink href="/info/why-choose-swaplyar">
-            ¿Por qué Elegir SwaplyAr?
+          <FooterLink href="/info/help-center">
+            Centro de Ayuda
+          </FooterLink>
+          <FooterLink href="/info/about-us">
+            Preguntas y Respuestas
+          </FooterLink>
+          <FooterLink href="/info/blog">
+            SwaplyAr Blog
           </FooterLink>
         </section>
       </div>
