@@ -1,32 +1,70 @@
-import React, { useRef, useState } from 'react';
-import Select from 'react-select';
-import clsx from 'clsx';
+import IconArbitrum from '@/components/ui/IconsRed/IconArbitrum';
+import IconBnb from '@/components/ui/IconsRed/IconBnb';
+import IconOptimism from '@/components/ui/IconsRed/IconOptimism';
+import IconTron from '@/components/ui/IconsRed/IconTron';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import React, { useState } from 'react';
+import Select, { components } from 'react-select';
+import clsx from 'clsx';
 
 type FieldError = {
   message: string;
 };
 
-type SelectBooleanProps = {
-  selectedOption: string | undefined;
-  setSelectedOption: (option: string | undefined) => void;
+type SelectRedProps = {
+  selectedRed: string | undefined;
+  setSelectedRed: (option: string | undefined) => void;
   errors: { [key: string]: FieldError } | {}; // Tipado explícito
   blockAll: boolean;
 };
 
-const SelectBoolean: React.FC<SelectBooleanProps> = ({
-  selectedOption,
-  setSelectedOption,
+const options = [
+  {
+    value: 'arbitrum',
+    label: 'Arbitrum One',
+    image: <IconArbitrum />,
+  },
+  {
+    value: 'bnb',
+    label: 'BNB Chain (BEP-20)',
+    image: <IconBnb />,
+  },
+  {
+    value: 'tron',
+    label: 'Tron (TRC20)',
+    image: <IconTron />,
+  },
+  {
+    value: 'optimism',
+    label: 'Optimism',
+    image: <IconOptimism />,
+  },
+];
+
+const CustomOption = (props: any) => (
+  <components.Option {...props} className={clsx(props.className, 'flex items-center gap-2')}>
+    {props.data.image}
+    {props.label}
+  </components.Option>
+);
+
+const CustomSingleValue = (props: any) => (
+    <components.SingleValue {...props} className="flex items-center gap-2">
+      {props.data.image}
+      {props.data.label}
+    </components.SingleValue>
+  );
+
+const SelectRed: React.FC<SelectRedProps> = ({
+  selectedRed,
+  setSelectedRed,
   errors,
   blockAll,
 }) => {
-  const fieldName = 'own_account';
+  const fieldName = 'red_selection';
   const errorMessage = (errors as { [key: string]: FieldError })[fieldName]
     ?.message;
   const [isFocused, setIsFocused] = useState(false);
-  const handleFocus = () => {
-    setIsFocused(!isFocused);
-  };
   const { isDark } = useDarkTheme();
   return (
     <>
@@ -34,32 +72,24 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
         htmlFor={fieldName}
         className={clsx(
           errorMessage ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
-          'hidden',
         )}
       >
-        ¿Tienes cuenta propia?
+        Selecciona una Red
       </label>
       <Select
         isDisabled={blockAll}
         id={fieldName}
         onFocus={() => setIsFocused(true)} // Activa el enfoque
-        onBlur={() => setIsFocused(false)} // Desactiva el enfoque
-        options={[
-          { value: 'Si', label: 'Si' },
-          { value: 'No', label: 'No' },
-        ]}
-        value={
-          selectedOption !== undefined
-            ? { value: selectedOption, label: selectedOption }
-            : null
-        }
+        onBlur={() => setIsFocused(false)}
+        value={options.find((option) => option.value === selectedRed)}
+        options={options}
         onChange={(option) => {
-          setSelectedOption(option?.value || undefined);
+          setSelectedRed(option?.value || undefined);
           setIsFocused(false);
         }}
-        placeholder="Selecciona una opción"
-        classNamePrefix="custom-select"
+        components={{ Option: CustomOption, SingleValue: CustomSingleValue  }}
         isSearchable={false}
+        placeholder="Selecciona una red"
         className={clsx(
           'h-[38px] w-full rounded border border-[#6B7280] bg-gray-200 px-[10px] text-gray-900 dark:bg-lightText dark:text-white',
           errorMessage && !isFocused
@@ -108,6 +138,7 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
             '&:hover': {
               backgroundColor: 'rgba(59, 130, 246, 0.1)',
             },
+            display: 'flex',
           }),
           singleValue: (provided) => ({
             ...provided,
@@ -151,4 +182,4 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
   );
 };
 
-export default SelectBoolean;
+export default SelectRed;
