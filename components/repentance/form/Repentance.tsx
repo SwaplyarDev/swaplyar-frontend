@@ -1,12 +1,12 @@
 'use client';
 import React, { useState } from 'react';
-import  ReactDOM  from 'react-dom';
+import ReactDOM from 'react-dom';
 import { regretsPc, regretsPhone } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useForm, SubmitHandler, Controller, useWatch } from 'react-hook-form';
-import { FormData } from '@/types/repentance/repentance';
+import { FormData, CheckRefundProps } from '@/types/repentance/repentance';
 import clsx from 'clsx';
 import SelectCodeCountry from '@/components/request/form/inputs/SelectCodeCountry';
 import Swal from 'sweetalert2';
@@ -14,18 +14,23 @@ import Arrow from '@/components/ui/Arrow/Arrow';
 import { createRoot } from 'react-dom/client';
 import Tick from '@/components/ui/Tick/Tick';
 import WarningIcon from '@/components/ui/WarningIcon/WarningIcon';
+import {
+  checkIfRegretExists,
+  createRegret,
+} from '@/actions/repentance/action.repentanceForm';
 
 const RepentanceForm = () => {
   const { isDark } = useDarkTheme();
-
+  const [isRequestSent, setIsRequestSent] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [formData, setFormData] = useState<FormData>({
-    referenceNumber: '',
-    lastName: '',
+    transaction_id: '',
+    last_name: '',
     email: '',
     phone_number: '',
     note: '',
     calling_code: { value: '', label: '', callingCode: '' },
+    status: '',
   });
 
   const {
@@ -46,154 +51,296 @@ const RepentanceForm = () => {
       [name]: value,
     }));
   };
-  const handleSendClick = () => {
-    // PROCESO
 
-    // Swal.fire({
-    //   title: `<h1 style="color:white; ${isDark ? 'color: white;' : 'color: black;'}" >La solicitud #123456789 se encuentra en proceso</h1>`,
-    //   html: `<div style="text-align: left; ${isDark ? 'color: white;' : 'color: black;'}">
-    //            <p>¿Desea cancelarla? El reembolso se devolverá a la cuenta de origen utilizada para esta operación.</p>
-    //            <p style="padding-top: 10px;">Nota: Si la transferencia ya se ha completado, no será posible procesar un reembolso.</p>
-    //          </div>`,
-    //   icon: 'warning',
-    //   background: isDark ? 'rgb(69 69 69)' : '#ffffff',
-    //   showCancelButton: true,
-    //   showConfirmButton: true,
-    //   buttonsStyling: false, // desactivar estilos predeterminados de SweetAlert
-    //   customClass: {
-    //     actions: 'flex justify-between w-full px-4', // posición de botones
-    //     confirmButton: `${isDark ? 'buttonSecondDark text-white' : 'buttonSecond text-buttonsLigth '} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3  hover:bg-transparent dark:border-darkText dark:hover:bg-transparent md:hidden  `, // botón Volver con fondo del modal y letras blancas
-    //     cancelButton: `${isDark ? 'buttonSecondDark' : 'buttonSecond'} dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText `, // botón Cancelar con fondo blanco y letras negras
-    //   },
-    //   confirmButtonText: '<- Volver',
-    //   cancelButtonText: 'Cancelar',
-    // });
+  const handleRepentanceProcess = async () => {
+    try {
+      // Mostrar SweetAlert2 para confirmar la acción
+      const confirmation = await Swal.fire({
+        title: `<h1 style="color:white; ${isDark ? 'color: white;' : 'color: black;'}">La solicitud #${formData.transaction_id} se encuentra en proceso</h1>`,
+        html: `<div style="text-align: left; ${isDark ? 'color: white;' : 'color: black;'}">
+                <p>¿Desea cancelarla? El reembolso se devolverá a la cuenta de origen utilizada para esta operación.</p>
+                <p style="padding-top: 10px;">Nota: Si la transferencia ya se ha completado, no será posible procesar un reembolso.</p>
+              </div>`,
+        icon: 'warning',
+        background: isDark ? 'rgb(69 69 69)' : '#ffffff',
+        showCancelButton: true,
+        showConfirmButton: true,
+        buttonsStyling: false, // Desactivar estilos predeterminados de SweetAlert
+        customClass: {
+          actions: 'flex flex-row-reverse justify-between w-full px-4', // Flex para separar los botones
+          cancelButton: `${
+            isDark
+              ? 'buttonSecondDark text-white'
+              : 'buttonSecond text-buttonsLigth'
+          } relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 hover:bg-transparent dark:border-darkText dark:hover:bg-transparent`, // Estilo del botón "Volver"
+          confirmButton: `${
+            isDark ? 'buttonSecondDark' : 'buttonSecond'
+          } dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText`, // Estilo del botón "Aceptar"
+        },
+        cancelButtonText: '← Volver',
+        confirmButtonText: 'Aceptar',
+      });
+      if (!confirmation.isConfirmed) {
+        // Si el usuario cancela, mostrar un mensaje y no proceder
+        Swal.fire({
+          didRender: () => {
+            const tickContainer = document.getElementById('tick-container');
+            if (tickContainer) {
+              const root = createRoot(tickContainer);
+              root.render(
+                <div
+                  style={{
+                    backgroundColor: isDark ? '#FCFBFA' : '#414244',
+                    borderRadius: '50%',
+                    padding: '10px',
+                  }}
+                >
+                  <Tick color={isDark ? '#414244' : '#FCFBFA'} size="70px" />
+                </div>,
+              );
+            }
+          },
+          title: '',
+          html: `
+            <div class="flex flex-col items-center justify-center bg-[#ffffff] dark:bg-[#454545] gap-[15px] rounded-xl px-[15px] py-5 xs-phone:py-[10px] max-w-[467.45px] w-full">
+              <div id="tick-container" class="flex items-center justify-center mb-4"></div>
+              <h2 class="text-2xl text-[#252526] dark:text-[#ebe7e0] mb-4">La solicitud fue cancelada</h2>
+              <button id="back-button" class="${isDark ? 'buttonSecondDark text-white' : 'buttonSecond text-buttonsLigth'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 hover:bg-transparent dark:border-darkText dark:hover:bg-transparent">
+                ← Volver
+              </button>
+            </div>
+          `,
+          customClass: {
+            popup: 'confirmAlert',
+          },
+          showConfirmButton: false,
+          showCancelButton: false,
+          background: 'transparent',
+          color: isDark ? '#ffffff' : '#000000',
+          allowOutsideClick: true,
+          allowEscapeKey: false,
+          allowEnterKey: false,
+        });
+        document.addEventListener('click', (e) => {
+          if ((e.target as HTMLElement).id === 'back-button') {
+            Swal.close();
+          }
+        });
+        return;
+      }
 
-    // EXITO
+      // Validar si ya existe
+      const exists = await checkIfRegretExists(formData);
 
-    // Swal.fire({
-    //   didRender: () => {
-    //     const tickContainer = document.getElementById('tick-container');
-    //     if (tickContainer) {
-    //       const root = createRoot(tickContainer);
-    //       root.render(
-    //         <div style={{ backgroundColor: isDark ? '#FCFBFA' : '#414244', borderRadius: '50%', padding: '10px' }}>
-    //           <Tick color={isDark ? '#414244' : '#FCFBFA'} size="70px" />
-    //         </div>
-    //       );
-    //     }
-    //   },
-    //   title: "",
-    //   html: `
-    //     <div class="flex flex-col items-center justify-center bg-[#ffffff] dark:bg-[#454545] gap-[15px] rounded-xl px-[15px] py-5 xs-phone:py-[10px] max-w-[467.45px] w-full">
-    //       <div id="tick-container" class="flex items-center justify-center mb-4"></div>
-    //       <h2 class="text-2xl text-[#252526] dark:text-[#ebe7e0] mb-4">Solicitud realizada con éxito</h2>
-    //       <button id="back-button" class="${isDark ? 'buttonSecondDark text-white' : 'buttonSecond text-buttonsLigth'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 hover:bg-transparent dark:border-darkText dark:hover:bg-transparent">
-    //         ← Volver
-    //       </button>
-    //     </div>
-    //   `,
-    //   customClass: {
-    //     popup: 'confirmAlert',
-    //   },
-    //   showConfirmButton: false,
-    //   showCancelButton: false,
-    //   background: 'transparent',
-    //   color: isDark ? '#ffffff' : '#000000',
-    //   allowOutsideClick: true,
-    //   allowEscapeKey: false,
-    //   allowEnterKey: false,
-    // });
-    // document.addEventListener('click', (e) => {
-    //   if ((e.target as HTMLElement).id === 'back-button') {
-    //     Swal.close();
-    //   }
-    // });
+      if (exists) {
+        // Si existe, mostrar alerta
+        Swal.fire({
+          didRender: () => {
+            const warningContainer =
+              document.getElementById('warning-container');
+            if (warningContainer) {
+              const root = createRoot(warningContainer);
+              root.render(<WarningIcon isDark={isDark} />);
+            }
+          },
+          title: '',
+          html: `
+          <div class="flex flex-col items-center justify-center bg-[#ffffff] dark:bg-[#454545] gap-[15px] rounded-xl px-[15px] py-5 xs-phone:py-[10px] max-w-[467.45px] w-full">
+            <div id="warning-container" class="flex items-center justify-center mb-4"></div>
+            <h2 class="text-2xl text-[#252526] dark:text-[#ebe7e0] mb-4">Esta solicitud ya genero una alerta de cancelación o reembolso</h2>
+            <button id="back-button" class="${isDark ? 'buttonSecondDark text-white' : 'buttonSecond text-buttonsLigth'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 hover:bg-transparent dark:border-darkText dark:hover:bg-transparent">
+              ← Volver
+            </button>
+          </div>
+        `,
+          customClass: {
+            popup: 'confirmAlert',
+          },
+          showConfirmButton: false,
+          showCancelButton: false,
+          background: 'transparent',
+          color: isDark ? '#ffffff' : '#000000',
+          allowOutsideClick: true,
+          allowEscapeKey: false,
+          allowEnterKey: false,
+        });
+        document.addEventListener('click', (e) => {
+          if ((e.target as HTMLElement).id === 'back-button') {
+            Swal.close();
+          }
+        });
+        } else {
+        // Si no existe, crear la solicitud
+        const response = await createRegret(formData);
 
-    // DUPLICACION
-    
-    // Swal.fire({
-    //   didRender: () => {
-    //     const warningContainer = document.getElementById('warning-container');
-    //     if (warningContainer) {
-    //       const root = createRoot(warningContainer);
-    //       root.render(
-            
-    //         <WarningIcon isDark={isDark} />
-            
-    //       );
-    //     }
-    //   },
-    //   title: "",
-    //   html: `
-    //     <div class="flex flex-col items-center justify-center bg-[#ffffff] dark:bg-[#454545] gap-[15px] rounded-xl px-[15px] py-5 xs-phone:py-[10px] max-w-[467.45px] w-full">
-    //       <div id="warning-container" class="flex items-center justify-center mb-4"></div>
-    //       <h2 class="text-2xl text-[#252526] dark:text-[#ebe7e0] mb-4">Esta solicitud ya genero una alerta de cancelación o reembolso</h2>
-    //       <button id="back-button" class="${isDark ? 'buttonSecondDark text-white' : 'buttonSecond text-buttonsLigth'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 hover:bg-transparent dark:border-darkText dark:hover:bg-transparent">
-    //         ← Volver
-    //       </button>
-    //     </div>
-    //   `,
-    //   customClass: {
-    //     popup: 'confirmAlert',
-    //   },
-    //   showConfirmButton: false,
-    //   showCancelButton: false,
-    //   background: 'transparent',
-    //   color: isDark ? '#ffffff' : '#000000',
-    //   allowOutsideClick: true,
-    //   allowEscapeKey: false,
-    //   allowEnterKey: false,
-    // });
-    // document.addEventListener('click', (e) => {
-    //   if ((e.target as HTMLElement).id === 'back-button') {
-    //     Swal.close();
-    //   }
-    // });
+        if (response.ok) {
+          Swal.fire({
+            didRender: () => {
+              const tickContainer = document.getElementById('tick-container');
+              if (tickContainer) {
+                const root = createRoot(tickContainer);
+                root.render(
+                  <div
+                    style={{
+                      backgroundColor: isDark ? '#FCFBFA' : '#414244',
+                      borderRadius: '50%',
+                      padding: '10px',
+                    }}
+                  >
+                    <Tick color={isDark ? '#414244' : '#FCFBFA'} size="70px" />
+                  </div>,
+                );
+              }
+            },
+            title: '',
+            html: `
+                   <div class="flex flex-col items-center justify-center bg-[#ffffff] dark:bg-[#454545] gap-[15px] rounded-xl px-[15px] py-5 xs-phone:py-[10px] max-w-[467.45px] w-full">
+                     <div id="tick-container" class="flex items-center justify-center mb-4"></div>
+                     <h2 class="text-2xl text-[#252526] dark:text-[#ebe7e0] mb-4">Solicitud realizada con éxito</h2>
+                     <button id="back-button" class="${isDark ? 'buttonSecondDark text-white' : 'buttonSecond text-buttonsLigth'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 hover:bg-transparent dark:border-darkText dark:hover:bg-transparent">
+                       ← Volver
+                     </button>
+                   </div>
+                 `,
+            customClass: {
+              popup: 'confirmAlert',
+            },
+            showConfirmButton: false,
+            showCancelButton: false,
+            background: isDark ? 'rgb(69 69 69)' : '#ffffff',
+            color: isDark ? '#ffffff' : '#000000',
+            allowOutsideClick: true,
+            allowEscapeKey: false,
+            allowEnterKey: false,
+          });
+          document.addEventListener('click', (e) => {
+            if ((e.target as HTMLElement).id === 'back-button') {
+              Swal.close();
+            }
+          });
+          setFormData({
+            transaction_id: '',
+            last_name: '',
+            email: '',
+            phone_number: '',
+            note: '',
+            calling_code: { value: '', label: '', callingCode: '' },
+            status: '',
+          });
+        } else {
+          // Mostrar error si el envío falla
+          Swal.fire({
+            title: '',
+            html: `
+              <div class="flex flex-col items-center justify-center bg-[#ffffff] dark:bg-[#454545] gap-[15px] rounded-xl px-[15px] py-5 xs-phone:py-[10px] max-w-[467.45px] w-full">
+                <div id="error-icon-container" class="flex items-center justify-center mb-4">
+                  <i class="fas fa-exclamation-circle text-red-500 text-5xl"></i>
+                </div>
+                <h2 class="text-2xl text-[#252526] dark:text-[#ebe7e0] mb-4 text-center">
+                  Ocurrió un error. Intente más tarde.
+                </h2>
+                <button id="back-button" class="${isDark ? 'buttonSecondDark text-white' : 'buttonSecond text-buttonsLigth'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 hover:bg-transparent dark:border-darkText dark:hover:bg-transparent">
+                  ← Volver
+                </button>
+              </div>
+            `,
+            background: isDark ? 'rgb(69 69 69)' : '#ffffff',
+            color: isDark ? '#ffffff' : '#000000',
+            icon: 'error',
+            showConfirmButton: false, 
+            didRender: () => {
+              
+              const backButton = document.getElementById('back-button');
+              if (backButton) {
+                backButton.addEventListener('click', () => {
+                  Swal.close(); 
+                });
+              } else {
+                console.error(errors);
+              }
+            },
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error en el proceso:', error);
+      Swal.fire({
+        title: '',
+        html: `
+          <div class="flex flex-col items-center justify-center bg-[#ffffff] dark:bg-[#454545] gap-[15px] rounded-xl px-[15px] py-5 xs-phone:py-[10px] max-w-[467.45px] w-full">
+            <div id="error-icon-container" class="flex items-center justify-center mb-4">
+              <i class="fas fa-exclamation-circle text-red-500 text-5xl"></i>
+            </div>
+            <h2 class="text-2xl text-[#252526] dark:text-[#ebe7e0] mb-4 text-center">
+              Ocurrió un error inesperado, intente nuevamente en unos minutos.
+            </h2>
+            <button id="back-button" class="${isDark ? 'buttonSecondDark text-white' : 'buttonSecond text-buttonsLigth'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 hover:bg-transparent dark:border-darkText dark:hover:bg-transparent">
+              ← Volver
+            </button>
+          </div>
+        `,
+        background: isDark ? 'rgb(69 69 69)' : '#ffffff',
+        color: isDark ? '#ffffff' : '#000000',
+        icon: 'error',
+        showConfirmButton: false, 
+        didRender: () => {
+          
+          const backButton = document.getElementById('back-button');
+          if (backButton) {
+            backButton.addEventListener('click', () => {
+              Swal.close(); 
+            });
+          } else {
+            console.error(errors);
+          }
+        },
+      });
+    }
   };
 
   const formValues = useWatch({ control });
   return (
-    <div className="my-7 mx-5 lg:mx-0 flex flex-col items-center justify-center ">
+    <div className="mx-5 my-7 flex flex-col items-center justify-center lg:mx-0">
       <div className="flex w-full flex-col md:flex-row">
-        <div className="hidden md:block md:w-3/7 flex-col items-start mb-4">
-          <h1 className="text-start text-xl w-full">Cancelacion o Reembolso</h1>
-          <p className="mt-2 text-justify ">
+        <div className="md:w-3/7 mb-4 hidden flex-col items-start md:block">
+          <h1 className="w-full text-start text-xl">Cancelacion o Reembolso</h1>
+          <p className="mt-2 text-justify">
             Ingresa los datos tal cual aparece en el email enviado
           </p>
         </div>
       </div>
-    <div className="w-full flex flex-col md:flex-row">
-    <div className="min-h-full flex-wrap justify-center hidden md:block ">
-    <Image
-      src={regretsPc}
-      alt="regretsPc"
-      width={650}
-      height={0}
-      className="object-cover h-full"
-    />
-  </div>
-  <div>
-  <div className="min-h-full flex flex-wrap justify-center block md:hidden w-72">
-    <Image
-      src={regretsPhone}
-      alt="regretsPhone"
-      width={200}
-      height={0}
-      className='object-contain h-full'
-      
-    />
-    <div className={` min-w-full flex-wrap justify-center block md:hidden border-t-4  ${isDark ? 'border-t-white' : 'border-t-buttonsLigth'}`}></div>
-  </div>
-  <div className="block w-72 md:hidden md:w-2/6 flex-col items-start">
-          <p className="mt-2 text-lg text-center">
-            Ingresa los datos tal cual aparece en el email enviado
-          </p>
+      <div className="flex w-full flex-col md:flex-row">
+        <div className="hidden min-h-full flex-wrap justify-center md:block">
+          <Image
+            src={regretsPc}
+            alt="regretsPc"
+            width={650}
+            height={0}
+            className="h-full object-cover"
+          />
         </div>
-  </div>
-  
+        <div>
+          <div className="block flex min-h-full w-72 flex-wrap justify-center md:hidden">
+            <Image
+              src={regretsPhone}
+              alt="regretsPhone"
+              width={200}
+              height={0}
+              className="h-full object-contain"
+            />
+            <div
+              className={`block min-w-full flex-wrap justify-center border-t-4 md:hidden ${isDark ? 'border-t-white' : 'border-t-buttonsLigth'}`}
+            ></div>
+          </div>
+          <div className="block w-72 flex-col items-start md:hidden md:w-2/6">
+            <p className="mt-2 text-center text-lg">
+              Ingresa los datos tal cual aparece en el email enviado
+            </p>
+          </div>
+        </div>
+
         <div
-          className={`mr-0 md:mr-3 h-full w-full flex flex-col justify-center border-0 md:border-l-4 ${isDark ? 'border-l-white' : 'border-l-buttonsLigth'}`}
+          className={`mr-0 flex h-full w-full flex-col justify-center border-0 md:mr-3 md:border-l-4 ${isDark ? 'border-l-white' : 'border-l-buttonsLigth'}`}
         >
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -206,7 +353,7 @@ const RepentanceForm = () => {
                   className={`w-full border-0 border-b-4 border-solid ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
                   type="text"
                   placeholder="Como figura en el recibo"
-                  {...register('referenceNumber', {
+                  {...register('transaction_id', {
                     required: '• El número de referencia es obligatorio',
                     pattern: {
                       value: /^[A-Za-z0-9]{20,40}$/,
@@ -218,9 +365,9 @@ const RepentanceForm = () => {
                   required
                 />
               </label>
-              {errors.referenceNumber && (
+              {errors.transaction_id && (
                 <p className="mt-1 text-sm text-red-500">
-                  {errors.referenceNumber.message}
+                  {errors.transaction_id.message}
                 </p>
               )}
             </div>
@@ -231,7 +378,7 @@ const RepentanceForm = () => {
                   className={`w-full border-0 border-b-4 border-solid ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
                   type="text"
                   placeholder="Como figura en el recibo"
-                  {...register('lastName', {
+                  {...register('last_name', {
                     required: '• El Nombre y Apellido es obligatorio',
                     minLength: {
                       value: 6,
@@ -246,9 +393,9 @@ const RepentanceForm = () => {
                   required
                 />
               </label>
-              {errors.lastName && (
+              {errors.last_name && (
                 <p className="mt-1 text-sm text-red-500">
-                  {errors.lastName.message}
+                  {errors.last_name.message}
                 </p>
               )}
             </div>
@@ -319,7 +466,7 @@ const RepentanceForm = () => {
                   </p>
                   <input
                     placeholder="Telefono"
-                    className="${isDark ? 'border-b-white focus:border-white' : 'border-b-buttonsLigth focus:border-buttonsLigth'} w-full border-none bg-transparent text-lg  focus:border-none focus:outline-none focus:ring-0"
+                    className="${isDark ? 'border-b-white focus:border-white' : 'border-b-buttonsLigth focus:border-buttonsLigth'} w-full border-none bg-transparent text-lg focus:border-none focus:outline-none focus:ring-0"
                     type="tel"
                     // onFocus={() => setIsFocused(true)} // Agrega onFocus
                     // onBlur={() => setIsFocused(false)} // Agrega onBlur
@@ -368,7 +515,7 @@ const RepentanceForm = () => {
             <div className="mt-5 flex justify-center text-center">
               <button
                 type="submit"
-                onClick={handleSendClick}
+                onClick={handleRepentanceProcess}
                 className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
               >
                 Enviar Solicitud

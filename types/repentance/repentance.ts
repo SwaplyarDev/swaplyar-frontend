@@ -1,17 +1,24 @@
 import { CountryOption } from "../request/request";
 
 export type FormRepentance ={
-    referenceNumber: string;
-  lastName: string;
+    transaction_id: string;
+    last_name: string;
   email: string;
   phone_number: string;
   note: string;
+  status: string;
 }
 export interface FormData {
-  referenceNumber: string;
-  lastName: string;
+  transaction_id: string;
+  last_name: string;
   email: string;
   phone_number: string;
   note: string;
   calling_code: CountryOption | null;
+  status: string;
 };
+export interface CheckRefundProps {
+  transaction_id: string;
+  email: string;
+  last_name: string;
+}
