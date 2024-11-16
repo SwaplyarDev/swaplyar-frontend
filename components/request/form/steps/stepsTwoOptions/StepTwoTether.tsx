@@ -4,6 +4,7 @@ import {
   FieldErrors,
   UseFormGetValues,
   UseFormRegister,
+  useWatch,
 } from 'react-hook-form';
 import clsx from 'clsx';
 import InputField from '@/components/ui/contact-form/InputField';
@@ -26,6 +27,9 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
   formData,
   control,
 }) => {
+  const formValues = useWatch({ control });
+  const receiveAmount = localStorage.getItem('receiveAmount');
+  console.log(formValues.red_selection)
   return (
     <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
       <div className="flex w-full flex-col gap-4">
@@ -45,9 +49,6 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
             disabled={blockAll}
             id="usdt_direction"
             type="text"
-            defaultValue={
-              formData.stepOne?.own_account !== 'Si' ? undefined : ''
-            }
             placeholder="Direccion USDT"
             register={register('usdt_direction', {
               required: 'La dirección de USDT es obligatorio',
@@ -79,9 +80,6 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
             disabled={blockAll}
             id="re_enter_usdt_direction"
             type="text"
-            defaultValue={
-              formData.stepOne?.own_account !== 'Si' ? undefined : ''
-            }
             placeholder="RE-ENTER Direccion USDT"
             register={register('re_enter_usdt_direction', {
               required: `La dirección de USDT es obligatorio`,
@@ -125,10 +123,10 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
 
         <div className="flex flex-col">
           <label
-            htmlFor="re_enter_bank_email"
+            htmlFor="recieveAmountRed"
             className={clsx(
               'ml-1 text-xs',
-              errors.re_enter_bank_email
+              errors.recieveAmountRed
                 ? 'text-red-500'
                 : 'text-lightText dark:text-darkText',
             )}
@@ -136,23 +134,17 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
             Recibes exactamente
           </label>
           <InputField
-            disabled={blockAll}
-            id="re_enter_bank_email"
-            type="email"
-            placeholder={`Monto a Recibir por`}
-            register={register('re_enter_bank_email', {
-              required: `El Email de TeStepTwoTether es obligatorio`,
-              validate: (value) => {
-                const originalValue = getValues('bank_email');
-                return (
-                  value === originalValue ||
-                  'Debe coincidir con el Email de TeStepTwoTether'
-                );
-              },
+            disabled={true}
+            id="recieveAmountRed"
+            type="text"
+            value={`${receiveAmount} USDT ${formValues.red_selection?.label ? formValues.red_selection?.label : 'Red'}`}
+            placeholder={`Monto a Recibir por ${formValues.red_selection?.label ? formValues.red_selection?.label : 'Red'}`}
+            register={register('recieveAmountRed', {
+              required: 'El monto es obligatorio',
             })}
             error={
-              errors.re_enter_bank_email?.message
-                ? String(errors.re_enter_bank_email.message)
+              errors.recieveAmountRed?.message
+                ? String(errors.recieveAmountRed.message)
                 : undefined
             }
           />

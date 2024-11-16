@@ -117,7 +117,6 @@ const StepTwoWise: React.FC<StepTwoWiseProps> = ({
             register={register('bank_email', {
               required: `El Email de Wise es obligatorio`,
               pattern: {
-                // value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                 value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
                 message: `El Email de Wise no es valido`,
               },

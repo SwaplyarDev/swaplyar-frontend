@@ -1,25 +1,8 @@
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import React, { useEffect, useState } from 'react';
-import { SingleValue } from 'react-select';
 import clsx from 'clsx';
 import Select from 'react-select'; // Asegúrate de importar de 'react-select'
-
-type CountryOption = {
-  value: string; // Sigla del país
-  label: string; // Nombre del país y código de área
-  callingCode: string; // Código de área
-};
-
-type FieldError = {
-  message: string;
-};
-
-type SelectCodeCountryProps = {
-  selectedCodeCountry: CountryOption | undefined;
-  setSelectedCodeCountry: (option: CountryOption | undefined) => void;
-  errors: { [key: string]: FieldError } | {}; // Tipado explícito
-  blockAll?: boolean;
-};
+import { CountryOption, FieldError, SelectCodeCountryProps } from '@/types/request/request';
 
 const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
   selectedCodeCountry,

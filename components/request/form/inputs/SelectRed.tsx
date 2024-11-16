@@ -6,17 +6,7 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import React, { useState } from 'react';
 import Select, { components } from 'react-select';
 import clsx from 'clsx';
-
-type FieldError = {
-  message: string;
-};
-
-type SelectRedProps = {
-  selectedRed: string | undefined;
-  setSelectedRed: (option: string | undefined) => void;
-  errors: { [key: string]: FieldError } | {}; // Tipado explícito
-  blockAll: boolean;
-};
+import { FieldError, SelectRedProps } from '@/types/request/request';
 
 const options = [
   {
@@ -71,7 +61,10 @@ const SelectRed: React.FC<SelectRedProps> = ({
       <label
         htmlFor={fieldName}
         className={clsx(
-          errorMessage ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
+          'ml-1 text-xs',
+          errorMessage
+            ? 'text-red-500'
+            : 'text-lightText dark:text-darkText',
         )}
       >
         Selecciona una Red
@@ -81,10 +74,10 @@ const SelectRed: React.FC<SelectRedProps> = ({
         id={fieldName}
         onFocus={() => setIsFocused(true)} // Activa el enfoque
         onBlur={() => setIsFocused(false)}
-        value={options.find((option) => option.value === selectedRed)}
+        value={options.find((option) => option.value === selectedRed?.value)}
         options={options}
         onChange={(option) => {
-          setSelectedRed(option?.value || undefined);
+          setSelectedRed(option || undefined);
           setIsFocused(false);
         }}
         components={{ Option: CustomOption, SingleValue: CustomSingleValue  }}

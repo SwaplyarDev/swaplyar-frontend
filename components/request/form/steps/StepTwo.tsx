@@ -4,14 +4,13 @@ import { useStepperStore } from '@/store/stateStepperStore';
 import { useSystemStore } from '@/store/useSystemStore';
 import { useEffect, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import clsx from 'clsx';
-import InputField from '@/components/ui/contact-form/InputField';
-import { error } from 'console';
 import StepTwoBank from './stepsTwoOptions/StepTwoBank';
 import StepTwoPayoneer from './stepsTwoOptions/StepTwoPayoneer';
 import StepTwoPaypal from './stepsTwoOptions/StepTwoPaypal';
 import StepTwoWise from './stepsTwoOptions/StepTwoWise';
 import StepTwoTether from './stepsTwoOptions/StepTwoTether';
+import StepTwoPix from './stepsTwoOptions/StepTwoPix';
+import { RedType } from '@/types/request/request';
 
 interface FormData {
   receiver_first_name: string;
@@ -22,6 +21,12 @@ interface FormData {
   name_of_bank: string;
   bank_email: string;
   re_enter_bank_email: string;
+  usdt_direction: string;
+  re_enter_usdt_direction: string;
+  red_selection: RedType | undefined;
+  recieveAmountRed: string;
+  pix_key: string;
+  individual_tax_id: string;
 }
 
 const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
@@ -43,10 +48,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   const { selectedReceivingSystem, selectedSendingSystem } = useSystemStore();
   const { isDark } = useDarkTheme();
 
-  // Estado para guardar los valores iniciales
   const [initialValues, setInitialValues] = useState<FormData | null>(null);
 
-  // Observar cambios en los inputs
   const formValues = useWatch({ control });
 
   useEffect(() => {
@@ -59,6 +62,12 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
       name_of_bank,
       bank_email,
       re_enter_bank_email,
+      usdt_direction,
+      re_enter_usdt_direction,
+      red_selection,
+      recieveAmountRed,
+      pix_key,
+      individual_tax_id,
     } = formData.stepTwo;
     const newValues = {
       receiver_first_name,
@@ -69,6 +78,12 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
       name_of_bank,
       bank_email,
       re_enter_bank_email,
+      usdt_direction,
+      re_enter_usdt_direction,
+      red_selection,
+      recieveAmountRed,
+      pix_key,
+      individual_tax_id,
     };
 
     setValue(
@@ -89,8 +104,13 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     setValue('name_of_bank', name_of_bank);
     setValue('bank_email', bank_email);
     setValue('re_enter_bank_email', re_enter_bank_email);
+    setValue('usdt_direction', usdt_direction);
+    setValue('re_enter_usdt_direction', re_enter_usdt_direction);
+    setValue('red_selection', red_selection);
+    setValue('recieveAmountRed', recieveAmountRed);
+    setValue('pix_key', pix_key);
+    setValue('individual_tax_id', individual_tax_id);
 
-    // Guardar los valores iniciales al montar el componente
     setInitialValues(newValues);
     console.log(newValues);
   }, [
@@ -102,9 +122,9 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   ]);
 
   const onSubmit = (data: FormData) => {
-    updateFormData(1, data); // Actualiza los datos del formulario en Zustand
-    markStepAsCompleted(1); // Marcar este paso como completado
-    setActiveStep(2); // Ir al siguiente paso
+    updateFormData(1, data);
+    markStepAsCompleted(1); 
+    setActiveStep(2); 
   };
 
   // Determinar si se han hecho cambios en el formulario
@@ -116,28 +136,17 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
         formValues[key as keyof FormData],
     );
 
-  // const fullName = selectedReceivingSystem?.name;
-  // const firstPart = fullName ? fullName.split(' ')[0] : '';
-
   const renderSelectedSystem = () => {
     switch (selectedReceivingSystem?.id) {
       case 'bank':
         return (
-          // <StepTwoBank
-          //   register={register}
-          //   errors={errors}
-          //   getValues={getValues}
-          //   blockAll={blockAll}
-          //   formData={formData}
-          // />
-          <StepTwoTether
-          register={register}
-          errors={errors}
-          getValues={getValues}
-          blockAll={blockAll}
-          formData={formData}
-          control={control}
-        />
+          <StepTwoBank
+            register={register}
+            errors={errors}
+            getValues={getValues}
+            blockAll={blockAll}
+            formData={formData}
+          />
         );
       case 'payoneer':
         return (
@@ -179,7 +188,17 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             formData={formData}
             control={control}
           />
-        )
+        );
+      case 'pix':
+        return (
+          <StepTwoPix
+            register={register}
+            errors={errors}
+            getValues={getValues}
+            blockAll={blockAll}
+            formData={formData}
+          />
+        );
       default:
         return '';
     }
@@ -187,7 +206,6 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-
       {renderSelectedSystem()}
 
       <div className="flex justify-end">

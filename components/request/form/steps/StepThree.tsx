@@ -33,10 +33,8 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   } = useStepperStore();
   const { isDark } = useDarkTheme();
 
-  // Estado para guardar los valores iniciales
   const [initialValues, setInitialValues] = useState<FormData | null>(null);
 
-  // Observar cambios en los inputs
   const formValues = useWatch({ control });
 
   const receiveAmount = localStorage.getItem('receiveAmount');
@@ -78,20 +76,15 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
     setInitialValues(newValues);
     console.log(proof_of_payment);
 
-    // if (proof_of_payment) {
-    //   setSelectedFile(proof_of_payment);
-    //   document.getElementById('file-name')!.textContent = proof_of_payment.name;
-    // }
   }, [formData.stepThree, setValue, receiveAmount, sendAmount]);
 
   const onSubmit = (data: FormData) => {
     console.log(data)
-    updateFormData(2, data); // Actualiza los datos del formulario en Zustand
-    markStepAsCompleted(2); // Marcar este paso como completado
-    setActiveStep(3); // Aquí podrías finalizar el proceso o realizar una acción adicional
+    updateFormData(2, data); 
+    markStepAsCompleted(2); 
+    setActiveStep(3); 
   };
 
-  // Determinar si se han hecho cambios en el formulario
   const hasChanges =
     initialValues &&
     !Object.keys(initialValues).every(

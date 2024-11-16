@@ -1,5 +1,5 @@
 import { System } from '@/types/data';
-import { CountryOption } from '@/types/request/request';
+import { CountryOption, RedType } from '@/types/request/request';
 import { create } from 'zustand';
 
 const BASE_URL =
@@ -23,6 +23,12 @@ interface StepTwoData {
   name_of_bank: string;
   bank_email: string;
   re_enter_bank_email: string;
+  usdt_direction: string;
+  re_enter_usdt_direction: string;
+  red_selection: RedType | undefined;
+  recieveAmountRed: string;
+  pix_key: string;
+  individual_tax_id: string;
 }
 
 interface StepThreeData {
@@ -83,6 +89,12 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       name_of_bank: '',
       bank_email: '',
       re_enter_bank_email: '',
+      usdt_direction: '',
+      re_enter_usdt_direction: '',
+      red_selection: undefined,
+      recieveAmountRed: '',
+      pix_key: '',
+      individual_tax_id: '',
     },
     stepThree: {
       send_amount: '',
@@ -128,7 +140,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           identification: stepTwo.tax_identification, // por ahora
           phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
           email: stepOne.email,
-          bank_account: {
+          bank_account: { //por ahora
             email_account: stepOne.email, // por ahora
             payment_method: selectedSendingSystem?.name || '',
             number_account: '',
@@ -294,6 +306,12 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           name_of_bank: '',
           bank_email: '',
           re_enter_bank_email: '',
+          usdt_direction: '',
+          re_enter_usdt_direction: '',
+          red_selection: undefined,
+          recieveAmountRed: '',
+          pix_key: '',
+          individual_tax_id: '',
         },
         stepThree: {
           send_amount: '',

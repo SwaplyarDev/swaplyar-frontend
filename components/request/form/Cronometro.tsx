@@ -2,12 +2,7 @@ import Clock from '@/components/ui/Clock/Clock';
 import { useState, useEffect, useRef } from 'react';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import useChronometerState from '@/store/chronometerStore';
-import { Reloj } from '@/utils/assets/img-database';
-import Image from 'next/image';
-
-type CronometroProps = {
-  setBlockAll: (value: boolean) => void;
-};
+import { CronometroProps } from '@/types/request/request';
 
 const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
   const [segundos, setSegundos] = useState<number>(30 * 60); // Inicializamos en 30 minutos (30 * 60 segundos)

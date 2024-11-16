@@ -77,3 +77,45 @@ export type TransactionRequest = {
     };
   };
 };
+
+export type RedType = {
+  value: string;
+  label: string;
+  image: JSX.Element;
+};
+
+export type CronometroProps = {
+  setBlockAll: (value: boolean) => void;
+};
+
+export type FieldError = {
+  message: string;
+};
+
+export type SelectRedProps = {
+  selectedRed: RedType | undefined;
+  setSelectedRed: (option: RedType | undefined) => void;
+  errors: { [key: string]: FieldError } | {};
+  blockAll: boolean;
+};
+
+export type SelectCodeCountryProps = {
+  selectedCodeCountry: CountryOption | undefined;
+  setSelectedCodeCountry: (option: CountryOption | undefined) => void;
+  errors: { [key: string]: FieldError } | {}; // Tipado explícito
+  blockAll?: boolean;
+};
+
+export type SelectBooleanProps = {
+  selectedOption: string | undefined;
+  setSelectedOption: (option: string | undefined) => void;
+  errors: { [key: string]: FieldError } | {}; // Tipado explícito
+  blockAll: boolean;
+};
+
+export type payerOptions = {
+  sendAmount: number;
+  sendCurrency: string;
+  recibeAmount: number;
+  recibeCurrency: string;
+};

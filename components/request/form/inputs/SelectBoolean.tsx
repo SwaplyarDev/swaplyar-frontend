@@ -1,18 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import Select from 'react-select';
 import clsx from 'clsx';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-
-type FieldError = {
-  message: string;
-};
-
-type SelectBooleanProps = {
-  selectedOption: string | undefined;
-  setSelectedOption: (option: string | undefined) => void;
-  errors: { [key: string]: FieldError } | {}; // Tipado explícito
-  blockAll: boolean;
-};
+import { FieldError, SelectBooleanProps } from '@/types/request/request';
 
 const SelectBoolean: React.FC<SelectBooleanProps> = ({
   selectedOption,
@@ -24,9 +14,6 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
   const errorMessage = (errors as { [key: string]: FieldError })[fieldName]
     ?.message;
   const [isFocused, setIsFocused] = useState(false);
-  const handleFocus = () => {
-    setIsFocused(!isFocused);
-  };
   const { isDark } = useDarkTheme();
   return (
     <>

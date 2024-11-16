@@ -27,10 +27,6 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     setValue,
   } = useForm<FormData>({ mode: 'onChange' });
 
-  // const [currentCountry, setCurrentCountry] = useState<CountryOption | null>(
-  //   null,
-  // );
-
   const {
     markStepAsCompleted,
     setActiveStep,
@@ -44,13 +40,10 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
   } = useStepperStore();
   const { isDark } = useDarkTheme();
 
-  // Estado para guardar los valores iniciales
   const [initialValues, setInitialValues] = useState<FormData | null>(null);
 
-  // Observar cambios en los inputs
   const formValues = useWatch({ control });
 
-  // Cargar los datos del formulario al montar el componente
   useEffect(() => {
     const {
       sender_first_name,
@@ -75,7 +68,6 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     setValue('email', email);
     setValue('own_account', own_account);
 
-    // Guardar los valores iniciales al montar el componente
     console.log(newValues);
     setInitialValues(newValues);
   }, [formData.stepOne, setValue]);
@@ -85,16 +77,16 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
 
     if (idTransaction) {
       updateOneStep(idTransaction);
-      markStepAsCompleted(0); // Marcar este paso como completado
-      setActiveStep(1); // Ir al siguiente paso
+      markStepAsCompleted(0); 
+      setActiveStep(1); 
     } else {
       const responseData = await submitOneStep();
 
       if (responseData) {
         console.log('Datos enviados y respuesta recibida:', responseData);
         setIdTransaction(responseData.transaction_id);
-        markStepAsCompleted(0); // Marcar este paso como completado
-        setActiveStep(1); // Ir al siguiente paso
+        markStepAsCompleted(0); 
+        setActiveStep(1); 
       } else {
         console.error('No se pudo completar el envío de los datos');
       }
@@ -220,12 +212,6 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               error={errors.email && errors.email.message}
             />
           </div>
-          {/* <SelectCountry
-            errors={errors}
-            setValue={setValue}
-            register={register}
-            blockALl={blockAll}
-          /> */}
           <div className="flex flex-col">
             <label
               htmlFor="phone"
@@ -247,9 +233,8 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                     ? 'border-blue-600 outline-none ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
                     : 'hover:border-blue-600 dark:hover:border-white',
               )}
-              onFocus={() => setIsFocused(true)} // Manejador de foco en el contenedor
-              onBlur={() => setIsFocused(false)} // Manejador de desenfoque en el contenedor
-              // tabIndex={0} // Asegúrate de que el div pueda recibir el enfoque
+              onFocus={() => setIsFocused(true)} 
+              onBlur={() => setIsFocused(false)} 
             >
               <Controller
                 name="calling_code"
@@ -277,8 +262,6 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                 className="w-full border-none bg-transparent focus:border-none focus:outline-none focus:ring-0"
                 type="tel"
                 disabled={blockAll}
-                // onFocus={() => setIsFocused(true)} // Agrega onFocus
-                // onBlur={() => setIsFocused(false)} // Agrega onBlur
                 {...register('phone', {
                   required: 'El número de teléfono es obligatorio',
                   pattern: {
