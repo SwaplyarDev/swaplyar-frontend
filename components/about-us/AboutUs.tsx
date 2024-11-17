@@ -66,33 +66,42 @@ const AboutUs = () => {
         >
           <div className="rs-wrapper-v4 mx-auto items-center justify-center text-center md:w-full">
             <div className="container-text pb-12 pt-10 text-xl sm:pb-24 sm:pt-20 sm:text-2xl lg:text-4xl">
-              <h1 className="max-w-[1000px] text-left lg:text-4xl">
-                En SwaplyAr, garantizamos un intercambio seguro y confiable de tu dinero de PayPal. Estamos
-                comprometidos con tu seguridad y satisfacción.
-              </h1>
+            <h1 className="max-w-[1000px] text-center lg:text-4xl">Nuestra misión y valores</h1>
+              
             </div>
           </div>
 
+          <div className="rs-wrapper-v4 mx-auto mb-12 max-w-[1000px] text-center sm:mt-4 md:mt-8 md:w-full lg:mt-8">          
+            <p className="mx-auto mt-4 text-lg sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
+            SwaplyAr surgió de una necesidad fundamental: facilitar el intercambio de saldo y asegurar que cada usuario reciba exactamente lo acordado, brindando acompañamiento a lo largo de todo el proceso. Gracias a nuestra confiabilidad, seguridad y rapidez en cada transacción, el crecimiento de SwaplyAr ha sido exponencial.
+            Nuestros valores son la base de todas nuestras acciones diarias y definen cómo operamos en cada interacción.
+            </p>
+          </div>
+
           <div className="rs-wrapper-v4 mx-auto mb-12 max-w-[1000px] text-center sm:mt-4 md:mt-8 md:w-full lg:mt-8">
-            <h2 className="text-2xl font-semibold">Nuestra misión y valores</h2>
-            <h5 className="mx-auto mt-4 text-lg sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
-              SwaplyAr nació de una simple necesidad, intercambiar saldo y que cada persona que lo utiliza reciba lo
-              pactado, acompañándolo en todo el proceso. Pronto su crecimiento fue exponencial debido a la
-              confiabilidad, seguridad y velocidad en cada operación.
-            </h5>
+            <h3 className="max-w-[1000px] text-center font-bold lg:text-2xl">Nuestros Valores</h3>
+            <p className="mx-auto mt-4 text-lg sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
+              Nos guiamos diariamente por nuestros valores fundamentales:
+              Profesionalidad, Apoyo, Transparencia, Simplicidad y Eficiencia. Estos principios nos permiten trabajar unidos como un equipo global, con nuestros clientes en el centro de todas nuestras acciones. Además, nos impulsan a cuidar de nosotros mismos, de los demás y de las comunidades que nos rodean.
+            </p>
           </div>
 
           <div className="w-full max-w-[1000px]">
             <CaedAboutUs cardsData={cardsData} />
           </div>
 
+          <div className="rs-wrapper-v4 mx-auto mb-12 max-w-[1000px] text-center sm:mt-4 md:mt-8 md:w-full lg:mt-8">
+            <p className="mx-auto mt-4 text-lg sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
+              En SwaplyAR, garantizamos un intercambio seguro y confiable de tus fondos entre diversas billeteras virtuales y cuentas bancarias a nivel global. Nuestro compromiso es brindar seguridad y satisfacción en cada transacción, asegurando que tu dinero llegue a su destino de manera rápida y segura.
+            </p>
+          </div>
+
           <div className="mb-20 mt-20 w-full max-w-[1000px] sm:mb-36 sm:mt-40">
             <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
-              <div className="col-right order-1 text-center text-lg text-black dark:text-white sm:text-left sm:text-4xl md:order-2">
-                <h2>
-                  &quot;Buscamos solucionar los problemas de las personas implementando las &uacute;ltimas
-                  tecnolog&iacute;as y sistemas de pago.&quot;
-                </h2>
+              <div className="col-right order-1 text-center text-lg text-black dark:text-white sm:text-left sm:text-xl md:order-2">
+                <p className='italic'>
+                "Nos Dedicamos a transformar la manera en que las personas manejan su dinero, utilizando las tecnologias mas avanzadas y sistemas de pago innovadores. Porque entendemos que detrás de cada transacción hay sueños, metas y necesidades, trabajamos incansablemente para brindar soluciones que ofrezcan tranquilidad, confianza y seguridad. Queremos que sientas que tu dinero está en las mejores manos, acompañándote en cada paso hacia lo que más valoras."
+                </p>
               </div>
 
               <div className="col-left order-2 flex flex-col items-center md:order-1">
@@ -104,7 +113,7 @@ const AboutUs = () => {
                   className="sm:h-[300px] sm:w-[350px]"
                 />
                 <div className="text-team mt-4 text-center text-black dark:text-white">
-                  <h4 className="text-lg sm:text-2xl">Oa Johan Javier Suarez Merchan</h4>
+                  <h5 className="text-lg sm:text-2xl">Oa Johan Javier Suarez Merchan</h5>
                   <h5>Founder &amp; Chief Executive Officer (CEO)</h5>
                 </div>
               </div>
