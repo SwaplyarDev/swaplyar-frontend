@@ -40,16 +40,24 @@ export default function HomePage() {
         </div>
         <div className={mainStyles.infoBlocksContainer}>
           <InfoBlock
-            title="Cambia USD de PayPal por ARS con SwaplyAr"
-            imageSrc={UsdArs}
-            imageAlt="Cambia USD de PayPal por ARS"
-            content="Realizá cambios de dólares de PayPal a pesos argentinos de manera rápida y eficiente. Ofrecemos las mejores tasas del mercado para que maximices tus ganancias. Si necesitás transferir dinero desde PayPal, lo depositamos directamente en tu cuenta bancaria local o internacional según prefieras. Aumentá tus beneficios con SwaplyAr."
+            title = "Cambia USD o EUR de tu billetera virtual por la moneda de tu preferencia  con SwaplyAr"
+            imageSrc = {UsdArs}
+            imageAlt = "Cambia USD de PayPal por ARS"
+            contentNode = {
+              <>              
+              Realizá cambios de <strong>USD</strong>, <strong>EUR</strong> o <strong>USDT</strong> de tu billetera virtual a la moneda que necesitas de manera rápida y eficiente. Ofrecemos las mejores tasas del mercado para que siempre maximices tus ganancias. Si necesitás transferir dinero desde <strong> PayPal</strong>, <strong> Payoneer</strong>, <strong> Wise</strong>, <strong>Pix</strong>, <strong>USDT</strong>, o pesos Argentinos, lo depositamos directamente en tu cuenta bancaria local o internacional según prefieras. Aumentá tus beneficios con <strong>SwaplyAr plus Renwards</strong>.
+              </>
+            }
           />
           <InfoBlock
             title="Necesitás recargar tu cuenta de PayPal en USD o EUR, fácilmente en SwaplyAr tenés la solución"
             imageSrc={RecargaPaypal}
             imageAlt="Recarga PayPal"
-            content="Simplemente envianos un mensaje especificando la cantidad que necesitás y te proporcionaremos una cotización. Si aceptás el precio, procederemos con la transacción de manera rápida y segura."
+            contentNode = {
+              <>              
+              Es tan simple de colocar el monto que deseas en la calculadora en que <strong>billetera Virtual</strong> deseas el dinero, rellenar la solicitud y realizar el pago correspondiente y en menos de 15 minutos procederemos con la transacción de manera rápida y segura. También nos puedes escribir a nuestro <strong>WhatsApp</strong> y responderemos cualquier duda que tengas.
+              </>
+            }
           />
         </div>
       </div>
@@ -69,7 +77,7 @@ export default function HomePage() {
                 href={'/info/how-to-use'}
                 className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'} `}
               >
-                <h3>Como usar Swaplyar</h3>
+                ¡Empieza ahora!
               </Link>
             </button>
           </div>
