@@ -12,6 +12,8 @@ import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import { useSession } from 'next-auth/react';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
+import LinkWithHover from '../ui/LinkWithHover/LinkWithHover';
+
 
 const mainStyles = {
   main: 'py-10 relative', // Centrado tanto vertical como horizontalmente
@@ -45,7 +47,7 @@ export default function HomePage() {
             imageAlt = "Cambia USD de PayPal por ARS"
             contentNode = {
               <>              
-              Realizá cambios de <strong>USD</strong>, <strong>EUR</strong> o <strong>USDT</strong> de tu billetera virtual a la moneda que necesitas de manera rápida y eficiente. Ofrecemos las mejores tasas del mercado para que siempre maximices tus ganancias. Si necesitás transferir dinero desde <strong> PayPal</strong>, <strong> Payoneer</strong>, <strong> Wise</strong>, <strong>Pix</strong>, <strong>USDT</strong>, o pesos Argentinos, lo depositamos directamente en tu cuenta bancaria local o internacional según prefieras. Aumentá tus beneficios con <strong>SwaplyAr plus Renwards</strong>.
+              Realizá cambios de <strong><LinkWithHover href='#'>USD</LinkWithHover></strong>, <strong><LinkWithHover href='#'>EUR</LinkWithHover></strong> o <strong><LinkWithHover href='#'>USDT</LinkWithHover></strong> de tu billetera virtual a la moneda que necesitas de manera rápida y eficiente. Ofrecemos las mejores tasas del mercado para que siempre maximices tus ganancias. Si necesitás transferir dinero desde <strong><LinkWithHover href='#'>PayPal</LinkWithHover></strong>, <strong><LinkWithHover href='#'>Payoneer</LinkWithHover></strong>, <strong><LinkWithHover href='#'>Wise</LinkWithHover></strong>, <strong><LinkWithHover href='#'>Pix</LinkWithHover></strong>, <strong><LinkWithHover href='#'>USDT</LinkWithHover></strong>, o pesos Argentinos, lo depositamos directamente en tu cuenta bancaria local o internacional según prefieras. Aumentá tus beneficios con <strong><LinkWithHover href='#'>SwaplyAr plus Rewards</LinkWithHover></strong>.
               </>
             }
           />
@@ -55,7 +57,7 @@ export default function HomePage() {
             imageAlt="Recarga PayPal"
             contentNode = {
               <>              
-              Es tan simple de colocar el monto que deseas en la calculadora en que <strong>billetera Virtual</strong> deseas el dinero, rellenar la solicitud y realizar el pago correspondiente y en menos de 15 minutos procederemos con la transacción de manera rápida y segura. También nos puedes escribir a nuestro <strong>WhatsApp</strong> y responderemos cualquier duda que tengas.
+              Es tan simple de colocar el monto que deseas en la calculadora en que <strong><LinkWithHover href="#">Billetera Virtual</LinkWithHover></strong>  deseas el dinero, rellenar la solicitud y realizar el pago correspondiente y en menos de 15 minutos procederemos con la transacción de manera rápida y segura. También nos puedes escribir a nuestro <strong><LinkWithHover href="#">WhatsApp</LinkWithHover></strong> y responderemos cualquier duda que tengas.
               </>
             }
           />
@@ -66,7 +68,7 @@ export default function HomePage() {
         <FlyerTrabajo imageSrc={FlyerGif}>
           <p>
             ¿Nuevo en SwaplyAr? <br /> Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma
-            sencilla y segura. Haz click y aprende cómo usar SwaplyAr{' '}
+            sencilla y segura.{' '}
           </p>
           <div>
             <button
