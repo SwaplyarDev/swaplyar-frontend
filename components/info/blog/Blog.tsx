@@ -1,14 +1,11 @@
 'use client';
-import React, { useEffect, useState, useRef } from 'react';
-// @ts-ignore
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import useBlogStore from '@/store/useBlogStore';
-import Image from 'next/image';
+
+import React, { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import BlogPostCard from '@/components/ui/BlogPostCard/BlogPostCard';
 import ImageCarousel from '@/components/ui/ImageCarousel/imageCarousel';
+import PaginationButtonsProps from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
+import useBlogStore from '@/store/useBlogStore';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -21,52 +18,8 @@ const Blog: React.FC = () => {
   const [randomImages, setRandomImages] = useState<string[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
 
-  let pageButtons: (number | string)[] = [];
-
-  if (currentPage <= 2) {
-    pageButtons = [1, 2, 3, '...', totalPages];
-  } else if (currentPage >= totalPages - 2) {
-    pageButtons = [1, '...', totalPages - 2, totalPages - 1, totalPages];
-  } else {
-    pageButtons = [currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
-  }
-
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  const fetchData = async () => {
-    const datas = {
-      content: 'Titulo Editado 3',
-    };
-
-    try {
-      // Construir la URL con los parámetros de consulta
-      const url = new URL(`${BASE_URL}/v1/blogs/content`);
-      url.searchParams.append('content', datas.content);
-
-      const response = await fetch(url.toString(), {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      console.log('Response:----', response);
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
-      console.log('Success:', data);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const handlePageChange = (page: number) => {
     if (page !== currentPage) {
@@ -138,7 +91,7 @@ const Blog: React.FC = () => {
             className="w-full rounded-2xl border border-gray-300 p-2 pl-4 pr-10 focus:outline-none focus:ring-0"
             style={{ color: 'black', backgroundColor: 'white' }}
             value={searchTerm}
-            onChange={handleSearchChange} // Cambié aquí para usar la función manejadora correcta
+            onChange={handleSearchChange}
           />
           <span className="absolute right-3 top-2 text-gray-500">
             <svg
@@ -175,39 +128,12 @@ const Blog: React.FC = () => {
         )}
       </div>
 
-      <div className="mt-8 flex justify-center space-x-4">
-        <button
-          className={`h-10 w-10 rounded-full border ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
-          onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
-          disabled={currentPage === 1}
-        >
-          &lt;
-        </button>
-
-        {pageButtons.map((pageNumber, index) =>
-          typeof pageNumber === 'number' ? (
-            <button
-              key={index}
-              className={`h-10 w-10 rounded-full border ${currentPage === pageNumber ? 'bg-blue-500 text-white' : 'bg-white'}`}
-              onClick={() => handlePageChange(pageNumber)}
-            >
-              {pageNumber}
-            </button>
-          ) : (
-            <span key={index} className="flex h-10 w-10 items-center justify-center text-gray-500">
-              ...
-            </span>
-          ),
-        )}
-
-        <button
-          className={`h-10 w-10 rounded-full border ${currentPage === totalPages ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
-          onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
-          disabled={currentPage === totalPages}
-        >
-          &gt;
-        </button>
-      </div>
+      {/* Usa el componente PaginationButtons */}
+      <PaginationButtonsProps
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handlePageChange={handlePageChange}
+      />
     </div>
   );
 };
