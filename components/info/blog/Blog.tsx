@@ -1,11 +1,13 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import BlogPostCard from '@/components/ui/BlogPostCard/BlogPostCard';
 import ImageCarousel from '@/components/ui/ImageCarousel/imageCarousel';
 import PaginationButtonsProps from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import useBlogStore from '@/store/useBlogStore';
+import usePageSync from '@/components/ui/usePageSync/usePageSync';
+import { fetchBlogs } from '@/components/ui/fetchBlogs/fetchBlogs'; // Importa la función fetch
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -13,55 +15,34 @@ const Blog: React.FC = () => {
   const { blogs, setBlogs } = useBlogStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  const [data, setData] = useState<number | null>(null);
-  const postsPerPage = 9;
-  const [randomImages, setRandomImages] = useState<string[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
+  const [randomImages, setRandomImages] = useState<string[]>([]);
 
   const router = useRouter();
-  const searchParams = useSearchParams();
+
+  // Usar el custom hook para sincronizar la página
+  usePageSync(currentPage, setCurrentPage);
 
   const handlePageChange = (page: number) => {
     if (page !== currentPage) {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       setCurrentPage(page);
       router.replace(`/info/blog?page=${page}`, { scroll: false });
     }
   };
 
   useEffect(() => {
-    const pageParam = parseInt(searchParams.get('page') || '1', 10);
-    if (pageParam !== currentPage) {
-      setCurrentPage(pageParam);
-    }
-  }, [searchParams]);
-
-  useEffect(() => {
-    const fetchBlogs = async () => {
+    const getBlogs = async () => {
       try {
-        let url = `${BASE_URL}/v1/blogs?page=${currentPage}`;
-
-        if (searchTerm) {
-          url += `&search=${encodeURIComponent(searchTerm)}`;
-        }
-
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Network response was not ok');
-
-        const data = await response.json();
+        const data = await fetchBlogs(currentPage, searchTerm, BASE_URL!);
         setBlogs(data.blogsPerPage);
-        setData(data.meta.totalPages);
         setTotalPages(data.meta.totalPages);
       } catch (error) {
         console.error('Error fetching blogs:', error);
       }
     };
 
-    fetchBlogs();
+    getBlogs();
   }, [currentPage, searchTerm, setBlogs]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +57,9 @@ const Blog: React.FC = () => {
     }
   }, [blogs]);
 
-  const filteredBlogs = blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredBlogs = blogs.filter((post) =>
+    post.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="mx-auto max-w-7xl p-6">
@@ -128,7 +111,6 @@ const Blog: React.FC = () => {
         )}
       </div>
 
-      {/* Usa el componente PaginationButtons */}
       <PaginationButtonsProps
         currentPage={currentPage}
         totalPages={totalPages}
