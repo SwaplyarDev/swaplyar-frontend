@@ -110,26 +110,31 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
       case 'pix':
         return (
           <StepThreeGeneral
-          register={register}
-          errors={errors}
-          getValues={getValues}
-          blockAll={blockAll}
-          formData={formData}
-          sendAmount={sendAmount}
-          selectedSendingSystem={selectedSendingSystem}
-          receiveAmount={receiveAmount}
-          handleChange={handleChange}
-          restRegister={restRegister}
+            register={register}
+            errors={errors}
+            getValues={getValues}
+            blockAll={blockAll}
+            formData={formData}
+            sendAmount={sendAmount}
+            selectedSendingSystem={selectedSendingSystem}
+            receiveAmount={receiveAmount}
+            handleChange={handleChange}
+            restRegister={restRegister}
           />
         );
       case 'tether':
         return (
           <StepThreeTether
-          // register={register}
-          // errors={errors}
-          // getValues={getValues}
-          // blockAll={blockAll}
-          // formData={formData}
+            register={register}
+            errors={errors}
+            getValues={getValues}
+            blockAll={blockAll}
+            formData={formData}
+            sendAmount={sendAmount}
+            selectedSendingSystem={selectedSendingSystem}
+            receiveAmount={receiveAmount}
+            handleChange={handleChange}
+            restRegister={restRegister}
           />
         );
       default:
