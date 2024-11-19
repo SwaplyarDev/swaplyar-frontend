@@ -9,11 +9,12 @@ interface RewardCardProps {
   imageAlt: string;
   title: string;
   description: string;
+  desriptionNode?: React.ReactNode;
   linkText: string;
   linkHref: string;
 }
 
-function RewardCard({ imageSrc, imageAlt, title, description, linkText, linkHref }: RewardCardProps) {
+function RewardCard({ imageSrc, imageAlt, title, description, desriptionNode, linkText, linkHref }: RewardCardProps) {
   return (
     <div className="m-4 box-border max-w-sm transform rounded p-6">
       <Image src={imageSrc} alt={imageAlt} width={210} height={150} />
@@ -26,7 +27,7 @@ function RewardCard({ imageSrc, imageAlt, title, description, linkText, linkHref
         >
           {linkText}
         </a>
-        .
+        
       </p>
     </div>
   );
