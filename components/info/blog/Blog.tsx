@@ -7,21 +7,26 @@ import ImageCarousel from '@/components/ui/ImageCarousel/imageCarousel';
 import PaginationButtonsProps from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import useBlogStore from '@/store/useBlogStore';
 import usePageSync from '@/components/ui/usePageSync/usePageSync';
-import { fetchBlogs } from '@/components/ui/fetchBlogs/fetchBlogs'; // Importa la función fetch
-
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+import { fetchBlogs } from '@/components/ui/fetchBlogs/fetchBlogs';
+import { useFetchBlogs } from '@/components/ui/useFetchBlogs/useFetchBlogs';
+import { useRandomImages } from '@/components/ui/useRandomImages/useRandomImages';
 
 const Blog: React.FC = () => {
-  const { blogs, setBlogs } = useBlogStore();
+  const { blogs } = useBlogStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [totalPages, setTotalPages] = useState<number>(0);
-  const [randomImages, setRandomImages] = useState<string[]>([]);
 
   const router = useRouter();
 
   // Usar el custom hook para sincronizar la página
   usePageSync(currentPage, setCurrentPage);
+
+  // Fetch de blogs y total de páginas
+  useFetchBlogs(currentPage, searchTerm, setTotalPages);
+
+  // Imágenes aleatorias para el carrusel
+  const randomImages = useRandomImages(blogs);
 
   const handlePageChange = (page: number) => {
     if (page !== currentPage) {
@@ -31,31 +36,10 @@ const Blog: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const getBlogs = async () => {
-      try {
-        const data = await fetchBlogs(currentPage, searchTerm, BASE_URL!);
-        setBlogs(data.blogsPerPage);
-        setTotalPages(data.meta.totalPages);
-      } catch (error) {
-        console.error('Error fetching blogs:', error);
-      }
-    };
-
-    getBlogs();
-  }, [currentPage, searchTerm, setBlogs]);
-
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     setCurrentPage(1); // Reiniciar a la primera página en cada nueva búsqueda
   };
-
-  useEffect(() => {
-    if (Array.isArray(blogs)) {
-      const images = blogs.map((el) => el.url_image);
-      setRandomImages(images);
-    }
-  }, [blogs]);
 
   const filteredBlogs = blogs.filter((post) =>
     post.title.toLowerCase().includes(searchTerm.toLowerCase())
