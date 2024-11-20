@@ -149,14 +149,19 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         receiver: {
           first_name: stepTwo.receiver_first_name,
           last_name: stepTwo.receiver_last_name,
+          document: {
+            type: 'DNI',
+            value: stepTwo.transfer_identification,
+          },
           bank_account: {
             email_account: stepOne.email,
             payment_method: selectedReceivingSystem?.name || '',
             number_account: stepTwo.transfer_identification,
+            name_bank: stepTwo.name_of_bank,
           },
         },
         transfer: {
-          transfer_code: '',
+          transfer_code: '2134534534',
           country_transaction: 'USA',
           message: stepThree.note,
           created_at: new Date().toISOString(),
@@ -167,6 +172,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           amount_received: parseFloat(stepThree.receive_amount),
           currency_received: selectedReceivingSystem?.coin || '',
         },
+        status: 'pending',
+        idAdmin: '',
       },
     };
 

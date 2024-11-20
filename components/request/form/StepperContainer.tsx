@@ -31,6 +31,7 @@ const StepperContainer = () => {
   const navigation = useRouter();
 
   const { isStopped, stop, setisStopped, setStop } = useChronometerState();
+  const [correctSend, setCorrectSend] = useState(false);
 
   const steps = [
     { title: 'Mis Datos', component: <StepOne blockAll={blockAll} /> },
@@ -95,43 +96,43 @@ const StepperContainer = () => {
       },
     });
   };
-  const handleSendRequest = () => {
-    Swal.fire({
-      title: '',
-      html: `
-      <div class="flex bg-[#ffffff] dark:bg-[#454545] rounded-xl px-[15px] py-5 xs-phone:py-[10px] max-w-[500px] w-full xs-phone:flex-row flex-col-reverse gap-3 justify-between items-center">
-        <div class="flex items-center justify-center gap-1 flex-col">
-          <h2 class="text-2xl xs-phone:text-left text-center w-full text-[#252526] dark:text-[#ebe7e0]">Solicitud realizada con éxito</h2>
-          <a href="#" target="_blank" class="text-base w-full xs-phone:text-left text-center text-[#012c8a] dark:text-[#0ea5e9]">¿Tuviste algún problema con la transferencia?</a>
-        </div>
-        <div id="tick-container" class="flex justify-center items-center h-[100px] w-[100px] rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText"></div>
-      </div>
-      `,
-      customClass: {
-        htmlContainer: 'confirmAlert',
-      },
-      showConfirmButton: false,
-      showCancelButton: false,
-      background: 'transparent',
-      color: isDark ? '#ffffff' : '#000000',
-      allowOutsideClick: true,
-      allowEscapeKey: true,
-      allowEnterKey: false,
-      didRender: () => {
-        const tickContainer = document.getElementById('tick-container');
-        if (tickContainer) {
-          const root = createRoot(tickContainer);
-          root.render(
-            <Tick color={isDark ? '#414244' : '#FCFBFA'} size="70px" />,
-          );
-        }
-      },
-      willClose: () => {
-        //Redirigir al home cuando se cierre la alerta
-        navigation.push('/');
-      },
-    });
-  };
+  // const handleSendRequest = () => {
+  //   Swal.fire({
+  //     title: '',
+  //     html: `
+  //     <div class="flex bg-[#ffffff] dark:bg-[#454545] rounded-xl px-[15px] py-5 xs-phone:py-[10px] max-w-[500px] w-full xs-phone:flex-row flex-col-reverse gap-3 justify-between items-center">
+  //       <div class="flex items-center justify-center gap-1 flex-col">
+  //         <h2 class="text-2xl xs-phone:text-left text-center w-full text-[#252526] dark:text-[#ebe7e0]">Solicitud realizada con éxito</h2>
+  //         <a href="#" target="_blank" class="text-base w-full xs-phone:text-left text-center text-[#012c8a] dark:text-[#0ea5e9]">¿Tuviste algún problema con la transferencia?</a>
+  //       </div>
+  //       <div id="tick-container" class="flex justify-center items-center h-[100px] w-[100px] rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText"></div>
+  //     </div>
+  //     `,
+  //     customClass: {
+  //       htmlContainer: 'confirmAlert',
+  //     },
+  //     showConfirmButton: false,
+  //     showCancelButton: false,
+  //     background: 'transparent',
+  //     color: isDark ? '#ffffff' : '#000000',
+  //     allowOutsideClick: true,
+  //     allowEscapeKey: true,
+  //     allowEnterKey: false,
+  //     didRender: () => {
+  //       const tickContainer = document.getElementById('tick-container');
+  //       if (tickContainer) {
+  //         const root = createRoot(tickContainer);
+  //         root.render(
+  //           <Tick color={isDark ? '#414244' : '#FCFBFA'} size="70px" />,
+  //         );
+  //       }
+  //     },
+  //     willClose: () => {
+  //       //Redirigir al home cuando se cierre la alerta
+  //       navigation.push('/');
+  //     },
+  //   });
+  // };
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
   const [loading, setLoading] = useState(false);
   const handleSubmit = async () => {
@@ -146,7 +147,9 @@ const StepperContainer = () => {
 
       if (isSuccess) {
         console.log('Datos enviados correctamente');
-        handleSendRequest();
+        // handleSendRequest();
+        setBlockAll(true);
+        setCorrectSend(true);
       } else {
         console.error('Hubo un error al enviar los datos');
       }
@@ -164,38 +167,113 @@ const StepperContainer = () => {
       )}
     >
       {blockAll && (
-        <div className="absolute left-0 top-36 flex w-full justify-center bg-[#9F412E]">
+        <div
+          className={clsx(
+            'absolute left-0 top-36 flex w-full justify-center',
+            isDark
+              ? correctSend
+                ? 'bg-[#00a72e]'
+                : isStopped
+                  ? 'bg-[#bb8a04]'
+                  : 'bg-[#a31c01]'
+              : correctSend
+                ? 'bg-[#00a73c]'
+                : isStopped
+                  ? 'bg-[#f0b232]'
+                  : 'bg-[#d50102]',
+          )}
+        >
           <div className="flex w-full max-w-[1000px] flex-col gap-2 px-5 py-5 xs-phone:px-10">
-            {isStopped ? (
-              <h2 className="w-full text-center text-3xl font-bold text-darkText sm-phone:text-end">
-                Solicitud cancelada, te quedaste sin tiempo.
-              </h2>
+            {correctSend ? (
+              <>
+                <h2 className="w-full text-center text-3xl font-bold text-darkText sm-phone:text-end">
+                  Solicitud enviada con exito
+                </h2>
+              </>
             ) : (
-              <h2 className="w-full text-center text-3xl font-bold text-darkText sm-phone:text-end">
-                Solicitud cancelada.
-              </h2>
+              <>
+                {isStopped ? (
+                  <h2
+                    className={clsx(
+                      'w-full text-center text-3xl font-bold sm-phone:text-end',
+                      isDark ? 'text-darkText' : 'text-[#252526]',
+                    )}
+                  >
+                    Tiempo agotado
+                  </h2>
+                ) : (
+                  <h2 className="w-full text-center text-3xl font-bold text-darkText sm-phone:text-end">
+                    Solicitud cancelada
+                  </h2>
+                )}
+                {isStopped ? (
+                  <>
+                    <p
+                      className={clsx(
+                        'w-full text-center sm-phone:hidden',
+                        isDark ? 'text-darkText' : 'text-[#252526]',
+                      )}
+                    >
+                      Tu tiempo se agoto pero puedes crear una nueva, y si
+                      tienes alguna pregunta o necesitas ayuda, estamos aquí
+                      para ti.
+                    </p>
+                    <div className="w-full">
+                      <p
+                        className={clsx(
+                          'hidden w-full text-end sm-phone:block',
+                          isDark ? 'text-darkText' : 'text-[#252526]',
+                        )}
+                      >
+                        Tu tiempo se agoto pero puedes crear una nueva, y si
+                        tienes alguna pregunta
+                      </p>
+                      <p
+                        className={clsx(
+                          'hidden w-full text-end sm-phone:block',
+                          isDark ? 'text-darkText' : 'text-[#252526]',
+                        )}
+                      >
+                        o necesitas ayuda, estamos aquí para ti.
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p className="w-full text-center text-darkText sm-phone:hidden">
+                      Puedes crear una nueva, y si tienes alguna pregunta o
+                      necesitas ayuda, estamos aquí para ti.
+                    </p>
+                    <div className="w-full">
+                      <p className="hidden w-full text-end text-darkText sm-phone:block">
+                        Puedes crear una nueva, y si tienes alguna pregunta
+                      </p>
+                      <p className="hidden w-full text-end text-darkText sm-phone:block">
+                        o necesitas ayuda, estamos aquí para ti.
+                      </p>
+                    </div>
+                  </>
+                )}
+              </>
             )}
-            <p className="w-full text-center text-darkText sm-phone:hidden">
-              Puedes crear una nueva, y si tienes alguna pregunta o necesitas
-              ayuda, estamos aquí para ti.
-            </p>
-            <div className="w-full">
-              <p className="hidden w-full text-end text-darkText sm-phone:block">
-                Puedes crear una nueva, y si tienes alguna pregunta
-              </p>
-              <p className="hidden w-full text-end text-darkText sm-phone:block">
-                o necesitas ayuda, estamos aquí para ti.
-              </p>
-            </div>
             <div className="flex w-full flex-col-reverse items-center justify-between gap-2 xs:flex-row">
               <Link
-                className="group flex items-center gap-1 text-center text-darkText sm-phone:text-start"
+                className={clsx(
+                  'group flex items-center gap-1 text-center sm-phone:text-start',
+                  isStopped
+                    ? isDark
+                      ? 'text-darkText'
+                      : 'text-[#252526]'
+                    : 'text-darkText',
+                )}
                 href="/"
               >
                 <div className="relative h-[15px] w-[15px] overflow-hidden">
                   <div className="absolute left-0 top-0 transition-all duration-200 group-hover:left-1">
                     <Arrow
-                      color='#ebe7e0'
+                      color={
+                        isStopped ? (isDark ? '#ebe7e0' : '#252526') : '#ebe7e0'
+                      }
                       backRequest={true}
                     />
                   </div>
@@ -203,7 +281,14 @@ const StepperContainer = () => {
                 Volver al home
               </Link>
               <Link
-                className="text-center underline text-darkText sm-phone:text-start"
+                className={clsx(
+                  'text-center underline sm-phone:text-start',
+                  isStopped
+                    ? isDark
+                      ? 'text-darkText'
+                      : 'text-[#252526]'
+                    : 'text-darkText',
+                )}
                 href="/info/help-center"
               >
                 ¡No dudes en contactarnos!

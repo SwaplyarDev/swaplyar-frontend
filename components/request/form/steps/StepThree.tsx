@@ -105,8 +105,10 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
     switch (selectedSendingSystem?.id) {
       case 'bank':
       case 'paypal':
-      case 'payoneer':
-      case 'wise':
+      case 'payoneer_usd':
+      case 'payoneer_eur':
+      case 'wise_usd':
+      case 'wise_eur':
       case 'pix':
         return (
           <StepThreeGeneral
