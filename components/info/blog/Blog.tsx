@@ -10,6 +10,7 @@ import usePageSync from '@/components/ui/usePageSync/usePageSync';
 import { fetchBlogs } from '@/components/ui/fetchBlogs/fetchBlogs';
 import { useFetchBlogs } from '@/components/ui/useFetchBlogs/useFetchBlogs';
 import { useRandomImages } from '@/components/ui/useRandomImages/useRandomImages';
+import SkeletonLoader from '@/components/ui/SkeletonLoader/SkeletonLoader';
 
 const Blog: React.FC = () => {
   const { blogs } = useBlogStore();
@@ -49,24 +50,6 @@ const Blog: React.FC = () => {
   );
 
   // Esqueleto de carga
-  const SkeletonLoader = () => (
-    <div className="grid gap-2 " style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
-      {Array.from({ length: 6 }).map((_, index) => (
-        <div
-          key={index}
-          className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-lg animate-pulse"
-        >
-          <div className="h-48 bg-gray-300"></div> {/* Simula la imagen */}
-          <div className="p-4 space-y-3">
-            <div className="h-6 bg-gray-300 rounded"></div> {/* Simula el título */}
-            <div className="h-4 bg-gray-300 rounded w-3/4"></div> {/* Simula el texto */}
-            <div className="h-4 bg-gray-300 rounded w-5/6"></div>
-            <div className="h-4 bg-gray-300 rounded w-2/3 mt-4"></div> {/* Simula la fecha */}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
 
   // Lógica para mostrar el esqueleto de carga hasta que los datos estén disponibles
   useEffect(() => {
