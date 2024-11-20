@@ -32,6 +32,7 @@ const StepperContainer = () => {
 
   const { isStopped, stop, setisStopped, setStop } = useChronometerState();
   const [correctSend, setCorrectSend] = useState(false);
+  const [errorSend, setErrorSend] = useState(false);
 
   const steps = [
     { title: 'Mis Datos', component: <StepOne blockAll={blockAll} /> },
@@ -151,6 +152,7 @@ const StepperContainer = () => {
         setBlockAll(true);
         setCorrectSend(true);
       } else {
+        setErrorSend(true);
         console.error('Hubo un error al enviar los datos');
       }
     } catch (error) {
@@ -163,7 +165,7 @@ const StepperContainer = () => {
     <div
       className={clsx(
         'flex w-full max-w-[1000px] flex-col gap-5',
-        blockAll && 'mt-72 xs:mt-52',
+        blockAll || errorSend && 'mt-72 xs:mt-52',
       )}
     >
       {blockAll && (
@@ -288,6 +290,69 @@ const StepperContainer = () => {
                       ? 'text-darkText'
                       : 'text-[#252526]'
                     : 'text-darkText',
+                )}
+                href="/info/help-center"
+              >
+                ¡No dudes en contactarnos!
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+      {errorSend && (
+        <div
+          className={clsx(
+            'absolute left-0 top-36 flex w-full justify-center bg-[#d50102]',
+          )}
+        >
+          <div className="flex w-full max-w-[1000px] flex-col gap-2 px-5 py-5 xs-phone:px-10">
+            <h2 className="w-full text-center text-3xl font-bold text-darkText sm-phone:text-end">
+              Error en la solicitud
+            </h2>
+            <>
+              <p
+                className={clsx(
+                  'w-full text-center text-darkText sm-phone:hidden',
+                )}
+              >
+                Si el problema persiste, vuelve a intentarlo más tarde y si
+                tienes alguna pregunta o necesitas ayuda, estamos aquí para ti.
+              </p>
+              <div className="w-full">
+                <p
+                  className={clsx(
+                    'hidden w-full text-end text-darkText sm-phone:block',
+                  )}
+                >
+                  Si el problema persiste, vuelve a intentarlo más tarde y si
+                  tienes alguna pregunta 
+                </p>
+                <p
+                  className={clsx(
+                    'hidden w-full text-end text-darkText sm-phone:block',
+                  )}
+                >
+                  o necesitas ayuda, estamos aquí para ti.
+                </p>
+              </div>
+            </>
+            <div className="flex w-full flex-col-reverse items-center justify-between gap-2 xs:flex-row">
+              <Link
+                className={clsx(
+                  'group flex items-center gap-1 text-center text-darkText sm-phone:text-start',
+                )}
+                href="/"
+              >
+                <div className="relative h-[15px] w-[15px] overflow-hidden">
+                  <div className="absolute left-0 top-0 transition-all duration-200 group-hover:left-1">
+                    <Arrow color={'#ebe7e0'} backRequest={true} />
+                  </div>
+                </div>
+                Volver al home
+              </Link>
+              <Link
+                className={clsx(
+                  'text-center text-darkText underline sm-phone:text-start',
                 )}
                 href="/info/help-center"
               >
