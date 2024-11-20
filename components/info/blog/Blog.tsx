@@ -15,8 +15,9 @@ const Blog: React.FC = () => {
   const { blogs } = useBlogStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const [totalPages, setTotalPages] = useState<number>(0);
-
+  
   const router = useRouter();
 
   // Usar el custom hook para sincronizar la página
@@ -39,11 +40,40 @@ const Blog: React.FC = () => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     setCurrentPage(1); // Reiniciar a la primera página en cada nueva búsqueda
+    setIsLoading(true); // Comienza la carga nuevamente al buscar
   };
 
+  // Filtrar blogs según el término de búsqueda
   const filteredBlogs = blogs.filter((post) =>
     post.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // Esqueleto de carga
+  const SkeletonLoader = () => (
+    <div className="grid gap-2 " style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+      {Array.from({ length: 6 }).map((_, index) => (
+        <div
+          key={index}
+          className="bg-white border border-gray-300 rounded-lg overflow-hidden shadow-lg animate-pulse"
+        >
+          <div className="h-48 bg-gray-300"></div> {/* Simula la imagen */}
+          <div className="p-4 space-y-3">
+            <div className="h-6 bg-gray-300 rounded"></div> {/* Simula el título */}
+            <div className="h-4 bg-gray-300 rounded w-3/4"></div> {/* Simula el texto */}
+            <div className="h-4 bg-gray-300 rounded w-5/6"></div>
+            <div className="h-4 bg-gray-300 rounded w-2/3 mt-4"></div> {/* Simula la fecha */}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  // Lógica para mostrar el esqueleto de carga hasta que los datos estén disponibles
+  useEffect(() => {
+    if (blogs.length > 0) {
+      setIsLoading(false); // Finaliza la carga cuando los blogs estén disponibles
+    }
+  }, [blogs]);
 
   return (
     <div className="mx-auto max-w-7xl p-6">
@@ -79,19 +109,24 @@ const Blog: React.FC = () => {
         </div>
       </div>
 
+      {/* Renderizar el esqueleto o las tarjetas según el estado de carga */}
       <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-        {filteredBlogs.length > 0 ? (
-          filteredBlogs.map((post) => (
-            <BlogPostCard
-              key={post.blog_id}
-              title={post.title}
-              body={post.body}
-              url_image={post.url_image}
-              created_at={post.created_at}
-            />
-          ))
+        {isLoading ? (
+          <SkeletonLoader />
         ) : (
-          <p>No se encontraron resultados.</p>
+          filteredBlogs.length > 0 ? (
+            filteredBlogs.map((post) => (
+              <BlogPostCard
+                key={post.blog_id}
+                title={post.title}
+                body={post.body}
+                url_image={post.url_image}
+                created_at={post.created_at}
+              />
+            ))
+          ) : (
+            <p>No se encontraron resultados.</p>
+          )
         )}
       </div>
 
