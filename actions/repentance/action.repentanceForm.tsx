@@ -4,9 +4,9 @@ const URLRepentance = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 import { CheckRefundProps, FormRepentance } from "@/types/repentance/repentance";
 
-
 export const createRegret = async (createRepentance: FormRepentance) => {
   try {
+    
     const response = await fetch(`${URLRepentance}/v1/regrets`, {
       method: 'POST',
       headers: {
@@ -14,11 +14,12 @@ export const createRegret = async (createRepentance: FormRepentance) => {
       },
       body: JSON.stringify(createRepentance),
     });
-
+    console.log('reponse:',response)
     const data = await response.json();
-
+    console.log('data:',data)
+    
     if (!response.ok) {
-      throw new Error(data.message || 'Error en el registro');
+      throw new Error(data.message || 'Error al enviar los datos');
     }
 
     return {

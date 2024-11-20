@@ -22,3 +22,7 @@ export interface CheckRefundProps {
   email: string;
   last_name: string;
 }
+
+export interface FormularioProps {
+  handleRepentanceProcess: () => Promise<void>; // Define la prop que recibirá la función
+}
