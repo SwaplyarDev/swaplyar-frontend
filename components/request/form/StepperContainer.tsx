@@ -151,6 +151,7 @@ const StepperContainer = () => {
         // handleSendRequest();
         setBlockAll(true);
         setCorrectSend(true);
+        setErrorSend(false)
       } else {
         setErrorSend(true);
         console.error('Hubo un error al enviar los datos');
@@ -160,12 +161,13 @@ const StepperContainer = () => {
     }
     setLoading(false);
   };
-
+  console.log(blockAll || errorSend);
   return (
     <div
       className={clsx(
         'flex w-full max-w-[1000px] flex-col gap-5',
-        blockAll || errorSend && 'mt-72 xs:mt-52',
+        correctSend && 'mt-48 xs:mt-32',
+        (blockAll || errorSend) && 'mt-72 xs:mt-52',
       )}
     >
       {blockAll && (

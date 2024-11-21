@@ -2,6 +2,54 @@ import { System } from '@/types/data';
 import { CountryOption, RedType } from '@/types/request/request';
 import { create } from 'zustand';
 
+// transaction: {
+//   sender: {
+//     first_name: 'John',
+//     last_name: 'Doe',
+//     identification: '1234567890',
+//     phone_number: '+55988032066',
+//     email: 'brasil@swaplyar.com',
+//     bank_account: {
+//       email_account: 'jane.smith.bank@example.com',
+//       payment_method: 'wise',
+//       number_account: 'sender-number-123456',
+//     },
+//   },
+//   receiver: {
+//     first_name: 'John',
+//     last_name: 'Doe',
+//     bank_account: {
+//       email_account: 'tincho@gmail.com',
+//       name: 'Galicia',
+//       payment_method: 'paypal',
+//       number_account: 'receiver-number-123456',
+//     },
+//     document: {
+//       type: 'dni',
+//       value: '43412385',
+//     },
+//     crypto: {
+//       currency: 'usdt',
+//       network: 'ether',
+//       wallet: 'jfuyher85',
+//     },
+//   },
+//   transfer: {
+//     transfer_code: 'TRX202409300001',
+//     country_transaction: 'USA',
+//     message: 'Payment for services',
+//     created_at: '2024-09-30T12:00:00Z',
+//   },
+//   amounts: {
+//     amount_sent: 1000.0,
+//     currency_sent: 'USD',
+//     amount_received: 960.0,
+//     currency_received: 'EUR',
+//   },
+//   status: 'pending',
+//   idAdmin: 'utqmzt2qvni',
+// },
+
 const BASE_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
 
@@ -137,11 +185,10 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         sender: {
           first_name: stepOne.sender_first_name,
           last_name: stepOne.sender_last_name,
-          identification: stepTwo.tax_identification, // por ahora
           phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
           email: stepOne.email,
-          bank_account: { //por ahora
-            email_account: stepOne.email, // por ahora
+          bank_account: {
+            email_account: stepOne.email,
             payment_method: selectedSendingSystem?.name || '',
             number_account: '',
           },
@@ -149,15 +196,20 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         receiver: {
           first_name: stepTwo.receiver_first_name,
           last_name: stepTwo.receiver_last_name,
-          document: {
-            type: 'DNI',
-            value: stepTwo.transfer_identification,
-          },
           bank_account: {
-            email_account: stepOne.email,
+            email_account: stepTwo.bank_email || 'hola@gmail.com',
+            name: stepTwo.name_of_bank,
             payment_method: selectedReceivingSystem?.name || '',
-            number_account: stepTwo.transfer_identification,
-            name_bank: stepTwo.name_of_bank,
+            number_account: '',
+          },
+          document: {
+            type: 'dni',
+            value: stepTwo.individual_tax_id || '12345678',
+          },
+          crypto: {
+            currency: 'usdt',
+            network: 'trc20',
+            wallet: 'jfuyher85',
           },
         },
         transfer: {
