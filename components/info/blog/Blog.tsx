@@ -20,6 +20,7 @@ const Blog: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number>(0);
   
   const router = useRouter();
+  console.log(currentPage)
 
   // Usar el custom hook para sincronizar la página
   usePageSync(currentPage, setCurrentPage);
@@ -117,6 +118,7 @@ const Blog: React.FC = () => {
         currentPage={currentPage}
         totalPages={totalPages}
         handlePageChange={handlePageChange}
+        isLoading={isLoading} 
       />
     </div>
   );
