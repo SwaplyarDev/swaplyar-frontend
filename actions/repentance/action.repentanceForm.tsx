@@ -2,74 +2,79 @@
 
 const URLRepentance = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-import { CheckRefundProps, FormRepentance } from "@/types/repentance/repentance";
+import {  FormRepentance } from "@/types/repentance/repentance";
+import { FormData, OutputFormat } from "@/types/repentance/repentance";
 
-export const createRegret = async (createRepentance: FormRepentance) => {
+
+
+const transformData = (input: FormData): OutputFormat => {
+  return {
+    transaction_id: input.transaction_id.trim(),
+    last_name: input.last_name.trim(),
+    email: input.email.trim(),
+    phone_number: `${input.calling_code?.callingCode}${input.phone_number}`.trim(),
+    note: input.note?.trim(),
+    status: input.status || 'PENDING',
+  };
+}
+
+export const createRegret = async (createRepentance: FormData) => {
   try {
-    
+    // Validar los campos requeridos
+    if (!createRepentance.transaction_id || !createRepentance.last_name || !createRepentance.email) {
+      throw new Error('Faltan campos requeridos en createRepentance');
+    }
+
+    // Transformar los datos antes de enviarlos
+    console.log('createRepentance:', createRepentance);
+
+    const transformedData = transformData(createRepentance);
+
+    console.log('transformedData:', transformedData);
+
+    // Realizar la solicitud
     const response = await fetch(`${URLRepentance}/v1/regrets`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(createRepentance),
+      body: JSON.stringify({
+        transaction_id: transformedData.transaction_id,
+        last_name: transformedData.last_name,
+        email: transformedData.email,
+        phone_number: transformedData.phone_number,
+        note: transformedData.note,
+        status: transformedData.status || 'PENDING',
+      }),
     });
-    console.log('reponse:',response)
+    console.log('Enviando status:', transformedData.status);
+    console.log('response:', response);
+
     const data = await response.json();
-    console.log('data:',data)
-    
+    console.error('Error al crear el arrepentimiento:', data.error.message);
+    console.log('Detalles del error:', data.error.details);
+    console.log('data:', data);
+
+    // Validar la respuesta del servidor
     if (!response.ok) {
       throw new Error(data.message || 'Error al enviar los datos');
     }
 
+    // Retornar éxito
     return {
       ok: true,
       user: data.user,
       message: 'Regret creado',
     };
   } catch (error) {
-    console.error('Error al crear el arrepentimiento:', error);
+    // Manejo del error
+    const errorMessage = error instanceof Error ? error.message : 'Error inesperado al crear el regret';
+    console.error('Error al crear el arrepentimiento:', errorMessage);
 
     return {
       ok: false,
-      message: error instanceof Error ? error.message : 'No se pudo crear el regret',
+      message: errorMessage,
     };
-  }
-};
-
-
-export const checkIfRegretExists = async ({ transaction_id, email, last_name }: CheckRefundProps): Promise<boolean> => {
-  try {
-    // Validar que los parámetros no estén vacíos
-    if (!transaction_id || !email || !last_name) {
-      throw new Error('Todos los campos son obligatorios.');
-    }
-
-    
-
-    // Realizar el fetch hacia el backend
-    const response = await fetch(`${URLRepentance}/v1/regrets`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ transaction_id, email, last_name: last_name }),
-    });
-
-    // Manejar el caso de error HTTP
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Error al verificar el reembolso.');
-    }
-
-    // Parsear la respuesta JSON
-    const data = await response.json();
-
-    // Retornar true si ya existe un reembolso, false en caso contrario
-    return data.exists;
-  } catch (error) {
-    console.error('Error al comprobar el reembolso:', error);
-    return false;
   }
 };
 

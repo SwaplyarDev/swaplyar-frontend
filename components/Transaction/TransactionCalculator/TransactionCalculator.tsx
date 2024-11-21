@@ -17,6 +17,7 @@ import { useExchangeRateStore } from '@/store/exchangeRateStore';
 import { useExchangeRate } from '@/hooks/useExchangeRates';
 import Image from 'next/image';
 import { useStepperStore } from '@/store/stateStepperStore';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
 export default function TransactionCalculator() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -226,14 +227,15 @@ export default function TransactionCalculator() {
               }
             >
               {isProcessing ? (
-                <div className="flex items-center justify-center">
-                  <Image
+                <div className="flex items-center justify-center gap-2">
+                  {/* <Image
                     src="/gif/cargando.gif"
                     width={20}
                     height={20}
                     alt="loading"
                     className="mb-0.5 mr-1"
-                  />
+                  /> */}
+                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'}/>
                   Procesando...
                 </div>
               ) : (

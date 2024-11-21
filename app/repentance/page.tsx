@@ -1,4 +1,4 @@
-import RepentanceForm from "@/components/repentance/form/Repentance";
+import RepentanceForm from "@/components/repentance/Repentance";
 
 
 const Page: React.FC = () => {

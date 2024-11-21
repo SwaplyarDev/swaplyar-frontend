@@ -4,9 +4,13 @@ import { useStepperStore } from '@/store/stateStepperStore';
 import { useSystemStore } from '@/store/useSystemStore';
 import { useEffect, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import clsx from 'clsx';
-import InputField from '@/components/ui/contact-form/InputField';
-import { error } from 'console';
+import StepTwoBank from './stepsTwoOptions/StepTwoBank';
+import StepTwoPayoneer from './stepsTwoOptions/StepTwoPayoneer';
+import StepTwoPaypal from './stepsTwoOptions/StepTwoPaypal';
+import StepTwoWise from './stepsTwoOptions/StepTwoWise';
+import StepTwoTether from './stepsTwoOptions/StepTwoTether';
+import StepTwoPix from './stepsTwoOptions/StepTwoPix';
+import { RedType } from '@/types/request/request';
 
 interface FormData {
   receiver_first_name: string;
@@ -17,6 +21,12 @@ interface FormData {
   name_of_bank: string;
   bank_email: string;
   re_enter_bank_email: string;
+  usdt_direction: string;
+  re_enter_usdt_direction: string;
+  red_selection: RedType | undefined;
+  recieveAmountRed: string;
+  pix_key: string;
+  individual_tax_id: string;
 }
 
 const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
@@ -38,10 +48,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   const { selectedReceivingSystem, selectedSendingSystem } = useSystemStore();
   const { isDark } = useDarkTheme();
 
-  // Estado para guardar los valores iniciales
   const [initialValues, setInitialValues] = useState<FormData | null>(null);
 
-  // Observar cambios en los inputs
   const formValues = useWatch({ control });
 
   useEffect(() => {
@@ -54,6 +62,12 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
       name_of_bank,
       bank_email,
       re_enter_bank_email,
+      usdt_direction,
+      re_enter_usdt_direction,
+      red_selection,
+      recieveAmountRed,
+      pix_key,
+      individual_tax_id,
     } = formData.stepTwo;
     const newValues = {
       receiver_first_name,
@@ -64,6 +78,12 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
       name_of_bank,
       bank_email,
       re_enter_bank_email,
+      usdt_direction,
+      re_enter_usdt_direction,
+      red_selection,
+      recieveAmountRed,
+      pix_key,
+      individual_tax_id,
     };
 
     setValue(
@@ -84,8 +104,13 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     setValue('name_of_bank', name_of_bank);
     setValue('bank_email', bank_email);
     setValue('re_enter_bank_email', re_enter_bank_email);
+    setValue('usdt_direction', usdt_direction);
+    setValue('re_enter_usdt_direction', re_enter_usdt_direction);
+    setValue('red_selection', red_selection);
+    setValue('recieveAmountRed', recieveAmountRed);
+    setValue('pix_key', pix_key);
+    setValue('individual_tax_id', individual_tax_id);
 
-    // Guardar los valores iniciales al montar el componente
     setInitialValues(newValues);
     console.log(newValues);
   }, [
@@ -97,9 +122,9 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   ]);
 
   const onSubmit = (data: FormData) => {
-    updateFormData(1, data); // Actualiza los datos del formulario en Zustand
-    markStepAsCompleted(1); // Marcar este paso como completado
-    setActiveStep(2); // Ir al siguiente paso
+    updateFormData(1, data);
+    markStepAsCompleted(1); 
+    setActiveStep(2); 
   };
 
   // Determinar si se han hecho cambios en el formulario
@@ -111,360 +136,77 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
         formValues[key as keyof FormData],
     );
 
-  const fullName = selectedReceivingSystem?.name;
-  const firstPart = fullName ? fullName.split(' ')[0] : '';
+  const renderSelectedSystem = () => {
+    switch (selectedReceivingSystem?.id) {
+      case 'bank':
+        return (
+          <StepTwoBank
+            register={register}
+            errors={errors}
+            getValues={getValues}
+            blockAll={blockAll}
+            formData={formData}
+          />
+        );
+      case 'payoneer':
+        return (
+          <StepTwoPayoneer
+            register={register}
+            errors={errors}
+            getValues={getValues}
+            blockAll={blockAll}
+            formData={formData}
+          />
+        );
+      case 'paypal':
+        return (
+          <StepTwoPaypal
+            register={register}
+            errors={errors}
+            getValues={getValues}
+            blockAll={blockAll}
+            formData={formData}
+          />
+        );
+      case 'wise':
+        return (
+          <StepTwoWise
+            register={register}
+            errors={errors}
+            getValues={getValues}
+            blockAll={blockAll}
+            formData={formData}
+          />
+        );
+      case 'tether':
+        return (
+          <StepTwoTether
+            register={register}
+            errors={errors}
+            getValues={getValues}
+            blockAll={blockAll}
+            formData={formData}
+            control={control}
+          />
+        );
+      case 'pix':
+        return (
+          <StepTwoPix
+            register={register}
+            errors={errors}
+            getValues={getValues}
+            blockAll={blockAll}
+            formData={formData}
+          />
+        );
+      default:
+        return '';
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-      {selectedReceivingSystem?.id == 'bank' ? (
-        <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
-          <div className="flex w-full flex-col gap-4">
-            <div className="flex flex-col">
-              <label
-                htmlFor="receiver_first_name"
-                className={clsx(
-                  'ml-1 text-xs',
-                  errors.receiver_first_name
-                    ? 'text-red-500'
-                    : 'text-lightText dark:text-darkText',
-                )}
-              >
-                Nombre
-              </label>
-              <InputField
-                id="receiver_first_name"
-                type="text"
-                value={
-                  formData.stepOne?.own_account === 'Si'
-                    ? formData.stepOne?.sender_first_name
-                    : undefined
-                }
-                defaultValue={
-                  formData.stepOne?.own_account !== 'Si' ? undefined : ''
-                }
-                placeholder="Nombre"
-                register={register('receiver_first_name', {
-                  required: 'El Nombre es obligatorio',
-                  pattern: {
-                    value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
-                    message: 'El Nombre solo puede contener letras y espacios',
-                  },
-                })}
-                error={
-                  errors.receiver_first_name &&
-                  errors.receiver_first_name.message
-                }
-                disabled={blockAll || formData.stepOne?.own_account === 'Si'}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label
-                htmlFor="receiver_last_name"
-                className={clsx(
-                  'ml-1 text-xs',
-                  errors.receiver_last_name
-                    ? 'text-red-500'
-                    : 'text-lightText dark:text-darkText',
-                )}
-              >
-                Apellido
-              </label>
-              <InputField
-                disabled={blockAll || formData.stepOne?.own_account === 'Si'}
-                id="receiver_last_name"
-                value={
-                  formData.stepOne?.own_account === 'Si'
-                    ? formData.stepOne?.sender_last_name
-                    : undefined
-                }
-                defaultValue={
-                  formData.stepOne?.own_account !== 'Si' ? undefined : ''
-                }
-                type="text"
-                placeholder="Apellido"
-                register={register('receiver_last_name', {
-                  required: 'El Apellido es obligatorio',
-                  pattern: {
-                    value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
-                    message:
-                      'El Apellido solo puede contener letras y espacios',
-                  },
-                })}
-                error={
-                  errors.receiver_last_name && errors.receiver_last_name.message
-                }
-              />
-            </div>
-            <div className="flex flex-col">
-              <label
-                htmlFor="tax_identification"
-                className={clsx(
-                  'ml-1 text-xs',
-                  errors.tax_identification
-                    ? 'text-red-500'
-                    : 'text-lightText dark:text-darkText',
-                )}
-              >
-                TAX ID/CUIT/CUIL
-              </label>
-              <InputField
-                disabled={blockAll}
-                id="tax_identification"
-                type="text"
-                placeholder="TAX ID/CUIT/CUIL"
-                register={register('tax_identification', {
-                  required: 'El TAX ID/CUIT/CUIL es obligatorio',
-                  pattern: {
-                    value: /^(?:\d{9}|\d{11}|\d{2}-\d{8}-\d{1})$/, //valida 11 caracteres o 14 pero con guiones
-                    message: 'El formato de TAX ID/CUIT/CUIL es inválido',
-                  },
-                })}
-                error={
-                  errors.tax_identification && errors.tax_identification.message
-                }
-              />
-            </div>
-          </div>
-          <div className="flex w-full flex-col gap-4">
-            <div className="flex flex-col">
-              <label
-                htmlFor="transfer_identification"
-                className={clsx(
-                  'ml-1 text-xs',
-                  errors.transfer_identification
-                    ? 'text-red-500'
-                    : 'text-lightText dark:text-darkText',
-                )}
-              >
-                CBU/CVU/ALIAS
-              </label>
-              <InputField
-                disabled={blockAll}
-                id="transfer_identification"
-                type="text"
-                placeholder="CBU/CVU/ALIAS"
-                register={register('transfer_identification', {
-                  required: 'El CBU/CVU/ALIAS es obligatorio',
-                  pattern: {
-                    value: /^(?:\d{22}|[a-zA-Z0-9._-]{3,30})$/i,
-                    message: 'El formato de CBU/CVU/ALIAS es inválido',
-                  },
-                })}
-                error={
-                  errors.transfer_identification &&
-                  errors.transfer_identification.message
-                }
-              />
-            </div>
-            <div className="flex flex-col">
-              <label
-                htmlFor="re_transfer_identification"
-                className={clsx(
-                  'ml-1 text-xs',
-                  errors.re_transfer_identification
-                    ? 'text-red-500'
-                    : 'text-lightText dark:text-darkText',
-                )}
-              >
-                RE-ENTER CBU/CVU/ALIAS
-              </label>
-              <InputField
-                disabled={blockAll}
-                id="re_transfer_identification"
-                type="text"
-                placeholder="RE-ENTER CBU/CVU/ALIAS"
-                register={register('re_transfer_identification', {
-                  required: 'El RE-ENTER CBU/CVU/ALIAS es obligatorio',
-                  validate: (value) => {
-                    const originalValue = getValues('transfer_identification');
-                    return (
-                      value === originalValue ||
-                      'Debe coincidir con el CBU/CVU/ALIAS ingresado anteriormente'
-                    );
-                  },
-                })}
-                error={
-                  errors.re_transfer_identification &&
-                  errors.re_transfer_identification.message
-                }
-              />
-            </div>
-            <div className="flex flex-col">
-              <label
-                htmlFor="name_of_bank"
-                className={clsx(
-                  'ml-1 text-xs',
-                  errors.name_of_bank
-                    ? 'text-red-500'
-                    : 'text-lightText dark:text-darkText',
-                )}
-              >
-                Nombre del Banco
-              </label>
-              <InputField
-                disabled={blockAll}
-                id="name_of_bank"
-                type="text"
-                placeholder="Nombre del Banco"
-                register={register('name_of_bank', {
-                  required: 'El Nombre del Banco es obligatorio',
-                  pattern: {
-                    value: /^[A-Za-z0-9\s&.'-_]{1,60}$/i,
-                    message:
-                      'El Nombre del Banco solo puede contener 60 caracteres',
-                  },
-                })}
-                error={errors.name_of_bank && errors.name_of_bank.message}
-              />
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
-          <div className="flex w-full flex-col gap-4">
-            <div className="flex flex-col">
-              <label
-                htmlFor="receiver_first_name"
-                className={clsx(
-                  'ml-1 text-xs',
-                  errors.receiver_first_name
-                    ? 'text-red-500'
-                    : 'text-lightText dark:text-darkText',
-                )}
-              >
-                Nombre
-              </label>
-              <InputField
-                disabled={blockAll || formData.stepOne?.own_account === 'Si'}
-                id="receiver_first_name"
-                type="text"
-                value={
-                  formData.stepOne?.own_account === 'Si'
-                    ? formData.stepOne?.sender_first_name
-                    : undefined
-                }
-                defaultValue={
-                  formData.stepOne?.own_account !== 'Si' ? undefined : ''
-                }
-                placeholder="Nombre"
-                register={register('receiver_first_name', {
-                  required: 'El Nombre es obligatorio',
-                  pattern: {
-                    value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
-                    message: 'El Nombre solo puede contener letras y espacios',
-                  },
-                })}
-                error={
-                  errors.receiver_first_name &&
-                  errors.receiver_first_name.message
-                }
-              />
-            </div>
-            <div className="flex flex-col">
-              <label
-                htmlFor="receiver_last_name"
-                className={clsx(
-                  'ml-1 text-xs',
-                  errors.receiver_last_name
-                    ? 'text-red-500'
-                    : 'text-lightText dark:text-darkText',
-                )}
-              >
-                Apellido
-              </label>
-              <InputField
-                disabled={blockAll || formData.stepOne?.own_account === 'Si'}
-                id="receiver_last_name"
-                type="text"
-                value={
-                  formData.stepOne?.own_account === 'Si'
-                    ? formData.stepOne?.sender_last_name
-                    : undefined
-                }
-                defaultValue={
-                  formData.stepOne?.own_account !== 'Si' ? undefined : ''
-                }
-                placeholder="Apellido"
-                register={register('receiver_last_name', {
-                  required: 'El Apellido es obligatorio',
-                  pattern: {
-                    value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
-                    message:
-                      'El Apellido solo puede contener letras y espacios',
-                  },
-                })}
-                error={
-                  errors.receiver_last_name && errors.receiver_last_name.message
-                }
-              />
-            </div>
-          </div>
-          <div className="flex w-full flex-col gap-4">
-            <div className="flex flex-col">
-              <label
-                htmlFor="bank_email"
-                className={clsx(
-                  'ml-1 text-xs',
-                  errors.bank_email
-                    ? 'text-red-500'
-                    : 'text-lightText dark:text-darkText',
-                )}
-              >
-                Email de {firstPart}
-              </label>
-              <InputField
-                disabled={blockAll}
-                id="bank_email"
-                type="email"
-                placeholder={`Email de ${firstPart}`}
-                register={register('bank_email', {
-                  required: `El Email de ${firstPart} es obligatorio`,
-                  pattern: {
-                    // value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
-                    message: `El Email de ${firstPart} no es valido`,
-                  },
-                })}
-                error={errors.bank_email && errors.bank_email.message}
-              />
-            </div>
-            <div className="flex flex-col">
-              <label
-                htmlFor="re_enter_bank_email"
-                className={clsx(
-                  'ml-1 text-xs',
-                  errors.re_enter_bank_email
-                    ? 'text-red-500'
-                    : 'text-lightText dark:text-darkText',
-                )}
-              >
-                RE-ENTER Email de {firstPart}
-              </label>
-              <InputField
-                disabled={blockAll}
-                id="re_enter_bank_email"
-                type="email"
-                placeholder={`RE-ENTER Email de ${firstPart}`}
-                register={register('re_enter_bank_email', {
-                  required: `El Email de ${firstPart} es obligatorio`,
-                  validate: (value) => {
-                    const originalValue = getValues('bank_email');
-                    return (
-                      value === originalValue ||
-                      'Debe coincidir con el Email de ' +
-                        firstPart
-                    );
-                  },
-                })}
-                error={
-                  errors.re_enter_bank_email &&
-                  errors.re_enter_bank_email.message
-                }
-              />
-            </div>
-          </div>
-        </div>
-      )}
+      {renderSelectedSystem()}
 
       <div className="flex justify-end">
         {completedSteps[1] ? (

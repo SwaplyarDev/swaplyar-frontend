@@ -5,24 +5,35 @@ export type FormRepentance ={
     last_name: string;
   email: string;
   phone_number: string;
-  note: string;
+  note?: string;
   status: string;
 }
+
 export interface FormData {
   transaction_id: string;
   last_name: string;
   email: string;
   phone_number: string;
-  note: string;
-  calling_code: CountryOption | null;
+  note?: string;
+  calling_code?: {
+    value: string;
+    label: string;
+    callingCode: string;
+  };
   status: string;
-};
-export interface CheckRefundProps {
+}
+export interface OutputFormat {
   transaction_id: string;
-  email: string;
   last_name: string;
+  email: string;
+  phone_number: string;
+  note?: string;
+  status: string;
+}
+export interface AlertsProps {
+  status: string;
 }
 
 export interface FormularioProps {
-  handleRepentanceProcess: () => Promise<void>; // Define la prop que recibirá la función
+  onSubmit: (data: FormRepentance) => void;
 }

@@ -2,13 +2,7 @@
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
-
-type payerOptions = {
-  sendAmount: number;
-  sendCurrency: string;
-  recibeAmount: number;
-  recibeCurrency: string;
-};
+import { payerOptions } from '@/types/request/request';
 
 type PayerInfoProps = {
   errors: FieldErrors;
