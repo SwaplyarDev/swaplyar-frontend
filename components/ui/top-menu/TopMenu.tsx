@@ -40,8 +40,6 @@ export function TopMenu() {
   }, []);
 
   const { data: session, status } = useSession();
-  console.log(`session: `, session);
-
   return (
     <main className="sticky top-0 z-[1000] flex flex-col shadow-md">
       <TopPopUp />
