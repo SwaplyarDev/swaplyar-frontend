@@ -3,10 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 const SkeletonLoader = () => (
   <div
-    className="grid gap-4"
-    style={{
-      gridTemplateColumns: 'repeat(3, 400px)', // Centra las columnas en el contenedor
-    }}
+    className="grid gap-4 custom-grid"
   >
     {' '}
     {/* Define 3 columnas con un espacio entre ellas */}

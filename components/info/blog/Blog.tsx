@@ -114,7 +114,8 @@ const Blog: React.FC = () => {
         )}
       </div>
 
-      <PaginationButtonsProps currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+      <PaginationButtonsProps currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange}
+       isLoading={isLoading}  />
     </div>
   );
 };
