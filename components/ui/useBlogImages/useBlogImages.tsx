@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 export const useBlogImages = (
   blogs: { url_image: string }[] | null,
   setImages: React.Dispatch<React.SetStateAction<string[]>>,
-  previousBlogs: { url_image: string }[] | null
+  previousBlogs: { url_image: string }[] | null,
 ) => {
   useEffect(() => {
     if (Array.isArray(blogs) && blogs !== previousBlogs) {

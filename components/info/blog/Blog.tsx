@@ -18,7 +18,7 @@ const Blog: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [totalPages, setTotalPages] = useState<number>(0);
-  
+
   const router = useRouter();
 
   // Usar el custom hook para sincronizar la página
@@ -45,9 +45,7 @@ const Blog: React.FC = () => {
   };
 
   // Filtrar blogs según el término de búsqueda
-  const filteredBlogs = blogs.filter((post) =>
-    post.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredBlogs = blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   // Esqueleto de carga
 
@@ -96,28 +94,22 @@ const Blog: React.FC = () => {
       <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
         {isLoading ? (
           <SkeletonLoader />
+        ) : filteredBlogs.length > 0 ? (
+          filteredBlogs.map((post) => (
+            <BlogPostCard
+              key={post.blog_id}
+              title={post.title}
+              body={post.body}
+              url_image={post.url_image}
+              created_at={post.created_at}
+            />
+          ))
         ) : (
-          filteredBlogs.length > 0 ? (
-            filteredBlogs.map((post) => (
-              <BlogPostCard
-                key={post.blog_id}
-                title={post.title}
-                body={post.body}
-                url_image={post.url_image}
-                created_at={post.created_at}
-              />
-            ))
-          ) : (
-            <p>No se encontraron resultados.</p>
-          )
+          <p>No se encontraron resultados.</p>
         )}
       </div>
 
-      <PaginationButtonsProps
-        currentPage={currentPage}
-        totalPages={totalPages}
-        handlePageChange={handlePageChange}
-      />
+      <PaginationButtonsProps currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
     </div>
   );
 };

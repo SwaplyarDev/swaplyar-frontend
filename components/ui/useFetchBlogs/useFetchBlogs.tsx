@@ -4,11 +4,7 @@ import useBlogStore from '@/store/useBlogStore';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export const useFetchBlogs = (
-  currentPage: number,
-  searchTerm: string,
-  setTotalPages: (pages: number) => void
-) => {
+export const useFetchBlogs = (currentPage: number, searchTerm: string, setTotalPages: (pages: number) => void) => {
   const { setBlogs } = useBlogStore();
 
   useEffect(() => {

@@ -39,11 +39,11 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
   }, [limitedImages]);
 
   const SkeletonLoader = () => (
-    <div className="relative border-4 border-gray-200 rounded-[20px] w-full h-60 animate-pulse bg-gray-300"></div>
+    <div className="relative h-60 w-full animate-pulse rounded-[20px] border-4 border-gray-200 bg-gray-300"></div>
   );
 
   return (
-    <div className="relative group border-4 border-[#012C8A] rounded-[20px] overflow-hidden">
+    <div className="group relative overflow-hidden rounded-[20px] border-4 border-[#012C8A]">
       {!allImagesLoaded ? (
         <SkeletonLoader />
       ) : (
@@ -54,7 +54,7 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
                 <Image
                   src={image}
                   alt={`Slide ${index + 1}`}
-                  className="w-full h-60 object-cover"
+                  className="h-60 w-full object-cover"
                   width={800}
                   height={400}
                 />
@@ -64,7 +64,7 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
 
           {/* Botón de navegación izquierda */}
           <button
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            className="absolute left-4 top-1/2 -translate-y-1/2 transform rounded-full bg-gray-700 bg-opacity-50 p-2 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             onClick={() => sliderRef.current?.slickPrev()}
           >
             &lt;
@@ -72,20 +72,18 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
 
           {/* Botón de navegación derecha */}
           <button
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            className="absolute right-4 top-1/2 -translate-y-1/2 transform rounded-full bg-gray-700 bg-opacity-50 p-2 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             onClick={() => sliderRef.current?.slickNext()}
           >
             &gt;
           </button>
 
-          <div className="absolute bottom-4 w-full flex justify-center space-x-2">
+          <div className="absolute bottom-4 flex w-full justify-center space-x-2">
             {limitedImages.map((_, index) => (
               <div
                 key={index}
-                className={`w-4 h-4 rounded-full transition-all duration-300 ${
-                  activeIndex === index
-                    ? 'bg-[#012C8A]'
-                    : 'bg-white border-2 border-[#012C8A] opacity-50'
+                className={`h-4 w-4 rounded-full transition-all duration-300 ${
+                  activeIndex === index ? 'bg-[#012C8A]' : 'border-2 border-[#012C8A] bg-white opacity-50'
                 }`}
               ></div>
             ))}
