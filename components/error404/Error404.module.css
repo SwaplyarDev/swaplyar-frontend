@@ -2,9 +2,10 @@
 @media (max-width: 7680px) {
   .container {
     text-align: center;
-    height: 950px;
+    height: 980px;
     margin-bottom: 300px;
     position: relative;
+    background-color: transparent;
   }
 
   .image {
@@ -42,23 +43,23 @@
   .postImage1 {
     position: relative;
     transform: translate(-50%, -50%);
-    width: 600px;
-    top: calc(50% - 910px);
-    left: calc(50% - -220px);
+    width: 650px;
+    top: calc(50% - 840px);
+    left: calc(50% - -200px);
   }
   .postImage2 {
     position: relative;
     transform: translate(-50%, -50%);
-    width: 415px;
-    top: calc(50% - 1280px);
-    left: calc(50% - -460px);
+    width: 650px;
+    top: calc(50% - 1380px);
+    left: calc(50% - -525px);
   }
   .lineaVertical1 {
     background-color: white;
     width: 3px;
     height: 190px;
     position: relative;
-    top: calc(50% - 1700px);
+    top: calc(50% - 1900px);
     left: calc(50% - 610px);
     border-radius: 12px;
   }
@@ -67,29 +68,32 @@
     width: 3px;
     height: 190px;
     position: relative;
-    top: calc(50% - 1700px);
+    top: calc(50% - 1900px);
     left: calc(50% - 610px);
     border-radius: 12px;
   }
   .enchufe1 {
-    width: 2800px;
+    width: 4100px;
     position: relative;
-    top: calc(50% - 1670px);
-    left: calc(50% - 2750px);
+    top: calc(50% - 1900px);
+    left: calc(50% - 3900px);
   }
   .enchufe2 {
-    width: 2800px;
+    width: 4100px;
     position: relative;
-    top: calc(50% - 1670px);
-    left: calc(50% - 2750px);
+    top: calc(50% - 1900px);
+    left: calc(50% - 3900px);
   }
 }
 
-@media (max-width: 1325px) {
+@media (max-width: 1920px) {
   .container {
     text-align: center;
-    height: 650px;
-    margin-bottom: 100px;
+    height: 1100px;
+    margin-bottom: 20px;
+    margin-top: -100px;
+    position: relative;
+    background-color: transparent;
   }
 
   .image {
@@ -169,7 +173,11 @@
 @media (min-width: 550px) and (max-width: 768px) {
   .container {
     text-align: center;
-    height: 450px;
+    height: 1100px;
+    position: relative;
+    background-color: transparent;
+    margin-top: -300px;
+    margin-bottom: -250px;
   }
   .image {
     position: relative;
@@ -277,10 +285,11 @@
 @media (min-width: 395px) and (max-width: 549px) {
   .container {
     text-align: center;
-    height: 300px;
+    height: 1100px;
     position: relative;
-    margin-top: 180px;
-    margin-bottom: 100px;
+    background-color: transparent;
+    margin-top: -200px;
+    margin-bottom: -150px;
   }
 
   .image_tlf {
@@ -391,10 +400,11 @@
 @media (max-width: 394px) {
   .container {
     text-align: center;
-    height: 300px;
+    height: 1500px;
     position: relative;
-    margin-top: 180px;
-    margin-bottom: -50px;
+    background-color: transparent;
+    margin-top: -400px;
+    margin-bottom: -550px;
   }
 
   .image_tlf {

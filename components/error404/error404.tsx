@@ -25,7 +25,7 @@ const Error_404 = () => {
   const [counter, setCounter] = useState(10);
   const router = useRouter();
 
-  /*   useEffect(() => {
+  useEffect(() => {
     if (counter === 0) {
       router.push('/');
       return;
@@ -36,12 +36,11 @@ const Error_404 = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-
-  }, [counter, router]);  */
+  }, [counter, router]);
 
   return (
     <div className={styles.container}>
-      <AnimatedBlurredCircles tope="top-[10px]" />
+      <AnimatedBlurredCircles tope="top-[0px]" />
       {isDark ? (
         <>
           <div className={styles.image}>
@@ -101,8 +100,8 @@ const Error_404 = () => {
             <Image
               src={Post1_404}
               alt="Descripción de la imagen 1"
-              width={460}
-              height={380}
+              width={550}
+              height={450}
               style={{ borderRadius: '8px' }}
             />
           </div>
@@ -110,8 +109,8 @@ const Error_404 = () => {
             <Image
               src={Post2_404}
               alt="Descripción de la imagen 2"
-              width={465}
-              height={350}
+              width={520}
+              height={450}
               style={{ borderRadius: '8px' }}
             />
           </div>
@@ -128,7 +127,7 @@ const Error_404 = () => {
           <div className={styles.tlf_lineaVertical1}></div>
 
           <div className={styles.enchufe1}>
-            <Image src={Enchufe_dark_largo} alt="Descripción de la imagen enchufe" width={2800} height={50} />
+            <Image src={Enchufe_dark_largo} alt="Descripción de la imagen enchufe" width={4100} height={50} />
           </div>
           <div className={styles.tlf_enchufe1}>
             <Image src={Enchufe_dark} alt="Descripción de la imagen enchufe" width={400} height={30} />
@@ -181,8 +180,8 @@ const Error_404 = () => {
                   fontSize: '10px',
                   textAlign: 'center',
                   borderRadius: '28px',
-                  width: '115px',
-                  height: '42px',
+                  width: '109px',
+                  height: 'auto',
                   padding: '10px',
                 }}
               >
@@ -194,8 +193,8 @@ const Error_404 = () => {
             <Image
               src={Post1_404}
               alt="Descripción de la imagen 1"
-              width={460}
-              height={380}
+              width={550}
+              height={450}
               style={{ borderRadius: '8px' }}
             />
           </div>
@@ -203,8 +202,8 @@ const Error_404 = () => {
             <Image
               src={Post2_404}
               alt="Descripción de la imagen 2"
-              width={465}
-              height={350}
+              width={520}
+              height={450}
               style={{ borderRadius: '8px' }}
             />
           </div>
@@ -222,7 +221,7 @@ const Error_404 = () => {
           <div className={styles.tlf_lineaVertical2}></div>
 
           <div className={styles.enchufe2}>
-            <Image src={Enchufe_clear_largo} alt="Descripción de la imagen enchufe" width={2800} height={50} />
+            <Image src={Enchufe_clear_largo} alt="Descripción de la imagen enchufe" width={4100} height={50} />
           </div>
           <div className={styles.tlf_enchufe2}>
             <Image src={Enchufe_clear} alt="Descripción de la imagen enchufe" width={400} height={30} />

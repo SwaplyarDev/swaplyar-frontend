@@ -4,15 +4,18 @@ import type { Config } from 'tailwindcss';
 import flowbite from 'flowbite-react/tailwind';
 
 const config: Config = {
+  darkMode: 'class',
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     flowbite.content(),
   ],
-  darkMode: 'class',
   theme: {
     extend: {
+      container: {
+        center: true,
+      },
       backgroundImage: {
         'need-help': "url('/images/need-help.png')",
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
