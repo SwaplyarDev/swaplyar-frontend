@@ -3,7 +3,7 @@ import Blog from '@/components/info/blog/Blog';
 
 const BlogPage: React.FC = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense>
       <Blog />
     </Suspense>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import BlogPostCard from '@/components/ui/BlogPostCard/BlogPostCard';
 import ImageCarousel from '@/components/ui/ImageCarousel/imageCarousel';
@@ -30,22 +30,27 @@ const Blog: React.FC = () => {
   // Imágenes aleatorias para el carrusel
   const randomImages = useRandomImages(blogs);
 
-  const handlePageChange = (page: number) => {
-    if (page !== currentPage) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setCurrentPage(page);
-      router.replace(`/info/blog?page=${page}`, { scroll: false });
-    }
-  };
+  const handlePageChange = useCallback(
+    (page: number) => {
+      if (page !== currentPage) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setCurrentPage(page);
+        router.replace(`/info/blog?page=${page}`, { scroll: false });
+      }
+    },
+    [currentPage, router],
+  );
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     setCurrentPage(1); // Reiniciar a la primera página en cada nueva búsqueda
     setIsLoading(true); // Comienza la carga nuevamente al buscar
-  };
+  }, []);
 
   // Filtrar blogs según el término de búsqueda
-  const filteredBlogs = blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredBlogs = useMemo(() => {
+    return blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
+  }, [blogs, searchTerm]);
 
   // Esqueleto de carga
 
