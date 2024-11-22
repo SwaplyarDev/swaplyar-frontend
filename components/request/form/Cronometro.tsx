@@ -7,13 +7,11 @@ import { CronometroProps } from '@/types/request/request';
 const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
   const [segundos, setSegundos] = useState<number>(30 * 60); // Inicializamos en 30 minutos (30 * 60 segundos)
   const intervaloRef = useRef<NodeJS.Timeout | null>(null); // Referencia para el intervalo de tiempo
-  // const [stop, setStop] = useState(false);
   const { isStopped, stop, setisStopped, setStop } = useChronometerState();
 
   // Iniciar el cronómetro automáticamente al montar el componente
   useEffect(() => {
     if (stop) {
-      // clearInterval(intervaloRef.current!);
       if (intervaloRef.current) {
         clearInterval(intervaloRef.current);
       }
@@ -69,12 +67,10 @@ const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
   };
 
   return (
-    // <div style={{ textAlign: 'center', padding: '10px' }}>
     <div>
       <div
         style={{
           fontSize: '18px',
-          // marginBottom: '7px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -84,36 +80,28 @@ const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
       >
         Tiempo Restante{' '}
         <Clock color={isDark ? '#ebe7e0' : '#252526'} stopRequest={stop} />
-        {/* <Image
-          src={Reloj}
-          alt="Reloj"
-          width={18}
-          height={18}
-        /> */}
         <span className="w-[52px] text-center">
-          {formatTiempo(segundos)} {/* Mostrar el tiempo en formato mm:ss */}
+          {formatTiempo(segundos)}
         </span>
       </div>
 
-      {/* Barra de progreso */}
       {!isStopped && (
         <div
           style={{
             width: '100%',
             height: '3px',
-            backgroundColor: 'transparent', // Color de fondo de la barra
-            //   borderRadius: '5px',
+            backgroundColor: 'transparent', 
             marginTop: '7px',
             position: 'relative',
           }}
         >
           <div
             style={{
-              width: `${porcentajeProgreso(segundos)}%`, // Progreso calculado
+              width: `${porcentajeProgreso(segundos)}%`, 
               height: '100%',
-              backgroundColor: obtenerColorBarra(segundos), // Color de la barra (puedes cambiarlo)
+              backgroundColor: obtenerColorBarra(segundos), 
               borderRadius: '1px',
-              transition: 'width 1s ease-out', // Transición suave para el cambio de la barra
+              transition: 'width 1s ease-out',
             }}
           ></div>
         </div>

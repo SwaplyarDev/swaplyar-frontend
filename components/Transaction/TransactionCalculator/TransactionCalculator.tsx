@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, use } from 'react';
 import SystemInfo from '../SystemInfo/SystemInfo';
 import InvertSystems from '../InvertSystems/InvertSystems';
 import { useSystemStore } from '@/store/useSystemStore';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Paypal from '../PayPal/Paypal';
 import Swal from 'sweetalert2';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
@@ -18,6 +18,7 @@ import { useExchangeRate } from '@/hooks/useExchangeRates';
 import Image from 'next/image';
 import { useStepperStore } from '@/store/stateStepperStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
+import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 
 export default function TransactionCalculator() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -64,8 +65,19 @@ export default function TransactionCalculator() {
     });
   }, [sendAmount, selectedSendingSystem]);
 
+  const pathname = usePathname(); 
+  const { pass } = useControlRouteRequestStore(state => state);
+  const { setPass } = useControlRouteRequestStore(state => state); 
+
+  useEffect(() => {
+    if (!pass && pathname === '/request') {
+      router.push('/home');
+    }
+  }, [pass, pathname, router]);
+
   const handleDirection = () => {
-    router.push('/request');
+    setPass();
+    router.push('/request'); 
   };
 
   const handleExchangePaypal = () => {

@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 import { createRoot } from 'react-dom/client';
 import Arrow from '@/components/ui/Arrow/Arrow';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useSystemStore } from '@/store/useSystemStore';
@@ -18,6 +18,7 @@ import Image from 'next/image';
 import Tick from '@/components/ui/Tick/Tick';
 import Cronometro from './Cronometro';
 import useChronometerState from '@/store/chronometerStore';
+import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 
 const StepperContainer = () => {
   const {
@@ -25,12 +26,11 @@ const StepperContainer = () => {
     completedSteps,
     setActiveStep,
     submitAllData,
-    // getOneStep,
   } = useStepperStore();
   const [blockAll, setBlockAll] = useState(false);
   const navigation = useRouter();
 
-  const { isStopped, stop, setisStopped, setStop } = useChronometerState();
+  const { isStopped, setStop } = useChronometerState();
   const [correctSend, setCorrectSend] = useState(false);
   const [errorSend, setErrorSend] = useState(false);
 
@@ -43,12 +43,20 @@ const StepperContainer = () => {
     { title: 'Pago', component: <StepThree blockAll={blockAll} /> },
   ];
 
+  const router = useRouter();
+  const { pass } = useControlRouteRequestStore(state => state); 
   const handleStepClick = (index: number) => {
     if (completedSteps[index] || index === activeStep) {
       setActiveStep(index);
     }
   };
   const { isDark } = useDarkTheme();
+
+  useEffect(() => {
+    if (!pass) {
+      router.push('/home'); // Redirige al home si `pass` es false
+    }
+  }, [pass, router]);
 
   const handleCancelRequest = () => {
     Swal.fire({
@@ -97,7 +105,6 @@ const StepperContainer = () => {
       },
     });
   };
-  // const handleSendRequest = () => {
   //   Swal.fire({
   //     title: '',
   //     html: `
@@ -148,7 +155,6 @@ const StepperContainer = () => {
 
       if (isSuccess) {
         console.log('Datos enviados correctamente');
-        // handleSendRequest();
         setBlockAll(true);
         setCorrectSend(true);
         setErrorSend(false)

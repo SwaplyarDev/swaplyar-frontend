@@ -45,7 +45,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     updateFormData,
     completedSteps,
   } = useStepperStore();
-  const { selectedReceivingSystem, selectedSendingSystem } = useSystemStore();
+  const { selectedReceivingSystem } = useSystemStore();
   const { isDark } = useDarkTheme();
 
   const [initialValues, setInitialValues] = useState<FormData | null>(null);
