@@ -21,6 +21,10 @@ const config: Config = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      backgroundPosition: {
+        'center-80px': 'center -80px',
+        'center-10px': 'center 10px',
+      },
       screens: {
         xs: '480px',
         sm: '640px',
@@ -58,6 +62,11 @@ const config: Config = {
       dropShadow: {
         light: '0 5px 4px rgba(0, 0, 0, 0.400)',
         darkmode: '0 4px 5px rgba(187, 187, 187, 0.400)',
+      },
+      borderWidth: {
+        '6': '6px',
+        '8': '8px',
+        '10': '10px',
       },
       boxShadow: {
         'custom-blue': '0 5px 10px #012a8d',
