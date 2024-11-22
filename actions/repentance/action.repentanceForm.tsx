@@ -14,7 +14,7 @@ const transformData = (input: FormData): OutputFormat => {
     email: input.email.trim(),
     phone_number: `${input.calling_code?.callingCode}${input.phone_number}`.trim(),
     note: input.note?.trim(),
-    status: input.status || 'PENDING',
+    status: input.status || 'pendiente',
   };
 }
 
@@ -44,7 +44,7 @@ export const createRegret = async (createRepentance: FormData) => {
         email: transformedData.email,
         phone_number: transformedData.phone_number,
         note: transformedData.note,
-        status: transformedData.status || 'PENDING',
+        status: transformedData.status || 'pendiente',
       }),
     });
     console.log('Enviando status:', transformedData.status);
@@ -56,16 +56,30 @@ export const createRegret = async (createRepentance: FormData) => {
     console.log('data:', data);
 
     // Validar la respuesta del servidor
-    if (!response.ok) {
-      throw new Error(data.message || 'Error al enviar los datos');
-    }
+    if (response.ok) {
+      const data = await response.json();  // Esperamos que el cuerpo esté en formato JSON
+      console.log('data:', data);
 
-    // Retornar éxito
-    return {
-      ok: true,
-      user: data.user,
-      message: 'Regret creado',
-    };
+      return {
+        ok: true,
+        user: data.user,
+        message: 'Regret creado',
+      };
+    } else {
+      // Si la respuesta no es exitosa, leer la respuesta como JSON y manejar el error
+      const errorData = await response.json();
+      console.log('ErrorData:', errorData); // Imprimir para depuración
+
+      const errorMessage = errorData?.error?.message || errorData?.message || 'Error desconocido';
+      console.error('Error al crear el arrepentimiento:', errorMessage);
+
+      return {
+        ok: false,
+        message: errorMessage,
+      };
+    }
+    
+    
   } catch (error) {
     // Manejo del error
     const errorMessage = error instanceof Error ? error.message : 'Error inesperado al crear el regret';
