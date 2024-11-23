@@ -2,54 +2,6 @@ import { System } from '@/types/data';
 import { CountryOption, RedType } from '@/types/request/request';
 import { create } from 'zustand';
 
-// transaction: {
-//   sender: {
-//     first_name: 'John',
-//     last_name: 'Doe',
-//     identification: '1234567890',
-//     phone_number: '+55988032066',
-//     email: 'brasil@swaplyar.com',
-//     bank_account: {
-//       email_account: 'jane.smith.bank@example.com',
-//       payment_method: 'wise',
-//       number_account: 'sender-number-123456',
-//     },
-//   },
-//   receiver: {
-//     first_name: 'John',
-//     last_name: 'Doe',
-//     bank_account: {
-//       email_account: 'tincho@gmail.com',
-//       name: 'Galicia',
-//       payment_method: 'paypal',
-//       number_account: 'receiver-number-123456',
-//     },
-//     document: {
-//       type: 'dni',
-//       value: '43412385',
-//     },
-//     crypto: {
-//       currency: 'usdt',
-//       network: 'ether',
-//       wallet: 'jfuyher85',
-//     },
-//   },
-//   transfer: {
-//     transfer_code: 'TRX202409300001',
-//     country_transaction: 'USA',
-//     message: 'Payment for services',
-//     created_at: '2024-09-30T12:00:00Z',
-//   },
-//   amounts: {
-//     amount_sent: 1000.0,
-//     currency_sent: 'USD',
-//     amount_received: 960.0,
-//     currency_received: 'EUR',
-//   },
-//   status: 'pending',
-//   idAdmin: 'utqmzt2qvni',
-// },
-
 const BASE_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
 
@@ -241,14 +193,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     formDataPayload.append('transactions', JSON.stringify(payload));
 
     try {
-      // for (let pair of formDataPayload.entries()) {
-      //   console.log(pair[0] + ', ' + pair[1]);
-      // }
       const response = await fetch(`${BASE_URL}/v1/transactions`, {
         method: 'POST',
-        // headers: {
-        //   'Content-Type': 'multipart/form-data',
-        // },
         body: formDataPayload,
       });
 
@@ -258,10 +204,10 @@ export const useStepperStore = create<StepperState>((set, get) => ({
 
       const data = await response.json();
       console.log('Respuesta del servidor:', data);
-      return true; // Indicar que la operación fue exitosa
+      return true; 
     } catch (error) {
       console.error('Error en la solicitud:', error);
-      return false; // Indicar que hubo un error
+      return false; 
     }
   },
   submitOneStep: async () => {
@@ -327,22 +273,6 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       console.error('Error en la solicitud:', error);
     }
   },
-  // getOneStep: async () => {
-  //   try {
-  //     const response = await fetch(`${BASE_URL}/v1/canceled_transactions`, {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
-  //     const data = await response.json();
-  //     console.log('Respuesta del servidor:', data); // Mueve el console.log antes del return
-  //     return data;
-  //   } catch (error) {
-  //     console.error('Error en la solicitud:', error);
-  //     return { error: 'Error en la solicitud' }; // Devuelve un valor de error en caso de fallo
-  //   }
-  // },
   resetToDefault: () =>
     set((state) => ({
       activeStep: 0,
