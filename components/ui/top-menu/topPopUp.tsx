@@ -1,9 +1,11 @@
 'use client';
+import { setBannerColor } from '@/utils/setBannerColor';
 import { useState, useEffect } from 'react';
 import { MdOutlineClose } from 'react-icons/md';
 
 function TopPopUp() {
   const [isClosed, setIsClosed] = useState(true);
+  const [bannerColor, setBannerColorState] = useState('');
 
   const handleClose = () => {
     sessionStorage.setItem('isClosed', JSON.stringify(true));
@@ -11,6 +13,8 @@ function TopPopUp() {
   };
 
   useEffect(() => {
+    const color = setBannerColor();
+    setBannerColorState(color);
     const closed = JSON.parse(sessionStorage.getItem('isClosed') as string);
     if (closed) {
       setIsClosed(closed);
@@ -24,7 +28,7 @@ function TopPopUp() {
   }
 
   return (
-    <main className="relative w-full bg-violet-700 py-2">
+    <main className={`relative w-full py-2`} style={{ backgroundColor: bannerColor }}>
       <div className="relative m-auto flex w-[90%] max-w-screen-2xl items-center justify-between">
         <p className="flex-grow text-center text-xs font-bold text-darkText md:text-sm lg:text-lg">
           Estamos trabajando en las funciones de inicio de sesión y registro
