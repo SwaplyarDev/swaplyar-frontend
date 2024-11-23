@@ -73,7 +73,7 @@ const ContactForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col space-y-4">
       <div className="rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark">
-        <h4 className="mb-7 text-xl font-semibold">Contáctanos</h4>
+        <h2 className="mb-7 text-xl font-semibold">Contáctanos</h2>
         <div className="flex flex-col gap-10 md:flex-row md:gap-16">
           <div className="flex w-full flex-col gap-4">
             <InputField
