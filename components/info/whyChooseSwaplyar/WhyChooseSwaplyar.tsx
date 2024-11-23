@@ -72,7 +72,7 @@ const WhyChooseSwaplyar: React.FC = () => {
           />
 
           <InfoBlock
-            title="SwaplyAr: Líderes en Cambio de Divisas de PayPal"
+            title="SwaplyAr: Líder en Intercambio de Divisas entre Billeteras Virtuales y Criptomonedas"
             imageSrc={LideresenCambio}
             imageAlt="Recarga PayPal"
             content="
