@@ -28,6 +28,7 @@ const config: Config = {
       screens: {
         xs: '480px',
         sm: '640px',
+        'md-tablet': '749px',
         md: '768px',
         'lg-tablet': '960px',
         lg: '1170px',
