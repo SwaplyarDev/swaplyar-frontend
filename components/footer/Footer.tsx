@@ -35,7 +35,7 @@ export default function Footer() {
     <footer className="rs-wrapper-v4 mx-auto max-w-screen-2xl px-4 py-8">
       <div className="one-info-footer hidden w-full flex-col items-center gap-4 px-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 md-tablet:flex">
         <section className="mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-start">
-          <h4 className="mb-2 text-pretty text-start text-xl font-bold">Regístrate y disfruta de beneficios</h4>
+          <p className="mb-2 text-pretty text-start text-xl font-bold">Regístrate y disfruta de beneficios</p>
           <FooterLink href="/auth/login-register" view="login">
             Iniciar Sesión
           </FooterLink>
@@ -45,7 +45,7 @@ export default function Footer() {
           <FooterLink href="/info/loyalty-program">Programa de Fidelización</FooterLink>
         </section>
         <section className="mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-center sm:text-center">
-          <h4 className="mb-2 text-xl font-bold">Normativa</h4>
+          <p className="mb-2 text-xl font-bold">Normativa</p>
           <FooterLink href="/info/warranty">Garantía</FooterLink>
           <FooterLink href="/info/terms-and-conditions">Términos y Condiciones</FooterLink>
           <FooterLink href="/info/sapr-terms-conditions">T&C Plus Rewards</FooterLink>
@@ -53,7 +53,7 @@ export default function Footer() {
         </section>
 
         <section className="flex flex-col items-center text-left sm:w-1/3 sm:items-end sm:text-right">
-          <h4 className="mb-2 text-xl font-bold">Atención al Cliente</h4>
+          <p className="mb-2 text-xl font-bold">Atención al Cliente</p>
           <FooterLink href="/info/help-center">Centro de Ayuda</FooterLink>
           <FooterLink href="/info/about-us">Preguntas y Respuestas</FooterLink>
           <FooterLink href="/info/blog">SwaplyAr Blog</FooterLink>
