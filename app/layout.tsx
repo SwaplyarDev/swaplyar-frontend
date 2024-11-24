@@ -6,7 +6,7 @@ import { TopMenu } from '@/components/ui/top-menu/TopMenu';
 import ThemeProvider from '../components/ui/theme-Provider/themeProvider';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
-import { inter } from '@/config/fonts/fonts';
+import { roboto } from '@/config/fonts/fonts';
 import { MarginProvider } from '@/context/MarginProvider';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
@@ -51,7 +51,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.className} bg-white text-lightText dark:bg-lightText dark:text-darkText`}>
+      <body className={`${roboto.className} bg-white text-lightText dark:bg-lightText dark:text-darkText`}>
         <SessionProvider>
           <ThemeProvider>
             <MarginProvider>
