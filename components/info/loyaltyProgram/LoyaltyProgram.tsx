@@ -29,9 +29,9 @@ function LoyaltyProgram() {
       <div>
         <div className="text-center">
           <div className="flex justify-center">
-            <h1 className="mb-4 text-4xl font-bold mr-2">SwaplyAr Plus Rewards™ </h1>
+            <h1 className="mb-4 mr-2 text-4xl font-bold">SwaplyAr Plus Rewards™ </h1>
             <p className="mb-4 text-4xl font-bold"> premia tu fidelidad</p>
-          </div>          
+          </div>
           <div className="mt-4">
             <button
               id="submit-25456"
@@ -46,10 +46,20 @@ function LoyaltyProgram() {
         <div className="py-10">
           <div className="text-center">
             <h2 className="mb-4 text-2xl font-bold">
-            Cada transacción es una oportunidad de obtener más. Únete a SwaplyAr Plus Rewards y disfruta de beneficios exclusivos cada vez que realices un intercambio.
+              Cada transacción es una oportunidad de obtener más. Únete a SwaplyAr Plus Rewards y disfruta de beneficios
+              exclusivos cada vez que realices un intercambio.
             </h2>
             <p className="">
-            ¿Aún no formas parte? <strong><LinkWithHover href="#">Crea</LinkWithHover></strong> tu perfil en SwaplyAr o <strong><LinkWithHover href="#">Inicia Sesión</LinkWithHover></strong> en tu cuenta y da el primer paso hacia una experiencia que te recompensa en cada movimiento. ¡Inscríbete hoy y comienza a disfrutar las ventajas!
+              ¿Aún no formas parte?{' '}
+              <strong>
+                <LinkWithHover href="#">Crea</LinkWithHover>
+              </strong>{' '}
+              tu perfil en SwaplyAr o{' '}
+              <strong>
+                <LinkWithHover href="#">Inicia Sesión</LinkWithHover>
+              </strong>{' '}
+              en tu cuenta y da el primer paso hacia una experiencia que te recompensa en cada movimiento. ¡Inscríbete
+              hoy y comienza a disfrutar las ventajas!
             </p>
           </div>
         </div>
@@ -86,12 +96,11 @@ function LoyaltyProgram() {
         <div>
           <p>
             Para conocer los Términos y Condiciones del programa SwaplyAr Plus Rewards, haz{' '}
-
-            <Link href="./sapr-terms-conditions" target="_blank" className="underline ml-2s">
+            <Link href="./sapr-terms-conditions" target="_blank" className="ml-2s underline">
               click aquí
-            </Link> 
-            .           
-          </p>          
+            </Link>
+            .
+          </p>
           <div>
             <button
               id="bannerHTUButton"

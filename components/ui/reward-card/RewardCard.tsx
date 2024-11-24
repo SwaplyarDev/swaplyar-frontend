@@ -27,7 +27,6 @@ function RewardCard({ imageSrc, imageAlt, title, description, desriptionNode, li
         >
           {linkText}
         </a>
-        
       </p>
     </div>
   );

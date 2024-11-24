@@ -73,9 +73,30 @@ const Warranty = () => {
             imageAlt="Cambia USD de PayPal por ARS"
             contentNode={
               <>
-                En SwaplyAr, no solo garantizamos seguridad total y atención personalizada en cada transacción, sino que también ofrecemos <strong><LinkWithHover href="#">Beneficios Adicionales</LinkWithHover></strong>. A nuestros usuarios registrados les brindamos promociones exclusivas y cubrimos las comisiones por ti.{' '}
-
-                Mientras que otros servicios aplican comisiones del 5.6% + $0.30 USD en PayPal, nosotros absorbemos esos costos para ofrecerte el mejor valor. Además, trabajamos con múltiples billeteras virtuales como <strong><LinkWithHover href='#'>Payoneer</LinkWithHover></strong>, <strong><LinkWithHover href='#'>Wise</LinkWithHover></strong>, <strong><LinkWithHover href='#'>Pix</LinkWithHover></strong> y <strong><LinkWithHover href='#'>USDT</LinkWithHover></strong> para brindarte aún más opciones y flexibilidad.
+                En SwaplyAr, no solo garantizamos seguridad total y atención personalizada en cada transacción, sino que
+                también ofrecemos{' '}
+                <strong>
+                  <LinkWithHover href="#">Beneficios Adicionales</LinkWithHover>
+                </strong>
+                . A nuestros usuarios registrados les brindamos promociones exclusivas y cubrimos las comisiones por ti.{' '}
+                Mientras que otros servicios aplican comisiones del 5.6% + $0.30 USD en PayPal, nosotros absorbemos esos
+                costos para ofrecerte el mejor valor. Además, trabajamos con múltiples billeteras virtuales como{' '}
+                <strong>
+                  <LinkWithHover href="#">Payoneer</LinkWithHover>
+                </strong>
+                ,{' '}
+                <strong>
+                  <LinkWithHover href="#">Wise</LinkWithHover>
+                </strong>
+                ,{' '}
+                <strong>
+                  <LinkWithHover href="#">Pix</LinkWithHover>
+                </strong>{' '}
+                y{' '}
+                <strong>
+                  <LinkWithHover href="#">USDT</LinkWithHover>
+                </strong>{' '}
+                para brindarte aún más opciones y flexibilidad.
                 {/* <span
                   style={{
                     backgroundColor: 'yellow',
@@ -87,7 +108,7 @@ const Warranty = () => {
                 </span> */}
               </>
             }
-          />          
+          />
         </div>
       </div>
     </>

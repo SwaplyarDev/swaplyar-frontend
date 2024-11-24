@@ -4,7 +4,9 @@ const ConversionInstructions = () => {
   return (
     <div className="lazyload-user-social flex w-full max-w-7xl flex-col-reverse items-center justify-between gap-4 space-y-4 py-8 md:flex-col lg-tablet:flex-row lg-tablet:space-x-4 lg-tablet:space-y-0">
       <div className="steps flex max-w-xl flex-1 flex-col items-start pt-6 lg-tablet:pt-8">
-        <h1 className="text-4xl">Recibí y envía dinero de cualquier billetera virtual y criptomoneda a tu cuenta bancaria</h1>
+        <h1 className="text-4xl">
+          Recibí y envía dinero de cualquier billetera virtual y criptomoneda a tu cuenta bancaria
+        </h1>
         <div className="not-ssr mt-2">
           <div className="container-steps mt-2">
             {['1', '2', '3'].map((number, index) => (
@@ -27,12 +29,10 @@ const ConversionInstructions = () => {
                     {index === 1 && 'Sigue las Instrucciones.'}
                     {index === 2 && 'Recibe tu Dinero.'}
                   </strong>
-                  {index === 0 &&
-                    ' Consulta la cotización actual y elige el monto que deseas convertir a tu cuenta.'}
+                  {index === 0 && ' Consulta la cotización actual y elige el monto que deseas convertir a tu cuenta.'}
                   {index === 1 &&
                     ' Te guiaremos paso a paso para que completes la transacción de forma segura y sin complicaciones.'}
-                  {index === 2 &&
-                    ' ¡Todo listo! Obtén tu dinero en tu cuenta de manera rápida y confiable.'}
+                  {index === 2 && ' ¡Todo listo! Obtén tu dinero en tu cuenta de manera rápida y confiable.'}
                 </p>
               </div>
             ))}

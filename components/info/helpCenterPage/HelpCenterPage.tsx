@@ -79,17 +79,19 @@ const HelpCenterPage = () => {
                 height={150}
                 className="hidden dark:inline-block"
               />
-              <h2 className="text-xl font-bold mt-4">Chateá con nosotros</h2>
+              <h2 className="mt-4 text-xl font-bold">Chateá con nosotros</h2>
               <div className="flex h-full flex-col justify-between">
-                <p className="mb-6 text-center text-lg mt-2 md:mb-0 md:text-left">
+                <p className="mb-6 mt-2 text-center text-lg md:mb-0 md:text-left">
                   Comunicate con nuestro representante de Atención al Cliente para recibir ayuda.
                 </p>
                 <p className="text-right text-2xl">
-                  <strong><LinkWithHover href="https://wa.me/+5491123832198">WhatsApp</LinkWithHover></strong>
+                  <strong>
+                    <LinkWithHover href="https://wa.me/+5491123832198">WhatsApp</LinkWithHover>
+                  </strong>
                 </p>
               </div>
             </span>
-            <span className="card-rawe flex flex-col  rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark md:items-start">
+            <span className="card-rawe flex flex-col rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark md:items-start">
               {isDark ? (
                 <Image
                   // src={Ayuda2Dark}
@@ -107,13 +109,15 @@ const HelpCenterPage = () => {
                   height={150}
                 />
               )}
-              <h2 className="text-xl font-bold mt-4">Otro motivo...</h2>
+              <h2 className="mt-4 text-xl font-bold">Otro motivo...</h2>
               <div className="flex h-full flex-col justify-between">
-                <p className="mb-6 text-center mt-2 text-lg md:mb-0 md:text-left">
+                <p className="mb-6 mt-2 text-center text-lg md:mb-0 md:text-left">
                   Si necesitás contactarnos por otro motivo, simplemente envianos un email y atenderemos tu solicitud.
                 </p>
                 <p className="text-right text-2xl">
-                  <strong><LinkWithHover href="mailto:centrodeayuda@swaplyar.com">Email</LinkWithHover></strong>
+                  <strong>
+                    <LinkWithHover href="mailto:centrodeayuda@swaplyar.com">Email</LinkWithHover>
+                  </strong>
                 </p>
               </div>
             </span>

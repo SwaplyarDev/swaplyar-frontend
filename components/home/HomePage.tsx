@@ -14,7 +14,6 @@ import { useSession } from 'next-auth/react';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import LinkWithHover from '../ui/LinkWithHover/LinkWithHover';
 
-
 const mainStyles = {
   main: 'py-10 relative', // Centrado tanto vertical como horizontalmente
   infoBlocksContainer: 'flex flex-col items-center justify-center mt-8',
@@ -42,12 +41,50 @@ export default function HomePage() {
         </div>
         <div className={mainStyles.infoBlocksContainer}>
           <InfoBlock
-            title = "Cambia USD o EUR de tu billetera virtual por la moneda de tu preferencia  con SwaplyAr"
-            imageSrc = {UsdArs}
-            imageAlt = "Cambia USD de PayPal por ARS"
-            contentNode = {
-              <>              
-              Realizá cambios de <strong><LinkWithHover href='#'>USD</LinkWithHover></strong>, <strong><LinkWithHover href='#'>EUR</LinkWithHover></strong> o <strong><LinkWithHover href='#'>USDT</LinkWithHover></strong> de tu billetera virtual a la moneda que necesitas de manera rápida y eficiente. Ofrecemos las mejores tasas del mercado para que siempre maximices tus ganancias. Si necesitás transferir dinero desde <strong><LinkWithHover href='#'>PayPal</LinkWithHover></strong>, <strong><LinkWithHover href='#'>Payoneer</LinkWithHover></strong>, <strong><LinkWithHover href='#'>Wise</LinkWithHover></strong>, <strong><LinkWithHover href='#'>Pix</LinkWithHover></strong>, <strong><LinkWithHover href='#'>USDT</LinkWithHover></strong>, o pesos Argentinos, lo depositamos directamente en tu cuenta bancaria local o internacional según prefieras. Aumentá tus beneficios con <strong><LinkWithHover href='#'>SwaplyAr plus Rewards</LinkWithHover></strong>.
+            title="Cambia USD o EUR de tu billetera virtual por la moneda de tu preferencia  con SwaplyAr"
+            imageSrc={UsdArs}
+            imageAlt="Cambia USD de PayPal por ARS"
+            contentNode={
+              <>
+                Realizá cambios de{' '}
+                <strong>
+                  <LinkWithHover href="#">USD</LinkWithHover>
+                </strong>
+                ,{' '}
+                <strong>
+                  <LinkWithHover href="#">EUR</LinkWithHover>
+                </strong>{' '}
+                o{' '}
+                <strong>
+                  <LinkWithHover href="#">USDT</LinkWithHover>
+                </strong>{' '}
+                de tu billetera virtual a la moneda que necesitas de manera rápida y eficiente. Ofrecemos las mejores
+                tasas del mercado para que siempre maximices tus ganancias. Si necesitás transferir dinero desde{' '}
+                <strong>
+                  <LinkWithHover href="#">PayPal</LinkWithHover>
+                </strong>
+                ,{' '}
+                <strong>
+                  <LinkWithHover href="#">Payoneer</LinkWithHover>
+                </strong>
+                ,{' '}
+                <strong>
+                  <LinkWithHover href="#">Wise</LinkWithHover>
+                </strong>
+                ,{' '}
+                <strong>
+                  <LinkWithHover href="#">Pix</LinkWithHover>
+                </strong>
+                ,{' '}
+                <strong>
+                  <LinkWithHover href="#">USDT</LinkWithHover>
+                </strong>
+                , o pesos Argentinos, lo depositamos directamente en tu cuenta bancaria local o internacional según
+                prefieras. Aumentá tus beneficios con{' '}
+                <strong>
+                  <LinkWithHover href="#">SwaplyAr plus Rewards</LinkWithHover>
+                </strong>
+                .
               </>
             }
           />
@@ -55,9 +92,18 @@ export default function HomePage() {
             title="Necesitás recargar tu cuenta de PayPal en USD o EUR, fácilmente en SwaplyAr tenés la solución"
             imageSrc={RecargaPaypal}
             imageAlt="Recarga PayPal"
-            contentNode = {
-              <>              
-              Es tan simple de colocar el monto que deseas en la calculadora en que <strong><LinkWithHover href="#">Billetera Virtual</LinkWithHover></strong>  deseas el dinero, rellenar la solicitud y realizar el pago correspondiente y en menos de 15 minutos procederemos con la transacción de manera rápida y segura. También nos puedes escribir a nuestro <strong><LinkWithHover href="#">WhatsApp</LinkWithHover></strong> y responderemos cualquier duda que tengas.
+            contentNode={
+              <>
+                Es tan simple de colocar el monto que deseas en la calculadora en que{' '}
+                <strong>
+                  <LinkWithHover href="#">Billetera Virtual</LinkWithHover>
+                </strong>{' '}
+                deseas el dinero, rellenar la solicitud y realizar el pago correspondiente y en menos de 15 minutos
+                procederemos con la transacción de manera rápida y segura. También nos puedes escribir a nuestro{' '}
+                <strong>
+                  <LinkWithHover href="#">WhatsApp</LinkWithHover>
+                </strong>{' '}
+                y responderemos cualquier duda que tengas.
               </>
             }
           />
