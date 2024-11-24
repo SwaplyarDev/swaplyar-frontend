@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import S from '../../public/images/logo-solo.png';
+import { SwaplyArLogoSolo } from '@/utils/assets/imgDatabaseCloudinary';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLinkedin, faInstagram, faFacebook, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import useStore from '@/store/authViewStore';
@@ -178,7 +178,7 @@ export default function Footer() {
         </section>
         <section className="mb-4 flex flex-grow justify-center filter dark:brightness-[0%] dark:invert sm:mb-0 sm:w-1/3 sm:justify-center">
           <Link href="/">
-            <Image src={S} alt="Cambiar saldo online" width={65} height={70} />
+            <Image src={SwaplyArLogoSolo} alt="Cambiar saldo online" width={65} height={70} />
           </Link>
         </section>
         <section className="flex items-center justify-center sm:w-1/3 sm:justify-end">
