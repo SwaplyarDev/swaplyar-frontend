@@ -2,16 +2,21 @@
 
 /** Centro de Ayuda **/
 export const CentroDeAyuda = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725223667/centro-ayuda_uhyb5r.png';
+export const RewardsHC = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732424782/plus-rewards_dib2g4.png';
+export const RewardsHCDark =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1732424640/plus-rewards-dark_kojk1p.png';
 
 /** GIFs **/
 export const FlyerGif = '/gif/flyer.gif';
-export const SwipeGif = '/gif/swipe.gif';
+export const SwipeGif = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732479827/swipe_sip1tg.gif';
 
 /** Logo SwaplyAr **/
 export const SwaplyArlogoMobileWhite =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225355/SwaplyAr-logo-Mobile-White_na2qoc.png';
 export const SwaplyArlogoWhite =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225363/SwaplyAr-Logo-White_yvdnvm.png';
+export const SwaplyArLogoSolo = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224752/logo-solo_dgx9c5.png';
+export const SwaplyArLogoComplete = 'https://res.cloudinary.com/df5jwzuq9/image/upload/v1722209853/logo_g74htq.png';
 
 /** Request **/
 export const FormularioDeSolicitud =
@@ -37,8 +42,11 @@ export const Paso4Gif = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725
 
 /** Loyalty Program **/
 export const Rewards1 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225314/rewards1_hme3sh.png';
+export const Rewards1Dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732423763/rewards1Dark_rjixpi.png';
 export const Rewards2 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225322/rewards2_xxnfbs.png';
+export const Rewards2Dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732424005/rewards2Dark_nnxjee.png';
 export const Rewards3 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225330/rewards3_hnwcgy.png';
+export const Rewards3Dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732424010/rewards3Dark_pjxrmt.png';
 
 /** Terms and Conditions **/
 export const TerminosCondiciones =
@@ -60,10 +68,8 @@ export const Contacto = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725
 export const PlusRewardsGif = '/gif/plus-rewards.gif';
 export const PlusRewards = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225314/rewards1_hme3sh.png';
 export const PlusRewardsDark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1726601342/reward1.dark_xsutks.png';
-export const Ayuda1 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725223376/ayuda1_sp859a.png';
-export const Ayuda2 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725223422/ayuda2_xmn7wd.png';
-export const Ayuda1Dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1726601291/ayuda1.dark_setspr.png';
-export const Ayuda2Dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1726601340/ayuda2.dark_yhbltd.png';
+export const Ayuda1 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732547526/Ayuda1_new_rot3ne.png';
+export const Ayuda2 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732547526/Ayuda2_new_utttp6.png';
 
 /** Why Choose Us and Key Benefits **/
 export const ElegirSwaplyAr = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224460/elegirSwaplyAr_le6gqp.png';
@@ -92,8 +98,22 @@ export const WiseUsdDarkImg = 'https://res.cloudinary.com/dwrhturiy/image/upload
 export const WiseEurImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225416/wise.eur.big_etdolw.png';
 export const WiseEurDarkImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1726600630/wise.eur.dark_zkxrnp.png';
 
-/** Exchange Routes **/
+/** 404 Error **/
+export const Post1_404 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732486012/post1-404_rz6g6k.png';
+export const Post2_404 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732486215/post2-404_qycpu0.png';
+export const Enchufe_dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732486335/enchufe_dark_f5y6ny.png';
+export const Enchufe_clear = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732486336/enchufe_clear_fkay11.png';
+export const Enchufe_dark_largo =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1732486335/enchufe_dark_largo_dtkxoq.png';
+export const Enchufe_clear_largo =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1732486335/enchufe_clear_largo_dyh2ce.png';
 
+export const tlf_404_clear = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732487578/tlf_404_clear_skszrs.png';
+export const tlf_404_dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732488318/tlf_404_dark_jior67.png';
+export const Error_404_clear = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732488402/clear-404_tz3b71.png';
+export const Error_404_dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732488388/dark-404_t5dlmf.png';
+
+/** Exchange Routes **/
 // ARS to PayPal, Payoneer, Wise
 export const ArsToPayPal = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225073/request-ars-pp_zqjih3.png';
 export const ArsToPyEUR = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225081/request-ars-py-eur_ldqgk0.png';

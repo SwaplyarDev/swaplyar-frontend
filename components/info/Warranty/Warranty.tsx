@@ -4,6 +4,10 @@ import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import CaedAboutUs from '@/components/ui/caed-about-us/caed-about-us';
 import GuaranteeSection from '@/components/ui/warranty-section/WarrantySection';
+import { useMargins } from '@/context/MarginProvider';
+import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
+import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
+import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 import {
   Aumeno,
   Caida,
@@ -12,10 +16,6 @@ import {
   Transacciones,
   Ventajaalelegirswaplyar,
 } from '@/utils/assets/imgDatabaseCloudinary';
-import { useMargins } from '@/context/MarginProvider';
-import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
-import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
-import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 
 const cardsData = [
   {

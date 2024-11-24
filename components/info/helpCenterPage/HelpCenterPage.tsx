@@ -1,16 +1,13 @@
 'use client';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import ContactForm from '@/components/ui/contact-form/ContactForm';
-import { CentroDeAyuda } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { PlusRewardsDark } from '@/utils/assets/img-database';
-import { Ayuda1 } from '@/utils/assets/img-database';
-import { Ayuda1Dark } from '@/utils/assets/img-database';
+import { CentroDeAyuda, RewardsHC, RewardsHCDark, Ayuda1, Ayuda2 } from '@/utils/assets/imgDatabaseCloudinary';
 
 const HelpCenterPage = () => {
   const { margins } = useMargins();
@@ -32,15 +29,14 @@ const HelpCenterPage = () => {
           <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
             <span className="flex items-center justify-center">
               <Image
-                // src={PlusRewards}
-                src="/images/plus-rewards.png"
+                src={RewardsHC}
                 alt="SwaplyAr Plus Rewards™"
                 width={400}
                 height={300}
                 className="inline-block dark:hidden"
               />
               <Image
-                src="/gif/plus-rewards-dark.png"
+                src={RewardsHCDark}
                 alt="SwaplyAr Plus Rewards™ tema oscuro"
                 width={400}
                 height={300}
@@ -70,14 +66,7 @@ const HelpCenterPage = () => {
                 alt="paso 1 de como cambiar tu dinero en SwaplyAr"
                 width={210}
                 height={150}
-                className="inline-block dark:hidden"
-              />
-              <Image
-                src={Ayuda1Dark}
-                alt="paso 1 de como cambiar tu dinero en SwaplyAr tema oscuro"
-                width={210}
-                height={150}
-                className="hidden dark:inline-block"
+                className="inline-block"
               />
               <h2 className="mt-4 text-xl font-bold">Chateá con nosotros</h2>
               <div className="flex h-full flex-col justify-between">
@@ -92,23 +81,13 @@ const HelpCenterPage = () => {
               </div>
             </span>
             <span className="card-rawe flex flex-col rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark md:items-start">
-              {isDark ? (
-                <Image
-                  // src={Ayuda2Dark}
-                  src="/images/ayuda2-dark.png"
-                  alt="paso 2 de como cambiar tu dinero en SwaplyAr tema oscuro"
-                  width={210}
-                  height={150}
-                />
-              ) : (
-                <Image
-                  // src={Ayuda2}
-                  src="/images/ayuda2.png"
-                  alt="paso 2 de como cambiar tu dinero en SwaplyAr"
-                  width={210}
-                  height={150}
-                />
-              )}
+              <Image
+                src={Ayuda2}
+                alt="paso 1 de como cambiar tu dinero en SwaplyAr"
+                width={210}
+                height={150}
+                className="inline-block"
+              />
               <h2 className="mt-4 text-xl font-bold">Otro motivo...</h2>
               <div className="flex h-full flex-col justify-between">
                 <p className="mb-6 mt-2 text-center text-lg md:mb-0 md:text-left">
