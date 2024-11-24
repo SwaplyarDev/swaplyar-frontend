@@ -195,7 +195,7 @@ const TermsAndConditions = () => {
                   <strong>a)</strong> Publicar contenido ilegal, obsceno, abusivo, difamatorio, injurioso,
                   discriminatorio o contrario a las buenas costumbres.
                 </p>
-                <p className='indent-6 mb-2'>
+                <p className='ml-6 mb-2'>
                   <strong>b)</strong> Enviar archivos o comunicaciones con virus, troyanos, programas maliciosos o
                   cualquier otra característica capaz de dañar el funcionamiento de un sistema informático.
                 </p>
