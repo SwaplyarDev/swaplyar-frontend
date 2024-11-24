@@ -43,6 +43,7 @@ export const Rewards3 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725
 /** Terms and Conditions **/
 export const TerminosCondiciones =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225370/terminos-y-condiciones_hebdux.png';
+export const SwaplyRewardsTnC = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732384862/plus-rewards_vmhrmg.png';
 
 /** We Guarantee **/
 export const Garantizamos = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224583/Garantizamos_oj4fpr.png';

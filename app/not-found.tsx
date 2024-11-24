@@ -31,18 +31,18 @@ export default function NotFoundPage() {
           <div className="flex w-full items-center">
             <div className="flex h-fit w-full items-end">
               <div className="font-white md:text-4k absolute bottom-[30%] left-0 flex h-fit flex-col items-center gap-3 pl-1 text-xl font-normal sm:max-md:bottom-[15%] sm:max-md:text-2xl md:gap-5 md:max-lg-tablet:bottom-[23%] lg-tablet:max-lg:bottom-[22%] lg-tablet:max-lg:left-[6%] lg:max-xl:bottom-[22%] lg:max-xl:left-[14%] xl:max-2k:bottom-[21%] xl:max-2k:left-[18%] 2xl:max-4k:bottom-[22%] 2xl:max-4k:left-[19%] 4k:left-[4%] 4k:text-[170px] 4k:leading-[1.2]">
-                <div className="block border-l-2 border-l-blue-700 pl-1 text-start md:hidden">
+                <h1 className="block border-l-2 border-l-blue-700 pl-1 text-start md:hidden">
                   Ups... <br />
                   La página no <br />
                   ha sido encontrada
-                </div>
+                </h1>
 
-                <div className="hidden text-start md:block">
+                <h1 className="hidden text-start md:block">
                   Ups... <br />
                   La página no <br />
                   ha sido <br />
                   encontrada
-                </div>
+                </h1>
 
                 <Link href="/">
                   <div className="flex items-center justify-center rounded-full border border-blue-700 bg-white pl-1 pr-1 text-[11px] font-bold text-blue-700 md:mr-5 md:p-1 md:text-[14px] lg-tablet:w-44 xl:w-40 4k:w-[900px] 4k:border-6 4k:p-4 4k:text-[90px]">

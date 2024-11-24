@@ -40,7 +40,7 @@ const HelpCenterPage = () => {
                 className="inline-block dark:hidden"
               />
               <Image
-                src={PlusRewardsDark}
+                src="/gif/plus-rewards-dark.png"
                 alt="SwaplyAr Plus Rewards™ tema oscuro"
                 width={400}
                 height={300}
@@ -64,7 +64,7 @@ const HelpCenterPage = () => {
           </section>
 
           <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
-            <span className="card-rawe flex flex-col rounded bg-gray-100 p-4 dark:bg-graytyc">
+            <span className="card-rawe flex flex-col rounded-2xl bg-gray-100 p-8 dark:bg-graytyc">
               <Image
                 src={Ayuda1}
                 alt="paso 1 de como cambiar tu dinero en SwaplyAr"
@@ -79,17 +79,19 @@ const HelpCenterPage = () => {
                 height={150}
                 className="hidden dark:inline-block"
               />
-              <h3 className="text-xl font-bold">Chateá con nosotros</h3>
+              <h2 className="mt-4 text-xl font-bold">Chateá con nosotros</h2>
               <div className="flex h-full flex-col justify-between">
-                <p className="mb-6 text-center text-lg md:mb-0 md:text-left">
+                <p className="mb-6 mt-2 text-center text-lg md:mb-0 md:text-left">
                   Comunicate con nuestro representante de Atención al Cliente para recibir ayuda.
                 </p>
                 <p className="text-right text-2xl">
-                  <LinkWithHover href="https://wa.me/+5491123832198">WhatsApp.</LinkWithHover>
+                  <strong>
+                    <LinkWithHover href="https://wa.me/+5491123832198">WhatsApp</LinkWithHover>
+                  </strong>
                 </p>
               </div>
             </span>
-            <span className="card-rawe flex flex-col items-center rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark md:items-start">
+            <span className="card-rawe flex flex-col rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark md:items-start">
               {isDark ? (
                 <Image
                   // src={Ayuda2Dark}
@@ -107,13 +109,15 @@ const HelpCenterPage = () => {
                   height={150}
                 />
               )}
-              <h3 className="text-xl font-bold">Otro motivo...</h3>
-              <div className="flex flex-col justify-between">
-                <p className="mb-6 text-center text-lg md:mb-0 md:text-left">
+              <h2 className="mt-4 text-xl font-bold">Otro motivo...</h2>
+              <div className="flex h-full flex-col justify-between">
+                <p className="mb-6 mt-2 text-center text-lg md:mb-0 md:text-left">
                   Si necesitás contactarnos por otro motivo, simplemente envianos un email y atenderemos tu solicitud.
                 </p>
                 <p className="text-right text-2xl">
-                  <LinkWithHover href="mailto:centrodeayuda@swaplyar.com">Email.</LinkWithHover>
+                  <strong>
+                    <LinkWithHover href="mailto:centrodeayuda@swaplyar.com">Email</LinkWithHover>
+                  </strong>
                 </p>
               </div>
             </span>

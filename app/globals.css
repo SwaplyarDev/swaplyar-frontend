@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 255, 255, 255;
@@ -542,4 +545,9 @@ div:where(.swal2-container).swal2-noanimation {
 
 .buttonSecondDarkDisabled {
   box-shadow: inherit;
+}
+
+/* Estilos de fuentes H1*/
+h1 {
+  font-family: 'Open Sans', sans-serif;
 }
