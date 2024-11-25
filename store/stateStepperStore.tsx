@@ -137,11 +137,10 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         sender: {
           first_name: stepOne.sender_first_name,
           last_name: stepOne.sender_last_name,
-          identification: stepTwo.tax_identification, // por ahora
           phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
           email: stepOne.email,
-          bank_account: { //por ahora
-            email_account: stepOne.email, // por ahora
+          bank_account: {
+            email_account: stepOne.email,
             payment_method: selectedSendingSystem?.name || '',
             number_account: '',
           },
@@ -150,13 +149,23 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           first_name: stepTwo.receiver_first_name,
           last_name: stepTwo.receiver_last_name,
           bank_account: {
-            email_account: stepOne.email,
+            email_account: stepTwo.bank_email || 'hola@gmail.com',
+            name: stepTwo.name_of_bank,
             payment_method: selectedReceivingSystem?.name || '',
-            number_account: stepTwo.transfer_identification,
+            number_account: '',
+          },
+          document: {
+            type: 'dni',
+            value: stepTwo.individual_tax_id || '12345678',
+          },
+          crypto: {
+            currency: 'usdt',
+            network: 'trc20',
+            wallet: 'jfuyher85',
           },
         },
         transfer: {
-          transfer_code: '',
+          transfer_code: '2134534534',
           country_transaction: 'USA',
           message: stepThree.note,
           created_at: new Date().toISOString(),
@@ -167,6 +176,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           amount_received: parseFloat(stepThree.receive_amount),
           currency_received: selectedReceivingSystem?.coin || '',
         },
+        status: 'pending',
+        idAdmin: '',
       },
     };
 
@@ -182,14 +193,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     formDataPayload.append('transactions', JSON.stringify(payload));
 
     try {
-      // for (let pair of formDataPayload.entries()) {
-      //   console.log(pair[0] + ', ' + pair[1]);
-      // }
       const response = await fetch(`${BASE_URL}/v1/transactions`, {
         method: 'POST',
-        // headers: {
-        //   'Content-Type': 'multipart/form-data',
-        // },
         body: formDataPayload,
       });
 
@@ -199,10 +204,10 @@ export const useStepperStore = create<StepperState>((set, get) => ({
 
       const data = await response.json();
       console.log('Respuesta del servidor:', data);
-      return true; // Indicar que la operación fue exitosa
+      return true; 
     } catch (error) {
       console.error('Error en la solicitud:', error);
-      return false; // Indicar que hubo un error
+      return false; 
     }
   },
   submitOneStep: async () => {
@@ -268,22 +273,6 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       console.error('Error en la solicitud:', error);
     }
   },
-  // getOneStep: async () => {
-  //   try {
-  //     const response = await fetch(`${BASE_URL}/v1/canceled_transactions`, {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
-  //     const data = await response.json();
-  //     console.log('Respuesta del servidor:', data); // Mueve el console.log antes del return
-  //     return data;
-  //   } catch (error) {
-  //     console.error('Error en la solicitud:', error);
-  //     return { error: 'Error en la solicitud' }; // Devuelve un valor de error en caso de fallo
-  //   }
-  // },
   resetToDefault: () =>
     set((state) => ({
       activeStep: 0,

@@ -18,7 +18,7 @@ const defaultSendingSystem: System = {
 
 const defaultReceivingSystem: System = {
   id: 'bank',
-  name: 'Banco',
+  name: 'Bank',
   logo: BankImg,
   logoDark: BankDarkImg,
   isDisabled: false,

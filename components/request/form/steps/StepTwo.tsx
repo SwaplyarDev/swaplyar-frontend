@@ -45,7 +45,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     updateFormData,
     completedSteps,
   } = useStepperStore();
-  const { selectedReceivingSystem, selectedSendingSystem } = useSystemStore();
+  const { selectedReceivingSystem } = useSystemStore();
   const { isDark } = useDarkTheme();
 
   const [initialValues, setInitialValues] = useState<FormData | null>(null);
@@ -148,7 +148,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             formData={formData}
           />
         );
-      case 'payoneer':
+      case 'payoneer_usd':
+      case 'payoneer_eur':
         return (
           <StepTwoPayoneer
             register={register}
@@ -168,7 +169,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             formData={formData}
           />
         );
-      case 'wise':
+      case 'wise_usd':
+      case 'wise_eur':
         return (
           <StepTwoWise
             register={register}

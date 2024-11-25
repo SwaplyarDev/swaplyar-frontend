@@ -178,34 +178,6 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
           </div>
         </div>
         <div className="flex w-full flex-col gap-4">
-          {/* <div className="flex h-full flex-col">
-            <label
-              htmlFor="note"
-              className={clsx(
-                'ml-1 text-xs',
-                errors.note
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
-              )}
-            >
-              Nota (opcional)
-            </label>
-            <textarea
-              {...register('note', { required: false })}
-              id="note"
-              disabled={blockAll}
-              placeholder="Añade una nota si lo deseas ;)"
-              className={clsx(
-                'h-full w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-                errors.note
-                  ? 'border-red-500'
-                  : 'hover:border-blue-600 dark:hover:border-white',
-              )}
-            ></textarea>
-            {errors.note && (
-              <p className="text-sm text-red-500">Este campo es obligatorio</p>
-            )}
-          </div> */}
           <div className="flex h-full flex-col">
             <div className="ml-1 flex gap-2 text-xs">
               <p>Red: Tron (TRC-20)</p>
