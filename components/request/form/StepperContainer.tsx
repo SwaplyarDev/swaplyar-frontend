@@ -212,8 +212,9 @@ const StepperContainer = () => {
           </div>
         </div>
       )}
-      <div className="flex items-center justify-between px-2">
-        <h1 className="text-2xl font-bold text-lightText dark:text-darkText">
+      <div className="flex items-center justify-between px-2 flex-col gap-2 sm-phone:flex-row sm-phone:gap-0">
+        {/* <h1 className="text-2xl font-bold text-lightText dark:text-darkText"> */}
+        <h1 className="text-2xl xs:text-3xl font-bold text-lightText dark:text-darkText sm-phone:text-2xl">
           Formulario de Solicitud
         </h1>
         <div>
@@ -233,7 +234,7 @@ const StepperContainer = () => {
                   : ''
               }`}
             >
-              <h2 className="mb-2 text-center text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0">
+              <h2 className="mb-2 text-center text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0 w-full">
                 {step.title}
               </h2>
               {/* Mostrar StepIndicator solo si no está completado y es el paso actual */}

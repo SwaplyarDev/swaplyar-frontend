@@ -76,7 +76,7 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
         isDisabled={blockAll}
         classNamePrefix="custom-select"
         className={clsx(
-          'w-full max-w-24 rounded py-px text-gray-900 dark:text-white',
+          'w-full max-w-24 rounded py-px text-gray-900 dark:text-white ml-[10px]',
         )}
         placeholder="AR"
         theme={(theme) => ({
@@ -143,6 +143,7 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
             ...provided,
             padding: '0 8px', // Asegura espacio para la flecha desplegable
             color: isDark ? '#FFFFFF' : '#111827',
+            cursor: 'pointer',
           }),
           indicatorSeparator: () => ({
             display: 'none', // Elimina el separador vertical "|"

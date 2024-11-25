@@ -22,7 +22,7 @@ const Clock = ({
         {!stopRequest && (
           <animateTransform
             attributeName="transform"
-            dur="9s"
+            dur="20s"
             repeatCount="indefinite"
             type="rotate"
             values="0 12 12;360 12 12"
@@ -33,7 +33,7 @@ const Clock = ({
         {!stopRequest && (
           <animateTransform
             attributeName="transform"
-            dur="0.75s"
+            dur="10s"
             repeatCount="indefinite"
             type="rotate"
             values="0 12 12;360 12 12"

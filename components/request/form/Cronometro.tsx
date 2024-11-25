@@ -3,6 +3,10 @@ import { useState, useEffect, useRef } from 'react';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import useChronometerState from '@/store/chronometerStore';
 import { CronometroProps } from '@/types/request/request';
+import Image from 'next/image';  // Asegúrate de importar el componente Image de Next.js
+import {
+  Reloj,
+} from '@/utils/assets/img-database';
 
 const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
   const [segundos, setSegundos] = useState<number>(30 * 60); // Inicializamos en 30 minutos (30 * 60 segundos)
@@ -56,14 +60,14 @@ const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
   const { isDark } = useDarkTheme();
 
   const obtenerColorBarra = (segundos: number) => {
-    if (segundos <= 5 * 60) {
-      // Menos de 5 minutos
+    if (segundos <= 7.5 * 60) {
+      // Menos de 7.5 minutos
       return 'red';
-    } else if (segundos <= 10 * 60) {
-      // Menos de 10 minutos
+    } else if (segundos <= 15 * 60) {
+      // Menos de 15 minutos
       return 'orange';
     } else {
-      // Más de 10 minutos
+      // Más de 15 minutos
       return isDark ? '#ebe7e0' : '#252526'; // Color estándar, cambia si es tema oscuro
     }
   };
@@ -83,13 +87,13 @@ const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
         }}
       >
         Tiempo Restante{' '}
-        <Clock color={isDark ? '#ebe7e0' : '#252526'} stopRequest={stop} />
-        {/* <Image
+        {/* <Clock color={isDark ? '#ebe7e0' : '#252526'} stopRequest={stop} /> */}
+        <Image
           src={Reloj}
           alt="Reloj"
           width={18}
           height={18}
-        /> */}
+        />
         <span className="w-[52px] text-center">
           {formatTiempo(segundos)} {/* Mostrar el tiempo en formato mm:ss */}
         </span>
