@@ -13,11 +13,9 @@ function TopPopUp() {
   };
 
   useEffect(() => {
-    // Obtenemos el color del banner desde setBannerColor
     const color = setBannerColor();
     setBannerColorState(color);
 
-    // Verificamos si el popup está cerrado
     const closed = JSON.parse(sessionStorage.getItem('isClosed') || 'false');
     setIsClosed(closed);
   }, []);
