@@ -6,12 +6,12 @@ import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import clsx from 'clsx';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
 import { useRouter } from 'next/navigation';
-import Arrow from '../ui/Arrow/Arrow';
 import useCodeVerificationStore from '@/store/codeVerificationStore';
 import useStore from '@/store/authViewStore';
 import userInfoStore from '@/store/userInfoStore';
 import { registerUser } from '@/actions/auth/register';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
+import ButtonBack from '../ui/ButtonBack/ButtonBack';
 
 type FormInputs = {
   verificationCode: string[];
@@ -233,19 +233,7 @@ export const VerifyCodePage = () => {
           {errors.verificationCode && <p className="mb-5 text-sm text-red-500">• {errors.verificationCode.message}</p>}
 
           <div className="my-5 flex justify-between text-buttonsLigth dark:text-darkText">
-            <button
-              onClick={() => router.push('/auth/login-register')}
-              className={`${
-                isDark ? 'buttonSecondDark' : 'buttonSecond'
-              } group relative m-1 flex h-[48px] min-w-[48px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent xs:min-w-[150px]`}
-            >
-              <div className="relative h-5 w-5 overflow-hidden">
-                <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
-                  <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
-                </div>
-              </div>
-              <p className="hidden xs:inline-block">Volver</p>
-            </button>
+            <ButtonBack route="/auth/login-register" isDark={isDark} />
 
             <button
               type="button"
