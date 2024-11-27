@@ -30,6 +30,7 @@
 - **use-debounce 10.0.0:** Hook para implementar debounce en eventos.
 - **@fortawesome/\*:** Varias bibliotecas para el uso de iconos de Font Awesome.
 - **@heroicons/react 2.1.4:** Conjunto de iconos SVG.
+- **sweetalert2 11.12.4:** Estilos para alertas. [Documentacion](https://sweetalert2.github.io/#examples)
 
 ### Desarrollo
 
