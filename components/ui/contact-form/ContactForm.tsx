@@ -78,12 +78,14 @@ const ContactForm = () => {
           <div className="flex w-full flex-col gap-4">
             <InputField
               id="Nombre"
+              type="text"
               placeholder="Nombre completo"
               register={register('Nombre', { required: true })}
               error={errors.Nombre && 'Este campo es obligatorio'}
             />
             <InputField
               id="Apellido"
+              type="text"
               placeholder="Apellido Completo"
               register={register('Apellido', { required: true })}
               error={errors.Apellido && 'Este campo es obligatorio'}

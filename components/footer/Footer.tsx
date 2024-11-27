@@ -33,7 +33,7 @@ function FooterLink({ href, children, view }: FooterLinkProps) {
 export default function Footer() {
   return (
     <footer className="rs-wrapper-v4 mx-auto max-w-screen-2xl px-4 py-8">
-      <div className="one-info-footer hidden w-full flex-col items-center gap-4 px-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 md-tablet:flex">
+      <div className="one-info-footer hidden w-full flex-col items-center gap-4 px-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 sm-tablet:flex">
         <section className="mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-start">
           <p className="mb-2 text-pretty text-start text-xl font-bold">Regístrate y disfruta de beneficios</p>
           <FooterLink href="/auth/login-register" view="login">
@@ -60,7 +60,7 @@ export default function Footer() {
         </section>
       </div>
 
-      <div className="flex flex-col md-tablet:hidden">
+      <div className="flex flex-col sm-tablet:hidden">
         <Accordion className="border-0 bg-transparent shadow-none">
           <AccordionSummary
             expandIcon={<ExpandMoreIcon className="h-10 w-10 text-buttonsLigth dark:text-darkText" />}
