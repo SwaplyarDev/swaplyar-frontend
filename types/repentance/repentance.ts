@@ -31,9 +31,18 @@ export interface OutputFormat {
   status: string;
 }
 export interface AlertsProps {
-  status: string;
+  isDark: boolean;
 }
 
 export interface FormularioProps {
   onSubmit: (data: FormRepentance) => void;
+}
+export interface AlertProcessProps {
+  isDark: boolean;
+  formData: FormData;
+  isLoading: boolean;
+}
+export interface Size {
+  size?: number;
+  isDark?: boolean;
 }

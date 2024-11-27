@@ -1,75 +1,88 @@
 'use client';
 import React, { useState } from 'react';
 import Form from './form/Form';
-import Alerts from './Alerts/Alerts';
 import { regretsPc, regretsPhone } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import { createRegret } from '@/actions/repentance/action.repentanceForm';
 import { FormRepentance } from '@/types/repentance/repentance';
-// Función principal para manejar el envío del formulario
-const RepentanceForm = () => {
-  const [alertStatus, setAlertStatus] = useState<string>('');
-  const { isDark } = useDarkTheme();
+import AlertSuccess from './Alerts/AlertSuccess';
+import AlertDuplication from './Alerts/AlertDuplication';
+import AlertIncorrect from './Alerts/AlertIncorrect';
+import AlertError from './Alerts/AlertError';
+import AlertProcess from './Alerts/AlertProcess';
 
-  const validateFormData = (formData: FormRepentance): boolean => {
+interface Response {
+  ok: boolean;
+  user?: any;
+  message: string;
+  status: number;
+}
+
+
+const RepentanceForm = () => {
+  const { isDark } = useDarkTheme();
+  const [isLoading, ] = useState(false); 
+  const validateFormData = async (
+    formData: FormRepentance,
+  ): Promise<boolean> => {
     if (
       !formData.transaction_id ||
       !formData.last_name ||
       !formData.email ||
       !formData.phone_number
     ) {
-      setAlertStatus('INCORRECT_DATA');
-      console.log('INCORRECT_DATA:', setAlertStatus('INCORRECT_DATA'));
+      await AlertIncorrect({isDark});
       return false;
     }
-    // Aquí podrías agregar más validaciones según el formato esperado de los datos
     return true;
   };
 
   const handleRepentanceFormSubmission = async (formData: FormRepentance) => {
-    // Primero validamos los datos
-    const isValid = validateFormData(formData);
-    if (!isValid) return; // Si los datos no son correctos, no continuar
-  
-    // Si los datos son correctos, mostramos AlertProcess
-    setAlertStatus('PROCESS');
-  
-    // Creamos el objeto para enviar
-    const dataToSend = { ...formData, status: 'pendiente' };
-  
-    try {
-      // Enviamos los datos al backend
-      const response = await createRegret(dataToSend);
-  
-      // Ahora response contiene la respuesta de createRegret, que ya es un objeto con las claves ok, user y message
-      console.log('response desde createRegret:', response);
-  
-      // Si la respuesta es exitosa
+    const isValid = await validateFormData(formData);
+  if (!isValid) return;
+
+  const confirm = await AlertProcess({isDark, formData, isLoading})
+
+  if (!confirm.isConfirmed) return;
+
+  const dataToSend = { ...formData, status: 'pendiente' };
+
+  try {
+    const response = await createRegret(dataToSend);
+    console.log('responseeeeeeee:',response); 
+    if(!response){
+      console.log('es vacio')
+    }else {
       if (response.ok) {
-        setAlertStatus('SUCCESS');
-        console.log('SUCCESS:', response);
-      } else if (response.message === 'DUPLICATE') {
-        setAlertStatus('DUPLICATE');
-        console.log('DUPLICATE:', response);
-      } else if (response.message === 'INCORRECT_DATA') {
-        setAlertStatus('INCORRECT_DATA');
-        console.log('INCORRECT_DATA:', response);
+        console.log('caso de exito')
+        await AlertSuccess({isDark});
       } else {
-        setAlertStatus('ERROR');
-        console.log('ERROR:', response);
-      }
-    } catch (error) {
-      setAlertStatus('ERROR');
-      console.log('Error al enviar los datos', error);
-    }
-    
-  };
+        
+        const errorMessage = response.message || 'Hubo un problema al enviar los datos.';
+        console.log('errorMessage:', errorMessage);  
   
+        if (response.status === 409) {
+          await AlertDuplication({isDark})
+          console.log('caso de duplicación');
+        } else if (response.status === 400) {
+          await AlertIncorrect({isDark})
+          console.log('caso de datos incorrectos');
+        } else {
+          await AlertError({isDark})
+          console.log('caso de error');
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error en el envío:', error);
+    await AlertError({isDark})
+  }
+  };
+
   return (
     <div>
-      <Alerts status={alertStatus}></Alerts>
       <div className="mx-5 my-7 flex flex-col items-center justify-center lg:mx-0">
         <div className="flex w-full flex-col lg:flex-row">
           <div className="lg:w-3/7 mb-4 hidden flex-col items-start lg:block">

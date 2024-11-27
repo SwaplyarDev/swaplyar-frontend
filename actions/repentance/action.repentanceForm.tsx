@@ -2,7 +2,6 @@
 
 const URLRepentance = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-import {  FormRepentance } from "@/types/repentance/repentance";
 import { FormData, OutputFormat } from "@/types/repentance/repentance";
 
 
@@ -19,78 +18,80 @@ const transformData = (input: FormData): OutputFormat => {
 }
 
 export const createRegret = async (createRepentance: FormData) => {
+  if (!createRepentance.transaction_id || !createRepentance.last_name || !createRepentance.email) {
+    throw new Error('Faltan campos requeridos en createRepentance');
+  }
+
+  const transformedData = transformData(createRepentance);
+  const response = await fetch(`${URLRepentance}/v1/regrets`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      transaction_id: transformedData.transaction_id,
+      last_name: transformedData.last_name,
+      email: transformedData.email,
+      phone_number: transformedData.phone_number,
+      status: transformedData.status || 'pendiente',
+      note: transformedData.note,
+    }),
+  });
   try {
-    // Validar los campos requeridos
-    if (!createRepentance.transaction_id || !createRepentance.last_name || !createRepentance.email) {
-      throw new Error('Faltan campos requeridos en createRepentance');
-    }
 
-    // Transformar los datos antes de enviarlos
-    console.log('createRepentance:', createRepentance);
-
-    const transformedData = transformData(createRepentance);
-
-    console.log('transformedData:', transformedData);
-
-    // Realizar la solicitud
-    const response = await fetch(`${URLRepentance}/v1/regrets`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        transaction_id: transformedData.transaction_id,
-        last_name: transformedData.last_name,
-        email: transformedData.email,
-        phone_number: transformedData.phone_number,
-        note: transformedData.note,
-        status: transformedData.status || 'pendiente',
-      }),
-    });
-    console.log('Enviando status:', transformedData.status);
-    console.log('response:', response);
-
+    // Intentamos parsear el cuerpo de la respuesta a JSON
     const data = await response.json();
-    console.error('Error al crear el arrepentimiento:', data.error.message);
-    console.log('Detalles del error:', data.error.details);
-    console.log('data:', data);
 
-    // Validar la respuesta del servidor
     if (response.ok) {
-      const data = await response.json();  // Esperamos que el cuerpo esté en formato JSON
-      console.log('data:', data);
-
-      return {
-        ok: true,
-        user: data.user,
-        message: 'Regret creado',
-      };
+      // Revisamos los posibles casos de duplicación o datos incorrectos
+       if(response.ok) {
+        return {
+          ok: true,
+          user: data.user,
+          message: 'Regret creado',
+          status: response.status
+        };
+      }
     } else {
-      // Si la respuesta no es exitosa, leer la respuesta como JSON y manejar el error
-      const errorData = await response.json();
-      console.log('ErrorData:', errorData); // Imprimir para depuración
+      // Si la respuesta no es exitosa, manejamos el error
+      const errorMessage = data?.error?.message
+        ? typeof data.error.message === 'string'
+          ? data.error.message
+          : JSON.stringify(data.error.message)  // Aseguramos que el mensaje sea una cadena
+        : data?.message || 'Error desconocido'; // Si no existe el mensaje, retornamos 'Error desconocido'
 
-      const errorMessage = errorData?.error?.message || errorData?.message || 'Error desconocido';
-      console.error('Error al crear el arrepentimiento:', errorMessage);
+      
 
       return {
         ok: false,
         message: errorMessage,
+        status: response.status
       };
     }
-    
-    
-  } catch (error) {
-    // Manejo del error
-    const errorMessage = error instanceof Error ? error.message : 'Error inesperado al crear el regret';
-    console.error('Error al crear el arrepentimiento:', errorMessage);
 
+  } catch (error) {
+    if (response.status === 409) {
+      return {
+        ok: false,
+        status: response.status
+      };
+    } else if (response.status === 400) {
+      return {
+        ok: false,
+        status: response.status
+      };
+    }
+    const errorMessage = error instanceof Error ? error.message : 'Error inesperado al crear el regret';
+    
     return {
       ok: false,
-      message: errorMessage,
+      status: response.status
     };
   }
 };
+
+
+
 
 
 export const getRegretsList = async () => {

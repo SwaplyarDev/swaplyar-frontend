@@ -60,7 +60,7 @@ swaplyar-frontend/
 │   │   ├── login/     # Página de inicio de sesión
 │   │   └── new-account/ # Página de registro de nueva cuenta
 │   ├── request/       # Rutas relacionadas con solicitudes de intercambio
-|   ├── repentance/# Página "Arrepentimiento"
+|   ├── repentance/    # Página "Arrepentimiento"
 │   ├── layout.js      # Layout principal de la aplicación (opcional)
 │   └── page.js        # Página de inicio (opcional)
 ├── components/        # Componentes reutilizables

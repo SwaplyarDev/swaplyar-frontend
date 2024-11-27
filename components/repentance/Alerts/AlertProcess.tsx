@@ -1,22 +1,10 @@
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { FormData } from '@/types/repentance/repentance';
-import { useState } from 'react';
+import { AlertProcessProps } from '@/types/repentance/repentance';
 import Swal from 'sweetalert2';
 
-const AlertProcess = async() => {
-    const { isDark } = useDarkTheme();
-    const [isLoading, ] = useState(false); // Estado para mostrar el spinner
-    const [formData, ] = useState<FormData>({
-        transaction_id: '',
-        last_name: '',
-        email: '',
-        phone_number: '',
-        note: '',
-        calling_code: { value: '', label: '', callingCode: '' },
-        status: '',
-      });
-      // Mostrar Swal de Alerta en proceso
-    const result = await  Swal.fire({
+const AlertProcess = async ({isDark, formData, isLoading}:AlertProcessProps): Promise<{ isConfirmed: boolean }> => {
+    
+     
+    return await Swal.fire({
         title: `<h1 style="color:white; ${isDark ? 'color: white;' : 'color: black;'}">La solicitud #${formData.transaction_id} se encuentra en proceso</h1>`,
         html: `<div style="text-align: left; ${isDark ? 'color: white;' : 'color: black;'}">
                 <p>¿Desea cancelarla? El reembolso se devolverá a la cuenta de origen utilizada para esta operación.</p>
@@ -40,9 +28,9 @@ const AlertProcess = async() => {
         },
         cancelButtonText: '← Volver',
         confirmButtonText: `${isLoading ? "Cargando..." : "Enviar"}`,
-        didOpen: () => {
-            Swal.showLoading();
-          },
+        
+      }).then(result => {
+        return { isConfirmed: result.isConfirmed };
       });
     
 };
