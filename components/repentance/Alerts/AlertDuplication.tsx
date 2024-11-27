@@ -4,8 +4,6 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Swal from 'sweetalert2';
 
-
-
 const AlertDuplication = async ({ isDark }: AlertsProps): Promise<void> => {
   Swal.fire({
     didRender: () => {
@@ -23,9 +21,7 @@ const AlertDuplication = async ({ isDark }: AlertsProps): Promise<void> => {
           Esta solicitud ya genero una alerta de cancelacion o reembolso.
         </p>
         <button id="back-button" 
-          class="${isDark 
-            ? 'buttonSecondDark text-white border-white' 
-            : 'buttonSecond text-buttonsLigth border-black'}
+          class="${isDark ? 'buttonSecondDark text-white border-white' : 'buttonSecond text-buttonsLigth border-black'}
             relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 hover:bg-transparent dark:border-darkText dark:hover:bg-transparent pb-2">
           ← Volver
         </button>

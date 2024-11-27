@@ -9,7 +9,7 @@ const useControlRouteRequestStore = create<ControlRouteRequestStoreState>((set, 
   return {
     pass: false,
     setPass: () => {
-      const currentPass = get().pass;  
+      const currentPass = get().pass;
       set({ pass: !currentPass });
     },
   };

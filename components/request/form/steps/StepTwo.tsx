@@ -38,13 +38,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     setValue,
     getValues,
   } = useForm<FormData>({ mode: 'onChange' });
-  const {
-    markStepAsCompleted,
-    setActiveStep,
-    formData,
-    updateFormData,
-    completedSteps,
-  } = useStepperStore();
+  const { markStepAsCompleted, setActiveStep, formData, updateFormData, completedSteps } = useStepperStore();
   const { selectedReceivingSystem } = useSystemStore();
   const { isDark } = useDarkTheme();
 
@@ -88,15 +82,11 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
 
     setValue(
       'receiver_first_name',
-      formData.stepOne?.own_account === 'Si'
-        ? formData.stepOne?.sender_first_name
-        : receiver_first_name,
+      formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_first_name : receiver_first_name,
     );
     setValue(
       'receiver_last_name',
-      formData.stepOne?.own_account === 'Si'
-        ? formData.stepOne?.sender_last_name
-        : receiver_last_name,
+      formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_last_name : receiver_last_name,
     );
     setValue('tax_identification', tax_identification);
     setValue('transfer_identification', transfer_identification);
@@ -123,17 +113,15 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
 
   const onSubmit = (data: FormData) => {
     updateFormData(1, data);
-    markStepAsCompleted(1); 
-    setActiveStep(2); 
+    markStepAsCompleted(1);
+    setActiveStep(2);
   };
 
   // Determinar si se han hecho cambios en el formulario
   const hasChanges =
     initialValues &&
     !Object.keys(initialValues).every(
-      (key) =>
-        initialValues[key as keyof FormData] ===
-        formValues[key as keyof FormData],
+      (key) => initialValues[key as keyof FormData] === formValues[key as keyof FormData],
     );
 
   const renderSelectedSystem = () => {

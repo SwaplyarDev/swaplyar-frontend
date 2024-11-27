@@ -2,8 +2,7 @@ import { System } from '@/types/data';
 import { CountryOption, RedType } from '@/types/request/request';
 import { create } from 'zustand';
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
 
 interface StepOneData {
   sender_first_name: string;
@@ -52,14 +51,8 @@ interface StepperState {
   idTransaction: string | undefined;
   setActiveStep: (step: number) => void;
   markStepAsCompleted: (step: number) => void;
-  updateFormData: (
-    step: number,
-    data: Partial<FormData[keyof FormData]>,
-  ) => void; // Permite actualizaciones parciales
-  submitAllData: (
-    selectedSendingSystem: System | null,
-    selectedReceivingSystem: System | null,
-  ) => Promise<boolean>;
+  updateFormData: (step: number, data: Partial<FormData[keyof FormData]>) => void; // Permite actualizaciones parciales
+  submitAllData: (selectedSendingSystem: System | null, selectedReceivingSystem: System | null) => Promise<boolean>;
   submitOneStep: () => Promise<any>;
   updateOneStep: (id: string) => void;
   // getOneStep: () => Promise<any>;
@@ -204,10 +197,10 @@ export const useStepperStore = create<StepperState>((set, get) => ({
 
       const data = await response.json();
       console.log('Respuesta del servidor:', data);
-      return true; 
+      return true;
     } catch (error) {
       console.error('Error en la solicitud:', error);
-      return false; 
+      return false;
     }
   },
   submitOneStep: async () => {
@@ -252,16 +245,13 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     };
 
     try {
-      const response = await fetch(
-        `${BASE_URL}/v1/canceled_transactions/${id}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
+      const response = await fetch(`${BASE_URL}/v1/canceled_transactions/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        body: JSON.stringify(payload),
+      });
 
       if (!response.ok) {
         throw new Error('Error al enviar los datos al servidor');

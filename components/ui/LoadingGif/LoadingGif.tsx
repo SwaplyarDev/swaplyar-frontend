@@ -1,14 +1,11 @@
 import React, { FC } from 'react';
 
 type LoadingGifProps = {
-    color: string;
-    size?: string;
-  }
+  color: string;
+  size?: string;
+};
 
-const LoadingGif: FC<LoadingGifProps> = ({
-  color,
-  size = "20px",
-}) => {
+const LoadingGif: FC<LoadingGifProps> = ({ color, size = '20px' }) => {
   return (
     <svg
       version="1.1"

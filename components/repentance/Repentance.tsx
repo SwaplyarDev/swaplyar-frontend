@@ -20,20 +20,12 @@ interface Response {
   status: number;
 }
 
-
 const RepentanceForm = () => {
   const { isDark } = useDarkTheme();
-  const [isLoading, ] = useState(false); 
-  const validateFormData = async (
-    formData: FormRepentance,
-  ): Promise<boolean> => {
-    if (
-      !formData.transaction_id ||
-      !formData.last_name ||
-      !formData.email ||
-      !formData.phone_number
-    ) {
-      await AlertIncorrect({isDark});
+  const [isLoading] = useState(false);
+  const validateFormData = async (formData: FormRepentance): Promise<boolean> => {
+    if (!formData.transaction_id || !formData.last_name || !formData.email || !formData.phone_number) {
+      await AlertIncorrect({ isDark });
       return false;
     }
     return true;
@@ -41,44 +33,43 @@ const RepentanceForm = () => {
 
   const handleRepentanceFormSubmission = async (formData: FormRepentance) => {
     const isValid = await validateFormData(formData);
-  if (!isValid) return;
+    if (!isValid) return;
 
-  const confirm = await AlertProcess({isDark, formData, isLoading})
+    const confirm = await AlertProcess({ isDark, formData, isLoading });
 
-  if (!confirm.isConfirmed) return;
+    if (!confirm.isConfirmed) return;
 
-  const dataToSend = { ...formData, status: 'pendiente' };
+    const dataToSend = { ...formData, status: 'pendiente' };
 
-  try {
-    const response = await createRegret(dataToSend);
-    console.log('responseeeeeeee:',response); 
-    if(!response){
-      console.log('es vacio')
-    }else {
-      if (response.ok) {
-        console.log('caso de exito')
-        await AlertSuccess({isDark});
+    try {
+      const response = await createRegret(dataToSend);
+      console.log('responseeeeeeee:', response);
+      if (!response) {
+        console.log('es vacio');
       } else {
-        
-        const errorMessage = response.message || 'Hubo un problema al enviar los datos.';
-        console.log('errorMessage:', errorMessage);  
-  
-        if (response.status === 409) {
-          await AlertDuplication({isDark})
-          console.log('caso de duplicación');
-        } else if (response.status === 400) {
-          await AlertIncorrect({isDark})
-          console.log('caso de datos incorrectos');
+        if (response.ok) {
+          console.log('caso de exito');
+          await AlertSuccess({ isDark });
         } else {
-          await AlertError({isDark})
-          console.log('caso de error');
+          const errorMessage = response.message || 'Hubo un problema al enviar los datos.';
+          console.log('errorMessage:', errorMessage);
+
+          if (response.status === 409) {
+            await AlertDuplication({ isDark });
+            console.log('caso de duplicación');
+          } else if (response.status === 400) {
+            await AlertIncorrect({ isDark });
+            console.log('caso de datos incorrectos');
+          } else {
+            await AlertError({ isDark });
+            console.log('caso de error');
+          }
         }
       }
+    } catch (error) {
+      console.error('Error en el envío:', error);
+      await AlertError({ isDark });
     }
-  } catch (error) {
-    console.error('Error en el envío:', error);
-    await AlertError({isDark})
-  }
   };
 
   return (
@@ -86,41 +77,23 @@ const RepentanceForm = () => {
       <div className="mx-5 my-7 flex flex-col items-center justify-center lg:mx-0">
         <div className="flex w-full flex-col lg:flex-row">
           <div className="lg:w-3/7 mb-4 hidden flex-col items-start lg:block">
-            <h1 className="w-full text-start text-xl">
-              Cancelacion o Reembolso
-            </h1>
-            <p className="mt-2 text-justify">
-              Ingresa los datos tal cual aparece en el email enviado
-            </p>
+            <h1 className="w-full text-start text-xl">Cancelacion o Reembolso</h1>
+            <p className="mt-2 text-justify">Ingresa los datos tal cual aparece en el email enviado</p>
           </div>
         </div>
         <div className="flex w-full flex-col lg:flex-row">
           <div className="hidden min-h-full flex-wrap justify-center lg:block">
-            <Image
-              src={regretsPc}
-              alt="regretsPc"
-              width={650}
-              height={0}
-              className="h-full object-cover"
-            />
+            <Image src={regretsPc} alt="regretsPc" width={650} height={0} className="h-full object-cover" />
           </div>
           <div className="flex flex-col flex-wrap content-center">
             <div className="block flex min-h-full w-72 flex-wrap justify-center lg:hidden">
-              <Image
-                src={regretsPhone}
-                alt="regretsPhone"
-                width={200}
-                height={0}
-                className="h-full object-contain"
-              />
+              <Image src={regretsPhone} alt="regretsPhone" width={200} height={0} className="h-full object-contain" />
               <div
                 className={`block min-w-full flex-wrap justify-center border-t-4 lg:hidden ${isDark ? 'border-t-white' : 'border-t-buttonsLigth'}`}
               ></div>
             </div>
             <div className="block w-72 flex-col items-start lg:hidden lg:w-2/6">
-              <p className="mt-2 text-center text-lg">
-                Ingresa los datos tal cual aparece en el email enviado
-              </p>
+              <p className="mt-2 text-center text-lg">Ingresa los datos tal cual aparece en el email enviado</p>
             </div>
           </div>
 
