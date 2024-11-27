@@ -19,7 +19,7 @@ const SearchRequest = () => {
             APELLIDO
           </label>
           <input type="text" placeholder='como figura en el recibo' />
-          <button className='bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4'>Buscar</button>
+          <button className=''>Buscar</button>
           <button type='button'>Salir</button>
         </form>
       </section>
