@@ -1,9 +1,11 @@
 'use client';
+import { setBannerColor } from '@/utils/setBannerColor';
 import { useState, useEffect } from 'react';
 import { MdOutlineClose } from 'react-icons/md';
 
 function TopPopUp() {
-  const [isClosed, setIsClosed] = useState(true);
+  const [isClosed, setIsClosed] = useState(false);
+  const [bannerColor, setBannerColorState] = useState({ bg: '', text: '' });
 
   const handleClose = () => {
     sessionStorage.setItem('isClosed', JSON.stringify(true));
@@ -11,12 +13,11 @@ function TopPopUp() {
   };
 
   useEffect(() => {
-    const closed = JSON.parse(sessionStorage.getItem('isClosed') as string);
-    if (closed) {
-      setIsClosed(closed);
-    } else {
-      setIsClosed(false);
-    }
+    const color = setBannerColor();
+    setBannerColorState(color);
+
+    const closed = JSON.parse(sessionStorage.getItem('isClosed') || 'false');
+    setIsClosed(closed);
   }, []);
 
   if (isClosed) {
@@ -24,13 +25,20 @@ function TopPopUp() {
   }
 
   return (
-    <main className="w-full bg-violet-700 py-2">
-      <div className="m-auto flex w-[90%] max-w-screen-2xl items-start justify-center md:gap-3 lg:items-center">
-        <p className="text-center text-xs font-bold text-darkText md:text-sm lg:text-lg">
+    <main
+      className="relative w-full py-2"
+      style={{
+        backgroundColor: bannerColor.bg,
+        color: bannerColor.text,
+      }}
+    >
+      <div className="relative m-auto flex w-[90%] max-w-screen-2xl items-center justify-between">
+        <p className="flex-grow text-center text-xs font-bold md:text-sm lg:text-lg">
           Estamos trabajando en las funciones de inicio de sesión y registro
         </p>
         <button
-          className="text-lg font-extrabold text-darkText lg:text-2xl"
+          className="ml-2 text-lg font-extrabold lg:text-2xl"
+          style={{ color: bannerColor.text }}
           onClick={handleClose}
         >
           <MdOutlineClose />

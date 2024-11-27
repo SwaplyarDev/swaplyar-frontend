@@ -35,28 +35,16 @@ export default function TransactionCalculator() {
       console.log('Deteniendo el proceso de actualización de tasas.');
       stopUpdatingRates();
     };
-  }, [
-    selectedSendingSystem,
-    selectedReceivingSystem,
-    startUpdatingRates,
-    stopUpdatingRates,
-  ]);
+  }, [selectedSendingSystem, selectedReceivingSystem, startUpdatingRates, stopUpdatingRates]);
 
   const { activeSelect } = useSystemStore();
   const { resetToDefault } = useStepperStore();
   const router = useRouter();
   const { isDark } = useDarkTheme();
   const [exchange, setExchange] = useState({ currency: 'USD', amount: 0 });
-  const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } =
-    useSystemSelection();
-  const {
-    sendAmount,
-    receiveAmount,
-    handleSendAmountChange,
-    handleReceiveAmountChange,
-    rateForOne,
-    rateForOneBank,
-  } = useAmountCalculator();
+  const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } = useSystemSelection();
+  const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne, rateForOneBank } =
+    useAmountCalculator();
 
   useEffect(() => {
     setExchange({
@@ -65,9 +53,9 @@ export default function TransactionCalculator() {
     });
   }, [sendAmount, selectedSendingSystem]);
 
-  const pathname = usePathname(); 
-  const { pass } = useControlRouteRequestStore(state => state);
-  const { setPass } = useControlRouteRequestStore(state => state); 
+  const pathname = usePathname();
+  const { pass } = useControlRouteRequestStore((state) => state);
+  const { setPass } = useControlRouteRequestStore((state) => state);
 
   useEffect(() => {
     if (!pass && pathname === '/request') {
@@ -77,7 +65,7 @@ export default function TransactionCalculator() {
 
   const handleDirection = () => {
     setPass();
-    router.push('/request'); 
+    router.push('/request');
   };
 
   const handleExchangePaypal = () => {
@@ -98,9 +86,7 @@ export default function TransactionCalculator() {
       background: isDark ? 'rgb(69 69 69)' : '#ffffff',
       color: isDark ? '#ffffff' : '#000000',
       didRender: () => {
-        const paypalElement = document.getElementById(
-          'paypal-button-container',
-        );
+        const paypalElement = document.getElementById('paypal-button-container');
         if (paypalElement) {
           const root = createRoot(paypalElement);
           root.render(
@@ -162,9 +148,7 @@ export default function TransactionCalculator() {
           <InvertSystems onInvert={handleInvertSystemsClick} />
         </div>
         <SystemInfo pointBorder="border" linePosition="up">
-          <p className="text-xs xs:text-base">
-            Información del sistema de recepción
-          </p>
+          <p className="text-xs xs:text-base">Información del sistema de recepción</p>
         </SystemInfo>
         <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
           <TransactionSection
@@ -186,36 +170,24 @@ export default function TransactionCalculator() {
                       buttonSecondDark: !(
                         isProcessing ||
                         sendAmount === '' ||
-                        (selectedSendingSystem?.id === 'paypal' &&
-                          parseInt(sendAmount) < 5) ||
-                        (selectedSendingSystem?.id === 'payoneer_usd' &&
-                          parseInt(sendAmount) < 50) ||
-                        (selectedSendingSystem?.id === 'payoneer_eur' &&
-                          parseInt(sendAmount) < 50) ||
-                        (selectedReceivingSystem?.id === 'paypal' &&
-                          parseInt(receiveAmount) < 5) ||
-                        (selectedReceivingSystem?.id === 'payoneer_usd' &&
-                          parseInt(receiveAmount) < 50) ||
-                        (selectedReceivingSystem?.id === 'payoneer_eur' &&
-                          parseInt(receiveAmount) < 50)
+                        (selectedSendingSystem?.id === 'paypal' && parseInt(sendAmount) < 5) ||
+                        (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
+                        (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
+                        (selectedReceivingSystem?.id === 'paypal' && parseInt(receiveAmount) < 5) ||
+                        (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
+                        (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
                       ),
                     }
                   : {
                       buttonSecond: !(
                         isProcessing ||
                         sendAmount === '' ||
-                        (selectedSendingSystem?.id === 'paypal' &&
-                          parseInt(sendAmount) < 5) ||
-                        (selectedSendingSystem?.id === 'payoneer_usd' &&
-                          parseInt(sendAmount) < 50) ||
-                        (selectedSendingSystem?.id === 'payoneer_eur' &&
-                          parseInt(sendAmount) < 50) ||
-                        (selectedReceivingSystem?.id === 'paypal' &&
-                          parseInt(receiveAmount) < 5) ||
-                        (selectedReceivingSystem?.id === 'payoneer_usd' &&
-                          parseInt(receiveAmount) < 50) ||
-                        (selectedReceivingSystem?.id === 'payoneer_eur' &&
-                          parseInt(receiveAmount) < 50)
+                        (selectedSendingSystem?.id === 'paypal' && parseInt(sendAmount) < 5) ||
+                        (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
+                        (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
+                        (selectedReceivingSystem?.id === 'paypal' && parseInt(receiveAmount) < 5) ||
+                        (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
+                        (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
                       ),
                     },
                 'relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-10 py-3 font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2',
@@ -224,18 +196,12 @@ export default function TransactionCalculator() {
               disabled={
                 isProcessing ||
                 sendAmount === '' ||
-                (selectedSendingSystem?.id === 'paypal' &&
-                  parseInt(sendAmount) < 5) ||
-                (selectedSendingSystem?.id === 'payoneer_usd' &&
-                  parseInt(sendAmount) < 50) ||
-                (selectedSendingSystem?.id === 'payoneer_eur' &&
-                  parseInt(sendAmount) < 50) ||
-                (selectedReceivingSystem?.id === 'paypal' &&
-                  parseInt(receiveAmount) < 5) ||
-                (selectedReceivingSystem?.id === 'payoneer_usd' &&
-                  parseInt(receiveAmount) < 50) ||
-                (selectedReceivingSystem?.id === 'payoneer_eur' &&
-                  parseInt(receiveAmount) < 50)
+                (selectedSendingSystem?.id === 'paypal' && parseInt(sendAmount) < 5) ||
+                (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
+                (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
+                (selectedReceivingSystem?.id === 'paypal' && parseInt(receiveAmount) < 5) ||
+                (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
+                (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
               }
             >
               {isProcessing ? (
@@ -247,7 +213,7 @@ export default function TransactionCalculator() {
                     alt="loading"
                     className="mb-0.5 mr-1"
                   /> */}
-                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'}/>
+                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
                   Procesando...
                 </div>
               ) : (
@@ -260,28 +226,20 @@ export default function TransactionCalculator() {
           ) : (
             <div
               className={clsx(
-                (selectedSendingSystem?.id === 'payoneer_usd' &&
-                  parseInt(sendAmount) < 50) ||
-                  (selectedSendingSystem?.id === 'payoneer_eur' &&
-                    parseInt(sendAmount) < 50) ||
-                  (selectedReceivingSystem?.id === 'payoneer_usd' &&
-                    parseInt(receiveAmount) < 50) ||
-                  (selectedReceivingSystem?.id === 'payoneer_eur' &&
-                    parseInt(receiveAmount) < 50) ||
-                  (selectedSendingSystem?.id === 'paypal' &&
-                    parseInt(sendAmount) < 5) ||
-                  (selectedReceivingSystem?.id === 'paypal' &&
-                    parseInt(receiveAmount) < 5)
+                (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
+                  (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
+                  (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
+                  (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50) ||
+                  (selectedSendingSystem?.id === 'paypal' && parseInt(sendAmount) < 5) ||
+                  (selectedReceivingSystem?.id === 'paypal' && parseInt(receiveAmount) < 5)
                   ? 'mt-8'
                   : 'hidden',
               )}
             >
               <p
                 className={clsx(
-                  (selectedSendingSystem?.id === 'paypal' &&
-                    parseInt(sendAmount) < 5) ||
-                    (selectedReceivingSystem?.id === 'paypal' &&
-                      parseInt(receiveAmount) < 5)
+                  (selectedSendingSystem?.id === 'paypal' && parseInt(sendAmount) < 5) ||
+                    (selectedReceivingSystem?.id === 'paypal' && parseInt(receiveAmount) < 5)
                     ? 'block'
                     : 'hidden',
                   'text-[#f44336]',
@@ -291,10 +249,8 @@ export default function TransactionCalculator() {
               </p>
               <p
                 className={clsx(
-                  (selectedSendingSystem?.id === 'payoneer_usd' &&
-                    parseInt(sendAmount) < 50) ||
-                    (selectedReceivingSystem?.id === 'payoneer_usd' &&
-                      parseInt(receiveAmount) < 50)
+                  (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
+                    (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50)
                     ? 'block'
                     : 'hidden',
                   'text-[#f44336]',
@@ -304,10 +260,8 @@ export default function TransactionCalculator() {
               </p>
               <p
                 className={clsx(
-                  (selectedSendingSystem?.id === 'payoneer_eur' &&
-                    parseInt(sendAmount) < 50) ||
-                    (selectedReceivingSystem?.id === 'payoneer_eur' &&
-                      parseInt(receiveAmount) < 50)
+                  (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
+                    (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
                     ? 'block'
                     : 'hidden',
                   'text-[#f44336]',
