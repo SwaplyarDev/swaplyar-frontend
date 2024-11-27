@@ -4,25 +4,16 @@ import clsx from 'clsx';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { FieldError, SelectBooleanProps } from '@/types/request/request';
 
-const SelectBoolean: React.FC<SelectBooleanProps> = ({
-  selectedOption,
-  setSelectedOption,
-  errors,
-  blockAll,
-}) => {
+const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelectedOption, errors, blockAll }) => {
   const fieldName = 'own_account';
-  const errorMessage = (errors as { [key: string]: FieldError })[fieldName]
-    ?.message;
+  const errorMessage = (errors as { [key: string]: FieldError })[fieldName]?.message;
   const [isFocused, setIsFocused] = useState(false);
   const { isDark } = useDarkTheme();
   return (
     <>
       <label
         htmlFor={fieldName}
-        className={clsx(
-          errorMessage ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
-          'hidden',
-        )}
+        className={clsx(errorMessage ? 'text-red-500' : 'text-gray-900 dark:text-gray-300', 'hidden')}
       >
         ¿Tienes cuenta propia?
       </label>
@@ -35,11 +26,7 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({
           { value: 'Si', label: 'Si' },
           { value: 'No', label: 'No' },
         ]}
-        value={
-          selectedOption !== undefined
-            ? { value: selectedOption, label: selectedOption }
-            : null
-        }
+        value={selectedOption !== undefined ? { value: selectedOption, label: selectedOption } : null}
         onChange={(option) => {
           setSelectedOption(option?.value || undefined);
           setIsFocused(false);

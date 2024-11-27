@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Controller,
-  SubmitErrorHandler,
-  SubmitHandler,
-  useForm,
-  useWatch,
-} from 'react-hook-form';
+import { Controller, SubmitErrorHandler, SubmitHandler, useForm, useWatch } from 'react-hook-form';
 
 import clsx from 'clsx';
 import SelectCodeCountry from '@/components/request/form/inputs/SelectCodeCountry';
@@ -44,9 +38,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
     status: '',
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -79,19 +71,14 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
               required: '• El número de referencia es obligatorio',
               pattern: {
                 value: /^[A-Za-z0-9]{10,20}$/,
-                message:
-                  '• El número de referencia debe tener entre 10 y 20 caracteres alfanuméricos',
+                message: '• El número de referencia debe tener entre 10 y 20 caracteres alfanuméricos',
               },
             })}
             onChange={handleChange}
             required
           />
         </label>
-        {errors.transaction_id && (
-          <p className="mt-1 text-sm text-red-500">
-            {errors.transaction_id.message}
-          </p>
-        )}
+        {errors.transaction_id && <p className="mt-1 text-sm text-red-500">{errors.transaction_id.message}</p>}
       </div>
       <div className="mt-2">
         <label className="text-lg">
@@ -115,11 +102,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
             required
           />
         </label>
-        {errors.last_name && (
-          <p className="mt-1 text-sm text-red-500">
-            {errors.last_name.message}
-          </p>
-        )}
+        {errors.last_name && <p className="mt-1 text-sm text-red-500">{errors.last_name.message}</p>}
       </div>
       <div className="mt-2">
         <label className="text-lg">
@@ -131,8 +114,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
               required: '• El Email es obligatorio',
               pattern: {
                 value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-                message:
-                  '• Ingresa un formato válido de email. Ej: Ejemplo@gmail.com',
+                message: '• Ingresa un formato válido de email. Ej: Ejemplo@gmail.com',
               },
             })}
             onChange={handleChange}
@@ -140,9 +122,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
             placeholder="El mismo email que colocaste en el formulario"
           />
         </label>
-        {errors.email && (
-          <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
-        )}
+        {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
       </div>
       <div className="mt-2 w-full">
         <div className="flex flex-col">
@@ -170,17 +150,11 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
                 <SelectCodeCountry
                   selectedCodeCountry={field.value}
                   setSelectedCodeCountry={field.onChange}
-                  errors={
-                    errors.calling_code
-                      ? { [field.name]: errors.calling_code }
-                      : {}
-                  }
+                  errors={errors.calling_code ? { [field.name]: errors.calling_code } : {}}
                 />
               )}
             />
-            <p className="flex h-full items-center justify-center">
-              {formValues.calling_code?.callingCode}
-            </p>
+            <p className="flex h-full items-center justify-center">{formValues.calling_code?.callingCode}</p>
             <input
               placeholder="Telefono"
               className="${isDark ? 'border-b-white focus:border-white' : 'border-b-buttonsLigth focus:border-buttonsLigth'} w-full border-none bg-transparent text-lg focus:border-none focus:outline-none focus:ring-0"
@@ -195,9 +169,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
             />
           </div>
           {errors.phone_number && (
-            <p className="mb-5 text-sm text-red-500">
-              • {errors.phone_number.message as string}
-            </p>
+            <p className="mb-5 text-sm text-red-500">• {errors.phone_number.message as string}</p>
           )}
         </div>
       </div>
@@ -218,12 +190,9 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
             })}
             placeholder="Añade una nota mencionando el motivo del reembolso"
             onChange={handleChange}
-            
           />
         </label>
-        {errors.note && (
-          <p className="mt-1 text-sm text-red-500">{errors.note.message}</p>
-        )}
+        {errors.note && <p className="mt-1 text-sm text-red-500">{errors.note.message}</p>}
       </div>
       <div className="mt-5 flex justify-center text-center">
         <button

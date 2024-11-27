@@ -3,10 +3,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import useChronometerState from '@/store/chronometerStore';
 import { CronometroProps } from '@/types/request/request';
-import Image from 'next/image';  // Asegúrate de importar el componente Image de Next.js
-import {
-  Reloj,
-} from '@/utils/assets/img-database';
+import Image from 'next/image'; // Asegúrate de importar el componente Image de Next.js
+import { Reloj } from '@/utils/assets/img-database';
 
 const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
   const [segundos, setSegundos] = useState<number>(30 * 60); // Inicializamos en 30 minutos (30 * 60 segundos)
@@ -82,17 +80,9 @@ const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
           color: isDark ? '#ebe7e0' : '#252526',
         }}
       >
-        Tiempo Restante{' '}
-        {/* <Clock color={isDark ? '#ebe7e0' : '#252526'} stopRequest={stop} /> */}
-        <Image
-          src={Reloj}
-          alt="Reloj"
-          width={18}
-          height={18}
-        />
-        <span className="w-[52px] text-center">
-          {formatTiempo(segundos)}
-        </span>
+        Tiempo Restante {/* <Clock color={isDark ? '#ebe7e0' : '#252526'} stopRequest={stop} /> */}
+        <Image src={Reloj} alt="Reloj" width={18} height={18} />
+        <span className="w-[52px] text-center">{formatTiempo(segundos)}</span>
       </div>
 
       {!isStopped && (
@@ -100,16 +90,16 @@ const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
           style={{
             width: '100%',
             height: '3px',
-            backgroundColor: 'transparent', 
+            backgroundColor: 'transparent',
             marginTop: '7px',
             position: 'relative',
           }}
         >
           <div
             style={{
-              width: `${porcentajeProgreso(segundos)}%`, 
+              width: `${porcentajeProgreso(segundos)}%`,
               height: '100%',
-              backgroundColor: obtenerColorBarra(segundos), 
+              backgroundColor: obtenerColorBarra(segundos),
               borderRadius: '1px',
               transition: 'width 1s ease-out',
             }}

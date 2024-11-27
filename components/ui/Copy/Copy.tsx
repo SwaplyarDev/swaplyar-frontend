@@ -2,12 +2,7 @@ import React from 'react';
 
 const Copy = () => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="22px"
-      height="22px"
-      viewBox="0 0 36 36"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="22px" height="22px" viewBox="0 0 36 36">
       <path
         fill="currentColor"
         d="M29.5 7h-19A1.5 1.5 0 0 0 9 8.5v24a1.5 1.5 0 0 0 1.5 1.5h19a1.5 1.5 0 0 0 1.5-1.5v-24A1.5 1.5 0 0 0 29.5 7M29 32H11V9h18Z"

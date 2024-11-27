@@ -15,15 +15,7 @@ interface InputCopyProps {
   disabled?: boolean;
 }
 
-const InputCopy: FC<InputCopyProps> = ({
-  id,
-  type = 'text',
-  placeholder,
-  register,
-  error,
-  value,
-  disabled,
-}) => {
+const InputCopy: FC<InputCopyProps> = ({ id, type = 'text', placeholder, register, error, value, disabled }) => {
   const [isFocused, setIsFocused] = useState(false);
   const { onChange, ...restRegister } = register;
   const [copied, setCopied] = useState(false);
@@ -53,7 +45,7 @@ const InputCopy: FC<InputCopyProps> = ({
           error && !isFocused
             ? 'border border-red-500 hover:border-blue-600 dark:hover:border-white'
             : isFocused
-              ? 'outline-none border-blue-600 ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
+              ? 'border-blue-600 outline-none ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
               : 'hover:border-blue-600 dark:hover:border-white',
         )}
       >
@@ -68,8 +60,8 @@ const InputCopy: FC<InputCopyProps> = ({
           className={clsx(
             'flex h-[38px] w-full rounded border-none bg-transparent px-5 py-2 focus:border-none focus:outline-none focus:ring-0',
           )}
-          onFocus={() => setIsFocused(true)} 
-          onBlur={() => setIsFocused(false)} 
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
         />
         <button
           type="button"
@@ -77,7 +69,7 @@ const InputCopy: FC<InputCopyProps> = ({
           disabled={copied}
           onClick={() => handleCopy()}
         >
-          {copied ? <Tick copy={true} color={isDark ? '#414244' : '#FCFBFA'}/> : <Copy />}
+          {copied ? <Tick copy={true} color={isDark ? '#414244' : '#FCFBFA'} /> : <Copy />}
         </button>
       </div>
       {error && <p className="text-sm text-red-500">• {error}</p>}

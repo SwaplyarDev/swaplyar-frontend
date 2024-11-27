@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  FieldErrors,
-  UseFormGetValues,
-  UseFormRegister,
-} from 'react-hook-form';
+import { FieldErrors, UseFormGetValues, UseFormRegister } from 'react-hook-form';
 import clsx from 'clsx';
 import InputField from '@/components/ui/contact-form/InputField';
 
@@ -15,13 +11,7 @@ interface StepTwoPaypalProps {
   formData: any;
 }
 
-const StepTwoPaypal: React.FC<StepTwoPaypalProps> = ({
-  register,
-  errors,
-  getValues,
-  blockAll,
-  formData,
-}) => {
+const StepTwoPaypal: React.FC<StepTwoPaypalProps> = ({ register, errors, getValues, blockAll, formData }) => {
   return (
     <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
       <div className="flex w-full flex-col gap-4">
@@ -30,9 +20,7 @@ const StepTwoPaypal: React.FC<StepTwoPaypalProps> = ({
             htmlFor="receiver_first_name"
             className={clsx(
               'ml-1 text-xs',
-              errors.receiver_first_name
-                ? 'text-red-500'
-                : 'text-lightText dark:text-darkText',
+              errors.receiver_first_name ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >
             Nombre
@@ -41,14 +29,8 @@ const StepTwoPaypal: React.FC<StepTwoPaypalProps> = ({
             disabled={blockAll || formData.stepOne?.own_account === 'Si'}
             id="receiver_first_name"
             type="text"
-            value={
-              formData.stepOne?.own_account === 'Si'
-                ? formData.stepOne?.sender_first_name
-                : undefined
-            }
-            defaultValue={
-              formData.stepOne?.own_account !== 'Si' ? undefined : ''
-            }
+            value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_first_name : undefined}
+            defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
             placeholder="Nombre"
             register={register('receiver_first_name', {
               required: 'El Nombre es obligatorio',
@@ -65,9 +47,7 @@ const StepTwoPaypal: React.FC<StepTwoPaypalProps> = ({
             htmlFor="receiver_last_name"
             className={clsx(
               'ml-1 text-xs',
-              errors.receiver_last_name
-                ? 'text-red-500'
-                : 'text-lightText dark:text-darkText',
+              errors.receiver_last_name ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >
             Apellido
@@ -76,14 +56,8 @@ const StepTwoPaypal: React.FC<StepTwoPaypalProps> = ({
             disabled={blockAll || formData.stepOne?.own_account === 'Si'}
             id="receiver_last_name"
             type="text"
-            value={
-              formData.stepOne?.own_account === 'Si'
-                ? formData.stepOne?.sender_last_name
-                : undefined
-            }
-            defaultValue={
-              formData.stepOne?.own_account !== 'Si' ? undefined : ''
-            }
+            value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_last_name : undefined}
+            defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
             placeholder="Apellido"
             register={register('receiver_last_name', {
               required: 'El Apellido es obligatorio',
@@ -100,12 +74,7 @@ const StepTwoPaypal: React.FC<StepTwoPaypalProps> = ({
         <div className="flex flex-col">
           <label
             htmlFor="bank_email"
-            className={clsx(
-              'ml-1 text-xs',
-              errors.bank_email
-                ? 'text-red-500'
-                : 'text-lightText dark:text-darkText',
-            )}
+            className={clsx('ml-1 text-xs', errors.bank_email ? 'text-red-500' : 'text-lightText dark:text-darkText')}
           >
             Email de Paypal
           </label>
@@ -130,9 +99,7 @@ const StepTwoPaypal: React.FC<StepTwoPaypalProps> = ({
             htmlFor="re_enter_bank_email"
             className={clsx(
               'ml-1 text-xs',
-              errors.re_enter_bank_email
-                ? 'text-red-500'
-                : 'text-lightText dark:text-darkText',
+              errors.re_enter_bank_email ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >
             RE-ENTER Email de Paypal
@@ -146,10 +113,7 @@ const StepTwoPaypal: React.FC<StepTwoPaypalProps> = ({
               required: `El Email de Paypal es obligatorio`,
               validate: (value) => {
                 const originalValue = getValues('bank_email');
-                return (
-                  value === originalValue ||
-                  'Debe coincidir con el Email de Paypal'
-                );
+                return value === originalValue || 'Debe coincidir con el Email de Paypal';
               },
             })}
             error={errors.re_enter_bank_email?.message ? String(errors.re_enter_bank_email.message) : undefined}

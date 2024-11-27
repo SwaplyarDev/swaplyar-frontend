@@ -2,10 +2,20 @@
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Post1_404, Post2_404, Enchufe_clear_largo, Enchufe_dark_largo } from '@/utils/assets/img-database';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import {
+  Post1_404,
+  Post2_404,
+  Enchufe_clear_largo,
+  Enchufe_dark_largo,
+  tlf_404_clear,
+  tlf_404_dark,
+  Error_404_clear,
+  Error_404_dark,
+} from '@/utils/assets/imgDatabaseCloudinary';
+
 export default function NotFoundPage() {
   const { isDark } = useDarkTheme();
   const [counter, setCounter] = useState(10);
@@ -70,7 +80,7 @@ export default function NotFoundPage() {
               </div>
               <Image
                 src={isDark ? Enchufe_dark_largo : Enchufe_clear_largo}
-                className="absolute bottom-[18%] left-[-32%] h-32 w-[4000px] sm:max-md:bottom-[1%] md:bottom-0 md:max-lg-tablet:left-[-42%] lg-tablet:max-2k:left-[-45%] 2k:max-4k:left-[-55%] 2k:max-4k:h-[300px] 4k:left-[-55%] 4k:h-[400px]"
+                className="absolute bottom-[18%] left-[-32%] h-32 w-[4000px] sm:max-md:bottom-[1%] md:max-lg:bottom-[9%] xl:bottom-0 xl:right-[50%] 4k:left-[-50%] 4k:h-[400px]"
                 alt="Descripción de la imagen enchufe"
                 width={4000}
                 height={144}

@@ -1,13 +1,13 @@
-import { CountryOption } from "../request/request";
+import { CountryOption } from '../request/request';
 
-export type FormRepentance ={
-    transaction_id: string;
-    last_name: string;
+export type FormRepentance = {
+  transaction_id: string;
+  last_name: string;
   email: string;
   phone_number: string;
   note?: string;
   status: string;
-}
+};
 
 export interface FormData {
   transaction_id: string;

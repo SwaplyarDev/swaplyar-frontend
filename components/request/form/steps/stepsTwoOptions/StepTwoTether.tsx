@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Controller,
-  FieldErrors,
-  UseFormGetValues,
-  UseFormRegister,
-  useWatch,
-} from 'react-hook-form';
+import { Controller, FieldErrors, UseFormGetValues, UseFormRegister, useWatch } from 'react-hook-form';
 import clsx from 'clsx';
 import InputField from '@/components/ui/contact-form/InputField';
 import SelectRed from '../../inputs/SelectRed';
@@ -19,17 +13,10 @@ interface StepTwoTetherProps {
   control: any;
 }
 
-const StepTwoTether: React.FC<StepTwoTetherProps> = ({
-  register,
-  errors,
-  getValues,
-  blockAll,
-  formData,
-  control,
-}) => {
+const StepTwoTether: React.FC<StepTwoTetherProps> = ({ register, errors, getValues, blockAll, formData, control }) => {
   const formValues = useWatch({ control });
   const receiveAmount = localStorage.getItem('receiveAmount');
-  console.log(formValues.red_selection)
+  console.log(formValues.red_selection);
   return (
     <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
       <div className="flex w-full flex-col gap-4">
@@ -38,9 +25,7 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
             htmlFor="usdt_direction"
             className={clsx(
               'ml-1 text-xs',
-              errors.usdt_direction
-                ? 'text-red-500'
-                : 'text-lightText dark:text-darkText',
+              errors.usdt_direction ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >
             Direccion USDT
@@ -57,11 +42,7 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
                 message: 'La dirección de USDT no es válida',
               },
             })}
-            error={
-              errors.usdt_direction?.message
-                ? String(errors.usdt_direction.message)
-                : undefined
-            }
+            error={errors.usdt_direction?.message ? String(errors.usdt_direction.message) : undefined}
           />
         </div>
         <div className="flex flex-col">
@@ -69,9 +50,7 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
             htmlFor="re_enter_usdt_direction"
             className={clsx(
               'ml-1 text-xs',
-              errors.re_enter_usdt_direction
-                ? 'text-red-500'
-                : 'text-lightText dark:text-darkText',
+              errors.re_enter_usdt_direction ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >
             RE-ENTER Direccion USDT
@@ -85,17 +64,10 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
               required: `La dirección de USDT es obligatorio`,
               validate: (value) => {
                 const originalValue = getValues('usdt_direction');
-                return (
-                  value === originalValue ||
-                  'Debe coincidir con la Direccion USDT'
-                );
+                return value === originalValue || 'Debe coincidir con la Direccion USDT';
               },
             })}
-            error={
-              errors.re_enter_usdt_direction?.message
-                ? String(errors.re_enter_usdt_direction.message)
-                : undefined
-            }
+            error={errors.re_enter_usdt_direction?.message ? String(errors.re_enter_usdt_direction.message) : undefined}
           />
         </div>
       </div>
@@ -113,9 +85,7 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
                 blockAll={blockAll}
                 selectedRed={field.value}
                 setSelectedRed={(option) => field.onChange(option)}
-                errors={
-                  fieldState.error ? { [field.name]: fieldState.error } : {}
-                }
+                errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
               />
             )}
           />
@@ -126,9 +96,7 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
             htmlFor="recieveAmountRed"
             className={clsx(
               'ml-1 text-xs',
-              errors.recieveAmountRed
-                ? 'text-red-500'
-                : 'text-lightText dark:text-darkText',
+              errors.recieveAmountRed ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >
             Recibes exactamente
@@ -142,11 +110,7 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
             register={register('recieveAmountRed', {
               required: 'El monto es obligatorio',
             })}
-            error={
-              errors.recieveAmountRed?.message
-                ? String(errors.recieveAmountRed.message)
-                : undefined
-            }
+            error={errors.recieveAmountRed?.message ? String(errors.recieveAmountRed.message) : undefined}
           />
         </div>
       </div>

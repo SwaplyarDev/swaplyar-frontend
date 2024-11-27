@@ -2,9 +2,7 @@
 
 const URLRepentance = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-import { FormData, OutputFormat } from "@/types/repentance/repentance";
-
-
+import { FormData, OutputFormat } from '@/types/repentance/repentance';
 
 const transformData = (input: FormData): OutputFormat => {
   return {
@@ -15,7 +13,7 @@ const transformData = (input: FormData): OutputFormat => {
     note: input.note?.trim(),
     status: input.status || 'pendiente',
   };
-}
+};
 
 export const createRegret = async (createRepentance: FormData) => {
   if (!createRepentance.transaction_id || !createRepentance.last_name || !createRepentance.email) {
@@ -38,18 +36,17 @@ export const createRegret = async (createRepentance: FormData) => {
     }),
   });
   try {
-
     // Intentamos parsear el cuerpo de la respuesta a JSON
     const data = await response.json();
 
     if (response.ok) {
       // Revisamos los posibles casos de duplicación o datos incorrectos
-       if(response.ok) {
+      if (response.ok) {
         return {
           ok: true,
           user: data.user,
           message: 'Regret creado',
-          status: response.status
+          status: response.status,
         };
       }
     } else {
@@ -57,42 +54,35 @@ export const createRegret = async (createRepentance: FormData) => {
       const errorMessage = data?.error?.message
         ? typeof data.error.message === 'string'
           ? data.error.message
-          : JSON.stringify(data.error.message)  // Aseguramos que el mensaje sea una cadena
+          : JSON.stringify(data.error.message) // Aseguramos que el mensaje sea una cadena
         : data?.message || 'Error desconocido'; // Si no existe el mensaje, retornamos 'Error desconocido'
-
-      
 
       return {
         ok: false,
         message: errorMessage,
-        status: response.status
+        status: response.status,
       };
     }
-
   } catch (error) {
     if (response.status === 409) {
       return {
         ok: false,
-        status: response.status
+        status: response.status,
       };
     } else if (response.status === 400) {
       return {
         ok: false,
-        status: response.status
+        status: response.status,
       };
     }
     const errorMessage = error instanceof Error ? error.message : 'Error inesperado al crear el regret';
-    
+
     return {
       ok: false,
-      status: response.status
+      status: response.status,
     };
   }
 };
-
-
-
-
 
 export const getRegretsList = async () => {
   try {
@@ -121,7 +111,6 @@ export const getRegretsList = async () => {
     };
   }
 };
-
 
 export const cancelRegret = async (regretId: string) => {
   try {
