@@ -13,7 +13,6 @@ export const configRoutes: ConfigRoutes = {
     '/info/warranty',
     '/info/why-choose-swaplyar',
     '/info/sapr-terms-conditions',
-    '/error404',
     '/request',
   ],
   authRoutes: ['/auth/login-register', '/auth/login-register/email-verification'],
