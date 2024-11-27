@@ -9,11 +9,7 @@ interface SystemInfoProps {
   children: React.ReactNode;
 }
 
-export default function SystemInfo({
-  pointBorder,
-  linePosition,
-  children,
-}: SystemInfoProps) {
+export default function SystemInfo({ pointBorder, linePosition, children }: SystemInfoProps) {
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
   const { isDark } = useDarkTheme();
 
@@ -24,8 +20,7 @@ export default function SystemInfo({
   useEffect(() => {
     if (isTooltipVisible) {
       // Guardar el ancho del scroll y aplicar no-scroll
-      const scrollBarWidth =
-        window.innerWidth - document.documentElement.clientWidth;
+      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.paddingRight = `${scrollBarWidth}px`;
       document.body.classList.add('no-scroll');
 
@@ -67,16 +62,11 @@ export default function SystemInfo({
   return (
     <div className={`system-info-${linePosition}`}>
       <div className="data-container flex flex-row items-center">
-        {pointBorder === 'fill' && (
-          <div className="line-joins-up mb-4 h-1 w-full bg-blue-500"></div>
-        )}
+        {pointBorder === 'fill' && <div className="line-joins-up mb-4 h-1 w-full bg-blue-500"></div>}
         <div className="system-info-container mt-5 flex flex-row items-center">
           {pointBorder === 'border' && (
             <div className="icon-tooltip-container">
-              <button
-                className="more-info-icon show-tooltip flex"
-                onClick={() => setIsTooltipVisible(true)}
-              >
+              <button className="more-info-icon show-tooltip flex" onClick={() => setIsTooltipVisible(true)}>
                 <InfoOutlinedIcon className="mr-2 h-6 w-6 text-blue-800 dark:text-white" />
               </button>
             </div>

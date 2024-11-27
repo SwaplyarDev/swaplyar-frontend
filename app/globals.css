@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 255, 255, 255;
@@ -457,9 +460,7 @@ body::-webkit-scrollbar-thumb {
 /* Estilos del scrollbar usando variables definidas en el body */
 ul.scrollable-list {
   margin-top: 5px;
-  clip-path: inset(
-    0 round 16px
-  ); /* Ajusta el valor según el borde redondeado */
+  clip-path: inset(0 round 16px); /* Ajusta el valor según el borde redondeado */
 }
 ul.scrollable-list {
   padding-right: 0.5rem; /* Ajusta según sea necesario */
@@ -558,5 +559,9 @@ div:where(.swal2-container).swal2-noanimation {
 @media (min-width: 550px) {
   .confirmAlert {
     padding: 0px !important;
+  }
+  /* Estilos de fuentes H1*/
+  h1 {
+    font-family: 'Open Sans', sans-serif;
   }
 }

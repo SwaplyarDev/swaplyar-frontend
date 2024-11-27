@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 import { createRoot } from 'react-dom/client';
 import Arrow from '@/components/ui/Arrow/Arrow';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useSystemStore } from '@/store/useSystemStore';
@@ -18,6 +18,7 @@ import Image from 'next/image';
 import Tick from '@/components/ui/Tick/Tick';
 import Cronometro from './Cronometro';
 import useChronometerState from '@/store/chronometerStore';
+import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 
 const StepperContainer = () => {
   const {
@@ -25,13 +26,13 @@ const StepperContainer = () => {
     completedSteps,
     setActiveStep,
     submitAllData,
-    // getOneStep,
   } = useStepperStore();
   const [blockAll, setBlockAll] = useState(false);
   const navigation = useRouter();
 
-  const { isStopped, stop, setisStopped, setStop } = useChronometerState();
+  const { isStopped, setStop } = useChronometerState();
   const [correctSend, setCorrectSend] = useState(false);
+  const [errorSend, setErrorSend] = useState(false);
 
   const steps = [
     { title: 'Mis Datos', component: <StepOne blockAll={blockAll} /> },
@@ -42,12 +43,20 @@ const StepperContainer = () => {
     { title: 'Pago', component: <StepThree blockAll={blockAll} /> },
   ];
 
+  const router = useRouter();
+  const { pass } = useControlRouteRequestStore(state => state); 
   const handleStepClick = (index: number) => {
     if (completedSteps[index] || index === activeStep) {
       setActiveStep(index);
     }
   };
   const { isDark } = useDarkTheme();
+
+  useEffect(() => {
+    if (!pass) {
+      router.push('/home'); // Redirige al home si `pass` es false
+    }
+  }, [pass, router]);
 
   const handleCancelRequest = () => {
     Swal.fire({
@@ -96,7 +105,6 @@ const StepperContainer = () => {
       },
     });
   };
-  // const handleSendRequest = () => {
   //   Swal.fire({
   //     title: '',
   //     html: `
@@ -147,10 +155,11 @@ const StepperContainer = () => {
 
       if (isSuccess) {
         console.log('Datos enviados correctamente');
-        // handleSendRequest();
         setBlockAll(true);
         setCorrectSend(true);
+        setErrorSend(false)
       } else {
+        setErrorSend(true);
         console.error('Hubo un error al enviar los datos');
       }
     } catch (error) {
@@ -158,12 +167,13 @@ const StepperContainer = () => {
     }
     setLoading(false);
   };
-
+  console.log(blockAll || errorSend);
   return (
     <div
       className={clsx(
         'flex w-full max-w-[1000px] flex-col gap-5',
-        blockAll && 'mt-72 xs:mt-52',
+        correctSend && 'mt-48 xs:mt-32',
+        (blockAll || errorSend) && 'mt-72 xs:mt-52',
       )}
     >
       {blockAll && (
@@ -297,8 +307,72 @@ const StepperContainer = () => {
           </div>
         </div>
       )}
-      <div className="flex items-center justify-between px-2">
-        <h1 className="text-2xl font-bold text-lightText dark:text-darkText">
+      {errorSend && (
+        <div
+          className={clsx(
+            'absolute left-0 top-36 flex w-full justify-center bg-[#d50102]',
+          )}
+        >
+          <div className="flex w-full max-w-[1000px] flex-col gap-2 px-5 py-5 xs-phone:px-10">
+            <h2 className="w-full text-center text-3xl font-bold text-darkText sm-phone:text-end">
+              Error en la solicitud
+            </h2>
+            <>
+              <p
+                className={clsx(
+                  'w-full text-center text-darkText sm-phone:hidden',
+                )}
+              >
+                Si el problema persiste, vuelve a intentarlo más tarde y si
+                tienes alguna pregunta o necesitas ayuda, estamos aquí para ti.
+              </p>
+              <div className="w-full">
+                <p
+                  className={clsx(
+                    'hidden w-full text-end text-darkText sm-phone:block',
+                  )}
+                >
+                  Si el problema persiste, vuelve a intentarlo más tarde y si
+                  tienes alguna pregunta 
+                </p>
+                <p
+                  className={clsx(
+                    'hidden w-full text-end text-darkText sm-phone:block',
+                  )}
+                >
+                  o necesitas ayuda, estamos aquí para ti.
+                </p>
+              </div>
+            </>
+            <div className="flex w-full flex-col-reverse items-center justify-between gap-2 xs:flex-row">
+              <Link
+                className={clsx(
+                  'group flex items-center gap-1 text-center text-darkText sm-phone:text-start',
+                )}
+                href="/"
+              >
+                <div className="relative h-[15px] w-[15px] overflow-hidden">
+                  <div className="absolute left-0 top-0 transition-all duration-200 group-hover:left-1">
+                    <Arrow color={'#ebe7e0'} backRequest={true} />
+                  </div>
+                </div>
+                Volver al home
+              </Link>
+              <Link
+                className={clsx(
+                  'text-center text-darkText underline sm-phone:text-start',
+                )}
+                href="/info/help-center"
+              >
+                ¡No dudes en contactarnos!
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="flex items-center justify-between px-2 flex-col gap-2 sm-phone:flex-row sm-phone:gap-0">
+        {/* <h1 className="text-2xl font-bold text-lightText dark:text-darkText"> */}
+        <h1 className="text-2xl xs:text-3xl font-bold text-lightText dark:text-darkText sm-phone:text-2xl">
           Formulario de Solicitud
         </h1>
         <div>
@@ -318,7 +392,7 @@ const StepperContainer = () => {
                   : ''
               }`}
             >
-              <h2 className="mb-2 text-center text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0">
+              <h2 className="mb-2 text-center text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0 w-full">
                 {step.title}
               </h2>
               {/* Mostrar StepIndicator solo si no está completado y es el paso actual */}

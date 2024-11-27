@@ -22,9 +22,7 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showSwipeHands, setShowSwipeHands] = useState(false);
   const sectionRef = useRef(null);
-  const [activeCards, setActiveCards] = useState<{ [key: number]: boolean }>(
-    {},
-  );
+  const [activeCards, setActiveCards] = useState<{ [key: number]: boolean }>({});
 
   const handleToggle = (index: number) => {
     // Alternar el estado de la tarjeta al hacer clic
@@ -35,15 +33,11 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
   };
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === cardsData.length - 1 ? 0 : prevIndex + 1,
-    );
+    setCurrentIndex((prevIndex) => (prevIndex === cardsData.length - 1 ? 0 : prevIndex + 1));
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? cardsData.length - 1 : prevIndex - 1,
-    );
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? cardsData.length - 1 : prevIndex - 1));
   };
 
   const swipeHandlers = useSwipeable({
@@ -85,17 +79,12 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
         </div>
       )}
 
-      <div
-        {...swipeHandlers}
-        className="relative block h-64 w-full overflow-hidden md:hidden"
-      >
+      <div {...swipeHandlers} className="relative block h-64 w-full overflow-hidden md:hidden">
         <div className="relative flex h-full w-full items-center justify-center">
           {cardsData.map((card, index) => {
             const isCurrent = index === currentIndex;
             const isNext = index === (currentIndex + 1) % cardsData.length;
-            const isPrev =
-              index ===
-              (currentIndex - 1 + cardsData.length) % cardsData.length;
+            const isPrev = index === (currentIndex - 1 + cardsData.length) % cardsData.length;
 
             const isClick = !!activeCards[index];
 
@@ -105,11 +94,7 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
                 className={`absolute transition-transform duration-700 ease-in-out ${isCurrent ? 'z-20 scale-100' : 'z-10 scale-90 blur-sm'} ${isPrev ? '-translate-x-20' : ''} ${isNext ? 'translate-x-20' : ''}`}
               >
                 <div
-                  className={clsx(
-                    isClick
-                      ? 'card-active relative h-64 w-52'
-                      : 'relative h-64 w-52',
-                  )}
+                  className={clsx(isClick ? 'card-active relative h-64 w-52' : 'relative h-64 w-52')}
                   onClick={() => handleToggle(index)}
                 >
                   <div className="card-inner h-full w-full duration-700">

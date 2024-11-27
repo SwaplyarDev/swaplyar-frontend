@@ -2,13 +2,7 @@
 
 import RequestInfoBlock from '@/components/ui/RequestInfoBlock/RequestInfoBlock';
 import Image from 'next/image';
-import {
-  ArsToPayPal,
-  ArsToPyEUR,
-  ArsToPyUSD,
-  ArsToWsEUR,
-  ArsToWsUSD,
-} from '@/utils/assets/imgDatabaseCloudinary';
+import { ArsToPayPal, ArsToPyEUR, ArsToPyUSD, ArsToWsEUR, ArsToWsUSD } from '@/utils/assets/imgDatabaseCloudinary';
 import { useEffect, useState } from 'react';
 
 export default function Ars() {
@@ -31,39 +25,30 @@ export default function Ars() {
             <p className="mb-4 text-center text-lg md:text-left">
               <ul className="space-y-2">
                 <li>
-                  Ingrese sus datos personales en el formulario: Nombre,
-                  Apellido, Número de WhatsApp, CBU o Alias, CUIL, Correo
-                  Electrónico y Comprobante.
+                  Ingrese sus datos personales en el formulario: Nombre, Apellido, Número de WhatsApp, CBU o Alias,
+                  CUIL, Correo Electrónico y Comprobante.
                 </li>
                 <li>
                   Cuenta en Pesos Argentinos a transferir: {''}
-                  <span className="font-bold text-buttonsLigth dark:text-sky-500">
-                    0150804601000139382113
-                  </span>
+                  <span className="font-bold text-buttonsLigth dark:text-sky-500">0150804601000139382113</span>
                 </li>
                 <li>
                   CUIL: {''}
-                  <span className="font-semibold text-buttonsLigth dark:text-sky-500">
-                    20-1913601-9
-                  </span>
+                  <span className="font-semibold text-buttonsLigth dark:text-sky-500">20-1913601-9</span>
                 </li>
                 <li>
                   Usuario: {''}
-                  <span className="font-semibold text-buttonsLigth dark:text-sky-500">
-                    Johan Javier Suarez Merchan
-                  </span>
+                  <span className="font-semibold text-buttonsLigth dark:text-sky-500">Johan Javier Suarez Merchan</span>
                 </li>
                 <li>
                   <span className="bg-yellow-400 px-1 text-black">
-                    Luego de realizar la transferencia o el pago, por favor suba
-                    el comprobante de la misma (captura de pantalla) para
-                    completar su solicitud.
+                    Luego de realizar la transferencia o el pago, por favor suba el comprobante de la misma (captura de
+                    pantalla) para completar su solicitud.
                   </span>
                 </li>
                 <li>
-                  Una vez recibido, procesaremos su transferencia. No nos
-                  hacemos responsable si envias a otra cuenta que no sea la
-                  proporcionada por SwaplyAr.
+                  Una vez recibido, procesaremos su transferencia. No nos hacemos responsable si envias a otra cuenta
+                  que no sea la proporcionada por SwaplyAr.
                 </li>
               </ul>
             </p>

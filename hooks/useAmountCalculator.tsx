@@ -15,11 +15,7 @@ export const useAmountCalculator = () => {
   // Efecto para actualizar montos al cambiar el sistema de envío o recepción
   useEffect(() => {
     const updateAmounts = async () => {
-      if (
-        selectedSendingSystem &&
-        selectedReceivingSystem &&
-        Object.keys(rates).length > 0
-      ) {
+      if (selectedSendingSystem && selectedReceivingSystem && Object.keys(rates).length > 0) {
         try {
           if ((sendAmount === '' || sendAmount === '0') && isSendActive) {
             setReceiveAmount('');
@@ -37,17 +33,10 @@ export const useAmountCalculator = () => {
               setReceiveAmount(amount.toString());
               localStorage.setItem('receiveAmount', amount.toString());
             }
-          } else if (
-            (receiveAmount === '' || receiveAmount === '0') &&
-            !isSendActive
-          ) {
+          } else if ((receiveAmount === '' || receiveAmount === '0') && !isSendActive) {
             setSendAmount('');
             localStorage.setItem('sendAmount', '');
-          } else if (
-            receiveAmount !== '' &&
-            receiveAmount !== '0' &&
-            !isSendActive
-          ) {
+          } else if (receiveAmount !== '' && receiveAmount !== '0' && !isSendActive) {
             const parsedReceiveAmount = parseFloat(receiveAmount);
             if (!isNaN(parsedReceiveAmount)) {
               const amount = await calculateAmount(
@@ -67,35 +56,15 @@ export const useAmountCalculator = () => {
     };
 
     updateAmounts();
-  }, [
-    selectedSendingSystem,
-    selectedReceivingSystem,
-    sendAmount,
-    receiveAmount,
-    isSendActive,
-    rates,
-  ]);
+  }, [selectedSendingSystem, selectedReceivingSystem, sendAmount, receiveAmount, isSendActive, rates]);
 
   // Efecto para calcular la tasa por una unidad
   useEffect(() => {
     const fetchRates = async () => {
-      if (
-        selectedSendingSystem &&
-        selectedReceivingSystem &&
-        Object.keys(rates).length > 0
-      ) {
+      if (selectedSendingSystem && selectedReceivingSystem && Object.keys(rates).length > 0) {
         try {
-          const rateOneUnit = await calculateAmount(
-            selectedSendingSystem.id,
-            selectedReceivingSystem.id,
-            1,
-          );
-          const rateOneUnitBank = await calculateAmount(
-            selectedSendingSystem.id,
-            selectedReceivingSystem.id,
-            1,
-            true,
-          );
+          const rateOneUnit = await calculateAmount(selectedSendingSystem.id, selectedReceivingSystem.id, 1);
+          const rateOneUnitBank = await calculateAmount(selectedSendingSystem.id, selectedReceivingSystem.id, 1, true);
           setRateForOne(rateOneUnit || 0);
           setRateForOneBank(rateOneUnitBank || 0);
         } catch (error) {
@@ -112,9 +81,7 @@ export const useAmountCalculator = () => {
     if (/^[0-9]*[.,]?[0-9]{0,2}$/.test(value)) {
       setIsSendActive(true);
       const formattedValue = value.replace(',', '.');
-      setSendAmount(
-        formattedValue === '' || formattedValue === '0' ? '' : formattedValue,
-      );
+      setSendAmount(formattedValue === '' || formattedValue === '0' ? '' : formattedValue);
       setReceiveAmount(''); // Resetear el monto de recepción
     }
   };
@@ -123,9 +90,7 @@ export const useAmountCalculator = () => {
     if (/^[0-9]*[.,]?[0-9]{0,2}$/.test(value)) {
       setIsSendActive(false);
       const formattedValue = value.replace(',', '.');
-      setReceiveAmount(
-        formattedValue === '' || formattedValue === '0' ? '' : formattedValue,
-      );
+      setReceiveAmount(formattedValue === '' || formattedValue === '0' ? '' : formattedValue);
       setSendAmount(''); // Resetear el monto de envío
     }
   };

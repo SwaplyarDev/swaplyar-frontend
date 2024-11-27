@@ -46,9 +46,7 @@ const TransactionSection: React.FC<TransactionSectionProps> = ({
       <InputTransactionCalculator
         id={`${isSending ? 'send' : 'receive'}InputUniqueID`}
         value={value}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          onChange(e.target.value)
-        }
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
         placeholder="0"
         label={label}
       />

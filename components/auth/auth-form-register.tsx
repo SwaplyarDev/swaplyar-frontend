@@ -90,19 +90,13 @@ export const RegisterForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="relative flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
       >
-        <h2 className="mb-5 text-center text-2xl font-bold text-buttonsLigth dark:text-darkText">
-          Crear Cuenta
-        </h2>
+        <h1 className="mb-5 text-center text-2xl font-bold text-buttonsLigth dark:text-darkText">Crear Cuenta</h1>
 
         <div className="flex flex-col justify-between xs:flex-row">
           <div className="flex flex-col xs:max-w-48">
             <label
               htmlFor="firstName"
-              className={clsx(
-                errors.firstName
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
-              )}
+              className={clsx(errors.firstName ? 'text-red-500' : 'text-lightText dark:text-darkText')}
             >
               Nombre
             </label>
@@ -110,29 +104,19 @@ export const RegisterForm = () => {
               id="firstName"
               className={clsx(
                 'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-                errors.firstName
-                  ? 'mb-0 border-red-500'
-                  : 'mb-5 hover:border-blue-600 dark:hover:border-white',
+                errors.firstName ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600 dark:hover:border-white',
               )}
               type="text"
               {...register('firstName', {
                 required: 'El nombre es obligatorio',
               })}
             />
-            {errors.firstName && (
-              <p className="mb-5 text-sm text-red-500">
-                • {errors.firstName.message}
-              </p>
-            )}
+            {errors.firstName && <p className="mb-5 text-sm text-red-500">• {errors.firstName.message}</p>}
           </div>
           <div className="flex flex-col xs:max-w-48">
             <label
               htmlFor="lastName"
-              className={clsx(
-                errors.lastName
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
-              )}
+              className={clsx(errors.lastName ? 'text-red-500' : 'text-lightText dark:text-darkText')}
             >
               Apellido
             </label>
@@ -140,38 +124,25 @@ export const RegisterForm = () => {
               id="lastName"
               className={clsx(
                 'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-                errors.lastName
-                  ? 'mb-0 border-red-500'
-                  : 'mb-5 hover:border-blue-600 dark:hover:border-white',
+                errors.lastName ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600 dark:hover:border-white',
               )}
               type="text"
               {...register('lastName', {
                 required: 'El apellido es obligatorio',
               })}
             />
-            {errors.lastName && (
-              <p className="mb-5 text-sm text-red-500">
-                • {errors.lastName.message}
-              </p>
-            )}
+            {errors.lastName && <p className="mb-5 text-sm text-red-500">• {errors.lastName.message}</p>}
           </div>
         </div>
 
-        <label
-          htmlFor="email"
-          className={clsx(
-            errors.email ? 'text-red-500' : 'text-lightText dark:text-darkText',
-          )}
-        >
+        <label htmlFor="email" className={clsx(errors.email ? 'text-red-500' : 'text-lightText dark:text-darkText')}>
           Correo electrónico
         </label>
         <input
           id="email"
           className={clsx(
             'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-            errors.email
-              ? 'mb-0 border-red-500'
-              : 'mb-5 hover:border-blue-600 dark:hover:border-white',
+            errors.email ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600 dark:hover:border-white',
           )}
           type="email"
           {...register('email', {
@@ -182,9 +153,7 @@ export const RegisterForm = () => {
             },
           })}
         />
-        {errors.email && (
-          <p className="mb-5 text-sm text-red-500">• {errors.email.message}</p>
-        )}
+        {errors.email && <p className="mb-5 text-sm text-red-500">• {errors.email.message}</p>}
 
         <div className="mb-5 flex items-center">
           <input
@@ -217,13 +186,7 @@ export const RegisterForm = () => {
         >
           {loading ? (
             <div className="flex items-center justify-center">
-              <Image
-                src="/gif/cargando.gif"
-                width={30}
-                height={30}
-                alt="loading"
-                className="mb-0.5 mr-2"
-              />
+              <Image src="/gif/cargando.gif" width={30} height={30} alt="loading" className="mb-0.5 mr-2" />
               Creando cuenta...
             </div>
           ) : (

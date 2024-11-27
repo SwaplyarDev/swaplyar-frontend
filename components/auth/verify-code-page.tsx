@@ -1,3 +1,5 @@
+// /components/auth/verify-code-page.tsx
+
 'use client';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState, useEffect, ChangeEvent } from 'react';
@@ -6,12 +8,12 @@ import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import clsx from 'clsx';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
 import { useRouter } from 'next/navigation';
-import Arrow from '../ui/Arrow/Arrow';
 import useCodeVerificationStore from '@/store/codeVerificationStore';
 import useStore from '@/store/authViewStore';
 import userInfoStore from '@/store/userInfoStore';
 import { registerUser } from '@/actions/auth/register';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
+import ButtonBack from '../ui/ButtonBack/ButtonBack';
 
 type FormInputs = {
   verificationCode: string[];
@@ -41,13 +43,7 @@ export const VerifyCodePage = () => {
   console.log('User id: ', user?.id);
   console.log('View: ', view);
 
-  const {
-    attempts,
-    lockUntil,
-    decrementAttempts,
-    setLockUntil,
-    resetAttempts,
-  } = useCodeVerificationStore();
+  const { attempts, lockUntil, decrementAttempts, setLockUntil, resetAttempts } = useCodeVerificationStore();
 
   const isLocked = lockUntil && lockUntil > Date.now();
   const [timer, setTimer] = useState(0);
@@ -77,9 +73,7 @@ export const VerifyCodePage = () => {
     }
   }, [timer]);
 
-  const verifyCode: SubmitHandler<FormInputs> = async ({
-    verificationCode,
-  }) => {
+  const verifyCode: SubmitHandler<FormInputs> = async ({ verificationCode }) => {
     setLoading(true);
     const code = verificationCode.join('');
 
@@ -155,16 +149,11 @@ export const VerifyCodePage = () => {
     }
   };
 
-  const handleInputChange = (
-    index: number,
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     if (/^\d*$/.test(value)) {
       clearErrors('verificationCode');
-      const newVerificationCode = [
-        ...(watch('verificationCode') || ([] as string[])),
-      ];
+      const newVerificationCode = [...(watch('verificationCode') || ([] as string[]))];
       newVerificationCode[index] = value;
       setValue('verificationCode', newVerificationCode);
 
@@ -179,10 +168,7 @@ export const VerifyCodePage = () => {
     }
   };
 
-  const handleInputKeyDown = (
-    index: number,
-    event: React.KeyboardEvent<HTMLInputElement>,
-  ) => {
+  const handleInputKeyDown = (index: number, event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Backspace' && event.currentTarget.value === '') {
       if (index > 0) {
         const prevInput = document.getElementById(`code-${index - 1}`);
@@ -207,16 +193,10 @@ export const VerifyCodePage = () => {
           onSubmit={handleSubmit(verifyCode)}
           className="flex w-full max-w-xl flex-col rounded-2xl bg-[#e6e8ef62] px-2 py-8 shadow-md dark:bg-calculatorDark sm:px-8"
         >
-          <h2 className="mb-5 text-center text-5xl font-bold text-buttonsLigth dark:text-darkText">
-            Verificación
-          </h2>
+          <h2 className="mb-5 text-center text-5xl font-bold text-buttonsLigth dark:text-darkText">Verificación</h2>
 
-          <label
-            htmlFor="verificationCode"
-            className={'mb-8 text-center text-lightText dark:text-darkText'}
-          >
-            Si tienes una cuenta, te hemos enviado un código a{' '}
-            <span className="font-bold">{email}</span>. Introdúcelo a
+          <label htmlFor="verificationCode" className={'mb-8 text-center text-lightText dark:text-darkText'}>
+            Si tienes una cuenta, te hemos enviado un código a <span className="font-bold">{email}</span>. Introdúcelo a
             continuación
           </label>
 
@@ -252,26 +232,10 @@ export const VerifyCodePage = () => {
             ))}
           </div>
 
-          {errors.verificationCode && (
-            <p className="mb-5 text-sm text-red-500">
-              • {errors.verificationCode.message}
-            </p>
-          )}
+          {errors.verificationCode && <p className="mb-5 text-sm text-red-500">• {errors.verificationCode.message}</p>}
 
           <div className="my-5 flex justify-between text-buttonsLigth dark:text-darkText">
-            <button
-              onClick={() => router.push('/auth/login-register')}
-              className={`${
-                isDark ? 'buttonSecondDark' : 'buttonSecond'
-              } group relative m-1 flex h-[48px] min-w-[48px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent xs:min-w-[150px]`}
-            >
-              <div className="relative h-5 w-5 overflow-hidden">
-                <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
-                  <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
-                </div>
-              </div>
-              <p className="hidden xs:inline-block">Volver</p>
-            </button>
+            <ButtonBack route="/auth/login-register" isDark={isDark} />
 
             <button
               type="button"
@@ -285,8 +249,7 @@ export const VerifyCodePage = () => {
                 `Reenviar en ${timer}s`
               ) : (
                 <p>
-                  Reenviar{' '}
-                  <span className="hidden xs:inline-block">código</span>
+                  Reenviar <span className="hidden xs:inline-block">código</span>
                 </p>
               )}
             </button>
@@ -297,9 +260,7 @@ export const VerifyCodePage = () => {
               Tienes {attempts} intentos para reenviar el código
             </p>
           ) : (
-            <p className="mt-2 text-center text-base text-red-500">
-              Estás bloqueado por 5 minutos.
-            </p>
+            <p className="mt-2 text-center text-base text-red-500">Estás bloqueado por 5 minutos.</p>
           )}
         </form>
       </div>

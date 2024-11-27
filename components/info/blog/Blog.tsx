@@ -1,139 +1,65 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-// @ts-ignore
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import BlogPostCard from '@/components/ui/BlogPostCard/BlogPostCard';
+import ImageCarousel from '@/components/ui/ImageCarousel/imageCarousel';
+import PaginationButtonsProps from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import useBlogStore from '@/store/useBlogStore';
-import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
-
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-const BlogPostCard: React.FC<{
-  title: string;
-  body: string;
-  url_image: string;
-  created_at: string;
-}> = ({ title, body, url_image, created_at }) => {
-  return (
-    <div className="transform overflow-hidden rounded-lg border border-gray-300 bg-white shadow-lg transition-transform hover:scale-105">
-      <Image
-        src={url_image}
-        alt={title}
-        className="h-48 w-full object-cover"
-        width={300}
-        height={160}
-      />
-      <div className="p-4">
-        <h3 className="mb-2 text-xl font-semibold">{title}</h3>
-        <p className="mb-4 text-gray-700">{body}</p>
-        <p className="mt-2 text-sm text-gray-500">
-          {new Date(created_at).toLocaleDateString()}
-        </p>
-      </div>
-    </div>
-  );
-};
-
-const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const settings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    beforeChange: (current: number, next: number) => setActiveIndex(next),
-    autoplay: true,
-    autoplaySpeed: 5000,
-  };
-
-  const limitedImages = images.slice(0, 3);
-
-  return (
-    <div className="relative overflow-hidden rounded-[20px] border-4 border-[#012C8A]">
-      <Slider {...settings}>
-        {limitedImages.map((image, index) => (
-          <div key={index}>
-            <Image
-              src={image}
-              alt={`Slide ${index + 1}`}
-              className="h-60 w-full object-cover"
-              width={800}
-              height={400}
-            />
-          </div>
-        ))}
-      </Slider>
-      <div className="absolute bottom-4 flex w-full justify-center space-x-2">
-        {limitedImages.map((_, index) => (
-          <div
-            key={index}
-            className={`h-4 w-4 rounded-full transition-all duration-300 ${activeIndex === index ? 'bg-[#012C8A]' : 'border-2 border-[#012C8A] bg-white opacity-50'}`}
-          ></div>
-        ))}
-      </div>
-    </div>
-  );
-};
+import usePageSync from '@/components/ui/usePageSync/usePageSync';
+import { fetchBlogs } from '@/components/ui/fetchBlogs/fetchBlogs';
+import { useFetchBlogs } from '@/components/ui/useFetchBlogs/useFetchBlogs';
+import { useRandomImages } from '@/components/ui/useRandomImages/useRandomImages';
+import SkeletonLoader from '@/components/ui/SkeletonLoader/SkeletonLoader';
 
 const Blog: React.FC = () => {
-  const { blogs, setBlogs } = useBlogStore();
+  const { blogs } = useBlogStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  const postsPerPage = 9;
-  const [randomImages, setRandomImages] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [totalPages, setTotalPages] = useState<number>(0);
 
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const handlePageChange = (page: number) => {
-    if (page !== currentPage) {
-      setCurrentPage(page);
-      router.replace(`/info/blog?page=${page}`, { scroll: false });
-    }
-  };
+  // Usar el custom hook para sincronizar la página
+  usePageSync(currentPage, setCurrentPage);
 
-  useEffect(() => {
-    const pageParam = parseInt(searchParams.get('page') || '1', 10);
-    if (pageParam !== currentPage) {
-      setCurrentPage(pageParam);
-    }
-  }, [searchParams]);
+  // Fetch de blogs y total de páginas
+  useFetchBlogs(currentPage, searchTerm, setTotalPages);
 
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const response = await fetch(
-          `${BASE_URL}/v1/blogs?page=${currentPage}`,
-        );
+  // Imágenes aleatorias para el carrusel
+  const randomImages = useRandomImages(blogs);
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-        setBlogs(data.blogsPerPage);
-      } catch (error) {
-        console.error('Error fetching blogs:', error);
+  const handlePageChange = useCallback(
+    (page: number) => {
+      if (page !== currentPage) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setCurrentPage(page);
+        router.replace(`/info/blog?page=${page}`, { scroll: false });
       }
-    };
+    },
+    [currentPage, router],
+  );
 
-    fetchBlogs();
-  }, [currentPage, setBlogs]);
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1); // Reiniciar a la primera página en cada nueva búsqueda
+    setIsLoading(true); // Comienza la carga nuevamente al buscar
+  }, []);
 
+  // Filtrar blogs según el término de búsqueda
+  const filteredBlogs = useMemo(() => {
+    return blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
+  }, [blogs, searchTerm]);
+
+  // Esqueleto de carga
+
+  // Lógica para mostrar el esqueleto de carga hasta que los datos estén disponibles
   useEffect(() => {
-    if (Array.isArray(blogs)) {
-      const images = blogs.map((el) => el.url_image);
-      setRandomImages(images);
+    if (blogs.length > 0) {
+      setIsLoading(false); // Finaliza la carga cuando los blogs estén disponibles
     }
   }, [blogs]);
-  // filtra una card
-  const filteredBlogs = blogs.filter((post) =>
-    post.title.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
 
   return (
     <div className="mx-auto max-w-7xl p-6">
@@ -148,7 +74,7 @@ const Blog: React.FC = () => {
             className="w-full rounded-2xl border border-gray-300 p-2 pl-4 pr-10 focus:outline-none focus:ring-0"
             style={{ color: 'black', backgroundColor: 'white' }}
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchChange}
           />
           <span className="absolute right-3 top-2 text-gray-500">
             <svg
@@ -169,8 +95,11 @@ const Blog: React.FC = () => {
         </div>
       </div>
 
+      {/* Renderizar el esqueleto o las tarjetas según el estado de carga */}
       <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-        {filteredBlogs.length > 0 ? (
+        {isLoading ? (
+          <SkeletonLoader />
+        ) : filteredBlogs.length > 0 ? (
           filteredBlogs.map((post) => (
             <BlogPostCard
               key={post.blog_id}
@@ -184,31 +113,8 @@ const Blog: React.FC = () => {
           <p>No se encontraron resultados.</p>
         )}
       </div>
-      <div className="mt-8 flex justify-center space-x-4">
-        <button
-          className={`h-10 w-10 rounded-full border ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
-          onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
-          disabled={currentPage === 1}
-        >
-          &lt;
-        </button>
-        {[...Array(3)].map((_, index) => (
-          <button
-            key={index}
-            className={`h-10 w-10 rounded-full border ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-white'}`}
-            onClick={() => handlePageChange(index + 1)}
-          >
-            {index + 1}
-          </button>
-        ))}
-        <button
-          className={`h-10 w-10 rounded-full border ${currentPage === 3 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
-          onClick={() => handlePageChange(Math.min(currentPage + 1, 3))}
-          disabled={currentPage === 3}
-        >
-          &gt;
-        </button>
-      </div>
+
+      <PaginationButtonsProps currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
     </div>
   );
 };

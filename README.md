@@ -114,7 +114,6 @@ swaplyar-frontend/
 - `/request`: Página principal de solicitudes de intercambio.
 - `/repentance`: Página principal de arrepentimiento.
 
-
 🔗 **Guía para escribir commits claros y organizados**
 Para quienes deseen entender mejor cómo escribir commits efectivos, les recomiendo estudiar la [Especificación de Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/). Esta convención es ligera y se aplica fácilmente sobre los mensajes de commit, ofreciendo un conjunto de reglas simples para crear un historial de commits explícito y ordenado. Esto no solo facilita la lectura, sino que también ayuda en la automatización de herramientas y en la integración con SemVer (Versionado Semántico), describiendo claramente las nuevas características, correcciones y cambios importantes realizados.
 

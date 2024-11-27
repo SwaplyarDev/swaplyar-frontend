@@ -9,8 +9,7 @@ import { useDarkTheme } from '../theme-Provider/themeProvider';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
 
 const ContactForm = () => {
   const { data: session, status } = useSession();
@@ -72,24 +71,21 @@ const ContactForm = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex w-full flex-col space-y-4"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col space-y-4">
       <div className="rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark">
-        <h4 className="mb-7 text-xl font-semibold">Contáctanos</h4>
+        <h2 className="mb-7 text-xl font-semibold">Contáctanos</h2>
         <div className="flex flex-col gap-10 md:flex-row md:gap-16">
           <div className="flex w-full flex-col gap-4">
             <InputField
               id="Nombre"
-              type='text'
+              type="text"
               placeholder="Nombre completo"
               register={register('Nombre', { required: true })}
               error={errors.Nombre && 'Este campo es obligatorio'}
             />
             <InputField
               id="Apellido"
-              type='text'
+              type="text"
               placeholder="Apellido Completo"
               register={register('Apellido', { required: true })}
               error={errors.Apellido && 'Este campo es obligatorio'}
@@ -110,14 +106,10 @@ const ContactForm = () => {
               placeholder="Mensaje"
               className={clsx(
                 'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-                errors.message
-                  ? 'border-red-500'
-                  : 'hover:border-blue-600 dark:hover:border-white',
+                errors.message ? 'border-red-500' : 'hover:border-blue-600 dark:hover:border-white',
               )}
             ></textarea>
-            {errors.message && (
-              <p className="text-sm text-red-500">Este campo es obligatorio</p>
-            )}
+            {errors.message && <p className="text-sm text-red-500">Este campo es obligatorio</p>}
           </div>
         </div>
       </div>
@@ -131,12 +123,7 @@ const ContactForm = () => {
       </div>
       {loading && (
         <div id="loading" className="flex justify-center">
-          <Image
-            src="/gif/cargando.gif"
-            alt="Cargando..."
-            width={50}
-            height={50}
-          />
+          <Image src="/gif/cargando.gif" alt="Cargando..." width={50} height={50} />
         </div>
       )}
     </form>

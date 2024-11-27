@@ -147,12 +147,12 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       {renderSelectedSystem()}
 
-      <div className="flex justify-end">
+      <div className="flex justify-center sm-phone:justify-end">
         {completedSteps[2] ? (
           hasChanges ? (
             <button
               type="submit"
-              className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+              className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
               disabled={!isValid || blockAll}
             >
               Siguiente
@@ -170,7 +170,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
         ) : (
           <button
             type="submit"
-            className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
+            className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] text-sm font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
             disabled={!isValid || blockAll}
           >
             Siguiente

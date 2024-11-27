@@ -3,13 +3,7 @@
 'use client';
 import StepBlock from '@/components/stepBlock/stepBlock';
 import { BsCheck2Circle } from 'react-icons/bs';
-import {
-  CentroDeAyuda,
-  Paso1Gif,
-  Paso2Gif,
-  Paso3Gif,
-  Paso4Gif,
-} from '@/utils/assets/imgDatabaseCloudinary';
+import { CentroDeAyuda, Paso1Gif, Paso2Gif, Paso3Gif, Paso4Gif } from '@/utils/assets/imgDatabaseCloudinary';
 import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 
@@ -22,16 +16,11 @@ export default function SwaplyArInstructions() {
       <div className=" " style={{ margin: currentMargin }}>
         <section className="pb-16 text-center">
           <article className="container-text space-y-2">
-            <h1 className="text-2xl font-bold">
-              El Cómo para Operar en SwaplyAr
-            </h1>
-            <h3 className="text-2xl">
-              Seguí estos 4 sencillos pasos para realizar una operación exitosa:
-            </h3>
+            <h1 className="text-2xl font-bold">El Cómo para Operar en SwaplyAr</h1>
+            <h3 className="text-2xl">Seguí estos 4 sencillos pasos para realizar una operación exitosa:</h3>
             <p>
               <span className="bg-[#fbff27] text-lightText">
-                Ejemplo Ilustrativo: En este caso se utilizó un ejemplo de 100
-                USD. Los datos presentados son ficticios.
+                Ejemplo Ilustrativo: En este caso se utilizó un ejemplo de 100 USD. Los datos presentados son ficticios.
               </span>
             </p>
           </article>
@@ -70,8 +59,7 @@ export default function SwaplyArInstructions() {
           />
 
           <h1 className="flex items-center gap-1 text-center text-2xl font-semibold">
-            <BsCheck2Circle className="hidden md:block" /> En menos de 5
-            minutos, tu depósito será procesado.
+            <BsCheck2Circle className="hidden md:block" /> En menos de 5 minutos, tu depósito será procesado.
           </h1>
         </section>
       </div>

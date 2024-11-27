@@ -8,10 +8,7 @@ export function useHydrateStore() {
   const setView = useStore((state) => state.setView);
 
   useEffect(() => {
-    const storedView =
-      typeof window !== 'undefined'
-        ? (localStorage.getItem('view') as 'login' | 'register')
-        : 'login';
+    const storedView = typeof window !== 'undefined' ? (localStorage.getItem('view') as 'login' | 'register') : 'login';
     if (storedView) {
       setView(storedView);
     }

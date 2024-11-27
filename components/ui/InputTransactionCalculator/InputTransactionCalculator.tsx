@@ -8,9 +8,13 @@ interface InputTransactionCalculatorProps {
   label: string;
 }
 
-export const InputTransactionCalculator: React.FC<
-  InputTransactionCalculatorProps
-> = ({ id, value, onChange, placeholder, label }) => {
+export const InputTransactionCalculator: React.FC<InputTransactionCalculatorProps> = ({
+  id,
+  value,
+  onChange,
+  placeholder,
+  label,
+}) => {
   return (
     <div
       className={clsx(

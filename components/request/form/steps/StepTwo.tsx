@@ -45,7 +45,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     updateFormData,
     completedSteps,
   } = useStepperStore();
-  const { selectedReceivingSystem, selectedSendingSystem } = useSystemStore();
+  const { selectedReceivingSystem } = useSystemStore();
   const { isDark } = useDarkTheme();
 
   const [initialValues, setInitialValues] = useState<FormData | null>(null);
@@ -148,7 +148,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             formData={formData}
           />
         );
-      case 'payoneer':
+      case 'payoneer_usd':
+      case 'payoneer_eur':
         return (
           <StepTwoPayoneer
             register={register}
@@ -168,7 +169,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             formData={formData}
           />
         );
-      case 'wise':
+      case 'wise_usd':
+      case 'wise_eur':
         return (
           <StepTwoWise
             register={register}
@@ -208,12 +210,12 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       {renderSelectedSystem()}
 
-      <div className="flex justify-end">
+      <div className="flex justify-center sm-phone:justify-end">
         {completedSteps[1] ? (
           hasChanges ? (
             <button
               type="submit"
-              className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+              className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
               disabled={!isValid || blockAll}
             >
               Siguiente
@@ -231,7 +233,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
         ) : (
           <button
             type="submit"
-            className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[14px] text-sm font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
+            className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] text-sm font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
             disabled={!isValid || blockAll}
           >
             Siguiente
