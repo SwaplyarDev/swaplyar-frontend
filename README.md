@@ -59,8 +59,9 @@ swaplyar-frontend/
 │   ├── auth/          # Rutas relacionadas con autenticación
 │   │   ├── login/     # Página de inicio de sesión
 │   │   └── new-account/ # Página de registro de nueva cuenta
-│   └── request/       # Rutas relacionadas con solicitudes de intercambio
-│   └── layout.js      # Layout principal de la aplicación (opcional)
+│   ├── request/       # Rutas relacionadas con solicitudes de intercambio
+|   ├── repentance/    # Página "Arrepentimiento"
+│   ├── layout.js      # Layout principal de la aplicación (opcional)
 │   └── page.js        # Página de inicio (opcional)
 ├── components/        # Componentes reutilizables
 │   ├── ui/            # Componentes de interfaz de usuario
@@ -82,7 +83,7 @@ swaplyar-frontend/
 
 - **`app/`:**
   - **`api/auth/[...nextauth]`:** Ruta de NextAuth.js para manejar la autenticación.
-  - **`info/`, `auth/`, `request/`:** Carpetas para agrupar las rutas relacionadas con cada sección de la aplicación.
+  - **`info/`, `auth/`, `request/`, `repentance/`:** Carpetas para agrupar las rutas relacionadas con cada sección de la aplicación.
   - **`layout.js`:** Define el diseño general de la aplicación (opcional).
   - **`page.js`:** Define la página de inicio (opcional).
 - **`components/`:** Contiene componentes reutilizables, organizados por funcionalidad.
@@ -91,6 +92,7 @@ swaplyar-frontend/
   - **`clientWrapper/`:** Componente que envuelve vistas para gestionar estados de carga, mostrando skeletons cuando sea necesario.
   - **`skeleton/`:** Componentes Skeleton que se muestran mientras las vistas se están cargando, mejorando la experiencia de usuario.
   - **`request/`:** Componentes específicos para gestionar solicitudes de intercambio.
+  - **`repentance/`:** Componentes específicos para el envio de solicitud de reembolso o arrepentimiento.
 - **`hooks/`:** Contiene hooks personalizados para gestionar lógica compartida.
 - **`store/`:** Contiene la configuración del store global, usando Zustand para manejar el estado global de la aplicación.
 - **`public/`:** Almacena archivos estáticos accesibles públicamente, como imágenes y fuentes.
@@ -110,6 +112,7 @@ swaplyar-frontend/
 - `/info/warranty`: Página de garantía.
 - `/info/why-choose-swaplyar`: Página "Por qué elegir Swaplyar".
 - `/request`: Página principal de solicitudes de intercambio.
+- `/repentance`: Página principal de arrepentimiento.
 
 🔗 **Guía para escribir commits claros y organizados**
 Para quienes deseen entender mejor cómo escribir commits efectivos, les recomiendo estudiar la [Especificación de Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/). Esta convención es ligera y se aplica fácilmente sobre los mensajes de commit, ofreciendo un conjunto de reglas simples para crear un historial de commits explícito y ordenado. Esto no solo facilita la lectura, sino que también ayuda en la automatización de herramientas y en la integración con SemVer (Versionado Semántico), describiendo claramente las nuevas características, correcciones y cambios importantes realizados.
