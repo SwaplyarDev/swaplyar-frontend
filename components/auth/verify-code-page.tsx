@@ -1,3 +1,5 @@
+// /components/auth/verify-code-page.tsx
+
 'use client';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState, useEffect, ChangeEvent } from 'react';

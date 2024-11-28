@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, use } from 'react';
 import SystemInfo from '../SystemInfo/SystemInfo';
 import InvertSystems from '../InvertSystems/InvertSystems';
 import { useSystemStore } from '@/store/useSystemStore';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Paypal from '../PayPal/Paypal';
 import Swal from 'sweetalert2';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
@@ -16,6 +16,9 @@ import clsx from 'clsx';
 import { useExchangeRateStore } from '@/store/exchangeRateStore';
 import { useExchangeRate } from '@/hooks/useExchangeRates';
 import Image from 'next/image';
+import { useStepperStore } from '@/store/stateStepperStore';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
+import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 
 export default function TransactionCalculator() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -35,6 +38,7 @@ export default function TransactionCalculator() {
   }, [selectedSendingSystem, selectedReceivingSystem, startUpdatingRates, stopUpdatingRates]);
 
   const { activeSelect } = useSystemStore();
+  const { resetToDefault } = useStepperStore();
   const router = useRouter();
   const { isDark } = useDarkTheme();
   const [exchange, setExchange] = useState({ currency: 'USD', amount: 0 });
@@ -49,7 +53,18 @@ export default function TransactionCalculator() {
     });
   }, [sendAmount, selectedSendingSystem]);
 
+  const pathname = usePathname();
+  const { pass } = useControlRouteRequestStore((state) => state);
+  const { setPass } = useControlRouteRequestStore((state) => state);
+
+  useEffect(() => {
+    if (!pass && pathname === '/request') {
+      router.push('/home');
+    }
+  }, [pass, pathname, router]);
+
   const handleDirection = () => {
+    setPass();
     router.push('/request');
   };
 
@@ -101,10 +116,11 @@ export default function TransactionCalculator() {
       handleExchangePaypal();
     } else {
       setIsProcessing(true);
-      setInterval(() => {
-        handleDirection();
-        setIsProcessing(false);
-      }, 3000);
+      // setInterval(() => {
+      handleDirection();
+      resetToDefault();
+      setIsProcessing(false);
+      // }, 3000);
     }
   };
 
@@ -189,8 +205,15 @@ export default function TransactionCalculator() {
               }
             >
               {isProcessing ? (
-                <div className="flex items-center justify-center">
-                  <Image src="/gif/cargando.gif" width={20} height={20} alt="loading" className="mb-0.5 mr-1" />
+                <div className="flex items-center justify-center gap-2">
+                  {/* <Image
+                    src="/gif/cargando.gif"
+                    width={20}
+                    height={20}
+                    alt="loading"
+                    className="mb-0.5 mr-1"
+                  /> */}
+                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
                   Procesando...
                 </div>
               ) : (

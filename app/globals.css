@@ -547,7 +547,21 @@ div:where(.swal2-container).swal2-noanimation {
   box-shadow: inherit;
 }
 
-/* Estilos de fuentes H1*/
-h1 {
-  font-family: 'Open Sans', sans-serif;
+.confirmAlert {
+  max-width: 650px;
+  width: 100%;
+  padding: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+@media (min-width: 550px) {
+  .confirmAlert {
+    padding: 0px !important;
+  }
+  /* Estilos de fuentes H1*/
+  h1 {
+    font-family: 'Open Sans', sans-serif;
+  }
 }

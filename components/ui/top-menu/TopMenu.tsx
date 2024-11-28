@@ -13,13 +13,12 @@ import { MdOutlineClose } from 'react-icons/md';
 import NavLinks from '@/components/ui/top-menu/nav-links';
 import Switch from './switch';
 import Image from 'next/image';
-import S from '../../../public/images/logo-solo.png';
 import TopPopUp from './topPopUp';
-
 import LogInButton from './log-register-bt/logiInButton';
-import style from './log-register-bt/buttonStyle.module.css';
+
 import { signOut, useSession } from 'next-auth/react';
 import RegisterButton from './log-register-bt/registerButton';
+import { SwaplyArLogoSolo, SwaplyArLogoComplete } from '@/utils/assets/imgDatabaseCloudinary';
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -62,14 +61,14 @@ export function TopMenu() {
           <Navbar.Brand href="/">
             <Image
               alt="Your Company"
-              src="https://res.cloudinary.com/df5jwzuq9/image/upload/v1722209853/logo_g74htq.png"
+              src={SwaplyArLogoComplete}
               width={200}
               height={200}
               className="hidden h-12 w-auto rounded-xl filter dark:brightness-[0%] dark:invert md:block"
             />
             <Image
               alt="Your Company"
-              src={S}
+              src={SwaplyArLogoSolo}
               width={200}
               height={200}
               className="h-12 w-auto rounded-xl filter dark:brightness-[0%] dark:invert md:hidden"
