@@ -22,3 +22,8 @@ export type FormValues = {
   email: string;
   message: string;
 };
+
+export type RequestSearch = {
+  numberOfRequest: string;
+  lastNameRequest: string;
+};
