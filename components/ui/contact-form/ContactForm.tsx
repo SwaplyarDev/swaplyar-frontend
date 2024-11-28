@@ -8,6 +8,7 @@ import { FormValues } from '@/types/data';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
@@ -72,44 +73,112 @@ const ContactForm = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex w-full flex-col space-y-4"
-    >
-      <div className="rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col">
+      <div className="rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark mb-5">
         <h4 className="mb-7 text-xl font-semibold">Contáctanos</h4>
         <div className="flex flex-col gap-10 md:flex-row md:gap-16">
-          <div className="flex w-full flex-col gap-4">
+        <div className="flex w-full flex-col gap-4">
+          <div className="flex flex-col">
+            <label
+              htmlFor="Nombre"
+              className={clsx(
+                'ml-1 text-xs hidden',
+                errors.Nombre
+                  ? 'text-red-500'
+                  : 'text-lightText dark:text-darkText',
+              )}
+            >
+              Nombre
+            </label>
             <InputField
               id="Nombre"
-              type='text'
+              type="text"
               placeholder="Nombre completo"
-              register={register('Nombre', { required: true })}
-              error={errors.Nombre && 'Este campo es obligatorio'}
+              register={register('Nombre', {
+                required: 'El Nombre es obligatorio',
+                pattern: {
+                  value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                  message: 'El Nombre solo puede contener letras y espacios',
+                },
+              })}
+              error={
+                errors.Nombre && errors.Nombre.message
+              }
             />
+          </div>
+          <div className="flex flex-col">
+            <label
+              htmlFor="Apellido"
+              className={clsx(
+                'ml-1 text-xs hidden',
+                errors.Apellido
+                  ? 'text-red-500'
+                  : 'text-lightText dark:text-darkText',
+              )}
+            >
+              Apellido
+            </label>
             <InputField
               id="Apellido"
-              type='text'
-              placeholder="Apellido Completo"
-              register={register('Apellido', { required: true })}
-              error={errors.Apellido && 'Este campo es obligatorio'}
+              type="text"
+              placeholder="Apellido completo"
+              register={register('Apellido', {
+                required: 'El Apellido es obligatorio',
+                pattern: {
+                  value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                  message: 'El Apellido solo puede contener letras y espacios',
+                },
+              })}
+              error={errors.Apellido && errors.Apellido.message}
             />
+          </div>
+          <div className="flex flex-col">
+            <label
+              htmlFor="email"
+              className={clsx(
+                'ml-1 text-xs hidden',
+                errors.email
+                  ? 'text-red-500'
+                  : 'text-lightText dark:text-darkText',
+              )}
+            >
+              Email
+            </label>
             <InputField
               id="email"
               type="email"
               placeholder="Email"
-              register={register('email', { required: true })}
-              error={errors.email && 'Este campo es obligatorio'}
+              register={register('email', {
+                required: 'El Email es obligatorio',
+                pattern: {
+                  // value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+                  message: 'El formato del Email es inválido',
+                },
+              })}
+              error={errors.email && errors.email.message}
             />
           </div>
-          <div className="flex w-full flex-col">
+        </div>
+        <div className="flex w-full flex-col gap-4">
+          <div className="flex h-full flex-col">
+            <label
+              htmlFor="message"
+              className={clsx(
+                'ml-1 text-xs hidden',
+                errors.message
+                  ? 'text-red-500'
+                  : 'text-lightText dark:text-darkText',
+              )}
+            >
+              Nota
+            </label>
             <textarea
               {...register('message', { required: true })}
               id="message"
-              rows={7}
               placeholder="Mensaje"
               className={clsx(
-                'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
+                'h-full w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
                 errors.message
                   ? 'border-red-500'
                   : 'hover:border-blue-600 dark:hover:border-white',
@@ -121,24 +190,125 @@ const ContactForm = () => {
           </div>
         </div>
       </div>
+        {/* <div className="flex flex-col gap-10 md:flex-row md:gap-16">
+          <div className="flex w-full flex-col gap-4">
+            <div className="flex flex-col">
+              <label
+                htmlFor="Nombre"
+                className={clsx(
+                  'hidden',
+                  errors.Nombre
+                    ? 'text-red-500'
+                    : 'text-lightText dark:text-darkText',
+                )}
+              >
+                Nombre
+              </label>
+              <InputField
+                id="Nombre"
+                type="text"
+                placeholder="Nombre completo"
+                register={register('Nombre', { required: true })}
+                error={errors.Nombre && 'Este campo es obligatorio'}
+              />
+            </div>
+            <div className="flex flex-col">
+              <label
+                htmlFor="Apellido"
+                className={clsx(
+                  'hidden',
+                  errors.Apellido
+                    ? 'text-red-500'
+                    : 'text-lightText dark:text-darkText',
+                )}
+              >
+                Apellido
+              </label>
+              <InputField
+                id="Apellido"
+                type="text"
+                placeholder="Apellido Completo"
+                register={register('Apellido', { required: true })}
+                error={errors.Apellido && 'Este campo es obligatorio'}
+              />
+            </div>
+            <div className="flex flex-col">
+              <label
+                htmlFor="email"
+                className={clsx(
+                  'hidden',
+                  errors.email
+                    ? 'text-red-500'
+                    : 'text-lightText dark:text-darkText',
+                )}
+              >
+                Email
+              </label>
+              <InputField
+                id="email"
+                type="email"
+                placeholder="Email"
+                register={register('email', { required: true })}
+                error={errors.email && 'Este campo es obligatorio'}
+              />
+            </div>
+          </div>
+          <div className="flex w-full flex-col gap-4">
+            <div className="flex w-full flex-col">
+              <label
+                htmlFor="message"
+                className={clsx(
+                  'hidden',
+                  errors.message
+                    ? 'text-red-500'
+                    : 'text-lightText dark:text-darkText',
+                )}
+              >
+                Nota (opcional)
+              </label>
+              <textarea
+                {...register('message', { required: true })}
+                id="message"
+                rows={7}
+                placeholder="Mensaje"
+                className={clsx(
+                  'h-full w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
+                  errors.message
+                    ? 'border-red-500'
+                    : 'hover:border-blue-600 dark:hover:border-white',
+                )}
+              ></textarea>
+              {errors.message && (
+                <p className="text-sm text-red-500">
+                  Este campo es obligatorio
+                </p>
+              )}
+            </div>
+          </div>
+        </div> */}
+      </div>
       <div className="flex justify-center">
         <button
           type="submit"
           className={`dark:hover:bg- relative m-1 h-[48px] w-[200px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText xs:w-[330px] ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
         >
-          {loading ? 'Enviando...' : 'Enviar Mensaje'}
+          {loading ? (
+            <div className="flex items-center justify-center gap-2">
+              {/* <Image
+                    src="/gif/cargando.gif"
+                    width={20}
+                    height={20}
+                    alt="loading"
+                    className="mb-0.5 mr-1"
+                  /> */}
+              <LoadingGif color={isDark ? '#012c8a' : '#ebe7e0'} />
+              Enviando...
+            </div>
+          ) : (
+            'Enviar Mensaje'
+          )}
         </button>
       </div>
-      {loading && (
-        <div id="loading" className="flex justify-center">
-          <Image
-            src="/gif/cargando.gif"
-            alt="Cargando..."
-            width={50}
-            height={50}
-          />
-        </div>
-      )}
     </form>
   );
 };

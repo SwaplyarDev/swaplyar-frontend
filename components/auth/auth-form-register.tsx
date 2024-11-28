@@ -10,6 +10,7 @@ import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
 import { useRouter } from 'next/navigation';
 import userInfoStore from '@/store/userInfoStore';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
 type FormInputs = {
   firstName: string;
@@ -213,7 +214,21 @@ export const RegisterForm = () => {
           className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
           disabled={loading}
         >
-          {loading ? 'Creando cuenta...' : 'Crear cuenta'}
+          {loading ? (
+            <div className="flex items-center justify-center gap-2">
+              {/* <Image
+                src="/gif/cargando.gif"
+                width={20}
+                height={20}
+                alt="loading"
+                className="mb-0.5 mr-1"
+              /> */}
+              <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
+              Creando cuenta...
+            </div>
+          ) : (
+            'Crear cuenta'
+          )}
         </button>
 
         <div className="my-5 flex items-center">

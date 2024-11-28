@@ -7,6 +7,7 @@ import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import Image from 'next/image';
 
 const BASE_URL =
@@ -100,14 +101,15 @@ export const LoginForm = () => {
           disabled={loading} // Desactivar el botón si está cargando
         >
           {loading ? (
-            <div className="flex items-center justify-center">
-              <Image
+            <div className="flex items-center justify-center gap-2">
+              {/* <Image
                 src="/gif/cargando.gif"
                 width={20}
                 height={20}
                 alt="loading"
                 className="mb-0.5 mr-1"
-              />
+              /> */}
+              <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
               Procesando...
             </div>
           ) : (

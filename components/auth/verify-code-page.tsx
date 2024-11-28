@@ -11,6 +11,7 @@ import useCodeVerificationStore from '@/store/codeVerificationStore';
 import useStore from '@/store/authViewStore';
 import userInfoStore from '@/store/userInfoStore';
 import { registerUser } from '@/actions/auth/register';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
 type FormInputs = {
   verificationCode: string[];
@@ -255,11 +256,23 @@ export const VerifyCodePage = () => {
             disabled={timer > 0 || reLoading || !!isLocked}
             className={`dark:hover:bg- relative m-1 h-[48px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth disabled:border-gray-400 disabled:bg-gray-400 disabled:shadow-none dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400 ${isDark ? 'buttonSecondDark' : 'buttonSecond'}${timer > 0 || attempts <= 0 ? 'text-gray-500' : ''}`}
           >
-            {reLoading
-              ? 'Enviando...'
-              : timer > 0 && attempts > 0
-                ? `Reenviar en ${timer}s`
-                : 'Reenviar código'}
+            {reLoading ? (
+              <div className="flex items-center justify-center gap-2">
+                {/* <Image
+                    src="/gif/cargando.gif"
+                    width={20}
+                    height={20}
+                    alt="loading"
+                    className="mb-0.5 mr-1"
+                  /> */}
+                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
+                Enviando...
+              </div>
+            ) : timer > 0 && attempts > 0 ? (
+              `Reenviar en ${timer}s`
+            ) : (
+              'Reenviar código'
+            )}
           </button>
         </div>
 

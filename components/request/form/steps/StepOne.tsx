@@ -202,7 +202,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               placeholder="Email"
               disabled={blockAll}
               register={register('email', {
-                required: 'El correo es obligatorio',
+                required: 'El Correo es obligatorio',
                 pattern: {
                   // value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                   value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
