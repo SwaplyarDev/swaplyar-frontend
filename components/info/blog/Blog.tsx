@@ -26,6 +26,7 @@ const Blog: React.FC = () => {
 
   // Fetch de blogs y total de páginas
   useFetchBlogs(currentPage, searchTerm, setTotalPages);
+  console.log(blogs);
 
   // Imágenes aleatorias para el carrusel
   const randomImages = useRandomImages(blogs);

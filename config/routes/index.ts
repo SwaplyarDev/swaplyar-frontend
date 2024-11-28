@@ -6,6 +6,7 @@ export const configRoutes: ConfigRoutes = {
     '/auth/change-password',
     '/info/about-us',
     '/info/blog',
+    '/info/blog/:cardId',
     '/info/help-center',
     '/info/how-to-use',
     '/info/loyalty-program',
