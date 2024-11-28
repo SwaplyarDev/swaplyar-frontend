@@ -10,11 +10,7 @@ type PayerInfoProps = {
   setValue: UseFormSetValue<any>;
 };
 
-export default function PayerInfo({
-  register,
-  errors,
-  setValue,
-}: PayerInfoProps) {
+export default function PayerInfo({ register, errors, setValue }: PayerInfoProps) {
   const [amounts, setAmounts] = useState<payerOptions>({
     sendAmount: 0,
     sendCurrency: '',
@@ -27,9 +23,7 @@ export default function PayerInfo({
     const storedSendAmount = localStorage.getItem('sendAmount');
     const storedSendCurrency = localStorage.getItem('selectedSendingSystem');
     const storedReciveAmount = localStorage.getItem('receiveAmount');
-    const storedReciveCurrency = localStorage.getItem(
-      'selectedReceivingSystem',
-    );
+    const storedReciveCurrency = localStorage.getItem('selectedReceivingSystem');
 
     if (storedClient) {
       const client = JSON.parse(storedClient);
@@ -39,12 +33,7 @@ export default function PayerInfo({
       setValue('sender_email', client.email);
     }
 
-    if (
-      storedSendCurrency &&
-      storedReciveCurrency &&
-      storedSendAmount &&
-      storedReciveAmount
-    ) {
+    if (storedSendCurrency && storedReciveCurrency && storedSendAmount && storedReciveAmount) {
       const preSendCurrency = JSON.parse(storedSendCurrency);
       const preReciveCurrency = JSON.parse(storedReciveCurrency);
 
@@ -80,20 +69,14 @@ export default function PayerInfo({
     <>
       <label
         htmlFor="sender_first_name"
-        className={clsx(
-          errors.sender_first_name
-            ? 'text-red-500'
-            : 'text-gray-900 dark:text-gray-300',
-        )}
+        className={clsx(errors.sender_first_name ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
       >
         Nombre
       </label>
       <input
         className={clsx(
           'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-          errors.sender_first_name
-            ? 'mb-0 border-red-500'
-            : 'mb-5 hover:border-blue-600',
+          errors.sender_first_name ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
         )}
         type="text"
         {...register('sender_first_name', {
@@ -101,27 +84,19 @@ export default function PayerInfo({
         })}
       />
       {errors.sender_first_name && (
-        <p className="mb-5 text-sm text-red-500">
-          • {errors.sender_first_name.message as string}
-        </p>
+        <p className="mb-5 text-sm text-red-500">• {errors.sender_first_name.message as string}</p>
       )}
 
       <label
         htmlFor="sender_last_name"
-        className={clsx(
-          errors.sender_last_name
-            ? 'text-red-500'
-            : 'text-gray-900 dark:text-gray-300',
-        )}
+        className={clsx(errors.sender_last_name ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
       >
         Apellido
       </label>
       <input
         className={clsx(
           'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-          errors.last_name
-            ? 'mb-0 border-red-500'
-            : 'mb-5 hover:border-blue-600',
+          errors.last_name ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
         )}
         type="text"
         {...register('sender_last_name', {
@@ -129,26 +104,18 @@ export default function PayerInfo({
         })}
       />
       {errors.sender_last_name && (
-        <p className="mb-5 text-sm text-red-500">
-          • {errors.sender_last_name.message as string}
-        </p>
+        <p className="mb-5 text-sm text-red-500">• {errors.sender_last_name.message as string}</p>
       )}
       <label
         htmlFor="amount_sent"
-        className={clsx(
-          errors.amount_sent
-            ? 'text-red-500'
-            : 'text-gray-900 dark:text-gray-300',
-        )}
+        className={clsx(errors.amount_sent ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
       >
         Monto Enviado
       </label>
       <input
         className={clsx(
           'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-          errors.amount_sent
-            ? 'mb-0 border-red-500'
-            : 'mb-5 hover:border-blue-600',
+          errors.amount_sent ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
         )}
         type="number"
         value={amounts.sendAmount}
@@ -156,28 +123,18 @@ export default function PayerInfo({
           required: 'El monto enviado es obligatorio',
         })}
       />
-      {errors.amount_sent && (
-        <p className="mb-5 text-sm text-red-500">
-          • {errors.amount_sent.message as string}
-        </p>
-      )}
+      {errors.amount_sent && <p className="mb-5 text-sm text-red-500">• {errors.amount_sent.message as string}</p>}
 
       <label
         htmlFor="amount_received"
-        className={clsx(
-          errors.amount_received
-            ? 'text-red-500'
-            : 'text-gray-900 dark:text-gray-300',
-        )}
+        className={clsx(errors.amount_received ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
       >
         Monto Recibido
       </label>
       <input
         className={clsx(
           'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-          errors.amount_received
-            ? 'mb-0 border-red-500'
-            : 'mb-5 hover:border-blue-600',
+          errors.amount_received ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
         )}
         type="number"
         value={amounts.recibeAmount}
@@ -186,54 +143,36 @@ export default function PayerInfo({
         })}
       />
       {errors.amount_received && (
-        <p className="mb-5 text-sm text-red-500">
-          • {errors.amount_received.message as string}
-        </p>
+        <p className="mb-5 text-sm text-red-500">• {errors.amount_received.message as string}</p>
       )}
 
       <label
         htmlFor="transfer_code"
-        className={clsx(
-          errors.transfer_code
-            ? 'text-red-500'
-            : 'text-gray-900 dark:text-gray-300',
-        )}
+        className={clsx(errors.transfer_code ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
       >
         Identificador de Transacción
       </label>
       <input
         className={clsx(
           'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-          errors.transfer_code
-            ? 'mb-0 border-red-500'
-            : 'mb-5 hover:border-blue-600',
+          errors.transfer_code ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
         )}
         type="text"
         {...register('transfer_code', {
           required: 'El identificador es obligatorio',
         })}
       />
-      {errors.transfer_code && (
-        <p className="mb-5 text-sm text-red-500">
-          • {errors.transfer_code.message as string}
-        </p>
-      )}
+      {errors.transfer_code && <p className="mb-5 text-sm text-red-500">• {errors.transfer_code.message as string}</p>}
       <label
         htmlFor="sender_email"
-        className={clsx(
-          errors.sender_email
-            ? 'text-red-500'
-            : 'text-gray-900 dark:text-gray-300',
-        )}
+        className={clsx(errors.sender_email ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
       >
         Email
       </label>
       <input
         className={clsx(
           'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-          errors.sender_email
-            ? 'mb-0 border-red-500'
-            : 'mb-5 hover:border-blue-600',
+          errors.sender_email ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
         )}
         type="email"
         {...register('sender_email', {
@@ -244,11 +183,7 @@ export default function PayerInfo({
           },
         })}
       />
-      {errors.sender_email && (
-        <p className="mb-5 text-sm text-red-500">
-          • {errors.sender_email.message as string}
-        </p>
-      )}
+      {errors.sender_email && <p className="mb-5 text-sm text-red-500">• {errors.sender_email.message as string}</p>}
     </>
   );
 }

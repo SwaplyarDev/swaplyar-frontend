@@ -6,12 +6,14 @@ import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import clsx from 'clsx';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
 import { useRouter } from 'next/navigation';
-import Arrow from '../ui/Arrow/Arrow';
 import useCodeVerificationStore from '@/store/codeVerificationStore';
 import useStore from '@/store/authViewStore';
 import userInfoStore from '@/store/userInfoStore';
 import { registerUser } from '@/actions/auth/register';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
+import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
+import ButtonBack from '../ui/ButtonBack/ButtonBack';
+import Arrow from '../ui/Arrow/Arrow';
 
 type FormInputs = {
   verificationCode: string[];
@@ -30,6 +32,7 @@ export const VerifyCodePage = () => {
     setValue,
   } = useForm<FormInputs>({});
 
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [reLoading, setReLoading] = useState(false);
   const { email } = useEmailVerificationStore();
@@ -40,13 +43,7 @@ export const VerifyCodePage = () => {
   console.log('User id: ', user?.id);
   console.log('View: ', view);
 
-  const {
-    attempts,
-    lockUntil,
-    decrementAttempts,
-    setLockUntil,
-    resetAttempts,
-  } = useCodeVerificationStore();
+  const { attempts, lockUntil, decrementAttempts, setLockUntil, resetAttempts } = useCodeVerificationStore();
 
   const isLocked = lockUntil && lockUntil > Date.now();
   const [timer, setTimer] = useState(0);
@@ -76,9 +73,7 @@ export const VerifyCodePage = () => {
     }
   }, [timer]);
 
-  const verifyCode: SubmitHandler<FormInputs> = async ({
-    verificationCode,
-  }) => {
+  const verifyCode: SubmitHandler<FormInputs> = async ({ verificationCode }) => {
     setLoading(true);
     const code = verificationCode.join('');
 
@@ -154,16 +149,11 @@ export const VerifyCodePage = () => {
     }
   };
 
-  const handleInputChange = (
-    index: number,
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     if (/^\d*$/.test(value)) {
       clearErrors('verificationCode');
-      const newVerificationCode = [
-        ...(watch('verificationCode') || ([] as string[])),
-      ];
+      const newVerificationCode = [...(watch('verificationCode') || ([] as string[]))];
       newVerificationCode[index] = value;
       setValue('verificationCode', newVerificationCode);
 
@@ -178,10 +168,7 @@ export const VerifyCodePage = () => {
     }
   };
 
-  const handleInputKeyDown = (
-    index: number,
-    event: React.KeyboardEvent<HTMLInputElement>,
-  ) => {
+  const handleInputKeyDown = (index: number, event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Backspace' && event.currentTarget.value === '') {
       if (index > 0) {
         const prevInput = document.getElementById(`code-${index - 1}`);
@@ -190,51 +177,83 @@ export const VerifyCodePage = () => {
     }
   };
 
+  const handleFocus = (index: number) => {
+    setFocusedIndex(index);
+  };
+
+  const handleBlur = () => {
+    setFocusedIndex(null);
+  };
+
   return (
     <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-start py-5 xs:mt-0 xs:justify-center">
-      <form
-        onSubmit={handleSubmit(verifyCode)}
-        className="flex w-full max-w-xl flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
-      >
-        <h2 className="mb-5 text-center text-5xl font-bold text-buttonsLigth dark:text-darkText">
-          Verificación
-        </h2>
-
-        <label
-          htmlFor="verificationCode"
-          className={'mb-8 text-center text-lightText dark:text-darkText'}
+      <AnimatedBlurredCircles tope="top-[124px]" />
+      <div className="w-full max-w-xl px-5">
+        <form
+          onSubmit={handleSubmit(verifyCode)}
+          className="flex w-full max-w-xl flex-col rounded-2xl bg-[#e6e8ef62] px-2 py-8 shadow-md dark:bg-calculatorDark sm:px-8"
         >
-          Si tienes una cuenta, te hemos enviado un código a{' '}
-          <span className="font-bold">{email}</span>. Introdúcelo a continuación
-        </label>
+          <h2 className="mb-5 text-center text-5xl font-bold text-buttonsLigth dark:text-darkText">Verificación</h2>
 
-        <div className="mb-5 flex justify-between">
-          {[...Array(6)].map((_, index) => (
-            <>
-              <input
-                key={index}
-                id={`code-${index}`}
-                type="text"
-                maxLength={1}
-                disabled={isLocked || loading} // Deshabilitar si está bloqueado o verificando
-                className={clsx(
-                  'h-16 w-16 rounded-full border text-center text-xl dark:bg-lightText',
-                  errors.verificationCode
-                    ? 'border-red-500'
-                    : 'hover:border-blue-600 dark:hover:border-white',
-                )}
-                {...register(`verificationCode.${index}`)}
-                onChange={(event) => handleInputChange(index, event)}
-                onKeyDown={(event) => handleInputKeyDown(index, event)}
-              />
-              {index < 5 && (
-                <div className="flex min-h-full min-w-[0.7rem] items-center justify-center">
-                  <div className="h-[1px] w-full flex-1 bg-buttonsLigth dark:bg-darkText"></div>
+          <label htmlFor="verificationCode" className={'mb-8 text-center text-lightText dark:text-darkText'}>
+            Si tienes una cuenta, te hemos enviado un código a <span className="font-bold">{email}</span>. Introdúcelo a
+            continuación
+          </label>
+
+          <div className="mb-5 flex h-[46px] justify-between gap-2 xs:h-[57px] xs:gap-1 sm:h-[65.33px]">
+            {[...Array(6)].map((_, index) => (
+              <>
+                <div
+                  className={clsx(
+                    `w-[46px] rounded-full border-[0.5px] border-buttonsLigth p-[3px] dark:border-darkText xs:w-[57px] sm:w-full`,
+                  )}
+                >
+                  <input
+                    key={index}
+                    id={`code-${index}`}
+                    type="text"
+                    maxLength={1}
+                    disabled={isLocked || loading}
+                    className={clsx(
+                      'h-full w-full rounded-full border-0 text-center text-base focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem]',
+                      errors.verificationCode ? 'border-red-500' : '',
+                    )}
+                    {...register(`verificationCode.${index}`)}
+                    onChange={(event) => handleInputChange(index, event)}
+                    onKeyDown={(event) => handleInputKeyDown(index, event)}
+                  />
                 </div>
+                {index < 5 && (
+                  <div className="hidden min-h-full min-w-[0.5rem] items-center justify-center xs:flex">
+                    <div className="h-[2px] w-full flex-1 bg-buttonsLigth dark:bg-darkText"></div>
+                  </div>
+                )}
+              </>
+            ))}
+          </div>
+
+          {errors.verificationCode && <p className="mb-5 text-sm text-red-500">• {errors.verificationCode.message}</p>}
+
+          <div className="my-5 flex justify-between text-buttonsLigth dark:text-darkText">
+            <ButtonBack route="/auth/login-register" isDark={isDark} />
+
+            <button
+              type="button"
+              onClick={resendCode}
+              disabled={timer > 0 || reLoading || !!isLocked}
+              className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth disabled:border-gray-400 disabled:bg-gray-400 disabled:shadow-none dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400 ${isDark ? 'buttonSecondDark' : 'buttonSecond'}${timer > 0 || attempts <= 0 ? 'text-gray-500' : ''}`}
+            >
+              {reLoading ? (
+                'Enviando...'
+              ) : timer > 0 && attempts > 0 ? (
+                `Reenviar en ${timer}s`
+              ) : (
+                <p>
+                  Reenviar <span className="hidden xs:inline-block">código</span>
+                </p>
               )}
-            </>
-          ))}
-        </div>
+            </button>
+          </div>
 
         {errors.verificationCode && (
           <p className="mb-5 text-sm text-red-500">
@@ -276,7 +295,7 @@ export const VerifyCodePage = () => {
           </button>
         </div>
 
-        {attempts > 0 && !isLocked ? (
+        {/* {attempts > 0 && !isLocked ? (
           <p className="mt-2 text-center text-xs text-buttonsLigth dark:text-darkText">
             Tienes {attempts} intentos para reenviar el código
           </p>
@@ -285,7 +304,16 @@ export const VerifyCodePage = () => {
             Estás bloqueado por 5 minutos.
           </p>
         )}
-      </form>
+      </form> */}
+          {attempts > 0 && !isLocked ? (
+            <p className="mt-2 text-center text-base text-buttonsLigth dark:text-darkText sm:text-lg">
+              Tienes {attempts} intentos para reenviar el código
+            </p>
+          ) : (
+            <p className="mt-2 text-center text-base text-red-500">Estás bloqueado por 5 minutos.</p>
+          )}
+        </form>
+      </div>
     </div>
   );
 };

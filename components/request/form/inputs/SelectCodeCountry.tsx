@@ -11,8 +11,7 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
   blockAll,
 }) => {
   const fieldName = 'calling_code';
-  const errorMessage = (errors as { [key: string]: FieldError })[fieldName]
-    ?.message;
+  const errorMessage = (errors as { [key: string]: FieldError })[fieldName]?.message;
   const { isDark } = useDarkTheme();
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
   const [countryValues, setCountryValues] = useState<CountryOption[]>([]);
@@ -23,9 +22,7 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
         const response = await fetch('https://restcountries.com/v3.1/all');
         const countries = await response.json();
         const options: CountryOption[] = countries.map((country: any) => {
-          const callingCode = country.idd?.root
-            ? `${country.idd.root}${country.idd.suffixes?.[0] || ''}`
-            : '';
+          const callingCode = country.idd?.root ? `${country.idd.root}${country.idd.suffixes?.[0] || ''}` : '';
           return {
             value: country.cca2, // Usar la sigla del país (ej. 'AR')
             label: `${callingCode ? callingCode : 'Sin código'} (${country.cca2})`, // Mostrar código de área y sigla
@@ -33,9 +30,7 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
           };
         });
         const options2: CountryOption[] = countries.map((country: any) => {
-          const callingCode = country.idd?.root
-            ? `${country.idd.root}${country.idd.suffixes?.[0] || ''}`
-            : '';
+          const callingCode = country.idd?.root ? `${country.idd.root}${country.idd.suffixes?.[0] || ''}` : '';
           return {
             value: country.cca2, // Usar la sigla del país (ej. 'AR')
             label: `${country.cca2}`, // Mostrar código de área y sigla
@@ -56,28 +51,19 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
     <>
       <label
         htmlFor={fieldName}
-        className={clsx(
-          errorMessage ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
-          'hidden',
-        )}
+        className={clsx(errorMessage ? 'text-red-500' : 'text-gray-900 dark:text-gray-300', 'hidden')}
       >
         Selecciona un código de país
       </label>
       <Select
         id={fieldName}
         options={countryOptions}
-        value={
-          countryValues.find(
-            (option) => option.value === selectedCodeCountry?.value,
-          ) || null
-        }
+        value={countryValues.find((option) => option.value === selectedCodeCountry?.value) || null}
         onChange={(option) => setSelectedCodeCountry(option as CountryOption)}
         isSearchable
         isDisabled={blockAll}
         classNamePrefix="custom-select"
-        className={clsx(
-          'w-full max-w-24 rounded py-px text-gray-900 dark:text-white ml-[10px]',
-        )}
+        className={clsx('ml-[10px] w-full max-w-24 rounded py-px text-gray-900 dark:text-white')}
         placeholder="AR"
         theme={(theme) => ({
           ...theme,
@@ -155,9 +141,7 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
           }),
         }}
       />
-      {errorMessage && (
-        <p className="mt-1 text-sm text-red-500">{errorMessage}</p>
-      )}
+      {errorMessage && <p className="mt-1 text-sm text-red-500">{errorMessage}</p>}
     </>
   );
 };

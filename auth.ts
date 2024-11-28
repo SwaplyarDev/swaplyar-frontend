@@ -20,23 +20,15 @@ export const {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       // Aquí puedes realizar verificaciones adicionales durante el sign-in
-      console.log('signIn callback:', {
-        user,
-        account,
-        profile,
-        email,
-        credentials,
-      });
+
       return true;
     },
     async redirect({ url, baseUrl }) {
-      console.log('redirect callback:', { url, baseUrl });
       return baseUrl;
     },
     async jwt({ token, user }) {
       // Verificación de propiedades de `user`
-      console.log('Token: ---', token);
-      console.log('User: ---', user);
+
       if (user && user.id) {
         token.id = user.id;
         token.role = user.role;
@@ -48,7 +40,6 @@ export const {
     },
 
     async session({ session, token }) {
-      console.log('session callback:', { session, token });
       if (session.user && token) {
         session.user.id = token.id;
         session.user.role = token.role;

@@ -2,12 +2,12 @@
 'use client';
 
 import React, { FC, MouseEvent } from 'react';
+import Link from 'next/link';
 
 interface LinkWithHoverProps {
   href: string;
   children: React.ReactNode;
 }
-
 const LinkWithHover: FC<LinkWithHoverProps> = ({ href, children }) => {
   const handleMouseOver = (e: MouseEvent<HTMLAnchorElement>) => {
     e.currentTarget.style.textDecoration = 'underline';
@@ -18,15 +18,15 @@ const LinkWithHover: FC<LinkWithHoverProps> = ({ href, children }) => {
   };
 
   return (
-    <a
+    <Link
       href={href}
       target="_blank"
-      style={{ color: '#012a8d', textDecoration: 'none' }}
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
+      className="relative items-center gap-2 transition-transform duration-300 ease-in-out hover:text-blue-700 dark:text-white dark:hover:text-sky-600"
     >
       {children}
-    </a>
+    </Link>
   );
 };
 

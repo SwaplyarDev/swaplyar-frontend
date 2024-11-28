@@ -10,8 +10,7 @@ import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
 
 const ContactForm = () => {
   const { data: session, status } = useSession();
@@ -184,9 +183,7 @@ const ContactForm = () => {
                   : 'hover:border-blue-600 dark:hover:border-white',
               )}
             ></textarea>
-            {errors.message && (
-              <p className="text-sm text-red-500">Este campo es obligatorio</p>
-            )}
+            {errors.message && <p className="text-sm text-red-500">Este campo es obligatorio</p>}
           </div>
         </div>
       </div>

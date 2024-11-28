@@ -8,7 +8,7 @@ import useStore from '@/store/authViewStore';
 
 export const Links = [
   { name: 'Quienes Somos', href: '/info/about-us' },
-  { name: 'Como Usar Swaplyar', href: '/info/how-to-use' },
+  { name: 'Como Usar SwaplyAr', href: '/info/how-to-use' },
   { name: 'Programa de Fidelización', href: '/info/loyalty-program' },
 ];
 
@@ -44,9 +44,7 @@ export default function NavLinks() {
               : ''
           } `}
         >
-          <p
-            className={`hidden md:block ${link.name === 'Login' || link.name === 'Register' ? 'font-bold' : ''}`}
-          >
+          <p className={`hidden md:block ${link.name === 'Login' || link.name === 'Register' ? 'font-bold' : ''}`}>
             {link.name}
           </p>
         </Link>

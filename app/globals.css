@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 255, 255, 255;
@@ -134,6 +137,35 @@ body {
 }
 
 @media (max-width: 640px) {
+  /* Contenedor estilo móvil */
+  .mobile-container {
+    @apply relative flex h-[70vh] w-full justify-center overflow-hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    clip-path: inset(0 0 -5% 0);
+    overflow: hidden;
+  }
+
+  /* Caja interna estilo móvil */
+  .mobile-box {
+    @apply absolute h-[60%] w-full rounded-full;
+    animation: spin 30s infinite linear;
+    bottom: 0;
+    left: 0%;
+    transform: translateX(-50%);
+  }
+
+  /* Bolas más pequeñas */
+  .small-ball {
+    width: 10px;
+    height: 10px;
+    margin: 5px;
+    filter: blur(1em);
+  }
+
   .container-blur {
     @apply relative flex h-[200vh] w-full justify-center overflow-hidden;
     position: absolute;
@@ -428,9 +460,7 @@ body::-webkit-scrollbar-thumb {
 /* Estilos del scrollbar usando variables definidas en el body */
 ul.scrollable-list {
   margin-top: 5px;
-  clip-path: inset(
-    0 round 16px
-  ); /* Ajusta el valor según el borde redondeado */
+  clip-path: inset(0 round 16px); /* Ajusta el valor según el borde redondeado */
 }
 ul.scrollable-list {
   padding-right: 0.5rem; /* Ajusta según sea necesario */
@@ -502,17 +532,6 @@ div:where(.swal2-container).swal2-noanimation {
 
 /*  animaciones de los botones */
 
-.buttonSecond {
-  outline: none;
-  transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
-}
-
-.buttonSecond:hover {
-  box-shadow:
-    0px 0px 0px 2px #ffffff,
-    0px 0px 0px 4px #91aeec;
-}
-
 .buttonSecondDark {
   outline: none;
   transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
@@ -540,5 +559,9 @@ div:where(.swal2-container).swal2-noanimation {
 @media (min-width: 550px) {
   .confirmAlert {
     padding: 0px !important;
+  }
+  /* Estilos de fuentes H1*/
+  h1 {
+    font-family: 'Open Sans', sans-serif;
   }
 }

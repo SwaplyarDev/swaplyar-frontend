@@ -5,8 +5,7 @@ import Github from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
 import { InvalidCredentials } from './lib/auth/index';
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default {
   providers: [
@@ -61,10 +60,7 @@ export default {
             throw new InvalidCredentials();
           }
         } catch (error) {
-          console.error(
-            'Authentication error:',
-            error instanceof InvalidCredentials ? error.message : error,
-          );
+          console.error('Authentication error:', error instanceof InvalidCredentials ? error.message : error);
           throw new Error('Authentication failed. Please try again.');
         }
       },
