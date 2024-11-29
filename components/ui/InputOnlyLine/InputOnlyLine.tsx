@@ -16,10 +16,10 @@ const InputOnlyLine: FC<InputOnlyLineProps> = ({ placeholder, type = 'text', reg
     <div className="flex w-full flex-col">
       <input
         className={clsx(
-          'border-b-2 border-blue-600 bg-transparent focus:outline-none focus:ring-0 dark:border-gray-200',
+          'border-b-4 border-buttonsLigth bg-transparent focus:outline-none focus:ring-0 dark:border-gray-200',
           error
             ? 'border-red-500'
-            : 'hover:border-blue-600 focus:border-blue-600 dark:hover:border-white dark:focus:border-blue-600',
+            : 'hover:border-buttonsLigth focus:border-buttonsLigth dark:hover:border-white dark:focus:border-buttonsLigth',
           'border-x-0 border-t-0',
           classStyle,
         )}

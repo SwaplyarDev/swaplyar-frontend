@@ -46,24 +46,39 @@ const SearchRequest = () => {
     }
   };
   return (
-    <div className="mx-auto flex w-full max-w-screen-lg flex-col gap-4 py-4">
-      <div className="px-4">
+    <div className="mx-auto flex w-full max-w-screen-lg flex-col gap-16 py-8 md:gap-4">
+      <div className="px-8">
         <h1 className="text-4xl text-lightText dark:text-darkText">Buscar Solicitud</h1>
-        <p className="text-xl text-lightText dark:text-darkText">
+        <p className="hidden w-96 text-xl font-[500] text-lightText dark:text-darkText md:block">
           Ingresa los datos tal cual aparece en el email enviado
         </p>
       </div>
-      <section className="relative flex min-h-[700px] items-start justify-start px-4 lg:px-0">
+      <section className="relative flex min-h-[500px] flex-col items-center justify-center px-8 md:flex-row md:items-start md:justify-start lg-tablet:min-h-[600px] lg:px-0">
         <Image
-          className="absolute left-0 top-0 w-[600px] lg-tablet:w-[700px]"
+          className="absolute left-0 top-0 ml-8 hidden w-[500px] md:block md-tablet:w-[600px] lg-tablet:w-[700px] lg:ml-0"
           src="/images/search-request-web.png"
           alt="SwaplyAr Search Request™"
           width={700}
           height={700}
         />
-        <div className="h-[324px] min-w-[410px] lg-tablet:min-w-[510px]"></div>
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-16 flex w-full max-w-[660px] flex-col items-end gap-16">
-          <div className="flex w-full flex-col items-end">
+        <div className="px- flex max-w-md flex-col items-center gap-8 md:hidden">
+          <Image
+            src="/images/search-request-phone.png"
+            alt="SwaplyAr Search Request Mobile™"
+            width={300}
+            height={300}
+          />
+          <div className="h-1 w-full bg-buttonsLigth dark:bg-darkText"></div>
+          <p className="text-center text-2xl font-[700] text-lightText dark:text-darkText">
+            Ingresa los datos tal cual aparece en el email enviado
+          </p>
+        </div>
+        <div className="hidden h-[324px] min-w-[380px] md:block md-tablet:min-w-[410px] lg-tablet:min-w-[510px]"></div>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="mt-16 flex w-full max-w-[660px] flex-col items-center gap-8 md:items-end lg-tablet:gap-16"
+        >
+          <div className="flex w-full flex-col items-start md:items-end">
             <label htmlFor="numberOfRequest" className="text-lg">
               NUMERO DE SOLICITUD
             </label>
@@ -72,10 +87,10 @@ const SearchRequest = () => {
               id="numberOfRequest"
               register={register('numberOfRequest')}
               error={errors.numberOfRequest?.message}
-              classStyle="text-end text-lg"
+              classStyle="text-start md:text-end text-lg pl-0"
             />
           </div>
-          <div className="flex w-full flex-col items-end">
+          <div className="flex w-full flex-col items-start md:items-end">
             <label htmlFor="lastNameRequest" className="text-lg">
               APELLIDO
             </label>
@@ -84,16 +99,20 @@ const SearchRequest = () => {
               id="lastNameRequest"
               register={register('lastNameRequest')}
               error={errors.lastNameRequest?.message}
-              classStyle="text-end text-lg"
+              classStyle="text-start md:text-end text-lg pl-0"
             />
           </div>
+          <div className="mt-8 h-1 w-full max-w-md bg-buttonsLigth dark:bg-darkText md:hidden"></div>
           <div className="flex flex-col gap-4">
             <button
               className={`relative m-1 h-10 w-52 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
             >
               {loading ? 'Buscando...' : 'Buscar'}
             </button>
-            <button type="button" className="text-lg font-bold underline">
+            <button
+              type="button"
+              className="text-lg font-bold underline transition-all duration-300 ease-in-out hover:no-underline"
+            >
               Salir
             </button>
           </div>
