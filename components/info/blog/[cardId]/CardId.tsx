@@ -10,7 +10,7 @@ interface BlogPostCardProps {
   created_at: string;
   cardId: string;
 }
-
+//card
 const CardId: React.FC = () => {
   const searchParams = useSearchParams();
   const [blogData, setBlogData] = useState<BlogPostCardProps | null>(null);
