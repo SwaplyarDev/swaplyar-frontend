@@ -4,9 +4,16 @@ import RewardCard from '@/components/ui/reward-card/RewardCard';
 import useStore from '@/store/authViewStore';
 import Link from 'next/link';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
-
-import { CentroDeAyuda, Rewards1, Rewards2, Rewards3 } from '@/utils/assets/imgDatabaseCloudinary';
-import { Rewards1Dark, Rewards2Dark, Rewards3Dark } from '@/utils/assets/img-database';
+import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
+import {
+  CentroDeAyuda,
+  Rewards1,
+  Rewards1Dark,
+  Rewards2,
+  Rewards2Dark,
+  Rewards3,
+  Rewards3Dark,
+} from '@/utils/assets/imgDatabaseCloudinary';
 import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
@@ -28,7 +35,10 @@ function LoyaltyProgram() {
       <AnimatedBlurredCircles tope={'top-[20px]'} />
       <div>
         <div className="text-center">
-          <h1 className="mb-4 text-4xl font-bold">SwaplyAr Plus Rewards™ premia tu fidelidad</h1>
+          <div className="flex justify-center">
+            <h1 className="mb-4 mr-2 text-4xl font-bold">SwaplyAr Plus Rewards™ </h1>
+            <p className="mb-4 text-4xl font-bold"> premia tu fidelidad</p>
+          </div>
           <div className="mt-4">
             <button
               id="submit-25456"
@@ -43,18 +53,20 @@ function LoyaltyProgram() {
         <div className="py-10">
           <div className="text-center">
             <h2 className="mb-4 text-2xl font-bold">
-              Obtén beneficios exclusivos cada vez que realices intercambio de divisa con SwaplyAr Plus Rewards.
+              Cada transacción es una oportunidad de obtener más. Únete a SwaplyAr Plus Rewards y disfruta de beneficios
+              exclusivos cada vez que realices un intercambio.
             </h2>
             <p className="">
-              ¿No estás inscrito todavía?&nbsp;
-              <Link className="text-buttonsLigth dark:text-sky-500" href="/">
-                Crea
-              </Link>
-              &nbsp;un perfil SwaplyAr o&nbsp;
-              <Link className="text-buttonsLigth dark:text-sky-500" href="/">
-                inicia
-              </Link>
-              &nbsp;sesión en tu perfil, y hacé clic en &quot;inscríbite&quot; para unirte.&nbsp;
+              ¿Aún no formas parte?{' '}
+              <strong>
+                <LinkWithHover href="#">Crea</LinkWithHover>
+              </strong>{' '}
+              tu perfil en SwaplyAr o{' '}
+              <strong>
+                <LinkWithHover href="#">Inicia Sesión</LinkWithHover>
+              </strong>{' '}
+              en tu cuenta y da el primer paso hacia una experiencia que te recompensa en cada movimiento. ¡Inscríbete
+              hoy y comienza a disfrutar las ventajas!
             </p>
           </div>
         </div>
@@ -64,23 +76,23 @@ function LoyaltyProgram() {
             imageSrc={isDark ? Rewards1Dark : Rewards1}
             imageAlt="paso 1 de como cambiar tu dinero en SwaplyAr"
             title="Regalo de Bienvenida"
-            description="Únete a SwaplyAr Plus Rewards™ y recibe 10 pesos por cada dólar en el cargo de tu segunda solicitud"
-            linkText="solicitud"
-            linkHref="/"
+            description="Únete a SwaplyAr Plus Rewards™ y recibe $10 adicionales en tu segunda transacción de más de $200, realizada con cualquier billetera virtual."
+            linkText=""
+            linkHref=""
           />
           <RewardCard
             imageSrc={isDark ? Rewards2Dark : Rewards2}
             imageAlt="paso 2 de como cambiar tu dinero en SwaplyAr"
             title="Los premios nunca terminan"
-            description="Recompensas Continuas: Gana 15 pesos por cada dólar en el cargo después de completar 5 solicitudes"
-            linkText="solicitudes"
-            linkHref="/"
+            description="Recompensas Continuas: Gana $5 adicionales después de completar 5 transacciones por un monto igual o superior a $400 cada una."
+            linkText=""
+            linkHref=""
           />
           <RewardCard
             imageSrc={isDark ? Rewards3Dark : Rewards3}
             imageAlt="paso 3 de como cambiar tu dinero en SwaplyAr"
-            title="Exclusivo"
-            description="¡Promociones exclusivas y acceso a ofertas únicas!"
+            title="Exclusivo SwaplyAr"
+            description="¡Mantente siempre atento a nuestras promociones: ¡ofertas exclusivas y acceso a beneficios únicos te esperan!"
             linkText=""
             linkHref=""
           />
@@ -90,11 +102,8 @@ function LoyaltyProgram() {
       <FlyerTrabajo imageSrc={CentroDeAyuda}>
         <div>
           <p>
-            Para conocer los Términos y Condiciones del programa SwaplyAr Plus Rewards, haz
-            <Link className="text-blue-800" href="/SAPR-Terms-Conditions-ES.pdf" target="_blank">
-              {' '}
-            </Link>
-            <Link href="./sapr-terms-conditions" target="_blank" className="underline">
+            Para conocer los Términos y Condiciones del programa SwaplyAr Plus Rewards, haz{' '}
+            <Link href="./sapr-terms-conditions" target="_blank" className="ml-2s underline">
               click aquí
             </Link>
             .
@@ -108,7 +117,7 @@ function LoyaltyProgram() {
                 href={'/info/how-to-use'}
                 className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'} `}
               >
-                <h3>¿Necesitás ayuda?</h3>
+                ¿Necesitás ayuda?
               </Link>
             </button>
           </div>

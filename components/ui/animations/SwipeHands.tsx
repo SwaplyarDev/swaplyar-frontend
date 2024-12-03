@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { swipeGif } from '@/utils/assets/img-database';
+import { SwipeGif } from '@/utils/assets/imgDatabaseCloudinary';
 import './swipehands.css';
 
 const SwipeHands: React.FC = () => {
@@ -10,7 +10,7 @@ const SwipeHands: React.FC = () => {
 
   useEffect(() => {
     const img = new window.Image();
-    img.src = swipeGif;
+    img.src = SwipeGif;
     img.onload = () => setGifLoaded(true);
   }, []);
 
@@ -34,7 +34,7 @@ const SwipeHands: React.FC = () => {
         <div className={`overlay ${isMounted && showHands ? 'show' : ''}`}>
           <div className="swipe">
             <Image
-              src={swipeGif}
+              src={SwipeGif}
               alt="Swipe Hands"
               width={375}
               height={175}

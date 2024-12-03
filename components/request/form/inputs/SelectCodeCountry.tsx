@@ -1,26 +1,20 @@
-// SelectCountry.tsx
-'use client';
-
-import { useEffect, useState } from 'react';
-import Select from 'react-select';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { FieldErrors, UseFormSetValue } from 'react-hook-form';
+import Select from 'react-select'; // Asegúrate de importar de 'react-select'
+import { CountryOption, FieldError, SelectCodeCountryProps } from '@/types/request/request';
 
-type CountryOption = {
-  value: string;
-  label: string;
-  callingCode: string;
-};
-
-type SelectCountryProps = {
-  errors: FieldErrors;
-  setValue: UseFormSetValue<any>;
-  setCurrentCountry: any;
-};
-
-export default function SelectCountry({ errors, setValue, setCurrentCountry }: SelectCountryProps) {
+const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
+  selectedCodeCountry,
+  setSelectedCodeCountry,
+  errors,
+  blockAll,
+}) => {
+  const fieldName = 'calling_code';
+  const errorMessage = (errors as { [key: string]: FieldError })[fieldName]?.message;
+  const { isDark } = useDarkTheme();
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
-  const [selectedCountry, setSelectedCountry] = useState<CountryOption | null>(null);
+  const [countryValues, setCountryValues] = useState<CountryOption[]>([]);
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -30,12 +24,21 @@ export default function SelectCountry({ errors, setValue, setCurrentCountry }: S
         const options: CountryOption[] = countries.map((country: any) => {
           const callingCode = country.idd?.root ? `${country.idd.root}${country.idd.suffixes?.[0] || ''}` : '';
           return {
-            value: country.name.common,
-            label: `${country.name.common} (${callingCode ? callingCode : 'Sin código'})`,
+            value: country.cca2, // Usar la sigla del país (ej. 'AR')
+            label: `${callingCode ? callingCode : 'Sin código'} (${country.cca2})`, // Mostrar código de área y sigla
+            callingCode: callingCode,
+          };
+        });
+        const options2: CountryOption[] = countries.map((country: any) => {
+          const callingCode = country.idd?.root ? `${country.idd.root}${country.idd.suffixes?.[0] || ''}` : '';
+          return {
+            value: country.cca2, // Usar la sigla del país (ej. 'AR')
+            label: `${country.cca2}`, // Mostrar código de área y sigla
             callingCode: callingCode,
           };
         });
         setCountryOptions(options);
+        setCountryValues(options2);
       } catch (error) {
         console.error('Error fetching countries:', error);
       }
@@ -46,26 +49,22 @@ export default function SelectCountry({ errors, setValue, setCurrentCountry }: S
 
   return (
     <>
-      <label htmlFor="country" className={clsx(errors.country ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}>
-        País
+      <label
+        htmlFor={fieldName}
+        className={clsx(errorMessage ? 'text-red-500' : 'text-gray-900 dark:text-gray-300', 'hidden')}
+      >
+        Selecciona un código de país
       </label>
       <Select
-        id="country"
+        id={fieldName}
         options={countryOptions}
-        value={selectedCountry}
-        onChange={(option) => {
-          setCurrentCountry(option);
-          setSelectedCountry(option);
-          setValue('country', option?.value ?? '');
-        }}
-        isClearable
+        value={countryValues.find((option) => option.value === selectedCodeCountry?.value) || null}
+        onChange={(option) => setSelectedCodeCountry(option as CountryOption)}
         isSearchable
+        isDisabled={blockAll}
         classNamePrefix="custom-select"
-        className={clsx(
-          'rounded border border-[#6b7280] bg-gray-200 py-px text-gray-900 dark:bg-gray-700 dark:text-white',
-          errors.country ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
-        )}
-        placeholder="Selecciona un país"
+        className={clsx('ml-[10px] w-full max-w-24 rounded py-px text-gray-900 dark:text-white')}
+        placeholder="AR"
         theme={(theme) => ({
           ...theme,
           borderRadius: 0,
@@ -123,18 +122,28 @@ export default function SelectCountry({ errors, setValue, setCurrentCountry }: S
               boxShadow: 'none',
             },
           }),
-          clearIndicator: (provided) => ({
+          clearIndicator: () => ({
+            display: 'none', // Ocultar la X
+          }),
+          dropdownIndicator: (provided) => ({
             ...provided,
-            color: 'inherit',
+            padding: '0 8px', // Asegura espacio para la flecha desplegable
+            color: isDark ? '#FFFFFF' : '#111827',
+            cursor: 'pointer',
+          }),
+          indicatorSeparator: () => ({
+            display: 'none', // Elimina el separador vertical "|"
           }),
           placeholder: (provided) => ({
             ...provided,
-            color: 'gray', // Cambia este color al que desees
-            opacity: 0.7, // Puedes ajustar la opacidad si lo deseas
+            color: 'gray',
+            opacity: 0.7,
           }),
         }}
       />
-      {errors.country && <p className="mb-5 text-sm text-red-500">• {errors.country.message as string}</p>}
+      {errorMessage && <p className="mt-1 text-sm text-red-500">{errorMessage}</p>}
     </>
   );
-}
+};
+
+export default SelectCodeCountry;

@@ -25,7 +25,7 @@ export const systems: System[] = [
   },
   {
     id: 'payoneer_usd',
-    name: 'Payoneer USD',
+    name: 'Payoneer',
     logo: PayoneerUsdImg,
     logoDark: PayoneerUsdDarkImg,
     isDisabled: false,
@@ -33,7 +33,7 @@ export const systems: System[] = [
   },
   {
     id: 'payoneer_eur',
-    name: 'Payoneer EUR',
+    name: 'Payoneer',
     logo: PayoneerEurImg,
     logoDark: PayoneerEurDarkImg,
     isDisabled: false,
@@ -41,7 +41,7 @@ export const systems: System[] = [
   },
   {
     id: 'bank',
-    name: 'Banco',
+    name: 'Bank',
     logo: BankImg,
     logoDark: BankDarkImg,
     isDisabled: false,
@@ -49,7 +49,7 @@ export const systems: System[] = [
   },
   {
     id: 'wise_usd',
-    name: 'Wise USD',
+    name: 'Wise',
     logo: WiseUsdImg,
     logoDark: WiseUsdDarkImg,
     isDisabled: false,
@@ -57,7 +57,7 @@ export const systems: System[] = [
   },
   {
     id: 'wise_eur',
-    name: 'Wise EUR',
+    name: 'Wise',
     logo: WiseEurImg,
     logoDark: WiseEurDarkImg,
     isDisabled: false,

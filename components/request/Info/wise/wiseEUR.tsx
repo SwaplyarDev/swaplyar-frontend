@@ -1,6 +1,12 @@
 import RequestInfoBlock from '@/components/ui/RequestInfoBlock/RequestInfoBlock';
 import Image from 'next/image';
-import { WsEURtoArs, WsEURtoPayPal, WsEURtoPyEUR, WsEURtoPyUSD, WsEURtoWsUSD } from '@/utils/assets/img-database';
+import {
+  WsEURtoArs,
+  WsEURtoPayPal,
+  WsEURtoPyEUR,
+  WsEURtoPyUSD,
+  WsEURtoWsUSD,
+} from '@/utils/assets/imgDatabaseCloudinary';
 import { useEffect, useState } from 'react';
 
 export default function WiseEUR() {
