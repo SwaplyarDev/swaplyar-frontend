@@ -32,7 +32,7 @@ function FooterLink({ href, children, view }: FooterLinkProps) {
 
 export default function Footer() {
   return (
-    <footer className="rs-wrapper-v4 mx-auto max-w-screen-2xl px-4 py-8">
+    <footer className="rs-wrapper-v4 mx-auto max-w-screen-2xl py-8 sm-tablet:px-4">
       <div className="one-info-footer hidden w-full flex-col items-center gap-4 px-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 sm-tablet:flex">
         <section className="mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-start">
           <p className="mb-2 text-pretty text-start text-xl font-bold">Regístrate y disfruta de beneficios</p>
@@ -63,10 +63,10 @@ export default function Footer() {
       <div className="flex flex-col sm-tablet:hidden">
         <Accordion className="border-0 bg-transparent shadow-none">
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon className="h-10 w-10 text-buttonsLigth dark:text-darkText" />}
+            expandIcon={<ExpandMoreIcon className="h-10 w-10 translate-x-3 text-buttonsLigth dark:text-darkText" />}
             aria-controls="panel1-content"
             id="panel1-header"
-            className="min-h-10"
+            className="mx-auto min-h-10 w-[90%] p-0"
             sx={{
               minHeight: '0!important',
               '& .MuiAccordionSummary-content': {
@@ -90,10 +90,10 @@ export default function Footer() {
         </Accordion>
         <Accordion className="border-0 bg-transparent shadow-none before:content-none">
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon className="h-10 w-10 text-buttonsLigth dark:text-darkText" />}
+            expandIcon={<ExpandMoreIcon className="h-10 w-10 translate-x-3 text-buttonsLigth dark:text-darkText" />}
             aria-controls="panel2-content"
             id="panel2-header"
-            className="min-h-10"
+            className="mx-auto min-h-10 w-[90%] p-0"
             sx={{
               minHeight: '0!important',
               '& .MuiAccordionSummary-content': {
@@ -112,10 +112,10 @@ export default function Footer() {
         </Accordion>
         <Accordion className="border-0 bg-transparent shadow-none before:content-none">
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon className="h-10 w-10 text-buttonsLigth dark:text-darkText" />}
+            expandIcon={<ExpandMoreIcon className="h-10 w-10 translate-x-3 text-buttonsLigth dark:text-darkText" />}
             aria-controls="panel3-content"
             id="panel3-header"
-            className="min-h-10"
+            className="mx-auto min-h-10 w-[90%] p-0"
             sx={{
               minHeight: '0!important',
               '& .MuiAccordionSummary-content': {
@@ -133,7 +133,7 @@ export default function Footer() {
         </Accordion>
       </div>
 
-      <div className="two-info-footer mt-5 flex flex-col items-center justify-between px-4 pt-4 sm:flex-row">
+      <div className="two-info-footer mx-auto mt-5 flex w-[90%] flex-col items-center justify-between p-0 pt-4 sm:flex-row sm-tablet:mx-0 sm-tablet:w-full sm-tablet:px-4">
         <section className="container-footer-icon-social mb-4 flex justify-center space-x-4 sm:mb-0 sm:w-1/3 sm:justify-start">
           <Link
             href="https://www.linkedin.com/company/swaplyar/"
