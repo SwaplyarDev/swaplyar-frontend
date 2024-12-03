@@ -104,6 +104,7 @@ const Blog: React.FC = () => {
           filteredBlogs.map((post) => (
             <BlogPostCard
               key={post.blog_id}
+              blog_id={post.blog_id}
               title={post.title}
               body={post.body}
               url_image={post.url_image}
@@ -115,8 +116,12 @@ const Blog: React.FC = () => {
         )}
       </div>
 
-      <PaginationButtonsProps currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange}
-       isLoading={isLoading}  />
+      <PaginationButtonsProps
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handlePageChange={handlePageChange}
+        isLoading={isLoading}
+      />
     </div>
   );
 };
