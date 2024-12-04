@@ -34,6 +34,7 @@ export type CountryOption = {
   value: string;
   label: string;
   callingCode: string;
+  country: string;
 };
 
 // TransactionRequest

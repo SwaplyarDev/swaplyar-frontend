@@ -14,6 +14,7 @@ export interface System {
   logoDark: string; // Ruta a la imagen del logo en modo oscuro
   isDisabled: boolean; // Indica si el sistema de pago es deshabilitado
   coin: string; // Indica el tipo de moneda
+  paymentMethod: string; // Indica el tipo de pago
 }
 
 export type FormValues = {

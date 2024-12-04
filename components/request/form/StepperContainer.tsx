@@ -21,12 +21,7 @@ import useChronometerState from '@/store/chronometerStore';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 
 const StepperContainer = () => {
-  const {
-    activeStep,
-    completedSteps,
-    setActiveStep,
-    submitAllData,
-  } = useStepperStore();
+  const { activeStep, completedSteps, setActiveStep, submitAllData } = useStepperStore();
   const [blockAll, setBlockAll] = useState(false);
   const navigation = useRouter();
 
@@ -44,7 +39,7 @@ const StepperContainer = () => {
   ];
 
   const router = useRouter();
-  const { pass } = useControlRouteRequestStore(state => state); 
+  const { pass } = useControlRouteRequestStore((state) => state);
   const handleStepClick = (index: number) => {
     if (completedSteps[index] || index === activeStep) {
       setActiveStep(index);
@@ -60,8 +55,7 @@ const StepperContainer = () => {
 
   const handleCancelRequest = () => {
     Swal.fire({
-      title:
-        '<h2 style="font-size: 24px;">¿Estás seguro de que deseas cancelar esta solicitud?</h2>',
+      title: '<h2 style="font-size: 24px;">¿Estás seguro de que deseas cancelar esta solicitud?</h2>',
       icon: 'info',
       html: `
         <p style="font-size: 16px;">Si cancela esta solicitud, debe generar una nueva solicitud</p>
@@ -84,10 +78,7 @@ const StepperContainer = () => {
               onClick={() => Swal.close()}
               className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 flex h-[42px] min-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-sm text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
             >
-              <Arrow
-                color={isDark ? '#ebe7e0' : '#012c8a'}
-                backRequest={true}
-              />
+              <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} backRequest={true} />
               Volver
             </button>,
           );
@@ -148,16 +139,13 @@ const StepperContainer = () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
-      const isSuccess = await submitAllData(
-        selectedSendingSystem,
-        selectedReceivingSystem,
-      );
+      const isSuccess = await submitAllData(selectedSendingSystem, selectedReceivingSystem);
 
       if (isSuccess) {
         console.log('Datos enviados correctamente');
         setBlockAll(true);
         setCorrectSend(true);
-        setErrorSend(false)
+        setErrorSend(false);
       } else {
         setErrorSend(true);
         console.error('Hubo un error al enviar los datos');
@@ -224,9 +212,8 @@ const StepperContainer = () => {
                         isDark ? 'text-darkText' : 'text-[#252526]',
                       )}
                     >
-                      Tu tiempo se agoto pero puedes crear una nueva, y si
-                      tienes alguna pregunta o necesitas ayuda, estamos aquí
-                      para ti.
+                      Tu tiempo se agoto pero puedes crear una nueva, y si tienes alguna pregunta o necesitas ayuda,
+                      estamos aquí para ti.
                     </p>
                     <div className="w-full">
                       <p
@@ -235,8 +222,7 @@ const StepperContainer = () => {
                           isDark ? 'text-darkText' : 'text-[#252526]',
                         )}
                       >
-                        Tu tiempo se agoto pero puedes crear una nueva, y si
-                        tienes alguna pregunta
+                        Tu tiempo se agoto pero puedes crear una nueva, y si tienes alguna pregunta
                       </p>
                       <p
                         className={clsx(
@@ -251,8 +237,7 @@ const StepperContainer = () => {
                 ) : (
                   <>
                     <p className="w-full text-center text-darkText sm-phone:hidden">
-                      Puedes crear una nueva, y si tienes alguna pregunta o
-                      necesitas ayuda, estamos aquí para ti.
+                      Puedes crear una nueva, y si tienes alguna pregunta o necesitas ayuda, estamos aquí para ti.
                     </p>
                     <div className="w-full">
                       <p className="hidden w-full text-end text-darkText sm-phone:block">
@@ -270,22 +255,13 @@ const StepperContainer = () => {
               <Link
                 className={clsx(
                   'group flex items-center gap-1 text-center sm-phone:text-start',
-                  isStopped
-                    ? isDark
-                      ? 'text-darkText'
-                      : 'text-[#252526]'
-                    : 'text-darkText',
+                  isStopped ? (isDark ? 'text-darkText' : 'text-[#252526]') : 'text-darkText',
                 )}
                 href="/"
               >
                 <div className="relative h-[15px] w-[15px] overflow-hidden">
                   <div className="absolute left-0 top-0 transition-all duration-200 group-hover:left-1">
-                    <Arrow
-                      color={
-                        isStopped ? (isDark ? '#ebe7e0' : '#252526') : '#ebe7e0'
-                      }
-                      backRequest={true}
-                    />
+                    <Arrow color={isStopped ? (isDark ? '#ebe7e0' : '#252526') : '#ebe7e0'} backRequest={true} />
                   </div>
                 </div>
                 Volver al home
@@ -293,11 +269,7 @@ const StepperContainer = () => {
               <Link
                 className={clsx(
                   'text-center underline sm-phone:text-start',
-                  isStopped
-                    ? isDark
-                      ? 'text-darkText'
-                      : 'text-[#252526]'
-                    : 'text-darkText',
+                  isStopped ? (isDark ? 'text-darkText' : 'text-[#252526]') : 'text-darkText',
                 )}
                 href="/info/help-center"
               >
@@ -308,47 +280,28 @@ const StepperContainer = () => {
         </div>
       )}
       {errorSend && (
-        <div
-          className={clsx(
-            'absolute left-0 top-36 flex w-full justify-center bg-[#d50102]',
-          )}
-        >
+        <div className={clsx('absolute left-0 top-36 flex w-full justify-center bg-[#d50102]')}>
           <div className="flex w-full max-w-[1000px] flex-col gap-2 px-5 py-5 xs-phone:px-10">
             <h2 className="w-full text-center text-3xl font-bold text-darkText sm-phone:text-end">
               Error en la solicitud
             </h2>
             <>
-              <p
-                className={clsx(
-                  'w-full text-center text-darkText sm-phone:hidden',
-                )}
-              >
-                Si el problema persiste, vuelve a intentarlo más tarde y si
-                tienes alguna pregunta o necesitas ayuda, estamos aquí para ti.
+              <p className={clsx('w-full text-center text-darkText sm-phone:hidden')}>
+                Si el problema persiste, vuelve a intentarlo más tarde y si tienes alguna pregunta o necesitas ayuda,
+                estamos aquí para ti.
               </p>
               <div className="w-full">
-                <p
-                  className={clsx(
-                    'hidden w-full text-end text-darkText sm-phone:block',
-                  )}
-                >
-                  Si el problema persiste, vuelve a intentarlo más tarde y si
-                  tienes alguna pregunta 
+                <p className={clsx('hidden w-full text-end text-darkText sm-phone:block')}>
+                  Si el problema persiste, vuelve a intentarlo más tarde y si tienes alguna pregunta
                 </p>
-                <p
-                  className={clsx(
-                    'hidden w-full text-end text-darkText sm-phone:block',
-                  )}
-                >
+                <p className={clsx('hidden w-full text-end text-darkText sm-phone:block')}>
                   o necesitas ayuda, estamos aquí para ti.
                 </p>
               </div>
             </>
             <div className="flex w-full flex-col-reverse items-center justify-between gap-2 xs:flex-row">
               <Link
-                className={clsx(
-                  'group flex items-center gap-1 text-center text-darkText sm-phone:text-start',
-                )}
+                className={clsx('group flex items-center gap-1 text-center text-darkText sm-phone:text-start')}
                 href="/"
               >
                 <div className="relative h-[15px] w-[15px] overflow-hidden">
@@ -359,9 +312,7 @@ const StepperContainer = () => {
                 Volver al home
               </Link>
               <Link
-                className={clsx(
-                  'text-center text-darkText underline sm-phone:text-start',
-                )}
+                className={clsx('text-center text-darkText underline sm-phone:text-start')}
                 href="/info/help-center"
               >
                 ¡No dudes en contactarnos!
@@ -370,9 +321,9 @@ const StepperContainer = () => {
           </div>
         </div>
       )}
-      <div className="flex items-center justify-between px-2 flex-col gap-2 sm-phone:flex-row sm-phone:gap-0">
+      <div className="flex flex-col items-center justify-between gap-2 px-2 sm-phone:flex-row sm-phone:gap-0">
         {/* <h1 className="text-2xl font-bold text-lightText dark:text-darkText"> */}
-        <h1 className="text-2xl xs:text-3xl font-bold text-lightText dark:text-darkText sm-phone:text-2xl">
+        <h1 className="text-2xl font-bold text-lightText dark:text-darkText xs:text-3xl sm-phone:text-2xl">
           Formulario de Solicitud
         </h1>
         <div>
@@ -387,20 +338,15 @@ const StepperContainer = () => {
           >
             <div
               className={`justify-between xs-phone:flex md-tablet:relative md-tablet:flex-col md-tablet:items-center ${
-                !completedSteps[index] && index !== activeStep
-                  ? 'opacity-50'
-                  : ''
+                !completedSteps[index] && index !== activeStep ? 'opacity-50' : ''
               }`}
             >
-              <h2 className="mb-2 text-center text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0 w-full">
+              <h2 className="mb-2 w-full text-center text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0">
                 {step.title}
               </h2>
               {/* Mostrar StepIndicator solo si no está completado y es el paso actual */}
               {activeStep === index && !completedSteps[index] && (
-                <StepIndicator
-                  currentStep={activeStep}
-                  completedSteps={completedSteps}
-                />
+                <StepIndicator currentStep={activeStep} completedSteps={completedSteps} />
               )}
               {/* Mostrar el botón solo para pasos completados o si es el paso anterior al actual */}
               {(index < activeStep || completedSteps[index]) && (
@@ -423,39 +369,25 @@ const StepperContainer = () => {
               )}
             </div>
 
-            {activeStep === index && (
-              <div className="mt-2 rounded-md">{step.component}</div>
-            )}
+            {activeStep === index && <div className="mt-2 rounded-md">{step.component}</div>}
           </section>
         );
       })}
       <div className="flex flex-col items-center gap-4 sm-phone:flex-row sm-phone:justify-between sm-phone:gap-0">
-        <button
-          className="text-2xl font-light"
-          onClick={handleCancelRequest}
-          disabled={blockAll}
-        >
+        <button className="text-2xl font-light" onClick={handleCancelRequest} disabled={blockAll}>
           Cancelar esta Solicitud
         </button>
         <button
           disabled={completedSteps[2] == false || blockAll || loading}
           onClick={() => {
             handleSubmit();
+            setStop(true);
           }}
           className={`relative h-12 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-9 py-[3px] font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? completedSteps[2] == true && 'buttonSecondDark' : completedSteps[2] == true && 'buttonSecond'}`}
         >
           {loading ? (
-            <div
-              id="loading"
-              className="flex items-center justify-center gap-2"
-            >
-              <Image
-                src="/gif/cargando.gif"
-                alt="Cargando..."
-                width={25}
-                height={25}
-                className="mb-0.5"
-              />
+            <div id="loading" className="flex items-center justify-center gap-2">
+              <Image src="/gif/cargando.gif" alt="Cargando..." width={25} height={25} className="mb-0.5" />
               <span>Procesando...</span>
             </div>
           ) : (
