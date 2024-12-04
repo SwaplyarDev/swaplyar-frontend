@@ -14,17 +14,16 @@ const BlogPostCard: React.FC<BlogPost> = ({ title, body, url_image, created_at }
   console.log(slug);
   return (
     <div className="transform cursor-pointer overflow-hidden rounded-lg border border-gray-300 bg-white shadow-lg transition-transform hover:scale-105">
+      <Image src={url_image} className="h-48 w-full object-cover" alt={title} width={300} height={160} />
       <Link
         href={{
           pathname: `/info/blog/${slug}`,
           query: { title, body, url_image, created_at },
         }}
         passHref
-      >
-        <Image src={url_image} className="h-48 w-full object-cover" alt={title} width={300} height={160} />
-      </Link>
+      ></Link>
       <div className="p-4">
-        <h3 className="mb-2 text-xl font-semibold">{title}</h3>
+        <h3 className="mb-2 text-xl font-semibold text-gray-700">{title}</h3>
         <p className="mb-4 text-gray-700">
           {showFullText ? body : `${body.slice(0, 135)}...`} {/* Ajusta el slice para mostrar un resumen del texto */}
           <button onClick={handleToggleText} className="inline font-semibold text-blue-500 hover:underline">

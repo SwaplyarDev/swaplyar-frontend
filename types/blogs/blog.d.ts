@@ -2,8 +2,8 @@ export interface BlogPost {
   title: string;
   body: string;
   url_image: string;
-  created_at: string; // Cambiar a `Date` si prefieres usar objetos de fecha
-  blog_id: string; // O número, dependiendo de cómo viene desde la API
+  created_at: string;
+  blog_id: string;
 }
 
 interface BlogPostCardProps {
@@ -11,4 +11,17 @@ interface BlogPostCardProps {
   body: string;
   url_image: string;
   created_at: string;
+}
+
+export interface BlogResponse {
+  blogsPerPage: any[];
+  meta: {
+    totalPages: number;
+  };
+}
+
+export interface UseFetchBlogsProps {
+  currentPage: number;
+  searchTerm: string;
+  setTotalPages: (pages: number) => void;
 }

@@ -9,10 +9,9 @@ import ImageCarousel from '@/components/ui/ImageCarousel/imageCarousel';
 import PaginationButtonsProps from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import useBlogStore from '@/store/useBlogStore';
 import usePageSync from '@/components/ui/usePageSync/usePageSync';
-import { fetchBlogs } from '@/components/ui/fetchBlogs/fetchBlogs';
-import { useFetchBlogs } from '@/components/ui/useFetchBlogs/useFetchBlogs';
 import { useRandomImages } from '@/components/ui/useRandomImages/useRandomImages';
 import SkeletonLoader from '@/components/ui/SkeletonLoader/SkeletonLoader';
+import useFetchBlogs from '@/hooks/useFetchBlogs/useFetchBlogs';
 
 const Blog: React.FC = () => {
   const { blogs } = useBlogStore();
@@ -27,7 +26,12 @@ const Blog: React.FC = () => {
   usePageSync(currentPage, setCurrentPage);
 
   // Fetch de blogs y total de páginas
-  useFetchBlogs(currentPage, searchTerm, setTotalPages);
+  useFetchBlogs({
+    currentPage,
+    searchTerm,
+    setTotalPages,
+  });
+
   console.log(blogs);
 
   // Imágenes aleatorias para el carrusel
