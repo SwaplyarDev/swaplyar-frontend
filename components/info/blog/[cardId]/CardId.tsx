@@ -1,3 +1,5 @@
+// /components/info/blog/[cardId]/CardId.tsx
+
 'use client';
 
 import Image from 'next/image';
@@ -55,7 +57,13 @@ const CardId: React.FC = () => {
 
         {/* Tercera columna: Imagen, ocupa el espacio restante */}
         <div className="flex flex-1 flex-col items-center">
-          <Image className="my-4 h-auto w-full rounded-lg" src={blogData.url_image} alt={blogData.title} width={200} />
+          <Image
+            className="my-4 h-auto w-full rounded-lg"
+            src={blogData.url_image}
+            alt={blogData.title}
+            width={200}
+            height={200} // Añadir la propiedad height
+          />
         </div>
       </div>
 

@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import Blog from '@/components/info/blog/Blog';
+import Blog from '@/components/info/blog/Blogs';
 
 const BlogPage: React.FC = () => {
   return (

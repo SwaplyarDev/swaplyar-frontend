@@ -1,3 +1,5 @@
+// /components/info/blog/Blogs.tsx
+
 'use client';
 
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
