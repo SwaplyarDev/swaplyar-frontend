@@ -89,6 +89,7 @@ const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
           alt="Reloj"
           width={18}
           height={18}
+          className='ml-1'
         />
         <span className="w-[52px] text-center">
           {formatTiempo(segundos)}
