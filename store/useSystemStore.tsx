@@ -9,6 +9,7 @@ const defaultSendingSystem: System = {
   logoDark: PaypalDarkImg,
   isDisabled: false,
   coin: 'USD',
+  paymentMethod: 'paypal',
 };
 
 const defaultReceivingSystem: System = {
@@ -18,6 +19,7 @@ const defaultReceivingSystem: System = {
   logoDark: BankDarkImg,
   isDisabled: false,
   coin: 'ARS',
+  paymentMethod: 'ars',
 };
 
 interface SystemStore {

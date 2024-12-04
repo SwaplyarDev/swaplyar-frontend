@@ -399,6 +399,7 @@ const StepperContainer = () => {
           disabled={completedSteps[2] == false || blockAll || loading}
           onClick={() => {
             handleSubmit();
+            setStop(true);
           }}
           className={`relative h-12 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-9 py-[3px] font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? completedSteps[2] == true && 'buttonSecondDark' : completedSteps[2] == true && 'buttonSecond'}`}
         >
