@@ -5,15 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useSystemStore } from '@/store/useSystemStore';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-
-interface System {
-  id: string;
-  name: string;
-  logo: string;
-  logoDark: string;
-  isDisabled: boolean;
-  coin: string;
-}
+import { System } from '@/types/data';
 
 interface SystemSelectProps {
   systems: System[];
