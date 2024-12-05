@@ -10,7 +10,7 @@ interface BlogPostCardProps {
   created_at: string;
   cardId: string;
 }
-//card
+
 const CardId: React.FC = () => {
   const searchParams = useSearchParams();
   const [blogData, setBlogData] = useState<BlogPostCardProps | null>(null);
@@ -23,7 +23,7 @@ const CardId: React.FC = () => {
     const cardId = searchParams.get('cardId') || '';
 
     setBlogData({ title, body, url_image, created_at, cardId });
-
+    console.log(blogData) 
     const newUrl = window.location.pathname;
     window.history.replaceState(null, '', newUrl);
   }, []); 
@@ -48,13 +48,13 @@ const CardId: React.FC = () => {
 
         {/* Segunda columna: Titulo y contenido, ocupa el espacio restante */}
         <div className="flex-1 flex flex-col">
-          <h1 className="text-2xl font-bold mt-0 mb-1">{blogData.title}</h1>
-          <p className="text-gray-700 mb-0">{blogData.body}</p>
+          <h1 className="text-2xl font-bold mt-0 mb-1">{blogData?.title}</h1>
+          <p className="text-gray-700 mb-0">{blogData?.body}</p>
         </div>
 
         {/* Tercera columna: Imagen, ocupa el espacio restante */}
         <div className="flex-1 flex flex-col items-center">
-          <img src={blogData.url_image} alt={blogData.title} className="w-full h-auto my-4 rounded-lg h-[300px]" />
+          <img src={blogData?.url_image} alt={blogData.title} className="w-full h-auto my-4 rounded-lg h-[300px]" />
         </div>
       </div>
 

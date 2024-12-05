@@ -8,15 +8,13 @@ interface BlogPostCardProps {
   body: string;
   url_image: string;
   created_at: string;
-  cardId: string; // Agrega el `cardId` aquí como parte de las props
 }
 
 const BlogPostCard: React.FC<BlogPostCardProps> = ({
   title,
   body,
   url_image,
-  created_at,
-  cardId, // Recibe `cardId` como prop
+  created_at
 }) => {
   const [showFullText, setShowFullText] = useState(false);
   
