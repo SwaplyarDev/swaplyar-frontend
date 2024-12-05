@@ -4,6 +4,10 @@ import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import CaedAboutUs from '@/components/ui/caed-about-us/caed-about-us';
 import GuaranteeSection from '@/components/ui/warranty-section/WarrantySection';
+import { useMargins } from '@/context/MarginProvider';
+import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
+import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
+import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 import {
   Aumeno,
   Caida,
@@ -12,9 +16,7 @@ import {
   Transacciones,
   Ventajaalelegirswaplyar,
 } from '@/utils/assets/imgDatabaseCloudinary';
-import { useMargins } from '@/context/MarginProvider';
-import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
-import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
+
 const cardsData = [
   {
     src: Transacciones,
@@ -55,8 +57,8 @@ const Warranty = () => {
           style={{ margin: currentMargin }}
         >
           <GuaranteeSection
-            title="Garantizamos Tu Tranquilidad en Cada Transacción"
-            text="En SwaplyAr, nos comprometemos a que cada cambio de divisas sea seguro y confiable. Con nuestra garantía de satisfacción, podés estar seguro de que tus operaciones se manejarán con la mayor eficiencia y cuidado. ¡Confiá en nosotros para una experiencia sin preocupaciones!"
+            title="Tranquilidad en Cada Transacción"
+            text="En SwaplyAr, nos comprometemos a que cada cambio de divisas sea seguro y confiable. Con nuestra garantía de satisfacción, podés estar seguro de que tus operaciones se manejaran con la mayor eficiencia y cuidado. ¡Confiá en nosotros para una experiencia sin preocupaciones!"
             imageSrc={Garantizamos}
             imageAlt="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
           />
@@ -71,24 +73,42 @@ const Warranty = () => {
             imageAlt="Cambia USD de PayPal por ARS"
             contentNode={
               <>
-                En SwaplyAr, no solo garantizamos total seguridad y atención personalizada durante cada transacción,
-                sino que también ofrecemos beneficios adicionales. Para nuestros usuarios registrados, disponemos de
-                promociones exclusivas y asumimos las comisiones por vos.
-                <span
+                En SwaplyAr, no solo garantizamos seguridad total y atención personalizada en cada transacción, sino que
+                también ofrecemos{' '}
+                <strong>
+                  <LinkWithHover href="#">Beneficios Adicionales</LinkWithHover>
+                </strong>
+                . A nuestros usuarios registrados les brindamos promociones exclusivas y cubrimos las comisiones por ti.{' '}
+                Mientras que otros servicios aplican comisiones del 5.6% + $0.30 USD en PayPal, nosotros absorbemos esos
+                costos para ofrecerte el mejor valor. Además, trabajamos con múltiples billeteras virtuales como{' '}
+                <strong>
+                  <LinkWithHover href="#">Payoneer</LinkWithHover>
+                </strong>
+                ,{' '}
+                <strong>
+                  <LinkWithHover href="#">Wise</LinkWithHover>
+                </strong>
+                ,{' '}
+                <strong>
+                  <LinkWithHover href="#">Pix</LinkWithHover>
+                </strong>{' '}
+                y{' '}
+                <strong>
+                  <LinkWithHover href="#">USDT</LinkWithHover>
+                </strong>{' '}
+                para brindarte aún más opciones y flexibilidad.
+                {/* <span
                   style={{
                     backgroundColor: 'yellow',
                     color: 'black',
                     marginTop: '1%',
                   }}
                 >
-                  Mientras que otros servicios pueden incluir una comisión de PayPal del 5.6% + $0.30 USD, en SwaplyAr,
-                  nosotros absorbemos esos costos para ofrecerte el mejor valor.
-                </span>
+                  
+                </span> */}
               </>
             }
           />
-          {/* <div id="flyer-container"></div> */}
-          <footer>{/* <div id="footer-placeholder"></div> */}</footer>
         </div>
       </div>
     </>

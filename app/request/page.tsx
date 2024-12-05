@@ -1,42 +1,10 @@
 // /app/request/page.tsx
-'use client';
-
-import { RequestRegisterForm } from '@/components/request/form/requestRegister';
-import { useEffect, useState } from 'react';
-
-import Ars from '@/components/request/Info/ars/ars';
-
-import PayoneerEUR from '@/components/request/Info/payoneer/payoneerEUR';
-import PayoneerUSD from '@/components/request/Info/payoneer/payoneerUSD';
-
-import PaypalEUR from '@/components/request/Info/paypal/paypalEUR';
-import PaypalUSD from '@/components/request/Info/paypal/paypalUSD';
-
-import WiseEUR from '@/components/request/Info/wise/wiseEUR';
-import WiseUSD from '@/components/request/Info/wise/wiseUSD';
+import StepperContainer from '@/components/request/form/StepperContainer';
 
 const RequestPage = () => {
-  const [payerBank, setPayerBank] = useState<string>('');
-
-  useEffect(() => {
-    const data = localStorage.getItem('selectedSendingSystem');
-    if (data) {
-      const bank = JSON.parse(data);
-      setPayerBank(bank.name);
-    }
-  }, []);
-
   return (
-    <div className="flex flex-col-reverse items-center justify-center p-10 lg:flex-row lg:gap-8">
-      <RequestRegisterForm />
-
-      {payerBank === 'PayPal' && <PaypalUSD />}
-      {payerBank === 'Banco' && <Ars />}
-      {payerBank === 'Payoneer EUR' && <PayoneerEUR />}
-      {payerBank === 'Payoneer USD' && <PayoneerUSD />}
-      {/* {payerBank === 'Paypal EUR' && <PaypalEUR />} */}
-      {payerBank === 'Wise EUR' && <WiseEUR />}
-      {payerBank === 'Wise USD' && <WiseUSD />}
+    <div className="flex items-center justify-center px-5 py-10 xs-phone:px-10">
+      <StepperContainer />
     </div>
   );
 };

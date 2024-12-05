@@ -61,7 +61,7 @@ export const LoginForm = () => {
         onSubmit={handleSubmit(submitEmail)}
         className="flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
       >
-        <h2 className="mb-5 text-center text-2xl font-bold text-buttonsLigth dark:text-darkText">Iniciar Sesión</h2>
+        <h1 className="mb-5 text-center text-2xl font-bold text-buttonsLigth dark:text-darkText">Iniciar Sesión</h1>
 
         <label htmlFor="email" className={clsx(errors.email ? 'text-red-500' : 'text-lightText dark:text-darkText')}>
           Correo electrónico
