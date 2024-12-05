@@ -339,23 +339,23 @@ const StepperContainer = () => {
           <section
             key={index}
             className={clsx(
-              (completedSteps[index] || index == activeStep) ? 'flex-col' : 'flex-row',
-              'flex min-h-20 w-full gap-4 rounded-2xl bg-calculatorDark p-4 dark:bg-calculatorLight'
+              completedSteps[index] || index == activeStep ? 'flex-col' : 'flex-row',
+              'flex min-h-20 w-full gap-4 rounded-2xl bg-calculatorDark p-4 dark:bg-calculatorLight',
             )}
           >
             <div
-              className={`justify-between xs-phone:flex md-tablet:relative md-tablet:flex-col ${completedSteps[index] ? 'flex' : ''} md-tablet:items-end w-full ${
-                !completedSteps[index] && index !== activeStep
-                  ? 'opacity-50'
-                  : ''
+              className={`w-full justify-between xs-phone:flex md-tablet:relative md-tablet:flex-col ${completedSteps[index] ? 'flex md-tablet:items-end' : 'md-tablet:items-center'} ${
+                !completedSteps[index] && index !== activeStep ? 'opacity-50' : ''
               }`}
             >
-            {/* <div
+              {/* <div
               className={`justify-between xs-phone:flex md-tablet:relative md-tablet:${!completedSteps[index] ? 'flex-col' : 'flex-row'} md-tablet:items-center ${
                 !completedSteps[index] && index !== activeStep ? 'opacity-50' : ''
               }`}
             > */}
-              <h2 className={`mb-2 ${completedSteps[index] ? 'text-left' : 'text-center'} w-full text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0`}>
+              <h2
+                className={`mb-2 ${completedSteps[index] ? 'pr-5 text-left' : 'text-center'} w-full text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0`}
+              >
                 {step.title}
               </h2>
               {/* Mostrar StepIndicator solo si no está completado y es el paso actual */}
@@ -365,7 +365,7 @@ const StepperContainer = () => {
               {/* Mostrar el botón solo para pasos completados o si es el paso anterior al actual */}
               {(index < activeStep || completedSteps[index]) && (
                 //saque el justify-end chequear que no sirva al 100%
-                <div className={`flex w-full flex-col items-end`}>
+                <div className={`flex flex-col items-end`}>
                   <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
                     <Tick color={isDark ? '#414244' : '#FCFBFA'} />
                   </div>

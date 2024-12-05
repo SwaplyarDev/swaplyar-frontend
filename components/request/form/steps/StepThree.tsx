@@ -35,7 +35,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   const receiveAmount = localStorage.getItem('receiveAmount');
   const sendAmount = localStorage.getItem('sendAmount');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const { selectedSendingSystem } = useSystemStore();
+  const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
 
   function showFileName(event: any) {
     // Tomar el archivo del evento y asignarlo a `selectedFile`
@@ -114,6 +114,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
             formData={formData}
             sendAmount={sendAmount}
             selectedSendingSystem={selectedSendingSystem}
+            selectedReceivingSystem={selectedReceivingSystem}
             receiveAmount={receiveAmount}
             handleChange={handleChange}
             restRegister={restRegister}
@@ -129,6 +130,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
             formData={formData}
             sendAmount={sendAmount}
             selectedSendingSystem={selectedSendingSystem}
+            selectedReceivingSystem={selectedReceivingSystem}
             receiveAmount={receiveAmount}
             handleChange={handleChange}
             restRegister={restRegister}

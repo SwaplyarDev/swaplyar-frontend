@@ -15,6 +15,7 @@ export interface System {
   isDisabled: boolean; // Indica si el sistema de pago es deshabilitado
   coin: string; // Indica el tipo de moneda
   paymentMethod: string; // Indica el tipo de pago
+  coinSign: string; // Indica el signo de la moneda
 }
 
 export type FormValues = {
