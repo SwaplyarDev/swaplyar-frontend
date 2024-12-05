@@ -16,7 +16,7 @@ export const fetchBlogs = async (page: number, searchTerm: string): Promise<Blog
 
   const response = await fetch(url, {
     method: 'GET',
-    cache: 'no-store',
+    cache: 'no-store', // Evita el caché para obtener datos actualizados.
   });
 
   if (!response.ok) {

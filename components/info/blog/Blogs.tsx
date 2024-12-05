@@ -4,7 +4,7 @@
 
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import BlogPostCard from '@/components/ui/BlogPostCard/BlogPostCard';
+import BlogPostCard from '@/components/info/blog/BlogPostCard/BlogPostCard';
 import ImageCarousel from '@/components/ui/ImageCarousel/imageCarousel';
 import PaginationButtonsProps from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import useBlogStore from '@/store/useBlogStore';
