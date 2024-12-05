@@ -565,6 +565,7 @@ div:where(.swal2-container).swal2-noanimation {
     font-family: 'Open Sans', sans-serif;
   }
 }
+<<<<<<< HEAD
 /* Stylos para ajustar tamaño en el esqueleto de las card */
 
 .custom-grid {
@@ -614,3 +615,5 @@ div:where(.swal2-container).swal2-noanimation {
   }
 }
 
+=======
+>>>>>>> f136d8d3c4975ee23aaaaccfe64a0905f9b1f09c

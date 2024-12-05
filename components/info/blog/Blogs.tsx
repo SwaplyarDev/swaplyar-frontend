@@ -1,16 +1,17 @@
+// /components/info/blog/Blogs.tsx
+
 'use client';
 
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import BlogPostCard from '@/components/ui/BlogPostCard/BlogPostCard';
+import BlogPostCard from '@/components/info/blog/BlogPostCard/BlogPostCard';
 import ImageCarousel from '@/components/ui/ImageCarousel/imageCarousel';
 import PaginationButtonsProps from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import useBlogStore from '@/store/useBlogStore';
 import usePageSync from '@/components/ui/usePageSync/usePageSync';
-import { fetchBlogs } from '@/components/ui/fetchBlogs/fetchBlogs';
-import { useFetchBlogs } from '@/components/ui/useFetchBlogs/useFetchBlogs';
 import { useRandomImages } from '@/components/ui/useRandomImages/useRandomImages';
 import SkeletonLoader from '@/components/ui/SkeletonLoader/SkeletonLoader';
+import useFetchBlogs from '@/hooks/useFetchBlogs/useFetchBlogs';
 
 const Blog: React.FC = () => {
   const { blogs } = useBlogStore();
@@ -25,7 +26,12 @@ const Blog: React.FC = () => {
   usePageSync(currentPage, setCurrentPage);
 
   // Fetch de blogs y total de páginas
-  useFetchBlogs(currentPage, searchTerm, setTotalPages);
+  useFetchBlogs({
+    currentPage,
+    searchTerm,
+    setTotalPages,
+  });
+
   console.log(blogs);
 
   // Imágenes aleatorias para el carrusel
@@ -104,6 +110,7 @@ const Blog: React.FC = () => {
           filteredBlogs.map((post) => (
             <BlogPostCard
               key={post.blog_id}
+              blog_id={post.blog_id}
               title={post.title}
               body={post.body}
               url_image={post.url_image}
@@ -115,8 +122,12 @@ const Blog: React.FC = () => {
         )}
       </div>
 
-      <PaginationButtonsProps currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange}
-       isLoading={isLoading}  />
+      <PaginationButtonsProps
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handlePageChange={handlePageChange}
+        isLoading={isLoading}
+      />
     </div>
   );
 };

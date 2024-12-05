@@ -18,6 +18,7 @@ export default auth((req) => {
 });
 
 export const config = {
+<<<<<<< HEAD
   /*
 Match all request paths except for the ones starting with:
 api (API routes)
@@ -27,3 +28,7 @@ favicon.ico (favicon file)
 */
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };
+=======
+  matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
+};
+>>>>>>> f136d8d3c4975ee23aaaaccfe64a0905f9b1f09c
