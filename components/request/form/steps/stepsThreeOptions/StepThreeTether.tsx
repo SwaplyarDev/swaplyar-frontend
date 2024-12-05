@@ -1,14 +1,11 @@
 import React from 'react';
 import clsx from 'clsx';
-import {
-  FieldErrors,
-  UseFormGetValues,
-  UseFormRegister,
-} from 'react-hook-form';
+import { FieldErrors, UseFormGetValues, UseFormRegister } from 'react-hook-form';
 import InputCopy from '../../inputs/InputCopy';
 import InputField from '@/components/ui/contact-form/InputField';
 import IconTron from '@/components/ui/IconsRed/IconTron';
 import Image from 'next/image';
+import { System } from '@/types/data';
 
 interface StepThreeTetherProps {
   register: UseFormRegister<any>;
@@ -17,7 +14,8 @@ interface StepThreeTetherProps {
   blockAll: boolean;
   formData: any;
   sendAmount: string | null;
-  selectedSendingSystem: any;
+  selectedSendingSystem: System | null;
+  selectedReceivingSystem: System | null;
   receiveAmount: string | null;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   restRegister: any;
@@ -31,6 +29,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
   formData,
   sendAmount,
   selectedSendingSystem,
+  selectedReceivingSystem,
   receiveAmount,
   handleChange,
   restRegister,
@@ -42,11 +41,8 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
         <span className="font-semibold underline">
           {sendAmount} {selectedSendingSystem?.coin}
         </span>{' '}
-        a las direccion{' '}
-        <span className="font-semibold underline">
-          TSgBPeFSb9TxJWyzDjDfuNqBktF898ZFUb
-        </span>{' '}
-        con el concepto de "PAGO" para enviarte el dinero a la cuenta{' '}
+        a las direccion <span className="font-semibold underline">TSgBPeFSb9TxJWyzDjDfuNqBktF898ZFUb</span> con el
+        concepto de "PAGO" para enviarte el dinero a la cuenta{' '}
         <span className="font-semibold underline">
           {' '}
           {formData.stepTwo.re_enter_bank_email == '' &&
@@ -63,9 +59,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
               htmlFor="pay_usdt_direction"
               className={clsx(
                 'ml-1 text-xs',
-                errors.pay_usdt_direction
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
+                errors.pay_usdt_direction ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
               Direccion USDT a pagar
@@ -85,9 +79,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
               htmlFor="send_amount"
               className={clsx(
                 'ml-1 text-xs',
-                errors.send_amount
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
+                errors.send_amount ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
               Monto a pagar
@@ -95,7 +87,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
             <InputCopy
               id="send_amount"
               type="number"
-              value={sendAmount?.toString()}
+              value={`${selectedSendingSystem?.coinSign} ${sendAmount?.toString()}`}
               disabled={true}
               placeholder="Monto Enviar"
               register={register('send_amount', { required: true })}
@@ -107,9 +99,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
               htmlFor="receive_amount"
               className={clsx(
                 'ml-1 text-xs',
-                errors.receive_amount
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
+                errors.receive_amount ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
               Monto a Recibir
@@ -117,7 +107,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
             <InputField
               id="receive_amount"
               type="number"
-              value={receiveAmount?.toString()}
+              value={`${selectedReceivingSystem?.coinSign} ${receiveAmount?.toString()}`}
               disabled={true}
               placeholder="Monto a Recibir"
               register={register('receive_amount', { required: true })}
@@ -129,27 +119,20 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
               htmlFor="proof_of_payment"
               className={clsx(
                 'cursor-pointer',
-                errors.proof_of_payment
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
+                errors.proof_of_payment ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
               <p className="ml-1 text-xs">Comprobante</p>
               <div
                 className={clsx(
                   'flex w-full flex-col items-center gap-2 rounded border border-[#6B7280] bg-gray-200 px-5 py-2 dark:bg-lightText xs-phone:flex-row sm-phone:flex-col lg-tablet:h-[38px] lg-tablet:flex-row lg-tablet:items-center',
-                  errors.proof_of_payment
-                    ? 'border-red-500'
-                    : 'hover:border-blue-600 dark:hover:border-white',
+                  errors.proof_of_payment ? 'border-red-500' : 'hover:border-blue-600 dark:hover:border-white',
                 )}
               >
                 <p className="w-full text-sm xs-phone:max-w-32 sm-phone:max-w-[inherit] lg-tablet:max-w-40 lg-tablet:text-base">
                   Subir comprobante
                 </p>
-                <span
-                  id="file-name"
-                  className="w-full text-xs text-[#6B7280] lg-tablet:text-sm"
-                >
+                <span id="file-name" className="w-full text-xs text-[#6B7280] lg-tablet:text-sm">
                   No hay archivo seleccionado
                 </span>
               </div>
@@ -170,9 +153,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
                 )}
               />
               {errors.proof_of_payment && 'Este campo es obligatorio' && (
-                <p className="text-sm text-red-500">
-                  • Este campo es obligatorio
-                </p>
+                <p className="text-sm text-red-500">• Este campo es obligatorio</p>
               )}
             </div>
           </div>
@@ -189,13 +170,8 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
               )}
             >
               <p>QR</p>
-              <div className='w-full flex items-center justify-center'>
-                <Image
-                  src={'/images/QR_image.png'}
-                  alt="qr"
-                  width={200}
-                  height={200}
-                />
+              <div className="flex w-full items-center justify-center">
+                <Image src={'/images/QR_image.png'} alt="qr" width={200} height={200} />
               </div>
             </div>
           </div>

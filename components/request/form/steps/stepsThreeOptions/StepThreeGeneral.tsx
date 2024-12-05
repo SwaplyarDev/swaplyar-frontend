@@ -1,12 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
-import {
-  FieldErrors,
-  UseFormGetValues,
-  UseFormRegister,
-} from 'react-hook-form';
+import { FieldErrors, UseFormGetValues, UseFormRegister } from 'react-hook-form';
 import InputCopy from '../../inputs/InputCopy';
 import InputField from '@/components/ui/contact-form/InputField';
+import { System } from '@/types/data';
 
 interface StepThreeGeneralProps {
   register: UseFormRegister<any>;
@@ -15,7 +12,8 @@ interface StepThreeGeneralProps {
   blockAll: boolean;
   formData: any;
   sendAmount: string | null;
-  selectedSendingSystem: any;
+  selectedSendingSystem: System | null;
+  selectedReceivingSystem: System | null;
   receiveAmount: string | null;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   restRegister: any;
@@ -29,19 +27,21 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
   formData,
   sendAmount,
   selectedSendingSystem,
+  selectedReceivingSystem,
   receiveAmount,
   handleChange,
   restRegister,
 }) => {
+  console.log(' selectedSendingSystem: ', selectedSendingSystem);
+  console.log(' selectedReceivingSystem: ', selectedReceivingSystem);
   return (
     <>
       <p className="text-left">
         tienes que realizar el pago de{' '}
         <span className="font-semibold underline">
-          {sendAmount} {selectedSendingSystem?.coin}
+          {selectedSendingSystem?.coinSign} {sendAmount}
         </span>{' '}
-        al email asdfgh@asdfgh.com con el concepto de "PAGO" para enviarte el
-        dinero a la cuenta{' '}
+        al email asdfgh@asdfgh.com con el concepto de "PAGO" para enviarte el dinero a la cuenta{' '}
         <span className="font-semibold underline">
           {' '}
           {formData.stepTwo.re_enter_bank_email == '' &&
@@ -56,12 +56,7 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
           <div className="flex flex-col">
             <label
               htmlFor="pay_email"
-              className={clsx(
-                'ml-1 text-xs',
-                errors.pay_email
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
-              )}
+              className={clsx('ml-1 text-xs', errors.pay_email ? 'text-red-500' : 'text-lightText dark:text-darkText')}
             >
               Email a pagar
             </label>
@@ -80,17 +75,15 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
               htmlFor="send_amount"
               className={clsx(
                 'ml-1 text-xs',
-                errors.send_amount
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
+                errors.send_amount ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
               Monto a pagar
             </label>
             <InputCopy
               id="send_amount"
-              type="number"
-              value={sendAmount?.toString()}
+              type="text"
+              value={`${selectedSendingSystem?.coinSign} ${sendAmount?.toString()}`}
               disabled={true}
               placeholder="Monto Enviar"
               register={register('send_amount', { required: true })}
@@ -102,17 +95,15 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
               htmlFor="receive_amount"
               className={clsx(
                 'ml-1 text-xs',
-                errors.receive_amount
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
+                errors.receive_amount ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
               Monto a Recibir
             </label>
             <InputField
               id="receive_amount"
-              type="number"
-              value={receiveAmount?.toString()}
+              type="text"
+              value={`${selectedReceivingSystem?.coinSign} ${receiveAmount?.toString()}`}
               disabled={true}
               placeholder="Monto a Recibir"
               register={register('receive_amount', { required: true })}
@@ -124,27 +115,20 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
               htmlFor="proof_of_payment"
               className={clsx(
                 'cursor-pointer',
-                errors.proof_of_payment
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
+                errors.proof_of_payment ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
               <p className="ml-1 text-xs">Comprobante</p>
               <div
                 className={clsx(
                   'flex w-full flex-col items-center gap-2 rounded border border-[#6B7280] bg-gray-200 px-5 py-2 dark:bg-lightText xs-phone:flex-row sm-phone:flex-col lg-tablet:h-[38px] lg-tablet:flex-row lg-tablet:items-center',
-                  errors.proof_of_payment
-                    ? 'border-red-500'
-                    : 'hover:border-blue-600 dark:hover:border-white',
+                  errors.proof_of_payment ? 'border-red-500' : 'hover:border-blue-600 dark:hover:border-white',
                 )}
               >
                 <p className="w-full text-sm xs-phone:max-w-32 sm-phone:max-w-[inherit] lg-tablet:max-w-40 lg-tablet:text-base">
                   Subir comprobante
                 </p>
-                <span
-                  id="file-name"
-                  className="w-full text-xs text-[#6B7280] lg-tablet:text-sm"
-                >
+                <span id="file-name" className="w-full text-xs text-[#6B7280] lg-tablet:text-sm">
                   No hay archivo seleccionado
                 </span>
               </div>
@@ -165,9 +149,7 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
                 )}
               />
               {errors.proof_of_payment && 'Este campo es obligatorio' && (
-                <p className="text-sm text-red-500">
-                  • Este campo es obligatorio
-                </p>
+                <p className="text-sm text-red-500">• Este campo es obligatorio</p>
               )}
             </div>
           </div>
@@ -176,12 +158,7 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
           <div className="flex h-full flex-col">
             <label
               htmlFor="note"
-              className={clsx(
-                'ml-1 text-xs',
-                errors.note
-                  ? 'text-red-500'
-                  : 'text-lightText dark:text-darkText',
-              )}
+              className={clsx('ml-1 text-xs', errors.note ? 'text-red-500' : 'text-lightText dark:text-darkText')}
             >
               Nota (opcional)
             </label>
@@ -192,14 +169,10 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
               placeholder="Añade una nota si lo deseas ;)"
               className={clsx(
                 'h-full w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-                errors.note
-                  ? 'border-red-500'
-                  : 'hover:border-blue-600 dark:hover:border-white',
+                errors.note ? 'border-red-500' : 'hover:border-blue-600 dark:hover:border-white',
               )}
             ></textarea>
-            {errors.note && (
-              <p className="text-sm text-red-500">Este campo es obligatorio</p>
-            )}
+            {errors.note && <p className="text-sm text-red-500">Este campo es obligatorio</p>}
           </div>
         </div>
       </div>

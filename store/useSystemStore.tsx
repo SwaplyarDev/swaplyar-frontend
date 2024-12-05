@@ -10,6 +10,7 @@ const defaultSendingSystem: System = {
   isDisabled: false,
   coin: 'USD',
   paymentMethod: 'paypal',
+  coinSign: 'US$',
 };
 
 const defaultReceivingSystem: System = {
@@ -20,6 +21,7 @@ const defaultReceivingSystem: System = {
   isDisabled: false,
   coin: 'ARS',
   paymentMethod: 'ars',
+  coinSign: '$a',
 };
 
 interface SystemStore {

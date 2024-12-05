@@ -24,13 +24,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
     setValue,
     getValues,
   } = useForm<FormData>({ mode: 'onChange' });
-  const {
-    markStepAsCompleted,
-    setActiveStep,
-    formData,
-    updateFormData,
-    completedSteps,
-  } = useStepperStore();
+  const { markStepAsCompleted, setActiveStep, formData, updateFormData, completedSteps } = useStepperStore();
   const { isDark } = useDarkTheme();
 
   const [initialValues, setInitialValues] = useState<FormData | null>(null);
@@ -40,7 +34,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   const receiveAmount = localStorage.getItem('receiveAmount');
   const sendAmount = localStorage.getItem('sendAmount');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const { selectedSendingSystem } = useSystemStore();
+  const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
 
   function showFileName(event: any) {
     // Tomar el archivo del evento y asignarlo a `selectedFile`
@@ -53,8 +47,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
       document.getElementById('file-name')!.textContent = file.name;
     } else {
       // Si no hay archivo cargado, mostrar mensaje predeterminado
-      document.getElementById('file-name')!.textContent =
-        'No hay archivo seleccionado';
+      document.getElementById('file-name')!.textContent = 'No hay archivo seleccionado';
     }
   }
 
@@ -87,9 +80,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   const hasChanges =
     initialValues &&
     !Object.keys(initialValues).every(
-      (key) =>
-        initialValues[key as keyof FormData] ===
-        formValues[key as keyof FormData],
+      (key) => initialValues[key as keyof FormData] === formValues[key as keyof FormData],
     );
 
   const { onChange, ...restRegister } = register('proof_of_payment', {
@@ -119,6 +110,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
             formData={formData}
             sendAmount={sendAmount}
             selectedSendingSystem={selectedSendingSystem}
+            selectedReceivingSystem={selectedReceivingSystem}
             receiveAmount={receiveAmount}
             handleChange={handleChange}
             restRegister={restRegister}
@@ -134,6 +126,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
             formData={formData}
             sendAmount={sendAmount}
             selectedSendingSystem={selectedSendingSystem}
+            selectedReceivingSystem={selectedReceivingSystem}
             receiveAmount={receiveAmount}
             handleChange={handleChange}
             restRegister={restRegister}
