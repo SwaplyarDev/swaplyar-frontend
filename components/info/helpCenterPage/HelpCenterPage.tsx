@@ -9,58 +9,11 @@ import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { CentroDeAyuda, Ayuda1, Ayuda1Dark, PlusRewardsDark } from '@/utils/assets/imgDatabaseCloudinary';
 import { PlusRewards, Ayuda2, Ayuda2Dark } from '@/utils/assets/img-database';
-import Swal from 'sweetalert2';
 
 const HelpCenterPage = () => {
   const { margins } = useMargins();
   const currentMargin = ResponsiveMarginHook(margins);
   const { isDark } = useDarkTheme();
-
-  // const handleSendRequest = () => {
-  //   Swal.fire({
-  //     title:
-  //       '<h2 style="font-size: 24px;">¿Estás seguro de que deseas cancelar esta solicitud?</h2>',
-  //     icon: 'info',
-  //     html: `
-  //       <p style="font-size: 16px;">Si cancela esta solicitud, debe generar una nueva solicitud</p>
-  //       <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; gap: 40px; padding: 0 13px">
-  //         <div id="back-button-container"></div>
-  //         <div style="height: 49px;" class="flex items-center justify-center">   
-  //         <button id="cancel-button" class="m-1 text-base h-[42px] min-w-[110px] flex relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white dark:border-darkText dark:bg-darkText dark:text-lightText  ${isDark ? 'buttonSecondDark' : 'buttonSecond'}">Cancelar</button></div>
-  //       </div>
-  //     `,
-  //     showConfirmButton: false,
-  //     showCancelButton: false,
-  //     background: isDark ? 'rgb(69 69 69)' : '#ffffff',
-  //     color: isDark ? '#ffffff' : '#000000',
-  //     didRender: () => {
-  //       const backElement = document.getElementById('back-button-container');
-  //       if (backElement) {
-  //         const root = createRoot(backElement);
-  //         root.render(
-  //           <button
-  //             onClick={() => Swal.close()}
-  //             className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 flex h-[42px] min-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-sm text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
-  //           >
-  //             <Arrow
-  //               color={isDark ? '#ebe7e0' : '#012c8a'}
-  //               backRequest={true}
-  //             />
-  //             Volver
-  //           </button>,
-  //         );
-  //       }
-  //     },
-  //     didOpen: () => {
-  //       const cancelButton = document.getElementById('cancel-button');
-  //       if (cancelButton) {
-  //         cancelButton.addEventListener('click', () => {
-  //           Swal.close();
-  //         });
-  //       }
-  //     },
-  //   });
-  // };
 
   return (
     <>

@@ -14,7 +14,6 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useSystemStore } from '@/store/useSystemStore';
-import Image from 'next/image';
 import Tick from '@/components/ui/Tick/Tick';
 import Cronometro from './Cronometro';
 import useChronometerState from '@/store/chronometerStore';
