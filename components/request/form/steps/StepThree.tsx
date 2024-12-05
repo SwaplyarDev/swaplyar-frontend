@@ -6,6 +6,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import { useSystemStore } from '@/store/useSystemStore';
 import StepThreeGeneral from './stepsThreeOptions/StepThreeGeneral';
 import StepThreeTether from './stepsThreeOptions/StepThreeTether';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
 interface FormData {
   send_amount: string;
@@ -70,11 +71,14 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
     console.log(proof_of_payment);
   }, [formData.stepThree, setValue, receiveAmount, sendAmount]);
 
+  const [loading, setLoading] = useState(false);
   const onSubmit = (data: FormData) => {
+    setLoading(true);
     console.log(data);
     updateFormData(2, data);
     markStepAsCompleted(2);
     setActiveStep(3);
+    setLoading(false);
   };
 
   const hasChanges =
@@ -146,9 +150,16 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
             <button
               type="submit"
               className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-              disabled={!isValid || blockAll}
+              disabled={!isValid || blockAll || loading}
             >
-              Siguiente
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
+                  Cargando...
+                </div>
+              ) : (
+                'Siguiente'
+              )}
             </button>
           ) : (
             <button
@@ -164,9 +175,16 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
           <button
             type="submit"
             className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] text-sm font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
-            disabled={!isValid || blockAll}
+            disabled={!isValid || blockAll || loading}
           >
-            Siguiente
+            {loading ? (
+              <div className="flex items-center justify-center gap-2">
+                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
+                Cargando...
+              </div>
+            ) : (
+              'Siguiente'
+            )}
           </button>
         )}
       </div>

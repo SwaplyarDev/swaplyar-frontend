@@ -122,7 +122,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
                 errors.proof_of_payment ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
-              <p className="ml-1 text-xs">Comprobante</p>
+              <p className="ml-1 text-xs">Comprobante con formato: PNG o JPG</p>
               <div
                 className={clsx(
                   'flex w-full flex-col items-center gap-2 rounded border border-[#6B7280] bg-gray-200 px-5 py-2 dark:bg-lightText xs-phone:flex-row sm-phone:flex-col lg-tablet:h-[38px] lg-tablet:flex-row lg-tablet:items-center',

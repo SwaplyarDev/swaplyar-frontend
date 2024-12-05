@@ -19,6 +19,7 @@ import Tick from '@/components/ui/Tick/Tick';
 import Cronometro from './Cronometro';
 import useChronometerState from '@/store/chronometerStore';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
 const StepperContainer = () => {
   const { activeStep, completedSteps, setActiveStep, submitAllData } = useStepperStore();
@@ -331,9 +332,6 @@ const StepperContainer = () => {
         </div>
       </div>
       {steps.map((step, index) => {
-        console.log('ASDASDASDASDASDASDASD: ', !completedSteps[index] && index !== activeStep);
-        console.log('jjjjjjjjjjjjjjjj: ', !completedSteps[index]);
-        console.log('ggggggggggggggg: ', index !== activeStep);
         return (
           // <section
           //   key={index}
@@ -405,7 +403,7 @@ const StepperContainer = () => {
         >
           {loading ? (
             <div id="loading" className="flex items-center justify-center gap-2">
-              <Image src="/gif/cargando.gif" alt="Cargando..." width={25} height={25} className="mb-0.5" />
+              <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
               <span>Procesando...</span>
             </div>
           ) : (
