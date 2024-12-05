@@ -11,6 +11,7 @@ import StepTwoWise from './stepsTwoOptions/StepTwoWise';
 import StepTwoTether from './stepsTwoOptions/StepTwoTether';
 import StepTwoPix from './stepsTwoOptions/StepTwoPix';
 import { RedType } from '@/types/request/request';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
 interface FormData {
   receiver_first_name: string;
@@ -38,13 +39,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     setValue,
     getValues,
   } = useForm<FormData>({ mode: 'onChange' });
-  const {
-    markStepAsCompleted,
-    setActiveStep,
-    formData,
-    updateFormData,
-    completedSteps,
-  } = useStepperStore();
+  const { markStepAsCompleted, setActiveStep, formData, updateFormData, completedSteps } = useStepperStore();
   const { selectedReceivingSystem } = useSystemStore();
   const { isDark } = useDarkTheme();
 
@@ -88,15 +83,11 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
 
     setValue(
       'receiver_first_name',
-      formData.stepOne?.own_account === 'Si'
-        ? formData.stepOne?.sender_first_name
-        : receiver_first_name,
+      formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_first_name : receiver_first_name,
     );
     setValue(
       'receiver_last_name',
-      formData.stepOne?.own_account === 'Si'
-        ? formData.stepOne?.sender_last_name
-        : receiver_last_name,
+      formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_last_name : receiver_last_name,
     );
     setValue('tax_identification', tax_identification);
     setValue('transfer_identification', transfer_identification);
@@ -121,19 +112,20 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     formData.stepOne?.sender_last_name,
   ]);
 
+  const [loading, setLoading] = useState(false);
   const onSubmit = (data: FormData) => {
+    setLoading(true);
     updateFormData(1, data);
-    markStepAsCompleted(1); 
-    setActiveStep(2); 
+    markStepAsCompleted(1);
+    setActiveStep(2);
+    setLoading(false);
   };
 
   // Determinar si se han hecho cambios en el formulario
   const hasChanges =
     initialValues &&
     !Object.keys(initialValues).every(
-      (key) =>
-        initialValues[key as keyof FormData] ===
-        formValues[key as keyof FormData],
+      (key) => initialValues[key as keyof FormData] === formValues[key as keyof FormData],
     );
 
   const renderSelectedSystem = () => {
@@ -216,9 +208,16 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             <button
               type="submit"
               className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-              disabled={!isValid || blockAll}
+              disabled={!isValid || blockAll || loading}
             >
-              Siguiente
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
+                  Cargando...
+                </div>
+              ) : (
+                'Siguiente'
+              )}
             </button>
           ) : (
             <button
@@ -234,9 +233,16 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
           <button
             type="submit"
             className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] text-sm font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
-            disabled={!isValid || blockAll}
+            disabled={!isValid || blockAll || loading}
           >
-            Siguiente
+            {loading ? (
+              <div className="flex items-center justify-center gap-2">
+                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
+                Cargando...
+              </div>
+            ) : (
+              'Siguiente'
+            )}
           </button>
         )}
       </div>
