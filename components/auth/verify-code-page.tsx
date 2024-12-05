@@ -40,8 +40,6 @@ export const VerifyCodePage = () => {
   const router = useRouter();
   const { view } = useStore();
   const { user } = userInfoStore();
-  console.log('User id: ', user?.id);
-  console.log('View: ', view);
 
   const { attempts, lockUntil, decrementAttempts, setLockUntil, resetAttempts } = useCodeVerificationStore();
 

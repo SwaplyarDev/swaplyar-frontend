@@ -32,6 +32,7 @@ export interface OutputFormat {
 }
 export interface AlertsProps {
   isDark: boolean;
+  message?: string;
 }
 
 export interface FormularioProps {

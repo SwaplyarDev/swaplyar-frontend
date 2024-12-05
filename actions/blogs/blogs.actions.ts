@@ -14,16 +14,19 @@ export const fetchBlogs = async (page: number, searchTerm: string): Promise<Blog
     url += `&search=${encodeURIComponent(searchTerm)}`;
   }
 
-  const response = await fetch(url, {
-    method: 'GET',
-    cache: 'no-store', // Evita el caché para obtener datos actualizados.
-  });
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      cache: 'no-store', // Evita el caché para obtener datos actualizados.
+    });
 
-  if (!response.ok) {
-    console.error(`Error fetching blogs: ${response.statusText}`);
-    throw new Error(`Failed to fetch blogs: ${response.status}`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch blogs: ${response.status} ${response.statusText}`);
+    }
+
+    const data: BlogResponse = await response.json();
+    return data;
+  } catch (error: any) {
+    throw new Error(`Failed to fetch blogs. Error: ${error.message}`);
   }
-
-  const data: BlogResponse = await response.json();
-  return data;
 };

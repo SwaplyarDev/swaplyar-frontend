@@ -32,8 +32,6 @@ const Blog: React.FC = () => {
     setTotalPages,
   });
 
-  console.log(blogs);
-
   // Imágenes aleatorias para el carrusel
   const randomImages = useRandomImages(blogs);
 
