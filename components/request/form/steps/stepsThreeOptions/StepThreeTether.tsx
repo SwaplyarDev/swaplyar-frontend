@@ -24,7 +24,6 @@ interface StepThreeTetherProps {
 const StepThreeTether: React.FC<StepThreeTetherProps> = ({
   register,
   errors,
-  getValues,
   blockAll,
   formData,
   sendAmount,
@@ -58,7 +57,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
             <label
               htmlFor="pay_usdt_direction"
               className={clsx(
-                'ml-1 text-xs',
+                'ml-1 h-5 text-xs',
                 errors.pay_usdt_direction ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
@@ -78,7 +77,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
             <label
               htmlFor="send_amount"
               className={clsx(
-                'ml-1 text-xs',
+                'ml-1 h-5 text-xs',
                 errors.send_amount ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
@@ -98,7 +97,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
             <label
               htmlFor="receive_amount"
               className={clsx(
-                'ml-1 text-xs',
+                'ml-1 h-5 text-xs',
                 errors.receive_amount ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
@@ -122,7 +121,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
                 errors.proof_of_payment ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
-              <p className="ml-1 text-xs">Comprobante con formato: PNG o JPG</p>
+              <p className="ml-1 h-5 text-xs">Comprobante con formato: PNG o JPG</p>
               <div
                 className={clsx(
                   'flex w-full flex-col items-center gap-2 rounded border border-[#6B7280] bg-gray-200 px-5 py-2 dark:bg-lightText xs-phone:flex-row sm-phone:flex-col lg-tablet:h-[38px] lg-tablet:flex-row lg-tablet:items-center',

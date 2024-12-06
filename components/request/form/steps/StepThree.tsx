@@ -38,16 +38,13 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
 
   function showFileName(event: any) {
-    // Tomar el archivo del evento y asignarlo a `selectedFile`
     const file = event.target.files[0] || null;
 
-    // Si hay un archivo seleccionado, actualizar el estado y mostrar el nombre
     console.log(file);
     if (file) {
       setSelectedFile(file);
       document.getElementById('file-name')!.textContent = file.name;
     } else {
-      // Si no hay archivo cargado, mostrar mensaje predeterminado
       document.getElementById('file-name')!.textContent = 'No hay archivo seleccionado';
     }
   }
@@ -92,8 +89,8 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(event); // Llamamos al onChange de register
-    if (showFileName) showFileName(event); // Ejecutamos la función personalizada si existe
+    onChange(event);
+    if (showFileName) showFileName(event);
   };
 
   const renderSelectedSystem = () => {

@@ -49,7 +49,7 @@ const StepperContainer = () => {
 
   useEffect(() => {
     if (!pass) {
-      router.push('/home'); // Redirige al home si `pass` es false
+      router.push('/home');
     }
   }, [pass, router]);
 
@@ -96,42 +96,6 @@ const StepperContainer = () => {
       },
     });
   };
-  //   Swal.fire({
-  //     title: '',
-  //     html: `
-  //     <div class="flex bg-[#ffffff] dark:bg-[#454545] rounded-xl px-[15px] py-5 xs-phone:py-[10px] max-w-[500px] w-full xs-phone:flex-row flex-col-reverse gap-3 justify-between items-center">
-  //       <div class="flex items-center justify-center gap-1 flex-col">
-  //         <h2 class="text-2xl xs-phone:text-left text-center w-full text-[#252526] dark:text-[#ebe7e0]">Solicitud realizada con éxito</h2>
-  //         <a href="#" target="_blank" class="text-base w-full xs-phone:text-left text-center text-[#012c8a] dark:text-[#0ea5e9]">¿Tuviste algún problema con la transferencia?</a>
-  //       </div>
-  //       <div id="tick-container" class="flex justify-center items-center h-[100px] w-[100px] rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText"></div>
-  //     </div>
-  //     `,
-  //     customClass: {
-  //       htmlContainer: 'confirmAlert',
-  //     },
-  //     showConfirmButton: false,
-  //     showCancelButton: false,
-  //     background: 'transparent',
-  //     color: isDark ? '#ffffff' : '#000000',
-  //     allowOutsideClick: true,
-  //     allowEscapeKey: true,
-  //     allowEnterKey: false,
-  //     didRender: () => {
-  //       const tickContainer = document.getElementById('tick-container');
-  //       if (tickContainer) {
-  //         const root = createRoot(tickContainer);
-  //         root.render(
-  //           <Tick color={isDark ? '#414244' : '#FCFBFA'} size="70px" />,
-  //         );
-  //       }
-  //     },
-  //     willClose: () => {
-  //       //Redirigir al home cuando se cierre la alerta
-  //       navigation.push('/');
-  //     },
-  //   });
-  // };
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
   const [loading, setLoading] = useState(false);
   const handleSubmit = async () => {
@@ -322,7 +286,6 @@ const StepperContainer = () => {
         </div>
       )}
       <div className="flex flex-col items-center justify-between gap-2 px-2 sm-phone:flex-row sm-phone:gap-0">
-        {/* <h1 className="text-2xl font-bold text-lightText dark:text-darkText"> */}
         <h1 className="text-2xl font-bold text-lightText dark:text-darkText xs:text-3xl sm-phone:text-2xl">
           Formulario de Solicitud
         </h1>
@@ -332,10 +295,6 @@ const StepperContainer = () => {
       </div>
       {steps.map((step, index) => {
         return (
-          // <section
-          //   key={index}
-          //   className={`flex min-h-20 w-full ${(!completedSteps[index] && index !== activeStep) ? 'flex-col' : 'flex-row'} gap-4 rounded-2xl bg-calculatorDark p-4 dark:bg-calculatorLight`}
-          // >
           <section
             key={index}
             className={clsx(
@@ -348,23 +307,15 @@ const StepperContainer = () => {
                 !completedSteps[index] && index !== activeStep ? 'opacity-50' : ''
               }`}
             >
-              {/* <div
-              className={`justify-between xs-phone:flex md-tablet:relative md-tablet:${!completedSteps[index] ? 'flex-col' : 'flex-row'} md-tablet:items-center ${
-                !completedSteps[index] && index !== activeStep ? 'opacity-50' : ''
-              }`}
-            > */}
               <h2
                 className={`mb-2 ${completedSteps[index] ? 'pr-5 text-left' : 'text-center'} w-full text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0`}
               >
                 {step.title}
               </h2>
-              {/* Mostrar StepIndicator solo si no está completado y es el paso actual */}
               {activeStep === index && !completedSteps[index] && (
                 <StepIndicator currentStep={activeStep} completedSteps={completedSteps} />
               )}
-              {/* Mostrar el botón solo para pasos completados o si es el paso anterior al actual */}
               {(index < activeStep || completedSteps[index]) && (
-                //saque el justify-end chequear que no sirva al 100%
                 <div className={`flex flex-col items-end`}>
                   <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
                     <Tick color={isDark ? '#414244' : '#FCFBFA'} />

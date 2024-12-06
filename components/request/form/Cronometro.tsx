@@ -1,19 +1,15 @@
-import Clock from '@/components/ui/Clock/Clock';
 import { useState, useEffect, useRef } from 'react';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import useChronometerState from '@/store/chronometerStore';
 import { CronometroProps } from '@/types/request/request';
-import Image from 'next/image';  // Asegúrate de importar el componente Image de Next.js
-import {
-  Reloj,
-} from '@/utils/assets/img-database';
+import Image from 'next/image';
+import { Reloj } from '@/utils/assets/img-database';
 
 const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
-  const [segundos, setSegundos] = useState<number>(30 * 60); // Inicializamos en 30 minutos (30 * 60 segundos)
-  const intervaloRef = useRef<NodeJS.Timeout | null>(null); // Referencia para el intervalo de tiempo
+  const [segundos, setSegundos] = useState<number>(30 * 60);
+  const intervaloRef = useRef<NodeJS.Timeout | null>(null);
   const { isStopped, stop, setisStopped, setStop } = useChronometerState();
 
-  // Iniciar el cronómetro automáticamente al montar el componente
   useEffect(() => {
     if (stop) {
       if (intervaloRef.current) {
@@ -24,18 +20,17 @@ const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
     intervaloRef.current = setInterval(() => {
       setSegundos((prev) => {
         if (prev > 0) {
-          return prev - 1; // Restamos un segundo
+          return prev - 1;
         } else {
-          clearInterval(intervaloRef.current!); // Detenemos el cronómetro cuando llega a cero
+          clearInterval(intervaloRef.current!);
           setStop(true);
           setBlockAll(true);
           setisStopped(true);
-          return 0; // Aseguramos que el cronómetro no pase a valores negativos
+          return 0;
         }
       });
-    }, 1000); // Ejecutar cada segundo
+    }, 1000);
 
-    // Limpiamos el intervalo cuando el componente se desmonte
     return () => {
       if (intervaloRef.current) {
         clearInterval(intervaloRef.current);
@@ -45,14 +40,13 @@ const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
 
   // Formato de tiempo: mm:ss (minutos:segundos)
   const formatTiempo = (segundos: number) => {
-    const minutos = Math.floor(segundos / 60); // Obtenemos los minutos
-    const segundosRestantes = segundos % 60; // Obtenemos los segundos restantes
+    const minutos = Math.floor(segundos / 60);
+    const segundosRestantes = segundos % 60;
     return `${String(minutos).padStart(2, '0')}:${String(segundosRestantes).padStart(2, '0')}`;
   };
 
-  // Calcular el porcentaje de la barra de progreso
   const porcentajeProgreso = (segundos: number) => {
-    return (segundos / (30 * 60)) * 100; // Calculamos el porcentaje basado en el tiempo restante
+    return (segundos / (30 * 60)) * 100;
   };
 
   const { isDark } = useDarkTheme();
@@ -66,7 +60,7 @@ const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
       return 'orange';
     } else {
       // Más de 15 minutos
-      return isDark ? '#ebe7e0' : '#252526'; // Color estándar, cambia si es tema oscuro
+      return isDark ? '#ebe7e0' : '#252526';
     }
   };
 
@@ -82,18 +76,8 @@ const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
           color: isDark ? '#ebe7e0' : '#252526',
         }}
       >
-        Tiempo Restante{' '}
-        {/* <Clock color={isDark ? '#ebe7e0' : '#252526'} stopRequest={stop} /> */}
-        <Image
-          src={Reloj}
-          alt="Reloj"
-          width={18}
-          height={18}
-          className='ml-1'
-        />
-        <span className="w-[52px] text-center">
-          {formatTiempo(segundos)}
-        </span>
+        Tiempo Restante <Image src={Reloj} alt="Reloj" width={18} height={18} className="ml-1" />
+        <span className="w-[52px] text-center">{formatTiempo(segundos)}</span>
       </div>
 
       {!isStopped && (
@@ -101,16 +85,16 @@ const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
           style={{
             width: '100%',
             height: '3px',
-            backgroundColor: 'transparent', 
+            backgroundColor: 'transparent',
             marginTop: '7px',
             position: 'relative',
           }}
         >
           <div
             style={{
-              width: `${porcentajeProgreso(segundos)}%`, 
+              width: `${porcentajeProgreso(segundos)}%`,
               height: '100%',
-              backgroundColor: obtenerColorBarra(segundos), 
+              backgroundColor: obtenerColorBarra(segundos),
               borderRadius: '1px',
               transition: 'width 1s ease-out',
             }}

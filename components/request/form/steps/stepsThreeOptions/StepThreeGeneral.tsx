@@ -22,7 +22,6 @@ interface StepThreeGeneralProps {
 const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
   register,
   errors,
-  getValues,
   blockAll,
   formData,
   sendAmount,
@@ -56,7 +55,10 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
           <div className="flex flex-col">
             <label
               htmlFor="pay_email"
-              className={clsx('ml-1 text-xs', errors.pay_email ? 'text-red-500' : 'text-lightText dark:text-darkText')}
+              className={clsx(
+                'ml-1 h-5 text-xs',
+                errors.pay_email ? 'text-red-500' : 'text-lightText dark:text-darkText',
+              )}
             >
               Email a pagar
             </label>
@@ -74,7 +76,7 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
             <label
               htmlFor="send_amount"
               className={clsx(
-                'ml-1 text-xs',
+                'ml-1 h-5 text-xs',
                 errors.send_amount ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
@@ -94,7 +96,7 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
             <label
               htmlFor="receive_amount"
               className={clsx(
-                'ml-1 text-xs',
+                'ml-1 h-5 text-xs',
                 errors.receive_amount ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
@@ -118,7 +120,7 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
                 errors.proof_of_payment ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
-              <p className="ml-1 text-xs">Comprobante con formato: PNG o JPG</p>
+              <p className="ml-1 h-5 text-xs">Comprobante con formato: PNG o JPG</p>
               <div
                 className={clsx(
                   'flex w-full flex-col items-center gap-2 rounded border border-[#6B7280] bg-gray-200 px-5 py-2 dark:bg-lightText xs-phone:flex-row sm-phone:flex-col lg-tablet:h-[38px] lg-tablet:flex-row lg-tablet:items-center',
@@ -158,7 +160,7 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
           <div className="flex h-full flex-col">
             <label
               htmlFor="note"
-              className={clsx('ml-1 text-xs', errors.note ? 'text-red-500' : 'text-lightText dark:text-darkText')}
+              className={clsx('ml-1 h-5 text-xs', errors.note ? 'text-red-500' : 'text-lightText dark:text-darkText')}
             >
               Nota (opcional)
             </label>

@@ -39,33 +39,22 @@ const CustomOption = (props: any) => (
 );
 
 const CustomSingleValue = (props: any) => (
-    <components.SingleValue {...props} className="flex items-center gap-2">
-      {props.data.image}
-      {props.data.label}
-    </components.SingleValue>
-  );
+  <components.SingleValue {...props} className="flex items-center gap-2">
+    {props.data.image}
+    {props.data.label}
+  </components.SingleValue>
+);
 
-const SelectRed: React.FC<SelectRedProps> = ({
-  selectedRed,
-  setSelectedRed,
-  errors,
-  blockAll,
-}) => {
+const SelectRed: React.FC<SelectRedProps> = ({ selectedRed, setSelectedRed, errors, blockAll }) => {
   const fieldName = 'red_selection';
-  const errorMessage = (errors as { [key: string]: FieldError })[fieldName]
-    ?.message;
+  const errorMessage = (errors as { [key: string]: FieldError })[fieldName]?.message;
   const [isFocused, setIsFocused] = useState(false);
   const { isDark } = useDarkTheme();
   return (
     <>
       <label
         htmlFor={fieldName}
-        className={clsx(
-          'ml-1 text-xs',
-          errorMessage
-            ? 'text-red-500'
-            : 'text-lightText dark:text-darkText',
-        )}
+        className={clsx('ml-1 h-5 text-xs', errorMessage ? 'text-red-500' : 'text-lightText dark:text-darkText')}
       >
         Selecciona una Red
       </label>
@@ -80,7 +69,7 @@ const SelectRed: React.FC<SelectRedProps> = ({
           setSelectedRed(option || undefined);
           setIsFocused(false);
         }}
-        components={{ Option: CustomOption, SingleValue: CustomSingleValue  }}
+        components={{ Option: CustomOption, SingleValue: CustomSingleValue }}
         isSearchable={false}
         placeholder="Selecciona una red"
         className={clsx(

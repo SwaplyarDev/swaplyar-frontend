@@ -16,6 +16,8 @@ import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 interface FormData {
   receiver_first_name: string;
   receiver_last_name: string;
+  document_type: string | undefined;
+  method_key: string | undefined;
   tax_identification: string;
   transfer_identification: string;
   re_transfer_identification: string;
@@ -38,6 +40,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     formState: { errors, isValid },
     setValue,
     getValues,
+    clearErrors,
   } = useForm<FormData>({ mode: 'onChange' });
   const { markStepAsCompleted, setActiveStep, formData, updateFormData, completedSteps } = useStepperStore();
   const { selectedReceivingSystem } = useSystemStore();
@@ -51,6 +54,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     const {
       receiver_first_name,
       receiver_last_name,
+      document_type,
+      method_key,
       tax_identification,
       transfer_identification,
       re_transfer_identification,
@@ -67,6 +72,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     const newValues = {
       receiver_first_name,
       receiver_last_name,
+      document_type,
+      method_key,
       tax_identification,
       transfer_identification,
       re_transfer_identification,
@@ -81,6 +88,9 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
       individual_tax_id,
     };
 
+    console.log('Document Type: ', document_type);
+    console.log('Method Key: ', method_key);
+
     setValue(
       'receiver_first_name',
       formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_first_name : receiver_first_name,
@@ -89,6 +99,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
       'receiver_last_name',
       formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_last_name : receiver_last_name,
     );
+    setValue('document_type', document_type);
+    setValue('method_key', method_key);
     setValue('tax_identification', tax_identification);
     setValue('transfer_identification', transfer_identification);
     setValue('re_transfer_identification', re_transfer_identification);
@@ -121,7 +133,6 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     setLoading(false);
   };
 
-  // Determinar si se han hecho cambios en el formulario
   const hasChanges =
     initialValues &&
     !Object.keys(initialValues).every(
@@ -138,6 +149,10 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             getValues={getValues}
             blockAll={blockAll}
             formData={formData}
+            control={control}
+            formValues={formValues}
+            clearErrors={clearErrors}
+            setValue={setValue}
           />
         );
       case 'payoneer_usd':

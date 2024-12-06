@@ -1,47 +1,32 @@
-import React, { useState } from 'react';
-import Select from 'react-select';
-import clsx from 'clsx';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { FieldError, SelectBooleanProps } from '@/types/request/request';
+import { FieldError, SelectLabelsProps } from '@/types/request/request';
+import React from 'react';
+import Select from 'react-select';
 
-const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelectedOption, errors, blockAll }) => {
-  const fieldName = 'own_account';
+const SelectLabel: React.FC<SelectLabelsProps> = ({
+  selectedOption,
+  setSelectedOption,
+  errors,
+  blockAll,
+  fieldName,
+  options,
+}) => {
   const errorMessage = (errors as { [key: string]: FieldError })[fieldName]?.message;
-  const [isFocused, setIsFocused] = useState(false);
   const { isDark } = useDarkTheme();
+
   return (
     <>
-      <label
-        htmlFor={fieldName}
-        className={clsx(errorMessage ? 'text-red-500' : 'text-gray-900 dark:text-gray-300', 'hidden')}
-      >
-        ¿Tienes cuenta propia?
+      <label htmlFor={fieldName} className="hidden">
+        Selecciona una opcion
       </label>
       <Select
-        isDisabled={blockAll}
         id={fieldName}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        options={[
-          { value: 'Si', label: 'Si' },
-          { value: 'No', label: 'No' },
-        ]}
-        value={selectedOption !== undefined ? { value: selectedOption, label: selectedOption } : null}
-        onChange={(option) => {
-          setSelectedOption(option?.value || undefined);
-          setIsFocused(false);
-        }}
+        options={options}
+        value={options.find((option) => option.value === selectedOption)}
+        onChange={(option) => setSelectedOption(option?.value)}
+        isDisabled={blockAll}
         placeholder="Selecciona una opción"
-        classNamePrefix="custom-select"
-        isSearchable={false}
-        className={clsx(
-          'h-[38px] w-full rounded border border-[#6B7280] bg-gray-200 px-[10px] text-gray-900 dark:bg-lightText dark:text-white',
-          errorMessage && !isFocused
-            ? 'border border-red-500 hover:border-blue-600 dark:hover:border-white'
-            : isFocused
-              ? 'border-blue-600 outline-none ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
-              : 'hover:border-blue-600 dark:hover:border-white',
-        )}
+        className="h-5 text-xs"
         theme={(theme) => ({
           ...theme,
           borderRadius: 0,
@@ -62,6 +47,9 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelect
             boxShadow: 'none',
             backgroundColor: 'transparent',
             cursor: 'pointer',
+            maxHeight: '16px',
+            minHeight: 'inherit',
+            margin: '0px 0px 5px 0px',
           }),
           menu: (provided) => ({
             ...provided,
@@ -83,6 +71,10 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelect
               backgroundColor: 'rgba(59, 130, 246, 0.1)',
             },
           }),
+          valueContainer: (provided) => ({
+            ...provided,
+            padding: '0px 0px 0px 3px',
+          }),
           singleValue: (provided) => ({
             ...provided,
             color: 'text-gray-900 dark:text-white',
@@ -94,6 +86,8 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelect
             background: 'none',
             boxShadow: 'none',
             cursor: 'pointer',
+            padding: '0px',
+            margin: '0px',
             '& input': {
               font: 'inherit',
               color: 'inherit',
@@ -101,6 +95,8 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelect
               cursor: 'pointer',
               border: 'none',
               boxShadow: 'none',
+              padding: '0px',
+              margin: '0px',
             },
           }),
           clearIndicator: () => ({
@@ -116,7 +112,7 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelect
           }),
           placeholder: (provided) => ({
             ...provided,
-            color: '#6B7280',
+            color: '#ebe7e0',
           }),
         }}
       />
@@ -125,4 +121,4 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelect
   );
 };
 
-export default SelectBoolean;
+export default SelectLabel;

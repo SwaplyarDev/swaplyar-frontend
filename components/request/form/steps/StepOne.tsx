@@ -91,7 +91,6 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     }
   };
 
-  // Determinar si se han hecho cambios en el formulario
   const deepEqual = (obj1: any, obj2: any): boolean => {
     if (obj1 === obj2) return true;
     if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) return false;
@@ -108,7 +107,6 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     return true;
   };
 
-  // Usar la función deepEqual para hasChanges
   const hasChanges = initialValues && !deepEqual(initialValues, formValues);
 
   const [isFocused, setIsFocused] = useState(false);
@@ -121,7 +119,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             <label
               htmlFor="name"
               className={clsx(
-                'ml-1 text-xs',
+                'ml-1 h-5 text-xs',
                 errors.sender_first_name ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
@@ -146,7 +144,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             <label
               htmlFor="sender_last_name"
               className={clsx(
-                'ml-1 text-xs',
+                'ml-1 h-5 text-xs',
                 errors.sender_last_name ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
@@ -172,7 +170,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
           <div className="flex flex-col">
             <label
               htmlFor="email"
-              className={clsx('ml-1 text-xs', errors.email ? 'text-red-500' : 'text-lightText dark:text-darkText')}
+              className={clsx('ml-1 h-5 text-xs', errors.email ? 'text-red-500' : 'text-lightText dark:text-darkText')}
             >
               Correo electrónico
             </label>
@@ -195,7 +193,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
           <div className="flex flex-col">
             <label
               htmlFor="phone"
-              className={clsx('ml-1 text-xs', errors.phone ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
+              className={clsx('ml-1 h-5 text-xs', errors.phone ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
             >
               Telefono
             </label>
@@ -248,7 +246,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
       </div>
       <div className="mx-0 flex flex-col gap-0 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
         <div className="flex w-full items-center justify-start sm-phone:justify-center">
-          <p className="ml-1 text-xs text-lightText dark:text-darkText sm-phone:ml-0 sm-phone:text-sm md:text-lg">
+          <p className="ml-1 h-5 text-xs text-lightText dark:text-darkText sm-phone:ml-0 sm-phone:text-sm md:text-lg">
             ¿Se transfiere a una cuenta propia?
           </p>
         </div>

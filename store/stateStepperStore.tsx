@@ -1,5 +1,5 @@
 import { System } from '@/types/data';
-import { CountryOption, RedType } from '@/types/request/request';
+import { CountryOption, LabelOption, RedType } from '@/types/request/request';
 import { buildPaymentMethod } from '@/utils/buildPaymentMethod';
 import { create } from 'zustand';
 
@@ -17,6 +17,8 @@ interface StepOneData {
 interface StepTwoData {
   receiver_first_name: string;
   receiver_last_name: string;
+  document_type: string | undefined;
+  method_key: string | undefined;
   tax_identification: string;
   transfer_identification: string;
   re_transfer_identification: string;
@@ -77,6 +79,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     stepTwo: {
       receiver_first_name: '',
       receiver_last_name: '',
+      document_type: undefined,
+      method_key: undefined,
       tax_identification: '',
       transfer_identification: '',
       re_transfer_identification: '',
@@ -125,14 +129,16 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     const { stepOne, stepTwo, stepThree } = state.formData;
 
     console.log(stepThree.proof_of_payment);
+    console.log(stepTwo.method_key);
+    console.log(stepTwo.document_type);
 
     const senderDetails: Record<string, string> = {
       email_account: stepThree.pay_email || '',
       transfer_code: stepTwo.transfer_identification || '',
       bank_name: stepTwo.name_of_bank || '',
-      send_method_key: 'cbu',
+      send_method_key: stepTwo.method_key === 'CVU' ? 'CBU' : stepTwo.method_key || '',
       send_method_value: stepTwo.transfer_identification || '',
-      document_type: 'DNI',
+      document_type: stepTwo.document_type || '',
       document_value: stepTwo.tax_identification || '',
       pix_key: stepTwo.pix_key || '',
       pix_value: stepTwo.transfer_identification || '',
@@ -146,9 +152,9 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       email_account: stepThree.pay_email || '',
       transfer_code: stepTwo.transfer_identification || '',
       bank_name: stepTwo.name_of_bank || '',
-      send_method_key: 'cbu',
+      send_method_key: stepTwo.method_key === 'CVU' ? 'CBU' : stepTwo.method_key || '',
       send_method_value: stepTwo.transfer_identification || '',
-      document_type: 'DNI',
+      document_type: stepTwo.document_type || '',
       document_value: stepTwo.tax_identification || '',
       pix_key: stepTwo.pix_key || '',
       pix_value: stepTwo.transfer_identification || '',
@@ -299,6 +305,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         stepTwo: {
           receiver_first_name: '',
           receiver_last_name: '',
+          document_type: undefined,
+          method_key: undefined,
           tax_identification: '',
           transfer_identification: '',
           re_transfer_identification: '',

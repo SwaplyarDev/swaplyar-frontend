@@ -1,7 +1,7 @@
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import Select from 'react-select'; // Asegúrate de importar de 'react-select'
+import Select from 'react-select';
 import { CountryOption, FieldError, SelectCodeCountryProps } from '@/types/request/request';
 
 const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
