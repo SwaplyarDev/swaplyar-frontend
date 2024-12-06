@@ -5,7 +5,7 @@ import { regretsPc, regretsPhone } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
-import { createRegret } from '@/actions/repentance/action.repentanceForm';
+import { createRegret } from '@/actions/repentance/repentanceForm.action';
 import { FormRepentance } from '@/types/repentance/repentance';
 import AlertSuccess from './Alerts/AlertSuccess';
 import AlertDuplication from './Alerts/AlertDuplication';
