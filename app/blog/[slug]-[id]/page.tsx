@@ -1,6 +1,6 @@
 // /app/info/blog/[slug]-[id]
 
-import CardDetail from '@/components/info/blog/blogDetail/CardDetail';
+import CardDetail from '@/components/blog/blogDetail/CardDetail';
 
 export default function BlogDetailPage() {
   return (

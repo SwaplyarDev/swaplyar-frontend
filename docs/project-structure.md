@@ -1,4 +1,6 @@
-```markdown
+
+---
+
 # 🗂️ **Estructura Principal del Proyecto**
 
 Esta es la estructura principal del proyecto **SwaplyAr Frontend**, diseñada para mantener el código organizado y modular. A continuación, se detalla cada carpeta y su propósito.
@@ -7,47 +9,79 @@ Esta es la estructura principal del proyecto **SwaplyAr Frontend**, diseñada pa
 
 ```plaintext
 swaplyar-frontend/
-├── app/               # (Nuevo) Directorio App Router (Next.js 13)
-│   ├── api/           # Rutas de API
-│   │   ├── auth/      # Rutas de autenticación con NextAuth.js
-│   │   └── paypal/    # Rutas para transacciones con PayPal
-│   ├── info/          # Rutas de información general
-│   │   ├── about-us/               # Página "Quiénes Somos"
-│   │   ├── help-center/            # Página de Centro de Ayuda
-│   │   ├── how-to-use/             # Página "Cómo usar SwaplyAr"
-│   │   ├── loyalty-program/        # Página del Programa de Fidelización
-│   │   ├── terms-and-conditions/   # Página de Términos y Condiciones
-│   │   ├── warranty/               # Página de Garantía
-│   │   └── why-choose-swaplyar/    # Página "Por qué elegir SwaplyAr"
-│   ├── auth/          # Rutas relacionadas con autenticación
-│   │   ├── login/     # Página de inicio de sesión
-│   │   └── new-account/ # Página de registro
-│   ├── request/       # Rutas para solicitudes de intercambio
-│   ├── repentance/    # Página "Arrepentimiento"
-│   ├── layout.js      # Layout principal de la aplicación
-│   └── page.js        # Página de inicio
-├── components/        # Componentes reutilizables
-│   ├── ui/            # Componentes de interfaz de usuario
-│   ├── auth/          # Componentes relacionados con autenticación
-│   ├── clientWrapper/ # Gestión de estados de carga
-│   ├── skeleton/      # Componentes Skeleton para carga
-│   ├── request/       # Componentes de solicitudes de intercambio
-│   └── transactions/  # Componentes de transacciones
-│       └── paypal/    # Componentes para transacciones con PayPal
-├── hooks/             # Hooks personalizados
-├── store/             # Configuración del store global (Zustand)
-├── public/            # Archivos estáticos (imágenes, fuentes, etc.)
-├── styles/            # Estilos globales (CSS o Tailwind)
-├── actions/           # Acciones para interactuar con la API
-│   ├── blogs/         # Acciones relacionadas con blogs
-│   └── paypal/        # Acciones relacionadas con PayPal
-├── lib/               # Utilidades y funciones auxiliares
-│   ├── utils.ts       # Funciones utilitarias
-├── types/             # Definiciones de tipos TypeScript
-│   ├── blogs/         # Tipos relacionados con blogs
-│   └── paypal/        # Tipos relacionados con PayPal
-├── ...                # Otros archivos y carpetas importantes
-└── [package.json](http://_vscodecontentref_/0)       # Dependencias y scripts del proyecto
+├── app/                         # Rutas principales bajo App Router
+│   ├── api/                     # Endpoints de API
+│   │   ├── auth/                # Rutas para autenticación (NextAuth.js)
+│   │   ├── paypal/              # Rutas para transacciones PayPal
+│   │   └── request/             # API para solicitudes de intercambio
+│   ├── auth/                    # Rutas de autenticación
+│   │   └── login-register/      # Página de login y registro
+│   │       └── email-verification/  # Verificación de email
+│   ├── blog/                    # Rutas relacionadas con el blog (independiente)
+│   │   ├── page.tsx             # Página principal del blog
+│   │   └── [slug]-[id]/         # Páginas dinámicas de detalle del blog
+│   ├── info/                    # Rutas de información
+│   │   ├── about-us/            # Página "Quiénes Somos"
+│   │   ├── help-center/         # Centro de ayuda
+│   │   ├── how-to-use/          # "Cómo usar SwaplyAr"
+│   │   ├── loyalty-program/     # Programa de fidelización
+│   │   ├── terms/               # Subcarpeta para términos y condiciones
+│   │   │   ├── sapr-terms-conditions/
+│   │   │   └── terms-and-conditions/
+│   │   ├── warranty/            # Garantía
+│   │   └── why-choose-swaplyar/ # Por qué elegir SwaplyAr
+│   ├── request/                 # Página para gestionar solicitudes
+│   ├── repentance/              # Página de arrepentimiento
+│   ├── layout.tsx               # Layout principal
+│   ├── page.tsx                 # Página de inicio
+│   └── globals.css              # Estilos globales para la aplicación
+├── components/                  # Componentes reutilizables
+│   ├── auth/                    # Componentes de autenticación
+│   ├── blog/                    # Componentes específicos del blog
+│   │   ├── BlogPostCard.tsx     # Tarjetas para listar blogs
+│   │   └── BlogDetail.tsx       # Detalle del blog
+│   ├── info/                    # Componentes relacionados con info general
+│   │   ├── HelpCenter.tsx       # Centro de ayuda
+│   │   └── Warranty.tsx         # Garantía
+│   ├── request/                 # Componentes de solicitudes de intercambio
+│   ├── transactions/            # Componentes para transacciones
+│   │   └── PayPal.tsx           # Integración con PayPal
+│   ├── shared/                  # Componentes compartidos (cabecera, pie, etc.)
+│   ├── skeleton/                # Placeholder para carga
+│   └── ui/                      # Botones, modales y elementos genéricos de UI
+├── hooks/                       # Hooks personalizados
+│   ├── useAuth.ts               # Lógica para autenticación
+│   ├── useRequest.ts            # Lógica para solicitudes
+│   └── useBlog.ts               # Lógica del blog
+├── store/                       # Gestión global del estado con Zustand
+│   ├── authStore.ts             # Estado para autenticación
+│   ├── blogStore.ts             # Estado para blogs
+│   └── requestStore.ts          # Estado para solicitudes
+├── public/                      # Recursos estáticos (imágenes, fuentes)
+├── styles/                      # Estilos globales y específicos
+│   ├── globals.css              # Estilos globales
+│   ├── tailwind.css             # Base de configuración de Tailwind
+│   └── components/              # Estilos específicos de componentes
+├── actions/                     # Lógica para interactuar con la API
+│   ├── auth.ts                  # Acciones para autenticación
+│   ├── blog.ts                  # Acciones del blog
+│   ├── paypal.ts                # Acciones relacionadas con PayPal
+│   └── request.ts               # Acciones para solicitudes
+├── lib/                         # Funciones auxiliares y servicios
+│   ├── auth.ts                  # Utilidades de autenticación
+│   ├── blog.ts                  # Utilidades del blog
+│   ├── routes.ts                # Gestión de rutas dinámicas
+│   └── utils.ts                 # Funciones generales
+├── types/                       # Definiciones de tipos TypeScript
+│   ├── auth.d.ts                # Tipos para autenticación
+│   ├── blog.d.ts                # Tipos del blog
+│   └── request.d.ts             # Tipos para solicitudes
+├── tests/                       # Pruebas del proyecto
+│   ├── integration/             # Tests de integración
+│   └── unit/                    # Tests unitarios
+├── next.config.js               # Configuración de Next.js
+├── tailwind.config.js           # Configuración de Tailwind
+└── package.json                 # Dependencias y scripts
 ```
 
 ---
@@ -55,86 +89,92 @@ swaplyar-frontend/
 ## 📂 **Descripción de Carpetas**
 
 ### **`app/`**
-Este directorio sigue la arquitectura **App Router** de Next.js 13+ y organiza las rutas principales de la aplicación.
+Este directorio sigue la arquitectura **App Router** de Next.js (14+). Organiza las rutas principales de la aplicación y sus funcionalidades asociadas.
 
-- **`api/`**: Contiene las rutas para la API.
-  - **`auth/`**: Implementación de autenticación con **NextAuth.js**.
-  - **`paypal/`**: Lógica para gestionar transacciones con PayPal.
-- **`info/`**: Rutas de información general como "Quiénes Somos", "Cómo usar SwaplyAr" y más.
-- **`auth/`**: Rutas para el inicio de sesión y registro.
-- **`request/`**: Manejo de rutas de solicitudes de intercambio.
-- **`repentance/`**: Página dedicada a la funcionalidad de reembolso o arrepentimiento.
-- **`layout.js`**: Define el diseño principal compartido por todas las páginas.
-- **`page.js`**: Página de inicio de la aplicación.
+- **`api/`**: Rutas para manejar solicitudes API internas.
+  - **`auth/`**: Funciones para autenticación mediante **NextAuth.js**.
+  - **`paypal/`**: Endpoints para gestionar transacciones de PayPal.
+  - **`request/`**: API relacionada con las solicitudes de intercambio.
+- **`auth/`**: Páginas para login y registro, incluyendo verificación por email.
+- **`blog/`**: Páginas del blog, con rutas dinámicas para visualizar entradas específicas.
+- **`info/`**: Contiene información general del sitio, como "Quiénes somos" o "Centro de ayuda".
+- **`request/`**: Página para gestionar solicitudes de intercambio.
+- **`repentance/`**: Página dedicada al derecho de arrepentimiento.
+- **Archivos clave:**
+  - **`layout.tsx`**: Define el diseño principal de la aplicación.
+  - **`page.tsx`**: Representa la página de inicio.
 
 ---
 
 ### **`components/`**
-Almacena componentes reutilizables organizados por funcionalidad.
+Esta carpeta almacena componentes reutilizables organizados por funcionalidad específica.
 
-- **`ui/`**: Componentes genéricos de interfaz de usuario (botones, modales, etc.).
-- **`auth/`**: Componentes específicos para autenticación, como formularios.
-- **`clientWrapper/`**: Componente para manejar estados de carga y envolturas de vistas.
-- **`skeleton/`**: Componentes **Skeleton** para mostrar mientras las vistas se cargan.
-- **`request/`**: Componentes relacionados con solicitudes de intercambio.
-- **`transactions/`**: Componentes para la funcionalidad de transacciones, como integración con **PayPal**.
+- **`auth/`**: Componentes para autenticación, como formularios de inicio de sesión.
+- **`blog/`**: Tarjetas y vistas relacionadas con las entradas del blog.
+- **`info/`**: Componentes para secciones informativas como el centro de ayuda.
+- **`shared/`**: Elementos comunes, como cabeceras o pies de página.
+- **`skeleton/`**: Placeholders para mejorar la experiencia durante la carga.
+- **`ui/`**: Elementos de interfaz de usuario genéricos (botones, modales).
 
 ---
 
 ### **`hooks/`**
-Aquí se encuentran los **hooks personalizados** que encapsulan lógica reutilizable para manejar datos y estados.
+Incluye hooks personalizados para encapsular lógica reutilizable:
+- **`useAuth.ts`**: Gestión de la autenticación.
+- **`useRequest.ts`**: Lógica para solicitudes de intercambio.
 
 ---
 
 ### **`store/`**
-Contiene la configuración del **store global**, implementado con **Zustand** para la gestión del estado de la aplicación.
+Implementa un sistema de gestión de estado global mediante **Zustand**.
+- **`authStore.ts`**: Estado relacionado con autenticación.
+- **`requestStore.ts`**: Manejo del estado de solicitudes.
 
 ---
 
 ### **`public/`**
-Archivos estáticos accesibles públicamente, como imágenes, iconos y fuentes.
+Recursos estáticos accesibles públicamente, como imágenes, íconos o fuentes.
 
 ---
 
 ### **`styles/`**
-Contiene los estilos globales del proyecto. Puede incluir:
-- **CSS tradicional**.
-- **Tailwind CSS** (si se usa en el proyecto).
+Define los estilos del proyecto:
+- **`globals.css`**: Estilos generales.
+- **`tailwind.css`**: Configuración base de Tailwind.
 
 ---
 
 ### **`actions/`**
-Contiene las acciones para interactuar con la API.
-- **blogs/** (Acciones relacionadas con blogs).
-- **paypal/** (Acciones relacionadas con PayPal).
+Lógica centralizada para interactuar con APIs:
+- **`auth.ts`**: Acciones relacionadas con autenticación.
+- **`paypal.ts`**: Métodos para la integración con PayPal.
 
 ---
 
 ### **`lib/`**
-Utilidades y funciones auxiliares.
-- **utils.ts** (Funciones utilitarias).
+Funciones auxiliares y herramientas compartidas:
+- **`utils.ts`**: Funciones utilitarias comunes.
 
 ---
 
 ### **`types/`**
-Definiciones de tipos TypeScript.
-- **blogs/** (Tipos relacionados con blogs).
-- **paypal/** (Tipos relacionados con PayPal).
+Define los tipos de datos de TypeScript usados en el proyecto.
 
 ---
 
-### **`package.json`**
-Este archivo especifica las dependencias del proyecto y los scripts necesarios para la ejecución y desarrollo.
+### **`tests/`**
+Contiene pruebas unitarias e integraciones para asegurar la calidad del código.
 
 ---
 
 ## 🛠️ **Notas Adicionales**
 
-1. **Estandarización**: Todas las carpetas y archivos siguen una estructura modular para facilitar la escalabilidad y el mantenimiento.
-2. **Componentización**: Se prioriza la reutilización de componentes, especialmente para funcionalidades comunes como autenticación y transacciones.
-3. **Gestión de Estados**: La arquitectura del estado global utiliza **Zustand**, ofreciendo una solución ligera y eficiente.
+1. **Estandarización**: La estructura modular facilita la escalabilidad y el mantenimiento.
+2. **Gestión eficiente**: Uso de Zustand para el estado global, y hooks personalizados para manejar lógica compleja.
+3. **Estilo organizado**: Los estilos globales se manejan mediante **Tailwind CSS**.
 
---- 
+---
 
-¡Esta estructura está diseñada para garantizar un desarrollo limpio y colaborativo! 🚀
-```
+¡Este esquema asegura una
+
+ navegación intuitiva y un desarrollo ágil! 🚀

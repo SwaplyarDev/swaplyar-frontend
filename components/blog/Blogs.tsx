@@ -4,7 +4,7 @@
 
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import BlogPostCard from '@/components/info/blog/BlogPostCard/BlogPostCard';
+
 import ImageCarousel from '@/components/ui/ImageCarousel/imageCarousel';
 import PaginationButtonsProps from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import useBlogStore from '@/store/useBlogStore';
@@ -12,6 +12,7 @@ import usePageSync from '@/components/ui/usePageSync/usePageSync';
 import { useRandomImages } from '@/components/ui/useRandomImages/useRandomImages';
 import SkeletonLoader from '@/components/ui/SkeletonLoader/SkeletonLoader';
 import useFetchBlogs from '@/hooks/useFetchBlogs/useFetchBlogs';
+import BlogPostCard from './BlogPostCard/BlogPostCard';
 
 const Blog: React.FC = () => {
   const { blogs } = useBlogStore();
