@@ -62,14 +62,11 @@ export const RegisterForm = () => {
           role: 'admin',
         }),
       });
-      console.log(response);
       if (!response.ok) {
         const errorResponse = await response.json();
-        console.error('Error en la respuesta:', errorResponse);
         throw new Error(errorResponse.message || 'Error al crear el usuario');
       }
       const responseData = await response.json();
-      console.log('Respuesta del servidor:', responseData);
       setUser(responseData.user);
       setLoading(false);
       setEmail(email);
@@ -79,7 +76,6 @@ export const RegisterForm = () => {
       }, 6000);
     } catch (error) {
       setLoading(false);
-      console.error('Error al enviar el código:', error);
       alert('Ocurrió un error inesperado.');
     }
   };

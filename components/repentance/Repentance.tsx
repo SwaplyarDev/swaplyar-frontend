@@ -5,7 +5,7 @@ import { regretsPc, regretsPhone } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
-import { createRegret } from '@/actions/repentance/action.repentanceForm';
+import { createRegret } from '@/actions/repentance/repentanceForm.action';
 import { FormRepentance } from '@/types/repentance/repentance';
 import AlertSuccess from './Alerts/AlertSuccess';
 import AlertDuplication from './Alerts/AlertDuplication';
@@ -44,32 +44,25 @@ const RepentanceForm = () => {
 
     try {
       const response = await createRegret(dataToSend);
-      console.log('responseeeeeeee:', response);
       if (!response) {
-        console.log('es vacio');
+        await AlertError({ isDark, message: 'La respuesta está vacía.' });
       } else {
         if (response.ok) {
-          console.log('caso de exito');
           await AlertSuccess({ isDark });
         } else {
           const errorMessage = response.message || 'Hubo un problema al enviar los datos.';
-          console.log('errorMessage:', errorMessage);
 
           if (response.status === 409) {
             await AlertDuplication({ isDark });
-            console.log('caso de duplicación');
           } else if (response.status === 400) {
             await AlertIncorrect({ isDark });
-            console.log('caso de datos incorrectos');
           } else {
-            await AlertError({ isDark });
-            console.log('caso de error');
+            await AlertError({ isDark, message: errorMessage });
           }
         }
       }
-    } catch (error) {
-      console.error('Error en el envío:', error);
-      await AlertError({ isDark });
+    } catch (error: any) {
+      await AlertError({ isDark, message: `Error en el envío: ${error.message}` });
     }
   };
 
@@ -88,13 +81,13 @@ const RepentanceForm = () => {
             <Image src={regretsPc} alt="regretsPc" width={650} height={0} className="h-full object-cover" />
           </div>
           <div className="flex flex-col flex-wrap content-center">
-            <div className="block flex min-h-full w-72 flex-wrap justify-center lg:hidden">
+            <div className="flex min-h-full w-72 flex-wrap justify-center lg:hidden">
               <Image src={regretsPhone} alt="regretsPhone" width={200} height={0} className="h-full object-contain" />
               <div
-                className={`block min-w-full flex-wrap justify-center border-t-4 lg:hidden ${isDark ? 'border-t-white' : 'border-t-buttonsLigth'}`}
+                className={`min-w-full flex-wrap justify-center border-t-4 lg:hidden ${isDark ? 'border-t-white' : 'border-t-buttonsLigth'}`}
               ></div>
             </div>
-            <div className="block w-72 flex-col items-start lg:hidden lg:w-2/6">
+            <div className="flex flex-col items-start lg:hidden lg:w-2/6">
               <p className="mt-2 text-center text-lg">Ingresa los datos tal cual aparece en el email enviado</p>
             </div>
           </div>

@@ -10,7 +10,7 @@ const EditSoli = () => {
   const { isDark } = useDarkTheme();
   return (
     <div className="flex flex-col justify-center lg:flex-row">
-      {/* <AnimatedBlurredCircles tope="top-[124px]" /> */}
+      <AnimatedBlurredCircles tope="top-[124px]" />
       <div className="flex w-auto flex-col lg:flex-row">
         <div className="flex flex-col flex-wrap content-center">
           <h1 className="w-full text-start text-3xl font-bold">Editar solicitud</h1>
