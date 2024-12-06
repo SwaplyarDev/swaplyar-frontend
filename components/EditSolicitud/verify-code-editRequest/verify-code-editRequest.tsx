@@ -1,10 +1,8 @@
-// /components/auth/verify-code-page.tsx
-
 'use client';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState, useEffect, ChangeEvent } from 'react';
 import { login } from '@/actions/auth/login';
-import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import clsx from 'clsx';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
 import { useRouter } from 'next/navigation';
@@ -12,16 +10,27 @@ import useCodeVerificationStore from '@/store/codeVerificationStore';
 import useStore from '@/store/authViewStore';
 import userInfoStore from '@/store/userInfoStore';
 import { registerUser } from '@/actions/auth/register';
-import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
-import ButtonBack from '../ui/ButtonBack/ButtonBack';
+
+import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
+import Arrow from '@/components/ui/Arrow/Arrow';
+import Modal1 from '@/components/modals/Modal_1';
+import Modal2 from '@/components/modals/Modal_2';
+import Modal3 from '@/components/modals/Modal_3';
+import Modal4 from '@/components/modals/Modal_4';
 
 type FormInputs = {
   verificationCode: string[];
 };
+interface VerifycodeEditRequestProps {
+  isDark: boolean;
+  toggle: () => void;
+}
 
-const BASE_URL = process.env || 'http://localhost:8080/api';
+const BASE_URL = process.env.BACKEND_API_URL;
 
-export const VerifyCodePage = () => {
+const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, isDark }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -36,7 +45,6 @@ export const VerifyCodePage = () => {
   const [loading, setLoading] = useState(false);
   const [reLoading, setReLoading] = useState(false);
   const { email } = useEmailVerificationStore();
-  const { isDark } = useDarkTheme();
   const router = useRouter();
   const { view } = useStore();
   const { user } = userInfoStore();
@@ -49,10 +57,6 @@ export const VerifyCodePage = () => {
   const [timer, setTimer] = useState(0);
 
   useEffect(() => {
-    if (email === '') {
-      router.push('/auth/login-register');
-    }
-
     if (isLocked) {
       const timer = setTimeout(() => {
         setLockUntil(null);
@@ -184,58 +188,78 @@ export const VerifyCodePage = () => {
   const handleBlur = () => {
     setFocusedIndex(null);
   };
+  // abrir el modal
+  const openModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+  };
+  const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-start py-5 xs:mt-0 xs:justify-center">
-      <AnimatedBlurredCircles tope="top-[124px]" />
-      <div className="w-full max-w-xl px-5">
-        <form
-          onSubmit={handleSubmit(verifyCode)}
-          className="flex w-full max-w-xl flex-col rounded-2xl bg-[#e6e8ef62] px-2 py-8 shadow-md dark:bg-calculatorDark sm:px-8"
-        >
-          <h2 className="mb-5 text-center text-5xl font-bold text-buttonsLigth dark:text-darkText">Verificación</h2>
-
-          <label htmlFor="verificationCode" className={'mb-8 text-center text-lightText dark:text-darkText'}>
-            Si tienes una cuenta, te hemos enviado un código a <span className="font-bold">{email}</span>. Introdúcelo a
-            continuación
+    <div>
+      <div>
+        <form onSubmit={handleSubmit(verifyCode)} className="w-auto">
+          <label htmlFor="verificationCode" className={'text-center text-3xl text-lightText dark:text-darkText'}>
+            Ingrese el codigo de 6 digitos que recibiste por email
           </label>
-
-          <div className="mb-5 flex h-[46px] justify-between gap-2 xs:h-[57px] xs:gap-1 sm:h-[65.33px]">
-            {[...Array(6)].map((_, index) => (
-              <>
-                <div
-                  className={clsx(
-                    `w-[46px] rounded-full border-[0.5px] border-buttonsLigth p-[3px] dark:border-darkText xs:w-[57px] sm:w-full`,
-                  )}
-                >
-                  <input
-                    key={index}
-                    id={`code-${index}`}
-                    type="text"
-                    maxLength={1}
-                    disabled={isLocked || loading}
+          <div className="flex w-full justify-center">
+            <div className="lg:min-h-1/12 my-5 flex h-full justify-between gap-2 xs:h-[57px] xs:gap-1 sm:h-[65.33px] lg:w-9/12 xl:w-full">
+              {[...Array(6)].map((_, index) => (
+                <>
+                  <div
                     className={clsx(
-                      'h-full w-full rounded-full border-0 text-center text-base focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem]',
-                      errors.verificationCode ? 'border-red-500' : '',
+                      `w-[46px] rounded-full border-[0.5px] border-buttonsLigth p-[3px] dark:border-darkText xs:w-[57px] sm:w-full`,
                     )}
-                    {...register(`verificationCode.${index}`)}
-                    onChange={(event) => handleInputChange(index, event)}
-                    onKeyDown={(event) => handleInputKeyDown(index, event)}
-                  />
-                </div>
-                {index < 5 && (
-                  <div className="hidden min-h-full min-w-[0.5rem] items-center justify-center xs:flex">
-                    <div className="h-[2px] w-full flex-1 bg-buttonsLigth dark:bg-darkText"></div>
+                  >
+                    <input
+                      key={index}
+                      id={`code-${index}`}
+                      type="text"
+                      maxLength={1}
+                      disabled={isLocked || loading}
+                      className={clsx(
+                        'h-full w-full rounded-full border-0 text-center text-base focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem]',
+                        errors.verificationCode ? 'border-red-500' : '',
+                      )}
+                      {...register(`verificationCode.${index}`)}
+                      onChange={(event) => handleInputChange(index, event)}
+                      onKeyDown={(event) => handleInputKeyDown(index, event)}
+                    />
                   </div>
-                )}
-              </>
-            ))}
+                  {index < 5 && (
+                    <div className="hidden min-h-full min-w-[0.5rem] items-center justify-center xs:flex">
+                      <div className="h-[2px] w-full flex-1 bg-buttonsLigth dark:bg-darkText"></div>
+                    </div>
+                  )}
+                </>
+              ))}
+            </div>
           </div>
 
           {errors.verificationCode && <p className="mb-5 text-sm text-red-500">• {errors.verificationCode.message}</p>}
-
-          <div className="my-5 flex justify-between text-buttonsLigth dark:text-darkText">
-            <ButtonBack route="/auth/login-register" isDark={isDark} />
+          <div>
+            {attempts > 0 && !isLocked ? (
+              <p className="mt-2 text-center text-base text-buttonsLigth dark:text-darkText sm:text-lg">
+                Tienes {attempts} intentos para reenviar el código
+              </p>
+            ) : (
+              <p className="mt-2 text-center text-base text-red-500">Estás bloqueado por 5 minutos.</p>
+            )}
+          </div>
+          <div className="my-5 flex justify-end text-buttonsLigth dark:text-darkText">
+            <button
+              onClick={toggle}
+              className={`${
+                isDark ? 'buttonSecondDark' : 'buttonSecond'
+              } group relative m-1 mr-14 flex h-[48px] min-w-[48px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent xs:min-w-[150px]`}
+            >
+              <div className="relative h-5 w-5 overflow-hidden">
+                <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
+                  <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
+                </div>
+              </div>
+              <p className="hidden xs:inline-block">Volver</p>
+            </button>
 
             <button
               type="button"
@@ -255,15 +279,17 @@ export const VerifyCodePage = () => {
             </button>
           </div>
 
-          {attempts > 0 && !isLocked ? (
-            <p className="mt-2 text-center text-base text-buttonsLigth dark:text-darkText sm:text-lg">
-              Tienes {attempts} intentos para reenviar el código
-            </p>
-          ) : (
-            <p className="mt-2 text-center text-base text-red-500">Estás bloqueado por 5 minutos.</p>
-          )}
+          <button className="rounded bg-blue-500 px-4 py-2 text-white" onClick={openModal}>
+            Abrir Modal
+          </button>
         </form>
+        {/* <Modal1 isDark={isDark} isOpen={isModalOpen} onClose={closeModal} title="modal 1"></Modal1> */}
+        {/* <Modal2 isDark={isDark} isOpen={isModalOpen} onClose={closeModal} title="modal 2"></Modal2> */}
+        {/* <Modal3 isDark={isDark} isOpen={isModalOpen} onClose={closeModal} title="modal 3"></Modal3> */}
+        <Modal4 isDark={isDark} isOpen={isModalOpen} onClose={closeModal} title="modal 4"></Modal4>
       </div>
     </div>
   );
 };
+
+export default VerifycodeEditRequest;

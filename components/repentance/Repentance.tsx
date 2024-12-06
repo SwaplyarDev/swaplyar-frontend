@@ -12,6 +12,7 @@ import AlertDuplication from './Alerts/AlertDuplication';
 import AlertIncorrect from './Alerts/AlertIncorrect';
 import AlertError from './Alerts/AlertError';
 import AlertProcess from './Alerts/AlertProcess';
+import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 
 interface Response {
   ok: boolean;
@@ -75,6 +76,7 @@ const RepentanceForm = () => {
   return (
     <div>
       <div className="mx-5 my-7 flex flex-col items-center justify-center lg:mx-0">
+        <AnimatedBlurredCircles tope="top-[124px]" />
         <div className="flex w-full flex-col lg:flex-row">
           <div className="lg:w-3/7 mb-4 hidden flex-col items-start lg:block">
             <h1 className="w-full text-start text-xl">Cancelacion o Reembolso</h1>
