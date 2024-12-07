@@ -120,17 +120,3 @@ export type payerOptions = {
   recibeAmount: number;
   recibeCurrency: string;
 };
-
-export type SelectLabelsProps = {
-  selectedOption: string | undefined;
-  setSelectedOption: (option: string | undefined) => void;
-  errors: { [key: string]: FieldError } | {}; // Tipado explícito
-  blockAll: boolean;
-  fieldName: string;
-  options: LabelOption[];
-};
-
-export type LabelOption = {
-  value: string;
-  label: string;
-};

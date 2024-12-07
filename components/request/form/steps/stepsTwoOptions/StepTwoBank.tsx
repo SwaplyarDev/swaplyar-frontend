@@ -1,36 +1,9 @@
+'use client';
 import InputField from '@/components/ui/contact-form/InputField';
-import React, { useEffect } from 'react';
-import {
-  Control,
-  Controller,
-  FieldErrors,
-  UseFormClearErrors,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
-} from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { FieldErrors, UseFormGetValues, UseFormRegister } from 'react-hook-form';
 import clsx from 'clsx';
-import SelectLabel from '../../inputs/SelectLabel';
-import { RedType } from '@/types/request/request';
-
-interface FormData {
-  receiver_first_name: string;
-  receiver_last_name: string;
-  document_type: string | undefined;
-  method_key: string | undefined;
-  tax_identification: string;
-  transfer_identification: string;
-  re_transfer_identification: string;
-  name_of_bank: string;
-  bank_email: string;
-  re_enter_bank_email: string;
-  usdt_direction: string;
-  re_enter_usdt_direction: string;
-  red_selection: RedType | undefined;
-  recieveAmountRed: string;
-  pix_key: string;
-  individual_tax_id: string;
-}
+import { getTaxIdentificationType, getTransferIdentificationType } from '@/utils/validationUtils';
 
 interface StepTwoBankProps {
   register: UseFormRegister<any>;
@@ -38,65 +11,22 @@ interface StepTwoBankProps {
   getValues: UseFormGetValues<any>;
   blockAll: boolean;
   formData: any;
-  control: Control<FormData, any>;
   formValues: any;
-  clearErrors: UseFormClearErrors<any>;
-  setValue: UseFormSetValue<any>;
 }
-export const documentOptions = [
-  { value: 'TAX ID', label: 'TAX ID' },
-  { value: 'CUIT', label: 'CUIT' },
-  { value: 'CUIL', label: 'CUIL' },
-];
 
-export const methodKeyOptions = [
-  { value: 'CBU', label: 'CBU' },
-  { value: 'CVU', label: 'CVU' },
-  { value: 'ALIAS', label: 'ALIAS' },
-];
+const StepTwoBank: React.FC<StepTwoBankProps> = ({ register, errors, getValues, blockAll, formData, formValues }) => {
+  const taxIdentificationValue = formValues.tax_identification;
+  const [taxIdentificationType, setTaxIdentificationType] = useState<string>('TAX ID/CUIT/CUIL');
 
-const StepTwoBank: React.FC<StepTwoBankProps> = ({
-  register,
-  errors,
-  getValues,
-  blockAll,
-  formData,
-  control,
-  formValues,
-  clearErrors,
-  setValue,
-}) => {
-  const getPattern = () => {
-    switch (formValues.document_type) {
-      case 'TAX ID':
-        return { value: /^\d{9}$/, message: 'El TAX ID debe tener 9 dígitos' };
-      case 'CUIT':
-        return { value: /^\d{11}$/, message: 'El CUIT debe tener 11 dígitos' };
-      case 'CUIL':
-        return { value: /^\d{2}-\d{8}-\d{1}$/, message: 'El CUIL debe tener el formato XX-XXXXXXXX-X' };
-      default:
-        return { value: /.*/, message: 'Formato inválido' };
-    }
-  };
-
-  const getPatternKey = () => {
-    switch (formValues.method_key) {
-      case 'CBU':
-        return { value: /^\d{22}$/, message: 'El CBU debe tener 22 dígitos' };
-      case 'CVU':
-        return { value: /^\d{22}$/, message: 'El CVU debe tener 22 dígitos' };
-      case 'ALIAS':
-        return { value: /^\d{10}$/, message: 'El ALIAS debe tener 10 dígitos' };
-      default:
-        return { value: /.*/, message: 'Formato inválido' };
-    }
-  };
+  const methodValue = formValues.transfer_identification;
+  const [methodType, setMethodType] = useState<string>('CBU/CVU/ALIAS');
 
   useEffect(() => {
-    clearErrors('tax_identification');
-    clearErrors('transfer_identification');
-  }, [formValues.document_type, clearErrors]);
-
+    const type = getTaxIdentificationType(taxIdentificationValue);
+    const typeMethod = getTransferIdentificationType(methodValue);
+    setMethodType(typeMethod);
+    setTaxIdentificationType(type);
+  }, [taxIdentificationValue, methodValue]);
   return (
     <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
       <div className="flex w-full flex-col gap-4">
@@ -157,78 +87,56 @@ const StepTwoBank: React.FC<StepTwoBankProps> = ({
         </div>
 
         <div className="flex flex-col">
-          <Controller
-            name="document_type"
-            control={control}
-            defaultValue={undefined}
-            rules={{ required: 'El Tipo de Documento es obligatorio' }}
-            render={({ field, fieldState }) => (
-              <SelectLabel
-                fieldName="document_type"
-                blockAll={blockAll}
-                selectedOption={field.value}
-                setSelectedOption={(option) => {
-                  field.onChange(option);
-                  setValue('tax_identification', '');
-                  clearErrors('tax_identification');
-                }}
-                errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
-                options={documentOptions}
-              />
+          <label
+            htmlFor="tax_identification"
+            className={clsx(
+              'ml-1 h-5 text-xs',
+              errors.tax_identification ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
-          />
-          <label htmlFor="tax_identification" className="hidden">
-            TAX ID/CUIT/CUIL
+          >
+            {taxIdentificationType}
           </label>
           <InputField
             id="tax_identification"
             type="text"
-            placeholder="TAX ID/CUIT/CUIL"
+            placeholder="DNI/CUIT/CUIL"
             register={register('tax_identification', {
-              required: `El ${formValues.document_type} es obligatorio`,
-              pattern: getPattern(),
+              required: 'El DNI/CUIT/CUIL es obligatorio',
+              pattern: {
+                value: /^(?:d{8}|\d{11}|\d{2}-\d{8}-\d{1})$/,
+                message: 'El formato de DNI/CUIT/CUIL es inválido',
+              },
             })}
             error={errors.tax_identification?.message ? String(errors.tax_identification.message) : undefined}
-            disabled={blockAll || formValues.document_type === undefined}
+            disabled={blockAll}
           />
         </div>
       </div>
 
       <div className="flex w-full flex-col gap-4">
         <div className="flex flex-col">
-          <Controller
-            name="method_key"
-            control={control}
-            defaultValue={undefined}
-            rules={{ required: 'El Metodo es obligatorio' }}
-            render={({ field, fieldState }) => (
-              <SelectLabel
-                fieldName="method_key"
-                blockAll={blockAll}
-                selectedOption={field.value}
-                setSelectedOption={(option) => {
-                  field.onChange(option);
-                  setValue('transfer_identification', '');
-                  clearErrors('transfer_identification');
-                }}
-                errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
-                options={methodKeyOptions}
-              />
+          <label
+            htmlFor="transfer_identification"
+            className={clsx(
+              'ml-1 h-5 text-xs',
+              errors.transfer_identification ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
-          />
-          <label htmlFor="transfer_identification" className="hidden">
-            CBU/CVU/ALIAS
+          >
+            {methodType}
           </label>
           <InputField
             id="transfer_identification"
             type="text"
             placeholder="CBU/CVU/ALIAS"
             register={register('transfer_identification', {
-              required: `El ${formValues.method_key} es obligatorio`,
-              pattern: getPatternKey(),
+              required: 'El CBU/CVU/ALIAS es obligatorio',
+              pattern: {
+                value: /^(?:\d{22}|[a-zA-Z0-9._-]{3,30})$/i,
+                message: 'El formato de CBU/CVU/ALIAS es inválido',
+              },
             })}
             error={errors.transfer_identification?.message ? String(errors.transfer_identification.message) : undefined}
-            disabled={blockAll || formValues.method_key === undefined}
+            disabled={blockAll}
           />
         </div>
 
