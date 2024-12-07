@@ -2,9 +2,7 @@ import useBlogStore from '@/store/useBlogStore';
 import React, { useEffect, useState } from 'react';
 
 const SkeletonLoader = () => (
-  <div
-    className="grid gap-4 custom-grid"
-  >
+  <div className="custom-grid grid gap-4">
     {' '}
     {/* Define 3 columnas con un espacio entre ellas */}
     {Array.from({ length: 6 }).map((_, index) => (

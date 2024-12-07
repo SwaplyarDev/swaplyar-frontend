@@ -1,10 +1,7 @@
-
 ---
-
 # 🗂️ **Estructura Principal del Proyecto**
 
 Esta es la estructura principal del proyecto **SwaplyAr Frontend**, diseñada para mantener el código organizado y modular. A continuación, se detalla cada carpeta y su propósito.
-
 ---
 
 ```plaintext
@@ -89,6 +86,7 @@ swaplyar-frontend/
 ## 📂 **Descripción de Carpetas**
 
 ### **`app/`**
+
 Este directorio sigue la arquitectura **App Router** de Next.js (14+). Organiza las rutas principales de la aplicación y sus funcionalidades asociadas.
 
 - **`api/`**: Rutas para manejar solicitudes API internas.
@@ -107,6 +105,7 @@ Este directorio sigue la arquitectura **App Router** de Next.js (14+). Organiza 
 ---
 
 ### **`components/`**
+
 Esta carpeta almacena componentes reutilizables organizados por funcionalidad específica.
 
 - **`auth/`**: Componentes para autenticación, como formularios de inicio de sesión.
@@ -119,50 +118,63 @@ Esta carpeta almacena componentes reutilizables organizados por funcionalidad es
 ---
 
 ### **`hooks/`**
+
 Incluye hooks personalizados para encapsular lógica reutilizable:
+
 - **`useAuth.ts`**: Gestión de la autenticación.
 - **`useRequest.ts`**: Lógica para solicitudes de intercambio.
 
 ---
 
 ### **`store/`**
+
 Implementa un sistema de gestión de estado global mediante **Zustand**.
+
 - **`authStore.ts`**: Estado relacionado con autenticación.
 - **`requestStore.ts`**: Manejo del estado de solicitudes.
 
 ---
 
 ### **`public/`**
+
 Recursos estáticos accesibles públicamente, como imágenes, íconos o fuentes.
 
 ---
 
 ### **`styles/`**
+
 Define los estilos del proyecto:
+
 - **`globals.css`**: Estilos generales.
 - **`tailwind.css`**: Configuración base de Tailwind.
 
 ---
 
 ### **`actions/`**
+
 Lógica centralizada para interactuar con APIs:
+
 - **`auth.ts`**: Acciones relacionadas con autenticación.
 - **`paypal.ts`**: Métodos para la integración con PayPal.
 
 ---
 
 ### **`lib/`**
+
 Funciones auxiliares y herramientas compartidas:
+
 - **`utils.ts`**: Funciones utilitarias comunes.
 
 ---
 
 ### **`types/`**
+
 Define los tipos de datos de TypeScript usados en el proyecto.
 
 ---
 
 ### **`tests/`**
+
 Contiene pruebas unitarias e integraciones para asegurar la calidad del código.
 
 ---
@@ -177,4 +189,4 @@ Contiene pruebas unitarias e integraciones para asegurar la calidad del código.
 
 ¡Este esquema asegura una
 
- navegación intuitiva y un desarrollo ágil! 🚀
+navegación intuitiva y un desarrollo ágil! 🚀

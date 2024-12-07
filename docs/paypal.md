@@ -6,7 +6,7 @@ Este documento detalla la integración de la API de PayPal en la aplicación **S
 
 ## 💻 Componente PayPal
 
-El componente PayPal gestiona la interacción del usuario con el sistema de pagos. 
+El componente PayPal gestiona la interacción del usuario con el sistema de pagos.
 
 ### **Props**
 
@@ -19,10 +19,12 @@ El componente acepta los siguientes props dinámicos para personalizar su funcio
 ### **Flujo del Componente**
 
 1. **Creación de Órdenes**:
+
    - El componente realiza una solicitud `POST` a la API `/api/paypal` para crear una orden de compra.
    - Los valores de `currency` y `amount` se envían como parte de la solicitud.
 
 2. **Captura de Pago**:
+
    - Cuando el usuario aprueba el pago (`onApprove`), el sistema captura la información del pagador:
      - Nombre completo del pagador.
      - Correo electrónico asociado al pago.
@@ -41,12 +43,14 @@ El componente acepta los siguientes props dinámicos para personalizar su funcio
 La ruta API de PayPal es responsable de manejar la comunicación con los servidores de PayPal. Aquí están los pasos que sigue:
 
 ### **1. Autenticación**
+
 - **Proceso**:
   - La API obtiene un **token de acceso** de PayPal utilizando las credenciales `clientId` y `secretKey`.
 - **Propósito**:
   - Este token se requiere para realizar solicitudes autorizadas a la API de PayPal.
 
 ### **2. Creación de Órdenes**
+
 - **Proceso**:
   - Utilizando el token de acceso, la API realiza una solicitud para crear una orden en PayPal.
   - Incluye detalles como la moneda (`currency`) y el monto (`amount`).
@@ -54,6 +58,7 @@ La ruta API de PayPal es responsable de manejar la comunicación con los servido
   - Si la solicitud es exitosa, se devuelve un `orderID` al frontend, que se usa para continuar el flujo de pago.
 
 ### **3. Manejo de Errores**
+
 - **Proceso**:
   - Si ocurre un problema durante la autenticación o la creación de la orden:
     - Se captura el error.
@@ -82,14 +87,16 @@ La ruta API de PayPal es responsable de manejar la comunicación con los servido
 ## 🎯 Notas Adicionales
 
 - **Entornos de PayPal**:
+
   - La integración se prueba inicialmente en el entorno **sandbox**.
   - Una vez funcional, se migra al entorno de **producción** utilizando las credenciales apropiadas.
 
 - **Seguridad**:
+
   - Las credenciales (`clientId` y `secretKey`) nunca deben estar expuestas en el frontend.
   - Asegúrate de almacenarlas de manera segura en variables de entorno en el servidor.
 
 - **Almacenamiento Local**:
   - La información del pagador almacenada en `localStorage` debe manejarse conforme a las regulaciones locales de protección de datos, como el GDPR.
 
-Este archivo proporciona una guía completa sobre cómo funciona la integración de PayPal en la aplicación, tanto desde el frontend como desde el backend. 
+Este archivo proporciona una guía completa sobre cómo funciona la integración de PayPal en la aplicación, tanto desde el frontend como desde el backend.

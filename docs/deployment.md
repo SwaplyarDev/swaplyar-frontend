@@ -1,6 +1,6 @@
-Aquí tienes el archivo completo con el contenido generado en formato **`deployment.md`**:  
+Aquí tienes el archivo completo con el contenido generado en formato **`deployment.md`**:
 
-```markdown
+````markdown
 # Deployment de SwaplyAr Frontend 🚀
 
 Este documento detalla los pasos necesarios para desplegar la aplicación **SwaplyAr Frontend** en un entorno de producción utilizando Vercel o cualquier otro servidor compatible.
@@ -12,9 +12,11 @@ Este documento detalla los pasos necesarios para desplegar la aplicación **Swap
 Antes de comenzar, asegúrate de que tu entorno cumpla con los siguientes requisitos:
 
 1. **Node.js y npm instalados:**
+
    - Recomendamos instalar la última versión LTS de Node.js desde [Node.js](https://nodejs.org/).
 
 2. **Repositorio configurado:**
+
    - Clona el repositorio desde GitHub:
      ```bash
      git clone git@github.com:SwaplyAr/swaplyar-frontend.git
@@ -22,6 +24,7 @@ Antes de comenzar, asegúrate de que tu entorno cumpla con los siguientes requis
      ```
 
 3. **Dependencias instaladas:**
+
    - Ejecuta el siguiente comando para instalar todas las dependencias del proyecto:
      ```bash
      npm install
@@ -63,6 +66,8 @@ Antes de desplegar a producción, verifica que la aplicación funcione correctam
    ```bash
    npm run dev
    ```
+````
+
 2. Accede a la aplicación en [http://localhost:3000](http://localhost:3000).
 
 Si todo funciona como se espera, continúa con el despliegue.
@@ -89,6 +94,7 @@ Esto generará los archivos en la carpeta `.next`. Si no hay errores, la build e
    git commit -m "Preparación para despliegue"
    ```
 2. Sube los cambios al repositorio remoto:
+
    ```bash
    git push origin [nombre-de-la-rama]
    ```
@@ -100,12 +106,15 @@ Esto generará los archivos en la carpeta `.next`. Si no hay errores, la build e
 ## 🛠️ Resolución de Problemas Comunes
 
 ### Error: "Missing Environment Variables"
+
 - **Solución:** Asegúrate de que todas las variables de entorno requeridas estén configuradas en Vercel.
 
 ### Error: "Build failed with error X"
+
 - **Solución:** Verifica que la versión de Node.js y Next.js en Vercel coincidan con las especificadas en `package.json`. También revisa las dependencias para posibles conflictos.
 
 ### Problemas con `next.config.js`
+
 - **Solución:** Si estás utilizando un archivo `next.config.ts`, asegúrate de que esté correctamente compilado en TypeScript antes del build.
 
 ---
@@ -115,11 +124,13 @@ Esto generará los archivos en la carpeta `.next`. Si no hay errores, la build e
 Si decides no usar Vercel, aquí hay una alternativa para el despliegue en un servidor personalizado.
 
 ### 1. **Crear la Build**
+
 ```bash
 npm run build
 ```
 
 ### 2. **Iniciar la Aplicación**
+
 ```bash
 npm run start
 ```
@@ -129,6 +140,7 @@ npm run start
 Configura un servidor proxy como **NGINX** para gestionar las solicitudes HTTP hacia la aplicación.
 
 ### Configuración Básica de NGINX:
+
 ```nginx
 server {
     listen 80;
@@ -147,6 +159,7 @@ server {
 ```
 
 Reinicia NGINX para aplicar los cambios:
+
 ```bash
 sudo systemctl restart nginx
 ```
@@ -158,9 +171,11 @@ sudo systemctl restart nginx
 Para garantizar un funcionamiento continuo, considera las siguientes prácticas:
 
 1. **Monitorización:**
+
    - Utiliza herramientas como [Sentry](https://sentry.io/) para capturar errores en tiempo real.
 
 2. **Actualizaciones:**
+
    - Revisa regularmente las dependencias y las notas de la versión de Next.js.
 
 3. **Backups:**
@@ -177,12 +192,13 @@ Después de desplegar, verifica lo siguiente:
 3. Las transacciones de PayPal funcionan sin problemas.
 4. Los usuarios pueden autenticarse e interactuar con la plataforma.
 
---- 
+---
 
 ## 📩 Contacto
 
 Si tienes algún problema o pregunta, no dudes en contactarnos en **support@swaplyar.com**.
 
-```  
+```
 
-Este archivo incluye instrucciones detalladas y completas para el despliegue del proyecto **SwaplyAr Frontend**. 
+Este archivo incluye instrucciones detalladas y completas para el despliegue del proyecto **SwaplyAr Frontend**.
+```

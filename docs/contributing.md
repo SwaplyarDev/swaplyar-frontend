@@ -1,4 +1,4 @@
-```markdown
+````markdown
 # 💪 Contribuir al Proyecto
 
 Gracias por tu interés en contribuir al proyecto **SwaplyAr**. Este documento describe los pasos recomendados para agregar nuevas funcionalidades, corregir errores y colaborar de manera efectiva.
@@ -24,6 +24,7 @@ Antes de comenzar, asegúrate de que tu copia local de `developer` esté sincron
 git checkout developer
 git pull origin developer
 ```
+````
 
 ---
 
@@ -135,4 +136,7 @@ git pull origin developer
 ## 🎉 ¡Gracias por Contribuir!
 
 Tu ayuda es invaluable para mejorar y hacer crecer **SwaplyAr**. Si tienes preguntas, no dudes en contactarnos. 😊
+
+```
+
 ```
