@@ -12,18 +12,27 @@ import { MdOutlineClose } from 'react-icons/md';
 
 import NavLinks from '@/components/ui/top-menu/nav-links';
 import Switch from './switch';
+import styled from 'styled-components';
 import Image from 'next/image';
-import S from '../../../public/images/logo-solo.png';
 import TopPopUp from './topPopUp';
-
 import LogInButton from './log-register-bt/logiInButton';
-import style from './log-register-bt/buttonStyle.module.css';
+
 import { signOut, useSession } from 'next-auth/react';
 import RegisterButton from './log-register-bt/registerButton';
+import { SwaplyArLogoSolo, SwaplyArLogoComplete } from '@/utils/assets/imgDatabaseCloudinary';
+
+// Styled components con uso de transient props
+const StyledButton = styled.button<{ $isDark: boolean }>`
+  background-color: ${({ $isDark }) => ($isDark ? 'var(--dark-bg)' : 'var(--light-bg)')};
+  color: ${({ $isDark }) => ($isDark ? 'var(--dark-text)' : 'var(--light-text)')};
+  border: 1px solid ${({ $isDark }) => ($isDark ? 'var(--dark-border)' : 'var(--light-border)')};
+  &:hover {
+    background-color: ${({ $isDark }) => ($isDark ? 'var(--dark-hover)' : 'var(--light-hover)')};
+  }
+`;
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
-
   const [drawerMenu, setDrawerMenu] = useState(false);
 
   const { setView } = useStore();
@@ -40,42 +49,47 @@ export function TopMenu() {
   }, []);
 
   const { data: session, status } = useSession();
+
   return (
     <main className="sticky top-0 z-[1000] flex flex-col shadow-md">
       <TopPopUp />
 
-      <Navbar fluid rounded className={`sticky py-3 dark:bg-lightText`}>
+      <Navbar fluid rounded className="sticky py-3 dark:bg-lightText">
         <div className="m-auto flex w-[95%] max-w-screen-2xl flex-row justify-between">
+          {/* Botón para iniciar sesión o cerrar sesión */}
           <span className="hidden md:flex lg:hidden">
             {status === 'authenticated' ? (
-              <button
+              <StyledButton
+                $isDark={isDark}
                 onClick={() => signOut()}
-                className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+                className="relative m-1 h-[48px] items-center justify-center rounded-3xl p-3"
               >
                 Salir
-              </button>
+              </StyledButton>
             ) : (
               <LogInButton />
             )}
           </span>
 
+          {/* Logo */}
           <Navbar.Brand href="/">
             <Image
               alt="Your Company"
-              src="https://res.cloudinary.com/df5jwzuq9/image/upload/v1722209853/logo_g74htq.png"
+              src={SwaplyArLogoComplete}
               width={200}
               height={200}
               className="hidden h-12 w-auto rounded-xl filter dark:brightness-[0%] dark:invert md:block"
             />
             <Image
               alt="Your Company"
-              src={S}
+              src={SwaplyArLogoSolo}
               width={200}
               height={200}
               className="h-12 w-auto rounded-xl filter dark:brightness-[0%] dark:invert md:hidden"
             />
           </Navbar.Brand>
 
+          {/* Navegación */}
           <nav className="flex flex-row items-center justify-center">
             <section className="flex items-center justify-end gap-4 lg:pr-2">
               <Switch />
@@ -84,6 +98,7 @@ export function TopMenu() {
               </button>
             </section>
 
+            {/* Menú desplegable */}
             <Drawer
               open={drawerMenu}
               onClose={() => setDrawerMenu(false)}
@@ -112,14 +127,8 @@ export function TopMenu() {
                         onClick={() => handleSelect('about-us')}
                         href="/info/about-us"
                       >
-                        <div
-                          className={`${
-                            selectedItem === 'about-us' ? 'bg-blue-800 dark:bg-sky-500' : ''
-                          } absolute left-0 -mt-2 h-10 w-2 rounded-r-md`}
-                        ></div>
                         Quienes Somos
                       </Sidebar.Item>
-
                       <Sidebar.Item
                         className={`text-buttonsLigth ${
                           selectedItem === 'how-to-use'
@@ -129,73 +138,15 @@ export function TopMenu() {
                         onClick={() => handleSelect('how-to-use')}
                         href="/info/how-to-use"
                       >
-                        <div
-                          className={`${
-                            selectedItem === 'how-to-use' ? 'bg-blue-800 dark:bg-sky-500' : ''
-                          } absolute left-0 -mt-2 h-10 w-2 rounded-r-md`}
-                        ></div>
                         Como Usar SwaplyAr
                       </Sidebar.Item>
-
-                      <Sidebar.Item
-                        className={`text-buttonsLigth ${
-                          selectedItem === 'loyalty-program'
-                            ? 'h-10 bg-gray-100 dark:bg-gray-700'
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                        }`}
-                        onClick={() => handleSelect('loyalty-program')}
-                        href="/info/loyalty-program"
-                      >
-                        <div
-                          className={`${
-                            selectedItem === 'loyalty-program' ? 'bg-blue-800 dark:bg-sky-500' : ''
-                          } absolute left-0 -mt-2 h-10 w-2 rounded-r-md`}
-                        ></div>
-                        Programa de Fidelización
-                      </Sidebar.Item>
-                    </Sidebar.ItemGroup>
-
-                    <Sidebar.ItemGroup className="border-t-2 border-buttonsLigth px-2 dark:border-sky-500">
-                      {status === 'authenticated' ? (
-                        <Sidebar.Item
-                          className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-                          onClick={() => signOut()}
-                        >
-                          Salir
-                        </Sidebar.Item>
-                      ) : (
-                        <>
-                          <Sidebar.Item
-                            className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:hover:bg-transparent md:hidden ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-                            onClick={() => {
-                              handleSelect('login');
-                              setView('login');
-                              setDrawerMenu(false);
-                            }}
-                            href="/auth/login-register"
-                          >
-                            Iniciar sesión
-                          </Sidebar.Item>
-
-                          <Sidebar.Item
-                            className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
-                            onClick={() => {
-                              handleSelect('register');
-                              setView('register');
-                              setDrawerMenu(false);
-                            }}
-                            href="/auth/login-register"
-                          >
-                            Registrarse
-                          </Sidebar.Item>
-                        </>
-                      )}
                     </Sidebar.ItemGroup>
                   </Sidebar.Items>
                 </Sidebar>
               </Drawer.Items>
             </Drawer>
 
+            {/* Navegación completa */}
             <section className="hidden lg:flex lg:gap-2">
               <NavLinks />
               {status === 'authenticated' ? (
@@ -204,12 +155,13 @@ export function TopMenu() {
                     <p>Bienvenido!</p>
                     <p>{session?.user?.email}</p>
                   </div>
-                  <button
+                  <StyledButton
+                    $isDark={isDark}
                     onClick={() => signOut()}
-                    className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+                    className="relative m-1 h-[48px] items-center justify-center rounded-3xl p-3"
                   >
                     Salir
-                  </button>
+                  </StyledButton>
                 </>
               ) : (
                 <>

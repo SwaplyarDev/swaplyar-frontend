@@ -1,5 +1,5 @@
+import { BlogPost } from '@/types/blogs/blog';
 import { useEffect, useState } from 'react';
-import { BlogPost } from '@/app/types'; // Define el tipo `BlogPost` si aún no lo tienes
 
 export const useRandomImages = (blogs: BlogPost[]) => {
   const [randomImages, setRandomImages] = useState<string[]>([]);

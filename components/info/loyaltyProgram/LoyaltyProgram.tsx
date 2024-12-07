@@ -5,8 +5,15 @@ import useStore from '@/store/authViewStore';
 import Link from 'next/link';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
-import { CentroDeAyuda, Rewards1, Rewards2, Rewards3 } from '@/utils/assets/imgDatabaseCloudinary';
-import { Rewards1Dark, Rewards2Dark, Rewards3Dark } from '@/utils/assets/img-database';
+import {
+  CentroDeAyuda,
+  Rewards1,
+  Rewards1Dark,
+  Rewards2,
+  Rewards2Dark,
+  Rewards3,
+  Rewards3Dark,
+} from '@/utils/assets/imgDatabaseCloudinary';
 import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';

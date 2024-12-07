@@ -7,8 +7,8 @@ import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { CentroDeAyuda, Ayuda1, Ayuda1Dark, PlusRewardsDark } from '@/utils/assets/imgDatabaseCloudinary';
-import { PlusRewards, Ayuda2, Ayuda2Dark } from '@/utils/assets/img-database';
+import { CentroDeAyuda, Ayuda1, PlusRewardsDark } from '@/utils/assets/imgDatabaseCloudinary';
+import { PlusRewards, Ayuda2, Ayuda2Dark, Ayuda1Dark } from '@/utils/assets/img-database';
 
 const HelpCenterPage = () => {
   const { margins } = useMargins();
@@ -21,43 +21,47 @@ const HelpCenterPage = () => {
         <AnimatedBlurredCircles tope="top-[-260px]" />
         <div className="mx-auto grid max-w-[1000px] gap-12" style={{ margin: currentMargin }}>
           <section className="rs-wrapper-v4 p-4">
-            <h1 className="text-center text-3xl font-bold md:text-left mb-5">Bienvenido al Centro de Ayuda de SwaplyAr</h1>
+            <h1 className="mb-5 text-center text-3xl font-bold md:text-left">
+              Bienvenido al Centro de Ayuda de SwaplyAr
+            </h1>
             <div>
-              <div className="flex gap-14 items-center">
-                <div className="flex w-full flex-col items-center justify-center h-[250px]">
+              <div className="flex items-center gap-14">
+                <div className="flex h-[250px] w-full flex-col items-center justify-center">
                   <Image
                     src={Ayuda1Dark}
                     alt="paso 1 de como cambiar tu dinero en SwaplyAr tema oscuro"
                     width={210}
                     height={150}
                   />
-                  <hr className="border-1 mb-1 w-full dark:border-darkText border-buttonsLigth" />
+                  <hr className="border-1 mb-1 w-full border-buttonsLigth dark:border-darkText" />
                   <p className="font-bold underline underline-offset-2">Cancelacion o Reembolso</p>
-                  <p className="text-center text-xs font-bold w-[180px]">Cancela tu transferencia para obtener un reembolso.</p>
+                  <p className="w-[180px] text-center text-xs font-bold">
+                    Cancela tu transferencia para obtener un reembolso.
+                  </p>
                 </div>
-                <div className='flex h-40 w-[1px] dark:bg-darkText bg-buttonsLigth items-center justify-center'></div>
-                <div className="flex w-full flex-col items-center justify-center  h-[250px]">
+                <div className="flex h-40 w-[1px] items-center justify-center bg-buttonsLigth dark:bg-darkText"></div>
+                <div className="flex h-[250px] w-full flex-col items-center justify-center">
                   <Image
                     src={Ayuda1Dark}
                     alt="paso 1 de como cambiar tu dinero en SwaplyAr tema oscuro"
                     width={210}
                     height={150}
                   />
-                  <hr className="border-1 mb-1 w-full dark:border-darkText border-buttonsLigth" />
+                  <hr className="border-1 mb-1 w-full border-buttonsLigth dark:border-darkText" />
                   <p className="font-bold underline underline-offset-2">Buscar Solicitud</p>
-                  <p className="text-center text-xs font-bold h-[32px]">Consulte el estado de la transferencia.</p>
+                  <p className="h-[32px] text-center text-xs font-bold">Consulte el estado de la transferencia.</p>
                 </div>
-                <div className='flex h-40 w-[1px] items-center dark:bg-darkText bg-buttonsLigth justify-center'></div>
-                <div className="flex w-full flex-col items-center justify-center  h-[250px]">
+                <div className="flex h-40 w-[1px] items-center justify-center bg-buttonsLigth dark:bg-darkText"></div>
+                <div className="flex h-[250px] w-full flex-col items-center justify-center">
                   <Image
                     src={Ayuda1Dark}
                     alt="paso 1 de como cambiar tu dinero en SwaplyAr tema oscuro"
                     width={210}
                     height={150}
                   />
-                  <hr className="border-1 mb-1 w-full dark:border-darkText border-buttonsLigth" />
+                  <hr className="border-1 mb-1 w-full border-buttonsLigth dark:border-darkText" />
                   <p className="font-bold underline underline-offset-2">Editar Solicitud</p>
-                  <p className="text-center text-xs font-bold w-[225px]">
+                  <p className="w-[225px] text-center text-xs font-bold">
                     Edita el nombre de tu destinatario en caso de que creas que cometiste un error.
                   </p>
                 </div>
@@ -76,19 +80,9 @@ const HelpCenterPage = () => {
           <section className="rs-wrapper-v4 grid grid-cols-1 gap-8 md:grid-cols-2">
             <span className="flex items-center justify-center">
               {isDark ? (
-                <Image
-                src={PlusRewardsDark}
-                alt="SwaplyAr Plus Rewards™ tema oscuro"
-                width={400}
-                height={300}
-              />
+                <Image src={PlusRewardsDark} alt="SwaplyAr Plus Rewards™ tema oscuro" width={400} height={300} />
               ) : (
-                <Image
-                src={PlusRewards}
-                alt="SwaplyAr Plus Rewards™"
-                width={400}
-                height={300}
-              />
+                <Image src={PlusRewards} alt="SwaplyAr Plus Rewards™" width={400} height={300} />
               )}
             </span>
             <span className="flex flex-col items-center text-center">
@@ -140,12 +134,7 @@ const HelpCenterPage = () => {
                   height={150}
                 />
               ) : (
-                <Image
-                  src={Ayuda2}
-                  alt="paso 2 de como cambiar tu dinero en SwaplyAr"
-                  width={210}
-                  height={150}
-                />
+                <Image src={Ayuda2} alt="paso 2 de como cambiar tu dinero en SwaplyAr" width={210} height={150} />
               )}
               <h2 className="mt-4 text-xl font-bold">Otro motivo...</h2>
               <div className="flex h-full flex-col justify-between">

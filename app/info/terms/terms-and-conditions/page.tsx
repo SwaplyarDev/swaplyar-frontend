@@ -1,4 +1,4 @@
-import TermsAndConditions from '@/components/info/terms-and-conditions';
+import TermsAndConditions from '@/components/info/terms/terms-and-conditions';
 
 const page = () => {
   return (

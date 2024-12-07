@@ -17,9 +17,8 @@ export async function authenticate(formData: FormData) {
     }
 
     return 'Success';
-  } catch (error) {
-    console.error('Authentication error:', error);
-    return 'CredentialsSignin';
+  } catch (error: any) {
+    return `Authentication failed. Please try again. Error: ${error.message}`;
   }
 }
 
@@ -40,11 +39,10 @@ export const login = async (email: string, verificationCode: string) => {
     }
 
     return { ok: true };
-  } catch (error) {
-    console.error('Login error:', error);
+  } catch (error: any) {
     return {
       ok: false,
-      message: 'No se pudo iniciar sesión',
+      message: `No se pudo iniciar sesión. Error: ${error.message}`,
     };
   }
 };

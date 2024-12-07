@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { MdDownloadForOffline } from 'react-icons/md';
 import { useMargins } from '@/context/MarginProvider';
-import { useDarkTheme } from '../../ui/theme-Provider/themeProvider';
+import { useDarkTheme } from '../../../ui/theme-Provider/themeProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';

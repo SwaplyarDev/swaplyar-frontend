@@ -41,7 +41,7 @@ export default {
             if (response.status === 401 || response.status === 403) {
               throw new InvalidCredentials();
             } else {
-              throw new Error('Error inesperado durante la autenticación');
+              throw new Error(`Error inesperado durante la autenticación: ${response.statusText}`);
             }
           }
 
@@ -59,9 +59,8 @@ export default {
           } else {
             throw new InvalidCredentials();
           }
-        } catch (error) {
-          console.error('Authentication error:', error instanceof InvalidCredentials ? error.message : error);
-          throw new Error('Authentication failed. Please try again.');
+        } catch (error: any) {
+          throw new Error(`Authentication failed. Please try again. Error: ${error.message}`);
         }
       },
     }),
