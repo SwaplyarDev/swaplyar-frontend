@@ -11,7 +11,7 @@ interface StepTwoPixProps {
   formData: any;
 }
 
-const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, getValues, blockAll, formData }) => {
+const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, blockAll, formData }) => {
   return (
     <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
       <div className="flex w-full flex-col gap-4">
@@ -19,7 +19,7 @@ const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, getValues, bl
           <label
             htmlFor="receiver_first_name"
             className={clsx(
-              'ml-1 text-xs',
+              'ml-1 h-5 text-xs',
               errors.receiver_first_name ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >
@@ -46,7 +46,7 @@ const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, getValues, bl
           <label
             htmlFor="receiver_last_name"
             className={clsx(
-              'ml-1 text-xs',
+              'ml-1 h-5 text-xs',
               errors.receiver_last_name ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >
@@ -74,7 +74,7 @@ const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, getValues, bl
         <div className="flex flex-col">
           <label
             htmlFor="pix_key"
-            className={clsx('ml-1 text-xs', errors.pix_key ? 'text-red-500' : 'text-lightText dark:text-darkText')}
+            className={clsx('ml-1 h-5 text-xs', errors.pix_key ? 'text-red-500' : 'text-lightText dark:text-darkText')}
           >
             PIX KEY
           </label>
@@ -112,7 +112,7 @@ const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, getValues, bl
           <label
             htmlFor="individual_tax_id"
             className={clsx(
-              'ml-1 text-xs',
+              'ml-1 h-5 text-xs',
               errors.individual_tax_id ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >

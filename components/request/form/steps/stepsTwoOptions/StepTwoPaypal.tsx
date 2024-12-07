@@ -19,7 +19,7 @@ const StepTwoPaypal: React.FC<StepTwoPaypalProps> = ({ register, errors, getValu
           <label
             htmlFor="receiver_first_name"
             className={clsx(
-              'ml-1 text-xs',
+              'ml-1 h-5 text-xs',
               errors.receiver_first_name ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >
@@ -46,7 +46,7 @@ const StepTwoPaypal: React.FC<StepTwoPaypalProps> = ({ register, errors, getValu
           <label
             htmlFor="receiver_last_name"
             className={clsx(
-              'ml-1 text-xs',
+              'ml-1 h-5 text-xs',
               errors.receiver_last_name ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >
@@ -74,7 +74,10 @@ const StepTwoPaypal: React.FC<StepTwoPaypalProps> = ({ register, errors, getValu
         <div className="flex flex-col">
           <label
             htmlFor="bank_email"
-            className={clsx('ml-1 text-xs', errors.bank_email ? 'text-red-500' : 'text-lightText dark:text-darkText')}
+            className={clsx(
+              'ml-1 h-5 text-xs',
+              errors.bank_email ? 'text-red-500' : 'text-lightText dark:text-darkText',
+            )}
           >
             Email de Paypal
           </label>
@@ -98,7 +101,7 @@ const StepTwoPaypal: React.FC<StepTwoPaypalProps> = ({ register, errors, getValu
           <label
             htmlFor="re_enter_bank_email"
             className={clsx(
-              'ml-1 text-xs',
+              'ml-1 h-5 text-xs',
               errors.re_enter_bank_email ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >

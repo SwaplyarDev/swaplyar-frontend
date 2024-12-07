@@ -1,5 +1,7 @@
 import { System } from '@/types/data';
 import { CountryOption, RedType } from '@/types/request/request';
+import { buildPaymentMethod } from '@/utils/buildPaymentMethod';
+import { getTaxIdentificationType, getTransferIdentificationType } from '@/utils/validationUtils';
 import { create } from 'zustand';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
@@ -106,13 +108,13 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       return { completedSteps: updatedSteps };
     }),
   updateFormData: (step, data) => {
-    const stepKeys = ['stepOne', 'stepTwo', 'stepThree'] as const; // Define un array con las claves de los pasos
-    const stepKey = stepKeys[step]; // Obtiene la clave correspondiente
+    const stepKeys = ['stepOne', 'stepTwo', 'stepThree'] as const;
+    const stepKey = stepKeys[step];
 
     return set((state) => ({
       formData: {
         ...state.formData,
-        [stepKey]: { ...state.formData[stepKey], ...data }, // Actualiza la propiedad correspondiente
+        [stepKey]: { ...state.formData[stepKey], ...data },
       },
     }));
   },
@@ -120,57 +122,72 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     selectedSendingSystem: System | null,
     selectedReceivingSystem: System | null,
   ): Promise<boolean> => {
-    const state = get(); // Obtener el estado actual
+    const state = get();
     const { stepOne, stepTwo, stepThree } = state.formData;
 
     console.log(stepThree.proof_of_payment);
 
+    const senderDetails: Record<string, string> = {
+      email_account: stepThree.pay_email || '',
+      transfer_code: stepTwo.transfer_identification || '',
+      bank_name: stepTwo.name_of_bank || '',
+      send_method_key: getTaxIdentificationType(stepTwo.transfer_identification),
+      send_method_value: stepTwo.transfer_identification || '',
+      document_type: getTransferIdentificationType(stepTwo.tax_identification),
+      document_value: stepTwo.tax_identification || '',
+      pix_key: stepTwo.pix_key || '',
+      pix_value: stepTwo.transfer_identification || '',
+      cpf: stepTwo.individual_tax_id || '',
+      currency: selectedSendingSystem?.coin || '',
+      network: String(stepTwo.red_selection || ''),
+      wallet: stepTwo.usdt_direction || '',
+    };
+
+    const receiverDetails = {
+      email_account: stepThree.pay_email || '',
+      transfer_code: stepTwo.transfer_identification || '',
+      bank_name: stepTwo.name_of_bank || '',
+      send_method_key: getTaxIdentificationType(stepTwo.transfer_identification),
+      send_method_value: stepTwo.transfer_identification || '',
+      document_type: getTransferIdentificationType(stepTwo.tax_identification),
+      document_value: stepTwo.tax_identification || '',
+      pix_key: stepTwo.pix_key || '',
+      pix_value: stepTwo.transfer_identification || '',
+      cpf: stepTwo.individual_tax_id || '',
+      currency: selectedReceivingSystem?.coin || '',
+      network: String(stepTwo.red_selection || ''),
+      wallet: stepTwo.usdt_direction || '',
+    };
+
     const payload = {
       transaction: {
-        sender: {
-          first_name: stepOne.sender_first_name,
-          last_name: stepOne.sender_last_name,
-          phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
-          email: stepOne.email,
-          bank_account: {
-            email_account: stepOne.email,
-            payment_method: selectedSendingSystem?.name || '',
-            number_account: '',
-          },
-        },
-        receiver: {
-          first_name: stepTwo.receiver_first_name,
-          last_name: stepTwo.receiver_last_name,
-          bank_account: {
-            email_account: stepTwo.bank_email || 'hola@gmail.com',
-            name: stepTwo.name_of_bank,
-            payment_method: selectedReceivingSystem?.name || '',
-            number_account: '',
-          },
-          document: {
-            type: 'dni',
-            value: stepTwo.individual_tax_id || '12345678',
-          },
-          crypto: {
-            currency: 'usdt',
-            network: 'trc20',
-            wallet: 'jfuyher85',
-          },
-        },
-        transfer: {
-          transfer_code: '2134534534',
-          country_transaction: 'USA',
-          message: stepThree.note,
-          created_at: new Date().toISOString(),
-        },
-        amounts: {
-          amount_sent: parseFloat(stepThree.send_amount),
-          currency_sent: selectedSendingSystem?.coin || '',
-          amount_received: parseFloat(stepThree.receive_amount),
-          currency_received: selectedReceivingSystem?.coin || '',
-        },
-        status: 'pending',
+        country_transaction: stepOne.calling_code?.country,
+        message: 'Transaccion enviada',
+        user_id: '',
+        status: '',
         idAdmin: '',
+      },
+      sender: {
+        sender_first_name: stepOne.sender_first_name,
+        sender_last_name: stepOne.sender_last_name,
+        identification: '',
+        phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
+        email: stepOne.email,
+      },
+      receiver: {
+        transaction_id: 'fj82JH5f',
+        receiver_first_name: stepTwo.receiver_first_name,
+        receiver_last_name: stepTwo.receiver_last_name,
+      },
+      payment_method: {
+        sender: buildPaymentMethod(selectedSendingSystem?.paymentMethod || '', senderDetails),
+        receiver: buildPaymentMethod(selectedReceivingSystem?.paymentMethod || '', receiverDetails),
+      },
+      amounts: {
+        amount_sent: stepThree.send_amount,
+        currency_sent: selectedSendingSystem?.coin,
+        amount_received: stepThree.receive_amount,
+        currency_received: selectedReceivingSystem?.coin,
       },
     };
 
@@ -183,7 +200,11 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     } else {
       console.log('No hay archivo disponible');
     }
-    formDataPayload.append('transactions', JSON.stringify(payload));
+    formDataPayload.append('transaction', JSON.stringify(payload.transaction));
+    formDataPayload.append('sender', JSON.stringify(payload.sender));
+    formDataPayload.append('receiver', JSON.stringify(payload.receiver));
+    formDataPayload.append('payment_method', JSON.stringify(payload.payment_method));
+    formDataPayload.append('amounts', JSON.stringify(payload.amounts));
 
     try {
       const response = await fetch(`${BASE_URL}/v1/transactions`, {

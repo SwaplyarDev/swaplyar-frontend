@@ -34,7 +34,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
     email: '',
     phone_number: '',
     note: '',
-    calling_code: { value: '', label: '', callingCode: '' },
+    calling_code: undefined,
     status: '',
   });
 
@@ -146,11 +146,11 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
               rules={{
                 required: 'Este campo es obligatorio',
               }}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <SelectCodeCountry
                   selectedCodeCountry={field.value}
-                  setSelectedCodeCountry={field.onChange}
-                  errors={errors.calling_code ? { [field.name]: errors.calling_code } : {}}
+                  setSelectedCodeCountry={(option) => field.onChange(option)}
+                  errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
                 />
               )}
             />

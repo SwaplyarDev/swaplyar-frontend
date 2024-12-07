@@ -13,7 +13,7 @@ export default function ReceiverInfo({ register, errors }: RecibeInfoProps) {
     <>
       <label
         htmlFor="receiver_first_name"
-        className={clsx(errors.receiver_first_name ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
+        className={clsx(errors.receiver_first_name ? 'text-red-500' : 'text-gray-900 dark:text-gray-300', 'h-5')}
       >
         Nombre de quien va a recibir la transacción
       </label>

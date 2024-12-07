@@ -1,7 +1,7 @@
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import Select from 'react-select'; // Asegúrate de importar de 'react-select'
+import Select from 'react-select';
 import { CountryOption, FieldError, SelectCodeCountryProps } from '@/types/request/request';
 
 const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
@@ -27,6 +27,7 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
             value: country.cca2, // Usar la sigla del país (ej. 'AR')
             label: `${callingCode ? callingCode : 'Sin código'} (${country.cca2})`, // Mostrar código de área y sigla
             callingCode: callingCode,
+            country: country.name.common,
           };
         });
         const options2: CountryOption[] = countries.map((country: any) => {
@@ -35,6 +36,7 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
             value: country.cca2, // Usar la sigla del país (ej. 'AR')
             label: `${country.cca2}`, // Mostrar código de área y sigla
             callingCode: callingCode,
+            country: country.name.common,
           };
         });
         setCountryOptions(options);
