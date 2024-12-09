@@ -146,7 +146,7 @@ const SearchRequest = () => {
     <div className="mx-auto flex w-full max-w-screen-lg flex-col gap-16 py-8 md:gap-4">
       <div className="px-8 lg:px-0">
         <h1 className="text-4xl text-lightText dark:text-darkText">Buscar Solicitud</h1>
-        <p className="hidden w-96 text-xl font-[500] text-lightText dark:text-darkText md:block">
+        <p className="hidden text-xl font-[500] text-lightText dark:text-darkText md:block">
           Ingresa los datos tal cual aparece en el email enviado
         </p>
       </div>
