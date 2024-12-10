@@ -180,14 +180,6 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
       }
     }
   };
-
-  const handleFocus = (index: number) => {
-    setFocusedIndex(index);
-  };
-
-  const handleBlur = () => {
-    setFocusedIndex(null);
-  };
   // abrir el modal
   const openModal = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

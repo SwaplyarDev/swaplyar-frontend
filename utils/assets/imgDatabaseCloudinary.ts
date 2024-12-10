@@ -179,4 +179,3 @@ export const WsUSDtoWsUSD = '/images/request-ws-usd-ws-usd.png';
 
 // Repentance
 export const regretsPc = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1731499821/69_oze2gb.png';
-export const regretsPhone = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1731499822/70_egnupa.png';

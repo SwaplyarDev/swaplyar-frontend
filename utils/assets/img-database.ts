@@ -146,3 +146,6 @@ export const post3_404 = '/images/post3_404.png';
 /** Editor Solicitud **/
 export const EditorPC = '/images/EditorPC.png';
 export const EditorMobile = '/images/EditorMobile.png';
+
+/** Repentance**/
+export const regretsPhone = '/images/regretPhone.png';

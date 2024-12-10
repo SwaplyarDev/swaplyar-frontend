@@ -10,31 +10,10 @@ interface ModalProps {
 }
 const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark }) => {
   const [file, setFile] = useState<File | null>(null);
-
   if (!isOpen) return null;
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setFile(event.target.files[0]);
-    }
-  };
-
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-  };
-
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
-      setFile(event.dataTransfer.files[0]);
-    }
-  };
-
-  const handleUpload = () => {
-    if (file) {
-      alert(`Subiendo archivo: ${file.name}`);
-      // Aquí puedes agregar lógica para subir el archivo a un servidor.
-    } else {
-      alert('No se ha seleccionado ningún archivo.');
     }
   };
   const handleFileRemove = () => {
