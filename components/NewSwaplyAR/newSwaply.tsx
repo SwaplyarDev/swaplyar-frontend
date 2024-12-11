@@ -11,7 +11,7 @@ const NewSwaply = () => {
     <div>
       <div className="mt-10 text-center">
         <FlyerTrabajo imageSrc={FlyerGif}>
-          <span className="">
+          <span className="text-base md:text-lg">
             <p>¿Nuevo en SwaplyAr?</p>
             <p>
               Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma sencilla y segura. Haz
@@ -21,7 +21,7 @@ const NewSwaply = () => {
           <div>
             <button
               id="bannerHTUButton"
-              className={`trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:border-selectBtsLight dark:border-darkText dark:bg-darkText dark:text-black ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+              className={`trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-base duration-300 hover:border-selectBtsLight dark:border-darkText dark:bg-darkText dark:text-black md:text-lg ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
             >
               <Link
                 href={'/info/how-to-use'}

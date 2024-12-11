@@ -43,7 +43,7 @@ const EditSoli = () => {
           </div>
         </div>
       </div>
-      <div className={`mr-0 flex h-auto w-full flex-col border-0 pt-32`}>
+      <div className={`mr-0 flex h-auto w-full flex-col border-0 lg:pt-32`}>
         <SeachRequest></SeachRequest>
       </div>
     </div>

@@ -189,18 +189,18 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
 
   return (
     <div>
-      <div>
+      <div className="w-full">
         <form onSubmit={handleSubmit(verifyCode)} className="w-auto">
-          <label htmlFor="verificationCode" className={'text-center text-3xl text-lightText dark:text-darkText'}>
+          <label htmlFor="verificationCode" className={'text-center text-xl text-lightText dark:text-darkText'}>
             Ingrese el codigo de 6 digitos que recibiste por email
           </label>
           <div className="flex w-full justify-center">
-            <div className="lg:min-h-1/12 my-5 flex h-full justify-between gap-2 xs:h-[57px] xs:gap-1 sm:h-[65.33px] lg:w-9/12 xl:w-full">
+            <div className="my-5 flex h-full w-11/12 justify-between gap-2 xs:h-[57px] xs:gap-1 sm:h-[65.33px] md:h-[52px] md:w-7/12 lg:w-full xl:w-8/12 2xl:w-6/12">
               {[...Array(6)].map((_, index) => (
                 <>
                   <div
                     className={clsx(
-                      `w-[46px] rounded-full border-[0.5px] border-buttonsLigth p-[3px] dark:border-darkText xs:w-[57px] sm:w-full`,
+                      `w-[50px] rounded-full border-[0.5px] border-buttonsLigth p-[3px] dark:border-darkText xs:w-[57px] sm:w-full`,
                     )}
                   >
                     <input
@@ -210,7 +210,7 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
                       maxLength={1}
                       disabled={isLocked || loading}
                       className={clsx(
-                        'h-full w-full rounded-full border-0 text-center text-base focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem]',
+                        'h-full w-full rounded-full border-0 text-center text-base focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem] lg:text-2xl',
                         errors.verificationCode ? 'border-red-500' : '',
                       )}
                       {...register(`verificationCode.${index}`)}
@@ -238,26 +238,26 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
               <p className="mt-2 text-center text-base text-red-500">Estás bloqueado por 5 minutos.</p>
             )}
           </div>
-          <div className="my-5 flex justify-end text-buttonsLigth dark:text-darkText">
+          <div className="my-5 flex justify-evenly text-buttonsLigth dark:text-darkText">
             <button
               onClick={toggle}
               className={`${
                 isDark ? 'buttonSecondDark' : 'buttonSecond'
-              } group relative m-1 mr-14 flex h-[48px] min-w-[48px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent xs:min-w-[150px]`}
+              } group relative m-1 flex h-[42px] min-w-[150px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent xs:min-w-[150px]`}
             >
               <div className="relative h-5 w-5 overflow-hidden">
                 <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
                   <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
                 </div>
               </div>
-              <p className="hidden xs:inline-block">Volver</p>
+              <p className="inline-block">Volver</p>
             </button>
 
             <button
               type="button"
               onClick={resendCode}
               disabled={timer > 0 || reLoading || !!isLocked}
-              className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth disabled:border-gray-400 disabled:bg-gray-400 disabled:shadow-none dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400 ${isDark ? 'buttonSecondDark' : 'buttonSecond'}${timer > 0 || attempts <= 0 ? 'text-gray-500' : ''}`}
+              className={`dark:hover:bg- relative m-1 flex h-[42px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth disabled:border-gray-400 disabled:bg-gray-400 disabled:shadow-none dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400 ${isDark ? 'buttonSecondDark' : 'buttonSecond'}${timer > 0 || attempts <= 0 ? 'text-gray-500' : ''}`}
             >
               {reLoading ? (
                 'Enviando...'
@@ -275,11 +275,11 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
             Abrir Modal
           </button>
         </form>
-        {/* <Modal1 isDark={isDark} isOpen={isModalOpen} onClose={closeModal} title="modal 1"></Modal1> */}
-        {/* <Modal2 isDark={isDark} isOpen={isModalOpen} onClose={closeModal} title="modal 2"></Modal2> */}
-        {/* <Modal3 isDark={isDark} isOpen={isModalOpen} onClose={closeModal} title="modal 3"></Modal3> */}
-        <Modal4 isDark={isDark} isOpen={isModalOpen} onClose={closeModal} title="modal 4"></Modal4>
       </div>
+      <Modal1 isDark={isDark} isOpen={isModalOpen} onClose={closeModal} title="modal 1"></Modal1>
+      {/* <Modal2 isDark={isDark} isOpen={isModalOpen} onClose={closeModal} title="modal 2"></Modal2> */}
+      {/* <Modal3 isDark={isDark} isOpen={isModalOpen} onClose={closeModal} title="modal 3"></Modal3> */}
+      {/* <Modal4 isDark={isDark} isOpen={isModalOpen} onClose={closeModal} title="modal 4"></Modal4> */}
     </div>
   );
 };

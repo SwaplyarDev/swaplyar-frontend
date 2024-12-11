@@ -22,8 +22,8 @@ const SeachRequest: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false); // Estado para mostrar el spinner
   const handleSeachRequestSubmit = () => {};
   return (
-    <div>
-      <form className="ml-2 mt-3 flex h-full flex-col justify-evenly lg:ml-7">
+    <div className="flex justify-center md:mx-10 lg:mx-0 lg:flex-none">
+      <form className="ml-2 mt-3 flex h-full w-full flex-col lg:ml-7 lg:justify-evenly">
         <label className="flex flex-col pr-2 text-right text-xl font-bold" htmlFor="Solicitud">
           NUMERO DE SOLICITUD
         </label>
@@ -42,12 +42,12 @@ const SeachRequest: React.FC = () => {
 
           // required
         />
-        <div className="mt-5 flex w-full justify-end text-center xl:mr-44">
+        <div className="mb-10 mt-5 flex w-full justify-center text-center lg:mb-0 lg:justify-end xl:mr-44">
           {!isToggled ? (
             <button
               type="submit"
               disabled={isLoading}
-              className={`dark:hover:bg- relative m-1 mt-8 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 px-20 font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+              className={`relative m-1 mt-8 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 px-20 font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
               onClick={handleToggle}
             >
               {isLoading ? 'Cargando...' : 'Buscar'}
