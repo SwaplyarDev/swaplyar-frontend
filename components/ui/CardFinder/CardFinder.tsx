@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import useBlogStore from '@/store/useBlogStore';
-import BlogPostCard from '@/components/info/blog/BlogPostCard/BlogPostCard';
+import BlogPostCard from '@/components/blog/BlogPostCard/BlogPostCard';
 
 function CardFinder() {
   const [searchTerm, setSearchTerm] = useState('');

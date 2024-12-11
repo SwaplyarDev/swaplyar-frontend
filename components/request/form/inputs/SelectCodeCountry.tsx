@@ -1,7 +1,7 @@
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import Select from 'react-select'; // Asegúrate de importar de 'react-select'
+import Select from 'react-select';
 import { CountryOption, FieldError, SelectCodeCountryProps } from '@/types/request/request';
 
 const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
@@ -19,14 +19,17 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await fetch('https://restcountries.com/v3.1/all');
+        const response = await fetch(process.env.NEXT_PUBLIC_REST_COUNTRIES_API_URL!);
+        console.log('restcountries 01', response);
         const countries = await response.json();
+        console.log('restcountries 02', countries);
         const options: CountryOption[] = countries.map((country: any) => {
           const callingCode = country.idd?.root ? `${country.idd.root}${country.idd.suffixes?.[0] || ''}` : '';
           return {
             value: country.cca2, // Usar la sigla del país (ej. 'AR')
             label: `${callingCode ? callingCode : 'Sin código'} (${country.cca2})`, // Mostrar código de área y sigla
             callingCode: callingCode,
+            country: country.name.common,
           };
         });
         const options2: CountryOption[] = countries.map((country: any) => {
@@ -35,6 +38,7 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
             value: country.cca2, // Usar la sigla del país (ej. 'AR')
             label: `${country.cca2}`, // Mostrar código de área y sigla
             callingCode: callingCode,
+            country: country.name.common,
           };
         });
         setCountryOptions(options);

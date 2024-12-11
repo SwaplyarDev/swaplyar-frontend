@@ -23,6 +23,7 @@ Este documento describe las rutas principales de la aplicación **SwaplyAr**, or
 ## 🗺️ Rutas Generales
 
 - **`/` - Página de Inicio**
+
   - **Descripción:** La página principal que da la bienvenida a los usuarios.
   - **Componentes Clave:**
     - Información introductoria.
@@ -39,6 +40,7 @@ Este documento describe las rutas principales de la aplicación **SwaplyAr**, or
 ## 🔒 Rutas de Autenticación
 
 - **`/auth/login` - Iniciar Sesión**
+
   - **Descripción:** Página para que los usuarios inicien sesión en la plataforma.
   - **Componentes Clave:**
     - Formulario de autenticación.
@@ -55,36 +57,42 @@ Este documento describe las rutas principales de la aplicación **SwaplyAr**, or
 ## 📄 Rutas de Información
 
 - **`/info/about-us` - Sobre Nosotros**
+
   - **Descripción:** Página con información sobre la misión y visión de SwaplyAr.
   - **Componentes Clave:**
     - Texto estático.
     - Sección de contacto.
 
 - **`/info/help-center` - Centro de Ayuda**
+
   - **Descripción:** Proporciona soporte y respuestas a preguntas frecuentes.
   - **Componentes Clave:**
     - FAQ.
     - Botones de contacto.
 
 - **`/info/how-to-use` - Cómo Usar SwaplyAr**
+
   - **Descripción:** Instrucciones para que los usuarios aprovechen al máximo la plataforma.
   - **Componentes Clave:**
     - Tutoriales.
     - Consejos para nuevos usuarios.
 
 - **`/info/loyalty-program` - Programa de Fidelización**
+
   - **Descripción:** Explica los beneficios y recompensas del programa de fidelización.
   - **Componentes Clave:**
     - Detalles del programa.
     - Formulario de inscripción.
 
 - **`/info/terms-and-conditions` - Términos y Condiciones**
+
   - **Descripción:** Página con los términos legales de uso de la plataforma.
   - **Componentes Clave:**
     - Texto estático.
     - Sección de aceptación.
 
 - **`/info/warranty` - Garantía**
+
   - **Descripción:** Información sobre políticas de garantía de productos.
   - **Componentes Clave:**
     - Detalles de cobertura.
@@ -101,6 +109,7 @@ Este documento describe las rutas principales de la aplicación **SwaplyAr**, or
 ## 💼 Rutas Funcionales
 
 - **`/request` - Solicitudes de Intercambio**
+
   - **Descripción:** Página principal para gestionar solicitudes de intercambio.
   - **Componentes Clave:**
     - Listado de solicitudes.
@@ -119,6 +128,7 @@ Este documento describe las rutas principales de la aplicación **SwaplyAr**, or
 ### **Carpetas Clave**
 
 - **`app/`**
+
   - **Rutas de API:**
     - **`api/auth/[...nextauth]`:** Ruta para manejar la autenticación con NextAuth.js.
   - **Agrupación por Sección:**
@@ -128,6 +138,7 @@ Este documento describe las rutas principales de la aplicación **SwaplyAr**, or
     - **`page.js`:** Define la página de inicio (opcional).
 
 - **`components/`**
+
   - **`ui/`:** Componentes de interfaz de usuario reutilizables.
   - **`auth/`:** Componentes para manejar autenticación (por ejemplo, formularios de inicio de sesión y registro).
   - **`clientWrapper/`:** Componente para gestionar estados de carga, mostrando skeletons si es necesario.
@@ -136,12 +147,15 @@ Este documento describe las rutas principales de la aplicación **SwaplyAr**, or
   - **`repentance/`:** Componentes específicos para solicitudes de arrepentimiento.
 
 - **`hooks/`**
+
   - Hooks personalizados para manejar lógica compartida.
 
 - **`store/`**
+
   - Configuración del estado global utilizando **Zustand**.
 
 - **`public/`**
+
   - Almacén de archivos estáticos accesibles públicamente, como imágenes y fuentes.
 
 - **`styles/`**

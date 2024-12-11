@@ -22,6 +22,8 @@ export const systems: System[] = [
     logoDark: PaypalDarkImg,
     isDisabled: false,
     coin: 'USD',
+    paymentMethod: 'paypal',
+    coinSign: 'US$',
   },
   {
     id: 'payoneer_usd',
@@ -30,6 +32,8 @@ export const systems: System[] = [
     logoDark: PayoneerUsdDarkImg,
     isDisabled: false,
     coin: 'USD',
+    paymentMethod: 'payoneer',
+    coinSign: 'US$',
   },
   {
     id: 'payoneer_eur',
@@ -38,6 +42,8 @@ export const systems: System[] = [
     logoDark: PayoneerEurDarkImg,
     isDisabled: false,
     coin: 'EUR',
+    paymentMethod: 'payoneer',
+    coinSign: '€',
   },
   {
     id: 'bank',
@@ -46,6 +52,8 @@ export const systems: System[] = [
     logoDark: BankDarkImg,
     isDisabled: false,
     coin: 'ARS',
+    paymentMethod: 'ars',
+    coinSign: '$a',
   },
   {
     id: 'wise_usd',
@@ -54,6 +62,8 @@ export const systems: System[] = [
     logoDark: WiseUsdDarkImg,
     isDisabled: false,
     coin: 'USD',
+    paymentMethod: 'wise',
+    coinSign: 'US$',
   },
   {
     id: 'wise_eur',
@@ -62,5 +72,7 @@ export const systems: System[] = [
     logoDark: WiseEurDarkImg,
     isDisabled: false,
     coin: 'EUR',
+    paymentMethod: 'wise',
+    coinSign: '€',
   },
 ];

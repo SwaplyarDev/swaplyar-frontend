@@ -1,4 +1,4 @@
-import SaprTermsConditions from '@/components/info/sapr-terms-conditions/SaprTermsConditions';
+import SaprTermsConditions from '@/components/info/terms/sapr-terms-conditions/SaprTermsConditions';
 
 const page = () => {
   return (

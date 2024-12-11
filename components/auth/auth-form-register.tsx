@@ -10,6 +10,7 @@ import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
 import { useRouter } from 'next/navigation';
 import userInfoStore from '@/store/userInfoStore';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import Image from 'next/image';
 
 type FormInputs = {
@@ -181,8 +182,8 @@ export const RegisterForm = () => {
           disabled={loading}
         >
           {loading ? (
-            <div className="flex items-center justify-center">
-              <Image src="/gif/cargando.gif" width={30} height={30} alt="loading" className="mb-0.5 mr-2" />
+            <div className="flex items-center justify-center gap-2">
+              <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
               Creando cuenta...
             </div>
           ) : (

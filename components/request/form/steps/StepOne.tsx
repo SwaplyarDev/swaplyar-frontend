@@ -8,6 +8,7 @@ import InputField from '@/components/ui/contact-form/InputField';
 import SelectBoolean from '../inputs/SelectBoolean';
 import SelectCodeCountry from '../inputs/SelectCodeCountry';
 import { CountryOption } from '@/types/request/request';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
 interface FormData {
   sender_first_name: string;
@@ -65,7 +66,10 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     setInitialValues(newValues);
   }, [formData.stepOne, setValue]);
 
+  const [loading, setLoading] = useState(false);
+
   const onSubmit = async (data: FormData) => {
+    setLoading(true);
     updateFormData(0, data);
 
     if (idTransaction) {
@@ -80,13 +84,13 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
         setIdTransaction(responseData.transaction_id);
         markStepAsCompleted(0);
         setActiveStep(1);
+        setLoading(false);
       } else {
         console.error('No se pudo completar el envío de los datos');
       }
     }
   };
 
-  // Determinar si se han hecho cambios en el formulario
   const deepEqual = (obj1: any, obj2: any): boolean => {
     if (obj1 === obj2) return true;
     if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) return false;
@@ -103,7 +107,6 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     return true;
   };
 
-  // Usar la función deepEqual para hasChanges
   const hasChanges = initialValues && !deepEqual(initialValues, formValues);
 
   const [isFocused, setIsFocused] = useState(false);
@@ -116,7 +119,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             <label
               htmlFor="name"
               className={clsx(
-                'ml-1 text-xs',
+                'ml-1 h-5 text-xs',
                 errors.sender_first_name ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
@@ -141,7 +144,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             <label
               htmlFor="sender_last_name"
               className={clsx(
-                'ml-1 text-xs',
+                'ml-1 h-5 text-xs',
                 errors.sender_last_name ? 'text-red-500' : 'text-lightText dark:text-darkText',
               )}
             >
@@ -167,7 +170,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
           <div className="flex flex-col">
             <label
               htmlFor="email"
-              className={clsx('ml-1 text-xs', errors.email ? 'text-red-500' : 'text-lightText dark:text-darkText')}
+              className={clsx('ml-1 h-5 text-xs', errors.email ? 'text-red-500' : 'text-lightText dark:text-darkText')}
             >
               Correo electrónico
             </label>
@@ -177,7 +180,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               placeholder="Email"
               disabled={blockAll}
               register={register('email', {
-                required: 'El correo es obligatorio',
+                required: 'El Correo es obligatorio',
                 pattern: {
                   // value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                   value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
@@ -190,7 +193,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
           <div className="flex flex-col">
             <label
               htmlFor="phone"
-              className={clsx('ml-1 text-xs', errors.phone ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
+              className={clsx('ml-1 h-5 text-xs', errors.phone ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
             >
               Telefono
             </label>
@@ -243,7 +246,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
       </div>
       <div className="mx-0 flex flex-col gap-0 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
         <div className="flex w-full items-center justify-start sm-phone:justify-center">
-          <p className="ml-1 text-xs text-lightText dark:text-darkText sm-phone:ml-0 sm-phone:text-sm md:text-lg">
+          <p className="ml-1 h-5 text-xs text-lightText dark:text-darkText sm-phone:ml-0 sm-phone:text-sm md:text-lg">
             ¿Se transfiere a una cuenta propia?
           </p>
         </div>
@@ -273,9 +276,16 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             <button
               type="submit"
               className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-              disabled={!isValid || blockAll}
+              disabled={!isValid || blockAll || loading}
             >
-              Siguiente
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
+                  Cargando...
+                </div>
+              ) : (
+                'Siguiente'
+              )}
             </button>
           ) : (
             <button
@@ -291,9 +301,16 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
           <button
             type="submit"
             className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] text-sm font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
-            disabled={!isValid || blockAll}
+            disabled={!isValid || blockAll || loading}
           >
-            Siguiente
+            {loading ? (
+              <div className="flex items-center justify-center gap-2">
+                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
+                Cargando...
+              </div>
+            ) : (
+              'Siguiente'
+            )}
           </button>
         )}
       </div>

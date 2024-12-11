@@ -54,7 +54,7 @@ const SelectRed: React.FC<SelectRedProps> = ({ selectedRed, setSelectedRed, erro
     <>
       <label
         htmlFor={fieldName}
-        className={clsx('ml-1 text-xs', errorMessage ? 'text-red-500' : 'text-lightText dark:text-darkText')}
+        className={clsx('ml-1 h-5 text-xs', errorMessage ? 'text-red-500' : 'text-lightText dark:text-darkText')}
       >
         Selecciona una Red
       </label>

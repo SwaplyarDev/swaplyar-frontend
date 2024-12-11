@@ -13,7 +13,7 @@ interface StepTwoTetherProps {
   control: any;
 }
 
-const StepTwoTether: React.FC<StepTwoTetherProps> = ({ register, errors, getValues, blockAll, formData, control }) => {
+const StepTwoTether: React.FC<StepTwoTetherProps> = ({ register, errors, getValues, blockAll, control }) => {
   const formValues = useWatch({ control });
   const receiveAmount = localStorage.getItem('receiveAmount');
   console.log(formValues.red_selection);
@@ -24,7 +24,7 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({ register, errors, getValu
           <label
             htmlFor="usdt_direction"
             className={clsx(
-              'ml-1 text-xs',
+              'ml-1 h-5 text-xs',
               errors.usdt_direction ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >
@@ -49,7 +49,7 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({ register, errors, getValu
           <label
             htmlFor="re_enter_usdt_direction"
             className={clsx(
-              'ml-1 text-xs',
+              'ml-1 h-5 text-xs',
               errors.re_enter_usdt_direction ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >
@@ -95,7 +95,7 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({ register, errors, getValu
           <label
             htmlFor="recieveAmountRed"
             className={clsx(
-              'ml-1 text-xs',
+              'ml-1 h-5 text-xs',
               errors.recieveAmountRed ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >

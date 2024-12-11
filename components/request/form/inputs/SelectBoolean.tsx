@@ -20,8 +20,8 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelect
       <Select
         isDisabled={blockAll}
         id={fieldName}
-        onFocus={() => setIsFocused(true)} // Activa el enfoque
-        onBlur={() => setIsFocused(false)} // Desactiva el enfoque
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         options={[
           { value: 'Si', label: 'Si' },
           { value: 'No', label: 'No' },

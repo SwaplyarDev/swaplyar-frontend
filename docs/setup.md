@@ -1,4 +1,4 @@
-```markdown
+````markdown
 # 🚀 Configuración Inicial
 
 Este archivo detalla los pasos necesarios para configurar y ejecutar el proyecto **SwaplyAr** en tu entorno local.
@@ -11,6 +11,7 @@ Este archivo detalla los pasos necesarios para configurar y ejecutar el proyecto
 git clone git@github.com:SwaplyAr/swaplyar-frontend.git
 cd swaplyar-frontend
 ```
+````
 
 ---
 
@@ -111,4 +112,7 @@ Estos son los scripts disponibles en el proyecto para tareas comunes:
    - Nunca incluyas este archivo en tu sistema de control de versiones (Git). Asegúrate de que `.env.local` esté en el archivo `.gitignore`.
 
 Este documento cubre todo lo necesario para configurar y ejecutar el proyecto en tu máquina local. 🚀
+
+```
+
 ```

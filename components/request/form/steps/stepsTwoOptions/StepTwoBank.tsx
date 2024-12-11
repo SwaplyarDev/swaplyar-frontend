@@ -1,7 +1,9 @@
+'use client';
 import InputField from '@/components/ui/contact-form/InputField';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FieldErrors, UseFormGetValues, UseFormRegister } from 'react-hook-form';
 import clsx from 'clsx';
+import { getTaxIdentificationType, getTransferIdentificationType } from '@/utils/validationUtils';
 
 interface StepTwoBankProps {
   register: UseFormRegister<any>;
@@ -9,9 +11,22 @@ interface StepTwoBankProps {
   getValues: UseFormGetValues<any>;
   blockAll: boolean;
   formData: any;
+  formValues: any;
 }
 
-const StepTwoBank: React.FC<StepTwoBankProps> = ({ register, errors, getValues, blockAll, formData }) => {
+const StepTwoBank: React.FC<StepTwoBankProps> = ({ register, errors, getValues, blockAll, formData, formValues }) => {
+  const taxIdentificationValue = formValues.tax_identification;
+  const [taxIdentificationType, setTaxIdentificationType] = useState<string>('TAX ID/CUIT/CUIL');
+
+  const methodValue = formValues.transfer_identification;
+  const [methodType, setMethodType] = useState<string>('CBU/CVU/ALIAS');
+
+  useEffect(() => {
+    const type = getTaxIdentificationType(taxIdentificationValue);
+    const typeMethod = getTransferIdentificationType(methodValue);
+    setMethodType(typeMethod);
+    setTaxIdentificationType(type);
+  }, [taxIdentificationValue, methodValue]);
   return (
     <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
       <div className="flex w-full flex-col gap-4">
@@ -19,7 +34,7 @@ const StepTwoBank: React.FC<StepTwoBankProps> = ({ register, errors, getValues, 
           <label
             htmlFor="receiver_first_name"
             className={clsx(
-              'ml-1 text-xs',
+              'ml-1 h-5 text-xs',
               errors.receiver_first_name ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >
@@ -47,7 +62,7 @@ const StepTwoBank: React.FC<StepTwoBankProps> = ({ register, errors, getValues, 
           <label
             htmlFor="receiver_last_name"
             className={clsx(
-              'ml-1 text-xs',
+              'ml-1 h-5 text-xs',
               errors.receiver_last_name ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >
@@ -75,21 +90,21 @@ const StepTwoBank: React.FC<StepTwoBankProps> = ({ register, errors, getValues, 
           <label
             htmlFor="tax_identification"
             className={clsx(
-              'ml-1 text-xs',
+              'ml-1 h-5 text-xs',
               errors.tax_identification ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >
-            TAX ID/CUIT/CUIL
+            {taxIdentificationType}
           </label>
           <InputField
             id="tax_identification"
             type="text"
-            placeholder="TAX ID/CUIT/CUIL"
+            placeholder="DNI/CUIT/CUIL"
             register={register('tax_identification', {
-              required: 'El TAX ID/CUIT/CUIL es obligatorio',
+              required: 'El DNI/CUIT/CUIL es obligatorio',
               pattern: {
-                value: /^(?:\d{9}|\d{11}|\d{2}-\d{8}-\d{1})$/,
-                message: 'El formato de TAX ID/CUIT/CUIL es inválido',
+                value: /^(?:d{8}|\d{11}|\d{2}-\d{8}-\d{1})$/,
+                message: 'El formato de DNI/CUIT/CUIL es inválido',
               },
             })}
             error={errors.tax_identification?.message ? String(errors.tax_identification.message) : undefined}
@@ -103,11 +118,11 @@ const StepTwoBank: React.FC<StepTwoBankProps> = ({ register, errors, getValues, 
           <label
             htmlFor="transfer_identification"
             className={clsx(
-              'ml-1 text-xs',
+              'ml-1 h-5 text-xs',
               errors.transfer_identification ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >
-            CBU/CVU/ALIAS
+            {methodType}
           </label>
           <InputField
             id="transfer_identification"
@@ -129,7 +144,7 @@ const StepTwoBank: React.FC<StepTwoBankProps> = ({ register, errors, getValues, 
           <label
             htmlFor="re_transfer_identification"
             className={clsx(
-              'ml-1 text-xs',
+              'ml-1 h-5 text-xs',
               errors.re_transfer_identification ? 'text-red-500' : 'text-lightText dark:text-darkText',
             )}
           >
@@ -156,7 +171,10 @@ const StepTwoBank: React.FC<StepTwoBankProps> = ({ register, errors, getValues, 
         <div className="flex flex-col">
           <label
             htmlFor="name_of_bank"
-            className={clsx('ml-1 text-xs', errors.name_of_bank ? 'text-red-500' : 'text-lightText dark:text-darkText')}
+            className={clsx(
+              'ml-1 h-5 text-xs',
+              errors.name_of_bank ? 'text-red-500' : 'text-lightText dark:text-darkText',
+            )}
           >
             Nombre del Banco
           </label>
