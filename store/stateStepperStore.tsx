@@ -4,7 +4,7 @@ import { buildPaymentMethod } from '@/utils/buildPaymentMethod';
 import { getTaxIdentificationType, getTransferIdentificationType } from '@/utils/validationUtils';
 import { create } from 'zustand';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 interface StepOneData {
   sender_first_name: string;

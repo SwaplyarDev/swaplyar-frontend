@@ -19,8 +19,10 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const response = await fetch('https://restcountries.com/v3.1/all');
+        const response = await fetch(process.env.NEXT_PUBLIC_REST_COUNTRIES_API_URL!);
+        console.log('restcountries 01', response);
         const countries = await response.json();
+        console.log('restcountries 02', countries);
         const options: CountryOption[] = countries.map((country: any) => {
           const callingCode = country.idd?.root ? `${country.idd.root}${country.idd.suffixes?.[0] || ''}` : '';
           return {
