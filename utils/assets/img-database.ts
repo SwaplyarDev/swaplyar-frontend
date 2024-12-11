@@ -143,3 +143,9 @@ export const Enchufe_clear_largo = '/images/enchufe_clear_largo.png';
 export const tlf_404_dark = '/images/tlf_404_dark.png';
 export const tlf_404_clear = '/images/tlf_404_clear.png';
 export const post3_404 = '/images/post3_404.png';
+/** Editor Solicitud **/
+export const EditorPC = '/images/EditorPC.png';
+export const EditorMobile = '/images/EditorMobile.png';
+
+/** Repentance**/
+export const regretsPhone = '/images/regretPhone.png';

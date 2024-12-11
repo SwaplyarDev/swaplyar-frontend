@@ -15,10 +15,16 @@ const IncorrectIcon: React.FC<Size> = ({ size = 150, isDark }) => {
         height: `${size * 1.2}px`,
       }}
     >
-      <div className={`absolute inset-0 rounded-full ${isDark ? 'bg-red-700' : 'bg-red-500'}`}></div>
       <div
-        className={`absolute rounded-full ${isDark ? 'dark:bg-[#454545]' : 'bg-[#ffffff]'}`}
+        className={`absolute inset-0 rounded-full`}
         style={{
+          backgroundColor: isDark ? '#a31c01' : '#d50102', // Cambié el color a backgroundColor
+        }}
+      ></div>
+      <div
+        className={`absolute rounded-full`}
+        style={{
+          backgroundColor: isDark ? '#454545' : '#ffffff', // También aquí
           width: `${size * 1}px`,
           height: `${size * 1}px`,
           top: `${size * 0.1}px`,
@@ -26,14 +32,16 @@ const IncorrectIcon: React.FC<Size> = ({ size = 150, isDark }) => {
         }}
       ></div>
       <div
-        className={`absolute rounded-full ${isDark ? 'bg-red-700' : 'bg-red-500'}`}
+        className={`absolute rounded-full`}
         style={{
+          backgroundColor: isDark ? '#a31c01' : '#d50102', // Y aquí también
           width: `${size * 0.8}px`,
           height: `${size * 0.8}px`,
           top: `${size * 0.2}px`,
           left: `${size * 0.2}px`,
         }}
       ></div>
+
       <div
         className="absolute flex items-center justify-center font-bold text-white"
         style={{

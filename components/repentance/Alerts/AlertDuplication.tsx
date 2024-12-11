@@ -1,3 +1,4 @@
+import Arrow from '@/components/ui/Arrow/Arrow';
 import WarningIcon from '@/components/ui/WarningIcon/WarningIcon';
 import { AlertsProps } from '@/types/repentance/repentance';
 import React from 'react';
@@ -8,9 +9,30 @@ const AlertDuplication = async ({ isDark }: AlertsProps): Promise<void> => {
   Swal.fire({
     didRender: () => {
       const warningContainer = document.getElementById('warning-container');
-      if (warningContainer) {
-        const root = createRoot(warningContainer);
-        root.render(<WarningIcon isDark={isDark} />);
+      const backElement = document.getElementById('button-container');
+      if (backElement) {
+        const root = createRoot(backElement);
+        root.render(
+          <div className="flex w-full items-center justify-between gap-4 pt-5">
+            <button
+              onClick={() => Swal.close()}
+              className={`${
+                isDark ? 'buttonSecondDark' : 'buttonSecond'
+              } group relative m-1 flex h-[42px] min-w-[150pxpx] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent xs:min-w-[150px]`}
+            >
+              <div className="relative h-5 w-5 overflow-hidden">
+                <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
+                  <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
+                </div>
+              </div>
+              <p className="hidden xs:inline-block">Volver</p>
+            </button>
+          </div>,
+        );
+        if (warningContainer) {
+          const root = createRoot(warningContainer);
+          root.render(<WarningIcon isDark={isDark} />);
+        }
       }
     },
     title: '',
@@ -20,11 +42,7 @@ const AlertDuplication = async ({ isDark }: AlertsProps): Promise<void> => {
         <p class="text-xl font-bold text-center pb-3 ${isDark ? 'text-white' : 'text-black'}">
           Esta solicitud ya genero una alerta de cancelacion o reembolso.
         </p>
-        <button id="back-button" 
-          class="${isDark ? 'buttonSecondDark text-white border-white' : 'buttonSecond text-buttonsLigth border-black'}
-            relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 hover:bg-transparent dark:border-darkText dark:hover:bg-transparent pb-2">
-          ← Volver
-        </button>
+        <div id="button-container"></div>
       </div>
     `,
     customClass: {
