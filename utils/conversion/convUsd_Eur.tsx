@@ -1,6 +1,8 @@
 const apiKey = process.env.NEXT_PUBLIC_FREE_CURRENCY_API_KEY;
 const apiKey2 = process.env.NEXT_PUBLIC_FREE_CURRENCY_APY_KEY;
 
+const apiUrl = process.env.NEXT_PUBLIC_FREE_CURRENCY_API_URL;
+
 if (!apiKey && !apiKey2) {
   throw new Error('Missing both FreeCurrencyAPI Keys');
 }
@@ -15,7 +17,8 @@ interface CurrencyData {
 //* Función para calcular el precio del dolar/euro usando FreeCurrencyAPI
 export async function updateCurrentValueUSDToEUR() {
   const fetchCurrencyData = async (key: string): Promise<CurrencyData> => {
-    const response = await fetch(`https://api.freecurrencyapi.com/v1/latest?apikey=${key}`);
+    // const response = await fetch(`https://api.freecurrencyapi.com/v1/latest?apikey=${key}`);
+    const response = await fetch(`${apiUrl}?apikey=${key}`);
 
     if (!response.ok) {
       const errorMessage = `Error: ${response.status} ${response.statusText}`;

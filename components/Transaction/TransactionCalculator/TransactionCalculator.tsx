@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef, use } from 'react';
+import { useState, useEffect } from 'react';
 import SystemInfo from '../SystemInfo/SystemInfo';
 import InvertSystems from '../InvertSystems/InvertSystems';
 import { useSystemStore } from '@/store/useSystemStore';
