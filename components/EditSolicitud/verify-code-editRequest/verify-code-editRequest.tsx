@@ -26,7 +26,7 @@ interface VerifycodeEditRequestProps {
   toggle: () => void;
 }
 
-const BASE_URL = process.env.BACKEND_API_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, isDark }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,10 +41,8 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
     setValue,
   } = useForm<FormInputs>({});
 
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [reLoading, setReLoading] = useState(false);
-  const { email } = useEmailVerificationStore();
   const router = useRouter();
   const { view } = useStore();
   const { user } = userInfoStore();
@@ -57,6 +55,10 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
   const [timer, setTimer] = useState(0);
 
   useEffect(() => {
+    // if (email === '') {
+    //   router.push('/auth/login-register');
+    // }
+
     if (isLocked) {
       const timer = setTimeout(() => {
         setLockUntil(null);
@@ -64,7 +66,7 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
       }, lockUntil - Date.now());
       return () => clearTimeout(timer);
     }
-  }, [email, router, isLocked, lockUntil, setLockUntil, resetAttempts]);
+  }, [router, isLocked, lockUntil, setLockUntil, resetAttempts]);
 
   // Temporizador para el reenvío
   useEffect(() => {
@@ -90,66 +92,28 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
       return;
     }
 
-    try {
-      let result: { ok: boolean; message?: any } = { ok: false };
-      if (view === 'login') {
-        result = await login(email || '', code);
-      } else if (view === 'register') {
-        result = await registerUser(user?.id || '', code);
-      }
+    // try {
+    //   let result: { ok: boolean; message?: any } = { ok: false };
+    //   if (view === 'login') {
+    //     result = await login(email || '', code);
+    //   } else if (view === 'register') {
+    //     result = await registerUser(user?.id || '', code);
+    //   }
 
-      if (!result.ok) {
-        setError('verificationCode', {
-          type: 'manual',
-          message: 'El código ingresado es incorrecto.',
-        });
-        clearVerificationInputs(); // Limpiar campos si es incorrecto
-      } else {
-        window.location.href = '/';
-      }
-    } catch (error) {
-      console.error('Error durante la verificación del código:', error);
-    } finally {
+    //   if (!result.ok) {
+    //     setError('verificationCode', {
+    //       type: 'manual',
+    //       message: 'El código ingresado es incorrecto.',
+    //     });
+    //     clearVerificationInputs(); // Limpiar campos si es incorrecto
+    //   } else {
+    //     window.location.href = '/';
+    //   }
+    // } catch (error) {
+    //   console.error('Error durante la verificación del código:', error);
+    // }
+    else {
       setLoading(false);
-    }
-  };
-
-  const resendCode = async () => {
-    if (!isLocked && attempts > 0 && timer === 0) {
-      setReLoading(true);
-      let URL_VERIFICATION = '';
-      if (email) {
-        URL_VERIFICATION = 'login/email/verify-code';
-      }
-      if (user?.id) {
-        URL_VERIFICATION = 'users/email-validation/send';
-      }
-      const bodyData = {
-        email: email,
-        ...(user?.id && { user_id: user.id }),
-      };
-      try {
-        await fetch(`${BASE_URL}/v1/${URL_VERIFICATION}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(bodyData),
-        });
-        decrementAttempts(); // Reducir intentos después del reenvío
-        setTimer(10); // Reiniciar el temporizador a 10 segundos
-        if (attempts <= 1) {
-          setLockUntil(Date.now() + 5 * 60 * 1000); // Bloquear por 5 minutos si no hay intentos
-        }
-      } catch (error) {
-        console.error('Error al reenviar el código:', error);
-      } finally {
-        setReLoading(false);
-      }
-    }
-  };
-
-  const clearVerificationInputs = () => {
-    for (let i = 0; i < 6; i++) {
-      setValue(`verificationCode.${i}`, '');
     }
   };
 
@@ -255,7 +219,6 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
 
             <button
               type="button"
-              onClick={resendCode}
               disabled={timer > 0 || reLoading || !!isLocked}
               className={`dark:hover:bg- relative m-1 flex h-[42px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth disabled:border-gray-400 disabled:bg-gray-400 disabled:shadow-none dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400 ${isDark ? 'buttonSecondDark' : 'buttonSecond'}${timer > 0 || attempts <= 0 ? 'text-gray-500' : ''}`}
             >

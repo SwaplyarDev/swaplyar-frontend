@@ -24,15 +24,15 @@ const SeachRequest: React.FC = () => {
   return (
     <div className="flex justify-center md:mx-10 lg:mx-0 lg:flex-none">
       <form className="ml-2 mt-3 flex h-full w-full flex-col lg:ml-7 lg:justify-evenly">
-        <label className="flex flex-col pr-2 text-right text-xl font-bold" htmlFor="Solicitud">
+        <label className="flex flex-col pr-2 text-right text-xl font-bold" htmlFor="transactionId">
           NUMERO DE SOLICITUD
         </label>
         <input
-          id="Solicitud"
+          id="transactionId"
           className={`flex w-full border-0 border-b-4 border-solid ps-0 pt-0 text-right text-xl ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-black placeholder-black focus:border-buttonsLigth'} outline-none focus:outline-none`}
           type="text"
           placeholder="Como figura en el recibo"
-          // {...register('transaction_id', {
+          // {...register('transactionId', {
           //   required: '• El número de referencia es obligatorio',
           //   pattern: {
           //     value: /^[A-Za-z0-9]{10,20}$/,
