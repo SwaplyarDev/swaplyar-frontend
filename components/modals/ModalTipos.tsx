@@ -7,40 +7,94 @@ interface ModalProps {
   onClose: () => void;
   title?: string;
   children?: React.ReactNode;
+  transaccionId?: string;
 }
-const Modal3: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark }) => {
+interface payMethodInfo {
+  methodDestinatario: string;
+}
+const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark, transaccionId }) => {
   const [file, setFile] = useState<File | null>(null);
   if (!isOpen) return null;
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setFile(event.target.files[0]);
     }
   };
-
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-  };
-
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
-      setFile(event.dataTransfer.files[0]);
-    }
-  };
-
-  const handleUpload = () => {
-    if (file) {
-      alert(`Subiendo archivo: ${file.name}`);
-      // Aquí puedes agregar lógica para subir el archivo a un servidor.
-    } else {
-      alert('No se ha seleccionado ningún archivo.');
-    }
-  };
   const handleFileRemove = () => {
     setFile(null);
   };
+  const PayMethodInfo: React.FC<payMethodInfo> = ({ methodDestinatario }) => {
+    if (methodDestinatario === 'datos') {
+      return (
+        <div className="mx-10 flex justify-between">
+          <div className="flex flex-col text-start text-black">
+            <p>Nombre </p>
+            <p>Apellido </p>
+            <p>Email </p>
+          </div>
+          <div className="flex flex-col text-end text-black">
+            <p>{transaccionId}</p>
+            <p>{transaccionId}</p>
+            <p>{transaccionId}</p>
+          </div>
+        </div>
+      );
+    } else if (methodDestinatario === 'USDT') {
+      return (
+        <div className="mx-10 flex justify-between">
+          <div className="flex flex-col text-start text-black">
+            <p>Dirección USDT </p>
+            <p>Red </p>
+          </div>
+          <div className="flex flex-col text-end text-black">
+            <p>{transaccionId}</p>
+            <p>{transaccionId}</p>
+          </div>
+        </div>
+      );
+    } else if (methodDestinatario === 'banco') {
+      return (
+        <div className="mx-10 flex justify-between">
+          <div className="flex flex-col text-start text-black">
+            <p>Nombre </p>
+            <p>Apellido </p>
+            <p>TAX ID/CUIT/CUIL</p>
+            <p>Nombre del Banco</p>
+            <p>CBU/CVU/ALIAS</p>
+          </div>
+          <div className="flex flex-col text-end text-black">
+            <p>{transaccionId}</p>
+            <p>{transaccionId}</p>
+            <p>{transaccionId}</p>
+            <p>{transaccionId}</p>
+            <p>{transaccionId}</p>
+          </div>
+        </div>
+      );
+    } else if (methodDestinatario === 'PIX') {
+      return (
+        <div className="mx-10 flex justify-between">
+          <div className="flex flex-col text-start text-black">
+            <p>Nombre </p>
+            <p>Apellido </p>
+            <p>PIX KEY</p>
+            <p>Individual TAX ID (CPF)</p>
+          </div>
+          <div className="flex flex-col text-end text-black">
+            <p>{transaccionId}</p>
+            <p>{transaccionId}</p>
+            <p>{transaccionId}</p>
+            <p>{transaccionId}</p>
+          </div>
+        </div>
+      );
+    } else {
+      console.error('No fue recibido el método', new Error());
+      return null;
+    }
+  };
 
+  const methodDestinatario = 'banco';
   return (
     <div
       className="fixed inset-0 left-0 right-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
@@ -67,10 +121,10 @@ const Modal3: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
                 <p>N° de Teléfono </p>
               </div>
               <div className="flex flex-col text-end text-black">
-                <p>Juan</p>
-                <p>Pérez</p>
-                <p>juan.perez@example.com</p>
-                <p>+123 456 789</p>
+                <p>{transaccionId}</p>
+                <p>{transaccionId}</p>
+                <p>{transaccionId}</p>
+                <p>{transaccionId}</p>
               </div>
             </div>
           </section>
@@ -80,22 +134,8 @@ const Modal3: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
 
           <section className="flex flex-col">
             <h3 className="mb-2 flex text-lg font-semibold text-buttonsLigth">informacion del Destinatario</h3>
-            <div className="mx-10 flex justify-between">
-              <div className="flex flex-col text-start text-black">
-                <p>Nombre </p>
-                <p>Apellido </p>
-                <p>TAX ID/CUIT/CUIL</p>
-                <p>Nombre del Banco</p>
-                <p>CBU/CVU/ALIAS</p>
-              </div>
-              <div className="flex flex-col text-end text-black">
-                <p>Juan</p>
-                <p>camilo</p>
-                <p>45000000</p>
-                <p>BBVA</p>
-                <p>012345678901</p>
-              </div>
-            </div>
+
+            <PayMethodInfo methodDestinatario={methodDestinatario} />
           </section>
           <div className="mb-1 mt-3 flex w-full justify-center">
             <div className={`mr-0 flex h-full w-9/12 border-0 border-b-buttonsLigth lg:mr-3 lg:border-b-2`}></div>
@@ -109,8 +149,8 @@ const Modal3: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
                 <p>Monto a recibir </p>
               </div>
               <div className="flex flex-col text-end text-black">
-                <p>350</p>
-                <p>320</p>
+                <p>{transaccionId}</p>
+                <p>{transaccionId}</p>
               </div>
             </div>
           </section>
@@ -200,4 +240,4 @@ const Modal3: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
   );
 };
 
-export default Modal3;
+export default Modal1;
