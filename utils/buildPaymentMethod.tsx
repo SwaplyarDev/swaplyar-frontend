@@ -7,10 +7,24 @@ interface PaymentMethodDetails {
 export function buildPaymentMethod(selectedSystem: string, details: Record<string, string>): PaymentMethodDetails {
   switch (selectedSystem) {
     case 'paypal':
-    case 'payoneer':
-    case 'wise':
       return {
         value: 'paypal',
+        details: {
+          email_account: details.email_account || '',
+          transfer_code: details.transfer_code || '',
+        },
+      };
+    case 'payoneer':
+      return {
+        value: 'payoneer',
+        details: {
+          email_account: details.email_account || '',
+          transfer_code: details.transfer_code || '',
+        },
+      };
+    case 'wise':
+      return {
+        value: 'wise',
         details: {
           email_account: details.email_account || '',
           transfer_code: details.transfer_code || '',
@@ -36,9 +50,9 @@ export function buildPaymentMethod(selectedSystem: string, details: Record<strin
           cpf: details.cpf || '',
         },
       };
-    case 'crypto':
+    case 'tether':
       return {
-        value: 'crypto',
+        value: 'tether',
         details: {
           currency: details.currency || '',
           network: details.network || '',
