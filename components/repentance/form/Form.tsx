@@ -58,13 +58,13 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
   return (
     <form
       onSubmit={handleSubmit(submitHandler, errorHandler)}
-      className="ml-2 mt-3 flex h-full flex-col justify-evenly lg:ml-7"
+      className="flex h-full flex-col justify-evenly md:ml-2 md:mt-3 lg:ml-7"
     >
       <div className="mt-2 w-full">
-        <label className="text-lg">
+        <label className="font-sans text-base">
           NUMERO DE SOLICITUD
           <input
-            className={`w-full border-0 border-b-4 border-solid ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
+            className={`placeholder-text-gray-900 w-full border-0 border-b-2 border-solid ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
             type="text"
             placeholder="Como figura en el recibo"
             {...register('transaction_id', {
@@ -81,10 +81,10 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
         {errors.transaction_id && <p className="mt-1 text-sm text-red-500">{errors.transaction_id.message}</p>}
       </div>
       <div className="mt-2">
-        <label className="text-lg">
+        <label className="font-sans text-base">
           Apellido
           <input
-            className={`w-full border-0 border-b-4 border-solid ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
+            className={`placeholder-text-gray-900 w-full border-0 border-b-2 border-solid ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
             type="text"
             placeholder="Como figura en el recibo"
             {...register('last_name', {
@@ -105,10 +105,10 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
         {errors.last_name && <p className="mt-1 text-sm text-red-500">{errors.last_name.message}</p>}
       </div>
       <div className="mt-2">
-        <label className="text-lg">
+        <label className="font-sans text-base">
           Email
           <input
-            className={`w-full border-0 border-b-4 border-solid ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white dark:hover:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
+            className={`placeholder-text-gray-900 w-full border-0 border-b-2 border-solid ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white focus:border-white dark:hover:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
             type="email"
             {...register('email', {
               required: '• El Email es obligatorio',
@@ -126,10 +126,12 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
       </div>
       <div className="mt-2 w-full">
         <div className="flex flex-col">
-          <label htmlFor="phone_number">Telefono</label>
+          <label htmlFor="phone_number" className="font-sans text-base">
+            Telefono
+          </label>
           <div
             className={clsx(
-              `flex w-full items-center border-0 border-b-4 border-solid ps-0 text-center text-lg ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`,
+              `flex w-full items-center border-0 border-b-2 border-solid ps-0 text-center text-lg ${isDark ? 'border-b-white bg-transparent text-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`,
               errors.phone_number && !isFocused
                 ? 'border border-red-500 hover:border-blue-600 dark:hover:border-white'
                 : isFocused
@@ -174,10 +176,10 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
         </div>
       </div>
       <div className="mt-2">
-        <label className="text-lg">
+        <label className="font-sans text-base">
           NOTA OPCIONAL
           <textarea
-            className={`max-h-[500px] min-h-[45px] w-full resize-none border-0 border-b-2 ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth placeholder-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
+            className={`placeholder-text-gray-900 max-h-[500px] min-h-[45px] w-full resize-none border-0 border-b-2 ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
             {...register('note', {
               minLength: {
                 value: 6,
@@ -198,7 +200,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
         <button
           type="submit"
           disabled={isLoading}
-          className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+          className={`dark:hover:bg- relative m-1 flex h-[42px] min-w-[150pxpx] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-center font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
         >
           {isLoading ? 'Cargando...' : 'Enviar Solicitud'}
         </button>
