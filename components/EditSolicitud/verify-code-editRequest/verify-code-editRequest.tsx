@@ -11,6 +11,7 @@ import userInfoStore from '@/store/userInfoStore';
 
 import Arrow from '@/components/ui/Arrow/Arrow';
 import Modal1 from '@/components/modals/ModalTipos';
+import { fetchCode } from '@/actions/editRequest/editRequest.action';
 
 type FormInputs = {
   verificationCode: string[];
@@ -23,7 +24,6 @@ interface VerifycodeEditRequestProps {
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-const api = process.env.BACKEND_CODING;
 
 const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, isDark, transaccionId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -70,15 +70,10 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
 
     setLoading(true);
 
-    // Verificar código en la base de datos (Simulación de llamada API)
     try {
-      const response = await fetch(`${BASE_URL}/verify-code`, {
-        method: 'POST',
-        body: JSON.stringify({ code }),
-        headers: { 'Content-Type': 'application/json' },
-      });
+      // Usamos la función fetchCode para enviar el código al backend
+      const result = await fetchCode(code); // Llamar a fetchCode con el código
 
-      const result = await response.json();
       if (result.success) {
         setIsCodeCorrect(true);
         setDisabledInputs(true); // Deshabilitar inputs después de la verificación exitosa

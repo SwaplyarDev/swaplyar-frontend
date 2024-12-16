@@ -1,4 +1,4 @@
-import { fetchTransactionById } from '@/actions/editRequest/editRequest.action';
+import { fetchTransactionById, TransactionRequestData } from '@/actions/editRequest/editRequest.action';
 import VerifycodeEditRequest from '../verify-code-editRequest/verify-code-editRequest';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import React, { useState } from 'react';
@@ -10,35 +10,42 @@ interface isDark {
 
 interface FormValues {
   transaccionId: string; // Cambié el nombre aquí de "transactionId" a "transaccionId"
+  userEmail: string;
 }
-
-const backend = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const SeachRequest: React.FC = () => {
   const [isToggled, setIsToggled] = useState(false);
-  const [transaccionId, setTransaccionId] = useState<string>(''); // Cambié el nombre aquí de "transactionId" a "transaccionId"
-  const handleToggle = () => {
-    setIsToggled((prev) => !prev);
-  };
+  const [transaccionId, setTransaccionId] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { isDark } = useDarkTheme();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    control,
+    setError,
   } = useForm<FormValues>();
 
-  const { isDark } = useDarkTheme();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleSeachRequestSubmit = async (data: FormValues) => {
+  const handleSeachRequestSubmit = async (data: TransactionRequestData) => {
     setIsLoading(true);
+    setErrorMessage(null);
+
     try {
-      const response = await fetchTransactionById(`${backend}`, data.transaccionId); // Cambié el nombre aquí de "transactionId" a "transaccionId"
-      setTransaccionId(response.transactionId); // Cambié el nombre aquí de "transactionId" a "transaccionId"
-      console.log('Transaction:', response);
+      const requestData: TransactionRequestData = {
+        transaccionId: data.transaccionId, // Mapear desde FormValues
+        userEmail: data.userEmail, // Mapear si existe en el formulario
+      };
+
+      // Realiza la llamada a la base de datos, pero no necesitas esperar la respuesta
+      await fetchTransactionById(requestData); // Pasar el objeto completo
+
+      // Aquí no validas la respuesta, solo activas el toggle
+      setIsToggled(true);
+      setTransaccionId(data.transaccionId); // Pasar el transaccionId recibido del formulario
     } catch (error) {
       console.error('Error fetching transaction:', error);
+      setErrorMessage('Hubo un error al buscar la solicitud. Intente nuevamente.');
     } finally {
       setIsLoading(false);
     }
@@ -65,20 +72,21 @@ const SeachRequest: React.FC = () => {
             },
           })}
           id="transaccionId"
-          required
         />
+        {errors.transaccionId && <span className="mt-1 text-sm text-red-500">{errors.transaccionId.message}</span>}
+
+        {errorMessage && <div className="mt-2 text-sm text-red-500">{errorMessage}</div>}
         <div className="mb-10 mt-5 flex w-full justify-center text-center lg:mb-0 lg:justify-end xl:mr-44">
           {!isToggled ? (
             <button
               type="submit"
               disabled={isLoading}
               className={`relative m-1 mt-8 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 px-20 font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-              onClick={handleToggle}
             >
               {isLoading ? 'Cargando...' : 'Buscar'}
             </button>
           ) : (
-            <VerifycodeEditRequest transaccionId={transaccionId} toggle={handleToggle} isDark={isDark} />
+            <VerifycodeEditRequest transaccionId={transaccionId} toggle={() => setIsToggled(false)} isDark={isDark} />
           )}
         </div>
       </form>
