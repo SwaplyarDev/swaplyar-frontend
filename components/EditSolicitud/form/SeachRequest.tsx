@@ -1,3 +1,4 @@
+'use client';
 import { fetchTransactionById, TransactionRequestData } from '@/actions/editRequest/editRequest.action';
 import VerifycodeEditRequest from '../verify-code-editRequest/verify-code-editRequest';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
