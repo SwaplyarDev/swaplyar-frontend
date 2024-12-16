@@ -1,10 +1,13 @@
 // /utils/currencyApis.tsx
 
 import { useExchangeRateStore } from '@/store/exchangeRateStore';
-import { exchangeRates } from './exchangeRates';
+
 import { updateCurrentValueUSDToEUR } from './conversion/convUsd_Eur';
 import { updateCurrentValueUSD } from './conversion/convArs_Usd';
 import { updateCurrentValueEUR } from './conversion/convArs_Eur';
+import { updateCurrentValueEURToBRL } from './conversion/convEur_Brl';
+import { updateCurrentValueUSDToBRL } from './conversion/convUsd_Brl';
+import { exchangeRates } from './exchangeRates';
 
 //* Función para obtener todas las tasas de cambio
 export async function getExchangeRates() {
@@ -49,6 +52,46 @@ export async function getExchangeRatesUSD_EUR() {
   }
 }
 
+export async function getExchangeRatesUSD_BRL() {
+  try {
+    const { currentValueBRLToUSD, currentValueUSDToBRL } = await updateCurrentValueUSDToBRL();
+    console.log('Tasas de USD a BRL actualizadas:', currentValueUSDToBRL);
+    console.log('Tasas de BRL a USD actualizadas:', currentValueBRLToUSD);
+
+    return {
+      currentValueBRLToUSD,
+      currentValueUSDToBRL,
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error getting exchange rates USD_BRL:', error.message);
+    } else {
+      console.error('Unknown error getting exchange rates USD_BRL:', error);
+    }
+    throw new Error('Failed to get exchange rates USD_BRL');
+  }
+}
+
+export async function getExchangeRatesEUR_BRL() {
+  try {
+    const { currentValueBRLToEUR, currentValueEURToBRL } = await updateCurrentValueEURToBRL();
+    console.log('Tasas de EUR a BRL actualizadas:', currentValueEURToBRL);
+    console.log('Tasas de BRL a EUR actualizadas:', currentValueBRLToEUR);
+
+    return {
+      currentValueBRLToEUR,
+      currentValueEURToBRL,
+    };
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Error getting exchange rates EUR_BRL:', error.message);
+    } else {
+      console.error('Unknown error getting exchange rates EUR_BRL:', error);
+    }
+    throw new Error('Failed to get exchange rates EUR_BRL');
+  }
+}
+
 // Función para calcular el monto convertido entre diferentes monedas
 export function calculateAmount(
   from: string,
@@ -72,142 +115,64 @@ export function calculateAmount(
 
     // Determina la tasa adecuada según el tipo de conversión
     let rate: number;
+    let usdToBrl: number = 1;
+
     switch (from) {
       case 'bank':
         rate =
-          to === 'payoneer_usd' || to === 'paypal' || to === 'wise_usd'
+          to === 'payoneer_usd' || to === 'paypal' || to === 'wise_usd' || to === 'tether' || to === 'pix'
             ? rates.currentValueUSDBlueSale
             : rates.currentValueEURBlueSale;
+        usdToBrl = to === 'pix' ? rates.currentValueUSDToBRL : 1;
         break;
       case 'paypal':
       case 'payoneer_usd':
       case 'wise_usd':
-        rate = to === 'bank' ? rates.currentValueUSDBluePurchase : rates.currentValueUSDToEUR;
+      case 'tether':
+        rate =
+          to === 'bank'
+            ? rates.currentValueUSDBluePurchase
+            : to === 'pix'
+              ? rates.currentValueUSDToBRL
+              : rates.currentValueUSDToEUR;
         break;
       case 'payoneer_eur':
       case 'wise_eur':
-        rate = to === 'bank' ? rates.currentValueEURBluePurchase : rates.currentValueEURToUSD;
+        rate =
+          to === 'bank'
+            ? rates.currentValueEURBluePurchase
+            : to === 'pix'
+              ? rates.currentValueEURToBRL
+              : rates.currentValueEURToUSD;
         break;
       default:
         throw new Error(`Conversión de ${from} a ${to} no soportada.`);
     }
 
+    console.log('Amount:', amount);
+    console.log('Rate:', rate);
+
     // Usa la fórmula correcta según el valor de 'inverse'
-    const convertedAmount = inverse
-      ? exchangeRate.inverseFormula
-        ? exchangeRate.inverseFormula(amount, rate)
-        : (() => {
-            throw new Error(`No hay fórmula inversa para ${from} a ${to}`);
-          })()
-      : exchangeRate.formula(amount, rate);
+    const formula = inverse ? exchangeRate.inverseFormula : exchangeRate.formula;
+
+    if (!formula) {
+      throw new Error(`No hay fórmula ${inverse ? 'inversa' : 'normal'} disponible para convertir de ${from} a ${to}.`);
+    }
+
+    const convertedAmount = formula(amount, rate, usdToBrl);
+
+    console.log(`Monto convertido de ${from} a ${to}: ${convertedAmount}`);
 
     return parseFloat(convertedAmount.toFixed(2));
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error calculating amount:', error.message);
+      console.error('Error calculando monto:', error.message);
     } else {
-      console.error('Unknown error calculating amount:', error);
+      console.error('Error desconocido al calcular monto:', error);
     }
     throw new Error('Failed to calculate amount');
   }
 }
-
-// export async function calculateInverseAmount(
-//   from: string,
-//   to: string,
-//   amountToReceive: number,
-// ): Promise<number> {
-//   try {
-//     const { rates } = useExchangeRateStore.getState();
-
-//     if (!rates || Object.keys(rates).length === 0) {
-//       throw new Error('Las tasas de cambio no están disponibles.');
-//     }
-
-//     const exchangeRate = exchangeRates.find(
-//       (rate) => rate.from === from && rate.to === to,
-//     );
-
-//     if (!exchangeRate) {
-//       throw new Error(
-//         `No se encontró una fórmula para convertir de ${from} a ${to}`,
-//       );
-//     }
-
-//     let rate = 1; // Tasa por defecto
-
-//     switch (from) {
-//       case 'bank':
-//         if (to === 'payoneer_usd' || to === 'paypal' || to === 'wise_usd') {
-//           rate = rates.currentValueUSDBlueSale;
-//         } else if (to === 'payoneer_eur' || to === 'wise_eur') {
-//           rate = rates.currentValueEURBlueSale;
-//         }
-//         break;
-//       case 'paypal':
-//       case 'payoneer_usd':
-//       case 'wise_usd':
-//         if (to === 'bank') {
-//           rate = rates.currentValueUSDBluePurchase;
-//         } else if (to === 'payoneer_eur' || to === 'wise_eur') {
-//           rate = rates.currentValueUSDToEUR;
-//         }
-//         break;
-//       case 'payoneer_eur':
-//       case 'wise_eur':
-//         if (to === 'bank') {
-//           rate = rates.currentValueEURBluePurchase;
-//         } else if (to === 'payoneer_usd' || to === 'wise_usd') {
-//           rate = rates.currentValueEURToUSD;
-//         }
-//         break;
-//       default:
-//         throw new Error(`Conversión de ${from} a ${to} no soportada.`);
-//     }
-
-//     const inverseAmount =
-//       (amountToReceive * rate) / (1 - obtenerPorcentajeDescuento(from, to));
-
-//     return parseFloat(inverseAmount.toFixed(2));
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       console.error('Error calculating inverse amount:', error.message);
-//     } else {
-//       console.error('Unknown error calculating inverse amount:', error);
-//     }
-//     throw new Error('Failed to calculate inverse amount');
-//   }
-// }
-
-// // Esta función auxiliar obtiene el porcentaje de descuento aplicado en las conversiones
-// function obtenerPorcentajeDescuento(from: string, to: string): number {
-//   const exchangeRate = exchangeRates.find(
-//     (rate) => rate.from === from && rate.to === to,
-//   );
-
-//   if (!exchangeRate) {
-//     throw new Error(
-//       `No se encontró una fórmula para obtener el descuento de ${from} a ${to}`,
-//     );
-//   }
-
-//   if (exchangeRate.formula.toString().includes('1 - 0.04')) {
-//     return 0.04;
-//   } else if (exchangeRate.formula.toString().includes('1 - 0.05')) {
-//     return 0.05;
-//   } else if (exchangeRate.formula.toString().includes('1 - 0.12')) {
-//     return 0.12;
-//   } else if (exchangeRate.formula.toString().includes('1 - 0.14')) {
-//     return 0.14;
-//   }
-//   return 0;
-// }
-
-// export {
-//   updateCurrentValueUSDToEUR,
-//   updateCurrentValueUSD,
-//   updateCurrentValueEUR,
-// };
 
 (async function testCalculateAmount() {
   const from = 'paypal'; // Cambiar según la prueba

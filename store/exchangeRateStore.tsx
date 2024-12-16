@@ -1,5 +1,10 @@
 import { create } from 'zustand';
-import { getExchangeRates, getExchangeRatesUSD_EUR } from '@/utils/currencyApis';
+import {
+  getExchangeRates,
+  getExchangeRatesEUR_BRL,
+  getExchangeRatesUSD_BRL,
+  getExchangeRatesUSD_EUR,
+} from '@/utils/currencyApis';
 
 interface ExchangeRateStore {
   rates: any;
@@ -57,7 +62,9 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
 
     try {
       // Obtener tasas de cambio USD a EUR (10 minutos)
+      console.log('Entrooooooooooooooooo');
       const ratesUSD_EUR = await getExchangeRatesUSD_EUR();
+      console.log('Tasas de USD a EUR obtenidas:', ratesUSD_EUR);
       if (Object.keys(ratesUSD_EUR).length > 0) {
         // Combinamos las tasas existentes con las nuevas
         set((state) => {
@@ -87,6 +94,88 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
     } catch (error) {
       console.error('Error actualizando tasas USD a EUR:', error);
       set({ isLoading: false, error: 'Error al obtener las tasas USD a EUR.' });
+    }
+  };
+
+  const fetchAndUpdateUSDToBRLRates = async () => {
+    set({ isLoading: true, error: null });
+    console.log('Haciendo petición a la API para actualizar las tasas de USD a BRL...');
+
+    try {
+      // Obtener tasas de cambio USD a BRL (10 minutos)
+      console.log('Entrooooooooooooooooo');
+      const ratesUSD_BRL = await getExchangeRatesUSD_BRL();
+      console.log('Tasas de USD a BRL obtenidas:', ratesUSD_BRL);
+      if (Object.keys(ratesUSD_BRL).length > 0) {
+        // Combinamos las tasas existentes con las nuevas
+        set((state) => {
+          const combinedRates = {
+            ...state.rates,
+            ...ratesUSD_BRL,
+          };
+
+          // Guardamos el objeto combinado en localStorage
+          const timestamp = Date.now();
+          const dataToStore = { rates: combinedRates, timestamp };
+          localStorage.setItem(localStorageKey, JSON.stringify(dataToStore));
+
+          return {
+            rates: combinedRates,
+            isLoading: false,
+          };
+        });
+        console.log('Tasas USD a BRL actualizadas:', ratesUSD_BRL);
+      } else {
+        set({
+          isLoading: false,
+          error: 'No se obtuvieron tasas válidas para USD a BRL.',
+        });
+        console.log('Error: No se obtuvieron tasas válidas para USD a BRL.');
+      }
+    } catch (error) {
+      console.error('Error actualizando tasas USD a BRL:', error);
+      set({ isLoading: false, error: 'Error al obtener las tasas USD a BRL.' });
+    }
+  };
+
+  const fetchAndUpdateEURToBRLRates = async () => {
+    set({ isLoading: true, error: null });
+    console.log('Haciendo petición a la API para actualizar las tasas de EUR a BRL...');
+
+    try {
+      // Obtener tasas de cambio EUR a BRL (10 minutos)
+      console.log('Entrooooooooooooooooo');
+      const ratesEUR_BRL = await getExchangeRatesEUR_BRL();
+      console.log('Tasas de EUR a BRL obtenidas:', ratesEUR_BRL);
+      if (Object.keys(ratesEUR_BRL).length > 0) {
+        // Combinamos las tasas existentes con las nuevas
+        set((state) => {
+          const combinedRates = {
+            ...state.rates,
+            ...ratesEUR_BRL,
+          };
+
+          // Guardamos el objeto combinado en localStorage
+          const timestamp = Date.now();
+          const dataToStore = { rates: combinedRates, timestamp };
+          localStorage.setItem(localStorageKey, JSON.stringify(dataToStore));
+
+          return {
+            rates: combinedRates,
+            isLoading: false,
+          };
+        });
+        console.log('Tasas EUR a BRL actualizadas:', ratesEUR_BRL);
+      } else {
+        set({
+          isLoading: false,
+          error: 'No se obtuvieron tasas válidas para EUR a BRL.',
+        });
+        console.log('Error: No se obtuvieron tasas válidas para EUR a BRL.');
+      }
+    } catch (error) {
+      console.error('Error actualizando tasas EUR a BRL:', error);
+      set({ isLoading: false, error: 'Error al obtener las tasas EUR a BRL.' });
     }
   };
 
@@ -124,6 +213,8 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
       if (!ratesLoaded) {
         fetchAndUpdateRates(); // Llama a la función de tasas cada 2 minutos
         fetchAndUpdateUSDToEURRates(); // Llama a la función de tasas cada 10 minutos
+        fetchAndUpdateEURToBRLRates();
+        fetchAndUpdateUSDToBRLRates();
       }
 
       // Actualización cada 2 minutos
