@@ -34,7 +34,7 @@ interface SystemStore {
   setActiveSelect: (selectType: 'send' | 'receive' | null) => void;
   disableSystem: (systemId: string) => void;
   enableSystem: (systemId: string) => void;
-  resetToDefault: () => void; // Nuevo método para restablecer a los valores predeterminados
+  resetToDefault: () => void;
 }
 
 export const useSystemStore = create<SystemStore>((set) => {

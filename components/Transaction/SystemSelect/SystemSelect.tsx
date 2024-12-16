@@ -18,16 +18,7 @@ interface SystemSelectProps {
   toggleSelect: () => void;
 }
 
-export default function SystemSelect({
-  systems,
-  selectedSystem,
-  onSystemSelect,
-  label,
-  inputId,
-  isSending,
-  showOptions,
-  toggleSelect,
-}: SystemSelectProps) {
+export default function SystemSelect({ systems, selectedSystem, onSystemSelect, isSending }: SystemSelectProps) {
   const { isDark } = useDarkTheme();
   const [showOptionsInternal, setShowOptionsInternal] = useState(false);
 
@@ -42,24 +33,6 @@ export default function SystemSelect({
       setShowOptionsInternal(true);
     }
   };
-
-  // useEffect(() => {
-  //   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-  //   setDarkMode(mediaQuery.matches);
-  //   const handleChange = (e: MediaQueryListEvent) => {
-  //     setDarkMode(e.matches);
-  //   };
-  //   mediaQuery.addEventListener('change', handleChange);
-  //   return () => mediaQuery.removeEventListener('change', handleChange);
-  // }, []);
-
-  // useEffect(() => {
-  //   if (darkMode) {
-  //     document.documentElement.classList.add('dark');
-  //   } else {
-  //     document.documentElement.classList.remove('dark');
-  //   }
-  // }, [darkMode]);
 
   useEffect(() => {
     // Si cambia `activeSelect`, asegúrate de cerrar el menú si este no es el select activo

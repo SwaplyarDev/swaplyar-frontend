@@ -65,11 +65,11 @@ export default function TransactionCalculator() {
 
   const handleSubmit = () => {
     setIsProcessing(true);
-    // setInterval(() => {
-    handleDirection();
-    resetToDefault();
-    setIsProcessing(false);
-    // }, 3000);
+    setTimeout(() => {
+      handleDirection();
+      resetToDefault();
+      setIsProcessing(false);
+    }, 3000);
   };
 
   return (
@@ -154,13 +154,6 @@ export default function TransactionCalculator() {
             >
               {isProcessing ? (
                 <div className="flex items-center justify-center gap-2">
-                  {/* <Image
-                    src="/gif/cargando.gif"
-                    width={20}
-                    height={20}
-                    alt="loading"
-                    className="mb-0.5 mr-1"
-                  /> */}
                   <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
                   Procesando...
                 </div>
