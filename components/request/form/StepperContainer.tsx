@@ -23,7 +23,6 @@ import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 const StepperContainer = () => {
   const { activeStep, completedSteps, setActiveStep, submitAllData } = useStepperStore();
   const [blockAll, setBlockAll] = useState(false);
-  const navigation = useRouter();
 
   const { isStopped, setStop } = useChronometerState();
   const [correctSend, setCorrectSend] = useState(false);

@@ -1,9 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useSystemStore } from '@/store/useSystemStore';
-import { exchangeRates } from '@/utils/exchangeRates';
 import { updateCurrentValueUSD } from '@/utils/conversion/convArs_Usd';
 import { updateCurrentValueEUR } from '@/utils/conversion/convArs_Eur';
 import { updateCurrentValueUSDToEUR } from '@/utils/conversion/convUsd_Eur';
+import { updateCurrentValueUSDToBRL } from '@/utils/conversion/convUsd_Brl';
+import { updateCurrentValueEURToBRL } from '@/utils/conversion/convEur_Brl';
+import { exchangeRates } from '@/utils/exchangeRates';
 
 export const useExchangeRate = () => {
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
@@ -22,7 +24,7 @@ export const useExchangeRate = () => {
           rate = await handleSameCurrencyRate(selectedSendingSystem.coin);
         } else {
           apiRate = await handleDifferentCurrencyRate(selectedSendingSystem.coin, selectedReceivingSystem.coin);
-          rate = rateInfo.formula(1, apiRate);
+          rate = rateInfo.formula(1, apiRate, 1);
         }
 
         setExchangeRate(rate);
@@ -51,6 +53,18 @@ const handleDifferentCurrencyRate = async (fromCoin: string, toCoin: string) => 
   } else if (fromCoin === 'EUR' && toCoin === 'USD') {
     const { currentValueEURToUSD } = await updateCurrentValueUSDToEUR();
     return currentValueEURToUSD || 0;
+  } else if (fromCoin === 'USD' && toCoin === 'BRL') {
+    const { currentValueUSDToBRL } = await updateCurrentValueUSDToBRL();
+    return currentValueUSDToBRL || 0;
+  } else if (fromCoin === 'BRL' && toCoin === 'USD') {
+    const { currentValueBRLToUSD } = await updateCurrentValueUSDToBRL();
+    return currentValueBRLToUSD || 0;
+  } else if (fromCoin === 'EUR' && toCoin === 'BRL') {
+    const { currentValueEURToBRL } = await updateCurrentValueEURToBRL();
+    return currentValueEURToBRL || 0;
+  } else if (fromCoin === 'BRL' && toCoin === 'EUR') {
+    const { currentValueBRLToEUR } = await updateCurrentValueEURToBRL();
+    return currentValueBRLToEUR || 0;
   }
   return 0;
 };

@@ -13,6 +13,7 @@ import {
   WiseUsdDarkImg,
   WiseUsdImg,
 } from '@/utils/assets/imgDatabaseCloudinary';
+import { PixDarkImg, PixImg, TetherDarkImg, TetherImg } from './assets/img-database';
 
 export const systems: System[] = [
   {
@@ -74,5 +75,25 @@ export const systems: System[] = [
     coin: 'EUR',
     paymentMethod: 'wise',
     coinSign: '€',
+  },
+  {
+    id: 'pix',
+    name: 'PIX',
+    logo: PixImg,
+    logoDark: PixDarkImg,
+    isDisabled: false,
+    coin: 'BRL',
+    paymentMethod: 'pix',
+    coinSign: 'R$',
+  },
+  {
+    id: 'tether',
+    name: 'Tether',
+    logo: TetherImg,
+    logoDark: TetherDarkImg,
+    isDisabled: false,
+    coin: 'USDT',
+    paymentMethod: 'tether',
+    coinSign: 'US$',
   },
 ];

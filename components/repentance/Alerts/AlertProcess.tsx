@@ -5,13 +5,13 @@ import { AlertProcessProps } from '@/types/repentance/repentance';
 import Swal from 'sweetalert2';
 import { createRoot } from 'react-dom/client';
 
-const AlertProcess = async ({
+const AlertProcess = ({
   isDark,
   formData,
   isLoading,
   onSend,
 }: AlertProcessProps & { onSend: () => void }): Promise<{ isConfirmed: boolean }> => {
-  return await Swal.fire({
+  return Swal.fire({
     didRender: () => {
       const backElement = document.getElementById('button-container');
       if (backElement) {
@@ -33,9 +33,9 @@ const AlertProcess = async ({
             </button>
             <button
               disabled={isLoading}
-              onClick={() => {
+              onClick={async () => {
                 // Llamar la función onSend para enviar los datos
-                onSend();
+                await onSend();
                 Swal.close();
               }}
               className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} flex h-[42px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-4 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText`}

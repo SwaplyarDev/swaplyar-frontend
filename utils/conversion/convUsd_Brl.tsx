@@ -8,15 +8,15 @@ if (!apiKey || !apiKey2) {
 
 interface CurrencyData {
   data: {
-    EUR: number;
+    BRL: number;
   };
 }
 
 /**
  * Función para calcular el precio del dólar/euro usando FreeCurrencyAPI
- * @returns Valores de conversión entre EUR y USD
+ * @returns Valores de conversión entre BRL y USD
  */
-export async function updateCurrentValueUSDToEUR() {
+export async function updateCurrentValueUSDToBRL() {
   const fetchCurrencyData = async (key: string): Promise<CurrencyData> => {
     const response = await fetch(`${url}?apikey=${key}=EUR%2CUSD%2CBRL`);
 
@@ -44,10 +44,10 @@ export async function updateCurrentValueUSDToEUR() {
     }
 
     const data = successfulData[0];
-    const currentValueEURToUSD = 1 / data.data.EUR;
-    const currentValueUSDToEUR = data.data.EUR;
+    const currentValueBRLToUSD = 1 / data.data.BRL;
+    const currentValueUSDToBRL = data.data.BRL;
 
-    return { currentValueEURToUSD, currentValueUSDToEUR };
+    return { currentValueBRLToUSD, currentValueUSDToBRL };
   } catch (error) {
     console.error('Error fetching currency data from both API keys:', error instanceof Error ? error.message : error);
     throw new Error('Failed to fetch currency data from both API keys');

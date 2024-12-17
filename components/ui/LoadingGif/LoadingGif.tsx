@@ -1,25 +1,25 @@
 import React, { FC } from 'react';
 
 type LoadingGifProps = {
-  color: string;
-  size?: string;
+    color: string;
+    size?: string;
 };
 
 const LoadingGif: FC<LoadingGifProps> = ({ color, size = '20px' }) => {
   return (
     <svg
-      version="1.1"
-      id="cog9_1_"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
-      x="0px"
-      y="0px"
-      width={size}
-      height={size}
-      viewBox="-13 -13 45 45"
-      enable-background="new 0 0 96 96"
-      xmlSpace="preserve"
-      className={'mb-1'}
+        version="1.1"
+        id="cog9_1_"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        width={size}
+        height={size}
+        viewBox="-13 -13 45 45"
+        enable-background="new 0 0 96 96"
+        xmlSpace="preserve"
+        className={'mb-1'}
     >
       <style>
         {`.box5631 {

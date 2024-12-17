@@ -57,7 +57,6 @@ interface StepperState {
   submitAllData: (selectedSendingSystem: System | null, selectedReceivingSystem: System | null) => Promise<boolean>;
   submitOneStep: () => Promise<any>;
   updateOneStep: (id: string) => void;
-  // getOneStep: () => Promise<any>;
   resetToDefault: () => void;
   setIdTransaction: (id: string) => void;
   resetIdTransaction: () => void;
@@ -65,7 +64,7 @@ interface StepperState {
 
 export const useStepperStore = create<StepperState>((set, get) => ({
   activeStep: 0,
-  completedSteps: [false, false, false], // Tres pasos por defecto
+  completedSteps: [false, false, false],
   formData: {
     stepOne: {
       sender_first_name: '',
@@ -196,7 +195,6 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     if (stepThree.proof_of_payment && stepThree.proof_of_payment.length > 0) {
       const realFile = stepThree.proof_of_payment[0];
       formDataPayload.append('file', realFile);
-      console.log('Archivo:', realFile);
     } else {
       console.log('No hay archivo disponible');
     }
@@ -216,8 +214,6 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         throw new Error('Error al enviar los datos al servidor');
       }
 
-      const data = await response.json();
-      console.log('Respuesta del servidor:', data);
       return true;
     } catch (error) {
       console.error('Error en la solicitud:', error);
@@ -225,7 +221,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     }
   },
   submitOneStep: async () => {
-    const state = get(); // Obtener el estado actual
+    const state = get();
     const { stepOne } = state.formData;
 
     const payload = {
@@ -248,15 +244,14 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       }
 
       const data = await response.json();
-      console.log('Respuesta del servidor:', data);
-      return data; // Retornar la data obtenida
+      return data;
     } catch (error) {
       console.error('Error en la solicitud:', error);
-      return null; // Retornar null en caso de error
+      return null;
     }
   },
   updateOneStep: async (id: string) => {
-    const state = get(); // Obtener el estado actual
+    const state = get();
     const { stepOne } = state.formData;
 
     const payload = {
@@ -279,13 +274,12 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       }
 
       const data = await response.json();
-      console.log('Respuesta del servidor:', data);
     } catch (error) {
       console.error('Error en la solicitud:', error);
     }
   },
   resetToDefault: () =>
-    set((state) => ({
+    set(() => ({
       activeStep: 0,
       completedSteps: [false, false, false],
       formData: {
@@ -322,6 +316,6 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         },
       },
     })),
-  setIdTransaction: (id: string) => set((state) => ({ idTransaction: id })),
-  resetIdTransaction: () => set((state) => ({ idTransaction: undefined })),
+  setIdTransaction: (id: string) => set(() => ({ idTransaction: id })),
+  resetIdTransaction: () => set(() => ({ idTransaction: undefined })),
 }));

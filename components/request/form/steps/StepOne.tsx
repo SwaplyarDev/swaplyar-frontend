@@ -182,7 +182,6 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               register={register('email', {
                 required: 'El Correo es obligatorio',
                 pattern: {
-                  // value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                   value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
                   message: 'El formato del Correo electrónico es inválido',
                 },
