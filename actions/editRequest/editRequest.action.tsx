@@ -4,7 +4,12 @@ export interface TransactionRequestData {
   userEmail: string;
   code?: number;
 }
-
+export interface sendeForm {
+  message: string;
+  file: File;
+  transaccionId: string;
+  token: string | null;
+}
 interface TransactionData {
   // Define los campos esperados según la respuesta de la API
   transactionId: string;
@@ -69,6 +74,12 @@ export const fetchCode = async (code: string, requestData: { transactionId: stri
       throw new Error(result.message || 'Código incorrecto');
     }
 
+    if (result.token) {
+      sessionStorage.setItem('token', result.token);
+    } else {
+      console.error('Token no encontrado en la respuesta');
+    }
+
     return { success: true, message: result.message || 'Código verificado exitosamente.' };
   } catch (error) {
     console.error('Error de la verificacion:', error);
@@ -117,5 +128,39 @@ export const fetchTransactionData = async (transaccionId: string): Promise<Trans
   } catch (error) {
     console.error('Error fetching transaction data:', error);
     return null;
+  }
+};
+
+export const sendFormData = async ({ message, file, transaccionId }: sendeForm): Promise<any> => {
+  try {
+    const token = sessionStorage.getItem('token');
+
+    // Verifica si el token es nulo
+    if (!token) {
+      throw new Error('Token no encontrado en sessionStorage');
+    }
+    const formData = new FormData();
+    formData.append('message', message);
+    formData.append('file', file);
+    formData.append('transaccionId', transaccionId);
+    formData.append('token', token);
+    const response = await fetch(`${BASE_URL}/v1/notes/${transaccionId}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error('Error al enviar los datos');
+    }
+
+    const result = await response.json();
+    console.log('resul sendformdata:', result);
+    return result;
+  } catch (error) {
+    console.error('Error al enviar la solicitud:', error);
+    throw error; // Lanzar el error para ser manejado en el componente o función que llama este action.
   }
 };

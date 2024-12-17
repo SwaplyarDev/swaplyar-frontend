@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Arrow from '../ui/Arrow/Arrow';
-import { fetchTransactionData } from '@/actions/editRequest/editRequest.action';
+import { fetchTransactionData, sendFormData } from '@/actions/editRequest/editRequest.action';
 
 interface ModalProps {
   isDark: boolean;
@@ -18,7 +18,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
   const [file, setFile] = useState<File | null>(null);
   const [transactionData, setTransactionData] = useState<any>(null); // State to store backend data
   const [loading, setLoading] = useState<boolean>(true);
-
+  const [note, setNote] = useState<string>('');
   useEffect(() => {
     if (transaccionId) {
       const fetchData = async () => {
@@ -42,6 +42,36 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
   };
   const handleFileRemove = () => {
     setFile(null);
+  };
+  const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNote(event.target.value);
+  };
+  const handleFormSubmit = async () => {
+    if (!file || !note || !transaccionId) {
+      alert('Debe ingresar una nota, seleccionar un archivo y proporcionar el ID de transacción');
+      return;
+    }
+
+    try {
+      const token = sessionStorage.getItem('token'); // Asegúrate de que el token esté disponible
+
+      // Verificar que el token no sea nulo
+      if (!token) {
+        alert('Token no encontrado');
+        return;
+      }
+      // Aquí pasas los 4 argumentos
+      const result = await sendFormData({
+        message: note, // Mensaje de la nota
+        file: file, // El archivo seleccionado
+        transaccionId: transaccionId, // El ID de la transacción
+        token: token, // El token obtenido
+      }); // Asegúrate de pasar el token correcto
+      console.log('Resultado del envío:', result);
+      onClose(); // Cerrar el modal después del envío
+    } catch (error) {
+      console.error('Error al enviar los datos:', error);
+    }
   };
   const PayMethodInfo: React.FC<payMethodInfo> = ({ methodDestinatario }) => {
     if (methodDestinatario === 'datos') {
@@ -114,8 +144,6 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
       return null;
     }
   };
-
-  console.log('datos de la transaccion:', transaccionId);
   return (
     <div
       className="fixed inset-0 left-0 right-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
@@ -194,6 +222,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
                 rows={4}
                 className="mb-4 block w-full rounded-md border border-gray-300 p-2"
                 placeholder="Escriba aquí su comentario o nota..."
+                onChange={handleNoteChange}
               ></textarea>
 
               <div className="file-upload flex flex-col justify-between border-2 border-dashed border-buttonsLigth">
@@ -250,7 +279,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
             </button>
             <button
               className={`buttonSecond relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth disabled:border-gray-400 disabled:bg-gray-400 disabled:shadow-none`}
-              onClick={onClose}
+              onClick={handleFormSubmit}
             >
               Editar Solicitud
             </button>
