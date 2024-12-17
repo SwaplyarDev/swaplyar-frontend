@@ -1,21 +1,19 @@
 'use client';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useState, useEffect, ChangeEvent } from 'react';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import clsx from 'clsx';
-import useEmailVerificationStore from '@/store/emailVerificationStore';
 import { useRouter } from 'next/navigation';
 import useCodeVerificationStore from '@/store/codeVerificationStore';
-import useStore from '@/store/authViewStore';
 import userInfoStore from '@/store/userInfoStore';
 
 import Arrow from '@/components/ui/Arrow/Arrow';
 import Modal1 from '@/components/modals/ModalTipos';
-import { fetchCode } from '@/actions/editRequest/editRequest.action';
+import { fetchCode, resendCodeAction } from '@/actions/editRequest/editRequest.action';
 
-type FormInputs = {
+interface FormInputs {
   verificationCode: string[];
-};
+  requestData: string;
+}
 
 interface VerifycodeEditRequestProps {
   isDark: boolean;
@@ -31,13 +29,14 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
   const [reLoading, setReLoading] = useState(false);
   const [isCodeCorrect, setIsCodeCorrect] = useState<boolean | null>(null); // To store code verification result
   const [disabledInputs, setDisabledInputs] = useState(false); // To disable inputs after submission
-
+  const [isLock, setIsLock] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
     watch,
+    getValues,
   } = useForm<FormInputs>();
   const { attempts, lockUntil, setLockUntil, resetAttempts } = useCodeVerificationStore();
   const router = useRouter();
@@ -65,44 +64,47 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
   }, [timer]);
 
   // Handle the code verification
-  const verifyCode: SubmitHandler<FormInputs> = async ({ verificationCode }) => {
+  const verifyCode = async ({ verificationCode, requestData }: FormInputs) => {
     const code = verificationCode.join('');
-
     setLoading(true);
 
     try {
       // Usamos la función fetchCode para enviar el código al backend
-      const result = await fetchCode(code); // Llamar a fetchCode con el código
+      const result = await fetchCode(code, { transactionId: transaccionId });
 
       if (result.success) {
         setIsCodeCorrect(true);
-        setDisabledInputs(true); // Deshabilitar inputs después de la verificación exitosa
+        setIsModalOpen(true); // Mostrar el modal al verificar correctamente
       } else {
         setIsCodeCorrect(false);
-        // Limpiar las casillas si el código es incorrecto
-        setValue('verificationCode', ['', '', '', '', '', '']);
+        setValue('verificationCode', ['', '', '', '', '', '']); // Limpiar las casillas
       }
     } catch (error) {
-      console.error('Error during code verification:', error);
+      console.error('Error durante la verificación del código:', error);
       setIsCodeCorrect(false);
       setValue('verificationCode', ['', '', '', '', '', '']); // Limpiar en caso de error
+    } finally {
+      setLoading(false);
+      setIsLock(false); // Desbloquear inputs si hay error
     }
-
-    setLoading(false);
   };
 
   const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
+
+    // Validar que solo se acepten dígitos
     if (/^\d*$/.test(value)) {
       const newVerificationCode = [...(watch('verificationCode') || ([] as string[]))];
       newVerificationCode[index] = value;
       setValue('verificationCode', newVerificationCode);
 
-      // Si es el sexto dígito, verificar automáticamente
-      if (newVerificationCode.every((code) => code.length === 1)) {
-        handleSubmit(verifyCode)();
+      // Bloquear inputs automáticamente si están todos completos
+      if (newVerificationCode.every((val) => val.trim() !== '' && val.length === 1)) {
+        setIsLock(true); // Bloquear inputs
+        handleSubmit(verifyCode)(); // Verificar automáticamente
       }
 
+      // Enfocar automáticamente el siguiente input si el actual está lleno
       if (value.length === 1 && index < 5) {
         const nextInput = document.getElementById(`code-${index + 1}`);
         nextInput?.focus();
@@ -110,20 +112,24 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
     }
   };
 
-  const handleInputKeyDown = (index: number, event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Backspace' && event.currentTarget.value === '') {
-      if (index > 0) {
-        const prevInput = document.getElementById(`code-${index - 1}`);
-        prevInput?.focus();
-      }
-    }
-  };
+  const resendCode = async () => {
+    try {
+      setReLoading(true);
+      setTimer(30); // Bloquear el botón por 30 segundos
 
-  const resendCode = () => {
-    setReLoading(true);
-    setTimer(30); // Reset timer to 30 seconds
-    // Simulate resend code
-    setTimeout(() => setReLoading(false), 2000); // Mock resend delay
+      // Llamada a la función de acción para reenviar el código
+      const { success, message } = await resendCodeAction(transaccionId);
+
+      if (success) {
+        alert('El código ha sido reenviado exitosamente a tu correo electrónico.');
+      } else {
+        alert(`Hubo un error al intentar reenviar el código: ${message}`);
+      }
+    } catch (error) {
+      alert('Ocurrió un problema al reenviar el código. Por favor, verifica tu conexión.');
+    } finally {
+      setReLoading(false);
+    }
   };
 
   const openModal = () => setIsModalOpen(true);
@@ -156,7 +162,6 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
                     )}
                     {...register(`verificationCode.${index}`)}
                     onChange={(event) => handleInputChange(index, event)}
-                    onKeyDown={(event) => handleInputKeyDown(index, event)}
                   />
                 </div>
               ))}
@@ -176,28 +181,16 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
               <p>Volver</p>
             </button>
 
-            {isCodeCorrect !== null ? (
-              <button
-                type="button"
-                onClick={resendCode}
-                disabled={reLoading || !!isLocked}
-                className={`${
-                  isDark ? 'buttonSecondDark' : 'buttonSecond'
-                } m-1 flex h-[42px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white disabled:border-gray-400 disabled:bg-gray-400`}
-              >
-                {reLoading ? 'Reenviando...' : 'Reenviar código'}
-              </button>
-            ) : (
-              <button
-                type="submit"
-                disabled={loading || !!isLocked}
-                className={`${
-                  isDark ? 'buttonSecondDark' : 'buttonSecond'
-                } m-1 flex h-[42px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white disabled:border-gray-400 disabled:bg-gray-400`}
-              >
-                {loading ? 'Verificando...' : 'Verificar código'}
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={resendCode}
+              disabled={reLoading || timer > 0}
+              className={`${
+                isDark ? 'buttonSecondDark' : 'buttonSecond'
+              } flex h-[42px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white disabled:border-gray-400 disabled:bg-gray-400`}
+            >
+              {reLoading ? 'Reenviando...' : timer > 0 ? `Reenviar en ${timer}s` : 'Reenviar código'}
+            </button>
           </div>
         </form>
       </div>

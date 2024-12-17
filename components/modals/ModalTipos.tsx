@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Arrow from '../ui/Arrow/Arrow';
+import { fetchTransactionData } from '@/actions/editRequest/editRequest.action';
 
 interface ModalProps {
   isDark: boolean;
@@ -12,9 +13,28 @@ interface ModalProps {
 interface payMethodInfo {
   methodDestinatario: string;
 }
+
 const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark, transaccionId }) => {
   const [file, setFile] = useState<File | null>(null);
+  const [transactionData, setTransactionData] = useState<any>(null); // State to store backend data
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (transaccionId) {
+      const fetchData = async () => {
+        setLoading(true);
+        const data = await fetchTransactionData(transaccionId);
+        setTransactionData(data);
+        setLoading(false);
+      };
+      fetchData();
+    }
+  }, [transaccionId]);
+
   if (!isOpen) return null;
+
+  const methodDestinatario = 'datos';
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setFile(event.target.files[0]);
@@ -33,9 +53,9 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
             <p>Email </p>
           </div>
           <div className="flex flex-col text-end text-black">
-            <p>{transaccionId}</p>
-            <p>{transaccionId}</p>
-            <p>{transaccionId}</p>
+            <p>{transactionData?.transaction?.receiver?.first_name}</p>
+            <p>{transactionData?.transaction?.receiver?.last_name}</p>
+            <p>{transactionData?.transaction?.receiver?.email}</p>
           </div>
         </div>
       );
@@ -47,8 +67,8 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
             <p>Red </p>
           </div>
           <div className="flex flex-col text-end text-black">
-            <p>{transaccionId}</p>
-            <p>{transaccionId}</p>
+            <p>{transactionData?.transaction?.receiver?.payment_method_id}</p>
+            <p>{transactionData?.transaction?.country_transaction}</p>
           </div>
         </div>
       );
@@ -63,11 +83,12 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
             <p>CBU/CVU/ALIAS</p>
           </div>
           <div className="flex flex-col text-end text-black">
-            <p>{transaccionId}</p>
-            <p>{transaccionId}</p>
-            <p>{transaccionId}</p>
-            <p>{transaccionId}</p>
-            <p>{transaccionId}</p>
+            <p>{transactionData?.transaction?.sender?.first_name}</p>
+            <p>{transactionData?.transaction?.sender?.last_name}</p>
+            <p>{transactionData?.transaction?.sender?.identification}</p>
+            <p>{transactionData?.transaction?.payment_method?.value}</p> {/* Suponiendo que el banco es fijo */}
+            <p>{transactionData?.transaction?.payment_method?.value}</p>{' '}
+            {/* Puedes obtener esto si está en los datos */}
           </div>
         </div>
       );
@@ -81,10 +102,10 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
             <p>Individual TAX ID (CPF)</p>
           </div>
           <div className="flex flex-col text-end text-black">
-            <p>{transaccionId}</p>
-            <p>{transaccionId}</p>
-            <p>{transaccionId}</p>
-            <p>{transaccionId}</p>
+            <p>{transactionData?.transaction?.sender?.first_name}</p>
+            <p>{transactionData?.transaction?.sender?.last_name}</p>
+            <p>{transactionData?.transaction?.sender?.identification}</p>
+            <p>{transactionData?.transaction?.receiver?.payment_method_id}</p>
           </div>
         </div>
       );
@@ -94,7 +115,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
     }
   };
 
-  const methodDestinatario = 'banco';
+  console.log('datos de la transaccion:', transaccionId);
   return (
     <div
       className="fixed inset-0 left-0 right-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
@@ -106,7 +127,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
         onClick={(e) => e.stopPropagation()} // Evita cerrar el modal al hacer clic dentro
       >
         {/* Título del Modal */}
-        <h2 className="mb-4 text-2xl font-bold text-black">Formulario de solicitud N°requestNumber</h2>
+        <h2 className="mb-4 text-2xl font-bold text-black">Formulario de solicitud N°{transaccionId}</h2>
 
         {/* Contenido del Modal con Scroll */}
         <div className="max-h-[70vh] overflow-y-auto">
@@ -121,10 +142,10 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
                 <p>N° de Teléfono </p>
               </div>
               <div className="flex flex-col text-end text-black">
-                <p>{transaccionId}</p>
-                <p>{transaccionId}</p>
-                <p>{transaccionId}</p>
-                <p>{transaccionId}</p>
+                <p>{transactionData?.transaction?.sender?.first_name}</p>
+                <p>{transactionData?.transaction?.sender?.last_name}</p>
+                <p>{transactionData?.transaction?.sender?.email}</p>
+                <p>{transactionData?.transaction?.sender?.phone_number}</p>
               </div>
             </div>
           </section>
@@ -149,8 +170,8 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
                 <p>Monto a recibir </p>
               </div>
               <div className="flex flex-col text-end text-black">
-                <p>{transaccionId}</p>
-                <p>{transaccionId}</p>
+                <p>{transactionData?.transaction?.amounts?.sent?.amount}</p>
+                <p>{transactionData?.transaction?.amounts?.received?.amount}</p>
               </div>
             </div>
           </section>

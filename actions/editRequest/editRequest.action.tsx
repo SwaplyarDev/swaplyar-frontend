@@ -5,6 +5,14 @@ export interface TransactionRequestData {
   code?: number;
 }
 
+interface TransactionData {
+  // Define los campos esperados según la respuesta de la API
+  transactionId: string;
+  amount: number;
+  status: string;
+  recipient: string;
+  // Agrega otros campos según lo que devuelva tu API
+}
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const fetchTransactionById = async (requestData: TransactionRequestData): Promise<any> => {
@@ -39,7 +47,7 @@ export const fetchTransactionById = async (requestData: TransactionRequestData):
     throw new Error(error instanceof Error ? error.message : 'Error desconocido.');
   }
 };
-export const fetchCode = async (code: string): Promise<any> => {
+export const fetchCode = async (code: string, requestData: { transactionId: string }): Promise<any> => {
   try {
     // Realizar la solicitud POST al backend para verificar el código
     const response = await fetch(`${BASE_URL}/v1/notes/verify`, {
@@ -47,29 +55,67 @@ export const fetchCode = async (code: string): Promise<any> => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ code }), // Enviar el código al backend
+      body: JSON.stringify({
+        code, // Código a enviar
+        transactionId: requestData.transactionId, // ID de transacción proveniente del requestData
+      }),
     });
-    console.log('respuesta', response);
-    // Comprobar si la respuesta fue exitosa
-    if (!response.ok) {
-      // Si no es exitosa, lanzar un error con el mensaje del servidor
-      const errorResponse = await response.json();
-      throw new Error(errorResponse.message || 'Código no verificado');
-    }
 
-    // Parsear la respuesta JSON
+    console.log('Respuesta del servidor del fetchCode:', response);
+
     const result = await response.json();
-
-    // Si la respuesta contiene un éxito, devolver el resultado
-    if (result.success) {
-      return result; // El código fue verificado correctamente
-    } else {
-      // Si el código no es correcto, lanzar un error
-      throw new Error('Código incorrecto');
+    console.log('result json:', result);
+    if (!response.ok) {
+      throw new Error(result.message || 'Código incorrecto');
     }
+
+    return { success: true, message: result.message || 'Código verificado exitosamente.' };
   } catch (error) {
-    // Manejo de errores
-    console.error('Error fetching code:', error);
+    console.error('Error de la verificacion:', error);
     throw new Error(error instanceof Error ? error.message : 'Error desconocido.');
+  }
+};
+
+export const resendCodeAction = async (transactionId: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/v1/notes/send`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ transactionId }),
+    });
+
+    console.log('Respuesta del servidor del resendCode:', response);
+
+    // Si la respuesta no es exitosa, lanzamos un error
+    if (!response.ok) {
+      const result = await response.json();
+      console.log('respuesta del data del resend:', result);
+      return { success: false, message: result.message || 'Error desconocido' };
+    }
+
+    // Si la respuesta es exitosa, continuamos con el flujo normal
+    const result = await response.json();
+    console.log('respuesta del data del resend:', result);
+    return { success: true, message: result.message || 'Código reenviado exitosamente.' };
+  } catch (error) {
+    console.error('Error al reenviar el código:', error);
+    return { success: false, message: 'Error al conectarse con el servidor.' };
+  }
+};
+
+export const fetchTransactionData = async (transaccionId: string): Promise<TransactionData | null> => {
+  try {
+    const response = await fetch(`${BASE_URL}/v1/transactions/${transaccionId}`);
+    if (!response.ok) {
+      throw new Error('Error fetching transaction data');
+    }
+    const data = await response.json();
+    console.log('data 116:', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching transaction data:', error);
+    return null;
   }
 };
