@@ -22,12 +22,10 @@ export default function TransactionCalculator() {
 
   useEffect(() => {
     if (selectedSendingSystem && selectedReceivingSystem) {
-      console.log('Iniciando el proceso de actualización de tasas.');
       startUpdatingRates();
     }
 
     return () => {
-      console.log('Deteniendo el proceso de actualización de tasas.');
       stopUpdatingRates();
     };
   }, [selectedSendingSystem, selectedReceivingSystem, startUpdatingRates, stopUpdatingRates]);

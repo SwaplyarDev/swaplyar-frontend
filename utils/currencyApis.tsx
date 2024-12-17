@@ -35,8 +35,6 @@ export async function getExchangeRates() {
 export async function getExchangeRatesUSD_EUR() {
   try {
     const { currentValueEURToUSD, currentValueUSDToEUR } = await updateCurrentValueUSDToEUR();
-    console.log('Tasas de USD a EUR actualizadas:', currentValueUSDToEUR);
-    console.log('Tasas de EUR a USD actualizadas:', currentValueEURToUSD);
 
     return {
       currentValueEURToUSD,
@@ -55,8 +53,6 @@ export async function getExchangeRatesUSD_EUR() {
 export async function getExchangeRatesUSD_BRL() {
   try {
     const { currentValueBRLToUSD, currentValueUSDToBRL } = await updateCurrentValueUSDToBRL();
-    console.log('Tasas de USD a BRL actualizadas:', currentValueUSDToBRL);
-    console.log('Tasas de BRL a USD actualizadas:', currentValueBRLToUSD);
 
     return {
       currentValueBRLToUSD,
@@ -75,8 +71,6 @@ export async function getExchangeRatesUSD_BRL() {
 export async function getExchangeRatesEUR_BRL() {
   try {
     const { currentValueBRLToEUR, currentValueEURToBRL } = await updateCurrentValueEURToBRL();
-    console.log('Tasas de EUR a BRL actualizadas:', currentValueEURToBRL);
-    console.log('Tasas de BRL a EUR actualizadas:', currentValueBRLToEUR);
 
     return {
       currentValueBRLToEUR,
@@ -93,15 +87,9 @@ export async function getExchangeRatesEUR_BRL() {
 }
 
 // Función para calcular el monto convertido entre diferentes monedas
-export function calculateAmount(
-  from: string,
-  to: string,
-  amount: number,
-  inverse: boolean = false, // Parámetro para usar fórmula inversa
-): number {
+export function calculateAmount(from: string, to: string, amount: number, inverse: boolean = false): number {
   try {
     const { rates } = useExchangeRateStore.getState();
-    console.log('Las tasas de cambio son:', rates);
 
     if (!rates || Object.keys(rates).length === 0) {
       throw new Error('Las tasas de cambio no están disponibles.');
@@ -149,9 +137,6 @@ export function calculateAmount(
         throw new Error(`Conversión de ${from} a ${to} no soportada.`);
     }
 
-    console.log('Amount:', amount);
-    console.log('Rate:', rate);
-
     // Usa la fórmula correcta según el valor de 'inverse'
     const formula = inverse ? exchangeRate.inverseFormula : exchangeRate.formula;
 
@@ -160,8 +145,6 @@ export function calculateAmount(
     }
 
     const convertedAmount = formula(amount, rate, usdToBrl);
-
-    console.log(`Monto convertido de ${from} a ${to}: ${convertedAmount}`);
 
     return parseFloat(convertedAmount.toFixed(2));
   } catch (error) {
@@ -173,31 +156,3 @@ export function calculateAmount(
     throw new Error('Failed to calculate amount');
   }
 }
-
-(async function testCalculateAmount() {
-  const from = 'paypal'; // Cambiar según la prueba
-  const to = 'bank'; // Destino
-  const amountToReceive = 600000; // Monto a recibir en 'bank'
-
-  // Usa setTimeout para esperar 10 segundos antes de ejecutar el cálculo
-  setTimeout(async () => {
-    try {
-      console.log('Iniciando cálculo inverso...');
-
-      // Asegúrate de tener tasas actualizadas antes del cálculo
-      await getExchangeRates();
-      await getExchangeRatesUSD_EUR();
-
-      // Llamada al cálculo inverso
-      const inverseAmount = await calculateAmount(from, to, amountToReceive, true);
-
-      console.log(`Para recibir ${amountToReceive} ${to}, debes enviar ${inverseAmount.toFixed(2)} ${from}.`);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('Error al calcular el monto inverso:', error.message);
-      } else {
-        console.error('Error desconocido al calcular el monto inverso:', error);
-      }
-    }
-  }, 10000); // 10 segundos de espera (10,000 ms)
-})();
