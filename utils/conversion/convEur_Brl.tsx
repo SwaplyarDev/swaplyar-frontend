@@ -18,7 +18,8 @@ interface CurrencyData {
  */
 export async function updateCurrentValueEURToBRL() {
   const fetchCurrencyData = async (key: string): Promise<CurrencyData> => {
-    const response = await fetch(`${url}?apikey=${key}&currencies=BRL&base_currency=EUR`);
+    const response = await fetch(`${url}?apikey=${key}=BRL&base_currency=EUR`);
+    console.log('BRL&base_currency=EUR: ', response);
 
     if (!response.ok) {
       const errorMessage = `Error: ${response.status} ${response.statusText}`;

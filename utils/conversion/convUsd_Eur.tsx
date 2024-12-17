@@ -19,7 +19,7 @@ interface CurrencyData {
 export async function updateCurrentValueUSDToEUR() {
   const fetchCurrencyData = async (key: string): Promise<CurrencyData> => {
     const response = await fetch(`${url}?apikey=${key}=EUR%2CUSD%2CBRL`);
-
+    console.log('EUR%2CUSD%2CBRL: ', response);
     if (!response.ok) {
       const errorMessage = `Error: ${response.status} ${response.statusText}`;
       console.error('Error fetching currency data from FreeCurrencyAPI:', errorMessage);

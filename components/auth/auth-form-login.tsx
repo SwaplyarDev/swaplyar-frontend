@@ -1,16 +1,15 @@
 'use client';
 
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useState, useEffect } from 'react'; // Importa useEffect
+import { useState } from 'react'; // Importa useEffect
 import useStore from '@/store/authViewStore';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
-import Image from 'next/image';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
+const { NEXT_PUBLIC_BACKEND_URL } = process.env;
 
 type FormInputs = {
   email: string;
@@ -32,7 +31,7 @@ export const LoginForm = () => {
     setLoading(true);
     try {
       // Llamar a la API que envía el código al email
-      const response = await fetch(`${BASE_URL}/v1/login/email/send`, {
+      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/login/email/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

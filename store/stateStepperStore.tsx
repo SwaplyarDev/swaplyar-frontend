@@ -4,7 +4,7 @@ import { buildPaymentMethod } from '@/utils/buildPaymentMethod';
 import { getTaxIdentificationType, getTransferIdentificationType } from '@/utils/validationUtils';
 import { create } from 'zustand';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const { NEXT_PUBLIC_BACKEND_URL } = process.env;
 
 interface StepOneData {
   sender_first_name: string;
@@ -205,7 +205,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     formDataPayload.append('amounts', JSON.stringify(payload.amounts));
 
     try {
-      const response = await fetch(`${BASE_URL}/v1/transactions`, {
+      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions`, {
         method: 'POST',
         body: formDataPayload,
       });
@@ -231,7 +231,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     };
 
     try {
-      const response = await fetch(`${BASE_URL}/v1/canceled_transactions`, {
+      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/canceled_transactions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -261,7 +261,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     };
 
     try {
-      const response = await fetch(`${BASE_URL}/v1/canceled_transactions/${id}`, {
+      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/canceled_transactions/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

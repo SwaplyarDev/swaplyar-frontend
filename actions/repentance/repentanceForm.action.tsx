@@ -1,6 +1,6 @@
 'use server';
 
-const URLRepentance = process.env.NEXT_PUBLIC_BACKEND_URL;
+const { NEXT_PUBLIC_BACKEND_URL } = process.env;
 
 import { FormData, OutputFormat } from '@/types/repentance/repentance';
 
@@ -21,7 +21,7 @@ export const createRegret = async (createRepentance: FormData) => {
   }
 
   const transformedData = transformData(createRepentance);
-  const response = await fetch(`${URLRepentance}/v1/regrets`, {
+  const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/regrets`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -34,6 +34,7 @@ export const createRegret = async (createRepentance: FormData) => {
       status: transformedData.status || 'pendiente',
       note: transformedData.note,
     }),
+    cache: 'no-store',
   });
   try {
     // Intentamos parsear el cuerpo de la respuesta a JSON
@@ -86,7 +87,7 @@ export const createRegret = async (createRepentance: FormData) => {
 
 export const getRegretsList = async () => {
   try {
-    const response = await fetch(`${URLRepentance}/v1/regrets`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/regrets`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -114,7 +115,7 @@ export const getRegretsList = async () => {
 
 export const cancelRegret = async (regretId: string) => {
   try {
-    const response = await fetch(`${URLRepentance}/v1/regrets/${regretId}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/regrets/${regretId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

@@ -12,6 +12,7 @@ export const requestRegister = async (transaction: TransactionRequest) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(transaction),
+      cache: 'no-store',
     });
 
     const data = await response.json();

@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import Image from 'next/image';
 import InputField from './InputField';
 import { FormValues } from '@/types/data';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
@@ -14,7 +13,7 @@ import Tick from '@/components/ui/Tick/Tick';
 import { createRoot } from 'react-dom/client';
 import Arrow from '@/components/ui/Arrow/Arrow';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
+const { NEXT_PUBLIC_BACKEND_URL } = process.env;
 
 const ContactForm = () => {
   const { data: session, status } = useSession();
@@ -42,7 +41,7 @@ const ContactForm = () => {
     console.log('message', data.message);
     console.log('apellido', data.Apellido);
     try {
-      const response = await fetch(`${BASE_URL}/v1/contacts`, {
+      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/contacts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
