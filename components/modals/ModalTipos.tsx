@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Arrow from '../ui/Arrow/Arrow';
+import { fetchTransactionData, sendFormData } from '@/actions/editRequest/editRequest.action';
 
 interface ModalProps {
   isDark: boolean;
@@ -7,40 +8,142 @@ interface ModalProps {
   onClose: () => void;
   title?: string;
   children?: React.ReactNode;
+  transaccionId?: string;
 }
-const Modal3: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark }) => {
+interface payMethodInfo {
+  methodDestinatario: string;
+}
+
+const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark, transaccionId }) => {
   const [file, setFile] = useState<File | null>(null);
+  const [transactionData, setTransactionData] = useState<any>(null); // State to store backend data
+  const [loading, setLoading] = useState<boolean>(true);
+  const [note, setNote] = useState<string>('');
+  useEffect(() => {
+    if (transaccionId) {
+      const fetchData = async () => {
+        setLoading(true);
+        const data = await fetchTransactionData(transaccionId);
+        setTransactionData(data);
+        setLoading(false);
+      };
+      fetchData();
+    }
+  }, [transaccionId]);
+
   if (!isOpen) return null;
+
+  const methodDestinatario = 'datos';
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setFile(event.target.files[0]);
     }
   };
-
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-  };
-
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
-      setFile(event.dataTransfer.files[0]);
-    }
-  };
-
-  const handleUpload = () => {
-    if (file) {
-      alert(`Subiendo archivo: ${file.name}`);
-      // Aquí puedes agregar lógica para subir el archivo a un servidor.
-    } else {
-      alert('No se ha seleccionado ningún archivo.');
-    }
-  };
   const handleFileRemove = () => {
     setFile(null);
   };
+  const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNote(event.target.value);
+  };
+  const handleFormSubmit = async () => {
+    if (!file || !note || !transaccionId) {
+      alert('Debe ingresar una nota, seleccionar un archivo y proporcionar el ID de transacción');
+      return;
+    }
 
+    try {
+      const token = sessionStorage.getItem('token'); // Asegúrate de que el token esté disponible
+
+      // Verificar que el token no sea nulo
+      if (!token) {
+        alert('Token no encontrado');
+        return;
+      }
+      // Aquí pasas los 4 argumentos
+      const result = await sendFormData({
+        message: note, // Mensaje de la nota
+        file: file, // El archivo seleccionado
+        transaccionId: transaccionId, // El ID de la transacción
+        token: token, // El token obtenido
+      }); // Asegúrate de pasar el token correcto
+      console.log('Resultado del envío:', result);
+      onClose(); // Cerrar el modal después del envío
+    } catch (error) {
+      console.error('Error al enviar los datos:', error);
+    }
+  };
+  const PayMethodInfo: React.FC<payMethodInfo> = ({ methodDestinatario }) => {
+    if (methodDestinatario === 'datos') {
+      return (
+        <div className="mx-10 flex justify-between">
+          <div className="flex flex-col text-start text-black">
+            <p>Nombre </p>
+            <p>Apellido </p>
+            <p>Email </p>
+          </div>
+          <div className="flex flex-col text-end text-black">
+            <p>{transactionData?.transaction?.receiver?.first_name}</p>
+            <p>{transactionData?.transaction?.receiver?.last_name}</p>
+            <p>{transactionData?.transaction?.receiver?.email}</p>
+          </div>
+        </div>
+      );
+    } else if (methodDestinatario === 'USDT') {
+      return (
+        <div className="mx-10 flex justify-between">
+          <div className="flex flex-col text-start text-black">
+            <p>Dirección USDT </p>
+            <p>Red </p>
+          </div>
+          <div className="flex flex-col text-end text-black">
+            <p>{transactionData?.transaction?.receiver?.payment_method_id}</p>
+            <p>{transactionData?.transaction?.country_transaction}</p>
+          </div>
+        </div>
+      );
+    } else if (methodDestinatario === 'banco') {
+      return (
+        <div className="mx-10 flex justify-between">
+          <div className="flex flex-col text-start text-black">
+            <p>Nombre </p>
+            <p>Apellido </p>
+            <p>TAX ID/CUIT/CUIL</p>
+            <p>Nombre del Banco</p>
+            <p>CBU/CVU/ALIAS</p>
+          </div>
+          <div className="flex flex-col text-end text-black">
+            <p>{transactionData?.transaction?.sender?.first_name}</p>
+            <p>{transactionData?.transaction?.sender?.last_name}</p>
+            <p>{transactionData?.transaction?.sender?.identification}</p>
+            <p>{transactionData?.transaction?.payment_method?.value}</p> {/* Suponiendo que el banco es fijo */}
+            <p>{transactionData?.transaction?.payment_method?.value}</p>{' '}
+            {/* Puedes obtener esto si está en los datos */}
+          </div>
+        </div>
+      );
+    } else if (methodDestinatario === 'PIX') {
+      return (
+        <div className="mx-10 flex justify-between">
+          <div className="flex flex-col text-start text-black">
+            <p>Nombre </p>
+            <p>Apellido </p>
+            <p>PIX KEY</p>
+            <p>Individual TAX ID (CPF)</p>
+          </div>
+          <div className="flex flex-col text-end text-black">
+            <p>{transactionData?.transaction?.sender?.first_name}</p>
+            <p>{transactionData?.transaction?.sender?.last_name}</p>
+            <p>{transactionData?.transaction?.sender?.identification}</p>
+            <p>{transactionData?.transaction?.receiver?.payment_method_id}</p>
+          </div>
+        </div>
+      );
+    } else {
+      console.error('No fue recibido el método', new Error());
+      return null;
+    }
+  };
   return (
     <div
       className="fixed inset-0 left-0 right-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
@@ -52,7 +155,7 @@ const Modal3: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
         onClick={(e) => e.stopPropagation()} // Evita cerrar el modal al hacer clic dentro
       >
         {/* Título del Modal */}
-        <h2 className="mb-4 text-2xl font-bold text-black">Formulario de solicitud N°requestNumber</h2>
+        <h2 className="mb-4 text-2xl font-bold text-black">Formulario de solicitud N°{transaccionId}</h2>
 
         {/* Contenido del Modal con Scroll */}
         <div className="max-h-[70vh] overflow-y-auto">
@@ -67,10 +170,10 @@ const Modal3: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
                 <p>N° de Teléfono </p>
               </div>
               <div className="flex flex-col text-end text-black">
-                <p>Juan</p>
-                <p>Pérez</p>
-                <p>juan.perez@example.com</p>
-                <p>+123 456 789</p>
+                <p>{transactionData?.transaction?.sender?.first_name}</p>
+                <p>{transactionData?.transaction?.sender?.last_name}</p>
+                <p>{transactionData?.transaction?.sender?.email}</p>
+                <p>{transactionData?.transaction?.sender?.phone_number}</p>
               </div>
             </div>
           </section>
@@ -80,22 +183,8 @@ const Modal3: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
 
           <section className="flex flex-col">
             <h3 className="mb-2 flex text-lg font-semibold text-buttonsLigth">informacion del Destinatario</h3>
-            <div className="mx-10 flex justify-between">
-              <div className="flex flex-col text-start text-black">
-                <p>Nombre </p>
-                <p>Apellido </p>
-                <p>TAX ID/CUIT/CUIL</p>
-                <p>Nombre del Banco</p>
-                <p>CBU/CVU/ALIAS</p>
-              </div>
-              <div className="flex flex-col text-end text-black">
-                <p>Juan</p>
-                <p>camilo</p>
-                <p>45000000</p>
-                <p>BBVA</p>
-                <p>012345678901</p>
-              </div>
-            </div>
+
+            <PayMethodInfo methodDestinatario={methodDestinatario} />
           </section>
           <div className="mb-1 mt-3 flex w-full justify-center">
             <div className={`mr-0 flex h-full w-9/12 border-0 border-b-buttonsLigth lg:mr-3 lg:border-b-2`}></div>
@@ -109,8 +198,8 @@ const Modal3: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
                 <p>Monto a recibir </p>
               </div>
               <div className="flex flex-col text-end text-black">
-                <p>350</p>
-                <p>320</p>
+                <p>{transactionData?.transaction?.amounts?.sent?.amount}</p>
+                <p>{transactionData?.transaction?.amounts?.received?.amount}</p>
               </div>
             </div>
           </section>
@@ -133,6 +222,7 @@ const Modal3: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
                 rows={4}
                 className="mb-4 block w-full rounded-md border border-gray-300 p-2"
                 placeholder="Escriba aquí su comentario o nota..."
+                onChange={handleNoteChange}
               ></textarea>
 
               <div className="file-upload flex flex-col justify-between border-2 border-dashed border-buttonsLigth">
@@ -189,7 +279,7 @@ const Modal3: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
             </button>
             <button
               className={`buttonSecond relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth disabled:border-gray-400 disabled:bg-gray-400 disabled:shadow-none`}
-              onClick={onClose}
+              onClick={handleFormSubmit}
             >
               Editar Solicitud
             </button>
@@ -200,4 +290,4 @@ const Modal3: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
   );
 };
 
-export default Modal3;
+export default Modal1;

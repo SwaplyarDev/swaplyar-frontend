@@ -21,7 +21,7 @@ type FormInputs = {
   verificationCode: string[];
 };
 
-const BASE_URL = process.env || 'http://localhost:8080/api';
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const VerifyCodePage = () => {
   const {
