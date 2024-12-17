@@ -5,7 +5,7 @@ import { useExchangeRateStore } from '@/store/exchangeRateStore';
 
 export const useAmountCalculator = () => {
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
-  const { rates } = useExchangeRateStore(); // Asegúrate de obtener las tasas de la tienda
+  const { rates } = useExchangeRateStore();
   const [sendAmount, setSendAmount] = useState<string>('');
   const [receiveAmount, setReceiveAmount] = useState<string>('');
   const [isSendActive, setIsSendActive] = useState<boolean>(true);
@@ -82,7 +82,7 @@ export const useAmountCalculator = () => {
       setIsSendActive(true);
       const formattedValue = value.replace(',', '.');
       setSendAmount(formattedValue === '' || formattedValue === '0' ? '' : formattedValue);
-      setReceiveAmount(''); // Resetear el monto de recepción
+      setReceiveAmount('');
     }
   };
 
@@ -91,7 +91,7 @@ export const useAmountCalculator = () => {
       setIsSendActive(false);
       const formattedValue = value.replace(',', '.');
       setReceiveAmount(formattedValue === '' || formattedValue === '0' ? '' : formattedValue);
-      setSendAmount(''); // Resetear el monto de envío
+      setSendAmount('');
     }
   };
 

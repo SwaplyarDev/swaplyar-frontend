@@ -34,7 +34,6 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
 
   const receiveAmount = localStorage.getItem('receiveAmount');
   const sendAmount = localStorage.getItem('sendAmount');
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
 
   function showFileName(event: any) {
@@ -42,7 +41,6 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
 
     console.log(file);
     if (file) {
-      setSelectedFile(file);
       document.getElementById('file-name')!.textContent = file.name;
     } else {
       document.getElementById('file-name')!.textContent = 'No hay archivo seleccionado';

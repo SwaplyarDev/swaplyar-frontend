@@ -29,7 +29,6 @@ export const InputTransactionCalculator: React.FC<InputTransactionCalculatorProp
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        // disabled={id !== 'sendInputUniqueID'} // Verifica si está correctamente evaluando esta condición
       />
 
       <fieldset
