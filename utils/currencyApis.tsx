@@ -91,6 +91,8 @@ export function calculateAmount(from: string, to: string, amount: number, invers
   try {
     const { rates } = useExchangeRateStore.getState();
 
+    console.log(rates);
+
     if (!rates || Object.keys(rates).length === 0) {
       throw new Error('Las tasas de cambio no están disponibles.');
     }

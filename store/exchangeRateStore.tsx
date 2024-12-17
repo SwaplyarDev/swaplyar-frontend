@@ -60,6 +60,7 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
     try {
       // Obtener tasas de cambio USD a EUR (10 minutos)
       const ratesUSD_EUR = await getExchangeRatesUSD_EUR();
+      console.log(ratesUSD_EUR);
       if (Object.keys(ratesUSD_EUR).length > 0) {
         set((state) => {
           const combinedRates = {
