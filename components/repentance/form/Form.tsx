@@ -7,7 +7,6 @@ import Swal from 'sweetalert2';
 import { FormData } from '@/types/repentance/repentance';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { FormularioProps } from '@/types/repentance/repentance';
-const URLRepentance = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
   const {

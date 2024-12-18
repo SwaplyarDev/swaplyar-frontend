@@ -1,55 +1,27 @@
-const apiKey = process.env.NEXT_PUBLIC_FREE_CURRENCY_API_KEY;
-const apiKey2 = process.env.NEXT_PUBLIC_FREE_CURRENCY_APY_KEY;
-const url = process.env.NEXT_PUBLIC_FREE_CURRENCY_API_URL;
+// /utils/conversion/convUsd_Eur.tsx
 
-if (!apiKey || !apiKey2) {
-  throw new Error('Missing one or both FreeCurrencyAPI Keys');
-}
-
-interface CurrencyData {
-  data: {
-    EUR: number;
-  };
-}
+import { fetchCurrencyData } from './currencyConversion';
 
 /**
- * Función para calcular el precio del dólar/euro usando FreeCurrencyAPI
- * @returns Valores de conversión entre EUR y USD
+ * Función para obtener las tasas de conversión actuales entre USD y EUR.
+ *
+ * Esta función utiliza fetchCurrencyData para obtener los datos de conversión
+ * de USD a EUR y calcula tanto la tasa de USD a EUR como la tasa inversa de EUR a USD.
+ *
+ * @returns {Promise<{ currentValueEURToUSD: number, currentValueUSDToEUR: number }>}
+ * Un objeto que contiene las tasas de conversión actuales:
+ * - currentValueEURToUSD: La tasa de conversión de EUR a USD.
+ * - currentValueUSDToEUR: La tasa de conversión de USD a EUR.
+ *
+ * @example
+ * const { currentValueEURToUSD, currentValueUSDToEUR } = await updateCurrentValueUSDToEUR();
+ * console.log(`1 USD = ${currentValueUSDToEUR} EUR`);
+ * console.log(`1 EUR = ${currentValueEURToUSD} USD`);
  */
 export async function updateCurrentValueUSDToEUR() {
-  const fetchCurrencyData = async (key: string): Promise<CurrencyData> => {
-    const response = await fetch(`${url}?apikey=${key}=EUR%2CUSD%2CBRL`);
+  const data = await fetchCurrencyData('USD', 'EUR');
+  const currentValueEURToUSD = 1 / data.data.EUR;
+  const currentValueUSDToEUR = data.data.EUR;
 
-    if (!response.ok) {
-      const errorMessage = `Error: ${response.status} ${response.statusText}`;
-      console.error('Error fetching currency data from FreeCurrencyAPI:', errorMessage);
-      throw new Error(errorMessage);
-    }
-
-    return response.json();
-  };
-
-  try {
-    const [data1, data2] = await Promise.allSettled([
-      fetchCurrencyData(apiKey as string),
-      fetchCurrencyData(apiKey2 as string),
-    ]);
-
-    const successfulData = [data1, data2]
-      .filter((result): result is PromiseFulfilledResult<CurrencyData> => result.status === 'fulfilled')
-      .map((result) => result.value);
-
-    if (successfulData.length === 0) {
-      throw new Error('Failed to fetch currency data from both API keys');
-    }
-
-    const data = successfulData[0];
-    const currentValueEURToUSD = 1 / data.data.EUR;
-    const currentValueUSDToEUR = data.data.EUR;
-
-    return { currentValueEURToUSD, currentValueUSDToEUR };
-  } catch (error) {
-    console.error('Error fetching currency data from both API keys:', error instanceof Error ? error.message : error);
-    throw new Error('Failed to fetch currency data from both API keys');
-  }
+  return { currentValueEURToUSD, currentValueUSDToEUR };
 }

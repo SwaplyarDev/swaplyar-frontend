@@ -21,8 +21,6 @@ interface VerifycodeEditRequestProps {
   toggle: () => void;
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
 const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, isDark, transaccionId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
