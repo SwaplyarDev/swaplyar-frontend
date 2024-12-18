@@ -140,7 +140,7 @@ export const sendFormData = async ({ message, file, transaccionId }: sendeForm):
       throw new Error('Token no encontrado en sessionStorage');
     }
     const formData = new FormData();
-    formData.append('message', message);
+    formData.append('message', JSON.stringify(message));
     formData.append('file', file);
     formData.append('transaccionId', transaccionId);
     formData.append('token', token);
