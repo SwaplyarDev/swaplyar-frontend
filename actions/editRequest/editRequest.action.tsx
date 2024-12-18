@@ -18,11 +18,11 @@ interface TransactionData {
   recipient: string;
   // Agrega otros campos según lo que devuelva tu API
 }
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const fetchTransactionById = async (requestData: TransactionRequestData): Promise<any> => {
   try {
-    const response = await fetch(`${BASE_URL}/v1/notes/send`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/send`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ export const fetchTransactionById = async (requestData: TransactionRequestData):
 export const fetchCode = async (code: string, requestData: { transactionId: string }): Promise<any> => {
   try {
     // Realizar la solicitud POST al backend para verificar el código
-    const response = await fetch(`${BASE_URL}/v1/notes/verify`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/verify`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ export const fetchCode = async (code: string, requestData: { transactionId: stri
 
 export const resendCodeAction = async (transactionId: string) => {
   try {
-    const response = await fetch(`${BASE_URL}/v1/notes/send`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/send`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ export const resendCodeAction = async (transactionId: string) => {
 
 export const fetchTransactionData = async (transaccionId: string): Promise<TransactionData | null> => {
   try {
-    const response = await fetch(`${BASE_URL}/v1/transactions/${transaccionId}`);
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions/${transaccionId}`);
     if (!response.ok) {
       throw new Error('Error fetching transaction data');
     }
@@ -144,7 +144,7 @@ export const sendFormData = async ({ message, file, transaccionId }: sendeForm):
     formData.append('file', file);
     formData.append('transaccionId', transaccionId);
     formData.append('token', token);
-    const response = await fetch(`${BASE_URL}/v1/notes/${transaccionId}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/${transaccionId}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,

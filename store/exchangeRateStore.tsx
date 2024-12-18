@@ -95,6 +95,7 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
 
     try {
       const ratesUSD_BRL = await getExchangeRatesUSD_BRL();
+      console.log('ratesUSD_BRL: ', ratesUSD_BRL);
       if (Object.keys(ratesUSD_BRL).length > 0) {
         set((state) => {
           const combinedRates = {

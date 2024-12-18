@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
-const { NEXT_PUBLIC_BACKEND_URL } = process.env;
+const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 type FormInputs = {
   email: string;

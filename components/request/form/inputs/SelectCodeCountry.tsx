@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Select from 'react-select';
 import { CountryOption, FieldError, SelectCodeCountryProps } from '@/types/request/request';
+const NEXT_PUBLIC_REST_COUNTRIES_API_URL = process.env.NEXT_PUBLIC_REST_COUNTRIES_API_URL;
 
 const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
   selectedCodeCountry,
@@ -17,9 +18,9 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
   const { isDark } = useDarkTheme();
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
   const [countryValues, setCountryValues] = useState<CountryOption[]>([]);
-  const { NEXT_PUBLIC_REST_COUNTRIES_API_URL } = process.env;
 
   useEffect(() => {
+    console.log('NEXT_PUBLIC_REST_COUNTRIES_API_URL:  ', NEXT_PUBLIC_REST_COUNTRIES_API_URL);
     const fetchCountries = async () => {
       if (!NEXT_PUBLIC_REST_COUNTRIES_API_URL) {
         console.error('Missing REST Countries API URL');
@@ -28,6 +29,7 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
       try {
         const response = await fetch(NEXT_PUBLIC_REST_COUNTRIES_API_URL);
         const countries = await response.json();
+        console.log('countries:  ', countries);
         const options: CountryOption[] = countries.map((country: any) => {
           const callingCode = country.idd?.root ? `${country.idd.root}${country.idd.suffixes?.[0] || ''}` : '';
           return {
@@ -54,7 +56,7 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
     };
 
     fetchCountries();
-  }, [NEXT_PUBLIC_REST_COUNTRIES_API_URL]);
+  }, []);
 
   return (
     <>

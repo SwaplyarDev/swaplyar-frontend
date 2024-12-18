@@ -1,6 +1,6 @@
 'use server';
 
-const { NEXT_PUBLIC_BACKEND_URL } = process.env;
+const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 import { FormData, OutputFormat } from '@/types/repentance/repentance';
 

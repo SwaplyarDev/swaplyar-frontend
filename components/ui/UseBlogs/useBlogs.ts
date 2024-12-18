@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import useBlogStore from '@/store/useBlogStore';
 
-const { NEXT_PUBLIC_BACKEND_URL } = process.env;
+const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const useBlogs = (currentPage: number, searchTerm: string) => {
   const { setBlogs } = useBlogStore();

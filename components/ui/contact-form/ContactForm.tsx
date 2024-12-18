@@ -13,7 +13,7 @@ import Tick from '@/components/ui/Tick/Tick';
 import { createRoot } from 'react-dom/client';
 import Arrow from '@/components/ui/Arrow/Arrow';
 
-const { NEXT_PUBLIC_BACKEND_URL } = process.env;
+const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const ContactForm = () => {
   const { data: session, status } = useSession();
