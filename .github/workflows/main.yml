@@ -10,6 +10,9 @@ jobs:
     if: github.event.pull_request.merged == true
 
     steps:
+      - name: Set up jq
+        run: sudo apt-get install jq
+
       - name: Send notification to Discord
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -20,12 +23,22 @@ jobs:
           PR_BODY: ${{ github.event.pull_request.body }}
           REPO_NAME: ${{ github.event.repository.full_name }}
         run: |
-          MESSAGE=$(jq -n \
-          --arg content ":rocket: **Actualización en el repositorio \`${REPO_NAME}\` en la rama \`${PR_BASE_BRANCH}\`** :rocket:
-            
+          create_message() {
+            jq -n --arg content ":rocket: **Actualización en el repositorio \`${REPO_NAME}\` en la rama \`${PR_BASE_BRANCH}\`** :rocket:
+
             La rama ha sido actualizada con los cambios de la siguiente PR: [Ver detalles](${PR_URL})
-            
-            :point_right:**Los cambios realizados a la rama son los siguientes:**               
+
+            :point_right: **Título del PR:** ${PR_TITLE}
+            :point_right: **Autor del PR:** ${PR_USER}
+            :point_right: **Los cambios realizados a la rama son los siguientes:**
             ${PR_BODY}" \
-          '{content: $content}')
-          curl -X POST -H "Content-Type: application/json" -d "$MESSAGE" $DISCORD_WEBHOOK_URL
+            '{content: $content}'
+          }
+
+          MESSAGE=$(create_message)
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-Type: application/json" -d "$MESSAGE" $DISCORD_WEBHOOK_URL)
+
+          if [ $RESPONSE -ne 204 ]; then
+            echo "Error sending notification to Discord. HTTP status code: $RESPONSE"
+            exit 1
+          fi

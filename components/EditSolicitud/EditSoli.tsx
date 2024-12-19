@@ -25,7 +25,7 @@ const EditSoli = () => {
             ></Image>
           </div>
           <div className="flex flex-col flex-wrap content-center">
-            <div className="block flex min-h-full w-72 flex-wrap justify-center lg:hidden">
+            <div className="block min-h-full w-72 flex-wrap justify-center lg:hidden">
               <Image
                 src={EditorMobile}
                 alt="imagen del Editor de solicitud de mobile"
