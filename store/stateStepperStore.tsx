@@ -188,6 +188,9 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         amount_received: stepThree.receive_amount,
         currency_received: selectedReceivingSystem?.coin,
       },
+      status: {
+        status: 'pending',
+      },
     };
 
     const formDataPayload = new FormData();
@@ -203,6 +206,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     formDataPayload.append('receiver', JSON.stringify(payload.receiver));
     formDataPayload.append('payment_method', JSON.stringify(payload.payment_method));
     formDataPayload.append('amounts', JSON.stringify(payload.amounts));
+    formDataPayload.append('status', JSON.stringify(payload.status));
 
     try {
       const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions`, {
