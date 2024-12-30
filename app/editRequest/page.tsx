@@ -4,7 +4,7 @@ import NewSwaply from '@/components/NewSwaplyAR/newSwaply';
 const editRequestPage: React.FC = () => {
   return (
     <>
-      <div className="flex-column container flex w-full flex-wrap items-center justify-center lg:px-20 lg:py-10">
+      <div className="flex-column container flex w-full flex-wrap items-center justify-center px-5 py-10 lg:px-0 xl:px-20">
         <EditSoli></EditSoli>
       </div>
       <div className="w-full">

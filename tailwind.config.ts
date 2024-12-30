@@ -48,14 +48,24 @@ const config: Config = {
           600: '#2F6FEB',
         },
         // calculatorDark: 'rgb(69 69 69 / 48%)',
-        buttonsLigth: '#012c8a',
-        calculatorDark: 'rgb(235, 231, 224, .15)',
-        calculatorDark2: 'rgb(235, 231, 224, .5)',
-        calculatorLight: 'rgb(230, 232, 239, .15)',
-        calculatorLight2: 'rgb(230, 232, 239, .5)',
-        selectBtsLight: '#91aeec',
-        darkText: '#ebe7e0',
-        lightText: '#252526',
+        buttonsLigth: '#012c8a', // Azul Marino Oscuro
+        calculatorDark: 'rgba(235, 231, 224, 0.15)', // Beige Claro con Transparencia (15%)
+        calculatorDark2: 'rgba(235, 231, 224, 0.5)', // Beige Claro con Transparencia (50%)
+        calculatorLight: 'rgba(230, 232, 239, 0.15)', // Azul Grisáceo Claro con Transparencia (15%)
+        calculatorLight2: 'rgba(230, 232, 239, 0.5)', // Azul Grisáceo Claro con Transparencia (50%)
+        selectBtsLight: '#91aeec', // Azul Pastel Claro
+        darkText: '#ebe7e0', // Blanco Hueso o Marfil Claro
+        lightText: '#252526', // Gris Muy Oscuro o Negro Grafito
+
+        // Estados deshabilitados
+        disabledButtonsLigth: '#A0AEC0', // Gris claro para fondo deshabilitado de buttonsLigth
+        disabledCalculatorDark: 'rgba(235, 231, 224, 0.1)', // Transparencia reducida para calculatorDark
+        disabledCalculatorDark2: 'rgba(235, 231, 224, 0.3)', // Transparencia reducida para calculatorDark2
+        disabledCalculatorLight: 'rgba(230, 232, 239, 0.1)', // Transparencia reducida para calculatorLight
+        disabledCalculatorLight2: 'rgba(230, 232, 239, 0.3)', // Transparencia reducida para calculatorLight2
+        disabledSelectBtsLight: '#D6E4FC', // Azul Pastel Claro más tenue
+        disabledDarkText: '#AAA59F', // Gris claro para texto deshabilitado
+        disabledLightText: '#555555', // Gris más claro para texto deshabilitado
       },
       width: {
         '9/10': '90%',

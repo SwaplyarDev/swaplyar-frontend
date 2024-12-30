@@ -9,6 +9,7 @@ import userInfoStore from '@/store/userInfoStore';
 import Arrow from '@/components/ui/Arrow/Arrow';
 import Modal1 from '@/components/modals/ModalTipos';
 import { fetchCode, resendCodeAction } from '@/actions/editRequest/editRequest.action';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
 interface FormInputs {
   verificationCode: string[];
@@ -60,6 +61,16 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
       return () => clearInterval(interval);
     }
   }, [timer]);
+
+  useEffect(() => {
+    if (isModalOpen) {
+      document.documentElement.classList.add('overflow-hidden');
+    } else {
+      document.documentElement.classList.remove('overflow-hidden');
+    }
+
+    return () => document.documentElement.classList.remove('overflow-hidden');
+  }, [isModalOpen]);
 
   // Handle the code verification
   const verifyCode = async ({ verificationCode, requestData }: FormInputs) => {
@@ -136,12 +147,12 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
   return (
     <div>
       <div className="w-full">
-        <form onSubmit={handleSubmit(verifyCode)} className="w-auto">
+        <form onSubmit={handleSubmit(verifyCode)} className="flex w-auto flex-col items-center xl:items-end">
           <label htmlFor="verificationCode" className="text-center text-xl text-lightText dark:text-darkText">
             Ingrese el código de 6 dígitos que recibiste por email
           </label>
-          <div className="flex w-full justify-center">
-            <div className="my-5 flex h-full w-11/12 justify-between gap-2 xs:h-[57px] xs:gap-1 sm:h-[65.33px] md:h-[52px] md:w-7/12 lg:w-full xl:w-8/12 2xl:w-6/12">
+          <div className="flex w-full justify-center xl:justify-end">
+            <div className="my-5 flex h-[52px] w-[336px] justify-between gap-2 xs:gap-1">
               {[...Array(6)].map((_, index) => (
                 <div
                   key={index}
@@ -170,10 +181,17 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
 
           {isCodeCorrect === false && <p className="mt-2 text-sm text-red-500">Código incorrecto. Intenta de nuevo.</p>}
 
-          <div className="my-5 flex justify-evenly text-buttonsLigth dark:text-darkText">
+          {loading && (
+            <div id="loading" className="flex w-9/12 items-center justify-center gap-2">
+              <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
+              <span>Verificando...</span>
+            </div>
+          )}
+
+          <div className="my-5 flex items-center justify-evenly gap-5 text-buttonsLigth dark:text-darkText">
             <button
               onClick={toggle}
-              className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} group relative m-1 flex h-[42px] min-w-[150px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent xs:min-w-[150px]`}
+              className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} group relative m-1 flex h-[42px] min-w-[150px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 font-bold text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent xs:min-w-[150px]`}
             >
               <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
               <p>Volver</p>
@@ -184,10 +202,25 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
               onClick={resendCode}
               disabled={reLoading || timer > 0}
               className={`${
-                isDark ? 'buttonSecondDark' : 'buttonSecond'
-              } flex h-[42px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white disabled:border-gray-400 disabled:bg-gray-400`}
+                isDark
+                  ? reLoading || timer > 0
+                    ? 'buttonSecondDarkDisabled'
+                    : 'buttonSecondDark'
+                  : reLoading || timer > 0
+                    ? 'buttonSecondDisabled'
+                    : 'buttonSecond'
+              } flex h-[42px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-darkText disabled:border-gray-400 disabled:bg-gray-400 dark:border-darkText dark:bg-darkText dark:text-lightText`}
             >
-              {reLoading ? 'Reenviando...' : timer > 0 ? `Reenviar en ${timer}s` : 'Reenviar código'}
+              {reLoading ? (
+                <div id="loading" className="flex items-center justify-center gap-2">
+                  <LoadingGif color={!isDark ? '#ebe7e0' : '#012c8a'} />
+                  <span>Reenviando...</span>
+                </div>
+              ) : timer > 0 ? (
+                `Reenviar en ${timer}s`
+              ) : (
+                'Reenviar código'
+              )}
             </button>
           </div>
         </form>
@@ -196,7 +229,10 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
         transaccionId={transaccionId}
         isDark={isDark}
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          toggle();
+        }}
         title="modal de tipos"
       />
     </div>
