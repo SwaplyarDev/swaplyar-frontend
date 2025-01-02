@@ -111,7 +111,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
   };
 
   const handleFormSubmit = async () => {
-    if (!file || !note || !transaccionId) {
+    if (!note || !transaccionId) {
       handleEditRequestError();
       return;
     }
@@ -281,13 +281,13 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
                 </span>
               </div>
             </p>
-            {/* Formulario */}
             <form>
               <textarea
                 rows={4}
                 className="mb-4 block w-full rounded-md border border-gray-300 p-2 text-lightText dark:bg-[#bdb8b4]"
                 placeholder="Escriba aquí su comentario o nota..."
                 onChange={handleNoteChange}
+                required
               ></textarea>
 
               <div className="file-upload flex flex-col justify-between rounded-md border-2 border-dashed border-buttonsLigth">
