@@ -1,5 +1,4 @@
 'use client';
-import { useForm } from 'react-hook-form';
 import { useState, useEffect, ChangeEvent } from 'react';
 import clsx from 'clsx';
 import useCodeVerificationStore from '@/store/codeVerificationStore';
@@ -7,6 +6,7 @@ import Arrow from '@/components/ui/Arrow/Arrow';
 import Modal1 from '@/components/modals/ModalTipos';
 import { fetchCode, resendCodeAction } from '@/actions/editRequest/editRequest.action';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
+import { useForm } from 'react-hook-form';
 
 interface FormInputs {
   verificationCode: string[];
