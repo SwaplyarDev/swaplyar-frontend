@@ -17,9 +17,9 @@ interface payMethodInfo {
   methodDestinatario: string;
 }
 
-const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark, transaccionId }) => {
+const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }) => {
   const [file, setFile] = useState<File | null>(null);
-  const [transactionData, setTransactionData] = useState<any>(null); // State to store backend data
+  const [transactionData, setTransactionData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [note, setNote] = useState<string>('');
   useEffect(() => {
@@ -118,23 +118,21 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
 
     try {
       setLoading(true);
-      const token = sessionStorage.getItem('token'); // Asegúrate de que el token esté disponible
+      const token = sessionStorage.getItem('token');
 
-      // Verificar que el token no sea nulo
       if (!token) {
         handleEditRequestError();
         return;
       }
-      // Aquí pasas los 4 argumentos
       await sendFormData({
-        message: note, // Mensaje de la nota
-        file: file, // El archivo seleccionado
-        transaccionId: transaccionId, // El ID de la transacción
-        token: token, // El token obtenido
-      }); // Asegúrate de pasar el token correcto
+        message: note,
+        file: file,
+        transaccionId: transaccionId,
+        token: token,
+      });
       setLoading(false);
       handleEditRequestSuccess();
-      onClose(); // Cerrar el modal después del envío
+      onClose();
     } catch (error) {
       console.error('Error al enviar los datos:', error);
       setLoading(false);
@@ -183,9 +181,8 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
             <p>{transactionData?.transaction?.sender?.first_name}</p>
             <p>{transactionData?.transaction?.sender?.last_name}</p>
             <p>{transactionData?.transaction?.sender?.identification}</p>
-            <p>{transactionData?.transaction?.payment_method?.value}</p> {/* Suponiendo que el banco es fijo */}
+            <p>{transactionData?.transaction?.payment_method?.value}</p>
             <p>{transactionData?.transaction?.payment_method?.value}</p>{' '}
-            {/* Puedes obtener esto si está en los datos */}
           </div>
         </div>
       );
@@ -219,16 +216,13 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
       <div
         style={{ top: '0px', bottom: '64px' }}
         className="relative mt-24 w-11/12 rounded-lg bg-[#dcdee0] p-6 shadow-lg dark:bg-[#333231] md:w-8/12 lg:w-6/12 xl:w-5/12"
-        onClick={(e) => e.stopPropagation()} // Evita cerrar el modal al hacer clic dentro
+        onClick={(e) => e.stopPropagation()}
       >
-        {/* Título del Modal */}
         <h2 className="mb-4 text-2xl font-bold text-lightText dark:text-darkText">
           Formulario de solicitud N°{transaccionId}
         </h2>
 
-        {/* Contenido del Modal con Scroll */}
         <div className="max-h-[70vh] overflow-y-auto">
-          {/* Información Plana */}
           <section className="flex flex-col">
             <h3 className="mb-2 flex text-lg font-semibold text-buttonsLigth dark:text-darkText">Mis Datos</h3>
             <div className="mx-10 flex justify-between">
@@ -335,7 +329,6 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, title, children, isDark
             </form>
           </section>
 
-          {/* Botones de acción */}
           <div className="mt-4 flex justify-between">
             <button
               onClick={onClose}

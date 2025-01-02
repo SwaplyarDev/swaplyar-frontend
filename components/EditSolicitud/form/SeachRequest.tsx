@@ -1,17 +1,13 @@
 'use client';
 import { fetchTransactionById, TransactionRequestData } from '@/actions/editRequest/editRequest.action';
-import VerifycodeEditRequest from '../verify-code-editRequest/verify-code-editRequest';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
-
-interface isDark {
-  isDark: boolean;
-}
+import VerifycodeEditRequest from '../Verify-code-editRequest/Verify-code-editRequest';
 
 interface FormValues {
-  transaccionId: string; // Cambié el nombre aquí de "transactionId" a "transaccionId"
+  transaccionId: string;
   userEmail: string;
 }
 
@@ -27,7 +23,6 @@ const SeachRequest: React.FC = () => {
     handleSubmit,
     formState: { errors },
     reset,
-    setError,
   } = useForm<FormValues>();
 
   const handleSeachRequestSubmit = async (data: TransactionRequestData) => {
@@ -36,16 +31,14 @@ const SeachRequest: React.FC = () => {
 
     try {
       const requestData: TransactionRequestData = {
-        transaccionId: data.transaccionId, // Mapear desde FormValues
-        userEmail: data.userEmail, // Mapear si existe en el formulario
+        transaccionId: data.transaccionId,
+        userEmail: data.userEmail,
       };
 
-      // Realiza la llamada a la base de datos, pero no necesitas esperar la respuesta
-      await fetchTransactionById(requestData); // Pasar el objeto completo
+      await fetchTransactionById(requestData);
 
-      // Aquí no validas la respuesta, solo activas el toggle
       setIsToggled(true);
-      setTransaccionId(data.transaccionId); // Pasar el transaccionId recibido del formulario
+      setTransaccionId(data.transaccionId);
     } catch (error) {
       console.error('Error fetching transaction:', error);
       setErrorMessage('Hubo un error al buscar la solicitud. Intente nuevamente.');
@@ -107,7 +100,7 @@ const SeachRequest: React.FC = () => {
               toggle={() => {
                 setIsToggled(false);
                 reset({
-                  transaccionId: '', // Reemplaza con el nombre del campo que deseas resetear
+                  transaccionId: '',
                 });
               }}
               isDark={isDark}

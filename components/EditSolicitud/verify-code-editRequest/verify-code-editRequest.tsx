@@ -2,10 +2,7 @@
 import { useForm } from 'react-hook-form';
 import { useState, useEffect, ChangeEvent } from 'react';
 import clsx from 'clsx';
-import { useRouter } from 'next/navigation';
 import useCodeVerificationStore from '@/store/codeVerificationStore';
-import userInfoStore from '@/store/userInfoStore';
-
 import Arrow from '@/components/ui/Arrow/Arrow';
 import Modal1 from '@/components/modals/ModalTipos';
 import { fetchCode, resendCodeAction } from '@/actions/editRequest/editRequest.action';
@@ -26,20 +23,15 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [reLoading, setReLoading] = useState(false);
-  const [isCodeCorrect, setIsCodeCorrect] = useState<boolean | null>(null); // To store code verification result
-  const [disabledInputs, setDisabledInputs] = useState(false); // To disable inputs after submission
-  const [isLock, setIsLock] = useState(false);
+  const [isCodeCorrect, setIsCodeCorrect] = useState<boolean | null>(null);
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
     watch,
-    getValues,
   } = useForm<FormInputs>();
-  const { attempts, lockUntil, setLockUntil, resetAttempts } = useCodeVerificationStore();
-  const router = useRouter();
-  const { user } = userInfoStore();
+  const { lockUntil, setLockUntil, resetAttempts } = useCodeVerificationStore();
 
   const isLocked = lockUntil && lockUntil > Date.now();
   const [timer, setTimer] = useState(0);
@@ -72,48 +64,41 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
     return () => document.documentElement.classList.remove('overflow-hidden');
   }, [isModalOpen]);
 
-  // Handle the code verification
   const verifyCode = async ({ verificationCode, requestData }: FormInputs) => {
     const code = verificationCode.join('');
     setLoading(true);
 
     try {
-      // Usamos la función fetchCode para enviar el código al backend
       const result = await fetchCode(code, { transactionId: transaccionId });
 
       if (result.success) {
         setIsCodeCorrect(true);
-        setIsModalOpen(true); // Mostrar el modal al verificar correctamente
+        setIsModalOpen(true);
       } else {
         setIsCodeCorrect(false);
-        setValue('verificationCode', ['', '', '', '', '', '']); // Limpiar las casillas
+        setValue('verificationCode', ['', '', '', '', '', '']);
       }
     } catch (error) {
       console.error('Error durante la verificación del código:', error);
       setIsCodeCorrect(false);
-      setValue('verificationCode', ['', '', '', '', '', '']); // Limpiar en caso de error
+      setValue('verificationCode', ['', '', '', '', '', '']);
     } finally {
       setLoading(false);
-      setIsLock(false); // Desbloquear inputs si hay error
     }
   };
 
   const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
 
-    // Validar que solo se acepten dígitos
     if (/^\d*$/.test(value)) {
       const newVerificationCode = [...(watch('verificationCode') || ([] as string[]))];
       newVerificationCode[index] = value;
       setValue('verificationCode', newVerificationCode);
 
-      // Bloquear inputs automáticamente si están todos completos
       if (newVerificationCode.every((val) => val.trim() !== '' && val.length === 1)) {
-        setIsLock(true); // Bloquear inputs
-        handleSubmit(verifyCode)(); // Verificar automáticamente
+        handleSubmit(verifyCode)();
       }
 
-      // Enfocar automáticamente el siguiente input si el actual está lleno
       if (value.length === 1 && index < 5) {
         const nextInput = document.getElementById(`code-${index + 1}`);
         nextInput?.focus();
@@ -124,9 +109,8 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
   const resendCode = async () => {
     try {
       setReLoading(true);
-      setTimer(30); // Bloquear el botón por 30 segundos
+      setTimer(30);
 
-      // Llamada a la función de acción para reenviar el código
       const { success, message } = await resendCodeAction(transaccionId);
 
       if (success) {
@@ -140,9 +124,6 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
       setReLoading(false);
     }
   };
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
 
   return (
     <div>
@@ -164,7 +145,7 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
                     id={`code-${index}`}
                     type="text"
                     maxLength={1}
-                    disabled={disabledInputs || isLocked || loading}
+                    disabled={isLocked || loading}
                     className={clsx(
                       'h-full w-full rounded-full border-0 text-center text-base focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem] lg:text-2xl',
                       errors.verificationCode ? 'border-red-500' : '',
