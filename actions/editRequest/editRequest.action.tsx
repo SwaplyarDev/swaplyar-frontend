@@ -6,7 +6,7 @@ export interface TransactionRequestData {
 }
 export interface sendeForm {
   message: string;
-  file: File;
+  file: File | null;
   transaccionId: string;
   token: string | null;
 }
@@ -141,7 +141,9 @@ export const sendFormData = async ({ message, file, transaccionId }: sendeForm):
     }
     const formData = new FormData();
     formData.append('message', JSON.stringify(message));
-    formData.append('file', file);
+    if (file) {
+      formData.append('file', file);
+    }
     formData.append('transaccionId', transaccionId);
     formData.append('token', token);
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/${transaccionId}`, {

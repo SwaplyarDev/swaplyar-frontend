@@ -67,10 +67,10 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
             type="text"
             placeholder="Como figura en el recibo"
             {...register('transaction_id', {
-              required: '• El número de referencia es obligatorio',
+              required: '• El número de solicitud es obligatorio',
               pattern: {
                 value: /^[A-Za-z0-9]{10,20}$/,
-                message: '• El número de referencia debe tener entre 10 y 20 caracteres alfanuméricos',
+                message: '• El número de solicitud debe tener entre 10 y 20 caracteres alfanuméricos',
               },
             })}
             onChange={handleChange}
