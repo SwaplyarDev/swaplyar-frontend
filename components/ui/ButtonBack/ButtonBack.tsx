@@ -12,6 +12,7 @@ const ButtonBack: React.FC<ButtonBackProps> = ({ route, isDark = false, label = 
 
   return (
     <button
+      type="button"
       onClick={() => router.push(route)}
       className={`${
         isDark ? 'buttonSecondDark' : 'buttonSecond'
