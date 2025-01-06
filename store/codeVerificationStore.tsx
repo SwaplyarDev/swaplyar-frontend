@@ -9,7 +9,7 @@ type CodeVerificationState = {
 };
 
 const useCodeVerificationStore = create<CodeVerificationState>((set) => ({
-  attempts: 3,
+  attempts: 20,
   lockUntil: null,
   decrementAttempts: () => set((state) => ({ attempts: state.attempts > 0 ? state.attempts - 1 : 0 })),
   setLockUntil: (time) => set(() => ({ lockUntil: time })),

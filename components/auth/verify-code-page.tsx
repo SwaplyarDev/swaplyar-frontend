@@ -15,7 +15,6 @@ import { registerUser } from '@/actions/auth/register';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import ButtonBack from '../ui/ButtonBack/ButtonBack';
-import Arrow from '../ui/Arrow/Arrow';
 
 type FormInputs = {
   verificationCode: string[];
@@ -34,7 +33,6 @@ export const VerifyCodePage = () => {
     setValue,
   } = useForm<FormInputs>({});
 
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [reLoading, setReLoading] = useState(false);
   const { email } = useEmailVerificationStore();
@@ -175,14 +173,6 @@ export const VerifyCodePage = () => {
         prevInput?.focus();
       }
     }
-  };
-
-  const handleFocus = (index: number) => {
-    setFocusedIndex(index);
-  };
-
-  const handleBlur = () => {
-    setFocusedIndex(null);
   };
 
   return (
