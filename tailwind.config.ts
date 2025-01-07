@@ -35,6 +35,7 @@ const config: Config = {
         'md-tablet': '850px',
         'lg-tablet': '960px',
         lg: '1024px',
+        lg2: '1124px',
         xl: '1280px',
         '2k': '2048px',
         '4k': '3840px',

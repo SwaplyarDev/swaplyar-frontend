@@ -35,7 +35,6 @@ export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [drawerMenu, setDrawerMenu] = useState(false);
 
-  const { setView } = useStore();
   const { isDark } = useDarkTheme();
 
   const handleSelect = (item: string) => {
@@ -57,7 +56,7 @@ export function TopMenu() {
       <Navbar fluid rounded className="sticky py-3 dark:bg-lightText">
         <div className="m-auto flex w-[95%] max-w-screen-2xl flex-row justify-between">
           {/* Botón para iniciar sesión o cerrar sesión */}
-          <span className="hidden md:flex lg:hidden">
+          <span className="hidden md:flex lg2:hidden">
             {status === 'authenticated' ? (
               <StyledButton
                 $isDark={isDark}
@@ -91,9 +90,9 @@ export function TopMenu() {
 
           {/* Navegación */}
           <nav className="flex flex-row items-center justify-center">
-            <section className="flex items-center justify-end gap-4 lg:pr-2">
+            <section className="flex items-center justify-end gap-4 lg2:pr-2">
               <Switch />
-              <button onClick={() => setDrawerMenu(true)} className="block lg:hidden">
+              <button onClick={() => setDrawerMenu(true)} className="block lg2:hidden">
                 <GiHamburgerMenu className="size-8 text-lightText dark:text-darkText" />
               </button>
             </section>
@@ -140,6 +139,25 @@ export function TopMenu() {
                       >
                         Como Usar SwaplyAr
                       </Sidebar.Item>
+                      <Sidebar.Item
+                        className={`text-buttonsLigth ${
+                          selectedItem === 'loyalty-program'
+                            ? 'h-10 bg-gray-100 dark:bg-gray-700'
+                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                        }`}
+                        onClick={() => handleSelect('loyalty-program')}
+                        href="/info/loyalty-program"
+                      >
+                        Programa de Fidelización
+                      </Sidebar.Item>
+                    </Sidebar.ItemGroup>
+                    <Sidebar.ItemGroup className="w-full bg-inherit">
+                      <div className="flex flex-col md:hidden">
+                        <LogInButton />
+                      </div>
+                      <div className="flex flex-col">
+                        <RegisterButton />
+                      </div>
                     </Sidebar.ItemGroup>
                   </Sidebar.Items>
                 </Sidebar>
@@ -147,7 +165,7 @@ export function TopMenu() {
             </Drawer>
 
             {/* Navegación completa */}
-            <section className="hidden lg:flex lg:gap-2">
+            <section className="hidden lg2:flex lg2:gap-2">
               <NavLinks />
               {status === 'authenticated' ? (
                 <>
