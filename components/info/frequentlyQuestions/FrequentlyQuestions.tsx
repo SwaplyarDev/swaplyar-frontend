@@ -102,7 +102,9 @@ const FrequentlyQuestions = () => {
     <>
       <main className="relative flex w-full flex-col items-center justify-center py-10">
         <div className="mx-auto grid max-w-[1000px]" style={{ margin: currentMargin }}>
-          <h1 className={`text-left text-4xl font-bold mb-14 ${isDark ? 'text-gray-100' : 'text-buttonsLigth'}`}>Preguntas Frecuentes</h1>
+          <h1 className={`mb-14 text-left text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-buttonsLigth'}`}>
+            Preguntas Frecuentes
+          </h1>
           <Accordion expanded={expanded.has('panel1')} onChange={handleChange('panel1')} isDark={isDark}>
             <AccordionSummary aria-controls="panel1d-content" id="panel1d-header" isDark={isDark} className="p-0">
               <Typography className={`mr-8 py-2 text-xl ${isDark ? 'text-[#ebe7e0]' : 'text-[#252526]'}`}>
