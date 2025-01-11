@@ -6,14 +6,15 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
+  Enchufe_clear,
+  Enchufe_dark,
+  Error_404_clear,
+  Error_404_dark,
   Post1_404,
   Post2_404,
   tlf_404_clear,
   tlf_404_dark,
-  Error_404_clear,
-  Error_404_dark,
-} from '@/utils/assets/imgDatabaseCloudinary';
-import { Enchufe_clear, Enchufe_clear_largo, Enchufe_dark, Enchufe_dark_largo } from '@/utils/assets/img-database';
+} from '@/utils/assets/img-database';
 
 export default function NotFoundPage() {
   const { isDark } = useDarkTheme();
@@ -90,14 +91,66 @@ export default function NotFoundPage() {
           </div>
         </div>
       </div> */}
-      <section className="relative m-auto flex w-full max-w-7xl flex-col items-start">
-        <div></div>
+      <section className="relative m-auto flex w-full max-w-7xl flex-col items-start gap-20">
+        <div className="relative flex min-h-[530px] w-full items-end md-tablet:min-h-[630px]">
+          <div className="absolute top-0 flex w-full items-center justify-center">
+            <Image
+              src={isDark ? Error_404_dark : Error_404_clear}
+              className="hidden px-8 sm-tablet:block xl-desktop:px-0"
+              alt="Descripción de la imagen 404"
+              width={1000}
+              height={400}
+            />
+            <Image
+              src={isDark ? tlf_404_dark : tlf_404_clear}
+              className="block px-8 sm-tablet:hidden xl-desktop:px-0"
+              alt="Descripción de la imagen 404"
+              width={600}
+              height={400}
+            />
+          </div>
+          <div className="ml-6 flex w-full min-w-[350px] flex-col gap-3 border-l-2 border-l-blue-700 pl-6 sm-tablet:min-w-[440px] md-tablet:ml-12">
+            <h1 className="hidden text-start text-5xl sm-tablet:block">
+              Ups... <br />
+              La página no <br />
+              ha sido encontrada
+            </h1>
+
+            <h1 className="block text-start text-5xl sm-tablet:hidden">
+              Ups... <br />
+              La página <br />
+              no ha sido <br />
+              encontrada
+            </h1>
+
+            <Link href="/">
+              <div className="flex w-[165px] items-center justify-center rounded-full border border-blue-700 bg-white p-2 text-base font-bold text-blue-700">
+                Redireccion en {counter}
+              </div>
+            </Link>
+          </div>
+          <div className="flex min-h-[530px] w-full items-center justify-center pr-14 md-tablet:min-h-[630px] xl-desktop:items-end">
+            <Image
+              src={Post1_404}
+              alt="Man smiling with tablet"
+              className="z-10 hidden w-[125px] sm-phone:block md-tablet:w-[155px] xl-desktop:w-[195px]"
+              width={195}
+              height={220}
+            />
+            <Image
+              src={Post2_404}
+              alt="Woman smiling with a laptop"
+              className="z-10 w-[220px] md-tablet:w-[260px] xl-desktop:w-[300px]"
+              width={300}
+              height={220}
+            />
+          </div>
+        </div>
         <div className="relative flex w-full items-center justify-center">
           <div className="absolute left-0 -ml-[calc((100vw-100%)/2)] mt-1 h-[11px] w-[50vw] bg-buttonsLigth dark:bg-darkText"></div>
           <div className="flex w-[485px] items-center justify-end">
             <Image
               src={isDark ? Enchufe_dark : Enchufe_clear}
-              className=""
               alt="Descripción de la imagen enchufe"
               width={400}
               height={100}
