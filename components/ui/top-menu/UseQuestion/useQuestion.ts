@@ -1,7 +1,7 @@
 import useQuestionStore from '@/store/useQuestion.store';
 import { useEffect } from 'react';
 
-const BASE_URL = process.env.NEXT_PUBLIC_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const useQuestion = () => {
   const { questions, setQuestions } = useQuestionStore();
