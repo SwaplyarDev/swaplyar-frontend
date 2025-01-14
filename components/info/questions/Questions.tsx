@@ -11,7 +11,7 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import useQuestion from '@/components/ui/top-menu/UseQuestion/useQuestion';
-import PaginationButtons from '@/components/ui/PaginationButtons.tsx/PaginationButtons';
+import PaginationButtonsProps from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import useQuestionStore from '@/store/useQuestion.store';
 
 const Accordion = styled((props: AccordionProps & { isDark: boolean }) => (
@@ -105,7 +105,7 @@ const FrequentlyQuestions = () => {
             </Accordion>
           ))}
 
-          <PaginationButtons currentPage={currentPage} totalPages={6} isLoading={false} />
+          <PaginationButtonsProps currentPage={currentPage} totalPages={6} isLoading={false} />
         </div>
       </main>
     </>
