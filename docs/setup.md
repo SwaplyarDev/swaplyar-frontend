@@ -39,7 +39,7 @@ NEXTAUTH_SECRET='cB9cQQRXYKn5/ptRnpPhZ2QHHqAIlwMAUh7Lmi4IU+ovkhKZNHhxN6Ki9lw='
 
 # URLs
 NEXTAUTH_URL="http://localhost:3000" # Local development URL
-NEXT_PUBLIC_BACKEND_URL="https://swaplyar-back.vercel.app/api" # Production backend URL
+NEXT_PUBLIC_BACKEND_URL="https://apiswaplyar.vercel.app/api" # Production backend URL
 # NEXT_PUBLIC_BACKEND_URL="http://localhost:8080/api" # Uncomment for local backend testing
 # NEXTAUTH_URL="https://swaplyar.vercel.app" # Uncomment for production
 
