@@ -1,18 +1,19 @@
 // app/components/InvertSystems/InvertSystems.tsx
 'use client';
 
-import Icon from '@mui/material/Icon';
-
 import SwapVertIcon from '@mui/icons-material/SwapVert';
+import { System } from '@/types/data';
 
 interface InvertSystemsProps {
   onInvert: () => void;
+  selectedReceivingSystem: System | null;
 }
 
-export default function InvertSystems({ onInvert }: InvertSystemsProps) {
+export default function InvertSystems({ onInvert, selectedReceivingSystem }: InvertSystemsProps) {
   return (
     <button
-      className="big-icon-button rounded-3xl bg-blue-800 text-white transition-all duration-300 ease-in-out hover:bg-blue-700 focus:outline-none"
+      className={`big-icon-button rounded-3xl bg-blue-800 text-white transition-all duration-300 ease-in-out ${selectedReceivingSystem?.id === 'pix' ? '' : 'hover:bg-blue-700'} focus:outline-none`}
+      disabled={selectedReceivingSystem?.id === 'pix'}
       onClick={onInvert}
       aria-label="Invertir sistemas"
     >

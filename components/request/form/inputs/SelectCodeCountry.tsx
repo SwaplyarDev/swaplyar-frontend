@@ -1,8 +1,12 @@
+// /components/request/form/inputs/SelectCodeCountry.tsx
+
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Select from 'react-select';
 import { CountryOption, FieldError, SelectCodeCountryProps } from '@/types/request/request';
+import { defaultCountryOptions, defaultCountryValues } from '@/utils/defaultCountryOptions';
+const NEXT_PUBLIC_REST_COUNTRIES_API_URL = process.env.NEXT_PUBLIC_REST_COUNTRIES_API_URL;
 
 const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
   selectedCodeCountry,
@@ -17,12 +21,17 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
   const [countryValues, setCountryValues] = useState<CountryOption[]>([]);
 
   useEffect(() => {
+    console.log('NEXT_PUBLIC_REST_COUNTRIES_API_URL:  ', NEXT_PUBLIC_REST_COUNTRIES_API_URL);
     const fetchCountries = async () => {
+      if (!NEXT_PUBLIC_REST_COUNTRIES_API_URL) {
+        console.error('Missing REST Countries API URL. Using default options.');
+        setCountryOptions(defaultCountryOptions);
+        setCountryValues(defaultCountryValues);
+        return;
+      }
       try {
-        const response = await fetch(process.env.NEXT_PUBLIC_REST_COUNTRIES_API_URL!);
-        console.log('restcountries 01', response);
+        const response = await fetch(NEXT_PUBLIC_REST_COUNTRIES_API_URL);
         const countries = await response.json();
-        console.log('restcountries 02', countries);
         const options: CountryOption[] = countries.map((country: any) => {
           const callingCode = country.idd?.root ? `${country.idd.root}${country.idd.suffixes?.[0] || ''}` : '';
           return {
@@ -44,7 +53,9 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
         setCountryOptions(options);
         setCountryValues(options2);
       } catch (error) {
-        console.error('Error fetching countries:', error);
+        console.error('Error fetching countries:', error, 'Using default options.');
+        setCountryOptions(defaultCountryOptions);
+        setCountryValues(defaultCountryValues);
       }
     };
 

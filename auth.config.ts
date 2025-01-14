@@ -5,7 +5,7 @@ import Github from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
 import { InvalidCredentials } from './lib/auth/index';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default {
   providers: [
@@ -29,7 +29,7 @@ export default {
             ...(user_id ? { user_id } : {}),
           };
 
-          const response = await fetch(`${BASE_URL}/v1/${URL_VERIFICATION}`, {
+          const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/${URL_VERIFICATION}`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

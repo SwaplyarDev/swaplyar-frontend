@@ -111,21 +111,29 @@ export const LideresenCambio = '/images/lideresencambio.png';
 export const SeguridadySatisfaccion = '/images/seguridadysatisfaccion.png';
 
 /**transaction-calculator**/
-export const PaypalImg = '/images/paypal.big.png';
-export const PaypalDarkImg = '/images/paypal.dark.png';
+export const PaypalImg = '/images/32.png';
+export const PaypalDarkImg = '/images/31.png';
 
-export const PayoneerUsdImg = '/images/payoneer.usd.big.png';
-export const PayoneerUsdDarkImg = '/images/payoneer.usd.dark.png';
-export const PayoneerEurImg = '/images/payoneer.eur.big.png';
-export const PayoneerEurDarkImg = '/images/payoneer.eur.dark.png';
+export const PayoneerUsdImg = '/images/24.png';
+export const PayoneerUsdDarkImg = '/images/23.png';
+export const PayoneerEurImg = '/images/26.png';
+export const PayoneerEurDarkImg = '/images/25.png';
 
-export const BankImg = '/images/banco.medium.png';
-export const BankDarkImg = '/images/banco.dark.png';
+export const BankImg = '/images/22.png';
+export const BankDarkImg = '/images/21.png';
 
-export const WiseUsdImg = '/images/wise.usd.big.png';
-export const WiseUsdDarkImg = '/images/wise.usd.dark.png';
-export const WiseEurImg = '/images/wise.eur.big.png';
-export const WiseEurDarkImg = '/images/wise.eur.dark.png';
+export const WiseUsdImg = '/images/28.png';
+export const WiseUsdDarkImg = '/images/27.png';
+export const WiseEurImg = '/images/30.png';
+export const WiseEurDarkImg = '/images/29.png';
+
+export const TetherImg = '/images/34.png';
+export const TetherDarkImg = '/images/33.png';
+
+export const PixImg = '/images/36.png';
+export const PixDarkImg = '/images/35.png';
+
+/**404**/
 
 export const Error_404_clear = '/images/clear-404.png';
 export const Error_404_dark = '/images/dark-404.png';
@@ -143,3 +151,9 @@ export const Enchufe_clear_largo = '/images/enchufe_clear_largo.png';
 export const tlf_404_dark = '/images/tlf_404_dark.png';
 export const tlf_404_clear = '/images/tlf_404_clear.png';
 export const post3_404 = '/images/post3_404.png';
+/** Editor Solicitud **/
+export const EditorPC = '/images/EditorPC.png';
+export const EditorMobile = '/images/EditorMobile.png';
+
+/** Repentance**/
+export const regretsPhone = '/images/regretPhone.png';

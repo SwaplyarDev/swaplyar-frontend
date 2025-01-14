@@ -17,6 +17,7 @@ export const configRoutes: ConfigRoutes = {
     '/info/questions',
     '/request',
     '/repentance',
+    '/editRequest',
   ],
   authRoutes: ['/auth/login-register', '/auth/login-register/email-verification'],
   apiRoutes: ['/api/login', '/api/users', '/api/company', '/api/roles', '/api/paypal'],

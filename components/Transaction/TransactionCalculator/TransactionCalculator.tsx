@@ -1,24 +1,19 @@
 'use client';
-import { useState, useEffect, useRef, use } from 'react';
+import { useState, useEffect } from 'react';
 import SystemInfo from '../SystemInfo/SystemInfo';
 import InvertSystems from '../InvertSystems/InvertSystems';
 import { useSystemStore } from '@/store/useSystemStore';
 import { usePathname, useRouter } from 'next/navigation';
-import Paypal from '../PayPal/Paypal';
-import Swal from 'sweetalert2';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { createRoot } from 'react-dom/client';
-import { systems } from '@/utils/dataCoins';
 import { useAmountCalculator } from '@/hooks/useAmountCalculator';
 import { useSystemSelection } from '@/hooks/useSystemSelection';
 import TransactionSection from '@/components/ui/TransactionSection/TransactionSection';
 import clsx from 'clsx';
 import { useExchangeRateStore } from '@/store/exchangeRateStore';
-import { useExchangeRate } from '@/hooks/useExchangeRates';
-import Image from 'next/image';
 import { useStepperStore } from '@/store/stateStepperStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
+import { systems } from '@/utils/dataCoins';
 
 export default function TransactionCalculator() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -27,12 +22,10 @@ export default function TransactionCalculator() {
 
   useEffect(() => {
     if (selectedSendingSystem && selectedReceivingSystem) {
-      console.log('Iniciando el proceso de actualización de tasas.');
       startUpdatingRates();
     }
 
     return () => {
-      console.log('Deteniendo el proceso de actualización de tasas.');
       stopUpdatingRates();
     };
   }, [selectedSendingSystem, selectedReceivingSystem, startUpdatingRates, stopUpdatingRates]);
@@ -68,60 +61,13 @@ export default function TransactionCalculator() {
     router.push('/request');
   };
 
-  const handleExchangePaypal = () => {
-    setIsProcessing(true);
-    Swal.fire({
-      title: 'Procesar pago con PayPal',
-      html: `
-        <p>¿Estás seguro de que deseas procesar el pago de ${exchange.amount} ${exchange.currency} con PayPal?</p>
-        <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px; gap: 40px">
-          <div id="paypal-button-container" style="width: 150px;"></div>
-          <div style="height: 49px;">   
-          <button id="cancel-button" class="rounded-[23px] h-[45px] min-w-[150px] bg-[#f44336] text-white border-none px-5 py-2.5 cursor-pointer hover:filter  hover:brightness-75">Cancelar</button></div>
-        </div>
-      `,
-      icon: 'info',
-      showConfirmButton: false,
-      showCancelButton: false,
-      background: isDark ? 'rgb(69 69 69)' : '#ffffff',
-      color: isDark ? '#ffffff' : '#000000',
-      didRender: () => {
-        const paypalElement = document.getElementById('paypal-button-container');
-        if (paypalElement) {
-          const root = createRoot(paypalElement);
-          root.render(
-            <Paypal
-              currency={exchange.currency}
-              amount={exchange.amount}
-              handleDirection={handleDirection}
-              handleClose={Swal.close}
-            />,
-          );
-        }
-      },
-      didOpen: () => {
-        const cancelButton = document.getElementById('cancel-button');
-        if (cancelButton) {
-          cancelButton.addEventListener('click', () => {
-            setIsProcessing(false);
-            Swal.close();
-          });
-        }
-      },
-    });
-  };
-
   const handleSubmit = () => {
-    if (selectedSendingSystem?.id === 'paypal') {
-      handleExchangePaypal();
-    } else {
-      setIsProcessing(true);
-      // setInterval(() => {
+    setIsProcessing(true);
+    setTimeout(() => {
       handleDirection();
       resetToDefault();
       setIsProcessing(false);
-      // }, 3000);
-    }
+    }, 3000);
   };
 
   return (
@@ -134,7 +80,7 @@ export default function TransactionCalculator() {
         </p>
 
         <TransactionSection
-          systems={systems}
+          systems={systems.filter((system) => system.id !== 'pix')}
           selectedSystem={selectedSendingSystem}
           onSystemSelect={(system) => handleSystemSelection(system, true)}
           showOptions={activeSelect === 'send'}
@@ -145,7 +91,7 @@ export default function TransactionCalculator() {
           isSending={true}
         />
         <div className="mt-4 flex h-full items-center justify-center">
-          <InvertSystems onInvert={handleInvertSystemsClick} />
+          <InvertSystems onInvert={handleInvertSystemsClick} selectedReceivingSystem={selectedReceivingSystem} />
         </div>
         <SystemInfo pointBorder="border" linePosition="up">
           <p className="text-xs xs:text-base">Información del sistema de recepción</p>
@@ -206,13 +152,6 @@ export default function TransactionCalculator() {
             >
               {isProcessing ? (
                 <div className="flex items-center justify-center gap-2">
-                  {/* <Image
-                    src="/gif/cargando.gif"
-                    width={20}
-                    height={20}
-                    alt="loading"
-                    className="mb-0.5 mr-1"
-                  /> */}
                   <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
                   Procesando...
                 </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import useBlogStore from '@/store/useBlogStore';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const useBlogs = (currentPage: number, searchTerm: string) => {
   const { setBlogs } = useBlogStore();
@@ -11,7 +11,7 @@ const useBlogs = (currentPage: number, searchTerm: string) => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        let url = `${BASE_URL}/v1/blogs?page=${currentPage}`;
+        let url = `${NEXT_PUBLIC_BACKEND_URL}/v1/blogs?page=${currentPage}`;
 
         if (searchTerm) {
           url += `&search=${encodeURIComponent(searchTerm)}`;
