@@ -26,10 +26,13 @@ const config: Config = {
         'center-10px': 'center 10px',
       },
       screens: {
+        'mini-phone': '340px',
+        'xs-mini-phone': '390px',
         xs: '480px',
         'xs-phone': '550px',
         sm: '640px',
         'sm-phone': '660px',
+        'md-phone': '700px',
         'sm-tablet': '749px',
         md: '768px',
         'md-tablet': '850px',
