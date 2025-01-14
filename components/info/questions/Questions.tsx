@@ -31,7 +31,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolea
   <MuiAccordionSummary
     expandIcon={
       <div
-        className="group" // Usamos "group" aquí para que el hover se aplique correctamente
+        className={`${props.isDark ? 'bg-[rgba(75,75,75,1)]' : 'bg-[rgb(225,225,225)] group-hover:bg-[rgb(1,42,142)]'}`}
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -39,14 +39,18 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolea
           borderRadius: '50%',
           width: '40px',
           height: '40px',
-          backgroundColor: '#ebe7e0', // Fondo predeterminado
-          transition: 'background-color 0.3s ease', // Animar el cambio de color de fondo
+
+          // Fondo predeterminado
+          transition: 'background-color 0.3s ease',
+          // Animar el cambio de color de fondo
         }}
       >
         <ExpandMore
+          className={`${props.isDark ? 'text-white' : 'group-hover:text-[rgb(235,231,224)]'}`}
           sx={{
             fontSize: '2rem',
-            color: '#252526', // Color de la flecha
+            color: 'rgb(144,176,254)',
+
             transition: 'color 0.3s ease', // Animar el cambio de color de la flecha si se desea
           }}
         />
@@ -54,13 +58,19 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolea
     }
     {...props}
   />
-))(({ theme }) => ({
+))(({ theme, isDark }) => ({
   border: 'none',
   [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]: {
     transform: 'rotate(180deg)',
   },
   [`& .${accordionSummaryClasses.content}`]: {
     marginLeft: theme.spacing(0),
+  },
+  '&:hover': {
+    backgroundColor: isDark ? '#333' : '#f5f5f5', // Color de fondo en hover
+    [`& .MuiTypography-root`]: {
+      color: isDark ? '#f5f5f5' : 'rgb(1,42,141)', // Cambiar color del texto en hover
+    },
   },
 }));
 
@@ -92,20 +102,20 @@ const FrequentlyQuestions = () => {
           <Accordion
             isDark={isDark}
             key={dato.question_id}
+            onMouseOver={(e) => console.log('mouseOver', e.target)}
             expanded={expanded === `panel${index}`} // Comprobar si este panel está expandido
             onChange={handleChange(`panel${index}`)} // Manejar la expansión del panel
             className="group" // Agregar "group" al Accordion completo
           >
             <AccordionSummary className="p-0" isDark={isDark}>
-              <Typography
-                className={`mr-8 py-2 text-xl ${isDark ? 'text-[#ebe7e0]' : 'text-[#252526] group-hover:text-[rgb(1,42,141)]'} `}
-              >
+              <Typography className={`mr-8 py-2 text-xl ${isDark ? 'text-[#ebe7e0]' : 'text-[#252526]'} `}>
                 {dato.title}
               </Typography>
             </AccordionSummary>
             <AccordionDetails className="flex flex-col items-center justify-center">
               <Typography
-                className={`w-9/10 rounded-md bg-gray-200 p-6 text-left ${isDark ? 'bg-graytyc text-gray-100' : 'bg-gray-100 text-gray-900'}`}
+                className={`w-9/10 rounded-md p-6 text-left ${isDark ? 'bg-graytyc text-gray-100' : 'bg-gray-100 text-gray-900'}`}
+                style={isDark ? { background: 'rgba(75,75,75,1)' } : { background: 'rgb(238, 234, 227)' }}
               >
                 {dato.descripcion}
               </Typography>
