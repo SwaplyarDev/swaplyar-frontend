@@ -126,19 +126,19 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
         {cardsData.map((card, index) => (
           <div key={index} className="card relative h-64 w-52">
             <div className="card-inner transform-style preserve-3d h-full w-full transition-transform duration-700">
-              <div className="card-front backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-lg bg-white text-black shadow-lg dark:bg-gray-800 dark:text-white">
+              <div className="card-front backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-2xl bg-white text-black shadow-lg dark:bg-gray-800 dark:text-white">
                 <Image
                   src={card.src}
                   alt={card.alt}
                   layout="fill"
                   objectFit="cover"
-                  className="rounded-lg shadow-custom-blue"
+                  className="rounded-2xl shadow-custom-blue"
                 />
-                <h3 className="absolute bottom-0 mt-2 w-full rounded bg-black bg-opacity-75 p-2 text-xl text-white">
+                <h3 className="absolute bottom-0 mt-2 w-full rounded-bl-2xl rounded-br-2xl bg-black p-2 text-xl text-white">
                   {card.title}
                 </h3>
               </div>
-              <div className="card-back backface-hidden rotate-y-180 absolute flex h-full w-full transform flex-col items-center justify-center rounded-lg bg-dark-blue p-4 text-white shadow-custom-black dark:bg-gray-800 dark:text-white">
+              <div className="card-back backface-hidden rotate-y-180 absolute flex h-full w-full transform flex-col items-center justify-center rounded-2xl bg-dark-blue p-4 text-white shadow-custom-black dark:bg-gray-800 dark:text-white">
                 <h3 className="text-xl">{card.backTitle}</h3>
                 <p className="mt-2">{card.backText}</p>
               </div>
