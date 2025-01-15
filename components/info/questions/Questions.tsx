@@ -11,6 +11,10 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import useQuestion from '@/components/ui/top-menu/UseQuestion/useQuestion';
+import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
+import BannerQuestions from '@/public/images/baner_questions.png';
+//C:\Users\Administrator\swaplyar-frontend\components\info\questions\Questions.tsx
+//C:\Users\Administrator\swaplyar-frontend\public\images
 
 const Accordion = styled((props: AccordionProps & { isDark: boolean }) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -92,38 +96,47 @@ const FrequentlyQuestions = () => {
   };
 
   return (
-    <main className="relative flex w-full flex-col items-center justify-center py-10">
-      <div className="mx-auto grid max-w-[1000px]" style={{ margin: currentMargin }}>
-        <h1 className={`mb-14 text-left text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-buttonsLigth'}`}>
-          Preguntas Frecuentes
-        </h1>
+    <div>
+      <main className="relative flex w-full flex-col items-center justify-center py-10">
+        <div className="mx-auto grid max-w-[1000px]" style={{ margin: currentMargin }}>
+          <h1 className={`mb-14 text-left text-4xl ${isDark ? 'text-gray-100' : 'text-slate-800'}`}>
+            Preguntas Frecuentes
+          </h1>
 
-        {questions.map((dato, index) => (
-          <Accordion
-            isDark={isDark}
-            key={dato.question_id}
-            onMouseOver={(e) => console.log('mouseOver', e.target)}
-            expanded={expanded === `panel${index}`} // Comprobar si este panel está expandido
-            onChange={handleChange(`panel${index}`)} // Manejar la expansión del panel
-            className="group" // Agregar "group" al Accordion completo
-          >
-            <AccordionSummary className="p-0" isDark={isDark}>
-              <Typography className={`mr-8 py-2 text-xl ${isDark ? 'text-[#ebe7e0]' : 'text-[#252526]'} `}>
-                {dato.title}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails className="flex flex-col items-center justify-center">
-              <Typography
-                className={`w-9/10 rounded-md p-6 text-left ${isDark ? 'bg-graytyc text-gray-100' : 'bg-gray-100 text-gray-900'}`}
-                style={isDark ? { background: 'rgba(75,75,75,1)' } : { background: 'rgb(238, 234, 227)' }}
+          {questions.map((dato, index) => (
+            <Accordion
+              isDark={isDark}
+              key={dato.question_id}
+              expanded={expanded === `panel${index}`} // Comprobar si este panel está expandido
+              onChange={handleChange(`panel${index}`)} // Manejar la expansión del panel
+              className="group" // Agregar "group" al Accordion completo
+            >
+              <AccordionSummary
+                className={`p-0 ${isDark ? 'hover:bg-gray-800' : 'hover:bg-transparent'}`}
+                isDark={isDark}
               >
-                {dato.descripcion}
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-        ))}
+                <Typography className={`mr-8 py-2 text-xl ${isDark ? 'text-[#ebe7e0]' : 'text-[#252526]'} `}>
+                  {dato.title}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails className="flex flex-col items-center justify-center">
+                <Typography
+                  className={`w-9/10 rounded-md p-6 text-left ${isDark ? 'bg-graytyc text-gray-100' : 'bg-gray-100 text-gray-900'}`}
+                  style={isDark ? { background: 'rgba(75,75,75,1)' } : { background: 'rgb(238, 234, 227)' }}
+                >
+                  {dato.descripcion}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </div>
+      </main>{' '}
+      <div className="hidden md:block">
+        <FlyerTrabajo imageSrc={BannerQuestions.src}>
+          <></>
+        </FlyerTrabajo>
       </div>
-    </main>
+    </div>
   );
 };
 
