@@ -25,10 +25,9 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
   const [activeCards, setActiveCards] = useState<{ [key: number]: boolean }>({});
 
   const handleToggle = (index: number) => {
-    // Alternar el estado de la tarjeta al hacer clic
-    setActiveCards((prev: any) => ({
+    setActiveCards((prev) => ({
       ...prev,
-      [index]: !prev[index], // Cambiar el estado para la tarjeta correspondiente
+      [index]: !prev[index],
     }));
   };
 
@@ -40,7 +39,14 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? cardsData.length - 1 : prevIndex - 1));
   };
 
-  const swipeHandlers = useSwipeable({
+  const swipeHandlersMobile = useSwipeable({
+    onSwipedLeft: handleNext,
+    onSwipedRight: handlePrev,
+    preventScrollOnSwipe: true,
+    trackMouse: true,
+  });
+
+  const swipeHandlersDesktop = useSwipeable({
     onSwipedLeft: handleNext,
     onSwipedRight: handlePrev,
     preventScrollOnSwipe: true,
@@ -50,7 +56,6 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        console.log('IntersectionObserver triggered:', entry.isIntersecting);
         if (entry.isIntersecting) {
           setShowSwipeHands(true);
         }
@@ -58,7 +63,7 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
       { threshold: 1 },
     );
 
-    const currentSectionRef = sectionRef.current; // Copia la referencia a una variable
+    const currentSectionRef = sectionRef.current;
 
     if (currentSectionRef) {
       observer.observe(currentSectionRef);
@@ -66,7 +71,7 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
 
     return () => {
       if (currentSectionRef) {
-        observer.unobserve(currentSectionRef); // Usa la variable en lugar de sectionRef.current
+        observer.unobserve(currentSectionRef);
       }
     };
   }, []);
@@ -79,7 +84,7 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
         </div>
       )}
 
-      <div {...swipeHandlers} className="relative block h-64 w-full overflow-hidden md:hidden">
+      <div {...swipeHandlersMobile} className="relative block h-64 w-full overflow-hidden md:hidden">
         <div className="relative flex h-full w-full items-center justify-center">
           {cardsData.map((card, index) => {
             const isCurrent = index === currentIndex;
@@ -98,15 +103,22 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
                   onClick={() => handleToggle(index)}
                 >
                   <div className="card-inner h-full w-full duration-700">
-                    <div className="card-front backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-lg bg-white text-black shadow-lg dark:bg-gray-800 dark:text-white">
+                    <div className="card-front backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-2xl bg-white text-black shadow-lg dark:bg-gray-800 dark:text-white">
                       <Image
                         src={card.src}
                         alt={card.alt}
                         layout="fill"
                         objectFit="cover"
-                        className="rounded-lg shadow-custom-blue"
+                        className="rounded-2xl shadow-md shadow-black/50"
                       />
-                      <h3 className="absolute bottom-0 mt-2 w-full rounded bg-black bg-opacity-75 p-2 text-xl text-white">
+                      <Image
+                        src="/images/rotate-card-icon.svg"
+                        alt="Icono de rotacion de la card"
+                        width={25}
+                        height={25}
+                        className="absolute right-2 top-2"
+                      />
+                      <h3 className="absolute bottom-0 mt-2 w-full rounded-bl-2xl rounded-br-2xl bg-black p-2 text-xl text-white">
                         {card.title}
                       </h3>
                     </div>
@@ -122,29 +134,49 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
         </div>
       </div>
 
-      <div className="cards-container hidden h-full items-center justify-between md:flex">
-        {cardsData.map((card, index) => (
-          <div key={index} className="card relative h-64 w-52">
-            <div className="card-inner transform-style preserve-3d h-full w-full transition-transform duration-700">
-              <div className="card-front backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-2xl bg-white text-black shadow-lg dark:bg-gray-800 dark:text-white">
-                <Image
-                  src={card.src}
-                  alt={card.alt}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-2xl shadow-custom-blue"
-                />
-                <h3 className="absolute bottom-0 mt-2 w-full rounded-bl-2xl rounded-br-2xl bg-black p-2 text-xl text-white">
-                  {card.title}
-                </h3>
-              </div>
-              <div className="card-back backface-hidden rotate-y-180 absolute flex h-full w-full transform flex-col items-center justify-center rounded-2xl bg-dark-blue p-4 text-white shadow-custom-black dark:bg-gray-800 dark:text-white">
-                <h3 className="text-xl">{card.backTitle}</h3>
-                <p className="mt-2">{card.backText}</p>
+      <div
+        {...swipeHandlersDesktop}
+        className="cards-container relative hidden h-[300px] w-full items-center justify-between md:flex md:items-end"
+      >
+        {cardsData.map((card, index) => {
+          const isFrontLeft = index === currentIndex;
+          const isFrontRight = index === (currentIndex + 1) % cardsData.length;
+          const isPrev = index === (currentIndex - 1 + cardsData.length) % cardsData.length;
+
+          return (
+            <div
+              key={index}
+              className={`card h-64 w-52 lg:static ${(isFrontLeft || isFrontRight) && `absolute top-0 z-20`}`}
+              style={isFrontLeft ? { left: `20%` } : isFrontRight ? { right: `20%` } : isPrev ? { left: '-20%' } : {}}
+            >
+              <div className="card-inner transform-style preserve-3d h-full w-full transition-transform duration-700">
+                <div className="card-front backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-2xl bg-white text-black shadow-lg dark:bg-gray-800 dark:text-white">
+                  <Image
+                    src={card.src}
+                    alt={card.alt}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-2xl shadow-md shadow-black/50"
+                  />
+                  <Image
+                    src="/images/rotate-card-icon.svg"
+                    alt="Icono de rotacion de la card"
+                    width={25}
+                    height={25}
+                    className="absolute right-2 top-2"
+                  />
+                  <h3 className="absolute bottom-0 mt-2 w-full rounded-bl-2xl rounded-br-2xl bg-black p-2 text-xl text-white">
+                    {card.title}
+                  </h3>
+                </div>
+                <div className="card-back backface-hidden rotate-y-180 absolute flex h-full w-full transform flex-col items-center justify-center rounded-2xl bg-dark-blue p-4 text-white shadow-custom-black dark:bg-gray-800 dark:text-white">
+                  <h3 className="text-xl">{card.backTitle}</h3>
+                  <p className="mt-2">{card.backText}</p>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

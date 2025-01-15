@@ -120,9 +120,9 @@ const AboutUs = () => {
             ))}
           </div>
 
-          <div className="my-10 flex w-full max-w-[1000px] justify-center sm:mb-36 sm:mt-40">
+          <div className="my-10 flex w-full max-w-[1000px] justify-center">
             <div className="grid w-[80%] grid-cols-1 items-center justify-center gap-8 md:grid-cols-2">
-              <div className="col-right order-1 text-left text-lg font-semibold text-black dark:text-white sm:text-left sm:text-xl md:order-2">
+              <div className="col-right order-1 text-left text-lg text-black dark:text-white sm:text-left sm:text-xl md:order-2">
                 <p>
                   "Nos Dedicamos a transformar la manera en que las personas manejan su dinero, utilizando las
                   tecnologias mas avanzadas y sistemas de pago innovadores. Porque entendemos que detrás de cada
@@ -151,10 +151,10 @@ const AboutUs = () => {
       </div>
       <div className="mt-10 text-center">
         <FlyerTrabajo imageSrc={FlyerGif}>
-          <span className="">
+          <span className="flex flex-col gap-2 text-base md:text-lg lg:text-xl">
+            <p>¿Nuevo en SwaplyAr?</p>
             <p>
-              ¿Nuevo en SwaplyAr? <br /> Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma
-              sencilla y segura. Haz click y aprende cómo usar SwaplyAr{' '}
+              Conoce cómo funciona nuestra plataforma y comienza a transferir <br /> dinero de forma sencilla y segura.
             </p>
           </span>
           <div>
@@ -166,7 +166,7 @@ const AboutUs = () => {
                 href={'/info/how-to-use'}
                 className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'}`}
               >
-                <h3>Como usar Swaplyar</h3>
+                <h3>¡Empieza ahora!</h3>
               </Link>
             </button>
           </div>
