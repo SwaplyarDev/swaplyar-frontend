@@ -8,15 +8,26 @@ interface User {
   email: string;
 }
 
+interface UserVerification {
+  email: string;
+  message: string;
+  user_id: string;
+}
+
 interface UserInfoStoreState {
   user: User | null;
+  userVerification: UserVerification | null;
   setUser: (user: User) => void;
+  setUserVerification: (userVerification: UserVerification) => void;
   clearUser: () => void;
 }
 
 // Creación del store de Zustand
 const userInfoStore = create<UserInfoStoreState>((set) => ({
   user: null, // Estado inicial sin usuario
+  userVerification: null,
+
+  setUserVerification: (userVerification) => set({ userVerification }),
 
   // Función para establecer el usuario
   setUser: (user) => set({ user }),
