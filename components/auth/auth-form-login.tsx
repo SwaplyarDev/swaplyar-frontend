@@ -70,21 +70,17 @@ export const LoginForm = () => {
 
         <label
           htmlFor="email"
-          className={clsx(
-            errors.email ? 'text-errorColor' : 'text-lightText dark:text-darkText',
-            !isFocused && 'hidden',
-            'mb-1 ml-2.5 text-sm',
-          )}
+          className={clsx('text-lightText dark:text-darkText', !isFocused && 'hidden', 'mb-1 ml-2.5 text-sm')}
         >
           Correo Electrónico
         </label>
         <input
           className={clsx(
-            'rounded-2xl border bg-transparent px-5 py-2 dark:bg-lightText',
-            watch('email') && 'border-inputLight',
+            'rounded-2xl border bg-transparent px-5 py-2 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
+            watch('email') && 'border-inputLight dark:border-lightText',
             errors.email
               ? 'mb-0 border-errorColor text-errorColor placeholder-errorColor'
-              : 'mb-5 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:hover:border-white',
+              : 'mb-5 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
           )}
           placeholder={isFocused ? '' : 'Correo electrónico'}
           type="text"
@@ -100,31 +96,30 @@ export const LoginForm = () => {
         />
         {errors.email && <p className="mb-5 ml-2.5 mt-1 text-sm text-errorColor">{errors.email.message}</p>}
 
-        <button
-          type="submit"
-          className={clsx(
-            loading || !watch('email') || errors.email
-              ? 'border-disabledButtonsLigth bg-disabledButtonsLigth'
-              : isDark
-                ? 'buttonSecondDark'
-                : 'buttonSecond',
-            'relative m-1 min-h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white dark:border-darkText dark:bg-darkText dark:text-lightText',
-          )}
-          disabled={loading || !watch('email')} // Desactivar el botón si está cargando
-        >
-          {loading ? (
-            <div className="flex items-center justify-center gap-2">
-              <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
-              Procesando...
-            </div>
-          ) : (
-            'Ingresar'
-          )}
-        </button>
+        {loading ? (
+          <div className="flex items-center justify-center">
+            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
+          </div>
+        ) : (
+          <button
+            type="submit"
+            className={clsx(
+              loading || !watch('email') || errors.email
+                ? 'border-disabledButtonsLigth bg-disabledButtonsLigth dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText'
+                : isDark
+                  ? 'buttonSecondDark dark:text-lightText'
+                  : 'buttonSecond',
+              'relative m-1 min-h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-darkText dark:border-darkText dark:bg-darkText dark:text-darkText',
+            )}
+            disabled={loading || !watch('email')} // Desactivar el botón si está cargando
+          >
+            Ingresar
+          </button>
+        )}
 
         <div className="my-5 flex items-center">
           <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
-          <div className="px-2 text-buttonsLigth dark:text-darkText">O</div>
+          <div className="px-2 text-2xl font-bold text-buttonsLigth dark:text-darkText">O</div>
           <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
         </div>
 

@@ -61,10 +61,13 @@ const config: Config = {
         darkText: '#ebe7e0', // Blanco Hueso o Marfil Claro
         lightText: '#252526', // Gris Muy Oscuro o Negro Grafito
         inputLight: '#012A8E', // Azul Marino Oscuro
+        inputDark: '#EEEAE3', // Blanco Hueso o Marfil Claro
+        placeholderDark: '#969696', // Gris claro para placeholder
         errorColor: '#CE1818',
 
         // Estados deshabilitados
         disabledButtonsLigth: '#90B0FE', // Gris claro para fondo deshabilitado de buttonsLigth
+        disabledButtonsDark: '#969696', // Gris claro para fondo deshabilitado
         disabledCalculatorDark: 'rgba(235, 231, 224, 0.1)', // Transparencia reducida para calculatorDark
         disabledCalculatorDark2: 'rgba(235, 231, 224, 0.3)', // Transparencia reducida para calculatorDark2
         disabledCalculatorLight: 'rgba(230, 232, 239, 0.1)', // Transparencia reducida para calculatorLight

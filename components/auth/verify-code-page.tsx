@@ -39,7 +39,7 @@ export const VerifyCodePage = () => {
   const { isDark } = useDarkTheme();
   const router = useRouter();
   const { view } = useStore();
-  const { user } = userInfoStore();
+  const { user, userVerification } = userInfoStore();
 
   const { attempts, lockUntil, decrementAttempts, setLockUntil, resetAttempts } = useCodeVerificationStore();
 
@@ -89,7 +89,7 @@ export const VerifyCodePage = () => {
       if (view === 'login') {
         result = await login(email || '', code);
       } else if (view === 'register') {
-        result = await registerUser(user?.id || '', code);
+        result = await registerUser(userVerification?.user_id || '', code);
       }
 
       if (!result.ok) {
@@ -112,16 +112,20 @@ export const VerifyCodePage = () => {
     if (!isLocked && attempts > 0 && timer === 0) {
       setReLoading(true);
       let URL_VERIFICATION = '';
+      let bodyData;
       if (email) {
-        URL_VERIFICATION = 'login/email/verify-code';
+        URL_VERIFICATION = 'login/email/send';
+        bodyData = {
+          email: email,
+        };
       }
-      if (user?.id) {
+      if (userVerification?.user_id) {
         URL_VERIFICATION = 'users/email-validation/send';
+        bodyData = {
+          email: email,
+          ...(userVerification?.user_id && { user_id: userVerification.user_id }),
+        };
       }
-      const bodyData = {
-        email: email,
-        ...(user?.id && { user_id: user.id }),
-      };
       try {
         await fetch(`${BASE_URL}/v1/${URL_VERIFICATION}`, {
           method: 'POST',

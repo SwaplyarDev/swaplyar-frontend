@@ -11,7 +11,6 @@ import useEmailVerificationStore from '@/store/emailVerificationStore';
 import { useRouter } from 'next/navigation';
 import userInfoStore from '@/store/userInfoStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
-import Image from 'next/image';
 
 type FormInputs = {
   firstName: string;
@@ -28,17 +27,23 @@ export const RegisterForm = () => {
   const { isDark } = useDarkTheme();
   const { setEmail } = useEmailVerificationStore();
   const router = useRouter();
-  const { setUser } = userInfoStore();
+  const { setUserVerification } = userInfoStore();
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFocused2, setIsFocused2] = useState(false);
+  const [isFocused3, setIsFocused3] = useState(false);
+  const [isFocused4, setIsFocused4] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
+    watch,
+    reset,
   } = useForm<FormInputs>();
 
   const { setView } = useStore();
   const handleChange = () => {
+    reset();
     setView('login');
   };
 
@@ -60,7 +65,7 @@ export const RegisterForm = () => {
           full_name: name,
           email: email,
           terms: termsConditions,
-          role: 'admin',
+          role: 'user',
         }),
       });
       if (!response.ok) {
@@ -68,7 +73,7 @@ export const RegisterForm = () => {
         throw new Error(errorResponse.message || 'Error al crear el usuario');
       }
       const responseData = await response.json();
-      setUser(responseData.user);
+      setUserVerification(responseData);
       setLoading(false);
       setEmail(email);
       setTimeout(() => {
@@ -93,55 +98,77 @@ export const RegisterForm = () => {
           <div className="flex flex-col xs:max-w-48">
             <label
               htmlFor="firstName"
-              className={clsx(errors.firstName ? 'text-red-500' : 'text-lightText dark:text-darkText')}
+              className={clsx('text-lightText dark:text-darkText', !isFocused && 'hidden', 'mb-1 ml-2.5 text-sm')}
             >
               Nombre
             </label>
             <input
               id="firstName"
               className={clsx(
-                'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-                errors.firstName ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600 dark:hover:border-white',
+                !isFocused && 'mt-6',
+                'max-w-full rounded-2xl border bg-transparent px-5 py-2 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
+                watch('firstName') && 'border-inputLight dark:border-lightText',
+                errors.firstName
+                  ? 'mb-0 border-errorColor text-errorColor placeholder-errorColor'
+                  : 'mb-5 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
               )}
+              placeholder={isFocused ? '' : 'Nombre'}
               type="text"
               {...register('firstName', {
                 required: 'El nombre es obligatorio',
               })}
+              onFocus={() => setIsFocused(true)}
+              onBlur={(e) => setIsFocused(e.target.value !== '')}
             />
-            {errors.firstName && <p className="mb-5 text-sm text-red-500">• {errors.firstName.message}</p>}
+            {errors.firstName && <p className="mb-5 ml-2.5 mt-1 text-sm text-errorColor">{errors.firstName.message}</p>}
           </div>
           <div className="flex flex-col xs:max-w-48">
             <label
               htmlFor="lastName"
-              className={clsx(errors.lastName ? 'text-red-500' : 'text-lightText dark:text-darkText')}
+              className={clsx('text-lightText dark:text-darkText', !isFocused2 && 'hidden', 'mb-1 ml-2.5 text-sm')}
             >
               Apellido
             </label>
             <input
               id="lastName"
               className={clsx(
-                'max-w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-                errors.lastName ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600 dark:hover:border-white',
+                !isFocused2 && 'mt-6',
+                'max-w-full rounded-2xl border bg-transparent px-5 py-2 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
+                watch('lastName') && 'border-inputLight dark:border-lightText',
+                errors.lastName
+                  ? 'mb-0 border-errorColor text-errorColor placeholder-errorColor'
+                  : 'mb-5 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
               )}
+              placeholder={isFocused2 ? '' : 'Apellido'}
               type="text"
               {...register('lastName', {
                 required: 'El apellido es obligatorio',
               })}
+              onFocus={() => setIsFocused2(true)}
+              onBlur={(e) => setIsFocused2(e.target.value !== '')}
             />
-            {errors.lastName && <p className="mb-5 text-sm text-red-500">• {errors.lastName.message}</p>}
+            {errors.lastName && <p className="mb-5 ml-2.5 mt-1 text-sm text-errorColor">{errors.lastName.message}</p>}
           </div>
         </div>
 
-        <label htmlFor="email" className={clsx(errors.email ? 'text-red-500' : 'text-lightText dark:text-darkText')}>
+        <label
+          htmlFor="email"
+          className={clsx('text-lightText dark:text-darkText', !isFocused3 && 'hidden', 'mb-1 ml-2.5 text-sm')}
+        >
           Correo electrónico
         </label>
         <input
           id="email"
           className={clsx(
-            'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-            errors.email ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600 dark:hover:border-white',
+            !isFocused3 && 'mt-6',
+            'rounded-2xl border bg-transparent px-5 py-2 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
+            watch('email') && 'border-inputLight dark:border-lightText',
+            errors.email
+              ? 'mb-0 border-errorColor text-errorColor placeholder-errorColor'
+              : 'mb-5 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
           )}
-          type="email"
+          placeholder={isFocused3 ? '' : 'Correo Electrónico'}
+          type="text"
           {...register('email', {
             required: 'El correo electrónico es obligatorio',
             pattern: {
@@ -149,17 +176,29 @@ export const RegisterForm = () => {
               message: 'El formato del correo electrónico es inválido',
             },
           })}
+          onFocus={() => setIsFocused3(true)}
+          onBlur={(e) => setIsFocused3(e.target.value !== '')}
         />
-        {errors.email && <p className="mb-5 text-sm text-red-500">• {errors.email.message}</p>}
+        {errors.email && <p className="mb-5 ml-2.5 mt-1 text-sm text-errorColor">{errors.email.message}</p>}
 
         <div className="mb-5 flex items-center">
           <input
             id="termsConditions"
             type="checkbox"
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 hover:cursor-pointer hover:border-blue-600 dark:border-gray-600 dark:bg-lightText dark:ring-blue-500 dark:hover:border-white"
-            {...register('termsConditions')}
+            className={clsx(
+              watch('termsConditions') && 'border-inputLight bg-inputLight dark:border-lightText dark:bg-lightText',
+              'h-5 w-5 cursor-pointer appearance-none rounded-full border-2 border-inputLightDisabled transition-all duration-200 dark:border-lightText',
+              'checked:border-inputLight checked:bg-inputLight checked:ring-opacity-0 dark:checked:border-lightText dark:checked:bg-lightText',
+              'focus:shadow-none focus:outline-none focus:ring-0 focus:ring-offset-0',
+              'hover:border-inputLight checked:hover:border-inputLight checked:focus:border-inputLight checked:focus:bg-inputLight dark:checked:hover:border-lightText dark:checked:focus:border-lightText dark:checked:focus:bg-lightText',
+              errors.termsConditions ? 'border-red-500 ring-2 ring-red-500' : '',
+              'dark:border-lightText dark:bg-lightText dark:invert dark:hover:border-lightText',
+            )}
+            {...register('termsConditions', {
+              required: 'Debes aceptar los términos y condiciones.',
+            })}
           />
-          <label htmlFor="termsConditions" className="ml-2">
+          <label htmlFor="termsConditions" className="ml-2 text-lightText dark:text-darkText">
             <Link href="/info/terms-and-conditions" className="underline">
               Acepto Términos & Condiciones
             </Link>
@@ -176,30 +215,41 @@ export const RegisterForm = () => {
           </div>
         )}
 
-        <button
-          type="submit"
-          className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 min-h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
-          disabled={loading}
-        >
-          {loading ? (
-            <div className="flex items-center justify-center gap-2">
-              <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
-              Creando cuenta...
-            </div>
-          ) : (
-            'Crear cuenta'
-          )}
-        </button>
+        {loading ? (
+          <div className="flex items-center justify-center">
+            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
+          </div>
+        ) : (
+          <button
+            type="submit"
+            className={clsx(
+              loading ||
+                !watch('email') ||
+                !watch('termsConditions') ||
+                !watch('firstName') ||
+                !watch('lastName') ||
+                errors.email
+                ? 'border-disabledButtonsLigth bg-disabledButtonsLigth dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText'
+                : isDark
+                  ? 'buttonSecondDark dark:text-lightText'
+                  : 'buttonSecond',
+              'relative m-1 min-h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-darkText dark:border-darkText dark:bg-darkText',
+            )}
+            disabled={loading || !watch('email')} // Desactivar el botón si está cargando
+          >
+            Crear cuenta
+          </button>
+        )}
 
         <div className="my-5 flex items-center">
           <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
-          <div className="px-2 text-buttonsLigth dark:text-darkText">O</div>
+          <div className="px-2 text-2xl font-bold text-buttonsLigth dark:text-darkText">O</div>
           <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
         </div>
 
         <button
           onClick={handleChange}
-          className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+          className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth px-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
           type="button"
         >
           Ingresar
