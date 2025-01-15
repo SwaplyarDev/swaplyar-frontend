@@ -21,13 +21,13 @@ const Accordion = styled((props: AccordionProps & { isDark: boolean }) => (
 ))(({ isDark }) => ({
   border: 'none',
   backgroundColor: 'transparent',
-  borderTop: isDark ? '2px solid #ebe7e0' : '2px solid #012c8a',
+  borderTop: isDark ? '1px solid #ebe7e0' : '1px solid #012c8a',
   '&::before': {
     content: 'none',
     border: 'none',
   },
   '&:last-child': {
-    borderBottom: isDark ? '2px solid #ebe7e0' : '2px solid #012c8a',
+    borderBottom: isDark ? '1px solid #ebe7e0' : '1px solid #012c8a',
   },
 }));
 
@@ -96,13 +96,12 @@ const FrequentlyQuestions = () => {
   };
 
   return (
-    <div>
-      <main className="relative flex w-full flex-col items-center justify-center py-10">
-        <div className="mx-auto grid max-w-[1000px]" style={{ margin: currentMargin }}>
-          <h1 className={`mb-14 text-left text-4xl ${isDark ? 'text-gray-100' : 'text-slate-800'}`}>
-            Preguntas Frecuentes
-          </h1>
-
+    <main className="relative flex w-full flex-col items-center justify-center py-10">
+      <div className="mx-auto grid max-w-[1000px]" style={{ margin: currentMargin }}>
+        <header className={`mb-14 text-left text-4xl ${isDark ? 'text-gray-100' : 'text-slate-800'}`}>
+          Preguntas Frecuentes
+        </header>
+        <section>
           {questions.map((dato, index) => (
             <Accordion
               isDark={isDark}
@@ -129,14 +128,14 @@ const FrequentlyQuestions = () => {
               </AccordionDetails>
             </Accordion>
           ))}
-        </div>
-      </main>{' '}
-      <div className="mt-10 hidden md:block">
+        </section>
+      </div>
+      <section className="mt-10 h-auto w-full border-[1px] border-gray-300">
         <FlyerTrabajo imageSrc={BannerQuestions.src}>
           <></>
-        </FlyerTrabajo>
-      </div>
-    </div>
+        </FlyerTrabajo>{' '}
+      </section>
+    </main>
   );
 };
 
