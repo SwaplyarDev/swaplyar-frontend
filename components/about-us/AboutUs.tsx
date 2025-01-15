@@ -52,60 +52,78 @@ const cardsData = [
   },
 ];
 
+const sectionsData = [
+  {
+    title: 'Nuestra Misión: Ofrecerte Soluciones Financieras',
+    description:
+      'Nuestra misión es facilitar transacciones financieras digitales e internacionales seguras y accesibles para personas y empresas en todo el mundo. SwaplyAr nació de la necesidad de facilitar el intercambio de saldo y asegurar que cada usuario reciba exactamente lo acordado, brindando acompañamiento a lo largo de todo el proceso.',
+  },
+  {
+    title: 'Nuestra Visión: Transformar Tus Finanzas Digitales',
+    description:
+      'Queremos ser la plataforma líder en servicios financieros digitales, reconocida globalmente por nuestrainnovación, confianza y compromiso con cada cliente. Nuestro objetivo es expandir nuestra presencia internacional, creando una comunidad global que transforma juntos la manera de gestionar las finanzas.',
+    secondaryDescription:
+      'A través de tecnología de vanguardia y un enfoque centrado en el cliente, trabajamos para garantizar transacciones seguras, rápidas y transparentes. Nos adaptamos a un mundo en constante evolución, ayudando a transformar la manera en que gestionas tus finanzas digitales.',
+  },
+  {
+    title: 'Nuestros Valores: Una Extensión de Tu Confianza',
+    description:
+      'Nos guiamos diariamente por nuestros valores fundamentales: Profesionalidad, Apoyo, Transparencia, Simplicidad y Eficiencia. Estos principios nos permiten trabajar unidos como un equipo global, con nuestros clientes en el centro de todas nuestras acciones. Además, nos impulsan a cuidar de nosotros mismos, de los demás y de las comunidades que nos rodean.',
+  },
+];
+
 const AboutUs = () => {
   const { margins } = useMargins();
   const currentMargin = ResponsiveMarginHook(margins);
   const { isDark } = useDarkTheme();
   return (
     <>
-      <div className="relative flex flex-col items-center justify-center py-10">
+      <div className="relative flex flex-col items-center justify-center px-4">
         <AnimatedBlurredCircles tope="top-[0px]" />
         <div
           className="flex w-full max-w-[1000px] flex-col items-center justify-center pt-5 text-black dark:text-white"
           style={{ margin: currentMargin }}
         >
-          <div className="rs-wrapper-v4 mx-auto items-center justify-center text-center md:w-full">
-            <div className="container-text pb-12 pt-10 text-xl sm:pb-24 sm:pt-20 sm:text-2xl lg:text-4xl">
-              <h1 className="max-w-[1000px] text-center lg:text-4xl">Nuestra misión y valores</h1>
+          <div className="md:max-w-[80%]">
+            <div className="rs-wrapper-v4 mx-auto items-center justify-center text-center md:w-full">
+              <h1 className="text-center text-[38px] font-bold lg:text-left lg:text-4xl">
+                Nuestra Historia, Misión, Visión y Valores
+              </h1>
             </div>
-          </div>
 
-          <div className="rs-wrapper-v4 mx-auto mb-12 max-w-[1000px] text-center sm:mt-4 md:mt-8 md:w-full lg:mt-8">
-            <p className="mx-auto mt-4 text-lg sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
-              SwaplyAr surgió de una necesidad fundamental: facilitar el intercambio de saldo y asegurar que cada
-              usuario reciba exactamente lo acordado, brindando acompañamiento a lo largo de todo el proceso. Gracias a
-              nuestra confiabilidad, seguridad y rapidez en cada transacción, el crecimiento de SwaplyAr ha sido
-              exponencial. Nuestros valores son la base de todas nuestras acciones diarias y definen cómo operamos en
-              cada interacción.
-            </p>
-          </div>
-
-          <div className="rs-wrapper-v4 mx-auto mb-12 max-w-[1000px] text-center sm:mt-4 md:mt-8 md:w-full lg:mt-8">
-            <h3 className="max-w-[1000px] text-center font-bold lg:text-2xl">Nuestros Valores</h3>
-            <p className="mx-auto mt-4 text-lg sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
-              Nos guiamos diariamente por nuestros valores fundamentales: Profesionalidad, Apoyo, Transparencia,
-              Simplicidad y Eficiencia. Estos principios nos permiten trabajar unidos como un equipo global, con
-              nuestros clientes en el centro de todas nuestras acciones. Además, nos impulsan a cuidar de nosotros
-              mismos, de los demás y de las comunidades que nos rodean.
-            </p>
+            <section className="rs-wrapper-v4 mx-auto mb-12 max-w-[1000px] text-left sm:mt-4 md:mt-8 md:w-full lg:mt-8">
+              <p className="mx-auto mt-4 text-lg sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
+                En SwaplyAr, transformamos la forma en que las personas y empresas realizan transacciones
+                internacionales, garantizando un intercambio seguro y confiable entre las principales billeteras
+                virtuales y cuentas bancarias a nivel global. Nuestro enfoque en la seguridad, rapidez y transparencia
+                nos permite ofrecer soluciones financieras innovadoras que se adaptan a tus necesidades.
+              </p>
+              <p className="mx-auto mt-4 text-lg sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
+                Desde nuestros inicios, SwaplyAr nació con la visión de simplificar las transferencias internacionales
+                para todos: empresas, personas y familias. Nos dedicamos a proporcionar servicios rápidos, seguros y
+                accesibles, siempre enfocados en garantizar la mejor experiencia para cada cliente.
+              </p>
+            </section>
           </div>
 
           <div className="w-full max-w-[1000px]">
             <CaedAboutUs cardsData={cardsData} />
           </div>
 
-          <div className="rs-wrapper-v4 mx-auto mb-12 max-w-[1000px] text-center sm:mt-4 md:mt-8 md:w-full lg:mt-8">
-            <p className="mx-auto mt-4 text-lg sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
-              En SwaplyAR, garantizamos un intercambio seguro y confiable de tus fondos entre diversas billeteras
-              virtuales y cuentas bancarias a nivel global. Nuestro compromiso es brindar seguridad y satisfacción en
-              cada transacción, asegurando que tu dinero llegue a su destino de manera rápida y segura.
-            </p>
+          <div className="flex flex-col gap-10 pt-10">
+            {sectionsData.map((section, i) => (
+              <section key={i}>
+                <h2 className="text-4xl font-bold">{section.title}</h2>
+                <p>{section.description}</p>
+                {section.secondaryDescription && <p className="pt-5">{section.secondaryDescription}</p>}
+              </section>
+            ))}
           </div>
 
-          <div className="mb-20 mt-20 w-full max-w-[1000px] sm:mb-36 sm:mt-40">
-            <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
-              <div className="col-right order-1 text-center text-lg text-black dark:text-white sm:text-left sm:text-xl md:order-2">
-                <p className="italic">
+          <div className="my-10 flex w-full max-w-[1000px] justify-center">
+            <div className="grid w-[80%] grid-cols-1 items-center justify-center gap-8 md:grid-cols-2">
+              <div className="col-right order-1 text-left text-lg text-black dark:text-white sm:text-left sm:text-xl md:order-2">
+                <p>
                   "Nos Dedicamos a transformar la manera en que las personas manejan su dinero, utilizando las
                   tecnologias mas avanzadas y sistemas de pago innovadores. Porque entendemos que detrás de cada
                   transacción hay sueños, metas y necesidades, trabajamos incansablemente para brindar soluciones que
@@ -116,14 +134,14 @@ const AboutUs = () => {
 
               <div className="col-left order-2 flex flex-col items-center md:order-1">
                 <Image
-                  src={OaSuarez}
+                  src="/images/CEO&CPO.png"
                   alt="Chief Executive Officer (CEO)"
                   width={250}
-                  height={200}
-                  className="sm:h-[300px] sm:w-[350px]"
+                  height={250}
+                  className="sm:h-[300px] sm:w-[300px]"
                 />
                 <div className="text-team mt-4 text-center text-black dark:text-white">
-                  <h5 className="text-lg sm:text-2xl">Oa Johan Javier Suarez Merchan</h5>
+                  <h5 className="text-lg font-semibold sm:text-2xl">Oa Johan Javier Suarez Merchan</h5>
                   <h5>Founder &amp; Chief Executive Officer (CEO)</h5>
                 </div>
               </div>
@@ -133,10 +151,10 @@ const AboutUs = () => {
       </div>
       <div className="mt-10 text-center">
         <FlyerTrabajo imageSrc={FlyerGif}>
-          <span className="">
+          <span className="flex flex-col gap-2 text-base md:text-lg lg:text-xl">
+            <p>¿Nuevo en SwaplyAr?</p>
             <p>
-              ¿Nuevo en SwaplyAr? <br /> Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma
-              sencilla y segura. Haz click y aprende cómo usar SwaplyAr{' '}
+              Conoce cómo funciona nuestra plataforma y comienza a transferir <br /> dinero de forma sencilla y segura.
             </p>
           </span>
           <div>
@@ -148,7 +166,7 @@ const AboutUs = () => {
                 href={'/info/how-to-use'}
                 className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'}`}
               >
-                <h3>Como usar Swaplyar</h3>
+                <h3>¡Empieza ahora!</h3>
               </Link>
             </button>
           </div>
