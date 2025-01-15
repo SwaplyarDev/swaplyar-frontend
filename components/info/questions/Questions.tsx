@@ -131,7 +131,7 @@ const FrequentlyQuestions = () => {
           ))}
         </div>
       </main>{' '}
-      <div className="hidden md:block">
+      <div className="mt-10 hidden md:block">
         <FlyerTrabajo imageSrc={BannerQuestions.src}>
           <></>
         </FlyerTrabajo>
