@@ -1,102 +1,84 @@
-import Image from 'next/image';
-import fraudPrevent from '@/public/images/fraudPrevent.png';
+'use client';
+import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
+import { fraudPrevention } from '@/utils/assets/img-database';
+import { mockLinks } from './mockFraudPrev';
+import { mockTexts } from './mockFraudPrev';
+import { useState } from 'react';
 
 const FraudPrevention = () => {
-  const mockLinks = [
-    {
-      text: 'Organizaciones de los Estados Unidos y de Canadá',
-      link: '',
-    },
-    {
-      text: 'Federal Trade Commission',
-      link: 'https://www.ftc.gov/',
-    },
+  const [selectedTextIndex, setSelectedTextIndex] = useState<number>(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-    {
-      text: "National Consumers League's Fraud Center",
-      link: 'https://fraud.org/',
-    },
-    {
-      text: 'U.S. Postal Inspection Service',
-      link: 'https://www.uspis.gov/',
-    },
-    {
-      text: 'Canadian Anti-Fraud Centre',
-      link: 'https://antifraudcentre-centreantifraude.ca/',
-    },
-    {
-      text: 'StopFraud.gov',
-      link: 'https://www.stopfraud.gov/about.html',
-    },
-    {
-      text: 'Consumer Financial Protection Bureau',
-      link: 'https://www.consumerfinance.gov/',
-    },
-    {
-      text: 'Organizaciones del Reino Unido y de Australia',
-      link: '',
-    },
-    {
-      text: 'Action Fraud UK',
-      link: 'https://www.actionfraud.police.uk/',
-    },
-    {
-      text: 'ScamWatchAustralia',
-      link: 'https://www.scamwatch.gov.au/',
-    },
-  ];
+  const handleButtonClick = (key: number) => {
+    setIsAnimating(true);
+    setTimeout(() => {
+      setSelectedTextIndex(key);
+      setIsAnimating(false);
+    }, 300);
+  };
+
+  const renderButtons = (key: number, title: string) => (
+    <button
+      key={key}
+      className={`flex flex-row gap-2 ${selectedTextIndex === key ? 'scale-105 text-blue-800 decoration-blue-800 dark:text-[#97938d] dark:decoration-[#97938d]' : 'dark:text-[#EBE7E0] dark:decoration-[#EBE7E0]'} transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:hover:decoration-[#97938d]`}
+      onClick={() => handleButtonClick(key)}
+    >
+      <p>{selectedTextIndex === key ? '|  ' : null}</p>
+
+      <p className={` ${selectedTextIndex === key ? 'underline' : 'decoration-transparent'}`}>{title}</p>
+    </button>
+  );
 
   return (
-    <main className="flex w-full flex-col items-center gap-5 py-10">
-      <h1 className="text-2xl font-semibold md:text-3xl lg:text-4xl">Concientización sobre el fraude</h1>
-      <section className="flex w-[80%] flex-col justify-items-center gap-5 lg:grid lg:grid-cols-2">
-        <article className="flex flex-col gap-5 pt-5 text-xl lg:text-2xl">
-          <p>Prevencion del fraude</p>
-          <p>Como protegerse del fraude</p>
-          <p>Estafas al cliente comunes</p>
-          <a
-            href=""
-            className="text-blue-600 underline decoration-blue-600 transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0] dark:hover:decoration-[#97938d]"
-          >
-            | Otros recursos
-          </a>
+    <main className="flex w-full flex-col items-center gap-10 pt-10">
+      <h1 className="self-center text-2xl font-medium md:text-3xl lg:text-4xl">Concientización sobre el fraude</h1>
+      <section className="flex min-h-[100vh] w-[80%] flex-col justify-items-center gap-5 lg:grid lg:grid-cols-2">
+        <article className="flex select-none flex-col items-start gap-5 pt-5 text-xl lg:text-2xl">
+          {renderButtons(0, 'Prevencion del fraude')}
+          {renderButtons(1, 'Como protegerse del fraude')}
+          {renderButtons(2, 'Estafas al cliente comunes')}
+          {renderButtons(3, 'Otros recursos')}
         </article>
         <article className="flex flex-col gap-5">
           <h2 className="border-t-[1px] border-blue-500 text-xl font-semibold dark:border-[#EBE7E0] md:text-2xl lg:text-3xl">
-            Como protegerte del fraude contra Clientes
+            {mockTexts[selectedTextIndex]?.title}
           </h2>
-          <section className="flex flex-col gap-5 rounded-md bg-[#EEEAE3] p-5 dark:bg-[#4B4B4B]">
-            <div>
-              <p>Hay varias organizaciones que brindan información para ayudarte a protegerte del fraude.</p>
-              <p> Selecciona la organización que quieras ver de la lista de abajo para obtener más detalles.</p>
-            </div>
+          {selectedTextIndex !== null ? (
+            <section
+              className={`transition-all duration-300 ease-in-out ${
+                isAnimating ? 'max-h-0 opacity-0' : 'max-h-[100%] opacity-100'
+              } flex flex-col gap-5 overflow-hidden rounded-md bg-[#EEEAE3] p-5 dark:bg-[#4B4B4B]`}
+            >
+              <article className="flex flex-col gap-2">
+                <p>{mockTexts[selectedTextIndex]?.text1}</p>
+                <p>{mockTexts[selectedTextIndex]?.text2}</p>
+              </article>
+              <article className="flex flex-col gap-1">
+                {selectedTextIndex === 2
+                  ? mockLinks.map((mock, index) => (
+                      <a
+                        key={index}
+                        className="text-blue-600 underline decoration-blue-600 transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0] dark:hover:decoration-[#97938d]"
+                        href={mock.link}
+                      >
+                        {mock.text}
+                      </a>
+                    ))
+                  : null}
+              </article>
 
-            <div className="flex flex-col">
-              {mockLinks.map((mock, index) => (
-                <a
-                  key={index}
-                  className="text-blue-600 underline decoration-blue-600 transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0] dark:hover:decoration-[#97938d]"
-                  href={mock.link}
-                >
-                  {mock.text}
-                </a>
-              ))}
-            </div>
-
-            <p>
-              Si crees haber sido víctima de fraude, completa nuestro formulario en línea para denunciarlo, o si
-              sospechas que hubo fraude en una transacción que todavía no ha sido recibida, comunícate con el Centro de
-              Atención al Cliente, al WhatsApp +5491123832198, para que cancelen la transacción de inmediato.
-            </p>
-          </section>
+              <p>{mockTexts[selectedTextIndex]?.text3}</p>
+            </section>
+          ) : (
+            <p>Selecciona una opción para ver más detalles.</p>
+          )}
         </article>
       </section>
-      <Image
-        className="hidden w-[100%] pt-24 dark:hidden lg:flex"
-        src={fraudPrevent}
-        alt="Fraude-Posible"
-        loading="lazy"
-      />
+      <div className="relative top-20 mt-16 hidden pt-11 lg:contents">
+        <FlyerTrabajo imageSrc={fraudPrevention}>
+          <> </>
+        </FlyerTrabajo>
+      </div>
     </main>
   );
 };
