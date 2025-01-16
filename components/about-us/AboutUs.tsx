@@ -76,29 +76,30 @@ const AboutUs = () => {
   const { margins } = useMargins();
   const currentMargin = ResponsiveMarginHook(margins);
   const { isDark } = useDarkTheme();
+
   return (
     <>
-      <div className="relative flex flex-col items-center justify-center px-4">
+      <div
+        className="relative mx-4 flex flex-col items-center justify-center md:mx-8"
+        style={{ margin: currentMargin }}
+      >
         <AnimatedBlurredCircles tope="top-[0px]" />
-        <div
-          className="flex w-full max-w-[1000px] flex-col items-center justify-center pt-5 text-black dark:text-white"
-          style={{ margin: currentMargin }}
-        >
+        <div className="flex w-full max-w-[1000px] flex-col items-center justify-center pt-5 text-black dark:text-white">
           <div className="md:max-w-[80%]">
-            <div className="rs-wrapper-v4 mx-auto items-center justify-center text-center md:w-full">
+            <div className="rs-wrapper-v4 items-center justify-center text-center md:w-full">
               <h1 className="text-center text-[38px] font-bold lg:text-left lg:text-4xl">
                 Nuestra Historia, Misión, Visión y Valores
               </h1>
             </div>
 
-            <section className="rs-wrapper-v4 mx-auto mb-12 max-w-[1000px] text-left sm:mt-4 md:mt-8 md:w-full lg:mt-8">
-              <p className="mx-auto mt-4 text-lg sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
+            <section className="rs-wrapper-v4 mb-12 max-w-[1000px] text-left sm:mt-4 md:mt-8 md:w-full lg:mt-8">
+              <p className="mt-4 text-lg sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
                 En SwaplyAr, transformamos la forma en que las personas y empresas realizan transacciones
                 internacionales, garantizando un intercambio seguro y confiable entre las principales billeteras
                 virtuales y cuentas bancarias a nivel global. Nuestro enfoque en la seguridad, rapidez y transparencia
                 nos permite ofrecer soluciones financieras innovadoras que se adaptan a tus necesidades.
               </p>
-              <p className="mx-auto mt-4 text-lg sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
+              <p className="mt-4 text-lg sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
                 Desde nuestros inicios, SwaplyAr nació con la visión de simplificar las transferencias internacionales
                 para todos: empresas, personas y familias. Nos dedicamos a proporcionar servicios rápidos, seguros y
                 accesibles, siempre enfocados en garantizar la mejor experiencia para cada cliente.

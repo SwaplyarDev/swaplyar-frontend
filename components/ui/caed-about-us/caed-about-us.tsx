@@ -134,21 +134,66 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
         </div>
       </div>
 
+      <div {...swipeHandlersMobile} className="relative hidden h-[350px] w-full overflow-hidden md:block lg:hidden">
+        <div className="relative flex h-full w-full items-center justify-between">
+          {cardsData.map((card, index) => {
+            const isCurrent1 = index === currentIndex;
+            const isCurrent2 = index === (currentIndex + 1) % cardsData.length;
+            const isPrev = index === (currentIndex - 1 + cardsData.length) % cardsData.length;
+            const isNext = index === (currentIndex + 1) % cardsData.length;
+
+            const isClick = !!activeCards[index];
+
+            return (
+              <div
+                key={index}
+                className={`transition-transform duration-700 ease-in-out ${isCurrent1 ? 'absolute z-20 -translate-y-[15%] translate-x-[60%] scale-100' : isCurrent2 ? 'absolute right-0 z-20 -translate-x-[60%] -translate-y-[15%] scale-100' : 'z-10 scale-90 blur-sm'} ${isPrev ? 'z-0' : ''} ${isNext ? 'z-0' : ''} ${index === cardsData.length - 1 ? '' : ''} `}
+              >
+                <div
+                  className={clsx(isClick ? 'card-active relative h-64 w-52' : 'relative h-64 w-52')}
+                  onClick={() => handleToggle(index)}
+                >
+                  <div className="card-inner h-full w-full duration-700">
+                    <div
+                      className={`card-front backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-2xl bg-white text-black shadow-lg dark:bg-gray-800 dark:text-white`}
+                    >
+                      <Image
+                        src={card.src}
+                        alt={card.alt}
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-2xl shadow-md shadow-black/50"
+                      />
+                      <Image
+                        src="/images/rotate-card-icon.svg"
+                        alt="Icono de rotacion de la card"
+                        width={25}
+                        height={25}
+                        className="absolute right-2 top-2"
+                      />
+                      <h3 className="absolute bottom-0 mt-2 w-full rounded-bl-2xl rounded-br-2xl bg-black p-2 text-xl text-white">
+                        {card.title}
+                      </h3>
+                    </div>
+                    <div className="card-back backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-lg bg-dark-blue p-4 text-white shadow-custom-black dark:bg-gray-800 dark:text-white">
+                      <h3 className="text-xl">{card.backTitle}</h3>
+                      <p className="mt-2">{card.backText}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       <div
         {...swipeHandlersDesktop}
-        className="cards-container relative hidden h-[300px] w-full items-center justify-between md:flex md:items-end"
+        className="cards-container relative hidden h-[300px] w-full items-center justify-between md:items-end md:gap-[55px] lg:flex lg:items-center"
       >
         {cardsData.map((card, index) => {
-          const isFrontLeft = index === currentIndex;
-          const isFrontRight = index === (currentIndex + 1) % cardsData.length;
-          const isPrev = index === (currentIndex - 1 + cardsData.length) % cardsData.length;
-
           return (
-            <div
-              key={index}
-              className={`card h-64 w-52 lg:static ${(isFrontLeft || isFrontRight) && `absolute top-0 z-20`}`}
-              style={isFrontLeft ? { left: `20%` } : isFrontRight ? { right: `20%` } : isPrev ? { left: '-20%' } : {}}
-            >
+            <div key={index} className="card h-64 w-52">
               <div className="card-inner transform-style preserve-3d h-full w-full transition-transform duration-700">
                 <div className="card-front backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-2xl bg-white text-black shadow-lg dark:bg-gray-800 dark:text-white">
                   <Image
