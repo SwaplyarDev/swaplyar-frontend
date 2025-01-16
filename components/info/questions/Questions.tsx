@@ -96,41 +96,40 @@ const FrequentlyQuestions = () => {
   };
 
   return (
-    <main className="relative flex w-full flex-col items-center justify-center py-10">
-      <div className="mx-auto grid max-w-[1000px]" style={{ margin: currentMargin }}>
-        <header className={`mb-14 text-left text-4xl ${isDark ? 'text-gray-100' : 'text-slate-800'}`}>
-          Preguntas Frecuentes
-        </header>
-        <section>
-          {questions.map((dato, index) => (
-            <Accordion
+    <main className="flex w-full flex-col items-center justify-center">
+      <header className={`mt-10 text-left text-center text-4xl ${isDark ? 'text-gray-100' : 'text-slate-800'}`}>
+        <p>Preguntas Frecuentes</p>
+      </header>
+
+      <section className="grid max-w-[716px] gap-6 py-12" style={{ marginInline: currentMargin }}>
+        {questions.map((dato, index) => (
+          <Accordion
+            isDark={isDark}
+            key={dato.question_id}
+            expanded={expanded === `panel${index}`} // Comprobar si este panel está expandido
+            onChange={handleChange(`panel${index}`)} // Manejar la expansión del panel
+            className="group" // Agregar "group" al Accordion completo
+          >
+            <AccordionSummary
+              className={`p-0 ${isDark ? 'hover:bg-gray-800' : 'hover:bg-transparent'}`}
               isDark={isDark}
-              key={dato.question_id}
-              expanded={expanded === `panel${index}`} // Comprobar si este panel está expandido
-              onChange={handleChange(`panel${index}`)} // Manejar la expansión del panel
-              className="group" // Agregar "group" al Accordion completo
             >
-              <AccordionSummary
-                className={`p-0 ${isDark ? 'hover:bg-gray-800' : 'hover:bg-transparent'}`}
-                isDark={isDark}
+              <Typography className={`text-xl ${isDark ? 'text-[#ebe7e0]' : 'text-[#252526]'} `}>
+                {dato.title}
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails className="flex flex-col items-center justify-center">
+              <Typography
+                className={`w-9/10 rounded-md p-6 text-left ${isDark ? 'bg-graytyc text-gray-100' : 'bg-gray-100 text-gray-900'}`}
+                style={isDark ? { background: 'rgba(75,75,75,1)' } : { background: 'rgb(238, 234, 227)' }}
               >
-                <Typography className={`mr-8 py-2 text-xl ${isDark ? 'text-[#ebe7e0]' : 'text-[#252526]'} `}>
-                  {dato.title}
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails className="flex flex-col items-center justify-center">
-                <Typography
-                  className={`w-9/10 rounded-md p-6 text-left ${isDark ? 'bg-graytyc text-gray-100' : 'bg-gray-100 text-gray-900'}`}
-                  style={isDark ? { background: 'rgba(75,75,75,1)' } : { background: 'rgb(238, 234, 227)' }}
-                >
-                  {dato.descripcion}
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-          ))}
-        </section>
-      </div>
-      <section className="mt-10 h-auto w-full border-[1px] border-gray-300">
+                {dato.descripcion}
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+        ))}
+      </section>
+      <section className="mt-10 h-auto w-full">
         <FlyerTrabajo imageSrc={BannerQuestions.src}>
           <></>
         </FlyerTrabajo>{' '}
