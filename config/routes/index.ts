@@ -14,6 +14,7 @@ export const configRoutes: ConfigRoutes = {
     '/info/warranty',
     '/info/why-choose-swaplyar',
     '/info/sapr-terms-conditions',
+    '/info/questions',
     '/request',
     '/repentance',
     '/editRequest',

@@ -75,6 +75,9 @@ export const Paso2Gif = '/images/paso2.gif';
 export const Paso3Gif = '/images/paso3.gif';
 export const Paso4Gif = '/images/paso4.gif';
 
+/**questions**/
+export const BannerQuestions = '/images/baner_questions.png';
+
 /**loyalty-program**/
 export const Rewards1 = '/images/rewards1.png';
 export const Rewards2 = '/images/rewards2.png';
