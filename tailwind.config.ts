@@ -28,6 +28,7 @@ const config: Config = {
       screens: {
         'mini-phone': '340px',
         'xs-mini-phone': '390px',
+        'xs-mini-phone2': '400px',
         xs: '480px',
         'xs-phone': '550px',
         sm: '640px',
