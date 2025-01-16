@@ -4,7 +4,7 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
-import VerifycodeEditRequest from '../verify-code-editRequest/verify-code-editRequest';
+import VerifycodeEditRequest from '../VerifyCodeEditRequest/VerifyCodeEditRequest';
 
 interface FormValues {
   transaccionId: string;

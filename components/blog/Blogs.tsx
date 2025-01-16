@@ -121,12 +121,7 @@ const Blog: React.FC = () => {
         )}
       </div>
 
-      <PaginationButtonsProps
-        currentPage={currentPage}
-        totalPages={totalPages}
-        handlePageChange={handlePageChange}
-        isLoading={isLoading}
-      />
+      <PaginationButtonsProps currentPage={currentPage} totalPages={totalPages} isLoading={isLoading} />
     </div>
   );
 };

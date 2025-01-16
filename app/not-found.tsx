@@ -6,15 +6,15 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  Post1_404,
-  Post2_404,
-  Enchufe_clear_largo,
-  Enchufe_dark_largo,
-  tlf_404_clear,
-  tlf_404_dark,
+  Enchufe_clear,
+  Enchufe_dark,
   Error_404_clear,
   Error_404_dark,
-} from '@/utils/assets/imgDatabaseCloudinary';
+  Post1_404,
+  Post2_404,
+  tlf_404_clear,
+  tlf_404_dark,
+} from '@/utils/assets/img-database';
 
 export default function NotFoundPage() {
   const { isDark } = useDarkTheme();
@@ -35,60 +35,79 @@ export default function NotFoundPage() {
   }, [counter, router]);
 
   return (
-    <div className="flex w-full justify-center overflow-x-hidden">
-      <div className="container min-h-[100dvh]">
-        <div className="relative flex h-full w-full bg-[url('/images/tlf_404_clear.png')] bg-contain bg-center-10px bg-no-repeat dark:bg-[url('/images/tlf_404_dark.png')] md:bg-[url('/images/dark-404.png')] md:bg-cover md:bg-center-80px md:dark:bg-[url('/images/dark-404.png')]">
-          <AnimatedBlurredCircles tope="top-[0px]" />
-          <div className="flex w-full items-center">
-            <div className="flex h-fit w-full items-end">
-              <div className="font-white md:text-4k absolute bottom-[30%] left-0 flex h-fit flex-col items-center gap-3 pl-1 text-xl font-normal sm:max-md:bottom-[15%] sm:max-md:text-2xl md:gap-5 md:max-lg-tablet:bottom-[23%] lg-tablet:max-lg:bottom-[22%] lg-tablet:max-lg:left-[6%] lg:max-xl:bottom-[22%] lg:max-xl:left-[14%] xl:max-2k:bottom-[21%] xl:max-2k:left-[18%] 2xl:max-4k:bottom-[22%] 2xl:max-4k:left-[19%] 4k:bottom-[20%] 4k:left-[4%] 4k:text-[130px] 4k:leading-[1.2]">
-                <h1 className="block border-l-2 border-l-blue-700 pl-1 text-start md:hidden">
-                  Ups... <br />
-                  La página no <br />
-                  ha sido encontrada
-                </h1>
+    <>
+      <section className="relative m-auto flex w-full max-w-7xl flex-col items-start gap-20">
+        <div className="relative flex min-h-[490px] w-full items-end xs:min-h-[530px] xs-phone:min-h-[550px] md-tablet:min-h-[630px]">
+          <div className="absolute top-0 flex w-full items-center justify-center">
+            <Image
+              src={isDark ? Error_404_dark : Error_404_clear}
+              className="hidden px-8 md-phone:block xl-desktop:px-0"
+              alt="Descripción de la imagen 404"
+              width={1000}
+              height={400}
+            />
+            <Image
+              src={isDark ? tlf_404_dark : tlf_404_clear}
+              className="block px-6 xs:px-10 sm-phone:px-8 md-phone:hidden xl-desktop:px-0"
+              alt="Descripción de la imagen 404"
+              width={600}
+              height={400}
+            />
+          </div>
+          <div className="ml-2 flex w-full flex-col gap-3 border-l-2 border-l-buttonsLigth pl-1 dark:border-l-darkText xs-mini-phone:ml-6 xs:pl-6 md-phone:min-w-[350px] sm-tablet:min-w-[440px] md-tablet:ml-12">
+            <h1 className="hidden text-start text-5xl sm-phone:block">
+              Ups...
+              <br />
+              La página no
+              <br />
+              ha sido encontrada
+            </h1>
 
-                <h1 className="hidden text-start md:block">
-                  Ups... <br />
-                  La página no <br />
-                  ha sido <br />
-                  encontrada
-                </h1>
+            <h1 className="block text-start text-3xl mini-phone:text-4xl sm-phone:hidden md-phone:text-5xl">
+              Ups...
+              <br />
+              La página no
+              <br />
+              ha sido
+              <br />
+              encontrada
+            </h1>
 
-                <Link href="/">
-                  <div className="flex items-center justify-center rounded-full border border-blue-700 bg-white pl-1 pr-1 text-[11px] font-bold text-blue-700 md:mr-5 md:p-1 md:text-[14px] lg-tablet:w-44 xl:w-40 4k:w-[900px] 4k:border-6 4k:p-4 4k:text-[90px]">
-                    Redireccion en {counter}
-                  </div>
-                </Link>
+            <Link href="/">
+              <div className="flex w-[165px] items-center justify-center rounded-full border border-buttonsLigth bg-transparent p-2 text-base font-bold text-buttonsLigth dark:border-darkText dark:text-darkText">
+                Redireccion en {counter}
               </div>
-              <div className="flex h-fit justify-end">
-                <Image
-                  src={Post1_404}
-                  alt="Man smiling with tablet"
-                  className="3k absolute bottom-[30%] right-[13%] h-auto w-56 sm:max-md:bottom-[15%] sm:max-md:right-[18%] sm:max-md:w-64 md:max-lg:bottom-[33%] md:max-lg:w-[280px] md:max-lg-tablet:right-[17%] lg-tablet:max-lg:right-[21%] lg-tablet:max-lg:w-[300px] lg:max-xl:bottom-[31%] lg:max-xl:right-[25%] lg:max-xl:w-[320px] xl:max-2k:w-[350px] xl:max-2xl:bottom-[24%] xl:max-2xl:right-[27%] 2xl:max-4k:bottom-[26%] 2xl:max-4k:right-[30%] 2k:max-4k:bottom-[17%] 2k:max-4k:right-[26%] 2k:max-4k:w-[650px] 4k:bottom-[21%] 4k:right-[18%] 4k:w-[1000px]"
-                  width={300}
-                  height={220}
-                />
-
-                <Image
-                  src={Post2_404}
-                  className="absolute bottom-[30%] right-0 ml-20 h-auto w-56 sm:max-md:bottom-[15%] sm:max-md:w-64 sm:max-sm:right-0 md:ml-0 md:max-lg-tablet:bottom-[20%] md:max-lg-tablet:right-[-10%] md:max-lg-tablet:w-[280px] lg-tablet:max-lg:bottom-[23%] lg-tablet:max-lg:right-0 lg-tablet:max-lg:w-[300px] lg:max-xl:bottom-[19%] lg:max-xl:right-[5%] lg:max-xl:w-[320px] xl:max-2k:bottom-[14%] xl:max-2k:right-[8%] xl:max-2k:w-[350px] 2xl:max-4k:bottom-[14%] 2xl:max-4k:right-[12%] 2k:bottom-[2%] 2k:right-[13%] 2k:max-4k:w-[650px] 4k:right-0 4k:w-[1000px]"
-                  alt="Woman smiling with a laptop"
-                  width={300}
-                  height={220}
-                />
-              </div>
-              <Image
-                src={isDark ? Enchufe_dark_largo : Enchufe_clear_largo}
-                className="absolute bottom-[18%] left-[-32%] h-32 w-[4000px] sm:max-md:bottom-[1%] md:max-lg:bottom-[9%] xl:bottom-0 xl:right-[50%] 4k:left-[-50%] 4k:h-[400px]"
-                alt="Descripción de la imagen enchufe"
-                width={4000}
-                height={144}
-              />
-            </div>
+            </Link>
+          </div>
+          <div className="absolute flex min-h-[530px] w-full items-end justify-end pb-10 pr-2 xs:pb-0 xs:pr-0 md-phone:items-center md:relative md:justify-center md:pr-14 md-tablet:min-h-[630px] xl-desktop:items-end">
+            <Image
+              src={Post1_404}
+              alt="Man smiling with tablet"
+              className="z-10 hidden w-[125px] md-phone:block md-tablet:w-[155px] xl-desktop:w-[195px]"
+              width={195}
+              height={220}
+            />
+            <Image
+              src={Post2_404}
+              alt="Woman smiling with a laptop"
+              className="z-10 w-[170px] xs:w-[200px] md-tablet:w-[240px] xl-desktop:w-[300px]"
+              width={300}
+              height={220}
+            />
           </div>
         </div>
-      </div>
-    </div>
+        <div className="relative flex w-full items-center justify-center">
+          <div className="absolute left-0 -ml-[calc((100vw-100%)/2)] mt-1 h-[11px] w-[calc(100%-245px)] min-w-[135px] bg-buttonsLigth dark:bg-darkText xs:w-[50vw]"></div>
+          <div className="flex w-[485px] items-center justify-end">
+            <Image
+              src={isDark ? Enchufe_dark : Enchufe_clear}
+              alt="Descripción de la imagen enchufe"
+              width={400}
+              height={100}
+            />
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

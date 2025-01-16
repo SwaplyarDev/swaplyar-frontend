@@ -15,7 +15,6 @@ import { registerUser } from '@/actions/auth/register';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import ButtonBack from '../ui/ButtonBack/ButtonBack';
-import Arrow from '../ui/Arrow/Arrow';
 
 type FormInputs = {
   verificationCode: string[];
@@ -34,14 +33,13 @@ export const VerifyCodePage = () => {
     setValue,
   } = useForm<FormInputs>({});
 
-  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [reLoading, setReLoading] = useState(false);
   const { email } = useEmailVerificationStore();
   const { isDark } = useDarkTheme();
   const router = useRouter();
   const { view } = useStore();
-  const { user } = userInfoStore();
+  const { user, userVerification } = userInfoStore();
 
   const { attempts, lockUntil, decrementAttempts, setLockUntil, resetAttempts } = useCodeVerificationStore();
 
@@ -91,7 +89,7 @@ export const VerifyCodePage = () => {
       if (view === 'login') {
         result = await login(email || '', code);
       } else if (view === 'register') {
-        result = await registerUser(user?.id || '', code);
+        result = await registerUser(userVerification?.user_id || '', code);
       }
 
       if (!result.ok) {
@@ -114,16 +112,20 @@ export const VerifyCodePage = () => {
     if (!isLocked && attempts > 0 && timer === 0) {
       setReLoading(true);
       let URL_VERIFICATION = '';
+      let bodyData;
       if (email) {
-        URL_VERIFICATION = 'login/email/verify-code';
+        URL_VERIFICATION = 'login/email/send';
+        bodyData = {
+          email: email,
+        };
       }
-      if (user?.id) {
+      if (userVerification?.user_id) {
         URL_VERIFICATION = 'users/email-validation/send';
+        bodyData = {
+          email: email,
+          ...(userVerification?.user_id && { user_id: userVerification.user_id }),
+        };
       }
-      const bodyData = {
-        email: email,
-        ...(user?.id && { user_id: user.id }),
-      };
       try {
         await fetch(`${BASE_URL}/v1/${URL_VERIFICATION}`, {
           method: 'POST',
@@ -177,14 +179,6 @@ export const VerifyCodePage = () => {
     }
   };
 
-  const handleFocus = (index: number) => {
-    setFocusedIndex(index);
-  };
-
-  const handleBlur = () => {
-    setFocusedIndex(null);
-  };
-
   return (
     <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-start py-5 xs:mt-0 xs:justify-center">
       <AnimatedBlurredCircles tope="top-[124px]" />
@@ -236,35 +230,6 @@ export const VerifyCodePage = () => {
 
           <div className="my-5 flex justify-between text-buttonsLigth dark:text-darkText">
             <ButtonBack route="/auth/login-register" isDark={isDark} />
-
-            <button
-              type="button"
-              onClick={resendCode}
-              disabled={timer > 0 || reLoading || !!isLocked}
-              className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth disabled:border-gray-400 disabled:bg-gray-400 disabled:shadow-none dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400 ${isDark ? 'buttonSecondDark' : 'buttonSecond'}${timer > 0 || attempts <= 0 ? 'text-gray-500' : ''}`}
-            >
-              {reLoading ? (
-                'Enviando...'
-              ) : timer > 0 && attempts > 0 ? (
-                `Reenviar en ${timer}s`
-              ) : (
-                <p>
-                  Reenviar <span className="hidden xs:inline-block">código</span>
-                </p>
-              )}
-            </button>
-          </div>
-
-          {errors.verificationCode && <p className="mb-5 text-sm text-red-500">• {errors.verificationCode.message}</p>}
-
-          <div className="my-5 flex justify-between text-buttonsLigth dark:text-darkText">
-            <button
-              onClick={() => router.push('/auth/login-register')}
-              className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 flex h-[48px] min-w-[150px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
-            >
-              <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
-              Volver
-            </button>
             <button
               type="button"
               onClick={resendCode}
@@ -273,13 +238,6 @@ export const VerifyCodePage = () => {
             >
               {reLoading ? (
                 <div className="flex items-center justify-center gap-2">
-                  {/* <Image
-                    src="/gif/cargando.gif"
-                    width={20}
-                    height={20}
-                    alt="loading"
-                    className="mb-0.5 mr-1"
-                  /> */}
                   <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
                   Enviando...
                 </div>
@@ -290,17 +248,6 @@ export const VerifyCodePage = () => {
               )}
             </button>
           </div>
-
-          {/* {attempts > 0 && !isLocked ? (
-          <p className="mt-2 text-center text-xs text-buttonsLigth dark:text-darkText">
-            Tienes {attempts} intentos para reenviar el código
-          </p>
-        ) : (
-          <p className="mt-2 text-center text-xs text-red-500">
-            Estás bloqueado por 5 minutos.
-          </p>
-        )}
-      </form> */}
           {attempts > 0 && !isLocked ? (
             <p className="mt-2 text-center text-base text-buttonsLigth dark:text-darkText sm:text-lg">
               Tienes {attempts} intentos para reenviar el código

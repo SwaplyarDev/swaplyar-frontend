@@ -26,16 +26,20 @@ const config: Config = {
         'center-10px': 'center 10px',
       },
       screens: {
+        'mini-phone': '340px',
+        'xs-mini-phone': '390px',
         xs: '480px',
         'xs-phone': '550px',
         sm: '640px',
         'sm-phone': '660px',
+        'md-phone': '700px',
         'sm-tablet': '749px',
         md: '768px',
         'md-tablet': '850px',
         'lg-tablet': '960px',
         lg: '1024px',
         lg2: '1124px',
+        'xl-desktop': '1080px',
         xl: '1280px',
         '2k': '2048px',
         '4k': '3840px',
@@ -49,7 +53,7 @@ const config: Config = {
           600: '#2F6FEB',
         },
         // calculatorDark: 'rgb(69 69 69 / 48%)',
-        buttonsLigth: '#012c8a', // Azul Marino Oscuro
+        buttonsLigth: '#012A8E', // Azul Marino Oscuro
         calculatorDark: 'rgba(235, 231, 224, 0.15)', // Beige Claro con Transparencia (15%)
         calculatorDark2: 'rgba(235, 231, 224, 0.5)', // Beige Claro con Transparencia (50%)
         calculatorLight: 'rgba(230, 232, 239, 0.15)', // Azul Grisáceo Claro con Transparencia (15%)
@@ -57,9 +61,14 @@ const config: Config = {
         selectBtsLight: '#91aeec', // Azul Pastel Claro
         darkText: '#ebe7e0', // Blanco Hueso o Marfil Claro
         lightText: '#252526', // Gris Muy Oscuro o Negro Grafito
+        inputLight: '#012A8E', // Azul Marino Oscuro
+        inputDark: '#EEEAE3', // Blanco Hueso o Marfil Claro
+        placeholderDark: '#969696', // Gris claro para placeholder
+        errorColor: '#CE1818',
 
         // Estados deshabilitados
-        disabledButtonsLigth: '#A0AEC0', // Gris claro para fondo deshabilitado de buttonsLigth
+        disabledButtonsLigth: '#90B0FE', // Gris claro para fondo deshabilitado de buttonsLigth
+        disabledButtonsDark: '#969696', // Gris claro para fondo deshabilitado
         disabledCalculatorDark: 'rgba(235, 231, 224, 0.1)', // Transparencia reducida para calculatorDark
         disabledCalculatorDark2: 'rgba(235, 231, 224, 0.3)', // Transparencia reducida para calculatorDark2
         disabledCalculatorLight: 'rgba(230, 232, 239, 0.1)', // Transparencia reducida para calculatorLight
@@ -67,6 +76,7 @@ const config: Config = {
         disabledSelectBtsLight: '#D6E4FC', // Azul Pastel Claro más tenue
         disabledDarkText: '#AAA59F', // Gris claro para texto deshabilitado
         disabledLightText: '#555555', // Gris más claro para texto deshabilitado
+        inputLightDisabled: '#90B0FE', // Azul pastel con un tono más vibrante y saturado
       },
       width: {
         '9/10': '90%',

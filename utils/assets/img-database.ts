@@ -75,6 +75,9 @@ export const Paso2Gif = '/images/paso2.gif';
 export const Paso3Gif = '/images/paso3.gif';
 export const Paso4Gif = '/images/paso4.gif';
 
+/**questions**/
+export const BannerQuestions = '/images/baner_questions.png';
+
 /**loyalty-program**/
 export const Rewards1 = '/images/rewards1.png';
 export const Rewards2 = '/images/rewards2.png';
@@ -103,6 +106,8 @@ export const Ayuda1 = '/images/ayuda1.png';
 export const Ayuda2 = '/images/ayuda2.png';
 export const Ayuda1Dark = '/images/ayuda1-dark.png';
 export const Ayuda2Dark = '/images/ayuda2-dark.png';
+
+export const fraudPrevention = '/images/fraudprevent.png';
 
 /**why-choose-swaplyar**/
 export const ElegirSwaplyAr = '/images/elegirSwaplyAr.png';
