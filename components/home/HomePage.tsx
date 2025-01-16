@@ -13,6 +13,8 @@ import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import { useSession } from 'next-auth/react';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import LinkWithHover from '../ui/LinkWithHover/LinkWithHover';
+import Recommendations from '../recommendations/recommendations';
+import exampleItems from '../recommendations/exampleItems';
 
 const mainStyles = {
   main: 'py-10 relative', // Centrado tanto vertical como horizontalmente
@@ -109,6 +111,10 @@ export default function HomePage() {
           />
         </div>
       </div>
+
+      <section>
+        <Recommendations items={exampleItems} />
+      </section>
 
       <div className="mt-10">
         <FlyerTrabajo imageSrc={FlyerGif}>
