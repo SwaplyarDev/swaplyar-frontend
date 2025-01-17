@@ -16,11 +16,12 @@ import BannerQuestions from '@/public/images/baner_questions.png';
 //C:\Users\Administrator\swaplyar-frontend\components\info\questions\Questions.tsx
 //C:\Users\Administrator\swaplyar-frontend\public\images
 
-const Accordion = styled((props: AccordionProps & { isDark: boolean }) => (
+const Accordion = styled((props: AccordionProps & { isDark: boolean; expanded: boolean }) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ isDark }) => ({
+))(({ isDark, expanded }) => ({
   border: 'none',
-  backgroundColor: 'transparent',
+  background: 'transparent',
+
   borderTop: isDark ? '1px solid #ebe7e0' : '1px solid #012c8a',
   '&::before': {
     content: 'none',
@@ -31,11 +32,11 @@ const Accordion = styled((props: AccordionProps & { isDark: boolean }) => (
   },
 }));
 
-const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolean }) => (
+const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolean; expanded: boolean }) => (
   <MuiAccordionSummary
     expandIcon={
       <div
-        className={`${props.isDark ? 'bg-[rgba(75,75,75,1)]' : 'bg-[rgb(225,225,225)] group-hover:bg-[rgb(1,42,142)]'}`}
+        className={`${props.isDark ? 'bg-[rgba(75,75,75,1)]' : 'bg-[rgb(225,225,225)]'} ${props.expanded ? 'bg-[rgb(1,42,141)]' : ''} font-bold group-hover:bg-[rgb(1,42,142)]`}
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -44,18 +45,16 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolea
           width: '40px',
           height: '40px',
 
-          // Fondo predeterminado
           transition: 'background-color 0.3s ease',
-          // Animar el cambio de color de fondo
         }}
       >
         <ExpandMore
-          className={`${props.isDark ? 'text-white' : 'group-hover:text-[rgb(235,231,224)]'}`}
+          className={` ${props.expanded || props.isDark ? 'text-white' : 'text-[rgb(144,176,254)]'} group-hover:text-white`}
           sx={{
             fontSize: '2rem',
-            color: 'rgb(144,176,254)',
+            color: 'rgb(244,176,254)',
 
-            transition: 'color 0.3s ease', // Animar el cambio de color de la flecha si se desea
+            transition: 'color 0.3s ease',
           }}
         />
       </div>
@@ -71,9 +70,11 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolea
     marginLeft: theme.spacing(0),
   },
   '&:hover': {
-    backgroundColor: isDark ? '#333' : '#f5f5f5', // Color de fondo en hover
+    backgroundColor: isDark ? '#333' : '#f5f5f5',
+
     [`& .MuiTypography-root`]: {
-      color: isDark ? '#f5f5f5' : 'rgb(1,42,141)', // Cambiar color del texto en hover
+      color: isDark ? '#f5f5f5' : 'rgb(1,42,141)',
+      fontWeight: '600',
     },
   },
 }));
@@ -98,7 +99,7 @@ const FrequentlyQuestions = () => {
   return (
     <main className="flex w-full flex-col items-center justify-center">
       <header className={`mt-10 text-left text-center text-4xl ${isDark ? 'text-gray-100' : 'text-slate-800'}`}>
-        <p>Preguntas Frecuentes</p>
+        <p className="font-semibold">Preguntas Frecuentes</p>
       </header>
 
       <section className="grid max-w-[716px] gap-6 py-12" style={{ marginInline: currentMargin }}>
@@ -106,22 +107,29 @@ const FrequentlyQuestions = () => {
           <Accordion
             isDark={isDark}
             key={dato.question_id}
-            expanded={expanded === `panel${index}`} // Comprobar si este panel está expandido
-            onChange={handleChange(`panel${index}`)} // Manejar la expansión del panel
-            className="group" // Agregar "group" al Accordion completo
+            expanded={expanded === `panel${index}`}
+            onChange={handleChange(`panel${index}`)}
+            className="group"
           >
             <AccordionSummary
-              className={`p-0 ${isDark ? 'hover:bg-gray-800' : 'hover:bg-transparent'}`}
+              className={`p-0 hover:bg-transparent`}
               isDark={isDark}
+              expanded={expanded === `panel${index}`}
             >
-              <Typography className={`text-xl ${isDark ? 'text-[#ebe7e0]' : 'text-[#252526]'} `}>
+              <Typography
+                className={`} text-xl ${isDark ? 'text-[#ebe7e0]' : 'text-[#252526]'} ${isDark && expanded === `panel${index}` ? 'font-semibold' : 'font-normal'} ${!isDark && expanded === `panel${index}` ? 'font-semibold text-[rgb(1,42,141)]' : 'font-normal'} `}
+              >
                 {dato.title}
               </Typography>
             </AccordionSummary>
             <AccordionDetails className="flex flex-col items-center justify-center">
               <Typography
-                className={`w-9/10 rounded-md p-6 text-left ${isDark ? 'bg-graytyc text-gray-100' : 'bg-gray-100 text-gray-900'}`}
-                style={isDark ? { background: 'rgba(75,75,75,1)' } : { background: 'rgb(238, 234, 227)' }}
+                className={`flex w-9/10 gap-6 rounded-md p-2.5 text-left${isDark ? 'bg-graytyc text-gray-100' : 'bg-gray-100 text-gray-900'}`}
+                style={
+                  isDark
+                    ? { background: 'rgba(75,75,75,1)', borderRadius: '16px' }
+                    : { background: 'rgb(238, 234, 227)', borderRadius: '16px' }
+                }
               >
                 {dato.descripcion}
               </Typography>
