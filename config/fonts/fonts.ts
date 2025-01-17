@@ -1,18 +1,15 @@
 // config/fonts.ts
 
-import { Roboto } from 'next/font/google';
-
-// Inter font
-// export const inter = Inter({ subsets: ['latin'] });
-
-// Montserrat Alternates font for titles
-// export const titleFont = Montserrat_Alternates({
-//   subsets: ['latin'],
-//   weight: ['500', '700'],
-// });
+import { Roboto, Open_Sans } from 'next/font/google';
 
 // Roboto font
 export const roboto = Roboto({
   subsets: ['latin'],
-  weight: ['100', '300'],
+  weight: ['100', '300', '400', '500', '700', '900'],
+});
+
+// Open Sans font
+export const openSans = Open_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '600', '700', '800'],
 });
