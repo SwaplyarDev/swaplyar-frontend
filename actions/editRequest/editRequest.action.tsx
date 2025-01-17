@@ -22,21 +22,12 @@ const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const fetchTransactionById = async (requestData: TransactionRequestData): Promise<any> => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/send`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/code/send/${requestData.transaccionId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        transactionId: requestData.transaccionId,
-      }), // Enviar datos como JSON
     });
-    console.log(
-      'el body:',
-      JSON.stringify({
-        transactionId: requestData.transaccionId,
-      }),
-    );
     if (!response.ok) {
       if (response.status === 404) {
         throw new Error('La transacción no fue encontrada.');
@@ -55,7 +46,7 @@ export const fetchTransactionById = async (requestData: TransactionRequestData):
 export const fetchCode = async (code: string, requestData: { transactionId: string }): Promise<any> => {
   try {
     // Realizar la solicitud POST al backend para verificar el código
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/verify`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/code/validate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
