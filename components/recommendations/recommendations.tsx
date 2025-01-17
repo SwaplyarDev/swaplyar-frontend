@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 // Definición de tipos para las props de cada tarjeta
 interface RecommendationCardProps {
@@ -11,35 +12,48 @@ interface RecommendationCardProps {
 // Componente reutilizable para una tarjeta de recomendación
 const RecommendationCard: React.FC<RecommendationCardProps> = ({ name, description, date, image }) => {
   return (
-    <div className="w-72 flex-shrink-0 rounded-lg border border-[#012A8E] bg-[#D6E2FF] p-4 text-center shadow-md dark:border-[#EBE7E0] dark:bg-[#969696]">
-      {/* Imagen circular */}
-      <div className="mb-3 flex justify-center">
-        <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
-          {image ? (
-            <img src={image} alt={name} className="h-full w-full object-cover" />
-          ) : (
-            <div className="h-full w-full rounded-full bg-gray-200 dark:bg-gray-600" />
-          )}
-        </div>
-      </div>
-      {/* Estrellas */}
-      <div className="mb-3 flex justify-center">
-        {'★'
-          .repeat(5)
-          .split('')
-          .map((star, index) => (
-            <span key={index} className="mx-0.5 text-4xl text-[#D9D9D9]">
-              {star}
+    <article className="h-[542px] flex-shrink-0 rounded-[16px] border-[#012A8E] bg-[#D6E2FF] p-4 text-center shadow-md dark:border-[#EBE7E0] dark:bg-[#969696] sm:w-[330px] lg:w-[358px]">
+      {/* Encabezado de la tarjeta */}
+      <header className="mb-3">
+        {/* Imagen circular */}
+        <figure className="flex justify-center">
+          <div className="h-[140px] w-[140px] overflow-hidden rounded-full bg-[#D9D9D9] dark:bg-[#D9D9D9]">
+            {image ? <Image src={image} alt={`${name}`} width={140} height={140} className="object-cover" /> : null}
+          </div>
+          <figcaption className="sr-only">{name}</figcaption>
+        </figure>
+      </header>
+
+      {/* Contenido principal */}
+      <section className="mb-3">
+        {/* Estrellas */}
+        <div className="flex justify-center space-x-1">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <span key={index} className="flex h-[42px] w-[42px] items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="39" viewBox="0 0 40 39" fill="none">
+                <path
+                  d="M20 0.441406L24.7148 14.952H39.9722L27.6287 23.9201L32.3435 38.4308L20 29.4627L7.65651 38.4308L12.3713 23.9201L0.027813 14.952H15.2852L20 0.441406Z"
+                  fill="#D9D9D9"
+                />
+              </svg>
             </span>
           ))}
-      </div>
-      {/* Nombre */}
-      <h3 className="mb-2 text-lg text-gray-900 dark:text-black">{name}</h3>
-      {/* Descripción */}
-      <p className="mb-2 text-sm text-black dark:text-black">{description}</p>
-      {/* Fecha */}
-      <p className="text-right text-xs text-black dark:text-black">{date}</p>
-    </div>
+        </div>
+      </section>
+
+      {/* Información adicional */}
+      <section className="pb-3">
+        <h3 className="mb-2 text-[16px] font-light leading-[24px] text-black">{name}</h3>
+        <div className="flex h-[216px] w-[317px] shrink-0 text-left">
+          <p className="mb-4 text-[16px] font-light leading-[24px] text-black">{description}</p>
+        </div>
+      </section>
+
+      {/* Pie de tarjeta */}
+      <footer>
+        <p className="mt-4 text-right text-[16px] font-light leading-[24px] text-black">{date}</p>
+      </footer>
+    </article>
   );
 };
 
@@ -56,9 +70,11 @@ interface RecommendationsProps {
 
 const Recommendations: React.FC<RecommendationsProps> = ({ items }) => {
   return (
-    <div className="flex w-full flex-col items-center p-5">
+    <section className="flex w-full flex-col items-center p-2">
+      {/* Encabezado con texto dinámico según el tema */}
       <h2 className="font-bold text-gray-900 dark:text-gray-100 sm:text-xl md:text-xl lg:text-2xl">
-        Ya somos más personas felices :)
+        <span className="block dark:hidden">Que dicen nuestros clientes de SwaplyAr</span>
+        <span className="hidden dark:block">Ya somos más personas felices :)</span>
       </h2>
       {/* Contenedor de tarjetas con desplazamiento horizontal */}
       <div className="scrollbar-hide w-full overflow-x-auto p-4 sm:w-auto">
@@ -74,7 +90,7 @@ const Recommendations: React.FC<RecommendationsProps> = ({ items }) => {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
