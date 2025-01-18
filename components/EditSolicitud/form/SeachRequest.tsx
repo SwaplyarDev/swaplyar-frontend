@@ -56,7 +56,7 @@ const SeachRequest: React.FC = () => {
   return (
     <div className="flex justify-center md:mx-10 lg:mx-0 lg:flex-none">
       <form
-        className="lg:max-w-inherit mt-3 flex h-full w-full max-w-[450px] flex-col lg:justify-evenly xl:ml-7"
+        className="lg:max-w-inherit mt-3 flex h-full w-full max-w-[450px] flex-col lg:max-w-full lg:justify-evenly"
         onSubmit={handleSubmit(handleSeachRequestSubmit)}
       >
         <label className="mb-3 flex flex-col text-right text-xs font-bold xs:mb-0 lg:text-sm" htmlFor="transaccionId">

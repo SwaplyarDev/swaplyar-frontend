@@ -126,19 +126,22 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
   };
 
   return (
-    <div>
+    <>
       <div className="w-full">
         <form onSubmit={handleSubmit(verifyCode)} className="flex w-auto flex-col items-center xl:items-end">
           <label htmlFor="verificationCode" className="text-center text-xl text-lightText dark:text-darkText">
             Ingrese el código de 6 dígitos que recibiste por email
           </label>
           <div className="flex w-full justify-center xl:justify-end">
-            <div className="my-5 flex h-[52px] w-[336px] justify-between gap-2 xs:gap-1">
+            <div className="my-5 flex h-[52px] w-full max-w-[336px] justify-between gap-2 xs:gap-1">
               {[...Array(6)].map((_, index) => (
                 <div
                   key={index}
                   className={clsx(
-                    `w-[50px] rounded-full border-[0.5px] border-buttonsLigth p-[3px] dark:border-darkText xs:w-[57px] sm:w-full`,
+                    errors.verificationCode || isCodeCorrect
+                      ? 'border-red-500'
+                      : 'border-buttonsLigth dark:border-darkText',
+                    `w-[50px] rounded-full border-[0.5px] p-[3px] xs:w-[57px] sm:w-full`,
                   )}
                 >
                   <input
@@ -148,7 +151,7 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
                     disabled={isLocked || loading}
                     className={clsx(
                       'h-full w-full rounded-full border-0 text-center text-base focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem] lg:text-2xl',
-                      errors.verificationCode ? 'border-red-500' : '',
+                      errors.verificationCode || isCodeCorrect ? 'border-red-500' : '',
                     )}
                     {...register(`verificationCode.${index}`)}
                     onChange={(event) => handleInputChange(index, event)}
@@ -169,7 +172,7 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
             </div>
           )}
 
-          <div className="my-5 flex items-center justify-evenly gap-5 text-buttonsLigth dark:text-darkText">
+          <div className="my-5 flex flex-col-reverse items-center justify-evenly gap-5 text-buttonsLigth dark:text-darkText xs:flex-row">
             <button
               onClick={toggle}
               className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} group relative m-1 flex h-[42px] min-w-[150px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 font-bold text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent xs:min-w-[150px]`}
@@ -216,7 +219,7 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
         }}
         title="modal de tipos"
       />
-    </div>
+    </>
   );
 };
 

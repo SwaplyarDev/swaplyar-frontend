@@ -118,23 +118,23 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
 
     try {
       setLoading(true);
-      const token = sessionStorage.getItem('token');
+      // const token = sessionStorage.getItem('token');
 
-      if (!token) {
-        handleEditRequestError();
-        return;
-      }
+      // if (!token) {
+      //   handleEditRequestError();
+      //   return;
+      // }
       await sendFormData({
         message: note,
         file: file,
         transaccionId: transaccionId,
-        token: token,
       });
       setLoading(false);
       handleEditRequestSuccess();
       onClose();
     } catch (error) {
       console.error('Error al enviar los datos:', error);
+      handleEditRequestError();
       setLoading(false);
     }
   };

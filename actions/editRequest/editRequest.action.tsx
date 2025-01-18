@@ -8,7 +8,7 @@ export interface sendeForm {
   message: string;
   file: File | null;
   transaccionId: string;
-  token: string | null;
+  // token: string | null;
 }
 interface TransactionData {
   // Define los campos esperados según la respuesta de la API
@@ -28,9 +28,10 @@ export const fetchTransactionById = async (requestData: TransactionRequestData):
         'Content-Type': 'application/json',
       },
     });
+    const result = await response.json();
     if (!response.ok) {
       if (response.status === 404) {
-        throw new Error('La transacción no fue encontrada.');
+        throw new Error('El ID de la transacción no fue encontrada.');
       } else {
         throw new Error('Ocurrió un error al buscar la transacción.');
       }
@@ -65,11 +66,11 @@ export const fetchCode = async (code: string, requestData: { transactionId: stri
       throw new Error(result.message || 'Código incorrecto');
     }
 
-    if (result.token) {
-      sessionStorage.setItem('token', result.token);
-    } else {
-      console.error('Token no encontrado en la respuesta');
-    }
+    // if (result.token) {
+    //   sessionStorage.setItem('token', result.token);
+    // } else {
+    //   console.error('Token no encontrado en la respuesta');
+    // }
 
     return { success: true, message: result.message || 'Código verificado exitosamente.' };
   } catch (error) {
@@ -80,7 +81,7 @@ export const fetchCode = async (code: string, requestData: { transactionId: stri
 
 export const resendCodeAction = async (transactionId: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/send`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/code/send/${transactionId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -124,24 +125,24 @@ export const fetchTransactionData = async (transaccionId: string): Promise<Trans
 
 export const sendFormData = async ({ message, file, transaccionId }: sendeForm): Promise<any> => {
   try {
-    const token = sessionStorage.getItem('token');
+    // const token = sessionStorage.getItem('token');
 
     // Verifica si el token es nulo
-    if (!token) {
-      throw new Error('Token no encontrado en sessionStorage');
-    }
+    // if (!token) {
+    //   throw new Error('Token no encontrado en sessionStorage');
+    // }
     const formData = new FormData();
-    formData.append('message', JSON.stringify(message));
+    formData.append('note', JSON.stringify(message));
     if (file) {
       formData.append('file', file);
     }
     formData.append('transaccionId', transaccionId);
-    formData.append('token', token);
+    // formData.append('token', token);
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/${transaccionId}`, {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      // headers: {
+      //   Authorization: `Bearer ${token}`,
+      // },
       body: formData,
     });
 
