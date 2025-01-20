@@ -54,7 +54,8 @@ const config: Config = {
           600: '#2F6FEB',
         },
         // calculatorDark: 'rgb(69 69 69 / 48%)',
-        buttonsLigth: '#012A8E', // Azul Marino Oscuro
+        buttonsLigth: '#2A68FE', // Azul Marino Claro
+        buttonsDark: '#012A8E', // Azul Marino Oscuro
         calculatorDark: 'rgba(235, 231, 224, 0.15)', // Beige Claro con Transparencia (15%)
         calculatorDark2: 'rgba(235, 231, 224, 0.5)', // Beige Claro con Transparencia (50%)
         calculatorLight: 'rgba(230, 232, 239, 0.15)', // Azul Grisáceo Claro con Transparencia (15%)

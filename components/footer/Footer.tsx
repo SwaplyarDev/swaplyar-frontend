@@ -43,7 +43,9 @@ function Section({
 }) {
   return (
     <section
-      className={`mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-center sm:text-center lg:items-${align}`}
+      className={`mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-center sm:text-center ${
+        align === 'start' ? 'lg:items-start' : align === 'end' ? 'lg:items-end' : 'lg:items-center'
+      }`}
     >
       <p className="mb-2 text-xl font-bold">{title}</p>
       {links.map(({ href, label, view }) => (
@@ -55,9 +57,14 @@ function Section({
 
 function AccordionSection({ title, links }: { title: string; links: FooterLinkProps[] }) {
   return (
-    <Accordion className="border-0 bg-transparent shadow-none">
+    <Accordion
+      disableGutters
+      className="group border-b-[1px] border-[#90b0fe] bg-transparent shadow-none transition-all duration-300 hover:border-buttonsDark [&.Mui-expanded]:border-buttonsDark"
+    >
       <AccordionSummary
-        expandIcon={<ExpandMoreIcon className="h-10 w-10 text-buttonsLigth dark:text-darkText" />}
+        expandIcon={
+          <ExpandMoreIcon className="[&:not(.Mui-expanded):hover]: h-10 w-10 text-buttonsLigth transition-all duration-300 group-hover:-rotate-180 group-hover:text-buttonsDark group-[&.Mui-expanded]:text-buttonsDark dark:text-darkText" />
+        }
         aria-controls={`${title}-content`}
         id={`${title}-header`}
         className="min-h-10"
@@ -70,7 +77,7 @@ function AccordionSection({ title, links }: { title: string; links: FooterLinkPr
       >
         <h4 className="text-xl font-bold text-lightText dark:text-darkText">{title}</h4>
       </AccordionSummary>
-      <AccordionDetails className="flex flex-col pb-0 pl-10 pr-0 pt-2">
+      <AccordionDetails className="flex flex-col text-center">
         {links.map(({ href, label, view }) => (
           <FooterLink key={href} href={href} label={label} view={view} />
         ))}
@@ -83,14 +90,14 @@ export default function Footer() {
   return (
     <footer className="rs-wrapper-v4 mx-auto w-full max-w-[1204px] px-4 py-8 md:px-8 lg:px-4">
       {/* Desktop View */}
-      <div className="one-info-footer hidden w-full flex-col items-center gap-4 px-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 lg:flex">
+      <div className="one-info-footer hidden w-full flex-col items-center gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 lg2:flex">
         <Section title="Regístrate y disfruta de beneficios" links={footerLinks.registro} align="start" />
         <Section title="Normativa" links={footerLinks.normativa} align="center" />
         <Section title="Atención al Cliente" links={footerLinks.atencion} align="end" />
       </div>
 
       {/* Mobile View */}
-      <div className="flex flex-col lg:hidden">
+      <div className="flex flex-col lg2:hidden">
         <AccordionSection title="Registro y Beneficios" links={footerLinks.registro} />
         <AccordionSection title="Normativa" links={footerLinks.normativa} />
         <AccordionSection title="Atención al Cliente" links={footerLinks.atencion} />
