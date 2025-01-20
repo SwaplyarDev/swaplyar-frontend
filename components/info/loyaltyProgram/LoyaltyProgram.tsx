@@ -20,7 +20,7 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 function LoyaltyProgram() {
   const { margins } = useMargins();
-  const currentMargin = ResponsiveMarginHook(margins);
+  //const currentMargin = ResponsiveMarginHook(margins);
 
   const { setView } = useStore();
   const handleChange = () => {
