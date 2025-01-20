@@ -1,16 +1,13 @@
 'use client';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
-import { useMargins } from '@/context/MarginProvider';
-import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import { fraudPrevention } from '@/utils/assets/img-database';
-import { mockLinks } from './mockFraudPrev';
+import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 import { mockTexts } from './mockFraudPrev';
 import { useState } from 'react';
 
 const FraudPrevention = () => {
   const [selectedTextIndex, setSelectedTextIndex] = useState<number>(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const { margins } = useMargins();
 
   const handleButtonClick = (key: number) => {
     setIsAnimating(true);
@@ -25,15 +22,15 @@ const FraudPrevention = () => {
       <section key={key} className="flex w-[100%] flex-col items-start gap-2">
         {/* Botón */}
         <button
-          className={`flex flex-row gap-2 text-xl sm:text-3xl md:text-3xl ${
+          className={`flex flex-row gap-2 text-xl ${
             selectedTextIndex === key
               ? 'scale-105 text-blue-800 decoration-blue-800 dark:text-[#97938d] dark:decoration-[#97938d]'
               : 'dark:text-[#EBE7E0] dark:decoration-[#EBE7E0]'
           } transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:hover:decoration-[#97938d]`}
           onClick={() => handleButtonClick(key)}
         >
-          <p>{selectedTextIndex === key ? '|  ' : null}</p>
-          <p className={`${selectedTextIndex === key ? 'underline' : 'decoration-transparent'}`}>{item.button}</p>
+          <h3>{selectedTextIndex === key ? '|  ' : null}</h3>
+          <h3 className={`${selectedTextIndex === key ? 'underline' : 'decoration-transparent'}`}>{item.button}</h3>
         </button>
 
         {/* Texto */}
@@ -42,12 +39,12 @@ const FraudPrevention = () => {
             selectedTextIndex === key ? 'visible' : 'invisible max-h-0'
           } flex w-[100%] flex-col items-start gap-5 lg:hidden`}
         >
-          <h2 className="w-[80%] self-end border-[#012A8E] p-2 text-start text-xl font-semibold dark:border-[#EBE7E0] xs:text-2xl sm:self-end sm:text-3xl md:text-4xl">
+          <h2 className="w-[80%] self-end border-[#012A8E] p-2 text-start text-3xl font-semibold dark:border-[#EBE7E0]">
             {item.mainTitle}
           </h2>
           <article
             className={`max-w-[372px] shrink-0 self-end transition-all duration-500 ease-in-out md:max-w-[395px] ${
-              isAnimating ? 'max-h-0 opacity-0 blur-xl' : 'max-h-[100%] opacity-100 blur-none'
+              isAnimating ? 'opacity-0 blur-xl' : 'opacity-100 blur-none'
             } flex flex-col gap-5 overflow-hidden rounded-2xl bg-[#EEEAE3] p-5 text-sm dark:bg-[#4B4B4B]`}
             style={{
               transitionProperty: 'max-height, opacity, filter',
@@ -59,6 +56,16 @@ const FraudPrevention = () => {
               <div key={index} className="flex flex-col gap-1">
                 <h3 className="text-lg font-medium text-[#012A8E] dark:text-[#97938d]">{it.title}</h3>
                 <p>{it.text}</p>
+                {it.links?.map((link, index) => (
+                  <a
+                    key={index}
+                    className="text-[#012A8E] underline decoration-[#012A8E] transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0] dark:hover:decoration-[#97938d]"
+                    href={link.link}
+                  >
+                    {link.text}
+                  </a>
+                ))}
+                {it.list?.map((list, index) => <p key={index}>* {list}</p>)}
               </div>
             ))}
           </article>
@@ -72,17 +79,16 @@ const FraudPrevention = () => {
       className={`flex flex-row gap-2 ${selectedTextIndex === key ? 'scale-105 text-blue-800 decoration-blue-800 dark:text-[#97938d] dark:decoration-[#97938d]' : 'dark:text-[#EBE7E0] dark:decoration-[#EBE7E0]'} transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:hover:decoration-[#97938d]`}
       onClick={() => handleButtonClick(key)}
     >
-      <p>{selectedTextIndex === key ? '|  ' : null}</p>
+      <h3>{selectedTextIndex === key ? '|  ' : null}</h3>
 
-      <p className={` ${selectedTextIndex === key ? 'underline' : 'decoration-transparent'}`}>{title}</p>
+      <h3 className={` ${selectedTextIndex === key ? 'underline' : 'decoration-transparent'}`}>{title}</h3>
     </button>
   );
 
   return (
     <main className="flex w-full flex-col items-center gap-10 pt-10">
-      <h1 className="self-center text-center text-3xl font-medium xs:text-2xl sm:text-3xl md:text-4xl lg:text-3xl">
-        Concientización sobre el fraude
-      </h1>
+      <AnimatedBlurredCircles tope="top-[40px]" />
+      <h1 className="self-center text-center text-4xl font-medium">Concientización sobre el fraude</h1>
 
       <section className="flex min-h-[100vh] w-[80%] max-w-[60.375rem] flex-col gap-2 lg:flex-row lg:gap-20">
         {/* VERSION MOBILES */}
@@ -110,21 +116,19 @@ const FraudPrevention = () => {
                 <div key={index} className="flex flex-col gap-1">
                   <h3 className="text-lg font-medium text-[#012A8E] dark:text-[#97938d]">{it.title}</h3>
                   <p>{it.text}</p>
+                  {it.links?.map((link, index) => (
+                    <a
+                      key={index}
+                      className="text-[#012A8E] underline decoration-[#012A8E] transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0] dark:hover:decoration-[#97938d]"
+                      href={link.link}
+                    >
+                      {link.text}
+                    </a>
+                  ))}
+                  {it.list?.map((list, index) => <p key={index}>* {list}</p>)}
                 </div>
               ))}
-              <article className="flex flex-col gap-1">
-                {selectedTextIndex === 3
-                  ? mockLinks.map((mock, index) => (
-                      <a
-                        key={index}
-                        className="text-blue-600 underline decoration-blue-600 transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0] dark:hover:decoration-[#97938d]"
-                        href={mock.link}
-                      >
-                        {mock.text}
-                      </a>
-                    ))
-                  : null}
-              </article>
+              <article className="flex flex-col gap-1"></article>
             </section>
           ) : (
             <p>Selecciona una opción para ver más detalles.</p>
