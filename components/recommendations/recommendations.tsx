@@ -44,7 +44,7 @@ const RecommendationCard: React.FC<RecommendationCardProps> = ({ name, descripti
       {/* Información adicional */}
       <section className="pb-3">
         <h3 className="mb-2 text-[16px] font-light leading-[24px] text-black">{name}</h3>
-        <div className="flex h-[216px] w-[317px] shrink-0 text-left">
+        <div className="flex h-[216px] w-[300px] shrink-0 text-left md:w-[317px]">
           <p className="mb-4 text-[16px] font-light leading-[24px] text-black">{description}</p>
         </div>
       </section>
@@ -70,25 +70,23 @@ interface RecommendationsProps {
 
 const Recommendations: React.FC<RecommendationsProps> = ({ items }) => {
   return (
-    <section className="flex w-full flex-col items-center p-2">
+    <section className="flex w-full flex-col items-center p-2 sm:w-auto">
       {/* Encabezado con texto dinámico según el tema */}
-      <h2 className="font-bold text-gray-900 dark:text-gray-100 sm:text-xl md:text-xl lg:text-2xl">
+      <h2 className="mb-4 text-center text-[36px] font-bold text-gray-900 dark:text-gray-100">
         <span className="block dark:hidden">Que dicen nuestros clientes de SwaplyAr</span>
         <span className="hidden dark:block">Ya somos más personas felices :)</span>
       </h2>
       {/* Contenedor de tarjetas con desplazamiento horizontal */}
-      <div className="scrollbar-hide w-full overflow-x-auto p-4 sm:w-auto">
-        <div className="flex space-x-4">
-          {items.map((item) => (
-            <RecommendationCard
-              key={item.id}
-              name={item.name}
-              description={item.description}
-              date={item.date}
-              image={item.image}
-            />
-          ))}
-        </div>
+      <div className="scrollbar-hide flex w-full space-x-4 overflow-x-auto p-4 lg:w-auto">
+        {items.map((item) => (
+          <RecommendationCard
+            key={item.id}
+            name={item.name}
+            description={item.description}
+            date={item.date}
+            image={item.image}
+          />
+        ))}
       </div>
     </section>
   );
