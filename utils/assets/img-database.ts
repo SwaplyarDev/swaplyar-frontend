@@ -139,7 +139,6 @@ export const PixImg = '/images/36.png';
 export const PixDarkImg = '/images/35.png';
 
 /**404**/
-
 export const Error_404_clear = '/images/clear-404.png';
 export const Error_404_dark = '/images/dark-404.png';
 export const Post1_404 = '/images/post1-404.png';
@@ -162,3 +161,6 @@ export const EditorMobile = '/images/EditorMobile.png';
 
 /** Repentance**/
 export const regretsPhone = '/images/regretPhone.png';
+
+/** Avatar **/
+export const swaplyArAvatar = '/images/swaplyArAvatar.png';

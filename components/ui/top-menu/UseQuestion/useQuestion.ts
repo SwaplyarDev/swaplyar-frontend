@@ -14,7 +14,7 @@ const useQuestion = () => {
         const response = await fetch(url);
         if (!response.ok) throw new Error('No funcionó');
         const data = await response.json();
-        setQuestions(data.questionsPerPage); // Actualiza el estado global
+        setQuestions(data.questionsPerPage);
       } catch (error) {
         console.log('Error fetching datos', error);
       }
@@ -22,7 +22,7 @@ const useQuestion = () => {
     fetchQuestions();
   }, [setQuestions, currentPage]);
 
-  return { questions }; // Retorna las preguntas para uso en el componente
+  return { questions };
 };
 
 export default useQuestion;

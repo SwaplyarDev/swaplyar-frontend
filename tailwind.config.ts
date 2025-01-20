@@ -28,6 +28,7 @@ const config: Config = {
       screens: {
         'mini-phone': '340px',
         'xs-mini-phone': '390px',
+        'xs-mini-phone2': '400px',
         xs: '480px',
         'xs-phone': '550px',
         sm: '640px',
@@ -38,6 +39,7 @@ const config: Config = {
         'md-tablet': '850px',
         'lg-tablet': '960px',
         lg: '1090px',
+        lg2: '1124px',
         'xl-desktop': '1080px',
         xl: '1280px',
         '2k': '2048px',
