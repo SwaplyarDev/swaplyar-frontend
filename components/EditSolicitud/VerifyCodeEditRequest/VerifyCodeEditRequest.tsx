@@ -128,18 +128,18 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
   return (
     <>
       <div className="w-full">
-        <form onSubmit={handleSubmit(verifyCode)} className="flex w-auto flex-col items-center xl:items-end">
+        <form onSubmit={handleSubmit(verifyCode)} className="flex w-auto flex-col items-center">
           <label htmlFor="verificationCode" className="text-center text-xl text-lightText dark:text-darkText">
             Ingrese el código de 6 dígitos que recibiste por email
           </label>
-          <div className="flex w-full justify-center xl:justify-end">
+          <div className="flex w-full justify-center">
             <div className="my-5 flex h-[52px] w-full max-w-[336px] justify-between gap-2 xs:gap-1">
               {[...Array(6)].map((_, index) => (
                 <div
                   key={index}
                   className={clsx(
-                    errors.verificationCode || isCodeCorrect
-                      ? 'border-red-500'
+                    !errors.verificationCode || !isCodeCorrect
+                      ? 'border-errorColor'
                       : 'border-buttonsLigth dark:border-darkText',
                     `w-[50px] rounded-full border-[0.5px] p-[3px] xs:w-[57px] sm:w-full`,
                   )}
@@ -150,8 +150,8 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
                     maxLength={1}
                     disabled={isLocked || loading}
                     className={clsx(
-                      'h-full w-full rounded-full border-0 text-center text-base focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem] lg:text-2xl',
-                      errors.verificationCode || isCodeCorrect ? 'border-red-500' : '',
+                      'h-full w-full rounded-full border-0 text-center text-base text-lightText focus:outline-none dark:border-[0.5px] dark:bg-darkText sm:text-[2.5rem] lg:text-2xl',
+                      !errors.verificationCode || !isCodeCorrect ? 'border-errorColor' : '',
                     )}
                     {...register(`verificationCode.${index}`)}
                     onChange={(event) => handleInputChange(index, event)}
@@ -161,9 +161,13 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
             </div>
           </div>
 
-          {errors.verificationCode && <p className="mb-5 text-sm text-red-500">• {errors.verificationCode.message}</p>}
+          {errors.verificationCode && (
+            <p className="mb-5 text-sm text-errorColor">• {errors.verificationCode.message}</p>
+          )}
 
-          {isCodeCorrect === false && <p className="mt-2 text-sm text-red-500">Código incorrecto. Intenta de nuevo.</p>}
+          {isCodeCorrect === false && (
+            <p className="mt-2 text-sm text-errorColor">Código incorrecto. Intenta de nuevo.</p>
+          )}
 
           {loading && (
             <div id="loading" className="flex w-9/12 items-center justify-center gap-2">
