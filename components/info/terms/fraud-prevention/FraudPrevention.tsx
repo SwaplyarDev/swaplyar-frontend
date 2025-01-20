@@ -114,7 +114,7 @@ const FraudPrevention = () => {
             >
               {mockTexts[selectedTextIndex]?.items.map((it, index) => (
                 <div key={index} className="flex flex-col gap-1">
-                  <h3 className="text-lg font-medium text-[#012A8E] dark:text-[#97938d]">{it.title}</h3>
+                  <p className="text-lg font-medium text-[#012A8E] dark:text-[#97938d]">{it.title}</p>
                   <p>{it.text}</p>
                   {it.links?.map((link, index) => (
                     <a
