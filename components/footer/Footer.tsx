@@ -32,9 +32,19 @@ function FooterLink({ href, label, view }: FooterLinkProps) {
   );
 }
 
-function Section({ title, links }: { title: string; links: FooterLinkProps[] }) {
+function Section({
+  title,
+  links,
+  align,
+}: {
+  title: string;
+  links: FooterLinkProps[];
+  align: 'start' | 'center' | 'end';
+}) {
   return (
-    <section className="mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-center sm:text-center">
+    <section
+      className={`mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-center sm:text-center lg:items-${align}`}
+    >
       <p className="mb-2 text-xl font-bold">{title}</p>
       {links.map(({ href, label, view }) => (
         <FooterLink key={href} href={href} label={label} view={view} />
@@ -71,16 +81,16 @@ function AccordionSection({ title, links }: { title: string; links: FooterLinkPr
 
 export default function Footer() {
   return (
-    <footer className="rs-wrapper-v4 mx-auto max-w-screen-2xl px-4 py-8">
+    <footer className="rs-wrapper-v4 mx-auto w-full max-w-[1204px] px-4 py-8 md:px-8 lg:px-4">
       {/* Desktop View */}
-      <div className="one-info-footer hidden w-full flex-col items-center gap-4 px-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 sm-tablet:flex">
-        <Section title="Regístrate y disfruta de beneficios" links={footerLinks.registro} />
-        <Section title="Normativa" links={footerLinks.normativa} />
-        <Section title="Atención al Cliente" links={footerLinks.atencion} />
+      <div className="one-info-footer hidden w-full flex-col items-center gap-4 px-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 lg:flex">
+        <Section title="Regístrate y disfruta de beneficios" links={footerLinks.registro} align="start" />
+        <Section title="Normativa" links={footerLinks.normativa} align="center" />
+        <Section title="Atención al Cliente" links={footerLinks.atencion} align="end" />
       </div>
 
       {/* Mobile View */}
-      <div className="flex flex-col sm-tablet:hidden">
+      <div className="flex flex-col lg:hidden">
         <AccordionSection title="Registro y Beneficios" links={footerLinks.registro} />
         <AccordionSection title="Normativa" links={footerLinks.normativa} />
         <AccordionSection title="Atención al Cliente" links={footerLinks.atencion} />
