@@ -33,6 +33,7 @@
     "eslint-plugin-react": "^7.36.1",
     "flowbite-react": "^0.10.1",
     "git-commit-msg-linter": "^5.0.8",
+    "motion": "^12.0.0",
     "next": "14.2.5",
     "next-auth": "^5.0.0-beta.20",
     "path-to-regexp": "^8.2.0",
