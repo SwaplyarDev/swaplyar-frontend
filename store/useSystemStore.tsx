@@ -9,6 +9,8 @@ const defaultSendingSystem: System = {
   logoDark: PaypalDarkImg,
   isDisabled: false,
   coin: 'USD',
+  paymentMethod: 'paypal',
+  coinSign: 'US$',
 };
 
 const defaultReceivingSystem: System = {
@@ -18,6 +20,8 @@ const defaultReceivingSystem: System = {
   logoDark: BankDarkImg,
   isDisabled: false,
   coin: 'ARS',
+  paymentMethod: 'ars',
+  coinSign: '$a',
 };
 
 interface SystemStore {
@@ -30,7 +34,7 @@ interface SystemStore {
   setActiveSelect: (selectType: 'send' | 'receive' | null) => void;
   disableSystem: (systemId: string) => void;
   enableSystem: (systemId: string) => void;
-  resetToDefault: () => void; // Nuevo método para restablecer a los valores predeterminados
+  resetToDefault: () => void;
 }
 
 export const useSystemStore = create<SystemStore>((set) => {

@@ -75,6 +75,9 @@ export const Paso2Gif = '/images/paso2.gif';
 export const Paso3Gif = '/images/paso3.gif';
 export const Paso4Gif = '/images/paso4.gif';
 
+/**questions**/
+export const BannerQuestions = '/images/baner_questions.png';
+
 /**loyalty-program**/
 export const Rewards1 = '/images/rewards1.png';
 export const Rewards2 = '/images/rewards2.png';
@@ -97,12 +100,14 @@ export const Caida = '/images/caida.png';
 /**help-center**/
 export const Contacto = '/images/contacto.png';
 export const PlusRewardsGif = '/gif/plus-rewards.gif';
-export const PlusRewards = '/gif/plus-rewards.png';
-export const PlusRewardsDark = '/gif/plus-rewards-dark.png';
+export const PlusRewards = '/images/plus-rewards.png';
+export const PlusRewardsDark = '/images/plus-rewards-dark.png';
 export const Ayuda1 = '/images/ayuda1.png';
 export const Ayuda2 = '/images/ayuda2.png';
 export const Ayuda1Dark = '/images/ayuda1-dark.png';
 export const Ayuda2Dark = '/images/ayuda2-dark.png';
+
+export const fraudPrevention = '/images/fraudprevent.png';
 
 /**why-choose-swaplyar**/
 export const ElegirSwaplyAr = '/images/elegirSwaplyAr.png';
@@ -111,22 +116,29 @@ export const LideresenCambio = '/images/lideresencambio.png';
 export const SeguridadySatisfaccion = '/images/seguridadysatisfaccion.png';
 
 /**transaction-calculator**/
-export const PaypalImg = '/images/paypal.big.png';
-export const PaypalDarkImg = '/images/paypal.dark.png';
+export const PaypalImg = '/images/32.png';
+export const PaypalDarkImg = '/images/31.png';
 
-export const PayoneerUsdImg = '/images/payoneer.usd.big.png';
-export const PayoneerUsdDarkImg = '/images/payoneer.usd.dark.png';
-export const PayoneerEurImg = '/images/payoneer.eur.big.png';
-export const PayoneerEurDarkImg = '/images/payoneer.eur.dark.png';
+export const PayoneerUsdImg = '/images/24.png';
+export const PayoneerUsdDarkImg = '/images/23.png';
+export const PayoneerEurImg = '/images/26.png';
+export const PayoneerEurDarkImg = '/images/25.png';
 
-export const BankImg = '/images/banco.medium.png';
-export const BankDarkImg = '/images/banco.dark.png';
+export const BankImg = '/images/22.png';
+export const BankDarkImg = '/images/21.png';
 
-export const WiseUsdImg = '/images/wise.usd.big.png';
-export const WiseUsdDarkImg = '/images/wise.usd.dark.png';
-export const WiseEurImg = '/images/wise.eur.big.png';
-export const WiseEurDarkImg = '/images/wise.eur.dark.png';
+export const WiseUsdImg = '/images/28.png';
+export const WiseUsdDarkImg = '/images/27.png';
+export const WiseEurImg = '/images/30.png';
+export const WiseEurDarkImg = '/images/29.png';
 
+export const TetherImg = '/images/34.png';
+export const TetherDarkImg = '/images/33.png';
+
+export const PixImg = '/images/36.png';
+export const PixDarkImg = '/images/35.png';
+
+/**404**/
 export const Error_404_clear = '/images/clear-404.png';
 export const Error_404_dark = '/images/dark-404.png';
 export const Post1_404 = '/images/post1-404.png';
@@ -143,3 +155,12 @@ export const Enchufe_clear_largo = '/images/enchufe_clear_largo.png';
 export const tlf_404_dark = '/images/tlf_404_dark.png';
 export const tlf_404_clear = '/images/tlf_404_clear.png';
 export const post3_404 = '/images/post3_404.png';
+/** Editor Solicitud **/
+export const EditorPC = '/images/EditorPC.png';
+export const EditorMobile = '/images/EditorMobile.png';
+
+/** Repentance**/
+export const regretsPhone = '/images/regretPhone.png';
+
+/** Avatar **/
+export const swaplyArAvatar = '/images/swaplyArAvatar.png';

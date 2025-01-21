@@ -1,3 +1,5 @@
+// /components/ui/top-menu/switch.tsx
+
 import React from 'react';
 import styled from 'styled-components';
 
@@ -7,7 +9,7 @@ const Switch = () => {
   const { changeTheme, isDark } = useDarkTheme();
 
   return (
-    <StyledWrapper isDark={isDark}>
+    <StyledWrapper $isDark={isDark}>
       <label className="theme-switch">
         <input type="checkbox" className="theme-switch__checkbox" checked={isDark} onChange={changeTheme} />
         <div className="theme-switch__container">
@@ -37,7 +39,7 @@ const Switch = () => {
   );
 };
 
-const StyledWrapper = styled.div<{ isDark: boolean }>`
+const StyledWrapper = styled.div<{ $isDark: boolean }>`
   .theme-switch {
     --toggle-size: 11px;
     /* the size is adjusted using font-size,
@@ -301,17 +303,17 @@ const StyledWrapper = styled.div<{ isDark: boolean }>`
   }
 
   theme-switch__container {
-    background-color: ${(props) => (props.isDark ? 'var(--container-night-bg)' : 'var(--container-light-bg)')};
+    background-color: ${(props) => (props.$isDark ? 'var(--container-night-bg)' : 'var(--container-light-bg)')};
     transition: background-color 0.3s ease-in-out;
   }
 
   .theme-switch__sun-moon-container {
-    background-color: ${(props) => (props.isDark ? 'var(--moon-bg)' : 'var(--sun-bg)')};
+    background-color: ${(props) => (props.$isDark ? 'var(--moon-bg)' : 'var(--sun-bg)')};
     transition: background-color 0.3s ease-in-out;
   }
 
   .theme-switch__moon {
-    transform: ${(props) => (props.isDark ? 'translateX(0)' : 'translateX(100%)')};
+    transform: ${(props) => (props.$isDark ? 'translateX(0)' : 'translateX(100%)')};
     transition: transform 0.3s ease-in-out;
   }
 `;

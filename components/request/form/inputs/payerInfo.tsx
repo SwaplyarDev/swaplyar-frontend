@@ -45,7 +45,6 @@ export default function PayerInfo({ register, errors, setValue }: PayerInfoProps
       };
 
       setAmounts((prevAmounts) => {
-        //comprueba si los valores cambian realmente esto se hace para eviar advertencias y bucles
         if (
           prevAmounts.sendAmount !== preAmounts.sendAmount ||
           prevAmounts.recibeAmount !== preAmounts.recibeAmount ||

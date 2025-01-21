@@ -6,6 +6,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import { useSystemStore } from '@/store/useSystemStore';
 import StepThreeGeneral from './stepsThreeOptions/StepThreeGeneral';
 import StepThreeTether from './stepsThreeOptions/StepThreeTether';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
 interface FormData {
   send_amount: string;
@@ -33,20 +34,15 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
 
   const receiveAmount = localStorage.getItem('receiveAmount');
   const sendAmount = localStorage.getItem('sendAmount');
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const { selectedSendingSystem } = useSystemStore();
+  const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
 
   function showFileName(event: any) {
-    // Tomar el archivo del evento y asignarlo a `selectedFile`
     const file = event.target.files[0] || null;
 
-    // Si hay un archivo seleccionado, actualizar el estado y mostrar el nombre
     console.log(file);
     if (file) {
-      setSelectedFile(file);
       document.getElementById('file-name')!.textContent = file.name;
     } else {
-      // Si no hay archivo cargado, mostrar mensaje predeterminado
       document.getElementById('file-name')!.textContent = 'No hay archivo seleccionado';
     }
   }
@@ -70,11 +66,14 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
     console.log(proof_of_payment);
   }, [formData.stepThree, setValue, receiveAmount, sendAmount]);
 
+  const [loading, setLoading] = useState(false);
   const onSubmit = (data: FormData) => {
+    setLoading(true);
     console.log(data);
     updateFormData(2, data);
     markStepAsCompleted(2);
     setActiveStep(3);
+    setLoading(false);
   };
 
   const hasChanges =
@@ -88,8 +87,8 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(event); // Llamamos al onChange de register
-    if (showFileName) showFileName(event); // Ejecutamos la función personalizada si existe
+    onChange(event);
+    if (showFileName) showFileName(event);
   };
 
   const renderSelectedSystem = () => {
@@ -110,6 +109,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
             formData={formData}
             sendAmount={sendAmount}
             selectedSendingSystem={selectedSendingSystem}
+            selectedReceivingSystem={selectedReceivingSystem}
             receiveAmount={receiveAmount}
             handleChange={handleChange}
             restRegister={restRegister}
@@ -125,6 +125,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
             formData={formData}
             sendAmount={sendAmount}
             selectedSendingSystem={selectedSendingSystem}
+            selectedReceivingSystem={selectedReceivingSystem}
             receiveAmount={receiveAmount}
             handleChange={handleChange}
             restRegister={restRegister}
@@ -144,9 +145,16 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
             <button
               type="submit"
               className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-              disabled={!isValid || blockAll}
+              disabled={!isValid || blockAll || loading}
             >
-              Siguiente
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
+                  Cargando...
+                </div>
+              ) : (
+                'Siguiente'
+              )}
             </button>
           ) : (
             <button
@@ -162,9 +170,16 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
           <button
             type="submit"
             className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] text-sm font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
-            disabled={!isValid || blockAll}
+            disabled={!isValid || blockAll || loading}
           >
-            Siguiente
+            {loading ? (
+              <div className="flex items-center justify-center gap-2">
+                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
+                Cargando...
+              </div>
+            ) : (
+              'Siguiente'
+            )}
           </button>
         )}
       </div>

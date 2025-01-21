@@ -15,11 +15,7 @@ export interface FormData {
   email: string;
   phone_number: string;
   note?: string;
-  calling_code?: {
-    value: string;
-    label: string;
-    callingCode: string;
-  };
+  calling_code?: CountryOption;
   status: string;
 }
 export interface OutputFormat {
@@ -32,6 +28,7 @@ export interface OutputFormat {
 }
 export interface AlertsProps {
   isDark: boolean;
+  message?: string;
 }
 
 export interface FormularioProps {

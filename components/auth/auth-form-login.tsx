@@ -1,15 +1,15 @@
 'use client';
 
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useState, useEffect } from 'react'; // Importa useEffect
+import { useState } from 'react'; // Importa useEffect
 import useStore from '@/store/authViewStore';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
-import Image from 'next/image';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080/api';
+const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 type FormInputs = {
   email: string;
@@ -19,10 +19,13 @@ export const LoginForm = () => {
   const {
     register,
     handleSubmit,
+    watch,
+    reset,
     formState: { errors },
   } = useForm<FormInputs>({});
   const [loading, setLoading] = useState(false);
-  const { view, setView } = useStore();
+  const [isFocused, setIsFocused] = useState(false);
+  const { setView } = useStore();
   const { setEmail } = useEmailVerificationStore(); // Zustand action para guardar el email
   const { isDark } = useDarkTheme();
   const router = useRouter(); // Utiliza useRouter para redirigir después de ingresar el email
@@ -31,7 +34,7 @@ export const LoginForm = () => {
     setLoading(true);
     try {
       // Llamar a la API que envía el código al email
-      const response = await fetch(`${BASE_URL}/v1/login/email/send`, {
+      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/login/email/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,6 +55,8 @@ export const LoginForm = () => {
   };
 
   const handleChange = () => {
+    reset();
+    setIsFocused(false);
     setView('register');
   };
 
@@ -63,15 +68,22 @@ export const LoginForm = () => {
       >
         <h1 className="mb-5 text-center text-2xl font-bold text-buttonsLigth dark:text-darkText">Iniciar Sesión</h1>
 
-        <label htmlFor="email" className={clsx(errors.email ? 'text-red-500' : 'text-lightText dark:text-darkText')}>
-          Correo electrónico
+        <label
+          htmlFor="email"
+          className={clsx('text-lightText dark:text-darkText', !isFocused && 'hidden', 'mb-1 ml-2.5 text-sm')}
+        >
+          Correo Electrónico
         </label>
         <input
           className={clsx(
-            'rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-            errors.email ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600 dark:hover:border-white',
+            'rounded-2xl border bg-transparent px-5 py-2 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
+            watch('email') && 'border-inputLight dark:border-lightText',
+            errors.email
+              ? 'mb-0 border-errorColor text-errorColor placeholder-errorColor'
+              : 'mb-5 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
           )}
-          type="email"
+          placeholder={isFocused ? '' : 'Correo electrónico'}
+          type="text"
           {...register('email', {
             required: 'El correo electrónico es obligatorio',
             pattern: {
@@ -79,33 +91,41 @@ export const LoginForm = () => {
               message: 'El formato del correo electrónico es inválido',
             },
           })}
+          onFocus={() => setIsFocused(true)}
+          onBlur={(e) => setIsFocused(e.target.value !== '')}
         />
-        {errors.email && <p className="mb-5 text-sm text-red-500">• {errors.email.message}</p>}
+        {errors.email && <p className="mb-5 ml-2.5 mt-1 text-sm text-errorColor">{errors.email.message}</p>}
 
-        <button
-          type="submit"
-          className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 min-h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth px-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
-          disabled={loading} // Desactivar el botón si está cargando
-        >
-          {loading ? (
-            <div className="flex items-center justify-center">
-              <Image src="/gif/cargando.gif" width={30} height={30} alt="loading" className="mb-0.5 mr-2" />
-              Procesando...
-            </div>
-          ) : (
-            'Ingresar'
-          )}
-        </button>
+        {loading ? (
+          <div className="flex items-center justify-center">
+            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
+          </div>
+        ) : (
+          <button
+            type="submit"
+            className={clsx(
+              loading || !watch('email') || errors.email
+                ? 'border-disabledButtonsLigth bg-disabledButtonsLigth dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText'
+                : isDark
+                  ? 'buttonSecondDark dark:text-lightText'
+                  : 'buttonSecond',
+              'relative m-1 min-h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-darkText dark:border-darkText dark:bg-darkText dark:text-darkText',
+            )}
+            disabled={loading || !watch('email')} // Desactivar el botón si está cargando
+          >
+            Ingresar
+          </button>
+        )}
 
         <div className="my-5 flex items-center">
           <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
-          <div className="px-2 text-buttonsLigth dark:text-darkText">O</div>
+          <div className="px-2 text-2xl font-bold text-buttonsLigth dark:text-darkText">O</div>
           <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
         </div>
 
         <button
           onClick={handleChange}
-          className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+          className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth px-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
           type="button"
         >
           Crear una nueva cuenta

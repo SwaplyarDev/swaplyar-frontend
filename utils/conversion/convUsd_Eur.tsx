@@ -1,41 +1,27 @@
-const apiKey = process.env.NEXT_PUBLIC_FREE_CURRENCY_API_KEY;
-const apiKey2 = process.env.NEXT_PUBLIC_FREE_CURRENCY_APY_KEY;
+// /utils/conversion/convUsd_Eur.tsx
 
-if (!apiKey && !apiKey2) {
-  throw new Error('Missing both FreeCurrencyAPI Keys');
-}
+import { fetchCurrencyData } from './currencyConversion';
 
-//* Interfaz para los datos de respuesta de la API
-interface CurrencyData {
-  data: {
-    EUR: number;
-  };
-}
-
-//* Función para calcular el precio del dolar/euro usando FreeCurrencyAPI
+/**
+ * Función para obtener las tasas de conversión actuales entre USD y EUR.
+ *
+ * Esta función utiliza fetchCurrencyData para obtener los datos de conversión
+ * de USD a EUR y calcula tanto la tasa de USD a EUR como la tasa inversa de EUR a USD.
+ *
+ * @returns {Promise<{ currentValueEURToUSD: number, currentValueUSDToEUR: number }>}
+ * Un objeto que contiene las tasas de conversión actuales:
+ * - currentValueEURToUSD: La tasa de conversión de EUR a USD.
+ * - currentValueUSDToEUR: La tasa de conversión de USD a EUR.
+ *
+ * @example
+ * const { currentValueEURToUSD, currentValueUSDToEUR } = await updateCurrentValueUSDToEUR();
+ * console.log(`1 USD = ${currentValueUSDToEUR} EUR`);
+ * console.log(`1 EUR = ${currentValueEURToUSD} USD`);
+ */
 export async function updateCurrentValueUSDToEUR() {
-  const fetchCurrencyData = async (key: string): Promise<CurrencyData> => {
-    const response = await fetch(`https://api.freecurrencyapi.com/v1/latest?apikey=${key}`);
+  const data = await fetchCurrencyData('USD', 'EUR');
+  const currentValueEURToUSD = 1 / data.data.EUR;
+  const currentValueUSDToEUR = data.data.EUR;
 
-    if (!response.ok) {
-      const errorMessage = `Error: ${response.status} ${response.statusText}`;
-      console.error('Error fetching currency data from FreeCurrencyAPI:', errorMessage);
-      throw new Error(errorMessage);
-    }
-
-    return response.json();
-  };
-
-  try {
-    const [data1, data2] = await Promise.all([fetchCurrencyData(apiKey!), fetchCurrencyData(apiKey2!)]);
-
-    const data = data1 ?? data2; // Usa data1 si existe, de lo contrario data2
-    let currentValueEURToUSD = 1 / data.data.EUR;
-    let currentValueUSDToEUR = data.data.EUR;
-
-    return { currentValueEURToUSD, currentValueUSDToEUR };
-  } catch (error) {
-    console.error('Error fetching currency data from both API keys:', error instanceof Error ? error.message : error);
-    throw new Error('Failed to fetch currency data from both API keys');
-  }
+  return { currentValueEURToUSD, currentValueUSDToEUR };
 }

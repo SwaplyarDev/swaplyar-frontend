@@ -1,14 +1,17 @@
 'use client';
 
 import React from 'react';
+import useQuestionStore from '@/store/useQuestion.store';
 
 interface PaginationButtonsProps {
   currentPage: number;
   totalPages: number;
-  handlePageChange: (page: number) => void;
+
+  isLoading: boolean; // Agregar esta propiedad
 }
 
-const PaginationButtons: React.FC<PaginationButtonsProps> = ({ currentPage, totalPages, handlePageChange }) => {
+const PaginationButtons: React.FC<PaginationButtonsProps> = ({ totalPages, isLoading }) => {
+  const { currentPage, setCurrentPage } = useQuestionStore();
   let pageButtons: (number | string)[] = [];
 
   if (currentPage <= 2) {
@@ -22,9 +25,9 @@ const PaginationButtons: React.FC<PaginationButtonsProps> = ({ currentPage, tota
   return (
     <div className="mt-8 flex justify-center space-x-4">
       <button
-        className={`h-10 w-10 rounded-full border ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
-        onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
-        disabled={currentPage === 1}
+        className={`h-10 w-10 cursor-pointer rounded-full border ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
+        onClick={() => setCurrentPage(Math.max(currentPage - 1, 1))}
+        disabled={currentPage === 1 || isLoading} // Deshabilitar durante la carga
       >
         &lt;
       </button>
@@ -33,8 +36,15 @@ const PaginationButtons: React.FC<PaginationButtonsProps> = ({ currentPage, tota
         typeof pageNumber === 'number' ? (
           <button
             key={index}
-            className={`h-10 w-10 rounded-full border ${currentPage === pageNumber ? 'bg-blue-500 text-white' : 'bg-white'}`}
-            onClick={() => handlePageChange(pageNumber)}
+            className={`h-10 w-10 rounded-full border transition ${
+              currentPage === pageNumber
+                ? 'bg-blue-500 text-white'
+                : isLoading
+                  ? 'cursor-pointer bg-gray-200'
+                  : 'bg-white text-black'
+            }`}
+            onClick={() => !isLoading && setCurrentPage(pageNumber)} // Evitar cambios si está cargando
+            disabled={isLoading} // Deshabilitar si está cargando
           >
             {pageNumber}
           </button>
@@ -46,11 +56,13 @@ const PaginationButtons: React.FC<PaginationButtonsProps> = ({ currentPage, tota
       )}
 
       <button
-        className={`h-10 w-10 rounded-full border ${currentPage === totalPages ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
-        onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
-        disabled={currentPage === totalPages}
+        className={`h-10 w-10 rounded-full border ${
+          currentPage === totalPages ? 'bg-gray-300' : 'bg-blue-500 text-white'
+        }`}
+        onClick={() => setCurrentPage(Math.min(currentPage + 1, totalPages))}
+        disabled={currentPage === totalPages || isLoading} // Deshabilitar durante la carga
       >
-        &gt;
+        <div className="cursor-pointer"> &gt;</div>
       </button>
     </div>
   );

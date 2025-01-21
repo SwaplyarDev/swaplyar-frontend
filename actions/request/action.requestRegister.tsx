@@ -12,6 +12,7 @@ export const requestRegister = async (transaction: TransactionRequest) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(transaction),
+      cache: 'no-store',
     });
 
     const data = await response.json();
@@ -26,11 +27,10 @@ export const requestRegister = async (transaction: TransactionRequest) => {
       message: 'Usuario creado',
     };
   } catch (error: any) {
-    console.log(error);
-
     return {
       ok: false,
-      message: 'No se pudo crear el usuario',
+      message: `No se pudo crear el usuario: ${error.message}`,
+      error: error.stack,
     };
   }
 };

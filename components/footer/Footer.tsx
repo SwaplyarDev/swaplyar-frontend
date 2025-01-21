@@ -1,180 +1,129 @@
+// /components/footer/Footer.tsx
+
 'use client';
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { SwaplyArLogoSolo } from '@/utils/assets/imgDatabaseCloudinary';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLinkedin, faInstagram, faFacebook, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
-import useStore from '@/store/authViewStore';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { footerLinks } from './footerLinks';
+import useStore from '@/store/authViewStore';
+import { SwaplyArLogoSolo } from '@/utils/assets/imgDatabaseCloudinary';
+import { usePathname } from 'next/navigation';
 
 interface FooterLinkProps {
   href: string;
-  children: React.ReactNode;
+  label: string;
   view?: 'login' | 'register';
 }
 
-function FooterLink({ href, children, view }: FooterLinkProps) {
+function FooterLink({ href, label, view }: FooterLinkProps) {
   const { setView } = useStore();
+  const pathname = usePathname();
+
+  const isActive = pathname === href;
+
   return (
     <Link
       href={href}
       {...(view ? { onClick: () => setView(view) } : {})}
-      className="rs-link text-base text-buttonsLigth transition duration-300 ease-in-out hover:scale-105 hover:text-blue-700 dark:text-sky-500 dark:hover:text-sky-600"
+      className={`rs-link text-base transition-all duration-300 ease-in-out hover:text-[17px] hover:text-buttonsLigth dark:text-sky-500 dark:hover:text-sky-600 ${isActive ? 'relative font-bold text-buttonsLigth after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:bg-buttonsLigth after:content-[""]' : 'text-buttonsExtraLigth'}`}
     >
-      {children}
+      {label}
     </Link>
+  );
+}
+
+function Section({
+  title,
+  links,
+  align,
+}: {
+  title: string;
+  links: FooterLinkProps[];
+  align: 'start' | 'center' | 'end';
+}) {
+  return (
+    <section
+      className={`mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-center sm:text-center ${
+        align === 'start' ? 'lg:items-start' : align === 'end' ? 'lg:items-end' : 'lg:items-center'
+      }`}
+    >
+      <p className="mb-2 text-xl font-bold">{title}</p>
+      {links.map(({ href, label, view }) => (
+        <FooterLink key={href} href={href} label={label} view={view} />
+      ))}
+    </section>
+  );
+}
+
+function AccordionSection({ title, links }: { title: string; links: FooterLinkProps[] }) {
+  return (
+    <Accordion
+      disableGutters
+      className="before:contante-[''] group relative bg-transparent shadow-none transition-all duration-300 before:absolute before:w-0 after:absolute after:bottom-0 after:left-[50%] after:h-[1px] after:w-[70%] after:min-w-[204px] after:-translate-x-[50%] after:bg-[#90b0fe] after:transition-all after:duration-300 after:content-[''] after:hover:bg-buttonsLigth after:[&.Mui-expanded]:bg-buttonsLigth"
+    >
+      <AccordionSummary
+        expandIcon={
+          <ExpandMoreIcon className="h-10 w-10 text-buttonsExtraLigth transition-all duration-300 group-hover:text-buttonsLigth group-[&.Mui-expanded]:text-buttonsLigth group-[&:not(.Mui-expanded)]:hover:rotate-180 dark:text-darkText" />
+        }
+        aria-controls={`${title}-content`}
+        id={`${title}-header`}
+        className="min-h-10 px-0"
+        sx={{
+          minHeight: '0!important',
+          '& .MuiAccordionSummary-content': {
+            margin: '0!important',
+          },
+        }}
+      >
+        <h4 className="text-xl font-bold text-lightText dark:text-darkText">{title}</h4>
+      </AccordionSummary>
+      <AccordionDetails className="flex flex-col text-center">
+        {links.map(({ href, label, view }) => (
+          <FooterLink key={href} href={href} label={label} view={view} />
+        ))}
+      </AccordionDetails>
+    </Accordion>
   );
 }
 
 export default function Footer() {
   return (
-    <footer className="rs-wrapper-v4 mx-auto max-w-screen-2xl py-8 sm-tablet:px-4">
-      <div className="one-info-footer hidden w-full flex-col items-center gap-4 px-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 sm-tablet:flex">
-        <section className="mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-start">
-          <p className="mb-2 text-pretty text-start text-xl font-bold">Regístrate y disfruta de beneficios</p>
-          <FooterLink href="/auth/login-register" view="login">
-            Iniciar Sesión
-          </FooterLink>
-          <FooterLink href="/auth/login-register" view="register">
-            Registrarse
-          </FooterLink>
-          <FooterLink href="/info/loyalty-program">Programa de Fidelización</FooterLink>
-        </section>
-        <section className="mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-center sm:text-center">
-          <p className="mb-2 text-xl font-bold">Normativa</p>
-          <FooterLink href="/info/warranty">Garantía</FooterLink>
-          <FooterLink href="/info/terms-and-conditions">Términos y Condiciones</FooterLink>
-          <FooterLink href="/info/sapr-terms-conditions">T&C Plus Rewards</FooterLink>
-          <FooterLink href="/info/arepentimiento">SwaplyAr Solicitud</FooterLink>
-        </section>
-
-        <section className="flex flex-col items-center text-left sm:w-1/3 sm:items-end sm:text-right">
-          <p className="mb-2 text-xl font-bold">Atención al Cliente</p>
-          <FooterLink href="/info/help-center">Centro de Ayuda</FooterLink>
-          <FooterLink href="/info/about-us">Preguntas y Respuestas</FooterLink>
-          <FooterLink href="/info/blog">SwaplyAr Blog</FooterLink>
-        </section>
+    <footer className="rs-wrapper-v4 mx-auto w-full max-w-[1204px] px-4 py-8 md:px-8 lg:px-4">
+      {/* Desktop View */}
+      <div className="one-info-footer hidden w-full flex-col items-center gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 lg2:flex">
+        <Section title="Regístrate y Disfruta de Beneficios" links={footerLinks.registro} align="start" />
+        <Section title="Normativa" links={footerLinks.normativa} align="center" />
+        <Section title="Atención al Cliente" links={footerLinks.atencion} align="end" />
       </div>
 
-      <div className="flex flex-col sm-tablet:hidden">
-        <Accordion className="border-0 bg-transparent shadow-none">
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon className="h-10 w-10 translate-x-3 text-buttonsLigth dark:text-darkText" />}
-            aria-controls="panel1-content"
-            id="panel1-header"
-            className="mx-auto min-h-10 w-[90%] p-0"
-            sx={{
-              minHeight: '0!important',
-              '& .MuiAccordionSummary-content': {
-                margin: '0!important',
-              },
-            }}
-          >
-            <h4 className="text-pretty text-start text-xl font-bold text-lightText dark:text-darkText">
-              Registro y Beneficios
-            </h4>
-          </AccordionSummary>
-          <AccordionDetails className="flex flex-col pb-0 pl-10 pr-0 pt-2">
-            <FooterLink href="/auth/login-register" view="login">
-              Iniciar Sesión
-            </FooterLink>
-            <FooterLink href="/auth/login-register" view="register">
-              Registrarse
-            </FooterLink>
-            <FooterLink href="/info/loyalty-program">Programa de Fidelización</FooterLink>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion className="border-0 bg-transparent shadow-none before:content-none">
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon className="h-10 w-10 translate-x-3 text-buttonsLigth dark:text-darkText" />}
-            aria-controls="panel2-content"
-            id="panel2-header"
-            className="mx-auto min-h-10 w-[90%] p-0"
-            sx={{
-              minHeight: '0!important',
-              '& .MuiAccordionSummary-content': {
-                margin: '0!important',
-              },
-            }}
-          >
-            <h4 className="text-xl font-bold text-lightText dark:text-darkText">Normativa</h4>
-          </AccordionSummary>
-          <AccordionDetails className="flex flex-col pb-0 pl-10 pr-0 pt-2">
-            <FooterLink href="/info/warranty">Garantía</FooterLink>
-            <FooterLink href="/info/terms-and-conditions">Términos y Condiciones</FooterLink>
-            <FooterLink href="/info/sapr-terms-conditions">T&C Plus Rewards</FooterLink>
-            <FooterLink href="/info/arepentimiento">SwaplyAr Solicitud</FooterLink>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion className="border-0 bg-transparent shadow-none before:content-none">
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon className="h-10 w-10 translate-x-3 text-buttonsLigth dark:text-darkText" />}
-            aria-controls="panel3-content"
-            id="panel3-header"
-            className="mx-auto min-h-10 w-[90%] p-0"
-            sx={{
-              minHeight: '0!important',
-              '& .MuiAccordionSummary-content': {
-                margin: '0!important',
-              },
-            }}
-          >
-            <h4 className="text-xl font-bold text-lightText dark:text-darkText">Atención al Cliente</h4>
-          </AccordionSummary>
-          <AccordionDetails className="flex flex-col pb-0 pl-10 pr-0 pt-2">
-            <FooterLink href="/info/help-center">Centro de Ayuda</FooterLink>
-            <FooterLink href="/info/about-us">Preguntas y Respuestas</FooterLink>
-            <FooterLink href="/info/blog">SwaplyAr Blog</FooterLink>
-          </AccordionDetails>
-        </Accordion>
+      {/* Mobile View */}
+      <div className="flex flex-col lg2:hidden">
+        <AccordionSection title="Regístrate y Disfruta de Beneficios" links={footerLinks.registro} />
+        <AccordionSection title="Normativa" links={footerLinks.normativa} />
+        <AccordionSection title="Atención al Cliente" links={footerLinks.atencion} />
       </div>
 
-      <div className="two-info-footer mx-auto mt-5 flex w-[90%] flex-col items-center justify-between p-0 pt-4 sm:flex-row sm-tablet:mx-0 sm-tablet:w-full sm-tablet:px-4">
+      {/* Footer Bottom */}
+      <div className="two-info-footer mt-5 flex flex-col items-center justify-between pt-4 sm:flex-row">
         <section className="container-footer-icon-social mb-4 flex justify-center space-x-4 sm:mb-0 sm:w-1/3 sm:justify-start">
-          <Link
-            href="https://www.linkedin.com/company/swaplyar/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            title="SwaplyAr CEO en LinkedIn"
-            className="transition-opacity duration-200 hover:opacity-75"
-          >
-            <FontAwesomeIcon icon={faLinkedin} className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]" />
-          </Link>
-          <Link
-            href="https://www.instagram.com/swaplyar/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram"
-            title="SwaplyAr en Instagram"
-            className="transition-opacity duration-200 hover:opacity-75"
-          >
-            <FontAwesomeIcon icon={faInstagram} className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]" />
-          </Link>
-          <Link
-            href="https://www.facebook.com/swaplyar/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Facebook"
-            title="SwaplyAr en Facebook"
-            className="transition-opacity duration-200 hover:opacity-75"
-          >
-            <FontAwesomeIcon icon={faFacebook} className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]" />
-          </Link>
-          <Link
-            href="https://wa.me/5491123832198"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="WhatsApp"
-            title="SwaplyAr en WhatsApp"
-            className="transition-opacity duration-200 hover:opacity-75"
-          >
-            <FontAwesomeIcon icon={faWhatsapp} className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]" />
-          </Link>
+          {footerLinks.social.map(({ href, icon, label }) => (
+            <Link
+              key={href}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              title={`SwaplyAr en ${label}`}
+              className="transition-opacity duration-200 hover:opacity-75"
+            >
+              <FontAwesomeIcon icon={icon} className="text-2xl text-[#012D8A] dark:text-[#FFFFFF]" />
+            </Link>
+          ))}
         </section>
         <section className="mb-4 flex flex-grow justify-center filter dark:brightness-[0%] dark:invert sm:mb-0 sm:w-1/3 sm:justify-center">
           <Link href="/">

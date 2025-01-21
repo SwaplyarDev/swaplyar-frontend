@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import useBlogStore from '@/store/useBlogStore';
-import BlogPostCard from '@/components/ui/BlogPostCard/BlogPostCard';
+import BlogPostCard from '@/components/blog/BlogPostCard/BlogPostCard';
 
 function CardFinder() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,6 +13,7 @@ function CardFinder() {
       filteredBlogs.map((post) => (
         <BlogPostCard
           key={post.blog_id}
+          blog_id={post.blog_id}
           title={post.title}
           body={post.body}
           url_image={post.url_image}
