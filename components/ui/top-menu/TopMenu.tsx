@@ -301,7 +301,7 @@ export function TopMenu() {
             </Drawer>
 
             {/* Navegación completa */}
-            <section className="hidden lg2:flex lg2:gap-2">
+            <section className="hidden lg2:flex lg2:items-center lg2:gap-2">
               <NavLinks />
               {status === 'authenticated' ? (
                 <>
