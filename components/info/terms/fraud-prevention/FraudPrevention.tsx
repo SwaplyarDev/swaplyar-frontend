@@ -1,7 +1,7 @@
 'use client';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import { fraudPrevention } from '@/utils/assets/img-database';
-import { mockLinks } from './mockFraudPrev';
+import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 import { mockTexts } from './mockFraudPrev';
 import { useState } from 'react';
 
@@ -14,67 +14,128 @@ const FraudPrevention = () => {
     setTimeout(() => {
       setSelectedTextIndex(key);
       setIsAnimating(false);
-    }, 300);
+    }, 500);
   };
 
-  const renderButtons = (key: number, title: string) => (
+  const renderButtonsWithTexts = () =>
+    mockTexts.map((item, key) => (
+      <section key={key} className="flex w-[100%] flex-col items-start gap-2">
+        {/* Botón */}
+        <button
+          className={`flex flex-row gap-2 text-xl ${
+            selectedTextIndex === key
+              ? 'scale-105 text-blue-800 decoration-blue-800 dark:text-[#97938d] dark:decoration-[#97938d]'
+              : 'dark:text-[#EBE7E0] dark:decoration-[#EBE7E0]'
+          } transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:hover:decoration-[#97938d]`}
+          onClick={() => handleButtonClick(key)}
+        >
+          <h3>{selectedTextIndex === key ? '|  ' : null}</h3>
+          <h3 className={`${selectedTextIndex === key ? 'underline' : 'decoration-transparent'}`}>{item.button}</h3>
+        </button>
+
+        {/* Texto */}
+        <section
+          className={`mt-4 ${
+            selectedTextIndex === key ? 'visible' : 'invisible max-h-0'
+          } flex w-[100%] flex-col items-start gap-5 lg:hidden`}
+        >
+          <h2 className="w-[80%] self-end border-[#012A8E] p-2 text-start text-3xl font-semibold dark:border-[#EBE7E0]">
+            {item.mainTitle}
+          </h2>
+          <article
+            className={`max-w-[372px] shrink-0 self-end transition-all duration-500 ease-in-out md:max-w-[395px] ${
+              isAnimating ? 'opacity-0 blur-xl' : 'opacity-100 blur-none'
+            } flex flex-col gap-5 overflow-hidden rounded-2xl bg-[#EEEAE3] p-5 text-sm dark:bg-[#4B4B4B]`}
+            style={{
+              transitionProperty: 'max-height, opacity, filter',
+              transitionDuration: '500ms',
+              transitionTimingFunction: 'ease-in-out',
+            }}
+          >
+            {item.items.map((it, index) => (
+              <div key={index} className="flex flex-col gap-1">
+                <h3 className="text-lg font-medium text-[#012A8E] dark:text-[#97938d]">{it.title}</h3>
+                <p>{it.text}</p>
+                {it.links?.map((link, index) => (
+                  <a
+                    key={index}
+                    className="text-[#012A8E] underline decoration-[#012A8E] transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0] dark:hover:decoration-[#97938d]"
+                    href={link.link}
+                  >
+                    {link.text}
+                  </a>
+                ))}
+                {it.list?.map((list, index) => <p key={index}>* {list}</p>)}
+              </div>
+            ))}
+          </article>
+        </section>
+      </section>
+    ));
+
+  const renderButtonsLG = (key: number, title: string) => (
     <button
       key={key}
       className={`flex flex-row gap-2 ${selectedTextIndex === key ? 'scale-105 text-blue-800 decoration-blue-800 dark:text-[#97938d] dark:decoration-[#97938d]' : 'dark:text-[#EBE7E0] dark:decoration-[#EBE7E0]'} transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:hover:decoration-[#97938d]`}
       onClick={() => handleButtonClick(key)}
     >
-      <p>{selectedTextIndex === key ? '|  ' : null}</p>
+      <h3>{selectedTextIndex === key ? '|  ' : null}</h3>
 
-      <p className={` ${selectedTextIndex === key ? 'underline' : 'decoration-transparent'}`}>{title}</p>
+      <h3 className={` ${selectedTextIndex === key ? 'underline' : 'decoration-transparent'}`}>{title}</h3>
     </button>
   );
 
   return (
     <main className="flex w-full flex-col items-center gap-10 pt-10">
-      <h1 className="self-center text-2xl font-medium md:text-3xl lg:text-4xl">Concientización sobre el fraude</h1>
-      <section className="flex min-h-[100vh] w-[80%] flex-col justify-items-center gap-5 lg:grid lg:grid-cols-2">
-        <article className="flex select-none flex-col items-start gap-5 pt-5 text-xl lg:text-2xl">
-          {renderButtons(0, 'Prevencion del fraude')}
-          {renderButtons(1, 'Como protegerse del fraude')}
-          {renderButtons(2, 'Estafas al cliente comunes')}
-          {renderButtons(3, 'Otros recursos')}
+      <AnimatedBlurredCircles tope="top-[40px]" />
+      <h1 className="self-center text-center text-4xl font-medium">Concientización sobre el fraude</h1>
+
+      <section className="flex min-h-[100vh] w-[80%] max-w-[60.375rem] flex-col gap-2 lg:flex-row lg:gap-20">
+        {/* VERSION MOBILES */}
+        <article className="flex select-none flex-col items-start gap-4 pt-5 lg:hidden">
+          {renderButtonsWithTexts()}
         </article>
-        <article className="flex flex-col gap-5">
-          <h2 className="border-t-[1px] border-blue-500 text-xl font-semibold dark:border-[#EBE7E0] md:text-2xl lg:text-3xl">
-            {mockTexts[selectedTextIndex]?.title}
+        {/* VERSION ESCRITORIO */}
+        <article className="hidden w-[70%] select-none flex-col items-start gap-4 pt-5 text-2xl lg:flex">
+          {renderButtonsLG(0, 'Prevencion del fraude')}
+          {renderButtonsLG(1, 'Como protegerse del fraude')}
+          {renderButtonsLG(2, 'Estafas al cliente comunes')}
+          {renderButtonsLG(3, 'Otros recursos')}
+        </article>
+        <article className="hidden w-[100%] flex-col items-start gap-5 lg:flex">
+          <h2 className="w-[100%] self-center border-t-[1px] border-[#012A8E] p-2 text-start text-3xl font-semibold dark:border-[#EBE7E0]">
+            {mockTexts[selectedTextIndex]?.mainTitle}
           </h2>
           {selectedTextIndex !== null ? (
             <section
-              className={`transition-all duration-300 ease-in-out ${
+              className={`duration-5 00 max-w-[518px] shrink-0 self-end transition-all ease-in-out ${
                 isAnimating ? 'max-h-0 opacity-0' : 'max-h-[100%] opacity-100'
-              } flex flex-col gap-5 overflow-hidden rounded-md bg-[#EEEAE3] p-5 dark:bg-[#4B4B4B]`}
+              } flex flex-col gap-5 overflow-hidden rounded-md bg-[#EEEAE3] p-5 text-base dark:bg-[#4B4B4B]`}
             >
-              <article className="flex flex-col gap-2">
-                <p>{mockTexts[selectedTextIndex]?.text1}</p>
-                <p>{mockTexts[selectedTextIndex]?.text2}</p>
-              </article>
-              <article className="flex flex-col gap-1">
-                {selectedTextIndex === 2
-                  ? mockLinks.map((mock, index) => (
-                      <a
-                        key={index}
-                        className="text-blue-600 underline decoration-blue-600 transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0] dark:hover:decoration-[#97938d]"
-                        href={mock.link}
-                      >
-                        {mock.text}
-                      </a>
-                    ))
-                  : null}
-              </article>
-
-              <p>{mockTexts[selectedTextIndex]?.text3}</p>
+              {mockTexts[selectedTextIndex]?.items.map((it, index) => (
+                <div key={index} className="flex flex-col gap-1">
+                  <p className="text-lg font-medium text-[#012A8E] dark:text-[#97938d]">{it.title}</p>
+                  <p>{it.text}</p>
+                  {it.links?.map((link, index) => (
+                    <a
+                      key={index}
+                      className="text-[#012A8E] underline decoration-[#012A8E] transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0] dark:hover:decoration-[#97938d]"
+                      href={link.link}
+                    >
+                      {link.text}
+                    </a>
+                  ))}
+                  {it.list?.map((list, index) => <p key={index}>* {list}</p>)}
+                </div>
+              ))}
+              <article className="flex flex-col gap-1"></article>
             </section>
           ) : (
             <p>Selecciona una opción para ver más detalles.</p>
           )}
         </article>
       </section>
-      <div className="relative top-20 mt-16 hidden pt-11 lg:contents">
+      <div className="my-20 w-[100%] bg-contain bg-center">
         <FlyerTrabajo imageSrc={fraudPrevention}>
           <> </>
         </FlyerTrabajo>
