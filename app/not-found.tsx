@@ -16,6 +16,14 @@ import {
   tlf_404_dark,
 } from '@/utils/assets/img-database';
 
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Ups, lo sentimos. Página no encontrada |  SwaplyAr',
+  description:
+    'Únete al programa de fidelización de SwaplyAr y disfruta de descuentos exclusivos, recompensas acumulables y beneficios únicos en cada transacción. Únete al Programa de Fidelización de Swaplyar y obtén recompensas por cada transacción. Descubre cómo ser parte de este beneficio exclusivo.',
+};
+
 export default function NotFoundPage() {
   const { isDark } = useDarkTheme();
   const [counter, setCounter] = useState(10);

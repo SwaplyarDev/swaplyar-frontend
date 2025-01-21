@@ -1,5 +1,13 @@
 import HomePage from '@/components/home/HomePage';
 
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'SwaplyAr | Pasar dólares de PayPal a pesos argentinos',
+  description:
+    'Descubre cómo Swaplyar simplifica tus Transferencias internacionales, billeteras virtuales o Cripto y gestión de pagos de manera segura, rápida y eficiente.',
+};
+
 export default function Home() {
   return (
     <main>
