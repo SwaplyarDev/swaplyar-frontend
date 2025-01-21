@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Arrow from '../ui/Arrow/Arrow';
 import { fetchTransactionData, sendFormData } from '@/actions/editRequest/editRequest.action';
 import Swal from 'sweetalert2';
 import { createRoot } from 'react-dom/client';
 import LoadingGif from '../ui/LoadingGif/LoadingGif';
+import clsx from 'clsx';
 
 interface ModalProps {
   isDark: boolean;
@@ -22,6 +23,8 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
   const [transactionData, setTransactionData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [note, setNote] = useState<string>('');
+  const [isFocused, setIsFocused] = useState(false);
+
   useEffect(() => {
     if (transaccionId) {
       const fetchData = async () => {
@@ -141,7 +144,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
   const PayMethodInfo: React.FC<payMethodInfo> = ({ methodDestinatario }) => {
     if (methodDestinatario === 'datos') {
       return (
-        <div className="mx-10 flex justify-between">
+        <div className="flex justify-between text-sm">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
             <p>Nombre </p>
             <p>Apellido </p>
@@ -156,7 +159,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
       );
     } else if (methodDestinatario === 'USDT') {
       return (
-        <div className="mx-10 flex justify-between">
+        <div className="flex justify-between text-sm">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
             <p>Dirección USDT </p>
             <p>Red </p>
@@ -169,7 +172,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
       );
     } else if (methodDestinatario === 'banco') {
       return (
-        <div className="mx-10 flex justify-between">
+        <div className="flex justify-between text-sm">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
             <p>Nombre </p>
             <p>Apellido </p>
@@ -188,7 +191,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
       );
     } else if (methodDestinatario === 'PIX') {
       return (
-        <div className="mx-10 flex justify-between">
+        <div className="flex justify-between text-sm">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
             <p>Nombre </p>
             <p>Apellido </p>
@@ -211,21 +214,21 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
   return (
     <div
       className="fixed inset-0 left-0 right-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-      onClick={onClose}
+      // onClick={onClose}
     >
       <div
         style={{ top: '0px', bottom: '64px' }}
-        className="relative mt-24 w-11/12 rounded-lg bg-[#dcdee0] p-6 shadow-lg dark:bg-[#333231] md:w-8/12 lg:w-6/12 xl:w-5/12"
+        className="relative mt-24 w-full max-w-[400px] rounded-lg bg-[#FFF] px-4 py-2 shadow-lg dark:bg-[#333231]"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="mb-4 text-2xl font-bold text-lightText dark:text-darkText">
+        <h2 className="mb-4 px-4 text-start text-lg font-bold text-lightText dark:text-darkText">
           Formulario de solicitud N°{transaccionId}
         </h2>
 
-        <div className="max-h-[70vh] overflow-y-auto">
+        <div className="max-h-[70vh] overflow-y-auto px-4 scrollbar-thin">
           <section className="flex flex-col">
-            <h3 className="mb-2 flex text-lg font-semibold text-buttonsLigth dark:text-darkText">Mis Datos</h3>
-            <div className="mx-10 flex justify-between">
+            <h3 className="mb-2 flex text-base font-semibold text-buttonsLigth dark:text-darkText">Mis Datos</h3>
+            <div className="flex justify-between text-sm">
               <div className="flex flex-col text-start text-lightText dark:text-darkText">
                 <p>Nombre </p>
                 <p>Apellido </p>
@@ -241,23 +244,27 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
             </div>
           </section>
           <div className="my-3 flex w-full justify-center">
-            <div className={`mr-0 flex h-full w-10/12 border-0 border-b-buttonsLigth lg:mr-3 lg:border-b-2`}></div>
+            <div
+              className={`flex h-full w-full border-0 border-b-buttonsLigth dark:border-b-darkText lg:border-b-2`}
+            ></div>
           </div>
 
           <section className="flex flex-col">
-            <h3 className="mb-2 flex text-lg font-semibold text-buttonsLigth dark:text-darkText">
+            <h3 className="mb-2 flex text-base font-semibold text-buttonsLigth dark:text-darkText">
               informacion del Destinatario
             </h3>
 
             <PayMethodInfo methodDestinatario={methodDestinatario} />
           </section>
-          <div className="mb-1 mt-3 flex w-full justify-center">
-            <div className={`mr-0 flex h-full w-10/12 border-0 border-b-buttonsLigth lg:mr-3 lg:border-b-2`}></div>
+          <div className="my-3 flex w-full justify-center">
+            <div
+              className={`flex h-full w-full border-0 border-b-buttonsLigth dark:border-b-darkText lg:border-b-2`}
+            ></div>
           </div>
 
           <section className="flex flex-col">
-            <h3 className="mb-2 flex text-lg font-semibold text-buttonsLigth dark:text-darkText">Pago</h3>
-            <div className="mx-10 flex justify-between">
+            <h3 className="mb-2 flex text-base font-semibold text-buttonsLigth dark:text-darkText">Pago</h3>
+            <div className="flex justify-between text-sm">
               <div className="flex flex-col text-start text-lightText dark:text-darkText">
                 <p className="mr-20">Monto a pagar </p>
                 <p>Monto a recibir </p>
@@ -268,13 +275,15 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
               </div>
             </div>
           </section>
-          <div className="my-3 flex w-full justify-center">
-            <div className={`mr-3 flex h-full w-10/12 border-b-2 border-b-buttonsLigth`}></div>
+          <div className="mb-6 mt-3 flex w-full justify-center">
+            <div
+              className={`flex h-full w-full border-0 border-b-buttonsLigth dark:border-b-darkText lg:border-b-2`}
+            ></div>
           </div>
 
           <section className="text-buttonsLigth dark:text-darkText">
-            <p className="flex h-1/2 flex-col">
-              <div className="text-start">
+            <p className="mb-5 flex h-1/2 flex-col">
+              <div className="text-start text-sm">
                 <span className="mr-1 font-bold">Nota:</span>
                 <span className="text-start">
                   Indique la sección que desea modificar o cargue el comprobante correcto si envió uno por error.{' '}
@@ -282,23 +291,38 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
               </div>
             </p>
             <form>
+              <label
+                htmlFor="note"
+                className={clsx(
+                  'text-lightText dark:text-darkText',
+                  !isFocused && 'hidden',
+                  'mb-1 ml-2.5 w-full max-w-full text-sm',
+                )}
+              >
+                Necesito Modificar...
+              </label>
               <textarea
-                rows={4}
-                className="mb-4 block w-full rounded-md border border-gray-300 p-2 text-lightText dark:bg-[#bdb8b4]"
-                placeholder="Escriba aquí su comentario o nota..."
+                rows={1}
+                id="note"
+                className={`mb-4 block w-full rounded-2xl border border-inputLightDisabled p-2 placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight focus:placeholder-transparent dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText hover:dark:border-transparent dark:hover:placeholder-lightText focus:dark:border-transparent focus:dark:ring-transparent`}
+                placeholder="Necesito Modificar..."
                 onChange={handleNoteChange}
                 required
+                onFocus={() => setIsFocused(true)}
+                onBlur={(e) => setIsFocused(e.target.value !== '')}
               ></textarea>
 
-              <div className="file-upload flex flex-col justify-between rounded-md border-2 border-dashed border-buttonsLigth">
-                <div className="z flex h-full w-full flex-col items-center justify-center rounded-md border-2 border-dashed bg-[#E3E9FF] text-center hover:bg-[#ced8fd] dark:bg-[#bdb8b4]">
+              <div className="file-upload flex flex-col justify-between rounded-2xl">
+                <div className="group flex h-full w-full flex-col items-center justify-center rounded-2xl border-[1px] border-inputLightDisabled py-2 text-center placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText">
                   {!file ? (
                     <>
-                      <p className="mb-5 hidden text-buttonsLigth lg:inline-block">Arrastre aquí el archivo o</p>
+                      <p className="mb-1 hidden text-sm text-inputLightDisabled group-hover:text-buttonsLigth lg:inline-block">
+                        SUBIR COMPROBANTE
+                      </p>
                       <label
-                        className={`buttonSecondDarkbuttonSecond relative mt-5 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-darkText lg:mt-0`}
+                        className={`buttonSecondDarkbuttonSecond relative mt-5 h-[48px] w-full max-w-[200px] items-center justify-center rounded-3xl border border-disabledButtonsLigth bg-disabledButtonsLigth p-[10px] text-lg text-darkText group-hover:border-buttonsLigth group-hover:bg-buttonsLigth group-hover:text-darkText dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText group-hover:dark:border-darkText group-hover:dark:bg-darkText lg:mt-0`}
                       >
-                        Subir
+                        Subir Archivo
                         <input
                           type="file"
                           onChange={handleFileChange}
@@ -320,8 +344,8 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
                     </div>
                   )}
                   {!file && (
-                    <p className="mt-5 text-sm text-buttonsLigth">
-                      Formatos de archivo permitidos: <strong>PNG, JPG, PDF</strong>
+                    <p className="mt-1 text-xs text-inputLightDisabled group-hover:text-buttonsLigth">
+                      Formatos de archivo: PNG, JPG, PDF
                     </p>
                   )}
                 </div>

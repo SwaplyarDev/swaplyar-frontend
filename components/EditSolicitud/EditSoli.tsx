@@ -18,11 +18,11 @@ const EditSoli = () => {
             solicitud de manera segura y eficiente. Asegúrate de verificar la información antes de guardar los cambios.
           </p>
         </div>
-        <div className="w-full">
-          <p className="w-full max-w-[500px] text-2xl lg:max-w-full">
-            Introduce los datos exactamente como aparecen en el correo electrónico enviado.
-          </p>
-        </div>
+
+        <p className="w-full max-w-[500px] text-center text-2xl lg:max-w-full">
+          Introduce los datos exactamente como aparecen en el correo electrónico enviado.
+        </p>
+
         <div className="flex w-full flex-col items-center gap-5 xs:gap-20 lg:flex-row lg:gap-0">
           <HeaderSectionEditSoli />
           <div className="mr-0 flex h-auto w-full flex-col border-0 lg:pb-28">

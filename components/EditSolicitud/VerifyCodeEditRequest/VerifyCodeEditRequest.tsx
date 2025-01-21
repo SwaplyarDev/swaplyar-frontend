@@ -125,6 +125,15 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
     }
   };
 
+  const handleInputKeyDown = (index: number, event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Backspace' && event.currentTarget.value === '') {
+      if (index > 0) {
+        const prevInput = document.getElementById(`code-${index - 1}`);
+        prevInput?.focus();
+      }
+    }
+  };
+
   return (
     <>
       <div className="w-full">
@@ -133,37 +142,41 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
             Ingrese el código de 6 dígitos que recibiste por email
           </label>
           <div className="flex w-full justify-center">
-            <div className="my-5 flex h-[52px] w-full max-w-[336px] justify-between gap-2 xs:gap-1">
+            <div className="my-5 flex h-[52px] w-full max-w-[350px] justify-between gap-0 xs:max-w-[500px]">
               {[...Array(6)].map((_, index) => (
-                <div
-                  key={index}
-                  className={clsx(
-                    !errors.verificationCode || !isCodeCorrect
-                      ? 'border-errorColor'
-                      : 'border-buttonsLigth dark:border-darkText',
-                    `w-[50px] rounded-full border-[0.5px] p-[3px] xs:w-[57px] sm:w-full`,
-                  )}
-                >
-                  <input
-                    id={`code-${index}`}
-                    type="text"
-                    maxLength={1}
-                    disabled={isLocked || loading}
+                <>
+                  <div
+                    key={index}
                     className={clsx(
-                      'h-full w-full rounded-full border-0 text-center text-base text-lightText focus:outline-none dark:border-[0.5px] dark:bg-darkText sm:text-[2.5rem] lg:text-2xl',
-                      !errors.verificationCode || !isCodeCorrect ? 'border-errorColor' : '',
+                      isCodeCorrect === false ? 'border-errorColor' : 'border-buttonsLigth dark:border-darkText',
+                      `flex h-[51px] min-w-[51px] items-center justify-center rounded-full border-[2px] p-[3px] xs:w-[57px] sm:w-[51px]`,
                     )}
-                    {...register(`verificationCode.${index}`)}
-                    onChange={(event) => handleInputChange(index, event)}
-                  />
-                </div>
+                  >
+                    <input
+                      id={`code-${index}`}
+                      type="text"
+                      maxLength={1}
+                      disabled={isLocked || loading}
+                      className={clsx(
+                        'h-[45px] w-[45px] rounded-full border-0 text-center text-base text-buttonsLigth focus:outline-none dark:border-[0.5px] dark:bg-darkText dark:text-lightText sm:text-[2.5rem] lg:text-2xl',
+                        isCodeCorrect === false ? 'border-errorColor' : '',
+                      )}
+                      {...register(`verificationCode.${index}`)}
+                      onChange={(event) => handleInputChange(index, event)}
+                      onKeyDown={(event) => handleInputKeyDown(index, event)}
+                    />
+                  </div>
+                  {index < 5 && (
+                    <div className="mx-1 hidden min-h-full w-full items-center justify-center xs:flex">
+                      <div className="h-1 w-full flex-1 rounded-full bg-buttonsLigth dark:bg-darkText"></div>
+                    </div>
+                  )}
+                </>
               ))}
             </div>
           </div>
 
-          {errors.verificationCode && (
-            <p className="mb-5 text-sm text-errorColor">• {errors.verificationCode.message}</p>
-          )}
+          {errors.verificationCode && <p className="mb-5 text-sm text-errorColor">{errors.verificationCode.message}</p>}
 
           {isCodeCorrect === false && (
             <p className="mt-2 text-sm text-errorColor">Código incorrecto. Intenta de nuevo.</p>
@@ -171,8 +184,7 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
 
           {loading && (
             <div id="loading" className="flex w-9/12 items-center justify-center gap-2">
-              <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
-              <span>Verificando...</span>
+              <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
             </div>
           )}
 
