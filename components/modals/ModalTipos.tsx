@@ -308,6 +308,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
                 placeholder="Necesito Modificar..."
                 onChange={handleNoteChange}
                 required
+                minLength={20}
                 onFocus={() => setIsFocused(true)}
                 onBlur={(e) => setIsFocused(e.target.value !== '')}
               ></textarea>

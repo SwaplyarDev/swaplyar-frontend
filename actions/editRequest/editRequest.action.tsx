@@ -85,7 +85,6 @@ export const resendCodeAction = async (transactionId: string) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ transactionId }),
     });
 
     console.log('Respuesta del servidor del resendCode:', response);
