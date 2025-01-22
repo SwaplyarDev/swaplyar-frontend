@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { createRoot } from 'react-dom/client';
 import LoadingGif from '../ui/LoadingGif/LoadingGif';
 import clsx from 'clsx';
+import { useForm } from 'react-hook-form';
 
 interface ModalProps {
   isDark: boolean;
@@ -16,6 +17,11 @@ interface ModalProps {
 }
 interface payMethodInfo {
   methodDestinatario: string;
+}
+
+interface FormInputs {
+  note: string;
+  file: File;
 }
 
 const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }) => {
@@ -212,16 +218,16 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
     }
   };
   return (
-    <div
-      className="fixed inset-0 left-0 right-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-      // onClick={onClose}
-    >
+    <div className="fixed inset-0 left-0 right-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div
         style={{ top: '0px', bottom: '64px' }}
-        className="relative mt-24 w-full max-w-[400px] rounded-lg bg-[#FFF] px-4 py-2 shadow-lg dark:bg-[#333231]"
+        className="relative mt-24 w-full max-w-[400px] rounded-lg bg-[#FFF] px-0 py-2 shadow-lg dark:bg-[#333231] xs:px-4"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="mb-4 px-4 text-start text-lg font-bold text-lightText dark:text-darkText">
+        <button onClick={onClose} className="absolute right-2.5 top-1.5 text-2xl">
+          <p className={`inline-block text-buttonsLigth dark:text-darkText`}>X</p>
+        </button>
+        <h2 className="mb-4 pl-4 pr-7 text-start text-lg font-bold text-lightText dark:text-darkText">
           Formulario de solicitud N°{transaccionId}
         </h2>
 
@@ -281,8 +287,8 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
             ></div>
           </div>
 
-          <section className="text-buttonsLigth dark:text-darkText">
-            <p className="mb-5 flex h-1/2 flex-col">
+          <section>
+            <p className="mb-5 flex h-1/2 flex-col text-buttonsLigth dark:text-darkText">
               <div className="text-start text-sm">
                 <span className="mr-1 font-bold">Nota:</span>
                 <span className="text-start">
@@ -290,13 +296,13 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
                 </span>
               </div>
             </p>
-            <form>
+            <form className="flex flex-col">
               <label
                 htmlFor="note"
                 className={clsx(
                   'text-lightText dark:text-darkText',
                   !isFocused && 'hidden',
-                  'mb-1 ml-2.5 w-full max-w-full text-sm',
+                  'w-full pl-3 text-start text-sm',
                 )}
               >
                 Necesito Modificar...
@@ -304,8 +310,8 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
               <textarea
                 rows={1}
                 id="note"
-                className={`mb-4 block w-full rounded-2xl border border-inputLightDisabled p-2 placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight focus:placeholder-transparent dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText hover:dark:border-transparent dark:hover:placeholder-lightText focus:dark:border-transparent focus:dark:ring-transparent`}
-                placeholder="Necesito Modificar..."
+                className={`mb-4 block w-full rounded-2xl border border-inputLightDisabled px-3 py-2 placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight focus:placeholder-transparent dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText hover:dark:border-transparent dark:hover:placeholder-lightText focus:dark:border-transparent focus:dark:ring-transparent`}
+                placeholder={isFocused ? '' : 'Necesito Modificar...'}
                 onChange={handleNoteChange}
                 required
                 minLength={20}
@@ -314,14 +320,16 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
               ></textarea>
 
               <div className="file-upload flex flex-col justify-between rounded-2xl">
-                <div className="group flex h-full w-full flex-col items-center justify-center rounded-2xl border-[1px] border-inputLightDisabled py-2 text-center placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText">
+                <div className="group flex h-full w-full flex-col items-center justify-center rounded-2xl border-[1px] border-inputLightDisabled py-2 text-center hover:border-inputLight dark:border-disabledDarkText dark:border-transparent dark:text-lightText dark:hover:border-darkText">
                   {!file ? (
                     <>
-                      <p className="mb-1 hidden text-sm text-inputLightDisabled group-hover:text-buttonsLigth lg:inline-block">
+                      <p className="mb-1 hidden text-sm text-inputLightDisabled group-hover:text-buttonsLigth dark:text-disabledDarkText group-hover:dark:text-darkText lg:inline-block">
                         SUBIR COMPROBANTE
                       </p>
                       <label
-                        className={`buttonSecondDarkbuttonSecond relative mt-5 h-[48px] w-full max-w-[200px] items-center justify-center rounded-3xl border border-disabledButtonsLigth bg-disabledButtonsLigth p-[10px] text-lg text-darkText group-hover:border-buttonsLigth group-hover:bg-buttonsLigth group-hover:text-darkText dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText group-hover:dark:border-darkText group-hover:dark:bg-darkText lg:mt-0`}
+                        className={`${
+                          isDark ? 'buttonSecondDark' : 'buttonSecond'
+                        } relative mt-5 h-[48px] w-full max-w-[200px] items-center justify-center rounded-3xl border border-disabledButtonsLigth bg-disabledButtonsLigth p-[10px] text-lg text-darkText group-hover:border-buttonsLigth group-hover:bg-buttonsLigth group-hover:text-darkText dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText group-hover:dark:border-darkText group-hover:dark:bg-darkText group-hover:dark:text-lightText lg:mt-0`}
                       >
                         Subir Archivo
                         <input
@@ -334,10 +342,12 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
                     </>
                   ) : (
                     <div className="flex items-center">
-                      <p className="text-sm text-buttonsLigth">Archivo seleccionado: {file.name}</p>
+                      <p className="text-sm text-buttonsLigth group-hover:text-darkText dark:text-disabledDarkText">
+                        Archivo seleccionado: {file.name}
+                      </p>
                       <button
                         onClick={handleFileRemove}
-                        className="ml-3 rounded-full bg-buttonsLigth px-2 text-white hover:bg-red-700"
+                        className="ml-3 rounded-full bg-buttonsLigth px-2 text-darkText hover:bg-errorColor dark:bg-darkText dark:text-lightText hover:dark:bg-errorColor"
                         aria-label="Eliminar archivo"
                       >
                         X
@@ -345,7 +355,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
                     </div>
                   )}
                   {!file && (
-                    <p className="mt-1 text-xs text-inputLightDisabled group-hover:text-buttonsLigth">
+                    <p className="mt-1 text-xs text-inputLightDisabled group-hover:text-buttonsLigth dark:text-disabledDarkText group-hover:dark:text-darkText">
                       Formatos de archivo: PNG, JPG, PDF
                     </p>
                   )}
@@ -354,12 +364,12 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
             </form>
           </section>
 
-          <div className="mt-4 flex justify-between">
+          <div className="mt-4 flex flex-col-reverse justify-between xs:flex-row">
             <button
               onClick={onClose}
               className={`${
                 isDark ? 'buttonSecondDark' : 'buttonSecond'
-              } group relative m-1 flex h-[48px] min-w-[140px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth dark:border-darkText dark:text-darkText xs:min-w-[150px]`}
+              } group relative m-1 flex h-[48px] min-w-[112px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth dark:border-darkText dark:text-darkText xs:min-w-[1px]`}
             >
               <div className="relative h-5 w-5 overflow-hidden">
                 <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
@@ -369,9 +379,14 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
               <p className={`inline-block text-buttonsLigth dark:text-darkText`}>Volver</p>
             </button>
             <button
+              disabled={!file || !note}
               className={`${
-                isDark ? 'buttonSecondDark' : 'buttonSecond'
-              } relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-darkText disabled:border-gray-400 disabled:bg-gray-400 disabled:shadow-none dark:border-darkText dark:bg-darkText dark:text-lightText`}
+                !file || !note
+                  ? 'border-disabledButtonsLigth bg-disabledButtonsLigth dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText'
+                  : isDark
+                    ? 'buttonSecondDark'
+                    : 'buttonSecond'
+              } relative m-1 h-[48px] min-w-[183px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText`}
               onClick={handleFormSubmit}
               type="button"
             >

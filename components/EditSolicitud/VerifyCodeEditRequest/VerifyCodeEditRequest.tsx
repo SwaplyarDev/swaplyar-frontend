@@ -200,16 +200,16 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
             <button
               type="button"
               onClick={resendCode}
-              disabled={reLoading || timer > 0}
+              disabled={reLoading || timer > 0 || loading}
               className={`${
                 isDark
-                  ? reLoading || timer > 0
+                  ? reLoading || timer > 0 || loading
                     ? 'buttonSecondDarkDisabled'
                     : 'buttonSecondDark'
-                  : reLoading || timer > 0
+                  : reLoading || timer > 0 || loading
                     ? 'buttonSecondDisabled'
                     : 'buttonSecond'
-              } flex h-[42px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-darkText disabled:border-gray-400 disabled:bg-gray-400 dark:border-darkText dark:bg-darkText dark:text-lightText`}
+              } flex h-[42px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-darkText disabled:border-disabledButtonsLigth disabled:bg-disabledButtonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText disabled:dark:border-disabledButtonsDark disabled:dark:bg-disabledButtonsDark`}
             >
               {reLoading ? (
                 <div id="loading" className="flex items-center justify-center gap-2">
