@@ -145,7 +145,13 @@ const config: Config = {
       },
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('tailwindcss-textshadow'), flowbite.plugin()],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('tailwindcss-textshadow'),
+    require('tailwind-scrollbar'),
+    require('tailwind-scrollbar-hide'),
+    flowbite.plugin(),
+  ],
 };
 
 export default config;
