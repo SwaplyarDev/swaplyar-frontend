@@ -48,6 +48,8 @@ const config: Config = {
       colors: {
         'nav-blue': '#012D8A',
         'gray-blue': '#020919',
+        'custom-blue': 'rgb(1,42,141)',
+        'custom-gray': 'rgb(125, 125, 125)',
         blue: {
           400: '#2589FE',
           500: '#0070F3',
