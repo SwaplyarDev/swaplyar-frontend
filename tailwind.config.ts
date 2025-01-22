@@ -83,6 +83,10 @@ const config: Config = {
         disabledLightText: '#555555', // Gris más claro para texto deshabilitado
         inputLightDisabled: '#90B0FE', // Azul pastel con un tono más vibrante y saturado
       },
+      fontFamily: {
+        titleFont: ['OpenSans', 'sans-serif'],
+        textFont: ['Roboto', 'sans-serif'],
+      },
       width: {
         '9/10': '90%',
       },
