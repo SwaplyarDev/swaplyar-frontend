@@ -38,9 +38,9 @@ export default function NavLinks() {
           key={link.name}
           href={link.href}
           onClick={() => handleLogView(link.name)}
-          className={`relative m-1 flex h-[48px] items-center gap-2 text-buttonsLigth transition-transform duration-300 ease-in-out hover:scale-105 hover:text-blue-700 dark:text-sky-500 dark:hover:text-sky-600 ${
+          className={`relative m-1 flex h-[48px] items-center gap-2 text-buttonsExtraLigth transition-transform duration-300 ease-in-out hover:scale-105 hover:text-buttonsLigth dark:text-buttonsExtraLigthDark dark:hover:text-buttonsLigthDark ${
             pathname === link.href && pathname !== '/auth/login-register'
-              ? 'font-bold after:absolute after:bottom-3 after:left-0 after:h-[1px] after:w-full after:bg-buttonsLigth after:content-[""] dark:decoration-sky-500'
+              ? 'font-bold text-buttonsLigth after:absolute after:bottom-3 after:left-0 after:h-[1px] after:w-full after:bg-buttonsLigth after:content-[""] dark:text-buttonsLigthDark dark:after:bg-buttonsLigthDark'
               : ''
           } `}
         >
