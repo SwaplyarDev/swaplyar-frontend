@@ -4,9 +4,9 @@ import AuthForm from '@/components/auth/auth-form';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 
 export const metadata: Metadata = {
-  title: 'Accedé o Registrate en SwaplyAr | Simplifica tus Finanzas',
+  title: 'Inicia Sesión o Regístrate en SwaplyAr | Accede a Beneficios',
   description:
-    'Entrá a tu cuenta de SwaplyAr y realiza tus transacciones digitales de forma rápida y segura con beneficios. Inicio de sesión y Registro protegido para tu tranquilidad',
+    'Inicia sesión o regístrate en SwaplyAr para realizar transacciones seguras y obtener beneficios exclusivos de nuestro programa de fidelización',
 };
 
 export default function LoginPage() {
