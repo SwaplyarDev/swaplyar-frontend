@@ -102,7 +102,7 @@ const NotFoundComponent = () => {
               src={isDark ? Enchufe_dark : Enchufe_clear}
               alt="Descripción de la imagen enchufe"
               width={400}
-              height={100}
+              height={110}
             />
           </div>
         </section>
