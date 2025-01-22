@@ -9,37 +9,27 @@ import { FlyerGif, RecargaPaypal, UsdArs } from '@/utils/assets/imgDatabaseCloud
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
 import { useMargins } from '@/context/MarginProvider';
-import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
-import { useSession } from 'next-auth/react';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import LinkWithHover from '../ui/LinkWithHover/LinkWithHover';
-
-const mainStyles = {
-  main: 'py-10 relative', // Centrado tanto vertical como horizontalmente
-  infoBlocksContainer: 'flex flex-col items-center justify-center mt-8',
-  instructionsCalculatorContainer: 'relative flex space-x-4 items-center justify-center mt-8', // Añadimos `relative`
-};
 
 export default function HomePage() {
   const resetToDefault = useSystemStore((state) => state.resetToDefault);
   const { margins } = useMargins();
-  const currentMargin = ResponsiveMarginHook(margins);
 
   useEffect(() => {
     resetToDefault();
   }, [resetToDefault]);
 
   const { isDark } = useDarkTheme();
-  const { data: session } = useSession();
 
   return (
-    <main className={mainStyles.main}>
+    <main className="relative py-10">
       <AnimatedBlurredCircles tope="top-[-375px]" />
-      <div className="flex flex-col items-center justify-center" style={{ margin: currentMargin }}>
-        <div className={mainStyles.instructionsCalculatorContainer}>
+      <div className="m-auto flex w-full max-w-screen-phone flex-col items-center justify-center px-4 sm:max-w-screen-tablet sm:px-8 lg2:max-w-screen-desktop lg2:px-3">
+        <div className="mt-8 flex flex-col items-center justify-center">
           <ConversionInstructions />
         </div>
-        <div className={mainStyles.infoBlocksContainer}>
+        <div className="relative mt-8 flex items-center justify-center space-x-4">
           <InfoBlock
             title="Cambia USD o EUR de tu billetera virtual por la moneda de tu preferencia  con SwaplyAr"
             imageSrc={UsdArs}

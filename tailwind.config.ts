@@ -25,6 +25,11 @@ const config: Config = {
         'center-80px': 'center -80px',
         'center-10px': 'center 10px',
       },
+      maxWidth: {
+        'screen-desktop': '1204px',
+        'screen-tablet': '680px',
+        'screen-phone': '358px',
+      },
       screens: {
         'mini-phone': '340px',
         'xs-mini-phone': '390px',
