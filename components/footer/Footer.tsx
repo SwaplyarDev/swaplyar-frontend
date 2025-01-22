@@ -30,7 +30,7 @@ function FooterLink({ href, label, view }: FooterLinkProps) {
     <Link
       href={href}
       {...(view ? { onClick: () => setView(view) } : {})}
-      className={`rs-link text-base transition-all duration-300 ease-in-out hover:text-[17px] hover:text-buttonsLigth dark:text-sky-500 dark:hover:text-sky-600 ${isActive ? 'relative font-bold text-buttonsLigth after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:bg-buttonsLigth after:content-[""]' : 'text-buttonsExtraLigth'}`}
+      className={`rs-link w-fit text-base transition-all duration-300 ease-in-out hover:text-[17px] hover:text-buttonsLigth dark:text-buttonsExtraLigthDark dark:hover:text-buttonsLigthDark ${isActive ? 'relative font-bold text-buttonsLigth after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:bg-buttonsLigth after:content-[""] dark:text-buttonsLigthDark dark:after:bg-buttonsLigthDark' : 'text-buttonsExtraLigth'}`}
     >
       {label}
     </Link>
@@ -64,11 +64,11 @@ function AccordionSection({ title, links }: { title: string; links: FooterLinkPr
   return (
     <Accordion
       disableGutters
-      className="before:contante-[''] group relative bg-transparent shadow-none transition-all duration-300 before:absolute before:w-0 after:absolute after:bottom-0 after:left-[50%] after:h-[1px] after:w-[70%] after:min-w-[204px] after:-translate-x-[50%] after:bg-[#90b0fe] after:transition-all after:duration-300 after:content-[''] after:hover:bg-buttonsLigth after:[&.Mui-expanded]:bg-buttonsLigth"
+      className="before:contante-[''] group relative bg-transparent shadow-none transition-all duration-300 before:absolute before:w-0 after:absolute after:bottom-0 after:left-[50%] after:h-[1px] after:w-[70%] after:min-w-[204px] after:-translate-x-[50%] after:bg-buttonExpandDark after:transition-all after:duration-300 after:content-[''] after:hover:bg-buttonsLigth dark:after:hover:bg-buttonExpandDark after:[&.Mui-expanded]:bg-buttonsLigth dark:after:[&.Mui-expanded]:bg-buttonExpandDark"
     >
       <AccordionSummary
         expandIcon={
-          <ExpandMoreIcon className="h-10 w-10 text-buttonsExtraLigth transition-all duration-300 group-hover:text-buttonsLigth group-[&.Mui-expanded]:text-buttonsLigth group-[&:not(.Mui-expanded)]:hover:rotate-180 dark:text-darkText" />
+          <ExpandMoreIcon className="h-10 w-10 text-buttonsExtraLigth transition-all duration-300 group-hover:text-buttonsLigth group-[&.Mui-expanded]:text-buttonsLigth group-[&:not(.Mui-expanded)]:hover:rotate-180 dark:text-buttonExpandDark dark:group-hover:text-buttonExpandDark dark:group-[&.Mui-expanded]:text-buttonExpandDark" />
         }
         aria-controls={`${title}-content`}
         id={`${title}-header`}
@@ -82,7 +82,7 @@ function AccordionSection({ title, links }: { title: string; links: FooterLinkPr
       >
         <h4 className="text-xl font-bold text-lightText dark:text-darkText">{title}</h4>
       </AccordionSummary>
-      <AccordionDetails className="flex flex-col text-center">
+      <AccordionDetails className="flex flex-col items-center text-center">
         {links.map(({ href, label, view }) => (
           <FooterLink key={href} href={href} label={label} view={view} />
         ))}
