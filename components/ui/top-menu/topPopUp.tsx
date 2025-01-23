@@ -38,12 +38,12 @@ function TopPopUp() {
           <motion.p
             animate={{ x: ['100%', '-100%'] }}
             transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
-            className="min-w-[350px] text-center text-xs font-bold"
+            className="min-w-[350px] text-center font-textFont text-xs font-semibold"
           >
             Estamos trabajando en las funciones de inicio de sesión y registro
           </motion.p>
         </div>
-        <p className="hidden w-full text-center text-xs font-bold xs:block md:text-sm lg:text-lg">
+        <p className="hidden w-full text-center font-textFont text-xs font-semibold xs:block md:text-sm lg:text-lg">
           Estamos trabajando en las funciones de inicio de sesión y registro
         </p>
         <button
