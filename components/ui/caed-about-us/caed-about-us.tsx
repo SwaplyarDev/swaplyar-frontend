@@ -165,7 +165,7 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
                     height={25}
                     className="absolute right-2 top-2"
                   />
-                  <h3 className="absolute bottom-0 mt-2 w-full rounded-bl-2xl rounded-br-2xl bg-black p-2 text-xl text-white">
+                  <h3 className="absolute bottom-0 mt-2 w-full rounded-bl-2xl rounded-br-2xl bg-black p-2 font-textFont text-xl font-bold text-white">
                     {card.title}
                   </h3>
                 </div>

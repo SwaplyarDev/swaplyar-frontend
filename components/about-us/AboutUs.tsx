@@ -86,19 +86,19 @@ const AboutUs = () => {
         >
           <div className="md:max-w-[80%]">
             <div className="rs-wrapper-v4 mx-auto items-center justify-center text-center md:w-full">
-              <h1 className="text-center text-[38px] font-bold lg:text-left lg:text-4xl">
+              <h1 className="text-center font-titleFont text-[40px] font-medium md:font-[38px] lg:text-left lg:text-4xl">
                 Nuestra Historia, Misión, Visión y Valores
               </h1>
             </div>
 
             <section className="rs-wrapper-v4 mx-auto mb-12 max-w-[1000px] text-left sm:mt-4 md:mt-8 md:w-full lg:mt-8">
-              <p className="mx-auto mt-4 text-lg sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
+              <p className="mx-auto mt-4 font-textFont font-light sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
                 En SwaplyAr, transformamos la forma en que las personas y empresas realizan transacciones
                 internacionales, garantizando un intercambio seguro y confiable entre las principales billeteras
                 virtuales y cuentas bancarias a nivel global. Nuestro enfoque en la seguridad, rapidez y transparencia
                 nos permite ofrecer soluciones financieras innovadoras que se adaptan a tus necesidades.
               </p>
-              <p className="mx-auto mt-4 text-lg sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
+              <p className="mx-auto mt-4 font-textFont font-light sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
                 Desde nuestros inicios, SwaplyAr nació con la visión de simplificar las transferencias internacionales
                 para todos: empresas, personas y familias. Nos dedicamos a proporcionar servicios rápidos, seguros y
                 accesibles, siempre enfocados en garantizar la mejor experiencia para cada cliente.
@@ -113,17 +113,19 @@ const AboutUs = () => {
           <div className="flex flex-col gap-10 pt-10">
             {sectionsData.map((section, i) => (
               <section key={i}>
-                <h2 className="text-4xl font-bold">{section.title}</h2>
-                <p>{section.description}</p>
-                {section.secondaryDescription && <p className="pt-5">{section.secondaryDescription}</p>}
+                <h2 className="font-textFont text-4xl">{section.title}</h2>
+                <p className="font-textFont font-light">{section.description}</p>
+                {section.secondaryDescription && (
+                  <p className="pt-5 font-textFont font-light">{section.secondaryDescription}</p>
+                )}
               </section>
             ))}
           </div>
 
           <div className="my-10 flex w-full max-w-[1000px] justify-center">
             <div className="grid w-[80%] grid-cols-1 items-center justify-center gap-8 md:grid-cols-2">
-              <div className="col-right order-1 text-left text-lg text-black dark:text-white sm:text-left sm:text-xl md:order-2">
-                <p>
+              <div className="col-right order-1 text-left text-black dark:text-white sm:text-left md:order-2">
+                <p className="font-textFont text-lg">
                   "Nos Dedicamos a transformar la manera en que las personas manejan su dinero, utilizando las
                   tecnologias mas avanzadas y sistemas de pago innovadores. Porque entendemos que detrás de cada
                   transacción hay sueños, metas y necesidades, trabajamos incansablemente para brindar soluciones que
@@ -141,8 +143,8 @@ const AboutUs = () => {
                   className="sm:h-[300px] sm:w-[300px]"
                 />
                 <div className="text-team mt-4 text-center text-black dark:text-white">
-                  <h5 className="text-lg font-semibold sm:text-2xl">Oa Johan Javier Suarez Merchan</h5>
-                  <h5>Founder &amp; Chief Executive Officer (CEO)</h5>
+                  <h5 className="font-textFont text-[28px]">Oa Johan Javier Suarez Merchan</h5>
+                  <h5 className="font-textFont text-xl font-light">Founder &amp; Chief Executive Officer (CEO)</h5>
                 </div>
               </div>
             </div>
@@ -151,9 +153,9 @@ const AboutUs = () => {
       </div>
       <div className="mt-10 text-center">
         <FlyerTrabajo imageSrc={FlyerGif}>
-          <span className="flex flex-col gap-2 text-base md:text-lg lg:text-xl">
-            <p>¿Nuevo en SwaplyAr?</p>
-            <p>
+          <span className="flex flex-col gap-2">
+            <p className="font-textFont text-[21px] font-extrabold">¿Nuevo en SwaplyAr?</p>
+            <p className="font-textFont text-[21px] font-extrabold">
               Conoce cómo funciona nuestra plataforma y comienza a transferir <br /> dinero de forma sencilla y segura.
             </p>
           </span>
@@ -166,7 +168,7 @@ const AboutUs = () => {
                 href={'/info/how-to-use'}
                 className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'}`}
               >
-                <h3>¡Empieza ahora!</h3>
+                <h3 className="font-titleFont font-semibold">¡Empieza ahora!</h3>
               </Link>
             </button>
           </div>
