@@ -174,7 +174,7 @@ const SaprTermsConditions = () => {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
               <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
-                  8. Sesión
+                  8. Cesión
                 </h2>
                 <p className="ml-6">
                   No puede ceder, transferir o permitir que nadie más use su membresía en SwaplyAr Plus Rewards.
