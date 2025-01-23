@@ -65,11 +65,10 @@ export default function LoyaltyProgram() {
       <section className="mb-8 flex flex-wrap justify-center gap-8 overflow-x-auto py-10 pb-16">
         <div className="flex w-full flex-col items-center px-6 py-2 text-left sm:w-[320px] lg:w-[360px]">
           <img
-            src={isDark ? Rewards1Dark : Rewards1}
+            src={Rewards1}
             alt="paso 1 de como cambiar tu dinero en SwaplyAr"
             className="mb-4 w-full max-w-[220px]"
           />
-
           <h3 className="text-center text-lg font-bold">Regalo de Bienvenida</h3>
           <p className="mt-2 text-justify text-sm leading-relaxed">
             Únete a SwaplyAr Plus Rewards™ y recibe $10 adicionales en tu segunda transacción de más de $200, realizada
@@ -79,11 +78,10 @@ export default function LoyaltyProgram() {
 
         <div className="flex w-full flex-col items-center px-6 py-2 text-left sm:w-[320px] lg:w-[360px]">
           <img
-            src={isDark ? Rewards2Dark : Rewards2}
+            src={Rewards2}
             alt="paso 2 de como cambiar tu dinero en SwaplyAr"
             className="mb-4 w-full max-w-[220px]"
           />
-
           <h3 className="text-center text-lg font-bold">Los premios nunca terminan</h3>
           <p className="mt-2 text-justify text-sm leading-relaxed">
             Recompensas Continuas: Gana $5 adicionales después de completar 5 transacciones por un monto igual o
@@ -93,11 +91,10 @@ export default function LoyaltyProgram() {
 
         <div className="flex w-full flex-col items-center px-6 py-2 text-left sm:w-[320px] lg:w-[360px]">
           <img
-            src={isDark ? Rewards3Dark : Rewards3}
+            src={Rewards3}
             alt="paso 3 de como cambiar tu dinero en SwaplyAr"
             className="mb-4 w-full max-w-[220px]"
           />
-
           <h3 className="text-center text-lg font-bold">Exclusivo SwaplyAr</h3>
           <p className="mt-2 text-justify text-sm leading-relaxed">
             ¡Mantente siempre atento a nuestras promociones: ¡ofertas exclusivas y acceso a beneficios únicos te
