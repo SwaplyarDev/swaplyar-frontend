@@ -15,7 +15,7 @@ const SaprTermsConditions = () => {
   const currentMargin = ResponsiveMarginHook(margins);
 
   return (
-    <div className="relative flex flex-col items-center py-10">
+    <div className="relative flex flex-col items-center py-10 text-custom-grayD">
       <AnimatedBlurredCircles tope="top-[-1675px]" />
       <div style={{ margin: currentMargin }}>
         <div className="flex max-w-[1000px] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left">
@@ -29,7 +29,7 @@ const SaprTermsConditions = () => {
 
         <div className="my-10 w-full max-w-5xl">
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 text-gray-900 shadow-md dark:bg-graytyc dark:text-gray-100">
+            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc dark:text-gray-100">
               <h2 className="mb-4 text-2xl md:text-3xl">1. Membresía</h2>
               <h3 className="indent-6 text-2xl md:text-2xl">a. Elegibilidad</h3>
               <p className="mb-4 ml-6">

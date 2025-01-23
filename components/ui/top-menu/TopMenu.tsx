@@ -4,7 +4,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
-import useStore from '@/store/authViewStore';
 
 import { Drawer, Sidebar, Navbar } from 'flowbite-react';
 import { GiHamburgerMenu } from 'react-icons/gi';
@@ -21,18 +20,8 @@ import { signOut, useSession } from 'next-auth/react';
 import RegisterButton from './log-register-bt/registerButton';
 import { SwaplyArLogoSolo, SwaplyArLogoComplete } from '@/utils/assets/imgDatabaseCloudinary';
 import { swaplyArAvatar } from '@/utils/assets/img-database';
-import { Button, Popover, Typography } from '@mui/material';
+import { Button, Popover } from '@mui/material';
 import clsx from 'clsx';
-
-// Styled components con uso de transient props
-const StyledButton = styled.button<{ $isDark: boolean }>`
-  background-color: ${({ $isDark }) => ($isDark ? 'var(--dark-bg)' : 'var(--light-bg)')};
-  color: ${({ $isDark }) => ($isDark ? 'var(--dark-text)' : 'var(--light-text)')};
-  border: 1px solid ${({ $isDark }) => ($isDark ? 'var(--dark-border)' : 'var(--light-border)')};
-  &:hover {
-    background-color: ${({ $isDark }) => ($isDark ? 'var(--dark-hover)' : 'var(--light-hover)')};
-  }
-`;
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -86,7 +75,7 @@ export function TopMenu() {
       <TopPopUp />
 
       <Navbar fluid rounded className="sticky px-4 py-3 dark:bg-lightText md:px-8 lg:px-4">
-        <div className="m-auto flex w-full max-w-[1204px] flex-row justify-between">
+        <div className="m-auto flex w-full max-w-screen-phone flex-row justify-between xs-mini-phone2:max-w-screen-tablet md:max-w-screen-desktop">
           {/* Botón para iniciar sesión o cerrar sesión */}
           <span className="hidden md:flex lg2:hidden">
             {status === 'authenticated' ? (
