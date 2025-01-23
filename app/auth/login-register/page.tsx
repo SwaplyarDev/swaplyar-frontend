@@ -1,7 +1,13 @@
 // /auth/login-register
-
+import { Metadata } from 'next';
 import AuthForm from '@/components/auth/auth-form';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
+
+export const metadata: Metadata = {
+  title: 'Inicia Sesión o Regístrate en SwaplyAr | Accede a Beneficios',
+  description:
+    'Inicia sesión o regístrate en SwaplyAr para realizar transacciones seguras y obtener beneficios exclusivos de nuestro programa de fidelización',
+};
 
 export default function LoginPage() {
   return (
