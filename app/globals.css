@@ -47,12 +47,18 @@ body {
 
 }*/
 
+@layer utilities {
+  .mask-gradient-popup {
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  }
+}
+
 .container-blur {
-  @apply absolute flex h-full w-full justify-center overflow-hidden;
+  @apply absolute flex h-full min-h-[1000px] w-full justify-center overflow-hidden;
 }
 
 .box {
-  @apply h-full w-full rounded-full;
+  @apply max-h-[1200px] w-full rounded-full h-full;
   animation: spin 30s infinite linear;
   display: flex;
   justify-content: center;

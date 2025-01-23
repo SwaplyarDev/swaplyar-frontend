@@ -1,8 +1,7 @@
 export function setBannerColor() {
   const colors = [
-    { bg: '#2DCCD3', text: '#FDFEFD' },
-    { bg: '#97D700', text: '#012D8A' },
-    { bg: '#B614FF', text: '#FDFEFD' },
+    { bg: '#7800AD', text: '#EBE7E0' },
+    { bg: '#97D700', text: '#011B5B' },
   ];
 
   let currentColor = sessionStorage.getItem('bannerColor');

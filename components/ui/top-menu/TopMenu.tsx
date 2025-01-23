@@ -85,8 +85,8 @@ export function TopMenu() {
     <main className="sticky top-0 z-[1000] flex flex-col shadow-md">
       <TopPopUp />
 
-      <Navbar fluid rounded className="sticky py-3 dark:bg-lightText">
-        <div className="m-auto flex w-[95%] max-w-screen-2xl flex-row justify-between">
+      <Navbar fluid rounded className="sticky px-4 py-3 dark:bg-lightText md:px-8 lg:px-4">
+        <div className="m-auto flex w-full max-w-[1204px] flex-row justify-between">
           {/* Botón para iniciar sesión o cerrar sesión */}
           <span className="hidden md:flex lg2:hidden">
             {status === 'authenticated' ? (
@@ -301,7 +301,7 @@ export function TopMenu() {
             </Drawer>
 
             {/* Navegación completa */}
-            <section className="hidden lg2:flex lg2:gap-2">
+            <section className="hidden lg2:flex lg2:items-center lg2:gap-2">
               <NavLinks />
               {status === 'authenticated' ? (
                 <>

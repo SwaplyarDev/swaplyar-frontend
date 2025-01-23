@@ -16,6 +16,7 @@ export const configRoutes: ConfigRoutes = {
     '/info/sapr-terms-conditions',
     '/info/questions',
     '/request',
+    '/request/search-request',
     '/repentance',
     '/editRequest',
   ],
