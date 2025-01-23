@@ -146,7 +146,7 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
           return (
             <div
               key={index}
-              className={`card h-64 w-52 lg:static ${(isFrontLeft || isFrontRight) && `absolute top-0 z-20`}`}
+              className={`card h-64 w-52 lg2:static ${(isFrontLeft || isFrontRight) && `absolute top-0 z-20`}`}
               style={isFrontLeft ? { left: `20%` } : isFrontRight ? { right: `20%` } : isPrev ? { left: '-20%' } : {}}
             >
               <div className="card-inner transform-style preserve-3d h-full w-full transition-transform duration-700">

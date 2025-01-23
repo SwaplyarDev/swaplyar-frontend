@@ -4,17 +4,8 @@ import Image from 'next/image';
 import CaedAboutUs from '../ui/caed-about-us/caed-about-us';
 import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
 import Link from 'next/link';
-import {
-  Apoyo,
-  Transparencia,
-  Simplicidad,
-  Eficiencia,
-  OaSuarez,
-  FlyerGif,
-} from '@/utils/assets/imgDatabaseCloudinary';
+import { Apoyo, Transparencia, Simplicidad, Eficiencia, FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
-import { useMargins } from '@/context/MarginProvider';
-import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import './about.css';
 
@@ -73,17 +64,12 @@ const sectionsData = [
 ];
 
 const AboutUs = () => {
-  const { margins } = useMargins();
-  const currentMargin = ResponsiveMarginHook(margins);
   const { isDark } = useDarkTheme();
   return (
-    <>
-      <div className="relative flex flex-col items-center justify-center px-4">
-        <AnimatedBlurredCircles tope="top-[0px]" />
-        <div
-          className="flex w-full max-w-[1000px] flex-col items-center justify-center pt-5 text-black dark:text-white"
-          style={{ margin: currentMargin }}
-        >
+    <main>
+      <AnimatedBlurredCircles tope="top-[0px]" />
+      <div className="relative flex flex-col items-center justify-center px-4 md:px-8 lg:px-4">
+        <div className="m-auto flex w-full max-w-screen-phone flex-col items-center justify-center pt-5 text-black dark:text-white xs-mini-phone2:max-w-screen-tablet md:max-w-screen-desktop">
           <div className="md:max-w-[80%]">
             <div className="rs-wrapper-v4 mx-auto items-center justify-center text-center md:w-full">
               <h1 className="text-center text-[38px] font-bold lg:text-left lg:text-4xl">
@@ -110,7 +96,7 @@ const AboutUs = () => {
             <CaedAboutUs cardsData={cardsData} />
           </div>
 
-          <div className="flex flex-col gap-10 pt-10">
+          <div className="flex max-w-[1000px] flex-col gap-10 pt-10">
             {sectionsData.map((section, i) => (
               <section key={i}>
                 <h2 className="text-4xl font-bold">{section.title}</h2>
@@ -172,7 +158,7 @@ const AboutUs = () => {
           </div>
         </FlyerTrabajo>
       </div>
-    </>
+    </main>
   );
 };
 

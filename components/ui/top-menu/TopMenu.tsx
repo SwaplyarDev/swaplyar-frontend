@@ -86,7 +86,7 @@ export function TopMenu() {
       <TopPopUp />
 
       <Navbar fluid rounded className="sticky px-4 py-3 dark:bg-lightText md:px-8 lg:px-4">
-        <div className="m-auto flex w-full max-w-[1204px] flex-row justify-between">
+        <div className="m-auto flex w-full max-w-screen-phone flex-row justify-between xs-mini-phone2:max-w-screen-tablet md:max-w-screen-desktop">
           {/* Botón para iniciar sesión o cerrar sesión */}
           <span className="hidden md:flex lg2:hidden">
             {status === 'authenticated' ? (
