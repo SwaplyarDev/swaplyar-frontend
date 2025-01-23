@@ -13,6 +13,7 @@ import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import useQuestion from '@/components/ui/top-menu/UseQuestion/useQuestion';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import BannerQuestions from '@/public/images/baner_questions.png';
+import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 //C:\Users\Administrator\swaplyar-frontend\components\info\questions\Questions.tsx
 //C:\Users\Administrator\swaplyar-frontend\public\images
 
@@ -36,7 +37,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolea
   <MuiAccordionSummary
     expandIcon={
       <div
-        className={`${props.isDark ? 'bg-[rgba(75,75,75,1)]' : 'bg-[rgb(225,225,225)]'} ${props.expanded ? 'bg-[rgb(1,42,141)]' : ''} font-bold group-hover:bg-[rgb(1,42,142)]`}
+        className={`${props.isDark ? 'bg-[rgba(75,75,75,1)]' : 'bg-[rgb(225,225,225)]'} ${props.expanded && props.isDark ? 'bg-custom-gray' : props.expanded ? 'bg-custom-blue' : ''} font-bold ${props.isDark ? 'group-hover:bg-custom-gray' : 'group-hover:bg-custom-blue'}`}
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -97,7 +98,9 @@ const FrequentlyQuestions = () => {
   };
 
   return (
-    <main className="flex w-full flex-col items-center justify-center">
+    <main className="relative flex w-full flex-col items-center justify-center">
+      <AnimatedBlurredCircles tope={'top-[20px]'} />
+
       <header className={`mt-10 text-left text-center text-4xl ${isDark ? 'text-gray-100' : 'text-slate-800'}`}>
         <p className="font-semibold">Preguntas Frecuentes</p>
       </header>
