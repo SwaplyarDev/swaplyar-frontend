@@ -7,10 +7,6 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import useStatusManager from '@/hooks/useStatusManager';
 import Swal from 'sweetalert2';
-import { createRoot } from 'react-dom/client';
-import Arrow from '../ui/Arrow/Arrow';
-import Tick from '../ui/Tick/Tick';
-import ReactDOMServer from 'react-dom/server';
 import { searchRequest } from '@/actions/request/action.search-request/action.searchRecuest';
 
 const SearchRequest = () => {
@@ -45,9 +41,24 @@ const SearchRequest = () => {
     }
   };
 
-  const handleSearchRequest = () => {
+  const handleSearchRequest = (statuses: Array<keyof typeof statusMessages>) => {
+    const statusMessages = {
+      pending: 'Solicitud Enviada',
+      received: 'Pago en Revisión',
+      ended: 'Solicitud Finalizada con Éxito',
+      cancelation: 'Solicitud Cancelada',
+      modified: 'Reembolso Solicitado',
+      refund: 'Dinero Reembolsado con Éxito',
+      discrepancy: 'Discrepancia en la Solicitud',
+    };
+
+    // Crea una lista de mensajes con los estados recibidos
+    const messages = statuses.map((status) => statusMessages[status]);
+
     Swal.fire({
-      html: `...`, // Mantén el código de Swal como está
+      html: `<ul>
+        ${messages.map((msg) => `<li>${msg}</li>`).join('')}
+      </ul>`, // Mantén el código de Swal como está
       showConfirmButton: false,
       showCancelButton: false,
       background: isDark ? 'rgb(69 69 69)' : '#ffffff',
@@ -72,8 +83,9 @@ const SearchRequest = () => {
         throw new Error(response.message || 'Hubo un problema al obtener el estado de la transacción');
       }
 
-      // Aquí puedes manejar la respuesta de la API, como mostrar el estado
-      console.log(response.status); // o actualizar el estado de la UI
+      // `response.status` es un arreglo con los estados de la solicitud
+      const statuses = response.status || [];
+      handleSearchRequest(statuses);
 
       reset();
     } catch (error) {
@@ -85,8 +97,6 @@ const SearchRequest = () => {
     } finally {
       setLoading(false);
     }
-
-    handleSearchRequest();
   };
 
   return (

@@ -1,3 +1,5 @@
+'use server';
+
 interface TransactionStatusError {
   message: string;
   details?: string | null;
@@ -20,7 +22,7 @@ export const searchRequest = async (transactionId: string, lastName: string) => 
     const data = await response.json();
 
     if (!response.ok) {
-      const errorData: TransactionStatusError = data; // Asegúrate de que la API devuelve un objeto con estos campos
+      const errorData: TransactionStatusError = data;
       throw new Error(errorData.message || 'Error al buscar el estado de la transacción');
     }
 
