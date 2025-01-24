@@ -67,12 +67,12 @@ export function constructMetadata({
   };
 }
 
-export function constructViewport(): Viewport {
-  return {
-    themeColor: 'black',
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  };
-}
+//export function constructViewport(): Viewport {
+//  return {
+//    themeColor: 'black',
+//    width: 'device-width',
+//    initialScale: 1,
+//    maximumScale: 1,
+//    userScalable: false,
+//  };
+//}
