@@ -1,6 +1,7 @@
 // config/fonts.ts
 
 import { Roboto } from 'next/font/google';
+import { Inter } from 'next/font/google';
 
 // Inter font
 // export const inter = Inter({ subsets: ['latin'] });
@@ -15,4 +16,8 @@ import { Roboto } from 'next/font/google';
 export const roboto = Roboto({
   subsets: ['latin'],
   weight: ['100', '300'],
+});
+export const inter = Inter({
+  subsets: ['latin'],
+  weight: ['100', '500'],
 });
