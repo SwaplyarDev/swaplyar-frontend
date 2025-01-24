@@ -16,7 +16,7 @@ export default auth((req) => {
     }
   } catch (err) {
     console.error('Error de servidor ', err);
-    return NextResponse.redirect(new URL('/500', req.url));
+    return NextResponse.redirect(new URL('/error-500', req.url));
   }
 
   // console.log(Middleware: ${req.nextUrl.pathname});
