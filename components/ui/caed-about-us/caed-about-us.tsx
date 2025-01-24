@@ -118,7 +118,7 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
                       alt={card.alt}
                       layout="fill"
                       objectFit="cover"
-                      className="rounded-2xl shadow-md shadow-black/50"
+                      className="rounded-2xl shadow-md shadow-black/50 lg:shadow-[#012A8E80]"
                     />
                     <Image
                       src="/images/rotate-card-icon.svg"
@@ -127,13 +127,20 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
                       height={25}
                       className="absolute right-2 top-2"
                     />
-                    <h3 className="absolute bottom-0 mt-2 w-full rounded-bl-2xl rounded-br-2xl bg-black p-2 text-xl text-white">
+                    <h3 className="font-vold absolute bottom-0 mt-2 w-full rounded-bl-2xl rounded-br-2xl bg-[#323232] p-[10px] font-textFont text-darkText">
                       {card.title}
                     </h3>
                   </div>
-                  <div className="card-back backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-lg bg-dark-blue p-4 text-white shadow-custom-black dark:bg-gray-800 dark:text-white">
-                    <h3 className="text-xl">{card.backTitle}</h3>
-                    <p className="mt-2">{card.backText}</p>
+                  <div className="card-back backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-lg bg-[#000c29] p-4 text-darkText shadow-custom-black dark:bg-gray-800 dark:text-darkText">
+                    <Image
+                      src="/images/rotate-card-icon.svg"
+                      alt="Icono de rotacion de la card"
+                      width={25}
+                      height={25}
+                      className="absolute right-2 top-2"
+                    />
+                    <h3 className="self-start font-textFont font-bold">{card.backTitle}</h3>
+                    <p className="mt-2 font-textFont font-light">{card.backText}</p>
                   </div>
                 </div>
               </div>
