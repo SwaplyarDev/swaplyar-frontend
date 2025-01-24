@@ -8,7 +8,7 @@ export interface sendeForm {
   message: string;
   file: File | null;
   transaccionId: string;
-  token: string | null;
+  // token: string | null;
 }
 interface TransactionData {
   // Define los campos esperados según la respuesta de la API
@@ -22,31 +22,22 @@ const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const fetchTransactionById = async (requestData: TransactionRequestData): Promise<any> => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/send`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/code/send/${requestData.transaccionId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        transactionId: requestData.transaccionId,
-      }), // Enviar datos como JSON
     });
-    console.log(
-      'el body:',
-      JSON.stringify({
-        transactionId: requestData.transaccionId,
-      }),
-    );
+    // const result = await response.json();
+    // console.log('respuesta:', result);
+    // console.log('response:', response);
     if (!response.ok) {
       if (response.status === 404) {
-        throw new Error('La transacción no fue encontrada.');
+        throw new Error('El ID de la transacción no fue encontrada.');
       } else {
         throw new Error('Ocurrió un error al buscar la transacción.');
       }
     }
-    const data = await response.json();
-
-    console.log('respuesta:', data);
   } catch (error) {
     console.error('Error fetching transaction:', error);
     throw new Error(error instanceof Error ? error.message : 'Error desconocido.');
@@ -55,7 +46,7 @@ export const fetchTransactionById = async (requestData: TransactionRequestData):
 export const fetchCode = async (code: string, requestData: { transactionId: string }): Promise<any> => {
   try {
     // Realizar la solicitud POST al backend para verificar el código
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/verify`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/code/validate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -74,11 +65,11 @@ export const fetchCode = async (code: string, requestData: { transactionId: stri
       throw new Error(result.message || 'Código incorrecto');
     }
 
-    if (result.token) {
-      sessionStorage.setItem('token', result.token);
-    } else {
-      console.error('Token no encontrado en la respuesta');
-    }
+    // if (result.token) {
+    //   sessionStorage.setItem('token', result.token);
+    // } else {
+    //   console.error('Token no encontrado en la respuesta');
+    // }
 
     return { success: true, message: result.message || 'Código verificado exitosamente.' };
   } catch (error) {
@@ -89,12 +80,11 @@ export const fetchCode = async (code: string, requestData: { transactionId: stri
 
 export const resendCodeAction = async (transactionId: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/send`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/code/send/${transactionId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ transactionId }),
     });
 
     console.log('Respuesta del servidor del resendCode:', response);
@@ -133,24 +123,24 @@ export const fetchTransactionData = async (transaccionId: string): Promise<Trans
 
 export const sendFormData = async ({ message, file, transaccionId }: sendeForm): Promise<any> => {
   try {
-    const token = sessionStorage.getItem('token');
+    // const token = sessionStorage.getItem('token');
 
     // Verifica si el token es nulo
-    if (!token) {
-      throw new Error('Token no encontrado en sessionStorage');
-    }
+    // if (!token) {
+    //   throw new Error('Token no encontrado en sessionStorage');
+    // }
     const formData = new FormData();
-    formData.append('message', JSON.stringify(message));
+    formData.append('note', JSON.stringify(message));
     if (file) {
       formData.append('file', file);
     }
     formData.append('transaccionId', transaccionId);
-    formData.append('token', token);
+    // formData.append('token', token);
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/${transaccionId}`, {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      // headers: {
+      //   Authorization: `Bearer ${token}`,
+      // },
       body: formData,
     });
 

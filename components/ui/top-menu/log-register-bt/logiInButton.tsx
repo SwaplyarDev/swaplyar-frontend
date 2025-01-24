@@ -13,9 +13,9 @@ function LogInButton() {
       <Link
         href="/auth/login-register"
         onClick={() => setView('login')}
-        className={`relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth dark:border-darkText dark:text-darkText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+        className={`relative h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth dark:border-darkText dark:text-darkText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
       >
-        <p className="font-bold">Iniciar sesión</p>
+        <p className="font-titleFont font-semibold">Iniciar sesión</p>
       </Link>
     </>
   );

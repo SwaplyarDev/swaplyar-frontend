@@ -5,6 +5,7 @@ import CaedAboutUs from '../ui/caed-about-us/caed-about-us';
 import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
 import Link from 'next/link';
 import { Apoyo, Transparencia, Simplicidad, Eficiencia, FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
+import { Apoyo, Transparencia, Simplicidad, Eficiencia, FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import './about.css';
@@ -130,9 +131,9 @@ const AboutUs = () => {
       </div>
       <section className="mt-10 text-center">
         <FlyerTrabajo imageSrc={FlyerGif}>
-          <span className="flex flex-col gap-2 text-base md:text-lg lg:text-xl">
-            <p>¿Nuevo en SwaplyAr?</p>
-            <p>
+          <span className="flex flex-col gap-2">
+            <p className="font-textFont text-[21px] font-extrabold">¿Nuevo en SwaplyAr?</p>
+            <p className="font-textFont text-[21px] font-extrabold">
               Conoce cómo funciona nuestra plataforma y comienza a transferir <br /> dinero de forma sencilla y segura.
             </p>
           </span>
@@ -145,7 +146,7 @@ const AboutUs = () => {
                 href={'/info/how-to-use'}
                 className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'}`}
               >
-                <h3>¡Empieza ahora!</h3>
+                <h3 className="font-titleFont font-semibold">¡Empieza ahora!</h3>
               </Link>
             </button>
           </div>

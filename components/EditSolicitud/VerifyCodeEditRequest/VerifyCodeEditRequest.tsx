@@ -125,51 +125,70 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
     }
   };
 
+  const handleInputKeyDown = (index: number, event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Backspace' && event.currentTarget.value === '') {
+      if (index > 0) {
+        const prevInput = document.getElementById(`code-${index - 1}`);
+        prevInput?.focus();
+      }
+    }
+  };
+
   return (
-    <div>
+    <>
       <div className="w-full">
-        <form onSubmit={handleSubmit(verifyCode)} className="flex w-auto flex-col items-center xl:items-end">
+        <form onSubmit={handleSubmit(verifyCode)} className="flex w-auto flex-col items-center">
           <label htmlFor="verificationCode" className="text-center text-xl text-lightText dark:text-darkText">
             Ingrese el código de 6 dígitos que recibiste por email
           </label>
-          <div className="flex w-full justify-center xl:justify-end">
-            <div className="my-5 flex h-[52px] w-[336px] justify-between gap-2 xs:gap-1">
+          <div className="flex w-full justify-center">
+            <div className="my-5 flex h-[52px] w-full max-w-[350px] justify-between gap-0 xs:max-w-[500px]">
               {[...Array(6)].map((_, index) => (
-                <div
-                  key={index}
-                  className={clsx(
-                    `w-[50px] rounded-full border-[0.5px] border-buttonsLigth p-[3px] dark:border-darkText xs:w-[57px] sm:w-full`,
-                  )}
-                >
-                  <input
-                    id={`code-${index}`}
-                    type="text"
-                    maxLength={1}
-                    disabled={isLocked || loading}
+                <>
+                  <div
+                    key={index}
                     className={clsx(
-                      'h-full w-full rounded-full border-0 text-center text-base focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem] lg:text-2xl',
-                      errors.verificationCode ? 'border-red-500' : '',
+                      isCodeCorrect === false ? 'border-errorColor' : 'border-buttonsLigth dark:border-darkText',
+                      `flex h-[51px] min-w-[51px] items-center justify-center rounded-full border-[2px] p-[3px] xs:w-[57px] sm:w-[51px]`,
                     )}
-                    {...register(`verificationCode.${index}`)}
-                    onChange={(event) => handleInputChange(index, event)}
-                  />
-                </div>
+                  >
+                    <input
+                      id={`code-${index}`}
+                      type="text"
+                      maxLength={1}
+                      disabled={isLocked || loading}
+                      className={clsx(
+                        'h-[45px] w-[45px] rounded-full border-0 text-center text-base text-buttonsLigth focus:outline-none dark:border-[0.5px] dark:bg-darkText dark:text-lightText sm:text-[2.5rem] lg:text-2xl',
+                        isCodeCorrect === false ? 'border-errorColor' : '',
+                      )}
+                      {...register(`verificationCode.${index}`)}
+                      onChange={(event) => handleInputChange(index, event)}
+                      onKeyDown={(event) => handleInputKeyDown(index, event)}
+                    />
+                  </div>
+                  {index < 5 && (
+                    <div className="mx-1 hidden min-h-full w-full items-center justify-center xs:flex">
+                      <div className="h-1 w-full flex-1 rounded-full bg-buttonsLigth dark:bg-darkText"></div>
+                    </div>
+                  )}
+                </>
               ))}
             </div>
           </div>
 
-          {errors.verificationCode && <p className="mb-5 text-sm text-red-500">• {errors.verificationCode.message}</p>}
+          {errors.verificationCode && <p className="mb-5 text-sm text-errorColor">{errors.verificationCode.message}</p>}
 
-          {isCodeCorrect === false && <p className="mt-2 text-sm text-red-500">Código incorrecto. Intenta de nuevo.</p>}
+          {isCodeCorrect === false && (
+            <p className="mt-2 text-sm text-errorColor">Código incorrecto. Intenta de nuevo.</p>
+          )}
 
           {loading && (
             <div id="loading" className="flex w-9/12 items-center justify-center gap-2">
-              <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
-              <span>Verificando...</span>
+              <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
             </div>
           )}
 
-          <div className="my-5 flex items-center justify-evenly gap-5 text-buttonsLigth dark:text-darkText">
+          <div className="my-5 flex flex-col-reverse items-center justify-evenly gap-5 text-buttonsLigth dark:text-darkText xs:flex-row">
             <button
               onClick={toggle}
               className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} group relative m-1 flex h-[42px] min-w-[150px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 font-bold text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent xs:min-w-[150px]`}
@@ -181,16 +200,16 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
             <button
               type="button"
               onClick={resendCode}
-              disabled={reLoading || timer > 0}
+              disabled={reLoading || timer > 0 || loading}
               className={`${
                 isDark
-                  ? reLoading || timer > 0
+                  ? reLoading || timer > 0 || loading
                     ? 'buttonSecondDarkDisabled'
                     : 'buttonSecondDark'
-                  : reLoading || timer > 0
+                  : reLoading || timer > 0 || loading
                     ? 'buttonSecondDisabled'
                     : 'buttonSecond'
-              } flex h-[42px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-darkText disabled:border-gray-400 disabled:bg-gray-400 dark:border-darkText dark:bg-darkText dark:text-lightText`}
+              } flex h-[42px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-darkText disabled:border-disabledButtonsLigth disabled:bg-disabledButtonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText disabled:dark:border-disabledButtonsDark disabled:dark:bg-disabledButtonsDark`}
             >
               {reLoading ? (
                 <div id="loading" className="flex items-center justify-center gap-2">
@@ -216,7 +235,7 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
         }}
         title="modal de tipos"
       />
-    </div>
+    </>
   );
 };
 

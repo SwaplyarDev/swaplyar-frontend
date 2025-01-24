@@ -8,108 +8,97 @@ import ConversionInstructions from '../ui/Conversion-Instructions/ConversionInst
 import { FlyerGif, RecargaPaypal, UsdArs } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
-import { useMargins } from '@/context/MarginProvider';
-import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
-import { useSession } from 'next-auth/react';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import LinkWithHover from '../ui/LinkWithHover/LinkWithHover';
 
-const mainStyles = {
-  main: 'py-10 relative', // Centrado tanto vertical como horizontalmente
-  infoBlocksContainer: 'flex flex-col items-center justify-center mt-8',
-  instructionsCalculatorContainer: 'relative flex space-x-4 items-center justify-center mt-8', // Añadimos `relative`
-};
-
 export default function HomePage() {
   const resetToDefault = useSystemStore((state) => state.resetToDefault);
-  const { margins } = useMargins();
-  const currentMargin = ResponsiveMarginHook(margins);
 
   useEffect(() => {
     resetToDefault();
   }, [resetToDefault]);
 
   const { isDark } = useDarkTheme();
-  const { data: session } = useSession();
 
   return (
-    <main className={mainStyles.main}>
+    <main className="relative py-10">
       <AnimatedBlurredCircles tope="top-[-375px]" />
-      <div className="flex flex-col items-center justify-center" style={{ margin: currentMargin }}>
-        <div className={mainStyles.instructionsCalculatorContainer}>
-          <ConversionInstructions />
-        </div>
-        <div className={mainStyles.infoBlocksContainer}>
-          <InfoBlock
-            title="Cambia USD o EUR de tu billetera virtual por la moneda de tu preferencia  con SwaplyAr"
-            imageSrc={UsdArs}
-            imageAlt="Cambia USD de PayPal por ARS"
-            contentNode={
-              <>
-                Realizá cambios de{' '}
-                <strong>
-                  <LinkWithHover href="#">USD</LinkWithHover>
-                </strong>
-                ,{' '}
-                <strong>
-                  <LinkWithHover href="#">EUR</LinkWithHover>
-                </strong>{' '}
-                o{' '}
-                <strong>
-                  <LinkWithHover href="#">USDT</LinkWithHover>
-                </strong>{' '}
-                de tu billetera virtual a la moneda que necesitas de manera rápida y eficiente. Ofrecemos las mejores
-                tasas del mercado para que siempre maximices tus ganancias. Si necesitás transferir dinero desde{' '}
-                <strong>
-                  <LinkWithHover href="#">PayPal</LinkWithHover>
-                </strong>
-                ,{' '}
-                <strong>
-                  <LinkWithHover href="#">Payoneer</LinkWithHover>
-                </strong>
-                ,{' '}
-                <strong>
-                  <LinkWithHover href="#">Wise</LinkWithHover>
-                </strong>
-                ,{' '}
-                <strong>
-                  <LinkWithHover href="#">Pix</LinkWithHover>
-                </strong>
-                ,{' '}
-                <strong>
-                  <LinkWithHover href="#">USDT</LinkWithHover>
-                </strong>
-                , o pesos Argentinos, lo depositamos directamente en tu cuenta bancaria local o internacional según
-                prefieras. Aumentá tus beneficios con{' '}
-                <strong>
-                  <LinkWithHover href="#">SwaplyAr plus Rewards</LinkWithHover>
-                </strong>
-                .
-              </>
-            }
-          />
-          <InfoBlock
-            title="Necesitás recargar tu cuenta de PayPal en USD o EUR, fácilmente en SwaplyAr tenés la solución"
-            imageSrc={RecargaPaypal}
-            imageAlt="Recarga PayPal"
-            contentNode={
-              <>
-                Es tan simple de colocar el monto que deseas en la calculadora en que{' '}
-                <strong>
-                  <LinkWithHover href="#">Billetera Virtual</LinkWithHover>
-                </strong>{' '}
-                deseas el dinero, rellenar la solicitud y realizar el pago correspondiente y en menos de 15 minutos
-                procederemos con la transacción de manera rápida y segura. También nos puedes escribir a nuestro{' '}
-                <strong>
-                  <LinkWithHover href="#">WhatsApp</LinkWithHover>
-                </strong>{' '}
-                y responderemos cualquier duda que tengas.
-              </>
-            }
-          />
+      <div className="w-full px-4 md:px-8 lg:px-4">
+        <div className="m-auto flex w-full max-w-screen-phone flex-col items-center justify-center xs-mini-phone2:max-w-screen-tablet md:max-w-screen-desktop">
+          <div className="mt-8 flex w-full flex-col items-center justify-center">
+            <ConversionInstructions />
+          </div>
+          <div className="relative mt-8 flex w-full items-center justify-center space-x-4">
+            <InfoBlock
+              title="Cambia USD o EUR de tu billetera virtual por la moneda de tu preferencia  con SwaplyAr"
+              imageSrc={UsdArs}
+              imageAlt="Cambia USD de PayPal por ARS"
+              contentNode={
+                <>
+                  Realizá cambios de{' '}
+                  <strong>
+                    <LinkWithHover href="#">USD</LinkWithHover>
+                  </strong>
+                  ,{' '}
+                  <strong>
+                    <LinkWithHover href="#">EUR</LinkWithHover>
+                  </strong>{' '}
+                  o{' '}
+                  <strong>
+                    <LinkWithHover href="#">USDT</LinkWithHover>
+                  </strong>{' '}
+                  de tu billetera virtual a la moneda que necesitas de manera rápida y eficiente. Ofrecemos las mejores
+                  tasas del mercado para que siempre maximices tus ganancias. Si necesitás transferir dinero desde{' '}
+                  <strong>
+                    <LinkWithHover href="#">PayPal</LinkWithHover>
+                  </strong>
+                  ,{' '}
+                  <strong>
+                    <LinkWithHover href="#">Payoneer</LinkWithHover>
+                  </strong>
+                  ,{' '}
+                  <strong>
+                    <LinkWithHover href="#">Wise</LinkWithHover>
+                  </strong>
+                  ,{' '}
+                  <strong>
+                    <LinkWithHover href="#">Pix</LinkWithHover>
+                  </strong>
+                  ,{' '}
+                  <strong>
+                    <LinkWithHover href="#">USDT</LinkWithHover>
+                  </strong>
+                  , o pesos Argentinos, lo depositamos directamente en tu cuenta bancaria local o internacional según
+                  prefieras. Aumentá tus beneficios con{' '}
+                  <strong>
+                    <LinkWithHover href="#">SwaplyAr plus Rewards</LinkWithHover>
+                  </strong>
+                  .
+                </>
+              }
+            />
+            <InfoBlock
+              title="Necesitás recargar tu cuenta de PayPal en USD o EUR, fácilmente en SwaplyAr tenés la solución"
+              imageSrc={RecargaPaypal}
+              imageAlt="Recarga PayPal"
+              contentNode={
+                <>
+                  Es tan simple de colocar el monto que deseas en la calculadora en que{' '}
+                  <strong>
+                    <LinkWithHover href="#">Billetera Virtual</LinkWithHover>
+                  </strong>{' '}
+                  deseas el dinero, rellenar la solicitud y realizar el pago correspondiente y en menos de 15 minutos
+                  procederemos con la transacción de manera rápida y segura. También nos puedes escribir a nuestro{' '}
+                  <strong>
+                    <LinkWithHover href="#">WhatsApp</LinkWithHover>
+                  </strong>{' '}
+                  y responderemos cualquier duda que tengas.
+                </>
+              }
+            />
+          </div>
         </div>
       </div>
-
       <div className="mt-10">
         <FlyerTrabajo imageSrc={FlyerGif}>
           <p>
