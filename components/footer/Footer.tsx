@@ -30,7 +30,7 @@ function FooterLink({ href, label, view }: FooterLinkProps) {
     <Link
       href={href}
       {...(view ? { onClick: () => setView(view) } : {})}
-      className={`rs-link w-fit text-base transition-all duration-300 ease-in-out hover:text-[17px] hover:text-buttonsLigth dark:text-buttonsExtraLigthDark dark:hover:text-buttonsLigthDark ${isActive ? 'relative font-bold text-buttonsLigth after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:bg-buttonsLigth after:content-[""] dark:text-buttonsLigthDark dark:after:bg-buttonsLigthDark' : 'text-buttonsExtraLigth'}`}
+      className={`rs-link w-fit font-textFont text-base transition-all duration-300 ease-in-out hover:text-[17px] hover:text-buttonsLigth dark:text-buttonsExtraLigthDark dark:hover:text-buttonsLigthDark ${isActive ? 'relative font-bold text-buttonsLigth after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:bg-buttonsLigth after:content-[""] dark:text-buttonsLigthDark dark:after:bg-buttonsLigthDark' : 'font-light text-buttonsExtraLigth'}`}
     >
       {label}
     </Link>
@@ -52,7 +52,7 @@ function Section({
         align === 'start' ? 'lg:items-start' : align === 'end' ? 'lg:items-end' : 'lg:items-center'
       }`}
     >
-      <p className="mb-2 text-xl font-bold">{title}</p>
+      <p className="mb-2 font-textFont text-lg">{title}</p>
       {links.map(({ href, label, view }) => (
         <FooterLink key={href} href={href} label={label} view={view} />
       ))}
@@ -93,7 +93,7 @@ function AccordionSection({ title, links }: { title: string; links: FooterLinkPr
 
 export default function Footer() {
   return (
-    <footer className="rs-wrapper-v4 mx-auto w-full max-w-[1204px] px-4 py-8 md:px-8 lg:px-4">
+    <footer className="rs-wrapper-v4 mx-auto w-full max-w-screen-phone px-4 py-8 dark:bg-lightText xs-mini-phone2:max-w-screen-tablet md:max-w-screen-desktop md:px-8 lg:px-4">
       {/* Desktop View */}
       <div className="one-info-footer hidden w-full flex-col items-center gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 lg2:flex">
         <Section title="Regístrate y Disfruta de Beneficios" links={footerLinks.registro} align="start" />
@@ -131,7 +131,7 @@ export default function Footer() {
           </Link>
         </section>
         <section className="flex items-center justify-center sm:w-1/3 sm:justify-end">
-          <p className="text-center text-xs text-gray-600 dark:text-gray-400">
+          <p className="text-center font-textFont text-xs font-thin text-gray-600 dark:text-gray-400">
             Todos los derechos reservados © SWAPLYAR | Group OA
           </p>
         </section>

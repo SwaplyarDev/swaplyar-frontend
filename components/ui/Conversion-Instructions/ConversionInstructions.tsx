@@ -2,8 +2,8 @@ import TransactionCalculator from '@/components/Transaction/TransactionCalculato
 
 const ConversionInstructions = () => {
   return (
-    <div className="lazyload-user-social flex w-full max-w-7xl flex-col-reverse items-center justify-between gap-4 space-y-4 py-8 md:flex-col lg-tablet:flex-row lg-tablet:space-x-4 lg-tablet:space-y-0">
-      <div className="steps flex max-w-xl flex-1 flex-col items-start pt-6 lg-tablet:pt-8">
+    <div className="lazyload-user-social flex w-full max-w-7xl flex-col-reverse items-center justify-between gap-4 space-y-4 py-8 sm:flex-col lg-tablet:flex-row lg-tablet:space-x-4 lg-tablet:space-y-0">
+      <div className="steps flex max-w-xl flex-1 flex-col items-start pt-6 md:pt-8">
         <h1 className="text-4xl">
           Recibí y envía dinero de cualquier billetera virtual y criptomoneda a tu cuenta bancaria
         </h1>

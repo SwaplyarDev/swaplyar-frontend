@@ -9,8 +9,8 @@ export const metadata = constructMetadata({
 
 export default function Home() {
   return (
-    <main>
+    <>
       <HomePage />
-    </main>
+    </>
   );
 }

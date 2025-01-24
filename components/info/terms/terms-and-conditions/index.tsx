@@ -11,7 +11,7 @@ const TermsAndConditions = () => {
   const currentMargin = ResponsiveMarginHook(margins);
 
   return (
-    <div className="relative flex flex-col items-center py-10">
+    <div className="relative flex flex-col items-center py-10 text-custom-grayD">
       <AnimatedBlurredCircles tope="top-[-1675px]" />
       <div style={{ margin: currentMargin }}>
         <div className="flex max-w-[1000px] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left">
@@ -30,8 +30,8 @@ const TermsAndConditions = () => {
         </div>
 
         <div className="my-10 w-full max-w-5xl">
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 text-gray-900 shadow-md dark:bg-graytyc dark:text-gray-100">
+          <div className="grid grid-cols-1 gap-5 dark:text-custom-whiteD sm:grid-cols-1">
+            <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-graytyc">
               <h2 className="mb-4 text-2xl md:text-3xl" id="primera-aceptacion-de-los-t&c">
                 Primera. Aceptación de los T&C:
               </h2>
@@ -44,7 +44,7 @@ const TermsAndConditions = () => {
               </p>
             </div>
 
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+            <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-graytyc">
               <h2 className="mb-4 text-2xl md:text-3xl" id="segunda-funcionamiento-del-sitio-y-servicios">
                 Segunda. Funcionamiento del Sitio y Servicios:
               </h2>
@@ -64,7 +64,7 @@ const TermsAndConditions = () => {
               </p>
             </div>
 
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+            <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-graytyc">
               <h2 className="mb-4 text-2xl md:text-3xl" id="segunda-funcionamiento-del-sitio-y-servicios">
                 Tercera. Capacidad Legal:
               </h2>
@@ -83,7 +83,7 @@ const TermsAndConditions = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+              <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-graytyc">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
                   Cuarta. Comisiones y Operativa:
                 </h2>
@@ -115,7 +115,7 @@ const TermsAndConditions = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+              <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-graytyc">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
                   Quinta. Procesos y Conflictos:
                 </h2>
@@ -162,7 +162,7 @@ const TermsAndConditions = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+              <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-graytyc">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
                   Sexta. Seguridad y Protección de Datos:
                 </h2>
@@ -200,7 +200,7 @@ const TermsAndConditions = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+              <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-graytyc">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
                   Séptima. Uso del Sitio y Prohibiciones:
                 </h2>
@@ -238,7 +238,7 @@ const TermsAndConditions = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+              <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-graytyc">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
                   Octava. Seguridad y Manejo de Información de Acceso:
                 </h2>
@@ -256,7 +256,7 @@ const TermsAndConditions = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+              <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-graytyc">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
                   Novena. Garantía a Clientes, Bonificaciones y Seguros:
                 </h2>
@@ -269,7 +269,7 @@ const TermsAndConditions = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+              <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-graytyc">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
                   Décima. Indemnidad:
                 </h2>
@@ -283,7 +283,7 @@ const TermsAndConditions = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+              <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-graytyc">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
                   Décima primera. Transferencia de Derechos y Uso Personal de la Cuenta:
                 </h2>
@@ -296,7 +296,7 @@ const TermsAndConditions = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+              <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-graytyc">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
                   Décima segunda. Contacto sobre Operaciones y Soporte Técnico:
                 </h2>
@@ -314,7 +314,7 @@ const TermsAndConditions = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+              <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-graytyc">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
                   Décima tercera. Datos Personales y Políticas de Privacidad:
                 </h2>
@@ -328,7 +328,7 @@ const TermsAndConditions = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+              <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-graytyc">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
                   Décima cuarta. Programa de Fidelización:
                 </h2>
@@ -342,13 +342,13 @@ const TermsAndConditions = () => {
               </div>
             </div>
 
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+            <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-graytyc">
               <h2 className="mb-4 text-2xl md:text-3xl" id="decima-cuarta-defensa-al-consumidor">
                 Décima quinta. Defensa al Consumidor:
               </h2>
               <p className="indent-6">
                 Dirección de Defensa al Consumidor de la Ciudad de Buenos Aires:{' '}
-                <strong>
+                <strong className="text-custom-whiteD-900">
                   <LinkWithHover href="https://buenosaires.gob.ar/defensaconsumidor/direccion-general">
                     Dirección General de Defensa y Protección al Consumidor.
                   </LinkWithHover>
@@ -356,7 +356,7 @@ const TermsAndConditions = () => {
               </p>
               <p className="indent-6">
                 Contacto de la Dirección Nacional de Protección de Datos Personales:{' '}
-                <strong>
+                <strong className="text-custom-whiteD-900">
                   Sarmiento 1118, 5° piso (C1041AAX), Tel: 4383-8510/12/13/15. AAIP Datos Personales -{' '}
                   <LinkWithHover href="https://www.argentina.gob.ar/aaip/datospersonales">
                     infodnpdp@just.gov.ar
