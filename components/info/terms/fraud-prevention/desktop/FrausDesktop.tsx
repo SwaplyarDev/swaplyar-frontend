@@ -30,7 +30,7 @@ const FraudDesktop: React.FC<FraudDesktopProps> = ({ selectedTextIndex, handleBu
           <section
             className={`duration-5 00 max-w-[518px] shrink-0 self-end transition-all ease-in-out ${
               isAnimating ? 'max-h-0 opacity-0' : 'max-h-[100%] opacity-100'
-            } flex flex-col gap-5 overflow-hidden rounded-md bg-[#EEEAE3] p-5 text-base dark:bg-[#4B4B4B]`}
+            } flex flex-col gap-5 overflow-hidden rounded-md bg-custom-whiteD-900 p-5 text-base dark:bg-custom-grayD-800`}
           >
             {mockTexts[selectedTextIndex]?.items.map((it, index) => (
               <div key={index} className="flex flex-col gap-1">

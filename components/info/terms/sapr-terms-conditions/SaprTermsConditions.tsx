@@ -15,7 +15,7 @@ const SaprTermsConditions = () => {
   const currentMargin = ResponsiveMarginHook(margins);
 
   return (
-    <div className="relative flex flex-col items-center py-10 text-custom-grayD">
+    <div className="relative flex flex-col items-center py-10 text-custom-grayD dark:text-custom-whiteD">
       <AnimatedBlurredCircles tope="top-[-1675px]" />
       <div style={{ margin: currentMargin }}>
         <div className="flex max-w-[1000px] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left">
@@ -29,7 +29,7 @@ const SaprTermsConditions = () => {
 
         <div className="my-10 w-full max-w-5xl">
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-1">
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc dark:text-gray-100">
+            <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-custom-grayD-800">
               <h2 className="mb-4 text-2xl md:text-3xl">1. Membresía</h2>
               <h3 className="indent-6 text-2xl md:text-2xl">a. Elegibilidad</h3>
               <p className="mb-4 ml-6">
@@ -53,7 +53,7 @@ const SaprTermsConditions = () => {
               </p>
             </div>
 
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+            <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-custom-grayD-800">
               <h2 className="mb-4 text-2xl md:text-3xl" id="segunda-funcionamiento-del-sitio-y-servicios">
                 2. Beneficios y Recompensas
               </h2>
@@ -90,7 +90,7 @@ const SaprTermsConditions = () => {
               </p>
             </div>
 
-            <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+            <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-custom-grayD-800">
               <h2 className="mb-4 text-2xl md:text-3xl" id="segunda-funcionamiento-del-sitio-y-servicios">
                 3. Comunicaciones de Marketing
               </h2>
@@ -107,7 +107,7 @@ const SaprTermsConditions = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+              <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-custom-grayD-800">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
                   4. Privacidad
                 </h2>
@@ -120,7 +120,7 @@ const SaprTermsConditions = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+              <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-custom-grayD-800">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
                   5. Contacto con SwaplyAr
                 </h2>
@@ -143,7 +143,7 @@ const SaprTermsConditions = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+              <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-custom-grayD-800">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
                   6. Marcas Registradas
                 </h2>
@@ -156,7 +156,7 @@ const SaprTermsConditions = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+              <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-custom-grayD-800">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
                   7. Sujeto a Cambios o Cancelación
                 </h2>
@@ -172,7 +172,7 @@ const SaprTermsConditions = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+              <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-custom-grayD-800">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
                   8. Cesión
                 </h2>
@@ -184,7 +184,7 @@ const SaprTermsConditions = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-              <div className="rounded-lg bg-gray-100 p-6 shadow-md dark:bg-graytyc">
+              <div className="rounded-lg bg-custom-whiteD-900 p-6 shadow-md dark:bg-custom-grayD-800">
                 <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
                   9. Ley Aplicable
                 </h2>

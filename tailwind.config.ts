@@ -111,12 +111,12 @@ const config: Config = {
         'custom-grayD-500': 'rgba(150, 150, 150, 1)',
         'custom-grayD-600': 'rgba(s125, 125, 125, 1)',
         'custom-grayD-700': 'rgba(100, 100, 100, 1)',
-        'custom-grayD-800': 'rgba(75, 75, 75, 1)',
+        'custom-grayD-800': 'rgba(75, 75, 75, 1)', //#4B4B4B
         'custom-grayD-900': 'rgba(50, 50, 50, 1)',
         'custom-grayD-1000': 'rgba(37, 37, 38, 1)',
 
         //whiteDark
-        'custom-whiteD': 'rgba(235, 231, 224, 1)',
+        'custom-whiteD': 'rgba(235, 231, 224, 1)', //#EBE7E0
         'custom-whiteD-100': 'rgba(255, 255, 251, 1)',
         'custom-whiteD-200': 'rgba(255, 255, 248, 1)',
         'custom-whiteD-300': 'rgba(255, 252, 245, 1)',
