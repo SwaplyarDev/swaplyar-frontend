@@ -6,8 +6,8 @@ import { RequestSearch } from '@/types/data';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import useStatusManager from '@/hooks/useStatusManager';
-import Swal from 'sweetalert2';
 import { searchRequest } from '@/actions/request/action.search-request/action.searchRecuest';
+import { showStatusAlert } from './swalConfig';
 
 const SearchRequest = () => {
   const {
@@ -44,10 +44,10 @@ const SearchRequest = () => {
   const handleSearchRequest = (statuses: Array<keyof typeof statusMessages>) => {
     const statusMessages = {
       pending: 'Solicitud Enviada',
-      received: 'Pago en Revisión',
+      received: 'Pago en Revisión ',
       ended: 'Solicitud Finalizada con Éxito',
       cancelation: 'Solicitud Cancelada',
-      modified: 'Reembolso Solicitado',
+      modified: 'Solicitud Modificada',
       refund: 'Dinero Reembolsado con Éxito',
       discrepancy: 'Discrepancia en la Solicitud',
     };
@@ -55,21 +55,7 @@ const SearchRequest = () => {
     // Crea una lista de mensajes con los estados recibidos
     const messages = statuses.map((status) => statusMessages[status]);
 
-    Swal.fire({
-      html: `<ul>
-        ${messages.map((msg) => `<li>${msg}</li>`).join('')}
-      </ul>`, // Mantén el código de Swal como está
-      showConfirmButton: false,
-      showCancelButton: false,
-      background: isDark ? 'rgb(69 69 69)' : '#ffffff',
-      color: isDark ? '#ffffff' : '#000000',
-      didRender: () => {
-        /* Código de renderizado del botón "Volver" */
-      },
-      didOpen: () => {
-        /* Código de apertura de cancel button */
-      },
-    });
+    showStatusAlert(messages, isDark);
   };
 
   const onSubmit: SubmitHandler<RequestSearch> = async (data) => {
