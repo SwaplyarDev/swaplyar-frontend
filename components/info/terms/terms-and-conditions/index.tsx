@@ -15,7 +15,9 @@ const TermsAndConditions = () => {
       <AnimatedBlurredCircles tope="top-[-1675px]" />
       <div className="flex flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left">
         <div className="flex w-full max-w-[600px] items-center justify-center p-0">
-          <h1 className="mb-6 text-3xl md:text-4xl">Términos y Condiciones de Uso y Navegación del Sitio SwaplyAr</h1>
+          <h1 className="mb-6 text-3xl dark:text-darkText md:text-4xl">
+            Términos y Condiciones de Uso y Navegación del Sitio SwaplyAr
+          </h1>
         </div>
         <div className="flex w-full max-w-[300px] flex-shrink-0 items-center justify-center">
           <Image className="hero-img" src={TerminosCondiciones} alt="terminos-y-condiciones" width={300} height={300} />
@@ -341,7 +343,7 @@ const TermsAndConditions = () => {
             </h2>
             <p className="indent-6">
               Dirección de Defensa al Consumidor de la Ciudad de Buenos Aires:{' '}
-              <strong className="text-custom-grayD">
+              <strong className="text-custom-grayD dark:text-darkText">
                 <LinkWithHover href="https://buenosaires.gob.ar/defensaconsumidor/direccion-general">
                   Dirección General de Defensa y Protección al Consumidor.
                 </LinkWithHover>
@@ -349,7 +351,7 @@ const TermsAndConditions = () => {
             </p>
             <p className="indent-6">
               Contacto de la Dirección Nacional de Protección de Datos Personales:{' '}
-              <strong className="text-custom-grayD">
+              <strong className="text-custom-grayD dark:text-darkText">
                 Sarmiento 1118, 5° piso (C1041AAX), Tel: 4383-8510/12/13/15. AAIP Datos Personales -{' '}
                 <LinkWithHover href="https://www.argentina.gob.ar/aaip/datospersonales">
                   infodnpdp@just.gov.ar
