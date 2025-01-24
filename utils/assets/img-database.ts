@@ -144,6 +144,9 @@ export const Error_404_dark = '/images/dark-404.png';
 export const Post1_404 = '/images/post1-404.png';
 export const Post2_404 = '/images/post2-404.png';
 
+/**Mantenimiento**/
+export const Mantenimiento = '/images/WebsiteDesignPrototype.png';
+
 /**chronometer**/
 export const Reloj = '/images/reloj.png';
 export const Enchufe_dark = '/images/enchufe_dark.png';
