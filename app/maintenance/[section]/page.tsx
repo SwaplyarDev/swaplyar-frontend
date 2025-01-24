@@ -9,9 +9,9 @@ interface MaintenanceProps {
 
 const page = ({ params }: MaintenanceProps) => {
   return (
-    <>
+    <main>
       <MaintenancePage params={params} />
-    </>
+    </main>
   );
 };
 
