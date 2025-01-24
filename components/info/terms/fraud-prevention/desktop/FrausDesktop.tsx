@@ -13,7 +13,7 @@ const FraudDesktop: React.FC<FraudDesktopProps> = ({ selectedTextIndex, handleBu
         {mockTexts.map((mock, key) => (
           <button
             key={key}
-            className={`flex flex-row gap-2 ${selectedTextIndex === key ? 'scale-105 text-blue-800 decoration-blue-800 dark:text-[#97938d] dark:decoration-[#97938d]' : 'dark:text-[#EBE7E0] dark:decoration-[#EBE7E0]'} transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:hover:decoration-[#97938d]`}
+            className={`flex flex-row gap-2 ${selectedTextIndex === key ? 'scale-105 text-blue-800 decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0]' : 'dark:text-[#EBE7E0] dark:decoration-[#EBE7E0]'} transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:hover:decoration-[#97938d]`}
             onClick={() => handleButtonClick(key)}
           >
             <h3>{selectedTextIndex === key ? '|  ' : null}</h3>
@@ -34,12 +34,12 @@ const FraudDesktop: React.FC<FraudDesktopProps> = ({ selectedTextIndex, handleBu
           >
             {mockTexts[selectedTextIndex]?.items.map((it, index) => (
               <div key={index} className="flex flex-col gap-1">
-                <p className="text-lg font-medium text-[#012A8E] dark:text-[#97938d]">{it.title}</p>
+                <p className="text-lg font-medium text-[#012A8E] dark:text-[#EBE7E0]">{it.title}</p>
                 <p>{it.text}</p>
                 {it.links?.map((link, index) => (
                   <a
                     key={index}
-                    className="text-[#012A8E] underline decoration-[#012A8E] transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0] dark:hover:decoration-[#97938d]"
+                    className="text-[#012A8E] underline decoration-[#012A8E] transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0] dark:hover:decoration-[#EBE7E0]"
                     href={link.link}
                   >
                     {link.text}

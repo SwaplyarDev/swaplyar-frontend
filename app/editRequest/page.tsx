@@ -1,13 +1,12 @@
 import EditSoli from '@/components/EditSolicitud/EditSoli';
 import NewSwaply from '@/components/NewSwaplyAR/newSwaply';
+import { constructMetadata } from '@/components/seo/SeoComp';
 
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
+export const metadata = constructMetadata({
   title: 'Envía tu Solicitud a Atención al Cliente | SwaplyAr',
   description:
     'Envía tu solicitud con texto e imágenes para que nuestro equipo de atención al cliente evalúe su aceptación. Proceso rápido y sencillo en SwaplyAr',
-};
+});
 
 const editRequestPage: React.FC = () => {
   return (

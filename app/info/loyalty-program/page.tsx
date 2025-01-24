@@ -1,11 +1,11 @@
 import LoyaltyProgram from '@/components/info/loyaltyProgram/LoyaltyProgram';
-import { Metadata } from 'next';
+import { constructMetadata } from '@/components/seo/SeoComp';
 
-export const metadata: Metadata = {
+export const metadata = constructMetadata({
   title: 'Swaplyar Plus Rewards | Ganá Beneficios por cada transacción',
   description:
     'Únete al programa de fidelización de SwaplyAr y disfruta de descuentos exclusivos, recompensas acumulables y beneficios únicos en cada transacción. Únete al Programa de Fidelización de Swaplyar y obtén recompensas por cada transacción. Descubre cómo ser parte de este beneficio exclusivo.',
-};
+});
 
 const page = () => {
   return (

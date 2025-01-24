@@ -1,13 +1,13 @@
 import Questions from '@/components/info/questions/Questions';
 import React from 'react';
 
-import { Metadata } from 'next';
+import { constructMetadata } from '@/components/seo/SeoComp';
 
-export const metadata: Metadata = {
+export const metadata = constructMetadata({
   title: 'Preguntas Frecuentes | Resuelve tus Dudas de SwaplyAr',
   description:
     'Encuentra respuestas a las preguntas más comunes sobre SwaplyAr. Aprende sobre nuestras transacciones, seguridad, y servicios adicionales.',
-};
+});
 
 const page = () => {
   return (

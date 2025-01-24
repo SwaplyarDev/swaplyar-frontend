@@ -1,12 +1,13 @@
 // /app/request/page.tsx
 import StepperContainer from '@/components/request/form/StepperContainer';
-import { Metadata } from 'next';
 
-export const metadata: Metadata = {
+import { constructMetadata } from '@/components/seo/SeoComp';
+
+export const metadata = constructMetadata({
   title: 'Formulario de Solicitud de Envío de Dinero | SwaplyAr',
   description:
     'Completa el formulario de envío de dinero con datos del remitente, destinatario y monto. SwaplyAr lo hace fácil, seguro y rápido.',
-};
+});
 
 const RequestPage = () => {
   return (

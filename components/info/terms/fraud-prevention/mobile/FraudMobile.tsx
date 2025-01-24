@@ -13,9 +13,9 @@ const FraudMobile: React.FC<FraudMobileProps> = ({ selectedTextIndex, handleButt
       <button
         className={`flex select-none flex-row gap-2 text-xl ${
           selectedTextIndex === key
-            ? 'scale-105 text-blue-800 decoration-blue-800 dark:text-[#97938d] dark:decoration-[#97938d]'
+            ? 'scale-105 text-blue-800 decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0]'
             : 'dark:text-[#EBE7E0] dark:decoration-[#EBE7E0]'
-        } transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:hover:decoration-[#97938d]`}
+        } transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:hover:decoration-[#EBE7E0]`}
         onClick={() => handleButtonClick(key)}
       >
         <h3>{selectedTextIndex === key ? '|  ' : null}</h3>
@@ -43,12 +43,12 @@ const FraudMobile: React.FC<FraudMobileProps> = ({ selectedTextIndex, handleButt
         >
           {item.items.map((it, index) => (
             <div key={index} className="flex flex-col gap-1">
-              <h3 className="text-lg font-medium text-[#012A8E] dark:text-[#97938d]">{it.title}</h3>
+              <h3 className="text-lg font-medium text-[#012A8E] dark:text-[#EBE7E0]">{it.title}</h3>
               <p>{it.text}</p>
               {it.links?.map((link, index) => (
                 <a
                   key={index}
-                  className="text-[#012A8E] underline decoration-[#012A8E] transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0] dark:hover:decoration-[#97938d]"
+                  className="text-[#012A8E] underline decoration-[#012A8E] transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0] dark:hover:decoration-[#EBE7E0]"
                   href={link.link}
                 >
                   {link.text}
