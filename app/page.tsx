@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <>
+    <main className="relative py-10">
       <HomePage />
-    </>
+    </main>
   );
 }

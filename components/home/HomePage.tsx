@@ -21,16 +21,16 @@ export default function HomePage() {
   const { isDark } = useDarkTheme();
 
   return (
-    <main className="relative py-10">
+    <>
       <AnimatedBlurredCircles tope="top-[-375px]" />
-      <div className="w-full px-4 md:px-8 lg:px-4">
-        <div className="m-auto flex w-full max-w-screen-phone flex-col items-center justify-center xs-mini-phone2:max-w-screen-tablet md:max-w-screen-desktop">
-          <div className="mt-8 flex w-full flex-col items-center justify-center">
+      <section className="w-full px-4 md:px-8 lg:px-4">
+        <article className="m-auto flex w-full max-w-screen-phone flex-col items-center justify-center xs-mini-phone2:max-w-screen-tablet md:max-w-screen-desktop">
+          <div className="mt-0 flex w-full flex-col items-center justify-center lg:mt-8">
             <ConversionInstructions />
           </div>
-          <div className="relative mt-8 flex w-full items-center justify-center space-x-4">
+          <div className="relative mt-8 flex w-full max-w-[850px] flex-col items-center justify-center space-x-4">
             <InfoBlock
-              title="Cambia USD o EUR de tu billetera virtual por la moneda de tu preferencia  con SwaplyAr"
+              title="Podes cambiar USD o EUR de tu billetera virtual por la moneda de tu preferencia"
               imageSrc={UsdArs}
               imageAlt="Cambia USD de PayPal por ARS"
               contentNode={
@@ -78,28 +78,38 @@ export default function HomePage() {
               }
             />
             <InfoBlock
-              title="Necesitás recargar tu cuenta de PayPal en USD o EUR, fácilmente en SwaplyAr tenés la solución"
+              title="Te ayudamos a recargar tu cuenta de Paypal en USD o EUR"
               imageSrc={RecargaPaypal}
               imageAlt="Recarga PayPal"
               contentNode={
                 <>
-                  Es tan simple de colocar el monto que deseas en la calculadora en que{' '}
-                  <strong>
-                    <LinkWithHover href="#">Billetera Virtual</LinkWithHover>
-                  </strong>{' '}
-                  deseas el dinero, rellenar la solicitud y realizar el pago correspondiente y en menos de 15 minutos
-                  procederemos con la transacción de manera rápida y segura. También nos puedes escribir a nuestro{' '}
-                  <strong>
-                    <LinkWithHover href="#">WhatsApp</LinkWithHover>
-                  </strong>{' '}
-                  y responderemos cualquier duda que tengas.
+                  Es tan simple que lo podes hacer en tres pasos. Colocas el monto que deseas en la calculadora,
+                  seleccionas en que Billetera Virtual deseas el dinero, rellenas la solicitud, realizas el pago
+                  correspondiente y en menos de 15 minutos procederemos con la transacción de manera rápida y segura.
+                  También nos podes escribir a nuestro WhatsApp y responderemos cualquier duda que tengas a la brevedad.
+                </>
+              }
+            />
+            <InfoBlock
+              title="¿Buscas un intercambio seguro y rápido para tu dinero?"
+              imageSrc={RecargaPaypal}
+              imageAlt="Recarga PayPal"
+              contentNode={
+                <>
+                  En SwaplyAr, ayudamos a freelancers y trabajadores remotos a cambiar sus pagos desde su billetera
+                  virtual y/o criptomonedas de forma rápida, segura y con un tipo de cambio competitivo, a su moneda
+                  local.
+                  <br /> <br /> Sabemos lo importante que es recibir tu dinero sin complicaciones, por eso ofrecemos un
+                  servicio transparente y confiable, eliminando los riesgos de estafas y demoras en transferencias a tu
+                  banco local.
+                  <br /> <br /> Tu tranquilidad y seguridad son nuestra prioridad.
                 </>
               }
             />
           </div>
-        </div>
-      </div>
-      <div className="mt-10">
+        </article>
+      </section>
+      <section className="mt-10">
         <FlyerTrabajo imageSrc={FlyerGif}>
           <p>
             ¿Nuevo en SwaplyAr? <br /> Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma
@@ -119,7 +129,7 @@ export default function HomePage() {
             </button>
           </div>
         </FlyerTrabajo>
-      </div>
-    </main>
+      </section>
+    </>
   );
 }
