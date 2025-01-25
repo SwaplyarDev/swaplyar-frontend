@@ -57,11 +57,21 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolea
         }}
       >
         <ExpandMore
-          className={` ${props.expanded || props.isDark ? 'text-white' : 'text-custom-blue-300'} group-hover:text-white`}
+          /*className={` ${props.expanded || props.isDark ? 'text-white' : 'text-custom-blue-300'} group-hover:custom-grayD-500`}*/
+
+          className={`${
+            props.isDark
+              ? props.expanded
+                ? 'text-custom-whiteD'
+                : 'text-custom-grayD-500'
+              : props.expanded
+                ? 'text-custom-whiteD'
+                : 'text-custom-blue-300'
+          } ${props.isDark ? 'group-hover:text-custom-whiteD' : 'group-hover:text-custom-whiteD'} `}
           sx={{
             fontSize: '2rem',
             transition: 'color 0.3s ease',
-            color: 'rgb(244,176,254)',
+
             borderRadius: '100%',
           }}
         />
