@@ -5,6 +5,7 @@ import Image from 'next/image';
 import './CaedAboutUs.css';
 import SwipeHands from '../animations/SwipeHands';
 import clsx from 'clsx';
+import { useSize } from '@/hooks/useSize';
 
 interface CardData {
   src: string;
@@ -23,6 +24,7 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
   const [showSwipeHands, setShowSwipeHands] = useState(false);
   const sectionRef = useRef(null);
   const [activeCards, setActiveCards] = useState<{ [key: number]: boolean }>({});
+  const { size } = useSize();
 
   const handleToggle = (index: number) => {
     setActiveCards((prev) => ({
@@ -40,13 +42,6 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
   };
 
   const swipeHandlersMobile = useSwipeable({
-    onSwipedLeft: handleNext,
-    onSwipedRight: handlePrev,
-    preventScrollOnSwipe: true,
-    trackMouse: true,
-  });
-
-  const swipeHandlersDesktop = useSwipeable({
     onSwipedLeft: handleNext,
     onSwipedRight: handlePrev,
     preventScrollOnSwipe: true,
@@ -77,107 +72,82 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
   }, []);
 
   return (
-    <div ref={sectionRef} className="relative h-full w-full">
+    <div ref={sectionRef} className="relative flex h-full w-full justify-center overflow-hidden">
       {showSwipeHands && (
         <div className="block md:hidden">
           <SwipeHands />
         </div>
       )}
 
-      <div {...swipeHandlersMobile} className="relative block h-64 w-full overflow-hidden md:hidden">
-        <div className="relative flex h-full w-full items-center justify-center">
-          {cardsData.map((card, index) => {
-            const isCurrent = index === currentIndex;
-            const isNext = index === (currentIndex + 1) % cardsData.length;
-            const isPrev = index === (currentIndex - 1 + cardsData.length) % cardsData.length;
+      <section
+        {...swipeHandlersMobile}
+        className="relative flex h-[272px] items-center justify-center md:h-[312px] md:min-w-[680px] lg:h-[272px] lg:w-full lg:justify-between"
+      >
+        {cardsData.map((card: CardData, index: number) => {
+          const isCurrent = index === currentIndex;
+          const isSecondCurrent = index === (currentIndex + 1) % cardsData.length && size >= 768;
+          const isNext = index === (currentIndex + 1) % cardsData.length;
+          const isPrev = index === (currentIndex - 1 + cardsData.length) % cardsData.length;
 
-            const isClick = !!activeCards[index];
+          const isBack1 = index === (currentIndex - 1 + cardsData.length) % cardsData.length;
+          const isBack2 = index === (currentIndex - 2 + cardsData.length) % cardsData.length;
 
-            return (
+          const isClick = !!activeCards[index];
+          return (
+            <article
+              key={index}
+              className={`linear absolute cursor-pointer transition-all duration-300 ${isCurrent || isSecondCurrent ? 'z-20 scale-100 lg:z-0' : 'z-10 scale-90 blur-sm md:scale-100 lg:z-0 lg:blur-none'} ${isPrev ? '-translate-x-20 md:-translate-x-0' : ''} ${isNext ? 'translate-x-20 md:translate-x-0' : ''} ${
+                isCurrent
+                  ? 'md:absolute md:left-[18%] md:-translate-y-[10%] lg:translate-y-0'
+                  : isSecondCurrent
+                    ? 'md:right-[18%] md:-translate-y-[10%] lg:translate-y-0'
+                    : ''
+              } ${isBack1 ? 'md:left-0' : isBack2 ? 'md:right-0' : ''} lg:static`}
+              style={{
+                transition: 'transform 0.3s linear, left 0.3s linear, right 0.3s linear',
+              }}
+            >
               <div
-                key={index}
-                className={`absolute transition-transform duration-700 ease-in-out ${isCurrent ? 'z-20 scale-100' : 'z-10 scale-90 blur-sm'} ${isPrev ? '-translate-x-20' : ''} ${isNext ? 'translate-x-20' : ''}`}
+                className={clsx(isClick ? 'card-active relative h-64 w-52' : 'relative h-64 w-52')}
+                onClick={() => handleToggle(index)}
               >
-                <div
-                  className={clsx(isClick ? 'card-active relative h-64 w-52' : 'relative h-64 w-52')}
-                  onClick={() => handleToggle(index)}
-                >
-                  <div className="card-inner h-full w-full duration-700">
-                    <div className="card-front backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-2xl bg-white text-black shadow-lg dark:bg-gray-800 dark:text-white">
-                      <Image
-                        src={card.src}
-                        alt={card.alt}
-                        layout="fill"
-                        objectFit="cover"
-                        className="rounded-2xl shadow-md shadow-black/50"
-                      />
-                      <Image
-                        src="/images/rotate-card-icon.svg"
-                        alt="Icono de rotacion de la card"
-                        width={25}
-                        height={25}
-                        className="absolute right-2 top-2"
-                      />
-                      <h3 className="absolute bottom-0 mt-2 w-full rounded-bl-2xl rounded-br-2xl bg-black p-2 text-xl text-white">
-                        {card.title}
-                      </h3>
-                    </div>
-                    <div className="card-back backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-lg bg-dark-blue p-4 text-white shadow-custom-black dark:bg-gray-800 dark:text-white">
-                      <h3 className="text-xl">{card.backTitle}</h3>
-                      <p className="mt-2">{card.backText}</p>
-                    </div>
+                <div className="card-inner h-full w-full duration-700">
+                  <div className="card-front backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-2xl bg-white text-black shadow-lg dark:bg-gray-800 dark:text-white">
+                    <Image
+                      src={card.src}
+                      alt={card.alt}
+                      layout="fill"
+                      objectFit="cover"
+                      className="rounded-2xl shadow-md shadow-black/50 lg:shadow-[#012A8E80]"
+                    />
+                    <Image
+                      src="/images/rotate-card-icon.svg"
+                      alt="Icono de rotacion de la card"
+                      width={25}
+                      height={25}
+                      className="absolute right-2 top-2"
+                    />
+                    <h3 className="font-vold absolute bottom-0 mt-2 w-full rounded-bl-2xl rounded-br-2xl bg-[#323232] p-[10px] font-textFont text-darkText">
+                      {card.title}
+                    </h3>
+                  </div>
+                  <div className="card-back backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-lg bg-[#000c29] p-4 text-darkText shadow-custom-black dark:bg-gray-800 dark:text-darkText">
+                    <Image
+                      src="/images/rotate-card-icon.svg"
+                      alt="Icono de rotacion de la card"
+                      width={25}
+                      height={25}
+                      className="absolute right-2 top-2"
+                    />
+                    <h3 className="self-start font-textFont font-bold">{card.backTitle}</h3>
+                    <p className="mt-2 font-textFont font-light">{card.backText}</p>
                   </div>
                 </div>
               </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <div
-        {...swipeHandlersDesktop}
-        className="cards-container relative hidden h-[300px] w-full items-center justify-between md:flex md:items-end"
-      >
-        {cardsData.map((card, index) => {
-          const isFrontLeft = index === currentIndex;
-          const isFrontRight = index === (currentIndex + 1) % cardsData.length;
-          const isPrev = index === (currentIndex - 1 + cardsData.length) % cardsData.length;
-
-          return (
-            <div
-              key={index}
-              className={`card h-64 w-52 lg2:static ${(isFrontLeft || isFrontRight) && `absolute top-0 z-20`}`}
-              style={isFrontLeft ? { left: `20%` } : isFrontRight ? { right: `20%` } : isPrev ? { left: '-20%' } : {}}
-            >
-              <div className="card-inner transform-style preserve-3d h-full w-full transition-transform duration-700">
-                <div className="card-front backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-2xl bg-white text-black shadow-lg dark:bg-gray-800 dark:text-white">
-                  <Image
-                    src={card.src}
-                    alt={card.alt}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-2xl shadow-md shadow-black/50"
-                  />
-                  <Image
-                    src="/images/rotate-card-icon.svg"
-                    alt="Icono de rotacion de la card"
-                    width={25}
-                    height={25}
-                    className="absolute right-2 top-2"
-                  />
-                  <h3 className="absolute bottom-0 mt-2 w-full rounded-bl-2xl rounded-br-2xl bg-black p-2 font-textFont text-xl font-bold text-white">
-                    {card.title}
-                  </h3>
-                </div>
-                <div className="card-back backface-hidden rotate-y-180 absolute flex h-full w-full transform flex-col items-center justify-center rounded-2xl bg-dark-blue p-4 text-white shadow-custom-black dark:bg-gray-800 dark:text-white">
-                  <h3 className="text-xl">{card.backTitle}</h3>
-                  <p className="mt-2">{card.backText}</p>
-                </div>
-              </div>
-            </div>
+            </article>
           );
         })}
-      </div>
+      </section>
     </div>
   );
 };
