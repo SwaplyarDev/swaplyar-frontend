@@ -1,39 +1,24 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image'; // Importar Image de Next.js
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 import { Rewards1, Rewards2, Rewards3, CentroDeAyuda } from '@/utils/assets/imgDatabaseCloudinary';
 
 export default function LoyaltyProgram() {
-  const [isTablet, setIsTablet] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsTablet(window.innerWidth <= 768); // Considera como "tablet" si el ancho es menor o igual a 768px
-    };
-
-    // Ejecutar al cargar y cada vez que la ventana cambie de tamaño
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   return (
     <>
       <main className="relative py-6">
         <AnimatedBlurredCircles tope="top-[20px]" />
 
-        <h1 className="mb-5 mt-[-10px] py-4 text-center text-[45px] font-[500] leading-[1.1] text-[#252526] sm:text-[30px]">
+        <h1 className="text-dark dark:text-light mb-5 mt-[-10px] py-4 text-center text-[40px] font-[500] leading-[1.1] sm:text-[30px]">
           <span>SwaplyAr Plus Rewards™</span>
           <br />
           <span>premia tu fidelidad</span>
         </h1>
 
-        <h2 className="mx-auto mb-5 mt-5 w-full leading-relaxed sm:w-[90%] lg:w-[55%]">
-          <span className="text-lg font-bold">Cada transacción es una oportunidad de obtener más.</span>
+        <h2 className="mx-auto mb-5 mt-5 w-full whitespace-normal px-4 text-[20px] leading-tight sm:max-w-[90%] sm:px-6 lg:max-w-[55%] lg:px-8">
+          <span className="mr-2 text-lg font-bold">Cada transacción es una oportunidad de obtener más.</span>
           <span className="text-base font-normal">
             Únete a SwaplyAr Plus Rewards y disfruta de beneficios exclusivos cada vez que realices un intercambio.
           </span>
@@ -41,12 +26,12 @@ export default function LoyaltyProgram() {
 
         <button
           id="submit-25456"
-          className="mx-auto my-10 block h-[48px] w-[200px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText sm:w-[250px]"
+          className="mx-auto my-10 block h-[48px] w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText sm:w-[300px]"
         >
           ¡Únete ya!
         </button>
 
-        <p className="mx-auto mb-0 mt-14 w-full leading-relaxed sm:w-[90%] lg:w-[592px]">
+        <p className="mx-auto mb-0 mt-14 w-full max-w-[592px] px-4 text-left leading-relaxed">
           ¿Aún no formas parte?{' '}
           <a href="http://localhost:3000/info/loyalty-program" className="underline">
             Crea
@@ -59,32 +44,15 @@ export default function LoyaltyProgram() {
           comienza a disfrutar las ventajas!
         </p>
 
-        <section
-          className="mx-auto mb-8 max-w-[1200px] py-10 pb-16"
-          style={{
-            display: 'flex',
-            flexDirection: isTablet ? 'column' : 'row', // Cambia a columna en tablet
-            gap: '1rem',
-            flexWrap: 'wrap',
-          }}
-        >
+        <section className="mx-auto mb-0 flex max-w-[1200px] flex-wrap justify-center gap-4 py-10 pb-16 md:mb-4">
           {/* Primer bloque */}
-          <div
-            className="flex w-full flex-col items-center px-6 py-4 text-left sm:w-full lg:w-[320px] xl:w-[340px]"
-            style={{
-              display: 'flex',
-              flexDirection: isTablet ? 'row' : 'column', // En tablet, coloca la imagen y el texto en fila
-              alignItems: isTablet ? 'center' : 'flex-start',
-            }}
-          >
-            <img
+          <div className="flex w-full flex-col items-center px-4 py-4 text-left sm:flex-col md:flex-row lg:w-[320px] lg:flex-col xl:w-[340px]">
+            <Image
               src={Rewards1}
               alt="paso 1 de como cambiar tu dinero en SwaplyAr"
               className="mb-4 w-full max-w-[300px] object-contain"
-              style={{
-                marginBottom: isTablet ? '0' : '1rem', // Ajusta el margen en modo tablet
-                marginRight: isTablet ? '1rem' : '0', // Espaciado entre imagen y texto en tablet
-              }}
+              width={300}
+              height={200}
             />
             <div>
               <h3 className="mb-0 mt-0 text-center text-lg font-bold">Regalo de Bienvenida</h3>
@@ -96,22 +64,13 @@ export default function LoyaltyProgram() {
           </div>
 
           {/* Segundo bloque */}
-          <div
-            className="flex w-full flex-col items-center px-6 py-4 text-left sm:w-full lg:w-[320px] xl:w-[340px]"
-            style={{
-              display: 'flex',
-              flexDirection: isTablet ? 'row-reverse' : 'column',
-              alignItems: isTablet ? 'center' : 'flex-start',
-            }}
-          >
-            <img
+          <div className="flex w-full flex-col items-center px-4 py-4 text-left sm:flex-col md:flex-row-reverse lg:w-[320px] lg:flex-col xl:w-[340px]">
+            <Image
               src={Rewards2}
               alt="paso 2 de como cambiar tu dinero en SwaplyAr"
               className="mb-4 w-full max-w-[300px] object-contain"
-              style={{
-                marginBottom: isTablet ? '0' : '1rem',
-                marginRight: isTablet ? '1rem' : '0',
-              }}
+              width={300}
+              height={200}
             />
             <div>
               <h3 className="mb-0 mt-0 text-center text-lg font-bold">Los premios nunca terminan</h3>
@@ -123,25 +82,16 @@ export default function LoyaltyProgram() {
           </div>
 
           {/* Tercer bloque */}
-          <div
-            className="flex w-full flex-col items-center px-6 py-4 text-left sm:w-full lg:w-[320px] xl:w-[340px]"
-            style={{
-              display: 'flex',
-              flexDirection: isTablet ? 'row' : 'column',
-              alignItems: isTablet ? 'center' : 'flex-start',
-            }}
-          >
-            <img
+          <div className="flex w-full flex-col items-center px-4 py-4 text-left sm:flex-col md:flex-row lg:w-[320px] lg:flex-col xl:w-[340px]">
+            <Image
               src={Rewards3}
               alt="paso 3 de como cambiar tu dinero en SwaplyAr"
               className="mb-4 w-full max-w-[300px] object-contain"
-              style={{
-                marginBottom: isTablet ? '0' : '1rem',
-                marginRight: isTablet ? '1rem' : '0',
-              }}
+              width={300}
+              height={200}
             />
             <div>
-              <h3 className="mb-0 mt-0 text-center text-lg font-bold">Exclusivo SwaplyAr</h3>
+              <h3 className="mb-0 mt-0 text-center text-lg font-bold md:text-left">Exclusivo SwaplyAr</h3>
               <p className="mt-0 text-justify text-sm leading-tight">
                 ¡Mantente siempre atento a nuestras promociones: ¡ofertas exclusivas y acceso a beneficios únicos te
                 esperan!
