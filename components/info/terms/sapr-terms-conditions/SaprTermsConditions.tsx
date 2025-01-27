@@ -13,7 +13,7 @@ const SaprTermsConditions = () => {
   return (
     <div className="relative mx-auto flex max-w-[1000px] flex-col items-center px-4 py-10 text-custom-grayD dark:text-darkText md:px-8 lg:px-4">
       <AnimatedBlurredCircles tope="top-[-1675px]" />
-      <div className="flex flex-col items-center md:flex-row md:items-start lg:items-center">
+      <section className="flex flex-col items-center md:flex-row md:items-start lg:items-center">
         <h1 className="flex-1 text-center font-titleFont text-[38px] font-medium lg:text-[40px]">
           Términos y Condiciones de Programa de Fidelización
         </h1>
@@ -24,11 +24,11 @@ const SaprTermsConditions = () => {
           width={332}
           height={179}
         />
-      </div>
+      </section>
 
-      <div className="mt-[40px] w-full max-w-[1000px]">
+      <section className="mt-[40px] w-full max-w-[1000px]">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-1">
-          <div>
+          <section>
             {sectionTermsAndConditionsPlus.map((item, i: number) => {
               const divideTitle = item.title.split('.');
 
@@ -75,7 +75,7 @@ const SaprTermsConditions = () => {
                 </div>
               );
             })}
-          </div>
+          </section>
 
           <div className="mb-4 flex justify-center">
             <Link
@@ -88,7 +88,7 @@ const SaprTermsConditions = () => {
             </Link>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };

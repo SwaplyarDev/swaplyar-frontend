@@ -9,7 +9,7 @@ const TermsAndConditions = () => {
   return (
     <div className="relative mx-auto flex max-w-[1000px] flex-col items-center px-4 py-10 text-custom-grayD md:px-8 lg:px-4">
       <AnimatedBlurredCircles tope="top-[-1675px]" />
-      <div className="flex flex-col items-center md:flex-row md:items-start lg:items-center">
+      <section className="flex flex-col items-center md:flex-row md:items-start lg:items-center">
         <h1 className="flex-1 text-center font-titleFont text-[38px] font-medium dark:text-darkText lg:text-[40px]">
           Términos y Condiciones de Uso y Navegación del Sitio SwaplyAr
         </h1>
@@ -20,14 +20,14 @@ const TermsAndConditions = () => {
           width={358}
           height={358}
         />
-      </div>
+      </section>
 
-      <div className="mt-[40px] flex flex-col gap-6">
+      <section className="mt-[40px] flex flex-col gap-6">
         {sectionTermsAndConditions.map((item, i: number) => {
           const divideTitle = item.title.split('.');
 
           return (
-            <div
+            <section
               key={i}
               className="rounded-lg bg-custom-whiteD-900 p-[10px] shadow-md dark:bg-graytyc dark:text-darkText"
             >
@@ -105,10 +105,10 @@ const TermsAndConditions = () => {
               {item.thirdText && <p className="mt-6 indent-6 font-textFont font-light">{item.thirdText}</p>}
               {item.fourthText && <p className="mt-6 indent-6 font-textFont font-light">{item.fourthText}</p>}
               {item.fifthText && <p className="mt-6 indent-6 font-textFont font-light">{item.fifthText}</p>}
-            </div>
+            </section>
           );
         })}
-      </div>
+      </section>
     </div>
   );
 };
