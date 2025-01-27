@@ -1,5 +1,4 @@
 import TermsAndConditions from '@/components/info/terms/terms-and-conditions';
-
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
