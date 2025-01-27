@@ -13,7 +13,7 @@ const FraudDesktop: React.FC<FraudDesktopProps> = ({ selectedTextIndex, handleBu
         {mockTexts.map((mock, key) => (
           <button
             key={key}
-            className={`flex flex-row gap-2 ${selectedTextIndex === key ? 'scale-105 text-blue-800 decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0]' : 'dark:text-[#EBE7E0] dark:decoration-[#EBE7E0]'} transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:hover:decoration-[#97938d]`}
+            className={`flex flex-row gap-2 font-extrabold ${selectedTextIndex === key ? 'scale-105 text-blue-800 decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0]' : 'dark:text-[#e0dfdd] dark:decoration-[#e0dfdd]'} transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:hover:decoration-[#97938d]`}
             onClick={() => handleButtonClick(key)}
           >
             <h3>{selectedTextIndex === key ? '|  ' : null}</h3>
@@ -30,7 +30,7 @@ const FraudDesktop: React.FC<FraudDesktopProps> = ({ selectedTextIndex, handleBu
           <section
             className={`duration-5 00 max-w-[518px] shrink-0 self-end transition-all ease-in-out ${
               isAnimating ? 'max-h-0 opacity-0' : 'max-h-[100%] opacity-100'
-            } flex flex-col gap-5 overflow-hidden rounded-md bg-[#EEEAE3] p-5 text-base dark:bg-[#4B4B4B]`}
+            } flex flex-col gap-5 overflow-hidden rounded-2xl bg-[#EEEAE3] p-5 text-base dark:bg-[#4B4B4B]`}
           >
             {mockTexts[selectedTextIndex]?.items.map((it, index) => (
               <div key={index} className="flex flex-col gap-1">
