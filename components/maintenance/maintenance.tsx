@@ -15,7 +15,7 @@ interface MaintenanceProps {
 const MaintenancePage = ({ params }: MaintenanceProps) => {
   const section = params?.section;
 
-  const [counter, setCounter] = useState(100);
+  const [counter, setCounter] = useState(10);
   const router = useRouter();
 
   useEffect(() => {
