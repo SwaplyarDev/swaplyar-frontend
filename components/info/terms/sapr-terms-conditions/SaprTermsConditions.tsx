@@ -2,206 +2,88 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { MdDownloadForOffline } from 'react-icons/md';
-import { useMargins } from '@/context/MarginProvider';
 import { useDarkTheme } from '../../../ui/theme-Provider/themeProvider';
-import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
-import { SwaplyRewardsTnC } from '@/utils/assets/imgDatabaseCloudinary';
+import { sectionTermsAndConditionsPlus } from '@/utils/sectionTermsAndConditions';
 
 const SaprTermsConditions = () => {
   const { isDark } = useDarkTheme();
-  const { margins } = useMargins();
-  const currentMargin = ResponsiveMarginHook(margins);
 
   return (
     <div className="relative mx-auto flex max-w-[1000px] flex-col items-center px-4 py-10 text-custom-grayD dark:text-darkText md:px-8 lg:px-4">
       <AnimatedBlurredCircles tope="top-[-1675px]" />
-      <div className="flex max-w-[1000px] flex-col items-center justify-center space-x-2 text-center md:flex-row md:items-center md:text-left">
-        <div className="flex w-full max-w-[600px] items-center justify-center p-0">
-          <h1 className="mb-6 text-3xl md:text-4xl">Términos y Condiciones de Programa de Fidelización</h1>
-        </div>
-        <div className="flex w-full max-w-[300px] flex-shrink-0 items-center justify-center">
-          <Image className="hero-img" src={SwaplyRewardsTnC} alt="terminos-y-condiciones" width={300} height={300} />
-        </div>
+      <div className="flex flex-col items-center md:flex-row md:items-start lg:items-center">
+        <h1 className="flex-1 text-center font-titleFont text-[38px] font-medium lg:text-[40px]">
+          Términos y Condiciones de Programa de Fidelización
+        </h1>
+        <Image
+          className="hero-img mt-4 h-[179px] w-[332px] lg:h-[205px] lg:w-[380px]"
+          src={`${isDark ? '/images/tycDark.png' : '/images/tycLight.png'}`}
+          alt="terminos-y-condiciones"
+          width={332}
+          height={179}
+        />
       </div>
 
-      <div className="my-10 w-full max-w-[1000px]">
+      <div className="mt-[40px] w-full max-w-[1000px]">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-1">
-          <div className="rounded-lg bg-inputDark p-6 shadow-md dark:bg-[#4b4b4b] dark:text-darkText">
-            <h2 className="mb-4 text-2xl md:text-3xl">1. Membresía</h2>
-            <h3 className="indent-6 text-2xl md:text-2xl">a. Elegibilidad</h3>
-            <p className="mb-4 ml-6">
-              La membresía en SwaplyAr Rewards está abierta a personas mayores de dieciocho (18) años (o la mayoría de
-              edad y capacidad contractual aplicable en su lugar de residencia). Debe proporcionar y mantener una
-              dirección de correo electrónico precisa.
-            </p>
-            <h3 className="indent-6 text-2xl md:text-2xl">b. Inscripción</h3>
-            <p className="mb-4 ml-6">
-              Será inscrito automáticamente cuando cree un perfil en SwaplyAr proporcionando su dirección de correo
-              electrónico. También puede inscribirse como miembro de SwaplyAr Rewards en una ubicación participante de
-              SwaplyAr o a través de otros canales que SwaplyAr pueda poner a disposición ocasionalmente. Siempre que
-              cumpla con los requisitos de elegibilidad, será inscrito como miembro de SwaplyAr Rewards (en adelante,
-              “Miembro”).
-            </p>
-            <h3 className="indent-6 text-2xl md:text-2xl">c. Obligaciones de la Membresía</h3>
-            <p className="ml-6">
-              Como miembro de SwaplyAr Rewards, acepta estos Términos y Condiciones. Se compromete a proporcionar
-              información precisa en todo momento y a notificarnos de cualquier cambio en su información de manera
-              oportuna.
-            </p>
-          </div>
+          <div>
+            {sectionTermsAndConditionsPlus.map((item, i: number) => {
+              const divideTitle = item.title.split('.');
 
-          <div className="rounded-lg bg-inputDark p-6 shadow-md dark:bg-[#4b4b4b] dark:text-darkText">
-            <h2 className="mb-4 text-2xl md:text-3xl" id="segunda-funcionamiento-del-sitio-y-servicios">
-              2. Beneficios y Recompensas
-            </h2>
-            <h3 className="indent-6 text-2xl md:text-2xl">a. Descuento de Bienvenida</h3>
-            <p className="mb-4 ml-6">
-              Como Miembro, recibirá un 10 pesos por cada dólar aplicables a su segunda Transacción Calificada después
-              de la fecha de inscripción en SwaplyAr Rewards (en adelante, “Bono de Bienvenida”). El Bono de Bienvenida
-              estará disponible de 24 a 48 horas después de su primera Transacción Calificada y vencerá a los 90 días de
-              su emisión.
-            </p>
-            <h3 className="indent-6 text-2xl md:text-2xl">b. Crédito por Quinta Transacción</h3>
-            <p className="mb-4 ml-6">
-              Como Miembro, después de cada quinta Transacción Calificada, recibirá 15 pesos por cada dólar aplicables a
-              su siguiente Transacción Calificada (en adelante, “Crédito por Quinta Transacción”). El Crédito por Quinta
-              Transacción estará disponible de 24 a 48 horas después de cada quinta Transacción Calificada y vencerá a
-              los 90 días de su emisión.
-            </p>
-            <h3 className="indent-6 text-2xl md:text-2xl">c. Estado Premier</h3>
-            <p className="mb-4 ml-6">
-              Como Miembro, después de su quinta Transacción Calificada dentro de un período de 12 meses, obtendrá el
-              estado de SwaplyAr Rewards Premier (en adelante, “Estado Premier”), que incluye recompensas personalizadas
-              y otras promociones determinadas por SwaplyAr a su entera discreción.
-            </p>
-            <h3 className="indent-6 text-2xl md:text-2xl">d. Gestión de Recompensas en Línea</h3>
-            <p className="mb-4 ml-6">
-              Como Miembro, podrá revisar su historial de transacciones y resumen de recompensas en línea.
-            </p>
-            <h3 className="indent-6 text-2xl md:text-2xl">e. Transacciones Calificadas</h3>
-            <p className="ml-6">
-              Una (“Transacción Calificada”) es una transacción de transferencia de saldo de PayPal realizada dentro de
-              un período de 12 meses en SwaplyAr con un número de miembro de SwaplyAr Rewards válido, número de
-              teléfono, correo electrónico y/o PIN que haya sido recibida con éxito por el destinatario designado y no
-              cancelada por ninguna razón por el remitente, destinatario o SwaplyAr.
-            </p>
-          </div>
-
-          <div className="rounded-lg bg-inputDark p-6 shadow-md dark:bg-[#4b4b4b] dark:text-darkText">
-            <h2 className="mb-4 text-2xl md:text-3xl" id="segunda-funcionamiento-del-sitio-y-servicios">
-              3. Comunicaciones de Marketing
-            </h2>
-            <p className="ml-6">
-              SwaplyAr o sus terceros pueden contactarlo ocasionalmente por correo electrónico con noticias, ofertas,
-              servicios, promociones y otras comunicaciones relacionadas con nuestros productos o servicios. Puede optar
-              por no recibir comunicaciones de marketing de nosotros en cualquier momento enviando un correo electrónico
-              a la siguiente dirección:{' '}
-              <strong>
-                <LinkWithHover href="mailto:info@swaplyar.com">centrodeayuda@swaplyar.com</LinkWithHover>
-              </strong>
-              .
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-inputDark p-6 shadow-md dark:bg-[#4b4b4b] dark:text-darkText">
-              <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
-                4. Privacidad
-              </h2>
-              <p className="ml-6">
-                Su privacidad es importante para nosotros. Por favor, revise nuestro Aviso de Privacidad sobre cómo
-                recopilamos, usamos, divulgamos o transferimos su información personal, o sus Derechos de Privacidad
-                para ejercer cualquiera de sus derechos de privacidad.
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-inputDark p-6 shadow-md dark:bg-[#4b4b4b] dark:text-darkText">
-              <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
-                5. Contacto con SwaplyAr
-              </h2>
-              <p className="ml-6">
-                Puede contactar a SwaplyAr en línea en{' '}
-                <strong>
-                  <LinkWithHover href="/info/help-center">swaplyar.com/info/help-center</LinkWithHover>
-                </strong>
-                , por{' '}
-                <strong>
-                  <LinkWithHover href="https://wa.me/+5491123832198">WhatsApp</LinkWithHover>
-                </strong>
-                , o por correo de atención:{' '}
-                <strong>
-                  <LinkWithHover href="mailto:info@swaplyar.com">centrodeayuda@swaplyar.com</LinkWithHover>
-                </strong>
-                .
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-inputDark p-6 shadow-md dark:bg-[#4b4b4b] dark:text-darkText">
-              <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
-                6. Marcas Registradas
-              </h2>
-              <p className="ml-6">
-                SwaplyAr, SwaplyAr Rewards y cualquier otra marca registrada asociada con SwaplyAr o SwaplyAr Rewards
-                son marcas registradas de SwaplyAr o sus afiliados y no pueden ser reproducidas o utilizadas de ninguna
-                manera sin el consentimiento previo por escrito de SwaplyAr.
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-inputDark p-6 shadow-md dark:bg-[#4b4b4b] dark:text-darkText">
-              <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
-                7. Sujeto a Cambios o Cancelación
-              </h2>
-              <p className="ml-6">
-                SwaplyAr Rewards, y cualquier beneficio o recompensa asociada, están sujetos a cambios en cualquier
-                momento a la discreción exclusiva de SwaplyAr. Podemos suspender su membresía en SwaplyAr Rewards, y/o
-                cancelar sus beneficios y recompensas, por cualquier razón, incluidas representaciones fraudulentas por
-                su parte, o si está prohibido por la ley aplicable. Los beneficios y recompensas no tienen valor en
-                efectivo, no generan intereses y no están asegurados contra pérdida. Los beneficios y recompensas no
-                pueden ser comprados, vendidos, combinados o transferidos de ninguna manera.
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-inputDark p-6 shadow-md dark:bg-[#4b4b4b] dark:text-darkText">
-              <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
-                8. Cesión
-              </h2>
-              <p className="ml-6">
-                No puede ceder, transferir o permitir que nadie más use su membresía en SwaplyAr Plus Rewards. SwaplyAr
-                puede ceder sus derechos o delegar sus deberes bajo este Acuerdo a su entera discreción.
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-1">
-            <div className="rounded-lg bg-inputDark p-6 shadow-md dark:bg-[#4b4b4b] dark:text-darkText">
-              <h2 className="mb-4 text-2xl md:text-3xl" id="cuarta-comisiones-y-operativa">
-                9. Ley Aplicable
-              </h2>
-              <p className="ml-6">
-                Este Acuerdo y la relación entre las partes se regirán e interpretarán de acuerdo con las leyes de la
-                Ciudad de Buenos Aires y resto de la República de Argentina. Las partes se someten irrevocablemente a la
-                jurisdicción de los tribunales situados en Buenos Aires, Argentina o donde corresponda.
-              </p>
-            </div>
+              return (
+                <div
+                  key={i}
+                  className="mt-6 rounded-lg bg-inputDark p-[10px] shadow-md dark:bg-[#4b4b4b] dark:text-darkText"
+                >
+                  <h2 className="font-textFont text-[28px]">
+                    {divideTitle[0]}. <span className="text-4xl">{divideTitle[1]}</span>
+                  </h2>
+                  {item.listLetters && (
+                    <div>
+                      {item.listLetters.map((item, i: number) => (
+                        <div key={i} className="mt-4 font-textFont font-light">
+                          <h2 className="indent-6">{item.title}</h2>
+                          <p>{item.text}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <p className="mt-6 indent-6 font-textFont font-light">
+                    {item.text &&
+                      item.text
+                        .split(/(swaplyar\.com\/info\/help-center|WhatsApp|centrodeayuda@swaplyar\.com)/)
+                        .map((item, i: number) =>
+                          item === 'swaplyar.com/info/help-center' ? (
+                            <LinkWithHover key={i} href="/info/help-center">
+                              swaplyar.com/info/help-center
+                            </LinkWithHover>
+                          ) : item === 'WhatsApp' ? (
+                            <LinkWithHover key={i} href="https://wa.me/+5491123832198">
+                              WhatsApp
+                            </LinkWithHover>
+                          ) : item === 'centrodeayuda@swaplyar.com' ? (
+                            <LinkWithHover key={i} href="mailto:info@swaplyar.com">
+                              centrodeayuda@swaplyar.com
+                            </LinkWithHover>
+                          ) : (
+                            item
+                          ),
+                        )}
+                  </p>
+                </div>
+              );
+            })}
           </div>
 
           <div className="mb-4 flex justify-center">
             <Link
               href="https://swaplyar.com/SAPR-Terms-Conditions-ES%20.pdf"
               target="_blank"
-              className={`relative m-1 flex h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+              className={`relative m-1 flex h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth px-[17px] py-[5px] font-titleFont font-semibold text-buttonsLigth dark:border-darkText dark:text-darkText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
             >
-              <MdDownloadForOffline className="h-7 w-7" />
+              <MdDownloadForOffline className="h-[38px] w-[38px]" />
               <h3>Descargar Términos</h3>
             </Link>
           </div>
