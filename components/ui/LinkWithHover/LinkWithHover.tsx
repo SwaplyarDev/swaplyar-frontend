@@ -23,7 +23,7 @@ const LinkWithHover: FC<LinkWithHoverProps> = ({ href, children }) => {
       target="_blank"
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
-      className="relative items-center gap-2 transition-transform duration-300 ease-in-out hover:text-blue-700 dark:text-white dark:hover:text-sky-600"
+      className="relative items-center gap-2 text-custom-grayD underline transition-transform duration-300 ease-in-out hover:text-blue-700 dark:text-darkText dark:hover:text-sky-600"
     >
       {children}
     </Link>
