@@ -9,7 +9,8 @@ import { FlyerGif, RecargaPaypal, UsdArs } from '@/utils/assets/imgDatabaseCloud
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
-import LinkWithHover from '../ui/LinkWithHover/LinkWithHover';
+import CardHome from '../ui/CardHome/CardHome';
+import CarruselHome from '../ui/CarruselHome/CarruselHome';
 
 export default function HomePage() {
   const resetToDefault = useSystemStore((state) => state.resetToDefault);
@@ -23,57 +24,23 @@ export default function HomePage() {
   return (
     <>
       <AnimatedBlurredCircles tope="top-[-375px]" />
-      <section className="w-full px-4 md:px-8 lg:px-4">
+      <section className="w-full overflow-hidden px-4 md:px-8 lg:px-4">
         <article className="m-auto flex w-full max-w-screen-phone flex-col items-center justify-center xs-mini-phone2:max-w-screen-tablet md:max-w-screen-desktop">
           <div className="mt-0 flex w-full flex-col items-center justify-center lg:mt-8">
             <ConversionInstructions />
           </div>
-          <div className="relative mt-8 flex w-full max-w-[850px] flex-col items-center justify-center space-x-4">
+          <div className="relative mb-10 mt-8 flex w-full max-w-[850px] flex-col items-center justify-center gap-10 space-x-4">
             <InfoBlock
               title="Podes cambiar USD o EUR de tu billetera virtual por la moneda de tu preferencia"
               imageSrc={UsdArs}
               imageAlt="Cambia USD de PayPal por ARS"
               contentNode={
                 <>
-                  Realizá cambios de{' '}
-                  <strong>
-                    <LinkWithHover href="#">USD</LinkWithHover>
-                  </strong>
-                  ,{' '}
-                  <strong>
-                    <LinkWithHover href="#">EUR</LinkWithHover>
-                  </strong>{' '}
-                  o{' '}
-                  <strong>
-                    <LinkWithHover href="#">USDT</LinkWithHover>
-                  </strong>{' '}
-                  de tu billetera virtual a la moneda que necesitas de manera rápida y eficiente. Ofrecemos las mejores
-                  tasas del mercado para que siempre maximices tus ganancias. Si necesitás transferir dinero desde{' '}
-                  <strong>
-                    <LinkWithHover href="#">PayPal</LinkWithHover>
-                  </strong>
-                  ,{' '}
-                  <strong>
-                    <LinkWithHover href="#">Payoneer</LinkWithHover>
-                  </strong>
-                  ,{' '}
-                  <strong>
-                    <LinkWithHover href="#">Wise</LinkWithHover>
-                  </strong>
-                  ,{' '}
-                  <strong>
-                    <LinkWithHover href="#">Pix</LinkWithHover>
-                  </strong>
-                  ,{' '}
-                  <strong>
-                    <LinkWithHover href="#">USDT</LinkWithHover>
-                  </strong>
-                  , o pesos Argentinos, lo depositamos directamente en tu cuenta bancaria local o internacional según
-                  prefieras. Aumentá tus beneficios con{' '}
-                  <strong>
-                    <LinkWithHover href="#">SwaplyAr plus Rewards</LinkWithHover>
-                  </strong>
-                  .
+                  Realizá cambios de USD, EUR o USDT de tu billetera virtual a la moneda que necesitas de manera rápida
+                  y eficiente con SwaplyAr. Ofrecemos las mejores tasas del mercado para que siempre maximices tus
+                  ganancias. Si necesitás transferir dinero desde PayPal, Payoneer, Wise, Pix, USDT, o pesos Argentinos,
+                  lo depositamos directamente en tu cuenta bancaria local o internacional según prefieras, ya sea que
+                  estes en tu casa o de viaje. Aumentá tus beneficios con SwaplyAr plus Rewards.
                 </>
               }
             />
@@ -81,6 +48,7 @@ export default function HomePage() {
               title="Te ayudamos a recargar tu cuenta de Paypal en USD o EUR"
               imageSrc={RecargaPaypal}
               imageAlt="Recarga PayPal"
+              position={true}
               contentNode={
                 <>
                   Es tan simple que lo podes hacer en tres pasos. Colocas el monto que deseas en la calculadora,
@@ -106,6 +74,51 @@ export default function HomePage() {
                 </>
               }
             />
+          </div>
+          <div className="mb-10 flex flex-col items-center gap-5">
+            <h2 className="font-textFont text-4xl text-custom-grayD dark:text-darkText">
+              Que dice nuestros clientes de SwaplyAr
+            </h2>
+            <section className="hidden gap-8 xl:flex">
+              <CardHome
+                icon={RecargaPaypal}
+                name="Oa Johan Javier Suarez Merchan"
+                description="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años,"
+                date="10/14/2025"
+              />
+              <CardHome
+                icon={RecargaPaypal}
+                name="Oa Johan Javier Suarez Merchan"
+                description="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años,"
+                date="10/14/2025"
+              />
+              <CardHome
+                icon={RecargaPaypal}
+                name="Oa Johan Javier Suarez Merchan"
+                description="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años,"
+                date="10/14/2025"
+              />
+            </section>
+            <CarruselHome>
+              <CardHome
+                icon={RecargaPaypal}
+                name="Oa Johan Javier Suarez Merchan"
+                description="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años,"
+                date="10/14/2025"
+              />
+              <CardHome
+                icon={RecargaPaypal}
+                name="Oa Johan Javier Suarez Merchan"
+                description="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años,"
+                date="10/14/2025"
+              />
+              <CardHome
+                icon={RecargaPaypal}
+                name="Oa Johan Javier Suarez Merchan"
+                description="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años,"
+                date="10/14/2025"
+              />
+            </CarruselHome>
           </div>
         </article>
       </section>
