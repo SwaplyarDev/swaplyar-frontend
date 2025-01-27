@@ -5,7 +5,7 @@ import { MdDownloadForOffline } from 'react-icons/md';
 import { useDarkTheme } from '../../../ui/theme-Provider/themeProvider';
 import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
-import { sectionTermsAndConditionsPlus } from '@/utils/sectionTermsAndConditions';
+import { sectionTermsAndConditionsPlus } from '@/data/sectionTermsAndConditions';
 
 const SaprTermsConditions = () => {
   const { isDark } = useDarkTheme();

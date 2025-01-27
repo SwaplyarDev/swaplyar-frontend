@@ -3,7 +3,7 @@ import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 import { TerminosCondiciones } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
-import { sectionTermsAndConditions } from '@/utils/sectionTermsAndConditions';
+import { sectionTermsAndConditions } from '@/data/sectionTermsAndConditions';
 
 const TermsAndConditions = () => {
   return (
