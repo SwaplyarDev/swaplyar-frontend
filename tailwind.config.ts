@@ -9,6 +9,7 @@ const config: Config = {
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
+
     flowbite.content(),
   ],
   theme: {
@@ -56,8 +57,8 @@ const config: Config = {
         'gray-blue': '#020919',
 
         //blue
-        'custom-blue': 'rgba(1,42,141,1)',
-        'custom-blue-100': 'rgba(214,226,255,1)',
+        'custom-blue': 'rgba(1, 42, 141, 1)',
+        'custom-blue-100': 'rgba(214, 226, 255, 1)',
         'custom-blue-200': 'rgba(194, 212, 255, 1)',
         'custom-blue-300': 'rgba(144, 176, 254, 1)',
         'custom-blue-400': 'rgba(93, 140, 254, 1)',
@@ -110,24 +111,24 @@ const config: Config = {
         //grayDark
         'custom-grayD': 'rgba(37, 37, 38, 1)', //#252526
         'custom-grayD-100': 'rgba(250, 250, 250, 1)',
-        'custom-grayD-200': 'rgba(225, 225, 225, 1)',
+        'custom-grayD-200': 'rgba(225, 225, 225, 1)', // #E1E1E1
         'custom-grayD-300': 'rgba(200, 200, 200, 1)',
         'custom-grayD-400': 'rgba(175, 175, 175, 1)',
         'custom-grayD-500': 'rgba(150, 150, 150, 1)',
-        'custom-grayD-600': 'rgba(s125, 125, 125, 1)',
+        'custom-grayD-600': 'rgba(125, 125, 125, 1)', //#7D7D7D
         'custom-grayD-700': 'rgba(100, 100, 100, 1)',
         'custom-grayD-800': 'rgba(75, 75, 75, 1)',
         'custom-grayD-900': 'rgba(50, 50, 50, 1)',
         'custom-grayD-1000': 'rgba(37, 37, 38, 1)',
 
         //whiteDark
-        'custom-whiteD': 'rgba(235, 231, 224, 1)',
+        'custom-whiteD': 'rgba(235, 231, 224, 1)', //EBE7E0
         'custom-whiteD-100': 'rgba(255, 255, 251, 1)',
         'custom-whiteD-200': 'rgba(255, 255, 248, 1)',
         'custom-whiteD-300': 'rgba(255, 252, 245, 1)',
         'custom-whiteD-400': 'rgba(253, 249, 242, 1)',
         'custom-whiteD-500': 'rgba(250, 246, 239, 1)',
-        'custom-whiteD-600': 'rgba(247, 24a3, 236, 1)',
+        'custom-whiteD-600': 'rgba(247, 243, 236, 1)',
         'custom-whiteD-700': 'rgba(244, 240, 233, 1)',
         'custom-whiteD-800': 'rgba(241, 237, 230, 1)',
         'custom-whiteD-900': 'rgba(238, 234, 227, 1)', //#EEEAE3
@@ -210,8 +211,8 @@ const config: Config = {
         '10': '10px',
       },
       boxShadow: {
-        'custom-blue': '0 5px 10px #012a8d',
-        'custom-black': '0 5px 10px #000',
+        'custom-blueBox': '0 5px 10px #012a8d',
+        'custom-blackBox': '0 5px 10px #000',
       },
       backgroundColor: {
         'dark-blue': 'rgb(3, 35, 54)',
