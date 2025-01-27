@@ -12,7 +12,6 @@ const ErrorBoundary = () => {
   const [counter, setCounter] = useState(10);
   const router = useRouter();
   const { isDark } = useDarkTheme();
-  // const isDark= true;
 
   useEffect(() => {
     if (counter === 0) {
@@ -46,7 +45,7 @@ const ErrorBoundary = () => {
               height={400}
             />
           </article>
-          {/* Texto------------------------------ */}
+
           <article className="absolute z-20 ml-2 flex min-h-[200px] flex-col justify-center border-l-2 border-l-buttonsLigth pt-2 dark:border-l-darkText xs-mini-phone2:ml-3 xs-mini-phone2:min-w-[240px] xs-phone:ml-8 xs-phone:pt-5 sm:ml-20 md-phone:ml-12 sm-tablet:ml-14 md:ml-16 lg2:ml-24">
             <h1 className="titleFont ml-4 hidden text-start text-4xl font-bold md-phone:block md-tablet:text-3xl md-tablet:font-normal">
               Ups...
@@ -63,14 +62,13 @@ const ErrorBoundary = () => {
               en nuestro lado.
             </h1>
 
-            {/* Botón */}
             <Link href="/">
               <button className="ml-3 flex w-[165px] justify-center rounded-full border border-buttonsLigth bg-transparent p-2 text-base font-bold text-buttonsLigth dark:border-darkText dark:text-darkText">
                 Redireccion en {counter}
               </button>
             </Link>
           </article>
-          {/* Imagen dos ........................ */}
+
           <article className="xs absolute top-32 flex w-full items-center justify-center xs-mini-phone:top-36 xs:right-2 xs:top-44 xs-phone:right-7 xs-phone:top-52 md-phone:items-end md-phone:justify-end sm-tablet:right-12 md:right-14 md-tablet:right-16 md-tablet:top-56 lg:right-12 lg:top-64 lg:p-1 lg:p-2 xl-desktop:right-9 lg2:right-14 xl:right-32">
             <Image
               src={Post1_500}
