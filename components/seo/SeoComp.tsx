@@ -40,8 +40,6 @@ export function constructMetadata({
 }: SEOProps): Metadata {
   //const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com'
 
-  //En un futuro cuando ya existan las keywords, el canonical, opengraph y twittercards descomentar esto
-
   return {
     title,
     description,
@@ -76,3 +74,5 @@ export function constructMetadata({
 //    userScalable: false,
 //  };
 //}
+
+//En un futuro cuando ya existan las keywords, el canonical, opengraph y twittercards descomentar esto
