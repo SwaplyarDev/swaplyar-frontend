@@ -1,6 +1,6 @@
 // /utils/conversion/convArs_Eur.tsx
 
-const bluelyticsApiUrl = process.env.NEXT_PUBLIC_BLUELYTICS_API_URL;
+const bluelyticsApiUrl = process.env.NEXT_PUBLIC_VALUE_TRANSACTIONS;
 
 if (!bluelyticsApiUrl) {
   throw new Error('Missing Bluelytics API URL');

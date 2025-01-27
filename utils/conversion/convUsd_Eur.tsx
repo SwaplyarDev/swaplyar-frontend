@@ -20,8 +20,12 @@ import { fetchCurrencyData } from './currencyConversion';
  */
 export async function updateCurrentValueUSDToEUR() {
   const data = await fetchCurrencyData('USD', 'EUR');
-  const currentValueEURToUSD = 1 / data.data.EUR;
-  const currentValueUSDToEUR = data.data.EUR;
+  // Verificar que data es un número
+  if (typeof data !== 'number') {
+    throw new Error('El dato recibido no es un número.');
+  }
+  const currentValueEURToUSD = 1 / data;
+  const currentValueUSDToEUR = data;
 
   return { currentValueEURToUSD, currentValueUSDToEUR };
 }
