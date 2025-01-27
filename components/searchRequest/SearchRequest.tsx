@@ -8,6 +8,8 @@ import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import useStatusManager from '@/hooks/useStatusManager';
 import { searchRequest } from '@/actions/request/action.search-request/action.searchRecuest';
 import { showStatusAlert } from './swalConfig';
+import ReactDOMServer from 'react-dom/server';
+import { IconoVacio, RevisionCamino, Modificada, Cancelada, Discrepancia, Reembolso } from './icons';
 
 const SearchRequest = () => {
   const {
@@ -41,21 +43,65 @@ const SearchRequest = () => {
     }
   };
 
-  const handleSearchRequest = (statuses: Array<keyof typeof statusMessages>) => {
+  const handleSearchRequest = (statusObject: Record<string, any>) => {
     const statusMessages = {
-      pending: 'Solicitud Enviada',
-      received: 'Pago en Revisión ',
-      ended: 'Solicitud Finalizada con Éxito',
-      cancelation: 'Solicitud Cancelada',
-      modified: 'Solicitud Modificada',
-      refund: 'Dinero Reembolsado con Éxito',
-      discrepancy: 'Discrepancia en la Solicitud',
+      received: {
+        text: 'Solicitud Recibida',
+        icon: ReactDOMServer.renderToString(<IconoVacio />),
+      },
+      pending: {
+        text: 'Solicitud enviada',
+        icon: ReactDOMServer.renderToString(<IconoVacio />),
+      },
+      review_payment: {
+        text: 'Pago en Revisión',
+        icon: ReactDOMServer.renderToString(<RevisionCamino />),
+      },
+      completed: {
+        text: 'Solicitud Finalizada con Éxito',
+        icon: ReactDOMServer.renderToString(<IconoVacio />),
+      },
+      in_transit: {
+        text: 'Dinero en Camino',
+        icon: ReactDOMServer.renderToString(<RevisionCamino />),
+      },
+      canceled: {
+        text: 'Solicitud Cancelada',
+        icon: ReactDOMServer.renderToString(<Cancelada />),
+      },
+      modified: {
+        text: 'Solicitud modificada',
+        icon: ReactDOMServer.renderToString(<Modificada />),
+      },
+      refunded: {
+        text: 'Reembolso solicitado',
+        icon: ReactDOMServer.renderToString(<Reembolso />),
+      },
+      discrepancy: {
+        text: 'Discrepancia en la Solicitud',
+        icon: ReactDOMServer.renderToString(<Discrepancia />),
+      },
     };
 
-    // Crea una lista de mensajes con los estados recibidos
-    const messages = statuses.map((status) => statusMessages[status]);
+    // Transformar el objeto en un array de claves únicas
+    const uniqueStatuses = Array.from(new Set(Object.keys(statusObject)));
+    const messages = uniqueStatuses
+      .map((status) => {
+        const statusInfo = statusMessages[status as keyof typeof statusMessages];
 
-    showStatusAlert(messages, isDark);
+        if (!statusInfo) {
+          console.warn(`Estado no reconocido: ${status}`);
+          return null;
+        }
+
+        return {
+          text: statusInfo.text,
+          icon: statusInfo.icon,
+        };
+      })
+      .filter((message): message is { text: string; icon: string } => message !== null); // Filtrar posibles `null`
+
+    showStatusAlert(messages, isDark); // Cambia `true` por `isDark` si es necesario
   };
 
   const onSubmit: SubmitHandler<RequestSearch> = async (data) => {
@@ -72,6 +118,7 @@ const SearchRequest = () => {
       // `response.status` es un arreglo con los estados de la solicitud
       const statuses = response.status || [];
       handleSearchRequest(statuses);
+      console.log(response);
 
       reset();
     } catch (error) {
