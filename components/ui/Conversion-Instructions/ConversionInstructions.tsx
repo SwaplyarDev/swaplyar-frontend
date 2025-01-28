@@ -1,3 +1,4 @@
+import Counter from '@/components/Counter/Counter';
 import TransactionCalculator from '@/components/Transaction/TransactionCalculator/TransactionCalculator';
 
 const ConversionInstructions = () => {
@@ -7,9 +8,7 @@ const ConversionInstructions = () => {
         <h1 className="font-titleFont text-[38px]/[120%] font-medium text-custom-grayD dark:text-darkText lg:text-[40px]/[120%]">
           Envía y recibe dinero de billeteras virtuales y criptomonedas
         </h1>
-        <p className="font-titleFont text-[96px]/[120%] font-bold text-buttonsLigth text-shadow-customLight dark:text-darkText dark:text-shadow-customDark sm:text-[140px]/[120%]">
-          15,731
-        </p>
+        <Counter />
         <p className="font-textFont text-2xl text-custom-grayD dark:text-darkText">
           <span className="font-bold">operaciones realizadas con éxito</span> respaldan nuestra eficiencia y seguridad.
         </p>

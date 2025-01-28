@@ -11,7 +11,7 @@ export async function updateCurrentValueUSD() {
   try {
     const response = await fetch(`${ApiUrl}`, {
       method: 'GET',
-      redirect: 'follow', // Asegúrate de seguir las redirecciones
+      redirect: 'follow',
     });
     if (!response.ok) {
       const errorMessage = `Error: ${response.status} ${response.statusText}`;
