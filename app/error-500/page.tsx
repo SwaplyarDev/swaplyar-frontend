@@ -1,4 +1,4 @@
-import ErrorBoundary from '@/components/ErrorBoundary/errorBoundary';
+import ErrorBoundary from '@/components/error/errorBoundary';
 import React from 'react';
 
 const page = () => {

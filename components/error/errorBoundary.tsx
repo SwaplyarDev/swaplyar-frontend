@@ -20,7 +20,7 @@ const ErrorBoundary = () => {
     }
 
     const timer = setInterval(() => {
-      setCounter((prev) => prev - 1);
+      // setCounter((prev) => prev - 1);
     }, 1000);
 
     return () => clearInterval(timer);
@@ -28,7 +28,7 @@ const ErrorBoundary = () => {
   return (
     <>
       <section className="relative m-auto flex w-full max-w-7xl flex-col items-start gap-20">
-        <section className="md-table:max-h-[560px] relative flex min-h-[480px] w-full items-end mini-phone:min-h-[490px] xs-mini-phone:min-h-[540px] xs-mini-phone2:h-[544px] xs:h-[600px] xs-phone:min-h-[622px] md-phone:max-h-[500px] md-phone:min-h-[430px] lg:max-h-[580px] xl:min-w-[1244px]">
+        <section className="md-table:max-h-[560px] relative flex min-h-[490px] w-full items-end mini-phone:min-h-[490px] xs-mini-phone:min-h-[540px] xs-mini-phone2:h-[544px] xs:h-[600px] xs-phone:min-h-[622px] md-phone:max-h-[500px] md-phone:min-h-[430px] lg:max-h-[580px] xl:min-w-[1244px]">
           <article className="absolute top-0 flex w-full items-center justify-center">
             <Image
               src={isDark ? Error_500_dark : Error_500_clear}
@@ -47,7 +47,7 @@ const ErrorBoundary = () => {
           </article>
 
           <article className="absolute z-20 ml-2 flex min-h-[200px] flex-col justify-center border-l-2 border-l-buttonsLigth pt-2 dark:border-l-darkText xs-mini-phone2:ml-3 xs-mini-phone2:min-w-[240px] xs-phone:ml-8 xs-phone:pt-5 sm:ml-20 md-phone:ml-12 sm-tablet:ml-14 md:ml-16 lg2:ml-24">
-            <h1 className="titleFont ml-4 hidden text-start text-4xl font-bold md-phone:block md-tablet:text-3xl md-tablet:font-normal">
+            <h1 className="titleFont ml-4 hidden text-start text-4xl md-phone:block md-tablet:text-3xl">
               Ups...
               <br />
               Algo salió mal
@@ -63,7 +63,7 @@ const ErrorBoundary = () => {
             </h1>
 
             <Link href="/">
-              <button className="ml-3 flex w-[165px] justify-center rounded-full border border-buttonsLigth bg-transparent p-2 text-base font-bold text-buttonsLigth dark:border-darkText dark:text-darkText">
+              <button className="ml-3 flex w-[165px] justify-center rounded-full border border-buttonsLigth bg-transparent p-2 text-base text-buttonsLigth dark:border-darkText dark:text-darkText">
                 Redireccion en {counter}
               </button>
             </Link>
