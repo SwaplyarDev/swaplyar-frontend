@@ -33,7 +33,7 @@ const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ reset }) => {
   return (
     <>
       <section className="relative m-auto flex w-full max-w-7xl flex-col items-start gap-20">
-        <section className="md-table:max-h-[560px] relative flex min-h-[490px] w-full items-end mini-phone:min-h-[490px] xs-mini-phone:min-h-[540px] xs-mini-phone2:h-[544px] xs:h-[600px] xs-phone:min-h-[622px] md-phone:max-h-[500px] md-phone:min-h-[430px] lg:max-h-[580px] xl:min-w-[1244px]">
+        <section className="md-table:max-h-[560px] relative flex min-h-[490px] w-full items-end mini-phone:min-h-[490px] xs-mini-phone:min-h-[540px] xs-mini-phone2:h-[544px] xs:h-[600px] xs-phone:min-h-[622px] md-phone:max-h-[510px] md-phone:min-h-[430px] md-tablet:max-h-[530px] lg:max-h-[580px] xl:min-w-[1244px]">
           <article className="absolute top-0 flex w-full items-center justify-center">
             <Image
               src={isDark ? Error_500_dark : Error_500_clear}
@@ -51,7 +51,7 @@ const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ reset }) => {
             />
           </article>
 
-          <article className="absolute z-20 ml-2 flex min-h-[200px] flex-col justify-center border-l-2 border-l-buttonsLigth pt-2 dark:border-l-darkText xs-mini-phone2:ml-3 xs-mini-phone2:min-w-[240px] xs-phone:ml-8 xs-phone:pt-5 sm:ml-20 md-phone:ml-12 sm-tablet:ml-14 md:inline-flex md:items-center md:justify-start">
+          <article className="absolute z-20 ml-2 flex min-h-[200px] flex-col justify-center border-l-2 border-l-buttonsLigth pt-2 dark:border-l-darkText xs-mini-phone2:ml-3 xs-mini-phone2:min-w-[240px] xs-phone:ml-8 xs-phone:pt-5 sm:ml-20 md-phone:ml-12 sm-tablet:ml-14 md:ml-[65px] md:inline-flex md:justify-start md-tablet:ml-[57px]">
             <h1 className="titleFont ml-4 hidden text-start text-4xl md-phone:block md-tablet:text-3xl">
               Ups...
               <br />
@@ -59,7 +59,7 @@ const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ reset }) => {
               <br />
               en nuestro lado
             </h1>
-            <h1 className="titleFont xs-phone: ml-7 block text-start text-4xl xs-mini-phone:text-5xl md-phone:hidden">
+            <h1 className="titleFont xs-phone: ml-7 block text-start text-4xl xs-mini-phone:text-[36px] md-phone:hidden">
               Ups...
               <br />
               Algo salió mal
@@ -69,7 +69,7 @@ const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ reset }) => {
 
             <Link href="/">
               <button
-                className="ml-3 flex w-[165px] justify-center rounded-full border border-buttonsLigth bg-transparent p-2 text-base text-buttonsLigth dark:border-darkText dark:text-darkText"
+                className="ml-7 mt-3 flex w-[165px] justify-center rounded-full border border-buttonsLigth bg-transparent p-2 text-base text-buttonsLigth dark:border-darkText dark:text-darkText md-phone:ml-3"
                 onClick={reset}
               >
                 Redireccion en {counter}
@@ -77,7 +77,7 @@ const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ reset }) => {
             </Link>
           </article>
 
-          <article className="xs absolute top-32 flex w-full items-center justify-center xs-mini-phone:top-36 xs:right-2 xs:top-44 xs-phone:right-7 xs-phone:top-52 md-phone:items-end md-phone:justify-end sm-tablet:right-12 md:right-14 md-tablet:right-16 md-tablet:top-56 lg:right-12 lg:top-64 lg:p-1 lg:p-2 xl-desktop:right-9 lg2:right-14 xl:right-32">
+          <article className="xs absolute top-32 flex w-full items-center justify-center xs-mini-phone:top-36 xs:right-2 xs:top-44 xs-phone:right-7 xs-phone:top-52 md-phone:items-end md-phone:justify-end sm-tablet:right-12 md:right-14 md-tablet:right-16 md-tablet:top-56 lg:right-12 lg:top-64 lg:p-1 xl-desktop:right-9 lg2:right-14 xl:right-32">
             <Image
               src={Post1_500}
               alt="Woman smiling with tablet"
