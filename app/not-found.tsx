@@ -1,5 +1,4 @@
 import NotFoundComponent from '@/components/error/errorComponent';
-
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

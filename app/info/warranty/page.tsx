@@ -1,5 +1,4 @@
 import Warranty from '@/components/info/Warranty/Warranty';
-
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

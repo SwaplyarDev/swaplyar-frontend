@@ -1,7 +1,7 @@
 // /auth/login-register
-import { Metadata } from 'next';
 import AuthForm from '@/components/auth/auth-form';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Inicia Sesión o Regístrate en SwaplyAr | Accede a Beneficios',

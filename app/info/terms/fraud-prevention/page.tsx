@@ -1,5 +1,4 @@
 import FraudPrevention from '@/components/info/terms/fraud-prevention/FraudPrevention';
-
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
