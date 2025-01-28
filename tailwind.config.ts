@@ -12,6 +12,8 @@ const config: Config = {
 
     flowbite.content(),
   ],
+
+  safelist: ['text-custom-blue-800', 'custom-blue'],
   theme: {
     extend: {
       container: {
@@ -57,7 +59,7 @@ const config: Config = {
         'gray-blue': '#020919',
 
         //blue
-        'custom-blue': 'rgba(1, 42, 141, 1)',
+        'custom-blue': 'rgba(1, 42, 142, 1)',
         'custom-blue-100': 'rgba(214, 226, 255, 1)',
         'custom-blue-200': 'rgba(194, 212, 255, 1)',
         'custom-blue-300': 'rgba(144, 176, 254, 1)', // #90B0FE Usos (generalmente en modo claro): Boton azul desabilitado, input azul desabilitado, ...

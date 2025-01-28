@@ -1,5 +1,4 @@
 import SaprTermsConditions from '@/components/info/terms/sapr-terms-conditions/SaprTermsConditions';
-
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

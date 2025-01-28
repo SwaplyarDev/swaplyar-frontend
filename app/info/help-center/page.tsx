@@ -1,6 +1,5 @@
 import HelpCenterPage from '@/components/info/helpCenterPage/HelpCenterPage';
 import React from 'react';
-
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
