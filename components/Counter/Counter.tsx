@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import CountUp from 'react-countup';
+const ApiUrl = process.env.NEXT_PUBLIC_VALUE_TIME;
 
 type CounterData = {
   Contador: number;
@@ -12,9 +13,7 @@ const Counter = () => {
 
   const fetchCounter = useCallback(async () => {
     try {
-      const response = await fetch(
-        'https://script.google.com/macros/s/AKfycbzoeZAqxVsuLDz8u2pPv6PQik9C2SVrREUabmCqc-IJZxx7OFkWux8PzlkBMS2N0w66/exec',
-      );
+      const response = await fetch(`${ApiUrl}`);
       const data: CounterData = await response.json();
       setPreviousCounter(counter);
       setCounter(data.Contador);
