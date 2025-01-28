@@ -27,23 +27,23 @@ function TopPopUp() {
 
   return (
     <main
-      className="relative w-full px-4 py-2 md:px-8 lg:px-4"
+      className="relative w-full py-2"
       style={{
         backgroundColor: bannerColor.bg,
         color: bannerColor.text,
       }}
     >
-      <div className="relative m-auto flex w-full max-w-[1204px] items-center justify-between">
+      <div className="relative m-auto flex w-full max-w-[1204px] items-center justify-between px-4 md:px-8 lg:px-4">
         <div className="mask-gradient-popup w-full overflow-hidden xs:hidden md:text-sm lg:text-lg">
           <motion.p
             animate={{ x: ['100%', '-100%'] }}
             transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
-            className="min-w-[350px] text-center text-xs font-bold"
+            className="min-w-[370px] text-center font-textFont text-xs font-semibold"
           >
             Estamos trabajando en las funciones de inicio de sesión y registro
           </motion.p>
         </div>
-        <p className="hidden w-full text-center text-xs font-bold xs:block md:text-sm lg:text-lg">
+        <p className="hidden w-full text-center font-textFont text-xs font-semibold xs:block md:text-sm lg:text-lg">
           Estamos trabajando en las funciones de inicio de sesión y registro
         </p>
         <button

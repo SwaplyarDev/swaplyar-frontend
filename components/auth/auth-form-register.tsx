@@ -92,13 +92,19 @@ export const RegisterForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="relative flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
       >
-        <h1 className="mb-5 text-center text-2xl font-bold text-buttonsLigth dark:text-darkText">Crear Cuenta</h1>
+        <h1 className="mb-5 text-center font-textFont text-[32px] font-medium text-buttonsLigth dark:text-darkText">
+          Crear Cuenta
+        </h1>
 
         <div className="flex flex-col justify-between xs:flex-row">
           <div className="flex flex-col xs:max-w-48">
             <label
               htmlFor="firstName"
-              className={clsx('text-lightText dark:text-darkText', !isFocused && 'hidden', 'mb-1 ml-2.5 text-sm')}
+              className={clsx(
+                'font-textFont text-lightText dark:text-darkText',
+                !isFocused && 'hidden',
+                'mb-1 ml-2.5 text-sm',
+              )}
             >
               Nombre
             </label>
@@ -125,7 +131,11 @@ export const RegisterForm = () => {
           <div className="flex flex-col xs:max-w-48">
             <label
               htmlFor="lastName"
-              className={clsx('text-lightText dark:text-darkText', !isFocused2 && 'hidden', 'mb-1 ml-2.5 text-sm')}
+              className={clsx(
+                'font-textFont text-lightText dark:text-darkText',
+                !isFocused2 && 'hidden',
+                'mb-1 ml-2.5 text-sm',
+              )}
             >
               Apellido
             </label>
@@ -153,7 +163,11 @@ export const RegisterForm = () => {
 
         <label
           htmlFor="email"
-          className={clsx('text-lightText dark:text-darkText', !isFocused3 && 'hidden', 'mb-1 ml-2.5 text-sm')}
+          className={clsx(
+            'font-textFont text-lightText dark:text-darkText',
+            !isFocused3 && 'hidden',
+            'mb-1 ml-2.5 text-sm',
+          )}
         >
           Correo electrónico
         </label>
@@ -199,7 +213,7 @@ export const RegisterForm = () => {
             })}
           />
           <label htmlFor="termsConditions" className="ml-2 text-lightText dark:text-darkText">
-            <Link href="/info/terms-and-conditions" className="underline">
+            <Link href="/info/terms-and-conditions" className="font-textFont underline">
               Acepto Términos & Condiciones
             </Link>
           </label>
@@ -233,7 +247,7 @@ export const RegisterForm = () => {
                 : isDark
                   ? 'buttonSecondDark dark:text-lightText'
                   : 'buttonSecond',
-              'relative m-1 min-h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-darkText dark:border-darkText dark:bg-darkText',
+              'relative m-1 min-h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-titleFont font-semibold text-darkText dark:border-darkText dark:bg-darkText',
             )}
             disabled={loading || !watch('email')} // Desactivar el botón si está cargando
           >
@@ -249,10 +263,10 @@ export const RegisterForm = () => {
 
         <button
           onClick={handleChange}
-          className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth px-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+          className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth px-3 font-titleFont font-semibold text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
           type="button"
         >
-          Ingresar
+          Inicia Sesión
         </button>
       </form>
     </div>

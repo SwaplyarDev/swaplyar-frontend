@@ -5,6 +5,9 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import VerifycodeEditRequest from '../VerifyCodeEditRequest/VerifyCodeEditRequest';
+import clsx from 'clsx';
+import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
+import useWindowWidth from '@/hooks/useWindowWidth';
 
 interface FormValues {
   transaccionId: string;
@@ -12,6 +15,8 @@ interface FormValues {
 }
 
 const SeachRequest: React.FC = () => {
+  const windowWidth = useWindowWidth();
+  const isMobile = windowWidth < 390;
   const [isToggled, setIsToggled] = useState(false);
   const [transaccionId, setTransaccionId] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -23,6 +28,7 @@ const SeachRequest: React.FC = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm<FormValues>();
 
   const handleSeachRequestSubmit = async (data: TransactionRequestData) => {
@@ -50,50 +56,69 @@ const SeachRequest: React.FC = () => {
   return (
     <div className="flex justify-center md:mx-10 lg:mx-0 lg:flex-none">
       <form
-        className="mt-3 flex h-full w-full flex-col lg:ml-7 lg:justify-evenly"
+        className="lg:max-w-inherit mt-3 flex h-full w-full max-w-[450px] flex-col lg:max-w-full lg:justify-evenly"
         onSubmit={handleSubmit(handleSeachRequestSubmit)}
       >
-        <label className="flex flex-col pr-2 text-right text-xl font-bold" htmlFor="transaccionId">
-          NUMERO DE SOLICITUD
+        <label className="mb-3 flex flex-col text-right text-xs font-bold xs:mb-0 lg:text-sm" htmlFor="transaccionId">
+          Número de Solicitud
         </label>
         <input
           disabled={isToggled}
-          className={`flex w-full border-0 border-b-4 border-solid ps-0 pt-0 text-right text-xl ${
+          className={`flex w-full border-0 border-b-[1px] border-solid pr-0 ps-0 pt-0 text-right text-base lg:text-xl ${
             isDark
-              ? 'border-b-darkText bg-transparent text-darkText placeholder-darkText placeholder-opacity-75 hover:border-b-buttonsLigth focus:border-b-buttonsLigth disabled:border-b-disabledDarkText disabled:text-disabledDarkText disabled:placeholder-disabledDarkText disabled:hover:border-b-disabledDarkText'
-              : 'border-b-buttonsLigth bg-transparent text-lightText placeholder-lightText placeholder-opacity-75 hover:border-b-selectBtsLight focus:border-b-selectBtsLight disabled:border-b-disabledDarkText disabled:text-disabledLightText disabled:placeholder-disabledLightText disabled:hover:border-b-disabledDarkText'
+              ? `${errors.transaccionId !== undefined ? 'placeholder-errorColor' : 'placeholder-placeholderDark'} border-b-darkText bg-transparent text-darkText hover:border-b-placeholderDark focus:border-b-placeholderDark disabled:border-b-disabledDarkText disabled:text-disabledDarkText disabled:placeholder-disabledDarkText disabled:hover:border-b-disabledDarkText`
+              : `${errors.transaccionId !== undefined ? 'placeholder-errorColor' : 'placeholder-inputLightDisabled'} border-b-buttonsLigth bg-transparent text-lightText hover:border-b-selectBtsLight focus:border-b-selectBtsLight disabled:border-b-disabledDarkText disabled:text-disabledLightText disabled:placeholder-disabledLightText disabled:hover:border-b-disabledDarkText`
           } outline-none focus:shadow-none focus:outline-none focus:ring-0`}
           type="text"
-          placeholder="Como figura en el recibo"
+          placeholder={
+            errors.transaccionId !== undefined
+              ? isMobile
+                ? 'N° de Solicitud*'
+                : 'N° de Solicitud como figura en el Correo Eletrónico*'
+              : isMobile
+                ? 'N° de Solicitud'
+                : 'N° de Solicitud como figura en el Correo Eletrónico'
+          }
           {...register('transaccionId', {
-            required: '• El número de solicitud es obligatorio',
+            required: 'El número de solicitud es obligatorio',
             pattern: {
               value: /^[A-Za-z0-9]{10,20}$/,
-              message: '• El número de solicitud debe tener entre 10 y 20 caracteres alfanuméricos',
+              message: 'El número de solicitud debe tener entre 10 y 20 caracteres alfanuméricos',
             },
           })}
           id="transaccionId"
         />
 
-        {errors.transaccionId && <span className="mt-1 text-sm text-red-500">{errors.transaccionId.message}</span>}
+        {errors.transaccionId && (
+          <span className="mt-1 text-end text-sm text-errorColor">{errors.transaccionId.message}</span>
+        )}
 
-        {errorMessage && <div className="mt-2 text-sm text-red-500">{errorMessage}</div>}
-        <div className="mb-10 mt-5 flex w-full justify-center text-center lg:mb-0 lg:justify-end xl:mr-44">
+        {errorMessage && <div className="mt-2 text-end text-sm text-errorColor">{errorMessage}</div>}
+        <div className="mb-10 mt-10 flex w-full flex-col items-center justify-center gap-1 text-center lg:mb-0 lg:justify-end">
           {!isToggled ? (
-            <button
-              type="submit"
-              disabled={isLoading}
-              className={`relative m-1 mt-8 flex h-[48px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 px-20 font-bold text-darkText hover:bg-buttonsLigth disabled:border-disabledDarkText disabled:bg-disabledButtonsLigth disabled:text-disabledLightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:border-disabledDarkText dark:disabled:bg-disabledDarkText dark:disabled:text-disabledLightText ${isDark ? (isLoading ? 'buttonSecondDarkDisabled' : 'buttonSecondDark') : isLoading ? 'buttonSecondDisabled' : 'buttonSecond'}`}
-            >
+            <>
               {isLoading ? (
-                <>
-                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
-                  Cargando...
-                </>
+                <div className="flex items-center justify-center">
+                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
+                </div>
               ) : (
-                'Buscar'
+                <button
+                  type="submit"
+                  className={clsx(
+                    isLoading || !watch('transaccionId')
+                      ? 'border-disabledButtonsLigth bg-disabledButtonsLigth dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText'
+                      : isDark
+                        ? 'buttonSecondDark dark:text-lightText'
+                        : 'buttonSecond',
+                    'relative m-1 min-h-[48px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth py-1 text-lg text-darkText dark:border-darkText dark:bg-darkText',
+                  )}
+                  disabled={isLoading || !watch('transaccionId')} // Desactivar el botón si está cargando
+                >
+                  Editar Solicitud
+                </button>
               )}
-            </button>
+              <ButtonBack route="/" isDark={isDark} label="Volver" size="100px" cancel={true} />
+            </>
           ) : (
             <VerifycodeEditRequest
               transaccionId={transaccionId}

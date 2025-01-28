@@ -1,10 +1,8 @@
-import SearchRequest from '@/components/searchRequest/SearchRequest'
-import React from 'react'
+import SearchRequest from '@/components/searchRequest/SearchRequest';
+import React from 'react';
 
 const SearchRequestPage = () => {
-  return (
-    <SearchRequest/>
-  )
-}
+  return <SearchRequest />;
+};
 
-export default SearchRequestPage
+export default SearchRequestPage;

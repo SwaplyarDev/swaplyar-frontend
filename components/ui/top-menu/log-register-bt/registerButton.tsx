@@ -14,7 +14,7 @@ function RegisterButton() {
         onClick={() => setView('register')}
         className={`relative h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
       >
-        <p className="font-bold">Registrarse</p>
+        <p className="font-titleFont font-semibold">Registrarse</p>
       </Link>
     </>
   );

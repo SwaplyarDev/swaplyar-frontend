@@ -33,6 +33,7 @@
 - **@fortawesome/\*:** Varias bibliotecas para el uso de iconos de Font Awesome.
 - **@heroicons/react 2.1.4:** Conjunto de iconos SVG.
 - **sweetalert2 11.12.4:** Estilos para alertas. [Documentacion](https://sweetalert2.github.io/#examples)
+- **react-countup 6.5.3:** Estilos para contadores. [Documentacion](https://www.npmjs.com/package/react-countup)
 
 ### Desarrollo
 
