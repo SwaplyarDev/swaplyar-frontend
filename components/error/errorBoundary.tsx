@@ -46,7 +46,7 @@ const ErrorBoundary = () => {
             />
           </article>
 
-          <article className="absolute z-20 ml-2 flex min-h-[200px] flex-col justify-center border-l-2 border-l-buttonsLigth pt-2 dark:border-l-darkText xs-mini-phone2:ml-3 xs-mini-phone2:min-w-[240px] xs-phone:ml-8 xs-phone:pt-5 sm:ml-20 md-phone:ml-12 sm-tablet:ml-14 md:ml-16 lg2:ml-24">
+          <article className="absolute z-20 ml-2 flex min-h-[200px] flex-col justify-center border-l-2 border-l-buttonsLigth pt-2 dark:border-l-darkText xs-mini-phone2:ml-3 xs-mini-phone2:min-w-[240px] xs-phone:ml-8 xs-phone:pt-5 sm:ml-20 md-phone:ml-12 sm-tablet:ml-14 md:inline-flex md:items-center md:justify-start">
             <h1 className="titleFont ml-4 hidden text-start text-4xl md-phone:block md-tablet:text-3xl">
               Ups...
               <br />
