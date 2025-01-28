@@ -20,8 +20,12 @@ import { fetchCurrencyData } from './currencyConversion';
  */
 export async function updateCurrentValueEURToBRL() {
   const data = await fetchCurrencyData('EUR', 'BRL');
-  const currentValueBRLToEUR = 1 / data.data.BRL;
-  const currentValueEURToBRL = data.data.BRL;
+  // Verificar que data es un número
+  if (typeof data !== 'number') {
+    throw new Error('El dato recibido no es un número.');
+  }
+  const currentValueBRLToEUR = 1 / data;
+  const currentValueEURToBRL = data;
 
   return { currentValueBRLToEUR, currentValueEURToBRL };
 }

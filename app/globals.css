@@ -464,3 +464,9 @@ div:where(.swal2-container).swal2-noanimation {
     font-family: 'Open Sans', sans-serif;
   }
 }
+
+/*Carrusel*/
+
+.slick-slide > div {
+  margin: 0 10px;
+}

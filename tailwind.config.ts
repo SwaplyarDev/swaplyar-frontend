@@ -62,12 +62,12 @@ const config: Config = {
         'custom-blue': 'rgba(1, 42, 142, 1)',
         'custom-blue-100': 'rgba(214, 226, 255, 1)',
         'custom-blue-200': 'rgba(194, 212, 255, 1)',
-        'custom-blue-300': 'rgba(144, 176, 254, 1)',
+        'custom-blue-300': 'rgba(144, 176, 254, 1)', // #90B0FE Usos (generalmente en modo claro): Boton azul desabilitado, input azul desabilitado, ...
         'custom-blue-400': 'rgba(93, 140, 254, 1)',
         'custom-blue-500': 'rgba(42, 104, 254, 1)',
         'custom-blue-600': 'rgba(1, 72, 244, 1)',
         'custom-blue-700': 'rgba(1, 57, 192, 1)',
-        'custom-blue-800': 'rgba(1, 42, 142, 1)',
+        'custom-blue-800': 'rgba(1, 42, 142, 1)', // #012A8A Usos (generalmente en modo claro): Boton azul, input azul, ...
         'custom-blue-900': 'rgba(1, 27, 91, 1)', //'custom-blue2
         'custom-blue-1000': 'rgba(0, 12, 41, 1)',
 
@@ -111,12 +111,12 @@ const config: Config = {
         'custom-aquamarineD-1000': 'rgba(86, 214, 220, 1)',
 
         //grayDark
-        'custom-grayD': 'rgba(37, 37, 38, 1)', //#252526
+        'custom-grayD': 'rgba(37, 37, 38, 1)', //#252526 COLOR DEL TEXTO EN MODO CLARO
         'custom-grayD-100': 'rgba(250, 250, 250, 1)',
         'custom-grayD-200': 'rgba(225, 225, 225, 1)', // #E1E1E1
         'custom-grayD-300': 'rgba(200, 200, 200, 1)',
         'custom-grayD-400': 'rgba(175, 175, 175, 1)',
-        'custom-grayD-500': 'rgba(150, 150, 150, 1)',
+        'custom-grayD-500': 'rgba(150, 150, 150, 1)', // #969696 Usos (generalmente en modo oscuro): Boton gris desabilitado, inputs gris desabilitado, ...
         'custom-grayD-600': 'rgba(125, 125, 125, 1)', //#7D7D7D
         'custom-grayD-700': 'rgba(100, 100, 100, 1)',
         'custom-grayD-800': 'rgba(75, 75, 75, 1)',
@@ -124,7 +124,7 @@ const config: Config = {
         'custom-grayD-1000': 'rgba(37, 37, 38, 1)',
 
         //whiteDark
-        'custom-whiteD': 'rgba(235, 231, 224, 1)', //EBE7E0
+        'custom-whiteD': 'rgba(235, 231, 224, 1)', //#EBE7E0 COLOR DEL TEXTO EN MODO OSCURO Usos (generalmente en modo oscuro): Boton blanco, inputs blanco, ...
         'custom-whiteD-100': 'rgba(255, 255, 251, 1)',
         'custom-whiteD-200': 'rgba(255, 255, 248, 1)',
         'custom-whiteD-300': 'rgba(255, 252, 245, 1)',
@@ -226,6 +226,8 @@ const config: Config = {
       textShadow: {
         light: '4px 4px 10px rgba(0, 0, 0, 0.9)',
         dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',
+        customLight: '7px 3px 0px rgba(0, 0, 0, 0.25);',
+        customDark: '7px 3px 0px rgba(131, 131, 131, 0.25);',
       },
       animation: {
         rotate: 'rotate 5s cubic-bezier(0.4, 0, 0.2, 1)',
