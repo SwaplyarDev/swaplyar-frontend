@@ -52,7 +52,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${roboto.className} bg-white text-lightText dark:bg-lightText dark:text-darkText`}>
+      <body className={`bg-white text-lightText dark:bg-lightText dark:text-darkText`}>
         <SessionProvider>
           <ThemeProvider>
             <MarginProvider>

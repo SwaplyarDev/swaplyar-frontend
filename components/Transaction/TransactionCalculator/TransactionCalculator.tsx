@@ -34,17 +34,9 @@ export default function TransactionCalculator() {
   const { resetToDefault } = useStepperStore();
   const router = useRouter();
   const { isDark } = useDarkTheme();
-  const [exchange, setExchange] = useState({ currency: 'USD', amount: 0 });
   const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } = useSystemSelection();
   const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne, rateForOneBank } =
     useAmountCalculator();
-
-  useEffect(() => {
-    setExchange({
-      currency: selectedSendingSystem?.coin as string,
-      amount: parseInt(sendAmount),
-    });
-  }, [sendAmount, selectedSendingSystem]);
 
   const pathname = usePathname();
   const { pass } = useControlRouteRequestStore((state) => state);
@@ -73,10 +65,24 @@ export default function TransactionCalculator() {
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
       <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight p-8 shadow-md dark:bg-calculatorDark dark:text-white lg-tablet:min-w-[500px]">
-        <p className="w-full max-w-lg text-2xl text-blue-800 dark:text-darkText xs:text-[2rem]">
-          {selectedSendingSystem?.id === 'bank'
-            ? `${rateForOneBank.toFixed(2)} ${selectedSendingSystem?.coin} = 1 ${selectedReceivingSystem?.coin}`
-            : `1 ${selectedSendingSystem?.coin} = ${rateForOne.toFixed(2)} ${selectedReceivingSystem?.coin}`}
+        <p className="flex w-full max-w-lg items-center gap-[7px] font-textFont text-custom-grayD dark:text-darkText">
+          {selectedSendingSystem?.id === 'bank' ? (
+            <>
+              <span className="text-[32px]/[150%] font-light">{rateForOneBank.toFixed(2)}</span>
+              <span className="text-[21px]/[150%] font-semibold">{selectedSendingSystem?.coin}</span>
+              <span className="text-[21px]/[150%] font-normal">=</span>
+              <span className="text-[32px]/[150%] font-light">1</span>
+              <span className="text-[21px]/[150%] font-semibold">{selectedReceivingSystem?.coin}</span>
+            </>
+          ) : (
+            <>
+              <span className="text-[32px]/[150%] font-light">1</span>
+              <span className="text-[21px]/[150%] font-semibold">{selectedSendingSystem?.coin}</span>
+              <span className="text-[21px]/[150%] font-normal">=</span>
+              <span className="text-[32px]/[150%] font-light">{rateForOne.toFixed(2)}</span>
+              <span className="text-[21px]/[150%] font-semibold">{selectedReceivingSystem?.coin}</span>
+            </>
+          )}
         </p>
 
         <TransactionSection
@@ -94,7 +100,7 @@ export default function TransactionCalculator() {
           <InvertSystems onInvert={handleInvertSystemsClick} selectedReceivingSystem={selectedReceivingSystem} />
         </div>
         <SystemInfo pointBorder="border" linePosition="up">
-          <p className="text-xs xs:text-base">Información del sistema de recepción</p>
+          <p className="font-textFont text-xs font-light xs:text-sm">Información del sistema de recepción</p>
         </SystemInfo>
         <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
           <TransactionSection
@@ -108,58 +114,56 @@ export default function TransactionCalculator() {
             label={`Recibes ${selectedReceivingSystem?.coin}`}
             isSending={false}
           />
-          <div className="mt-8">
-            <button
-              className={clsx(
-                isDark
-                  ? {
-                      buttonSecondDark: !(
-                        isProcessing ||
-                        sendAmount === '' ||
-                        (selectedSendingSystem?.id === 'paypal' && parseInt(sendAmount) < 5) ||
-                        (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
-                        (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
-                        (selectedReceivingSystem?.id === 'paypal' && parseInt(receiveAmount) < 5) ||
-                        (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
-                        (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
-                      ),
-                    }
-                  : {
-                      buttonSecond: !(
-                        isProcessing ||
-                        sendAmount === '' ||
-                        (selectedSendingSystem?.id === 'paypal' && parseInt(sendAmount) < 5) ||
-                        (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
-                        (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
-                        (selectedReceivingSystem?.id === 'paypal' && parseInt(receiveAmount) < 5) ||
-                        (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
-                        (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
-                      ),
-                    },
-                'relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-10 py-3 font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2',
-              )}
-              onClick={handleSubmit}
-              disabled={
-                isProcessing ||
-                sendAmount === '' ||
-                (selectedSendingSystem?.id === 'paypal' && parseInt(sendAmount) < 5) ||
-                (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
-                (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
-                (selectedReceivingSystem?.id === 'paypal' && parseInt(receiveAmount) < 5) ||
-                (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
-                (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
-              }
-            >
-              {isProcessing ? (
-                <div className="flex items-center justify-center gap-2">
-                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
-                  Procesando...
-                </div>
-              ) : (
-                'Procesar pago'
-              )}
-            </button>
-          </div>
+          <button
+            className={clsx(
+              isDark
+                ? {
+                    buttonSecondDark: !(
+                      isProcessing ||
+                      sendAmount === '' ||
+                      (selectedSendingSystem?.id === 'paypal' && parseInt(sendAmount) < 5) ||
+                      (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
+                      (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
+                      (selectedReceivingSystem?.id === 'paypal' && parseInt(receiveAmount) < 5) ||
+                      (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
+                      (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
+                    ),
+                  }
+                : {
+                    buttonSecond: !(
+                      isProcessing ||
+                      sendAmount === '' ||
+                      (selectedSendingSystem?.id === 'paypal' && parseInt(sendAmount) < 5) ||
+                      (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
+                      (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
+                      (selectedReceivingSystem?.id === 'paypal' && parseInt(receiveAmount) < 5) ||
+                      (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
+                      (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
+                    ),
+                  },
+              'mt-8 w-full max-w-[340px] rounded-full bg-custom-blue-800 px-[14px] py-3 font-titleFont text-base font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-custom-grayD dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD',
+            )}
+            onClick={handleSubmit}
+            disabled={
+              isProcessing ||
+              sendAmount === '' ||
+              (selectedSendingSystem?.id === 'paypal' && parseInt(sendAmount) < 5) ||
+              (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
+              (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
+              (selectedReceivingSystem?.id === 'paypal' && parseInt(receiveAmount) < 5) ||
+              (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
+              (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
+            }
+          >
+            {isProcessing ? (
+              <div className="flex items-center justify-center gap-2">
+                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
+                Procesando...
+              </div>
+            ) : (
+              'Procesar pago'
+            )}
+          </button>
           {sendAmount === '' ? (
             ''
           ) : (
