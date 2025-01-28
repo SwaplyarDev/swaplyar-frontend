@@ -1,3 +1,9 @@
+/**
+ * Este codigo define en constantes los iconos que se utilizaran a la par
+ * de la resuesta del backend en la funcion "Search Request"
+ * Cada ícono está definido como un componente funcional de React, utilizando elementos SVG
+ */
+
 import React from 'react';
 
 export const IconoVacio = () => <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" />;

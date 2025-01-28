@@ -1,3 +1,23 @@
+/**
+ * Esta función realiza una solicitud al backend para obtener el estado de una transacción.
+ *
+ * - **Parámetros**:
+ *   - `transactionId` (string): ID de la transacción.
+ *   - `lastName` (string): Apellido del usuario asociado a la transacción.
+ *
+ * - **Comportamiento**:
+ *   1. Construye la URL de la API utilizando `NEXT_PUBLIC_BACKEND_URL` del entorno.
+ *   2. Agrega los parámetros de consulta `transaction_id` y `last_name`.
+ *   3. Realiza una solicitud `GET` al endpoint `/v1/transactionStatus`.
+ *   4. Procesa la respuesta:
+ *      - Si la respuesta es exitosa (`response.ok`):
+ *        - Devuelve el estado de la transacción (`data.status`) y un mensaje de éxito.
+ *      - Si la respuesta es fallida:
+ *        - Extrae los datos del error (`errorData.message`) y lanza una excepción.
+ *
+ * Esta funcion se utiliza en el archivo "SearchRequest" /components/Searchrequest
+ */
+
 'use server';
 
 interface TransactionStatusError {
