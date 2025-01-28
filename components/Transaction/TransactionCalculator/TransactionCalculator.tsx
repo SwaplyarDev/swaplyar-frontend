@@ -34,17 +34,9 @@ export default function TransactionCalculator() {
   const { resetToDefault } = useStepperStore();
   const router = useRouter();
   const { isDark } = useDarkTheme();
-  const [exchange, setExchange] = useState({ currency: 'USD', amount: 0 });
   const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } = useSystemSelection();
   const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne, rateForOneBank } =
     useAmountCalculator();
-
-  useEffect(() => {
-    setExchange({
-      currency: selectedSendingSystem?.coin as string,
-      amount: parseInt(sendAmount),
-    });
-  }, [sendAmount, selectedSendingSystem]);
 
   const pathname = usePathname();
   const { pass } = useControlRouteRequestStore((state) => state);

@@ -9,8 +9,6 @@ import { FlyerGif, RecargaPaypal, UsdArs } from '@/utils/assets/imgDatabaseCloud
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
-import CardHome from '../ui/CardHome/CardHome';
-import CarruselHome from '../ui/CarruselHome/CarruselHome';
 
 export default function HomePage() {
   const resetToDefault = useSystemStore((state) => state.resetToDefault);
@@ -74,51 +72,6 @@ export default function HomePage() {
                 </>
               }
             />
-          </div>
-          <div className="mb-10 flex flex-col items-center gap-5">
-            <h2 className="font-textFont text-4xl text-custom-grayD dark:text-darkText">
-              Que dice nuestros clientes de SwaplyAr
-            </h2>
-            <section className="hidden gap-8 xl:flex">
-              <CardHome
-                icon={RecargaPaypal}
-                name="Oa Johan Javier Suarez Merchan"
-                description="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años,"
-                date="10/14/2025"
-              />
-              <CardHome
-                icon={RecargaPaypal}
-                name="Oa Johan Javier Suarez Merchan"
-                description="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años,"
-                date="10/14/2025"
-              />
-              <CardHome
-                icon={RecargaPaypal}
-                name="Oa Johan Javier Suarez Merchan"
-                description="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años,"
-                date="10/14/2025"
-              />
-            </section>
-            <CarruselHome>
-              <CardHome
-                icon={RecargaPaypal}
-                name="Oa Johan Javier Suarez Merchan"
-                description="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años,"
-                date="10/14/2025"
-              />
-              <CardHome
-                icon={RecargaPaypal}
-                name="Oa Johan Javier Suarez Merchan"
-                description="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años,"
-                date="10/14/2025"
-              />
-              <CardHome
-                icon={RecargaPaypal}
-                name="Oa Johan Javier Suarez Merchan"
-                description="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años,"
-                date="10/14/2025"
-              />
-            </CarruselHome>
           </div>
         </article>
       </section>
