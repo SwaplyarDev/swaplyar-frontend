@@ -13,7 +13,7 @@ interface InfoBlockProps {
 
 export default function InfoBlock({ title, imageSrc, imageAlt, content, contentNode }: InfoBlockProps) {
   return (
-    <div className="mb-12 mt-16 flex max-w-4xl flex-col items-center justify-center">
+    <article className="mb-12 mt-16 flex max-w-4xl flex-col items-center justify-center">
       <div className="info-image-container mb-4 flex justify-center">
         <Image
           src={imageSrc}
@@ -25,16 +25,21 @@ export default function InfoBlock({ title, imageSrc, imageAlt, content, contentN
       </div>
       <div className="info-content-container w-full">
         <div className="flex flex-col items-center">
-          <h2 className="dark-title mb-4 text-center text-3xl text-gray-blue dark:text-white">{title}</h2>
+          <h2 className="dark-title mb-4 text-center font-titleFont text-3xl text-lightText dark:text-darkText">
+            {title}
+          </h2>
         </div>
-        <div className="info-content text-left text-xl text-gray-blue dark:text-white">
+        <div className="info-content text-left text-xl text-lightText dark:text-darkText">
           {contentNode ? (
             contentNode
           ) : (
-            <p className="text-gray-700 dark:text-white" dangerouslySetInnerHTML={{ __html: content || '' }}></p>
+            <p
+              className="font-textFont text-lightText dark:text-darkText"
+              dangerouslySetInnerHTML={{ __html: content || '' }}
+            ></p>
           )}
         </div>
       </div>
-    </div>
+    </article>
   );
 }
