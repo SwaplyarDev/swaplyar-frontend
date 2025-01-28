@@ -1,5 +1,4 @@
-'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -24,27 +23,42 @@ export default function SystemSelect({ systems, selectedSystem, onSystemSelect, 
 
   const { selectedSendingSystem, selectedReceivingSystem, activeSelect, setActiveSelect } = useSystemStore();
 
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const handleClick = () => {
     if (activeSelect === (isSending ? 'send' : 'receive')) {
       setShowOptionsInternal((prev) => !prev);
     } else {
-      // Cierra cualquier otro select abierto antes de abrir este
       setActiveSelect(isSending ? 'send' : 'receive');
       setShowOptionsInternal(true);
     }
   };
 
   useEffect(() => {
-    // Si cambia `activeSelect`, asegúrate de cerrar el menú si este no es el select activo
     if (activeSelect !== (isSending ? 'send' : 'receive')) {
       setShowOptionsInternal(false);
     }
   }, [activeSelect, isSending]);
 
+  // Detect clicks outside the dropdown to close it
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowOptionsInternal(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, []);
+
   const handleOptionClick = (system: System) => {
     onSystemSelect(system);
     setShowOptionsInternal(false);
-    setActiveSelect(null); // Cierra el select después de seleccionar una opción
+    setActiveSelect(null);
   };
 
   const updatedSystems = systems.map((system) => ({
@@ -53,7 +67,7 @@ export default function SystemSelect({ systems, selectedSystem, onSystemSelect, 
   }));
 
   return (
-    <div className="relative w-full sm:mt-4">
+    <div className="relative w-full sm:mt-4" ref={dropdownRef}>
       <button
         className={`system-input-select flex h-16 w-full items-center justify-between rounded-2xl rounded-t-none border-2 border-t-0 border-[#012c8a] p-2 dark:border-gray-200 xs:h-[7.4rem] sm:w-64 sm:justify-start sm:rounded-bl-none sm:rounded-tl-none sm:rounded-tr-2xl sm:border-l-0 sm:border-t-2 ${
           isSending ? 'animation-system-send' : 'animation-system-receive'
@@ -63,7 +77,7 @@ export default function SystemSelect({ systems, selectedSystem, onSystemSelect, 
         {selectedSystem ? (
           <div className="flex w-full justify-center">
             <Image
-              src={isDark == true ? selectedSystem.logoDark : selectedSystem.logo}
+              src={isDark ? selectedSystem.logoDark : selectedSystem.logo}
               alt={selectedSystem.name}
               width={200}
               height={70}
@@ -84,7 +98,7 @@ export default function SystemSelect({ systems, selectedSystem, onSystemSelect, 
                 system.isDisabled ? 'cursor-not-allowed opacity-50' : ''
               }`}
             >
-              <Image src={isDark == true ? system.logoDark : system.logo} alt={system.name} width={200} height={70} />
+              <Image src={isDark ? system.logoDark : system.logo} alt={system.name} width={200} height={70} />
             </li>
           ))}
         </ul>
