@@ -149,6 +149,9 @@ export const Error_500_dark = '/images/dark-500.png';
 export const Post1_500 = '/images/post1-500.png';
 export const Post2_500 = '/images/post2-500.png';
 
+/**Mantenimiento**/
+export const Mantenimiento = '/images/WebsiteDesignPrototype.png';
+
 /**chronometer**/
 export const Reloj = '/images/reloj.png';
 export const Enchufe_dark = '/images/enchufe_dark.png';

@@ -131,7 +131,7 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
                       {card.title}
                     </h3>
                   </div>
-                  <div className="card-back backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-lg bg-[#000c29] p-4 text-darkText shadow-custom-black dark:bg-gray-800 dark:text-darkText">
+                  <div className="card-back backface-hidden shadow-custom-black absolute flex h-full w-full flex-col items-center justify-center rounded-lg bg-[#000c29] p-4 text-darkText dark:bg-gray-800 dark:text-darkText">
                     <Image
                       src="/images/rotate-card-icon.svg"
                       alt="Icono de rotacion de la card"

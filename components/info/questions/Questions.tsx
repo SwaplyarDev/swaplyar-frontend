@@ -31,8 +31,6 @@ const Accordion = styled((props: AccordionProps & { isDark: boolean; expanded: b
 }));
 
 const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolean; expanded: boolean }) => (
-  /*${props.isDark ? 'group-hover:bg-custom-600'
-: 'group-hover:bg-custom-blue'}*/
   <MuiAccordionSummary
     expandIcon={
       <div
@@ -120,8 +118,8 @@ const FrequentlyQuestions = () => {
     >
       <AnimatedBlurredCircles tope={'top-[20px]'} />
 
-      <header className={'mt-10 text-left text-center text-4xl'}>
-        <p className="font-titleFont">Preguntas Frecuentes</p>
+      <header className={'mb-10 mt-10 text-left text-center text-4xl lg:mt-20'}>
+        <p className="font-titleFont font-medium md:text-[38px] lg:text-[40px]">Preguntas Frecuentes</p>
       </header>
 
       <section className="grid max-w-[716px] gap-6 py-12" style={{ marginInline: currentMargin }}>
@@ -139,7 +137,13 @@ const FrequentlyQuestions = () => {
               expanded={expanded === `panel${index}`}
             >
               <Typography
-                className={`text-xl ${isDark ? 'text-custom-whiteD' : 'text-custom-grayD'} ${isDark && expanded === `panel${index}` ? 'font-semibold' : 'font-normal'} ${!isDark && expanded === `panel${index}` ? 'font-semibold text-[rgb(1,42,141)]' : 'font-normal'} `}
+                className={`text-xl ${
+                  isDark
+                    ? 'text-custom-whiteD'
+                    : expanded === `panel${index}`
+                      ? 'text-custom-blue-800'
+                      : 'text-custom-grayD'
+                } ${expanded === `panel${index}` ? 'font-semibold' : 'font-normal'}`}
               >
                 {dato.title}
               </Typography>

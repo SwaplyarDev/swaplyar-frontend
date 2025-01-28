@@ -3,6 +3,8 @@
 
 import SwapVertIcon from '@mui/icons-material/SwapVert';
 import { System } from '@/types/data';
+import clsx from 'clsx';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 interface InvertSystemsProps {
   onInvert: () => void;
@@ -10,9 +12,17 @@ interface InvertSystemsProps {
 }
 
 export default function InvertSystems({ onInvert, selectedReceivingSystem }: InvertSystemsProps) {
+  const { isDark } = useDarkTheme();
   return (
     <button
-      className={`big-icon-button rounded-3xl bg-blue-800 text-white transition-all duration-300 ease-in-out ${selectedReceivingSystem?.id === 'pix' ? '' : 'hover:bg-blue-700'} focus:outline-none`}
+      className={clsx(
+        selectedReceivingSystem?.id === 'pix'
+          ? 'border-disabledButtonsLigth bg-disabledButtonsLigth dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText'
+          : isDark
+            ? 'buttonSecondDark dark:text-lightText'
+            : 'buttonSecond',
+        'relative m-1 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth font-titleFont font-semibold text-darkText dark:border-darkText dark:bg-darkText',
+      )}
       disabled={selectedReceivingSystem?.id === 'pix'}
       onClick={onInvert}
       aria-label="Invertir sistemas"
