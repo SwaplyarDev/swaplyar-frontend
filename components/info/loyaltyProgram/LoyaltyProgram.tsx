@@ -31,32 +31,33 @@ function LoyaltyProgram() {
   const { isDark } = useDarkTheme();
 
   return (
-    <div className="relative py-20">
+    <div className="relative">
       <AnimatedBlurredCircles tope={'top-[20px]'} />
       <div>
         <div className="text-center">
           <div className="flex justify-center">
-            <h1 className="mb-4 mr-2 text-4xl font-bold">SwaplyAr Plus Rewards™ </h1>
-            <p className="mb-4 text-4xl font-bold"> premia tu fidelidad</p>
-          </div>
-          <div className="mt-4">
-            <button
-              id="submit-25456"
-              className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
-              onClick={() => handleChange()}
-            >
-              ¡Únete ya!
-            </button>
+            <section className="my-20 mb-10 mr-2 max-w-[796px] font-textFont text-[38px] font-medium xs:px-[100px] xs:text-[40px]">
+              SwaplyAr Plus Rewards™ premia tu fidelidad
+            </section>
           </div>
         </div>
 
         <div className="py-10">
           <div className="text-center">
-            <h2 className="mb-4 text-2xl font-bold">
-              Cada transacción es una oportunidad de obtener más. Únete a SwaplyAr Plus Rewards y disfruta de beneficios
-              exclusivos cada vez que realices un intercambio.
-            </h2>
-            <p className="">
+            <section className="mx-auto mb-4 max-w-[796px] text-start text-2xl font-normal">
+              <strong className="font-semibold"> Cada transacción es una oportunidad de obtener más.</strong>
+              Únete a SwaplyAr Plus Rewards y disfruta de beneficios exclusivos cada vez que realices un intercambio.
+            </section>
+            <div className="mb-10 mt-4">
+              <button
+                id="submit-25456"
+                className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+                onClick={() => handleChange()}
+              >
+                ¡Únete ya!
+              </button>
+            </div>
+            <p className="mx-auto max-w-[796px] text-start xs:px-[96px]">
               ¿Aún no formas parte?{' '}
               <strong>
                 <LinkWithHover href="#">Crea</LinkWithHover>
