@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import './shadow.css';
+import clsx from 'clsx';
 
 interface InfoBlockProps {
   title: string;
@@ -9,29 +10,43 @@ interface InfoBlockProps {
   imageAlt: string;
   content?: string;
   contentNode?: React.ReactNode;
+  position?: boolean;
 }
 
-export default function InfoBlock({ title, imageSrc, imageAlt, content, contentNode }: InfoBlockProps) {
+export default function InfoBlock({
+  title,
+  imageSrc,
+  imageAlt,
+  content,
+  contentNode,
+  position = false,
+}: InfoBlockProps) {
   return (
-    <div className="mb-12 mt-16 flex max-w-4xl flex-col items-center justify-center">
-      <div className="info-image-container mb-4 flex justify-center">
+    <div
+      className={clsx(
+        position ? 'flex-col sm:flex-row-reverse' : 'flex-col sm:flex-row',
+        'flex max-w-4xl items-center justify-center gap-4',
+      )}
+    >
+      <div className="info-image-container mb-4 flex w-full max-w-[331px] justify-center sm:max-w-[487px]">
         <Image
           src={imageSrc}
           alt={imageAlt}
-          width={350}
+          width={387}
           height={350}
-          className="drop-shadow-light dark:drop-shadow-darkmode"
+          className="w-full drop-shadow-light dark:drop-shadow-darkmode"
         />
       </div>
-      <div className="info-content-container w-full">
-        <div className="flex flex-col items-center">
-          <h2 className="dark-title mb-4 text-center text-3xl text-gray-blue dark:text-white">{title}</h2>
-        </div>
-        <div className="info-content text-left text-xl text-gray-blue dark:text-white">
+      <div className="info-content-container flex w-full max-w-[433px] flex-col gap-4">
+        <h2 className="text-start font-textFont text-4xl text-custom-grayD dark:text-custom-whiteD">{title}</h2>
+        <div className="info-content text-left text-base text-custom-grayD dark:text-custom-whiteD">
           {contentNode ? (
             contentNode
           ) : (
-            <p className="text-gray-700 dark:text-white" dangerouslySetInnerHTML={{ __html: content || '' }}></p>
+            <p
+              className="font-textFont text-base font-light text-custom-grayD dark:text-custom-whiteD"
+              dangerouslySetInnerHTML={{ __html: content || '' }}
+            ></p>
           )}
         </div>
       </div>

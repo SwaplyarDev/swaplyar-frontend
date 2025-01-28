@@ -44,6 +44,7 @@ Este documento detalla las tecnologías y herramientas empleadas para el desarro
 
 - **[use-debounce 10.0.0](https://www.npmjs.com/package/use-debounce)**: Hook para implementar debounce en eventos.
 - **[sweetalert2 11.12.4](https://sweetalert2.github.io/)**: Biblioteca para mostrar alertas elegantes y funcionales.
+- **[react-countup 6.5.3](https://www.npmjs.com/package/react-countup)**: Librería de React que se utiliza para animar números de forma fluida
 
 ---
 

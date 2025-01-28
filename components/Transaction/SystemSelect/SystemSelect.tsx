@@ -75,7 +75,7 @@ export default function SystemSelect({ systems, selectedSystem, onSystemSelect, 
         <FontAwesomeIcon icon={faChevronDown} width={32} height={16} />
       </button>
       {showOptionsInternal && (
-        <ul className="scrollable-list absolute z-[500] max-h-64 w-full overflow-y-auto overflow-x-hidden rounded-2xl border border-[#012c8a] bg-white shadow-md dark:border-white dark:bg-gray-800 sm:w-64">
+        <ul className="scrollable-list absolute z-[500] max-h-64 w-full overflow-y-auto overflow-x-hidden rounded-2xl border border-custom-blue-800 bg-white shadow-md dark:border-white dark:bg-gray-800 sm:w-64">
           {updatedSystems.map((system) => (
             <li
               key={system.id}
