@@ -8,13 +8,18 @@ import { inter } from '@/config/fonts/fonts';
 import { useRouter } from 'next/navigation';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 
-const ErrorBoundary = () => {
+interface ErrorBoundaryProps {
+  reset: () => void;
+}
+
+const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ reset }) => {
   const [counter, setCounter] = useState(10);
   const router = useRouter();
   const { isDark } = useDarkTheme();
 
   useEffect(() => {
     if (counter === 0) {
+      reset();
       router.push('/');
       return;
     }
@@ -24,7 +29,7 @@ const ErrorBoundary = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [counter, router]);
+  }, [counter, reset, router]);
   return (
     <>
       <section className="relative m-auto flex w-full max-w-7xl flex-col items-start gap-20">
@@ -63,7 +68,10 @@ const ErrorBoundary = () => {
             </h1>
 
             <Link href="/">
-              <button className="ml-3 flex w-[165px] justify-center rounded-full border border-buttonsLigth bg-transparent p-2 text-base text-buttonsLigth dark:border-darkText dark:text-darkText">
+              <button
+                className="ml-3 flex w-[165px] justify-center rounded-full border border-buttonsLigth bg-transparent p-2 text-base text-buttonsLigth dark:border-darkText dark:text-darkText"
+                onClick={reset}
+              >
                 Redireccion en {counter}
               </button>
             </Link>
