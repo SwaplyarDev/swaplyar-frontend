@@ -134,7 +134,7 @@ export const LoginForm = () => {
           className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth px-3 font-titleFont font-semibold text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
           type="button"
         >
-          Crear una nueva cuenta
+          Registrate aquí
         </button>
       </form>
     </div>

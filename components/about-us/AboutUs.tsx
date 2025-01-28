@@ -65,90 +65,81 @@ const sectionsData = [
 
 const AboutUs = () => {
   const { isDark } = useDarkTheme();
-  return (
-    <main>
-      <AnimatedBlurredCircles tope="top-[0px]" />
-      <div className="relative flex flex-col items-center justify-center px-4 md:px-8 lg:px-4">
-        <div className="m-auto flex w-full max-w-screen-phone flex-col items-center justify-center pt-5 text-black dark:text-white xs-mini-phone2:max-w-screen-tablet md:max-w-screen-desktop">
-          <div className="md:max-w-[80%]">
-            <div className="rs-wrapper-v4 mx-auto items-center justify-center text-center md:w-full">
-              <h1 className="text-center font-titleFont text-[40px] font-medium md:font-[38px] lg:text-left lg:text-4xl">
-                Nuestra Historia, Misión, Visión y Valores
-              </h1>
-            </div>
 
-            <section className="rs-wrapper-v4 mx-auto mb-12 max-w-[1000px] text-left sm:mt-4 md:mt-8 md:w-full lg:mt-8">
-              <p className="mx-auto mt-4 font-textFont font-light sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
+  return (
+    <>
+      <div className="relative mx-4 flex flex-col items-center justify-center md:mx-8 lg:mx-4">
+        <AnimatedBlurredCircles tope="top-[0px]" />
+        <div className="flex w-full max-w-[1000px] flex-col items-center justify-center text-lightText dark:text-darkText">
+          <section className="md:max-w-[80%]">
+            <h1 className="mt-6 text-center font-titleFont text-[38px] font-medium lg2:mt-20 lg2:text-left lg2:text-[40px]">
+              Nuestra Historia, Misión, Visión y Valores
+            </h1>
+
+            <section className="rs-wrapper-v4 max-w-[1000px] text-left font-textFont font-light sm:mt-4 md:mt-8 md:w-full lg2:mt-10">
+              <p className="mt-6 md:mt-7 md:text-base lg:text-xl">
                 En SwaplyAr, transformamos la forma en que las personas y empresas realizan transacciones
                 internacionales, garantizando un intercambio seguro y confiable entre las principales billeteras
                 virtuales y cuentas bancarias a nivel global. Nuestro enfoque en la seguridad, rapidez y transparencia
                 nos permite ofrecer soluciones financieras innovadoras que se adaptan a tus necesidades.
               </p>
-              <p className="mx-auto mt-4 font-textFont font-light sm:mt-6 sm:text-base md:mt-4 md:text-base lg:text-xl">
+              <p className="mt-6 md:mt-7 md:text-base lg:text-xl">
                 Desde nuestros inicios, SwaplyAr nació con la visión de simplificar las transferencias internacionales
                 para todos: empresas, personas y familias. Nos dedicamos a proporcionar servicios rápidos, seguros y
                 accesibles, siempre enfocados en garantizar la mejor experiencia para cada cliente.
               </p>
             </section>
-          </div>
+          </section>
 
-          <div className="w-full max-w-[1000px]">
+          <div className="mt-6 w-full max-w-[1000px] lg2:mt-10">
             <CaedAboutUs cardsData={cardsData} />
           </div>
 
-          <div className="flex max-w-[1000px] flex-col gap-10 pt-10">
+          <section className="mt-6 flex flex-col gap-6 text-lightText dark:text-darkText lg2:mt-10 lg2:gap-10">
             {sectionsData.map((section, i) => (
-              <section key={i}>
+              <article key={i}>
                 <h2 className="font-textFont text-4xl">{section.title}</h2>
                 <p className="font-textFont font-light">{section.description}</p>
-                {section.secondaryDescription && (
-                  <p className="pt-5 font-textFont font-light">{section.secondaryDescription}</p>
-                )}
-              </section>
+                {section.secondaryDescription && <p className="mt-6">{section.secondaryDescription}</p>}
+              </article>
             ))}
-          </div>
+          </section>
 
-          <div className="my-10 flex w-full max-w-[1000px] justify-center">
-            <div className="grid w-[80%] grid-cols-1 items-center justify-center gap-8 md:grid-cols-2">
-              <div className="col-right order-1 text-left text-black dark:text-white sm:text-left md:order-2">
-                <p className="font-textFont text-lg">
+          <section className="mt-6 flex w-full max-w-[1000px] justify-center">
+            <section className="grid w-[90%] grid-cols-1 items-center justify-center gap-6 md:w-full md:grid-cols-2">
+              <article className="col-right order-1 text-left font-textFont text-lg text-lightText dark:text-darkText md:order-2">
+                <p>
                   "Nos Dedicamos a transformar la manera en que las personas manejan su dinero, utilizando las
                   tecnologias mas avanzadas y sistemas de pago innovadores. Porque entendemos que detrás de cada
                   transacción hay sueños, metas y necesidades, trabajamos incansablemente para brindar soluciones que
                   ofrezcan tranquilidad, confianza y seguridad. Queremos que sientas que tu dinero está en las mejores
                   manos, acompañándote en cada paso hacia lo que más valoras."
                 </p>
-              </div>
+              </article>
 
-              <div className="col-left order-2 flex flex-col items-center md:order-1">
-                <Image
-                  src="/images/CEO&CPO.png"
-                  alt="Chief Executive Officer (CEO)"
-                  width={250}
-                  height={250}
-                  className="sm:h-[300px] sm:w-[300px]"
-                />
-                <div className="text-team mt-4 text-center text-black dark:text-white">
-                  <h5 className="font-textFont text-[28px]">Oa Johan Javier Suarez Merchan</h5>
-                  <h5 className="font-textFont text-xl font-light">Founder &amp; Chief Executive Officer (CEO)</h5>
+              <article className="col-left order-2 flex flex-col items-center md:order-1">
+                <Image src="/images/CEO&CPO.png" alt="Chief Executive Officer (CEO)" width={286} height={286} />
+                <div className="text-team mt-4 text-center font-textFont text-lightText dark:text-darkText">
+                  <h5 className="text-[28px]">Oa Johan Javier Suarez Merchan</h5>
+                  <h5 className="text-xl font-light">Founder &amp; Chief Executive Officer (CEO)</h5>
                 </div>
-              </div>
-            </div>
-          </div>
+              </article>
+            </section>
+          </section>
         </div>
       </div>
-      <div className="mt-10 text-center">
+      <section className="mt-[47px] overflow-hidden text-center">
         <FlyerTrabajo imageSrc={FlyerGif}>
           <span className="flex flex-col gap-2">
             <p className="font-textFont text-[21px] font-extrabold">¿Nuevo en SwaplyAr?</p>
-            <p className="font-textFont text-[21px] font-extrabold">
+            <p className="w-[731px] font-textFont text-[21px] font-extrabold">
               Conoce cómo funciona nuestra plataforma y comienza a transferir <br /> dinero de forma sencilla y segura.
             </p>
           </span>
           <div>
             <button
               id="bannerHTUButton"
-              className={`trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:border-selectBtsLight dark:border-darkText dark:bg-darkText dark:text-black ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+              className={`trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-[14px] py-3 text-lg duration-300 hover:border-selectBtsLight dark:border-darkText dark:bg-darkText dark:text-black ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
             >
               <Link
                 href={'/info/how-to-use'}
@@ -159,8 +150,8 @@ const AboutUs = () => {
             </button>
           </div>
         </FlyerTrabajo>
-      </div>
-    </main>
+      </section>
+    </>
   );
 };
 

@@ -1,6 +1,5 @@
 import EditSoli from '@/components/EditSolicitud/EditSoli';
 import NewSwaply from '@/components/NewSwaplyAR/newSwaply';
-
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
