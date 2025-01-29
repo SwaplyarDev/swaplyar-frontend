@@ -1,3 +1,31 @@
+/**
+ * **SearchRequest Component**
+ *
+ * Este componente se encarga de manejar la búsqueda de solicitudes en SwaplyAr.
+ *
+ * - **Dependencias principales**:
+ *   - `useForm`: Manejo de formularios y validación.
+ *   - `useDarkTheme`: Modo oscuro.
+ *   - `useStatusManager`: Control del estado de las solicitudes.
+ *   - `searchRequest`: Función para buscar solicitudes en la base de datos.
+ *   - `showStatusAlert`: Muestra alertas personalizadas basadas en los estados.
+ *
+ * - **Funciones clave**:
+ *   1. `handleAddNextStatus`: Agrega un estado predefinido a la lista de estados actuales.
+ *   2. `handleSearchRequest`: Mapea estados únicos recibidos desde el backend a sus descripciones e íconos correspondientes, y muestra un alerta con el resultado.
+ *
+ *   3. `onSubmit`:
+ *      - Envía el formulario, llama al backend y gestiona la respuesta de los estados de la solicitud.
+ *
+ * - **Interfaz de usuario**:
+ *   - Formulario para capturar el número de solicitud y apellido.
+ *   - Botón de búsqueda con estado de carga (usando un gif).
+ *
+ * - **Estados locales**:
+ *   - `loading`: Indica si la solicitud está en proceso.
+ *   - `currentIndex`: Controla el índice de estados predefinidos.
+ */
+
 'use client';
 import Image from 'next/image';
 import React, { useState } from 'react';
@@ -6,11 +34,14 @@ import { RequestSearch } from '@/types/data';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import useStatusManager from '@/hooks/useStatusManager';
-import Swal from 'sweetalert2';
-import { createRoot } from 'react-dom/client';
-import Arrow from '../ui/Arrow/Arrow';
-import Tick from '../ui/Tick/Tick';
+import { searchRequest } from '@/actions/request/action.search-request/action.searchRecuest';
+import { showStatusAlert } from './swalConfig';
 import ReactDOMServer from 'react-dom/server';
+import { IconoVacio, RevisionCamino, Modificada, Cancelada, Discrepancia, Reembolso } from './icons';
+import LoadingGif from '../ui/LoadingGif/LoadingGif';
+import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
+import Link from 'next/link';
+import { FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
 
 const SearchRequest = () => {
   const {
@@ -44,91 +75,82 @@ const SearchRequest = () => {
     }
   };
 
-  const handleSearchRequest = () => {
-    Swal.fire({
-      html: `
-          <p style="font-size: 16px;">Si cancela esta solicitud, debe generar una nueva solicitud</p>
-          <div style="display: flex; flex-direction: column; margin-top: 20px;">
-            ${completedSteps
-              .map((completed, index) => {
-                const tickHTML =
-                  index < currentIndex
-                    ? ReactDOMServer.renderToString(
-                        <div className="flex h-5 w-5 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
-                          <Tick color={`${isDark ? '#414244' : '#FCFBFA'}`} size="15px" />
-                        </div>,
-                      )
-                    : '<div class="h-5 w-5 rounded-full border-[3px] border-lightText bg-lightText dark:border-darkText dark:bg-darkText"></div>';
+  const handleSearchRequest = (statusObject: Record<string, any>) => {
+    const statusMessages = {
+      received: {
+        text: 'Solicitud Recibida',
+        icon: ReactDOMServer.renderToString(<IconoVacio />),
+      },
+      pending: {
+        text: 'Solicitud enviada',
+        icon: ReactDOMServer.renderToString(<IconoVacio />),
+      },
+      review_payment: {
+        text: 'Pago en Revisión',
+        icon: ReactDOMServer.renderToString(<RevisionCamino />),
+      },
+      completed: {
+        text: 'Solicitud Finalizada con Éxito',
+        icon: ReactDOMServer.renderToString(<IconoVacio />),
+      },
+      in_transit: {
+        text: 'Dinero en Camino',
+        icon: ReactDOMServer.renderToString(<RevisionCamino />),
+      },
+      canceled: {
+        text: 'Solicitud Cancelada',
+        icon: ReactDOMServer.renderToString(<Cancelada />),
+      },
+      modified: {
+        text: 'Solicitud modificada',
+        icon: ReactDOMServer.renderToString(<Modificada />),
+      },
+      refunded: {
+        text: 'Reembolso solicitado',
+        icon: ReactDOMServer.renderToString(<Reembolso />),
+      },
+      discrepancy: {
+        text: 'Discrepancia en la Solicitud',
+        icon: ReactDOMServer.renderToString(<Discrepancia />),
+      },
+    };
 
-                return `
-                  <div style="display: flex; align-items: center; gap: 10px;">
-                    ${tickHTML}
-                    <span>${completed}</span>
-                  </div>
-                  ${
-                    index < completedSteps.length - 1
-                      ? `<div style="height: 12px; width: 3px; margin-left: 8px; position: relative;">
-                      <div style="height: 14px; width: 3px; background-color: ${isDark ? '#FCFBFA' : '#414244'}; position: absolute; top: -1px"></div>
-                      </div>`
-                      : ''
-                  }
-                `;
-              })
-              .join('')}
-          </div>
-          <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px; gap: 40px; padding: 0 13px">
-            <div id="back-button-container"></div>
-          </div>
-        `,
-      showConfirmButton: false,
-      showCancelButton: false,
-      background: isDark ? 'rgb(69 69 69)' : '#ffffff',
-      color: isDark ? '#ffffff' : '#000000',
-      didRender: () => {
-        const backElement = document.getElementById('back-button-container');
-        if (backElement) {
-          const root = createRoot(backElement);
-          root.render(
-            <button
-              onClick={() => Swal.close()}
-              className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 flex h-[42px] min-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-sm text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
-            >
-              <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} backRequest={true} />
-              Volver
-            </button>,
-          );
+    // Transformar el objeto en un array de claves únicas
+    const uniqueStatuses = Array.from(new Set(Object.keys(statusObject)));
+    const messages = uniqueStatuses
+      .map((status) => {
+        const statusInfo = statusMessages[status as keyof typeof statusMessages];
+
+        if (!statusInfo) {
+          console.warn(`Estado no reconocido: ${status}`);
+          return null;
         }
-      },
-      didOpen: () => {
-        const cancelButton = document.getElementById('cancel-button');
-        if (cancelButton) {
-          cancelButton.addEventListener('click', () => {
-            Swal.close();
-          });
-        }
-      },
-    });
+
+        return {
+          text: statusInfo.text,
+          icon: statusInfo.icon,
+        };
+      })
+      .filter((message): message is { text: string; icon: string } => message !== null); // Filtrar posibles `null`
+
+    showStatusAlert(messages, isDark);
   };
 
   const onSubmit: SubmitHandler<RequestSearch> = async (data) => {
     setLoading(true);
     handleAddNextStatus();
     try {
-      const response = await fetch(`/v1/contacts`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...data,
-        }),
-      });
-
-      console.log(response);
+      // Llamar a la función de búsqueda de solicitud
+      const response = await searchRequest(data.numberOfRequest, data.lastNameRequest);
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(response.message || 'Hubo un problema al obtener el estado de la transacción');
       }
+
+      // `response.status` es un arreglo con los estados de la solicitud
+      const statuses = response.status || [];
+      handleSearchRequest(statuses);
+      console.log(response);
 
       reset();
     } catch (error) {
@@ -140,81 +162,119 @@ const SearchRequest = () => {
     } finally {
       setLoading(false);
     }
-    handleSearchRequest();
   };
+
   return (
-    <div className="mx-auto flex w-full max-w-screen-lg flex-col gap-16 py-8 md:gap-4">
-      <div className="px-8 lg:px-0">
-        <h1 className="text-4xl text-lightText dark:text-darkText">Buscar Solicitud</h1>
-        <p className="hidden text-xl font-[500] text-lightText dark:text-darkText md:block">
-          Ingresa los datos tal cual aparece en el email enviado
-        </p>
-      </div>
-      <section className="relative flex min-h-[500px] flex-col items-center justify-center px-8 md:flex-row md:items-start md:justify-start lg-tablet:min-h-[600px] lg:px-0">
-        <Image
-          className="absolute left-0 top-0 ml-8 hidden w-[500px] md:block md-tablet:w-[600px] lg-tablet:w-[700px] lg:ml-0"
-          src="/images/search-request-web.png"
-          alt="SwaplyAr Search Request™"
-          width={700}
-          height={700}
-        />
-        <div className="px- flex max-w-md flex-col items-center gap-8 md:hidden">
-          <Image
-            src="/images/search-request-phone.png"
-            alt="SwaplyAr Search Request Mobile™"
-            width={300}
-            height={300}
-          />
-          <div className="h-1 w-full bg-buttonsLigth dark:bg-darkText"></div>
-          <p className="text-center text-2xl font-[700] text-lightText dark:text-darkText">
-            Ingresa los datos tal cual aparece en el email enviado
+    <div>
+      <div className="mx-auto flex w-full max-w-screen-lg flex-col gap-16 py-8 md:gap-4">
+        <div className="flex flex-col items-center justify-center px-8 lg:px-0">
+          <h1 className="flex h-auto w-full max-w-[592px] items-center justify-center text-center text-2xl text-lightText dark:text-darkText md:h-[97px] md:text-4xl">
+            Consulta el estado de tu solicitud fácilmente
+          </h1>
+
+          <p className="flex h-auto w-full max-w-[592px] items-center justify-center py-6 text-center text-sm md:h-[48px] md:py-10 md:text-base">
+            Ingresa el Número de Solicitud y el Apellido tal como figura en el correo electrónico enviado para verificar
+            el estado actual de tu solicitud de manera rápida y precisa.
+          </p>
+
+          <p className="flex h-auto w-full max-w-[762px] items-center justify-center py-6 text-center text-sm font-[500] text-lightText dark:text-darkText md:h-[32px] md:py-10 md:text-xl">
+            Introduce los datos exactamente como aparecen en el correo electrónico enviado.
           </p>
         </div>
-        <div className="hidden h-[324px] min-w-[380px] md:block md-tablet:min-w-[410px] lg-tablet:min-w-[510px]"></div>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="mt-16 flex w-full max-w-[660px] flex-col items-center gap-8 md:items-end lg-tablet:gap-16"
-        >
-          <div className="flex w-full flex-col items-start md:items-end">
-            <label htmlFor="numberOfRequest" className="text-lg">
-              NUMERO DE SOLICITUD
-            </label>
-            <InputOnlyLine
-              placeholder="como figura en el recibo"
-              id="numberOfRequest"
-              register={register('numberOfRequest')}
-              error={errors.numberOfRequest?.message}
-              classStyle="text-start md:text-end text-lg pl-0"
+        <section className="relative flex min-h-[500px] flex-col items-center justify-center px-8 md:flex-row md:items-start md:justify-start lg-tablet:min-h-[600px] lg:px-0">
+          <Image
+            className="absolute left-0 top-0 ml-8 hidden w-[500px] md:block md-tablet:w-[600px] lg-tablet:w-[700px] lg:ml-0"
+            src="/images/search-request-web.png"
+            alt="SwaplyAr Search Request™"
+            width={700}
+            height={700}
+          />
+          <div className="px- flex max-w-md flex-col items-center gap-8 md:hidden">
+            <Image
+              src="/images/search-request-phone.png"
+              alt="SwaplyAr Search Request Mobile™"
+              width={300}
+              height={300}
             />
+            <div className="h-1 w-full bg-buttonsLigth dark:bg-darkText"></div>
+            <p className="text-center text-2xl font-[700] text-lightText dark:text-darkText">
+              Ingresa los datos tal cual aparece en el email enviado
+            </p>
           </div>
-          <div className="flex w-full flex-col items-start md:items-end">
-            <label htmlFor="lastNameRequest" className="text-lg">
-              APELLIDO
-            </label>
-            <InputOnlyLine
-              placeholder="como figura en el recibo"
-              id="lastNameRequest"
-              register={register('lastNameRequest')}
-              error={errors.lastNameRequest?.message}
-              classStyle="text-start md:text-end text-lg pl-0"
-            />
-          </div>
-          <div className="mt-8 h-1 w-full max-w-md bg-buttonsLigth dark:bg-darkText md:hidden"></div>
-          <div className="flex flex-col gap-4">
+          <div className="hidden h-[324px] min-w-[380px] md:block md-tablet:min-w-[410px] lg-tablet:min-w-[510px]"></div>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="mt-16 flex w-full max-w-[660px] flex-col items-center gap-8 md:items-end lg-tablet:gap-16"
+          >
+            <div className="flex w-full flex-col items-start md:items-end">
+              <label htmlFor="numberOfRequest" className="text-sm">
+                NUMERO DE SOLICITUD
+              </label>
+              <InputOnlyLine
+                placeholder="N° de Solicitud como figura en el Correo Eletrónico"
+                id="numberOfRequest"
+                register={register('numberOfRequest')}
+                error={errors.numberOfRequest?.message}
+                classStyle="text-start md:text-end text-lg pl-0 placeholder:text-[#90B0FE] dark:placeholder:text-[#969696] border-[#90B0FE] dark:border-[#969696]"
+              />
+            </div>
+            <div className="flex w-full flex-col items-start md:items-end">
+              <label htmlFor="lastNameRequest" className="text-sm">
+                APELLIDO
+              </label>
+              <InputOnlyLine
+                placeholder="Apellido como figura en el Correo Eletrónico"
+                id="lastNameRequest"
+                register={register('lastNameRequest')}
+                error={errors.lastNameRequest?.message}
+                classStyle="text-start md:text-end text-lg pl-0 placeholder:text-[#90B0FE] dark:placeholder:text-[#969696] border-[#90B0FE] dark:border-[#969696]"
+              />
+            </div>
+            <div className="mt-8 h-1 w-full max-w-md bg-buttonsLigth dark:bg-darkText md:hidden"></div>
+            <div className="flex flex-col items-center justify-center gap-4">
+              <button
+                className={`relative m-1 flex h-10 w-52 items-center justify-center rounded-3xl border border-[#90B0FE] bg-[#90B0FE] text-sm font-bold text-[#FFFFFB] dark:border-[#969696] dark:bg-[#969696] dark:text-[#FFFFFB] ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+              >
+                {loading ? (
+                  <div className="flex items-center justify-center">
+                    <LoadingGif color={isDark ? '#000' : '#ebe7e0'} />
+                  </div>
+                ) : (
+                  'Buscar Solicitud'
+                )}
+              </button>
+              <button
+                className={`flex w-[100px] items-center gap-2 rounded-full border px-4 py-2 ${
+                  isDark ? 'buttonSecondDark border-white text-white' : 'buttonSecond border-[#012A8E] text-[#012A8E]'
+                }`}
+              >
+                <span>←</span> Volver
+              </button>
+            </div>
+          </form>
+        </section>
+      </div>
+      <div className="mt-10">
+        <FlyerTrabajo imageSrc={FlyerGif}>
+          <p>
+            ¿Nuevo en SwaplyAr? <br /> Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma
+            sencilla y segura.{' '}
+          </p>
+          <div>
             <button
-              className={`relative m-1 h-10 w-52 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+              id="bannerHTUButton"
+              className={`ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-black ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
             >
-              {loading ? 'Buscando...' : 'Buscar'}
-            </button>
-            <button
-              type="button"
-              className="text-lg font-bold underline transition-all duration-300 ease-in-out hover:no-underline"
-            >
-              Salir
+              <Link
+                href={'/info/how-to-use'}
+                className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'} `}
+              >
+                ¡Empieza ahora!
+              </Link>
             </button>
           </div>
-        </form>
-      </section>
+        </FlyerTrabajo>
+      </div>
     </div>
   );
 };

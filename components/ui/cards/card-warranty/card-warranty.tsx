@@ -2,10 +2,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import Image from 'next/image';
-import './CaedAboutUs.css';
-import SwipeHands from '../animations/SwipeHands';
+import '../CardsCSS.css';
+import SwipeHands from '../../animations/SwipeHands';
 import clsx from 'clsx';
-import { useSize } from '@/hooks/useSize';
 
 interface CardData {
   src: string;
@@ -19,12 +18,11 @@ interface CaedAboutUsProps {
   cardsData: CardData[];
 }
 
-const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
+const CardWarranty: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showSwipeHands, setShowSwipeHands] = useState(false);
   const sectionRef = useRef(null);
   const [activeCards, setActiveCards] = useState<{ [key: number]: boolean }>({});
-  const { size } = useSize();
 
   const handleToggle = (index: number) => {
     setActiveCards((prev) => ({
@@ -47,8 +45,6 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
     preventScrollOnSwipe: true,
     trackMouse: true,
   });
-
-  const isThreeCards = cardsData.length === 3;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -83,11 +79,10 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
 
       <section
         {...swipeHandlersMobile}
-        className="relative flex h-[272px] items-center justify-center md:h-[312px] md:min-w-[680px] lg:h-[272px] lg:w-full lg:justify-between"
+        className="relative flex h-[272px] items-center justify-center md:h-[312px] lg:h-[272px] lg:w-full lg:justify-between"
       >
         {cardsData.map((card: CardData, index: number) => {
           const isCurrent = index === currentIndex;
-          const isSecondCurrent = index === (currentIndex + 1) % cardsData.length && size >= 768;
           const isNext = index === (currentIndex + 1) % cardsData.length;
           const isPrev = index === (currentIndex - 1 + cardsData.length) % cardsData.length;
 
@@ -98,12 +93,8 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
           return (
             <article
               key={index}
-              className={`linear absolute cursor-pointer transition-all duration-300 ${isCurrent || isSecondCurrent ? 'z-20 scale-100 lg:z-0' : 'z-10 scale-90 blur-sm md:scale-100 lg:z-0 lg:blur-none'} ${isPrev ? '-translate-x-20 md:-translate-x-0' : ''} ${isNext ? 'translate-x-20 md:translate-x-0' : ''} ${
-                isCurrent
-                  ? 'md:absolute md:left-[18%] md:-translate-y-[10%] lg:translate-y-0'
-                  : isSecondCurrent
-                    ? 'md:right-[18%] md:-translate-y-[10%] lg:translate-y-0'
-                    : ''
+              className={`linear absolute cursor-pointer transition-all duration-300 ${isCurrent ? 'z-20 scale-100 lg:z-0 lg:scale-90' : 'z-10 scale-90 blur-sm lg:z-0 lg:blur-none'} ${isPrev ? '-translate-x-20 md:-translate-x-0' : ''} ${isNext ? 'translate-x-20 md:translate-x-0' : ''} ${
+                isCurrent ? 'lg:translate-y-0' : ''
               } ${isBack1 ? 'md:left-0' : isBack2 ? 'md:right-0' : ''} lg:static`}
               style={{
                 transition: 'transform 0.3s linear, left 0.3s linear, right 0.3s linear',
@@ -154,4 +145,4 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
   );
 };
 
-export default CaedAboutUs;
+export default CardWarranty;

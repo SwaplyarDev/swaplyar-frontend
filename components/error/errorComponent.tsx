@@ -78,7 +78,7 @@ const NotFoundComponent = () => {
               </div>
             </Link>
           </article>
-          <article className="absolute flex min-h-[530px] w-full items-end justify-end pb-10 pr-2 xs:pb-0 xs:pr-0 md-phone:items-center md:relative md:justify-center md:pr-14 md-tablet:min-h-[630px] xl-desktop:items-end">
+          <article className="x` absolute flex min-h-[530px] w-full items-end justify-end pb-10 pr-2 xs:pb-0 xs:pr-0 md-phone:items-center md:relative md:justify-center md:pr-14 xl-desktop:items-end">
             <Image
               src={Post1_404}
               alt="Man smiling with tablet"

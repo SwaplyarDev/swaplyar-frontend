@@ -1,7 +1,7 @@
 // /components/about-us/AboutUs.tsx
 'use client';
 import Image from 'next/image';
-import CardWarranty from '@/components/ui/card-warranty/card-warranty';
+import CardWarranty from '@/components/ui/cards/card-warranty/card-warranty';
 import { TextWarranty, cardsData } from '@/data/mockWarranty';
 import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
