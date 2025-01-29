@@ -31,21 +31,20 @@ export const RegisterForm = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [isFocused2, setIsFocused2] = useState(false);
   const [isFocused3, setIsFocused3] = useState(false);
-  const [isFocused4, setIsFocused4] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
-    reset,
   } = useForm<FormInputs>();
 
   const { setView } = useStore();
   const handleChange = () => {
-    reset();
     setView('login');
   };
+
+  console.log('VAlor: ', isFocused2 || !!watch('lastName'));
 
   const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -87,7 +86,7 @@ export const RegisterForm = () => {
   };
 
   return (
-    <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-center py-5">
+    <div className="my-5 flex h-full min-h-[700px] flex-col items-center justify-start py-5 xs:min-h-[800px] xs:justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="relative flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
@@ -102,7 +101,7 @@ export const RegisterForm = () => {
               htmlFor="firstName"
               className={clsx(
                 'font-textFont text-lightText dark:text-darkText',
-                !isFocused && 'hidden',
+                !isFocused && !watch('firstName') && 'hidden',
                 'mb-1 ml-2.5 text-sm',
               )}
             >
@@ -111,14 +110,14 @@ export const RegisterForm = () => {
             <input
               id="firstName"
               className={clsx(
-                !isFocused && 'mt-6',
+                !isFocused && !watch('firstName') && 'mt-6',
                 'max-w-full rounded-2xl border bg-transparent px-5 py-2 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
                 watch('firstName') && 'border-inputLight dark:border-lightText',
                 errors.firstName
                   ? 'mb-0 border-errorColor text-errorColor placeholder-errorColor'
                   : 'mb-5 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
               )}
-              placeholder={isFocused ? '' : 'Nombre'}
+              placeholder={isFocused || !!watch('firstName') ? '' : 'Nombre'}
               type="text"
               {...register('firstName', {
                 required: 'El nombre es obligatorio',
@@ -133,7 +132,7 @@ export const RegisterForm = () => {
               htmlFor="lastName"
               className={clsx(
                 'font-textFont text-lightText dark:text-darkText',
-                !isFocused2 && 'hidden',
+                !isFocused2 && !watch('lastName') && 'hidden',
                 'mb-1 ml-2.5 text-sm',
               )}
             >
@@ -142,14 +141,14 @@ export const RegisterForm = () => {
             <input
               id="lastName"
               className={clsx(
-                !isFocused2 && 'mt-6',
+                !isFocused2 && !watch('lastName') && 'mt-6',
                 'max-w-full rounded-2xl border bg-transparent px-5 py-2 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
                 watch('lastName') && 'border-inputLight dark:border-lightText',
                 errors.lastName
                   ? 'mb-0 border-errorColor text-errorColor placeholder-errorColor'
                   : 'mb-5 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
               )}
-              placeholder={isFocused2 ? '' : 'Apellido'}
+              placeholder={isFocused2 || !!watch('lastName') ? '' : 'Apellido'}
               type="text"
               {...register('lastName', {
                 required: 'El apellido es obligatorio',
@@ -165,7 +164,7 @@ export const RegisterForm = () => {
           htmlFor="email"
           className={clsx(
             'font-textFont text-lightText dark:text-darkText',
-            !isFocused3 && 'hidden',
+            !isFocused3 && !watch('email') && 'hidden',
             'mb-1 ml-2.5 text-sm',
           )}
         >
@@ -174,14 +173,14 @@ export const RegisterForm = () => {
         <input
           id="email"
           className={clsx(
-            !isFocused3 && 'mt-6',
+            !isFocused3 && !watch('email') && 'mt-6',
             'rounded-2xl border bg-transparent px-5 py-2 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
             watch('email') && 'border-inputLight dark:border-lightText',
             errors.email
               ? 'mb-0 border-errorColor text-errorColor placeholder-errorColor'
               : 'mb-5 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
           )}
-          placeholder={isFocused3 ? '' : 'Correo Electrónico'}
+          placeholder={isFocused3 || !!watch('email') ? '' : 'Correo Electrónico'}
           type="text"
           {...register('email', {
             required: 'El correo electrónico es obligatorio',

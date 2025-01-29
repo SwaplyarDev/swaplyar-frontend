@@ -102,32 +102,8 @@ function LoyaltyProgram() {
           />
         </div>
       </div>
-      <div className="my-10 w-[100%] bg-contain bg-center">
-        <FlyerTrabajo imageSrc={CentroDeAyuda}>
-          <div>
-            <p>
-              Para conocer los Términos y Condiciones del programa SwaplyAr Plus Rewards, haz{' '}
-              <Link href="./sapr-terms-conditions" target="_blank" className="ml-2s underline">
-                click aquí
-              </Link>
-              .
-            </p>
-            <div>
-              <button
-                id="bannerHTUButton"
-                className={`trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:border-selectBtsLight dark:border-darkText dark:bg-darkText dark:text-black ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-              >
-                <Link
-                  href={'/info/how-to-use'}
-                  className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'} `}
-                >
-                  ¿Necesitás ayuda?
-                </Link>
-              </button>
-            </div>
-          </div>
-        </FlyerTrabajo>
-      </div>
+
+      <FlyerTrabajo imageSrc={CentroDeAyuda} />
     </div>
   );
 }

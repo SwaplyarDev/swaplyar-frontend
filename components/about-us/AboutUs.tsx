@@ -1,7 +1,7 @@
 // AboutUs.tsx
 'use client';
 import Image from 'next/image';
-import CaedAboutUs from '../ui/caed-about-us/caed-about-us';
+import CaedAboutUs from '../ui/cards/caed-about-us/caed-about-us';
 import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
 import Link from 'next/link';
 import { Apoyo, Transparencia, Simplicidad, Eficiencia, FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
@@ -100,13 +100,15 @@ const AboutUs = () => {
               <article key={i}>
                 <h2 className="font-textFont text-4xl">{section.title}</h2>
                 <p className="font-textFont font-light">{section.description}</p>
-                {section.secondaryDescription && <p className="mt-6">{section.secondaryDescription}</p>}
+                {section.secondaryDescription && (
+                  <p className="mt-6 font-textFont font-light">{section.secondaryDescription}</p>
+                )}
               </article>
             ))}
           </section>
 
-          <section className="mt-6 flex w-full max-w-[1000px] justify-center">
-            <section className="grid w-[90%] grid-cols-1 items-center justify-center gap-6 md:w-full md:grid-cols-2">
+          <section className="flex w-full max-w-[1000px] justify-center">
+            <section className="mt-10 grid w-[90%] grid-cols-1 items-center justify-center gap-6 md:w-full md:grid-cols-2">
               <article className="col-right order-1 text-left font-textFont text-lg text-lightText dark:text-darkText md:order-2">
                 <p>
                   "Nos Dedicamos a transformar la manera en que las personas manejan su dinero, utilizando las
@@ -129,27 +131,12 @@ const AboutUs = () => {
         </div>
       </div>
       <section className="mt-[47px] overflow-hidden text-center">
-        <FlyerTrabajo imageSrc={FlyerGif}>
-          <span className="flex flex-col gap-2">
-            <p className="font-textFont text-[21px] font-extrabold">¿Nuevo en SwaplyAr?</p>
-            <p className="w-[731px] font-textFont text-[21px] font-extrabold">
-              Conoce cómo funciona nuestra plataforma y comienza a transferir <br /> dinero de forma sencilla y segura.
-            </p>
-          </span>
-          <div>
-            <button
-              id="bannerHTUButton"
-              className={`trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-[14px] py-3 text-lg duration-300 hover:border-selectBtsLight dark:border-darkText dark:bg-darkText dark:text-black ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-            >
-              <Link
-                href={'/info/how-to-use'}
-                className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'}`}
-              >
-                <h3 className="font-titleFont font-semibold">¡Empieza ahora!</h3>
-              </Link>
-            </button>
-          </div>
-        </FlyerTrabajo>
+        <FlyerTrabajo
+          imageSrc={FlyerGif}
+          title="¿Nuevo en SwaplyAr?"
+          description="Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma sencilla y segura."
+          nameButton="¡Empieza ahora!"
+        />
       </section>
     </>
   );

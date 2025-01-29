@@ -131,7 +131,7 @@ export const mockTexts: TextCollection[] = [
   },
   {
     mainTitle: 'Informacion sobre las estafas comunes',
-    button: 'Estafas comunes dirigidas al cliente',
+    button: 'Estafas comunes al cliente',
     items: [
       {
         title: 'Cómo te ayudamos',

@@ -14,6 +14,7 @@ import {
   tlf_404_clear,
   tlf_404_dark,
 } from '@/utils/assets/img-database';
+import RedirectButton from '../ui/RedirectButton/RedirectButton';
 
 const NotFoundComponent = () => {
   const { isDark } = useDarkTheme();
@@ -72,11 +73,7 @@ const NotFoundComponent = () => {
               encontrada
             </h1>
 
-            <Link href="/">
-              <div className="flex w-[165px] items-center justify-center rounded-full border border-buttonsLigth bg-transparent p-2 text-base font-bold text-buttonsLigth dark:border-darkText dark:text-darkText">
-                Redireccion en {counter}
-              </div>
-            </Link>
+            <RedirectButton counter={counter} />
           </article>
           <article className="x` absolute flex min-h-[530px] w-full items-end justify-end pb-10 pr-2 xs:pb-0 xs:pr-0 md-phone:items-center md:relative md:justify-center md:pr-14 xl-desktop:items-end">
             <Image

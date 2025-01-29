@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { inter } from '@/config/fonts/fonts';
 import { useRouter } from 'next/navigation';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
+import RedirectButton from '../ui/RedirectButton/RedirectButton';
 
 interface ErrorBoundaryProps {
   reset: () => void;
@@ -51,15 +52,15 @@ const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ reset }) => {
             />
           </article>
 
-          <article className="absolute z-20 ml-2 flex min-h-[200px] flex-col justify-center border-l-2 border-l-buttonsLigth pt-2 dark:border-l-darkText xs-mini-phone2:ml-3 xs-mini-phone2:min-w-[240px] xs-phone:ml-8 xs-phone:pt-5 sm:ml-20 md-phone:ml-12 sm-tablet:ml-14 md:ml-[65px] md:inline-flex md:justify-start md-tablet:ml-[57px]">
-            <h1 className="titleFont ml-4 hidden text-start text-4xl md-phone:block md-tablet:text-3xl">
+          <article className="absolute z-20 ml-2 flex min-h-[200px] flex-col justify-center gap-3 border-l-2 border-l-buttonsLigth pl-6 dark:border-l-darkText xs-mini-phone2:ml-3 xs-mini-phone2:min-w-[240px] xs-phone:ml-8 sm:ml-20 md-phone:ml-12 sm-tablet:ml-14 md:ml-[65px] md:inline-flex md:justify-center md-tablet:ml-[57px]">
+            <h1 className="titleFont hidden text-start text-4xl md-phone:block md-tablet:text-3xl">
               Ups...
               <br />
               Algo salió mal
               <br />
               en nuestro lado
             </h1>
-            <h1 className="titleFont xs-phone: ml-7 block text-start text-4xl xs-mini-phone:text-[36px] md-phone:hidden">
+            <h1 className="titleFont block text-start text-4xl xs-mini-phone:text-[36px] xs-phone:ml-7 md-phone:hidden">
               Ups...
               <br />
               Algo salió mal
@@ -67,14 +68,7 @@ const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ reset }) => {
               en nuestro lado.
             </h1>
 
-            <Link href="/">
-              <button
-                className="ml-7 mt-3 flex w-[165px] justify-center rounded-full border border-buttonsLigth bg-transparent p-2 text-base text-buttonsLigth dark:border-darkText dark:text-darkText md-phone:ml-3"
-                onClick={reset}
-              >
-                Redireccion en {counter}
-              </button>
-            </Link>
+            <RedirectButton reset={reset} counter={counter} />
           </article>
 
           <article className="xs absolute top-32 flex w-full items-center justify-center xs-mini-phone:top-36 xs:right-2 xs:top-44 xs-phone:right-7 xs-phone:top-52 md-phone:items-end md-phone:justify-end sm-tablet:right-12 md:right-14 md-tablet:right-16 md-tablet:top-56 lg:right-12 lg:top-64 lg:p-1 xl-desktop:right-9 lg2:right-14 xl:right-32">

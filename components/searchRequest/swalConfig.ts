@@ -53,8 +53,8 @@ export const showStatusAlert = (statuses: { text: string; icon: string }[], isDa
         .join('')}
     </ul>
   </div>
-  <button id="close-popup-btn" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-2 px-4 py-2 rounded-full border ${isDark ? 'border-white text-white buttonSecondDark' : 'border-[#012A8E] text-[#012A8E] buttonSecond'}">
-    <span>←</span> Volver
+  <button id="close-popup-btn" class="group absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-2 px-4 py-2 rounded-full border ${isDark ? 'border-white text-white buttonSecondDark' : 'border-[#012A8E] text-[#012A8E] buttonSecond'}">
+    <span class="transition-transform duration-300 group-hover:translate-x-1">←</span> Volver
   </button>
   <button id="close-popup-btn-top" class="absolute top-2 right-2 text-white text-xl">
     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
@@ -62,7 +62,9 @@ export const showStatusAlert = (statuses: { text: string; icon: string }[], isDa
         ${isDark ? `stroke="#EBE7E0" ` : `stroke="#252526" `} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </button>
+  
 </div>
+
 
     `,
 

@@ -172,12 +172,12 @@ const SearchRequest = () => {
             Consulta el estado de tu solicitud fácilmente
           </h1>
 
-          <p className="flex h-auto w-full max-w-[592px] items-center justify-center py-6 text-center text-sm md:h-[48px] md:py-10 md:text-base">
+          <p className="flex h-auto w-full max-w-[600px] items-center justify-center py-6 text-center text-sm text-custom-grayD-1000 dark:text-custom-grayD-100 md:h-[48px] md:py-10 md:text-base">
             Ingresa el Número de Solicitud y el Apellido tal como figura en el correo electrónico enviado para verificar
             el estado actual de tu solicitud de manera rápida y precisa.
           </p>
 
-          <p className="flex h-auto w-full max-w-[762px] items-center justify-center py-6 text-center text-sm font-[500] text-lightText dark:text-darkText md:h-[32px] md:py-10 md:text-xl">
+          <p className="flex h-auto w-full max-w-[762px] items-center justify-center py-6 text-center text-sm text-custom-grayD-1000 dark:text-custom-grayD-100 md:h-[32px] md:py-10 md:text-lg">
             Introduce los datos exactamente como aparecen en el correo electrónico enviado.
           </p>
         </div>
@@ -196,7 +196,7 @@ const SearchRequest = () => {
               width={300}
               height={300}
             />
-            <div className="h-1 w-full bg-buttonsLigth dark:bg-darkText"></div>
+            <div className="h-1 w-full bg-custom-blue-300 dark:bg-custom-grayD-500"></div>
             <p className="text-center text-2xl font-[700] text-lightText dark:text-darkText">
               Ingresa los datos tal cual aparece en el email enviado
             </p>
@@ -215,7 +215,7 @@ const SearchRequest = () => {
                 id="numberOfRequest"
                 register={register('numberOfRequest')}
                 error={errors.numberOfRequest?.message}
-                classStyle="text-start md:text-end text-lg pl-0 placeholder:text-[#90B0FE] dark:placeholder:text-[#969696] border-[#90B0FE] dark:border-[#969696]"
+                classStyle="text-start md:text-end text-lg pl-0 placeholder:text-custom-blue-300 dark:placeholder:text-custom-grayD-500 border-custom-blue-300 dark:border-custom-grayD-500"
               />
             </div>
             <div className="flex w-full flex-col items-start md:items-end">
@@ -227,10 +227,10 @@ const SearchRequest = () => {
                 id="lastNameRequest"
                 register={register('lastNameRequest')}
                 error={errors.lastNameRequest?.message}
-                classStyle="text-start md:text-end text-lg pl-0 placeholder:text-[#90B0FE] dark:placeholder:text-[#969696] border-[#90B0FE] dark:border-[#969696]"
+                classStyle="text-start md:text-end text-lg pl-0 placeholder:text-custom-blue-300 dark:placeholder:text-custom-grayD-500 border-custom-blue-300 dark:border-custom-grayD-500"
               />
             </div>
-            <div className="mt-8 h-1 w-full max-w-md bg-buttonsLigth dark:bg-darkText md:hidden"></div>
+            <div className="mt-8 h-1 w-full max-w-md bg-custom-blue-300 dark:bg-custom-grayD-500 md:hidden"></div>
             <div className="flex flex-col items-center justify-center gap-4">
               <button
                 className={`relative m-1 flex h-10 w-52 items-center justify-center rounded-3xl border border-[#90B0FE] bg-[#90B0FE] text-sm font-bold text-[#FFFFFB] dark:border-[#969696] dark:bg-[#969696] dark:text-[#FFFFFB] ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
@@ -244,36 +244,33 @@ const SearchRequest = () => {
                 )}
               </button>
               <button
-                className={`flex w-[100px] items-center gap-2 rounded-full border px-4 py-2 ${
-                  isDark ? 'buttonSecondDark border-white text-white' : 'buttonSecond border-[#012A8E] text-[#012A8E]'
-                }`}
+                className={`group flex w-[100px] items-center gap-2 rounded-full border px-4 py-2 transition-all duration-300 ${isDark ? 'buttonSecondDark border-white text-white' : 'buttonSecond border-[#012A8E] text-[#012A8E]'}`}
               >
-                <span>←</span> Volver
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 transition-transform duration-300 group-hover:translate-x-1"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M19 12H6M12 5l-7 7 7 7" />
+                </svg>
+                Volver
               </button>
             </div>
           </form>
         </section>
       </div>
       <div className="mt-10">
-        <FlyerTrabajo imageSrc={FlyerGif}>
-          <p>
-            ¿Nuevo en SwaplyAr? <br /> Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma
-            sencilla y segura.{' '}
-          </p>
-          <div>
-            <button
-              id="bannerHTUButton"
-              className={`ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-black ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-            >
-              <Link
-                href={'/info/how-to-use'}
-                className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'} `}
-              >
-                ¡Empieza ahora!
-              </Link>
-            </button>
-          </div>
-        </FlyerTrabajo>
+        <FlyerTrabajo
+          imageSrc={FlyerGif}
+          title="¿Nuevo en SwaplyAr?"
+          description="Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma sencilla y segura."
+          nameButton="¡Empieza ahora!"
+        />
       </div>
     </div>
   );

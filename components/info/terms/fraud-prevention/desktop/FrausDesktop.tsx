@@ -1,4 +1,4 @@
-import { mockTexts } from '../mockFraudPrev';
+import { mockTexts } from '../../../../../data/mockFraudPrev';
 
 interface FraudDesktopProps {
   handleButtonClick: (arg: number) => void;
@@ -9,11 +9,11 @@ interface FraudDesktopProps {
 const FraudDesktop: React.FC<FraudDesktopProps> = ({ selectedTextIndex, handleButtonClick, isAnimating }) => {
   return (
     <section className="hidden w-[100%] flex-row gap-20 lg:flex">
-      <article className="hidden w-[80%] select-none flex-col items-start gap-4 pt-5 text-2xl lg:flex">
+      <article className="hidden w-[85%] select-none flex-col items-start gap-4 pt-5 text-2xl lg:flex">
         {mockTexts.map((mock, key) => (
           <button
             key={key}
-            className={`flex flex-row gap-2 font-extrabold ${selectedTextIndex === key ? 'scale-105 text-blue-800 decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0]' : 'dark:text-[#e0dfdd] dark:decoration-[#e0dfdd]'} transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:hover:decoration-[#97938d]`}
+            className={`flex flex-row gap-2 font-normal ${selectedTextIndex === key ? 'scale-105 text-blue-800 decoration-blue-800 dark:text-[#EBE7E0] dark:decoration-[#EBE7E0]' : 'dark:text-[#e0dfdd] dark:decoration-[#e0dfdd]'} transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:hover:decoration-[#97938d]`}
             onClick={() => handleButtonClick(key)}
           >
             <h3>{selectedTextIndex === key ? '|  ' : null}</h3>
@@ -23,7 +23,7 @@ const FraudDesktop: React.FC<FraudDesktopProps> = ({ selectedTextIndex, handleBu
         ))}
       </article>
       <article className="hidden w-[100%] flex-col items-start gap-5 lg:flex">
-        <h2 className="w-[100%] self-center border-t-[1px] border-[#012A8E] p-2 text-start text-3xl font-semibold dark:border-[#EBE7E0]">
+        <h2 className="w-[100%] self-center border-t-[1px] border-[#012A8E] p-2 text-start text-3xl font-normal dark:border-[#EBE7E0]">
           {mockTexts[selectedTextIndex]?.mainTitle}
         </h2>
         {selectedTextIndex !== null ? (
