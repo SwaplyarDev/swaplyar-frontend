@@ -60,7 +60,7 @@ const Warranty = () => {
             height={335}
           />
           <article className="flex flex-col">
-            <h1 className="mb-2 font-titleFont text-4xl font-bold">{TextWarranty[1].title}</h1>
+            <h2 className="mb-2 font-titleFont text-4xl font-bold">{TextWarranty[1].title}</h2>
             <p className="mb-4 font-textFont text-base leading-relaxed">
               {combinedText.map((text, index) => (
                 <span key={index} dangerouslySetInnerHTML={{ __html: text }} />
