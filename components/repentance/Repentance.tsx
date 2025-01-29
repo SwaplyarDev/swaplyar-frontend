@@ -14,6 +14,9 @@ import AlertError from './Alerts/AlertError';
 import AlertProcess from './Alerts/AlertProcess';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { regretsPhone } from '@/utils/assets/img-database';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
+import clsx from 'clsx';
 
 interface Response {
   ok: boolean;
@@ -76,41 +79,42 @@ const RepentanceForm = () => {
     <div>
       <div className="mx-5 my-7 flex flex-col items-center justify-center lg:mx-0">
         <AnimatedBlurredCircles tope="top-[124px]" />
-        <div className="flex w-full flex-col lg:flex-row">
-          <div className="lg:w-3/7 mb-4 hidden flex-col items-start lg:block">
-            <h1 className="w-full text-start text-2xl">Cancelacion o Reembolso</h1>
-            <p className="mt-2 text-justify">Ingresa los datos tal cual aparece en el email enviado</p>
-          </div>
+        <div className="flex w-full flex-col gap-10 lg:flex-row">
+          <h1 className="text-center font-titleFont text-[38px] font-medium">
+            Solicita tu reembolso De forma rápida y sencilla
+          </h1>
+          <p className="text-center font-textFont font-light">
+            Completa los datos requeridos con precisión para iniciar tu solicitud de reembolso. Procesaremos tu pedido
+            de forma segura y devolveremos el dinero a la cuenta de origen de manera eficiente y sin complicaciones.
+          </p>
+          <p className="font-textFont text-[21px] font-light">
+            Introduce los datos exactamente como aparecen en el email recibido.
+          </p>
         </div>
         <div className="flex w-full flex-col lg:flex-row">
           <div className="hidden min-h-full flex-wrap justify-center lg:block">
             <Image src={regretsPc} alt="regretsPc" width={650} height={0} className="h-full object-cover" />
           </div>
-          <div className="flex flex-col flex-wrap content-center items-center">
-            <div className="flex min-h-full w-72 flex-wrap justify-center lg:hidden">
-              <Image src={regretsPhone} alt="regretsPhone" width={200} height={0} className="h-full object-contain" />
-              <div
-                className={`min-w-full flex-wrap justify-center border-t-4 lg:hidden ${isDark ? 'border-t-white' : 'border-t-buttonsLigth'}`}
-              ></div>
-            </div>
-            <div className="flex flex-col items-start lg:hidden lg:w-2/6">
-              <p className="mt-2 text-center text-xl font-bold">
-                Ingresa los datos tal cual aparece en el email enviado
-              </p>
-            </div>
+          <div className="mt-10 flex min-h-full w-full flex-wrap justify-center lg:hidden">
+            <Image src={regretsPhone} alt="regretsPhone" width={200} height={0} className="h-full object-contain" />
+            <div
+              className={`min-w-full flex-wrap justify-center border-t-2 lg:hidden ${isDark ? 'border-t-white' : 'border-t-buttonsLigth'}`}
+            ></div>
           </div>
 
           <div
-            className={`mr-0 flex h-full w-full flex-col justify-center border-0 lg:mr-3 lg:border-l-2 ${isDark ? 'border-l-white' : 'border-l-buttonsLigth'}`}
+            className={`mt-10 flex h-full w-full flex-col justify-center border-0 lg:mr-3 lg:border-l-2 ${isDark ? 'border-l-white' : 'border-l-buttonsLigth'}`}
           >
             <Form onSubmit={handleRepentanceFormSubmission}></Form>
-            <div className="ml-2 mt-5 flex justify-center text-center lg:ml-7">
-              <Link href={'/'}>
-                <h3
-                  className={`w-fit border-b font-bold ${isDark ? 'border-b-white text-white' : 'border-black text-black'} `}
-                >
-                  Salir
-                </h3>
+            <div className="mt-[18px] flex justify-center text-center lg:ml-7">
+              <Link
+                className={clsx(
+                  'flex h-[46px] w-[100px] items-center justify-center gap-2 rounded-[50px] border border-buttonsLigth font-textFont text-xl font-light text-buttonsLigth',
+                )}
+                href={'/info/help-center'}
+              >
+                <FontAwesomeIcon icon={faArrowLeftLong} />
+                Volver
               </Link>
             </div>
           </div>

@@ -61,11 +61,11 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
     >
       <div className="mt-2 w-full">
         <label className="font-sans text-base">
-          NUMERO DE SOLICITUD
+          Número Solicitud
           <input
             className={`placeholder-text-gray-900 w-full border-0 border-b-2 border-solid ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
             type="text"
-            placeholder="Como figura en el recibo"
+            placeholder="N° de Solicitud como figura en el Correo Eletrónico"
             {...register('transaction_id', {
               required: '• El número de solicitud es obligatorio',
               pattern: {
@@ -105,7 +105,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
       </div>
       <div className="mt-2">
         <label className="font-sans text-base">
-          Email
+          Correo Electónico
           <input
             className={`placeholder-text-gray-900 w-full border-0 border-b-2 border-solid ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white focus:border-white dark:hover:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
             type="email"
@@ -126,7 +126,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
       <div className="mt-2 w-full">
         <div className="flex flex-col">
           <label htmlFor="phone_number" className="font-sans text-base">
-            Telefono
+            Número Telefónico
           </label>
           <div
             className={clsx(
@@ -176,7 +176,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
       </div>
       <div className="mt-2">
         <label className="font-sans text-base">
-          NOTA OPCIONAL
+          Nota Opcional{' '}
           <textarea
             className={`placeholder-text-gray-900 max-h-[500px] min-h-[45px] w-full resize-none border-0 border-b-2 ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
             {...register('note', {
@@ -195,7 +195,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
         </label>
         {errors.note && <p className="mt-1 text-sm text-red-500">{errors.note.message}</p>}
       </div>
-      <div className="mt-5 flex justify-center text-center">
+      <div className="mt-[18px] flex justify-center text-center">
         <button
           type="submit"
           disabled={isLoading}
