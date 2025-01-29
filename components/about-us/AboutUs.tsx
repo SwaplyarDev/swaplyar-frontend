@@ -1,7 +1,7 @@
 // AboutUs.tsx
 'use client';
 import Image from 'next/image';
-import CaedAboutUs from '../ui/caed-about-us/caed-about-us';
+import CaedAboutUs from '../ui/cards/caed-about-us/caed-about-us';
 import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
 import Link from 'next/link';
 import { Apoyo, Transparencia, Simplicidad, Eficiencia, FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
