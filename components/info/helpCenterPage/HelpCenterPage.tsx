@@ -6,6 +6,8 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import Link from 'next/link';
 import { sectionBottomHelpCenter, sectionLinksHelpCenter } from '@/data/sectionHelpCenter';
 import clsx from 'clsx';
+import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
+import { CentroDeAyuda } from '@/utils/assets/imgDatabaseCloudinary';
 
 const HelpCenterPage = () => {
   const { isDark } = useDarkTheme();
@@ -94,6 +96,12 @@ const HelpCenterPage = () => {
           </div>
         </div>
       </div>
+      <FlyerTrabajo
+        imageSrc={CentroDeAyuda}
+        title="¿Nuevo en SwaplyAr?"
+        description="Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma sencilla y segura."
+        nameButton="¡Empieza ahora!"
+      />
     </>
   );
 };
