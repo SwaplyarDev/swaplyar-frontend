@@ -20,7 +20,6 @@ export const LoginForm = () => {
     register,
     handleSubmit,
     watch,
-    reset,
     formState: { errors },
   } = useForm<FormInputs>({});
   const [loading, setLoading] = useState(false);
@@ -55,13 +54,12 @@ export const LoginForm = () => {
   };
 
   const handleChange = () => {
-    reset();
     setIsFocused(false);
     setView('register');
   };
 
   return (
-    <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-start py-5 xs:mt-0 xs:justify-center">
+    <div className="my-5 flex h-full min-h-[700px] flex-col items-center justify-start py-5 xs:mt-0 xs:min-h-[800px] xs:justify-center">
       <form
         onSubmit={handleSubmit(submitEmail)}
         className="flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
@@ -74,7 +72,7 @@ export const LoginForm = () => {
           htmlFor="email"
           className={clsx(
             'font-textFont text-lightText dark:text-darkText',
-            !isFocused && 'hidden',
+            !isFocused && !watch('email') && 'hidden',
             'mb-1 ml-2.5 text-sm',
           )}
         >
@@ -88,7 +86,7 @@ export const LoginForm = () => {
               ? 'mb-0 border-errorColor text-errorColor placeholder-errorColor'
               : 'mb-5 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
           )}
-          placeholder={isFocused ? '' : 'Correo electrónico'}
+          placeholder={isFocused || !!watch('email') ? '' : 'Correo electrónico'}
           type="text"
           {...register('email', {
             required: 'El correo electrónico es obligatorio',
