@@ -8,11 +8,7 @@ interface FraudMobileProps {
 
 const FraudMobile: React.FC<FraudMobileProps> = ({ selectedTextIndex, handleButtonClick, isAnimating }) =>
   mockTexts.map((item, key) => (
-    <section
-      key={key}
-      id={`section-${key}`} // ID único para cada sección
-      className="flex w-[100%] flex-col items-start gap-2 lg:hidden"
-    >
+    <section key={key} id={`section-${key}`} className="flex w-[100%] flex-col items-start gap-2 lg:hidden">
       {/* Botón */}
       <button
         className={`flex select-none flex-row gap-2 text-xl font-normal ${
@@ -21,7 +17,7 @@ const FraudMobile: React.FC<FraudMobileProps> = ({ selectedTextIndex, handleButt
             : 'dark:text-[#EBE7E0] dark:decoration-[#EBE7E0]'
         } transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 dark:hover:decoration-[#EBE7E0]`}
         onClick={() => {
-          handleButtonClick(key); // Manejador de evento actual
+          handleButtonClick(key);
           const section = document.getElementById(`section-${key}`);
           !isAnimating ? section?.scrollIntoView({ behavior: 'smooth', block: 'start' }) : null; // Desplazamiento suave
         }}
