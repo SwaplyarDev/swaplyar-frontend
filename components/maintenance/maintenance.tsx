@@ -32,17 +32,17 @@ const MaintenancePage = ({ params }: MaintenanceProps) => {
   }, [counter, router]);
 
   return (
-    <section className="m-auto flex max-h-[600px] w-full flex-col items-start px-3 xs:max-h-[900px] xs-phone:max-h-[1000px] sm:flex-row-reverse lg:max-h-[800px] lg:max-w-7xl">
+    <section className="m-auto flex min-h-[450px] w-full flex-col items-start px-3 xs-mini-phone:min-h-[500px] xs-mini-phone2:min-h-[570px] xs:max-h-[623px] xs-phone:max-h-[1000px] sm:flex-row-reverse lg:max-h-[800px] lg:max-w-7xl">
       {/* Contenedor del texto */}
       <section className="flex w-full flex-col">
         {/* Títulos */}
-        <h1 className="hidden text-right font-titleFont font-bold sm:block sm:pr-4 sm:pt-4 sm:text-[30px] md:text-[38px] lg:pr-[185px] lg:pt-[90px] lg:text-[33px]">
+        <h1 className="titleFont hidden bg-red-200 text-right sm:block sm:pr-4 sm:pt-4 sm:text-[30px] md:text-[38px] lg:pr-[185px] lg:pt-[90px] lg:text-[33px]">
           Sitio Web
           <br />
           en Mantenimiento
         </h1>
 
-        <h1 className="block text-right font-titleFont text-[29px] font-bold leading-[1.2] xs-mini-phone:text-[35px] xs:text-[40px] xs-phone:text-[45px] sm:hidden">
+        <h1 className="block text-right font-titleFont text-[29px] leading-[1.2] xs-mini-phone:text-[35px] xs:text-[40px] xs-phone:text-[45px] sm:hidden">
           Sitio Web
           <br />
           en Mantenimiento
@@ -75,7 +75,7 @@ const MaintenancePage = ({ params }: MaintenanceProps) => {
       </section>
 
       {/* Contenedor de la imagen */}
-      <section className="relative flex min-h-[600px] w-full items-end xs:min-h-[650px] md:min-h-[600px] lg:min-h-[740px]">
+      <section className="relative flex w-full items-end xs:min-h-[650px] md:min-h-[600px] lg:min-h-[740px]">
         <article className="absolute top-0 flex w-full flex-col items-center justify-center sm:left-[80px] sm:top-[80px] md:left-[100px] md:top-[120px] lg:left-[180px] lg:top-[160px]">
           {/* Imagen para pantallas grandes */}
           <Image
@@ -96,17 +96,17 @@ const MaintenancePage = ({ params }: MaintenanceProps) => {
           />
 
           {/* Párrafo para pantallas pequeñas */}
+          <div className="w-full text-right xs-mini-phone:min-h-20 xs-mini-phone2:mr-6 xs:mr-5 sm:hidden">
+            <p className="titleFont mb-5 w-full text-right text-[27px] xs-mini-phone:mr-4 xs-mini-phone:text-[30px] xs-mini-phone2:text-[33px] xs:mr-7 xs:text-[36px] xs-phone:text-[43px] sm:hidden">
+              Disculpe las molestias,
+              <br />
+              estamos trabajando
+              <br />
+              para mejorar el servicio.
+            </p>
 
-          <p className="mb-5 mt-4 w-full text-right font-textFont text-[25px] xs-mini-phone:text-[30px] xs:text-[35px] xs-phone:text-[43px] sm:hidden">
-            Disculpe las molestias
-            <br />
-            estamos trabajando
-            <br />
-            para mejorar el servicio.
-          </p>
+            {/* Botón de redirección para pantallas pequeñas */}
 
-          {/* Botón de redirección para pantallas pequeñas */}
-          <div className="w-full text-right sm:hidden">
             <Link href="/">
               <div className="inline-flex w-[165px] items-center justify-center rounded-full border border-buttonsLigth bg-transparent p-2 text-base font-bold text-buttonsLigth dark:border-darkText dark:text-darkText">
                 Redirección en {counter}
