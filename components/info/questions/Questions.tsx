@@ -118,7 +118,7 @@ const FrequentlyQuestions = () => {
     >
       <AnimatedBlurredCircles tope={'top-[20px]'} />
 
-      <header className={'mb-10 mt-10 text-left text-center text-4xl lg:mt-20'}>
+      <header className={'mb-10 mt-10 text-center text-4xl lg:mt-20'}>
         <p className="font-titleFont font-medium md:text-[38px] lg:text-[40px]">Preguntas Frecuentes</p>
       </header>
 
@@ -166,9 +166,7 @@ const FrequentlyQuestions = () => {
         ))}
       </section>
       <section className="mt-10 h-auto w-full">
-        <FlyerTrabajo imageSrc={BannerQuestions.src}>
-          <></>
-        </FlyerTrabajo>{' '}
+        <FlyerTrabajo imageSrc={BannerQuestions.src} />
       </section>
     </main>
   );
