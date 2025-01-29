@@ -21,7 +21,6 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
   const [countryValues, setCountryValues] = useState<CountryOption[]>([]);
 
   useEffect(() => {
-    console.log('NEXT_PUBLIC_REST_COUNTRIES_API_URL:  ', NEXT_PUBLIC_REST_COUNTRIES_API_URL);
     const fetchCountries = async () => {
       if (!NEXT_PUBLIC_REST_COUNTRIES_API_URL) {
         console.error('Missing REST Countries API URL. Using default options.');

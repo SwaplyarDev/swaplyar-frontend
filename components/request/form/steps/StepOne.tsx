@@ -9,6 +9,7 @@ import SelectBoolean from '../inputs/SelectBoolean';
 import SelectCodeCountry from '../inputs/SelectCodeCountry';
 import { CountryOption } from '@/types/request/request';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
+import SelectCountry from '../inputs/SelectCountry';
 
 interface FormData {
   sender_first_name: string;
@@ -216,7 +217,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                   required: 'Este campo es obligatorio',
                 }}
                 render={({ field, fieldState }) => (
-                  <SelectCodeCountry
+                  <SelectCountry
                     blockAll={blockAll}
                     selectedCodeCountry={field.value}
                     setSelectedCodeCountry={(option) => field.onChange(option)}
