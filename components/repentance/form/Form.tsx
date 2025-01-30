@@ -12,9 +12,11 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     control,
-  } = useForm<FormData>();
+  } = useForm<FormData>({
+    mode: 'onChange',
+  });
   const submitHandler: SubmitHandler<FormData> = (data) => {
     onSubmit(data); // Envía los datos al componente padre
   };
@@ -57,82 +59,101 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
   return (
     <form
       onSubmit={handleSubmit(submitHandler, errorHandler)}
-      className="flex h-full flex-col justify-evenly md:ml-2 md:mt-3 lg:ml-7"
+      className="mx-auto flex h-full w-full max-w-[490px] flex-col justify-evenly gap-1 md:mt-3"
     >
-      <div className="mt-2 w-full">
-        <label className="font-sans text-base">
+      <div className="h-[81px]">
+        <label className="font-textFont text-xs font-light">
           Número Solicitud
           <input
-            className={`placeholder-text-gray-900 w-full border-0 border-b-2 border-solid ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
+            className={clsx(
+              'placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
+              isDark
+                ? 'border-b-white bg-transparent text-white placeholder:text-placeholderDark focus:border-white'
+                : 'border-b-buttonsLigth bg-transparent outline-none placeholder:text-buttonExpandDark focus:border-buttonsLigth focus:outline-none',
+              errors.transaction_id ? 'placeholder:text-[#CE1818]' : '',
+            )}
             type="text"
-            placeholder="N° de Solicitud como figura en el Correo Eletrónico"
+            placeholder={
+              errors.transaction_id ? 'Número de Solicitud*' : 'N° de Solicitud como figura en el Correo Eletrónico'
+            }
             {...register('transaction_id', {
-              required: '• El número de solicitud es obligatorio',
+              required: 'El número de solicitud es obligatorio',
               pattern: {
                 value: /^[A-Za-z0-9]{10,20}$/,
-                message: '• El número de solicitud debe tener entre 10 y 20 caracteres alfanuméricos',
+                message: 'El número de solicitud debe tener entre 10 y 20 caracteres alfanuméricos',
               },
             })}
-            onChange={handleChange}
             required
           />
         </label>
-        {errors.transaction_id && <p className="mt-1 text-sm text-red-500">{errors.transaction_id.message}</p>}
+        {errors.transaction_id && (
+          <p className="mb-5 text-sm text-[#CE1818]">{errors.transaction_id.message as string}</p>
+        )}
       </div>
-      <div className="mt-2">
-        <label className="font-sans text-base">
+      <div className="h-[81px]">
+        <label className="font-textFont text-xs font-light">
           Apellido
           <input
-            className={`placeholder-text-gray-900 w-full border-0 border-b-2 border-solid ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
+            className={clsx(
+              'placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
+              isDark
+                ? 'border-b-white bg-transparent text-white placeholder:text-placeholderDark focus:border-white'
+                : 'border-b-buttonsLigth bg-transparent outline-none placeholder:text-buttonExpandDark focus:border-buttonsLigth focus:outline-none',
+              errors.last_name ? 'placeholder:text-[#CE1818]' : '',
+            )}
             type="text"
-            placeholder="Como figura en el recibo"
+            placeholder={errors.last_name ? 'Apellido*' : 'Apellido como figura en el Correo Eletrónico'}
             {...register('last_name', {
-              required: '• El Apellido es obligatorio',
+              required: 'El Apellido es obligatorio',
               minLength: {
                 value: 2,
-                message: '• Debe ingresar mínimo 2 caracteres',
+                message: 'Debe ingresar mínimo 2 caracteres',
               },
               maxLength: {
                 value: 50,
-                message: '• Debe ingresar como máximo 50 caracteres',
+                message: 'Debe ingresar como máximo 50 caracteres',
               },
             })}
-            onChange={handleChange}
             required
           />
         </label>
-        {errors.last_name && <p className="mt-1 text-sm text-red-500">{errors.last_name.message}</p>}
+        {errors.last_name && <p className="mb-5 text-sm text-[#CE1818]">{errors.last_name.message as string}</p>}
       </div>
-      <div className="mt-2">
-        <label className="font-sans text-base">
+      <div className="h-[81px]">
+        <label className="font-textFont text-xs font-light">
           Correo Electónico
           <input
-            className={`placeholder-text-gray-900 w-full border-0 border-b-2 border-solid ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white focus:border-white dark:hover:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
+            className={clsx(
+              'placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
+              isDark
+                ? 'border-b-white bg-transparent text-white placeholder:text-placeholderDark focus:border-white'
+                : 'border-b-buttonsLigth bg-transparent outline-none placeholder:text-buttonExpandDark focus:border-buttonsLigth focus:outline-none',
+              errors.email ? 'placeholder:text-[#CE1818]' : '',
+            )}
             type="email"
             {...register('email', {
-              required: '• El Email es obligatorio',
+              required: 'El Email es obligatorio',
               pattern: {
                 value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-                message: '• Ingresa un formato válido de email. Ej: Ejemplo@gmail.com',
+                message: 'Ingresa un formato válido de email. Ej: Ejemplo@gmail.com',
               },
             })}
-            onChange={handleChange}
             required
-            placeholder="El mismo email que colocaste en el formulario"
+            placeholder={errors.email ? 'Correo Electónico*' : 'El Correo Electónico que usaste para la Solicitud'}
           />
         </label>
-        {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
+        {errors.email && <p className="mb-5 text-sm text-[#CE1818]">{errors.email.message as string}</p>}
       </div>
-      <div className="mt-2 w-full">
+      <div className="mt-1 h-[81px]">
         <div className="flex flex-col">
-          <label htmlFor="phone_number" className="font-sans text-base">
+          <label htmlFor="phone_number" className="font-textFont text-xs font-light">
             Número Telefónico
           </label>
           <div
             className={clsx(
-              `flex w-full items-center border-0 border-b-2 border-solid ps-0 text-center text-lg ${isDark ? 'border-b-white bg-transparent text-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`,
+              `flex h-[41px] w-full items-center border-0 border-b-[1px] border-solid ps-0 text-center text-xs xs:text-lg ${isDark ? 'border-b-white bg-transparent text-white focus:border-white' : 'border-b-buttonsLigth bg-transparent focus:border-buttonsLigth'} outline-none focus:outline-none`,
               errors.phone_number && !isFocused
-                ? 'border border-red-500 hover:border-blue-600 dark:hover:border-white'
+                ? 'border border-[#CE1818] hover:border-blue-600 dark:hover:border-white'
                 : isFocused
                   ? 'border-blue-600 outline-none ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
                   : 'hover:border-blue-600 dark:hover:border-white',
@@ -155,10 +176,18 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
                 />
               )}
             />
-            <p className="flex h-full items-center justify-center">{formValues.calling_code?.callingCode}</p>
+            <p className="flex h-full items-center justify-center font-textFont text-buttonsLigth dark:text-darkText">
+              {formValues.calling_code?.callingCode}
+            </p>
             <input
-              placeholder="Telefono"
-              className="${isDark ? 'border-b-white focus:border-white' : 'border-b-buttonsLigth focus:border-buttonsLigth'} w-full border-none bg-transparent text-lg focus:border-none focus:outline-none focus:ring-0"
+              placeholder={errors.phone_number ? 'Número de Telefóno*' : 'Número de Telefóno'}
+              className={clsx(
+                'placeholder-text-gray-900 ml-3 h-[41px] w-full border-0 border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
+                isDark
+                  ? 'border-b-white bg-transparent text-white placeholder:text-placeholderDark focus:border-white'
+                  : 'border-b-buttonsLigth bg-transparent outline-none placeholder:text-buttonExpandDark focus:border-buttonsLigth focus:outline-none',
+                errors.phone_number ? 'placeholder:text-[#CE1818]' : '',
+              )}
               type="tel"
               {...register('phone_number', {
                 required: 'El número de teléfono es obligatorio',
@@ -170,40 +199,40 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
             />
           </div>
           {errors.phone_number && (
-            <p className="mb-5 text-sm text-red-500">• {errors.phone_number.message as string}</p>
+            <p className="mb-5 text-sm text-[#CE1818]">{errors.phone_number.message as string}</p>
           )}
         </div>
       </div>
-      <div className="mt-2">
-        <label className="font-sans text-base">
+      <div className="h-[81px]">
+        <label className="font-textFont text-xs font-light">
           Nota Opcional{' '}
           <textarea
-            className={`placeholder-text-gray-900 max-h-[500px] min-h-[45px] w-full resize-none border-0 border-b-2 ps-0 text-lg ${isDark ? 'border-b-white bg-transparent text-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-buttonsLigth focus:border-buttonsLigth'} outline-none focus:outline-none`}
-            {...register('note', {
-              minLength: {
-                value: 6,
-                message: '• Debe ingresar mínimo 6 caracteres',
-              },
-              maxLength: {
-                value: 500,
-                message: '• Debe ingresar como máximo 500 caracteres',
-              },
-            })}
-            placeholder="Añade una nota mencionando el motivo del reembolso"
-            onChange={handleChange}
+            className={clsx(
+              'placeholder-text-gray-900 h-[41px] w-full resize-none border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
+              isDark
+                ? 'border-b-white bg-transparent text-white placeholder:text-placeholderDark focus:border-white'
+                : 'border-b-buttonsLigth bg-transparent outline-none placeholder:text-buttonExpandDark focus:border-buttonsLigth focus:outline-none',
+            )}
+            placeholder="Mencione el motivo del Reembolso"
           />
         </label>
-        {errors.note && <p className="mt-1 text-sm text-red-500">{errors.note.message}</p>}
       </div>
-      <div className="mt-[18px] flex justify-center text-center">
-        <button
-          type="submit"
-          disabled={isLoading}
-          className={`dark:hover:bg- relative m-1 flex h-[42px] min-w-[150pxpx] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-center font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
-        >
-          {isLoading ? 'Cargando...' : 'Enviar Solicitud'}
-        </button>
-      </div>
+      <button
+        type="submit"
+        disabled={!isValid}
+        className={clsx(
+          'mx-auto mt-2 flex h-[42px] items-center justify-center rounded-3xl px-16 py-3 text-center font-titleFont font-semibold',
+          isValid
+            ? isDark
+              ? 'buttonSecondDark hover:bg-relative border-darkText bg-darkText text-lightText'
+              : 'buttonSecond border border-buttonsLigth bg-buttonsLigth text-darkText hover:bg-buttonsLigth'
+            : isDark
+              ? 'cursor-not-allowed bg-placeholderDark'
+              : 'bg-buttonExpandDark text-darkText',
+        )}
+      >
+        {isLoading ? 'Cargando...' : 'Solcitar Reembolso'}
+      </button>
     </form>
   );
 };
