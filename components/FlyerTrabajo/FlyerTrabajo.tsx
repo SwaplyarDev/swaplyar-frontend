@@ -26,7 +26,7 @@ export default function FlyerTrabajo({ title, description, nameButton, imageSrc 
               <div className="mask-gradient-popup w-full lg:hidden">
                 <motion.p
                   animate={{ x: ['100%', '-100%'] }}
-                  transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+                  transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
                   className="min-w-max"
                 >
                   {description}
