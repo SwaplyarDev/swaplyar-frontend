@@ -517,7 +517,7 @@ div:where(.swal2-container).swal2-noanimation {
 
 /*Input - Sacar estilos del autofill*/
 
-input:-webkit-autofill {
+/* input:-webkit-autofill {
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: rgba(37, 37, 38, 1) !important;
 }
@@ -525,4 +525,24 @@ input:-webkit-autofill {
 .dark input:-webkit-autofill {
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: rgba(235, 231, 224, 1) !important;
+} */
+
+.dark .inputChangeAutofill:-webkit-autofill {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: rgba(235, 231, 224, 1) !important;
+}
+
+.inputChangeAutofill:-webkit-autofill {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: rgba(37, 37, 38, 1) !important;
+}
+
+.dark .inputChangeAutofillReverse:-webkit-autofill {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: rgba(37, 37, 38, 1) !important;
+}
+
+.inputChangeAutofillReverse:-webkit-autofill {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: rgba(37, 37, 38, 1) !important;
 }

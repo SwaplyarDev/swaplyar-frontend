@@ -6,7 +6,6 @@ import { Controller, useForm, useWatch } from 'react-hook-form';
 import clsx from 'clsx';
 import InputField from '@/components/ui/contact-form/InputField';
 import SelectBoolean from '../inputs/SelectBoolean';
-import SelectCodeCountry from '../inputs/SelectCodeCountry';
 import { CountryOption } from '@/types/request/request';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import SelectCountry from '../inputs/SelectCountry';
@@ -210,12 +209,11 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             </label>
             <div
               className={clsx(
-                'flex max-h-[38px] items-center rounded border border-[#6B7280] bg-gray-200 dark:bg-lightText',
-                errors.phone && !isFocused
-                  ? 'border border-red-500 hover:border-blue-600 dark:hover:border-white'
-                  : isFocused
-                    ? 'border-blue-600 outline-none ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
-                    : 'hover:border-blue-600 dark:hover:border-white',
+                'flex max-h-[38px] max-w-full items-center rounded-2xl border bg-transparent py-2 pr-5 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
+                watch('phone') && 'border-inputLight dark:border-lightText',
+                errors.phone
+                  ? 'mb-0 border-errorColor text-errorColor placeholder-errorColor'
+                  : 'mb-5 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
               )}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
@@ -230,7 +228,6 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                 render={({ field, fieldState }) => (
                   <SelectCountry
                     blockAll={blockAll}
-                    selectedCodeCountry={field.value}
                     setSelectedCodeCountry={(option) => field.onChange(option)}
                     errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
                   />
@@ -239,7 +236,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               <p className="flex h-full items-center justify-center">{formValues.calling_code?.callingCode}</p>
               <input
                 placeholder="Telefono"
-                className="w-full border-none bg-transparent focus:border-none focus:outline-none focus:ring-0"
+                className="inputChangeAutofillReverse w-full border-none bg-transparent focus:border-none focus:outline-none focus:ring-0"
                 type="tel"
                 disabled={blockAll}
                 {...register('phone', {

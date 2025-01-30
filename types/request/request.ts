@@ -101,7 +101,7 @@ export type SelectRedProps = {
 };
 
 export type SelectCodeCountryProps = {
-  selectedCodeCountry: CountryOption | undefined;
+  selectedCodeCountry?: CountryOption | undefined;
   setSelectedCodeCountry: (option: CountryOption | undefined) => void;
   errors: { [key: string]: FieldError } | {}; // Tipado explícito
   blockAll?: boolean;
