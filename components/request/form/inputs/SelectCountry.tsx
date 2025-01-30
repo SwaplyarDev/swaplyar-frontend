@@ -26,6 +26,7 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
         console.error('Missing REST Countries API URL. Using default options.');
         setCountryOptions(defaultCountryOptions);
         setSelectedCountry(defaultCountryOptions.find((option) => option.callingCode === '+54'));
+        setSelectedCodeCountry(defaultCountryOptions.find((option) => option.callingCode === '+54'));
         return;
       }
       try {
@@ -42,22 +43,25 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
         });
         setCountryOptions(options);
         setSelectedCountry(options.find((option) => option.callingCode === '+54'));
+        setSelectedCodeCountry(options.find((option) => option.callingCode === '+54'));
       } catch (error) {
         console.error('Error fetching countries:', error, 'Using default options.');
         setCountryOptions(defaultCountryOptions);
         setSelectedCountry(defaultCountryOptions.find((option) => option.callingCode === '+54'));
+        setSelectedCodeCountry(defaultCountryOptions.find((option) => option.callingCode === '+54'));
       }
     };
 
     fetchCountries();
-  }, []);
+  }, [setSelectedCodeCountry]);
 
   return (
     <div className="relative w-56">
       <button
-        className="flex w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:outline-none dark:bg-gray-800 dark:text-white"
+        className="flex w-full items-center justify-between rounded-lg bg-transparent px-4 py-2 text-gray-900 focus:outline-none dark:text-white"
         onClick={() => setIsOpen(!isOpen)}
         type="button"
+        disabled={selectedCountry?.label === undefined}
       >
         <span>{`${selectedCountry?.label === undefined ? 'Cargando...' : selectedCountry?.label}`}</span>
         <ChevronDown className={cn('h-5 w-5 transition-transform', { 'rotate-180': isOpen })} />
@@ -77,6 +81,7 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
               })}
               onClick={() => {
                 setSelectedCountry(country);
+                setSelectedCodeCountry(country);
                 setIsOpen(false);
               }}
             >

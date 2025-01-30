@@ -27,6 +27,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     control,
     formState: { errors, isValid },
     setValue,
+    watch,
   } = useForm<FormData>({ mode: 'onChange' });
 
   const {
@@ -190,10 +191,20 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               error={errors.email && errors.email.message}
             />
           </div>
-          <div className="flex flex-col">
+          <div
+            className={clsx(
+              'flex min-h-[98px] flex-col',
+              errors.phone && 'justify-end',
+              isFocused || !!watch('phone') ? '' : 'pt-5',
+            )}
+          >
             <label
               htmlFor="phone"
-              className={clsx('ml-1 h-5 text-xs', errors.phone ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
+              className={clsx(
+                'ml-1 h-5 text-xs',
+                isFocused || !!watch('phone') ? '' : 'hidden',
+                errors.phone ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
+              )}
             >
               Telefono
             </label>

@@ -23,7 +23,7 @@
 }
 
 .box {
-  @apply max-h-[1200px] w-full rounded-full h-full;
+  @apply h-full max-h-[1200px] w-full rounded-full;
   animation: spin 30s infinite linear;
   display: flex;
   justify-content: center;
@@ -495,7 +495,7 @@ div:where(.swal2-container).swal2-noanimation {
 
 .animate-fade-in {
   opacity: 0;
-  animation: fadeIn 0.5s forwards; 
+  animation: fadeIn 0.5s forwards;
 }
 
 @keyframes lineGrowDown {
@@ -513,4 +513,16 @@ div:where(.swal2-container).swal2-noanimation {
 
 .slick-slide > div {
   margin: 0 10px;
+}
+
+/*Input - Sacar estilos del autofill*/
+
+input:-webkit-autofill {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: rgba(37, 37, 38, 1) !important;
+}
+
+.dark input:-webkit-autofill {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: rgba(235, 231, 224, 1) !important;
 }
