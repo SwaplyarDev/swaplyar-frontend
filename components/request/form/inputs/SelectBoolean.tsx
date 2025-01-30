@@ -13,7 +13,7 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelect
     <>
       <label
         htmlFor={fieldName}
-        className={clsx(errorMessage ? 'text-red-500' : 'text-gray-900 dark:text-gray-300', 'hidden')}
+        className={clsx(errorMessage ? 'text-errorColor' : 'text-gray-900 dark:text-gray-300', 'hidden')}
       >
         ¿Tienes cuenta propia?
       </label>
@@ -37,7 +37,7 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelect
         className={clsx(
           'h-[38px] w-full rounded border border-[#6B7280] bg-gray-200 px-[10px] text-gray-900 dark:bg-lightText dark:text-white',
           errorMessage && !isFocused
-            ? 'border border-red-500 hover:border-blue-600 dark:hover:border-white'
+            ? 'border border-errorColor hover:border-blue-600 dark:hover:border-white'
             : isFocused
               ? 'border-blue-600 outline-none ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
               : 'hover:border-blue-600 dark:hover:border-white',
@@ -120,7 +120,7 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelect
           }),
         }}
       />
-      {errorMessage && <p className="text-sm text-red-500">• {errorMessage}</p>}
+      {errorMessage && <p className="text-sm text-errorColor">• {errorMessage}</p>}
     </>
   );
 };

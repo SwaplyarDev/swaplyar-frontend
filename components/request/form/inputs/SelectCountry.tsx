@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { CountryOption, FieldError, SelectCodeCountryProps } from '@/types/request/request';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
 const NEXT_PUBLIC_REST_COUNTRIES_API_URL = process.env.NEXT_PUBLIC_REST_COUNTRIES_API_URL;
 
@@ -13,6 +12,7 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({ setSelectedCodeCountr
   const fieldName = 'calling_code';
   const errorMessage = (errors as { [key: string]: FieldError })[fieldName]?.message;
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -58,28 +58,42 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({ setSelectedCodeCountr
     fetchCountries();
   }, [setSelectedCodeCountry]); // No incluir `selectedCountry` en dependencias para evitar bucles
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="relative w-56">
+    <div ref={dropdownRef}>
       <button
-        className="flex w-full items-center justify-between rounded-lg bg-transparent px-4 py-2 text-lightText focus:outline-none"
+        className="flex items-center justify-between gap-1 rounded-lg bg-transparent py-2 pl-4 font-textFont text-lightText focus:outline-none"
         onClick={() => setIsOpen(!isOpen)}
         type="button"
         disabled={selectedCountry?.label === undefined || blockAll}
       >
-        <span>{`${selectedCountry?.label === undefined ? 'Cargando...' : selectedCountry?.label}`}</span>
+        <span>{`${selectedCountry?.label === undefined ? 'Cargando...' : selectedCountry?.value}`}</span>
         <ChevronDown className={cn('h-5 w-5 transition-transform', { 'rotate-180': isOpen })} />
+        <span>{`${selectedCountry?.label === undefined ? '' : selectedCountry?.callingCode}`}</span>
       </button>
       {isOpen && (
         <motion.ul
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -5 }}
-          className="scrollable-list absolute z-10 mt-2 max-h-64 w-full overflow-y-auto rounded-lg border border-custom-grayD-300 bg-custom-whiteD shadow-lg"
+          className="scrollable-list absolute top-16 z-10 mt-2 max-h-64 w-full overflow-y-auto rounded-2xl border border-custom-grayD-300 bg-custom-whiteD shadow-lg"
         >
           {countryOptions.map((country, index) => (
             <li
               key={index}
-              className={cn('cursor-pointer px-4 py-2 hover:bg-gray-200', {
+              className={cn('flex cursor-pointer justify-between px-4 py-2 font-textFont hover:bg-gray-200', {
                 'bg-gray-100': selectedCountry?.callingCode === country.callingCode,
               })}
               onClick={() => {
@@ -88,7 +102,8 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({ setSelectedCodeCountr
                 setIsOpen(false);
               }}
             >
-              {`${country.label}`}
+              <span>{country.country}</span>
+              <span>{country.callingCode}</span>
             </li>
           ))}
         </motion.ul>

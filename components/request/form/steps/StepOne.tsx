@@ -192,7 +192,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
           </div>
           <div
             className={clsx(
-              'flex min-h-[98px] flex-col',
+              'relative flex flex-col',
               errors.phone && 'justify-end',
               isFocused || !!watch('phone') ? '' : 'pt-5',
             )}
@@ -200,9 +200,9 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             <label
               htmlFor="phone"
               className={clsx(
-                'ml-1 h-5 text-xs',
+                'ml-3 h-5 font-textFont text-xs',
                 isFocused || !!watch('phone') ? '' : 'hidden',
-                errors.phone ? 'text-red-500' : 'text-gray-900 dark:text-gray-300',
+                errors.phone ? 'text-errorColor' : 'text-gray-900 dark:text-gray-300',
               )}
             >
               Telefono
@@ -213,7 +213,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                 watch('phone') && 'border-inputLight dark:border-lightText',
                 errors.phone
                   ? 'mb-0 border-errorColor text-errorColor placeholder-errorColor'
-                  : 'mb-5 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
+                  : 'mb-4 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
               )}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
@@ -233,10 +233,12 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                   />
                 )}
               />
-              <p className="flex h-full items-center justify-center">{formValues.calling_code?.callingCode}</p>
               <input
-                placeholder="Telefono"
-                className="inputChangeAutofillReverse w-full border-none bg-transparent focus:border-none focus:outline-none focus:ring-0"
+                placeholder={isFocused ? '' : errors.phone ? 'Telefono*' : 'Telefono'}
+                className={clsx(
+                  'inputChangeAutofillReverse w-full border-none bg-transparent font-textFont focus:border-none focus:outline-none focus:ring-0',
+                  errors.phone && 'placeholder-errorColor',
+                )}
                 type="tel"
                 disabled={blockAll}
                 {...register('phone', {
@@ -248,13 +250,15 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                 })}
               />
             </div>
-            {errors.phone && <p className="mb-5 text-sm text-red-500">• {errors.phone.message as string}</p>}
+            {errors.phone && (
+              <p className="ml-3 font-textFont text-xs text-errorColor">{errors.phone.message as string}</p>
+            )}
           </div>
         </div>
       </div>
       <div className="mx-0 flex flex-col gap-0 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
         <div className="flex w-full items-center justify-start sm-phone:justify-center">
-          <p className="ml-1 h-5 text-xs text-lightText dark:text-darkText sm-phone:ml-0 sm-phone:text-sm md:text-lg">
+          <p className="ml-1 h-5 font-textFont text-xs text-lightText dark:text-darkText sm-phone:ml-0 sm-phone:text-sm md:text-lg">
             ¿Se transfiere a una cuenta propia?
           </p>
         </div>
