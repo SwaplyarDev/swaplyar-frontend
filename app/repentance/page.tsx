@@ -1,4 +1,6 @@
+import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import RepentanceForm from '@/components/repentance/Repentance';
+import { FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -9,9 +11,17 @@ export const metadata: Metadata = {
 
 const Page: React.FC = () => {
   return (
-    <div className="flex-column flex w-full flex-wrap items-center justify-center lg:px-10">
-      <RepentanceForm />
-    </div>
+    <>
+      <div className="flex-column flex w-full flex-wrap items-center justify-center lg:px-10">
+        <RepentanceForm />
+      </div>
+      <FlyerTrabajo
+        imageSrc={FlyerGif}
+        title="¿Nuevo en SwaplyAr?"
+        description="Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma sencilla y segura."
+        nameButton="¡Empieza ahora!"
+      />
+    </>
   );
 };
 

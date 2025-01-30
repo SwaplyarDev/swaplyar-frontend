@@ -1,5 +1,5 @@
-import MaintenancePage from '@/components/maintenance/maintenance';
 import React from 'react';
+import MaintenancePage from '@/components/maintenance/maintenance';
 
 interface MaintenanceProps {
   params: {
@@ -7,7 +7,7 @@ interface MaintenanceProps {
   };
 }
 
-const page = ({ params }: MaintenanceProps) => {
+const Page = ({ params }: MaintenanceProps) => {
   return (
     <main>
       <MaintenancePage params={params} />
@@ -15,4 +15,4 @@ const page = ({ params }: MaintenanceProps) => {
   );
 };
 
-export default page;
+export default Page;

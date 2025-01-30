@@ -192,7 +192,7 @@ const ContactForm = () => {
               />
             </div>
           </div>
-          <div className="flex w-full flex-col gap-4">
+          <div className="flex h-[260px] w-full flex-col gap-4">
             <div className="flex h-full flex-col">
               <label
                 htmlFor="message"
@@ -205,10 +205,10 @@ const ContactForm = () => {
                 id="message"
                 placeholder={errors.message ? 'Mensaje*' : 'Mensaje'}
                 className={clsx(
-                  'h-[216px] w-full rounded-2xl border bg-[#fffff8] px-[9px] py-2 font-titleFont text-lightText placeholder:text-buttonExpandDark dark:bg-darkText',
+                  'h-[216px] w-full resize-none rounded-2xl border bg-[#fffff8] px-[9px] py-2 font-titleFont text-lightText dark:bg-darkText',
                   errors.message
                     ? 'border-[#c31818] placeholder:text-[#c31818]'
-                    : 'border-buttonExpandDark hover:border-buttonsLigth dark:border-placeholderDark dark:placeholder:text-placeholderDark dark:hover:border-white',
+                    : 'border-buttonExpandDark placeholder:text-buttonExpandDark hover:border-buttonsLigth dark:border-placeholderDark dark:placeholder:text-placeholderDark dark:hover:border-white',
                 )}
               ></textarea>
               {errors.message && <p className="px-[10px] pt-1 text-sm text-[#c31818]">Este campo es obligatorio</p>}

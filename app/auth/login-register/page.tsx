@@ -13,9 +13,7 @@ export default function LoginPage() {
   return (
     <>
       <AuthForm />
-      <FlyerTrabajo imageSrc="/images/centro-ayuda.png">
-        <></>
-      </FlyerTrabajo>
+      <FlyerTrabajo imageSrc="/images/centro-ayuda.png" />
     </>
   );
 }

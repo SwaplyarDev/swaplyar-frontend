@@ -31,33 +31,33 @@ function LoyaltyProgram() {
   const { isDark } = useDarkTheme();
 
   return (
-    <div className="relative">
+    <div className="relative font-textFont">
       <AnimatedBlurredCircles tope={'top-[20px]'} />
       <div>
         <div className="text-center">
           <div className="flex justify-center">
-            <section className="my-20 mb-10 mr-2 max-w-[796px] font-textFont text-[38px] font-medium xs:px-[100px] xs:text-[40px]">
+            <section className="my-10 mb-10 mr-2 max-w-[796px] text-[38px] font-medium xs:my-20 xs:px-[100px] xs:text-[40px]">
               SwaplyAr Plus Rewards™ premia tu fidelidad
             </section>
           </div>
         </div>
 
-        <div className="py-10">
-          <div className="text-center">
-            <section className="mx-auto mb-4 max-w-[796px] text-start text-2xl font-normal">
-              <strong className="font-semibold"> Cada transacción es una oportunidad de obtener más.</strong>
+        <div>
+          <div className="mx-4 text-center">
+            <section className="text-normal mx-auto mb-4 max-w-[796px] text-start font-normal">
+              <strong className="text-xl font-semibold"> Cada transacción es una oportunidad de obtener más.</strong>
               Únete a SwaplyAr Plus Rewards y disfruta de beneficios exclusivos cada vez que realices un intercambio.
             </section>
             <div className="mb-10 mt-4">
               <button
                 id="submit-25456"
-                className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+                className={`dark:hover:bg- relative m-1 h-[48px] w-[306px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
                 onClick={() => handleChange()}
               >
                 ¡Únete ya!
               </button>
             </div>
-            <p className="mx-auto max-w-[796px] text-start xs:px-[96px]">
+            <p className="mx-auto max-w-[796px] pb-10 text-start xs:px-[96px]">
               ¿Aún no formas parte?{' '}
               <strong>
                 <LinkWithHover href="#">Crea</LinkWithHover>
@@ -72,7 +72,7 @@ function LoyaltyProgram() {
           </div>
         </div>
 
-        <div className="flex flex-wrap justify-center py-10">
+        <div className="relative flex flex-wrap justify-center pb-14">
           <RewardCard
             imageSrc={isDark ? Rewards1Dark : Rewards1}
             imageAlt="paso 1 de como cambiar tu dinero en SwaplyAr"
@@ -80,6 +80,7 @@ function LoyaltyProgram() {
             description="Únete a SwaplyAr Plus Rewards™ y recibe $10 adicionales en tu segunda transacción de más de $200, realizada con cualquier billetera virtual."
             linkText=""
             linkHref=""
+            className="md:flex md:flex-row"
           />
           <RewardCard
             imageSrc={isDark ? Rewards2Dark : Rewards2}
@@ -88,6 +89,7 @@ function LoyaltyProgram() {
             description="Recompensas Continuas: Gana $5 adicionales después de completar 5 transacciones por un monto igual o superior a $400 cada una."
             linkText=""
             linkHref=""
+            className="md:flex md:flex-row-reverse"
           />
           <RewardCard
             imageSrc={isDark ? Rewards3Dark : Rewards3}
@@ -96,34 +98,12 @@ function LoyaltyProgram() {
             description="¡Mantente siempre atento a nuestras promociones: ¡ofertas exclusivas y acceso a beneficios únicos te esperan!"
             linkText=""
             linkHref=""
+            className="md:flex md:flex-row"
           />
         </div>
       </div>
 
-      <FlyerTrabajo imageSrc={CentroDeAyuda}>
-        <div>
-          <p>
-            Para conocer los Términos y Condiciones del programa SwaplyAr Plus Rewards, haz{' '}
-            <Link href="./sapr-terms-conditions" target="_blank" className="ml-2s underline">
-              click aquí
-            </Link>
-            .
-          </p>
-          <div>
-            <button
-              id="bannerHTUButton"
-              className={`trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:border-selectBtsLight dark:border-darkText dark:bg-darkText dark:text-black ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-            >
-              <Link
-                href={'/info/how-to-use'}
-                className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'} `}
-              >
-                ¿Necesitás ayuda?
-              </Link>
-            </button>
-          </div>
-        </div>
-      </FlyerTrabajo>
+      <FlyerTrabajo imageSrc={CentroDeAyuda} />
     </div>
   );
 }

@@ -6,6 +6,8 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import Link from 'next/link';
 import { sectionBottomHelpCenter, sectionLinksHelpCenter } from '@/data/sectionHelpCenter';
 import clsx from 'clsx';
+import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
+import { CentroDeAyuda } from '@/utils/assets/imgDatabaseCloudinary';
 
 const HelpCenterPage = () => {
   const { isDark } = useDarkTheme();
@@ -27,7 +29,14 @@ const HelpCenterPage = () => {
                   className="group relative flex flex-1 flex-col items-center lg2:after:absolute lg2:after:-right-4 lg2:after:h-full lg2:after:w-[1px] lg2:after:bg-buttonsLigth lg2:after:content-[''] lg2:after:last:hidden lg2:after:dark:bg-darkText"
                 >
                   <Image src={item.image} alt={item.title} width={200} height={200} />
-                  <h2 className="w-full border-t-[1px] border-buttonsLigth text-center font-textFont text-[28px] transition-all duration-300 group-hover:text-buttonsLigth dark:border-darkText">
+                  <h2
+                    className={clsx(
+                      'w-full border-t-[1px] text-center font-textFont text-[28px] transition-all duration-300',
+                      isDark
+                        ? 'border-darkText group-hover:underline'
+                        : 'border-buttonsLigth group-hover:text-buttonsLigth',
+                    )}
+                  >
                     {item.title}
                   </h2>
                   <p className="text-center font-textFont font-light">{item.text}</p>
@@ -65,8 +74,10 @@ const HelpCenterPage = () => {
               <Link
                 href="/info/loyalty-program"
                 className={clsx(
-                  isDark ? 'buttonSecondDark dark:text-lightText' : 'buttonSecond',
-                  'relative flex w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-[14px] py-3 font-titleFont font-semibold text-darkText dark:border-darkText dark:bg-darkText',
+                  isDark
+                    ? 'buttonSecondDark border-darkText bg-darkText dark:text-lightText'
+                    : 'buttonSecond border-buttonsLigth bg-buttonsLigth',
+                  'relative flex w-[300px] items-center justify-center rounded-3xl border px-[14px] py-3 font-titleFont font-semibold text-darkText',
                 )}
               >
                 Plus Rewards
@@ -84,7 +95,12 @@ const HelpCenterPage = () => {
                   height={270}
                 />
                 <div className="flex flex-col items-center gap-2">
-                  <h2 className="text-center font-textFont text-[28px] transition-all duration-300 group-hover:text-buttonsLigth">
+                  <h2
+                    className={clsx(
+                      'text-center font-textFont text-[28px] transition-all duration-300',
+                      isDark ? 'group-hover:underline' : 'group-hover:text-buttonsLigth',
+                    )}
+                  >
                     {item.title}
                   </h2>
                   <p className="font-textFont font-light">{item.text}</p>
@@ -94,6 +110,12 @@ const HelpCenterPage = () => {
           </div>
         </div>
       </div>
+      <FlyerTrabajo
+        imageSrc={CentroDeAyuda}
+        title="¿Nuevo en SwaplyAr?"
+        description="Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma sencilla y segura."
+        nameButton="¡Empieza ahora!"
+      />
     </>
   );
 };
