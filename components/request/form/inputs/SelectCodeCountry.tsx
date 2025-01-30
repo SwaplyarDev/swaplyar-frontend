@@ -1,12 +1,18 @@
-// /components/request/form/inputs/SelectCodeCountry.tsx
-
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Select from 'react-select';
 import { CountryOption, FieldError, SelectCodeCountryProps } from '@/types/request/request';
 import { defaultCountryOptions, defaultCountryValues } from '@/utils/defaultCountryOptions';
+
 const NEXT_PUBLIC_REST_COUNTRIES_API_URL = process.env.NEXT_PUBLIC_REST_COUNTRIES_API_URL;
+
+const ARGENTINA_DEFAULT_OPTION: CountryOption = {
+  value: 'AR',
+  label: '+54 (AR)',
+  callingCode: '+54',
+  country: 'Argentina',
+};
 
 const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
   selectedCodeCountry,
@@ -19,6 +25,12 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
   const { isDark } = useDarkTheme();
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
   const [countryValues, setCountryValues] = useState<CountryOption[]>([]);
+
+  useEffect(() => {
+    if (!selectedCodeCountry) {
+      setSelectedCodeCountry(ARGENTINA_DEFAULT_OPTION);
+    }
+  }, [selectedCodeCountry, setSelectedCodeCountry]);
 
   useEffect(() => {
     console.log('NEXT_PUBLIC_REST_COUNTRIES_API_URL:  ', NEXT_PUBLIC_REST_COUNTRIES_API_URL);
@@ -35,23 +47,14 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
         const options: CountryOption[] = countries.map((country: any) => {
           const callingCode = country.idd?.root ? `${country.idd.root}${country.idd.suffixes?.[0] || ''}` : '';
           return {
-            value: country.cca2, // Usar la sigla del país (ej. 'AR')
-            label: `${callingCode ? callingCode : 'Sin código'} (${country.cca2})`, // Mostrar código de área y sigla
-            callingCode: callingCode,
-            country: country.name.common,
-          };
-        });
-        const options2: CountryOption[] = countries.map((country: any) => {
-          const callingCode = country.idd?.root ? `${country.idd.root}${country.idd.suffixes?.[0] || ''}` : '';
-          return {
-            value: country.cca2, // Usar la sigla del país (ej. 'AR')
-            label: `${country.cca2}`, // Mostrar código de área y sigla
+            value: country.cca2,
+            label: `${callingCode ? callingCode : 'Sin código'} (${country.cca2})`,
             callingCode: callingCode,
             country: country.name.common,
           };
         });
         setCountryOptions(options);
-        setCountryValues(options2);
+        setCountryValues(options);
       } catch (error) {
         console.error('Error fetching countries:', error, 'Using default options.');
         setCountryOptions(defaultCountryOptions);
@@ -73,12 +76,12 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
       <Select
         id={fieldName}
         options={countryOptions}
-        value={countryValues.find((option) => option.value === selectedCodeCountry?.value) || null}
+        value={countryValues.find((option) => option.value === selectedCodeCountry?.value) || ARGENTINA_DEFAULT_OPTION}
         onChange={(option) => setSelectedCodeCountry(option as CountryOption)}
         isSearchable
         isDisabled={blockAll}
         classNamePrefix="custom-select"
-        className={clsx('ml-[10px] w-full max-w-24 rounded py-px text-gray-900 dark:text-white')}
+        className={clsx('w-[150px] rounded font-textFont text-buttonsLigth dark:text-darkText')}
         placeholder="AR"
         theme={(theme) => ({
           ...theme,
@@ -143,7 +146,7 @@ const SelectCodeCountry: React.FC<SelectCodeCountryProps> = ({
           dropdownIndicator: (provided) => ({
             ...provided,
             padding: '0 8px', // Asegura espacio para la flecha desplegable
-            color: isDark ? '#FFFFFF' : '#111827',
+            color: isDark ? '#ebe7e0' : '#012A8E',
             cursor: 'pointer',
           }),
           indicatorSeparator: () => ({
