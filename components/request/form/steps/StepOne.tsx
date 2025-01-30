@@ -9,6 +9,7 @@ import SelectBoolean from '../inputs/SelectBoolean';
 import SelectCodeCountry from '../inputs/SelectCodeCountry';
 import { CountryOption } from '@/types/request/request';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
+import InputSteps from '@/components/imputSteps/InputSteps';
 
 interface FormData {
   sender_first_name: string;
@@ -26,6 +27,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     control,
     formState: { errors, isValid },
     setValue,
+    watch,
   } = useForm<FormData>({ mode: 'onChange' });
 
   const {
@@ -111,11 +113,8 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
 
   const [isFocused, setIsFocused] = useState(false);
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-      <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
-        <div className="flex w-full flex-col gap-4">
-          <div className="flex flex-col">
+  {
+    /* <div className="flex flex-col">
             <label
               htmlFor="name"
               className={clsx(
@@ -139,8 +138,11 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               })}
               error={errors.sender_first_name && errors.sender_first_name.message}
             />
-          </div>
-          <div className="flex flex-col">
+          </div> */
+  }
+
+  {
+    /* <div className="flex flex-col">
             <label
               htmlFor="sender_last_name"
               className={clsx(
@@ -164,10 +166,39 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               })}
               error={errors.sender_last_name && errors.sender_last_name.message}
             />
-          </div>
+          </div> */
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
+        <div className="flex w-full flex-col gap-4">
+          <InputSteps
+            label="Nombre"
+            name="sender_first_name"
+            id="sender_first_name"
+            type="text"
+            placeholder="Nombre"
+            disabled={blockAll}
+            register={register}
+            watch={watch}
+            error={errors.sender_first_name}
+          />
+
+          <InputSteps
+            id="sender_last_name"
+            name="sender_last_name"
+            label="Apellido"
+            type="text"
+            placeholder="Apellido"
+            disabled={blockAll}
+            register={register}
+            watch={watch}
+            error={errors.sender_last_name}
+          />
         </div>
         <div className="flex w-full flex-col gap-4">
-          <div className="flex flex-col">
+          {/* <div className="flex flex-col">
             <label
               htmlFor="email"
               className={clsx('ml-1 h-5 text-xs', errors.email ? 'text-red-500' : 'text-lightText dark:text-darkText')}
@@ -188,7 +219,19 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               })}
               error={errors.email && errors.email.message}
             />
-          </div>
+          </div> */}
+
+          <InputSteps
+            label="Correo electrónico"
+            name="email"
+            id="email"
+            type="email"
+            placeholder="Email"
+            disabled={blockAll}
+            register={register}
+            watch={watch}
+            error={errors.email}
+          />
           <div className="flex flex-col">
             <label
               htmlFor="phone"
