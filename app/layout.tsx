@@ -5,6 +5,7 @@ import Footer from '@/components/footer/Footer';
 import { TopMenu } from '@/components/ui/top-menu/TopMenu';
 import ThemeProvider from '../components/ui/theme-Provider/themeProvider';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { GoogleTagManager } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
 import { roboto } from '@/config/fonts/fonts';
 import { MarginProvider } from '@/context/MarginProvider';
@@ -38,6 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
+      <GoogleTagManager gtmId="GTM-W2VLHMCW" />
       <head>
         <script
           dangerouslySetInnerHTML={{

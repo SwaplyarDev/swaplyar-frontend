@@ -43,9 +43,9 @@ function LoyaltyProgram() {
         </div>
 
         <div>
-          <div className="text-center">
-            <section className="mx-auto mb-4 max-w-[796px] text-start text-xl font-normal">
-              <strong className="font-semibold"> Cada transacción es una oportunidad de obtener más.</strong>
+          <div className="mx-4 text-center">
+            <section className="text-normal mx-auto mb-4 max-w-[796px] text-start font-normal">
+              <strong className="text-xl font-semibold"> Cada transacción es una oportunidad de obtener más.</strong>
               Únete a SwaplyAr Plus Rewards y disfruta de beneficios exclusivos cada vez que realices un intercambio.
             </section>
             <div className="mb-10 mt-4">

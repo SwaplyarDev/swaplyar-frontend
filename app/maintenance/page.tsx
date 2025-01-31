@@ -8,12 +8,15 @@ export const metadata: Metadata = {
   description:
     'SwaplyAr está mejorando sus servicios. Volveremos pronto con un sitio optimizado. ¡Gracias por tu comprensión y paciencia. Te invitamos regresar a la Home!',
 };
-const MaintenanceIndexPage = () => {
-  return (
-    <>
-      <MaintenancePage />
-    </>
-  );
+
+interface MaintenanceProps {
+  params: {
+    section: string;
+  };
+}
+
+const MaintenanceIndexPage: React.FC<MaintenanceProps> = ({ params }) => {
+  return <MaintenancePage params={params} />;
 };
 
 export default MaintenanceIndexPage;
