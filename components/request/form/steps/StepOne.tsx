@@ -221,6 +221,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                     selectedCodeCountry={field.value}
                     setSelectedCodeCountry={(option) => field.onChange(option)}
                     errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
+                    textColor={['', '']}
                   />
                 )}
               />
