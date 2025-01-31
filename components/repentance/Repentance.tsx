@@ -93,7 +93,13 @@ const RepentanceForm = () => {
         </div>
         <div className="flex w-full flex-col lg2:max-w-[1004px] lg2:flex-row">
           <div className="mt-10 hidden min-h-full flex-1 flex-wrap justify-center lg2:block">
-            <Image src={regretsPc} alt="regretsPc" width={650} height={0} className="h-full object-cover" />
+            <Image
+              src={regretsPc}
+              alt="regretsPc"
+              width={650}
+              height={0}
+              className="h-full max-h-[557px] object-cover"
+            />
           </div>
           <div className="mx-auto mt-10 flex min-h-full w-full max-w-[506px] flex-wrap justify-center lg2:hidden">
             <Image src={regretsPhone} alt="regretsPhone" width={200} height={0} className="h-full object-contain" />
@@ -103,7 +109,7 @@ const RepentanceForm = () => {
           </div>
 
           <div
-            className={`relative mt-10 flex h-full w-full flex-col justify-center border-0 lg2:mr-3 lg2:flex-1 lg2:after:absolute lg2:after:-left-3 lg2:after:top-5 lg2:after:h-[410px] lg2:after:w-[1px] lg2:after:bg-buttonsLigth lg2:after:content-[''] ${isDark ? 'lg2:after:bg-darkText' : ''}`}
+            className={`relative mt-10 flex h-full w-full flex-col justify-center border-0 lg2:mr-3 lg2:flex-1 lg2:after:absolute lg2:after:-left-3 lg2:after:top-5 lg2:after:h-[75%] lg2:after:w-[1px] lg2:after:bg-buttonsLigth lg2:after:content-[''] ${isDark ? 'lg2:after:bg-darkText' : ''}`}
           >
             <Form onSubmit={handleRepentanceFormSubmission}></Form>
             <div className="mt-[18px] flex justify-center text-center">
