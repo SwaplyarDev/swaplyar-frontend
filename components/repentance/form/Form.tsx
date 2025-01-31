@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Controller, SubmitErrorHandler, SubmitHandler, useForm, useWatch } from 'react-hook-form';
 
 import clsx from 'clsx';
-import SelectCodeCountry from '@/components/request/form/inputs/SelectCodeCountry';
 import Swal from 'sweetalert2';
 import { FormData } from '@/types/repentance/repentance';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { FormularioProps } from '@/types/repentance/repentance';
+import SelectCountry from '@/components/request/form/inputs/SelectCountry';
 
 const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
   const {
@@ -68,9 +68,9 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
             className={clsx(
               'placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
               isDark
-                ? 'border-b-white bg-transparent text-white placeholder:text-placeholderDark focus:border-white'
-                : 'border-b-buttonsLigth bg-transparent outline-none placeholder:text-buttonExpandDark focus:border-buttonsLigth focus:outline-none',
-              errors.transaction_id ? 'placeholder:text-[#CE1818]' : '',
+                ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
+                : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
+              errors.transaction_id ? 'placeholder:text-[#CE1818]' : 'placeholder:text-buttonExpandDark',
             )}
             type="text"
             placeholder={
@@ -97,9 +97,9 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
             className={clsx(
               'placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
               isDark
-                ? 'border-b-white bg-transparent text-white placeholder:text-placeholderDark focus:border-white'
-                : 'border-b-buttonsLigth bg-transparent outline-none placeholder:text-buttonExpandDark focus:border-buttonsLigth focus:outline-none',
-              errors.last_name ? 'placeholder:text-[#CE1818]' : '',
+                ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
+                : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
+              errors.last_name ? 'placeholder:text-[#CE1818]' : 'placeholder:text-buttonExpandDark',
             )}
             type="text"
             placeholder={errors.last_name ? 'Apellido*' : 'Apellido como figura en el Correo Eletrónico'}
@@ -126,9 +126,9 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
             className={clsx(
               'placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
               isDark
-                ? 'border-b-white bg-transparent text-white placeholder:text-placeholderDark focus:border-white'
-                : 'border-b-buttonsLigth bg-transparent outline-none placeholder:text-buttonExpandDark focus:border-buttonsLigth focus:outline-none',
-              errors.email ? 'placeholder:text-[#CE1818]' : '',
+                ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
+                : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
+              errors.email ? 'placeholder:text-[#CE1818]' : 'placeholder:text-buttonExpandDark',
             )}
             type="email"
             {...register('email', {
@@ -144,19 +144,19 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
         </label>
         {errors.email && <p className="mb-5 text-sm text-[#CE1818]">{errors.email.message as string}</p>}
       </div>
-      <div className="mt-1 h-[81px]">
+      <div className="relative mt-1 h-[81px]">
         <div className="flex flex-col">
           <label htmlFor="phone_number" className="font-textFont text-xs font-light">
             Número Telefónico
           </label>
           <div
             className={clsx(
-              `flex h-[41px] w-full items-center border-0 border-b-[1px] border-solid ps-0 text-center text-xs xs:text-lg ${isDark ? 'border-b-white bg-transparent text-white focus:border-white' : 'border-b-buttonsLigth bg-transparent focus:border-buttonsLigth'} outline-none focus:outline-none`,
+              `flex h-[41px] w-full items-center border-0 border-b-[1px] border-solid ps-0 text-center text-xs xs:text-lg ${isDark ? 'border-b-darkText bg-transparent text-white focus:border-white' : 'border-b-buttonsLigth bg-transparent focus:border-buttonsLigth'} outline-none focus:outline-none`,
               errors.phone_number && !isFocused
-                ? 'border border-[#CE1818] hover:border-blue-600 dark:hover:border-white'
+                ? 'border border-[#CE1818] hover:border-blue-600 dark:hover:border-darkText'
                 : isFocused
-                  ? 'border-blue-600 outline-none ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
-                  : 'hover:border-blue-600 dark:hover:border-white',
+                  ? 'border-blue-600 outline-none ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-darkText'
+                  : 'hover:border-blue-600 dark:hover:border-darkText',
             )}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
@@ -169,24 +169,21 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
                 required: 'Este campo es obligatorio',
               }}
               render={({ field, fieldState }) => (
-                <SelectCodeCountry
-                  selectedCodeCountry={field.value}
+                <SelectCountry
                   setSelectedCodeCountry={(option) => field.onChange(option)}
                   errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
+                  textColor={['buttonsLigth', 'darkText']}
                 />
               )}
             />
-            <p className="flex h-full items-center justify-center font-textFont text-buttonsLigth dark:text-darkText">
-              {formValues.calling_code?.callingCode}
-            </p>
             <input
               placeholder={errors.phone_number ? 'Número de Telefóno*' : 'Número de Telefóno'}
               className={clsx(
                 'placeholder-text-gray-900 ml-3 h-[41px] w-full border-0 border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
                 isDark
-                  ? 'border-b-white bg-transparent text-white placeholder:text-placeholderDark focus:border-white'
-                  : 'border-b-buttonsLigth bg-transparent outline-none placeholder:text-buttonExpandDark focus:border-buttonsLigth focus:outline-none',
-                errors.phone_number ? 'placeholder:text-[#CE1818]' : '',
+                  ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
+                  : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
+                errors.phone_number ? 'placeholder:text-[#CE1818]' : 'placeholder:text-buttonExpandDark',
               )}
               type="tel"
               {...register('phone_number', {
@@ -203,14 +200,14 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
           )}
         </div>
       </div>
-      <div className="h-[81px]">
+      <div className="">
         <label className="font-textFont text-xs font-light">
           Nota Opcional{' '}
           <textarea
             className={clsx(
-              'placeholder-text-gray-900 h-[41px] w-full resize-none border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
+              'placeholder-text-gray-900 h-[45px] max-h-[148px] min-h-[45px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
               isDark
-                ? 'border-b-white bg-transparent text-white placeholder:text-placeholderDark focus:border-white'
+                ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
                 : 'border-b-buttonsLigth bg-transparent outline-none placeholder:text-buttonExpandDark focus:border-buttonsLigth focus:outline-none',
             )}
             placeholder="Mencione el motivo del Reembolso"
