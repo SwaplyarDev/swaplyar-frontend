@@ -77,7 +77,7 @@ const RepentanceForm = () => {
 
   return (
     <div>
-      <div className="my-7 flex flex-col items-center justify-center overflow-hidden px-4 md:px-8 lg2:px-4">
+      <div className="my-7 flex flex-col items-center justify-center px-4 md:px-8 lg2:px-4">
         <AnimatedBlurredCircles tope="top-[124px]" />
         <div className="flex flex-col gap-10">
           <h1 className="mx-auto max-w-[506px] text-center font-titleFont text-[38px] font-medium lg2:max-w-[592px] lg2:text-[40px]">
