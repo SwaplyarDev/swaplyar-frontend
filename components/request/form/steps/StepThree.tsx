@@ -24,6 +24,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
     formState: { errors, isValid },
     setValue,
     getValues,
+    watch,
   } = useForm<FormData>({ mode: 'onChange' });
   const { markStepAsCompleted, setActiveStep, formData, updateFormData, completedSteps } = useStepperStore();
   const { isDark } = useDarkTheme();
@@ -112,6 +113,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
             selectedReceivingSystem={selectedReceivingSystem}
             receiveAmount={receiveAmount}
             handleChange={handleChange}
+            watch={watch}
             restRegister={restRegister}
           />
         );
@@ -128,6 +130,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
             selectedReceivingSystem={selectedReceivingSystem}
             receiveAmount={receiveAmount}
             handleChange={handleChange}
+            watch={watch}
             restRegister={restRegister}
           />
         );

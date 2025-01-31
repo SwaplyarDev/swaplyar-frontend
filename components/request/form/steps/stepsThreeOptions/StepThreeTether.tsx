@@ -1,15 +1,18 @@
 import React from 'react';
 import clsx from 'clsx';
-import { FieldErrors, UseFormGetValues, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch } from 'react-hook-form';
 import InputCopy from '../../inputs/InputCopy';
 import InputField from '@/components/ui/contact-form/InputField';
 import IconTron from '@/components/ui/IconsRed/IconTron';
 import Image from 'next/image';
 import { System } from '@/types/data';
+import InputSteps from '@/components/inputSteps/InputSteps';
+import { FieldError } from 'react-hook-form';
 
 interface StepThreeTetherProps {
   register: UseFormRegister<any>;
   errors: FieldErrors<any>;
+  watch: UseFormWatch<any>;
   getValues: UseFormGetValues<any>;
   blockAll: boolean;
   formData: any;
@@ -32,6 +35,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
   receiveAmount,
   handleChange,
   restRegister,
+  watch,
 }) => {
   return (
     <>
@@ -93,7 +97,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
               error={errors.send_amount && 'Este campo es obligatorio'}
             />
           </div>
-          <div className="flex flex-col">
+          {/* <div className="flex flex-col">
             <label
               htmlFor="receive_amount"
               className={clsx(
@@ -112,7 +116,23 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
               register={register('receive_amount', { required: true })}
               error={errors.receive_amount && 'Este campo es obligatorio'}
             />
-          </div>
+          </div> */}
+
+          <InputSteps
+            label="Monto a Recibir"
+            name="receive_amount"
+            id="receive_amount"
+            type="number"
+            placeholder="Monto a Recibir"
+            disabled={true}
+            register={register}
+            watch={watch}
+            rules={{
+              required: 'Este campo es obligatorio',
+            }}
+            error={errors.receive_amount ? (errors.receive_amount as FieldError) : undefined}
+          />
+
           <div className="flex flex-col">
             <label
               htmlFor="proof_of_payment"

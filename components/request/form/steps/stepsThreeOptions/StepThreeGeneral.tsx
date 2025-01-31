@@ -1,14 +1,17 @@
 import React from 'react';
 import clsx from 'clsx';
-import { FieldErrors, UseFormGetValues, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch } from 'react-hook-form';
 import InputCopy from '../../inputs/InputCopy';
 import InputField from '@/components/ui/contact-form/InputField';
 import { System } from '@/types/data';
+import InputSteps from '@/components/inputSteps/InputSteps';
+import { FieldError } from 'react-hook-form';
 
 interface StepThreeGeneralProps {
   register: UseFormRegister<any>;
   errors: FieldErrors<any>;
   getValues: UseFormGetValues<any>;
+  watch: UseFormWatch<any>; // 🔹 Agregado para solucionar el primer error
   blockAll: boolean;
   formData: any;
   sendAmount: string | null;
@@ -30,6 +33,7 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
   receiveAmount,
   handleChange,
   restRegister,
+  watch,
 }) => {
   console.log(' selectedSendingSystem: ', selectedSendingSystem);
   console.log(' selectedReceivingSystem: ', selectedReceivingSystem);
@@ -92,7 +96,8 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
               error={errors.send_amount && 'Este campo es obligatorio'}
             />
           </div>
-          <div className="flex flex-col">
+
+          {/* <div className="flex flex-col">
             <label
               htmlFor="receive_amount"
               className={clsx(
@@ -111,7 +116,23 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
               register={register('receive_amount', { required: true })}
               error={errors.receive_amount && 'Este campo es obligatorio'}
             />
-          </div>
+          </div> */}
+
+          <InputSteps
+            label="Monto a Recibir"
+            name="receive_amount"
+            id="receive_amount"
+            type="text"
+            placeholder="Monto a Recibir"
+            disabled={true}
+            register={register}
+            watch={watch}
+            rules={{
+              required: 'Este campo es obligatorio',
+            }}
+            error={errors.receive_amount ? (errors.receive_amount as FieldError) : undefined}
+          />
+
           <div className="flex flex-col">
             <label
               htmlFor="proof_of_payment"

@@ -9,7 +9,7 @@ import SelectBoolean from '../inputs/SelectBoolean';
 import SelectCodeCountry from '../inputs/SelectCodeCountry';
 import { CountryOption } from '@/types/request/request';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
-import InputSteps from '@/components/imputSteps/InputSteps';
+import InputSteps from '@/components/inputSteps/InputSteps';
 
 interface FormData {
   sender_first_name: string;
@@ -113,15 +113,17 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
 
   const [isFocused, setIsFocused] = useState(false);
 
-  {
-    /* <div className="flex flex-col">
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
+        <div className="flex w-full flex-col gap-4">
+          {/* <div className="flex flex-col">
             <label
               htmlFor="name"
               className={clsx(
                 'ml-1 h-5 text-xs',
                 errors.sender_first_name ? 'text-red-500' : 'text-lightText dark:text-darkText',
-              )}
-            >
+              )} >
               Nombre
             </label>
             <InputField
@@ -138,11 +140,28 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               })}
               error={errors.sender_first_name && errors.sender_first_name.message}
             />
-          </div> */
-  }
+          </div> */}
 
-  {
-    /* <div className="flex flex-col">
+          <InputSteps
+            label="Nombre"
+            name="sender_first_name"
+            id="sender_first_name"
+            type="text"
+            placeholder="Nombre"
+            disabled={blockAll}
+            register={register}
+            watch={watch}
+            rules={{
+              required: 'El Nombre es obligatorio',
+              pattern: {
+                value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                message: 'El Nombre solo puede contener letras y espacios',
+              },
+            }}
+            error={errors.sender_first_name}
+          />
+
+          {/* <div className="flex flex-col">
             <label
               htmlFor="sender_last_name"
               className={clsx(
@@ -166,25 +185,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               })}
               error={errors.sender_last_name && errors.sender_last_name.message}
             />
-          </div> */
-  }
-
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-      <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
-        <div className="flex w-full flex-col gap-4">
-          <InputSteps
-            label="Nombre"
-            name="sender_first_name"
-            id="sender_first_name"
-            type="text"
-            placeholder="Nombre"
-            disabled={blockAll}
-            register={register}
-            watch={watch}
-            error={errors.sender_first_name}
-          />
-
+          </div> */}
           <InputSteps
             id="sender_last_name"
             name="sender_last_name"
@@ -194,9 +195,17 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             disabled={blockAll}
             register={register}
             watch={watch}
+            rules={{
+              required: 'El Apellido es obligatorio',
+              pattern: {
+                value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                message: 'El Apellido solo puede contener letras y espacios',
+              },
+            }}
             error={errors.sender_last_name}
           />
         </div>
+
         <div className="flex w-full flex-col gap-4">
           {/* <div className="flex flex-col">
             <label
@@ -220,7 +229,6 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               error={errors.email && errors.email.message}
             />
           </div> */}
-
           <InputSteps
             label="Correo electrónico"
             name="email"
@@ -230,6 +238,13 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             disabled={blockAll}
             register={register}
             watch={watch}
+            rules={{
+              required: 'El Correo es obligatorio',
+              pattern: {
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+                message: 'El formato del Correo electrónico es inválido',
+              },
+            }}
             error={errors.email}
           />
           <div className="flex flex-col">
@@ -286,6 +301,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
           </div>
         </div>
       </div>
+
       <div className="mx-0 flex flex-col gap-0 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
         <div className="flex w-full items-center justify-start sm-phone:justify-center">
           <p className="ml-1 h-5 text-xs text-lightText dark:text-darkText sm-phone:ml-0 sm-phone:text-sm md:text-lg">
