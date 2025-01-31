@@ -14,6 +14,7 @@ import useQuestion from '@/components/ui/top-menu/UseQuestion/useQuestion';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import BannerQuestions from '@/public/images/baner_questions.png';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
+import SkeletonQuestions from '@/components/ui/SkeletonQuestions/SkeletonQuestions';
 //C:\Users\Administrator\swaplyar-frontend\components\info\questions\Questions.tsx
 //C:\Users\Administrator\swaplyar-frontend\public\images
 
@@ -122,48 +123,57 @@ const FrequentlyQuestions = () => {
         <p className="font-titleFont font-medium md:text-[38px] lg:text-[40px]">Preguntas Frecuentes</p>
       </header>
 
-      <section className="grid max-w-[716px] gap-6 py-12" style={{ marginInline: currentMargin }}>
-        {questions.map((dato, index) => (
-          <Accordion
-            isDark={isDark}
-            key={dato.question_id}
-            expanded={expanded === `panel${index}`}
-            onChange={handleChange(`panel${index}`)}
-            className="group"
-          >
-            <AccordionSummary
-              className={`p-0 hover:bg-transparent`}
+      <section
+        className={`grid max-w-[716px] gap-6 py-12 ${questions.length < 1 ? 'w-full' : ''}`}
+        style={{ marginInline: currentMargin }}
+      >
+        {questions.length > 1 ? (
+          questions.map((dato, index) => (
+            <Accordion
               isDark={isDark}
+              key={dato.question_id}
               expanded={expanded === `panel${index}`}
+              onChange={handleChange(`panel${index}`)}
+              className="group"
             >
-              <Typography
-                className={`text-xl ${
-                  isDark
-                    ? 'text-custom-whiteD'
-                    : expanded === `panel${index}`
-                      ? 'text-custom-blue-800'
-                      : 'text-custom-grayD'
-                } ${expanded === `panel${index}` ? 'font-semibold' : 'font-normal'}`}
+              <AccordionSummary
+                className={`p-0 hover:bg-transparent`}
+                isDark={isDark}
+                expanded={expanded === `panel${index}`}
               >
-                {dato.title}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails
-              className={`flex flex-col items-center justify-center ${isDark ? 'text-custom-whiteD' : 'text-custom-grayD'}`}
-            >
-              <Typography
-                className={`flex w-9/10 gap-6 rounded-md p-2.5 text-left`}
-                style={
-                  isDark
-                    ? { background: 'rgba(75,75,75,1)', borderRadius: '16px' }
-                    : { background: 'rgb(238, 234, 227)', borderRadius: '16px' }
-                }
+                <Typography
+                  className={`text-xl ${
+                    isDark
+                      ? 'text-custom-whiteD'
+                      : expanded === `panel${index}`
+                        ? 'text-custom-blue-800'
+                        : 'text-custom-grayD'
+                  } ${expanded === `panel${index}` ? 'font-semibold' : 'font-normal'}`}
+                >
+                  {dato.title}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails
+                className={`flex flex-col items-center justify-center ${isDark ? 'text-custom-whiteD' : 'text-custom-grayD'}`}
               >
-                {dato.descripcion}
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-        ))}
+                <Typography
+                  className={`flex w-9/10 gap-6 rounded-md p-2.5 text-left`}
+                  style={
+                    isDark
+                      ? { background: 'rgba(75,75,75,1)', borderRadius: '16px' }
+                      : { background: 'rgb(238, 234, 227)', borderRadius: '16px' }
+                  }
+                >
+                  {dato.descripcion}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))
+        ) : (
+          <div>
+            <SkeletonQuestions />
+          </div>
+        )}
       </section>
       <section className="mt-10 h-auto w-full">
         <FlyerTrabajo imageSrc={BannerQuestions.src} />
