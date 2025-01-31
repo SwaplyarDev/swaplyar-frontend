@@ -3,7 +3,7 @@
 const ApiUrl = process.env.NEXT_PUBLIC_VALUE_TRANSACTIONS;
 
 if (!ApiUrl) {
-  throw new Error('Missing API URL');
+  throw new Error('Falta la URL de la API en las variables de entorno.');
 }
 
 //* Función para calcular precio de compra/venta del euro blue usando
