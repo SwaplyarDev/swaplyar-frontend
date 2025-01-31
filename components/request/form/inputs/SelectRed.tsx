@@ -2,11 +2,12 @@ import IconArbitrum from '@/components/ui/IconsRed/IconArbitrum';
 import IconBnb from '@/components/ui/IconsRed/IconBnb';
 import IconOptimism from '@/components/ui/IconsRed/IconOptimism';
 import IconTron from '@/components/ui/IconsRed/IconTron';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import React, { useState } from 'react';
-import Select, { components } from 'react-select';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { FieldError, SelectRedProps } from '@/types/request/request';
+import { cn } from '@/lib/utils';
+import { ChevronDown } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const options = [
   {
@@ -31,25 +32,23 @@ const options = [
   },
 ];
 
-const CustomOption = (props: any) => (
-  <components.Option {...props} className={clsx(props.className, 'flex items-center gap-2')}>
-    {props.data.image}
-    {props.label}
-  </components.Option>
-);
-
-const CustomSingleValue = (props: any) => (
-  <components.SingleValue {...props} className="flex items-center gap-2">
-    {props.data.image}
-    {props.data.label}
-  </components.SingleValue>
-);
-
 const SelectRed: React.FC<SelectRedProps> = ({ selectedRed, setSelectedRed, errors, blockAll }) => {
   const fieldName = 'red_selection';
   const errorMessage = (errors as { [key: string]: FieldError })[fieldName]?.message;
-  const [isFocused, setIsFocused] = useState(false);
-  const { isDark } = useDarkTheme();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
   return (
     <>
       <label
@@ -58,108 +57,58 @@ const SelectRed: React.FC<SelectRedProps> = ({ selectedRed, setSelectedRed, erro
       >
         Selecciona una Red
       </label>
-      <Select
-        isDisabled={blockAll}
-        id={fieldName}
-        onFocus={() => setIsFocused(true)} // Activa el enfoque
-        onBlur={() => setIsFocused(false)}
-        value={options.find((option) => option.value === selectedRed?.value)}
-        options={options}
-        onChange={(option) => {
-          setSelectedRed(option || undefined);
-          setIsFocused(false);
-        }}
-        components={{ Option: CustomOption, SingleValue: CustomSingleValue }}
-        isSearchable={false}
-        placeholder="Selecciona una red"
+      <div
+        ref={dropdownRef}
         className={clsx(
-          'h-[38px] w-full rounded border border-[#6B7280] bg-gray-200 px-[10px] text-gray-900 dark:bg-lightText dark:text-white',
-          errorMessage && !isFocused
-            ? 'border border-red-500 hover:border-blue-600 dark:hover:border-white'
-            : isFocused
-              ? 'border-blue-600 outline-none ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
-              : 'hover:border-blue-600 dark:hover:border-white',
+          'relative flex max-h-[38px] max-w-full items-center rounded-2xl border bg-transparent py-2 pr-5 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
+          errorMessage
+            ? 'border-errorColor text-errorColor placeholder-errorColor'
+            : 'border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
         )}
-        theme={(theme) => ({
-          ...theme,
-          borderRadius: 0,
-          colors: {
-            ...theme.colors,
-            primary25: 'rgba(59, 130, 246, 0.1)',
-            primary: 'rgb(59, 130, 246)',
-            neutral0: 'rgb(255, 255, 255)',
-            neutral20: 'rgb(209, 213, 219)',
-            neutral30: 'rgba(209, 213, 219, 0.5)',
-            neutral50: 'rgba(255, 255, 255, 0.5)',
-          },
-        })}
-        styles={{
-          control: (provided) => ({
-            ...provided,
-            border: 'none',
-            boxShadow: 'none',
-            backgroundColor: 'transparent',
-            cursor: 'pointer',
-          }),
-          menu: (provided) => ({
-            ...provided,
-            backgroundColor: 'rgb(209, 213, 219)',
-            left: '0 !important',
-          }),
-          option: (provided, state) => ({
-            ...provided,
-            backgroundColor: state.isSelected
-              ? 'rgb(59, 130, 246)'
-              : state.isFocused
-                ? 'rgba(59, 130, 246, 0.1)'
-                : 'rgb(209, 213, 219)',
-            color: state.isSelected ? 'white' : 'rgb(59, 130, 246)',
-            padding: '5px 10px',
-            cursor: 'pointer',
-            userSelect: 'text',
-            '&:hover': {
-              backgroundColor: 'rgba(59, 130, 246, 0.1)',
-            },
-            display: 'flex',
-          }),
-          singleValue: (provided) => ({
-            ...provided,
-            color: 'text-gray-900 dark:text-white',
-            userSelect: 'text',
-          }),
-          input: (provided) => ({
-            ...provided,
-            color: 'inherit',
-            background: 'none',
-            boxShadow: 'none',
-            cursor: 'pointer',
-            '& input': {
-              font: 'inherit',
-              color: 'inherit',
-              userSelect: 'text',
-              cursor: 'pointer',
-              border: 'none',
-              boxShadow: 'none',
-            },
-          }),
-          clearIndicator: () => ({
-            display: 'none',
-          }),
-          dropdownIndicator: (provided) => ({
-            ...provided,
-            padding: '0 8px',
-            color: isDark ? '#FFFFFF' : '#111827',
-          }),
-          indicatorSeparator: () => ({
-            display: 'none',
-          }),
-          placeholder: (provided) => ({
-            ...provided,
-            color: '#6B7280',
-          }),
-        }}
-      />
-      {errorMessage && <p className="text-sm text-red-500">• {errorMessage}</p>}
+      >
+        <button
+          className="flex w-full items-center justify-between gap-1 rounded-lg bg-transparent py-2 pl-4 font-textFont text-lightText focus:outline-none"
+          onClick={() => setIsOpen(!isOpen)}
+          type="button"
+          disabled={blockAll}
+        >
+          <span
+            className={clsx(
+              selectedRed === undefined ? 'text-inputLightDisabled dark:text-placeholderDark' : 'text-lightText',
+              'flex items-center gap-2',
+            )}
+          >
+            {selectedRed?.image}
+            {selectedRed?.label || 'Selecciona una opción'}
+          </span>
+          <ChevronDown className={cn('h-5 w-5 transition-transform', { 'rotate-180': isOpen })} />
+        </button>
+        {isOpen && (
+          <motion.ul
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -5 }}
+            className="scrollable-list absolute top-10 z-10 mt-2 max-h-64 w-full overflow-y-auto rounded-2xl border border-custom-grayD-300 bg-custom-whiteD shadow-lg"
+          >
+            {options.map((option, index) => (
+              <li
+                key={index}
+                className={cn('flex cursor-pointer items-center gap-2 px-4 py-2 font-textFont hover:bg-gray-200', {
+                  'bg-gray-100': selectedRed?.value === option.value,
+                })}
+                onClick={() => {
+                  setSelectedRed(option);
+                  setIsOpen(false);
+                }}
+              >
+                {option.image}
+                <span>{option.label}</span>
+              </li>
+            ))}
+          </motion.ul>
+        )}
+        {errorMessage && <p className="mt-1 text-sm text-errorColor">{errorMessage}</p>}
+      </div>
     </>
   );
 };

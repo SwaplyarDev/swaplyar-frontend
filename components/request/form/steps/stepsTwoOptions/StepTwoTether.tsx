@@ -72,7 +72,7 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({ register, errors, getValu
         </div>
       </div>
       <div className="flex w-full flex-col gap-4">
-        <div className="flex w-full flex-col">
+        <div className="realative flex w-full flex-col">
           <Controller
             name="red_selection"
             control={control}

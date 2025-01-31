@@ -213,7 +213,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                 watch('phone') && 'border-inputLight dark:border-lightText',
                 errors.phone
                   ? 'mb-0 border-errorColor text-errorColor placeholder-errorColor'
-                  : 'mb-4 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
+                  : 'mb-4 border-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:hover:border-lightText dark:hover:placeholder-lightText',
               )}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
@@ -237,7 +237,9 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                 placeholder={isFocused ? '' : errors.phone ? 'Telefono*' : 'Telefono'}
                 className={clsx(
                   'inputChangeAutofillReverse w-full border-none bg-transparent font-textFont focus:border-none focus:outline-none focus:ring-0',
-                  errors.phone && 'placeholder-errorColor',
+                  errors.phone
+                    ? 'placeholder-errorColor'
+                    : 'placeholder-inputLightDisabled dark:placeholder-placeholderDark',
                 )}
                 type="tel"
                 disabled={blockAll}

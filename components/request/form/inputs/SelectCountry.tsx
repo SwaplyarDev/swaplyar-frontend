@@ -88,7 +88,7 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({ setSelectedCodeCountr
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -5 }}
-          className="scrollable-list absolute top-16 z-10 mt-2 max-h-64 w-full overflow-y-auto rounded-2xl border border-custom-grayD-300 bg-custom-whiteD shadow-lg"
+          className="scrollable-list absolute top-16 z-10 mt-2 max-h-64 w-full overflow-y-auto border border-custom-grayD-300 bg-custom-whiteD shadow-lg"
         >
           {countryOptions.map((country, index) => (
             <li
