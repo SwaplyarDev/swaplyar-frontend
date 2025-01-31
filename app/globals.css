@@ -23,7 +23,7 @@
 }
 
 .box {
-  @apply max-h-[1200px] w-full rounded-full h-full;
+  @apply h-full max-h-[1200px] w-full rounded-full;
   animation: spin 30s infinite linear;
   display: flex;
   justify-content: center;
@@ -359,27 +359,36 @@ body::-webkit-scrollbar-thumb {
 /* Estilos del scrollbar usando variables definidas en el body */
 ul.scrollable-list {
   margin-top: 5px;
-  clip-path: inset(0 round 16px); /* Ajusta el valor según el borde redondeado */
+  clip-path: inset(0 round 16px);
 }
-ul.scrollable-list {
+ul.scrollable-list-repentance {
+  margin-top: 5px;
+  clip-path: inset(0 0 0 0 round 0 0 16px 16px);
+}
+ul.scrollable-list,
+ul.scrollable-list-repentance {
   padding-right: 0.5rem; /* Ajusta según sea necesario */
 }
-ul.scrollable-list::-webkit-scrollbar {
+ul.scrollable-list::-webkit-scrollbar,
+ul.scrollable-list-repentance::-webkit-scrollbar {
   width: var(--sb-size);
 }
 
-ul.scrollable-list::-webkit-scrollbar-track {
+ul.scrollable-list::-webkit-scrollbar-track,
+ul.scrollable-list-repentance::-webkit-scrollbar-track {
   background: var(--sb-track-color);
   border-radius: 3px;
 }
 
-ul.scrollable-list::-webkit-scrollbar-thumb {
+ul.scrollable-list::-webkit-scrollbar-thumb,
+ul.scrollable-list-repentance::-webkit-scrollbar-thumb {
   background: var(--sb-thumb-color);
   border-radius: 3px;
 }
 
 @supports not selector(::-webkit-scrollbar) {
-  ul.scrollable-list {
+  ul.scrollable-list,
+  ul.scrollable-list-repentance {
     scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
 }
@@ -495,7 +504,7 @@ div:where(.swal2-container).swal2-noanimation {
 
 .animate-fade-in {
   opacity: 0;
-  animation: fadeIn 0.5s forwards; 
+  animation: fadeIn 0.5s forwards;
 }
 
 @keyframes lineGrowDown {

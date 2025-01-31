@@ -1,8 +1,9 @@
+// /components/ui/cards/card-warranty/card-warranty.tsx
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import Image from 'next/image';
-import '../CardsCSS.css';
+import '../CardsCss.css';
 import SwipeHands from '../../animations/SwipeHands';
 import clsx from 'clsx';
 
