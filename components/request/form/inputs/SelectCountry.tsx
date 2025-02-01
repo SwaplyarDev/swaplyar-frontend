@@ -6,8 +6,12 @@ import { CountryOption, FieldError, SelectCodeCountryProps } from '@/types/reque
 import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
 const NEXT_PUBLIC_REST_COUNTRIES_API_URL = process.env.NEXT_PUBLIC_REST_COUNTRIES_API_URL;
 
-const SelectCountry: React.FC<SelectCodeCountryProps> = ({ setSelectedCodeCountry, errors, blockAll }) => {
-  const [selectedCountry, setSelectedCountry] = useState<CountryOption>();
+const SelectCountry: React.FC<SelectCodeCountryProps> = ({
+  selectedCodeCountry,
+  setSelectedCodeCountry,
+  errors,
+  blockAll,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const fieldName = 'calling_code';
   const errorMessage = (errors as { [key: string]: FieldError })[fieldName]?.message;
@@ -19,13 +23,15 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({ setSelectedCodeCountr
       if (!NEXT_PUBLIC_REST_COUNTRIES_API_URL) {
         console.error('Missing REST Countries API URL. Using default options.');
         setCountryOptions(defaultCountryOptions);
-        if (!selectedCountry) {
+
+        // Solo establecer el valor por defecto si no hay uno seleccionado
+        if (!selectedCodeCountry) {
           const defaultOption = defaultCountryOptions.find((option) => option.callingCode === '+54');
-          setSelectedCountry(defaultOption);
           setSelectedCodeCountry(defaultOption);
         }
         return;
       }
+
       try {
         const response = await fetch(NEXT_PUBLIC_REST_COUNTRIES_API_URL);
         const countries = await response.json();
@@ -38,25 +44,28 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({ setSelectedCodeCountr
             country: country.name.common,
           };
         });
+
         setCountryOptions(options);
-        if (!selectedCountry) {
+
+        // Si no hay país seleccionado, usar `+54`
+        if (!selectedCodeCountry) {
           const defaultOption = options.find((option) => option.callingCode === '+54');
-          setSelectedCountry(defaultOption);
           setSelectedCodeCountry(defaultOption);
         }
       } catch (error) {
         console.error('Error fetching countries:', error, 'Using default options.');
         setCountryOptions(defaultCountryOptions);
-        if (!selectedCountry) {
+
+        // Solo asignar `+54` si no hay país seleccionado
+        if (!selectedCodeCountry) {
           const defaultOption = defaultCountryOptions.find((option) => option.callingCode === '+54');
-          setSelectedCountry(defaultOption);
           setSelectedCodeCountry(defaultOption);
         }
       }
     };
 
     fetchCountries();
-  }, [setSelectedCodeCountry]); // No incluir `selectedCountry` en dependencias para evitar bucles
+  }, [setSelectedCodeCountry]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -77,11 +86,11 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({ setSelectedCodeCountr
         className="flex items-center justify-between gap-1 rounded-lg bg-transparent py-2 pl-4 font-textFont text-lightText focus:outline-none"
         onClick={() => setIsOpen(!isOpen)}
         type="button"
-        disabled={selectedCountry?.label === undefined || blockAll}
+        disabled={selectedCodeCountry?.label === undefined || blockAll}
       >
-        <span>{`${selectedCountry?.label === undefined ? 'Cargando...' : selectedCountry?.value}`}</span>
+        <span>{`${selectedCodeCountry?.label === undefined ? 'Cargando...' : selectedCodeCountry?.value}`}</span>
         <ChevronDown className={cn('h-5 w-5 transition-transform', { 'rotate-180': isOpen })} />
-        <span>{`${selectedCountry?.label === undefined ? '' : selectedCountry?.callingCode}`}</span>
+        <span>{`${selectedCodeCountry?.label === undefined ? '' : selectedCodeCountry?.callingCode}`}</span>
       </button>
       {isOpen && (
         <motion.ul
@@ -94,10 +103,9 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({ setSelectedCodeCountr
             <li
               key={index}
               className={cn('flex cursor-pointer justify-between px-4 py-2 font-textFont hover:bg-gray-200', {
-                'bg-gray-100': selectedCountry?.callingCode === country.callingCode,
+                'bg-gray-100': selectedCodeCountry?.callingCode === country.callingCode,
               })}
               onClick={() => {
-                setSelectedCountry(country);
                 setSelectedCodeCountry(country);
                 setIsOpen(false);
               }}

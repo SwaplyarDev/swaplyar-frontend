@@ -118,11 +118,10 @@ const StepperContainer = () => {
     }
     setLoading(false);
   };
-  console.log(blockAll || errorSend);
   return (
     <div
       className={clsx(
-        'flex w-full max-w-[1000px] flex-col gap-5',
+        'flex w-full max-w-[800px] flex-col gap-5',
         correctSend && 'mt-48 xs:mt-32',
         (blockAll || errorSend) && 'mt-72 xs:mt-52',
       )}
@@ -284,13 +283,11 @@ const StepperContainer = () => {
           </div>
         </div>
       )}
-      <div className="flex flex-col items-center justify-between gap-2 px-2 sm-phone:flex-row sm-phone:gap-0">
-        <h1 className="text-2xl font-bold text-lightText dark:text-darkText xs:text-3xl sm-phone:text-2xl">
-          Formulario de Solicitud
-        </h1>
-        <div>
-          <Cronometro setBlockAll={setBlockAll} />
-        </div>
+      <h1 className="w-full text-center font-titleFont text-[40px]/[120%] font-medium text-lightText dark:text-darkText">
+        Formulario de Solicitud
+      </h1>
+      <div className="flex flex-col items-center justify-end px-2 sm-phone:flex-row sm-phone:gap-0">
+        <Cronometro setBlockAll={setBlockAll} />
       </div>
       {steps.map((step, index) => {
         return (
@@ -302,20 +299,32 @@ const StepperContainer = () => {
             )}
           >
             <div
-              className={`w-full justify-between xs-phone:flex md-tablet:relative md-tablet:flex-col ${completedSteps[index] ? 'flex md-tablet:items-end' : 'md-tablet:items-center'} ${
+              className={`w-full justify-between sm:flex md-tablet:relative ${completedSteps[index] ? 'flex md-tablet:items-start' : 'flex-col items-center'} ${
                 !completedSteps[index] && index !== activeStep ? 'opacity-50' : ''
               }`}
             >
-              <h2
-                className={`mb-2 ${completedSteps[index] ? 'pr-5 text-left' : 'text-center'} w-full text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0`}
+              <div
+                className={clsx(
+                  activeStep === index ? 'mb-2 flex w-full items-center justify-center sm:mb-0 sm:block' : '',
+                )}
               >
-                {step.title}
-              </h2>
+                <h2
+                  className={`${activeStep === 1 && !completedSteps[1] ? 'flex max-w-[260px] flex-col items-center justify-center sm:block' : 'top-0 md-tablet:absolute'} mb-2 ${completedSteps[index] ? 'pr-5 text-left' : 'text-center'} w-full font-textFont text-4xl xs-phone:mb-0 sm:text-left md-tablet:left-0 ${activeStep !== index && 'relative'}`}
+                >
+                  {activeStep === 1 && !completedSteps[1]
+                    ? step.title.split('del').map((part, index) => (
+                        <span key={index} className={index === 1 ? 'block' : ''}>
+                          {index === 1 ? 'del' + part : part}
+                        </span>
+                      ))
+                    : step.title}
+                </h2>
+              </div>
               {activeStep === index && !completedSteps[index] && (
                 <StepIndicator currentStep={activeStep} completedSteps={completedSteps} />
               )}
               {(index < activeStep || completedSteps[index]) && (
-                <div className={`flex flex-col items-end`}>
+                <div className={`flex flex-col items-end justify-between`}>
                   <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
                     <Tick color={isDark ? '#414244' : '#FCFBFA'} />
                   </div>

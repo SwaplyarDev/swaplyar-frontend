@@ -53,13 +53,17 @@ const SelectRed: React.FC<SelectRedProps> = ({ selectedRed, setSelectedRed, erro
     <>
       <label
         htmlFor={fieldName}
-        className={clsx('ml-1 h-5 text-xs', errorMessage ? 'text-red-500' : 'text-lightText dark:text-darkText')}
+        className={clsx(
+          'ml-1 h-5 text-xs',
+          selectedRed === undefined ? 'hidden' : errorMessage ? 'text-red-500' : 'text-lightText dark:text-darkText',
+        )}
       >
         Selecciona una Red
       </label>
       <div
         ref={dropdownRef}
         className={clsx(
+          selectedRed === undefined && 'mt-5',
           'relative flex max-h-[38px] max-w-full items-center rounded-2xl border bg-transparent py-2 pr-5 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
           errorMessage
             ? 'border-errorColor text-errorColor placeholder-errorColor'
@@ -79,7 +83,7 @@ const SelectRed: React.FC<SelectRedProps> = ({ selectedRed, setSelectedRed, erro
             )}
           >
             {selectedRed?.image}
-            {selectedRed?.label || 'Selecciona una opción'}
+            {selectedRed?.label || 'Selecciona una Red'}
           </span>
           <ChevronDown className={cn('h-5 w-5 transition-transform', { 'rotate-180': isOpen })} />
         </button>

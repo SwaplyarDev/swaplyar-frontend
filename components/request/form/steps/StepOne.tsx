@@ -113,7 +113,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
       <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
         <div className="flex w-full flex-col gap-4">
           <div className="flex flex-col">
@@ -212,8 +212,8 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                 'flex max-h-[38px] max-w-full items-center rounded-2xl border bg-transparent py-2 pr-5 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
                 watch('phone') && 'border-inputLight dark:border-lightText',
                 errors.phone
-                  ? 'mb-0 border-errorColor text-errorColor placeholder-errorColor'
-                  : 'mb-4 border-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:hover:border-lightText dark:hover:placeholder-lightText',
+                  ? 'border-errorColor text-errorColor placeholder-errorColor'
+                  : 'border-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:hover:border-lightText dark:hover:placeholder-lightText',
               )}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
@@ -227,6 +227,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                 }}
                 render={({ field, fieldState }) => (
                   <SelectCountry
+                    selectedCodeCountry={field.value}
                     blockAll={blockAll}
                     setSelectedCodeCountry={(option) => field.onChange(option)}
                     errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
@@ -253,7 +254,9 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               />
             </div>
             {errors.phone && (
-              <p className="ml-3 font-textFont text-xs text-errorColor">{errors.phone.message as string}</p>
+              <p className="absolute -bottom-5 ml-3 font-textFont text-xs text-errorColor">
+                {errors.phone.message as string}
+              </p>
             )}
           </div>
         </div>
@@ -287,20 +290,19 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
       <div className="flex justify-center sm-phone:justify-end">
         {completedSteps[0] ? (
           hasChanges ? (
-            <button
-              type="submit"
-              className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-              disabled={!isValid || blockAll || loading}
-            >
-              {loading ? (
-                <div className="flex items-center justify-center gap-2">
-                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
-                  Cargando...
-                </div>
-              ) : (
-                'Siguiente'
-              )}
-            </button>
+            loading ? (
+              <div className="flex w-full max-w-[300px] items-center justify-center">
+                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="42px" />
+              </div>
+            ) : (
+              <button
+                type="submit"
+                className={`flex h-[46px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] font-titleFont text-base font-semibold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
+                disabled={!isValid || blockAll || loading}
+              >
+                Siguiente
+              </button>
+            )
           ) : (
             <button
               className="flex items-center justify-center gap-1 text-base text-lightText underline dark:text-darkText"
@@ -311,20 +313,17 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               <ArrowUp />
             </button>
           )
+        ) : loading ? (
+          <div className="flex w-full max-w-[300px] items-center justify-center">
+            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="42px" />
+          </div>
         ) : (
           <button
             type="submit"
-            className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] text-sm font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
+            className={`flex h-[46px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] font-titleFont text-base font-semibold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
             disabled={!isValid || blockAll || loading}
           >
-            {loading ? (
-              <div className="flex items-center justify-center gap-2">
-                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
-                Cargando...
-              </div>
-            ) : (
-              'Siguiente'
-            )}
+            Siguiente
           </button>
         )}
       </div>
