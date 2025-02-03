@@ -38,6 +38,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     formState: { errors, isValid },
     setValue,
     getValues,
+    watch,
   } = useForm<FormData>({ mode: 'onChange' });
   const { markStepAsCompleted, setActiveStep, formData, updateFormData, completedSteps } = useStepperStore();
   const { selectedReceivingSystem } = useSystemStore();
@@ -138,6 +139,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             blockAll={blockAll}
             formData={formData}
             formValues={formValues}
+            watch={watch}
           />
         );
       case 'payoneer_usd':
@@ -149,6 +151,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             getValues={getValues}
             blockAll={blockAll}
             formData={formData}
+            watch={watch}
           />
         );
       case 'paypal':
@@ -159,6 +162,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             getValues={getValues}
             blockAll={blockAll}
             formData={formData}
+            watch={watch}
           />
         );
       case 'wise_usd':
@@ -170,6 +174,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             getValues={getValues}
             blockAll={blockAll}
             formData={formData}
+            watch={watch}
           />
         );
       case 'tether':
@@ -181,6 +186,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             blockAll={blockAll}
             formData={formData}
             control={control}
+            watch={watch}
           />
         );
       case 'pix':
@@ -191,6 +197,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             getValues={getValues}
             blockAll={blockAll}
             formData={formData}
+            watch={watch}
           />
         );
       default:
