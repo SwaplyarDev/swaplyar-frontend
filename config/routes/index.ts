@@ -22,5 +22,5 @@ export const configRoutes: ConfigRoutes = {
   ],
   authRoutes: ['/auth/login-register', '/auth/login-register/email-verification'],
   apiRoutes: ['/api/login', '/api/users', '/api/company', '/api/roles', '/api/paypal'],
-  protectedRoutes: ['/products/:path*'],
+  protectedRoutes: ['/products/:path*', '/admin/:path*'],
 };
