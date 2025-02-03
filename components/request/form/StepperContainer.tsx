@@ -305,13 +305,15 @@ const StepperContainer = () => {
             >
               <div
                 className={clsx(
-                  activeStep === index
-                    ? 'mb-2 flex w-full items-center justify-center sm:mb-0 sm:block'
-                    : 'flex w-full justify-center pr-20 sm:justify-start sm:pr-0',
+                  activeStep === index && completedSteps[index]
+                    ? 'mb-2 flex w-full items-center justify-start pr-8 sm:mb-0 sm:block'
+                    : activeStep === index && !completedSteps[index]
+                      ? 'flex w-full justify-center sm:justify-start'
+                      : 'flex w-full justify-start',
                 )}
               >
                 <h2
-                  className={`${activeStep === 1 && !completedSteps[1] ? 'flex max-w-[260px] flex-col items-center justify-center sm:block' : 'top-0 md-tablet:absolute'} mb-2 ${completedSteps[index] ? 'text-left' : 'text-center'} w-full font-textFont text-4xl xs-phone:mb-0 sm:text-left md-tablet:left-0 ${activeStep !== index && 'relative'}`}
+                  className={`${activeStep != index || activeStep == 0 ? 'top-0 md-tablet:absolute' : 'flex max-w-[260px] flex-col items-center justify-center sm:block'} ${activeStep === index && completedSteps[index] && 'text-start'} ${completedSteps[index] && activeStep != index && 'pr-8'} ${completedSteps[index] || (activeStep != index && 'pr-8')} mb-2 ${completedSteps[index] || activeStep != index ? 'text-left' : 'text-center'} ${activeStep != index ? 'text-left' : 'text-center'} w-full font-textFont text-4xl xs-phone:mb-0 sm:text-left md-tablet:left-0 ${activeStep !== index && 'relative'}`}
                 >
                   {activeStep === 1 && !completedSteps[1]
                     ? step.title.split('del').map((part, index) => (
