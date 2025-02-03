@@ -299,17 +299,19 @@ const StepperContainer = () => {
             )}
           >
             <div
-              className={`w-full justify-between sm:flex md-tablet:relative ${completedSteps[index] ? 'flex md-tablet:items-start' : 'flex-col items-center'} ${
+              className={`relative w-full justify-between sm:flex ${completedSteps[index] ? 'flex md-tablet:items-start' : 'flex-col items-center'} ${
                 !completedSteps[index] && index !== activeStep ? 'opacity-50' : ''
               }`}
             >
               <div
                 className={clsx(
-                  activeStep === index ? 'mb-2 flex w-full items-center justify-center sm:mb-0 sm:block' : '',
+                  activeStep === index
+                    ? 'mb-2 flex w-full items-center justify-center sm:mb-0 sm:block'
+                    : 'flex w-full justify-center pr-20 sm:justify-start sm:pr-0',
                 )}
               >
                 <h2
-                  className={`${activeStep === 1 && !completedSteps[1] ? 'flex max-w-[260px] flex-col items-center justify-center sm:block' : 'top-0 md-tablet:absolute'} mb-2 ${completedSteps[index] ? 'pr-5 text-left' : 'text-center'} w-full font-textFont text-4xl xs-phone:mb-0 sm:text-left md-tablet:left-0 ${activeStep !== index && 'relative'}`}
+                  className={`${activeStep === 1 && !completedSteps[1] ? 'flex max-w-[260px] flex-col items-center justify-center sm:block' : 'top-0 md-tablet:absolute'} mb-2 ${completedSteps[index] ? 'text-left' : 'text-center'} w-full font-textFont text-4xl xs-phone:mb-0 sm:text-left md-tablet:left-0 ${activeStep !== index && 'relative'}`}
                 >
                   {activeStep === 1 && !completedSteps[1]
                     ? step.title.split('del').map((part, index) => (
@@ -324,7 +326,9 @@ const StepperContainer = () => {
                 <StepIndicator currentStep={activeStep} completedSteps={completedSteps} />
               )}
               {(index < activeStep || completedSteps[index]) && (
-                <div className={`flex flex-col items-end justify-between`}>
+                <div
+                  className={`absolute right-0 top-1/2 flex -translate-y-1/2 flex-col items-end justify-between sm:relative sm:translate-y-0`}
+                >
                   <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
                     <Tick color={isDark ? '#414244' : '#FCFBFA'} />
                   </div>
