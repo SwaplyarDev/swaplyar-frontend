@@ -54,47 +54,47 @@ const SeachRequest: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center md:mx-10 lg:mx-0 lg:flex-none">
+    <div className="mt-10 flex justify-center md:mx-10 lg2:mr-[20px] lg2:justify-end">
       <form
-        className="lg:max-w-inherit mt-3 flex h-full w-full max-w-[450px] flex-col lg:max-w-full lg:justify-evenly"
+        className="lg:max-w-inherit flex h-full w-full max-w-[465px] flex-col lg:justify-evenly"
         onSubmit={handleSubmit(handleSeachRequestSubmit)}
       >
-        <label className="mb-3 flex flex-col text-right text-xs font-bold xs:mb-0 lg:text-sm" htmlFor="transaccionId">
-          Número de Solicitud
-        </label>
-        <input
-          disabled={isToggled}
-          className={`flex w-full border-0 border-b-[1px] border-solid pr-0 ps-0 pt-0 text-right text-base lg:text-xl ${
-            isDark
-              ? `${errors.transaccionId !== undefined ? 'placeholder-errorColor' : 'placeholder-placeholderDark'} border-b-darkText bg-transparent text-darkText hover:border-b-placeholderDark focus:border-b-placeholderDark disabled:border-b-disabledDarkText disabled:text-disabledDarkText disabled:placeholder-disabledDarkText disabled:hover:border-b-disabledDarkText`
-              : `${errors.transaccionId !== undefined ? 'placeholder-errorColor' : 'placeholder-inputLightDisabled'} border-b-buttonsLigth bg-transparent text-lightText hover:border-b-selectBtsLight focus:border-b-selectBtsLight disabled:border-b-disabledDarkText disabled:text-disabledLightText disabled:placeholder-disabledLightText disabled:hover:border-b-disabledDarkText`
-          } outline-none focus:shadow-none focus:outline-none focus:ring-0`}
-          type="text"
-          placeholder={
-            errors.transaccionId !== undefined
-              ? isMobile
-                ? 'N° de Solicitud*'
-                : 'N° de Solicitud como figura en el Correo Eletrónico*'
-              : isMobile
-                ? 'N° de Solicitud'
+        <div className="flex h-[100px] flex-col">
+          <label
+            className="mb-3 flex flex-col text-right font-textFont text-xs font-light xs:mb-0 lg:text-sm"
+            htmlFor="transaccionId"
+          >
+            Número de Solicitud
+          </label>
+          <input
+            disabled={isToggled}
+            className={`flex h-[41px] w-full border-0 border-b-[1px] border-solid pr-0 ps-0 pt-0 text-right text-base placeholder:text-xs xs:placeholder:text-base lg:text-xl ${
+              isDark
+                ? `${errors.transaccionId !== undefined ? 'placeholder-errorColor' : 'placeholder-placeholderDark'} border-b-darkText bg-transparent text-darkText hover:border-b-placeholderDark focus:border-b-placeholderDark disabled:border-b-disabledDarkText disabled:text-disabledDarkText disabled:placeholder-disabledDarkText disabled:hover:border-b-disabledDarkText`
+                : `${errors.transaccionId !== undefined ? 'placeholder-errorColor' : 'placeholder-inputLightDisabled'} border-b-buttonsLigth bg-transparent text-lightText hover:border-b-selectBtsLight focus:border-b-selectBtsLight disabled:border-b-disabledDarkText disabled:text-disabledLightText disabled:placeholder-disabledLightText disabled:hover:border-b-disabledDarkText`
+            } outline-none focus:shadow-none focus:outline-none focus:ring-0`}
+            type="text"
+            placeholder={
+              errors.transaccionId !== undefined
+                ? 'N° de Solicitud como figura en el Correo Eletrónico*'
                 : 'N° de Solicitud como figura en el Correo Eletrónico'
-          }
-          {...register('transaccionId', {
-            required: 'El número de solicitud es obligatorio',
-            pattern: {
-              value: /^[A-Za-z0-9]{10,20}$/,
-              message: 'El número de solicitud debe tener entre 10 y 20 caracteres alfanuméricos',
-            },
-          })}
-          id="transaccionId"
-        />
-
-        {errors.transaccionId && (
-          <span className="mt-1 text-end text-sm text-errorColor">{errors.transaccionId.message}</span>
-        )}
+            }
+            {...register('transaccionId', {
+              required: 'El número de solicitud es obligatorio',
+              pattern: {
+                value: /^[A-Za-z0-9]{10,20}$/,
+                message: 'El número de solicitud debe tener entre 10 y 20 caracteres alfanuméricos',
+              },
+            })}
+            id="transaccionId"
+          />
+          {errors.transaccionId && (
+            <span className="text-right text-sm text-errorColor">{errors.transaccionId.message}</span>
+          )}
+        </div>
 
         {errorMessage && <div className="mt-2 text-end text-sm text-errorColor">{errorMessage}</div>}
-        <div className="mb-10 mt-10 flex w-full flex-col items-center justify-center gap-1 text-center lg:mb-0 lg:justify-end">
+        <div className="mb-10 mt-4 flex w-full flex-col items-center justify-center gap-1 text-center lg:mb-0 lg:justify-end">
           {!isToggled ? (
             <>
               {isLoading ? (
@@ -117,7 +117,7 @@ const SeachRequest: React.FC = () => {
                   Editar Solicitud
                 </button>
               )}
-              <ButtonBack route="/" isDark={isDark} label="Volver" size="100px" cancel={true} />
+              <ButtonBack route="/info/help-center" isDark={isDark} />
             </>
           ) : (
             <VerifycodeEditRequest
