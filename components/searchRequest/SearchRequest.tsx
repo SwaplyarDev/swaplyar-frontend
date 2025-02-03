@@ -40,16 +40,18 @@ import ReactDOMServer from 'react-dom/server';
 import { IconoVacio, RevisionCamino, Modificada, Cancelada, Discrepancia, Reembolso } from './icons';
 import LoadingGif from '../ui/LoadingGif/LoadingGif';
 import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
-import Link from 'next/link';
+import ButtonBack from '../ui/ButtonBack/ButtonBack';
 import { FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
 
 const SearchRequest = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
-  } = useForm<RequestSearch>();
+  } = useForm<RequestSearch>({
+    mode: 'onChange',
+  });
   const [loading, setLoading] = useState(false);
   const { isDark } = useDarkTheme();
   const { statuses, addStatus } = useStatusManager();
@@ -63,8 +65,6 @@ const SearchRequest = () => {
 
   const [currentIndex, setCurrentIndex] = useState(1);
 
-  const completedSteps = statuses;
-
   const handleAddNextStatus = () => {
     const nextStatus = predefinedStatuses[currentIndex];
     if (nextStatus) {
@@ -77,45 +77,17 @@ const SearchRequest = () => {
 
   const handleSearchRequest = (statusObject: Record<string, any>) => {
     const statusMessages = {
-      received: {
-        text: 'Solicitud Recibida',
-        icon: ReactDOMServer.renderToString(<IconoVacio />),
-      },
-      pending: {
-        text: 'Solicitud enviada',
-        icon: ReactDOMServer.renderToString(<IconoVacio />),
-      },
-      review_payment: {
-        text: 'Pago en Revisión',
-        icon: ReactDOMServer.renderToString(<RevisionCamino />),
-      },
-      completed: {
-        text: 'Solicitud Finalizada con Éxito',
-        icon: ReactDOMServer.renderToString(<IconoVacio />),
-      },
-      in_transit: {
-        text: 'Dinero en Camino',
-        icon: ReactDOMServer.renderToString(<RevisionCamino />),
-      },
-      canceled: {
-        text: 'Solicitud Cancelada',
-        icon: ReactDOMServer.renderToString(<Cancelada />),
-      },
-      modified: {
-        text: 'Solicitud modificada',
-        icon: ReactDOMServer.renderToString(<Modificada />),
-      },
-      refunded: {
-        text: 'Reembolso solicitado',
-        icon: ReactDOMServer.renderToString(<Reembolso />),
-      },
-      discrepancy: {
-        text: 'Discrepancia en la Solicitud',
-        icon: ReactDOMServer.renderToString(<Discrepancia />),
-      },
+      received: { text: 'Solicitud Recibida', icon: ReactDOMServer.renderToString(<IconoVacio />) },
+      pending: { text: 'Solicitud enviada', icon: ReactDOMServer.renderToString(<IconoVacio />) },
+      review_payment: { text: 'Pago en Revisión', icon: ReactDOMServer.renderToString(<RevisionCamino />) },
+      completed: { text: 'Solicitud Finalizada con Éxito', icon: ReactDOMServer.renderToString(<IconoVacio />) },
+      in_transit: { text: 'Dinero en Camino', icon: ReactDOMServer.renderToString(<RevisionCamino />) },
+      canceled: { text: 'Solicitud Cancelada', icon: ReactDOMServer.renderToString(<Cancelada />) },
+      modified: { text: 'Solicitud modificada', icon: ReactDOMServer.renderToString(<Modificada />) },
+      refunded: { text: 'Reembolso solicitado', icon: ReactDOMServer.renderToString(<Reembolso />) },
+      discrepancy: { text: 'Discrepancia en la Solicitud', icon: ReactDOMServer.renderToString(<Discrepancia />) },
     };
 
-    // Transformar el objeto en un array de claves únicas
     const uniqueStatuses = Array.from(new Set(Object.keys(statusObject)));
     const messages = uniqueStatuses
       .map((status) => {
@@ -131,7 +103,7 @@ const SearchRequest = () => {
           icon: statusInfo.icon,
         };
       })
-      .filter((message): message is { text: string; icon: string } => message !== null); // Filtrar posibles `null`
+      .filter((message): message is { text: string; icon: string } => message !== null);
 
     showStatusAlert(messages, isDark);
   };
@@ -140,14 +112,12 @@ const SearchRequest = () => {
     setLoading(true);
     handleAddNextStatus();
     try {
-      // Llamar a la función de búsqueda de solicitud
       const response = await searchRequest(data.numberOfRequest, data.lastNameRequest);
 
       if (!response.ok) {
         throw new Error(response.message || 'Hubo un problema al obtener el estado de la transacción');
       }
 
-      // `response.status` es un arreglo con los estados de la solicitud
       const statuses = response.status || [];
       handleSearchRequest(statuses);
       console.log(response);
@@ -166,102 +136,89 @@ const SearchRequest = () => {
 
   return (
     <div>
-      <div className="mx-auto flex w-full max-w-screen-lg flex-col gap-16 py-8 md:gap-4">
-        <div className="flex flex-col items-center justify-center px-8 lg:px-0">
-          <h1 className="flex h-auto w-full max-w-[592px] items-center justify-center text-center text-2xl text-lightText dark:text-darkText md:h-[97px] md:text-4xl">
+      <div className="mx-auto flex w-full max-w-screen-lg flex-col px-4 py-8 md:gap-4 md:px-8 lg2:px-4">
+        <div className="flex flex-col items-center justify-center">
+          <h1 className="flex h-auto w-full max-w-[505px] items-center justify-center text-center font-titleFont text-[38px] font-medium text-lightText dark:text-darkText lg2:text-[40px]">
             Consulta el estado de tu solicitud fácilmente
           </h1>
 
-          <p className="flex h-auto w-full max-w-[600px] items-center justify-center py-6 text-center text-sm text-custom-grayD-1000 dark:text-custom-grayD-100 md:h-[48px] md:py-10 md:text-base">
+          <p className="mt-10 flex h-auto w-full max-w-[505px] items-center justify-center text-center font-textFont font-light text-custom-grayD-1000 dark:text-custom-grayD-100 lg2:max-w-[592px]">
             Ingresa el Número de Solicitud y el Apellido tal como figura en el correo electrónico enviado para verificar
             el estado actual de tu solicitud de manera rápida y precisa.
           </p>
 
-          <p className="flex h-auto w-full max-w-[762px] items-center justify-center py-6 text-center text-sm text-custom-grayD-1000 dark:text-custom-grayD-100 md:h-[32px] md:py-10 md:text-lg">
+          <p className="mt-10 flex h-auto w-full max-w-[515px] items-center justify-center text-left font-textFont text-[21px] font-light text-custom-grayD-1000 dark:text-custom-grayD-100 md:text-center lg2:max-w-full">
             Introduce los datos exactamente como aparecen en el correo electrónico enviado.
           </p>
         </div>
-        <section className="relative flex min-h-[500px] flex-col items-center justify-center px-8 md:flex-row md:items-start md:justify-start lg-tablet:min-h-[600px] lg:px-0">
+        <section className="relative mt-10 flex min-h-[500px] flex-col items-center justify-center">
           <Image
-            className="absolute left-0 top-0 ml-8 hidden w-[500px] md:block md-tablet:w-[600px] lg-tablet:w-[700px] lg:ml-0"
+            className="absolute left-0 hidden w-[588px] lg2:block"
             src="/images/search-request-web.png"
             alt="SwaplyAr Search Request™"
             width={700}
             height={700}
           />
-          <div className="px- flex max-w-md flex-col items-center gap-8 md:hidden">
+          <div className="flex w-full max-w-[506px] flex-col items-center border-b border-buttonsLigth dark:border-darkText lg2:hidden">
             <Image
+              className="h-[200px] w-[200px]"
               src="/images/search-request-phone.png"
               alt="SwaplyAr Search Request Mobile™"
               width={300}
               height={300}
             />
-            <div className="h-1 w-full bg-custom-blue-300 dark:bg-custom-grayD-500"></div>
-            <p className="text-center text-2xl font-[700] text-lightText dark:text-darkText">
-              Ingresa los datos tal cual aparece en el email enviado
-            </p>
           </div>
-          <div className="hidden h-[324px] min-w-[380px] md:block md-tablet:min-w-[410px] lg-tablet:min-w-[510px]"></div>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="mt-16 flex w-full max-w-[660px] flex-col items-center gap-8 md:items-end lg-tablet:gap-16"
+            className="mt-10 flex w-full max-w-[466px] flex-col items-center gap-4 lg2:self-end"
           >
-            <div className="flex w-full flex-col items-start md:items-end">
-              <label htmlFor="numberOfRequest" className="text-sm">
-                NUMERO DE SOLICITUD
+            <div className="flex h-[81px] w-full flex-col">
+              <label htmlFor="numberOfRequest" className="text-right font-textFont text-xs font-light">
+                Número de Solicitud
               </label>
               <InputOnlyLine
-                placeholder="N° de Solicitud como figura en el Correo Eletrónico"
+                placeholder={
+                  errors.numberOfRequest
+                    ? 'Número de Solicitud*'
+                    : 'N° de Solicitud como figura en el Correo Eletrónico'
+                }
                 id="numberOfRequest"
-                register={register('numberOfRequest')}
+                register={register('numberOfRequest', { required: 'El Número de Solicitud es Obligatorio' })}
                 error={errors.numberOfRequest?.message}
-                classStyle="text-start md:text-end text-lg pl-0 placeholder:text-custom-blue-300 dark:placeholder:text-custom-grayD-500 border-custom-blue-300 dark:border-custom-grayD-500
-                dark:focus:border-custom-grayD-500 focus:border-custom-blue-300 hover:border-custom-blue-300"
               />
             </div>
-            <div className="flex w-full flex-col items-start md:items-end">
-              <label htmlFor="lastNameRequest" className="text-sm">
-                APELLIDO
+            <div className="flex h-[81px] w-full flex-col">
+              <label htmlFor="lastNameRequest" className="text-right font-textFont text-xs font-light">
+                Apellido
               </label>
               <InputOnlyLine
-                placeholder="Apellido como figura en el Correo Eletrónico"
+                placeholder={errors.lastNameRequest ? 'Apellido*' : 'Apellido como figura en el Correo Eletrónico'}
                 id="lastNameRequest"
-                register={register('lastNameRequest')}
+                register={register('lastNameRequest', { required: 'El Apellido es Obligatorio' })}
                 error={errors.lastNameRequest?.message}
-                classStyle="text-start md:text-end text-lg pl-0 placeholder:text-custom-blue-300 dark:placeholder:text-custom-grayD-500 border-custom-blue-300 dark:border-custom-grayD-500 dark:focus:border-custom-grayD-500 focus:border-custom-blue-300 hover:border-custom-blue-300"
               />
             </div>
-            <div className="mt-8 h-1 w-full max-w-md bg-custom-blue-300 dark:bg-custom-grayD-500 md:hidden"></div>
-            <div className="flex flex-col items-center justify-center gap-4">
-              <button
-                className={`relative m-1 flex h-10 w-52 items-center justify-center rounded-3xl border border-custom-blue-300 bg-custom-blue-300 text-sm font-bold text-[#FFFFFB] dark:border-custom-grayD-500 dark:bg-custom-grayD-500 dark:text-[#FFFFFB] ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-              >
-                {loading ? (
-                  <div className="flex items-center justify-center">
-                    <LoadingGif color={isDark ? '#000' : '#ebe7e0'} />
-                  </div>
-                ) : (
-                  'Buscar Solicitud'
-                )}
-              </button>
-              <button
-                className={`group flex w-[100px] items-center gap-2 rounded-full border px-4 py-2 transition-all duration-300 ${isDark ? 'buttonSecondDark border-white text-white' : 'buttonSecond border-custom-blue-800 text-custom-blue-800'}`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 transition-transform duration-300 group-hover:translate-x-1"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+            <div className="flex h-[50px] flex-col items-center justify-center gap-[18px]">
+              {loading ? (
+                <div className="flex items-center justify-center">
+                  <LoadingGif color={isDark ? '#ebe7e0' : '#012A8E'} size="50px" />
+                </div>
+              ) : (
+                <button
+                  disabled={!isValid}
+                  className={`relative flex h-10 w-[280px] items-center justify-center rounded-3xl bg-buttonsLigth px-[14px] py-3 font-titleFont font-semibold text-darkText dark:bg-darkText ${
+                    !isValid
+                      ? 'bg-disabledButtonsLigth dark:bg-placeholderDark dark:text-darkText'
+                      : isDark && isValid
+                        ? 'buttonSecondDark text-lightText'
+                        : 'buttonSecond'
+                  }`}
                 >
-                  <path d="M19 12H6M12 5l-7 7 7 7" />
-                </svg>
-                Volver
-              </button>
+                  Buscar Solicitud
+                </button>
+              )}
             </div>
+            <ButtonBack route="/info/help-center" isDark={isDark} />
           </form>
         </section>
       </div>
