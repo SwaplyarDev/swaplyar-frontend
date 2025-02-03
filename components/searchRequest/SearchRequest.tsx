@@ -215,7 +215,8 @@ const SearchRequest = () => {
                 id="numberOfRequest"
                 register={register('numberOfRequest')}
                 error={errors.numberOfRequest?.message}
-                classStyle="text-start md:text-end text-lg pl-0 placeholder:text-custom-blue-300 dark:placeholder:text-custom-grayD-500 border-custom-blue-300 dark:border-custom-grayD-500"
+                classStyle="text-start md:text-end text-lg pl-0 placeholder:text-custom-blue-300 dark:placeholder:text-custom-grayD-500 border-custom-blue-300 dark:border-custom-grayD-500
+                dark:focus:border-custom-grayD-500 focus:border-custom-blue-300 hover:border-custom-blue-300"
               />
             </div>
             <div className="flex w-full flex-col items-start md:items-end">
@@ -227,13 +228,13 @@ const SearchRequest = () => {
                 id="lastNameRequest"
                 register={register('lastNameRequest')}
                 error={errors.lastNameRequest?.message}
-                classStyle="text-start md:text-end text-lg pl-0 placeholder:text-custom-blue-300 dark:placeholder:text-custom-grayD-500 border-custom-blue-300 dark:border-custom-grayD-500"
+                classStyle="text-start md:text-end text-lg pl-0 placeholder:text-custom-blue-300 dark:placeholder:text-custom-grayD-500 border-custom-blue-300 dark:border-custom-grayD-500 dark:focus:border-custom-grayD-500 focus:border-custom-blue-300 hover:border-custom-blue-300"
               />
             </div>
             <div className="mt-8 h-1 w-full max-w-md bg-custom-blue-300 dark:bg-custom-grayD-500 md:hidden"></div>
             <div className="flex flex-col items-center justify-center gap-4">
               <button
-                className={`relative m-1 flex h-10 w-52 items-center justify-center rounded-3xl border border-[#90B0FE] bg-[#90B0FE] text-sm font-bold text-[#FFFFFB] dark:border-[#969696] dark:bg-[#969696] dark:text-[#FFFFFB] ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+                className={`relative m-1 flex h-10 w-52 items-center justify-center rounded-3xl border border-custom-blue-300 bg-custom-blue-300 text-sm font-bold text-[#FFFFFB] dark:border-custom-grayD-500 dark:bg-custom-grayD-500 dark:text-[#FFFFFB] ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
               >
                 {loading ? (
                   <div className="flex items-center justify-center">
@@ -244,7 +245,7 @@ const SearchRequest = () => {
                 )}
               </button>
               <button
-                className={`group flex w-[100px] items-center gap-2 rounded-full border px-4 py-2 transition-all duration-300 ${isDark ? 'buttonSecondDark border-white text-white' : 'buttonSecond border-[#012A8E] text-[#012A8E]'}`}
+                className={`group flex w-[100px] items-center gap-2 rounded-full border px-4 py-2 transition-all duration-300 ${isDark ? 'buttonSecondDark border-white text-white' : 'buttonSecond border-custom-blue-800 text-custom-blue-800'}`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
