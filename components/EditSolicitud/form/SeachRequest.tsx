@@ -117,7 +117,7 @@ const SeachRequest: React.FC = () => {
                   Editar Solicitud
                 </button>
               )}
-              <ButtonBack route="/" isDark={isDark} label="Volver" size="100px" cancel={true} />
+              <ButtonBack route="/info/help-center" isDark={isDark} />
             </>
           ) : (
             <VerifycodeEditRequest
