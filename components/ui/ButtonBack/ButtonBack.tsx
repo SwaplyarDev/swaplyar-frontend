@@ -29,7 +29,7 @@ const ButtonBack: React.FC<ButtonBackProps> = ({
           <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
         </div>
       </div>
-      {cancel ? <p>{label}</p> : <p className="hidden xs:inline-block">{label}</p>}
+      Volver
     </button>
   );
 };
