@@ -413,6 +413,16 @@ div:where(.swal2-icon).swal2-info {
   margin-top: 0 !important;
 }
 
+.swal2-title {
+  padding-top: 0 !important;
+  @apply text-xl font-textFont p-0 mx-11;
+}
+
+.my-popup {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Agrega espacio entre elementos internos */
+}
 
 /**Button Second**/
 .buttonSecond {

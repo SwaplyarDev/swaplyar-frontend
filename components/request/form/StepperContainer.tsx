@@ -55,21 +55,28 @@ const StepperContainer = () => {
 
   const handleCancelRequest = () => {
     Swal.fire({
-      title: '<h2 style="font-size: 24px;">¿Estás seguro de que deseas cancelar esta solicitud?</h2>',
-      imageUrl: isDark ? alertaSirena : alertaSirenaDark,
+      title: '<h2>¿Estás seguro de que deseas cancelar esta solicitud?</h2>',
+      imageUrl: !isDark ? alertaSirena : alertaSirenaDark,
       imageWidth: 100,
       imageHeight: 100,
-      html: `
-        <p style="font-size: 16px;">Si cancela esta solicitud, debe generar una nueva solicitud</p>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; gap: 40px; padding: 0 13px">
-          <div id="back-button-container"></div>
-          <div style="height: 49px;" class="flex items-center justify-center">   
-          <button id="cancel-button" class="m-1 text-base h-[42px] min-w-[110px] flex relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white dark:border-darkText dark:bg-darkText dark:text-lightText  ${isDark ? 'buttonSecondDark' : 'buttonSecond'}">Cancelar</button></div>
+      html: `<div style="
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+">
+          <p style="font-size: 16px; font-weight: 300; font-family: Roboto; ">Si cancela esta solicitud, debe generar una nueva solicitud</p>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; gap: 40px; padding: 0 13px">
+            <div id="back-button-container"></div>
+            <div style="height: 49px;" class="flex items-center justify-center">   
+            <button id="cancel-button" class="m-1 text-base h-[42px] min-w-[110px] flex relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white dark:border-darkText dark:bg-darkText dark:text-lightText  ${isDark ? 'buttonSecondDark' : 'buttonSecond'}">Cancelar</button></div>
+          </div>
         </div>
       `,
       customClass: {
         image: 'swal-custom-image',
+        popup: 'my-popup',
       },
+      width: '400px',
       showConfirmButton: false,
       showCancelButton: false,
       background: isDark ? 'rgb(69 69 69)' : '#ffffff',
