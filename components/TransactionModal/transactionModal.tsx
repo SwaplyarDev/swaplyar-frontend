@@ -1,6 +1,6 @@
 'use client';
-import { strokepopup, swaplyarAvatarpopup } from '@/utils/assets/img-database';
-import { BankDarkImg, PayoneerUsdDarkImg } from '@/utils/assets/imgDatabaseCloudinary';
+import { PixDarkImg, strokepopup, swaplyarAvatarpopup } from '@/utils/assets/img-database';
+import { BankDarkImg, BankImg, PayoneerUsdDarkImg } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -200,22 +200,34 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
           <article className="absolute left-[40px] top-[425px] inline-flex h-[1118px] flex-col items-end justify-center gap-6">
             <article className="inline-flex items-center justify-start gap-[98.25px] overflow-hidden rounded-[121px] border-2 border-[#012a8d] pb-[9px] pl-3.5 pr-[171.25px] pt-2">
               <article className="inline-flex h-[60px] w-[60px] items-center justify-center">
-                <Image className="h-[60px] w-[60px]" src={swaplyarAvatarpopup} alt="avatar" width={60} height={60} />
+                <Image className="h-[60px] w-[60px]" src={swaplyarAvatarpopup} alt="avatar" width={200} height={200} />
               </article>
               <article className="inline-flex items-center justify-center gap-4 self-stretch">
                 <article className="flex h-[70px] w-[200px] items-center justify-center">
                   <Image
                     className="h-[70px] w-[200px]"
                     alt="imagen1"
-                    src={PayoneerUsdDarkImg}
+                    src={BankImg}
                     width={200}
                     height={70}
+                    unoptimized={true}
                   />
                 </article>
-
+                <article className="flex items-center justify-start gap-x-0">
+                  <Image className="h-[20px] w-[20px]" alt="imagen1" src={strokepopup} width={200} height={70} />
+                  <Image className="h-[20px] w-[20px]" alt="imagen1" src={strokepopup} width={200} height={70} />
+                  <Image className="h-[20px] w-[20px]" alt="imagen1" src={strokepopup} width={200} height={70} />
+                </article>
                 <article className="flex items-center justify-start gap-0.5" />
                 <article className="flex h-[70px] w-[200px] items-center justify-center">
-                  <Image className="h-[70px] w-[200px]" alt="imagen1" src={strokepopup} width={200} height={70} />
+                  <Image
+                    className="h-[70px] w-[200px]"
+                    alt="imagen1"
+                    src={PixDarkImg}
+                    width={200}
+                    height={70}
+                    unoptimized={true}
+                  />
                 </article>
               </article>
             </article>
