@@ -35,22 +35,20 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
   };
   return (
     <div className="mx-auto flex w-full max-w-screen-phone flex-col gap-4 px-4 py-10 xs-mini-phone2:max-w-screen-tablet md:max-w-screen-desktop md:gap-6 md:px-8 lg2:px-4">
+      <div className="-z-30">
+        <Cloud classes="top-0 -left-52 top-60 w-[629px] h-[451px] min-w-[629px]" src={nube2} alt="Nube 2" />
+        <Cloud classes="top-0 -left-72 top-[500px] w-[612px] h-[438px] min-w-[612px]" src={nube2} alt="Nube 2" />
+        <Cloud classes="top-0 -left-60 top-0 w-[669px] h-[399px] min-w-[669px]" src={nube1} alt="Nube 1" />
+      </div>
+
+      <div className="-z-30">
+        <Cloud classes="top-0 -right-20 top-72 w-[371px] h-[266px] min-w-[371px]" src={nube2} alt="Nube 2" />
+        <Cloud classes="top-0 -right-56 top-0 w-[559px] h-[400px] min-w-[559px]" src={nube2} alt="Nube 2" />
+        <Cloud classes="top-0 -right-60 top-[460px] w-[471px] h-[281px] min-w-[471px]" src={nube1} alt="Nube 1" />
+      </div>
       <h1 className="text-center font-titleFont text-[38px] font-medium lg2:text-[40px]">
         Solicitud finalizada con exito. <br /> Gracias por Elegir SwaplyAr
       </h1>
-
-      <div className="-z-30">
-        <Cloud classes="top-0 -left-52 top-20 w-[629px] h-[451px] min-w-[629px]" src={nube2} alt="Nube 2" />
-        <Cloud classes="top-0 -left-72 top-80 w-[612px] h-[438px] min-w-[612px]" src={nube2} alt="Nube 2" />
-        <Cloud classes="top-0 -left-60 -top-44 w-[669px] h-[399px] min-w-[669px]" src={nube1} alt="Nube 1" />
-      </div>
-
-      <div className="-z-30">
-        <Cloud classes="top-0 -right-20 top-28 w-[371px] h-[266px] min-w-[371px]" src={nube2} alt="Nube 2" />
-        <Cloud classes="top-0 -right-56 -top-44 w-[559px] h-[400px] min-w-[559px]" src={nube2} alt="Nube 2" />
-        <Cloud classes="top-0 -right-60 top-72 w-[471px] h-[281px] min-w-[471px]" src={nube1} alt="Nube 1" />
-      </div>
-
       <p className="text-center font-titleFont text-[40px] font-medium">#123456789</p>
       <div className="flex flex-col items-center md:flex-row md:justify-center md:gap-[9px]">
         <svg xmlns="http://www.w3.org/2000/svg" width="101" height="100" viewBox="0 0 101 100" fill="none">
