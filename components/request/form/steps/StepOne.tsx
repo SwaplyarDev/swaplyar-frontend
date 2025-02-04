@@ -142,12 +142,12 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             />
           </div> */}
 
-          <InputSteps
+          {/* <InputSteps
             label="Nombre"
             name="sender_first_name"
             id="sender_first_name"
             type="text"
-            placeholder="Nombre"
+            placeholder={errors.sender_first_name ? "Nombre *" : "Nombre"}
             disabled={blockAll}
             register={register}
             watch={watch}
@@ -159,6 +159,26 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               },
             }}
             error={errors.sender_first_name}
+          /> */}
+
+          <InputSteps
+            label="Nombre"
+            name="sender_first_name"
+            id="sender_first_name"
+            type="text"
+            placeholder={errors.sender_first_name ? 'Nombre *' : 'Nombre'}
+            disabled={blockAll}
+            register={register}
+            watch={watch}
+            rules={{
+              required: 'El Nombre es obligatorio',
+              pattern: {
+                value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                message: 'El Nombre solo puede contener letras y espacios',
+              },
+            }}
+            error={errors.sender_first_name}
+            className={`placeholder-gray-400 ${errors.sender_first_name ? 'placeholder-red-500' : ''}`}
           />
 
           {/* <div className="flex flex-col">
@@ -191,7 +211,8 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             name="sender_last_name"
             label="Apellido"
             type="text"
-            placeholder="Apellido"
+            // placeholder="Apellido"
+            placeholder={errors.sender_last_name ? 'Apellido *' : 'Apellido'}
             disabled={blockAll}
             register={register}
             watch={watch}
@@ -203,6 +224,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               },
             }}
             error={errors.sender_last_name}
+            className={`placeholder-gray-400 ${errors.sender_last_name ? 'placeholder-red-500' : ''}`}
           />
         </div>
 
@@ -234,7 +256,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             name="email"
             id="email"
             type="email"
-            placeholder="Email"
+            placeholder={errors.email ? 'Email *' : 'Email'}
             disabled={blockAll}
             register={register}
             watch={watch}

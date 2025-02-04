@@ -140,7 +140,7 @@ const StepTwoBank: React.FC<StepTwoBankProps> = ({ register, errors, getValues, 
           name="tax_identification"
           id="tax_identification"
           type="text"
-          placeholder="DNI/CUIT/CUIL"
+          placeholder={errors.tax_identification ? 'DNI/CUIT/CUIL *' : 'DNI/CUIT/CUIL'}
           disabled={blockAll}
           register={register}
           watch={watch}
@@ -151,7 +151,7 @@ const StepTwoBank: React.FC<StepTwoBankProps> = ({ register, errors, getValues, 
               message: 'El formato de DNI/CUIT/CUIL es inválido',
             },
           }}
-          error={errors.receive_amount ? (errors.receive_amount as FieldError) : undefined}
+          error={errors.tax_identification ? (errors.tax_identification as FieldError) : undefined}
         />
       </div>
 
@@ -187,7 +187,7 @@ const StepTwoBank: React.FC<StepTwoBankProps> = ({ register, errors, getValues, 
           name="transfer_identification" // Aquí va el nombre del campo
           id="transfer_identification"
           type="text"
-          placeholder="CBU/CVU/ALIAS"
+          placeholder={errors.transfer_identification ? 'CBU/CVU/ALIAS *' : 'CBU/CVU/ALIAS'}
           disabled={blockAll}
           register={register}
           watch={watch}
@@ -234,7 +234,7 @@ const StepTwoBank: React.FC<StepTwoBankProps> = ({ register, errors, getValues, 
           name="re_transfer_identification"
           id="re_transfer_identification"
           type="text"
-          placeholder="RE-ENTER CBU/CVU/ALIAS"
+          placeholder={errors.re_transfer_identification ? 'RE-ENTER CBU/CVU/ALIAS *' : 'RE-ENTER CBU/CVU/ALIAS'}
           disabled={blockAll}
           register={register}
           watch={watch}
@@ -278,7 +278,7 @@ const StepTwoBank: React.FC<StepTwoBankProps> = ({ register, errors, getValues, 
           name="name_of_bank"
           id="name_of_bank"
           type="text"
-          placeholder="Nombre del Banco"
+          placeholder={errors.name_of_bank ? 'Nombre del Banco *' : 'Nombre del Banco'}
           disabled={blockAll}
           register={register}
           watch={watch}

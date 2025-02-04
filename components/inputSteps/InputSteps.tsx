@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import { FieldError, UseFormRegister, UseFormWatch, RegisterOptions } from 'react-hook-form';
+
 interface InputStepsProps {
   label: string;
   name: string;
@@ -10,12 +11,13 @@ interface InputStepsProps {
   disabled?: boolean;
   register: UseFormRegister<any>;
   watch: UseFormWatch<any>;
-  rules?: RegisterOptions; // Ahora las reglas se reciben como prop
+  rules?: RegisterOptions;
   error?: FieldError;
   value?: string;
   defaultValue?: string;
   onCustomChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   file?: boolean;
+  className?: string;
 }
 
 const InputSteps: React.FC<InputStepsProps> = ({
@@ -27,7 +29,7 @@ const InputSteps: React.FC<InputStepsProps> = ({
   disabled,
   register,
   watch,
-  rules, // Se usa aquí
+  rules,
   error,
   value,
   defaultValue,
@@ -37,7 +39,6 @@ const InputSteps: React.FC<InputStepsProps> = ({
   const [isFocused, setIsFocused] = useState(false);
   const errorMessage = error?.message;
 
-  // Extraemos onChange del register para sobrescribirlo
   const { onChange, ...restRegister } = register(name, rules);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,14 +47,13 @@ const InputSteps: React.FC<InputStepsProps> = ({
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="relative flex flex-col">
       <label
         htmlFor={id}
         className={clsx(
-          'font-textFont text-lightText dark:text-darkText',
-          isFocused || watch(name) ? 'opacity-100' : 'opacity-0',
+          'font-textFont text-lightText dark:text-darkText', // Mantiene el color normal siempre
           'mb-1 ml-2.5 text-sm transition-opacity duration-300',
-          errorMessage && 'text-red-500',
+          isFocused || watch(name) || errorMessage ? 'opacity-100' : 'opacity-0', // Siempre aparece si hay texto o error
         )}
       >
         {label}
@@ -73,14 +73,15 @@ const InputSteps: React.FC<InputStepsProps> = ({
           'max-w-full rounded-2xl border bg-[#fffff8] px-[9px] py-2 font-titleFont text-lightText placeholder:text-buttonExpandDark dark:bg-darkText',
           watch(name) && 'border-inputLight dark:border-lightText',
           errorMessage
-            ? 'mb-0 border-errorColor text-errorColor placeholder-errorColor'
+            ? 'mb-0 border-errorColor text-errorColor placeholder:text-red-700' // Aquí está la clave
             : 'mb-5 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
         )}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />
 
-      {errorMessage && <p className="px-[10px] pt-1 text-sm text-[#c31818]">{errorMessage}</p>}
+      {/* El mensaje de error está posicionado absolutamente, pero no afectará el flujo de otros elementos */}
+      {errorMessage && <p className="bottom-[-20px] left-0 px-[10px] text-sm text-[#c31818]">{errorMessage}</p>}
     </div>
   );
 };
