@@ -71,7 +71,7 @@ export function TopMenu() {
   // Hasta aca, sacado de MUI
 
   return (
-    <main className="sticky top-0 z-[1000] flex flex-col shadow-md">
+    <main className="sticky top-0 z-[1000] flex flex-col bg-white shadow-md">
       <TopPopUp />
 
       <Navbar
