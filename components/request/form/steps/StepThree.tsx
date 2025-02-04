@@ -142,20 +142,19 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
       <div className="flex justify-center sm-phone:justify-end">
         {completedSteps[2] ? (
           hasChanges ? (
-            <button
-              type="submit"
-              className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] text-sm font-bold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-              disabled={!isValid || blockAll || loading}
-            >
-              {loading ? (
-                <div className="flex items-center justify-center gap-2">
-                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
-                  Cargando...
-                </div>
-              ) : (
-                'Siguiente'
-              )}
-            </button>
+            loading ? (
+              <div className="flex w-full max-w-[300px] items-center justify-center">
+                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="42px" />
+              </div>
+            ) : (
+              <button
+                type="submit"
+                className={`flex h-[46px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] font-titleFont text-base font-semibold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
+                disabled={!isValid || blockAll || loading}
+              >
+                Siguiente
+              </button>
+            )
           ) : (
             <button
               className="flex items-center justify-center gap-1 text-base text-lightText underline dark:text-darkText"
@@ -166,20 +165,17 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
               <ArrowUp />
             </button>
           )
+        ) : loading ? (
+          <div className="flex w-full max-w-[300px] items-center justify-center">
+            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="42px" />
+          </div>
         ) : (
           <button
             type="submit"
-            className={`m-1 flex h-[20px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] text-sm font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
+            className={`flex h-[46px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] font-titleFont text-base font-semibold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
             disabled={!isValid || blockAll || loading}
           >
-            {loading ? (
-              <div className="flex items-center justify-center gap-2">
-                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
-                Cargando...
-              </div>
-            ) : (
-              'Siguiente'
-            )}
+            Siguiente
           </button>
         )}
       </div>

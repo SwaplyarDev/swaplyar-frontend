@@ -19,6 +19,7 @@ import Cronometro from './Cronometro';
 import useChronometerState from '@/store/chronometerStore';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
+import { alertaSirena, alertaSirenaDark } from '@/utils/assets/img-database';
 
 const StepperContainer = () => {
   const { activeStep, completedSteps, setActiveStep, submitAllData } = useStepperStore();
@@ -55,7 +56,9 @@ const StepperContainer = () => {
   const handleCancelRequest = () => {
     Swal.fire({
       title: '<h2 style="font-size: 24px;">¿Estás seguro de que deseas cancelar esta solicitud?</h2>',
-      icon: 'info',
+      imageUrl: isDark ? alertaSirena : alertaSirenaDark,
+      imageWidth: 100,
+      imageHeight: 100,
       html: `
         <p style="font-size: 16px;">Si cancela esta solicitud, debe generar una nueva solicitud</p>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; gap: 40px; padding: 0 13px">
@@ -64,6 +67,9 @@ const StepperContainer = () => {
           <button id="cancel-button" class="m-1 text-base h-[42px] min-w-[110px] flex relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white dark:border-darkText dark:bg-darkText dark:text-lightText  ${isDark ? 'buttonSecondDark' : 'buttonSecond'}">Cancelar</button></div>
         </div>
       `,
+      customClass: {
+        image: 'swal-custom-image',
+      },
       showConfirmButton: false,
       showCancelButton: false,
       background: isDark ? 'rgb(69 69 69)' : '#ffffff',
@@ -313,7 +319,7 @@ const StepperContainer = () => {
                 )}
               >
                 <h2
-                  className={`${activeStep != index || activeStep == 0 ? 'top-0 md-tablet:absolute' : 'flex max-w-[260px] flex-col items-center justify-center sm:block'} ${activeStep === index && completedSteps[index] && 'text-start'} ${completedSteps[index] && activeStep != index && 'pr-8'} ${completedSteps[index] || (activeStep != index && 'pr-8')} mb-2 ${completedSteps[index] || activeStep != index ? 'text-left' : 'text-center'} ${activeStep != index ? 'text-left' : 'text-center'} w-full font-textFont text-4xl xs-phone:mb-0 sm:text-left md-tablet:left-0 ${activeStep !== index && 'relative'}`}
+                  className={`${activeStep != index || activeStep == 0 || activeStep == 2 ? 'top-0 md-tablet:absolute' : 'flex max-w-[260px] flex-col items-center justify-center sm:block'} ${activeStep === index && completedSteps[index] && 'text-start'} ${completedSteps[index] && activeStep != index && 'pr-8'} ${completedSteps[index] || (activeStep != index && 'pr-8')} mb-2 ${completedSteps[index] || activeStep != index ? 'text-left' : 'text-center'} ${activeStep != index ? 'text-left' : 'text-center'} w-full font-textFont text-4xl xs-phone:mb-0 sm:text-left md-tablet:left-0 ${activeStep !== index && 'relative'}`}
                 >
                   {activeStep === 1 && !completedSteps[1]
                     ? step.title.split('del').map((part, index) => (

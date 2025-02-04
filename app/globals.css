@@ -409,6 +409,11 @@ div:where(.swal2-icon).swal2-info {
   color: #f8bb86 !important;
 }
 
+.swal-custom-image {
+  margin-top: 0 !important;
+}
+
+
 /**Button Second**/
 .buttonSecond {
   outline: none;
@@ -516,16 +521,6 @@ div:where(.swal2-container).swal2-noanimation {
 }
 
 /*Input - Sacar estilos del autofill*/
-
-/* input:-webkit-autofill {
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: rgba(37, 37, 38, 1) !important;
-}
-
-.dark input:-webkit-autofill {
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: rgba(235, 231, 224, 1) !important;
-} */
 
 .dark .inputChangeAutofill:-webkit-autofill {
   -webkit-background-clip: text !important;
