@@ -66,7 +66,7 @@ const InputCopy: FC<InputCopyProps> = ({
       )}
       <div
         className={clsx(
-          'flex max-h-[38px] rounded border border-[#6B7280] bg-gray-200 dark:bg-lightText',
+          'flex max-h-[38px] rounded-2xl border border-blue-600 bg-[#fffff8] dark:bg-lightText',
           error && !isFocused
             ? 'border border-red-500 hover:border-blue-600 dark:hover:border-white'
             : isFocused

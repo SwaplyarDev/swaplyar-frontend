@@ -11,7 +11,7 @@ interface StepThreeGeneralProps {
   register: UseFormRegister<any>;
   errors: FieldErrors<any>;
   getValues: UseFormGetValues<any>;
-  watch: UseFormWatch<any>; // 🔹 Agregado para solucionar el primer error
+  watch: UseFormWatch<any>;
   blockAll: boolean;
   formData: any;
   sendAmount: string | null;
@@ -56,26 +56,6 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
       </p>
       <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
         <div className="flex w-full flex-col gap-4">
-          {/* <div className="flex flex-col">
-            <label
-              htmlFor="pay_email"
-              className={clsx(
-                'ml-1 h-5 text-xs',
-                errors.pay_email ? 'text-red-500' : 'text-lightText dark:text-darkText',
-              )}
-            >
-              Email a pagar
-            </label>
-            <InputCopy
-              id="pay_email"
-              type="text"
-              value={'asdfgh@asdfgh.com'}
-              disabled={true}
-              placeholder=""
-              register={register('pay_email', { required: true })}
-              error={errors.pay_email && 'Este campo es obligatorio'}
-            />
-            </div> */}
           <InputCopy
             id="pay_email"
             name="pay_email"
@@ -89,28 +69,6 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
             rules={{ required: 'Este campo es obligatorio' }}
             error={errors.pay_email ? (errors.pay_email as FieldError) : undefined}
           />
-
-          {/* <div className="flex flex-col">
-            <label
-              htmlFor="send_amount"
-              className={clsx(
-                'ml-1 h-5 text-xs',
-                errors.send_amount ? 'text-red-500' : 'text-lightText dark:text-darkText',
-              )}
-            >
-              Monto a pagar
-            </label>
-            <InputCopy
-              id="send_amount"
-              type="text"
-              value={`${selectedSendingSystem?.coinSign} ${sendAmount?.toString()}`}
-              disabled={true}
-              placeholder="Monto Enviar"
-              register={register('send_amount', { required: true })}
-              error={errors.send_amount && 'Este campo es obligatorio'}
-            />
-          </div> */}
-
           <InputCopy
             label="Monto a pagar"
             name="send_amount"
@@ -126,28 +84,6 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
             }}
             error={errors.send_amount ? (errors.send_amount as FieldError) : undefined}
           />
-
-          {/* <div className="flex flex-col">
-            <label
-              htmlFor="receive_amount"
-              className={clsx(
-                'ml-1 h-5 text-xs',
-                errors.receive_amount ? 'text-red-500' : 'text-lightText dark:text-darkText',
-              )}
-            >
-              Monto a Recibir
-            </label>
-            <InputField
-              id="receive_amount"
-              type="text"
-              value={`${selectedReceivingSystem?.coinSign} ${receiveAmount?.toString()}`}
-              disabled={true}
-              placeholder="Monto a Recibir"
-              register={register('receive_amount', { required: true })}
-              error={errors.receive_amount && 'Este campo es obligatorio'}
-            />
-          </div> */}
-
           <InputSteps
             label="Monto a Recibir"
             name="receive_amount"
