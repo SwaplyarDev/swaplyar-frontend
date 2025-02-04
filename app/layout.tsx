@@ -64,13 +64,13 @@ export default function RootLayout({
 
       <body className={`bg-white text-lightText dark:bg-lightText dark:text-darkText`}>
         {/* Integración de Google Analytics con next/script */}
-        <Script src="https://www.googletagmanager.com/gtag/js?id=TU_ID_DE_GA" strategy="afterInteractive" />
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-F7NZPRXT31" strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'TU_ID_DE_GA');
+            gtag('config', 'G-F7NZPRXT31');
           `}
         </Script>
 
