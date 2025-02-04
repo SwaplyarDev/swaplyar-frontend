@@ -56,7 +56,7 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
       </p>
       <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
         <div className="flex w-full flex-col gap-4">
-          <div className="flex flex-col">
+          {/* <div className="flex flex-col">
             <label
               htmlFor="pay_email"
               className={clsx(
@@ -75,8 +75,22 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
               register={register('pay_email', { required: true })}
               error={errors.pay_email && 'Este campo es obligatorio'}
             />
-          </div>
-          <div className="flex flex-col">
+            </div> */}
+          <InputCopy
+            id="pay_email"
+            name="pay_email"
+            label="Email a pagar"
+            type="text"
+            value="asdfgh@asdfgh.com"
+            disabled={true}
+            placeholder=""
+            register={register}
+            watch={watch}
+            rules={{ required: 'Este campo es obligatorio' }}
+            error={errors.pay_email ? (errors.pay_email as FieldError) : undefined}
+          />
+
+          {/* <div className="flex flex-col">
             <label
               htmlFor="send_amount"
               className={clsx(
@@ -95,7 +109,23 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
               register={register('send_amount', { required: true })}
               error={errors.send_amount && 'Este campo es obligatorio'}
             />
-          </div>
+          </div> */}
+
+          <InputCopy
+            label="Monto a pagar"
+            name="send_amount"
+            id="send_amount"
+            type="text"
+            placeholder="Monto Enviar"
+            disabled={true}
+            value={`${selectedSendingSystem?.coinSign} ${sendAmount?.toString()}`}
+            register={register}
+            watch={watch}
+            rules={{
+              required: 'Este campo es obligatorio',
+            }}
+            error={errors.send_amount ? (errors.send_amount as FieldError) : undefined}
+          />
 
           {/* <div className="flex flex-col">
             <label

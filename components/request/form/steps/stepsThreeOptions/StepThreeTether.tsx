@@ -57,7 +57,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
       </p>
       <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
         <div className="flex w-full flex-col gap-4">
-          <div className="flex flex-col">
+          {/* <div className="flex flex-col">
             <label
               htmlFor="pay_usdt_direction"
               className={clsx(
@@ -76,8 +76,22 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
               register={register('pay_usdt_direction', { required: true })}
               error={errors.pay_usdt_direction && 'Este campo es obligatorio'}
             />
-          </div>
-          <div className="flex flex-col">
+          </div> */}
+
+          <InputCopy
+            id="pay_usdt_direction"
+            name="pay_usdt_direction"
+            label="Dirección USDT a pagar"
+            type="text"
+            value="TSgBPeFSb9TxJWyzDjDfuNqBktF898ZFUb"
+            disabled={true}
+            placeholder=""
+            register={register}
+            watch={watch}
+            rules={{ required: 'Este campo es obligatorio' }}
+            error={errors.pay_usdt_direction ? (errors.pay_usdt_direction as FieldError) : undefined}
+          />
+          {/* <div className="flex flex-col">
             <label
               htmlFor="send_amount"
               className={clsx(
@@ -96,7 +110,20 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
               register={register('send_amount', { required: true })}
               error={errors.send_amount && 'Este campo es obligatorio'}
             />
-          </div>
+          </div> */}
+          <InputCopy
+            id="send_amount"
+            name="send_amount"
+            label="Monto a pagar"
+            type="number"
+            value={`${selectedSendingSystem?.coinSign} ${sendAmount?.toString()}`}
+            disabled={true}
+            placeholder="Monto Enviar"
+            register={register}
+            watch={watch}
+            rules={{ required: 'Este campo es obligatorio' }}
+            error={errors.send_amount ? (errors.send_amount as FieldError) : undefined}
+          />
           {/* <div className="flex flex-col">
             <label
               htmlFor="receive_amount"
