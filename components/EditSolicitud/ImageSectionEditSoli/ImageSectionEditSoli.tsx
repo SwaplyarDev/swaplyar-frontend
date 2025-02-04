@@ -8,7 +8,7 @@ const ImageSectionEditSoli = () => {
 
   return (
     <>
-      <div className="hidden flex-wrap lg:block">
+      <div className="hidden flex-wrap lg2:block">
         <Image
           src={EditorPC}
           alt="Imagen de Editor de solicitud de pc"
@@ -18,7 +18,7 @@ const ImageSectionEditSoli = () => {
         />
       </div>
       <div className="mt-5 flex w-full flex-col flex-wrap content-center">
-        <div className="block min-h-full w-full max-w-[500px] flex-wrap justify-center lg:hidden">
+        <div className="block min-h-full w-full max-w-[500px] flex-wrap justify-center lg2:hidden">
           <div className="flex w-full items-center justify-center sm:gap-5">
             <Image
               src={EditorMobile}
@@ -29,7 +29,7 @@ const ImageSectionEditSoli = () => {
             />
           </div>
           <div
-            className={`block min-w-full flex-wrap justify-center border-t-[1px] lg:hidden ${
+            className={`block min-w-full flex-wrap justify-center border-t-[1px] lg2:hidden ${
               isDark ? 'border-t-white' : 'border-t-buttonsLigth'
             }`}
           ></div>

@@ -21,7 +21,7 @@ export default function HomePage() {
 
   return (
     <>
-      <AnimatedBlurredCircles tope="top-[-375px]" />
+      <AnimatedBlurredCircles tope="top-[-175px]" />
       <section className="w-full overflow-hidden px-4 md:px-8 lg:px-4">
         <article className="m-auto flex w-full max-w-screen-phone flex-col items-center justify-center xs-mini-phone2:max-w-screen-tablet md:max-w-screen-desktop">
           <div className="mt-0 flex w-full flex-col items-center justify-center lg:mt-8">
