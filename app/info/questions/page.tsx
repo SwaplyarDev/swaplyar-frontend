@@ -1,5 +1,5 @@
 import Questions from '@/components/info/questions/Questions';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -11,7 +11,10 @@ export const metadata: Metadata = {
 const page = () => {
   return (
     <>
-      <Questions />
+      {' '}
+      <Suspense>
+        <Questions />
+      </Suspense>
     </>
   );
 };

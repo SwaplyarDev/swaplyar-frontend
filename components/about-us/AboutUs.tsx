@@ -100,13 +100,15 @@ const AboutUs = () => {
               <article key={i}>
                 <h2 className="font-textFont text-4xl">{section.title}</h2>
                 <p className="font-textFont font-light">{section.description}</p>
-                {section.secondaryDescription && <p className="mt-6">{section.secondaryDescription}</p>}
+                {section.secondaryDescription && (
+                  <p className="mt-6 font-textFont font-light">{section.secondaryDescription}</p>
+                )}
               </article>
             ))}
           </section>
 
-          <section className="mt-6 flex w-full max-w-[1000px] justify-center">
-            <section className="grid w-[90%] grid-cols-1 items-center justify-center gap-6 md:w-full md:grid-cols-2">
+          <section className="flex w-full max-w-[1000px] justify-center">
+            <section className="mt-10 grid w-[90%] grid-cols-1 items-center justify-center gap-6 md:w-full md:grid-cols-2">
               <article className="col-right order-1 text-left font-textFont text-lg text-lightText dark:text-darkText md:order-2">
                 <p>
                   "Nos Dedicamos a transformar la manera en que las personas manejan su dinero, utilizando las

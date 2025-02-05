@@ -9,6 +9,7 @@ import SelectBoolean from '../inputs/SelectBoolean';
 import { CountryOption } from '@/types/request/request';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import SelectCountry from '../inputs/SelectCountry';
+import InputSteps from '@/components/inputSteps/InputSteps';
 
 interface FormData {
   sender_first_name: string;
@@ -116,14 +117,13 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
       <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
         <div className="flex w-full flex-col gap-4">
-          <div className="flex flex-col">
+          {/* <div className="flex flex-col">
             <label
               htmlFor="name"
               className={clsx(
                 'ml-1 h-5 text-xs',
                 errors.sender_first_name ? 'text-red-500' : 'text-lightText dark:text-darkText',
-              )}
-            >
+              )} >
               Nombre
             </label>
             <InputField
@@ -140,8 +140,48 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               })}
               error={errors.sender_first_name && errors.sender_first_name.message}
             />
-          </div>
-          <div className="flex flex-col">
+          </div> */}
+
+          {/* <InputSteps
+            label="Nombre"
+            name="sender_first_name"
+            id="sender_first_name"
+            type="text"
+            placeholder={errors.sender_first_name ? "Nombre *" : "Nombre"}
+            disabled={blockAll}
+            register={register}
+            watch={watch}
+            rules={{
+              required: 'El Nombre es obligatorio',
+              pattern: {
+                value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                message: 'El Nombre solo puede contener letras y espacios',
+              },
+            }}
+            error={errors.sender_first_name}
+          /> */}
+
+          <InputSteps
+            label="Nombre"
+            name="sender_first_name"
+            id="sender_first_name"
+            type="text"
+            placeholder={errors.sender_first_name ? 'Nombre *' : 'Nombre'}
+            disabled={blockAll}
+            register={register}
+            watch={watch}
+            rules={{
+              required: 'El Nombre es obligatorio',
+              pattern: {
+                value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                message: 'El Nombre solo puede contener letras y espacios',
+              },
+            }}
+            error={errors.sender_first_name}
+            className={`placeholder-gray-400 ${errors.sender_first_name ? 'placeholder-red-500' : ''}`}
+          />
+
+          {/* <div className="flex flex-col">
             <label
               htmlFor="sender_last_name"
               className={clsx(
@@ -165,10 +205,31 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               })}
               error={errors.sender_last_name && errors.sender_last_name.message}
             />
-          </div>
+          </div> */}
+          <InputSteps
+            id="sender_last_name"
+            name="sender_last_name"
+            label="Apellido"
+            type="text"
+            // placeholder="Apellido"
+            placeholder={errors.sender_last_name ? 'Apellido *' : 'Apellido'}
+            disabled={blockAll}
+            register={register}
+            watch={watch}
+            rules={{
+              required: 'El Apellido es obligatorio',
+              pattern: {
+                value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                message: 'El Apellido solo puede contener letras y espacios',
+              },
+            }}
+            error={errors.sender_last_name}
+            className={`placeholder-gray-400 ${errors.sender_last_name ? 'placeholder-red-500' : ''}`}
+          />
         </div>
+
         <div className="flex w-full flex-col gap-4">
-          <div className="flex flex-col">
+          {/* <div className="flex flex-col">
             <label
               htmlFor="email"
               className={clsx('ml-1 h-5 text-xs', errors.email ? 'text-red-500' : 'text-lightText dark:text-darkText')}
@@ -189,14 +250,26 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               })}
               error={errors.email && errors.email.message}
             />
-          </div>
-          <div
-            className={clsx(
-              'relative flex flex-col',
-              errors.phone && 'justify-end',
-              isFocused || !!watch('phone') ? '' : 'pt-5',
-            )}
-          >
+          </div> */}
+          <InputSteps
+            label="Correo electrónico"
+            name="email"
+            id="email"
+            type="email"
+            placeholder={errors.email ? 'Email *' : 'Email'}
+            disabled={blockAll}
+            register={register}
+            watch={watch}
+            rules={{
+              required: 'El Correo es obligatorio',
+              pattern: {
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+                message: 'El formato del Correo electrónico es inválido',
+              },
+            }}
+            error={errors.email}
+          />
+          <div className="flex flex-col">
             <label
               htmlFor="phone"
               className={clsx(
@@ -231,6 +304,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                     blockAll={blockAll}
                     setSelectedCodeCountry={(option) => field.onChange(option)}
                     errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
+                    textColor={['', '']}
                   />
                 )}
               />
@@ -261,6 +335,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
           </div>
         </div>
       </div>
+
       <div className="mx-0 flex flex-col gap-0 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
         <div className="flex w-full items-center justify-start sm-phone:justify-center">
           <p className="ml-1 h-5 font-textFont text-xs text-lightText dark:text-darkText sm-phone:ml-0 sm-phone:text-sm md:text-lg">

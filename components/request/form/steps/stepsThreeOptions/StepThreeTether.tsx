@@ -1,15 +1,18 @@
 import React from 'react';
 import clsx from 'clsx';
-import { FieldErrors, UseFormGetValues, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch } from 'react-hook-form';
 import InputCopy from '../../inputs/InputCopy';
 import InputField from '@/components/ui/contact-form/InputField';
 import IconTron from '@/components/ui/IconsRed/IconTron';
 import Image from 'next/image';
 import { System } from '@/types/data';
+import InputSteps from '@/components/inputSteps/InputSteps';
+import { FieldError } from 'react-hook-form';
 
 interface StepThreeTetherProps {
   register: UseFormRegister<any>;
   errors: FieldErrors<any>;
+  watch: UseFormWatch<any>;
   getValues: UseFormGetValues<any>;
   blockAll: boolean;
   formData: any;
@@ -32,6 +35,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
   receiveAmount,
   handleChange,
   restRegister,
+  watch,
 }) => {
   return (
     <>
@@ -53,66 +57,47 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
       </p>
       <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
         <div className="flex w-full flex-col gap-4">
-          <div className="flex flex-col">
-            <label
-              htmlFor="pay_usdt_direction"
-              className={clsx(
-                'ml-1 h-5 text-xs',
-                errors.pay_usdt_direction ? 'text-red-500' : 'text-lightText dark:text-darkText',
-              )}
-            >
-              Direccion USDT a pagar
-            </label>
-            <InputCopy
-              id="pay_usdt_direction"
-              type="text"
-              value={'TSgBPeFSb9TxJWyzDjDfuNqBktF898ZFUb'}
-              disabled={true}
-              placeholder=""
-              register={register('pay_usdt_direction', { required: true })}
-              error={errors.pay_usdt_direction && 'Este campo es obligatorio'}
-            />
-          </div>
-          <div className="flex flex-col">
-            <label
-              htmlFor="send_amount"
-              className={clsx(
-                'ml-1 h-5 text-xs',
-                errors.send_amount ? 'text-red-500' : 'text-lightText dark:text-darkText',
-              )}
-            >
-              Monto a pagar
-            </label>
-            <InputCopy
-              id="send_amount"
-              type="number"
-              value={`${selectedSendingSystem?.coinSign} ${sendAmount?.toString()}`}
-              disabled={true}
-              placeholder="Monto Enviar"
-              register={register('send_amount', { required: true })}
-              error={errors.send_amount && 'Este campo es obligatorio'}
-            />
-          </div>
-          <div className="flex flex-col">
-            <label
-              htmlFor="receive_amount"
-              className={clsx(
-                'ml-1 h-5 text-xs',
-                errors.receive_amount ? 'text-red-500' : 'text-lightText dark:text-darkText',
-              )}
-            >
-              Monto a Recibir
-            </label>
-            <InputField
-              id="receive_amount"
-              type="number"
-              value={`${selectedReceivingSystem?.coinSign} ${receiveAmount?.toString()}`}
-              disabled={true}
-              placeholder="Monto a Recibir"
-              register={register('receive_amount', { required: true })}
-              error={errors.receive_amount && 'Este campo es obligatorio'}
-            />
-          </div>
+          <InputCopy
+            id="pay_usdt_direction"
+            name="pay_usdt_direction"
+            label="Dirección USDT a pagar"
+            type="text"
+            value="TSgBPeFSb9TxJWyzDjDfuNqBktF898ZFUb"
+            disabled={true}
+            placeholder=""
+            register={register}
+            watch={watch}
+            rules={{ required: 'Este campo es obligatorio' }}
+            error={errors.pay_usdt_direction ? (errors.pay_usdt_direction as FieldError) : undefined}
+          />
+          <InputCopy
+            id="send_amount"
+            name="send_amount"
+            label="Monto a pagar"
+            type="number"
+            value={`${selectedSendingSystem?.coinSign} ${sendAmount?.toString()}`}
+            disabled={true}
+            placeholder="Monto Enviar"
+            register={register}
+            watch={watch}
+            rules={{ required: 'Este campo es obligatorio' }}
+            error={errors.send_amount ? (errors.send_amount as FieldError) : undefined}
+          />
+          <InputSteps
+            label="Monto a Recibir"
+            name="receive_amount"
+            id="receive_amount"
+            type="number"
+            placeholder="Monto a Recibir"
+            disabled={true}
+            register={register}
+            watch={watch}
+            rules={{
+              required: 'Este campo es obligatorio',
+            }}
+            error={errors.receive_amount ? (errors.receive_amount as FieldError) : undefined}
+          />
+
           <div className="flex flex-col">
             <label
               htmlFor="proof_of_payment"

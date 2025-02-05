@@ -23,7 +23,7 @@ export const footerLinks = {
     { href: '/info/warranty', label: 'Garantía' },
     { href: '/info/terms/terms-and-conditions', label: 'Términos y Condiciones' },
     { href: '/info/terms/sapr-terms-conditions', label: 'T&C Plus Rewards' },
-    { href: '/info/arepentimiento', label: 'SwaplyAr Solicitud' },
+    { href: '/editRequest', label: 'SwaplyAr Solicitud' },
   ] as FooterLink[],
   atencion: [
     { href: '/info/help-center', label: 'Centro de Ayuda' },

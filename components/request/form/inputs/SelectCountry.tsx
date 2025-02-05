@@ -31,7 +31,6 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
         }
         return;
       }
-
       try {
         const response = await fetch(NEXT_PUBLIC_REST_COUNTRIES_API_URL);
         const countries = await response.json();
