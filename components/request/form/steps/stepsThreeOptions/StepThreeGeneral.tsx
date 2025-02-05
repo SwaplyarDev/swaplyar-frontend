@@ -99,16 +99,15 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
               required: 'Este campo es obligatorio',
             }}
             error={errors.receive_amount ? (errors.receive_amount as FieldError) : undefined}
+            disabledWithoutMargin={true}
           />
-        </div>
-        <div className="flex w-full flex-col gap-4">
           <div className="flex h-full flex-col">
             <label
               htmlFor="note"
               className={clsx(
-                'text-lightText dark:text-darkText',
-                !isFocused && 'hidden',
-                'w-full pl-3 text-start text-sm',
+                'font-textFont text-lightText dark:text-darkText',
+                'mb-1 ml-2.5 text-sm transition-opacity duration-300',
+                isFocused || watch('note') ? 'opacity-100' : 'opacity-0',
               )}
             >
               Nota (opcional)
@@ -120,7 +119,6 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
               disabled={blockAll}
               placeholder={isFocused ? '' : 'Nota (opcional)'}
               className={clsx(
-                !isFocused && 'mt-5',
                 `block w-full rounded-2xl border border-inputLightDisabled px-3 py-2 placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight focus:placeholder-transparent dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText hover:dark:border-transparent dark:hover:placeholder-lightText focus:dark:border-transparent focus:dark:ring-transparent`,
               )}
               onFocus={() => setIsFocused(true)}

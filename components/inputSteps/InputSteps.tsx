@@ -18,6 +18,7 @@ interface InputStepsProps {
   onCustomChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   file?: boolean;
   className?: string;
+  disabledWithoutMargin?: boolean;
 }
 
 const InputSteps: React.FC<InputStepsProps> = ({
@@ -35,6 +36,7 @@ const InputSteps: React.FC<InputStepsProps> = ({
   defaultValue,
   onCustomChange,
   file,
+  disabledWithoutMargin = false,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const errorMessage = error?.message;
@@ -51,9 +53,9 @@ const InputSteps: React.FC<InputStepsProps> = ({
       <label
         htmlFor={id}
         className={clsx(
-          'font-textFont text-lightText dark:text-darkText', // Mantiene el color normal siempre
+          'font-textFont text-lightText dark:text-darkText',
           'mb-1 ml-2.5 text-sm transition-opacity duration-300',
-          isFocused || watch(name) || errorMessage ? 'opacity-100' : 'opacity-0', // Siempre aparece si hay texto o error
+          isFocused || watch(name) || errorMessage ? 'opacity-100' : 'opacity-0',
         )}
       >
         {label}
@@ -70,18 +72,19 @@ const InputSteps: React.FC<InputStepsProps> = ({
         {...restRegister}
         className={clsx(
           file ? 'hidden' : '',
+          disabledWithoutMargin ? 'mb-0' : errorMessage ? 'mb-0' : 'mb-5',
           'max-w-full rounded-2xl border bg-[#fffff8] px-[9px] py-2 font-titleFont text-lightText placeholder:text-buttonExpandDark dark:bg-darkText',
           watch(name) && 'border-inputLight dark:border-lightText',
           errorMessage
-            ? 'mb-0 border-errorColor text-errorColor placeholder:text-red-700' // Aquí está la clave
-            : 'mb-5 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
+            ? 'mb-0 border-errorColor text-errorColor placeholder:text-errorColor'
+            : 'border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
         )}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />
-
-      {/* El mensaje de error está posicionado absolutamente, pero no afectará el flujo de otros elementos */}
-      {errorMessage && <p className="bottom-[-20px] left-0 px-[10px] text-sm text-[#c31818]">{errorMessage}</p>}
+      {errorMessage && (
+        <p className="bottom-[-20px] left-0 px-[10px] font-textFont text-sm text-errorColor">{errorMessage}</p>
+      )}
     </div>
   );
 };

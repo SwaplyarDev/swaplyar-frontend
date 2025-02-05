@@ -117,50 +117,6 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
       <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
         <div className="flex w-full flex-col gap-4">
-          {/* <div className="flex flex-col">
-            <label
-              htmlFor="name"
-              className={clsx(
-                'ml-1 h-5 text-xs',
-                errors.sender_first_name ? 'text-red-500' : 'text-lightText dark:text-darkText',
-              )} >
-              Nombre
-            </label>
-            <InputField
-              id="sender_first_name"
-              type="text"
-              placeholder="Nombre"
-              disabled={blockAll}
-              register={register('sender_first_name', {
-                required: 'El Nombre es obligatorio',
-                pattern: {
-                  value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
-                  message: 'El Nombre solo puede contener letras y espacios',
-                },
-              })}
-              error={errors.sender_first_name && errors.sender_first_name.message}
-            />
-          </div> */}
-
-          {/* <InputSteps
-            label="Nombre"
-            name="sender_first_name"
-            id="sender_first_name"
-            type="text"
-            placeholder={errors.sender_first_name ? "Nombre *" : "Nombre"}
-            disabled={blockAll}
-            register={register}
-            watch={watch}
-            rules={{
-              required: 'El Nombre es obligatorio',
-              pattern: {
-                value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
-                message: 'El Nombre solo puede contener letras y espacios',
-              },
-            }}
-            error={errors.sender_first_name}
-          /> */}
-
           <InputSteps
             label="Nombre"
             name="sender_first_name"
@@ -181,37 +137,11 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             className={`placeholder-gray-400 ${errors.sender_first_name ? 'placeholder-red-500' : ''}`}
           />
 
-          {/* <div className="flex flex-col">
-            <label
-              htmlFor="sender_last_name"
-              className={clsx(
-                'ml-1 h-5 text-xs',
-                errors.sender_last_name ? 'text-red-500' : 'text-lightText dark:text-darkText',
-              )}
-            >
-              Apellido
-            </label>
-            <InputField
-              id="sender_last_name"
-              type="text"
-              placeholder="Apellido"
-              disabled={blockAll}
-              register={register('sender_last_name', {
-                required: 'El Apellido es obligatorio',
-                pattern: {
-                  value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
-                  message: 'El Apellido solo puede contener letras y espacios',
-                },
-              })}
-              error={errors.sender_last_name && errors.sender_last_name.message}
-            />
-          </div> */}
           <InputSteps
             id="sender_last_name"
             name="sender_last_name"
             label="Apellido"
             type="text"
-            // placeholder="Apellido"
             placeholder={errors.sender_last_name ? 'Apellido *' : 'Apellido'}
             disabled={blockAll}
             register={register}
@@ -229,39 +159,17 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
         </div>
 
         <div className="flex w-full flex-col gap-4">
-          {/* <div className="flex flex-col">
-            <label
-              htmlFor="email"
-              className={clsx('ml-1 h-5 text-xs', errors.email ? 'text-red-500' : 'text-lightText dark:text-darkText')}
-            >
-              Correo electrónico
-            </label>
-            <InputField
-              id="email"
-              type="email"
-              placeholder="Email"
-              disabled={blockAll}
-              register={register('email', {
-                required: 'El Correo es obligatorio',
-                pattern: {
-                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
-                  message: 'El formato del Correo electrónico es inválido',
-                },
-              })}
-              error={errors.email && errors.email.message}
-            />
-          </div> */}
           <InputSteps
-            label="Correo electrónico"
+            label="Correo Electrónico"
             name="email"
             id="email"
             type="email"
-            placeholder={errors.email ? 'Email *' : 'Email'}
+            placeholder={errors.email ? 'Correo Electrónico *' : 'Correo Electrónico'}
             disabled={blockAll}
             register={register}
             watch={watch}
             rules={{
-              required: 'El Correo es obligatorio',
+              required: 'El Correo Electrónico es obligatorio',
               pattern: {
                 value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
                 message: 'El formato del Correo electrónico es inválido',
@@ -269,12 +177,12 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             }}
             error={errors.email}
           />
-          <div className="flex flex-col">
+          <div className="relative flex flex-col">
             <label
               htmlFor="phone"
               className={clsx(
-                'ml-3 h-5 font-textFont text-xs',
-                isFocused || !!watch('phone') ? '' : 'hidden',
+                'mb-1 ml-2.5 h-5 font-textFont text-sm transition-opacity duration-300',
+                isFocused || !!watch('phone') ? 'opacity-100' : 'opacity-0',
                 errors.phone ? 'text-errorColor' : 'text-gray-900 dark:text-gray-300',
               )}
             >
@@ -282,11 +190,11 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             </label>
             <div
               className={clsx(
-                'flex max-h-[38px] max-w-full items-center rounded-2xl border bg-transparent py-2 pr-5 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
+                'mb-5 flex max-h-[42px] max-w-full items-center rounded-2xl border bg-transparent py-2 pr-5 text-lightText focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
                 watch('phone') && 'border-inputLight dark:border-lightText',
                 errors.phone
-                  ? 'border-errorColor text-errorColor placeholder-errorColor'
-                  : 'border-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:hover:border-lightText dark:hover:placeholder-lightText',
+                  ? 'border-errorColor placeholder-errorColor'
+                  : 'border-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:hover:border-lightText dark:hover:placeholder-lightText',
               )}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
@@ -328,7 +236,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               />
             </div>
             {errors.phone && (
-              <p className="absolute -bottom-5 ml-3 font-textFont text-xs text-errorColor">
+              <p className="absolute bottom-[1px] px-[10px] font-textFont text-sm text-errorColor">
                 {errors.phone.message as string}
               </p>
             )}

@@ -59,19 +59,22 @@ const InputCopy: FC<InputCopyProps> = ({
       {label && (
         <label
           htmlFor={id}
-          className={clsx('ml-1 h-5 text-xs', error ? 'text-red-500' : 'text-lightText dark:text-darkText')}
+          className={clsx(
+            'font-textFont text-lightText dark:text-darkText',
+            'mb-1 ml-2.5 text-sm transition-opacity duration-300',
+            isFocused || watch(name) ? 'opacity-100' : 'opacity-0',
+          )}
         >
           {label}
         </label>
       )}
       <div
         className={clsx(
-          'flex max-h-[38px] rounded-2xl border border-blue-600 bg-[#fffff8] dark:bg-lightText',
-          error && !isFocused
-            ? 'border border-red-500 hover:border-blue-600 dark:hover:border-white'
-            : isFocused
-              ? 'border-blue-600 outline-none ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-white'
-              : 'hover:border-blue-600 dark:hover:border-white',
+          'flex max-h-[42px] max-w-full items-center rounded-2xl border bg-transparent py-2 text-lightText focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
+          watch(name) && 'border-inputLight dark:border-lightText',
+          error
+            ? 'border-errorColor placeholder-errorColor'
+            : 'border-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:hover:border-lightText dark:hover:placeholder-lightText',
         )}
       >
         <input
@@ -82,7 +85,7 @@ const InputCopy: FC<InputCopyProps> = ({
           placeholder={placeholder}
           onChange={handleChange}
           {...restRegister}
-          className="flex h-[38px] w-full rounded border-none bg-transparent px-5 py-2 focus:border-none focus:outline-none focus:ring-0"
+          className="flex h-[38px] w-full rounded border-none bg-transparent px-[9px] focus:border-none focus:outline-none focus:ring-0"
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
         />
@@ -95,7 +98,7 @@ const InputCopy: FC<InputCopyProps> = ({
           {copied ? <Tick copy={true} color={isDark ? '#414244' : '#FCFBFA'} /> : <Copy />}
         </button>
       </div>
-      {error && <p className="text-sm text-red-500">• {error.message}</p>}
+      {error && <p className="text-sm text-red-500">{error.message}</p>}
     </div>
   );
 };
