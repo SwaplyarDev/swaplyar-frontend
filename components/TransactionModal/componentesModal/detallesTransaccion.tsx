@@ -1,3 +1,4 @@
+// Aca se encuentra todo la parte de detalles de transaciones no consume api ni de esas cosas
 export default function DetallesTransaccion() {
   return (
     <article className="absolute left-[23px] top-[100px] inline-flex w-[832.01px] items-center justify-center pb-10">
