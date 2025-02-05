@@ -1,6 +1,6 @@
 'use client';
-import { strokepopup, swaplyarAvatarpopup } from '@/utils/assets/img-database';
-import { BankDarkImg, PayoneerUsdDarkImg } from '@/utils/assets/imgDatabaseCloudinary';
+import { PixDarkImg, strokepopup, swaplyarAvatarpopup } from '@/utils/assets/img-database';
+import { BankDarkImg, BankImg, PayoneerUsdDarkImg } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -71,8 +71,22 @@ interface TransactionModalProps {
 }
 
 export default function TransactionModal({ data, onClose, onUpdate }: TransactionModalProps) {
-  const { transaction, receiver, sender } = data;
+  //logica de boton
+  const [selected, setSelected] = useState<'aprobar' | 'stop' | 'rechazar' | null>(null);
+  const [selectedYesNo1, setSelectedYesNo1] = useState<'si' | 'no' | null>(null);
+  const [selectedYesNo2, setSelectedYesNo2] = useState<'si' | 'no' | null>(null);
+  const [selectedYesNo3, setSelectedYesNo3] = useState<'si' | 'no' | null>(null);
+  const [selectedYesNo4, setSelectedYesNo4] = useState<'si' | 'no' | null>(null);
 
+  const handleClick = (button: 'aprobar' | 'stop' | 'rechazar') => {
+    setSelected((prev) => (prev === button ? null : button));
+  };
+  const handleYesNoClick = (setter: React.Dispatch<React.SetStateAction<'si' | 'no' | null>>, button: 'si' | 'no') => {
+    setter((prev) => (prev === button ? null : button)); // Alternar selección
+  };
+
+  //logica de api
+  const { transaction, receiver, sender } = data;
   const [status, setStatus] = useState<'pending' | 'completed'>(data.status);
   const [loading, setLoading] = useState(false);
 
@@ -117,32 +131,35 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
         </h2>
         <article>
           <article className="absolute left-[23px] top-[100px] inline-flex w-[832.01px] items-center justify-center pb-10">
+            {/* contenedor datos de solicitante  */}
             <article className="relative h-[165px] w-[832.01px]">
               <p className="lightText titleFont absolute left-[95px] top-0 text-xl font-semibold">
                 Datos del Solicitante
               </p>
-              <article className="absolute left-[111px] top-[29px] inline-flex h-[39px] w-[196px] flex-col items-start justify-start">
+              <article className="absolute left-[108px] top-[25px] inline-flex h-[38px] w-[173px] flex-col items-start justify-start">
                 <p className="lightText titleFont self-stretch">Nombre y Apellidos</p>
                 <p className="lightText titleFont self-stretch">
                   {data.sender.first_name} {data.sender.last_name}{' '}
                 </p>
               </article>
-              <article className="absolute left-[111px] top-[74px] inline-flex h-[98px] w-[159px] flex-col items-start justify-start">
-                <p className="lightText titleFont self-stretch text-base font-normal">Correo Electronico</p>
-                <p className="lightText titleFont w-[188px] text-base font-normal">{data.status}</p>
+
+              <article className="absolute left-[111px] top-[74px] inline-flex h-[38px] w-[159px] flex-col items-start justify-start">
+                <p className="lightText titleFont self-stretch">Correo Electronico</p>
+                <p className="lightText titleFont self-stretch">{data.sender.email}</p>
               </article>
+
               <article className="absolute left-[86px] top-[70px] h-[0px] w-[217.01px] border border-[#979797]"></article>
-              <article className="absolute left-[86px] top-[116px] h-[0px] w-[217.01px] border border-[#979797]"></article>
+              <article className="absolute left-[86px] top-[120px] h-[0px] w-[217.01px] border border-[#979797]"></article>
               <article className="absolute left-[115px] top-[120px] inline-flex h-[39px] w-[159px] flex-col items-start justify-start">
                 <p className="lightText titleFont self-stretch text-base font-normal">N° Telefonico</p>
-                <p className="titleFont titleFont self-stretch text-base font-normal">{data.status}</p>
+                <p className="titleFont titleFont self-stretch text-base font-normal">{data.sender.phone_number}</p>
               </article>
               <p className="lightText titleFont absolute left-[352px] top-0 text-xl font-semibold">
                 Datos del Destinatario
               </p>
               <article className="absolute left-[347px] top-[28px] inline-flex h-[98px] w-[228px] flex-col items-start justify-start gap-px">
                 <p className="lightText titleFont self-stretch text-base font-normal">Direccion USDT</p>
-                <p className="titleFont titleFont self-stretch text-base font-normal">{data.status}</p>
+                <p className="titleFont titleFont self-stretch text-base font-normal">{data.receiver.first_name}</p>
 
                 <article className="h-[0px] w-[217.01px] border border-[#979797]"></article>
                 <article className="flex h-[38px] flex-col items-start justify-start">
@@ -159,10 +176,10 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
                 </article>
                 <article className="flex h-[38px] flex-col items-start justify-start">
                   <p className="lightText titleFont self-stretch text-base font-normal">Monto a Transferir</p>
-                  <article className="inline-flex items-center justify-end gap-0.5">
+                  <article className="inline-flex items-center justify-end gap-1">
                     <p className="lightText titleFont text-base font-normal">450</p>
                     <p className="lightText titleFont text-base font-normal">/</p>
-                    <article className="flex h-[19px] w-[71px] items-center justify-center">
+                    <article className="flex w-[71px] items-center justify-center">
                       <p className="lightText titleFont text-base font-normal">Payoneer</p>
                     </article>
                     <p className="lightText titleFont text-base font-normal">/</p>
@@ -171,7 +188,7 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
                     </article>
                   </article>
                 </article>
-                <article className="h-[0px] w-[217.01px] border border-[#979797]"></article>
+                <article className="mt-1 h-[0px] w-[217.01px] border border-[#979797]"></article>
                 <article className="flex h-[38px] flex-col items-start justify-start">
                   <p className="lightText titleFont self-stretch text-base font-normal">Monto a Recibir</p>
                   <article className="inline-flex items-center justify-start gap-0.5">
@@ -186,7 +203,7 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
                     </article>
                   </article>
                 </article>
-                <article className="h-[0px] self-stretch border border-[#979797]"></article>
+                <article className="mt-1 h-[0px] self-stretch border border-[#979797]"></article>
                 <article className="flex h-[38px] flex-col items-start justify-start">
                   <p className="lightText titleFont self-stretch text-base font-normal">Link del Comprobante</p>
                   <p className="titleFont self-stretch text-base font-normal text-[#012a8d]">
@@ -200,22 +217,46 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
           <article className="absolute left-[40px] top-[425px] inline-flex h-[1118px] flex-col items-end justify-center gap-6">
             <article className="inline-flex items-center justify-start gap-[98.25px] overflow-hidden rounded-[121px] border-2 border-[#012a8d] pb-[9px] pl-3.5 pr-[171.25px] pt-2">
               <article className="inline-flex h-[60px] w-[60px] items-center justify-center">
-                <Image className="h-[60px] w-[60px]" src={swaplyarAvatarpopup} alt="avatar" width={60} height={60} />
+                <Image className="h-[60px] w-[60px]" src={swaplyarAvatarpopup} alt="avatar" width={200} height={200} />
               </article>
               <article className="inline-flex items-center justify-center gap-4 self-stretch">
                 <article className="flex h-[70px] w-[200px] items-center justify-center">
                   <Image
                     className="h-[70px] w-[200px]"
                     alt="imagen1"
-                    src={PayoneerUsdDarkImg}
+                    src={BankImg}
                     width={200}
                     height={70}
+                    unoptimized={true}
                   />
                 </article>
-
+                <article className="flex w-[10%] flex-row items-center justify-center">
+                  <Image
+                    className="ml-3 h-[16px] w-[16px]"
+                    alt="imagen1"
+                    src={strokepopup}
+                    width={19.167}
+                    height={10.833}
+                  />
+                  <Image className="h-[16px] w-[16px]" alt="imagen1" src={strokepopup} width={19.167} height={10.833} />
+                  <Image
+                    className="mr-3 h-[16px] w-[16px]"
+                    alt="imagen1"
+                    src={strokepopup}
+                    width={19.167}
+                    height={10.833}
+                  />
+                </article>
                 <article className="flex items-center justify-start gap-0.5" />
                 <article className="flex h-[70px] w-[200px] items-center justify-center">
-                  <Image className="h-[70px] w-[200px]" alt="imagen1" src={strokepopup} width={200} height={70} />
+                  <Image
+                    className="h-[70px] w-[200px]"
+                    alt="imagen1"
+                    src={PixDarkImg}
+                    width={200}
+                    height={70}
+                    unoptimized={true}
+                  />
                 </article>
               </article>
             </article>
@@ -229,41 +270,55 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
                         ya está reflejada en nuestra cuenta.
                       </article>
                       <article className="inline-flex items-center justify-start gap-4">
-                        <article className="inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg bg-[#0b5300] px-2.5 py-1 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
-                          <button className="titleFont self-stretch text-center text-base font-medium text-[#ebe7e0]">
-                            SI
-                          </button>
+                        <article
+                          className={`inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${
+                            selectedYesNo4 === 'si'
+                              ? 'bg-[#0b5300] text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
+                              : 'bg-[#d3d3d3]'
+                          }`}
+                          onClick={() => handleYesNoClick(setSelectedYesNo4, 'si')}
+                        >
+                          <button className="titleFont self-stretch text-center">SI</button>
                         </article>
-                        <article className="inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg bg-[#d3d3d3] px-2.5 py-1">
+                        <article
+                          className={`inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${
+                            selectedYesNo4 === 'no'
+                              ? 'bg-[#cd1818] text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
+                              : 'bg-[#d3d3d3]'
+                          }`}
+                          onClick={() => handleYesNoClick(setSelectedYesNo4, 'no')}
+                        >
                           <button className="titleFont titleFont self-stretch text-center text-base font-normal">
                             NO
                           </button>
                         </article>
                       </article>
                     </article>
-                    <article className="inline-flex h-[81px] w-[262px] flex-col items-start justify-start gap-1">
-                      <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-                        <p className="titleFont titleFont shrink grow basis-0 text-xs font-normal leading-none">
-                          ID de la Transferencia
-                        </p>
-                      </article>
-                      <article className="inline-flex h-[41px] items-center justify-start gap-2.5 self-stretch rounded-lg border border-[#252526] bg-white py-2 pl-[9px] pr-2.5">
-                        <p className="titleFont titleFont shrink grow basis-0 text-base font-normal leading-none">
-                          4536tygsdeyhe45
-                        </p>
-                      </article>
-                      <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-                        <article className="titleFont shrink grow basis-0 text-xs font-normal leading-none">
-                          Error
+                    {selectedYesNo4 === 'si' && (
+                      <article className="inline-flex h-[81px] w-[262px] flex-col items-start justify-start gap-1">
+                        <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
+                          <p className="titleFont titleFont shrink grow basis-0 text-xs font-normal leading-none">
+                            ID de la Transferencia
+                          </p>
+                        </article>
+                        <label className="inline-flex h-[41px] items-center justify-start gap-2.5 self-stretch rounded-lg border border-[#252526] bg-white py-2 pl-[9px] pr-2.5">
+                          <input
+                            className="h-full w-full border-none outline-none focus:border-transparent focus:ring-0"
+                            type="text"
+                            placeholder="4536tygsdeyhe45"
+                          />
+                        </label>
+                        <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
+                          <article className="titleFont shrink grow basis-0 text-xs font-normal leading-none"></article>
                         </article>
                       </article>
-                    </article>
+                    )}
                   </article>
                   <article className="flex h-[117px] flex-col items-start justify-start gap-1">
                     <article className="inline-flex items-center justify-center gap-2">
                       <article className="relative h-6 w-6 overflow-hidden" />
                       <article className="flex items-center justify-start gap-2.5">
-                        <p className="titleFont titleFont w-[379px] text-[10px] font-normal leading-none">
+                        <p className="titleFont w-[379px] text-[10px] font-normal leading-none">
                           El botón STOP se usa para pausar el proceso de la operación en caso de detectar alguna
                           anomalía en la solicitud.
                         </p>
@@ -278,17 +333,38 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
                             </h2>
                           </article>
                           <article className="inline-flex items-center justify-start gap-4 self-stretch">
-                            <article className="inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg bg-[#d3d3d3] px-2.5 py-1">
+                            {/* BOTONES */}
+                            <article
+                              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${
+                                selected === 'aprobar'
+                                  ? 'bg-[#0b5300] text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
+                                  : 'bg-[#d3d3d3]'
+                              }`}
+                              onClick={() => handleClick('aprobar')}
+                            >
                               <button className="titleFont titleFont self-stretch text-center text-base font-normal">
                                 Aprobar
                               </button>
                             </article>
-                            <article className="inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg border-2 border-[#cd1818] px-2.5 py-1 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
-                              <button className="titleFont self-stretch text-center text-base font-extrabold text-[#cd1818]">
-                                STOP
-                              </button>
+                            <article
+                              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg border-2 px-2.5 py-1 ${
+                                selected === 'stop'
+                                  ? 'border-[#cd1818] font-extrabold text-[#cd1818] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
+                                  : 'border-[#d3d3d3]'
+                              }`}
+                              onClick={() => handleClick('stop')}
+                            >
+                              {/*  */}
+                              <button className="titleFont self-stretch text-center text-base">STOP</button>
                             </article>
-                            <article className="inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg bg-[#d3d3d3] px-2.5 py-1">
+                            <article
+                              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${
+                                selected === 'rechazar'
+                                  ? 'bg-[#cd1818] text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
+                                  : 'bg-[#d3d3d3]'
+                              }`}
+                              onClick={() => handleClick('rechazar')}
+                            >
                               <button className="titleFont titleFont self-stretch text-center text-base font-normal">
                                 Rechazar
                               </button>
@@ -296,21 +372,23 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
                           </article>
                         </article>
                       </article>
-                      <article className="flex items-start justify-start gap-2">
-                        <article className="inline-flex h-[81px] w-[375px] flex-col items-start justify-start gap-1">
-                          <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-                            <p className="titleFont titleFont shrink grow basis-0 text-xs font-normal leading-none">
-                              STOP
-                            </p>
-                          </article>
-                          <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-                            <p className="titleFont titleFont shrink grow basis-0 text-xs font-normal leading-none">
-                              Si los datos de la operación no coinciden (por ejemplo, si el monto es mayor o menor al
-                              acordado), comunícate con el solicitante para resolverlo antes de continuar.
-                            </p>
+                      {selected === 'stop' && (
+                        <article className="flex items-start justify-start gap-2">
+                          <article className="inline-flex h-[81px] w-[375px] flex-col items-start justify-start gap-1">
+                            <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
+                              <p className="titleFont titleFont shrink grow basis-0 text-xs font-normal leading-none">
+                                STOP
+                              </p>
+                            </article>
+                            <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
+                              <p className="titleFont titleFont shrink grow basis-0 text-xs font-normal leading-none">
+                                Si los datos de la operación no coinciden (por ejemplo, si el monto es mayor o menor al
+                                acordado), comunícate con el solicitante para resolverlo antes de continuar.
+                              </p>
+                            </article>
                           </article>
                         </article>
-                      </article>
+                      )}
                     </article>
                   </article>
                   <article className="inline-flex w-[685px] items-center justify-start gap-2">
@@ -320,42 +398,67 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
                         en la Operacion
                       </article>
                       <article className="inline-flex items-center justify-start gap-4 self-stretch">
-                        <article className="inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg bg-[#0b5300] px-2.5 py-1 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
-                          <button className="titleFont self-stretch text-center text-base font-medium text-[#ebe7e0]">
-                            SI
-                          </button>
+                        <article
+                          className={`inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${
+                            selectedYesNo1 === 'si'
+                              ? 'bg-[#0b5300] text-base font-medium text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
+                              : 'bg-[#d3d3d3]'
+                          }`}
+                          onClick={() => handleYesNoClick(setSelectedYesNo1, 'si')}
+                        >
+                          <button className="titleFont self-stretch text-center text-base">SI</button>
                         </article>
-                        <article className="inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg bg-[#d3d3d3] px-2.5 py-1">
+                        <article
+                          className={`inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${
+                            selectedYesNo1 === 'no'
+                              ? 'bg-[#cd1818] text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
+                              : 'bg-[#d3d3d3]'
+                          }`}
+                          onClick={() => handleYesNoClick(setSelectedYesNo1, 'no')}
+                        >
                           <button className="titleFont titleFont self-stretch text-center text-base font-normal">
                             NO
                           </button>
                         </article>
                       </article>
                     </article>
+
                     <article className="inline-flex h-[81px] w-[262px] flex-col items-start justify-start gap-1">
                       <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-                        <p className="titleFont titleFont shrink grow basis-0 text-xs font-normal leading-none">
+                        <p className="titleFont shrink grow basis-0 text-xs font-normal leading-none">
                           Motivo de la Discrepancia
                         </p>
                       </article>
-                      <article className="inline-flex h-[41px] items-center justify-start gap-2.5 self-stretch rounded-lg border border-[#252526] bg-white py-2 pl-[9px] pr-2.5">
-                        <p className="titleFont titleFont shrink grow basis-0 text-[15px] font-normal leading-none">
-                          la direccion de la billetera no es valida
-                        </p>
-                      </article>
-                      <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-                        <p className="titleFont shrink grow basis-0 text-xs font-normal leading-none">Error</p>
-                      </article>
+                      <label className="inline-flex h-[41px] items-center justify-start gap-2.5 self-stretch rounded-lg border border-[#252526] bg-white py-2 pl-[9px] pr-2.5">
+                        <input
+                          className="h-full w-full shrink border-none text-[13px] leading-none outline-none focus:border-transparent focus:ring-0"
+                          placeholder="la direccion de la billetera no es valida"
+                          // titleFont shrink grow basis-0 text-[15px] leading-none
+                        />
+                      </label>
+                      <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5"></article>
                     </article>
                     <article className="inline-flex w-[217px] flex-col items-center justify-start gap-2">
                       <p className="lightText titleFont self-stretch text-xl font-medium">Discrepancia Resuelta</p>
                       <article className="inline-flex items-center justify-center gap-4 self-stretch">
-                        <article className="inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg bg-[#d3d3d3] px-2.5 py-1">
-                          <button className="titleFont titleFont self-stretch text-center text-base font-normal">
-                            SI
-                          </button>
+                        <article
+                          className={`inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${
+                            selectedYesNo2 === 'si'
+                              ? 'bg-[#0b5300] text-base font-medium text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
+                              : 'bg-[#d3d3d3]'
+                          }`}
+                          onClick={() => handleYesNoClick(setSelectedYesNo2, 'si')}
+                        >
+                          <button className="titleFont self-stretch text-center text-base">SI</button>
                         </article>
-                        <article className="inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg bg-[#d3d3d3] px-2.5 py-1">
+                        <article
+                          className={`inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${
+                            selectedYesNo2 === 'no'
+                              ? 'bg-[#cd1818] text-base font-medium text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
+                              : 'bg-[#d3d3d3]'
+                          }`}
+                          onClick={() => handleYesNoClick(setSelectedYesNo2, 'no')}
+                        >
                           <button className="titleFont titleFont self-stretch text-center text-base font-normal">
                             NO
                           </button>
@@ -370,7 +473,7 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
               </article>
             </article>
             <article className="inline-flex h-10 items-center justify-center gap-2.5 rounded-lg border border-[#ffac79] bg-[#a78b79] p-2.5">
-              <p className="titleFont titleFont text-base font-normal">Editar Destinatario</p>
+              <button className="titleFont titleFont text-base font-normal">Editar Destinatario</button>
             </article>
             <article className="inline-flex items-start justify-center gap-[78px]">
               <article className="inline-flex flex-col items-start justify-center gap-2">
@@ -398,12 +501,26 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
                         Transferencia Realizada al Ciente
                       </article>
                       <article className="inline-flex items-center justify-start gap-4">
-                        <article className="inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg bg-[#d3d3d3] px-2.5 py-1">
+                        <article
+                          className={`inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${
+                            selectedYesNo3 === 'si'
+                              ? 'bg-[#0b5300] text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
+                              : 'bg-[#d3d3d3]'
+                          }`}
+                          onClick={() => handleYesNoClick(setSelectedYesNo3, 'si')}
+                        >
                           <button className="titleFont titleFont self-stretch text-center text-base font-normal">
                             SI
                           </button>
                         </article>
-                        <article className="inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg bg-[#d3d3d3] px-2.5 py-1">
+                        <article
+                          className={`inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${
+                            selectedYesNo3 === 'no'
+                              ? 'bg-[#cd1818] text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
+                              : 'bg-[#d3d3d3]'
+                          }`}
+                          onClick={() => handleYesNoClick(setSelectedYesNo3, 'no')}
+                        >
                           <button className="titleFont titleFont self-stretch text-center text-base font-normal">
                             NO
                           </button>
@@ -412,30 +529,8 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
                     </article>
                   </article>
                   <article className="inline-flex items-center justify-start gap-2 self-stretch">
-                    <article className="inline-flex h-[81px] w-[262px] flex-col items-center justify-center gap-1">
-                      <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-                        <article className="titleFont shrink grow basis-0 text-xs font-normal leading-none">
-                          Label
-                        </article>
-                      </article>
-                      <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-                        <article className="titleFont shrink grow basis-0 text-xs font-normal leading-none">
-                          Error
-                        </article>
-                      </article>
-                    </article>
-                    <article className="inline-flex h-[81px] w-[170px] flex-col items-start justify-start gap-1">
-                      <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-                        <article className="titleFont shrink grow basis-0 text-xs font-normal leading-none">
-                          Label
-                        </article>
-                      </article>
-                      <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-                        <article className="titleFont shrink grow basis-0 text-xs font-normal leading-none">
-                          Error
-                        </article>
-                      </article>
-                    </article>
+                    <article className="inline-flex h-[81px] w-[262px] flex-col items-center justify-center gap-1"></article>
+                    <article className="inline-flex h-[81px] w-[170px] flex-col items-start justify-start gap-1"></article>
                   </article>
                 </article>
                 <article className="flex h-[82px] flex-col items-start justify-start">
@@ -455,21 +550,18 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
                 Link del comprobante{' '}
               </button>
             </article>
-            <article className="inline-flex h-[69px] flex-col items-start justify-start">
-              <label className="self-stretch font-['Inter'] text-[8px] font-medium text-[#252526]">Mensaje</label>
-              <article className="relative flex h-[59px] items-center overflow-hidden rounded-lg border border-[#012a8d] px-3">
+            <article className="flex h-[69px] flex-col items-start justify-start">
+              <p className="text-[8px] font-medium text-custom-grayD">Mensaje</p>
+
+              <label className="flex h-[59px] w-[812px] items-center overflow-hidden rounded-lg border border-custom-blue-800 px-3">
+                <article className="absolute left-[12px] top-[3px] h-[0px] w-2.5 origin-top-left rotate-[143.13deg] border"></article>
+                <article className="absolute left-[12px] top-0 h-[0px] w-[15px] origin-top-left rotate-[143.13deg] border"></article>
                 <input
+                  className="h-full w-full border-none outline-none focus:border-transparent focus:ring-0"
+                  placeholder="Se realizó la modificación solicitada por el cliente con éxito."
                   type="text"
-                  placeholder="Proporcione una nota de cómo fue el proceso de la solicitud"
-                  className="h-full w-full bg-transparent font-['Inter'] text-base font-light text-[#252526] outline-none"
                 />
-                <article className="absolute right-3 top-1/2 -translate-y-1/2 transform">
-                  <div className="relative h-[9px] w-3">
-                    <div className="absolute left-[12px] top-[3px] h-0 w-2.5 origin-top-left rotate-[143.13deg] border border-[#012a8d]"></div>
-                    <div className="absolute left-[12px] top-0 h-0 w-[15px] origin-top-left rotate-[143.13deg] border border-[#012a8d]"></div>
-                  </div>
-                </article>
-              </article>
+              </label>
             </article>
             <article className="inline-flex items-center justify-start gap-[23px]">
               <article className="flex h-[75px] w-[200px] items-center justify-center gap-2.5 rounded-[45px] border-2 border-[#d0b8b8] p-1">
@@ -479,7 +571,14 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
               </article>
               <article className="flex h-[75px] w-[200px] items-center justify-center gap-2.5 rounded-[45px] border-2 border-[#b8cfb8] p-1">
                 <article className="flex shrink grow basis-0 items-center justify-center gap-2.5 self-stretch rounded-[45px] bg-[#9fb69f] px-2 py-1">
-                  <button className="titleFont titleFont text-2xl font-semibold">Finalizado</button>
+                  <button
+                    onClick={handleSave}
+                    disabled={loading}
+                    className="titleFont titleFont text-2xl font-semibold"
+                  >
+                    {' '}
+                    {loading ? 'Finalizado...' : 'Finalizado'}{' '}
+                  </button>
                 </article>
               </article>
             </article>
@@ -498,6 +597,12 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
               <button className="titleFont text-base font-semibold text-[#ebe7e0]">En Proceso</button>
             </article>
           </article>
+          <article className="absolute left-[820px] top-[15px] inline-flex h-[41px] flex-col items-end justify-start gap-[3px]">
+            <button onClick={onClose} className="relative h-6 w-9 overflow-hidden">
+              x
+            </button>
+          </article>
+
           <article className="absolute left-[602px] top-[27px] inline-flex h-[41px] flex-col items-end justify-start gap-[3px]">
             <p className="lightText titleFont self-stretch text-right text-base font-normal">22 Jul 2024</p>
             <p className="lightText titleFont self-stretch text-right text-base font-normal">
@@ -506,13 +611,6 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
           </article>
           <article className="absolute left-[859px] top-[9px] h-6 w-6 overflow-hidden" />
         </article>
-
-        <button onClick={handleSave} className="rounded bg-blue-500" disabled={loading}>
-          {loading ? 'Saving...' : 'Save'}
-        </button>
-        <button onClick={onClose} className="rounded bg-gray-300 text-black">
-          Close
-        </button>
       </section>
     </section>
   );

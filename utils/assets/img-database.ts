@@ -174,5 +174,5 @@ export const regretsPhone = '/images/regretPhone.png';
 export const swaplyArAvatar = '/images/swaplyArAvatar.png';
 
 /**POPUP**/
-export const swaplyarAvatarpopup = '/images/avantar1.png';
+export const swaplyarAvatarpopup = '/images/favicon-light.png';
 export const strokepopup = '/images/Stroke.svg';

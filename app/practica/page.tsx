@@ -64,6 +64,13 @@ interface Transaction {
 }
 
 export default function PracticaPage() {
+  //logica del boton
+  const [selected, setSelected] = useState<'aprobar' | 'stop' | 'rechazar' | null>(null);
+  const handleClick = (button: 'aprobar' | 'stop' | 'rechazar') => {
+    setSelected((prev) => (prev === button ? null : button));
+  };
+
+  //logica consumo de api
   const transactionId = 'ebzay3pdht7';
   const [data, setData] = useState<Transaction | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -111,6 +118,15 @@ export default function PracticaPage() {
       </ul>
 
       {modalOpen && <TransactionModal data={data} onClose={closeModal} />}
+
+      {/* <article className={`inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${selectedYesNo3 === "no" ? "bg-[#cd1818]  shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] text-[#ebe7e0]" : "bg-[#d3d3d3]"
+        }`}
+        onClick={() => handleYesNoClick(setSelectedYesNo3, "no")}>
+        <button className="titleFont titleFont self-stretch text-center text-base font-normal">
+          NO
+        </button> 
+        bg-[#0b5300] 
+        */}
     </div>
   );
 }
