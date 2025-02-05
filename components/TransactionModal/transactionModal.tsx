@@ -422,6 +422,7 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
                         </article>
                       </article>
                     </article>
+
                     <article className="inline-flex h-[81px] w-[262px] flex-col items-start justify-start gap-1">
                       <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
                         <p className="titleFont shrink grow basis-0 text-xs font-normal leading-none">
