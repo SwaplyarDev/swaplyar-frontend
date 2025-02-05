@@ -10,7 +10,7 @@ export default auth((req) => {
     const isLoggedIn = !!req.auth;
 
     // Verificar si la ruta está bajo /admin
-    const isAdminRoute = nextUrl.pathname.startsWith('/asdasd');
+    const isAdminRoute = nextUrl.pathname.startsWith('/admin');
 
     // Redirigir si la ruta es protegida y el usuario no está logueado
     if (isProtectedRoute && !isLoggedIn) {
@@ -20,7 +20,8 @@ export default auth((req) => {
     // Verificar si la ruta es /admin y el usuario no es admin
     if (isAdminRoute && !isLoggedIn) {
       return NextResponse.redirect(new URL('/', req.url));
-    } else if (isAdminRoute && isLoggedIn) {
+    }
+    if (isAdminRoute && isLoggedIn) {
       const userRole = req.auth?.user?.role; // Obtener el rol del usuario desde el token JWT
       if (userRole !== 'admin') {
         return NextResponse.redirect(new URL('/', req.url)); // Redirigir al home si no es admin
