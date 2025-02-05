@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import SolicitudFinalizada from '@/components/SolicitudFinalizada/SolicitudFinalizada';
 
 const page = () => {
   return (
     <main className="relative overflow-hidden">
-      <SolicitudFinalizada />
+      <Suspense fallback={<div>Cargando...</div>}>
+        <SolicitudFinalizada />
+      </Suspense>
     </main>
   );
 };
