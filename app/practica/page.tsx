@@ -118,15 +118,6 @@ export default function PracticaPage() {
       </ul>
 
       {modalOpen && <TransactionModal data={data} onClose={closeModal} />}
-
-      {/* <article className={`inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${selectedYesNo3 === "no" ? "bg-[#cd1818]  shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] text-[#ebe7e0]" : "bg-[#d3d3d3]"
-        }`}
-        onClick={() => handleYesNoClick(setSelectedYesNo3, "no")}>
-        <button className="titleFont titleFont self-stretch text-center text-base font-normal">
-          NO
-        </button> 
-        bg-[#0b5300] 
-        */}
     </div>
   );
 }

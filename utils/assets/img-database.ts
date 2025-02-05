@@ -176,3 +176,5 @@ export const swaplyArAvatar = '/images/swaplyArAvatar.png';
 /**POPUP**/
 export const swaplyarAvatarpopup = '/images/favicon-light.png';
 export const strokepopup = '/images/Stroke.svg';
+export const clipopup = '/images/clip.svg';
+export const quill_link = '/images/quill_link-out.svg';
