@@ -19,6 +19,7 @@ import { roboto } from '@/config/fonts/fonts';
 import { MarginProvider } from '@/context/MarginProvider';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
+import Script from 'next/script';
 
 /**
  * Metadatos globales de la aplicación.
@@ -58,35 +59,38 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      {/* Integración de Google Tag Manager */}
-      <GoogleTagManager gtmId="GTM-W2VLHMCW" />
       <head>
+        {/* Integración de Google Tag Manager */}
+        <GoogleTagManager gtmId="GTM-W2VLHMCW" />
         {/* Verificación de propiedad en Google Search Console */}
         <meta name="google-site-verification" content="bZu9PkFbaRVlAaT4NKUHZPD0o17JxMv08rBT-gzfpC0" />
 
         {/* Script para establecer el tema de la aplicación según las preferencias del usuario o del sistema */}
-        <script>
-          {`(function() {
-            const theme = localStorage.getItem('theme');
-            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const isDark = theme === 'dark' || (!theme && systemPrefersDark);
-            if (isDark) {
-              document.documentElement.classList.add('dark');
-            } else {
-              document.documentElement.classList.remove('dark');
-            }
-          })();`}
-        </script>
+        <Script id="theme-script" strategy="beforeInteractive">
+          {`
+            (function() {
+              const theme = localStorage.getItem('theme');
+              const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+              const isDark = theme === 'dark' || (!theme && systemPrefersDark);
+              if (isDark) {
+                document.documentElement.classList.add('dark');
+              } else {
+                document.documentElement.classList.remove('dark');
+              }
+            })();
+          `}
+        </Script>
       </head>
       <body className={`bg-white text-lightText dark:bg-lightText dark:text-darkText`}>
         {/* Proveedores de contexto y herramientas de análisis */}
         <SessionProvider>
+          {/* Integración de Google Analytics */}
+          <GoogleAnalytics gaId="G-F7NZPRXT31" />
+          {/* {process.env.NODE_ENV === 'production' && <GoogleAnalytics gaId="G-F7NZPRXT31" />} */}
           <ThemeProvider>
             <MarginProvider>
-              <GoogleAnalytics gaId="G-F7NZPRXT31" />
               <SpeedInsights />
               <Analytics />
-
               {/* Componentes globales de UI */}
               <TopMenu />
               {children}
