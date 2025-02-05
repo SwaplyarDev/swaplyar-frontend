@@ -172,3 +172,7 @@ export const regretsPhone = '/images/regretPhone.png';
 
 /** Avatar **/
 export const swaplyArAvatar = '/images/swaplyArAvatar.png';
+
+/**POPUP**/
+export const swaplyarAvatarpopup = '/images/avantar1.png';
+export const strokepopup = '/images/Stroke.svg';
