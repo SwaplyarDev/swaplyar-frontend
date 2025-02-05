@@ -1,26 +1,30 @@
 // /app/layout.tsx
 
 /**
- * @file layout.tsx
- * @description Componente de diseño raíz de la aplicación, encargado de la configuración global,
- * la gestión del tema, la integración con herramientas de análisis y la estructura básica de la UI.
+ * Configuración del layout principal de la aplicación en Next.js 14.
+ *
+ * Este archivo define la estructura global de la aplicación, incluyendo el HTML, head, y body.
+ * También integra varios proveedores de contexto, herramientas de análisis y seguimiento,
+ * y componentes globales como el menú de navegación y el pie de página.
  */
 
 import type { Metadata } from 'next';
-import Script from 'next/script';
 import Footer from '@/components/footer/Footer';
 import { TopMenu } from '@/components/ui/top-menu/TopMenu';
 import ThemeProvider from '../components/ui/theme-Provider/themeProvider';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import { GoogleTagManager } from '@next/third-parties/google';
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
 import { roboto } from '@/config/fonts/fonts';
 import { MarginProvider } from '@/context/MarginProvider';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
+import Script from 'next/script';
 
 /**
- * Metadata de la aplicación, incluyendo título, descripción y favicons.
+ * Metadatos globales de la aplicación.
+ *
+ * Define el título, la descripción y los íconos del sitio, optimizando su visibilidad en buscadores y en dispositivos con diferentes temas.
  */
 export const metadata: Metadata = {
   title: 'SwaplyAr | Pasar dólares de PayPal a pesos argentinos',
@@ -43,11 +47,10 @@ export const metadata: Metadata = {
 };
 
 /**
- * @component RootLayout
- * @description Componente principal que define la estructura base de la aplicación.
- * Incluye proveedores de sesión y tema, configuraciones de análisis y la interfaz global.
+ * RootLayout - Layout global de la aplicación.
  *
- * @param {React.ReactNode} children - Elementos secundarios de la aplicación.
+ * @param children - Contenido de la página renderizada.
+ * @returns Estructura principal del HTML y elementos globales.
  */
 export default function RootLayout({
   children,
@@ -56,41 +59,39 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <GoogleTagManager gtmId="GTM-W2VLHMCW" />
       <head>
+        {/* Integración de Google Tag Manager */}
+        <GoogleTagManager gtmId="GTM-W2VLHMCW" />
         {/* Verificación de propiedad en Google Search Console */}
         <meta name="google-site-verification" content="bZu9PkFbaRVlAaT4NKUHZPD0o17JxMv08rBT-gzfpC0" />
-      </head>
 
-      <body className={`bg-white text-lightText dark:bg-lightText dark:text-darkText`}>
-        {/* Integración de Google Analytics con next/script */}
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-F7NZPRXT31" strategy="afterInteractive" />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-F7NZPRXT31');
-          `}
-        </Script>
-
-        {/* Manejo del modo oscuro basado en preferencias del sistema */}
-        <Script id="theme-switcher" strategy="beforeInteractive">
+        {/* Script para establecer el tema de la aplicación según las preferencias del usuario o del sistema */}
+        <Script id="theme-script" strategy="beforeInteractive">
           {`
             (function() {
               const theme = localStorage.getItem('theme');
               const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
               const isDark = theme === 'dark' || (!theme && systemPrefersDark);
-              isDark ? document.documentElement.classList.add('dark') : document.documentElement.classList.remove('dark');
+              if (isDark) {
+                document.documentElement.classList.add('dark');
+              } else {
+                document.documentElement.classList.remove('dark');
+              }
             })();
           `}
         </Script>
-
+      </head>
+      <body className={`bg-white text-lightText dark:bg-lightText dark:text-darkText`}>
+        {/* Proveedores de contexto y herramientas de análisis */}
         <SessionProvider>
+          {/* Integración de Google Analytics */}
+          <GoogleAnalytics gaId="G-F7NZPRXT31" />
+          {/* {process.env.NODE_ENV === 'production' && <GoogleAnalytics gaId="G-F7NZPRXT31" />} */}
           <ThemeProvider>
             <MarginProvider>
               <SpeedInsights />
               <Analytics />
+              {/* Componentes globales de UI */}
               <TopMenu />
               {children}
               <Footer />
