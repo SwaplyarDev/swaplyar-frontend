@@ -136,30 +136,30 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
               <p className="lightText titleFont absolute left-[95px] top-0 text-xl font-semibold">
                 Datos del Solicitante
               </p>
-              <article className="absolute left-[108px] top-[25px] inline-flex h-[38px] w-[173px] flex-col items-start justify-start bg-red-400">
+              <article className="absolute left-[108px] top-[25px] inline-flex h-[38px] w-[173px] flex-col items-start justify-start">
                 <p className="lightText titleFont self-stretch">Nombre y Apellidos</p>
                 <p className="lightText titleFont self-stretch">
                   {data.sender.first_name} {data.sender.last_name}{' '}
                 </p>
               </article>
 
-              <article className="absolute left-[111px] top-[74px] inline-flex h-[38px] w-[159px] flex-col items-start justify-start bg-red-400">
+              <article className="absolute left-[111px] top-[74px] inline-flex h-[38px] w-[159px] flex-col items-start justify-start">
                 <p className="lightText titleFont self-stretch">Correo Electronico</p>
-                <p className="lightText titleFont self-stretch">{data.status}</p>
+                <p className="lightText titleFont self-stretch">{data.sender.email}</p>
               </article>
 
               <article className="absolute left-[86px] top-[70px] h-[0px] w-[217.01px] border border-[#979797]"></article>
               <article className="absolute left-[86px] top-[120px] h-[0px] w-[217.01px] border border-[#979797]"></article>
               <article className="absolute left-[115px] top-[120px] inline-flex h-[39px] w-[159px] flex-col items-start justify-start">
                 <p className="lightText titleFont self-stretch text-base font-normal">N° Telefonico</p>
-                <p className="titleFont titleFont self-stretch text-base font-normal">{data.status}</p>
+                <p className="titleFont titleFont self-stretch text-base font-normal">{data.sender.phone_number}</p>
               </article>
               <p className="lightText titleFont absolute left-[352px] top-0 text-xl font-semibold">
                 Datos del Destinatario
               </p>
               <article className="absolute left-[347px] top-[28px] inline-flex h-[98px] w-[228px] flex-col items-start justify-start gap-px">
                 <p className="lightText titleFont self-stretch text-base font-normal">Direccion USDT</p>
-                <p className="titleFont titleFont self-stretch text-base font-normal">{data.status}</p>
+                <p className="titleFont titleFont self-stretch text-base font-normal">{data.receiver.first_name}</p>
 
                 <article className="h-[0px] w-[217.01px] border border-[#979797]"></article>
                 <article className="flex h-[38px] flex-col items-start justify-start">
@@ -230,10 +230,22 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
                     unoptimized={true}
                   />
                 </article>
-                <article className="flex items-center justify-start gap-x-0">
-                  <Image className="h-[20px] w-[20px]" alt="imagen1" src={strokepopup} width={200} height={70} />
-                  <Image className="h-[20px] w-[20px]" alt="imagen1" src={strokepopup} width={200} height={70} />
-                  <Image className="h-[20px] w-[20px]" alt="imagen1" src={strokepopup} width={200} height={70} />
+                <article className="flex w-[10%] flex-row items-center justify-center">
+                  <Image
+                    className="ml-3 h-[16px] w-[16px]"
+                    alt="imagen1"
+                    src={strokepopup}
+                    width={19.167}
+                    height={10.833}
+                  />
+                  <Image className="h-[16px] w-[16px]" alt="imagen1" src={strokepopup} width={19.167} height={10.833} />
+                  <Image
+                    className="mr-3 h-[16px] w-[16px]"
+                    alt="imagen1"
+                    src={strokepopup}
+                    width={19.167}
+                    height={10.833}
+                  />
                 </article>
                 <article className="flex items-center justify-start gap-0.5" />
                 <article className="flex h-[70px] w-[200px] items-center justify-center">
@@ -282,31 +294,31 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
                         </article>
                       </article>
                     </article>
-                    <article className="inline-flex h-[81px] w-[262px] flex-col items-start justify-start gap-1">
-                      <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-                        <p className="titleFont titleFont shrink grow basis-0 text-xs font-normal leading-none">
-                          ID de la Transferencia
-                        </p>
-                      </article>
-                      <label className="inline-flex h-[41px] items-center justify-start gap-2.5 self-stretch rounded-lg border border-[#252526] bg-white py-2 pl-[9px] pr-2.5">
-                        <input
-                          className="h-full w-full border-none outline-none focus:border-transparent focus:ring-0"
-                          type="text"
-                          placeholder="4536tygsdeyhe45"
-                        />
-                      </label>
-                      <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-                        <article className="titleFont shrink grow basis-0 text-xs font-normal leading-none">
-                          Error
+                    {selectedYesNo4 === 'si' && (
+                      <article className="inline-flex h-[81px] w-[262px] flex-col items-start justify-start gap-1">
+                        <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
+                          <p className="titleFont titleFont shrink grow basis-0 text-xs font-normal leading-none">
+                            ID de la Transferencia
+                          </p>
+                        </article>
+                        <label className="inline-flex h-[41px] items-center justify-start gap-2.5 self-stretch rounded-lg border border-[#252526] bg-white py-2 pl-[9px] pr-2.5">
+                          <input
+                            className="h-full w-full border-none outline-none focus:border-transparent focus:ring-0"
+                            type="text"
+                            placeholder="4536tygsdeyhe45"
+                          />
+                        </label>
+                        <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
+                          <article className="titleFont shrink grow basis-0 text-xs font-normal leading-none"></article>
                         </article>
                       </article>
-                    </article>
+                    )}
                   </article>
                   <article className="flex h-[117px] flex-col items-start justify-start gap-1">
                     <article className="inline-flex items-center justify-center gap-2">
                       <article className="relative h-6 w-6 overflow-hidden" />
                       <article className="flex items-center justify-start gap-2.5">
-                        <p className="titleFont titleFont w-[379px] text-[10px] font-normal leading-none">
+                        <p className="titleFont w-[379px] text-[10px] font-normal leading-none">
                           El botón STOP se usa para pausar el proceso de la operación en caso de detectar alguna
                           anomalía en la solicitud.
                         </p>
@@ -360,21 +372,23 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
                           </article>
                         </article>
                       </article>
-                      <article className="flex items-start justify-start gap-2">
-                        <article className="inline-flex h-[81px] w-[375px] flex-col items-start justify-start gap-1">
-                          <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-                            <p className="titleFont titleFont shrink grow basis-0 text-xs font-normal leading-none">
-                              STOP
-                            </p>
-                          </article>
-                          <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-                            <p className="titleFont titleFont shrink grow basis-0 text-xs font-normal leading-none">
-                              Si los datos de la operación no coinciden (por ejemplo, si el monto es mayor o menor al
-                              acordado), comunícate con el solicitante para resolverlo antes de continuar.
-                            </p>
+                      {selected === 'stop' && (
+                        <article className="flex items-start justify-start gap-2">
+                          <article className="inline-flex h-[81px] w-[375px] flex-col items-start justify-start gap-1">
+                            <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
+                              <p className="titleFont titleFont shrink grow basis-0 text-xs font-normal leading-none">
+                                STOP
+                              </p>
+                            </article>
+                            <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
+                              <p className="titleFont titleFont shrink grow basis-0 text-xs font-normal leading-none">
+                                Si los datos de la operación no coinciden (por ejemplo, si el monto es mayor o menor al
+                                acordado), comunícate con el solicitante para resolverlo antes de continuar.
+                              </p>
+                            </article>
                           </article>
                         </article>
-                      </article>
+                      )}
                     </article>
                   </article>
                   <article className="inline-flex w-[685px] items-center justify-start gap-2">
@@ -582,7 +596,7 @@ export default function TransactionModal({ data, onClose, onUpdate }: Transactio
               <button className="titleFont text-base font-semibold text-[#ebe7e0]">En Proceso</button>
             </article>
           </article>
-          <article className="absolute left-[820px] top-[15px] inline-flex h-[41px] flex-col items-end justify-start gap-[3px] bg-blue-500">
+          <article className="absolute left-[820px] top-[15px] inline-flex h-[41px] flex-col items-end justify-start gap-[3px]">
             <button onClick={onClose} className="relative h-6 w-9 overflow-hidden">
               x
             </button>
