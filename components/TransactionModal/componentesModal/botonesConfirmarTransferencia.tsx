@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { CustomButton } from './ui/comoponenteboton';
 export default function ConfirmarTransferencia() {
-  const [selectedYesNo1, setSelectedYesNo1] = useState<'si' | 'no' | null>(null);
+  const [selected, setSelected] = useState<'si' | 'no' | null>(null);
 
   const handleYesNoClick = (setter: React.Dispatch<React.SetStateAction<'si' | 'no' | null>>, button: 'si' | 'no') => {
     setter((prev) => (prev === button ? null : button)); // Alternar selección
@@ -8,35 +9,25 @@ export default function ConfirmarTransferencia() {
 
   return (
     <article className="inline-flex items-center justify-start gap-4">
-      <article className="inline-flex h-[81px] w-[342px] flex-col items-center justify-center gap-2">
+      <article className="inline-flex h-[81px] w-[342px] flex-col items-center justify-center">
         <article className="lightText titleFont text-xl font-medium">
           La transferencia ha sido recibida y <br />
           ya está reflejada en nuestra cuenta.
         </article>
-        <article className="inline-flex items-center justify-start gap-4">
-          <article
-            className={`inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${
-              selectedYesNo1 === 'si'
-                ? 'bg-[#0b5300] text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
-                : 'bg-[#d3d3d3]'
-            }`}
-            onClick={() => handleYesNoClick(setSelectedYesNo1, 'si')}
-          >
-            <button className="titleFont self-stretch text-center">SI</button>
-          </article>
-          <article
-            className={`inline-flex w-[55px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${
-              selectedYesNo1 === 'no'
-                ? 'bg-[#cd1818] text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
-                : 'bg-[#d3d3d3]'
-            }`}
-            onClick={() => handleYesNoClick(setSelectedYesNo1, 'no')}
-          >
-            <button className="titleFont titleFont self-stretch text-center text-base font-normal">NO</button>
-          </article>
-        </article>
+        <div className="flex gap-4">
+          <CustomButton
+            text="SI"
+            onClick={() => setSelected(selected === 'si' ? null : 'si')}
+            className={`w-[55px] ${selected === 'si' ? 'bg-green-700 text-white' : 'bg-gray-300'}`}
+          />
+          <CustomButton
+            text="NO"
+            onClick={() => setSelected(selected === 'no' ? null : 'no')}
+            className={`w-[55px] ${selected === 'no' ? 'bg-red-600 text-white' : 'bg-gray-300'}`}
+          />
+        </div>
       </article>
-      {selectedYesNo1 === 'si' && (
+      {selected === 'si' && (
         <article className="inline-flex h-[81px] w-[262px] flex-col items-start justify-start gap-1">
           <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
             <p className="titleFont titleFont shrink grow basis-0 text-xs font-normal leading-none">
