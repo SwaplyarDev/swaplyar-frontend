@@ -17,7 +17,7 @@ interface StepTwoPixProps {
 
 const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, blockAll, formData, watch }) => {
   return (
-    <div className="mx-0 grid grid-cols-1 gap-4 sm:mx-6 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-8 sm-phone:mx-0">
+    <div className="mx-0 grid grid-cols-1 gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:grid-cols-2 sm-phone:gap-x-8 sm-phone:gap-y-4">
       <InputSteps
         label="Nombre"
         name="receiver_first_name"
@@ -37,6 +37,7 @@ const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, blockAll, for
           },
         }}
         error={errors.receiver_first_name ? (errors.receiver_first_name as FieldError) : undefined}
+        className="order-1"
       />
 
       <InputSteps
@@ -71,6 +72,7 @@ const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, blockAll, for
           },
         }}
         error={errors.pix_key ? (errors.pix_key as FieldError) : undefined}
+        className="order-3 sm-phone:order-2"
       />
 
       <InputSteps
@@ -92,6 +94,7 @@ const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, blockAll, for
           },
         }}
         error={errors.receiver_last_name ? (errors.receiver_last_name as FieldError) : undefined}
+        className="order-2 sm-phone:order-3"
       />
 
       <InputSteps
@@ -111,6 +114,7 @@ const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, blockAll, for
           },
         }}
         error={errors.individual_tax_id ? (errors.individual_tax_id as FieldError) : undefined}
+        className="order-4"
       />
     </div>
   );

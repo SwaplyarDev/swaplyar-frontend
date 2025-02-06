@@ -37,6 +37,7 @@ const InputSteps: React.FC<InputStepsProps> = ({
   onCustomChange,
   file,
   disabledWithoutMargin = false,
+  className,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const errorMessage = error?.message;
@@ -49,7 +50,7 @@ const InputSteps: React.FC<InputStepsProps> = ({
   };
 
   return (
-    <div className="relative flex flex-col">
+    <div className={`relative flex flex-col ${className}`}>
       <label
         htmlFor={id}
         className={clsx(

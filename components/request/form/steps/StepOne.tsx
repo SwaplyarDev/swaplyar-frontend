@@ -115,142 +115,133 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
-      <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
-        <div className="flex w-full flex-col gap-4">
-          <InputSteps
-            label="Nombre"
-            name="sender_first_name"
-            id="sender_first_name"
-            type="text"
-            placeholder={errors.sender_first_name ? 'Nombre *' : 'Nombre'}
-            disabled={blockAll}
-            register={register}
-            watch={watch}
-            rules={{
-              required: 'El Nombre es obligatorio',
-              pattern: {
-                value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
-                message: 'El Nombre solo puede contener letras y espacios',
-              },
-            }}
-            error={errors.sender_first_name}
-            className={`placeholder-gray-400 ${errors.sender_first_name ? 'placeholder-red-500' : ''}`}
-          />
+      <div className="mx-0 grid grid-cols-1 gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:grid-cols-2 sm-phone:gap-x-8 sm-phone:gap-y-4">
+        <InputSteps
+          label="Nombre"
+          name="sender_first_name"
+          id="sender_first_name"
+          type="text"
+          placeholder={errors.sender_first_name ? 'Nombre *' : 'Nombre'}
+          disabled={blockAll}
+          register={register}
+          watch={watch}
+          rules={{
+            required: 'El Nombre es obligatorio',
+            pattern: {
+              value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+              message: 'El Nombre solo puede contener letras y espacios',
+            },
+          }}
+          error={errors.sender_first_name}
+          className={'order-1'}
+        />
 
-          <InputSteps
-            id="sender_last_name"
-            name="sender_last_name"
-            label="Apellido"
-            type="text"
-            placeholder={errors.sender_last_name ? 'Apellido *' : 'Apellido'}
-            disabled={blockAll}
-            register={register}
-            watch={watch}
-            rules={{
-              required: 'El Apellido es obligatorio',
-              pattern: {
-                value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
-                message: 'El Apellido solo puede contener letras y espacios',
-              },
-            }}
-            error={errors.sender_last_name}
-            className={`placeholder-gray-400 ${errors.sender_last_name ? 'placeholder-red-500' : ''}`}
-          />
-        </div>
+        <InputSteps
+          id="sender_last_name"
+          name="sender_last_name"
+          label="Apellido"
+          type="text"
+          placeholder={errors.sender_last_name ? 'Apellido *' : 'Apellido'}
+          disabled={blockAll}
+          register={register}
+          watch={watch}
+          rules={{
+            required: 'El Apellido es obligatorio',
+            pattern: {
+              value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+              message: 'El Apellido solo puede contener letras y espacios',
+            },
+          }}
+          error={errors.sender_last_name}
+          className={`order-2 sm-phone:order-3`}
+        />
 
-        <div className="flex w-full flex-col gap-4">
-          <InputSteps
-            label="Correo Electrónico"
-            name="email"
-            id="email"
-            type="email"
-            placeholder={errors.email ? 'Correo Electrónico *' : 'Correo Electrónico'}
-            disabled={blockAll}
-            register={register}
-            watch={watch}
-            rules={{
-              required: 'El Correo Electrónico es obligatorio',
-              pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
-                message: 'El formato del Correo electrónico es inválido',
-              },
-            }}
-            error={errors.email}
-          />
-          <div className="relative flex flex-col">
-            <label
-              htmlFor="phone"
-              className={clsx(
-                'mb-1 ml-2.5 h-5 font-textFont text-sm transition-opacity duration-300',
-                isFocused || !!watch('phone') ? 'opacity-100' : 'opacity-0',
-                errors.phone ? 'text-errorColor' : 'text-gray-900 dark:text-gray-300',
-              )}
-            >
-              Telefono
-            </label>
-            <div
-              className={clsx(
-                'mb-5 flex max-h-[42px] max-w-full items-center rounded-2xl border bg-transparent py-2 pr-5 text-lightText focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
-                watch('phone') && 'border-inputLight dark:border-lightText',
-                errors.phone
-                  ? 'border-errorColor placeholder-errorColor'
-                  : 'border-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:hover:border-lightText dark:hover:placeholder-lightText',
-              )}
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
-            >
-              <Controller
-                name="calling_code"
-                control={control}
-                defaultValue={undefined}
-                rules={{
-                  required: 'Este campo es obligatorio',
-                }}
-                render={({ field, fieldState }) => (
-                  <SelectCountry
-                    selectedCodeCountry={field.value}
-                    blockAll={blockAll}
-                    setSelectedCodeCountry={(option) => field.onChange(option)}
-                    errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
-                    textColor={['', '']}
-                  />
-                )}
-              />
-              <input
-                placeholder={isFocused ? '' : errors.phone ? 'Telefono*' : 'Telefono'}
-                className={clsx(
-                  'inputChangeAutofillReverse w-full border-none bg-transparent font-textFont focus:border-none focus:outline-none focus:ring-0',
-                  errors.phone
-                    ? 'placeholder-errorColor'
-                    : 'placeholder-inputLightDisabled dark:placeholder-placeholderDark',
-                )}
-                type="tel"
-                disabled={blockAll}
-                {...register('phone', {
-                  required: 'El número de teléfono es obligatorio',
-                  pattern: {
-                    value: /^\d{9,11}$/,
-                    message: 'Introduce un número válido de entre 9 y 11 dígitos',
-                  },
-                })}
-              />
-            </div>
-            {errors.phone && (
-              <p className="absolute bottom-[1px] px-[10px] font-textFont text-sm text-errorColor">
-                {errors.phone.message as string}
-              </p>
+        <InputSteps
+          label="Correo Electrónico"
+          name="email"
+          id="email"
+          type="email"
+          placeholder={errors.email ? 'Correo Electrónico *' : 'Correo Electrónico'}
+          disabled={blockAll}
+          register={register}
+          watch={watch}
+          rules={{
+            required: 'El Correo Electrónico es obligatorio',
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+              message: 'El formato del Correo electrónico es inválido',
+            },
+          }}
+          error={errors.email}
+          className="order-3 sm-phone:order-2"
+        />
+        <div className="relative order-4 flex flex-col">
+          <label
+            htmlFor="phone"
+            className={clsx(
+              'mb-1 ml-2.5 h-5 font-textFont text-sm text-lightText transition-opacity duration-300 dark:text-darkText',
+              isFocused || !!watch('phone') ? 'opacity-100' : 'opacity-0',
             )}
+          >
+            Telefono
+          </label>
+          <div
+            className={clsx(
+              'flex max-h-[42px] max-w-full items-center rounded-2xl border bg-transparent py-2 pr-5 text-lightText focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
+              watch('phone') && 'border-inputLight dark:border-lightText',
+              errors.phone
+                ? 'mb-0 border-errorColor placeholder-errorColor'
+                : 'mb-5 border-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:hover:border-lightText dark:hover:placeholder-lightText',
+            )}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+          >
+            <Controller
+              name="calling_code"
+              control={control}
+              defaultValue={undefined}
+              rules={{
+                required: 'Este campo es obligatorio',
+              }}
+              render={({ field, fieldState }) => (
+                <SelectCountry
+                  selectedCodeCountry={field.value}
+                  blockAll={blockAll}
+                  setSelectedCodeCountry={(option) => field.onChange(option)}
+                  errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
+                  textColor={['', '']}
+                />
+              )}
+            />
+            <input
+              placeholder={isFocused ? '' : errors.phone ? 'Telefono*' : 'Telefono'}
+              className={clsx(
+                'inputChangeAutofillReverse w-full border-none bg-transparent font-textFont focus:border-none focus:outline-none focus:ring-0',
+                errors.phone
+                  ? 'placeholder-errorColor'
+                  : 'placeholder-inputLightDisabled dark:placeholder-placeholderDark',
+              )}
+              type="tel"
+              disabled={blockAll}
+              {...register('phone', {
+                required: 'El número de teléfono es obligatorio',
+                pattern: {
+                  value: /^\d{9,11}$/,
+                  message: 'Introduce un número válido de entre 9 y 11 dígitos',
+                },
+              })}
+            />
           </div>
+          {errors.phone && (
+            <p className="px-[10px] font-textFont text-sm text-errorColor">{errors.phone.message as string}</p>
+          )}
         </div>
-      </div>
-
-      <div className="mx-0 flex flex-col gap-0 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
-        <div className="flex w-full items-center justify-start sm-phone:justify-center">
-          <p className="ml-1 h-5 font-textFont text-xs text-lightText dark:text-darkText sm-phone:ml-0 sm-phone:text-sm md:text-lg">
+        <div className="order-5 mx-[10px] flex w-full items-center justify-start sm-phone:mx-0 sm-phone:justify-center">
+          <p className="h-5 font-textFont text-lightText dark:text-darkText sm-phone:ml-0 sm-phone:text-sm md:text-lg">
             ¿Se transfiere a una cuenta propia?
           </p>
         </div>
-        <div className="flex w-full flex-col">
+        <div className="order-6 flex w-full flex-col">
           <Controller
             name="own_account"
             control={control}

@@ -54,8 +54,13 @@ const SelectRed: React.FC<SelectRedProps> = ({ selectedRed, setSelectedRed, erro
       <label
         htmlFor={fieldName}
         className={clsx(
-          'ml-1 h-5 text-xs',
-          selectedRed === undefined ? 'hidden' : errorMessage ? 'text-red-500' : 'text-lightText dark:text-darkText',
+          'font-textFont text-lightText dark:text-darkText',
+          'mb-1 ml-2.5 text-sm transition-opacity duration-300',
+          selectedRed === undefined
+            ? 'opacity-0'
+            : errorMessage
+              ? 'text-errorColor opacity-100'
+              : 'text-lightText opacity-100 dark:text-darkText',
         )}
       >
         Selecciona una Red
@@ -63,8 +68,7 @@ const SelectRed: React.FC<SelectRedProps> = ({ selectedRed, setSelectedRed, erro
       <div
         ref={dropdownRef}
         className={clsx(
-          selectedRed === undefined && 'mt-5',
-          'relative flex max-h-[38px] max-w-full items-center rounded-2xl border bg-transparent py-2 pr-5 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
+          'relative mb-5 flex max-h-[42px] max-w-full items-center rounded-2xl border bg-transparent py-2 pr-5 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
           errorMessage
             ? 'border-errorColor text-errorColor placeholder-errorColor'
             : 'border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
