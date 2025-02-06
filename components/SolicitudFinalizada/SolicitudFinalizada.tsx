@@ -10,6 +10,8 @@ import clsx from 'clsx';
 import { FormRequestCompleted } from '@/types/repentance/repentance';
 import { useParams, useSearchParams } from 'next/navigation';
 
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const { isDark } = useDarkTheme();
@@ -35,14 +37,24 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
     mode: 'onChange',
     defaultValues: {
       message: '',
-      rating: 0,
+      stars_amount: 0,
     },
   });
 
-  const selectedRating = watch('rating');
+  const selectedRating = watch('stars_amount');
 
-  const onSubmit = (data: FormRequestCompleted) => {
-    console.log('Formulario enviado:', data);
+  const onSubmit = async (data: FormRequestCompleted) => {
+    const response = await fetch(`${API_URL}/v1/qualification`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ data }),
+    });
+
+    console.log(response);
+    console.log(data);
+
     reset();
   };
 
@@ -56,7 +68,7 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
       className={`h-[50px] w-[50px] cursor-pointer ${index <= selectedRating ? 'fill-[rgba(255,217,0,1)]' : 'fill-[rgba(188,188,188,1)]'} md:h-[100px] md:w-[100px]`}
       onMouseOver={() => setHoverIndex(index)}
       onMouseLeave={() => setHoverIndex(null)}
-      onClick={() => setValue('rating', index)}
+      onClick={() => setValue('stars_amount', index)}
     >
       <path d="M50 0L61.2257 34.5491H97.5528L68.1636 55.9017L79.3893 90.4509L50 69.0983L20.6107 90.4509L31.8364 55.9017L2.44717 34.5491H38.7743L50 0Z" />
     </svg>
@@ -212,16 +224,15 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
             <StarIcon key={index} index={index + 1} />
           ))}
         </div>
-        <input type="hidden" {...register('rating', { required: true })} />
+        <input type="hidden" {...register('stars_amount', { required: true })} />
 
-        <div className="h-[81px]">
+        <div className="max-h-[148px]">
           <label className="font-textFont text-xs font-light">
             Mensaje
-            <input
-              type="text"
+            <textarea
               {...register('message')}
               className={clsx(
-                'placeholder-text-gray-900 h-[45px] max-h-[148px] min-h-[45px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
+                'placeholder-text-gray-900 h-[45px] max-h-[128px] min-h-[45px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
                 isDark
                   ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
                   : 'border-b-buttonsLigth bg-transparent outline-none placeholder:text-buttonExpandDark focus:border-buttonsLigth focus:outline-none',

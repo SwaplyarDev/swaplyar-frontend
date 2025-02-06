@@ -19,7 +19,7 @@
 }
 
 .container-blur {
-  @apply absolute flex h-full min-h-[1000px] w-full justify-center overflow-hidden;
+  @apply fixed flex top-0 h-full min-h-[1000px] w-full justify-center overflow-hidden;
 }
 
 .box {
