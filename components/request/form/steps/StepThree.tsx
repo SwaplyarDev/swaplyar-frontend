@@ -7,6 +7,7 @@ import { useSystemStore } from '@/store/useSystemStore';
 import StepThreeGeneral from './stepsThreeOptions/StepThreeGeneral';
 import StepThreeTether from './stepsThreeOptions/StepThreeTether';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
+import InfoStep from '@/components/ui/InfoStep/InfoStep';
 
 interface FormData {
   send_amount: string;
@@ -140,6 +141,9 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <div className="absolute right-5 top-4">
+        <InfoStep />
+      </div>
       {renderSelectedSystem()}
 
       <div className="flex justify-center sm-phone:justify-end">

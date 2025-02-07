@@ -1,8 +1,6 @@
 'use client';
-import InputField from '@/components/ui/contact-form/InputField';
 import React, { useEffect, useState } from 'react';
-import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch, useForm } from 'react-hook-form';
-import clsx from 'clsx';
+import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch } from 'react-hook-form';
 import { getTaxIdentificationType, getTransferIdentificationType } from '@/utils/validationUtils';
 import InputSteps from '@/components/inputSteps/InputSteps';
 import { FieldError } from 'react-hook-form';

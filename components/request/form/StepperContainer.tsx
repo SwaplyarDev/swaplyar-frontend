@@ -308,7 +308,7 @@ const StepperContainer = () => {
             key={index}
             className={clsx(
               completedSteps[index] || index == activeStep ? 'flex-col' : 'flex-row',
-              'flex min-h-20 w-full gap-4 rounded-2xl bg-calculatorDark p-4 dark:bg-calculatorLight',
+              'relative flex min-h-20 w-full gap-4 rounded-2xl bg-calculatorDark p-4 dark:bg-calculatorLight',
             )}
           >
             <div

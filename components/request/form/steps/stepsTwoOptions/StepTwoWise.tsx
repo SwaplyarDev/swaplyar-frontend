@@ -1,7 +1,5 @@
 import React from 'react';
-import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch, useForm } from 'react-hook-form';
-import clsx from 'clsx';
-import InputField from '@/components/ui/contact-form/InputField';
+import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch } from 'react-hook-form';
 import InputSteps from '@/components/inputSteps/InputSteps';
 import { FieldError } from 'react-hook-form';
 

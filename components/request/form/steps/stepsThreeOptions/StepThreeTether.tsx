@@ -2,7 +2,6 @@ import React from 'react';
 import clsx from 'clsx';
 import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch } from 'react-hook-form';
 import InputCopy from '../../inputs/InputCopy';
-import InputField from '@/components/ui/contact-form/InputField';
 import IconTron from '@/components/ui/IconsRed/IconTron';
 import Image from 'next/image';
 import { System } from '@/types/data';
