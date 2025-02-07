@@ -1,81 +1,95 @@
-// Aca se encuentra todo la parte de detalles de transaciones no consume api ni de esas cosas
-export default function DetallesTransaccion() {
-  return (
-    <article className="absolute left-[23px] top-[100px] inline-flex w-[832.01px] items-center justify-center pb-10">
-      {/* contenedor datos de solicitante  */}
-      <article className="relative h-[165px] w-[832.01px]">
-        <p className="lightText titleFont absolute left-[95px] top-0 text-xl font-semibold">Datos del Solicitante</p>
-        <article className="absolute left-[108px] top-[25px] inline-flex h-[38px] w-[173px] flex-col items-start justify-start">
-          <p className="lightText titleFont self-stretch">Nombre y Apellidos</p>
-          <p className="lightText titleFont self-stretch">data.sender.first_name</p>
-        </article>
+import { TransactionTypeSingle } from '@/types/transactions/transactionsType';
+import React from 'react';
 
-        <article className="absolute left-[111px] top-[74px] inline-flex h-[38px] w-[159px] flex-col items-start justify-start">
-          <p className="lightText titleFont self-stretch">Correo Electronico</p>
-          <p className="lightText titleFont self-stretch">data.sender.email</p>
-        </article>
+interface DetailTransProps {
+  isLoading: boolean;
+  transaction: TransactionTypeSingle;
+}
 
-        <article className="absolute left-[86px] top-[70px] h-[0px] w-[217.01px] border border-[#979797]"></article>
-        <article className="absolute left-[86px] top-[120px] h-[0px] w-[217.01px] border border-[#979797]"></article>
-        <article className="absolute left-[115px] top-[120px] inline-flex h-[39px] w-[159px] flex-col items-start justify-start">
-          <p className="lightText titleFont self-stretch text-base font-normal">N° Telefonico</p>
-          <p className="titleFont titleFont self-stretch text-base font-normal">data.sender.phone_number</p>
-        </article>
-        {/* esto se vuelve a repetir mas abajo en la solicitud 
-                hay un componente llamado  datoDestinatario.tsx ahi esta la segunda parte */}
-        <p className="lightText titleFont absolute left-[352px] top-0 text-xl font-semibold">Datos del Destinatario</p>
-        <article className="absolute left-[347px] top-[28px] inline-flex h-[98px] w-[228px] flex-col items-start justify-start gap-px">
-          <p className="lightText titleFont self-stretch text-base font-normal">Direccion USDT</p>
-          <p className="titleFont titleFont self-stretch text-base font-normal">{/* {data.receiver.first_name} */}</p>
+const DetallesTransaccion: React.FC<DetailTransProps> = ({ transaction, isLoading }) => {
+  const { sender, receiver, payment_method, amounts, proof_of_payment } = transaction.transaction;
 
-          <article className="h-[0px] w-[217.01px] border border-[#979797]"></article>
-          <article className="flex h-[38px] flex-col items-start justify-start">
-            <p className="lightText titleFont self-stretch text-base font-normal">RED</p>
-            <p className="lightText titleFont w-[228px] text-base font-light">TRON (TRC-20)</p>
-          </article>
-        </article>
-        <article className="absolute left-[615px] top-0 inline-flex h-[165px] w-[217.01px] flex-col items-center justify-start gap-[3px]">
-          <article className="flex h-9 flex-col items-end justify-start">
-            <p className="lightText titleFont self-stretch text-xl font-semibold">Datos del Pago</p>
-            <p className="lightText titleFont self-stretch text-right text-[10px] font-normal">BILLETERA/MONEDA</p>
-          </article>
-          <article className="flex h-[38px] flex-col items-start justify-start">
-            <p className="lightText titleFont self-stretch text-base font-normal">Monto a Transferir</p>
-            <article className="inline-flex items-center justify-end gap-1">
-              <p className="lightText titleFont text-base font-normal">450</p>
-              <p className="lightText titleFont text-base font-normal">/</p>
-              <article className="flex w-[71px] items-center justify-center">
-                <p className="lightText titleFont text-base font-normal">Payoneer</p>
-              </article>
-              <p className="lightText titleFont text-base font-normal">/</p>
-              <article className="flex h-[19px] w-8 items-center justify-center">
-                <p className="lightText titleFont text-base font-normal">EUR</p>
-              </article>
-            </article>
-          </article>
-          <article className="mt-1 h-[0px] w-[217.01px] border border-[#979797]"></article>
-          <article className="flex h-[38px] flex-col items-start justify-start">
-            <p className="lightText titleFont self-stretch text-base font-normal">Monto a Recibir</p>
-            <article className="inline-flex items-center justify-start gap-0.5">
-              <p className="lightText titleFont text-base font-normal">387</p>
-              <article className="lightText titleFont text-base font-normal">/</article>
-              <article className="flex h-[19px] w-11 items-center justify-center">
-                <p className="lightText titleFont text-base font-normal">USDT</p>
-              </article>
-              <p className="lightText titleFont text-base font-normal">/</p>
-              <article className="flex h-[19px] w-11 items-center justify-center">
-                <p className="lightText titleFont text-base font-normal">USDT</p>
-              </article>
-            </article>
-          </article>
-          <article className="mt-1 h-[0px] self-stretch border border-[#979797]"></article>
-          <article className="flex h-[38px] flex-col items-start justify-start">
-            <p className="lightText titleFont self-stretch text-base font-normal">Link del Comprobante</p>
-            <p className="titleFont self-stretch text-base font-normal text-[#012a8d]">sdrg897ashf98sdfgn98......</p>
-          </article>
-        </article>
-        <article className="absolute left-0 top-0 h-10 w-10 overflow-hidden" />
-      </article>
+  const renderData = (label: string, text: string, text2?: string, text3?: string, key?: number) => (
+    <article key={key || 0} className="flex flex-col">
+      <p>{label}</p>
+      <p>
+        {text} {text2} {text3}
+      </p>
     </article>
   );
-}
+
+  const getReceiverLabels = () => {
+    const walletType = payment_method.receiver.value;
+
+    switch (walletType) {
+      case 'Wise':
+        return [
+          { label: 'Nombre y Apellidos', value: `${receiver.first_name} ${receiver.last_name}` },
+          { label: 'Email a realizar el pago', value: payment_method.receiver.details.sender_method_value },
+        ];
+      case 'Thether':
+        return [
+          { label: 'Dirección USDT', value: payment_method.receiver.details.sender_method_value },
+          { label: 'RED', value: payment_method.receiver.details.bank_name },
+        ];
+      case 'ars':
+        return [
+          { label: 'CBU', value: payment_method.receiver.details.sender_method_value },
+          { label: 'Banco', value: payment_method.receiver.details.bank_name },
+          { label: 'DNI', value: payment_method.receiver.details.document_value },
+        ];
+      default:
+        return [
+          { label: 'Método de pago', value: walletType },
+          { label: 'Detalle', value: payment_method.receiver.details.sender_method_value },
+        ];
+    }
+  };
+
+  if (!isLoading)
+    return (
+      <section className="flex w-[100%] flex-row justify-between gap-5 font-textFont">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <g clip-path="url(#clip0_3326_34388)">
+            <path
+              d="M27.5 17.5C27.5 21.65 24.15 25 20 25C15.85 25 12.5 21.65 12.5 17.5C12.5 13.35 15.85 10 20 10C24.15 10 27.5 13.35 27.5 17.5Z"
+              fill="black"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M40 20C40 31.05 31.05 40 20 40C8.95 40 0 31.05 0 20C0 8.95 8.95 0 20 0C31.05 0 40 8.95 40 20ZM10 34.375C10.4 33.71 14.275 27.5 19.975 27.5C25.65 27.5 29.55 33.725 29.95 34.375C32.2747 32.7675 34.1741 30.6193 35.4849 28.1153C36.7957 25.6113 37.4786 22.8264 37.475 20C37.475 10.325 29.65 2.5 19.975 2.5C10.3 2.5 2.475 10.325 2.475 20C2.475 25.95 5.45 31.225 10 34.375Z"
+              fill="black"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_3326_34388">
+              <rect width="40" height="40" fill="white" />
+            </clipPath>
+          </defs>
+        </svg>
+        <article className="flex flex-col divide-y-2">
+          <h3 className="text-xl font-semibold">Datos del Solicitante</h3>
+          {renderData('Nombre y Apellido', sender?.first_name, sender?.last_name)}
+          {renderData('Email', sender?.email)}
+        </article>
+        <article className="flex flex-col divide-y-2">
+          <h3 className="text-xl font-semibold">Datos del Destinatario</h3>
+          {getReceiverLabels().map((item, index) => renderData(item.label, item.value))}
+        </article>
+        <article className="flex flex-col divide-y-2">
+          <h3 className="text-xl font-semibold">Datos del Pago</h3>
+          {renderData('Monto a Transferir', amounts?.sent.amount, payment_method?.sender.value, amounts?.sent.currency)}
+          {renderData(
+            'Monto a recibir',
+            amounts?.received.amount,
+            payment_method?.receiver.value,
+            amounts?.received.currency,
+          )}
+          {renderData('Link del comprobante', proof_of_payment.img_transaction.substring(0, 16).concat('....'))}
+        </article>
+      </section>
+    );
+};
+
+export default DetallesTransaccion;
