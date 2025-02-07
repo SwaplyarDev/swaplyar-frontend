@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { CountryOption, FieldError, SelectCodeCountryProps } from '@/types/request/request';
 import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
-const NEXT_PUBLIC_REST_COUNTRIES_API_URL = process.env.NEXT_PUBLIC_REST_COUNTRIES_API_URL;
 
 const SelectCountry: React.FC<SelectCodeCountryProps> = ({
   selectedCodeCountry,

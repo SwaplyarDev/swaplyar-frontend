@@ -37,7 +37,7 @@ const StepTwoBank: React.FC<StepTwoBankProps> = ({
     setTaxIdentificationType(type);
   }, [taxIdentificationValue, methodValue]);
   return (
-    <div className="mx-0 grid grid-cols-1 gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:grid-cols-2 sm-phone:gap-x-8 sm-phone:gap-y-4">
+    <div className="mx-0 grid grid-cols-1 gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:grid-cols-2 sm-phone:gap-x-8 sm-phone:gap-y-2">
       <InputSteps
         label="Nombre"
         name="receiver_first_name"
@@ -134,7 +134,7 @@ const StepTwoBank: React.FC<StepTwoBankProps> = ({
           required: 'El RE-ENTER CBU/CVU/ALIAS es obligatorio',
           validate: (value) => {
             const originalValue = getValues('transfer_identification');
-            return value === originalValue || 'Debe coincidir con el CBU/CVU/ALIAS ingresado anteriormente';
+            return value === originalValue || 'Debe coincidir con el CBU/CVU/ALIAS';
           },
         }}
         error={errors.re_transfer_identification ? (errors.re_transfer_identification as FieldError) : undefined}
