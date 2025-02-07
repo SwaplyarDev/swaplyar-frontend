@@ -93,7 +93,7 @@ function AccordionSection({ title, links }: { title: string; links: FooterLinkPr
 
 export default function Footer() {
   return (
-    <footer className="rs-wrapper-v4 mx-auto w-full px-4 py-8 dark:bg-lightText md:px-8 lg:max-w-[1204px] lg:px-4">
+    <footer className="rs-wrapper-v4 mx-auto w-full px-4 py-8 md:px-8 lg:max-w-[1204px] lg:px-4">
       {/* Desktop View */}
       <div className="one-info-footer hidden w-full flex-col items-center gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 lg2:flex">
         <Section title="Regístrate y Disfruta de Beneficios" links={footerLinks.registro} align="start" />

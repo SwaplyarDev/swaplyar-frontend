@@ -20,7 +20,7 @@ export interface FormData {
 }
 
 export interface FormRequestCompleted {
-  rating: number;
+  stars_amount: number;
   message: string;
 }
 

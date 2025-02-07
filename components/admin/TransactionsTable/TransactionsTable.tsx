@@ -1,29 +1,36 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { getAllTransactions } from '@/actions/transactions/getAllTransactions';
 import SearchBarTable from './SearchBarTable/SearchBarTable';
 import StatusSection from './Status/StatusSection';
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import useQuestionStore from '@/store/useQuestion.store';
-import { TransactionType } from '@/types/transactions/transactionsType';
+import TransactionModal from '@/components/TransactionModal/transactionModal';
+import { TransactionTypeAll } from '@/types/transactions/transactionsTypeAll';
 
 const TransactionsTable = () => {
   const { currentPage, setCurrentPage } = useQuestionStore();
   const [isLoading, setIsLoading] = useState(false);
-  const [stateTrans, setStateTrans] = useState<TransactionType[]>([]);
-  const [filteredTransactions, setFilteredTransactions] = useState<TransactionType[]>([]);
+  const [modal, setModal] = useState<boolean>(false);
+  const [transId, setTransId] = useState<string>('');
+  const [stateTrans, setStateTrans] = useState<TransactionTypeAll[]>([]);
+  const [filteredTransactions, setFilteredTransactions] = useState<TransactionTypeAll[]>([]);
   const itemsPerPage = 20;
 
   useEffect(() => {
     const fetchTransactions = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch('https://apiswaplyar.vercel.app/api/v1/transactions');
-        if (!response.ok) throw new Error('Failed to fetch transactions');
-
-        const data: TransactionType[] = await response.json();
-        setFilteredTransactions(data);
+        const trans = await getAllTransactions();
+        if (trans) {
+          setStateTrans(trans);
+          setFilteredTransactions(trans);
+        } else {
+          setStateTrans([]);
+          setFilteredTransactions([]);
+        }
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching transactions:', error);
       } finally {
         setIsLoading(false);
       }
@@ -31,6 +38,11 @@ const TransactionsTable = () => {
 
     fetchTransactions();
   }, []);
+
+  const handleModal = (id: string) => {
+    setTransId(id);
+    setModal(!modal);
+  };
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
@@ -50,8 +62,9 @@ const TransactionsTable = () => {
   const indexOfLastItem = indexOfFirstItem + itemsPerPage;
   const currentTransactions = filteredTransactions.slice(indexOfFirstItem, indexOfLastItem);
 
-  const renderTr = (item: any, index: number, item2?: any) => (
+  const renderTr = (handler: any, item: string, index: number, id: string, item2?: string) => (
     <td
+      onClick={() => handler(id)}
       className={`border border-white ${index % 2 === 0 ? 'bg-[#B1BFDF] dark:bg-dark-blue' : ''} px-4 dark:border-lightText`}
     >
       {item} {item2}
@@ -87,17 +100,49 @@ const TransactionsTable = () => {
           </thead>
           <tbody>
             {currentTransactions.length > 0 ? (
-              currentTransactions.map((transaction: TransactionType, index: number) => (
+              currentTransactions.map((transaction: TransactionTypeAll, index: number) => (
                 <tr key={index}>
                   <td className="bg-transparent pl-3">
                     <span className={`flex h-5 w-5 rounded-full ${getStatusColor(transaction.status)}`}></span>
                   </td>
-                  {renderTr(new Date(transaction.transaction.created_at).toLocaleDateString(), index)}
-                  {renderTr(transaction.transaction.transaction_id, index)}
-                  {renderTr(transaction.sender.first_name, index, transaction.sender.last_name)}
-                  {renderTr(transaction.payment_method.sender.value, index)}
-                  {renderTr(transaction.receiver.first_name, index, transaction.receiver.last_name)}
-                  {renderTr(transaction.payment_method.receiver.value, index)}
+                  {renderTr(
+                    handleModal,
+                    new Date(transaction.transaction.created_at).toLocaleDateString(),
+                    index,
+                    transaction.transaction.transaction_id,
+                  )}
+                  {renderTr(
+                    handleModal,
+                    transaction.transaction.transaction_id,
+                    index,
+                    transaction.transaction.transaction_id,
+                  )}
+                  {renderTr(
+                    handleModal,
+                    transaction.sender.first_name,
+                    index,
+                    transaction.transaction.transaction_id,
+                    transaction.sender.last_name,
+                  )}
+                  {renderTr(
+                    handleModal,
+                    transaction.payment_method.sender.value,
+                    index,
+                    transaction.transaction.transaction_id,
+                  )}
+                  {renderTr(
+                    handleModal,
+                    transaction.receiver.first_name,
+                    index,
+                    transaction.transaction.transaction_id,
+                    transaction.receiver.last_name,
+                  )}
+                  {renderTr(
+                    handleModal,
+                    transaction.payment_method.receiver.value,
+                    index,
+                    transaction.transaction.transaction_id,
+                  )}
                 </tr>
               ))
             ) : (
@@ -111,6 +156,7 @@ const TransactionsTable = () => {
         </table>
       </div>
       <PaginationButtons totalPages={totalPages} currentPage={currentPage} isLoading={isLoading} />
+      <TransactionModal modal={modal} setModal={setModal} transId={transId} />
     </main>
   );
 };

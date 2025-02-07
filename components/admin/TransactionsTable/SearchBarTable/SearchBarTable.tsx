@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { TransactionType } from '@/types/transactions/transactionsType';
+import { TransactionTypeAll } from '@/types/transactions/transactionsTypeAll';
 
 interface SearchBarProps {
-  stateTrans: TransactionType[];
-  setFilteredTransactions: (arg: TransactionType[]) => void;
+  stateTrans: TransactionTypeAll[];
+  setFilteredTransactions: (arg: TransactionTypeAll[]) => void;
   setCurrentPage: (arg: number) => void;
 }
 

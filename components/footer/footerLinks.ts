@@ -26,7 +26,7 @@ export const footerLinks = {
   ] as FooterLink[],
   atencion: [
     { href: '/info/help-center', label: 'Centro de Ayuda' },
-    { href: '/info/about-us', label: 'Preguntas y Respuestas' },
+    { href: '/info/about-us', label: 'Preguntas Frecuentes' },
     { href: '/maintenance', label: 'SwaplyAr Blog' },
   ] as FooterLink[],
   social: [
