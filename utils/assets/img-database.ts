@@ -115,29 +115,6 @@ export const Porqueelegirnos = '/images/porqueelegirnos.png';
 export const LideresenCambio = '/images/lideresencambio.png';
 export const SeguridadySatisfaccion = '/images/seguridadysatisfaccion.png';
 
-/**transaction-calculator**/
-export const PaypalImg = '/images/32.png';
-export const PaypalDarkImg = '/images/31.png';
-
-export const PayoneerUsdImg = '/images/24.png';
-export const PayoneerUsdDarkImg = '/images/23.png';
-export const PayoneerEurImg = '/images/26.png';
-export const PayoneerEurDarkImg = '/images/25.png';
-
-export const BankImg = '/images/22.png';
-export const BankDarkImg = '/images/21.png';
-
-export const WiseUsdImg = '/images/28.png';
-export const WiseUsdDarkImg = '/images/27.png';
-export const WiseEurImg = '/images/30.png';
-export const WiseEurDarkImg = '/images/29.png';
-
-export const TetherImg = '/images/34.png';
-export const TetherDarkImg = '/images/33.png';
-
-export const PixImg = '/images/36.png';
-export const PixDarkImg = '/images/35.png';
-
 /**404**/
 export const Error_404_clear = '/images/clear-404.png';
 export const Error_404_dark = '/images/dark-404.png';
@@ -174,7 +151,31 @@ export const regretsPhone = '/images/regretPhone.png';
 export const swaplyArAvatar = '/images/swaplyArAvatar.png';
 
 /**POPUP**/
+
 export const swaplyarAvatarpopup = '/images/favicon-light.png';
 export const strokepopup = '/images/Stroke.svg';
 export const clipopup = '/images/clip.svg';
 export const quill_link = '/images/quill_link-out.svg';
+
+/**transaction-calculator**/
+export const TransLightImg = '/images/TransLight.png';
+export const TransDarkImg = '/images/TransDark.png';
+
+export const PaypalLightImg = '/images/PaypalLight.png';
+export const PaypalDarkImg = '/images/PaypalDark.png';
+
+export const PayoneerUsdImg = '/images/PayoUsdLight.png';
+export const PayoneerUsdDarkImg = '/images/PayoUsdDark.png';
+export const PayoneerEurImg = '/images/PayoEurLight.png';
+export const PayoneerEurDarkImg = '/images/PayoEurDark.png';
+
+export const WiseEurImg = '/images/WiseEurLight.png';
+export const WiseEurDarkImg = '/images/WiseEurDark.png';
+export const WiseUsdImg = '/images/WiseUsdLight.png';
+export const WiseUsdDarkImg = '/images/WiseUsdDark.png';
+
+export const TetherImg = '/images/TetherLight.png';
+export const TetherDarkImg = '/images/TetherDark.png';
+
+export const PixImg = '/images/Pix1.png';
+export const PixDarkImg = '/images/Pix2.png';
