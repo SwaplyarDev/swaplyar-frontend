@@ -40,7 +40,7 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
 
   return (
     <>
-      <p className="text-left">
+      <p className="text-left font-textFont">
         tienes que realizar el pago de{' '}
         <span className="font-semibold underline">
           {selectedSendingSystem?.coinSign} {sendAmount}

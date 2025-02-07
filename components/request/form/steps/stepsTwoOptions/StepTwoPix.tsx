@@ -3,6 +3,7 @@ import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch } from 're
 import InputSteps from '@/components/inputSteps/InputSteps';
 import { FieldError } from 'react-hook-form';
 import InfoStep from '@/components/ui/InfoStep/InfoStep';
+import clsx from 'clsx';
 
 interface StepTwoPixProps {
   register: UseFormRegister<any>;
@@ -11,12 +12,19 @@ interface StepTwoPixProps {
   getValues: UseFormGetValues<any>;
   blockAll: boolean;
   formData: any;
+  completedSteps: boolean[];
 }
 
-const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, blockAll, formData, watch }) => {
+const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, blockAll, formData, watch, completedSteps }) => {
   return (
     <>
-      <div className="absolute right-5 top-[9rem] mini-phone:top-4">
+      <div
+        className={clsx(
+          completedSteps[1]
+            ? 'absolute right-[15px] top-[15px] sm:right-14'
+            : 'absolute right-5 top-[9rem] mini-phone:top-4',
+        )}
+      >
         <InfoStep option="pix" />
       </div>
       <div className="mx-0 grid grid-cols-1 gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:grid-cols-2 sm-phone:gap-x-8 sm-phone:gap-y-4">

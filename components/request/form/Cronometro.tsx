@@ -75,6 +75,7 @@ const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
           gap: '5px',
           color: isDark ? '#ebe7e0' : '#252526',
         }}
+        className="font-textFont"
       >
         Tiempo Restante <Image src={Reloj} alt="Reloj" width={18} height={18} className="ml-1" />
         <span className="w-[52px] text-center">{formatTiempo(segundos)}</span>

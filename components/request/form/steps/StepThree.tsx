@@ -8,6 +8,7 @@ import StepThreeGeneral from './stepsThreeOptions/StepThreeGeneral';
 import StepThreeTether from './stepsThreeOptions/StepThreeTether';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import InfoStep from '@/components/ui/InfoStep/InfoStep';
+import clsx from 'clsx';
 
 interface FormData {
   send_amount: string;
@@ -141,7 +142,11 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-      <div className="absolute right-5 top-4">
+      <div
+        className={clsx(
+          completedSteps[2] ? 'absolute right-14 top-[30px] xs-phone:top-[26px] sm:top-4' : 'absolute right-5 top-4',
+        )}
+      >
         <InfoStep />
       </div>
       {renderSelectedSystem()}
@@ -156,7 +161,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
             ) : (
               <button
                 type="submit"
-                className={`flex h-[46px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] font-titleFont text-base font-semibold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
+                className={`flex h-[46px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] font-titleFont text-base font-semibold text-white disabled:border-gray-400 disabled:bg-custom-blue-300 disabled:text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 dark:disabled:text-darkText ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
                 disabled={!isValid || blockAll || loading}
               >
                 Siguiente
@@ -164,7 +169,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
             )
           ) : (
             <button
-              className="flex items-center justify-center gap-1 text-base text-lightText underline dark:text-darkText"
+              className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
               type="submit"
               disabled={blockAll}
             >
@@ -179,7 +184,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
         ) : (
           <button
             type="submit"
-            className={`flex h-[46px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] font-titleFont text-base font-semibold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
+            className={`flex h-[46px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] font-titleFont text-base font-semibold text-white disabled:border-gray-400 disabled:bg-custom-blue-300 disabled:text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 dark:disabled:text-darkText ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
             disabled={!isValid || blockAll || loading}
           >
             Siguiente

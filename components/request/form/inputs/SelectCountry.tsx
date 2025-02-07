@@ -20,51 +20,17 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
 
   useEffect(() => {
     const fetchCountries = async () => {
-      if (!NEXT_PUBLIC_REST_COUNTRIES_API_URL) {
-        console.error('Missing REST Countries API URL. Using default options.');
-        setCountryOptions(defaultCountryOptions);
+      setCountryOptions(defaultCountryOptions);
 
-        // Solo establecer el valor por defecto si no hay uno seleccionado
-        if (!selectedCodeCountry) {
-          const defaultOption = defaultCountryOptions.find((option) => option.callingCode === '+54');
-          setSelectedCodeCountry(defaultOption);
-        }
-        return;
+      if (!selectedCodeCountry) {
+        const defaultOption = defaultCountryOptions.find((option) => option.callingCode === '+54');
+        setSelectedCodeCountry(defaultOption);
       }
-      try {
-        const response = await fetch(NEXT_PUBLIC_REST_COUNTRIES_API_URL);
-        const countries = await response.json();
-        const options: CountryOption[] = countries.map((country: any) => {
-          const callingCode = country.idd?.root ? `${country.idd.root}${country.idd.suffixes?.[0] || ''}` : '';
-          return {
-            value: country.cca2,
-            label: `${callingCode ? callingCode : 'Sin código'} (${country.cca2})`,
-            callingCode,
-            country: country.name.common,
-          };
-        });
-
-        setCountryOptions(options);
-
-        // Si no hay país seleccionado, usar `+54`
-        if (!selectedCodeCountry) {
-          const defaultOption = options.find((option) => option.callingCode === '+54');
-          setSelectedCodeCountry(defaultOption);
-        }
-      } catch (error) {
-        console.error('Error fetching countries:', error, 'Using default options.');
-        setCountryOptions(defaultCountryOptions);
-
-        // Solo asignar `+54` si no hay país seleccionado
-        if (!selectedCodeCountry) {
-          const defaultOption = defaultCountryOptions.find((option) => option.callingCode === '+54');
-          setSelectedCodeCountry(defaultOption);
-        }
-      }
+      return;
     };
 
     fetchCountries();
-  }, [setSelectedCodeCountry]);
+  }, [selectedCodeCountry, setSelectedCodeCountry]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
