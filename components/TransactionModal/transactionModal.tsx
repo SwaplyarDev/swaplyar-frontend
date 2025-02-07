@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
 import getTransactionById from '@/actions/transactions/getTransactionById';
-import ConfirmarTransferencia from './componentesModal/botonesConfirmarTransferencia';
 import AprobarRechazar from './componentesModal/aprobarRechazar';
 import DetallesTransaccion from './componentesModal/detallesTransaccion';
 import MensajeCliente from './componentesModal/mensajeCliente';
