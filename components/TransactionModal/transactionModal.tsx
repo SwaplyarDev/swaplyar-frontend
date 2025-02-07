@@ -5,13 +5,13 @@ import ConfirmarTransferencia from './componentesModal/botonesConfirmarTransfere
 import AprobarRechazar from './componentesModal/aprobarRechazar';
 import DetallesTransaccion from './componentesModal/detallesTransaccion';
 import MensajeCliente from './componentesModal/mensajeCliente';
-import { useSession } from 'next-auth/react';
+import InfoStatus from './componentesModal/InfoStatus';
 import ImagenesTranferencia from './componentesModal/imagenestranferencia';
 import DiscrepanciaOperacion from './componentesModal/botonesDiscrepanciaOperacion';
 import TransferenciaRealizadaCliente from './componentesModal/botonesTransferenciaRealizadaCliente';
 import Image from 'next/image';
 import { TransactionTypeSingle, emptyTransaction } from '@/types/transactions/transactionsType';
-import { clipopup, quill_link } from '@/utils/assets/img-database';
+import { clipopup } from '@/utils/assets/img-database';
 import DatoDestinatario from './componentesModal/datoDestinatario';
 import Mensaje from './componentesModal/mensaje';
 
@@ -24,8 +24,6 @@ interface TransactionModalProps {
 const TransactionModal: React.FC<TransactionModalProps> = ({ modal, setModal, transId }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [trans, setTransaction] = useState<TransactionTypeSingle>(emptyTransaction);
-  const { data: session } = useSession();
-  const userName = session?.user.name;
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -48,19 +46,6 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ modal, setModal, tr
     fetchTransactions();
   }, [transId]);
 
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'pending':
-        return 'bg-[#000C29] outline-offset-2 outline outline-1 outline-[#012A8E]';
-      case 'rejected':
-        return 'bg-[#530000] outline-offset-2 outline outline-1 outline-[#CE1818]';
-      case 'accepted':
-        return 'bg-[#002C00] outline-offset-2 outline outline-1 outline-[#18CE18]';
-      default:
-        return 'bg-gray-500';
-    }
-  };
-
   return (
     <section
       onClick={() => setModal(!modal)}
@@ -70,23 +55,10 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ modal, setModal, tr
         onClick={(e) => e.stopPropagation()}
         className={`my-28 flex max-h-[48rem] flex-col gap-8 overflow-y-auto rounded-lg bg-white p-6 font-textFont shadow-lg transition-all duration-300 ${modal ? 'opacity-100' : 'translate-x-[30vw] opacity-0'}`}
       >
-        <article className="flex flex-row justify-between">
-          <div
-            className={`flex rounded-full px-4 py-2 font-titleFont text-2xl text-darkText ${getStatusColor(trans.transaction?.status)}`}
-          >
-            {trans.transaction?.status}{' '}
-          </div>
-          <h1 className="lightText font-sans text-4xl">Solicitud #{transId}</h1>
-          <div className="flex flex-col items-end">
-            <p className="text-xs">{new Date(trans.transaction.transaction.created_at).toLocaleDateString()}</p>
-            <p className="text-base">{userName}</p>
-          </div>
-        </article>
-
+        <InfoStatus trans={trans} transId={transId} />
         <DetallesTransaccion transaction={trans} isLoading={isLoading} />
+        <ImagenesTranferencia trans={trans} />
 
-        <ImagenesTranferencia />
-        <ConfirmarTransferencia />
         <AprobarRechazar />
         <DiscrepanciaOperacion />
         <h2 className="lightText text-2xl font-semibold">Información para realizar el pago al cliente</h2>

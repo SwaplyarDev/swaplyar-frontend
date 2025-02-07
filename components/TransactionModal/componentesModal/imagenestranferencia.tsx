@@ -1,41 +1,46 @@
-import { PixDarkImg, strokepopup, swaplyarAvatarpopup } from '@/utils/assets/img-database';
-import { BankDarkImg, BankImg, PayoneerUsdDarkImg } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
+import { MockImagesTransLight } from '@/data/mockImagesTransaction';
+import { TransactionTypeSingle } from '@/types/transactions/transactionsType';
+import { strokepopup, swaplyarAvatarpopup } from '@/utils/assets/img-database';
 
-export default function ImagenesTranferencia() {
+interface TransactionProps {
+  trans: TransactionTypeSingle;
+}
+
+const ImagenesTranferencia: React.FC<TransactionProps> = ({ trans }) => {
+  const { payment_method } = trans.transaction;
+  const senderImg = MockImagesTransLight.find((img) => img.name === payment_method.sender.value)?.image;
+
+  const receiverImg = MockImagesTransLight.find((img) => img.name === payment_method.receiver.value)?.image;
+
   return (
-    <article className="inline-flex items-center justify-start gap-[98.25px] overflow-hidden rounded-[121px] border-2 border-[#012a8d] pb-[9px] pl-3.5 pr-[171.25px] pt-2">
-      <article className="inline-flex h-[60px] w-[60px] items-center justify-center">
-        <Image className="h-[60px] w-[60px]" src={swaplyarAvatarpopup} alt="avatar" width={200} height={200} />
+    <article className="flex min-h-24 flex-row items-center justify-evenly overflow-hidden rounded-full border-2 border-[#012a8d] p-3">
+      <article className="flex h-16 w-16 items-center justify-center">
+        <Image className="h-full w-full" src={swaplyarAvatarpopup} alt="avatar" width={200} height={200} />
       </article>
-      <article className="inline-flex items-center justify-center gap-4 self-stretch">
-        <article className="flex h-[70px] w-[200px] items-center justify-center">
-          <Image
-            className="h-[70px] w-[200px]"
-            alt="imagen1"
-            src={BankImg}
-            width={200}
-            height={70}
-            unoptimized={true}
-          />
+      <article className="flex items-center gap-4">
+        <article className="flex h-20 w-48 items-center justify-center">
+          {senderImg ? (
+            <Image className="h-full w-full" alt="sender" src={senderImg} width={200} height={70} unoptimized />
+          ) : (
+            <p className="text-red-500">No encontrada</p>
+          )}
         </article>
-        <article className="flex w-[10%] flex-row items-center justify-center">
-          <Image className="ml-3 h-[16px] w-[16px]" alt="imagen1" src={strokepopup} width={19.167} height={10.833} />
-          <Image className="h-[16px] w-[16px]" alt="imagen1" src={strokepopup} width={19.167} height={10.833} />
-          <Image className="mr-3 h-[16px] w-[16px]" alt="imagen1" src={strokepopup} width={19.167} height={10.833} />
+        <article className="flex flex-row items-center justify-center gap-2">
+          <Image className="h-4 w-4" alt="flecha" src={strokepopup} width={19.167} height={10.833} />
+          <Image className="h-4 w-4" alt="flecha" src={strokepopup} width={19.167} height={10.833} />
+          <Image className="h-4 w-4" alt="flecha" src={strokepopup} width={19.167} height={10.833} />
         </article>
-        <article className="flex items-center justify-start gap-0.5" />
-        <article className="flex h-[70px] w-[200px] items-center justify-center">
-          <Image
-            className="h-[70px] w-[200px]"
-            alt="imagen1"
-            src={PixDarkImg}
-            width={200}
-            height={70}
-            unoptimized={true}
-          />
+        <article className="flex h-20 w-48 items-center justify-center">
+          {receiverImg ? (
+            <Image className="h-full w-full" alt="receiver" src={receiverImg} width={200} height={70} unoptimized />
+          ) : (
+            <p className="text-red-500">No encontrada</p>
+          )}
         </article>
       </article>
     </article>
   );
-}
+};
+
+export default ImagenesTranferencia;
