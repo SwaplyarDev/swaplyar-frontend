@@ -278,14 +278,14 @@ export function TopMenu() {
                           Salir
                         </button>
                       ) : (
-                        <>
+                        <div className="flex flex-col items-center gap-3">
                           <div className="flex flex-col md:hidden">
                             <LogInButton />
                           </div>
-                          <div className="flex flex-col">
+                          <div className="flex h-[60px] flex-col">
                             <RegisterButton />
                           </div>
-                        </>
+                        </div>
                       )}
                     </Sidebar.ItemGroup>
                   </Sidebar.Items>
