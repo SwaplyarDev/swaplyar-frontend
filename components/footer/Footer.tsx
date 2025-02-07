@@ -80,7 +80,9 @@ function AccordionSection({ title, links }: { title: string; links: FooterLinkPr
           },
         }}
       >
-        <h4 className="text-xl font-bold text-lightText dark:text-darkText">{title}</h4>
+        <h4 className="text-xl font-light text-lightText transition-all group-hover:font-semibold group-[&.Mui-expanded]:font-semibold dark:text-darkText">
+          {title}
+        </h4>
       </AccordionSummary>
       <AccordionDetails className="flex flex-col items-center text-center">
         {links.map(({ href, label, view }) => (
@@ -93,7 +95,7 @@ function AccordionSection({ title, links }: { title: string; links: FooterLinkPr
 
 export default function Footer() {
   return (
-    <footer className="rs-wrapper-v4 mx-auto w-full px-4 py-8 dark:bg-lightText md:px-8 lg:max-w-[1204px] lg:px-4">
+    <footer className="rs-wrapper-v4 mx-auto w-full px-4 py-8 md:px-8 lg:max-w-[1204px] lg:px-4">
       {/* Desktop View */}
       <div className="one-info-footer hidden w-full flex-col items-center gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 lg2:flex">
         <Section title="Regístrate y Disfruta de Beneficios" links={footerLinks.registro} align="start" />
@@ -102,7 +104,7 @@ export default function Footer() {
       </div>
 
       {/* Mobile View */}
-      <div className="flex flex-col lg2:hidden">
+      <div className="flex flex-col gap-5 lg2:hidden">
         <AccordionSection title="Regístrate y Disfruta de Beneficios" links={footerLinks.registro} />
         <AccordionSection title="Normativa" links={footerLinks.normativa} />
         <AccordionSection title="Atención al Cliente" links={footerLinks.atencion} />

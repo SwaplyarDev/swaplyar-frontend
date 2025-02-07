@@ -1,17 +1,31 @@
 // /app/layout.tsx
 
+/**
+ * Configuración del layout principal de la aplicación en Next.js 14.
+ *
+ * Este archivo define la estructura global de la aplicación, incluyendo el HTML, head, y body.
+ * También integra varios proveedores de contexto, herramientas de análisis y seguimiento,
+ * y componentes globales como el menú de navegación y el pie de página.
+ */
+
 import type { Metadata } from 'next';
 import Footer from '@/components/footer/Footer';
 import { TopMenu } from '@/components/ui/top-menu/TopMenu';
 import ThemeProvider from '../components/ui/theme-Provider/themeProvider';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import { GoogleTagManager } from '@next/third-parties/google';
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
 import { roboto } from '@/config/fonts/fonts';
 import { MarginProvider } from '@/context/MarginProvider';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
+import Script from 'next/script';
 
+/**
+ * Metadatos globales de la aplicación.
+ *
+ * Define el título, la descripción y los íconos del sitio, optimizando su visibilidad en buscadores y en dispositivos con diferentes temas.
+ */
 export const metadata: Metadata = {
   title: 'SwaplyAr | Pasar dólares de PayPal a pesos argentinos',
   description:
@@ -32,6 +46,12 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * RootLayout - Layout global de la aplicación.
+ *
+ * @param children - Contenido de la página renderizada.
+ * @returns Estructura principal del HTML y elementos globales.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -39,27 +59,39 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <GoogleTagManager gtmId="GTM-W2VLHMCW" />
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                const theme = localStorage.getItem('theme');
-                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                const isDark = theme === 'dark' || (!theme && systemPrefersDark);
-                isDark ? document.documentElement.classList.add('dark') : document.documentElement.classList.remove('dark');
-              })();
-            `,
-          }}
-        />
+        {/* Integración de Google Tag Manager */}
+        <GoogleTagManager gtmId="GTM-W2VLHMCW" />
+        {/* Verificación de propiedad en Google Search Console */}
+        <meta name="google-site-verification" content="bZu9PkFbaRVlAaT4NKUHZPD0o17JxMv08rBT-gzfpC0" />
+
+        {/* Script para establecer el tema de la aplicación según las preferencias del usuario o del sistema */}
+        <Script id="theme-script" strategy="beforeInteractive">
+          {`
+            (function() {
+              const theme = localStorage.getItem('theme');
+              const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+              const isDark = theme === 'dark' || (!theme && systemPrefersDark);
+              if (isDark) {
+                document.documentElement.classList.add('dark');
+              } else {
+                document.documentElement.classList.remove('dark');
+              }
+            })();
+          `}
+        </Script>
       </head>
       <body className={`bg-white text-lightText dark:bg-lightText dark:text-darkText`}>
+        {/* Proveedores de contexto y herramientas de análisis */}
         <SessionProvider>
+          {/* Integración de Google Analytics */}
+          <GoogleAnalytics gaId="G-F7NZPRXT31" />
+          {/* {process.env.NODE_ENV === 'production' && <GoogleAnalytics gaId="G-F7NZPRXT31" />} */}
           <ThemeProvider>
             <MarginProvider>
               <SpeedInsights />
               <Analytics />
+              {/* Componentes globales de UI */}
               <TopMenu />
               {children}
               <Footer />

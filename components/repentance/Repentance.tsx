@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import Form from './form/Form';
 import { regretsPc } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import { createRegret } from '@/actions/repentance/repentanceForm.action';
 import { FormRepentance } from '@/types/repentance/repentance';
@@ -14,9 +13,7 @@ import AlertError from './Alerts/AlertError';
 import AlertProcess from './Alerts/AlertProcess';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { regretsPhone } from '@/utils/assets/img-database';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
-import clsx from 'clsx';
+import ButtonBack from '../ui/ButtonBack/ButtonBack';
 
 interface Response {
   ok: boolean;
@@ -109,23 +106,10 @@ const RepentanceForm = () => {
           </div>
 
           <div
-            className={`relative mt-10 flex h-full w-full flex-col justify-center border-0 lg2:mr-3 lg2:flex-1 lg2:after:absolute lg2:after:-left-3 lg2:after:top-5 lg2:after:h-[75%] lg2:after:w-[1px] lg2:after:bg-buttonsLigth lg2:after:content-[''] ${isDark ? 'lg2:after:bg-darkText' : ''}`}
+            className={`relative mt-10 flex h-full w-full flex-col items-center justify-center gap-4 border-0 lg2:mr-3 lg2:flex-1 lg2:after:absolute lg2:after:-left-3 lg2:after:top-5 lg2:after:h-[75%] lg2:after:w-[1px] lg2:after:bg-buttonsLigth lg2:after:content-[''] ${isDark ? 'lg2:after:bg-darkText' : ''}`}
           >
             <Form onSubmit={handleRepentanceFormSubmission}></Form>
-            <div className="mt-[18px] flex justify-center text-center">
-              <Link
-                className={clsx(
-                  'mb-2 flex h-[46px] w-[100px] items-center justify-center gap-2 rounded-[50px] border px-1 font-textFont text-xl font-light',
-                  isDark
-                    ? 'buttonSecondDark border-darkText text-darkText'
-                    : 'buttonSecond border-buttonsLigth text-buttonsLigth',
-                )}
-                href={'/info/help-center'}
-              >
-                <FontAwesomeIcon icon={faArrowLeftLong} />
-                Volver
-              </Link>
-            </div>
+            <ButtonBack route="/info/help-center" isDark={isDark} />
           </div>
         </div>
       </div>
