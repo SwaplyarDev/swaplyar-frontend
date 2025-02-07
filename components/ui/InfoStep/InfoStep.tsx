@@ -55,8 +55,8 @@ const InfoStep: FC<InfoStepProps> = ({ option }) => {
                 <div className="flex w-full flex-col items-center gap-2">
                   <svg xmlns="http://www.w3.org/2000/svg" width="50" height="49" viewBox="0 0 50 49" fill="none">
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
                       d="M25.1354 4.08398C36.4095 4.08398 45.5521 13.2265 45.5521 24.5006C45.5521 35.7747 36.4095 44.9174 25.1354 44.9174C13.8613 44.9174 4.71875 35.7747 4.71875 24.5006C4.71875 13.2265 13.8613 4.08398 25.1354 4.08398ZM29.817 16.9321L25.1354 21.6138L20.4539 16.9323L17.567 19.8192L22.2485 24.5006L17.567 29.1822L20.4539 32.0691L25.1354 27.3876L29.817 32.0691L32.7039 29.1822L28.0224 24.5006L32.7039 19.8191L29.817 16.9321Z"
                       fill="#CE1818"
                     />
@@ -91,9 +91,9 @@ const InfoStep: FC<InfoStepProps> = ({ option }) => {
                     <path
                       d="M30 10L10 30M10 10L30 30"
                       stroke={isDark ? '#ebe7e0' : '#252526'}
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                   </svg>
                 </button>,
@@ -103,7 +103,7 @@ const InfoStep: FC<InfoStepProps> = ({ option }) => {
           didOpen: () => {
             const htmlContainer = Swal.getHtmlContainer();
             if (htmlContainer) {
-              htmlContainer.classList.add('custom-container-payment'); // Agrega tu clase
+              htmlContainer.classList.add('custom-container-payment');
             }
           },
           willClose: () => {
@@ -115,12 +115,14 @@ const InfoStep: FC<InfoStepProps> = ({ option }) => {
       };
 
       showTooltip();
-    } else {
-      // Restaurar el padding cuando se cierra el tooltip
+    }
+
+    return () => {
       document.body.style.paddingRight = '0px';
       document.body.classList.remove('no-scroll');
-    }
-  }, [option, isDark, toggleTooltip]);
+    };
+  }, [option]); // No poner las dependencias que faltan
+
   useEffect(() => {
     if (isTooltipVisible) {
       // Guardar el ancho del scroll y aplicar no-scroll
