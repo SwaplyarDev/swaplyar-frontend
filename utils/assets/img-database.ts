@@ -172,3 +172,15 @@ export const regretsPhone = '/images/regretPhone.png';
 
 /** Avatar **/
 export const swaplyArAvatar = '/images/swaplyArAvatar.png';
+
+export const howToUse = '/images/howToUse.png';
+export const howToUseDark = '/images/howToUseDark.png';
+export const howToUse1 = '/images/howToUse1.png';
+export const howToUse2 = '/images/howToUse2.png';
+export const howToUse3 = '/images/howToUse3.png';
+export const howToUseDark1 = '/images/howToUseDark1.png';
+export const howToUseDark2 = '/images/howToUseDark2.png';
+export const howToUseDark3 = '/images/howToUseDark3.png';
+
+export const nube1 = '/images/nube1.svg';
+export const nube2 = '/images/nube2.svg';

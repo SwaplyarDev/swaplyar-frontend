@@ -21,7 +21,7 @@ export interface FormData {
 
 export interface FormRequestCompleted {
   stars_amount: number;
-  message: string;
+  transaction_id: string;
 }
 
 export interface OutputFormat {

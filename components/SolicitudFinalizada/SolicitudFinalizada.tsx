@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import Cloud from '../ui/Cloud/Cloud';
-import nube1 from '@/public/images/nube1.svg';
-import nube2 from '@/public/images/nube2.svg';
+import { nube1, nube2 } from '@/utils/assets/img-database';
 import { useForm } from 'react-hook-form';
 import clsx from 'clsx';
 import { FormRequestCompleted } from '@/types/repentance/repentance';
@@ -18,7 +17,7 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
   const params = useParams();
   const searchParams = useSearchParams();
 
-  const transactionId = params?.id;
+  const transactionId = Array.isArray(params.id) ? params.id[0] : params.id;
 
   const rawParams = decodeURIComponent(searchParams.toString());
 
@@ -36,7 +35,7 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
   const { register, handleSubmit, setValue, watch, reset } = useForm<FormRequestCompleted>({
     mode: 'onChange',
     defaultValues: {
-      message: '',
+      transaction_id: transactionId,
       stars_amount: 0,
     },
   });
@@ -44,16 +43,20 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
   const selectedRating = watch('stars_amount');
 
   const onSubmit = async (data: FormRequestCompleted) => {
-    const response = await fetch(`${API_URL}/v1/qualification`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ data }),
-    });
+    try {
+      const response = await fetch(`${API_URL}/v1/qualification`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...data, stars_amount: data.stars_amount.toString() }),
+      });
 
-    console.log(response);
-    console.log(data);
+      console.log(response);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
 
     reset();
   };
@@ -226,7 +229,7 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
         </div>
         <input type="hidden" {...register('stars_amount', { required: true })} />
 
-        <div className="max-h-[148px]">
+        {/* <div className="max-h-[148px]">
           <label className="font-textFont text-xs font-light">
             Mensaje
             <textarea
@@ -240,7 +243,7 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
               placeholder="Tu comentario es muy valioso para nosotros"
             />
           </label>
-        </div>
+        </div> */}
         <button
           type="submit"
           disabled={selectedRating === 0}

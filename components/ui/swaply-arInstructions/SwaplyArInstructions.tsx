@@ -1,6 +1,5 @@
 'use client';
-import howToUse from '@/public/images/howToUse.png';
-import howToUseDark from '@/public/images/howToUseDark.png';
+import { howToUse, howToUseDark } from '@/utils/assets/img-database';
 import clsx from 'clsx';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
 import Image from 'next/image';
@@ -51,6 +50,8 @@ export default function SwaplyArInstructions() {
             className="w-full max-w-[500px] flex-1"
             src={isDark ? howToUseDark : howToUse}
             alt="Imagen principal"
+            width={300}
+            height={300}
             priority
           />
         </section>
@@ -97,6 +98,8 @@ export default function SwaplyArInstructions() {
                   className="w-full max-w-[390px] flex-1"
                   src={isDark ? item.srcDark : item.src}
                   alt={item.title}
+                  width={300}
+                  height={300}
                   priority
                 />
                 <div className="flex flex-1 flex-col gap-4">
