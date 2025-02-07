@@ -18,6 +18,12 @@ export interface FormData {
   calling_code?: CountryOption;
   status: string;
 }
+
+export interface FormRequestCompleted {
+  stars_amount: number;
+  message: string;
+}
+
 export interface OutputFormat {
   transaction_id: string;
   last_name: string;

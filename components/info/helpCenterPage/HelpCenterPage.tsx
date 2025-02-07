@@ -34,7 +34,7 @@ const HelpCenterPage = () => {
                       'w-full border-t-[1px] text-center font-textFont text-[28px] transition-all duration-300',
                       isDark
                         ? 'border-darkText group-hover:underline'
-                        : 'border-buttonsLigth group-hover:text-buttonsLigth',
+                        : 'border-buttonsLigth group-hover:text-buttonsLigth group-hover:underline',
                     )}
                   >
                     {item.title}

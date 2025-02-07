@@ -11,6 +11,7 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
   setSelectedCodeCountry,
   errors,
   blockAll,
+  textColor,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const fieldName = 'calling_code';
@@ -48,7 +49,8 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
   return (
     <div ref={dropdownRef}>
       <button
-        className="flex items-center justify-between gap-1 rounded-lg bg-transparent py-2 pl-4 font-textFont text-lightText focus:outline-none"
+        // className="flex items-center justify-between gap-1 rounded-lg bg-transparent py-2 pl-4 font-textFont text-lightText focus:outline-none"
+        className={`flex w-[118px] items-center justify-between gap-1 rounded-lg bg-transparent py-2 pl-4 font-textFont text-${textColor[0]} dark:text-${textColor[1]} focus:outline-none`}
         onClick={() => setIsOpen(!isOpen)}
         type="button"
         disabled={selectedCodeCountry?.label === undefined || blockAll}

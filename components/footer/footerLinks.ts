@@ -23,12 +23,11 @@ export const footerLinks = {
     { href: '/info/warranty', label: 'Garantía' },
     { href: '/info/terms/terms-and-conditions', label: 'Términos y Condiciones' },
     { href: '/info/terms/sapr-terms-conditions', label: 'T&C Plus Rewards' },
-    { href: '/editRequest', label: 'SwaplyAr Solicitud' },
   ] as FooterLink[],
   atencion: [
     { href: '/info/help-center', label: 'Centro de Ayuda' },
-    { href: '/info/about-us', label: 'Preguntas y Respuestas' },
-    { href: '/blog', label: 'SwaplyAr Blog' },
+    { href: '/info/about-us', label: 'Preguntas Frecuentes' },
+    { href: '/maintenance', label: 'SwaplyAr Blog' },
   ] as FooterLink[],
   social: [
     { href: 'https://www.linkedin.com/company/swaplyar/', icon: faLinkedin, label: 'LinkedIn' },
