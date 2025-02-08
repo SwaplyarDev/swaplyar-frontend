@@ -226,8 +226,8 @@ const config: Config = {
       textShadow: {
         light: '4px 4px 10px rgba(0, 0, 0, 0.9)',
         dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',
-        customLight: '7px 3px 0px rgba(0, 0, 0, 0.25);',
-        customDark: '7px 3px 0px rgba(131, 131, 131, 0.25);',
+        customLight: '4px 4px 0px rgba(0, 0, 0, 0.25);',
+        customDark: '4px 4px 0px rgba(131, 131, 131, 0.25);',
       },
       animation: {
         rotate: 'rotate 5s cubic-bezier(0.4, 0, 0.2, 1)',

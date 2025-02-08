@@ -172,3 +172,11 @@ export const regretsPhone = '/images/regretPhone.png';
 
 /** Avatar **/
 export const swaplyArAvatar = '/images/swaplyArAvatar.png';
+
+/** Alertas **/
+export const alertaSirena = '/images/ant-design_alert-outlined-light.png';
+export const alertaSirenaDark = '/images/ant-design_alert-outlined.png';
+
+/** Comprobantes **/
+export const comprobanteBienHecho = '/images/comprobante_bien_hecho.png';
+export const comprobanteMalHecho = '/images/comprobante_mal_hecho.png';
