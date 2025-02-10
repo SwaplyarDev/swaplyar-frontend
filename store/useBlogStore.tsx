@@ -2,10 +2,12 @@ import { create } from 'zustand';
 
 interface Blog {
   blog_id: string;
+  sub_title: string;
   title: string;
   body: string;
   url_image: string;
   created_at: string;
+  ver: string;
   status: string;
 }
 interface BlogStore {

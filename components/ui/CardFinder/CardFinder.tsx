@@ -14,9 +14,11 @@ function CardFinder() {
         <BlogPostCard
           key={post.blog_id}
           blog_id={post.blog_id}
+          sub_title={post.sub_title}
           title={post.title}
           body={post.body}
           url_image={post.url_image}
+          ver={post.ver}
           created_at={post.created_at}
         />
       ))

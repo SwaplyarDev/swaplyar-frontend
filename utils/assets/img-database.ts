@@ -172,3 +172,6 @@ export const regretsPhone = '/images/regretPhone.png';
 
 /** Avatar **/
 export const swaplyArAvatar = '/images/swaplyArAvatar.png';
+
+/**Blog **/
+export const BlogImage1 = '/images/image-blog.png';

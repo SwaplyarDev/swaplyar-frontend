@@ -1,15 +1,20 @@
 export interface BlogPost {
+  sub_title: string;
   title: string;
   body: string;
   url_image: string;
   created_at: string;
+  ver: string;
   blog_id: string;
 }
 
 interface BlogPostCardProps {
+  blog_id: string;
+  sub_title: string;
   title: string;
   body: string;
   url_image: string;
+  ver: string;
   created_at: string;
 }
 
