@@ -1,5 +1,5 @@
+import { TransactionTypeAll } from '@/types/transactions/transactionsType';
 import { useState } from 'react';
-import { TransactionTypeAll } from '@/types/transactions/transactionsTypeAll';
 
 interface SearchBarProps {
   stateTrans: TransactionTypeAll[];

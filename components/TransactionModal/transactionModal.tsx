@@ -1,6 +1,5 @@
 'use client';
 import { useState, useEffect } from 'react';
-import getTransactionById from '@/actions/transactions/getTransactionById';
 import AprobarRechazar from './componentesModal/aprobarRechazar';
 import DetallesTransaccion from './componentesModal/detallesTransaccion';
 import MensajeCliente from './componentesModal/mensajeCliente';
@@ -13,6 +12,7 @@ import { TransactionTypeSingle, emptyTransaction } from '@/types/transactions/tr
 import { clipopup } from '@/utils/assets/img-database';
 import DatoDestinatario from './componentesModal/datoDestinatario';
 import Mensaje from './componentesModal/mensaje';
+import getTransactionById from '@/actions/transactions/transactions.action';
 
 interface TransactionModalProps {
   modal: boolean;
