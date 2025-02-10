@@ -1,15 +1,18 @@
 import React from 'react';
 import clsx from 'clsx';
-import { FieldErrors, UseFormGetValues, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch } from 'react-hook-form';
 import InputCopy from '../../inputs/InputCopy';
-import InputField from '@/components/ui/contact-form/InputField';
 import IconTron from '@/components/ui/IconsRed/IconTron';
 import Image from 'next/image';
 import { System } from '@/types/data';
+import InputSteps from '@/components/inputSteps/InputSteps';
+import { FieldError } from 'react-hook-form';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 interface StepThreeTetherProps {
   register: UseFormRegister<any>;
   errors: FieldErrors<any>;
+  watch: UseFormWatch<any>;
   getValues: UseFormGetValues<any>;
   blockAll: boolean;
   formData: any;
@@ -28,14 +31,14 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
   formData,
   sendAmount,
   selectedSendingSystem,
-  selectedReceivingSystem,
-  receiveAmount,
   handleChange,
   restRegister,
+  watch,
 }) => {
+  const { isDark } = useDarkTheme();
   return (
     <>
-      <p className="text-left">
+      <p className="text-left font-textFont">
         tienes que realizar el pago de{' '}
         <span className="font-semibold underline">
           {sendAmount} {selectedSendingSystem?.coin}
@@ -53,122 +56,124 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
       </p>
       <div className="mx-0 flex flex-col gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
         <div className="flex w-full flex-col gap-4">
-          <div className="flex flex-col">
-            <label
-              htmlFor="pay_usdt_direction"
-              className={clsx(
-                'ml-1 h-5 text-xs',
-                errors.pay_usdt_direction ? 'text-red-500' : 'text-lightText dark:text-darkText',
-              )}
-            >
-              Direccion USDT a pagar
-            </label>
-            <InputCopy
-              id="pay_usdt_direction"
-              type="text"
-              value={'TSgBPeFSb9TxJWyzDjDfuNqBktF898ZFUb'}
-              disabled={true}
-              placeholder=""
-              register={register('pay_usdt_direction', { required: true })}
-              error={errors.pay_usdt_direction && 'Este campo es obligatorio'}
-            />
-          </div>
-          <div className="flex flex-col">
-            <label
-              htmlFor="send_amount"
-              className={clsx(
-                'ml-1 h-5 text-xs',
-                errors.send_amount ? 'text-red-500' : 'text-lightText dark:text-darkText',
-              )}
-            >
-              Monto a pagar
-            </label>
-            <InputCopy
-              id="send_amount"
-              type="number"
-              value={`${selectedSendingSystem?.coinSign} ${sendAmount?.toString()}`}
-              disabled={true}
-              placeholder="Monto Enviar"
-              register={register('send_amount', { required: true })}
-              error={errors.send_amount && 'Este campo es obligatorio'}
-            />
-          </div>
-          <div className="flex flex-col">
-            <label
-              htmlFor="receive_amount"
-              className={clsx(
-                'ml-1 h-5 text-xs',
-                errors.receive_amount ? 'text-red-500' : 'text-lightText dark:text-darkText',
-              )}
-            >
-              Monto a Recibir
-            </label>
-            <InputField
-              id="receive_amount"
-              type="number"
-              value={`${selectedReceivingSystem?.coinSign} ${receiveAmount?.toString()}`}
-              disabled={true}
-              placeholder="Monto a Recibir"
-              register={register('receive_amount', { required: true })}
-              error={errors.receive_amount && 'Este campo es obligatorio'}
-            />
-          </div>
+          <InputCopy
+            id="pay_usdt_direction"
+            name="pay_usdt_direction"
+            label="Dirección USDT a pagar"
+            type="text"
+            value="TSgBPeFSb9TxJWyzDjDfuNqBktF898ZFUb"
+            disabled={true}
+            placeholder=""
+            register={register}
+            watch={watch}
+            rules={{ required: 'Este campo es obligatorio' }}
+            error={errors.pay_usdt_direction ? (errors.pay_usdt_direction as FieldError) : undefined}
+          />
+          <InputCopy
+            id="send_amount"
+            name="send_amount"
+            label="Monto a pagar"
+            type="number"
+            disabled={true}
+            placeholder="Monto Enviar"
+            register={register}
+            watch={watch}
+            rules={{ required: 'Este campo es obligatorio' }}
+            error={errors.send_amount ? (errors.send_amount as FieldError) : undefined}
+          />
+          <InputSteps
+            label="Monto a Recibir"
+            name="receive_amount"
+            id="receive_amount"
+            type="number"
+            placeholder="Monto a Recibir"
+            disabled={true}
+            register={register}
+            watch={watch}
+            rules={{
+              required: 'Este campo es obligatorio',
+            }}
+            error={errors.receive_amount ? (errors.receive_amount as FieldError) : undefined}
+            disabledWithoutMargin={true}
+          />
+
           <div className="flex flex-col">
             <label
               htmlFor="proof_of_payment"
               className={clsx(
-                'cursor-pointer',
-                errors.proof_of_payment ? 'text-red-500' : 'text-lightText dark:text-darkText',
+                'relative flex h-full cursor-pointer flex-col',
+                errors.proof_of_payment ? 'text-errorColor' : 'text-lightText dark:text-darkText',
               )}
             >
-              <p className="ml-1 h-5 text-xs">Comprobante con formato: PNG o JPG</p>
-              <div
+              <p
                 className={clsx(
-                  'flex w-full flex-col items-center gap-2 rounded border border-[#6B7280] bg-gray-200 px-5 py-2 dark:bg-lightText xs-phone:flex-row sm-phone:flex-col lg-tablet:h-[38px] lg-tablet:flex-row lg-tablet:items-center',
-                  errors.proof_of_payment ? 'border-red-500' : 'hover:border-blue-600 dark:hover:border-white',
+                  'font-textFont text-lightText dark:text-darkText',
+                  'mb-1 ml-2.5 text-sm transition-opacity duration-300',
                 )}
               >
-                <p className="w-full text-sm xs-phone:max-w-32 sm-phone:max-w-[inherit] lg-tablet:max-w-40 lg-tablet:text-base">
-                  Subir comprobante
+                Comprobante
+              </p>
+              <div
+                className={clsx(
+                  'group flex h-full w-full flex-col items-center justify-center gap-2.5 rounded-2xl border-[1px] border-inputLightDisabled py-2 text-center hover:border-inputLight dark:border-disabledDarkText dark:text-lightText dark:hover:border-darkText',
+                  errors.proof_of_payment
+                    ? 'border-errorColor dark:border-errorColor'
+                    : 'hover:border-blue-600 dark:hover:border-white',
+                )}
+              >
+                <p className="mb-1 hidden text-sm text-inputLightDisabled group-hover:text-buttonsLigth dark:text-disabledDarkText group-hover:dark:text-darkText lg:inline-block">
+                  SUBIR COMPROBANTE
                 </p>
+                <div
+                  className={`${
+                    isDark ? 'buttonSecondDark' : 'buttonSecond'
+                  } relative mt-5 h-[48px] w-full max-w-[200px] items-center justify-center rounded-3xl border border-disabledButtonsLigth bg-disabledButtonsLigth p-[10px] text-lg text-darkText group-hover:border-buttonsLigth group-hover:bg-buttonsLigth group-hover:text-darkText dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText group-hover:dark:border-darkText group-hover:dark:bg-darkText group-hover:dark:text-lightText lg:mt-0`}
+                >
+                  Subir Archivo
+                </div>
                 <span id="file-name" className="w-full text-xs text-[#6B7280] lg-tablet:text-sm">
                   No hay archivo seleccionado
                 </span>
+                {errors.proof_of_payment && 'Este campo es obligatorio' && (
+                  <p className="text-sm text-errorColor">Este campo es obligatorio, accepta: .png, .jpg y .pdf</p>
+                )}
               </div>
             </label>
-            <div className="flex h-full flex-col">
-              <input
-                id="proof_of_payment"
-                type="file"
-                disabled={blockAll}
-                placeholder="SUBIR COMPROBANTE"
-                onChange={handleChange}
-                {...restRegister}
-                className={clsx(
-                  'hidden h-full w-full rounded border border-[#6B7280] bg-gray-200 px-5 py-2 dark:bg-lightText',
-                  errors.proof_of_payment && 'Este campo es obligatorio'
-                    ? 'border-red-500 hover:border-blue-600 dark:hover:border-white'
-                    : 'hover:border-blue-600 dark:hover:border-white',
-                )}
-              />
-              {errors.proof_of_payment && 'Este campo es obligatorio' && (
-                <p className="text-sm text-red-500">• Este campo es obligatorio</p>
+            <input
+              accept=".png,.jpg,.pdf"
+              id="proof_of_payment"
+              type="file"
+              disabled={blockAll}
+              placeholder="SUBIR COMPROBANTE"
+              onChange={handleChange}
+              {...restRegister}
+              className={clsx(
+                'hidden h-full w-full rounded border border-[#6B7280] bg-gray-200 px-5 py-2 dark:bg-lightText',
+                errors.proof_of_payment && 'Este campo es obligatorio'
+                  ? 'border-errorColor hover:border-blue-600 dark:hover:border-white'
+                  : 'hover:border-blue-600 dark:hover:border-white',
               )}
-            </div>
+            />
           </div>
         </div>
         <div className="flex w-full flex-col gap-4">
           <div className="flex h-full flex-col">
             <div className="ml-1 flex gap-2 text-xs">
-              <p>Red: Tron (TRC-20)</p>
-              <IconTron />
+              <p
+                className={clsx(
+                  'font-textFont text-lightText dark:text-darkText',
+                  'mb-1 ml-2.5 text-sm transition-opacity duration-300',
+                )}
+              >
+                Red: Tron (TRC-20)
+              </p>
+              <IconTron size="18px" />
             </div>
             <div
               className={clsx(
-                'h-full w-full rounded border border-[#6B7280] px-5 py-2 hover:border-blue-600 dark:bg-lightText dark:hover:border-white',
+                'group flex h-full w-full flex-col items-center justify-center gap-2.5 rounded-2xl border-[1px] border-inputLightDisabled py-2 text-center hover:border-inputLight dark:border-disabledDarkText dark:text-lightText dark:hover:border-darkText',
               )}
             >
-              <p>QR</p>
               <div className="flex w-full items-center justify-center">
                 <Image src={'/images/QR_image.png'} alt="qr" width={200} height={200} />
               </div>

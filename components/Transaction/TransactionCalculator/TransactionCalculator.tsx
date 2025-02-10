@@ -116,7 +116,7 @@ export default function TransactionCalculator() {
           />
           {isProcessing ? (
             <div className="mt-8">
-              <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
+              <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="44px" />
             </div>
           ) : (
             <button
