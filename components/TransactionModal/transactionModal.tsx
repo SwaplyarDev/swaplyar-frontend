@@ -12,7 +12,7 @@ import { TransactionTypeSingle, emptyTransaction } from '@/types/transactions/tr
 import { clipopup } from '@/utils/assets/img-database';
 import DatoDestinatario from './componentesModal/datoDestinatario';
 import Mensaje from './componentesModal/mensaje';
-import getTransactionById from '@/actions/transactions/transactions.action';
+import { getTransactionById } from '@/actions/transactions/transactions.action';
 
 interface TransactionModalProps {
   modal: boolean;
