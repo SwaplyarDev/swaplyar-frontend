@@ -418,6 +418,25 @@ div:where(.swal2-icon).swal2-info {
   color: #f8bb86 !important;
 }
 
+.swal-custom-image {
+  margin-top: 0 !important;
+}
+
+.swal2-title {
+  padding-top: 0 !important;
+  @apply text-xl font-textFont p-0 mx-11;
+}
+
+.my-popup {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Agrega espacio entre elementos internos */
+}
+
+.custom-container-payment{
+  @apply p-0;
+}
+
 /**Button Second**/
 .buttonSecond {
   outline: none;
@@ -522,4 +541,26 @@ div:where(.swal2-container).swal2-noanimation {
 
 .slick-slide > div {
   margin: 0 10px;
+}
+
+/*Input - Sacar estilos del autofill*/
+
+.dark .inputChangeAutofill:-webkit-autofill {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: rgba(235, 231, 224, 1) !important;
+}
+
+.inputChangeAutofill:-webkit-autofill {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: rgba(37, 37, 38, 1) !important;
+}
+
+.dark .inputChangeAutofillReverse:-webkit-autofill {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: rgba(37, 37, 38, 1) !important;
+}
+
+.inputChangeAutofillReverse:-webkit-autofill {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: rgba(37, 37, 38, 1) !important;
 }
