@@ -98,7 +98,7 @@ const HelpCenterPage = () => {
                   <h2
                     className={clsx(
                       'text-center font-textFont text-[28px] transition-all duration-300',
-                      isDark ? 'group-hover:underline' : 'group-hover:text-buttonsLigth',
+                      isDark ? 'group-hover:underline' : 'group-hover:text-buttonsLigth group-hover:underline',
                     )}
                   >
                     {item.title}

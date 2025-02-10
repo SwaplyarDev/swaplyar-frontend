@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import { motion } from 'motion/react';
 import clsx from 'clsx';
+import { useSize } from '@/hooks/useSize';
 
 interface FlyerTrabajoProps {
   title?: string;
@@ -15,6 +16,7 @@ interface FlyerTrabajoProps {
 export default function FlyerTrabajo({ title, description, nameButton, imageSrc }: FlyerTrabajoProps) {
   const backgroundImage = `url(${imageSrc})`;
   const { isDark } = useDarkTheme();
+  const { size } = useSize();
 
   return (
     <div className={`relative mb-20 mt-40 h-[272px] w-full bg-cover bg-center bg-repeat`} style={{ backgroundImage }}>
@@ -23,10 +25,25 @@ export default function FlyerTrabajo({ title, description, nameButton, imageSrc 
           {title && <h2>{title}</h2>}
           {description && (
             <>
-              <div className="mask-gradient-popup w-full lg:hidden">
+              <div className="mask-gradient-popup flex w-full overflow-hidden lg:hidden">
                 <motion.p
-                  animate={{ x: ['100%', '-100%'] }}
-                  transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
+                  initial={
+                    size >= 0 && size <= 390
+                      ? { x: '40%' }
+                      : size > 390 && size <= 490
+                        ? { x: '50%' }
+                        : size > 490 && size <= 590
+                          ? { x: '60%' }
+                          : size > 590 && size <= 670
+                            ? { x: '70%' }
+                            : size > 670 && size <= 770
+                              ? { x: '80%' }
+                              : size > 770 && size <= 870
+                                ? { x: '90%' }
+                                : size > 870 && { x: '100%' }
+                  }
+                  animate={{ x: '-100%' }}
+                  transition={{ duration: 25, repeat: Infinity, repeatType: 'loop', ease: 'linear' }}
                   className="min-w-max"
                 >
                   {description}
