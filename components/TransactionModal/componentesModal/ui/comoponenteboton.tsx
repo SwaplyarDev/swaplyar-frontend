@@ -6,7 +6,7 @@ interface ButtonProps {
 
 export const CustomButton = ({ text, onClick, className }: ButtonProps) => {
   return (
-    <button className={`rounded-lg px-4 py-2 font-medium transition-all ${className}`} onClick={onClick}>
+    <button className={`rounded-lg px-4 py-2 font-normal transition-all ${className}`} onClick={onClick}>
       {text}
     </button>
   );

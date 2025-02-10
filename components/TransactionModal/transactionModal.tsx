@@ -3,10 +3,11 @@ import { useState, useEffect } from 'react';
 import getTransactionById from '@/actions/transactions/getTransactionById';
 import AprobarRechazar from './componentesModal/aprobarRechazar';
 import DetallesTransaccion from './componentesModal/detallesTransaccion';
-import MensajeCliente from './componentesModal/mensajeCliente';
+import ConfirmTransButton from './componentesModal/ConfirmTransButton';
+import DiscrepancySection from './componentesModal/DiscrepancySection';
+import ClientMessage from './componentesModal/ClientMessage';
 import InfoStatus from './componentesModal/InfoStatus';
 import ImagenesTranferencia from './componentesModal/imagenestranferencia';
-import DiscrepanciaOperacion from './componentesModal/botonesDiscrepanciaOperacion';
 import TransferenciaRealizadaCliente from './componentesModal/botonesTransferenciaRealizadaCliente';
 import Image from 'next/image';
 import { TransactionTypeSingle, emptyTransaction } from '@/types/transactions/transactionsType';
@@ -45,21 +46,28 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ modal, setModal, tr
     fetchTransactions();
   }, [transId]);
 
+  const handleClick = () => {
+    setModal(!modal);
+    setTransaction(emptyTransaction);
+  };
+
   return (
     <section
-      onClick={() => setModal(!modal)}
+      onClick={handleClick}
       className={`fixed right-0 z-[101] flex w-full justify-end bg-gray-900/[0.4] ${modal ? 'visible' : 'invisible'}`}
     >
       <section
         onClick={(e) => e.stopPropagation()}
-        className={`my-28 flex max-h-[48rem] flex-col gap-8 overflow-y-auto rounded-lg bg-white p-6 font-textFont shadow-lg transition-all duration-300 ${modal ? 'opacity-100' : 'translate-x-[30vw] opacity-0'}`}
+        className={`my-28 flex max-h-[48rem] max-w-[55rem] flex-col gap-8 overflow-y-auto rounded-lg bg-white p-6 font-textFont shadow-lg transition-all duration-300 ${modal ? 'opacity-100' : 'translate-x-[30vw] opacity-0'}`}
       >
         <InfoStatus trans={trans} transId={transId} />
         <DetallesTransaccion transaction={trans} isLoading={isLoading} />
+        <ClientMessage trans={trans} />
         <ImagenesTranferencia trans={trans} />
+        <ConfirmTransButton trans={trans} />
 
         <AprobarRechazar />
-        <DiscrepanciaOperacion />
+        <DiscrepancySection trans={trans} />
         <h2 className="lightText text-2xl font-semibold">Información para realizar el pago al cliente</h2>
         <button className="rounded-lg border border-[#ffac79] bg-[#a78b79] p-2.5">Editar Destinatario</button>
         <DatoDestinatario />
