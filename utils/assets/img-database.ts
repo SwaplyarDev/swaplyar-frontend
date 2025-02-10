@@ -179,3 +179,10 @@ export const TetherDarkImg = '/images/TetherDark.png';
 
 export const PixImg = '/images/Pix1.png';
 export const PixDarkImg = '/images/Pix2.png';
+/** Alertas **/
+export const alertaSirena = '/images/ant-design_alert-outlined-light.png';
+export const alertaSirenaDark = '/images/ant-design_alert-outlined.png';
+
+/** Comprobantes **/
+export const comprobanteBienHecho = '/images/comprobante_bien_hecho.png';
+export const comprobanteMalHecho = '/images/comprobante_mal_hecho.png';

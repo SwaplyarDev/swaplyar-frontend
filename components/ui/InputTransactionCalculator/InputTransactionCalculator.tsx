@@ -24,7 +24,7 @@ export const InputTransactionCalculator: React.FC<InputTransactionCalculatorProp
     >
       <input
         type="text"
-        className="h-full w-full border-0 bg-transparent py-2 text-end text-[2.8rem] text-custom-grayD focus:border-inherit focus:placeholder-transparent focus:shadow-none focus:outline-none focus:ring-0 dark:text-white sm:text-end"
+        className="inputChangeAutofill h-full w-full border-0 bg-transparent py-2 text-end text-[2.8rem] text-custom-grayD focus:border-inherit focus:placeholder-transparent focus:shadow-none focus:outline-none focus:ring-0 dark:text-white sm:text-end"
         id={id}
         placeholder={placeholder}
         value={value}

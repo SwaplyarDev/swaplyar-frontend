@@ -1,12 +1,12 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { getAllTransactions } from '@/actions/transactions/getAllTransactions';
 import SearchBarTable from './SearchBarTable/SearchBarTable';
 import StatusSection from './Status/StatusSection';
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import useQuestionStore from '@/store/useQuestion.store';
 import TransactionModal from '@/components/TransactionModal/transactionModal';
-import { TransactionTypeAll } from '@/types/transactions/transactionsTypeAll';
+import { getAllTransactions } from '@/actions/transactions/transactions.action';
+import { TransactionTypeAll } from '@/types/transactions/transactionsType';
 
 const TransactionsTable = () => {
   const { currentPage, setCurrentPage } = useQuestionStore();

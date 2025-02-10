@@ -3,6 +3,7 @@
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 import { FormData, OutputFormat } from '@/types/repentance/repentance';
+import { RegretTypeSingle } from '@/types/transactions/regretsType';
 
 const transformData = (input: FormData): OutputFormat => {
   return {
@@ -137,6 +138,34 @@ export const cancelRegret = async (regretId: string) => {
     return {
       ok: false,
       message: error instanceof Error ? error.message : 'No se pudo cancelar el regret',
+    };
+  }
+};
+
+export const getRegret = async (regretId: string) => {
+  try {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/regrets/${regretId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data: RegretTypeSingle = await response.json();
+
+    if (!response.ok && data.error) {
+      throw new Error(data.error.message || 'Error al obtener el regret');
+    }
+
+    return {
+      ok: true,
+      regret: data,
+    };
+  } catch (error) {
+    console.error('Error al obtener el arrepentimiento:', error);
+    return {
+      ok: false,
+      message: error instanceof Error ? error.message : 'No se pudo obtener el regret',
     };
   }
 };
