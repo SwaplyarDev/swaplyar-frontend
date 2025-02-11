@@ -6,7 +6,7 @@ interface DetailTransProps {
   transaction: TransactionTypeSingle;
 }
 
-const DetallesTransaccion: React.FC<DetailTransProps> = ({ transaction, isLoading }) => {
+const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading }) => {
   const { sender, receiver, payment_method, amounts, proof_of_payment } = transaction.transaction;
 
   const renderData = (label: string, text: string, text2?: string, text3?: string, key?: number) => (
@@ -92,4 +92,4 @@ const DetallesTransaccion: React.FC<DetailTransProps> = ({ transaction, isLoadin
     );
 };
 
-export default DetallesTransaccion;
+export default TransactionDetail;

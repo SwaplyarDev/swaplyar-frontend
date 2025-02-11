@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import AprobarRechazar from './componentesModal/aprobarRechazar';
-import DetallesTransaccion from './componentesModal/detallesTransaccion';
+import TransactionDetail from './componentesModal/detallesTransaccion';
 import ConfirmTransButton from './componentesModal/ConfirmTransButton';
 import DiscrepancySection from './componentesModal/DiscrepancySection';
 import ClientMessage from './componentesModal/ClientMessage';
@@ -13,7 +13,7 @@ import { TransactionTypeSingle, emptyTransaction } from '@/types/transactions/tr
 import { clipopup } from '@/utils/assets/img-database';
 import DatoDestinatario from './componentesModal/datoDestinatario';
 import Mensaje from './componentesModal/mensaje';
-import { getTransactionById } from '@/actions/transactions/transactions.action';
+import { getTransactionById, updateStatusClient } from '@/actions/transactions/transactions.action';
 
 interface TransactionModalProps {
   modal: boolean;
@@ -24,6 +24,68 @@ interface TransactionModalProps {
 const TransactionModal: React.FC<TransactionModalProps> = ({ modal, setModal, transId }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [trans, setTransaction] = useState<TransactionTypeSingle>(emptyTransaction);
+  const [status, setStatus] = useState<string>('pending');
+  const [componentStates, setComponentStates] = useState({
+    aprooveReject: null,
+    confirmTransButton: false,
+    discrepancySection: false,
+    transferRealized: false,
+  });
+
+  console.log(status);
+  useEffect(() => {
+    if (
+      componentStates.confirmTransButton &&
+      componentStates.aprooveReject === 'stop' &&
+      componentStates.discrepancySection
+    ) {
+      setStatus('discrepancy'); // cuando hay discrepancia
+    }
+    if (
+      componentStates.confirmTransButton &&
+      componentStates.aprooveReject === null &&
+      !componentStates.discrepancySection
+    ) {
+      setStatus('review_payment'); //cuando se acepta la primera parte
+    }
+    if (
+      !componentStates.confirmTransButton &&
+      componentStates.aprooveReject === 'rejected' &&
+      !componentStates.discrepancySection
+    ) {
+      setStatus('rejected'); //cuando se rechaza la peticion (no llega la confirmacion de transferencia)
+    }
+    if (
+      componentStates.confirmTransButton &&
+      componentStates.aprooveReject === 'accepted' &&
+      !componentStates.discrepancySection &&
+      !componentStates.transferRealized
+    ) {
+      setStatus('in_transit'); //cuando esta todo bien solo hay que esperar a la transferencia de parte de swaply
+    }
+    if (
+      componentStates.confirmTransButton &&
+      componentStates.aprooveReject === 'accepted' &&
+      !componentStates.discrepancySection &&
+      componentStates.transferRealized
+    ) {
+      setStatus('completed'); //Se completo la transferencia
+    }
+  }, [componentStates]);
+
+  useEffect(() => {
+    const updateTransactionStatus = async () => {
+      try {
+        await updateStatusClient(transId, status);
+
+        console.log('Estado de la transacción actualizado');
+      } catch (error) {
+        console.error('Error al actualizar el estado de la transacción:', error);
+      }
+    };
+
+    updateTransactionStatus();
+  }, [status, transId]);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -61,10 +123,14 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ modal, setModal, tr
         className={`my-28 flex max-h-[48rem] max-w-[55rem] flex-col gap-8 overflow-y-auto rounded-lg bg-white p-6 font-textFont shadow-lg transition-all duration-300 ${modal ? 'opacity-100' : 'translate-x-[30vw] opacity-0'}`}
       >
         <InfoStatus trans={trans} transId={transId} />
-        <DetallesTransaccion transaction={trans} isLoading={isLoading} />
+        <TransactionDetail transaction={trans} isLoading={isLoading} />
         <ClientMessage trans={trans} />
         <ImagenesTranferencia trans={trans} />
-        <ConfirmTransButton trans={trans} />
+        <ConfirmTransButton
+          value={componentStates.confirmTransButton}
+          setValue={(value) => setComponentStates((prev) => ({ ...prev, confirmTransButton: !value }))}
+          trans={trans}
+        />
 
         <AprobarRechazar />
         <DiscrepancySection trans={trans} />
