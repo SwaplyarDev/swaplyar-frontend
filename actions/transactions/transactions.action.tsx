@@ -73,6 +73,7 @@ export const updateStatusClient = async (transactionId: string, status: string) 
       },
       body: JSON.stringify(status),
     });
+    console.log(response.status);
     if (!response.ok) throw new Error('Failed to update transaction');
 
     return response;
