@@ -9,6 +9,8 @@ import { FlyerGif, RecargaPaypal, UsdArs } from '@/utils/assets/imgDatabaseCloud
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
+import Recommendations from '../Recomendations/Recomendations';
+import recomendationsData from '@/data/recomendationsData';
 
 export default function HomePage() {
   const resetToDefault = useSystemStore((state) => state.resetToDefault);
@@ -22,12 +24,12 @@ export default function HomePage() {
   return (
     <>
       <AnimatedBlurredCircles tope="top-[-175px]" />
-      <section className="w-full overflow-hidden px-4 md:px-8 lg:px-4">
-        <article className="m-auto flex w-full max-w-screen-phone flex-col items-center justify-center xs-mini-phone2:max-w-screen-tablet md:max-w-screen-desktop">
+      <section className="mx-auto w-full max-w-[1204px] overflow-hidden px-4 md:px-8 lg:px-4">
+        <article className="m-auto flex w-full flex-col items-center justify-center">
           <div className="mt-0 flex w-full flex-col items-center justify-center lg:mt-8">
             <ConversionInstructions />
           </div>
-          <div className="relative mb-10 mt-8 flex w-full max-w-[850px] flex-col items-center justify-center gap-10 space-x-4">
+          <div className="relative mb-10 mt-8 flex w-full max-w-[850px] flex-col items-center justify-center gap-10">
             <InfoBlock
               title="Podes cambiar USD o EUR de tu billetera virtual por la moneda de tu preferencia"
               imageSrc={UsdArs}
@@ -74,6 +76,7 @@ export default function HomePage() {
             />
           </div>
         </article>
+        <Recommendations items={recomendationsData} />
       </section>
       <section className="mt-10">
         <FlyerTrabajo
