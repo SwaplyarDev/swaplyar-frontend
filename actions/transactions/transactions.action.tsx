@@ -64,18 +64,15 @@ export const updateTransaction = async ({ transaction }: TransactionTypeSingle) 
   }
 };
 
-export const updateStatusClient = async (transactionId: string, last_name: string, status: string) => {
+export const updateStatusClient = async (transactionId: string, status: string) => {
   try {
-    const response = await fetch(
-      `${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus?transaction_id=${transactionId}&last_name=${last_name}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(status),
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus/${transactionId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify(status),
+    });
     if (!response.ok) throw new Error('Failed to update transaction');
 
     return response;
