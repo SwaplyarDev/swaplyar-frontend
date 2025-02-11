@@ -1,117 +1,75 @@
 // /components/about-us/AboutUs.tsx
 'use client';
-import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
-import InfoBlock from '@/components/InfoBlock/InfoBlock';
-import CaedAboutUs from '@/components/ui/caed-about-us/caed-about-us';
-import GuaranteeSection from '@/components/ui/warranty-section/WarrantySection';
+import Image from 'next/image';
+import CardWarranty from '@/components/ui/cards/card-warranty/card-warranty';
+import { TextWarranty, cardsData } from '@/data/mockWarranty';
 import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
-import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
-import {
-  Aumeno,
-  Caida,
-  CentroDeAyuda,
-  Garantizamos,
-  Transacciones,
-  Ventajaalelegirswaplyar,
-} from '@/utils/assets/imgDatabaseCloudinary';
-
-const cardsData = [
-  {
-    src: Transacciones,
-    alt: 'Imagen de Apoyo',
-    title: 'Transacciones',
-    backTitle: 'Directas y Seguras',
-    backText:
-      'Asegurá que el dinero se mueva directamente de SwaplyAr al usuario, sin intermediarios, ofreciendo mayor rapidez y seguridad en cada transacción.',
-  },
-  {
-    src: Aumeno,
-    alt: 'Imagen de Transparencia',
-    title: 'Aumento',
-    backTitle: 'Aumento en la cotización',
-    backText:
-      'Al confirmar tu pago, fijamos la cotización. Si no recibís el dinero en 8 horas y hay aumento, ajustamos tu tasa.',
-  },
-  {
-    src: Caida,
-    alt: 'Imagen de Simplicidad',
-    title: 'Caída',
-    backTitle: 'Caída en la cotización',
-    backText:
-      'Confirmá tu pago, bloqueamos la cotización inicial. Si la cotización cae y no has recibido el dinero en 5 horas, mantenemos fijo el valor original.',
-  },
-];
+import { Garantizamos, Ventajaalelegirswaplyar } from '@/utils/assets/imgDatabaseCloudinary';
 
 const Warranty = () => {
   const { margins } = useMargins();
   const currentMargin = ResponsiveMarginHook(margins);
 
+  const combinedText = TextWarranty.slice(-2).map((item) => {
+    let content = item.text;
+    if (item.links) {
+      if (Array.isArray(item.links)) {
+        content += item.links
+          .map((link) => ` <u><LinkWithHover href="${link.link}">${link.name}</LinkWithHover></u>`)
+          .join(', ');
+      } else {
+        content += ` <u><LinkWithHover href="${item.links.link}">${item.links.name}</LinkWithHover></u>`;
+      }
+    }
+    return content;
+  });
+
   return (
-    <>
-      <div className="relative flex w-full flex-col items-center justify-center gap-20 py-10">
-        <AnimatedBlurredCircles tope="top-[-150px]" />
-        <div
-          className="rs-wrapper-v4 max-w-[1000px] flex-col items-center justify-center gap-12"
-          style={{ margin: currentMargin }}
-        >
-          <GuaranteeSection
-            title="Tranquilidad en Cada Transacción"
-            text="En SwaplyAr, nos comprometemos a que cada cambio de divisas sea seguro y confiable. Con nuestra garantía de satisfacción, podés estar seguro de que tus operaciones se manejaran con la mayor eficiencia y cuidado. ¡Confiá en nosotros para una experiencia sin preocupaciones!"
-            imageSrc={Garantizamos}
-            imageAlt="¿Por Qué Elegir SwaplyAr para Tu Cambio de Divisas?"
-          />
+    <main className="relative flex w-full flex-col items-center justify-center gap-20 py-10">
+      <AnimatedBlurredCircles tope="top-[-150px]" />
+      <section
+        className="flex-col items-center justify-center gap-12 md:max-w-[42.1rem] lg:max-w-[49.1rem]"
+        style={{ margin: currentMargin }}
+      >
+        <h1 className="text-center font-titleFont text-[38px] font-medium md:text-[40px]">
+          Seguridad y Confianza en cada transacción
+        </h1>
+        <section className="mt-[38px] flex flex-col items-center justify-items-center gap-10 md:flex-row">
+          <p className="font-textFont text-base font-light leading-relaxed">{TextWarranty[0].text}</p>
 
-          <section className="mx-auto mb-6 mt-12 w-full max-w-screen-md md:mb-24 md:mt-24">
-            <CaedAboutUs cardsData={cardsData} />
-          </section>
-
-          <InfoBlock
-            title="Ventajas Exclusivas al Elegir SwaplyAr para tus Transacciones"
-            imageSrc={Ventajaalelegirswaplyar}
-            imageAlt="Cambia USD de PayPal por ARS"
-            contentNode={
-              <>
-                En SwaplyAr, no solo garantizamos seguridad total y atención personalizada en cada transacción, sino que
-                también ofrecemos{' '}
-                <strong>
-                  <LinkWithHover href="#">Beneficios Adicionales</LinkWithHover>
-                </strong>
-                . A nuestros usuarios registrados les brindamos promociones exclusivas y cubrimos las comisiones por ti.{' '}
-                Mientras que otros servicios aplican comisiones del 5.6% + $0.30 USD en PayPal, nosotros absorbemos esos
-                costos para ofrecerte el mejor valor. Además, trabajamos con múltiples billeteras virtuales como{' '}
-                <strong>
-                  <LinkWithHover href="#">Payoneer</LinkWithHover>
-                </strong>
-                ,{' '}
-                <strong>
-                  <LinkWithHover href="#">Wise</LinkWithHover>
-                </strong>
-                ,{' '}
-                <strong>
-                  <LinkWithHover href="#">Pix</LinkWithHover>
-                </strong>{' '}
-                y{' '}
-                <strong>
-                  <LinkWithHover href="#">USDT</LinkWithHover>
-                </strong>{' '}
-                para brindarte aún más opciones y flexibilidad.
-                {/* <span
-                  style={{
-                    backgroundColor: 'yellow',
-                    color: 'black',
-                    marginTop: '1%',
-                  }}
-                >
-                  
-                </span> */}
-              </>
-            }
+          <Image
+            className="drop-shadow-light dark:drop-shadow-darkmode"
+            src={Garantizamos}
+            alt={'Garantizamos'}
+            width={331}
+            height={380}
           />
-        </div>
-      </div>
-    </>
+        </section>
+        <section className="mx-auto mt-10 w-full max-w-screen-md md:mb-24 md:mt-24">
+          <CardWarranty cardsData={cardsData} />
+        </section>
+
+        <section className="mx-auto mt-20 flex w-full flex-col items-center gap-5 text-left text-lightText dark:text-darkText md:flex-row">
+          <Image
+            className="drop-shadow-light dark:drop-shadow-darkmode"
+            src={Ventajaalelegirswaplyar}
+            alt={'Ventajas de elegir SwaplyAr'}
+            width={331}
+            height={335}
+          />
+          <article className="mt-10 flex flex-col">
+            <h2 className="font-textFont text-4xl">{TextWarranty[1].title}</h2>
+            <p className="mt-10 font-textFont text-base font-light leading-relaxed md:mt-0">
+              {combinedText.map((text, index) => (
+                <span key={index} dangerouslySetInnerHTML={{ __html: text }} />
+              ))}
+            </p>
+          </article>
+        </section>
+      </section>
+    </main>
   );
 };
 

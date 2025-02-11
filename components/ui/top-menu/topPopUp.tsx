@@ -2,6 +2,7 @@
 import { setBannerColor } from '@/utils/setBannerColor';
 import { useState, useEffect } from 'react';
 import { MdOutlineClose } from 'react-icons/md';
+import { motion } from 'motion/react';
 
 function TopPopUp() {
   const [isClosed, setIsClosed] = useState(false);
@@ -32,8 +33,17 @@ function TopPopUp() {
         color: bannerColor.text,
       }}
     >
-      <div className="relative m-auto flex w-[90%] max-w-screen-2xl items-center justify-between">
-        <p className="flex-grow text-center text-xs font-bold md:text-sm lg:text-lg">
+      <div className="relative m-auto flex w-full max-w-[1204px] items-center justify-between px-4 md:px-8 lg:px-4">
+        <div className="mask-gradient-popup w-full overflow-hidden xs:hidden md:text-sm lg:text-lg">
+          <motion.p
+            animate={{ x: ['100%', '-100%'] }}
+            transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+            className="min-w-[370px] text-center font-textFont text-xs font-semibold"
+          >
+            Estamos trabajando en las funciones de inicio de sesión y registro
+          </motion.p>
+        </div>
+        <p className="hidden w-full text-center font-textFont text-xs font-semibold xs:block md:text-sm lg:text-lg">
           Estamos trabajando en las funciones de inicio de sesión y registro
         </p>
         <button

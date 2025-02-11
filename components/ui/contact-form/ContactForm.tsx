@@ -20,9 +20,10 @@ const ContactForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
   } = useForm<FormValues>({
+    mode: 'onChange',
     defaultValues: {
       Nombre: session?.user?.name.split(' ')[0] || '',
       Apellido: session?.user?.name.split(' ')[1] || '',
@@ -121,25 +122,22 @@ const ContactForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col">
-      <div className="mb-5 rounded-2xl bg-[#e6e8ef62] p-8 dark:bg-calculatorDark">
-        <h4 className="mb-7 text-xl font-semibold">Contáctanos</h4>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-4">
+      <div className="flex flex-col gap-10 rounded-2xl px-[15px] py-[13px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] dark:bg-[#323232]">
+        <h4 className="font-textFont text-[32px] font-medium text-buttonsLigth dark:text-darkText">Contáctanos</h4>
         <div className="flex flex-col gap-10 md:flex-row md:gap-16">
-          <div className="flex w-full flex-col gap-4">
-            <div className="flex flex-col">
+          <div className="flex w-full flex-col gap-[6px]">
+            <div className="flex h-[81px] flex-col">
               <label
                 htmlFor="Nombre"
-                className={clsx(
-                  'ml-1 hidden text-xs',
-                  errors.Nombre ? 'text-red-500' : 'text-lightText dark:text-darkText',
-                )}
+                className={clsx('px-[10px] pb-1 font-titleFont text-xs', 'text-lightText dark:text-darkText')}
               >
                 Nombre
               </label>
               <InputField
                 id="Nombre"
                 type="text"
-                placeholder="Nombre completo"
+                placeholder={errors.Nombre ? 'Nombre*' : 'Nombre'}
                 register={register('Nombre', {
                   required: 'El Nombre es obligatorio',
                   pattern: {
@@ -150,20 +148,17 @@ const ContactForm = () => {
                 error={errors.Nombre && errors.Nombre.message}
               />
             </div>
-            <div className="flex flex-col">
+            <div className="flex h-[81px] flex-col">
               <label
                 htmlFor="Apellido"
-                className={clsx(
-                  'ml-1 hidden text-xs',
-                  errors.Apellido ? 'text-red-500' : 'text-lightText dark:text-darkText',
-                )}
+                className={clsx('px-[10px] pb-1 font-titleFont text-xs', 'text-lightText dark:text-darkText')}
               >
                 Apellido
               </label>
               <InputField
                 id="Apellido"
                 type="text"
-                placeholder="Apellido completo"
+                placeholder={errors.Apellido ? 'Apellido*' : 'Apellido'}
                 register={register('Apellido', {
                   required: 'El Apellido es obligatorio',
                   pattern: {
@@ -174,20 +169,17 @@ const ContactForm = () => {
                 error={errors.Apellido && errors.Apellido.message}
               />
             </div>
-            <div className="flex flex-col">
+            <div className="flex h-[81px] flex-col">
               <label
                 htmlFor="email"
-                className={clsx(
-                  'ml-1 hidden text-xs',
-                  errors.email ? 'text-red-500' : 'text-lightText dark:text-darkText',
-                )}
+                className={clsx('px-[10px] pb-1 font-titleFont text-xs', 'text-lightText dark:text-darkText')}
               >
-                Email
+                Correo Electrónico
               </label>
               <InputField
                 id="email"
                 type="email"
-                placeholder="Email"
+                placeholder={errors.email ? 'Correo Electrónico*' : 'Correo Electrónico'}
                 register={register('email', {
                   required: 'El Email es obligatorio',
                   pattern: {
@@ -200,35 +192,39 @@ const ContactForm = () => {
               />
             </div>
           </div>
-          <div className="flex w-full flex-col gap-4">
+          <div className="flex h-[260px] w-full flex-col gap-4">
             <div className="flex h-full flex-col">
               <label
                 htmlFor="message"
-                className={clsx(
-                  'ml-1 hidden text-xs',
-                  errors.message ? 'text-red-500' : 'text-lightText dark:text-darkText',
-                )}
+                className={clsx('px-[10px] pb-1 font-titleFont text-xs', 'text-lightText dark:text-darkText')}
               >
-                Nota
+                Mensaje
               </label>
               <textarea
                 {...register('message', { required: true })}
                 id="message"
-                placeholder="Mensaje"
+                placeholder={errors.message ? 'Mensaje*' : 'Mensaje'}
                 className={clsx(
-                  'h-full w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-                  errors.message ? 'border-red-500' : 'hover:border-blue-600 dark:hover:border-white',
+                  'h-[216px] w-full resize-none rounded-2xl border bg-[#fffff8] px-[9px] py-2 font-titleFont text-lightText dark:bg-darkText',
+                  errors.message
+                    ? 'border-[#c31818] placeholder:text-[#c31818]'
+                    : 'border-buttonExpandDark placeholder:text-buttonExpandDark hover:border-buttonsLigth dark:border-placeholderDark dark:placeholder:text-placeholderDark dark:hover:border-white',
                 )}
               ></textarea>
-              {errors.message && <p className="text-sm text-red-500">Este campo es obligatorio</p>}
+              {errors.message && <p className="px-[10px] pt-1 text-sm text-[#c31818]">Este campo es obligatorio</p>}
             </div>
           </div>
         </div>
       </div>
       <div className="flex justify-center">
         <button
+          disabled={!isValid || loading}
           type="submit"
-          className={`relative m-1 h-[48px] w-[200px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText xs:w-[330px] ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
+          className={clsx(
+            isDark && isValid ? 'buttonSecondDark dark:bg-darkText dark:text-lightText' : isValid ? 'buttonSecond' : '',
+            'relative flex w-[300px] items-center justify-center rounded-3xl px-[14px] py-3 font-titleFont font-semibold text-[#fffff8]',
+            isValid ? 'cursor-pointer bg-buttonsLigth' : 'cursor-default bg-inputLightDisabled dark:bg-placeholderDark',
+          )}
         >
           {loading ? (
             <div className="flex items-center justify-center gap-2">

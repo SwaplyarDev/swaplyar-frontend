@@ -1,9 +1,9 @@
 'use client';
 import React from 'react';
-import Arrow from '@/components/ui/Arrow/Arrow';
 import { AlertProcessProps } from '@/types/repentance/repentance';
 import Swal from 'sweetalert2';
 import { createRoot } from 'react-dom/client';
+import ButtonAlertBack from '@/components/ui/ButtonAlertBack/ButtonAlertBack';
 
 const AlertProcess = ({
   isDark,
@@ -18,19 +18,7 @@ const AlertProcess = ({
         const root = createRoot(backElement);
         root.render(
           <div className="flex w-full items-center justify-between gap-4 pt-5">
-            <button
-              onClick={() => Swal.close()}
-              className={`${
-                isDark ? 'buttonSecondDark' : 'buttonSecond'
-              } group relative m-1 flex h-[42px] min-w-[150pxpx] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent xs:min-w-[150px]`}
-            >
-              <div className="relative h-5 w-5 overflow-hidden">
-                <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
-                  <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
-                </div>
-              </div>
-              <p className="hidden xs:inline-block">Volver</p>
-            </button>
+            <ButtonAlertBack isDark={isDark} />
             <button
               disabled={isLoading}
               onClick={async () => {

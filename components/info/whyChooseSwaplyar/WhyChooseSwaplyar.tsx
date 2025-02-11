@@ -97,25 +97,12 @@ const WhyChooseSwaplyar: React.FC = () => {
         </section>
       </div>
 
-      <FlyerTrabajo imageSrc={FlyerGif}>
-        <p>
-          ¿Nuevo en SwaplyAr? <br /> Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma
-          sencilla y segura. Haz click y aprende cómo usar SwaplyAr{' '}
-        </p>
-        <div>
-          <button
-            id="bannerHTUButton"
-            className={`trasntition-transform ease group mt-6 rounded-full border-2 border-buttonsLigth bg-buttonsLigth px-4 py-2 text-lg duration-300 hover:border-selectBtsLight dark:border-darkText dark:bg-darkText dark:text-black ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-          >
-            <Link
-              href={'/info/how-to-use'}
-              className={`ease font-bold text-darkText transition-colors duration-300 ${isDark ? 'dark:text-lightText' : 'text'} `}
-            >
-              <h3>Como usar Swaplyar</h3>
-            </Link>
-          </button>
-        </div>
-      </FlyerTrabajo>
+      <FlyerTrabajo
+        imageSrc={FlyerGif}
+        title="¿Nuevo en SwaplyAr?"
+        description="Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma sencilla y segura."
+        nameButton="¡Empieza ahora!"
+      />
     </div>
   );
 };

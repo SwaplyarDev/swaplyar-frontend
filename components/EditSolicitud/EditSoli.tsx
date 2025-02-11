@@ -1,52 +1,36 @@
 'use client';
-import Image from 'next/image';
 import React from 'react';
-import { EditorMobile, EditorPC } from '@/utils/assets/img-database';
 import SeachRequest from './form/SeachRequest';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
-import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
+import HeaderSectionEditSoli from './HeaderSectionEditSoli/HeaderSectionEditSoli';
 
 const EditSoli = () => {
-  const { isDark } = useDarkTheme();
   return (
-    <div className="flex flex-col justify-center lg:flex-row">
+    <>
       <AnimatedBlurredCircles tope="top-[124px]" />
-      <div className="flex w-auto flex-col lg:flex-row">
-        <div className="flex flex-col flex-wrap content-center">
-          <h1 className="w-full text-start text-3xl font-bold">Editar solicitud</h1>
-          <p className="mt-2 text-justify text-lg font-bold">Ingrese los datos tal cual aparece en el email enviado</p>
-          <div className="hidden flex-wrap lg:block">
-            <Image
-              src={EditorPC}
-              alt="Imagen de Editor de solicitud de pc"
-              width={1000}
-              height={0}
-              className="h-full object-cover"
-            ></Image>
-          </div>
-          <div className="flex flex-col flex-wrap content-center">
-            <div className="block min-h-full w-72 flex-wrap justify-center lg:hidden">
-              <Image
-                src={EditorMobile}
-                alt="imagen del Editor de solicitud de mobile"
-                width={200}
-                height={0}
-                className="h-full object-contain"
-              />
-              <div
-                className={`block min-w-full flex-wrap justify-center border-t-4 lg:hidden ${isDark ? 'border-t-white' : 'border-t-buttonsLigth'}`}
-              ></div>
-            </div>
-            <div className="block w-72 flex-col items-start lg:hidden lg:w-2/6">
-              <p className="mt-2 text-center text-lg">Ingresa los datos tal cual aparece en el email enviado</p>
-            </div>
+      <div className="flex w-full flex-col px-4 md:px-8 lg:px-4">
+        <div>
+          <h1 className="mx-auto w-full text-center font-titleFont text-[38px] font-medium md:max-w-[504px] lg2:max-w-[741px] lg2:text-[40px]">
+            Modifica tu solicitud de forma rápida y sencilla
+          </h1>
+          <p className="mx-auto mt-[46px] w-full text-center font-textFont font-light lg2:max-w-[796px]">
+            Ingresa el Número de Solicitud que aparece en tu comprobante para localizar y editar los detalles de tu
+            solicitud de manera segura y eficiente. Asegúrate de verificar la información antes de guardar los cambios.
+          </p>
+        </div>
+
+        <p className="mx-auto mt-10 w-full text-left font-textFont text-[21px] font-light md:max-w-[506px] md:text-center lg2:max-w-[752px]">
+          Introduce los datos exactamente como aparecen en el correo electrónico enviado.
+        </p>
+
+        <div className="relative mx-auto mt-10 flex w-full flex-col lg2:max-w-[800px]">
+          <HeaderSectionEditSoli />
+          <div className="mx-auto flex h-auto w-full flex-col border-0 lg2:mb-[100px] lg2:mt-[55px]">
+            <SeachRequest />
           </div>
         </div>
       </div>
-      <div className={`mr-0 flex h-auto w-full flex-col border-0 lg:pt-32`}>
-        <SeachRequest></SeachRequest>
-      </div>
-    </div>
+    </>
   );
 };
 

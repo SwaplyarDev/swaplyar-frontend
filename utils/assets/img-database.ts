@@ -75,6 +75,9 @@ export const Paso2Gif = '/images/paso2.gif';
 export const Paso3Gif = '/images/paso3.gif';
 export const Paso4Gif = '/images/paso4.gif';
 
+/**questions**/
+export const BannerQuestions = '/images/baner_questions.png';
+
 /**loyalty-program**/
 export const Rewards1 = '/images/rewards1.png';
 export const Rewards2 = '/images/rewards2.png';
@@ -103,6 +106,8 @@ export const Ayuda1 = '/images/ayuda1.png';
 export const Ayuda2 = '/images/ayuda2.png';
 export const Ayuda1Dark = '/images/ayuda1-dark.png';
 export const Ayuda2Dark = '/images/ayuda2-dark.png';
+
+export const fraudPrevention = '/images/fraudprevent.png';
 
 /**why-choose-swaplyar**/
 export const ElegirSwaplyAr = '/images/elegirSwaplyAr.png';
@@ -134,11 +139,18 @@ export const PixImg = '/images/36.png';
 export const PixDarkImg = '/images/35.png';
 
 /**404**/
-
 export const Error_404_clear = '/images/clear-404.png';
 export const Error_404_dark = '/images/dark-404.png';
 export const Post1_404 = '/images/post1-404.png';
 export const Post2_404 = '/images/post2-404.png';
+/**500**/
+export const Error_500_clear = '/images/clear-500.png';
+export const Error_500_dark = '/images/dark-500.png';
+export const Post1_500 = '/images/post1-500.png';
+export const Post2_500 = '/images/post2-500.png';
+
+/**Mantenimiento**/
+export const Mantenimiento = '/images/WebsiteDesignPrototype.png';
 
 /**chronometer**/
 export const Reloj = '/images/reloj.png';
@@ -157,3 +169,21 @@ export const EditorMobile = '/images/EditorMobile.png';
 
 /** Repentance**/
 export const regretsPhone = '/images/regretPhone.png';
+
+/** Avatar **/
+export const swaplyArAvatar = '/images/swaplyArAvatar.png';
+
+/** Alertas **/
+export const alertaSirena = '/images/ant-design_alert-outlined-light.png';
+export const alertaSirenaDark = '/images/ant-design_alert-outlined.png';
+
+/** Comprobantes **/
+export const comprobanteBienHecho = '/images/comprobante_bien_hecho.png';
+export const comprobanteMalHecho = '/images/comprobante_mal_hecho.png';
+
+export const howToUse1 = '/images/howToUse1.png';
+export const howToUse2 = '/images/howToUse2.png';
+export const howToUse3 = '/images/howToUse3.png';
+export const howToUseDark1 = '/images/howToUseDark1.png';
+export const howToUseDark2 = '/images/howToUseDark2.png';
+export const howToUseDark3 = '/images/howToUseDark3.png';

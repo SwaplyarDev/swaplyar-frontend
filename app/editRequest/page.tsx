@@ -1,10 +1,17 @@
 import EditSoli from '@/components/EditSolicitud/EditSoli';
 import NewSwaply from '@/components/NewSwaplyAR/newSwaply';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Envía tu Solicitud a Atención al Cliente | SwaplyAr',
+  description:
+    'Envía tu solicitud con texto e imágenes para que nuestro equipo de atención al cliente evalúe su aceptación. Proceso rápido y sencillo en SwaplyAr',
+};
 
 const editRequestPage: React.FC = () => {
   return (
     <>
-      <div className="flex-column container flex w-full flex-wrap items-center justify-center lg:px-20 lg:py-10">
+      <div className="pt-10">
         <EditSoli></EditSoli>
       </div>
       <div className="w-full">

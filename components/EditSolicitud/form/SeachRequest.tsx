@@ -1,20 +1,22 @@
 'use client';
 import { fetchTransactionById, TransactionRequestData } from '@/actions/editRequest/editRequest.action';
-import VerifycodeEditRequest from '../verify-code-editRequest/verify-code-editRequest';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-
-interface isDark {
-  isDark: boolean;
-}
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
+import VerifycodeEditRequest from '../VerifyCodeEditRequest/VerifyCodeEditRequest';
+import clsx from 'clsx';
+import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
+import useWindowWidth from '@/hooks/useWindowWidth';
 
 interface FormValues {
-  transaccionId: string; // Cambié el nombre aquí de "transactionId" a "transaccionId"
+  transaccionId: string;
   userEmail: string;
 }
 
 const SeachRequest: React.FC = () => {
+  const windowWidth = useWindowWidth();
+  const isMobile = windowWidth < 390;
   const [isToggled, setIsToggled] = useState(false);
   const [transaccionId, setTransaccionId] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -25,7 +27,8 @@ const SeachRequest: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
+    reset,
+    watch,
   } = useForm<FormValues>();
 
   const handleSeachRequestSubmit = async (data: TransactionRequestData) => {
@@ -34,16 +37,14 @@ const SeachRequest: React.FC = () => {
 
     try {
       const requestData: TransactionRequestData = {
-        transaccionId: data.transaccionId, // Mapear desde FormValues
-        userEmail: data.userEmail, // Mapear si existe en el formulario
+        transaccionId: data.transaccionId,
+        userEmail: data.userEmail,
       };
 
-      // Realiza la llamada a la base de datos, pero no necesitas esperar la respuesta
-      await fetchTransactionById(requestData); // Pasar el objeto completo
+      await fetchTransactionById(requestData);
 
-      // Aquí no validas la respuesta, solo activas el toggle
       setIsToggled(true);
-      setTransaccionId(data.transaccionId); // Pasar el transaccionId recibido del formulario
+      setTransaccionId(data.transaccionId);
     } catch (error) {
       console.error('Error fetching transaction:', error);
       setErrorMessage('Hubo un error al buscar la solicitud. Intente nuevamente.');
@@ -53,41 +54,82 @@ const SeachRequest: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center md:mx-10 lg:mx-0 lg:flex-none">
+    <div className="mt-10 flex justify-center md:mx-10 lg2:mr-[20px] lg2:justify-end">
       <form
-        className="ml-2 mt-3 flex h-full w-full flex-col lg:ml-7 lg:justify-evenly"
+        className="lg:max-w-inherit flex h-full w-full max-w-[465px] flex-col lg:justify-evenly"
         onSubmit={handleSubmit(handleSeachRequestSubmit)}
       >
-        <label className="flex flex-col pr-2 text-right text-xl font-bold" htmlFor="transaccionId">
-          NUMERO DE SOLICITUD
-        </label>
-        <input
-          className={`flex w-full border-0 border-b-4 border-solid ps-0 pt-0 text-right text-xl ${isDark ? 'border-b-white bg-transparent text-white placeholder-white focus:border-white' : 'border-b-buttonsLigth bg-transparent text-black placeholder-black focus:border-buttonsLigth'} outline-none focus:outline-none`}
-          type="text"
-          placeholder="Como figura en el recibo"
-          {...register('transaccionId', {
-            required: '• El número de referencia es obligatorio',
-            pattern: {
-              value: /^[A-Za-z0-9]{10,20}$/,
-              message: '• El número de referencia debe tener entre 10 y 20 caracteres alfanuméricos',
-            },
-          })}
-          id="transaccionId"
-        />
-        {errors.transaccionId && <span className="mt-1 text-sm text-red-500">{errors.transaccionId.message}</span>}
+        <div className="flex h-[100px] flex-col">
+          <label
+            className="mb-3 flex flex-col text-right font-textFont text-xs font-light xs:mb-0 lg:text-sm"
+            htmlFor="transaccionId"
+          >
+            Número de Solicitud
+          </label>
+          <input
+            disabled={isToggled}
+            className={`flex h-[41px] w-full border-0 border-b-[1px] border-solid pr-0 ps-0 pt-0 text-right text-base placeholder:text-xs xs:placeholder:text-base lg:text-xl ${
+              isDark
+                ? `${errors.transaccionId !== undefined ? 'placeholder-errorColor' : 'placeholder-placeholderDark'} border-b-darkText bg-transparent text-darkText hover:border-b-placeholderDark focus:border-b-placeholderDark disabled:border-b-disabledDarkText disabled:text-disabledDarkText disabled:placeholder-disabledDarkText disabled:hover:border-b-disabledDarkText`
+                : `${errors.transaccionId !== undefined ? 'placeholder-errorColor' : 'placeholder-inputLightDisabled'} border-b-buttonsLigth bg-transparent text-lightText hover:border-b-selectBtsLight focus:border-b-selectBtsLight disabled:border-b-disabledDarkText disabled:text-disabledLightText disabled:placeholder-disabledLightText disabled:hover:border-b-disabledDarkText`
+            } outline-none focus:shadow-none focus:outline-none focus:ring-0`}
+            type="text"
+            placeholder={
+              errors.transaccionId !== undefined
+                ? 'N° de Solicitud como figura en el Correo Eletrónico*'
+                : 'N° de Solicitud como figura en el Correo Eletrónico'
+            }
+            {...register('transaccionId', {
+              required: 'El número de solicitud es obligatorio',
+              pattern: {
+                value: /^[A-Za-z0-9]{10,20}$/,
+                message: 'El número de solicitud debe tener entre 10 y 20 caracteres alfanuméricos',
+              },
+            })}
+            id="transaccionId"
+          />
+          {errors.transaccionId && (
+            <span className="text-right text-sm text-errorColor">{errors.transaccionId.message}</span>
+          )}
+        </div>
 
-        {errorMessage && <div className="mt-2 text-sm text-red-500">{errorMessage}</div>}
-        <div className="mb-10 mt-5 flex w-full justify-center text-center lg:mb-0 lg:justify-end xl:mr-44">
+        {errorMessage && <div className="mt-2 text-end text-sm text-errorColor">{errorMessage}</div>}
+        <div className="mb-10 mt-4 flex w-full flex-col items-center justify-center gap-1 text-center lg:mb-0 lg:justify-end">
           {!isToggled ? (
-            <button
-              type="submit"
-              disabled={isLoading}
-              className={`relative m-1 mt-8 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 px-20 font-bold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-            >
-              {isLoading ? 'Cargando...' : 'Buscar'}
-            </button>
+            <>
+              {isLoading ? (
+                <div className="flex items-center justify-center">
+                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
+                </div>
+              ) : (
+                <button
+                  type="submit"
+                  className={clsx(
+                    isLoading || !watch('transaccionId')
+                      ? 'border-disabledButtonsLigth bg-disabledButtonsLigth dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText'
+                      : isDark
+                        ? 'buttonSecondDark dark:text-lightText'
+                        : 'buttonSecond',
+                    'relative m-1 min-h-[48px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth py-1 text-lg text-darkText dark:border-darkText dark:bg-darkText',
+                  )}
+                  disabled={isLoading || !watch('transaccionId')} // Desactivar el botón si está cargando
+                >
+                  Editar Solicitud
+                </button>
+              )}
+              <ButtonBack route="/info/help-center" isDark={isDark} />
+            </>
           ) : (
-            <VerifycodeEditRequest transaccionId={transaccionId} toggle={() => setIsToggled(false)} isDark={isDark} />
+            <VerifycodeEditRequest
+              transaccionId={transaccionId}
+              toggle={() => {
+                setIsToggled(false);
+                reset({
+                  transaccionId: '',
+                });
+              }}
+              isDark={isDark}
+            />
           )}
         </div>
       </form>
