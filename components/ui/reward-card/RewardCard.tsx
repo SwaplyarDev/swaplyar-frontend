@@ -29,7 +29,13 @@ function RewardCard({
   return (
     <div className="m-4 box-border flex w-full max-w-sm transform rounded p-6 xs:max-w-2xl xl:max-w-sm">
       <div className={`${className} block items-center xs:flex xl:block`}>
-        <Image className="w-auto" src={imageSrc} alt={imageAlt} width={210} height={150} />
+        <Image
+          className="w-auto drop-shadow-light dark:drop-shadow-darkmode"
+          src={imageSrc}
+          alt={imageAlt}
+          width={210}
+          height={150}
+        />
         <div>
           <h3 className="mt-4 text-[28px] font-normal">{title}</h3>
           <p className="mt-2">

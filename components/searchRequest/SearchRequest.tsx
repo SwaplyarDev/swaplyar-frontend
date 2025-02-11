@@ -153,7 +153,7 @@ const SearchRequest = () => {
         </div>
         <section className="relative mt-10 flex min-h-[500px] flex-col items-center justify-center">
           <Image
-            className="absolute left-0 hidden w-[588px] lg2:block"
+            className="absolute left-0 hidden w-[588px] drop-shadow-light dark:drop-shadow-darkmode lg2:block"
             src="/images/search-request-web.png"
             alt="SwaplyAr Search Request™"
             width={700}
@@ -161,7 +161,7 @@ const SearchRequest = () => {
           />
           <div className="flex w-full max-w-[506px] flex-col items-center border-b border-buttonsLigth dark:border-darkText lg2:hidden">
             <Image
-              className="h-[200px] w-[200px]"
+              className="h-[200px] w-[200px] drop-shadow-light dark:drop-shadow-darkmode"
               src="/images/search-request-phone.png"
               alt="SwaplyAr Search Request Mobile™"
               width={300}

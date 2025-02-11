@@ -48,7 +48,7 @@ export default function SwaplyArInstructions() {
             </Link>
           </div>
           <Image
-            className="w-full max-w-[500px] flex-1"
+            className="w-full max-w-[500px] flex-1 drop-shadow-light dark:drop-shadow-darkmode"
             src={isDark ? howToUseDark : howToUse}
             alt="Imagen principal"
             priority
@@ -94,7 +94,7 @@ export default function SwaplyArInstructions() {
                 className={clsx('flex flex-col items-center gap-10', pair ? 'md:flex-row' : 'md:flex-row-reverse')}
               >
                 <Image
-                  className="w-full max-w-[390px] flex-1"
+                  className="w-full max-w-[390px] flex-1 drop-shadow-light dark:drop-shadow-darkmode"
                   src={isDark ? item.srcDark : item.src}
                   alt={item.title}
                   priority

@@ -28,7 +28,13 @@ const HelpCenterPage = () => {
                   href={item.href}
                   className="group relative flex flex-1 flex-col items-center lg2:after:absolute lg2:after:-right-4 lg2:after:h-full lg2:after:w-[1px] lg2:after:bg-buttonsLigth lg2:after:content-[''] lg2:after:last:hidden lg2:after:dark:bg-darkText"
                 >
-                  <Image src={item.image} alt={item.title} width={200} height={200} />
+                  <Image
+                    className="drop-shadow-light dark:drop-shadow-darkmode"
+                    src={item.image}
+                    alt={item.title}
+                    width={200}
+                    height={200}
+                  />
                   <h2
                     className={clsx(
                       'w-full border-t-[1px] text-center font-textFont text-[28px] transition-all duration-300',
@@ -58,7 +64,7 @@ const HelpCenterPage = () => {
           </section>
           <div className="mx-auto mt-10 flex max-w-[918px] flex-col items-center gap-2 md:flex-row">
             <Image
-              className="h-[320px] w-[332px] object-cover lg2:h-[386px] lg2:w-[388px]"
+              className="h-[320px] w-[332px] object-cover drop-shadow-light dark:drop-shadow-darkmode lg2:h-[386px] lg2:w-[388px]"
               src={isDark ? '/images/helpCenter4Dark.png' : '/images/helpCenter4.png'}
               alt="Imagen de SwaplyAr Plus Rewards"
               width={360}
@@ -88,7 +94,7 @@ const HelpCenterPage = () => {
             {sectionBottomHelpCenter.map((item, i: number) => (
               <Link key={i} href={item.href} target="_blank" className="group flex flex-1 flex-col items-center gap-2">
                 <Image
-                  className="h-[250px] w-[320px] md:h-[347px] md:object-contain"
+                  className="h-[250px] w-[320px] drop-shadow-light dark:drop-shadow-darkmode md:h-[347px] md:object-contain"
                   src={item.image}
                   alt={item.title}
                   width={320}
