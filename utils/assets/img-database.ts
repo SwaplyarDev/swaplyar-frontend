@@ -180,3 +180,10 @@ export const alertaSirenaDark = '/images/ant-design_alert-outlined.png';
 /** Comprobantes **/
 export const comprobanteBienHecho = '/images/comprobante_bien_hecho.png';
 export const comprobanteMalHecho = '/images/comprobante_mal_hecho.png';
+
+export const howToUse1 = '/images/howToUse1.png';
+export const howToUse2 = '/images/howToUse2.png';
+export const howToUse3 = '/images/howToUse3.png';
+export const howToUseDark1 = '/images/howToUseDark1.png';
+export const howToUseDark2 = '/images/howToUseDark2.png';
+export const howToUseDark3 = '/images/howToUseDark3.png';

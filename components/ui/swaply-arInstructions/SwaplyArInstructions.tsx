@@ -97,6 +97,8 @@ export default function SwaplyArInstructions() {
                   className="w-full max-w-[390px] flex-1 drop-shadow-light dark:drop-shadow-darkmode"
                   src={isDark ? item.srcDark : item.src}
                   alt={item.title}
+                  width={500}
+                  height={500}
                   priority
                 />
                 <div className="flex flex-1 flex-col gap-4">
