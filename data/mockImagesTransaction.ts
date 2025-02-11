@@ -46,7 +46,7 @@ export const MockImagesTransLight: MockImages[] = [
   },
   {
     image: TetherImg,
-    name: 'tether',
+    name: 'crypto',
     id: 5,
   },
   {

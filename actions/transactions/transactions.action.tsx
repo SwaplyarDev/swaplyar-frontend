@@ -64,4 +64,46 @@ export const updateTransaction = async ({ transaction }: TransactionTypeSingle) 
   }
 };
 
+export const updateStatusClient = async (transactionId: string, last_name: string, status: string) => {
+  try {
+    const response = await fetch(
+      `${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus?transaction_id=${transactionId}&last_name=${last_name}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(status),
+      },
+    );
+    if (!response.ok) throw new Error('Failed to update transaction');
+
+    return response;
+  } catch (error: any) {
+    console.error('Error updating transaction:', error);
+    return null;
+  }
+};
+
+// export const updateStatusAdmin = async (transactionId: string, last_name: string, changes: any) => {
+//   try {
+//     const response = await fetch(
+//       `${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus?transaction_id=${transactionId}&last_name=${last_name}`,
+//       {
+//         method: 'PUT',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(changes),
+//       },
+//     );
+//     if (!response.ok) throw new Error('Failed to update transaction');
+
+//     return response;
+//   } catch (error: any) {
+//     console.error('Error updating transaction:', error);
+//     return null;
+//   }
+// };
+
 // El CREATE esta en request
