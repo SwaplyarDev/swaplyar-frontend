@@ -20,8 +20,9 @@ export interface FormData {
 }
 
 export interface FormRequestCompleted {
+  transaction_id: string;
   stars_amount: number;
-  message: string;
+  note?: string;
 }
 
 export interface OutputFormat {
