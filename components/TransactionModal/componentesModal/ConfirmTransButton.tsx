@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { TransactionTypeSingle } from '@/types/transactions/transactionsType';
+
 import { CustomButton } from './ui/comoponenteboton';
 
 interface ConfirmarTransProps {
