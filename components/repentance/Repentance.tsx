@@ -95,11 +95,17 @@ const RepentanceForm = () => {
               alt="regretsPc"
               width={650}
               height={0}
-              className="h-full max-h-[557px] object-cover"
+              className="h-full max-h-[557px] object-cover drop-shadow-light dark:drop-shadow-darkmode"
             />
           </div>
           <div className="mx-auto mt-10 flex min-h-full w-full max-w-[506px] flex-wrap justify-center lg2:hidden">
-            <Image src={regretsPhone} alt="regretsPhone" width={200} height={0} className="h-full object-contain" />
+            <Image
+              src={regretsPhone}
+              alt="regretsPhone"
+              width={200}
+              height={0}
+              className="h-full object-contain drop-shadow-light dark:drop-shadow-darkmode"
+            />
             <div
               className={`min-w-full flex-wrap justify-center border-t-2 lg2:hidden ${isDark ? 'border-t-white' : 'border-t-buttonsLigth'}`}
             ></div>
