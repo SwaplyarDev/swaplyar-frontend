@@ -121,6 +121,7 @@ const InfoStep: FC<InfoStepProps> = ({ option }) => {
       document.body.style.paddingRight = '0px';
       document.body.classList.remove('no-scroll');
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [option]); // No poner las dependencias que faltan
 
   useEffect(() => {
