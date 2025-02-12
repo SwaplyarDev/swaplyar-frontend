@@ -181,3 +181,21 @@ export interface TransactionTypeAll {
     img_transaction: string;
   };
 }
+
+export interface TransactionArray {
+  meta: {
+    totalPages: number;
+    page: number;
+    perPage: number;
+  };
+  data: TransactionTypeAll[];
+}
+
+export const emptyTransactionArray: TransactionArray = {
+  meta: {
+    totalPages: 0,
+    page: 0,
+    perPage: 0,
+  },
+  data: [],
+};

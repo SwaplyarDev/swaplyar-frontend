@@ -1,20 +1,19 @@
 'use client';
 import { useEffect, useState } from 'react';
-import SearchBarTable from './SearchBarTable/SearchBarTable';
 import StatusSection from './Status/StatusSection';
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import useQuestionStore from '@/store/useQuestion.store';
 import TransactionModal from '@/components/TransactionModal/transactionModal';
 import { getAllTransactions } from '@/actions/transactions/transactions.action';
-import { TransactionTypeAll } from '@/types/transactions/transactionsType';
+import { TransactionArray, TransactionTypeAll, emptyTransactionArray } from '@/types/transactions/transactionsType';
 
 const TransactionsTable = () => {
   const { currentPage, setCurrentPage } = useQuestionStore();
   const [isLoading, setIsLoading] = useState(false);
   const [modal, setModal] = useState<boolean>(false);
   const [transId, setTransId] = useState<string>('');
-  const [stateTrans, setStateTrans] = useState<TransactionTypeAll[]>([]);
-  const [filteredTransactions, setFilteredTransactions] = useState<TransactionTypeAll[]>([]);
+  const [stateTrans, setStateTrans] = useState<TransactionArray>(emptyTransactionArray);
+  const [filteredTransactions, setFilteredTransactions] = useState<TransactionArray>(emptyTransactionArray);
   const itemsPerPage = 20;
 
   useEffect(() => {
@@ -25,9 +24,6 @@ const TransactionsTable = () => {
         if (trans) {
           setStateTrans(trans);
           setFilteredTransactions(trans);
-        } else {
-          setStateTrans([]);
-          setFilteredTransactions([]);
         }
       } catch (error) {
         console.error('Error fetching transactions:', error);
@@ -57,10 +53,10 @@ const TransactionsTable = () => {
     }
   };
 
-  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredTransactions?.data.length / itemsPerPage);
   const indexOfFirstItem = (currentPage - 1) * itemsPerPage;
   const indexOfLastItem = indexOfFirstItem + itemsPerPage;
-  const currentTransactions = filteredTransactions.slice(indexOfFirstItem, indexOfLastItem);
+  const currentTransactions = filteredTransactions.data.slice(indexOfFirstItem, indexOfLastItem);
 
   const renderTr = (handler: any, item: string, index: number, id: string, item2?: string) => (
     <td
@@ -75,11 +71,6 @@ const TransactionsTable = () => {
     <main className="flex w-full flex-col items-center justify-center pt-2">
       <section className="flex w-[100%] flex-row justify-between">
         <h1 className="pl-44 font-titleFont text-lg font-normal">Transacciones</h1>{' '}
-        <SearchBarTable
-          stateTrans={stateTrans}
-          setCurrentPage={setCurrentPage}
-          setFilteredTransactions={setFilteredTransactions}
-        />
       </section>
 
       <div className="flex w-[95%] flex-row gap-4 divide-x-[1px] divide-black overflow-x-auto">

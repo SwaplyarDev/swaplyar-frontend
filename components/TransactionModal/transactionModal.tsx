@@ -8,12 +8,11 @@ import ClientMessage from './componentesModal/ClientMessage';
 import InfoStatus from './componentesModal/InfoStatus';
 import TransferImages from './componentesModal/TransferImages';
 import TransferClient from './componentesModal/TransferClient';
+import { useTransactionStore } from '@/store/transactionModalStorage';
 import { TransactionTypeSingle, emptyTransaction } from '@/types/transactions/transactionsType';
 
 import RecieverData from './componentesModal/RecieverData';
 import Mensaje from './componentesModal/mensaje';
-import { getTransactionById, updateStatusClient } from '@/actions/transactions/transactions.action';
-
 interface TransactionModalProps {
   modal: boolean;
   setModal: (arg: boolean) => void;
@@ -21,104 +20,34 @@ interface TransactionModalProps {
 }
 
 const TransactionModal: React.FC<TransactionModalProps> = ({ modal, setModal, transId }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [trans, setTransaction] = useState<TransactionTypeSingle>(emptyTransaction);
-  const [status, setStatus] = useState<string>('pending');
-  const [componentStates, setComponentStates] = useState<{
-    aprooveReject: 'stop' | 'accepted' | 'rejected' | null;
-    confirmTransButton: boolean;
-    discrepancySection: boolean;
-    transferRealized: boolean;
-  }>({
-    aprooveReject: null,
-    confirmTransButton: false,
-    discrepancySection: false,
-    transferRealized: false,
-  });
-  const [selected, setSelected] = useState<'stop' | 'accepted' | 'rejected' | null>(null);
+  const {
+    isLoading,
+    trans,
+    status,
+    componentStates,
+    selected,
+    fetchTransaction,
+    updateTransactionStatus,
+    setComponentStates,
+    setSelected,
+  } = useTransactionStore();
 
   useEffect(() => {
     console.log(selected, componentStates);
+    console.log(status, 'status');
   }, [componentStates]);
 
   useEffect(() => {
-    if (
-      componentStates.confirmTransButton &&
-      componentStates.aprooveReject === 'stop' &&
-      componentStates.discrepancySection
-    ) {
-      setStatus('discrepancy'); // cuando hay discrepancia
-    }
-    if (
-      componentStates.confirmTransButton &&
-      componentStates.aprooveReject === null &&
-      !componentStates.discrepancySection
-    ) {
-      setStatus('review_payment'); //cuando se acepta la primera parte
-    }
-    if (
-      !componentStates.confirmTransButton &&
-      componentStates.aprooveReject === 'rejected' &&
-      !componentStates.discrepancySection
-    ) {
-      setStatus('rejected'); //cuando se rechaza la peticion (no llega la confirmacion de transferencia)
-    }
-    if (
-      componentStates.confirmTransButton &&
-      componentStates.aprooveReject === 'accepted' &&
-      !componentStates.discrepancySection &&
-      !componentStates.transferRealized
-    ) {
-      setStatus('in_transit'); //cuando esta todo bien solo hay que esperar a la transferencia de parte de swaply
-    }
-    if (
-      componentStates.confirmTransButton &&
-      componentStates.aprooveReject === 'accepted' &&
-      !componentStates.discrepancySection &&
-      componentStates.transferRealized
-    ) {
-      setStatus('completed'); //Se completo la transferencia
-    }
-  }, [componentStates]);
-
+    updateTransactionStatus(transId);
+  }, [status, transId, componentStates]);
   useEffect(() => {
-    const updateTransactionStatus = async () => {
-      try {
-        await updateStatusClient(transId, status);
-
-        console.log('Estado de la transacción actualizado');
-      } catch (error) {
-        console.error('Error al actualizar el estado de la transacción:', error);
-      }
-    };
-
-    updateTransactionStatus();
-  }, [status, transId]);
-
-  useEffect(() => {
-    const fetchTransactions = async () => {
-      setIsLoading(true);
-      try {
-        if (transId) {
-          const trans = await getTransactionById(transId);
-          if (trans !== null) {
-            setTransaction(trans);
-            console.log('Transaction state updated:', trans);
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching transactions:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchTransactions();
+    if (transId) {
+      fetchTransaction(transId);
+    }
   }, [transId]);
 
   const handleClick = () => {
-    setModal(!modal);
-    setTransaction(emptyTransaction);
+    setModal(false);
   };
 
   return (
@@ -128,7 +57,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ modal, setModal, tr
     >
       <section
         onClick={(e) => e.stopPropagation()}
-        className={`my-28 flex max-h-[48rem] max-w-[55rem] flex-col gap-8 overflow-y-auto rounded-lg bg-white p-6 font-textFont shadow-lg transition-all duration-300 ${modal ? 'opacity-100' : 'translate-x-[30vw] opacity-0'}`}
+        className={`mt-32 flex max-h-[48rem] max-w-[55rem] flex-col gap-8 overflow-y-auto rounded-lg bg-white p-6 font-textFont shadow-lg transition-all duration-300 ${modal ? 'opacity-100' : 'translate-x-[30vw] opacity-0'}`}
       >
         <InfoStatus trans={trans} transId={transId} />
         <TransactionDetail transaction={trans} isLoading={isLoading} />
@@ -136,18 +65,14 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ modal, setModal, tr
         <TransferImages trans={trans} />
         <ConfirmTransButton
           value={componentStates.confirmTransButton}
-          setValue={(value) => setComponentStates((prev) => ({ ...prev, confirmTransButton: !value }))}
+          setValue={(value) => setComponentStates('confirmTransButton', value)}
           trans={trans}
         />
         <AprobarRechazar
           selected={selected}
           onSelectChange={(value) => {
-            // Usar el setter de aprooveReject para modificar solo este campo
-            setComponentStates((prev) => ({
-              ...prev,
-              aprooveReject: value, // Aquí solo actualizas aprooveReject
-            }));
-            setSelected(value); // También actualizas el estado selected
+            setComponentStates('aprooveReject', value);
+            setSelected(value);
           }}
         />
         <DiscrepancySection trans={trans} />

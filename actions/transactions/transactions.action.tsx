@@ -1,5 +1,5 @@
 'use server';
-import { TransactionTypeAll, TransactionTypeSingle } from '@/types/transactions/transactionsType';
+import { TransactionArray, TransactionTypeSingle } from '@/types/transactions/transactionsType';
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -8,7 +8,7 @@ export const getAllTransactions = async () => {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions`);
     if (!response.ok) throw new Error('Failed to fetch transactions');
 
-    const data: TransactionTypeAll[] = await response.json();
+    const data: TransactionArray = await response.json();
     return data;
   } catch (error: any) {
     console.error('Error fetching transactions:', error);
