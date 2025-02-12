@@ -37,7 +37,7 @@ import useStatusManager from '@/hooks/useStatusManager';
 import { searchRequest } from '@/actions/request/action.search-request/action.searchRecuest';
 import { showStatusAlert } from './swalConfig';
 import ReactDOMServer from 'react-dom/server';
-import { IconoVacio, RevisionCamino, Modificada, Cancelada, Discrepancia, Reembolso } from './icons';
+import { Modificada, Cancelada, Discrepancia, Reembolso, Enviada, Revision, DineroEnCamino, Finalizada } from './icons';
 import LoadingGif from '../ui/LoadingGif/LoadingGif';
 import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
 import ButtonBack from '../ui/ButtonBack/ButtonBack';
@@ -77,15 +77,14 @@ const SearchRequest = () => {
 
   const handleSearchRequest = (statusObject: Record<string, any>) => {
     const statusMessages = {
-      received: { text: 'Solicitud Recibida', icon: ReactDOMServer.renderToString(<IconoVacio />) },
-      pending: { text: 'Solicitud enviada', icon: ReactDOMServer.renderToString(<IconoVacio />) },
-      review_payment: { text: 'Pago en Revisión', icon: ReactDOMServer.renderToString(<RevisionCamino />) },
-      completed: { text: 'Solicitud Finalizada con Éxito', icon: ReactDOMServer.renderToString(<IconoVacio />) },
-      in_transit: { text: 'Dinero en Camino', icon: ReactDOMServer.renderToString(<RevisionCamino />) },
-      canceled: { text: 'Solicitud Cancelada', icon: ReactDOMServer.renderToString(<Cancelada />) },
-      modified: { text: 'Solicitud modificada', icon: ReactDOMServer.renderToString(<Modificada />) },
-      refunded: { text: 'Reembolso solicitado', icon: ReactDOMServer.renderToString(<Reembolso />) },
-      discrepancy: { text: 'Discrepancia en la Solicitud', icon: ReactDOMServer.renderToString(<Discrepancia />) },
+      received: { text: 'Solicitud Enviada', icon: ReactDOMServer.renderToString(<Enviada />) },
+      pending: { text: 'Pago en Revisión', icon: ReactDOMServer.renderToString(<Revision />) },
+      review_payment: { text: 'Dinero en Camino', icon: ReactDOMServer.renderToString(<DineroEnCamino />) },
+      completed: { text: 'Discrepancia en la Solicitud', icon: ReactDOMServer.renderToString(<Discrepancia />) },
+      in_transit: { text: 'Solicitud Cancelada', icon: ReactDOMServer.renderToString(<Cancelada />) },
+      canceled: { text: 'Solicitud Modificada', icon: ReactDOMServer.renderToString(<Modificada />) },
+      modified: { text: 'Dinero Reembolsado con Éxito', icon: ReactDOMServer.renderToString(<Reembolso />) },
+      discrepancy: { text: 'Solicitud Finalizada con Éxito', icon: ReactDOMServer.renderToString(<Finalizada />) },
     };
 
     const uniqueStatuses = Array.from(new Set(Object.keys(statusObject)));
