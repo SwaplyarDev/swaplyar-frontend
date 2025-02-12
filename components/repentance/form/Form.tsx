@@ -7,6 +7,7 @@ import { FormData } from '@/types/repentance/repentance';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { FormularioProps } from '@/types/repentance/repentance';
 import SelectCountry from '@/components/request/form/inputs/SelectCountry';
+import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
 
 const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
   const {
@@ -164,12 +165,13 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
             <Controller
               name="calling_code"
               control={control}
-              defaultValue={undefined}
+              defaultValue={defaultCountryOptions.find((option) => option.callingCode === '+54')}
               rules={{
                 required: 'Este campo es obligatorio',
               }}
               render={({ field, fieldState }) => (
                 <SelectCountry
+                  selectedCodeCountry={field.value}
                   setSelectedCodeCountry={(option) => field.onChange(option)}
                   errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
                   textColor={['buttonsLigth', 'darkText']}
