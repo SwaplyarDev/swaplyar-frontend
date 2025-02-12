@@ -7,6 +7,7 @@ import { FormData } from '@/types/repentance/repentance';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { FormularioProps } from '@/types/repentance/repentance';
 import SelectCountry from '@/components/request/form/inputs/SelectCountry';
+import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
 
 const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
   const {
@@ -18,7 +19,12 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
     mode: 'onChange',
   });
   const submitHandler: SubmitHandler<FormData> = (data) => {
-    onSubmit(data); // Envía los datos al componente padre
+    const { calling_code, ...newData } = {
+      ...data,
+      phone_number: `${data.calling_code?.callingCode}${data.phone_number}`,
+    };
+
+    onSubmit(newData); // Envía los datos al componente padre
   };
 
   const errorHandler: SubmitErrorHandler<FormData> = (errors) => {
@@ -35,7 +41,6 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
     email: '',
     phone_number: '',
     note: '',
-    calling_code: undefined,
     status: '',
   });
 
@@ -164,12 +169,13 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
             <Controller
               name="calling_code"
               control={control}
-              defaultValue={undefined}
+              defaultValue={defaultCountryOptions.find((option) => option.callingCode === '+54')}
               rules={{
                 required: 'Este campo es obligatorio',
               }}
               render={({ field, fieldState }) => (
                 <SelectCountry
+                  selectedCodeCountry={field.value}
                   setSelectedCodeCountry={(option) => field.onChange(option)}
                   errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
                   textColor={['buttonsLigth', 'darkText']}
@@ -204,6 +210,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
         <label className="font-textFont text-xs font-light">
           Nota Opcional{' '}
           <textarea
+            {...register('note')}
             className={clsx(
               'placeholder-text-gray-900 h-[45px] max-h-[148px] min-h-[45px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
               isDark
