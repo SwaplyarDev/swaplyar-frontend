@@ -21,6 +21,7 @@ export const createRegret = async (createRepentance: FormData) => {
   }
 
   const transformedData = transformData(createRepentance);
+  console.log(transformData);
   const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/regrets`, {
     method: 'POST',
     headers: {

@@ -19,7 +19,12 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
     mode: 'onChange',
   });
   const submitHandler: SubmitHandler<FormData> = (data) => {
-    onSubmit(data); // Envía los datos al componente padre
+    const { calling_code, ...newData } = {
+      ...data,
+      phone_number: `${data.calling_code?.callingCode}${data.phone_number}`,
+    };
+
+    onSubmit(newData); // Envía los datos al componente padre
   };
 
   const errorHandler: SubmitErrorHandler<FormData> = (errors) => {
@@ -36,7 +41,6 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
     email: '',
     phone_number: '',
     note: '',
-    calling_code: undefined,
     status: '',
   });
 
