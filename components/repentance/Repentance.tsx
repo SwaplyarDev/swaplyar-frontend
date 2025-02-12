@@ -44,7 +44,7 @@ const RepentanceForm = () => {
       isLoading,
       onSend: async () => {
         // Aquí es donde hacemos el envío de los datos
-        const dataToSend = { ...formData, status: 'pendiente' };
+        const dataToSend = { ...formData, status: 'pending' };
         console.log(dataToSend);
         try {
           const response = await createRegret(dataToSend);

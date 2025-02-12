@@ -9,19 +9,20 @@ const transformData = (input: FormData): OutputFormat => {
     transaction_id: input.transaction_id.trim(),
     last_name: input.last_name.trim(),
     email: input.email.trim(),
-    phone_number: `${input.calling_code?.callingCode}${input.phone_number}`.trim(),
+    phone_number: `${input.phone_number}`.trim(),
     note: input.note?.trim(),
     status: input.status || 'pendiente',
   };
 };
 
 export const createRegret = async (createRepentance: FormData) => {
+  console.log(createRepentance);
   if (!createRepentance.transaction_id || !createRepentance.last_name || !createRepentance.email) {
     throw new Error('Faltan campos requeridos en createRepentance');
   }
 
   const transformedData = transformData(createRepentance);
-  console.log(transformData);
+
   const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/regrets`, {
     method: 'POST',
     headers: {
