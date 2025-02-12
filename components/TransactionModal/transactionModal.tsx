@@ -25,13 +25,22 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ modal, setModal, tr
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [trans, setTransaction] = useState<TransactionTypeSingle>(emptyTransaction);
   const [status, setStatus] = useState<string>('pending');
-  const [componentStates, setComponentStates] = useState({
+  const [componentStates, setComponentStates] = useState<{
+    aprooveReject: 'stop' | 'accepted' | 'rejected' | null;
+    confirmTransButton: boolean;
+    discrepancySection: boolean;
+    transferRealized: boolean;
+  }>({
     aprooveReject: null,
     confirmTransButton: false,
     discrepancySection: false,
     transferRealized: false,
   });
+  const [selected, setSelected] = useState<'stop' | 'accepted' | 'rejected' | null>(null);
 
+  useEffect(() => {
+    console.log(selected, componentStates);
+  }, [componentStates]);
   console.log(status);
   useEffect(() => {
     if (
@@ -132,7 +141,17 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ modal, setModal, tr
           trans={trans}
         />
 
-        <AprobarRechazar />
+        <AprobarRechazar
+          selected={selected}
+          onSelectChange={(value) => {
+            // Usar el setter de aprooveReject para modificar solo este campo
+            setComponentStates((prev) => ({
+              ...prev,
+              aprooveReject: value, // Aquí solo actualizas aprooveReject
+            }));
+            setSelected(value); // También actualizas el estado selected
+          }}
+        />
         <DiscrepancySection trans={trans} />
         <h2 className="lightText text-2xl font-semibold">Información para realizar el pago al cliente</h2>
         <button className="rounded-lg border border-[#ffac79] bg-[#a78b79] p-2.5">Editar Destinatario</button>
