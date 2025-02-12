@@ -1,4 +1,5 @@
 import { TransactionTypeSingle } from '@/types/transactions/transactionsType';
+import { renderLabels, getReceiverLabels } from './ui/RenderLabels';
 import React from 'react';
 
 interface DetailTransProps {
@@ -7,44 +8,7 @@ interface DetailTransProps {
 }
 
 const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading }) => {
-  const { sender, receiver, payment_method, amounts, proof_of_payment } = transaction.transaction;
-
-  const renderData = (label: string, text: string, text2?: string, text3?: string, key?: number) => (
-    <article key={key || 0} className="flex flex-col">
-      <p>{label}</p>
-      <p>
-        {text} {text2} {text3}
-      </p>
-    </article>
-  );
-
-  const getReceiverLabels = () => {
-    const walletType = payment_method.receiver.value;
-
-    switch (walletType) {
-      case 'Wise':
-        return [
-          { label: 'Nombre y Apellidos', value: `${receiver.first_name} ${receiver.last_name}` },
-          { label: 'Email a realizar el pago', value: payment_method.receiver.details.sender_method_value },
-        ];
-      case 'Thether':
-        return [
-          { label: 'Dirección USDT', value: payment_method.receiver.details.sender_method_value },
-          { label: 'RED', value: payment_method.receiver.details.bank_name },
-        ];
-      case 'ars':
-        return [
-          { label: 'CBU', value: payment_method.receiver.details.sender_method_value },
-          { label: 'Banco', value: payment_method.receiver.details.bank_name },
-          { label: 'DNI', value: payment_method.receiver.details.document_value },
-        ];
-      default:
-        return [
-          { label: 'Método de pago', value: walletType },
-          { label: 'Detalle', value: payment_method.receiver.details.sender_method_value },
-        ];
-    }
-  };
+  const { sender, payment_method, amounts, proof_of_payment } = transaction.transaction;
 
   if (!isLoading)
     return (
@@ -70,23 +34,28 @@ const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading 
         </svg>
         <article className="flex flex-col divide-y-2">
           <h3 className="text-xl font-semibold">Datos del Solicitante</h3>
-          {renderData('Nombre y Apellido', sender?.first_name, sender?.last_name)}
-          {renderData('Email', sender?.email)}
+          {renderLabels('Nombre y Apellido', sender?.first_name, sender?.last_name)}
+          {renderLabels('Email', sender?.email)}
         </article>
         <article className="flex flex-col divide-y-2">
           <h3 className="text-xl font-semibold">Datos del Destinatario</h3>
-          {getReceiverLabels().map((item, index) => renderData(item.label, item.value))}
+          {getReceiverLabels(transaction).map((item, index) => renderLabels(item.label, item.value))}
         </article>
         <article className="flex flex-col divide-y-2">
           <h3 className="text-xl font-semibold">Datos del Pago</h3>
-          {renderData('Monto a Transferir', amounts?.sent.amount, payment_method?.sender.value, amounts?.sent.currency)}
-          {renderData(
+          {renderLabels(
+            'Monto a Transferir',
+            amounts?.sent.amount,
+            payment_method?.sender.value,
+            amounts?.sent.currency,
+          )}
+          {renderLabels(
             'Monto a recibir',
             amounts?.received.amount,
             payment_method?.receiver.value,
             amounts?.received.currency,
           )}
-          {renderData('Link del comprobante', proof_of_payment.img_transaction.substring(0, 16).concat('....'))}
+          {renderLabels('Link del comprobante', proof_of_payment.img_transaction.substring(0, 16).concat('....'))}
         </article>
       </section>
     );

@@ -7,14 +7,14 @@ interface TransactionProps {
   trans: TransactionTypeSingle;
 }
 
-const ImagenesTranferencia: React.FC<TransactionProps> = ({ trans }) => {
+const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
   const { payment_method } = trans.transaction;
   const senderImg = MockImagesTransLight.find((img) => img.name === payment_method.sender.value)?.image;
 
   const receiverImg = MockImagesTransLight.find((img) => img.name === payment_method.receiver.value)?.image;
 
   return (
-    <article className="flex min-h-24 flex-row items-center justify-evenly overflow-hidden rounded-full border-2 border-[#012a8d] p-3">
+    <section className="flex min-h-24 flex-row items-center justify-evenly overflow-hidden rounded-full border-2 border-[#012a8d] p-3">
       <article className="flex h-16 w-16 items-center justify-center">
         <Image className="h-full w-full" src={swaplyarAvatarpopup} alt="avatar" width={200} height={200} />
       </article>
@@ -39,8 +39,8 @@ const ImagenesTranferencia: React.FC<TransactionProps> = ({ trans }) => {
           )}
         </article>
       </article>
-    </article>
+    </section>
   );
 };
 
-export default ImagenesTranferencia;
+export default TransferImages;

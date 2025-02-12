@@ -6,12 +6,11 @@ import ConfirmTransButton from './componentesModal/ConfirmTransButton';
 import DiscrepancySection from './componentesModal/DiscrepancySection';
 import ClientMessage from './componentesModal/ClientMessage';
 import InfoStatus from './componentesModal/InfoStatus';
-import ImagenesTranferencia from './componentesModal/imagenestranferencia';
-import TransferenciaRealizadaCliente from './componentesModal/botonesTransferenciaRealizadaCliente';
-import Image from 'next/image';
+import TransferImages from './componentesModal/TransferImages';
+import TransferClient from './componentesModal/TransferClient';
 import { TransactionTypeSingle, emptyTransaction } from '@/types/transactions/transactionsType';
-import { clipopup } from '@/utils/assets/img-database';
-import DatoDestinatario from './componentesModal/datoDestinatario';
+
+import RecieverData from './componentesModal/RecieverData';
 import Mensaje from './componentesModal/mensaje';
 import { getTransactionById, updateStatusClient } from '@/actions/transactions/transactions.action';
 
@@ -41,7 +40,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ modal, setModal, tr
   useEffect(() => {
     console.log(selected, componentStates);
   }, [componentStates]);
-  console.log(status);
+
   useEffect(() => {
     if (
       componentStates.confirmTransButton &&
@@ -134,13 +133,12 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ modal, setModal, tr
         <InfoStatus trans={trans} transId={transId} />
         <TransactionDetail transaction={trans} isLoading={isLoading} />
         <ClientMessage trans={trans} />
-        <ImagenesTranferencia trans={trans} />
+        <TransferImages trans={trans} />
         <ConfirmTransButton
           value={componentStates.confirmTransButton}
           setValue={(value) => setComponentStates((prev) => ({ ...prev, confirmTransButton: !value }))}
           trans={trans}
         />
-
         <AprobarRechazar
           selected={selected}
           onSelectChange={(value) => {
@@ -153,16 +151,16 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ modal, setModal, tr
           }}
         />
         <DiscrepancySection trans={trans} />
-        <h2 className="lightText text-2xl font-semibold">Información para realizar el pago al cliente</h2>
-        <button className="rounded-lg border border-[#ffac79] bg-[#a78b79] p-2.5">Editar Destinatario</button>
-        <DatoDestinatario />
-        <TransferenciaRealizadaCliente />
-        <p className="lightText text-center text-xl">Subir Comprobante</p>
-        <button className="flex items-center gap-2 rounded-lg bg-[#d3d3d3] p-2.5">
-          Subir Comprobante <Image src={clipopup} alt="clip" width={16} height={16} />
+        <button className="max-w-[9.50rem] self-end rounded-lg border border-[#FF6200] bg-[#642600] px-2 py-2 text-darkText">
+          Editar Destinatario
         </button>
-        <button className="text-[#012a8d] underline">Link del comprobante</button>
-        <Mensaje />
+        <h2 className="lightText text-2xl font-semibold">Información para realizar el pago al cliente</h2>
+
+        <section className="flex w-[100%] flex-row justify-between">
+          <RecieverData trans={trans} />
+          <TransferClient />
+        </section>
+
         <div className="flex gap-5">
           <button className="rounded-full border-2 border-[#d0b8b8] bg-[#b6a0a0] p-2.5 text-2xl font-semibold">
             Rechazada
