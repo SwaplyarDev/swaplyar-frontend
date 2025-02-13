@@ -38,6 +38,8 @@ interface StepThreeData {
   pay_email: string;
   proof_of_payment: FileList | null;
   note: string;
+  network?: string;
+  wallet?: string;
 }
 
 interface FormData {
@@ -96,6 +98,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       pay_email: '',
       proof_of_payment: null,
       note: '',
+      network: '',
+      wallet: '',
     },
   },
   idTransaction: undefined,
@@ -137,9 +141,9 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       pix_key: stepTwo.pix_key || '',
       pix_value: pixValue || '',
       cpf: stepTwo.individual_tax_id.replace(/[.-]/g, '') || '',
-      currency: selectedSendingSystem?.coin || '',
-      network: stepTwo.red_selection?.value || '',
-      wallet: stepTwo.usdt_direction || '',
+      currency: selectedSendingSystem?.coin.toLowerCase() || '',
+      network: stepThree.network || '',
+      wallet: stepThree.wallet || '',
     };
 
     const receiverDetails = {
@@ -153,7 +157,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       pix_key: stepTwo.pix_key || '',
       pix_value: pixValue || '',
       cpf: stepTwo.individual_tax_id.replace(/[.-]/g, '') || '',
-      currency: selectedReceivingSystem?.coin || '',
+      currency: selectedReceivingSystem?.coin.toLowerCase() || '',
       network: stepTwo.red_selection?.value || '',
       wallet: stepTwo.usdt_direction || '',
     };
@@ -320,6 +324,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           pay_email: '',
           proof_of_payment: null,
           note: '',
+          network: '',
+          wallet: '',
         },
       },
     })),
