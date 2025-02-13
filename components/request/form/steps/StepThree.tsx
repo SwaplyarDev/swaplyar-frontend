@@ -61,7 +61,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
       setValue('send_amount', sendAmount);
       setValue('receive_amount', receiveAmount);
     }
-    setValue('pay_email', '00000@00000000.com');
+    setValue('pay_email', '');
     setValue('proof_of_payment', proof_of_payment);
     setValue('note', note);
 
@@ -72,7 +72,6 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   const [loading, setLoading] = useState(false);
   const onSubmit = (data: FormData) => {
     setLoading(true);
-    console.log(data);
     updateFormData(2, data);
     markStepAsCompleted(2);
     setActiveStep(3);
