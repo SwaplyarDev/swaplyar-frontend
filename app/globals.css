@@ -19,7 +19,7 @@
 }
 
 .container-blur {
-  @apply fixed flex top-0 h-full min-h-[1000px] w-full justify-center overflow-hidden;
+  @apply fixed top-0 flex h-full min-h-[1000px] w-full justify-center overflow-hidden;
 }
 
 .box {
@@ -424,7 +424,7 @@ div:where(.swal2-icon).swal2-info {
 
 .swal2-title {
   padding-top: 0 !important;
-  @apply text-xl font-textFont p-0 mx-11;
+  @apply mx-11 p-0 font-textFont text-xl;
 }
 
 .my-popup {
@@ -433,7 +433,7 @@ div:where(.swal2-icon).swal2-info {
   gap: 20px; /* Agrega espacio entre elementos internos */
 }
 
-.custom-container-payment{
+.custom-container-payment {
   @apply p-0;
 }
 
@@ -534,6 +534,24 @@ div:where(.swal2-container).swal2-noanimation {
   to {
     height: 30px;
     bottom: -30px;
+  }
+}
+
+@layer utilities {
+  @keyframes cloudAnimation {
+    0% {
+      transform: translateY(5px);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+    100% {
+      transform: translateY(5px);
+    }
+  }
+
+  .cloud {
+    animation: cloudAnimation 3s linear infinite;
   }
 }
 
