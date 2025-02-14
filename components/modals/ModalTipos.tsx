@@ -45,8 +45,6 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
 
   if (!isOpen) return null;
 
-  const methodDestinatario = 'datos';
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setFile(event.target.files[0]);
@@ -147,68 +145,83 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
       setLoading(false);
     }
   };
-  const PayMethodInfo: React.FC<payMethodInfo> = ({ methodDestinatario }) => {
-    if (methodDestinatario === 'datos') {
+  const PayMethodInfo: React.FC = () => {
+    if (transactionData.payment_method.receiver.value === 'ars') {
       return (
         <div className="flex justify-between text-sm">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
             <p>Nombre </p>
             <p>Apellido </p>
-            <p>Correo electrónico </p>
+            <p>DNI/CUIT/CUIL </p>
+            <p>CBU/CVU/ALIAS </p>
+            <p>Nombre del Banco </p>
           </div>
           <div className="flex flex-col text-end text-lightText dark:text-darkText">
             <p>{transactionData.receiver.first_name}</p>
             <p>{transactionData.receiver.last_name}</p>
-            <p>{transactionData.payment_method.receiver.details.email_account}</p>
+            <p>{transactionData.payment_method.receiver.details.document_value}</p>
+            <p>{transactionData.payment_method.receiver.details.sender_method_value}</p>
+            <p>{transactionData.payment_method.receiver.details.bank_name}</p>
           </div>
         </div>
       );
-    } else if (methodDestinatario === 'USDT') {
+    } else if (transactionData.payment_method.receiver.value === 'crypto') {
       return (
         <div className="flex justify-between text-sm">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
             <p>Dirección USDT </p>
             <p>Red </p>
           </div>
-          <div className="flex flex-col text-end text-lightText dark:text-darkText">
-            <p>{transactionData.receiver.payment_method_id}</p>
-            <p>{transactionData.transaction.country_transaction}</p>
+          <div className="flex flex-col justify-between text-end text-lightText dark:text-darkText">
+            <p>{transactionData.payment_method.receiver.details.wallet}</p>
+            <p>{transactionData.payment_method.receiver.details.network}</p>
           </div>
         </div>
       );
-    } else if (methodDestinatario === 'banco') {
-      return (
-        <div className="flex justify-between text-sm">
-          <div className="flex flex-col text-start text-lightText dark:text-darkText">
-            <p>Nombre </p>
-            <p>Apellido </p>
-            <p>TAX ID/CUIT/CUIL</p>
-            <p>Nombre del Banco</p>
-            <p>CBU/CVU/ALIAS</p>
-          </div>
-          <div className="flex flex-col text-end text-lightText dark:text-darkText">
-            <p>{transactionData.sender.first_name}</p>
-            <p>{transactionData.sender.last_name}</p>
-            <p>{transactionData.sender.identification}</p>
-            <p>{transactionData?.transaction?.payment_method?.value}</p>
-            <p>{transactionData?.transaction?.payment_method?.value}</p>{' '}
-          </div>
-        </div>
-      );
-    } else if (methodDestinatario === 'PIX') {
+    } else if (transactionData.payment_method.receiver.value === 'pix') {
       return (
         <div className="flex justify-between text-sm">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
             <p>Nombre </p>
             <p>Apellido </p>
             <p>PIX KEY</p>
-            <p>Individual TAX ID (CPF)</p>
+            <p>CPF</p>
           </div>
           <div className="flex flex-col text-end text-lightText dark:text-darkText">
-            <p>{transactionData.sender.first_name}</p>
-            <p>{transactionData.sender.last_name}</p>
-            <p>{transactionData.sender.identification}</p>
-            <p>{transactionData.receiver.payment_method_id}</p>
+            <p>{transactionData.receiver.first_name}</p>
+            <p>{transactionData.receiver.last_name}</p>
+            <p>{transactionData.payment_method.receiver.details.pix_key}</p>
+            <p>{transactionData.payment_method.receiver.details.cpf}</p>
+          </div>
+        </div>
+      );
+    } else if (transactionData.payment_method.receiver.value === 'wise') {
+      return (
+        <div className="flex justify-between text-sm">
+          <div className="flex flex-col text-start text-lightText dark:text-darkText">
+            <p>Nombre </p>
+            <p>Apellido </p>
+            <p>Correo electrónico</p>
+          </div>
+          <div className="flex flex-col text-end text-lightText dark:text-darkText">
+            <p>{transactionData.receiver.first_name}</p>
+            <p>{transactionData.receiver.last_name}</p>
+            <p>{transactionData.payment_method.receiver.details.pix_key}</p>
+          </div>
+        </div>
+      );
+    } else if (transactionData.payment_method.receiver.value === 'payoneer') {
+      return (
+        <div className="flex justify-between text-sm">
+          <div className="flex flex-col text-start text-lightText dark:text-darkText">
+            <p>Nombre </p>
+            <p>Apellido </p>
+            <p>Correo electrónico</p>
+          </div>
+          <div className="flex flex-col text-end text-lightText dark:text-darkText">
+            <p>{transactionData.receiver.first_name}</p>
+            <p>{transactionData.receiver.last_name}</p>
+            <p>{transactionData.payment_method.receiver.details.pix_key}</p>
           </div>
         </div>
       );
@@ -222,7 +235,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
     <div className="fixed inset-0 left-0 right-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div
         style={{ top: '0px', bottom: '64px' }}
-        className="relative mt-24 w-full max-w-[400px] rounded-lg bg-[#FFF] px-0 py-2 shadow-lg dark:bg-[#333231] xs:px-4"
+        className="relative mt-24 w-full max-w-[400px] rounded-lg bg-[#FFF] px-0 py-2 shadow-lg dark:bg-[#333231] xs:px-0"
         onClick={(e) => e.stopPropagation()}
       >
         <button onClick={onClose} className="absolute right-2.5 top-1.5 text-2xl">
@@ -232,14 +245,14 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
           Formulario de Solicitud N° {transaccionId}
         </h2>
 
-        <div className="flex max-h-[70vh] flex-col gap-2 overflow-y-auto px-4 scrollbar-thin">
+        <div className="flex max-h-[70vh] flex-col gap-2 overflow-y-auto px-4 scrollbar">
           <section className="flex flex-col border-b border-darkText pb-2">
             <h3 className="mb-2 flex font-textFont font-semibold text-buttonsLigth dark:text-darkText">Mis Datos</h3>
             <div className="flex justify-between text-sm">
               <div className="flex flex-col text-start font-textFont font-light text-lightText dark:text-darkText">
                 <p>Nombre </p>
                 <p>Apellido </p>
-                <p>Email </p>
+                <p>Correo electrónico </p>
                 <p>N° de Teléfono </p>
               </div>
               <div className="flex flex-col text-end font-textFont font-light text-lightText dark:text-darkText">
@@ -256,7 +269,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
               informacion del Destinatario
             </h3>
 
-            <PayMethodInfo methodDestinatario={methodDestinatario} />
+            <PayMethodInfo />
           </section>
 
           <section className="flex flex-col border-b border-darkText pb-2">
