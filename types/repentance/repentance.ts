@@ -35,6 +35,8 @@ export interface OutputFormat {
 }
 export interface AlertsProps {
   isDark: boolean;
+  toggleTooltip: () => void;
+  setIsTooltipVisible: React.Dispatch<React.SetStateAction<boolean>>;
   message?: string;
 }
 

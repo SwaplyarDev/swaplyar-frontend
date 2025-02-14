@@ -1,97 +1,85 @@
-import React, { useState } from 'react';
-import { Controller, SubmitErrorHandler, SubmitHandler, useForm, useWatch } from 'react-hook-form';
+import React, { useCallback, useState } from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 import clsx from 'clsx';
-import Swal from 'sweetalert2';
 import { FormData } from '@/types/repentance/repentance';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { FormularioProps } from '@/types/repentance/repentance';
 import SelectCountry from '@/components/request/form/inputs/SelectCountry';
 import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
+import { createRegret } from '@/actions/repentance/repentanceForm.action';
+import AlertIncorrect from '../Alerts/AlertIncorrect';
 
-const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
+const Form = () => {
+  const [isFocused, setIsFocused] = useState(false);
+  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+  const toggleTooltip = useCallback(() => {
+    setIsTooltipVisible((prev) => !prev);
+  }, []);
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     control,
-    watch,
   } = useForm<FormData>({
     mode: 'onChange',
   });
-  const submitHandler: SubmitHandler<FormData> = (data) => {
-    const { calling_code, ...newData } = {
+
+  const { isDark } = useDarkTheme();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleFormSubmission: SubmitHandler<FormData> = async (data) => {
+    const dataToSend = {
       ...data,
       phone_number: `${data.calling_code?.callingCode}${data.phone_number}`,
+      status: 'pending',
     };
 
-    onSubmit(newData); // Envía los datos al componente padre
-  };
+    setIsLoading(true);
+    try {
+      const response: any = await createRegret(dataToSend);
+      console.log(response);
+      setIsLoading(false);
 
-  const errorHandler: SubmitErrorHandler<FormData> = (errors) => {
-    console.error('Errores del formulario:', errors);
-  };
-  const { isDark } = useDarkTheme();
-  const [isRequestSent, setIsRequestSent] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // Estado para mostrar el spinner
-  const [hasAlert, setHasAlert] = useState(false); // Estado para verificar si hay una alerta activa
-  const [formData, setFormData] = useState<FormData>({
-    transaction_id: '',
-    last_name: '',
-    email: '',
-    phone_number: '',
-    note: '',
-    status: '',
-  });
+      if (response.status === 404) {
+        AlertIncorrect({ isDark, toggleTooltip, setIsTooltipVisible });
+      }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+      if (!response || !response.ok) {
+        const message = response?.message || 'Hubo un problema al enviar los datos.';
+        return;
+      }
+    } catch (error: any) {
+      setIsLoading(false);
+    }
   };
-
-  const handleInvalidForm = () => {
-    Swal.fire({
-      icon: 'error',
-      title: 'Datos incorrectos',
-      text: 'Por favor, revisa los campos e inténtalo nuevamente.',
-    });
-  };
-
-  const formValues = useWatch({ control });
   return (
     <form
-      onSubmit={handleSubmit(submitHandler, errorHandler)}
-      className="mx-auto flex h-full w-full max-w-[490px] flex-col justify-evenly gap-1 md:mt-3"
+      onSubmit={handleSubmit(handleFormSubmission)}
+      className="flex h-full w-full max-w-[490px] flex-col justify-evenly gap-1 md:mt-3"
     >
       <div className="h-[81px]">
-        <label className="font-textFont text-xs font-light">
-          Número Solicitud
-          <input
-            className={clsx(
-              'inputChangeAutofill placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
-              isDark
-                ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
-                : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
-              errors.transaction_id ? 'placeholder:text-[#CE1818]' : 'placeholder:text-buttonExpandDark',
-            )}
-            type="text"
-            placeholder={
-              errors.transaction_id ? 'Número de Solicitud*' : 'N° de Solicitud como figura en el Correo Eletrónico'
-            }
-            {...register('transaction_id', {
-              required: 'El número de solicitud es obligatorio',
-              pattern: {
-                value: /^[A-Za-z0-9]{10,20}$/,
-                message: 'El número de solicitud debe tener entre 10 y 20 caracteres alfanuméricos',
-              },
-            })}
-            required
-          />
-        </label>
+        <label className="font-textFont text-xs font-light">Número Solicitud</label>
+        <input
+          className={clsx(
+            'inputChangeAutofill h-[41px] w-full border-0 border-b-[1px] ps-0 text-xs placeholder:font-light focus:border-0 focus:border-b-[1px] focus:placeholder-transparent focus:outline-none focus:ring-0 xs:text-lg',
+            isDark
+              ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
+              : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
+            errors.transaction_id ? 'placeholder:text-[#CE1818]' : 'placeholder:text-buttonExpandDark',
+          )}
+          type="text"
+          placeholder={
+            errors.transaction_id ? 'Número de Solicitud*' : 'N° de Solicitud como figura en el Correo Eletrónico'
+          }
+          {...register('transaction_id', {
+            required: 'El N° Solicitud es Obligatorio',
+            pattern: {
+              value: /^[A-Za-z0-9]{10,20}$/,
+              message: 'Debe tener entre 10 y 20 caracteres alfanumericos',
+            },
+          })}
+          required
+        />
         {errors.transaction_id && (
           <p className="mb-5 text-sm text-[#CE1818]">{errors.transaction_id.message as string}</p>
         )}
@@ -101,7 +89,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
           Apellido
           <input
             className={clsx(
-              'inputChangeAutofill placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
+              'inputChangeAutofill placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] ps-0 text-xs placeholder:font-light focus:border-0 focus:border-b-[1px] focus:outline-none focus:ring-0 xs:text-lg',
               isDark
                 ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
                 : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
@@ -141,7 +129,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
               required: 'El Email es obligatorio',
               pattern: {
                 value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-                message: 'Ingresa un formato válido de email. Ej: Ejemplo@gmail.com',
+                message: 'Ingresa un formato válido de email',
               },
             })}
             required
@@ -170,7 +158,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
             <Controller
               name="calling_code"
               control={control}
-              defaultValue={undefined}
+              defaultValue={defaultCountryOptions.find((option) => option.callingCode === '+54')}
               rules={{
                 required: 'Este campo es obligatorio',
               }}
@@ -180,17 +168,15 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
                   setSelectedCodeCountry={(option) => field.onChange(option)}
                   errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
                   textColor={['buttonsLigth', 'darkText']}
+                  classNames="pl-0 w-[104px]"
                 />
               )}
             />
             <input
               placeholder={errors.phone_number ? 'Número de Telefóno*' : 'Número de Telefóno'}
               className={clsx(
-                'inputChangeAutofill placeholder-text-gray-900 ml-3 h-[41px] w-full border-0 border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
-                isDark
-                  ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
-                  : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
-                errors.phone_number ? 'placeholder:text-[#CE1818]' : 'placeholder:text-buttonExpandDark',
+                'inputChangeAutofill placeholder-text-gray-900 ml-3 h-[41px] w-full border-0 border-none bg-transparent ps-0 text-xs placeholder:font-light focus:border-none focus:outline-none focus:ring-0 xs:text-lg',
+                errors.phone_number ? 'placeholder:text-errorColor' : 'placeholder:text-buttonExpandDark',
               )}
               type="tel"
               {...register('phone_number', {
