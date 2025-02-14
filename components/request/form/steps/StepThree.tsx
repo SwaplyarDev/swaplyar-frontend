@@ -16,6 +16,8 @@ interface FormData {
   pay_email: string;
   proof_of_payment: FileList | null;
   note: string;
+  network?: string;
+  wallet?: string;
 }
 
 const StepThree = ({ blockAll }: { blockAll: boolean }) => {
@@ -61,18 +63,22 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
       setValue('send_amount', sendAmount);
       setValue('receive_amount', receiveAmount);
     }
-    setValue('pay_email', '00000@00000000.com');
+    setValue('pay_email', '');
     setValue('proof_of_payment', proof_of_payment);
     setValue('note', note);
 
+    if (selectedSendingSystem?.id === 'tether') {
+      setValue('network', 'TRC-20');
+      setValue('wallet', 'TSgBPeFSb9TxJWyzDjDfuNqBktF898ZFUb');
+    }
+
     setInitialValues(newValues);
     console.log(proof_of_payment);
-  }, [formData.stepThree, setValue, receiveAmount, sendAmount]);
+  }, [formData.stepThree, setValue, receiveAmount, sendAmount, selectedSendingSystem]);
 
   const [loading, setLoading] = useState(false);
   const onSubmit = (data: FormData) => {
     setLoading(true);
-    console.log(data);
     updateFormData(2, data);
     markStepAsCompleted(2);
     setActiveStep(3);
