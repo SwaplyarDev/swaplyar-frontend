@@ -10,16 +10,14 @@ import TransferImages from './componentesModal/TransferImages';
 import TransferClient from './componentesModal/TransferClient';
 import { useTransactionStore } from '@/store/transactionModalStorage';
 import { TransactionTypeSingle, emptyTransaction } from '@/types/transactions/transactionsType';
+import CloseButton from './componentesModal/ui/CloseButton';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+const MySwal = withReactContent(Swal);
 
 import RecieverData from './componentesModal/RecieverData';
-import Mensaje from './componentesModal/mensaje';
-interface TransactionModalProps {
-  modal: boolean;
-  setModal: (arg: boolean) => void;
-  transId: string;
-}
 
-const TransactionModal: React.FC<TransactionModalProps> = ({ modal, setModal, transId }) => {
+const TransactionModal = ({ transId }: { transId: string }) => {
   const {
     isLoading,
     trans,
@@ -46,19 +44,13 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ modal, setModal, tr
     }
   }, [transId]);
 
-  const handleClick = () => {
-    setModal(false);
-  };
-
   return (
-    <section
-      onClick={handleClick}
-      className={`fixed right-0 z-[101] flex w-full justify-end bg-gray-900/[0.4] ${modal ? 'visible' : 'invisible'}`}
-    >
+    <section className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50">
       <section
         onClick={(e) => e.stopPropagation()}
-        className={`mt-32 flex max-h-[48rem] max-w-[55rem] flex-col gap-8 overflow-y-auto rounded-lg bg-white p-6 font-textFont shadow-lg transition-all duration-300 ${modal ? 'opacity-100' : 'translate-x-[30vw] opacity-0'}`}
+        className="mt-32 flex max-h-[48rem] max-w-[55rem] flex-col gap-8 overflow-y-auto rounded-lg bg-white p-6 font-textFont shadow-lg transition-all duration-300"
       >
+        <CloseButton close={() => MySwal.close()} />
         <InfoStatus trans={trans} transId={transId} />
         <TransactionDetail transaction={trans} isLoading={isLoading} />
         <ClientMessage trans={trans} />
@@ -100,7 +92,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ modal, setModal, tr
         <button className="rounded-full border-2 border-[#012a8d] bg-[#000c28] p-2.5 text-base font-semibold text-[#ebe7e0]">
           En Proceso
         </button>
-        <button onClick={() => setModal(false)} className="text-xl font-bold">
+        <button onClick={() => MySwal.close()} className="text-xl font-bold">
           Cerrar
         </button>
       </section>

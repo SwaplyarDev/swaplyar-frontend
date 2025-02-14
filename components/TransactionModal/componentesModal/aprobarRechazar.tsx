@@ -7,8 +7,6 @@ interface AprobarRechazarProps {
   onSelectChange: (value: 'stop' | 'accepted' | 'rejected' | null) => void;
 }
 const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectChange }) => {
-  //https://apiswaplyar.vercel.app/api/v1/transactions/1t2sfp3vkfb
-
   return (
     <article className="inline-flex items-center justify-start self-stretch">
       <article className="inline-flex w-[382px] flex-col items-start justify-center gap-2.5 py-2.5">
@@ -56,7 +54,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectCha
         <article>
           <div className="inline-flex h-[81px] w-[375px] flex-col items-start justify-start gap-1">
             <div className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-              <div className="shrink grow basis-0 font-['Inter'] text-xs font-normal leading-none text-[#252526]">
+              <div className="flex shrink grow basis-0 font-['Inter'] font-normal leading-none text-[#252526]">
                 Motivo del Rechazo
               </div>
             </div>

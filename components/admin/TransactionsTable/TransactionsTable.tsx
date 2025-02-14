@@ -6,11 +6,15 @@ import useQuestionStore from '@/store/useQuestion.store';
 import TransactionModal from '@/components/TransactionModal/transactionModal';
 import { getAllTransactions } from '@/actions/transactions/transactions.action';
 import { TransactionArray, TransactionTypeAll, emptyTransactionArray } from '@/types/transactions/transactionsType';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+import { SessionProvider } from 'next-auth/react';
+import CloseButton from '@/components/TransactionModal/componentesModal/ui/CloseButton';
 
 const TransactionsTable = () => {
   const { currentPage, setCurrentPage } = useQuestionStore();
+  const MySwal = withReactContent(Swal);
   const [isLoading, setIsLoading] = useState(false);
-  const [modal, setModal] = useState<boolean>(false);
   const [transId, setTransId] = useState<string>('');
   const [stateTrans, setStateTrans] = useState<TransactionArray>(emptyTransactionArray);
   const [filteredTransactions, setFilteredTransactions] = useState<TransactionArray>(emptyTransactionArray);
@@ -37,9 +41,19 @@ const TransactionsTable = () => {
 
   const handleModal = (id: string) => {
     setTransId(id);
-    setModal(!modal);
-  };
 
+    MySwal.fire({
+      html: (
+        <SessionProvider>
+          <div>
+            <TransactionModal transId={id} />
+          </div>
+        </SessionProvider>
+      ),
+      showConfirmButton: false,
+      showCloseButton: false,
+    });
+  };
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case 'pending':
@@ -147,7 +161,6 @@ const TransactionsTable = () => {
         </table>
       </div>
       <PaginationButtons totalPages={totalPages} currentPage={currentPage} isLoading={isLoading} />
-      <TransactionModal modal={modal} setModal={setModal} transId={transId} />
     </main>
   );
 };
