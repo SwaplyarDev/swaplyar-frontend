@@ -5,7 +5,7 @@ import { AlertsProps } from '@/types/repentance/repentance';
 import { createRoot } from 'react-dom/client';
 import Swal from 'sweetalert2';
 
-const AlertSuccess = async ({ isDark }: AlertsProps): Promise<void> => {
+const AlertSuccess = async ({ isDark, toggleTooltip, setIsTooltipVisible }: AlertsProps): Promise<void> => {
   Swal.fire({
     didRender: () => {
       const tickContainer = document.getElementById('tick-container');

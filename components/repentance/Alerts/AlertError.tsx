@@ -6,7 +6,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Swal from 'sweetalert2';
 
-const AlertIncorrect = async ({ isDark }: AlertsProps): Promise<void> => {
+const AlertIncorrect = async ({ isDark, toggleTooltip, setIsTooltipVisible }: AlertsProps): Promise<void> => {
   Swal.fire({
     title: '',
     html: `
