@@ -110,7 +110,7 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
           register={register}
           watch={watch}
           rules={{
-            required: 'El monto es obligatorio',
+            required: false,
           }}
           error={errors.recieveAmountRed ? (errors.recieveAmountRed as FieldError) : undefined}
           className="order-4"

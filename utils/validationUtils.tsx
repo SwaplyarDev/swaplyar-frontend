@@ -23,3 +23,19 @@ export function getTransferIdentificationType(input: string): string {
   }
   return 'CBU/CVU/ALIAS';
 }
+
+export function detectarTipoPixKey(pixKey: string): string {
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i;
+  const phonePattern = /^\+?[1-9]\d{1,14}$/;
+  const cpfPattern = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+  const cnpjPattern = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
+  const randomKeyPattern = /^[a-zA-Z0-9-]{32,36}$/;
+
+  if (emailPattern.test(pixKey)) return 'email';
+  if (phonePattern.test(pixKey)) return 'phone';
+  if (cpfPattern.test(pixKey)) return 'cpf';
+  if (cnpjPattern.test(pixKey)) return 'cnpj';
+  if (randomKeyPattern.test(pixKey)) return 'random';
+
+  return '';
+}

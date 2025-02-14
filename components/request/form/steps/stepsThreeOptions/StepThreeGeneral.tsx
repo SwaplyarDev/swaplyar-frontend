@@ -67,7 +67,9 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
             placeholder=""
             register={register}
             watch={watch}
-            rules={{ required: 'Este campo es obligatorio' }}
+            rules={{
+              required: false,
+            }}
             error={errors.pay_email ? (errors.pay_email as FieldError) : undefined}
           />
           <InputCopy
