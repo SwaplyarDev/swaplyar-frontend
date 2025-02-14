@@ -147,7 +147,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     };
 
     const receiverDetails = {
-      email_account: stepThree.pay_email || '',
+      email_account: stepTwo.bank_email || '',
       transfer_code: stepTwo.transfer_identification || '',
       bank_name: stepTwo.name_of_bank || '',
       send_method_key: getTaxIdentificationType(stepTwo.transfer_identification),

@@ -15,6 +15,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
     handleSubmit,
     formState: { errors, isValid },
     control,
+    watch,
   } = useForm<FormData>({
     mode: 'onChange',
   });
@@ -71,7 +72,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
           Número Solicitud
           <input
             className={clsx(
-              'placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
+              'inputChangeAutofill placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
               isDark
                 ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
                 : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
@@ -100,7 +101,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
           Apellido
           <input
             className={clsx(
-              'placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
+              'inputChangeAutofill placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
               isDark
                 ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
                 : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
@@ -129,7 +130,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
           Correo Electónico
           <input
             className={clsx(
-              'placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
+              'inputChangeAutofill placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
               isDark
                 ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
                 : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
@@ -156,9 +157,9 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
           </label>
           <div
             className={clsx(
-              `flex h-[41px] w-full items-center border-0 border-b-[1px] border-solid ps-0 text-center text-xs xs:text-lg ${isDark ? 'border-b-darkText bg-transparent text-white focus:border-white' : 'border-b-buttonsLigth bg-transparent focus:border-buttonsLigth'} outline-none focus:outline-none`,
+              `inputChangeAutofill flex h-[41px] w-full items-center border-0 border-b-[1px] border-solid ps-0 text-center text-xs text-lightText xs:text-lg ${isDark ? 'border-b-darkText bg-transparent focus:border-white' : 'border-b-buttonsLigth bg-transparent focus:border-buttonsLigth'} outline-none focus:outline-none`,
               errors.phone_number && !isFocused
-                ? 'border border-[#CE1818] hover:border-blue-600 dark:hover:border-darkText'
+                ? 'border border-errorColor hover:border-blue-600 dark:hover:border-darkText'
                 : isFocused
                   ? 'border-blue-600 outline-none ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-darkText'
                   : 'hover:border-blue-600 dark:hover:border-darkText',
@@ -169,7 +170,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
             <Controller
               name="calling_code"
               control={control}
-              defaultValue={defaultCountryOptions.find((option) => option.callingCode === '+54')}
+              defaultValue={undefined}
               rules={{
                 required: 'Este campo es obligatorio',
               }}
@@ -185,7 +186,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
             <input
               placeholder={errors.phone_number ? 'Número de Telefóno*' : 'Número de Telefóno'}
               className={clsx(
-                'placeholder-text-gray-900 ml-3 h-[41px] w-full border-0 border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
+                'inputChangeAutofill placeholder-text-gray-900 ml-3 h-[41px] w-full border-0 border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
                 isDark
                   ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
                   : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
@@ -212,7 +213,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
           <textarea
             {...register('note')}
             className={clsx(
-              'placeholder-text-gray-900 h-[45px] max-h-[148px] min-h-[45px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
+              'inputChangeAutofill placeholder-text-gray-900 h-[45px] max-h-[148px] min-h-[45px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
               isDark
                 ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
                 : 'border-b-buttonsLigth bg-transparent outline-none placeholder:text-buttonExpandDark focus:border-buttonsLigth focus:outline-none',
