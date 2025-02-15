@@ -1,13 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-
 import clsx from 'clsx';
 import { FormData } from '@/types/repentance/repentance';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import SelectCountry from '@/components/request/form/inputs/SelectCountry';
 import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
-import { createRegret } from '@/actions/repentance/repentanceForm.action';
-import AlertIncorrect from '../Alerts/AlertIncorrect';
+import AlertProcess from '../Alerts/AlertProcess';
 
 const Form = () => {
   const [isFocused, setIsFocused] = useState(false);
@@ -20,9 +18,12 @@ const Form = () => {
     handleSubmit,
     formState: { errors, isValid },
     control,
+    watch,
   } = useForm<FormData>({
     mode: 'onChange',
   });
+
+  const transaction_id = watch('transaction_id');
 
   const { isDark } = useDarkTheme();
   const [isLoading, setIsLoading] = useState(false);
@@ -35,22 +36,10 @@ const Form = () => {
     };
 
     setIsLoading(true);
-    try {
-      const response: any = await createRegret(dataToSend);
-      console.log(response);
-      setIsLoading(false);
 
-      if (response.status === 404) {
-        AlertIncorrect({ isDark, toggleTooltip, setIsTooltipVisible });
-      }
+    AlertProcess({ isDark, toggleTooltip, setIsTooltipVisible, transaction_id, dataToSend, setIsLoading });
 
-      if (!response || !response.ok) {
-        const message = response?.message || 'Hubo un problema al enviar los datos.';
-        return;
-      }
-    } catch (error: any) {
-      setIsLoading(false);
-    }
+    setIsLoading(false);
   };
   return (
     <form
@@ -65,7 +54,7 @@ const Form = () => {
             isDark
               ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
               : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
-            errors.transaction_id ? 'placeholder:text-[#CE1818]' : 'placeholder:text-buttonExpandDark',
+            errors.transaction_id ? 'placeholder:text-errorColor' : 'placeholder:text-buttonExpandDark',
           )}
           type="text"
           placeholder={
@@ -81,7 +70,7 @@ const Form = () => {
           required
         />
         {errors.transaction_id && (
-          <p className="mb-5 text-sm text-[#CE1818]">{errors.transaction_id.message as string}</p>
+          <p className="mb-5 text-sm text-errorColor">{errors.transaction_id.message as string}</p>
         )}
       </div>
       <div className="h-[81px]">
@@ -93,7 +82,7 @@ const Form = () => {
               isDark
                 ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
                 : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
-              errors.last_name ? 'placeholder:text-[#CE1818]' : 'placeholder:text-buttonExpandDark',
+              errors.last_name ? 'placeholder:text-errorColor' : 'placeholder:text-buttonExpandDark',
             )}
             type="text"
             placeholder={errors.last_name ? 'Apellido*' : 'Apellido como figura en el Correo Eletrónico'}
@@ -111,18 +100,18 @@ const Form = () => {
             required
           />
         </label>
-        {errors.last_name && <p className="mb-5 text-sm text-[#CE1818]">{errors.last_name.message as string}</p>}
+        {errors.last_name && <p className="mb-5 text-sm text-errorColor">{errors.last_name.message as string}</p>}
       </div>
       <div className="h-[81px]">
         <label className="font-textFont text-xs font-light">
           Correo Electónico
           <input
             className={clsx(
-              'inputChangeAutofill placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
+              'inputChangeAutofill placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] ps-0 text-xs placeholder:font-light focus:border-0 focus:border-b-[1px] focus:outline-none focus:ring-0 xs:text-lg',
               isDark
                 ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
                 : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
-              errors.email ? 'placeholder:text-[#CE1818]' : 'placeholder:text-buttonExpandDark',
+              errors.email ? 'placeholder:text-errorColor' : 'placeholder:text-buttonExpandDark',
             )}
             type="email"
             {...register('email', {
@@ -136,7 +125,7 @@ const Form = () => {
             placeholder={errors.email ? 'Correo Electónico*' : 'El Correo Electónico que usaste para la Solicitud'}
           />
         </label>
-        {errors.email && <p className="mb-5 text-sm text-[#CE1818]">{errors.email.message as string}</p>}
+        {errors.email && <p className="mb-5 text-sm text-errorColor">{errors.email.message as string}</p>}
       </div>
       <div className="relative mt-1 h-[81px]">
         <div className="flex flex-col">
@@ -146,11 +135,9 @@ const Form = () => {
           <div
             className={clsx(
               `inputChangeAutofill flex h-[41px] w-full items-center border-0 border-b-[1px] border-solid ps-0 text-center text-xs text-lightText xs:text-lg ${isDark ? 'border-b-darkText bg-transparent focus:border-white' : 'border-b-buttonsLigth bg-transparent focus:border-buttonsLigth'} outline-none focus:outline-none`,
-              errors.phone_number && !isFocused
-                ? 'border border-errorColor hover:border-blue-600 dark:hover:border-darkText'
-                : isFocused
-                  ? 'border-blue-600 outline-none ring-1 ring-blue-600 ring-offset-blue-600 hover:border-blue-600 dark:hover:border-darkText'
-                  : 'hover:border-blue-600 dark:hover:border-darkText',
+              errors.phone_number &&
+                !isFocused &&
+                'border border-errorColor hover:border-blue-600 dark:hover:border-darkText',
             )}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
@@ -175,8 +162,10 @@ const Form = () => {
             <input
               placeholder={errors.phone_number ? 'Número de Telefóno*' : 'Número de Telefóno'}
               className={clsx(
-                'inputChangeAutofill placeholder-text-gray-900 ml-3 h-[41px] w-full border-0 border-none bg-transparent ps-0 text-xs placeholder:font-light focus:border-none focus:outline-none focus:ring-0 xs:text-lg',
-                errors.phone_number ? 'placeholder:text-errorColor' : 'placeholder:text-buttonExpandDark',
+                'inputChangeAutofill placeholder-text-gray-900 ml-3 h-[41px] w-full border-0 border-none bg-transparent ps-0 text-xs placeholder:font-light focus:border-none focus:outline-none focus:ring-0 dark:text-darkText xs:text-lg',
+                errors.phone_number
+                  ? 'placeholder:text-errorColor'
+                  : 'placeholder:text-buttonExpandDark dark:placeholder:text-placeholderDark',
               )}
               type="tel"
               {...register('phone_number', {
@@ -189,7 +178,7 @@ const Form = () => {
             />
           </div>
           {errors.phone_number && (
-            <p className="mb-5 text-sm text-[#CE1818]">{errors.phone_number.message as string}</p>
+            <p className="mb-5 text-sm text-errorColor">{errors.phone_number.message as string}</p>
           )}
         </div>
       </div>
@@ -199,10 +188,11 @@ const Form = () => {
           <textarea
             {...register('note')}
             className={clsx(
-              'inputChangeAutofill placeholder-text-gray-900 h-[45px] max-h-[148px] min-h-[45px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
+              'inputChangeAutofill placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] ps-0 text-xs placeholder:font-light focus:border-0 focus:border-b-[1px] focus:outline-none focus:ring-0 xs:text-lg',
               isDark
                 ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
-                : 'border-b-buttonsLigth bg-transparent outline-none placeholder:text-buttonExpandDark focus:border-buttonsLigth focus:outline-none',
+                : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
+              errors.note ? 'placeholder:text-errorColor' : 'placeholder:text-buttonExpandDark',
             )}
             placeholder="Mencione el motivo del Reembolso"
           />

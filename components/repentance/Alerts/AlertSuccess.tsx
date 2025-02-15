@@ -1,63 +1,89 @@
 import Arrow from '@/components/ui/Arrow/Arrow';
-import ButtonAlertBack from '@/components/ui/ButtonAlertBack/ButtonAlertBack';
-import Tick from '@/components/ui/Tick/Tick';
 import { AlertsProps } from '@/types/repentance/repentance';
 import { createRoot } from 'react-dom/client';
 import Swal from 'sweetalert2';
+import ReactDOMServer from 'react-dom/server';
+import { checkIcon } from '@/utils/assets/img-database';
 
 const AlertSuccess = async ({ isDark, toggleTooltip, setIsTooltipVisible }: AlertsProps): Promise<void> => {
   Swal.fire({
-    didRender: () => {
-      const tickContainer = document.getElementById('tick-container');
-      const backElement = document.getElementById('button-container');
-      if (backElement) {
-        const root = createRoot(backElement);
-        root.render(
-          <div className="flex w-full items-center justify-between gap-4 pt-5">
-            <ButtonAlertBack isDark={isDark} />
-          </div>,
-        );
-        if (tickContainer) {
-          const root = createRoot(tickContainer);
-          root.render(
-            <div
-              style={{
-                backgroundColor: isDark ? '#FCFBFA' : '#414244',
-                borderRadius: '50%',
-                padding: '10px',
-              }}
-            >
-              <Tick color={isDark ? '#414244' : '#FCFBFA'} size="70px" />
-            </div>,
-          );
-        }
-      }
-    },
-    title: '',
-    html: `
-              <div class="flex flex-col items-center justify-center bg-[#ffffff] dark:bg-[#454545]  rounded-xl px-[15px] py-5 xs-phone:py-[10px] w-full">
-                <div id="tick-container" class="flex items-center justify-center mb-4"></div>
-                <h2 class="text-2xl text-[#252526] dark:text-[#ebe7e0] mb-4">Solicitud realizada con éxito</h2>
-                <div id="button-container"></div>
-              </div>
-            `,
+    imageUrl: checkIcon,
+    imageWidth: 100,
+    imageHeight: 100,
+    html: ReactDOMServer.renderToString(
+      <>
+        <div id="back-button-container"></div>
+        <div className="flex flex-col items-center gap-12 px-[38px]">
+          <p className="text-2xl">solicitud realizada con éxito</p>
+          <div id="back-button-container2"></div>
+        </div>
+      </>,
+    ),
     customClass: {
-      popup: 'confirmAlert',
+      image: 'swal-custom-image',
+      popup: 'my-popup',
     },
+    width: '400px',
     showConfirmButton: false,
     showCancelButton: false,
     background: isDark ? 'rgb(69 69 69)' : '#ffffff',
     color: isDark ? '#ffffff' : '#000000',
-    allowOutsideClick: true,
-    allowEscapeKey: false,
-    allowEnterKey: false,
+    preConfirm: () => {
+      toggleTooltip();
+    },
+    didRender: () => {
+      const backElement = document.getElementById('back-button-container');
+      if (backElement) {
+        const root = createRoot(backElement);
+        root.render(
+          <button onClick={() => Swal.close()} className="absolute right-0 top-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+              <path
+                d="M30 10L10 30M10 10L30 30"
+                stroke={isDark ? '#ebe7e0' : '#252526'}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>,
+        );
+      }
+      const backElement2 = document.getElementById('back-button-container2');
+      if (backElement2) {
+        const root = createRoot(backElement2);
+        root.render(
+          <button
+            onClick={() => Swal.close()}
+            className={`group relative m-1 flex h-[46px] max-w-[120px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 font-textFont text-lg font-light text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
+          >
+            <div className="relative h-5 w-5 overflow-hidden">
+              <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
+                <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
+              </div>
+            </div>
+            Volver
+          </button>,
+        );
+      }
+    },
+    didOpen: () => {
+      const htmlContainer = Swal.getHtmlContainer();
+      if (htmlContainer) {
+        htmlContainer.classList.add('custom-container-payment');
+      }
+    },
+    willClose: () => {
+      setIsTooltipVisible(false);
+      document.body.style.paddingRight = '0px';
+      document.body.classList.remove('no-scroll');
+    },
   });
   document.addEventListener('click', (e) => {
     if ((e.target as HTMLElement).id === 'back-button') {
       Swal.close();
     }
   });
-  return;
 };
 
 export default AlertSuccess;

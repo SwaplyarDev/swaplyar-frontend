@@ -4,8 +4,14 @@ import { createRoot } from 'react-dom/client';
 import Swal from 'sweetalert2';
 import ReactDOMServer from 'react-dom/server';
 import { alertaSirena, alertaSirenaDark } from '@/utils/assets/img-database';
+import Arrow from '@/components/ui/Arrow/Arrow';
 
-const AlertIncorrect = async ({ isDark, toggleTooltip, setIsTooltipVisible }: AlertsProps): Promise<void> => {
+const AlertIncorrect = async ({
+  isDark,
+  toggleTooltip,
+  setIsTooltipVisible,
+  setIsLoading,
+}: AlertsProps): Promise<void> => {
   Swal.fire({
     imageUrl: !isDark ? alertaSirena : alertaSirenaDark,
     imageWidth: 100,
@@ -13,10 +19,11 @@ const AlertIncorrect = async ({ isDark, toggleTooltip, setIsTooltipVisible }: Al
     html: ReactDOMServer.renderToString(
       <>
         <div id="back-button-container"></div>
-        <div className="px-[38px]">
+        <div className="flex flex-col items-center gap-12 px-[38px]">
           <p className="text-2xl">
             Algunos de los datos son incorrectos por favor verifique los datos ingresados e intente nuevamente
           </p>
+          <div id="back-button-container2"></div>
         </div>
       </>,
     ),
@@ -47,6 +54,23 @@ const AlertIncorrect = async ({ isDark, toggleTooltip, setIsTooltipVisible }: Al
                 strokeLinejoin="round"
               />
             </svg>
+          </button>,
+        );
+      }
+      const backElement2 = document.getElementById('back-button-container2');
+      if (backElement2) {
+        const root = createRoot(backElement2);
+        root.render(
+          <button
+            onClick={() => Swal.close()}
+            className={`group relative m-1 flex h-[46px] max-w-[120px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 font-textFont text-lg font-light text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
+          >
+            <div className="relative h-5 w-5 overflow-hidden">
+              <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
+                <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
+              </div>
+            </div>
+            Volver
           </button>,
         );
       }
