@@ -4,13 +4,14 @@ import AprobarRechazar from './componentesModal/aprobarRechazar';
 import TransactionDetail from './componentesModal/detallesTransaccion';
 import ConfirmTransButton from './componentesModal/ConfirmTransButton';
 import DiscrepancySection from './componentesModal/DiscrepancySection';
-import ClientMessage from './componentesModal/ClientMessage';
+import ClientMessage from './componentesModal/ui/ClientMessage';
 import InfoStatus from './componentesModal/InfoStatus';
 import TransferImages from './componentesModal/TransferImages';
 import TransferClient from './componentesModal/TransferClient';
 import { useTransactionStore } from '@/store/transactionModalStorage';
 import { TransactionTypeSingle, emptyTransaction } from '@/types/transactions/transactionsType';
 import CloseButton from './componentesModal/ui/CloseButton';
+import ModalEditReciever from './componentesModal/ModalEditReciever/ModalEditReciever';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 const MySwal = withReactContent(Swal);
@@ -18,6 +19,7 @@ const MySwal = withReactContent(Swal);
 import RecieverData from './componentesModal/RecieverData';
 
 const TransactionModal = ({ transId }: { transId: string }) => {
+  const [modal, setModal] = useState<boolean>(false);
   const {
     isLoading,
     trans,
@@ -48,12 +50,16 @@ const TransactionModal = ({ transId }: { transId: string }) => {
     <section className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50">
       <section
         onClick={(e) => e.stopPropagation()}
-        className="mt-32 flex max-h-[48rem] max-w-[55rem] flex-col gap-8 overflow-y-auto rounded-lg bg-white p-6 font-textFont shadow-lg transition-all duration-300"
+        className="mt-32 flex max-h-[48rem] max-w-[55rem] flex-col gap-8 overflow-y-auto rounded-lg bg-white p-[2.44rem] font-textFont text-lightText shadow-lg transition-all duration-300"
       >
         <CloseButton close={() => MySwal.close()} />
         <InfoStatus trans={trans} transId={transId} />
         <TransactionDetail transaction={trans} isLoading={isLoading} />
-        <ClientMessage trans={trans} />
+        <ClientMessage
+          message={trans.transaction.transaction.message}
+          headerMessage="Mensaje del cliente"
+          classnames="min-h-[4.25rem]"
+        />
         <TransferImages trans={trans} />
         <ConfirmTransButton
           value={componentStates.confirmTransButton}
@@ -68,14 +74,20 @@ const TransactionModal = ({ transId }: { transId: string }) => {
           }}
         />
         <DiscrepancySection trans={trans} />
-        <button className="max-w-[9.50rem] self-end rounded-lg border border-[#FF6200] bg-[#642600] px-2 py-2 text-darkText">
+        <button
+          onClick={() => setModal(!modal)}
+          className="max-w-[10rem] self-end rounded-lg border border-[#FF6200] bg-[#642600] px-2 py-2 text-darkText"
+        >
           Editar Destinatario
         </button>
-        <h2 className="lightText text-2xl font-semibold">Información para realizar el pago al cliente</h2>
 
-        <section className="flex w-[100%] flex-row justify-between">
-          <RecieverData trans={trans} />
-          <TransferClient />
+        <section className="flex flex-col gap-2">
+          <h2 className="text-left text-2xl font-semibold">Información para realizar el pago al cliente</h2>
+
+          <section className="flex w-[100%] flex-row justify-between">
+            <RecieverData trans={trans} />
+            <TransferClient />
+          </section>
         </section>
 
         <div className="flex gap-5">
@@ -96,6 +108,7 @@ const TransactionModal = ({ transId }: { transId: string }) => {
           Cerrar
         </button>
       </section>
+      <ModalEditReciever modal={modal} setModal={setModal} trans={trans} />
     </section>
   );
 };

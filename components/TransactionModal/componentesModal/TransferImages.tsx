@@ -26,7 +26,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
             <p className="text-red-500">No encontrada</p>
           )}
         </article>
-        <article className="flex flex-row items-center justify-center gap-2">
+        <article className="flex flex-row items-center justify-center">
           <Image className="h-4 w-4" alt="flecha" src={strokepopup} width={19.167} height={10.833} />
           <Image className="h-4 w-4" alt="flecha" src={strokepopup} width={19.167} height={10.833} />
           <Image className="h-4 w-4" alt="flecha" src={strokepopup} width={19.167} height={10.833} />

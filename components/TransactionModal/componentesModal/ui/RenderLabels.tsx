@@ -12,14 +12,19 @@ export const getReceiverLabels = (transaction: TransactionTypeSingle) => {
       ];
     case 'crypto':
       return [
-        { label: 'Dirección USDT', value: payment_method?.receiver?.details.sender_method_value },
-        { label: 'RED', value: payment_method?.receiver?.details.sender_method_key },
+        { label: 'Dirección USDT', value: payment_method?.receiver?.details.wallet },
+        { label: 'RED', value: payment_method?.receiver?.details.network },
       ];
     case 'ars':
       return [
         { label: 'CBU', value: payment_method.receiver.details.sender_method_value },
         { label: 'Banco', value: payment_method.receiver.details.bank_name },
         { label: 'DNI', value: payment_method.receiver.details.document_value },
+      ];
+    case 'pix':
+      return [
+        { label: 'Telefono', value: payment_method.receiver.details.pix_value },
+        { label: 'CPF', value: payment_method.receiver.details.cpf },
       ];
     default:
       return [
@@ -30,7 +35,7 @@ export const getReceiverLabels = (transaction: TransactionTypeSingle) => {
 };
 
 export const renderLabels = (label: string, text: string, text2?: string, text3?: string, key?: number) => (
-  <article key={key || 0} className="flex flex-col">
+  <article key={key || 0} className="flex w-[100%] flex-col items-start">
     <p>{label}</p>
     <p>
       {text} {text2} {text3}

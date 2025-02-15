@@ -27,20 +27,11 @@ export interface TransactionTypeSingle {
     payment_method: {
       sender: {
         value: string;
-        details: {
-          email_account: string;
-          transfer_code: string;
-        };
+        details: any;
       };
       receiver: {
         value: string;
-        details: {
-          bank_name: string;
-          sender_method_key: string;
-          sender_method_value: string;
-          document_type: string;
-          document_value: string;
-        };
+        details: any;
       };
     };
     amounts: {

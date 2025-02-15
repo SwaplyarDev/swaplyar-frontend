@@ -32,16 +32,16 @@ const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading 
             </clipPath>
           </defs>
         </svg>
-        <article className="flex flex-col divide-y-2">
+        <article className="flex flex-col items-start divide-y-2">
           <h3 className="text-xl font-semibold">Datos del Solicitante</h3>
           {renderLabels('Nombre y Apellido', sender?.first_name, sender?.last_name)}
           {renderLabels('Email', sender?.email)}
         </article>
-        <article className="flex flex-col divide-y-2">
+        <article className="flex flex-col items-start divide-y-2">
           <h3 className="text-xl font-semibold">Datos del Destinatario</h3>
           {getReceiverLabels(transaction).map((item, index) => renderLabels(item.label, item.value))}
         </article>
-        <article className="flex flex-col divide-y-2">
+        <article className="flex flex-col items-start divide-y-2">
           <h3 className="text-xl font-semibold">Datos del Pago</h3>
           {renderLabels(
             'Monto a Transferir',

@@ -24,7 +24,8 @@ const TransactionsTable = () => {
     const fetchTransactions = async () => {
       setIsLoading(true);
       try {
-        const trans = await getAllTransactions();
+        const trans = await getAllTransactions(currentPage);
+        console.log(trans);
         if (trans) {
           setStateTrans(trans);
           setFilteredTransactions(trans);
@@ -37,7 +38,7 @@ const TransactionsTable = () => {
     };
 
     fetchTransactions();
-  }, []);
+  }, [currentPage]);
 
   const handleModal = (id: string) => {
     setTransId(id);
@@ -66,11 +67,6 @@ const TransactionsTable = () => {
         return 'bg-gray-500';
     }
   };
-
-  const totalPages = Math.ceil(filteredTransactions?.data.length / itemsPerPage);
-  const indexOfFirstItem = (currentPage - 1) * itemsPerPage;
-  const indexOfLastItem = indexOfFirstItem + itemsPerPage;
-  const currentTransactions = filteredTransactions.data.slice(indexOfFirstItem, indexOfLastItem);
 
   const renderTr = (handler: any, item: string, index: number, id: string, item2?: string) => (
     <td
@@ -104,8 +100,8 @@ const TransactionsTable = () => {
             </tr>
           </thead>
           <tbody>
-            {currentTransactions.length > 0 ? (
-              currentTransactions.map((transaction: TransactionTypeAll, index: number) => (
+            {filteredTransactions.data.length > 0 ? (
+              filteredTransactions.data.map((transaction: TransactionTypeAll, index: number) => (
                 <tr key={index}>
                   <td className="bg-transparent pl-3">
                     <span className={`flex h-5 w-5 rounded-full ${getStatusColor(transaction.status)}`}></span>
@@ -160,7 +156,11 @@ const TransactionsTable = () => {
           </tbody>
         </table>
       </div>
-      <PaginationButtons totalPages={totalPages} currentPage={currentPage} isLoading={isLoading} />
+      <PaginationButtons
+        totalPages={filteredTransactions.meta.totalPages}
+        currentPage={filteredTransactions.meta.page}
+        isLoading={isLoading}
+      />
     </main>
   );
 };

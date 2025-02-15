@@ -3,9 +3,9 @@ import { TransactionArray, TransactionTypeSingle } from '@/types/transactions/tr
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export const getAllTransactions = async () => {
+export const getAllTransactions = async (page: number) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions`);
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions?page=${page}&perPage=12`);
     if (!response.ok) throw new Error('Failed to fetch transactions');
 
     const data: TransactionArray = await response.json();
