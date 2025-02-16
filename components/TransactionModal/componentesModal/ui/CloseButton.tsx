@@ -1,5 +1,5 @@
 const CloseButton = ({ close }: { close: () => void }) => (
-  <button onClick={close} className="right-4 top-4 flex justify-end text-xl text-gray-600 hover:text-gray-800">
+  <button onClick={close} className="absolute right-0 top-0 text-xl text-gray-600 hover:text-gray-800">
     ✖
   </button>
 );

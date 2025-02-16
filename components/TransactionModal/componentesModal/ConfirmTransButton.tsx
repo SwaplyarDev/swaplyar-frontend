@@ -3,7 +3,7 @@ import { TransactionTypeSingle } from '@/types/transactions/transactionsType';
 import { CustomButton } from './ui/comoponenteboton';
 
 interface ConfirmarTransProps {
-  value: boolean;
+  value: boolean | null;
   setValue: (arg: boolean) => void; // Asegurar que recibe un booleano
   trans: TransactionTypeSingle;
 }

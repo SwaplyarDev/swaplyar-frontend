@@ -8,7 +8,7 @@ interface TransactionState {
   status: string;
   componentStates: {
     aprooveReject: 'stop' | 'accepted' | 'rejected' | null;
-    confirmTransButton: boolean;
+    confirmTransButton: boolean | null;
     discrepancySection: boolean;
     transferRealized: boolean;
   };
@@ -27,7 +27,7 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
   status: 'pending',
   componentStates: {
     aprooveReject: null,
-    confirmTransButton: false,
+    confirmTransButton: null,
     discrepancySection: false,
     transferRealized: false,
   },

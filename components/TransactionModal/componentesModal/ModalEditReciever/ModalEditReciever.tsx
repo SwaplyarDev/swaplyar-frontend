@@ -40,7 +40,7 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
     >
       <section
         onClick={(e) => e.stopPropagation()}
-        className={`max-w-[38.5rem] justify-center gap-2 rounded-lg bg-white p-6 text-lightText shadow-lg transition-all duration-300 ${
+        className={`max-w-[38.5rem] justify-center gap-2 rounded-lg bg-white p-6 text-lightText shadow-lg transition-all ${
           modal ? 'scale-100 opacity-100' : 'scale-125 opacity-0'
         }`}
       >

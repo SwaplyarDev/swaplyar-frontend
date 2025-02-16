@@ -47,10 +47,10 @@ const TransactionModal = ({ transId }: { transId: string }) => {
   }, [transId]);
 
   return (
-    <section className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50">
+    <section className="fixed inset-0 top-0 z-[5] flex w-full items-center justify-end bg-black bg-opacity-50">
       <section
         onClick={(e) => e.stopPropagation()}
-        className="mt-32 flex max-h-[48rem] max-w-[55rem] flex-col gap-8 overflow-y-auto rounded-lg bg-white p-[2.44rem] font-textFont text-lightText shadow-lg transition-all duration-300"
+        className="relative flex h-full flex-col gap-8 overflow-y-auto rounded-lg bg-white p-6 font-textFont shadow-lg transition-all duration-300"
       >
         <CloseButton close={() => MySwal.close()} />
         <InfoStatus trans={trans} transId={transId} />
@@ -61,18 +61,23 @@ const TransactionModal = ({ transId }: { transId: string }) => {
           classnames="min-h-[4.25rem]"
         />
         <TransferImages trans={trans} />
+
         <ConfirmTransButton
           value={componentStates.confirmTransButton}
           setValue={(value) => setComponentStates('confirmTransButton', value)}
           trans={trans}
         />
-        <AprobarRechazar
-          selected={selected}
-          onSelectChange={(value) => {
-            setComponentStates('aprooveReject', value);
-            setSelected(value);
-          }}
-        />
+        {componentStates.confirmTransButton != null && (
+          <AprobarRechazar
+            selected={selected}
+            componentStates={componentStates}
+            onSelectChange={(value) => {
+              setComponentStates('aprooveReject', value);
+              setSelected(value);
+            }}
+          />
+        )}
+
         <DiscrepancySection trans={trans} />
         <button
           onClick={() => setModal(!modal)}

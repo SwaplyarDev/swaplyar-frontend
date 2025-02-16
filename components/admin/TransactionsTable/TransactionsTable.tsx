@@ -42,18 +42,36 @@ const TransactionsTable = () => {
 
   const handleModal = (id: string) => {
     setTransId(id);
-
     MySwal.fire({
       html: (
-        <SessionProvider>
-          <div>
-            <TransactionModal transId={id} />
-          </div>
-        </SessionProvider>
+        <div className="flex h-[200px] w-[400px] items-center justify-center opacity-0 transition-opacity duration-500">
+          <span className="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-blue-500">
+            cargando...
+          </span>
+        </div>
       ),
       showConfirmButton: false,
       showCloseButton: false,
+      allowOutsideClick: false,
+      width: '100vw',
+      customClass: {
+        popup: 'bg-transparent shadow-none',
+        container: 'bg-transparent',
+      },
     });
+
+    // Después de 500ms, actualiza el contenido con el modal real y lo hace visible
+    setTimeout(() => {
+      MySwal.update({
+        html: (
+          <SessionProvider>
+            <TransactionModal transId={id} />
+          </SessionProvider>
+        ),
+      });
+
+      document.querySelector('.swal2-html-container')?.classList.remove('opacity-0');
+    }, 500);
   };
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
