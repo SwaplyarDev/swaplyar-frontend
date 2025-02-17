@@ -35,7 +35,12 @@ export interface OutputFormat {
 }
 export interface AlertsProps {
   isDark: boolean;
+  toggleTooltip: () => void;
+  setIsTooltipVisible: React.Dispatch<React.SetStateAction<boolean>>;
   message?: string;
+  transaction_id?: string;
+  dataToSend?: FormData;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface FormularioProps {

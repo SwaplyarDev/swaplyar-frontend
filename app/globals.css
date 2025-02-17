@@ -422,6 +422,11 @@ div:where(.swal2-icon).swal2-info {
   margin-top: 0 !important;
 }
 
+.swal-custom-image2 {
+  margin-top: 1em !important;
+  margin-bottom: 0 !important;
+}
+
 .swal2-title {
   padding-top: 0 !important;
   @apply mx-11 p-0 font-textFont text-xl;
@@ -432,6 +437,13 @@ div:where(.swal2-icon).swal2-info {
   flex-direction: column;
   gap: 20px; /* Agrega espacio entre elementos internos */
 }
+
+.my-popup2 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Agrega espacio entre elementos internos */
+}
+
 
 .custom-container-payment {
   @apply p-0;
