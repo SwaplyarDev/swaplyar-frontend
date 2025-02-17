@@ -19,7 +19,7 @@
 }
 
 .container-blur {
-  @apply fixed flex top-0 h-full min-h-[1000px] w-full justify-center overflow-hidden;
+  @apply fixed top-0 flex h-full min-h-[1000px] w-full justify-center overflow-hidden;
 }
 
 .box {
@@ -350,6 +350,28 @@ body::-webkit-scrollbar-thumb {
   border-radius: 3px;
 }
 
+.scrollbar::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 3px;
+}
+
+.scrollbar::-webkit-scrollbar-track:hover {
+  background: var(--sb-track-color);
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 3px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--sb-thumb-color);
+}
+
 @supports not selector(::-webkit-scrollbar) {
   body {
     scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
@@ -424,7 +446,7 @@ div:where(.swal2-icon).swal2-info {
 
 .swal2-title {
   padding-top: 0 !important;
-  @apply text-xl font-textFont p-0 mx-11;
+  @apply mx-11 p-0 font-textFont text-xl;
 }
 
 .my-popup {
@@ -433,7 +455,7 @@ div:where(.swal2-icon).swal2-info {
   gap: 20px; /* Agrega espacio entre elementos internos */
 }
 
-.custom-container-payment{
+.custom-container-payment {
   @apply p-0;
 }
 

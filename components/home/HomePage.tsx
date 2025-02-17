@@ -76,7 +76,7 @@ export default function HomePage() {
             />
           </div>
         </article>
-        <Recommendations items={recomendationsData} />
+        <Recommendations />
       </section>
       <section className="mt-10">
         <FlyerTrabajo
