@@ -206,7 +206,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
           <div className="flex flex-col text-end text-lightText dark:text-darkText">
             <p>{transactionData.receiver.first_name}</p>
             <p>{transactionData.receiver.last_name}</p>
-            <p>{transactionData.payment_method.receiver.details.pix_key}</p>
+            <p>{transactionData.payment_method.receiver.details.email_account}</p>
           </div>
         </div>
       );
@@ -221,7 +221,22 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
           <div className="flex flex-col text-end text-lightText dark:text-darkText">
             <p>{transactionData.receiver.first_name}</p>
             <p>{transactionData.receiver.last_name}</p>
-            <p>{transactionData.payment_method.receiver.details.pix_key}</p>
+            <p>{transactionData.payment_method.receiver.details.email_account}</p>
+          </div>
+        </div>
+      );
+    } else if (transactionData.payment_method.receiver.value === 'paypal') {
+      return (
+        <div className="flex justify-between text-sm">
+          <div className="flex flex-col text-start text-lightText dark:text-darkText">
+            <p>Nombre </p>
+            <p>Apellido </p>
+            <p>Correo electrónico</p>
+          </div>
+          <div className="flex flex-col text-end text-lightText dark:text-darkText">
+            <p>{transactionData.receiver.first_name}</p>
+            <p>{transactionData.receiver.last_name}</p>
+            <p>{transactionData.payment_method.receiver.details.email_account}</p>
           </div>
         </div>
       );
