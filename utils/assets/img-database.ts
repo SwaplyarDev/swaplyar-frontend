@@ -192,3 +192,8 @@ export const howToUse3 = '/images/howToUse3.png';
 export const howToUseDark1 = '/images/howToUseDark1.png';
 export const howToUseDark2 = '/images/howToUseDark2.png';
 export const howToUseDark3 = '/images/howToUseDark3.png';
+
+export const nube1 = '/images/nube1.svg';
+export const nube2 = '/images/nube2.svg';
+
+export const plane = '/images/plane.svg';
