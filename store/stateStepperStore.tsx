@@ -1,7 +1,7 @@
 import { System } from '@/types/data';
 import { CountryOption, RedType } from '@/types/request/request';
 import { buildPaymentMethod } from '@/utils/buildPaymentMethod';
-import { getTaxIdentificationType, getTransferIdentificationType } from '@/utils/validationUtils';
+import { detectarTipoPixKey, getTaxIdentificationType, getTransferIdentificationType } from '@/utils/validationUtils';
 import { create } from 'zustand';
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -38,6 +38,8 @@ interface StepThreeData {
   pay_email: string;
   proof_of_payment: FileList | null;
   note: string;
+  network?: string;
+  wallet?: string;
 }
 
 interface FormData {
@@ -96,6 +98,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       pay_email: '',
       proof_of_payment: null,
       note: '',
+      network: '',
+      wallet: '',
     },
   },
   idTransaction: undefined,
@@ -124,7 +128,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     const state = get();
     const { stepOne, stepTwo, stepThree } = state.formData;
 
-    console.log(stepThree.proof_of_payment);
+    const pixValue = detectarTipoPixKey(stepTwo.pix_key);
 
     const senderDetails: Record<string, string> = {
       email_account: stepThree.pay_email || '',
@@ -135,15 +139,15 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       document_type: getTransferIdentificationType(stepTwo.tax_identification),
       document_value: stepTwo.tax_identification || '',
       pix_key: stepTwo.pix_key || '',
-      pix_value: stepTwo.transfer_identification || '',
-      cpf: stepTwo.individual_tax_id || '',
-      currency: selectedSendingSystem?.coin || '',
-      network: String(stepTwo.red_selection || ''),
-      wallet: stepTwo.usdt_direction || '',
+      pix_value: pixValue || '',
+      cpf: stepTwo.individual_tax_id.replace(/[.-]/g, '') || '',
+      currency: selectedSendingSystem?.coin.toLowerCase() || '',
+      network: stepThree.network || '',
+      wallet: stepThree.wallet || '',
     };
 
     const receiverDetails = {
-      email_account: stepThree.pay_email || '',
+      email_account: stepTwo.bank_email || '',
       transfer_code: stepTwo.transfer_identification || '',
       bank_name: stepTwo.name_of_bank || '',
       send_method_key: getTaxIdentificationType(stepTwo.transfer_identification),
@@ -151,10 +155,10 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       document_type: getTransferIdentificationType(stepTwo.tax_identification),
       document_value: stepTwo.tax_identification || '',
       pix_key: stepTwo.pix_key || '',
-      pix_value: stepTwo.transfer_identification || '',
-      cpf: stepTwo.individual_tax_id || '',
-      currency: selectedReceivingSystem?.coin || '',
-      network: String(stepTwo.red_selection || ''),
+      pix_value: pixValue || '',
+      cpf: stepTwo.individual_tax_id.replace(/[.-]/g, '') || '',
+      currency: selectedReceivingSystem?.coin.toLowerCase() || '',
+      network: stepTwo.red_selection?.value || '',
       wallet: stepTwo.usdt_direction || '',
     };
 
@@ -208,11 +212,14 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     formDataPayload.append('amounts', JSON.stringify(payload.amounts));
     formDataPayload.append('status', JSON.stringify(payload.status));
 
+    console.log(' payload: ', formDataPayload);
     try {
       const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions`, {
         method: 'POST',
         body: formDataPayload,
       });
+
+      console.log('response: ', response);
 
       if (!response.ok) {
         throw new Error('Error al enviar los datos al servidor');
@@ -317,6 +324,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           pay_email: '',
           proof_of_payment: null,
           note: '',
+          network: '',
+          wallet: '',
         },
       },
     })),

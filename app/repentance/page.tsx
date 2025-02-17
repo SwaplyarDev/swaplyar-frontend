@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const Page: React.FC = () => {
   return (
-    <>
+    <main>
       <div className="flex-column flex w-full flex-wrap items-center justify-center lg:px-10">
         <RepentanceForm />
       </div>
@@ -21,7 +21,7 @@ const Page: React.FC = () => {
         description="Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma sencilla y segura."
         nameButton="¡Empieza ahora!"
       />
-    </>
+    </main>
   );
 };
 
