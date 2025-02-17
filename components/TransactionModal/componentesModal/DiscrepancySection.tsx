@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { CustomButton } from './ui/comoponenteboton';
 import { TransactionTypeSingle } from '@/types/transactions/transactionsType';
+import Swal from 'sweetalert2';
 
 interface DiscrepancySectionProps {
   trans: TransactionTypeSingle;
@@ -11,9 +12,32 @@ const DiscrepancySection: React.FC<DiscrepancySectionProps> = ({ trans }) => {
   const [resolved, setResolved] = useState<boolean | null>(null);
   const { payment_method } = trans.transaction;
 
+  const buttonAction = (action: string) => {
+    Swal.fire({
+      title: '¿Estás seguro que quieres enviar este motivo de discrepancia?',
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: 'rgb(1,42,142)',
+      cancelButtonColor: 'rgb(205,24,24)',
+      preConfirm: (value) => {
+        if (!value) {
+          Swal.showValidationMessage('Debes ingresar un motivo');
+        }
+        return value;
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log('Motivo enviado:', result.value);
+      }
+    });
+
+    console.log(action);
+  };
+
   return (
     <section className="flex w-[95%] flex-row">
-      <article className="flex w-[30%] flex-col items-start gap-2">
+      <article className="flex flex-col items-start gap-2">
         <h3 className="text-left font-titleFont text-xl font-medium">Discrepancia en la Operacion.</h3>
         <div className="flex flex-row gap-2">
           <CustomButton
@@ -31,11 +55,19 @@ const DiscrepancySection: React.FC<DiscrepancySectionProps> = ({ trans }) => {
       <article className={` ${discrepancy ? 'visible' : 'invisible'} flex flex-row items-center`}>
         <div className="flex flex-col gap-1">
           <p className="pl-5 text-sm">Motivo de la Discrepancia</p>
-          <input
-            placeholder="Explica la discrepancia"
-            className={`text-md min-h-[2.6rem] min-w-[16.6rem] rounded-lg`}
-          />
+          <div className="flex">
+            <input placeholder="Explica la discrepancia" className={`text-md rounded-lg`} />{' '}
+            <article className="w-[1 0px] inline-flex flex-col items-center justify-center gap-2.5 rounded-lg bg-custom-blue px-2.5 py-1 text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
+              <button
+                className="titleFont titleFont self-stretch text-center text-base font-normal"
+                onClick={() => buttonAction('rejected')}
+              >
+                Enviar
+              </button>
+            </article>
+          </div>
         </div>
+
         <div className="flex flex-col items-center gap-2">
           <h3 className="text-center font-titleFont text-xl font-medium">Discrepancia Resuelta</h3>
           <div className="flex flex-row gap-2">

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { updateTransaction } from '@/actions/transactions/transactions.action';
 import { TransactionTypeSingle } from '@/types/transactions/transactionsType';
 import { useTransactionStore } from '@/store/transactionModalStorage';
+import Swal from 'sweetalert2';
 
 interface AprobarRechazarProps {
   selected: 'stop' | 'accepted' | 'rejected' | null;
@@ -20,6 +21,29 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectCha
   if (componentStates.confirmTransButton === false && selected !== 'rejected') {
     onSelectChange('rejected');
   }
+  const buttonAction = (action: string) => {
+    Swal.fire({
+      title: '¿Estás seguro que deseas rechazarlo?',
+
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: 'rgb(1,42,142)',
+      cancelButtonColor: 'rgb(205,24,24)',
+      preConfirm: (value) => {
+        if (!value) {
+          Swal.showValidationMessage('Debes ingresar un motivo');
+        }
+        return value;
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log('Motivo enviado:', result.value);
+      }
+    });
+
+    console.log(action);
+  };
 
   return (
     <article className="inline-flex items-center justify-start self-stretch">
@@ -91,7 +115,12 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectCha
             <div className="inline-flex h-[41px] items-center justify-start gap-2.5 self-stretch rounded-lg py-2 pl-[9px] pr-2.5">
               <input className="shrink grow basis-0 rounded-lg font-['Inter'] text-base font-normal leading-none text-[#252526]"></input>
               <article className="w-[1 0px] inline-flex flex-col items-center justify-center gap-2.5 rounded-lg bg-custom-blue px-2.5 py-1 text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
-                <button className="titleFont titleFont self-stretch text-center text-base font-normal">Enviar</button>
+                <button
+                  className="titleFont titleFont self-stretch text-center text-base font-normal"
+                  onClick={() => buttonAction('rejected')}
+                >
+                  Enviar
+                </button>
               </article>
             </div>
             <div className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5"></div>
