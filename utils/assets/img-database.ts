@@ -176,6 +176,11 @@ export const swaplyArAvatar = '/images/swaplyArAvatar.png';
 /** Alertas **/
 export const alertaSirena = '/images/ant-design_alert-outlined-light.png';
 export const alertaSirenaDark = '/images/ant-design_alert-outlined.png';
+export const alertSign = '/images/alert-sign.png';
+export const alertSignDark = '/images/alert-sign-dark.png';
+export const checkIcon = '/images/check-icon.png';
+export const proccessIcon = '/images/proccess-icon.png';
+export const proccessIconDark = '/images/proccess-icon-dark.png';
 
 /** Comprobantes **/
 export const comprobanteBienHecho = '/images/comprobante_bien_hecho.png';

@@ -106,6 +106,7 @@ export type SelectCodeCountryProps = {
   errors: { [key: string]: FieldError } | {}; // Tipado explícito
   blockAll?: boolean;
   textColor: string[];
+  classNames?: string;
 };
 
 export type SelectBooleanProps = {
