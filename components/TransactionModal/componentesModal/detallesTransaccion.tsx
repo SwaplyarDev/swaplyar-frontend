@@ -8,7 +8,7 @@ interface DetailTransProps {
 }
 
 const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading }) => {
-  const { sender, payment_method, amounts, proof_of_payment } = transaction.transaction;
+  const { sender, payment_method, amounts, proof_of_payment } = transaction;
 
   if (!isLoading)
     return (

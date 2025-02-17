@@ -9,7 +9,7 @@ interface DiscrepancySectionProps {
 const DiscrepancySection: React.FC<DiscrepancySectionProps> = ({ trans }) => {
   const [discrepancy, setDiscrepancy] = useState<boolean | null>(null);
   const [resolved, setResolved] = useState<boolean | null>(null);
-  const { payment_method } = trans.transaction;
+  const { payment_method } = trans;
 
   return (
     <section className="flex w-[95%] flex-row">

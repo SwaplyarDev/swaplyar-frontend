@@ -7,7 +7,7 @@ interface InfoStatusProps {
 }
 
 const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
-  const { status, transaction } = trans.transaction;
+  const { status, transaction } = trans;
   const { data: session } = useSession();
   const userName = session?.user.name;
 

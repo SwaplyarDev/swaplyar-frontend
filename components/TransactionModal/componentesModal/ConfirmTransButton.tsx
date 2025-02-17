@@ -10,7 +10,7 @@ interface ConfirmarTransProps {
 
 const ConfirmTransButton: React.FC<ConfirmarTransProps> = ({ trans, value, setValue }) => {
   const [selected, setSelected] = useState<boolean | null>(null);
-  const { payment_method } = trans.transaction;
+  const { payment_method } = trans;
 
   const handleClick = (newValue: boolean) => {
     setValue(newValue); // Modifica solo el estado de ConfirmTransButton

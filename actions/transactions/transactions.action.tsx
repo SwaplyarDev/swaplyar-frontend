@@ -3,6 +3,7 @@ import { TransactionArray, TransactionTypeSingle } from '@/types/transactions/tr
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+//General Transactions Fetchs
 export const getAllTransactions = async (page: number) => {
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions?page=${page}&perPage=12`);
@@ -45,16 +46,13 @@ export const deleteTransactionById = async (id: string) => {
 
 export const updateTransaction = async ({ transaction }: TransactionTypeSingle) => {
   try {
-    const response = await fetch(
-      `${NEXT_PUBLIC_BACKEND_URL}/v1/transactions/${transaction.transaction.transaction_id}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(transaction),
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions/${transaction.transaction_id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify(transaction),
+    });
     if (!response.ok) throw new Error('Failed to update transaction');
 
     return response;
@@ -63,6 +61,8 @@ export const updateTransaction = async ({ transaction }: TransactionTypeSingle) 
     return null;
   }
 };
+
+//Status Transaction Client syde Fetchs
 
 export const updateStatusClient = async (transactionId: string, status: string) => {
   try {
@@ -83,25 +83,36 @@ export const updateStatusClient = async (transactionId: string, status: string) 
   }
 };
 
-// export const updateStatusAdmin = async (transactionId: string, last_name: string, changes: any) => {
-//   try {
-//     const response = await fetch(
-//       `${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus?transaction_id=${transactionId}&last_name=${last_name}`,
-//       {
-//         method: 'PUT',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(changes),
-//       },
-//     );
-//     if (!response.ok) throw new Error('Failed to update transaction');
+//Status Transaction Admin syde Fetchs
 
-//     return response;
-//   } catch (error: any) {
-//     console.error('Error updating transaction:', error);
-//     return null;
-//   }
-// };
+export const getStatusTransactionAdmin = async (transactionId: string) => {
+  try {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transaction_admin/${transactionId}`);
+    if (!response.ok) throw new Error('Failed to update transaction');
+
+    return response;
+  } catch (error) {
+    console.error('Error updating transaction:', error);
+    return null;
+  }
+};
+
+export const updateStatusAdmin = async (transactionId: string, status: string) => {
+  try {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transaction_admin/${transactionId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(status),
+    });
+    if (!response.ok) throw new Error('Failed to update transaction');
+
+    return response;
+  } catch (error: any) {
+    console.error('Error updating transaction:', error);
+    return null;
+  }
+};
 
 // El CREATE esta en request

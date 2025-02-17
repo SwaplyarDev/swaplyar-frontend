@@ -1,5 +1,3 @@
-import { TransactionTypeSingle } from '@/types/transactions/transactionsType';
-
 interface ClientMessageProps {
   message: string;
   headerMessage: string;

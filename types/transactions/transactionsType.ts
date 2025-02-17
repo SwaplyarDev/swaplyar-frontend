@@ -1,115 +1,111 @@
 export interface TransactionTypeSingle {
   transaction: {
-    transaction: {
-      transaction_id: string;
-      sender_accounts_id: string;
-      receiver_accounts_id: string;
-      country_transaction: string;
-      message: string;
-      created_at: string;
-      user_id: string | null;
-      status: string;
-      idAdmin: string | null;
-    };
+    transaction_id: string;
+    sender_accounts_id: string;
+    receiver_accounts_id: string;
+    country_transaction: string;
+    message: string;
+    created_at: string;
+    user_id: string | null;
+    status: string;
+    idAdmin: string | null;
+  };
+  sender: {
+    first_name: string;
+    last_name: string;
+    identification: string;
+    phone_number: string;
+    email: string;
+    payment_method_id: string;
+  };
+  receiver: {
+    first_name: string;
+    last_name: string;
+    payment_method_id: string;
+  };
+  payment_method: {
     sender: {
-      first_name: string;
-      last_name: string;
-      identification: string;
-      phone_number: string;
-      email: string;
-      payment_method_id: string;
+      value: string;
+      details: any;
     };
     receiver: {
-      first_name: string;
-      last_name: string;
-      payment_method_id: string;
+      value: string;
+      details: any;
     };
-    payment_method: {
-      sender: {
-        value: string;
-        details: any;
-      };
-      receiver: {
-        value: string;
-        details: any;
-      };
+  };
+  amounts: {
+    sent: {
+      amount: string;
+      currency: string;
     };
-    amounts: {
-      sent: {
-        amount: string;
-        currency: string;
-      };
-      received: {
-        amount: string;
-        currency: string;
-      };
+    received: {
+      amount: string;
+      currency: string;
     };
-    status: string;
-    proof_of_payment: {
-      img_transaction: string;
-    };
+  };
+  status: string;
+  proof_of_payment: {
+    img_transaction: string;
   };
 }
 
 export const emptyTransaction: TransactionTypeSingle = {
   transaction: {
-    transaction: {
-      transaction_id: '',
-      sender_accounts_id: '',
-      receiver_accounts_id: '',
-      country_transaction: '',
-      message: '',
-      created_at: '',
-      user_id: null,
-      status: '',
-      idAdmin: null,
-    },
+    transaction_id: '',
+    sender_accounts_id: '',
+    receiver_accounts_id: '',
+    country_transaction: '',
+    message: '',
+    created_at: '',
+    user_id: null,
+    status: '',
+    idAdmin: null,
+  },
+  sender: {
+    first_name: '',
+    last_name: '',
+    identification: '',
+    phone_number: '',
+    email: '',
+    payment_method_id: '',
+  },
+  receiver: {
+    first_name: '',
+    last_name: '',
+    payment_method_id: '',
+  },
+  payment_method: {
     sender: {
-      first_name: '',
-      last_name: '',
-      identification: '',
-      phone_number: '',
-      email: '',
-      payment_method_id: '',
+      value: '',
+      details: {
+        email_account: '',
+        transfer_code: '',
+      },
     },
     receiver: {
-      first_name: '',
-      last_name: '',
-      payment_method_id: '',
-    },
-    payment_method: {
-      sender: {
-        value: '',
-        details: {
-          email_account: '',
-          transfer_code: '',
-        },
-      },
-      receiver: {
-        value: '',
-        details: {
-          bank_name: '',
-          sender_method_key: '',
-          sender_method_value: '',
-          document_type: '',
-          document_value: '',
-        },
+      value: '',
+      details: {
+        bank_name: '',
+        sender_method_key: '',
+        sender_method_value: '',
+        document_type: '',
+        document_value: '',
       },
     },
-    amounts: {
-      sent: {
-        amount: '',
-        currency: '',
-      },
-      received: {
-        amount: '',
-        currency: '',
-      },
+  },
+  amounts: {
+    sent: {
+      amount: '',
+      currency: '',
     },
-    status: '',
-    proof_of_payment: {
-      img_transaction: '',
+    received: {
+      amount: '',
+      currency: '',
     },
+  },
+  status: '',
+  proof_of_payment: {
+    img_transaction: '',
   },
 };
 

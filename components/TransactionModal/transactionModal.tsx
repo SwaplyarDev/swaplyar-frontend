@@ -32,14 +32,11 @@ const TransactionModal = ({ transId }: { transId: string }) => {
     setSelected,
   } = useTransactionStore();
 
-  useEffect(() => {
-    console.log(selected, componentStates);
-    console.log(status, 'status');
-  }, [componentStates]);
-
+  console.log(status);
   useEffect(() => {
     updateTransactionStatus(transId);
   }, [status, transId, componentStates]);
+
   useEffect(() => {
     if (transId) {
       fetchTransaction(transId);
@@ -56,7 +53,7 @@ const TransactionModal = ({ transId }: { transId: string }) => {
         <InfoStatus trans={trans} transId={transId} />
         <TransactionDetail transaction={trans} isLoading={isLoading} />
         <ClientMessage
-          message={trans.transaction.transaction.message}
+          message={trans.transaction.message}
           headerMessage="Mensaje del cliente"
           classnames="min-h-[4.25rem]"
         />

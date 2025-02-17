@@ -1,7 +1,7 @@
 import { TransactionTypeSingle } from '@/types/transactions/transactionsType';
 
 export const getReceiverLabels = (transaction: TransactionTypeSingle) => {
-  const { payment_method, receiver } = transaction?.transaction;
+  const { payment_method, receiver } = transaction;
   const walletType = payment_method?.receiver.value;
 
   switch (walletType) {

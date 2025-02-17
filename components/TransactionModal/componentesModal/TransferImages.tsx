@@ -8,7 +8,7 @@ interface TransactionProps {
 }
 
 const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
-  const { payment_method } = trans.transaction;
+  const { payment_method } = trans;
   const senderImg = MockImagesTransLight.find((img) => img.name === payment_method.sender.value)?.image;
 
   const receiverImg = MockImagesTransLight.find((img) => img.name === payment_method.receiver.value)?.image;
