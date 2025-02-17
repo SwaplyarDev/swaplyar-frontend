@@ -50,11 +50,11 @@ const ImageCarousel: React.FC<{ images: string[] }> = ({ images }) => {
         <>
           <Slider {...settings}>
             {limitedImages.map((image, index) => (
-              <div key={index}>
+              <div key={index} className="h-full w-full">
                 <Image
                   src={image}
                   alt={`Slide ${index + 1}`}
-                  className="h-60 w-full object-cover"
+                  className="h-full w-full object-cover"
                   width={800}
                   height={400}
                 />
