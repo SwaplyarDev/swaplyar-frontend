@@ -11,9 +11,12 @@ import BlogPostCard from './BlogPostCard/BlogPostCard';
 import { blogPosts } from '@/utils/dataBlog';
 import { arrowBackIosLeft, arrowBackIosLeft1, arrow_back_iosr, arrow_forward_iosrr } from '@/utils/assets/img-database';
 import { gifImage } from '@/utils/assets/img-database';
+import useBlogStore from '@/store/useBlogStore';
+import useFetchBlogs from '@/hooks/useFetchBlogs/useFetchBlogs';
 
 const Blog: React.FC = () => {
-  const blogs = blogPosts;
+  // const blogs = blogPosts;
+  const { blogs } = useBlogStore();
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -26,6 +29,12 @@ const Blog: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
 
   const postsPerPage = 9;
+
+  useFetchBlogs({
+    currentPage,
+    searchTerm,
+    setTotalPages,
+  });
 
   const filteredBlogs = useMemo(() => {
     return blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
