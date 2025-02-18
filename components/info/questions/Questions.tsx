@@ -176,7 +176,7 @@ const FrequentlyQuestions = () => {
         )}
       </section>
       <section className="mt-10 h-auto w-full">
-        <FlyerTrabajo imageSrc={BannerQuestions.src} />
+        <FlyerTrabajo href="" imageSrc={BannerQuestions.src} />
       </section>
     </main>
   );

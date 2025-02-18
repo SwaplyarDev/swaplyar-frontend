@@ -81,7 +81,7 @@ export default function HomePage() {
       <section className="mt-10">
         <FlyerTrabajo
           imageSrc={FlyerGif}
-          title="¿Nuevo en SwaplyAr?"
+          href="/info/how-to-use"
           description="Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma sencilla y segura."
           nameButton="¡Empieza ahora!"
         />

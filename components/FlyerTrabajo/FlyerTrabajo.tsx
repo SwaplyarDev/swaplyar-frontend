@@ -11,9 +11,10 @@ interface FlyerTrabajoProps {
   description?: string;
   nameButton?: string;
   imageSrc: string;
+  href: string;
 }
 
-export default function FlyerTrabajo({ title, description, nameButton, imageSrc }: FlyerTrabajoProps) {
+export default function FlyerTrabajo({ title, description, nameButton, imageSrc, href }: FlyerTrabajoProps) {
   const backgroundImage = `url(${imageSrc})`;
   const { isDark } = useDarkTheme();
   const { size } = useSize();
@@ -54,8 +55,8 @@ export default function FlyerTrabajo({ title, description, nameButton, imageSrc 
           )}
           {nameButton && (
             <Link
-              href={'/info/how-to-use'}
-              className={`ease rounded-[50px] bg-buttonsLigth px-[14px] py-3 font-titleFont font-semibold text-darkText transition-colors duration-300 ${isDark ? 'buttonSecondDark bg-darkText text-lightText' : 'text buttonSecond'} `}
+              href={href}
+              className={`ease rounded-[50px] bg-buttonsLigth px-[14px] py-3 font-titleFont text-base font-semibold text-darkText transition-colors duration-300 ${isDark ? 'buttonSecondDark bg-darkText text-lightText' : 'text buttonSecond'} `}
             >
               {nameButton}
             </Link>
