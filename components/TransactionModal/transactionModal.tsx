@@ -81,8 +81,7 @@ const TransactionModal = ({ transId }: { transId: string }) => {
             }}
           />
         )}
-
-        <DiscrepancySection trans={trans} />
+        {componentStates.aprooveReject != null && <DiscrepancySection trans={trans} />}
         <button
           onClick={() => setModal(!modal)}
           className="max-w-[10rem] self-end rounded-lg border border-[#FF6200] bg-[#642600] px-2 py-2 text-darkText"

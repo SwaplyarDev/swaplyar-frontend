@@ -52,6 +52,9 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ currentPage }) =>
         popup: 'bg-transparent shadow-none',
         container: 'bg-transparent',
       },
+      hideClass: {
+        popup: 'swal2-hide-custom',
+      },
     });
     setTimeout(() => {
       MySwal.update({
@@ -94,7 +97,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ currentPage }) =>
       </section>
       <div className="flex w-[95%] flex-row gap-4 divide-x-[1px] divide-black overflow-x-auto">
         <StatusSection />
-        <table className="w-full">
+        <table className="w-full cursor-pointer">
           <thead>
             <tr className="text-left">
               <th className="px-4 font-normal"></th>
