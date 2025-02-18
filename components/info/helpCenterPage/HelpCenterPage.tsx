@@ -8,6 +8,7 @@ import { sectionBottomHelpCenter, sectionLinksHelpCenter } from '@/data/sectionH
 import clsx from 'clsx';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import { CentroDeAyuda } from '@/utils/assets/imgDatabaseCloudinary';
+import { FlyerGif } from '@/utils/assets/img-database';
 
 const HelpCenterPage = () => {
   const { isDark } = useDarkTheme();
@@ -117,10 +118,10 @@ const HelpCenterPage = () => {
         </div>
       </div>
       <FlyerTrabajo
-        imageSrc={CentroDeAyuda}
-        title="¿Nuevo en SwaplyAr?"
-        description="Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma sencilla y segura."
-        nameButton="¡Empieza ahora!"
+        imageSrc={FlyerGif}
+        description="Encontrá respuestas a tus dudas"
+        nameButton="Preguntas frecuentes"
+        href="/info/questions"
       />
     </>
   );

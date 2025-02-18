@@ -37,7 +37,7 @@ const FraudPrevention = () => {
         />
       </section>
       <div className="my-20 w-[100%] bg-contain bg-center">
-        <FlyerTrabajo imageSrc={fraudPrevention} />
+        <FlyerTrabajo href="" imageSrc={fraudPrevention} />
       </div>
     </main>
   );

@@ -10,6 +10,7 @@ import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import { CentroDeAyuda } from '@/utils/assets/imgDatabaseCloudinary';
 import Link from 'next/link';
 import QuestionHowToUse from '../QuestionHowToUse/QuestionHowToUse';
+import { FlyerGif } from '@/utils/assets/img-database';
 
 export default function SwaplyArInstructions() {
   const { isDark } = useDarkTheme();
@@ -152,7 +153,12 @@ export default function SwaplyArInstructions() {
         </section>
         <QuestionHowToUse />
       </div>
-      <FlyerTrabajo imageSrc={CentroDeAyuda} />
+      <FlyerTrabajo
+        href="/info/loyalty-program"
+        description="¿Sabias que en SwaplyAr podes sumar descuentos con cada transacción?"
+        nameButton="Unite a Plus Rewards"
+        imageSrc={FlyerGif}
+      />
     </>
   );
 }
