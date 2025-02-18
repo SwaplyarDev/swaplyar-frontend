@@ -1,10 +1,18 @@
 import { create } from 'zustand';
 import { TransactionTypeSingle, emptyTransaction } from '@/types/transactions/transactionsType';
-import { getTransactionById, updateStatusClient } from '@/actions/transactions/transactions.action';
+import {
+  getTransactionById,
+  updateStatusClient,
+  getStatusTransactionAdmin,
+  postStatusInAdmin,
+  updateStatusAdmin,
+} from '@/actions/transactions/transactions.action';
+import { convertTransactionState, getComponentStatesFromStatus } from '@/utils/transactionStatesConverser';
 
 interface TransactionState {
   trans: TransactionTypeSingle;
   isLoading: boolean;
+  transIdAdmin: string;
   status: string;
   componentStates: {
     aprooveReject: 'stop' | 'accepted' | 'rejected' | null;
@@ -14,7 +22,7 @@ interface TransactionState {
   };
   selected: 'stop' | 'accepted' | 'rejected' | null;
   fetchTransaction: (transId: string) => Promise<void>;
-  updateTransactionStatus: (transId: string) => Promise<void>;
+  updateTransactionStatus: (transId: string, transIdAdmin: string) => Promise<void>;
   setComponentStates: (key: keyof TransactionState['componentStates'], value: any) => void;
   setStatus: (status: string) => void;
   setSelected: (selected: 'stop' | 'accepted' | 'rejected' | null) => void;
@@ -24,6 +32,7 @@ interface TransactionState {
 export const useTransactionStore = create<TransactionState>((set, get) => ({
   trans: emptyTransaction,
   isLoading: false,
+  transIdAdmin: '',
   status: 'pending',
   componentStates: {
     aprooveReject: null,
@@ -37,7 +46,16 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
     set({ isLoading: true });
     try {
       const trans = await getTransactionById(transId);
+      const existOnAdmin: any = await getStatusTransactionAdmin(transId);
       if (trans) {
+        if (existOnAdmin?.success) {
+          const stat = convertTransactionState(existOnAdmin.data?.status);
+          const comps = getComponentStatesFromStatus(existOnAdmin.data?.status);
+          const idAdminTrans = existOnAdmin.data?.transaction_admin_id;
+          set({ status: stat, componentStates: comps, transIdAdmin: idAdminTrans });
+        } else {
+          postStatusInAdmin(transId, '1');
+        }
         set({ trans });
       }
     } catch (error) {
@@ -47,10 +65,13 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
     }
   },
 
-  updateTransactionStatus: async (transId) => {
+  updateTransactionStatus: async (transIdAdmin: string) => {
     try {
       const { status } = get();
-      await updateStatusClient(transId, status);
+      const numberStat = convertTransactionState(status);
+      if (numberStat && transIdAdmin.length > 3) {
+        //await updateStatusAdmin(transIdAdmin, numberStat)
+      }
       console.log('Estado de la transacción actualizado');
     } catch (error) {
       console.error('Error al actualizar el estado de la transacción:', error);

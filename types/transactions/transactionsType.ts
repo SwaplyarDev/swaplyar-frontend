@@ -9,6 +9,8 @@ export interface TransactionTypeSingle {
     user_id: string | null;
     status: string;
     idAdmin: string | null;
+    regret_id: string | null;
+    note_id: string | null;
   };
   sender: {
     first_name: string;
@@ -60,6 +62,8 @@ export const emptyTransaction: TransactionTypeSingle = {
     user_id: null,
     status: '',
     idAdmin: null,
+    regret_id: null,
+    note_id: null,
   },
   sender: {
     first_name: '',
@@ -120,6 +124,8 @@ export interface TransactionTypeAll {
     user_id: string | null;
     status: string;
     idAdmin: string | null;
+    regret_id: string | null;
+    note_id: string | null;
   };
   sender: {
     first_name: string;
