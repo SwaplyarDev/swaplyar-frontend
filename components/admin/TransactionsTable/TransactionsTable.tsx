@@ -43,17 +43,11 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ currentPage }) =>
   const handleModal = (id: string) => {
     setTransId(id);
     MySwal.fire({
-      html: (
-        <div className="flex h-[200px] w-[400px] items-center justify-center opacity-0 transition-opacity duration-500">
-          <span className="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-blue-500">
-            cargando...
-          </span>
-        </div>
-      ),
+      html: <div className="display-hidden"></div>,
       showConfirmButton: false,
       showCloseButton: false,
       allowOutsideClick: false,
-      width: '100vw',
+      width: '0px',
       customClass: {
         popup: 'bg-transparent shadow-none',
         container: 'bg-transparent',
@@ -67,10 +61,10 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ currentPage }) =>
           </SessionProvider>
         ),
       });
+
       document.querySelector('.swal2-html-container')?.classList.remove('opacity-0');
     }, 500);
   };
-
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case 'pending':

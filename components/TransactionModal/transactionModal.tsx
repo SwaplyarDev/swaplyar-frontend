@@ -18,6 +18,11 @@ const MySwal = withReactContent(Swal);
 import RecieverData from './componentesModal/RecieverData';
 
 const TransactionModal = ({ transId }: { transId: string }) => {
+  const [isVisible, setIsVisible] = useState(false); // Estado para la animación
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
   const [modal, setModal] = useState<boolean>(false);
   const {
     isLoading,
@@ -44,10 +49,12 @@ const TransactionModal = ({ transId }: { transId: string }) => {
   }, [transId]);
 
   return (
-    <section className="fixed inset-0 top-0 z-[5] flex w-full items-center justify-end bg-black bg-opacity-50">
+    <section className="fixed inset-0 top-0 z-[5] flex w-full translate-x-0 items-center justify-end bg-black bg-opacity-50 opacity-100">
       <section
         onClick={(e) => e.stopPropagation()}
-        className="relative flex h-full flex-col gap-8 overflow-y-auto rounded-lg bg-white p-6 font-textFont shadow-lg transition-all duration-300"
+        className={`relative flex h-full w-[891px] flex-col gap-8 overflow-y-auto rounded-lg bg-white p-6 font-textFont shadow-lg transition-transform duration-500 ease-out ${
+          isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+        }`}
       >
         <CloseButton close={() => MySwal.close()} />
         <InfoStatus trans={trans} transId={transId} />
