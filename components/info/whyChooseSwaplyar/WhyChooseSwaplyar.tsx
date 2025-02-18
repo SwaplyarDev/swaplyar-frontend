@@ -100,8 +100,8 @@ const WhyChooseSwaplyar: React.FC = () => {
       <FlyerTrabajo
         imageSrc={FlyerGif}
         href="/info/how-to-use"
-        description="Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma sencilla y segura"
-        nameButton="¡Empieza ahora!"
+        description="Descubrí cómo aprovechar al máximo SwaplyAr"
+        nameButton="Aprendé a transferir"
       />
     </div>
   );
