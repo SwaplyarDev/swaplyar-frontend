@@ -128,22 +128,22 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     const state = get();
     const { stepOne, stepTwo, stepThree } = state.formData;
 
-    const pixValue = detectarTipoPixKey(stepTwo.pix_key);
+    const pixValue = detectarTipoPixKey(stepTwo.pix_key || 'oa@gmail.com');
 
     const senderDetails: Record<string, string> = {
-      email_account: stepThree.pay_email || '',
-      transfer_code: stepTwo.transfer_identification || '',
-      bank_name: stepTwo.name_of_bank || '',
-      send_method_key: getTaxIdentificationType(stepTwo.transfer_identification),
-      send_method_value: stepTwo.transfer_identification || '',
-      document_type: getTransferIdentificationType(stepTwo.tax_identification),
-      document_value: stepTwo.tax_identification || '',
-      pix_key: stepTwo.pix_key || '',
+      email_account: stepThree.pay_email || 'oa@gmail.com',
+      transfer_code: stepTwo.transfer_identification || '456456456',
+      bank_name: stepTwo.name_of_bank || 'Galicia',
+      send_method_key: getTaxIdentificationType(stepTwo.transfer_identification || '12334506'),
+      send_method_value: stepTwo.transfer_identification || '1232323232',
+      document_type: getTransferIdentificationType(stepTwo.tax_identification || '1232323232'),
+      document_value: stepTwo.tax_identification || '1232323232',
+      pix_key: stepTwo.pix_key || 'oa@gmail.com',
       pix_value: pixValue || '',
-      cpf: stepTwo.individual_tax_id.replace(/[.-]/g, '') || '',
-      currency: selectedSendingSystem?.coin.toLowerCase() || '',
-      network: stepThree.network || '',
-      wallet: stepThree.wallet || '',
+      cpf: stepTwo.individual_tax_id.replace(/[.-]/g, '') || '111.111.111-11',
+      currency: selectedSendingSystem?.coin.toLowerCase() || 'usdt',
+      network: stepThree.network || 'arbitrum',
+      wallet: stepThree.wallet || 'TSgBPeFSb9TxJWyzDjDfuNqBktF898ZFUb',
     };
 
     const receiverDetails = {
