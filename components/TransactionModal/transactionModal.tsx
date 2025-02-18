@@ -9,7 +9,6 @@ import InfoStatus from './componentesModal/InfoStatus';
 import TransferImages from './componentesModal/TransferImages';
 import TransferClient from './componentesModal/TransferClient';
 import { useTransactionStore } from '@/store/transactionModalStorage';
-import { TransactionTypeSingle, emptyTransaction } from '@/types/transactions/transactionsType';
 import CloseButton from './componentesModal/ui/CloseButton';
 import ModalEditReciever from './componentesModal/ModalEditReciever/ModalEditReciever';
 import withReactContent from 'sweetalert2-react-content';
@@ -23,6 +22,7 @@ const TransactionModal = ({ transId }: { transId: string }) => {
   const {
     isLoading,
     trans,
+    transIdAdmin,
     status,
     componentStates,
     selected,
@@ -34,7 +34,7 @@ const TransactionModal = ({ transId }: { transId: string }) => {
 
   console.log(status);
   useEffect(() => {
-    updateTransactionStatus(transId);
+    updateTransactionStatus(transId, transIdAdmin);
   }, [status, transId, componentStates]);
 
   useEffect(() => {

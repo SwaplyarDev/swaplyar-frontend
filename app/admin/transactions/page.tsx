@@ -1,9 +1,15 @@
 import TransactionsTable from '@/components/admin/TransactionsTable/TransactionsTable';
 
-export default function Page() {
+interface TransactionPageProps {
+  searchParams: { page?: string }; // Captura ?page=2
+}
+
+export default function Page({ searchParams }: TransactionPageProps) {
+  const currentPage = Number(searchParams.page) || 1; // Si no hay `?page=`, usa 1 por defecto
+
   return (
     <>
-      <TransactionsTable />
+      <TransactionsTable currentPage={currentPage} />
     </>
   );
 }
