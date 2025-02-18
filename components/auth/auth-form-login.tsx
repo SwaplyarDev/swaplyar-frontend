@@ -28,6 +28,7 @@ export const LoginForm = () => {
   const { setEmail } = useEmailVerificationStore(); // Zustand action para guardar el email
   const { isDark } = useDarkTheme();
   const router = useRouter(); // Utiliza useRouter para redirigir después de ingresar el email
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const submitEmail: SubmitHandler<FormInputs> = async ({ email }) => {
     setLoading(true);
@@ -45,11 +46,11 @@ export const LoginForm = () => {
       setTimeout(() => {
         setLoading(false);
         router.push('/auth/login-register/email-verification');
-      }, 6000); // Redirigir a la página de verificación
+      }, 3000); // Redirigir a la página de verificación
     } catch (error) {
       setLoading(false);
       console.error('Error al enviar el código:', error);
-      alert('Ocurrió un error inesperado.');
+      setErrorMessage('Hubo un error inesperado, vuelve a intentarlo más tarde.');
     }
   };
 
@@ -134,6 +135,7 @@ export const LoginForm = () => {
         >
           Registrate aquí
         </button>
+        {errorMessage && <p className="mt-5 text-center text-errorColor">{errorMessage}</p>}
       </form>
     </div>
   );
