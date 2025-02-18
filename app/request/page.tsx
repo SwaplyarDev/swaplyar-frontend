@@ -1,6 +1,7 @@
 // /app/request/page.tsx
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import StepperContainer from '@/components/request/form/StepperContainer';
+import { FlyerGif } from '@/utils/assets/img-database';
 import { CentroDeAyuda } from '@/utils/assets/imgDatabaseCloudinary';
 import { Metadata } from 'next';
 
@@ -16,7 +17,12 @@ const RequestPage = () => {
       <div className="flex items-center justify-center px-5 py-10 xs-phone:px-10">
         <StepperContainer />
       </div>
-      <FlyerTrabajo imageSrc={CentroDeAyuda} />
+      <FlyerTrabajo
+        href="/auth/login-register"
+        description="Para acceder a más beneficios y seguimiento en tiempo real registrate gratis"
+        nameButton="¡Me quiero registrar!"
+        imageSrc={FlyerGif}
+      />
     </>
   );
 };

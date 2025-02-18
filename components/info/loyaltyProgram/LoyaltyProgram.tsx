@@ -14,6 +14,7 @@ import {
   Rewards3Dark,
 } from '@/utils/assets/imgDatabaseCloudinary';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import { FlyerGif } from '@/utils/assets/img-database';
 
 function LoyaltyProgram() {
   const { setView } = useStore();
@@ -83,7 +84,12 @@ function LoyaltyProgram() {
           </section>
         </div>
       </div>
-      <FlyerTrabajo imageSrc={CentroDeAyuda} />
+      <FlyerTrabajo
+        imageSrc={FlyerGif}
+        href="/auth/login-register"
+        description="Registrate gratis para empezar a obtener beneficios exclusivos"
+        nameButton="Me quiero registrar"
+      />
     </>
   );
 }
