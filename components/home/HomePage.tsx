@@ -10,6 +10,7 @@ import { useSystemStore } from '@/store/useSystemStore';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import Recommendations from '../Recomendations/Recomendations';
 import { homeSearch } from '@/utils/assets/img-database';
+import Link from 'next/link';
 
 export default function HomePage() {
   const resetToDefault = useSystemStore((state) => state.resetToDefault);
