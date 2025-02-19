@@ -21,7 +21,7 @@ const defaultReceivingSystem: System = {
   isDisabled: false,
   coin: 'ARS',
   paymentMethod: 'ars',
-  coinSign: '$a',
+  coinSign: 'ARS',
 };
 
 interface SystemStore {
