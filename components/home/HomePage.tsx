@@ -4,12 +4,11 @@ import React, { useEffect } from 'react';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import ConversionInstructions from '../ui/Conversion-Instructions/ConversionInstructions';
-import { FlyerGif, RecargaPaypal, UsdArs } from '@/utils/assets/imgDatabaseCloudinary';
+import { FlyerGif, RecargaPaypal, UsdArs, homeSearch } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import Recommendations from '../Recomendations/Recomendations';
-import { homeSearch } from '@/utils/assets/img-database';
 import Link from 'next/link';
 
 export default function HomePage() {

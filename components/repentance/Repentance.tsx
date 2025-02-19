@@ -5,7 +5,7 @@ import { regretsPc } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
-import { regretsPhone } from '@/utils/assets/img-database';
+import { regretsPhone } from '@/utils/assets/imgDatabaseCloudinary';
 import ButtonBack from '../ui/ButtonBack/ButtonBack';
 
 const RepentanceForm = () => {
