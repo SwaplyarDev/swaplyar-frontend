@@ -7,7 +7,7 @@ interface ReceiverDataProps {
 
 const ReceiverData: React.FC<ReceiverDataProps> = ({ trans }) => {
   return (
-    <article className="inline-flex w-[100%] flex-col gap-2">
+    <article className={`${trans.transaction.regret_id ? 'hidden' : 'inline-flex'} w-[100%] flex-col gap-2`}>
       <article className="flex w-[70%] flex-col items-start divide-y-2 self-center">
         <h3 className="text-xl font-semibold">Datos del Destinatario</h3>
         {getReceiverLabels(trans).map((item, index) => renderLabels(item.label, item.value))}

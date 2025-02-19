@@ -45,14 +45,19 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
         }`}
       >
         <h3 className="text-2xl font-semibold">El cliente solicitó la edición de algunos datos</h3>
-        <ClientMessage message="Mensaje de la solicitud" headerMessage="Mensaje" />
+        <ClientMessage message="Mensaje de la solicitud" headerMessage="Mensaje" classnames="border-black" />
 
         <article className="item-center flex flex-row gap-2">
           {/* Datos originales */}
           <div className="flex max-w-[13.4rem] flex-col gap-2 divide-y-[1px]">
             <p className="min-h-[3.4rem] text-xl font-semibold">Datos del Destinatario</p>
             {receiverLabels.map(({ label, value }, index) => (
-              <ClientMessage key={index} message={value} headerMessage={label} classnames="pb-3 min-h-[2.25rem]" />
+              <ClientMessage
+                key={index}
+                message={value}
+                headerMessage={label}
+                classnames="pb-3 border-black min-h-[2.25rem]"
+              />
             ))}
           </div>
 

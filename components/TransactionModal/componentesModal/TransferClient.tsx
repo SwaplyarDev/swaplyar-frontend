@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { CustomButton } from './ui/comoponenteboton';
 import { clipopup } from '@/utils/assets/img-database';
 import Image from 'next/image';
-import InfoBox from './ui/InfoBox';
 
 const TransferClient = () => {
   const [selected, setSelected] = useState<boolean | null>(null);
@@ -12,7 +11,7 @@ const TransferClient = () => {
   });
 
   return (
-    <section className="flex w-[50%] flex-col items-start justify-start gap-4">
+    <section className="flex w-[50%] flex-col items-start justify-start gap-4 justify-self-end">
       <article className="flex flex-col items-center gap-1">
         <h3 className="text-center font-titleFont text-xl font-medium">Transferencia realizada al cliente.</h3>
         <div className="flex flex-row gap-5">
@@ -39,7 +38,7 @@ const TransferClient = () => {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <p className="text-sm">Monto de la transferencia</p>
+          <p className="text-sm">Monto</p>
           <input
             placeholder="Id de transferencia"
             type="number"
@@ -53,7 +52,7 @@ const TransferClient = () => {
         <button className="flex h-[3.6rem] w-[16.3rem] flex-row items-center justify-center gap-2 rounded-lg bg-[#d3d3d3] p-2.5 text-[#012a8d] underline">
           Subir Comprobante <Image src={clipopup} alt="clip" width={16} height={16} />
         </button>
-        <button className="text-[#012a8d] underline">Link del comprobante</button>
+        <button className="self-end text-[#012a8d] underline">Link del comprobante</button>
       </article>
     </section>
   );

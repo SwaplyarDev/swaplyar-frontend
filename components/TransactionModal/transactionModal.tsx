@@ -1,5 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { renderSvgRed } from './componentesModal/ui/svgFunctions';
+import { useTransactionStore } from '@/store/transactionModalStorage';
 import AprobarRechazar from './componentesModal/aprobarRechazar';
 import TransactionDetail from './componentesModal/detallesTransaccion';
 import ConfirmTransButton from './componentesModal/ConfirmTransButton';
@@ -8,7 +10,7 @@ import ClientMessage from './componentesModal/ui/ClientMessage';
 import InfoStatus from './componentesModal/InfoStatus';
 import TransferImages from './componentesModal/TransferImages';
 import TransferClient from './componentesModal/TransferClient';
-import { useTransactionStore } from '@/store/transactionModalStorage';
+import FinalSection from './componentesModal/FinalSection';
 import CloseButton from './componentesModal/ui/CloseButton';
 import ModalEditReciever from './componentesModal/ModalEditReciever/ModalEditReciever';
 import withReactContent from 'sweetalert2-react-content';
@@ -27,17 +29,22 @@ const TransactionModal = ({ transId }: { transId: string }) => {
   const {
     isLoading,
     trans,
+    noteEdit,
+    regretCancel,
     transIdAdmin,
     status,
     componentStates,
     selected,
     fetchTransaction,
+    fetchNote,
+    fetchRegret,
     updateTransactionStatus,
     setComponentStates,
     setSelected,
   } = useTransactionStore();
 
-  console.log(status);
+  const { transaction } = trans;
+
   useEffect(() => {
     updateTransactionStatus(transId, transIdAdmin);
   }, [status, transId, componentStates]);
@@ -48,13 +55,19 @@ const TransactionModal = ({ transId }: { transId: string }) => {
     }
   }, [transId]);
 
+  useEffect(() => {
+    if (transaction.regret_id) {
+      fetchRegret(transaction.regret_id);
+    } else if (transaction.note_id) {
+      fetchNote(transaction.note_id);
+    }
+  }, [transaction.regret_id]);
+
   return (
     <section className="fixed inset-0 top-0 z-[5] flex w-full translate-x-0 items-center justify-end bg-black bg-opacity-50 opacity-100">
       <section
         onClick={(e) => e.stopPropagation()}
-        className={`relative flex h-full w-[891px] flex-col gap-8 overflow-y-auto rounded-lg bg-white p-6 font-textFont shadow-lg transition-transform duration-500 ease-out ${
-          isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
-        }`}
+        className="relative flex h-full max-w-[55rem] flex-col gap-5 overflow-y-auto rounded-lg bg-white p-6 font-textFont text-lightText shadow-lg transition-all duration-300"
       >
         <CloseButton close={() => MySwal.close()} />
         <InfoStatus trans={trans} transId={transId} />
@@ -62,9 +75,30 @@ const TransactionModal = ({ transId }: { transId: string }) => {
         <ClientMessage
           message={trans.transaction.message}
           headerMessage="Mensaje del cliente"
-          classnames="min-h-[4.25rem]"
+          classnames="min-h-[4.25rem] border-black"
         />
         <TransferImages trans={trans} />
+        {transaction.regret_id ? (
+          <div className="flex flex-col">
+            <p className="text-left text-base font-medium">
+              El Cliente solicito la Cancelacion y el Reembolso - Se realiza el reembolso a la cuenta de origen
+            </p>
+            <ClientMessage
+              headerMessage="Mensaje"
+              message={regretCancel.note}
+              classnames="border-[#CE1818] min-h-[4.25rem]"
+            />
+          </div>
+        ) : transaction.note_id ? (
+          <div className="flex flex-col">
+            <p className="text-base font-medium">El Cliente solicito Editar la Solicitud</p>
+            <ClientMessage
+              headerMessage="mensage"
+              message={noteEdit.note}
+              classnames="border-[#D75600] min-h-[4.25rem]"
+            />
+          </div>
+        ) : null}
 
         <ConfirmTransButton
           value={componentStates.confirmTransButton}
@@ -84,37 +118,35 @@ const TransactionModal = ({ transId }: { transId: string }) => {
         {componentStates.aprooveReject != null && <DiscrepancySection trans={trans} />}
         <button
           onClick={() => setModal(!modal)}
-          className="max-w-[10rem] self-end rounded-lg border border-[#FF6200] bg-[#642600] px-2 py-2 text-darkText"
+          className="max-w-[12rem] self-end rounded-lg border border-[#FF6200] bg-[#642600] px-2 py-2 text-darkText"
         >
           Editar Destinatario
         </button>
 
-        <section className="flex flex-col gap-2">
-          <h2 className="text-left text-2xl font-semibold">Información para realizar el pago al cliente</h2>
+        <section className="flex flex-col items-center gap-2">
+          {transaction.regret_id ? (
+            <div className="flex flex-col gap-1">
+              <div className="flex flex-row items-center justify-center gap-1 text-xs font-light">
+                {renderSvgRed()}Si la Discrepancia no fue resuelta, se tiene que generar el reembolso del dinero al
+                cliente, a la cuenta de origen
+              </div>
+              <h2 className="text-left text-2xl font-semibold">
+                Realizar el Reembolso al cliente a la cuenta de Origen{' '}
+              </h2>
+            </div>
+          ) : (
+            <h2 className="self-start text-left text-2xl font-semibold">
+              Informacion para realizar el Pago al cliente{' '}
+            </h2>
+          )}
 
-          <section className="flex w-[100%] flex-row justify-between">
+          <section className="flex w-[100%] flex-row justify-center">
             <RecieverData trans={trans} />
             <TransferClient />
           </section>
         </section>
 
-        <div className="flex gap-5">
-          <button className="rounded-full border-2 border-[#d0b8b8] bg-[#b6a0a0] p-2.5 text-2xl font-semibold">
-            Rechazada
-          </button>
-          <button className="rounded-full border-2 border-[#b8cfb8] bg-[#9fb69f] p-2.5 text-2xl font-semibold">
-            Aprobada
-          </button>
-        </div>
-        <p className="lightText text-right text-base">
-          Esta solicitud fue operada por: Jenifer Paola Gutierrez Torrez - 16:52 pm
-        </p>
-        <button className="rounded-full border-2 border-[#012a8d] bg-[#000c28] p-2.5 text-base font-semibold text-[#ebe7e0]">
-          En Proceso
-        </button>
-        <button onClick={() => MySwal.close()} className="text-xl font-bold">
-          Cerrar
-        </button>
+        <FinalSection />
       </section>
       <ModalEditReciever modal={modal} setModal={setModal} trans={trans} />
     </section>

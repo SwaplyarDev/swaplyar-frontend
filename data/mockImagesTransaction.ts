@@ -19,6 +19,7 @@ import {
 
 interface MockImages {
   image: string;
+  type?: string;
   name: string;
   id: number;
 }
@@ -26,22 +27,26 @@ interface MockImages {
 export const MockImagesTransLight: MockImages[] = [
   {
     image: WiseUsdImg,
-    name: 'wise usd',
+    name: 'wise',
+    type: 'usd',
     id: 1,
   },
   {
     image: PayoneerUsdImg,
     name: 'payoneer',
+    type: 'usd',
     id: 2,
   },
   {
     image: WiseEurImg,
     name: 'wise eur',
+    type: 'eur',
     id: 3,
   },
   {
     image: PayoneerEurImg,
     name: 'payoneer eur',
+    type: 'eur',
     id: 4,
   },
   {
