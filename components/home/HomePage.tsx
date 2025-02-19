@@ -3,14 +3,14 @@
 import React, { useEffect } from 'react';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
-import Link from 'next/link';
 import ConversionInstructions from '../ui/Conversion-Instructions/ConversionInstructions';
 import { FlyerGif, RecargaPaypal, UsdArs } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import Recommendations from '../Recomendations/Recomendations';
-import recomendationsData from '@/data/recomendationsData';
+import { homeSearch } from '@/utils/assets/img-database';
+import Link from 'next/link';
 
 export default function HomePage() {
   const resetToDefault = useSystemStore((state) => state.resetToDefault);
@@ -60,7 +60,7 @@ export default function HomePage() {
             />
             <InfoBlock
               title="¿Buscas un intercambio seguro y rápido para tu dinero?"
-              imageSrc={RecargaPaypal}
+              imageSrc={homeSearch}
               imageAlt="Recarga PayPal"
               contentNode={
                 <>
