@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { NoteTypeSingle, emptyNote } from '@/types/transactions/notesType';
+import { RegretTypeSingle, emptyRegret } from '@/types/transactions/regretsType';
 import { TransactionTypeSingle, emptyTransaction } from '@/types/transactions/transactionsType';
 import {
   getTransactionById,
@@ -7,10 +9,14 @@ import {
   postStatusInAdmin,
   updateStatusAdmin,
 } from '@/actions/transactions/transactions.action';
+import { getNoteById } from '@/actions/transactions/notes.action';
+import { getRegret } from '@/actions/repentance/repentanceForm.action';
 import { convertTransactionState, getComponentStatesFromStatus } from '@/utils/transactionStatesConverser';
 
 interface TransactionState {
   trans: TransactionTypeSingle;
+  noteEdit: NoteTypeSingle;
+  regretCancel: RegretTypeSingle;
   isLoading: boolean;
   transIdAdmin: string;
   status: string;
@@ -22,6 +28,8 @@ interface TransactionState {
   };
   selected: 'stop' | 'accepted' | 'rejected' | null;
   fetchTransaction: (transId: string) => Promise<void>;
+  fetchNote: (noteId: string) => Promise<void>;
+  fetchRegret: (regretId: string) => Promise<void>;
   updateTransactionStatus: (transId: string, transIdAdmin: string) => Promise<void>;
   setComponentStates: (key: keyof TransactionState['componentStates'], value: any) => void;
   setStatus: (status: string) => void;
@@ -31,6 +39,8 @@ interface TransactionState {
 
 export const useTransactionStore = create<TransactionState>((set, get) => ({
   trans: emptyTransaction,
+  noteEdit: emptyNote,
+  regretCancel: emptyRegret,
   isLoading: false,
   transIdAdmin: '',
   status: 'pending',
@@ -64,7 +74,27 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
       set({ isLoading: false });
     }
   },
+  fetchNote: async (idNote: string) => {
+    try {
+      const note = await getNoteById(idNote);
+      if (note) {
+        set({ noteEdit: note });
+      }
+    } catch (error) {
+      console.error('Error al obtener la solicitud de edición:', error);
+    }
+  },
 
+  fetchRegret: async (idRegret: string) => {
+    try {
+      const { regret } = await getRegret(idRegret);
+      if (regret) {
+        set({ regretCancel: regret });
+      }
+    } catch (error) {
+      console.error('Error al obtener el rechazo:', error);
+    }
+  },
   updateTransactionStatus: async (transIdAdmin: string) => {
     try {
       const { status } = get();

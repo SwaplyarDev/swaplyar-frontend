@@ -5,7 +5,7 @@ export const getReceiverLabels = (transaction: TransactionTypeSingle) => {
   const walletType = payment_method?.receiver.value;
 
   switch (walletType) {
-    case 'Wise':
+    case 'wise':
       return [
         { label: 'Nombre y Apellidos', value: `${receiver.first_name} ${receiver.last_name}` },
         { label: 'Email a realizar el pago', value: payment_method.receiver.details.sender_method_value },
@@ -23,13 +23,14 @@ export const getReceiverLabels = (transaction: TransactionTypeSingle) => {
       ];
     case 'pix':
       return [
-        { label: 'Telefono', value: payment_method.receiver.details.pix_value },
+        { label: 'Telefono/Email de Pix', value: payment_method.receiver.details.pix_value },
         { label: 'CPF', value: payment_method.receiver.details.cpf },
       ];
     default:
       return [
         { label: 'Método de pago', value: walletType },
         { label: 'Detalle', value: payment_method.receiver.details.sender_method_value },
+        { label: 'Error', value: 'No hay información o no es correcta' },
       ];
   }
 };

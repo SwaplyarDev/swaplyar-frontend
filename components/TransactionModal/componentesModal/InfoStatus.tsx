@@ -15,8 +15,8 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
     switch (status.toLowerCase()) {
       case 'pending':
         return (
-          <div className="flex rounded-full bg-[#000C29] px-4 py-2 font-titleFont text-2xl text-darkText outline outline-1 outline-offset-2 outline-[#012A8E]">
-            Pendiente
+          <div className="flex rounded-full bg-[#000C29] px-4 py-2 font-titleFont text-2xl font-semibold text-white outline outline-1 outline-offset-2 outline-[#012A8E]">
+            En Proceso
           </div>
         );
       case 'rejected':
