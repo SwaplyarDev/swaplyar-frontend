@@ -61,7 +61,7 @@ export default function HomePage() {
             <InfoBlock
               title="¿Buscas un intercambio seguro y rápido para tu dinero?"
               imageSrc={homeSearch}
-              imageAlt="Recarga PayPal"
+              imageAlt="Intercambio seguro y rápido"
               contentNode={
                 <>
                   En SwaplyAr, ayudamos a freelancers y trabajadores remotos a cambiar sus pagos desde su billetera
