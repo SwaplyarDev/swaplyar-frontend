@@ -1,7 +1,12 @@
 import { System } from '@/types/data';
 import { CountryOption, RedType } from '@/types/request/request';
 import { buildPaymentMethod } from '@/utils/buildPaymentMethod';
-import { detectarTipoPixKey, getTaxIdentificationType, getTransferIdentificationType } from '@/utils/validationUtils';
+import {
+  detectarMail,
+  detectarTipoPixKey,
+  getTaxIdentificationType,
+  getTransferIdentificationType,
+} from '@/utils/validationUtils';
 import { create } from 'zustand';
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -131,18 +136,18 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     const pixValue = detectarTipoPixKey(stepTwo.pix_key || 'oa@gmail.com');
 
     const senderDetails: Record<string, string> = {
-      email_account: stepThree.pay_email || 'oa@gmail.com',
-      transfer_code: stepTwo.transfer_identification || '456456456',
-      bank_name: stepTwo.name_of_bank || 'Galicia',
-      send_method_key: getTaxIdentificationType(stepTwo.transfer_identification || '12334506'),
-      send_method_value: stepTwo.transfer_identification || '1232323232',
-      document_type: getTransferIdentificationType(stepTwo.tax_identification || '1232323232'),
-      document_value: stepTwo.tax_identification || '1232323232',
+      email_account: stepThree.pay_email || detectarMail(selectedSendingSystem),
+      transfer_code: stepTwo.transfer_identification || 'SwaplyAr.com',
+      bank_name: stepTwo.name_of_bank || 'Personal Pay',
+      send_method_key: getTaxIdentificationType(stepTwo.transfer_identification || 'SwaplyAr.com'),
+      send_method_value: stepTwo.transfer_identification || 'SwaplyAr.com',
+      document_type: getTransferIdentificationType(stepTwo.tax_identification || '20-19103601-9'),
+      document_value: stepTwo.tax_identification || '20-19103601-9',
       pix_key: stepTwo.pix_key || 'oa@gmail.com',
       pix_value: pixValue || '',
       cpf: stepTwo.individual_tax_id.replace(/[.-]/g, '') || '111.111.111-11',
-      currency: selectedSendingSystem?.coin.toLowerCase() || 'usdt',
-      network: stepThree.network || 'arbitrum',
+      currency: selectedSendingSystem?.coin.toLowerCase() || '',
+      network: stepThree.network || 'tron',
       wallet: stepThree.wallet || 'TSgBPeFSb9TxJWyzDjDfuNqBktF898ZFUb',
     };
 
