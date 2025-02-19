@@ -197,3 +197,5 @@ export const nube1 = '/images/nube1.svg';
 export const nube2 = '/images/nube2.svg';
 
 export const plane = '/images/plane.svg';
+
+export const homeSearch = '/images/homeSearch.png';

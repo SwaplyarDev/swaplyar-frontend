@@ -3,14 +3,14 @@
 import React, { useEffect } from 'react';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
-import Link from 'next/link';
 import ConversionInstructions from '../ui/Conversion-Instructions/ConversionInstructions';
 import { FlyerGif, RecargaPaypal, UsdArs } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import Recommendations from '../Recomendations/Recomendations';
-import recomendationsData from '@/data/recomendationsData';
+import { homeSearch } from '@/utils/assets/img-database';
+import Link from 'next/link';
 
 export default function HomePage() {
   const resetToDefault = useSystemStore((state) => state.resetToDefault);
@@ -60,7 +60,7 @@ export default function HomePage() {
             />
             <InfoBlock
               title="¿Buscas un intercambio seguro y rápido para tu dinero?"
-              imageSrc={RecargaPaypal}
+              imageSrc={homeSearch}
               imageAlt="Recarga PayPal"
               contentNode={
                 <>
@@ -77,6 +77,15 @@ export default function HomePage() {
           </div>
         </article>
         <Recommendations />
+        <div className="mt-20 flex flex-col text-center font-textFont lg2:flex-row lg2:items-center lg2:justify-center lg2:gap-4">
+          <p className="font-light">Descubre por qué SwaplyAr es la clave que necesitas.</p>
+          <Link
+            href="/info/why-choose-swaplyar"
+            className="block text-[28px] text-buttonsLigth underline dark:text-darkText"
+          >
+            ¿Por Que SwaplyAr?
+          </Link>
+        </div>
       </section>
       <section className="mt-10">
         <FlyerTrabajo
