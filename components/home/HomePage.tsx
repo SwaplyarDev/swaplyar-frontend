@@ -77,7 +77,7 @@ export default function HomePage() {
           </div>
         </article>
         <Recommendations />
-        <div className="mt-20 flex flex-col text-center font-textFont lg2:flex-row lg2:items-center lg2:justify-center lg2:gap-4">
+        <div className="mt-20 flex flex-col gap-[14px] text-center font-textFont">
           <p className="font-light">Descubre por qué SwaplyAr es la clave que necesitas.</p>
           <Link
             href="/info/why-choose-swaplyar"
