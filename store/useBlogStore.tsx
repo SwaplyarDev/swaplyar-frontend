@@ -3,6 +3,7 @@ import { create } from 'zustand';
 interface Blog {
   blog_id: string;
   sub_title: string;
+  category: string;
   title: string;
   body: string;
   url_image: string;

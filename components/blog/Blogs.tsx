@@ -8,15 +8,15 @@ import ImageCarousel from '@/components/ui/ImageCarousel/imageCarousel';
 import { useRandomImages } from '@/components/ui/useRandomImages/useRandomImages';
 import SkeletonLoader from '@/components/ui/SkeletonLoader/SkeletonLoader';
 import BlogPostCard from './BlogPostCard/BlogPostCard';
-import { blogPosts } from '@/utils/dataBlog';
 import { arrowBackIosLeft, arrowBackIosLeft1, arrow_back_iosr, arrow_forward_iosrr } from '@/utils/assets/img-database';
 import { gifImage } from '@/utils/assets/img-database';
 import useBlogStore from '@/store/useBlogStore';
 import useFetchBlogs from '@/hooks/useFetchBlogs/useFetchBlogs';
 
 const Blog: React.FC = () => {
-  // const blogs = blogPosts;
   const { blogs } = useBlogStore();
+  console.log('Traigo de la base de datos', blogs);
+
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -25,7 +25,7 @@ const Blog: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useState(page);
   const [searchTerm, setSearchTerm] = useState(searchQuery);
-  const [isLoading, setIsLoading] = useState(blogs.length === 0);
+  const [isLoading, setIsLoading] = useState(true);
   const [totalPages, setTotalPages] = useState<number>(1);
 
   const postsPerPage = 9;
@@ -35,6 +35,12 @@ const Blog: React.FC = () => {
     searchTerm,
     setTotalPages,
   });
+
+  useEffect(() => {
+    if (blogs.length > 0) {
+      setIsLoading(false);
+    }
+  }, [blogs]);
 
   const filteredBlogs = useMemo(() => {
     return blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -107,27 +113,18 @@ const Blog: React.FC = () => {
   return (
     <>
       <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:px-20">
-        <h1 className="mb-6 text-left font-['Inter'] text-2xl text-[61.04px] font-semibold leading-[73.25px] text-[#012a8d] sm:text-3xl">
+        <h1 className="mb-6 text-left font-titleFont text-[61.04px] font-semibold leading-[73.25px] text-inputLight dark:text-darkText">
           Blog
         </h1>
 
-        <div className="flex h-auto w-full max-w-[1200px] flex-shrink-0 items-center justify-center overflow-hidden rounded-[100px] border-[10px] border-[#012A8E] bg-white sm:h-[300px] md:h-[350px] lg:h-[400px]">
-          <ImageCarousel images={randomImages} />
-        </div>
-        <div className="mt-4 flex justify-start sm:justify-start">
-          <div className="relative w-full sm:w-2/3 md:w-1/3">
-            <input
-              type="text"
-              placeholder="Buscar en..."
-              className="w-full rounded-full border border-gray-300 p-3 pl-4 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 sm:text-base"
-              style={{ color: 'black', backgroundColor: 'white' }}
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
-            <span className="absolute right-3 top-2 text-gray-500">
+        {/* Asegúrate de que randomImages tenga varias imágenes */}
+        {randomImages && randomImages.length > 0 && <ImageCarousel images={randomImages} />}
+        <div className="mt-12 flex justify-start dark:bg-lightText">
+          <div className="relative w-[150px]">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-inputLight dark:text-darkText">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="mt-2 h-5 w-5"
+                className="h-5 w-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -140,12 +137,19 @@ const Blog: React.FC = () => {
                 />
               </svg>
             </span>
+            <input
+              type="text"
+              placeholder="Buscar en..."
+              className="w-[150px] rounded-2xl border-[1px] border-inputLight p-3 pl-10 pr-10 text-sm text-black focus:outline-none focus:ring-2 focus:ring-gray-400 dark:border-darkText dark:bg-lightText dark:text-darkText dark:focus:ring-gray-500 sm:text-base"
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
           </div>
         </div>
 
         <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {isLoading ? (
-            <SkeletonLoader />
+            Array.from({ length: 9 }).map((_, index) => <SkeletonLoader key={index} />)
           ) : paginatedBlogs.length > 0 ? (
             paginatedBlogs.map((post) => <BlogPostCard key={post.blog_id} {...post} />)
           ) : (
@@ -154,27 +158,26 @@ const Blog: React.FC = () => {
         </div>
 
         <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button onClick={() => handlePageChange(1)} disabled={currentPage === 1} className="disabled:opacity-50">
+          <button
+            onClick={() => handlePageChange(1)}
+            disabled={currentPage === 1}
+            className="disabled:opacity-50 dark:disabled:opacity-50"
+          >
             <Image
               src={arrowBackIosLeft}
               alt="Ir al inicio"
               width={24}
               height={24}
-              className="brightness-0 filter disabled:brightness-75 disabled:grayscale"
+              className="opacity-100 dark:invert"
             />
           </button>
+
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="disabled:opacity-50"
+            className="disabled:opacity-50 dark:disabled:opacity-50"
           >
-            <Image
-              src={arrowBackIosLeft1}
-              alt="Anterior"
-              width={24}
-              height={24}
-              className="brightness-0 filter disabled:brightness-75 disabled:grayscale"
-            />
+            <Image src={arrowBackIosLeft1} alt="Anterior" width={24} height={24} className="opacity-100 dark:invert" />
           </button>
 
           {pages.map((page, index) =>
@@ -182,7 +185,11 @@ const Blog: React.FC = () => {
               <button
                 key={index}
                 onClick={() => handlePageChange(page)}
-                className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold ${currentPage === page ? 'bg-white text-black shadow-lg' : 'text-gray-600 hover:bg-gray-200'}`}
+                className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold ${
+                  currentPage === page
+                    ? 'bg-white text-black shadow-lg dark:bg-lightText dark:text-darkText dark:shadow-white/50'
+                    : 'text-gray-600 hover:bg-gray-200'
+                }`}
               >
                 {page}
               </button>
@@ -196,16 +203,23 @@ const Blog: React.FC = () => {
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="disabled:opacity-50"
+            className="disabled:opacity-50 dark:disabled:opacity-50"
           >
-            <Image src={arrow_back_iosr} alt="Siguiente" width={24} height={24} />
+            <Image src={arrow_back_iosr} alt="Siguiente" width={24} height={24} className="opacity-50 dark:invert" />
           </button>
+
           <button
             onClick={() => handlePageChange(totalPages)}
             disabled={currentPage === totalPages}
-            className="disabled:opacity-50"
+            className="disabled:opacity-50 dark:disabled:opacity-50"
           >
-            <Image src={arrow_forward_iosrr} alt="Ir al final" width={24} height={24} />
+            <Image
+              src={arrow_forward_iosrr}
+              alt="Ir al final"
+              width={24}
+              height={24}
+              className="opacity-50 dark:invert"
+            />
           </button>
         </div>
       </div>
@@ -214,15 +228,15 @@ const Blog: React.FC = () => {
         className="mt-12 flex h-[272px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${gifImage})` }}
       >
-        <div className="max-w-[90%] text-center font-['Roboto'] text-[21px] font-extrabold leading-loose text-[#ebe7e0] md:max-w-[600px]">
+        <div className="max-w-[90%] text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText md:max-w-[600px]">
           Mantente al día
         </div>
-        <div className="max-w-[90%] text-center font-['Roboto'] text-[21px] font-extrabold leading-loose text-[#ebe7e0] md:max-w-[600px]">
+        <div className="max-w-[90%] text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText md:max-w-[600px]">
           Regístrate para recibir novedades en tu correo electrónico
         </div>
 
-        <div className="mt-4 inline-flex h-[46px] w-[300px] items-center justify-center gap-2.5 rounded-[50px] bg-[#ebe7e0] px-3.5 py-3">
-          <div className="font-['Open Sans'] text-base font-semibold text-[#252526]">Suscribete</div>
+        <div className="mt-4 inline-flex h-[46px] w-[300px] items-center justify-center gap-2.5 rounded-[50px] bg-darkText px-3.5 py-3">
+          <div className="font-titleFont text-base font-semibold text-lightText">Suscribete</div>
         </div>
       </div>
     </>
