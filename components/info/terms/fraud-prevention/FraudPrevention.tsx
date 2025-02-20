@@ -1,6 +1,6 @@
 'use client';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
-import { fraudPrevention } from '@/utils/assets/img-database';
+import { fraudPrevention } from '@/utils/assets/imgDatabaseCloudinary';
 import FraudDesktop from './desktop/FrausDesktop';
 import FraudMobile from './mobile/FraudMobile';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';

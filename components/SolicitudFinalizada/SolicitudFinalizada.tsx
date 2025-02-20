@@ -3,14 +3,13 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import Cloud from '../ui/Cloud/Cloud';
-import nube1 from '@/public/images/nube1.svg';
-import nube2 from '@/public/images/nube2.svg';
 import { useForm } from 'react-hook-form';
 import clsx from 'clsx';
 import { FormRequestCompleted } from '@/types/repentance/repentance';
 import { useParams, useSearchParams } from 'next/navigation';
 import { applicationCompleted, getApplicationCompleted } from '@/actions/applicationCompleted/applicationCompleted';
 import Swal from 'sweetalert2';
+import { nube1, nube2 } from '@/utils/assets/imgDatabaseCloudinary';
 
 const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);

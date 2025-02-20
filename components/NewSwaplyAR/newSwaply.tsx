@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { FlyerGif } from '@/utils/assets/img-database';
+import { FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
 import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
 
 const NewSwaply = () => {

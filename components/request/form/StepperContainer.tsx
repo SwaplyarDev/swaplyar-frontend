@@ -19,7 +19,7 @@ import Cronometro from './Cronometro';
 import useChronometerState from '@/store/chronometerStore';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
-import { alertaSirena, alertaSirenaDark } from '@/utils/assets/img-database';
+import { alertaSirena, alertaSirenaDark } from '@/utils/assets/imgDatabaseCloudinary';
 
 const StepperContainer = () => {
   const { activeStep, completedSteps, setActiveStep, submitAllData } = useStepperStore();
