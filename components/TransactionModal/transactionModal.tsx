@@ -19,8 +19,6 @@ import Swal from 'sweetalert2';
 import ClientInformation from '@/components/TransactionModal/componentesModal/ClientInformation';
 const MySwal = withReactContent(Swal);
 
-import RecieverData from './componentesModal/RecieverData';
-
 const TransactionModal = ({ transId }: { transId: string }) => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -133,7 +131,7 @@ const TransactionModal = ({ transId }: { transId: string }) => {
                 setValue={(value) => setComponentStates('discrepancySection', value)}
               />
             )}
-            {componentStates.discrepancySection && <ClientInformation trans={trans} />}
+            <ClientInformation trans={trans} />
             <FinalSection />
           </section>
         )}
