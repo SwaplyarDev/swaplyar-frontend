@@ -41,7 +41,7 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
   trans: emptyTransaction,
   noteEdit: emptyNote,
   regretCancel: emptyRegret,
-  isLoading: false,
+  isLoading: true,
   transIdAdmin: '',
   status: 'pending',
   componentStates: {

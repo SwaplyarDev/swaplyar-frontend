@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import StatusSection from './Status/StatusSection';
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import TransactionModal from '@/components/TransactionModal/transactionModal';
+import SkeletonTable from './SkeletonTble/SkeletonTable';
 import { getAllTransactions } from '@/actions/transactions/transactions.action';
 import { TransactionArray, TransactionTypeAll, emptyTransactionArray } from '@/types/transactions/transactionsType';
 import withReactContent from 'sweetalert2-react-content';
@@ -18,26 +19,24 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ currentPage }) =>
   const [isLoading, setIsLoading] = useState(false);
   const [transId, setTransId] = useState<string>('');
   const [stateTrans, setStateTrans] = useState<TransactionArray>(emptyTransactionArray);
-  const [filteredTransactions, setFilteredTransactions] = useState<TransactionArray>(emptyTransactionArray);
 
   useEffect(() => {
-    const fetchTransactions = async () => {
+    const fetchTransactions = async (currentPage: number) => {
       setIsLoading(true);
       try {
         console.log(currentPage);
         const trans = await getAllTransactions(currentPage);
         if (trans) {
           setStateTrans(trans);
-          setFilteredTransactions(trans);
+          setIsLoading(false);
         }
       } catch (error) {
         console.error('Error fetching transactions:', error);
-      } finally {
         setIsLoading(false);
       }
     };
 
-    fetchTransactions();
+    fetchTransactions(currentPage);
   }, [currentPage]);
 
   const handleModal = (id: string) => {
@@ -110,75 +109,75 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ currentPage }) =>
               <th className="px-4 font-normal"></th>
             </tr>
           </thead>
-          <tbody>
-            {filteredTransactions.data.length > 0 ? (
-              filteredTransactions.data.map((transaction: TransactionTypeAll, index: number) => (
-                <tr key={index}>
-                  <td className="bg-transparent pl-3">
-                    <span className={`flex h-5 w-5 rounded-full ${getStatusColor(transaction.status)}`}></span>
-                  </td>
-                  {renderTr(
-                    handleModal,
-                    new Date(transaction.transaction.created_at).toLocaleDateString(),
-                    index,
-                    transaction.transaction.transaction_id,
-                  )}
-                  {renderTr(
-                    handleModal,
-                    transaction.transaction.transaction_id,
-                    index,
-                    transaction.transaction.transaction_id,
-                  )}
-                  {renderTr(
-                    handleModal,
-                    transaction.sender.first_name,
-                    index,
-                    transaction.transaction.transaction_id,
-                    transaction.sender.last_name,
-                  )}
-                  {renderTr(
-                    handleModal,
-                    transaction.payment_method.sender.value,
-                    index,
-                    transaction.transaction.transaction_id,
-                  )}
-                  {renderTr(
-                    handleModal,
-                    transaction.receiver.first_name,
-                    index,
-                    transaction.transaction.transaction_id,
-                    transaction.receiver.last_name,
-                  )}
-                  {renderTr(
-                    handleModal,
-                    transaction.payment_method.receiver.value,
-                    index,
-                    transaction.transaction.transaction_id,
-                  )}
-                  <td
-                    className={`border border-white ${index % 2 === 0 ? 'bg-[#B1BFDF] dark:bg-dark-blue' : ''} px-4 dark:border-lightText`}
-                  >
-                    <span
-                      className={`flex h-5 w-5 rounded-full ${transaction.transaction.regret_id ? 'bg-[#530000] outline outline-1 outline-offset-2 outline-[#CE1818]' : transaction.transaction.note_id ? 'bg-[#6a3718] outline outline-1 outline-offset-2 outline-[#ff6200]' : 'invisible'}`}
-                    ></span>
+          {isLoading ? (
+            <SkeletonTable />
+          ) : (
+            <tbody>
+              {stateTrans.data.length > 0 ? (
+                stateTrans.data.map((transaction: TransactionTypeAll, index: number) => (
+                  <tr key={index}>
+                    <td className="bg-transparent pl-3">
+                      <span className={`flex h-5 w-5 rounded-full ${getStatusColor(transaction.status)}`}></span>
+                    </td>
+                    {renderTr(
+                      handleModal,
+                      new Date(transaction.transaction.created_at).toLocaleDateString(),
+                      index,
+                      transaction.transaction.transaction_id,
+                    )}
+                    {renderTr(
+                      handleModal,
+                      transaction.transaction.transaction_id,
+                      index,
+                      transaction.transaction.transaction_id,
+                    )}
+                    {renderTr(
+                      handleModal,
+                      transaction.sender.first_name,
+                      index,
+                      transaction.transaction.transaction_id,
+                      transaction.sender.last_name,
+                    )}
+                    {renderTr(
+                      handleModal,
+                      transaction.payment_method.sender.value,
+                      index,
+                      transaction.transaction.transaction_id,
+                    )}
+                    {renderTr(
+                      handleModal,
+                      transaction.receiver.first_name,
+                      index,
+                      transaction.transaction.transaction_id,
+                      transaction.receiver.last_name,
+                    )}
+                    {renderTr(
+                      handleModal,
+                      transaction.payment_method.receiver.value,
+                      index,
+                      transaction.transaction.transaction_id,
+                    )}
+                    <td
+                      className={`border border-white ${index % 2 === 0 ? 'bg-[#B1BFDF] dark:bg-dark-blue' : ''} px-4 dark:border-lightText`}
+                    >
+                      <span
+                        className={`flex h-5 w-5 rounded-full ${transaction.transaction.regret_id ? 'bg-[#530000] outline outline-1 outline-offset-2 outline-[#CE1818]' : transaction.transaction.note_id ? 'bg-[#6a3718] outline outline-1 outline-offset-2 outline-[#ff6200]' : 'invisible'}`}
+                      ></span>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={8} className="py-4 text-center">
+                    No se encontraron resultados
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={8} className="py-4 text-center">
-                  No se encontraron resultados
-                </td>
-              </tr>
-            )}
-          </tbody>
+              )}
+            </tbody>
+          )}
         </table>
       </div>
-      <PaginationButtons
-        totalPages={filteredTransactions.meta.totalPages}
-        currentPage={currentPage}
-        isLoading={isLoading}
-      />
+      <PaginationButtons totalPages={stateTrans.meta.totalPages} currentPage={currentPage} isLoading={isLoading} />
     </main>
   );
 };

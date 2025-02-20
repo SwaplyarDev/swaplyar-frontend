@@ -16,7 +16,7 @@ const PaginationButtons: React.FC<PaginationButtonsProps> = ({ totalPages, isLoa
   const searchParams = useSearchParams();
 
   const changePage = (newPage: number) => {
-    router.push(`/admin/transactions?page=${newPage}`); // Actualiza la URL
+    router.push(`/admin/transactions?page=${newPage}`);
   };
 
   let pageButtons: (number | string)[] = [];
