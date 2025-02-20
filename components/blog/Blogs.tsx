@@ -147,7 +147,7 @@ const Blog: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid auto-rows-fr grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
           {isLoading ? (
             Array.from({ length: 9 }).map((_, index) => <SkeletonLoader key={index} />)
           ) : paginatedBlogs.length > 0 ? (
