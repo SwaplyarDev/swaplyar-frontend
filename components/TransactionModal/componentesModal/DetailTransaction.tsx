@@ -28,17 +28,25 @@ const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading 
           <h3 className="text-xl font-semibold">Datos del Pago</h3>
           {renderLabels(
             'Monto a Transferir',
-            amounts?.sent.amount,
-            payment_method?.sender.value,
+            amounts?.sent.amount + ' /',
+            payment_method?.sender.value + ' /',
             amounts?.sent.currency,
           )}
           {renderLabels(
             'Monto a recibir',
-            amounts?.received.amount,
-            payment_method?.receiver.value,
+            amounts?.received.amount + ' /',
+            payment_method?.receiver.value + ' /',
             amounts?.received.currency,
           )}
-          {renderLabels('Link del comprobante', proof_of_payment.img_transaction.substring(0, 16).concat('....'))}
+          <article className="flex w-[100%] flex-col items-start">
+            <p>Link del comprobante</p>
+            <a
+              className="text-[#012A8E] underline decoration-white transition-all duration-300 hover:decoration-[#012A8E]"
+              href={proof_of_payment.img_transaction}
+            >
+              <p>{proof_of_payment.img_transaction.substring(0, 16).concat('....')} </p>
+            </a>
+          </article>
         </article>
       </section>
     );
