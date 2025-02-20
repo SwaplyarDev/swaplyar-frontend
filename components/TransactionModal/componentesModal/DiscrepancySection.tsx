@@ -7,16 +7,14 @@ import { useEffect } from 'react';
 interface DiscrepancySectionProps {
   trans: TransactionTypeSingle;
   setValue: (arg: boolean) => void;
-  value: boolean | null | string;
+  value: boolean | null;
 }
 
 const DiscrepancySection: React.FC<DiscrepancySectionProps> = ({ trans, setValue, value }) => {
   const [discrepancy, setDiscrepancy] = useState<boolean | null>(null);
   const [resolved, setResolved] = useState<boolean | null>(null);
   const { payment_method } = trans;
-  useEffect(() => {
-    setDiscrepancy(value === true || value === false ? Boolean(value) : null);
-  }, [value]);
+
   const handleClick = (newValue: boolean) => {
     setValue(newValue);
     setDiscrepancy(newValue);

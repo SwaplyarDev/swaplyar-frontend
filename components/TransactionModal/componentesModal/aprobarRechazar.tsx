@@ -10,7 +10,7 @@ interface AprobarRechazarProps {
   componentStates: {
     aprooveReject: 'stop' | 'accepted' | 'rejected' | null;
     confirmTransButton: boolean | null;
-    discrepancySection: boolean;
+    discrepancySection: boolean | null;
     transferRealized: boolean;
   };
 }

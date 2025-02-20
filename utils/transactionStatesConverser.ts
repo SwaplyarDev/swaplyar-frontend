@@ -23,7 +23,7 @@ type TransactionStateValues = (typeof TransactionStates)[TransactionStateKeys];
 interface ComponentStates {
   aprooveReject: 'stop' | 'rejected' | 'accepted' | null;
   confirmTransButton: boolean | null;
-  discrepancySection: boolean;
+  discrepancySection: boolean | null;
   transferRealized: boolean;
 }
 
@@ -68,7 +68,7 @@ export const getComponentStatesFromStatus = (value: string | undefined): Compone
         return {
           aprooveReject: null,
           confirmTransButton: false,
-          discrepancySection: false,
+          discrepancySection: null,
           transferRealized: false,
         };
 
@@ -76,7 +76,7 @@ export const getComponentStatesFromStatus = (value: string | undefined): Compone
         return {
           aprooveReject: 'rejected',
           confirmTransButton: false,
-          discrepancySection: false,
+          discrepancySection: null,
           transferRealized: false,
         };
 
@@ -84,7 +84,7 @@ export const getComponentStatesFromStatus = (value: string | undefined): Compone
         return {
           aprooveReject: 'stop',
           confirmTransButton: true,
-          discrepancySection: true,
+          discrepancySection: null,
           transferRealized: false,
         };
 
@@ -92,7 +92,7 @@ export const getComponentStatesFromStatus = (value: string | undefined): Compone
         return {
           aprooveReject: 'stop',
           confirmTransButton: true,
-          discrepancySection: false,
+          discrepancySection: null,
           transferRealized: false,
         };
 
@@ -100,7 +100,7 @@ export const getComponentStatesFromStatus = (value: string | undefined): Compone
         return {
           aprooveReject: 'accepted',
           confirmTransButton: true,
-          discrepancySection: false,
+          discrepancySection: null,
           transferRealized: false,
         };
 
@@ -108,7 +108,7 @@ export const getComponentStatesFromStatus = (value: string | undefined): Compone
         return {
           aprooveReject: 'accepted',
           confirmTransButton: true,
-          discrepancySection: false,
+          discrepancySection: null,
           transferRealized: true,
         };
 
@@ -116,7 +116,7 @@ export const getComponentStatesFromStatus = (value: string | undefined): Compone
         return {
           aprooveReject: null,
           confirmTransButton: null,
-          discrepancySection: false,
+          discrepancySection: null,
           transferRealized: false,
         };
     }
@@ -124,7 +124,7 @@ export const getComponentStatesFromStatus = (value: string | undefined): Compone
   return {
     aprooveReject: null,
     confirmTransButton: null,
-    discrepancySection: false,
+    discrepancySection: null,
     transferRealized: false,
   };
 };

@@ -15,7 +15,7 @@ import CloseButton from './componentesModal/ui/CloseButton';
 import ModalEditReciever from './componentesModal/ModalEditReciever/ModalEditReciever';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
-import ClientInformation from './componentesModal/ClientInformation';
+import ClientInformation from '@/components/TransactionModal/componentesModal/ClientInformation';
 const MySwal = withReactContent(Swal);
 
 import RecieverData from './componentesModal/RecieverData';
@@ -44,6 +44,9 @@ const TransactionModal = ({ transId }: { transId: string }) => {
     setSelected,
   } = useTransactionStore();
 
+  useEffect(() => {
+    console.log('Nuevo estado de componentStates:', componentStates);
+  }, [componentStates]);
   const { transaction } = trans;
 
   useEffect(() => {
@@ -125,9 +128,9 @@ const TransactionModal = ({ transId }: { transId: string }) => {
             setValue={(value) => setComponentStates('discrepancySection', value)}
           />
         )}
-        {componentStates.discrepancySection && <ClientInformation trans={trans} />}
+        {componentStates.discrepancySection != null && <ClientInformation trans={trans} />}
 
-        <FinalSection />
+        {componentStates.discrepancySection !== null && <FinalSection />}
       </section>
       <ModalEditReciever modal={modal} setModal={setModal} trans={trans} />
     </section>

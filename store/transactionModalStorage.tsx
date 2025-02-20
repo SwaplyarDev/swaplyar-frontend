@@ -23,7 +23,7 @@ interface TransactionState {
   componentStates: {
     aprooveReject: 'stop' | 'accepted' | 'rejected' | null;
     confirmTransButton: boolean | null;
-    discrepancySection: boolean;
+    discrepancySection: boolean | null;
     transferRealized: boolean;
   };
   selected: 'stop' | 'accepted' | 'rejected' | null;
@@ -47,7 +47,7 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
   componentStates: {
     aprooveReject: null,
     confirmTransButton: null,
-    discrepancySection: false,
+    discrepancySection: null,
     transferRealized: false,
   },
   selected: null,
