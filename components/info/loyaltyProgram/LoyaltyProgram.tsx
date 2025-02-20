@@ -5,13 +5,13 @@ import useStore from '@/store/authViewStore';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 import {
-  CentroDeAyuda,
   Rewards1,
   Rewards1Dark,
   Rewards2,
   Rewards2Dark,
   Rewards3,
   Rewards3Dark,
+  FlyerGif,
 } from '@/utils/assets/imgDatabaseCloudinary';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
@@ -83,7 +83,12 @@ function LoyaltyProgram() {
           </section>
         </div>
       </div>
-      <FlyerTrabajo imageSrc={CentroDeAyuda} />
+      <FlyerTrabajo
+        imageSrc={FlyerGif}
+        href="/auth/login-register"
+        description="Registrate gratis para empezar a obtener beneficios exclusivos"
+        nameButton="Me quiero registrar"
+      />
     </>
   );
 }

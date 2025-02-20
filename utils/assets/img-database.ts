@@ -182,6 +182,11 @@ export const PixDarkImg = '/images/Pix2.png';
 /** Alertas **/
 export const alertaSirena = '/images/ant-design_alert-outlined-light.png';
 export const alertaSirenaDark = '/images/ant-design_alert-outlined.png';
+export const alertSign = '/images/alert-sign.png';
+export const alertSignDark = '/images/alert-sign-dark.png';
+export const checkIcon = '/images/check-icon.png';
+export const proccessIcon = '/images/proccess-icon.png';
+export const proccessIconDark = '/images/proccess-icon-dark.png';
 
 /** Comprobantes **/
 export const comprobanteBienHecho = '/images/comprobante_bien_hecho.png';
@@ -193,3 +198,10 @@ export const howToUse3 = '/images/howToUse3.png';
 export const howToUseDark1 = '/images/howToUseDark1.png';
 export const howToUseDark2 = '/images/howToUseDark2.png';
 export const howToUseDark3 = '/images/howToUseDark3.png';
+
+export const nube1 = '/images/nube1.svg';
+export const nube2 = '/images/nube2.svg';
+
+export const plane = '/images/plane.svg';
+
+export const homeSearch = '/images/homeSearch.png';

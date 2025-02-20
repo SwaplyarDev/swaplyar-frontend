@@ -6,7 +6,7 @@ export default function EmailVerificationPage() {
   return (
     <>
       <VerifyCodePage />
-      <FlyerTrabajo imageSrc={FlyerGif} />
+      <FlyerTrabajo href="" imageSrc={FlyerGif} />
     </>
   );
 }

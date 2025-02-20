@@ -78,7 +78,7 @@ export const RegisterForm = () => {
       setTimeout(() => {
         setLoading(false);
         router.push('/auth/login-register/email-verification');
-      }, 6000);
+      }, 3000);
     } catch (error) {
       setLoading(false);
       alert('Ocurrió un error inesperado.');

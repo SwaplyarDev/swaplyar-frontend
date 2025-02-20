@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; // Usa next/navigation en lugar de next/router
 import Image from 'next/image';
-import Link from 'next/link';
-import { Mantenimiento } from '@/utils/assets/img-database';
+import { Mantenimiento } from '@/utils/assets/imgDatabaseCloudinary';
 import RedirectButton from '../ui/RedirectButton/RedirectButton';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 

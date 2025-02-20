@@ -3,14 +3,13 @@
 import React, { useEffect } from 'react';
 import InfoBlock from '@/components/InfoBlock/InfoBlock';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
-import Link from 'next/link';
 import ConversionInstructions from '../ui/Conversion-Instructions/ConversionInstructions';
-import { FlyerGif, RecargaPaypal, UsdArs } from '@/utils/assets/imgDatabaseCloudinary';
+import { FlyerGif, RecargaPaypal, UsdArs, homeSearch } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import Recommendations from '../Recomendations/Recomendations';
-import recomendationsData from '@/data/recomendationsData';
+import Link from 'next/link';
 
 export default function HomePage() {
   const resetToDefault = useSystemStore((state) => state.resetToDefault);
@@ -60,8 +59,8 @@ export default function HomePage() {
             />
             <InfoBlock
               title="¿Buscas un intercambio seguro y rápido para tu dinero?"
-              imageSrc={RecargaPaypal}
-              imageAlt="Recarga PayPal"
+              imageSrc={homeSearch}
+              imageAlt="Intercambio seguro y rápido"
               contentNode={
                 <>
                   En SwaplyAr, ayudamos a freelancers y trabajadores remotos a cambiar sus pagos desde su billetera
@@ -76,12 +75,21 @@ export default function HomePage() {
             />
           </div>
         </article>
-        <Recommendations items={recomendationsData} />
+        <Recommendations />
+        <div className="mt-20 flex flex-col gap-[14px] text-center font-textFont">
+          <p className="font-light">Descubre por qué SwaplyAr es la clave que necesitas.</p>
+          <Link
+            href="/info/why-choose-swaplyar"
+            className="block text-[28px] text-buttonsLigth underline dark:text-darkText"
+          >
+            ¿Por Que SwaplyAr?
+          </Link>
+        </div>
       </section>
       <section className="mt-10">
         <FlyerTrabajo
           imageSrc={FlyerGif}
-          title="¿Nuevo en SwaplyAr?"
+          href="/info/how-to-use"
           description="Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma sencilla y segura."
           nameButton="¡Empieza ahora!"
         />

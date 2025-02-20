@@ -8,6 +8,7 @@ const recomendationsData = [
     image: '/images/userRecomend1.png',
     href: 'https://www.linkedin.com/in/renan-dias-b9745284/',
     qualification: 5,
+    largeText: true,
   },
   {
     id: 2,
