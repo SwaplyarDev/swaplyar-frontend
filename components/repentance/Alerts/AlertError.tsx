@@ -4,7 +4,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Swal from 'sweetalert2';
 import ReactDOMServer from 'react-dom/server';
-import { alertSign, alertSignDark } from '@/utils/assets/img-database';
+import { alertSign, alertSignDark } from '@/utils/assets/imgDatabaseCloudinary';
 
 const AlertError = async ({ isDark, toggleTooltip, setIsTooltipVisible, setIsLoading }: AlertsProps): Promise<void> => {
   Swal.fire({

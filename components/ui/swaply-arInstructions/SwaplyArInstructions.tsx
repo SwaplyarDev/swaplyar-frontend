@@ -1,16 +1,13 @@
 'use client';
-import howToUse from '@/public/images/howToUse.png';
-import howToUseDark from '@/public/images/howToUseDark.png';
 import clsx from 'clsx';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
 import Image from 'next/image';
 import { howToUseData, IHowToUse, IHowToUseListItem } from '@/data/howToUseData';
 import AnimatedBlurredCircles from '../animations/AnimatedBlurredCircles';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
-import { CentroDeAyuda } from '@/utils/assets/imgDatabaseCloudinary';
 import Link from 'next/link';
 import QuestionHowToUse from '../QuestionHowToUse/QuestionHowToUse';
-import { FlyerGif } from '@/utils/assets/img-database';
+import { FlyerGif, howToUseDark, howToUse } from '@/utils/assets/imgDatabaseCloudinary';
 
 export default function SwaplyArInstructions() {
   const { isDark } = useDarkTheme();

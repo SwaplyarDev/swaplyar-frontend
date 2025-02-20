@@ -7,8 +7,7 @@ import Link from 'next/link';
 import { sectionBottomHelpCenter, sectionLinksHelpCenter } from '@/data/sectionHelpCenter';
 import clsx from 'clsx';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
-import { CentroDeAyuda } from '@/utils/assets/imgDatabaseCloudinary';
-import { FlyerGif } from '@/utils/assets/img-database';
+import { FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
 
 const HelpCenterPage = () => {
   const { isDark } = useDarkTheme();

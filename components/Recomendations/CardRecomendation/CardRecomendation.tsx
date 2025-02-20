@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { ICardRecomendationProps } from './types';
 import Link from 'next/link';
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, SquareArrowOutUpRight } from 'lucide-react';
-import { nube2, plane } from '@/utils/assets/img-database';
+import { nube2, plane } from '@/utils/assets/imgDatabaseCloudinary';
 
 export const CardRecomendation: React.FC<ICardRecomendationProps> = ({ items }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

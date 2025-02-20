@@ -3,7 +3,7 @@ import InfoIcon from '../InfoIcon/InfoIcon';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
 import Swal from 'sweetalert2';
 import Image from 'next/image';
-import { comprobanteBienHecho, comprobanteMalHecho } from '@/utils/assets/img-database';
+import { comprobanteBienHecho, comprobanteMalHecho } from '@/utils/assets/imgDatabaseCloudinary';
 import ReactDOMServer from 'react-dom/server';
 import { createRoot } from 'react-dom/client';
 

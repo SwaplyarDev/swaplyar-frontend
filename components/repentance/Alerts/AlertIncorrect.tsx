@@ -3,7 +3,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Swal from 'sweetalert2';
 import ReactDOMServer from 'react-dom/server';
-import { alertaSirena, alertaSirenaDark } from '@/utils/assets/img-database';
+import { alertaSirena, alertaSirenaDark } from '@/utils/assets/imgDatabaseCloudinary';
 import Arrow from '@/components/ui/Arrow/Arrow';
 
 const AlertIncorrect = async ({
