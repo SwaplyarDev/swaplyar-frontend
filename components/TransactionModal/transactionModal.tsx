@@ -15,6 +15,7 @@ import CloseButton from './componentesModal/ui/CloseButton';
 import ModalEditReciever from './componentesModal/ModalEditReciever/ModalEditReciever';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
+import ClientInformation from './componentesModal/ClientInformation';
 const MySwal = withReactContent(Swal);
 
 import RecieverData from './componentesModal/RecieverData';
@@ -67,7 +68,9 @@ const TransactionModal = ({ transId }: { transId: string }) => {
     <section className="fixed inset-0 top-0 z-[5] flex w-full translate-x-0 items-center justify-end bg-black bg-opacity-50 opacity-100">
       <section
         onClick={(e) => e.stopPropagation()}
-        className="relative flex h-full max-w-[55rem] flex-col gap-5 overflow-y-auto rounded-lg bg-white p-6 font-textFont text-lightText shadow-lg transition-all duration-300"
+        className={`relative flex h-full w-[891px] flex-col gap-8 overflow-y-auto rounded-lg bg-white p-6 font-textFont shadow-lg transition-transform duration-500 ease-out ${
+          isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+        }`}
       >
         <CloseButton close={() => MySwal.close()} />
         <InfoStatus trans={trans} transId={transId} />
@@ -115,36 +118,14 @@ const TransactionModal = ({ transId }: { transId: string }) => {
             }}
           />
         )}
-        {componentStates.aprooveReject != null && <DiscrepancySection trans={trans} />}
-        <button
-          onClick={() => setModal(!modal)}
-          className="max-w-[12rem] self-end rounded-lg border border-[#FF6200] bg-[#642600] px-2 py-2 text-darkText"
-        >
-          Editar Destinatario
-        </button>
-
-        <section className="flex flex-col items-center gap-2">
-          {transaction.regret_id ? (
-            <div className="flex flex-col gap-1">
-              <div className="flex flex-row items-center justify-center gap-1 text-xs font-light">
-                {renderSvgRed()}Si la Discrepancia no fue resuelta, se tiene que generar el reembolso del dinero al
-                cliente, a la cuenta de origen
-              </div>
-              <h2 className="text-left text-2xl font-semibold">
-                Realizar el Reembolso al cliente a la cuenta de Origen{' '}
-              </h2>
-            </div>
-          ) : (
-            <h2 className="self-start text-left text-2xl font-semibold">
-              Informacion para realizar el Pago al cliente{' '}
-            </h2>
-          )}
-
-          <section className="flex w-[100%] flex-row justify-center">
-            <RecieverData trans={trans} />
-            <TransferClient />
-          </section>
-        </section>
+        {componentStates.aprooveReject !== null && componentStates.aprooveReject !== 'rejected' && (
+          <DiscrepancySection
+            trans={trans}
+            value={componentStates.discrepancySection}
+            setValue={(value) => setComponentStates('discrepancySection', value)}
+          />
+        )}
+        {componentStates.discrepancySection && <ClientInformation trans={trans} />}
 
         <FinalSection />
       </section>
