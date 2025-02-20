@@ -26,10 +26,10 @@ const BlogPostCard: React.FC<BlogPostProps> = ({ blog_id, title, body, url_image
 
   return (
     <Link href={`blog/blogDetail?slug=${encodeURIComponent(slug)}&id=${encodeURIComponent(blog_id)}`}>
-      <div className="flex h-[443px] w-[350px] transform flex-col overflow-hidden rounded-[16px] border border-[#012A8E] bg-white shadow-md shadow-black/25 transition-transform dark:border-inputDark dark:bg-[#323232]">
+      <div className="flex h-[443px] w-full max-w-[350px] transform flex-col overflow-hidden rounded-[16px] border border-[#012A8E] bg-white shadow-md shadow-black/25 transition-transform dark:border-inputDark dark:bg-[#323232]">
         <Image
           src={url_image}
-          className="w-full rounded-tl-3xl rounded-tr-3xl object-cover p-3"
+          className="h-[198px] w-full rounded-tl-3xl rounded-tr-3xl object-cover p-3"
           alt={title}
           width={300}
           height={160}
