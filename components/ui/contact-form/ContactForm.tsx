@@ -87,7 +87,7 @@ const ContactForm = () => {
       title: '',
       html: `
         <div class="flex justify-center items-center flex-col gap-4">
-          <div id="tick-container" class="flex justify-center items-center h-[100px] w-[100px] rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText"></div>
+          <div id="tick-container" class="flex justify-center items-center h-[100px] w-[100px] rounded-full bg-[#4CAF50]"></div>
           <h1 class="text-4xl">Mensaje enviado con éxito</h1>
           <p>Gracias por tu mensaje, en la brevedad nos pondremos en contacto contigo</p>
           <div id="back-button-container"></div>
@@ -109,10 +109,15 @@ const ContactForm = () => {
           const root = createRoot(backElement);
           root.render(
             <button
+              type="button"
               onClick={() => Swal.close()}
-              className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 flex h-[42px] min-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-sm text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
+              className={`dark:text-darkborder-darkText group relative m-1 flex h-[46px] min-w-[48px] max-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 font-textFont text-lg font-light text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
             >
-              <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} backRequest={true} />
+              <div className="relative h-5 w-5 overflow-hidden">
+                <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
+                  <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
+                </div>
+              </div>
               Volver
             </button>,
           );
@@ -217,24 +222,27 @@ const ContactForm = () => {
         </div>
       </div>
       <div className="flex justify-center">
-        <button
-          disabled={!isValid || loading}
-          type="submit"
-          className={clsx(
-            isDark && isValid ? 'buttonSecondDark dark:bg-darkText dark:text-lightText' : isValid ? 'buttonSecond' : '',
-            'relative flex w-[300px] items-center justify-center rounded-3xl px-[14px] py-3 font-titleFont font-semibold text-[#fffff8]',
-            isValid ? 'cursor-pointer bg-buttonsLigth' : 'cursor-default bg-inputLightDisabled dark:bg-placeholderDark',
-          )}
-        >
-          {loading ? (
-            <div className="flex items-center justify-center gap-2">
-              <LoadingGif color={isDark ? '#012c8a' : '#ebe7e0'} />
-              Enviando...
-            </div>
-          ) : (
-            'Enviar Mensaje'
-          )}
-        </button>
+        {loading ? (
+          <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="44px" />
+        ) : (
+          <button
+            disabled={!isValid || loading}
+            type="submit"
+            className={clsx(
+              isDark && isValid
+                ? 'buttonSecondDark dark:bg-darkText dark:text-lightText'
+                : isValid
+                  ? 'buttonSecond'
+                  : '',
+              'relative flex w-[300px] items-center justify-center rounded-3xl px-[14px] py-3 font-titleFont font-semibold text-[#fffff8]',
+              isValid
+                ? 'cursor-pointer bg-buttonsLigth'
+                : 'cursor-default bg-inputLightDisabled dark:bg-placeholderDark',
+            )}
+          >
+            Enviar Mensaje
+          </button>
+        )}
       </div>
     </form>
   );
