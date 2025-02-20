@@ -40,24 +40,19 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
     >
       <section
         onClick={(e) => e.stopPropagation()}
-        className={`max-w-[38.5rem] cursor-pointer justify-center gap-2 rounded-lg bg-white p-6 text-lightText shadow-lg transition-all ${
+        className={`max-w-[38.5rem] justify-center gap-2 rounded-lg bg-white p-6 text-lightText shadow-lg transition-all ${
           modal ? 'scale-100 opacity-100' : 'scale-125 opacity-0'
         }`}
       >
         <h3 className="text-2xl font-semibold">El cliente solicitó la edición de algunos datos</h3>
-        <ClientMessage message="Mensaje de la solicitud" headerMessage="Mensaje" classnames="border-black" />
+        <ClientMessage message="Mensaje de la solicitud" headerMessage="Mensaje" />
 
         <article className="item-center flex flex-row gap-2">
           {/* Datos originales */}
           <div className="flex max-w-[13.4rem] flex-col gap-2 divide-y-[1px]">
             <p className="min-h-[3.4rem] text-xl font-semibold">Datos del Destinatario</p>
             {receiverLabels.map(({ label, value }, index) => (
-              <ClientMessage
-                key={index}
-                message={value}
-                headerMessage={label}
-                classnames="pb-3 border-black min-h-[2.25rem]"
-              />
+              <ClientMessage key={index} message={value} headerMessage={label} classnames="pb-3 min-h-[2.25rem]" />
             ))}
           </div>
 
@@ -68,7 +63,6 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
             <Image className="h-4 w-4" alt="flecha" src={strokepopup} width={19.167} height={10.833} />
           </article>
 
-          {/* Datos modificados */}
           <div className="flex max-w-[13.4rem] flex-col gap-2 divide-y-[1px]">
             <p className="min-h-[3rem] text-left text-xl font-semibold">Datos del Destinatario Modificado</p>
             {receiverLabels.map(({ label }, index) => (
