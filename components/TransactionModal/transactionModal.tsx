@@ -17,6 +17,7 @@ import ModalEditReciever from './componentesModal/ModalEditReciever/ModalEditRec
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import ClientInformation from '@/components/TransactionModal/componentesModal/ClientInformation';
+import { Console } from 'console';
 const MySwal = withReactContent(Swal);
 
 const TransactionModal = ({ transId }: { transId: string }) => {
@@ -124,15 +125,15 @@ const TransactionModal = ({ transId }: { transId: string }) => {
                 }}
               />
             )}
-            {componentStates.aprooveReject != null && (
+            {componentStates.aprooveReject !== null && componentStates.aprooveReject !== 'rejected' && (
               <DiscrepancySection
                 trans={trans}
                 value={componentStates.discrepancySection}
                 setValue={(value) => setComponentStates('discrepancySection', value)}
               />
             )}
-            <ClientInformation trans={trans} />
-            <FinalSection />
+            {componentStates.discrepancySection !== null && <ClientInformation trans={trans} />}
+            {componentStates.discrepancySection !== null && <FinalSection />}
           </section>
         )}
       </section>

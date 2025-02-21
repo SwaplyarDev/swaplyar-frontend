@@ -53,7 +53,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectCha
           <article className="inline-flex items-center justify-start gap-4 self-stretch">
             {/* BOTONES */}
             <article
-              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${
+              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 hover:bg-[#0b5300] hover:text-[#ebe7e0] hover:shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] ${
                 selected === 'accepted'
                   ? 'bg-[#0b5300] text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
                   : 'bg-[#d3d3d3]'
@@ -71,7 +71,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectCha
               </button>
             </article>
             <article
-              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg border-2 px-2.5 py-1 ${
+              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg border-2 px-2.5 py-1 hover:border-[#cd1818] hover:font-extrabold hover:text-[#cd1818] hover:shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] ${
                 selected === 'stop'
                   ? 'border-[#cd1818] font-extrabold text-[#cd1818] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
                   : 'border-[#d3d3d3]'
@@ -89,7 +89,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectCha
               </button>
             </article>
             <article
-              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${
+              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 hover:bg-[#cd1818] hover:text-[#ebe7e0] hover:shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] ${
                 selected === 'rejected'
                   ? 'bg-[#cd1818] text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
                   : 'bg-[#d3d3d3]'

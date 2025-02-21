@@ -51,12 +51,12 @@ const ConfirmTransButton: React.FC<ConfirmarTransProps> = ({ trans, value, setVa
           <CustomButton
             onClick={() => handleClick(true)}
             text="SI"
-            className={`hover:bg-[#0B5300] ${selected ? 'bg-[#0B5300] text-darkText' : 'bg-[#D4D4D4] text-lightText'}`}
+            className={`hover:bg-[#0B5300] hover:text-white ${selected ? 'bg-[#0B5300] text-darkText' : 'bg-[#D4D4D4] text-lightText'}`}
           />
           <CustomButton
             onClick={() => handleClick(false)}
             text="NO"
-            className={`hover:bg-[#CE1818] ${selected === false ? 'bg-[#CE1818] text-darkText' : 'bg-[#D4D4D4] text-lightText'} `}
+            className={`hover:bg-[#CE1818] hover:text-white ${selected === false ? 'bg-[#CE1818] text-darkText' : 'bg-[#D4D4D4] text-lightText'} `}
           />
         </div>
       </article>
