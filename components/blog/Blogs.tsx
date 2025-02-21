@@ -2,33 +2,31 @@
 
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Image from 'next/image';
-
+import PaginationButtons from '../ui/PaginationButtonsProps/PaginationButtonsProps';
 import ImageCarousel from '@/components/ui/ImageCarousel/imageCarousel';
 import { useRandomImages } from '@/components/ui/useRandomImages/useRandomImages';
 import SkeletonLoader from '@/components/ui/SkeletonLoader/SkeletonLoader';
 import BlogPostCard from './BlogPostCard/BlogPostCard';
-import { arrowBackIosLeft, arrowBackIosLeft1, arrow_back_iosr, arrow_forward_iosrr } from '@/utils/assets/img-database';
 import { gifImage } from '@/utils/assets/img-database';
 import useBlogStore from '@/store/useBlogStore';
 import useFetchBlogs from '@/hooks/useFetchBlogs/useFetchBlogs';
 import SearchInput from '../ui/SearchInput/SearchInput';
 
-const Blog: React.FC = () => {
+interface BlogProps {
+  currentPage: number;
+}
+
+const Blog: React.FC<BlogProps> = ({ currentPage }) => {
   const { blogs } = useBlogStore();
 
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const page = parseInt(searchParams.get('page') ?? '1', 10);
   const searchQuery = searchParams.get('search') || '';
 
-  const [currentPage, setCurrentPage] = useState(page);
   const [searchTerm, setSearchTerm] = useState(searchQuery);
   const [isLoading, setIsLoading] = useState(true);
   const [totalPages, setTotalPages] = useState<number>(1);
-
-  const postsPerPage = 9;
 
   useFetchBlogs({
     currentPage,
@@ -46,70 +44,18 @@ const Blog: React.FC = () => {
     return blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
   }, [blogs, searchTerm]);
 
-  useEffect(() => {
-    setTotalPages(Math.max(1, Math.ceil(filteredBlogs.length / postsPerPage)));
-  }, [filteredBlogs]);
-
-  useEffect(() => {
-    if (currentPage > totalPages) {
-      setCurrentPage(totalPages);
-    } else if (currentPage < 1) {
-      setCurrentPage(1);
-    }
-  }, [totalPages, currentPage]);
-
-  useEffect(() => {
-    if (page !== currentPage) {
-      setCurrentPage(page);
-    }
-  }, [page, currentPage]);
-
   const randomImages = useRandomImages(blogs);
-
-  const handlePageChange = useCallback(
-    (page: number) => {
-      if (page >= 1 && page <= totalPages) {
-        setCurrentPage(page);
-        router.replace(`/blog?page=${page}&search=${searchTerm}`, { scroll: false });
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    },
-    [totalPages, router, searchTerm],
-  );
 
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const term = e.target.value;
       setSearchTerm(term);
-      setCurrentPage(1);
       router.replace(`/blog?page=1&search=${term}`, { scroll: false });
     },
     [router],
   );
 
-  const paginatedBlogs = useMemo(() => {
-    const startIndex = (currentPage - 1) * postsPerPage;
-    return filteredBlogs.slice(startIndex, startIndex + postsPerPage);
-  }, [filteredBlogs, currentPage]);
-
-  const getPagesToShow = (currentPage: number, totalPages: number) => {
-    let pages: (number | string)[] = [];
-    if (totalPages <= 3) {
-      pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-    } else {
-      if (currentPage <= 2) {
-        pages = [1, 2, 3, '...'];
-      } else if (currentPage >= totalPages - 1) {
-        pages = ['...', totalPages - 2, totalPages - 1, totalPages];
-      } else {
-        pages = ['...', currentPage - 1, currentPage, currentPage + 1, '...'];
-      }
-    }
-    return pages;
-  };
-
-  const pages = getPagesToShow(currentPage, totalPages);
-
+  console.log(blogs.length);
   return (
     <>
       <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:px-20">
@@ -124,79 +70,22 @@ const Blog: React.FC = () => {
         <div className="mt-6 grid auto-rows-fr grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
           {isLoading ? (
             Array.from({ length: 9 }).map((_, index) => <SkeletonLoader key={index} />)
-          ) : paginatedBlogs.length > 0 ? (
-            paginatedBlogs.map((post) => <BlogPostCard key={post.blog_id} {...post} />)
+          ) : blogs.length > 0 ? (
+            blogs.map((post) => {
+              return <BlogPostCard key={post.blog_id} {...post} />;
+            })
           ) : (
             <p className="text-center text-gray-500">No se encontraron resultados.</p>
           )}
         </div>
-
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
-            onClick={() => handlePageChange(1)}
-            disabled={currentPage === 1}
-            className="disabled:opacity-50 dark:disabled:opacity-50"
-          >
-            <Image
-              src={arrowBackIosLeft}
-              alt="Ir al inicio"
-              width={24}
-              height={24}
-              className="opacity-100 dark:invert"
-            />
-          </button>
-
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="disabled:opacity-50 dark:disabled:opacity-50"
-          >
-            <Image src={arrowBackIosLeft1} alt="Anterior" width={24} height={24} className="opacity-100 dark:invert" />
-          </button>
-
-          {pages.map((page, index) =>
-            typeof page === 'number' ? (
-              <button
-                key={index}
-                onClick={() => handlePageChange(page)}
-                className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold ${
-                  currentPage === page
-                    ? 'bg-white text-black shadow-lg dark:bg-lightText dark:text-darkText dark:shadow-white/50'
-                    : 'text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                {page}
-              </button>
-            ) : (
-              <span key={index} className="flex h-10 w-10 items-center justify-center text-gray-400">
-                {page}
-              </span>
-            ),
-          )}
-
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="disabled:opacity-50 dark:disabled:opacity-50"
-          >
-            <Image src={arrow_back_iosr} alt="Siguiente" width={24} height={24} className="opacity-50 dark:invert" />
-          </button>
-
-          <button
-            onClick={() => handlePageChange(totalPages)}
-            disabled={currentPage === totalPages}
-            className="disabled:opacity-50 dark:disabled:opacity-50"
-          >
-            <Image
-              src={arrow_forward_iosrr}
-              alt="Ir al final"
-              width={24}
-              height={24}
-              className="opacity-50 dark:invert"
-            />
-          </button>
-        </div>
       </div>
+      <PaginationButtons
+        route="/blog"
+        setIsLoading={setIsLoading}
+        totalPages={totalPages}
+        isLoading={isLoading}
+        currentPage={currentPage}
+      />
 
       <div
         className="mt-12 flex h-[272px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"

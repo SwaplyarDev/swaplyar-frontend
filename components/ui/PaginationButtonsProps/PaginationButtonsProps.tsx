@@ -1,21 +1,38 @@
 'use client';
-
+import { arrowBackIosLeft, arrowBackIosLeft1, arrow_back_iosr, arrow_forward_iosrr } from '@/utils/assets/img-database';
 import React from 'react';
+import Image from 'next/image';
+import { useRouter, useSearchParams } from 'next/navigation';
 import useQuestionStore from '@/store/useQuestion.store';
+import useBlogStore from '@/store/useBlogStore';
 
 interface PaginationButtonsProps {
   currentPage: number;
   totalPages: number;
-
-  isLoading: boolean; // Agregar esta propiedad
+  isLoading: boolean;
+  setIsLoading: (arg: boolean) => void;
+  route: string;
 }
 
-const PaginationButtons: React.FC<PaginationButtonsProps> = ({ totalPages, isLoading }) => {
-  const { currentPage, setCurrentPage } = useQuestionStore();
+const PaginationButtons: React.FC<PaginationButtonsProps> = ({
+  totalPages,
+  isLoading,
+  setIsLoading,
+  currentPage,
+  route,
+}) => {
+  const router = useRouter();
+  const { setBlogs } = useBlogStore();
+
+  const changePage = (newPage: number) => {
+    setIsLoading(true);
+    router.push(`${route}?page=${newPage}`);
+  };
+
   let pageButtons: (number | string)[] = [];
 
-  if (currentPage <= 2) {
-    pageButtons = [1, 2, 3, '...', totalPages];
+  if (totalPages < 2) {
+    pageButtons = [1, '...', totalPages];
   } else if (currentPage >= totalPages - 2) {
     pageButtons = [1, '...', totalPages - 2, totalPages - 1, totalPages];
   } else {
@@ -25,44 +42,55 @@ const PaginationButtons: React.FC<PaginationButtonsProps> = ({ totalPages, isLoa
   return (
     <div className="mt-8 flex justify-center space-x-4">
       <button
-        className={`h-10 w-10 cursor-pointer rounded-full border ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'}`}
-        onClick={() => setCurrentPage(Math.max(currentPage - 1, 1))}
-        disabled={currentPage === 1 || isLoading} // Deshabilitar durante la carga
+        onClick={() => changePage(1)}
+        disabled={currentPage === 1}
+        className="disabled:opacity-50 dark:disabled:opacity-50"
       >
-        &lt;
+        <Image src={arrowBackIosLeft} alt="Ir al inicio" width={24} height={24} className="opacity-100 dark:invert" />
+      </button>
+      <button
+        className="disabled:opacity-50 dark:disabled:opacity-50"
+        onClick={() => changePage(currentPage - 1)}
+        disabled={currentPage === 1 || isLoading}
+      >
+        <Image src={arrowBackIosLeft1} alt="Anterior" width={24} height={24} className="opacity-100 dark:invert" />
       </button>
 
       {pageButtons.map((pageNumber, index) =>
-        typeof pageNumber === 'number' ? (
+        typeof pageNumber === 'number' && pageNumber >= 1 ? (
           <button
             key={index}
-            className={`h-10 w-10 rounded-full border transition ${
+            className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold ${
               currentPage === pageNumber
-                ? 'bg-blue-500 text-white'
-                : isLoading
-                  ? 'cursor-pointer bg-gray-200'
-                  : 'bg-white text-black'
+                ? 'bg-white text-black shadow-lg dark:bg-lightText dark:text-darkText dark:shadow-white/50'
+                : 'text-gray-600 hover:bg-gray-200'
             }`}
-            onClick={() => !isLoading && setCurrentPage(pageNumber)} // Evitar cambios si está cargando
-            disabled={isLoading} // Deshabilitar si está cargando
+            onClick={() => changePage(pageNumber)}
+            disabled={isLoading}
           >
             {pageNumber}
           </button>
         ) : (
-          <span key={index} className="flex h-10 w-10 items-center justify-center text-gray-500">
+          <span key={index} className="flex h-10 w-10 items-center justify-center text-gray-400">
             ...
           </span>
         ),
       )}
 
       <button
-        className={`h-10 w-10 rounded-full border ${
-          currentPage === totalPages ? 'bg-gray-300' : 'bg-blue-500 text-white'
-        }`}
-        onClick={() => setCurrentPage(Math.min(currentPage + 1, totalPages))}
-        disabled={currentPage === totalPages || isLoading} // Deshabilitar durante la carga
+        onClick={() => changePage(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className="disabled:opacity-50 dark:disabled:opacity-50"
       >
-        <div className="cursor-pointer"> &gt;</div>
+        <Image src={arrow_back_iosr} alt="Siguiente" width={24} height={24} className="opacity-50 dark:invert" />
+      </button>
+
+      <button
+        onClick={() => changePage(totalPages)}
+        disabled={currentPage === totalPages}
+        className="disabled:opacity-50 dark:disabled:opacity-50"
+      >
+        <Image src={arrow_forward_iosrr} alt="Ir al final" width={24} height={24} className="opacity-50 dark:invert" />
       </button>
     </div>
   );
