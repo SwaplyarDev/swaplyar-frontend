@@ -212,7 +212,7 @@ export const RegisterForm = () => {
             })}
           />
           <label htmlFor="termsConditions" className="ml-2 text-lightText dark:text-darkText">
-            <Link href="/info/terms-and-conditions" className="font-textFont underline">
+            <Link href="/info/terms/terms-and-conditions" className="font-textFont underline">
               Acepto Términos & Condiciones
             </Link>
           </label>
