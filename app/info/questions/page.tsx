@@ -11,13 +11,15 @@ export const metadata: Metadata = {
     description: 'Encuentra respuestas a las preguntas más frecuentes sobre nuestros servicios financieros.',
     url: 'https://www.swaplyar.com/info/questions',
     type: 'website',
-    images: [{ url: '/images/homeOG.png', width: 1200, height: 630, alt: 'Preguntas Frecuentes - Swaplyar' }],
+    images: [
+      { url: '/images/frequentlyQuestionsOG.png', width: 1200, height: 630, alt: 'Preguntas Frecuentes - Swaplyar' },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Preguntas Frecuentes - Swaplyar',
     description: 'Encuentra respuestas a las preguntas más frecuentes sobre nuestros servicios financieros.',
-    images: ['/images/homeOG.png'],
+    images: ['/images/frequentlyQuestionsOG.png'],
     site: '@Swaplyar',
   },
 };

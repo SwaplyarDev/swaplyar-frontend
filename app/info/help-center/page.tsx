@@ -11,13 +11,13 @@ export const metadata: Metadata = {
     description: 'Encuentra respuestas a tus preguntas y obtén asistencia en nuestro Centro de Ayuda.',
     url: 'https://www.swaplyar.com/info/help-center',
     type: 'website',
-    images: [{ url: '/images/homeOG.png', width: 1200, height: 630, alt: 'Centro de Ayuda - Swaplyar' }],
+    images: [{ url: '/images/helpCenterOG.png', width: 1200, height: 630, alt: 'Centro de Ayuda - Swaplyar' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Centro de Ayuda - Swaplyar',
     description: 'Encuentra respuestas a tus preguntas y obtén asistencia en nuestro Centro de Ayuda.',
-    images: ['/images/homeOG.png'],
+    images: ['/images/helpCenterOG.png'],
     site: '@Swaplyar',
   },
 };

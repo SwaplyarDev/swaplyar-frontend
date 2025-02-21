@@ -10,13 +10,13 @@ export const metadata: Metadata = {
     description: 'Conoce la historia, valores y misión de Swaplyar, tu aliado en soluciones financieras innovadoras.',
     url: 'https://www.swaplyar.com/info/about-us',
     type: 'website',
-    images: [{ url: '/images/homeOG.png', width: 1200, height: 630, alt: 'Quiénes Somos - Swaplyar' }],
+    images: [{ url: '/images/aboutUsOG.png', width: 1200, height: 630, alt: 'Quiénes Somos - Swaplyar' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Quiénes Somos - Swaplyar',
     description: 'Conoce la historia, valores y misión de Swaplyar, tu aliado en soluciones financieras innovadoras.',
-    images: ['/images/homeOG.png'],
+    images: ['/images/aboutUsOG.png'],
     site: '@Swaplyar',
   },
 };
