@@ -8,6 +8,20 @@ export const metadata: Metadata = {
   title: 'Formulario de Solicitud de Envío de Dinero | SwaplyAr',
   description:
     'Completa el formulario de envío de dinero con datos del remitente, destinatario y monto. SwaplyAr lo hace fácil, seguro y rápido.',
+  openGraph: {
+    title: 'Formulario de Solicitud - Swaplyar',
+    description: 'Completa tu solicitud con Swaplyar de forma rápida y segura. Accede al formulario aquí.',
+    url: 'https://www.swaplyar.com/request',
+    type: 'website',
+    images: [{ url: '/images/homeOG.png', width: 1200, height: 630, alt: 'Formulario de Solicitud - Swaplyar' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Formulario de Solicitud - Swaplyar',
+    description: 'Completa tu solicitud con Swaplyar de forma rápida y segura. Accede al formulario aquí.',
+    images: ['/images/homeOG.png'],
+    site: '@Swaplyar',
+  },
 };
 
 const RequestPage = () => {
