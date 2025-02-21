@@ -18,8 +18,6 @@ interface BlogPostProps {
 const BlogPostCard: React.FC<BlogPostProps> = ({ blog_id, title, body, url_image, created_at, category }) => {
   const slug = slugify(title, { lower: true, strict: true });
 
-  console.log('fecha', created_at);
-
   const formattedDate = created_at ? new Date(created_at) : null;
   const displayDate =
     formattedDate && !isNaN(formattedDate.getTime()) ? formattedDate.toLocaleDateString() : 'Fecha inválida';

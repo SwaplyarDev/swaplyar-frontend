@@ -12,10 +12,10 @@ import { arrowBackIosLeft, arrowBackIosLeft1, arrow_back_iosr, arrow_forward_ios
 import { gifImage } from '@/utils/assets/img-database';
 import useBlogStore from '@/store/useBlogStore';
 import useFetchBlogs from '@/hooks/useFetchBlogs/useFetchBlogs';
+import SearchInput from '../ui/SearchInput/SearchInput';
 
 const Blog: React.FC = () => {
   const { blogs } = useBlogStore();
-  console.log('Traigo de la base de datos', blogs);
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -119,33 +119,7 @@ const Blog: React.FC = () => {
 
         {/* Asegúrate de que randomImages tenga varias imágenes */}
         {randomImages && randomImages.length > 0 && <ImageCarousel images={randomImages} />}
-        <div className="mt-12 flex justify-start dark:bg-lightText">
-          <div className="relative w-[150px]">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-inputLight dark:text-darkText">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M11 2a9 9 0 100 18 9 9 0 000-18zM21 21l-6-6"
-                />
-              </svg>
-            </span>
-            <input
-              type="text"
-              placeholder="Buscar en..."
-              className="w-[150px] rounded-2xl border-[1px] border-inputLight p-3 pl-10 pr-10 text-sm text-black focus:outline-none focus:ring-2 focus:ring-gray-400 dark:border-darkText dark:bg-lightText dark:text-darkText dark:focus:ring-gray-500 sm:text-base"
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
-          </div>
-        </div>
+        <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} />
 
         <div className="mt-6 grid auto-rows-fr grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
           {isLoading ? (
