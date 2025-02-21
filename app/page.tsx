@@ -13,12 +13,19 @@ export const metadata: Metadata = {
     siteName: 'Swaplyar',
     images: [
       {
-        url: '/images/homeOG.png',
+        url: 'https://res.cloudinary.com/dwrhturiy/image/upload/v1740148885/1_g79hkd.png',
         width: 1200,
         height: 630,
         alt: 'Swaplyar - Soluciones Financieras',
       },
     ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Swaplyar - Soluciones Financieras Rápidas y Seguras',
+    description: 'Descubre cómo Swaplyar puede ayudarte con soluciones financieras seguras, rápidas y eficientes.',
+    images: ['https://res.cloudinary.com/dwrhturiy/image/upload/v1740148885/1_g79hkd.png'],
+    site: '@Swaplyar',
   },
 };
 
