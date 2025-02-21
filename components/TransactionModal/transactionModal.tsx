@@ -131,7 +131,7 @@ const TransactionModal = ({ transId }: { transId: string }) => {
                 setValue={(value) => setComponentStates('discrepancySection', value)}
               />
             )}
-            <ClientInformation trans={trans} />
+            <ClientInformation modal={modal} setModal={setModal} trans={trans} />
             <FinalSection />
           </section>
         )}

@@ -1,5 +1,6 @@
 import { TransactionTypeSingle } from '@/types/transactions/transactionsType';
 import { getReceiverLabels } from '../ui/RenderLabels';
+import { useTransactionStore } from '@/store/transactionModalStorage';
 import { strokepopup, clipopup } from '@/utils/assets/img-database';
 import { useState } from 'react';
 import Image from 'next/image';
@@ -13,6 +14,8 @@ interface ModalEditRecieverProps {
 
 const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, trans }) => {
   const receiverLabels = getReceiverLabels(trans);
+
+  const { noteEdit, regretCancel } = useTransactionStore();
 
   const [modifiedValues, setModifiedValues] = useState<{ [key: string]: string }>(
     receiverLabels.reduce(
@@ -45,7 +48,13 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
         }`}
       >
         <h3 className="text-2xl font-semibold">El cliente solicitó la edición de algunos datos</h3>
-        <ClientMessage message="Mensaje de la solicitud" headerMessage="Mensaje" />
+        {noteEdit.note ? (
+          <ClientMessage message={noteEdit.note} headerMessage="Mensaje" classnames="border-[#D75600]" />
+        ) : regretCancel.note ? (
+          <ClientMessage message={regretCancel.note} headerMessage="Mensaje" classnames="border-[#CE1818]" />
+        ) : (
+          <ClientMessage message="Mensaje de la solicitud" headerMessage="Mensaje" classnames="border-black" />
+        )}
 
         <article className="item-center flex flex-row gap-2">
           {/* Datos originales */}

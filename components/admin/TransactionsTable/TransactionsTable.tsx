@@ -158,7 +158,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ currentPage }) =>
                       transaction.transaction.transaction_id,
                     )}
                     <td
-                      className={`border border-white ${index % 2 === 0 ? 'bg-[#B1BFDF] dark:bg-dark-blue' : ''} px-4 dark:border-lightText`}
+                      className={`items-end border border-white ${index % 2 === 0 ? 'bg-[#B1BFDF] dark:bg-dark-blue' : ''} pl-5 dark:border-lightText`}
                     >
                       <span
                         className={`flex h-5 w-5 rounded-full ${transaction.transaction.regret_id ? 'bg-[#530000] outline outline-1 outline-offset-2 outline-[#CE1818]' : transaction.transaction.note_id ? 'bg-[#6a3718] outline outline-1 outline-offset-2 outline-[#ff6200]' : 'invisible'}`}
