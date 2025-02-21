@@ -8,21 +8,20 @@ interface PaginationButtonsProps {
   currentPage: number;
   totalPages: number;
   isLoading: boolean;
+  route: string;
 }
 
-const PaginationButtons: React.FC<PaginationButtonsProps> = ({ totalPages, isLoading, currentPage }) => {
-  const { setCurrentPage } = useQuestionStore();
+const PaginationButtons: React.FC<PaginationButtonsProps> = ({ totalPages, isLoading, currentPage, route }) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const changePage = (newPage: number) => {
-    router.push(`/admin/transactions?page=${newPage}`);
+    router.push(`${route}?page=${newPage}`);
   };
 
   let pageButtons: (number | string)[] = [];
 
-  if (currentPage <= 2) {
-    pageButtons = [1, 2, 3, '...', totalPages];
+  if (currentPage < 2) {
+    pageButtons = [1, '...', totalPages];
   } else if (currentPage >= totalPages - 2) {
     pageButtons = [1, '...', totalPages - 2, totalPages - 1, totalPages];
   } else {

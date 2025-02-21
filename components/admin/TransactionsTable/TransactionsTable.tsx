@@ -83,7 +83,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ currentPage }) =>
   const renderTr = (handler: any, item: string, index: number, id: string, item2?: string) => (
     <td
       onClick={() => handler(id)}
-      className={`border border-white ${index % 2 === 0 ? 'bg-[#B1BFDF] dark:bg-dark-blue' : ''} px-4 dark:border-lightText`}
+      className={`h-8 border border-white ${index % 2 === 0 ? 'bg-[#B1BFDF] dark:bg-dark-blue' : ''} px-4 dark:border-lightText`}
     >
       {item} {item2}
     </td>
@@ -94,9 +94,10 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ currentPage }) =>
       <section className="flex w-[100%] flex-row justify-between">
         <h1 className="pl-44 font-titleFont text-lg font-normal">Transacciones</h1>{' '}
       </section>
-      <div className="flex w-[95%] flex-row gap-4 divide-x-[1px] divide-black overflow-x-auto">
+      <div className="flex w-[95%] flex-row items-start gap-2 overflow-x-auto">
         <StatusSection />
-        <table className="w-full cursor-pointer">
+        <div className="ml-5 mt-4 h-[25rem] w-1 border-l-[1px] border-black"></div>
+        <table className={`w-full ${stateTrans.data.length >= 10 ? 'h-[25rem]' : ''} cursor-pointer`}>
           <thead>
             <tr className="text-left">
               <th className="px-4 font-normal"></th>
@@ -112,11 +113,11 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ currentPage }) =>
           {isLoading ? (
             <SkeletonTable />
           ) : (
-            <tbody>
+            <tbody className="table-fixed">
               {stateTrans.data.length > 0 ? (
                 stateTrans.data.map((transaction: TransactionTypeAll, index: number) => (
                   <tr key={index}>
-                    <td className="bg-transparent pl-3">
+                    <td className="bg-transparen pl-3">
                       <span className={`flex h-5 w-5 rounded-full ${getStatusColor(transaction.status)}`}></span>
                     </td>
                     {renderTr(
@@ -177,7 +178,12 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ currentPage }) =>
           )}
         </table>
       </div>
-      <PaginationButtons totalPages={stateTrans.meta.totalPages} currentPage={currentPage} isLoading={isLoading} />
+      <PaginationButtons
+        route="/admin/transactions"
+        totalPages={stateTrans.meta.totalPages}
+        currentPage={currentPage}
+        isLoading={isLoading}
+      />
     </main>
   );
 };
