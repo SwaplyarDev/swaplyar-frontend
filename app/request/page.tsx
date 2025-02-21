@@ -13,13 +13,20 @@ export const metadata: Metadata = {
     description: 'Completa tu solicitud con Swaplyar de forma rápida y segura. Accede al formulario aquí.',
     url: 'https://www.swaplyar.com/request',
     type: 'website',
-    images: [{ url: '/images/requestOG.png', width: 1200, height: 630, alt: 'Formulario de Solicitud - Swaplyar' }],
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dwrhturiy/image/upload/v1740149048/17_iduoj0.png',
+        width: 1200,
+        height: 630,
+        alt: 'Formulario de Solicitud - Swaplyar',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Formulario de Solicitud - Swaplyar',
     description: 'Completa tu solicitud con Swaplyar de forma rápida y segura. Accede al formulario aquí.',
-    images: ['/images/requestOG.png'],
+    images: ['https://res.cloudinary.com/dwrhturiy/image/upload/v1740149048/17_iduoj0.png'],
     site: '@Swaplyar',
   },
 };

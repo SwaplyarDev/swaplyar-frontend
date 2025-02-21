@@ -11,13 +11,20 @@ export const metadata: Metadata = {
     description: 'Modifica los detalles de tu solicitud de forma rápida y sencilla en Swaplyar.',
     url: 'https://www.swaplyar.com/editRequest',
     type: 'website',
-    images: [{ url: '/images/editRequestOG.png', width: 1200, height: 630, alt: 'Editar tu Solicitud - Swaplyar' }],
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dwrhturiy/image/upload/v1740149014/8_kzkkwu.png',
+        width: 1200,
+        height: 630,
+        alt: 'Editar tu Solicitud - Swaplyar',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Editar tu Solicitud - Swaplyar',
     description: 'Modifica los detalles de tu solicitud de forma rápida y sencilla en Swaplyar.',
-    images: ['/images/editRequestOG.png'],
+    images: ['https://res.cloudinary.com/dwrhturiy/image/upload/v1740149014/8_kzkkwu.png'],
     site: '@Swaplyar',
   },
 };

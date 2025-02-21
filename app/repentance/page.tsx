@@ -13,14 +13,21 @@ export const metadata: Metadata = {
       'Conoce nuestra política de cancelación y reembolso para que gestiones tus transacciones con confianza.',
     url: 'https://www.swaplyar.com/repentance',
     type: 'website',
-    images: [{ url: '/images/repentanceOG.png', width: 1200, height: 630, alt: 'Cancelación y Reembolso - Swaplyar' }],
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dwrhturiy/image/upload/v1740149010/6_xisubx.png',
+        width: 1200,
+        height: 630,
+        alt: 'Cancelación y Reembolso - Swaplyar',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Cancelación y Reembolso - Swaplyar',
     description:
       'Conoce nuestra política de cancelación y reembolso para que gestiones tus transacciones con confianza.',
-    images: ['/images/repentanceOG.png'],
+    images: ['https://res.cloudinary.com/dwrhturiy/image/upload/v1740149010/6_xisubx.png'],
     site: '@Swaplyar',
   },
 };
