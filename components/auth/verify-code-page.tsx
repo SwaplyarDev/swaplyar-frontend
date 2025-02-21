@@ -99,7 +99,7 @@ export const VerifyCodePage = () => {
         });
         clearVerificationInputs(); // Limpiar campos si es incorrecto
       } else {
-        window.location.href = '/';
+        window.location.href = '/maintenance';
       }
     } catch (error) {
       console.error('Error durante la verificación del código:', error);
