@@ -6,6 +6,7 @@ import { createRoot } from 'react-dom/client';
 import LoadingGif from '../ui/LoadingGif/LoadingGif';
 import clsx from 'clsx';
 import { useForm } from 'react-hook-form';
+import ButtonBack from '../ui/ButtonBack/ButtonBack';
 
 interface ModalProps {
   isDark: boolean;
@@ -75,10 +76,15 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
           const root = createRoot(backElement);
           root.render(
             <button
+              type="button"
               onClick={() => Swal.close()}
-              className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 flex h-[42px] min-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-sm text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
+              className={`group relative m-1 flex h-[46px] min-w-[48px] max-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 font-textFont text-lg font-light text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
             >
-              <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} backRequest={true} />
+              <div className="relative h-5 w-5 overflow-hidden">
+                <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
+                  <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
+                </div>
+              </div>
               Volver
             </button>,
           );
@@ -105,10 +111,15 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
           const root = createRoot(backElement);
           root.render(
             <button
+              type="button"
               onClick={() => Swal.close()}
-              className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 flex h-[42px] min-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-sm text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
+              className={`group relative m-1 flex h-[46px] min-w-[48px] max-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 font-textFont text-lg font-light text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
             >
-              <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} backRequest={true} />
+              <div className="relative h-5 w-5 overflow-hidden">
+                <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
+                  <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
+                </div>
+              </div>
               Volver
             </button>,
           );
@@ -391,27 +402,28 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
               </div>
               <p className={`inline-block text-buttonsLigth dark:text-darkText`}>Volver</p>
             </button>
-            <button
-              disabled={!file || !note}
-              className={`${
-                !file || !note
-                  ? 'border-disabledButtonsLigth bg-disabledButtonsLigth dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText'
-                  : isDark
-                    ? 'buttonSecondDark'
-                    : 'buttonSecond'
-              } relative m-1 h-[48px] min-w-[183px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText`}
-              onClick={handleFormSubmit}
-              type="button"
-            >
+            <div className="flex h-[48px] min-w-[183px] items-center justify-center">
               {loading ? (
-                <div id="loading" className="flex items-center justify-center gap-2 font-titleFont font-semibold">
-                  <LoadingGif color={!isDark ? '#ebe7e0' : '#012c8a'} />
-                  <span>Enviando...</span>
+                <div className="flex items-center justify-center">
+                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
                 </div>
               ) : (
-                'Enviar solicitud'
+                <button
+                  className={`${
+                    !file || !note
+                      ? 'border-disabledButtonsLigth bg-disabledButtonsLigth dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText'
+                      : isDark
+                        ? 'buttonSecondDark'
+                        : 'buttonSecond'
+                  } relative m-1 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText`}
+                  disabled={!file || !note}
+                  onClick={handleFormSubmit}
+                  type="button"
+                >
+                  Enviar solicitud
+                </button>
               )}
-            </button>
+            </div>
           </div>
         </div>
       </div>
