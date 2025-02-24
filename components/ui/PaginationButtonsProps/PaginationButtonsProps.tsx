@@ -31,10 +31,12 @@ const PaginationButtons: React.FC<PaginationButtonsProps> = ({
 
   let pageButtons: (number | string)[] = [];
 
-  if (totalPages < 2) {
-    pageButtons = [1, '...', totalPages];
+  if (totalPages <= 2) {
+    pageButtons = [1, 2, '...', totalPages];
   } else if (currentPage >= totalPages - 2) {
     pageButtons = [1, '...', totalPages - 2, totalPages - 1, totalPages];
+  } else if (currentPage === 1) {
+    pageButtons = [currentPage, currentPage + 1, '...', totalPages];
   } else {
     pageButtons = [currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
   }
@@ -57,7 +59,7 @@ const PaginationButtons: React.FC<PaginationButtonsProps> = ({
       </button>
 
       {pageButtons.map((pageNumber, index) =>
-        typeof pageNumber === 'number' && pageNumber >= 1 ? (
+        typeof pageNumber === 'number' ? (
           <button
             key={index}
             className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold ${

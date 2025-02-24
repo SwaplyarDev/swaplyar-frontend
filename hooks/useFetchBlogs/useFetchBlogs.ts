@@ -4,27 +4,25 @@ import { fetchBlogs } from '@/actions/blogs/blogs.actions';
 import { UseFetchBlogsProps } from '@/types/blogs/blog';
 
 const useFetchBlogs = ({ currentPage, searchTerm, setTotalPages }: UseFetchBlogsProps) => {
-  const { setBlogs, blogs } = useBlogStore();
-
-  const fetchAndSetBlogs = useCallback(async () => {
-    try {
-      const data = await fetchBlogs(currentPage, searchTerm);
-      if (blogs.length > 1) {
-        setBlogs([]);
-        setBlogs(data.blogsPerPage);
-        setTotalPages(data.meta.totalPages);
-      } else {
-        setBlogs(data.blogsPerPage);
-        setTotalPages(data.meta.totalPages);
-      }
-    } catch (error) {
-      console.error('Error fetching blogs:', error);
-    }
-  }, [currentPage, searchTerm, setBlogs, setTotalPages]);
+  const { setBlogs, blogs, setIsLoading, isLoading } = useBlogStore();
 
   useEffect(() => {
+    const fetchAndSetBlogs = async () => {
+      setIsLoading(true);
+      try {
+        const data = await fetchBlogs(currentPage, searchTerm);
+        if (data.blogsPerPage) {
+          setBlogs(data.blogsPerPage);
+          setTotalPages(data.meta.totalPages);
+        }
+      } catch (error) {
+        console.error('Error fetching blogs:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     fetchAndSetBlogs();
-  }, [fetchAndSetBlogs]);
+  }, [currentPage, searchTerm, setTotalPages]);
 };
 
 export default useFetchBlogs;

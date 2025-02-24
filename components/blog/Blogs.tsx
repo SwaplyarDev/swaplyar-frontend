@@ -17,7 +17,7 @@ interface BlogProps {
 }
 
 const Blog: React.FC<BlogProps> = ({ currentPage }) => {
-  const { blogs } = useBlogStore();
+  const { blogs, isLoading, setIsLoading } = useBlogStore();
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -25,7 +25,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
   const searchQuery = searchParams.get('search') || '';
 
   const [searchTerm, setSearchTerm] = useState(searchQuery);
-  const [isLoading, setIsLoading] = useState(true);
+
   const [totalPages, setTotalPages] = useState<number>(1);
 
   useFetchBlogs({
@@ -33,12 +33,6 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
     searchTerm,
     setTotalPages,
   });
-
-  useEffect(() => {
-    if (blogs.length > 0) {
-      setIsLoading(false);
-    }
-  }, [blogs]);
 
   const filteredBlogs = useMemo(() => {
     return blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -55,7 +49,6 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
     [router],
   );
 
-  console.log(blogs.length);
   return (
     <>
       <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:px-20">
@@ -67,17 +60,27 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
         {randomImages && randomImages.length > 0 && <ImageCarousel images={randomImages} />}
         <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} />
 
-        <div className="mt-6 grid auto-rows-fr grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
-          {isLoading ? (
-            Array.from({ length: 9 }).map((_, index) => <SkeletonLoader key={index} />)
-          ) : blogs.length > 0 ? (
-            blogs.map((post) => {
-              return <BlogPostCard key={post.blog_id} {...post} />;
-            })
-          ) : (
-            <p className="text-center text-gray-500">No se encontraron resultados.</p>
-          )}
-        </div>
+        {!isLoading ? (
+          <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
+            {blogs.length >= 1 ? (
+              blogs.map((post) => (
+                <BlogPostCard
+                  key={post.blog_id}
+                  blog_id={post.blog_id}
+                  body={post.body}
+                  title={post.title}
+                  category={post.category}
+                  url_image={post.url_image}
+                  created_at={post.created_at}
+                />
+              ))
+            ) : (
+              <p className="text-center text-gray-500">No se encontraron resultados.</p>
+            )}
+          </div>
+        ) : (
+          <SkeletonLoader />
+        )}
       </div>
       <PaginationButtons
         route="/blog"
