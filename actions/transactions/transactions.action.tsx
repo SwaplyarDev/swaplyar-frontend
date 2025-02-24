@@ -71,11 +71,11 @@ export const updateStatusClient = async (transactionId: string, status: string) 
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(status),
+      body: JSON.stringify({ status }),
     });
     if (!response.ok) throw new Error('Failed to update transaction client');
 
-    return response;
+    return response.json();
   } catch (error: any) {
     console.error('Error updating transaction:', error);
     return null;

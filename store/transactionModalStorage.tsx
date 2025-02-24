@@ -95,16 +95,24 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
       console.error('Error al obtener el rechazo:', error);
     }
   },
-  updateTransactionStatus: async (transIdAdmin: string) => {
+  updateTransactionStatus: async (transId: string) => {
     try {
       const { status } = get();
-      const numberStat = convertTransactionState(status);
-      if (numberStat && transIdAdmin.length > 3) {
-        //await updateStatusAdmin(transIdAdmin, numberStat)
+
+      if (!transId) return;
+
+      console.log(`🔄 Actualizando estado de la transacción ${transId} a: ${status}`);
+
+      const response = await updateStatusClient(transId, status);
+
+      if (response) {
+        console.log(' Estado actualizado con éxito:', response);
       }
-      console.log('Estado de la transacción actualizado');
+      if (!response) {
+        console.log(' no se ha actualizado con éxito:', response);
+      }
     } catch (error) {
-      console.error('Error al actualizar el estado de la transacción:', error);
+      console.error('❌ Error al actualizar el estado:', error);
     }
   },
 
@@ -118,9 +126,10 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
   updateStatusFromComponents: () => {
     const { componentStates, setStatus } = get();
     let newStatus = 'pending';
-    if (!componentStates.confirmTransButton) {
+    if (componentStates.aprooveReject === 'rejected') {
       newStatus = 'rejected';
     }
+
     if (
       componentStates.confirmTransButton &&
       componentStates.aprooveReject === 'stop' &&
@@ -133,12 +142,6 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
       !componentStates.discrepancySection
     ) {
       newStatus = 'review_payment';
-    } else if (
-      !componentStates.confirmTransButton &&
-      componentStates.aprooveReject === 'rejected' &&
-      !componentStates.discrepancySection
-    ) {
-      newStatus = 'rejected';
     } else if (
       componentStates.confirmTransButton &&
       componentStates.aprooveReject === 'accepted' &&

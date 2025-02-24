@@ -42,11 +42,11 @@ const TransactionModal = ({ transId }: { transId: string }) => {
     setComponentStates,
     setSelected,
   } = useTransactionStore();
-
-  useEffect(() => {
-    console.log('Nuevo estado de componentStates:', componentStates);
-  }, [componentStates]);
   const { transaction } = trans;
+
+  /* useEffect(() => {
+    console.log('Nuevo estado de componentStates:', componentStates);
+  }, [componentStates]);*/
 
   useEffect(() => {
     updateTransactionStatus(transId, transIdAdmin);
@@ -124,17 +124,18 @@ const TransactionModal = ({ transId }: { transId: string }) => {
                 }}
               />
             )}
-            {componentStates.aprooveReject != null && (
+            {componentStates.aprooveReject !== null && componentStates.aprooveReject !== 'rejected' && (
               <DiscrepancySection
                 trans={trans}
                 value={componentStates.discrepancySection}
                 setValue={(value) => setComponentStates('discrepancySection', value)}
               />
             )}
-            <ClientInformation modal={modal} setModal={setModal} trans={trans} />
-            <FinalSection />
+            {componentStates.discrepancySection !== null && <ClientInformation trans={trans} />}
+            {componentStates.discrepancySection !== null && <FinalSection />}
           </section>
         )}
+        <p className="flex justify-center text-center">Estado actual: {status}</p>
       </section>
       <ModalEditReciever modal={modal} setModal={setModal} trans={trans} />
     </section>
