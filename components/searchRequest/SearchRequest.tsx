@@ -121,7 +121,7 @@ const SearchRequest = () => {
       handleSearchRequest(statuses);
       console.log(response);
 
-      reset();
+      reset({ numberOfRequest: '', lastNameRequest: '' });
     } catch (error) {
       if (error instanceof Error) {
         console.error('Error!', error.message);
