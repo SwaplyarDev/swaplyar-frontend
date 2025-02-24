@@ -46,9 +46,10 @@ function LoyaltyProgram() {
               ¡Únete ya!
             </button>
             <p className="mx-auto mt-10 max-w-[504px] text-start font-light">
-              ¿Aún no formas parte? <LinkWithHover href="#">Crea</LinkWithHover> tu perfil en SwaplyAr o{' '}
-              <LinkWithHover href="#">Inicia Sesión</LinkWithHover> en tu cuenta y da el primer paso hacia una
-              experiencia que te recompensa en cada movimiento. ¡Inscríbete hoy y comienza a disfrutar las ventajas!
+              ¿Aún no formas parte? <LinkWithHover href="/auth/login-register">Crea</LinkWithHover> tu perfil en
+              SwaplyAr o <LinkWithHover href="/auth/login-register">Inicia Sesión</LinkWithHover> en tu cuenta y da el
+              primer paso hacia una experiencia que te recompensa en cada movimiento. ¡Inscríbete hoy y comienza a
+              disfrutar las ventajas!
             </p>
           </div>
 
