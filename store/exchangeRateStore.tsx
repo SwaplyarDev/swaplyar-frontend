@@ -6,6 +6,21 @@ import {
   getExchangeRatesUSD_EUR,
 } from '@/utils/currencyApis';
 
+type rates = {
+  'Actualizar Monedas Calculadora': {
+    Fuente: string;
+    'Par de MonedasR': string;
+    Valor: number;
+    'Ultima Actualización': string;
+  };
+};
+
+const API_URL = process.env.NEXT_PUBLIC_VALUE_TRANSACTIONS;
+
+if (!API_URL) {
+  throw new Error('Falta la URL de la API en las variables de entorno.');
+}
+
 interface ExchangeRateStore {
   rates: any;
   isLoading: boolean;
@@ -14,13 +29,14 @@ interface ExchangeRateStore {
   stopUpdatingRates: () => void;
   clearRates: () => void;
   loadRatesFromLocalStorage: () => boolean;
+  ratesOfAPi: rates[]; // Estado inicial
 }
 
 let intervalId: NodeJS.Timeout | null = null;
 const localStorageKey = 'exchangeRates';
 const expirationTime = 10 * 60 * 1000;
 
-export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
+export const getExchangeRateStore = create<ExchangeRateStore>((set) => {
   const fetchAndUpdateRates = async () => {
     set({ isLoading: true, error: null });
 
@@ -60,7 +76,6 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
     try {
       // Obtener tasas de cambio USD a EUR (10 minutos)
       const ratesUSD_EUR = await getExchangeRatesUSD_EUR();
-      console.log(ratesUSD_EUR);
       if (Object.keys(ratesUSD_EUR).length > 0) {
         set((state) => {
           const combinedRates = {
@@ -95,7 +110,6 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
 
     try {
       const ratesUSD_BRL = await getExchangeRatesUSD_BRL();
-      console.log('ratesUSD_BRL: ', ratesUSD_BRL);
       if (Object.keys(ratesUSD_BRL).length > 0) {
         set((state) => {
           const combinedRates = {
@@ -176,37 +190,56 @@ export const useExchangeRateStore = create<ExchangeRateStore>((set) => {
     return false;
   };
 
+  const fetchRates = async () => {
+    if (typeof window === 'undefined') return; // Previene ejecución en SSR
+
+    try {
+      const response = await fetch(`${API_URL}`, {
+        method: 'GET',
+        redirect: 'follow',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error al obtener datos de la API: ${response.status} ${response.statusText}`);
+      }
+
+      const data: rates[] = await response.json();
+      set({ ratesOfAPi: data });
+    } catch (error) {
+      console.error('Error al obtener datos de conversión:', error);
+    }
+  };
+
   return {
+    ratesOfAPi: [],
     rates: {},
     isLoading: false,
     error: null,
-    startUpdatingRates: () => {
-      if (intervalId) return;
+    startUpdatingRates: async () => {
+      if (typeof window === 'undefined') return; // Evita ejecución en SSR
+
+      await fetchRates(); // Llamada inicial
+
+      if (intervalId) return; // Evita múltiples intervalos
 
       const ratesLoaded = loadRatesFromLocalStorage();
 
       if (!ratesLoaded) {
-        fetchAndUpdateRates(); // Llama a la función de tasas cada 2 minutos
-        fetchAndUpdateUSDToEURRates(); // Llama a la función de tasas cada 10 minutos
-        fetchAndUpdateEURToBRLRates();
+        fetchAndUpdateRates();
+        fetchAndUpdateUSDToEURRates();
         fetchAndUpdateUSDToBRLRates();
+        fetchAndUpdateEURToBRLRates();
       }
 
-      // Actualización cada 2 minutos
       intervalId = setInterval(
         () => {
-          fetchAndUpdateRates(); // Cada 2 minutos
+          fetchAndUpdateRates();
+          fetchAndUpdateUSDToEURRates();
+          fetchAndUpdateUSDToBRLRates();
+          fetchAndUpdateEURToBRLRates();
         },
         2 * 60 * 1000,
-      ); // 120000 ms
-
-      // Actualización cada 10 minutos
-      setInterval(
-        () => {
-          fetchAndUpdateUSDToEURRates(); // Cada 10 minutos
-        },
-        10 * 60 * 1000,
-      ); // 600000 ms
+      ); // 2 minutos
     },
     stopUpdatingRates: () => {
       if (intervalId) {
