@@ -45,7 +45,8 @@ export const showStatusAlert = (statuses: { text: string; icon: string }[], isDa
 
   Swal.fire({
     html: `
-      <div class="flex relative flex-col items-center justify-center max-w-full max-h-[90vh] pt-[50px] pb-[50px] overflow-hidden">
+      <div class="flex flex-col items-center justify-center max-w-full max-h-[90vh] pt-[50px] pb-[50px] overflow-hidden">
+        <img class="w-[193px] h-[115px] absolute -top-14 -left-20 cloud hidden md:block" src="/images/nube2.svg" alt="Nube" />
         <div class="w-full overflow-hidden">
           <ul class="flex flex-col items-center justify-center">
             ${statuses
@@ -79,16 +80,23 @@ export const showStatusAlert = (statuses: { text: string; icon: string }[], isDa
               .join('')}
           </ul>
         </div>
-        <button id="close-popup-btn" class="group absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-2 px-4 py-2 rounded-full border ${isDark ? 'border-white text-white buttonSecondDark' : 'border-[#012A8E] text-[#012A8E] buttonSecond'}">
+        <button id="close-popup-btn" class="group transform mt-10 flex items-center gap-2 px-4 py-2 rounded-full border ${isDark ? 'border-white text-white' : 'border-[#012A8E] text-[#012A8E]'}">
           <div class="transition-transform relative w-[24px] h-[24px] overflow-hidden duration-300 group-hover:translate-x-1">${arrowIcon}</div> 
           <p>Volver</p>
         </button>
-        <button id="close-popup-btn-top" class="absolute top-0 right-0 text-white text-xl">
+        <button id="close-popup-btn-top" class="absolute top-2 right-5 text-white text-xl">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
             <path d="M30 10L10 30M10 10L30 30" 
               ${isDark ? `stroke="#EBE7E0" ` : `stroke="#252526" `} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
+        <img class="absolute -bottom-28 -right-28 hidden md:block" src="/images/popupRepentance.svg" alt="Avion del popup" />
+        <div class="absolute -bottom-28 -right-28 w-[271px] h-[181px] hidden md:block">
+          <img class="w-[85px] h-[50px] absolute top-20 -left-5 cloud" src="/images/nube2.svg" alt="Nube" />
+          <img class="w-[97px] h-[57px] absolute -top-3 right-7 cloud" src="/images/nube2.svg" alt="Nube" />
+          <img class="w-[113px] h-[67px] absolute top-36 cloud" src="/images/nube2.svg" alt="Nube" />
+          <img class="w-[128px] h-[76px] absolute top-24 right-7 cloud" src="/images/nube2.svg" alt="Nube" />
+        </div>
       </div>
     `,
 

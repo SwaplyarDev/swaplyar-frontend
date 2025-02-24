@@ -1,15 +1,13 @@
 'use client';
-import howToUse from '@/public/images/howToUse.png';
-import howToUseDark from '@/public/images/howToUseDark.png';
 import clsx from 'clsx';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
 import Image from 'next/image';
 import { howToUseData, IHowToUse, IHowToUseListItem } from '@/data/howToUseData';
 import AnimatedBlurredCircles from '../animations/AnimatedBlurredCircles';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
-import { CentroDeAyuda } from '@/utils/assets/imgDatabaseCloudinary';
 import Link from 'next/link';
 import QuestionHowToUse from '../QuestionHowToUse/QuestionHowToUse';
+import { FlyerGif, howToUseDark, howToUse } from '@/utils/assets/imgDatabaseCloudinary';
 
 export default function SwaplyArInstructions() {
   const { isDark } = useDarkTheme();
@@ -51,6 +49,8 @@ export default function SwaplyArInstructions() {
             className="w-full max-w-[500px] flex-1 drop-shadow-light dark:drop-shadow-darkmode"
             src={isDark ? howToUseDark : howToUse}
             alt="Imagen principal"
+            width={500}
+            height={500}
             priority
           />
         </section>
@@ -152,7 +152,12 @@ export default function SwaplyArInstructions() {
         </section>
         <QuestionHowToUse />
       </div>
-      <FlyerTrabajo imageSrc={CentroDeAyuda} />
+      <FlyerTrabajo
+        href="/info/loyalty-program"
+        description="¿Sabias que en SwaplyAr podes sumar descuentos con cada transacción?"
+        nameButton="Unite a Plus Rewards"
+        imageSrc={FlyerGif}
+      />
     </>
   );
 }

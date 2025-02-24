@@ -1,5 +1,3 @@
-// /auth.ts
-
 import NextAuth from 'next-auth';
 import authConfig from './auth.config';
 
@@ -19,16 +17,12 @@ export const {
 
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      // Aquí puedes realizar verificaciones adicionales durante el sign-in
-
       return true;
     },
     async redirect({ url, baseUrl }) {
       return baseUrl;
     },
     async jwt({ token, user }) {
-      // Verificación de propiedades de `user`
-
       if (user && user.id) {
         token.id = user.id;
         token.role = user.role;

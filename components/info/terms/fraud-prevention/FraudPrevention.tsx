@@ -1,6 +1,6 @@
 'use client';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
-import { fraudPrevention } from '@/utils/assets/img-database';
+import { fraudPrevention } from '@/utils/assets/imgDatabaseCloudinary';
 import FraudDesktop from './desktop/FrausDesktop';
 import FraudMobile from './mobile/FraudMobile';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
@@ -37,7 +37,7 @@ const FraudPrevention = () => {
         />
       </section>
       <div className="my-20 w-[100%] bg-contain bg-center">
-        <FlyerTrabajo imageSrc={fraudPrevention} />
+        <FlyerTrabajo href="" imageSrc={fraudPrevention} />
       </div>
     </main>
   );

@@ -61,9 +61,9 @@ export default function RootLayout({
     <html lang="es">
       <head>
         {/* Integración de Google Tag Manager */}
-        <GoogleTagManager gtmId="GTM-W2VLHMCW" />
+        <GoogleTagManager gtmId="GTM-TGBHM97R" />
         {/* Verificación de propiedad en Google Search Console */}
-        <meta name="google-site-verification" content="bZu9PkFbaRVlAaT4NKUHZPD0o17JxMv08rBT-gzfpC0" />
+        <meta name="google-site-verification" content="TDYMmlsmcxOohMXHebZJtRXZ-Y0otZk006ExVzrbPqs" />
 
         {/* Script para establecer el tema de la aplicación según las preferencias del usuario o del sistema */}
         <Script id="theme-script" strategy="beforeInteractive">
@@ -85,7 +85,7 @@ export default function RootLayout({
         {/* Proveedores de contexto y herramientas de análisis */}
         <SessionProvider>
           {/* Integración de Google Analytics */}
-          <GoogleAnalytics gaId="G-F7NZPRXT31" />
+          <GoogleAnalytics gaId="G-PX1MMJCPQL" />
           {/* {process.env.NODE_ENV === 'production' && <GoogleAnalytics gaId="G-F7NZPRXT31" />} */}
           <ThemeProvider>
             <MarginProvider>

@@ -6,6 +6,7 @@ import { System } from '@/types/data';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import InputSteps from '@/components/inputSteps/InputSteps';
 import { FieldError } from 'react-hook-form';
+import { detectarMail } from '@/utils/validationUtils';
 
 interface StepThreeGeneralProps {
   register: UseFormRegister<any>;
@@ -37,6 +38,8 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
 }) => {
   const { isDark } = useDarkTheme();
   const [isFocused, setIsFocused] = useState(false);
+  const emailAccount = detectarMail(selectedSendingSystem);
+  console.log(selectedSendingSystem?.name);
 
   return (
     <>
@@ -45,7 +48,15 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
         <span className="font-semibold underline">
           {selectedSendingSystem?.coinSign} {sendAmount}
         </span>{' '}
-        al email asdfgh@asdfgh.com con el concepto de "PAGO" para enviarte el dinero a la cuenta{' '}
+        {selectedSendingSystem?.name === 'Bank' ? (
+          <span>
+            a la cuenta de <span className="font-semibold underline">JOHAN JAVIER SUAREZ MERCHAN</span> y el ALIAS es{' '}
+            <span className="font-semibold underline">SwaplyAr.com</span> con el concepto de "PAGO" para enviarte el
+            dinero a la cuenta
+          </span>
+        ) : (
+          <span>al email {emailAccount} con el concepto de "PAGO" para enviarte el dinero a la cuenta</span>
+        )}
         <span className="font-semibold underline">
           {' '}
           {formData.stepTwo.re_enter_bank_email == '' &&
@@ -62,12 +73,14 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
             name="pay_email"
             label="Email a pagar"
             type="text"
-            value="asdfgh@asdfgh.com"
+            value={selectedSendingSystem?.name === 'Bank' ? 'SwaplyAr.com' : emailAccount}
             disabled={true}
             placeholder=""
             register={register}
             watch={watch}
-            rules={{ required: 'Este campo es obligatorio' }}
+            rules={{
+              required: false,
+            }}
             error={errors.pay_email ? (errors.pay_email as FieldError) : undefined}
           />
           <InputCopy

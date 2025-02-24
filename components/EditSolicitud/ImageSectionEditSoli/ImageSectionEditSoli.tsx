@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { EditorMobile, EditorPC } from '@/utils/assets/img-database';
+import { EditorMobile, EditorPC } from '@/utils/assets/imgDatabaseCloudinary';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 const ImageSectionEditSoli = () => {

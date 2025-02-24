@@ -179,3 +179,67 @@ export const WsUSDtoWsUSD = '/images/request-ws-usd-ws-usd.png';
 
 // Repentance
 export const regretsPc = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1731499821/69_oze2gb.png';
+export const regretsPhone = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980580/regretPhone_wbsuui.png';
+
+// Editar Solicitud
+export const EditorPC = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739979458/EditorPC_vu2bwc.png';
+export const EditorMobile = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739979529/EditorMobile_aepfko.png';
+
+// 500
+export const Error_500_clear = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739979662/clear-500_fdsntm.png';
+export const Error_500_dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739979669/dark-500_c0plrw.png';
+export const Post1_500 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739979686/post1-500_iz97bv.png';
+export const Post2_500 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739979692/post2-500_rgxcns.png';
+
+// Home Search
+export const homeSearch = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739979899/homeSearch_g7yg1x.png';
+
+// Fraud Prevention
+export const fraudPrevention = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980167/fraudPrevent_vd3rvf.png';
+
+// Mantenimiento
+export const Mantenimiento =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980236/WebsiteDesignPrototype_t1amqu.png';
+
+// Nubes y avion
+export const nube1 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980465/nube1_tyyitq.svg';
+export const nube2 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980460/nube2_a0pigb.svg';
+export const plane = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980330/plane_ifm8za.svg';
+
+// Alertas
+export const alertaSirena =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980724/ant-design_alert-outlined-light_pp6y29.png';
+export const alertaSirenaDark =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980722/ant-design_alert-outlined_ryaxfw.png';
+export const alertSign = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980717/alert-sign_l4uftf.png';
+export const alertSignDark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980722/alert-sign-dark_wevmjm.png';
+export const checkIcon = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980724/check-icon_carxhy.png';
+export const proccessIcon = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980725/proccess-icon_az4cos.png';
+export const proccessIconDark =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980717/proccess-icon-dark_i5w7ye.png';
+
+// Chronometer
+export const Reloj = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980859/reloj_re6qon.png';
+
+// Comprobantes
+export const comprobanteBienHecho =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980986/comprobante_bien_hecho_yrwtsj.png';
+export const comprobanteMalHecho =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980977/comprobante_mal_hecho_t9wift.png';
+
+// How to use
+export const howToUse = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739981169/howToUse_e4ujg5.png';
+export const howToUseDark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739981172/howToUseDark_btqefz.png';
+export const howToUse1 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739981357/howToUse1_t65y0n.png';
+export const howToUse2 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739981359/howToUse2_dpwllb.png';
+export const howToUse3 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739981362/howToUse3_uhxbim.png';
+export const howToUseDark1 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739981363/HowToUseDark1_e7m5u2.png';
+export const howToUseDark2 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739981355/howToUseDark2_dlnou3.png';
+export const howToUseDark3 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739981356/howToUseDark3_gldkmd.png';
+
+// Avatar
+export const swaplyArAvatar = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739981267/swaplyArAvatar_gzgj1q.png';
+
+// Questions
+export const BannerQuestions =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1739981532/baner_questions_lnxujx.png';
