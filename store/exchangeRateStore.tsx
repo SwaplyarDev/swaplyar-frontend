@@ -190,10 +190,12 @@ export const getExchangeRateStore = create<ExchangeRateStore>((set) => {
     return false;
   };
 
-  const fetchRates = async () => {
+  const fetchRates = async (set: any) => {
     if (typeof window === 'undefined') return; // Previene ejecución en SSR
 
     try {
+      set({ isLoading: true }); // Marca como cargando
+
       const response = await fetch(`${API_URL}`, {
         method: 'GET',
         redirect: 'follow',
@@ -204,8 +206,9 @@ export const getExchangeRateStore = create<ExchangeRateStore>((set) => {
       }
 
       const data: rates[] = await response.json();
-      set({ ratesOfAPi: data });
+      set({ ratesOfAPi: data, isLoading: false }); // Actualiza el estado
     } catch (error) {
+      set({ isLoading: false, error: 'Error al obtener datos de conversión' });
       console.error('Error al obtener datos de conversión:', error);
     }
   };
@@ -218,7 +221,7 @@ export const getExchangeRateStore = create<ExchangeRateStore>((set) => {
     startUpdatingRates: async () => {
       if (typeof window === 'undefined') return; // Evita ejecución en SSR
 
-      await fetchRates(); // Llamada inicial
+      await fetchRates(set); // Llamada inicial
 
       if (intervalId) return; // Evita múltiples intervalos
 
