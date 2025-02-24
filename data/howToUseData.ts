@@ -5,7 +5,7 @@ import {
   howToUseDark1,
   howToUseDark2,
   howToUseDark3,
-} from '@/utils/assets/img-database';
+} from '@/utils/assets/imgDatabaseCloudinary';
 
 export interface IHowToUseListItem {
   item: string;

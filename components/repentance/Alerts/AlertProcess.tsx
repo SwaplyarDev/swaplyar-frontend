@@ -3,7 +3,7 @@ import { AlertsProps } from '@/types/repentance/repentance';
 import Swal from 'sweetalert2';
 import { createRoot } from 'react-dom/client';
 import ReactDOMServer from 'react-dom/server';
-import { proccessIcon, proccessIconDark } from '@/utils/assets/img-database';
+import { proccessIcon, proccessIconDark } from '@/utils/assets/imgDatabaseCloudinary';
 import Arrow from '@/components/ui/Arrow/Arrow';
 import { createRegret } from '@/actions/repentance/repentanceForm.action';
 import AlertIncorrect from './AlertIncorrect';

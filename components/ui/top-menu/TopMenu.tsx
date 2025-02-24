@@ -19,7 +19,7 @@ import LogInButton from './log-register-bt/logiInButton';
 import { signOut, useSession } from 'next-auth/react';
 import RegisterButton from './log-register-bt/registerButton';
 import { SwaplyArLogoSolo, SwaplyArLogoComplete } from '@/utils/assets/imgDatabaseCloudinary';
-import { swaplyArAvatar } from '@/utils/assets/img-database';
+import { swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
 import { Button, Popover } from '@mui/material';
 import clsx from 'clsx';
 

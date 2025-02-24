@@ -9,7 +9,7 @@ import { useAmountCalculator } from '@/hooks/useAmountCalculator';
 import { useSystemSelection } from '@/hooks/useSystemSelection';
 import TransactionSection from '@/components/ui/TransactionSection/TransactionSection';
 import clsx from 'clsx';
-import { useExchangeRateStore } from '@/store/exchangeRateStore';
+import { getExchangeRateStore } from '@/store/exchangeRateStore';
 import { useStepperStore } from '@/store/stateStepperStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
@@ -18,7 +18,7 @@ import { systems } from '@/utils/dataCoins';
 export default function TransactionCalculator() {
   const [isProcessing, setIsProcessing] = useState(false);
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
-  const { startUpdatingRates, stopUpdatingRates } = useExchangeRateStore();
+  const { startUpdatingRates, stopUpdatingRates } = getExchangeRateStore();
 
   useEffect(() => {
     if (selectedSendingSystem && selectedReceivingSystem) {

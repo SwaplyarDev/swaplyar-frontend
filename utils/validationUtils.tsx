@@ -1,3 +1,5 @@
+import { System } from '@/types/data';
+
 export function getTaxIdentificationType(input: string): string {
   const cuitCuilPattern = /^(?:\d{11}|\d{2}-\d{8}-\d{1})$/;
   const dniPattern = /^d{8}$/;
@@ -36,6 +38,14 @@ export function detectarTipoPixKey(pixKey: string): string {
   if (cpfPattern.test(pixKey)) return 'cpf';
   if (cnpjPattern.test(pixKey)) return 'cnpj';
   if (randomKeyPattern.test(pixKey)) return 'random';
+
+  return '';
+}
+
+export function detectarMail(coin: System | null): string {
+  if (coin?.name.toLowerCase() === 'paypal') return 'oa.johan.suarez@gmail.com';
+  if (coin?.name.toLowerCase() === 'wise') return 'johansuarez90@gmail.com';
+  if (coin?.name.toLowerCase() === 'payoneer') return 'centrodeayuda@swaplyar.com';
 
   return '';
 }

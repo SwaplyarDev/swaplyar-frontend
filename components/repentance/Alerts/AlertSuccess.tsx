@@ -3,7 +3,7 @@ import { AlertsProps } from '@/types/repentance/repentance';
 import { createRoot } from 'react-dom/client';
 import Swal from 'sweetalert2';
 import ReactDOMServer from 'react-dom/server';
-import { checkIcon } from '@/utils/assets/img-database';
+import { checkIcon } from '@/utils/assets/imgDatabaseCloudinary';
 
 const AlertSuccess = async ({ isDark, toggleTooltip, setIsTooltipVisible }: AlertsProps): Promise<void> => {
   Swal.fire({

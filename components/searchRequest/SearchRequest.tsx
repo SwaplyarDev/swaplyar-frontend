@@ -121,7 +121,7 @@ const SearchRequest = () => {
       handleSearchRequest(statuses);
       console.log(response);
 
-      reset();
+      reset({ numberOfRequest: '', lastNameRequest: '' });
     } catch (error) {
       if (error instanceof Error) {
         console.error('Error!', error.message);
@@ -224,9 +224,9 @@ const SearchRequest = () => {
       <div className="mt-10">
         <FlyerTrabajo
           imageSrc={FlyerGif}
-          title="¿Nuevo en SwaplyAr?"
-          description="Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma sencilla y segura."
-          nameButton="¡Empieza ahora!"
+          href="/auth/login-register"
+          description="Crea tu cuenta para hacer seguimiento de tus solicitudes en tiempo real"
+          nameButton="Crear mi cuenta"
         />
       </div>
     </div>

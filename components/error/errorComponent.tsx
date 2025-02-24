@@ -1,6 +1,5 @@
 'use client';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
@@ -13,7 +12,7 @@ import {
   Post2_404,
   tlf_404_clear,
   tlf_404_dark,
-} from '@/utils/assets/img-database';
+} from '@/utils/assets/imgDatabaseCloudinary';
 import RedirectButton from '../ui/RedirectButton/RedirectButton';
 
 const NotFoundComponent = () => {
