@@ -17,7 +17,6 @@ import ModalEditReciever from './componentesModal/ModalEditReciever/ModalEditRec
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import ClientInformation from '@/components/TransactionModal/componentesModal/ClientInformation';
-import { Console } from 'console';
 const MySwal = withReactContent(Swal);
 
 const TransactionModal = ({ transId }: { transId: string }) => {
@@ -43,11 +42,11 @@ const TransactionModal = ({ transId }: { transId: string }) => {
     setComponentStates,
     setSelected,
   } = useTransactionStore();
-
-  useEffect(() => {
-    console.log('Nuevo estado de componentStates:', componentStates);
-  }, [componentStates]);
   const { transaction } = trans;
+
+  /* useEffect(() => {
+    console.log('Nuevo estado de componentStates:', componentStates);
+  }, [componentStates]);*/
 
   useEffect(() => {
     updateTransactionStatus(transId, transIdAdmin);
@@ -136,6 +135,7 @@ const TransactionModal = ({ transId }: { transId: string }) => {
             {componentStates.discrepancySection !== null && <FinalSection />}
           </section>
         )}
+        <p className="flex justify-center text-center">Estado actual: {status}</p>
       </section>
       <ModalEditReciever modal={modal} setModal={setModal} trans={trans} />
     </section>
