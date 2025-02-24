@@ -19,7 +19,7 @@ import LogInButton from './log-register-bt/logiInButton';
 import { signOut, useSession } from 'next-auth/react';
 import RegisterButton from './log-register-bt/registerButton';
 import { SwaplyArLogoSolo, SwaplyArLogoComplete } from '@/utils/assets/imgDatabaseCloudinary';
-import { swaplyArAvatar } from '@/utils/assets/img-database';
+import { swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
 import { Button, Popover } from '@mui/material';
 import clsx from 'clsx';
 
@@ -71,7 +71,7 @@ export function TopMenu() {
   // Hasta aca, sacado de MUI
 
   return (
-    <main className="sticky top-0 z-[1000] flex flex-col shadow-md">
+    <main className="sticky top-0 z-[1000] flex flex-col bg-white shadow-md dark:bg-lightText">
       <TopPopUp />
 
       <Navbar
@@ -278,14 +278,14 @@ export function TopMenu() {
                           Salir
                         </button>
                       ) : (
-                        <>
+                        <div className="flex flex-col items-center gap-3">
                           <div className="flex flex-col md:hidden">
                             <LogInButton />
                           </div>
-                          <div className="flex flex-col">
+                          <div className="flex h-[60px] flex-col">
                             <RegisterButton />
                           </div>
-                        </>
+                        </div>
                       )}
                     </Sidebar.ItemGroup>
                   </Sidebar.Items>

@@ -18,6 +18,13 @@ export interface FormData {
   calling_code?: CountryOption;
   status: string;
 }
+
+export interface FormRequestCompleted {
+  transaction_id: string;
+  stars_amount: number;
+  note?: string;
+}
+
 export interface OutputFormat {
   transaction_id: string;
   last_name: string;
@@ -28,7 +35,12 @@ export interface OutputFormat {
 }
 export interface AlertsProps {
   isDark: boolean;
+  toggleTooltip: () => void;
+  setIsTooltipVisible: React.Dispatch<React.SetStateAction<boolean>>;
   message?: string;
+  transaction_id?: string;
+  dataToSend?: FormData;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface FormularioProps {

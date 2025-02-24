@@ -6,7 +6,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Swal from 'sweetalert2';
 
-const AlertDuplication = async ({ isDark }: AlertsProps): Promise<void> => {
+const AlertDuplication = async ({ isDark, toggleTooltip, setIsTooltipVisible }: AlertsProps): Promise<void> => {
   Swal.fire({
     didRender: () => {
       const warningContainer = document.getElementById('warning-container');
@@ -18,10 +18,6 @@ const AlertDuplication = async ({ isDark }: AlertsProps): Promise<void> => {
             <ButtonAlertBack isDark={isDark} />
           </div>,
         );
-        if (warningContainer) {
-          const root = createRoot(warningContainer);
-          root.render(<WarningIcon isDark={isDark} />);
-        }
       }
     },
     title: '',

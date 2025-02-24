@@ -59,7 +59,7 @@ const SeachRequest: React.FC = () => {
         className="lg:max-w-inherit flex h-full w-full max-w-[465px] flex-col lg:justify-evenly"
         onSubmit={handleSubmit(handleSeachRequestSubmit)}
       >
-        <div className="h-[100px]">
+        <div className="flex h-[100px] flex-col">
           <label
             className="mb-3 flex flex-col text-right font-textFont text-xs font-light xs:mb-0 lg:text-sm"
             htmlFor="transaccionId"
@@ -89,7 +89,7 @@ const SeachRequest: React.FC = () => {
             id="transaccionId"
           />
           {errors.transaccionId && (
-            <span className="text-end text-sm text-errorColor">{errors.transaccionId.message}</span>
+            <span className="text-right text-sm text-errorColor">{errors.transaccionId.message}</span>
           )}
         </div>
 

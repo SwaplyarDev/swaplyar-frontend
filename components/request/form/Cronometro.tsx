@@ -3,7 +3,7 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import useChronometerState from '@/store/chronometerStore';
 import { CronometroProps } from '@/types/request/request';
 import Image from 'next/image';
-import { Reloj } from '@/utils/assets/img-database';
+import { Reloj } from '@/utils/assets/imgDatabaseCloudinary';
 
 const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
   const [segundos, setSegundos] = useState<number>(30 * 60);
@@ -75,6 +75,7 @@ const Cronometro: React.FC<CronometroProps> = ({ setBlockAll }) => {
           gap: '5px',
           color: isDark ? '#ebe7e0' : '#252526',
         }}
+        className="font-textFont"
       >
         Tiempo Restante <Image src={Reloj} alt="Reloj" width={18} height={18} className="ml-1" />
         <span className="w-[52px] text-center">{formatTiempo(segundos)}</span>

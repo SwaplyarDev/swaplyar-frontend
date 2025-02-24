@@ -2,6 +2,7 @@
 import Tick from '@/components/ui/Tick/Tick';
 import React from 'react';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import clsx from 'clsx';
 
 interface StepIndicatorProps {
   currentStep: number;
@@ -11,7 +12,12 @@ interface StepIndicatorProps {
 const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep, completedSteps }) => {
   const { isDark } = useDarkTheme();
   return (
-    <div className="flex items-center justify-center">
+    <div
+      className={clsx(
+        'flex items-center justify-center',
+        currentStep === 1 ? 'sm:absolute' : 'relative sm:absolute md-tablet:relative',
+      )}
+    >
       {completedSteps.map((completed, index) => (
         <React.Fragment key={index}>
           {index < currentStep ? (

@@ -54,7 +54,7 @@ export const systems: System[] = [
     isDisabled: false,
     coin: 'ARS',
     paymentMethod: 'ars',
-    coinSign: '$a',
+    coinSign: 'ARS',
   },
   {
     id: 'wise_usd',

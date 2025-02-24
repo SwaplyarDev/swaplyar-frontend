@@ -19,7 +19,8 @@
 }
 
 .container-blur {
-  @apply absolute flex h-full min-h-[1000px] w-full justify-center overflow-hidden;
+  @apply fixed top-0 flex h-full min-h-[1000px] w-full justify-center overflow-hidden;
+  @apply fixed top-0 flex h-full min-h-[1000px] w-full justify-center overflow-hidden;
 }
 
 .box {
@@ -350,6 +351,28 @@ body::-webkit-scrollbar-thumb {
   border-radius: 3px;
 }
 
+.scrollbar::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 3px;
+}
+
+.scrollbar::-webkit-scrollbar-track:hover {
+  background: var(--sb-track-color);
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 3px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--sb-thumb-color);
+}
+
 @supports not selector(::-webkit-scrollbar) {
   body {
     scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
@@ -416,6 +439,31 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 div:where(.swal2-icon).swal2-info {
   border-color: #facea8 !important;
   color: #f8bb86 !important;
+}
+
+.swal-custom-image {
+  margin-top: 0 !important;
+}
+
+.swal-custom-image2 {
+  margin-top: 1em !important;
+  margin-bottom: 0 !important;
+}
+
+.swal2-title {
+  padding-top: 0 !important;
+  @apply mx-11 p-0 font-textFont text-xl;
+  @apply mx-11 p-0 font-textFont text-xl;
+}
+
+.my-popup {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Agrega espacio entre elementos internos */
+}
+
+.custom-container-payment {
+  @apply p-0;
 }
 
 /**Button Second**/
@@ -518,8 +566,48 @@ div:where(.swal2-container).swal2-noanimation {
   }
 }
 
+@layer utilities {
+  @keyframes cloudAnimation {
+    0% {
+      transform: translateY(5px);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+    100% {
+      transform: translateY(5px);
+    }
+  }
+
+  .cloud {
+    animation: cloudAnimation 3s linear infinite;
+  }
+}
+
 /*Carrusel*/
 
 .slick-slide > div {
   margin: 0 10px;
+}
+
+/*Input - Sacar estilos del autofill*/
+
+.dark .inputChangeAutofill:-webkit-autofill {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: rgba(235, 231, 224, 1) !important;
+}
+
+.inputChangeAutofill:-webkit-autofill {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: rgba(37, 37, 38, 1) !important;
+}
+
+.dark .inputChangeAutofillReverse:-webkit-autofill {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: rgba(37, 37, 38, 1) !important;
+}
+
+.inputChangeAutofillReverse:-webkit-autofill {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: rgba(37, 37, 38, 1) !important;
 }
