@@ -187,6 +187,7 @@ const Form = () => {
           Nota Opcional{' '}
           <textarea
             {...register('note')}
+            maxLength={200}
             className={clsx(
               'inputChangeAutofill placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] ps-0 text-xs placeholder:font-light focus:border-0 focus:border-b-[1px] focus:outline-none focus:ring-0 xs:text-lg',
               isDark

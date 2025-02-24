@@ -34,7 +34,7 @@ const RepentanceForm = () => {
               alt="regretsPc"
               width={650}
               height={0}
-              className="h-full max-h-[557px] object-cover drop-shadow-light dark:drop-shadow-darkmode"
+              className="h-full max-h-[557px] min-h-[557px] object-cover drop-shadow-light dark:drop-shadow-darkmode"
             />
           </div>
           <div className="mx-auto mt-10 flex min-h-full w-full max-w-[506px] flex-wrap justify-center lg2:hidden">
