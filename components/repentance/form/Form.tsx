@@ -211,6 +211,7 @@ const Form: React.FC<FormularioProps> = ({ onSubmit }) => {
           Nota Opcional{' '}
           <textarea
             {...register('note')}
+            maxLength={200}
             className={clsx(
               'placeholder-text-gray-900 h-[45px] max-h-[148px] min-h-[45px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
               isDark
