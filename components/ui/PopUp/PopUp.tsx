@@ -4,9 +4,18 @@ import ReactDOMServer from 'react-dom/server';
 import { createRoot } from 'react-dom/client';
 import Arrow from '../Arrow/Arrow';
 
-export const PopUp = ({ title, text, isDark }: IPopUpProps) => {
+export const PopUp = ({ icon, title, text, isDark }: IPopUpProps) => {
   Swal.fire({
-    icon: 'success',
+    icon:
+      icon === 'success'
+        ? 'success'
+        : icon === 'info'
+          ? 'info'
+          : icon === 'warning'
+            ? 'warning'
+            : icon === 'error'
+              ? 'error'
+              : undefined,
     html: ReactDOMServer.renderToString(
       <div>
         <div className="flex flex-col gap-3">

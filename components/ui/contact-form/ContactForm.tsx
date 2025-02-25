@@ -75,6 +75,7 @@ const ContactForm = () => {
 
   const handleSendRequest = () =>
     PopUp({
+      icon: 'success',
       title: 'Mensaje enviado con éxito',
       text: 'Gracias por tu mensaje, en la brevedad nos pondremos en contacto contigo',
       isDark,
