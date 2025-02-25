@@ -7,6 +7,7 @@ import LoadingGif from '../ui/LoadingGif/LoadingGif';
 import clsx from 'clsx';
 import { useForm } from 'react-hook-form';
 import ButtonBack from '../ui/ButtonBack/ButtonBack';
+import PopUp from '../ui/PopUp/PopUp';
 
 interface ModalProps {
   isDark: boolean;
@@ -57,76 +58,21 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
   const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNote(event.target.value);
   };
-  const handleEditRequestError = () => {
-    Swal.fire({
-      title: '<h2 style="font-size: 24px;">Error al editar solicitud!</h2>',
-      icon: 'info',
-      html: `
-        <p style="font-size: 16px;">Debe ingresar una nota, seleccionar un archivo y proporcionar el ID de transacción.</p>
-        <p style="font-size: 16px;">Si sigue dando error, contactar a soporte.</p>
-        <div id="back-button-container" class="flex items-center justify-center mt-5"></div>
-      `,
-      showConfirmButton: false,
-      showCancelButton: false,
-      background: isDark ? 'rgb(69 69 69)' : '#ffffff',
-      color: isDark ? '#ffffff' : '#000000',
-      didRender: () => {
-        const backElement = document.getElementById('back-button-container');
-        if (backElement) {
-          const root = createRoot(backElement);
-          root.render(
-            <button
-              type="button"
-              onClick={() => Swal.close()}
-              className={`group relative m-1 flex h-[46px] min-w-[48px] max-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 font-textFont text-lg font-light text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
-            >
-              <div className="relative h-5 w-5 overflow-hidden">
-                <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
-                  <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
-                </div>
-              </div>
-              Volver
-            </button>,
-          );
-        }
-      },
+  const handleEditRequestError = () =>
+    PopUp({
+      icon: 'error',
+      title: 'Error al editar solicitud!',
+      text: 'Debe ingresar una nota, seleccionar un archivo y proporcionar el ID de transacción. Si sigue dando error, contactar a soporte.',
+      isDark: isDark,
     });
-  };
 
-  const handleEditRequestSuccess = () => {
-    Swal.fire({
-      title: '<h2 style="font-size: 24px;">Solucitud enviado con exito!</h2>',
+  const handleEditRequestSuccess = () =>
+    PopUp({
       icon: 'success',
-      html: `
-        <p style="font-size: 16px;">Su solicitud fue envia con exito, en la brevedad nos pondremos en contacto contigo.</p>
-        <div id="back-button-container" class="flex items-center justify-center mt-5"></div>
-      `,
-      showConfirmButton: false,
-      showCancelButton: false,
-      background: isDark ? 'rgb(69 69 69)' : '#ffffff',
-      color: isDark ? '#ffffff' : '#000000',
-      didRender: () => {
-        const backElement = document.getElementById('back-button-container');
-        if (backElement) {
-          const root = createRoot(backElement);
-          root.render(
-            <button
-              type="button"
-              onClick={() => Swal.close()}
-              className={`group relative m-1 flex h-[46px] min-w-[48px] max-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 font-textFont text-lg font-light text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
-            >
-              <div className="relative h-5 w-5 overflow-hidden">
-                <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
-                  <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
-                </div>
-              </div>
-              Volver
-            </button>,
-          );
-        }
-      },
+      title: 'Solucitud enviado con exito!',
+      text: 'Su solicitud fue envia con exito, en la brevedad nos pondremos en contacto contigo.',
+      isDark: isDark,
     });
-  };
 
   const handleFormSubmit = async () => {
     if (!note || !transaccionId) {
@@ -313,7 +259,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
           </section>
 
           <section>
-            <p className="mb-5 flex h-1/2 flex-col text-buttonsLigth dark:text-darkText">
+            <p className="mb-2 flex h-1/2 flex-col text-buttonsLigth dark:text-darkText">
               <div className="text-start font-textFont text-sm">
                 <span className="mr-1 font-semibold">Nota:</span>
                 <span className="text-start text-xs font-light">
@@ -326,7 +272,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
                 htmlFor="note"
                 className={clsx(
                   'font-textFont font-light text-lightText dark:text-darkText',
-                  !isFocused && 'hidden',
+                  !isFocused && 'opacity-0',
                   'w-full pl-3 text-start text-sm',
                 )}
               >
@@ -410,13 +356,13 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId }
               ) : (
                 <button
                   className={`${
-                    !file || !note
+                    !note
                       ? 'border-disabledButtonsLigth bg-disabledButtonsLigth dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText'
                       : isDark
                         ? 'buttonSecondDark'
                         : 'buttonSecond'
                   } relative m-1 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText`}
-                  disabled={!file || !note}
+                  disabled={!note}
                   onClick={handleFormSubmit}
                   type="button"
                 >
