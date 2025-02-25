@@ -8,10 +8,7 @@ import { useDarkTheme } from '../theme-Provider/themeProvider';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
-import Swal from 'sweetalert2';
-import Tick from '@/components/ui/Tick/Tick';
-import { createRoot } from 'react-dom/client';
-import Arrow from '@/components/ui/Arrow/Arrow';
+import { PopUp } from '../PopUp/PopUp';
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -76,55 +73,12 @@ const ContactForm = () => {
     }
   };
 
-  // <div class="flex w-full items-start justify-start">
-  //   <p class="ml-[0.9rem] w-[230px] text-left">
-  //     Gracias por tu mensaje, en la brevedad nos pondremos en contacto contigo
-  //   </p>
-  // </div>;
-
-  const handleSendRequest = () => {
-    Swal.fire({
-      title: '',
-      html: `
-        <div class="flex justify-center items-center flex-col gap-4">
-          <div id="tick-container" class="flex justify-center items-center h-[100px] w-[100px] rounded-full bg-[#4CAF50]"></div>
-          <h1 class="text-4xl">Mensaje enviado con éxito</h1>
-          <p>Gracias por tu mensaje, en la brevedad nos pondremos en contacto contigo</p>
-          <div id="back-button-container"></div>
-        </div>
-      `,
-      showConfirmButton: false,
-      showCancelButton: false,
-      background: isDark ? 'rgb(69 69 69)' : '#ffffff',
-      color: isDark ? '#ffffff' : '#000000',
-
-      didRender: () => {
-        const tickContainer = document.getElementById('tick-container');
-        if (tickContainer) {
-          const root = createRoot(tickContainer);
-          root.render(<Tick color={isDark ? '#414244' : '#FCFBFA'} size="70px" />);
-        }
-        const backElement = document.getElementById('back-button-container');
-        if (backElement) {
-          const root = createRoot(backElement);
-          root.render(
-            <button
-              type="button"
-              onClick={() => Swal.close()}
-              className={`dark:text-darkborder-darkText group relative m-1 flex h-[46px] min-w-[48px] max-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 font-textFont text-lg font-light text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
-            >
-              <div className="relative h-5 w-5 overflow-hidden">
-                <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
-                  <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
-                </div>
-              </div>
-              Volver
-            </button>,
-          );
-        }
-      },
+  const handleSendRequest = () =>
+    PopUp({
+      title: 'Mensaje enviado con éxito',
+      text: 'Gracias por tu mensaje, en la brevedad nos pondremos en contacto contigo',
+      isDark,
     });
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-4">
