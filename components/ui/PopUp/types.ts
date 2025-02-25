@@ -1,5 +1,7 @@
+type TIcon = 'success' | 'info' | 'warning' | 'error';
 export interface IPopUpProps {
-  title: string;
-  text: string;
+  icon: TIcon;
+  title?: string;
+  text?: string;
   isDark: boolean;
 }
