@@ -58,7 +58,9 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
 
         {/* Asegúrate de que randomImages tenga varias imágenes */}
         {randomImages && randomImages.length > 0 && <ImageCarousel images={randomImages} />}
-        <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} />
+
+        {/* Hasta que se pueda agregar paginado al filtrado */}
+        {/* <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} /> */}
 
         {!isLoading ? (
           <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">

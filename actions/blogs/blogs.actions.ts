@@ -19,7 +19,27 @@ export const fetchBlogs = async (page: number, searchTerm: string): Promise<Blog
     }
 
     const data: BlogResponse = await response.json();
-    // console.log(data);
+    return data;
+  } catch (error: any) {
+    throw new Error(`Failed to fetch blogs. Error: ${error.message}`);
+  }
+};
+
+export const filterBlogs = async (searchTerm: string): Promise<BlogResponse> => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/blogs/content/${encodeURIComponent(searchTerm)}`,
+      {
+        method: 'GET',
+        cache: 'no-store',
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch blogs: ${response.status} ${response.statusText}`);
+    }
+
+    const data: BlogResponse = await response.json();
     return data;
   } catch (error: any) {
     throw new Error(`Failed to fetch blogs. Error: ${error.message}`);

@@ -1,22 +1,49 @@
-'use client';
-
-import { usePathname } from 'next/navigation';
+import type { Metadata } from 'next';
 import Footer from '@/components/footer/Footer';
 import { TopMenu } from '@/components/ui/top-menu/TopMenu';
 import ThemeProvider from '../components/ui/theme-Provider/themeProvider';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
-import { roboto } from '@/config/fonts/fonts';
 import { MarginProvider } from '@/context/MarginProvider';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 import Script from 'next/script';
 import Footerblog from '@/components/footerblog/Footerblog';
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const pathname = usePathname(); // Obtener la URL actual
+/**
+ * Metadatos globales de la aplicación.
+ *
+ * Define el título, la descripción y los íconos del sitio, optimizando su visibilidad en buscadores y en dispositivos con diferentes temas.
+ */
+export const metadata: Metadata = {
+  title: 'SwaplyAr | Pasar dólares de PayPal a pesos argentinos',
+  description:
+    'Descubre cómo Swaplyar simplifica tus Transferencias internacionales, billeteras virtuales o Cripto y gestión de pagos de manera segura, rápida y eficiente.',
+  icons: {
+    icon: [
+      {
+        media: '(prefers-color-scheme: light)',
+        url: '/images/favicon-light.png',
+        href: '/images/favicon-light.png',
+      },
+      {
+        media: '(prefers-color-scheme: dark)',
+        url: '/images/favicon-dark.png',
+        href: '/images/favicon-dark.png',
+      },
+    ],
+  },
+};
 
+/**
+ * RootLayout - Layout global de la aplicación.
+ *
+ * @param children - Contenido de la página renderizada.
+ * @returns Estructura principal del HTML y elementos globales.
+ */
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
       <head>
@@ -52,7 +79,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <Analytics />
               <TopMenu />
               {children}
-              {pathname === '/blog' ? <Footerblog /> : <Footer />}
+              <Footer />
             </MarginProvider>
           </ThemeProvider>
         </SessionProvider>
