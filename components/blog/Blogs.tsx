@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import PaginationButtons from '../ui/PaginationButtonsProps/PaginationButtonsProps';
@@ -34,6 +33,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
     setTotalPages,
   });
 
+  // Filtrar los blogs según el término de búsqueda
   const filteredBlogs = useMemo(() => {
     return blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
   }, [blogs, searchTerm]);
@@ -62,8 +62,8 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
 
         {!isLoading ? (
           <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
-            {blogs.length >= 1 ? (
-              blogs.map((post) => (
+            {filteredBlogs.length >= 1 ? (
+              filteredBlogs.map((post) => (
                 <BlogPostCard
                   key={post.blog_id}
                   blog_id={post.blog_id}

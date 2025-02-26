@@ -31,6 +31,13 @@ export default function SearchInput({ searchTerm, onSearchChange, results }: Sea
     }
   }, [searchTerm, results]);
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && searchTerm) {
+      // Cierra el popup y la X al presionar Enter
+      handleClose();
+    }
+  };
+
   return (
     <div className="mt-12 flex flex-col justify-start dark:bg-lightText">
       <div className="h-[50px] w-[150px]"></div>
@@ -65,6 +72,7 @@ export default function SearchInput({ searchTerm, onSearchChange, results }: Sea
             value={searchTerm}
             onFocus={handleFocus}
             onChange={onSearchChange}
+            onKeyDown={handleKeyDown} // Agregamos el evento de teclado
           />
           {isExpanded && (
             <button
