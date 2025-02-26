@@ -150,6 +150,14 @@ export const regretsPhone = '/images/regretPhone.png';
 /** Avatar **/
 export const swaplyArAvatar = '/images/swaplyArAvatar.png';
 
+/**Blog **/
+export const BlogImage1 = '/images/image-blog.png';
+export const arrowBackIosLeft = '/images/arrow_forward_ios.svg';
+export const arrowBackIosLeft1 = '/images/arrow_back_ios.svg';
+export const arrow_back_iosr = '/images/arrow_back_iosr.svg';
+export const arrow_forward_iosrr = '/images/arrow_forward_iosrr.svg';
+
+export const gifImage = '/images/BannerBlog.gif';
 /**POPUP**/
 
 export const swaplyarAvatarpopup = '/images/favicon-light.png';

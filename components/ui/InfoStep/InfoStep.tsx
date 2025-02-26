@@ -18,7 +18,7 @@ const InfoStep: FC<InfoStepProps> = ({ option }) => {
     setIsTooltipVisible((prev) => !prev);
   }, []);
 
-  const showTooltip = () => {
+  const showTooltip = useCallback(() => {
     Swal.fire({
       html: ReactDOMServer.renderToString(
         <>
@@ -132,7 +132,7 @@ const InfoStep: FC<InfoStepProps> = ({ option }) => {
         document.body.classList.remove('no-scroll');
       },
     });
-  };
+  }, [isDark, setIsTooltipVisible, toggleTooltip]);
 
   useEffect(() => {
     if (option === undefined) {
@@ -164,7 +164,7 @@ const InfoStep: FC<InfoStepProps> = ({ option }) => {
       document.body.style.paddingRight = '0px';
       document.body.classList.remove('no-scroll');
     }
-  }, [isTooltipVisible, isDark, toggleTooltip]);
+  }, [isTooltipVisible, isDark, toggleTooltip, showTooltip]);
   return (
     <button
       className="group relative"

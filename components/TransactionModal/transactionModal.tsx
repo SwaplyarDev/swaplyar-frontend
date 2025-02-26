@@ -50,13 +50,13 @@ const TransactionModal = ({ transId }: { transId: string }) => {
 
   useEffect(() => {
     updateTransactionStatus(transId, transIdAdmin);
-  }, [status, transId, componentStates]);
+  }, [status, transId, componentStates, transIdAdmin, updateTransactionStatus]);
 
   useEffect(() => {
     if (transId) {
       fetchTransaction(transId);
     }
-  }, [transId]);
+  }, [transId, fetchTransaction]);
 
   useEffect(() => {
     if (transaction.regret_id) {
@@ -64,7 +64,7 @@ const TransactionModal = ({ transId }: { transId: string }) => {
     } else if (transaction.note_id) {
       fetchNote(transaction.note_id);
     }
-  }, [transaction.regret_id, transaction.note_id]);
+  }, [transaction.regret_id, transaction.note_id, fetchRegret, fetchNote]);
 
   return (
     <section className="fixed inset-0 top-0 z-[5] flex w-full translate-x-0 items-center justify-end bg-black bg-opacity-50 opacity-100">
