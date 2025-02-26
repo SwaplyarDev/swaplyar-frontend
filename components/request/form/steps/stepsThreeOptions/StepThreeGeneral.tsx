@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch } from 'react-hook-form';
 import InputCopy from '../../inputs/InputCopy';
-import InputField from '@/components/ui/contact-form/InputField';
 import { System } from '@/types/data';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import InputSteps from '@/components/inputSteps/InputSteps';
 import { FieldError } from 'react-hook-form';
+import { detectarMail } from '@/utils/validationUtils';
 
 interface StepThreeGeneralProps {
   register: UseFormRegister<any>;
@@ -35,16 +36,27 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
   restRegister,
   watch,
 }) => {
-  console.log(' selectedSendingSystem: ', selectedSendingSystem);
-  console.log(' selectedReceivingSystem: ', selectedReceivingSystem);
+  const { isDark } = useDarkTheme();
+  const [isFocused, setIsFocused] = useState(false);
+  const emailAccount = detectarMail(selectedSendingSystem);
+  console.log(selectedSendingSystem?.name);
+
   return (
     <>
-      <p className="text-left">
+      <p className="text-left font-textFont">
         tienes que realizar el pago de{' '}
         <span className="font-semibold underline">
           {selectedSendingSystem?.coinSign} {sendAmount}
         </span>{' '}
-        al email asdfgh@asdfgh.com con el concepto de "PAGO" para enviarte el dinero a la cuenta{' '}
+        {selectedSendingSystem?.name === 'Bank' ? (
+          <span>
+            a la cuenta de <span className="font-semibold underline">JOHAN JAVIER SUAREZ MERCHAN</span> y el ALIAS es{' '}
+            <span className="font-semibold underline">SwaplyAr.com</span> con el concepto de "PAGO" para enviarte el
+            dinero a la cuenta
+          </span>
+        ) : (
+          <span>al email {emailAccount} con el concepto de "PAGO" para enviarte el dinero a la cuenta</span>
+        )}
         <span className="font-semibold underline">
           {' '}
           {formData.stepTwo.re_enter_bank_email == '' &&
@@ -61,12 +73,14 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
             name="pay_email"
             label="Email a pagar"
             type="text"
-            value="asdfgh@asdfgh.com"
+            value={selectedSendingSystem?.name === 'Bank' ? 'SwaplyAr.com' : emailAccount}
             disabled={true}
             placeholder=""
             register={register}
             watch={watch}
-            rules={{ required: 'Este campo es obligatorio' }}
+            rules={{
+              required: false,
+            }}
             error={errors.pay_email ? (errors.pay_email as FieldError) : undefined}
           />
           <InputCopy
@@ -97,72 +111,83 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
               required: 'Este campo es obligatorio',
             }}
             error={errors.receive_amount ? (errors.receive_amount as FieldError) : undefined}
+            disabledWithoutMargin={true}
           />
-
-          <div className="flex flex-col">
-            <label
-              htmlFor="proof_of_payment"
-              className={clsx(
-                'cursor-pointer',
-                errors.proof_of_payment ? 'text-red-500' : 'text-lightText dark:text-darkText',
-              )}
-            >
-              <p className="ml-1 h-5 text-xs">Comprobante con formato: PNG o JPG</p>
-              <div
-                className={clsx(
-                  'flex w-full flex-col items-center gap-2 rounded border border-[#6B7280] bg-gray-200 px-5 py-2 dark:bg-lightText xs-phone:flex-row sm-phone:flex-col lg-tablet:h-[38px] lg-tablet:flex-row lg-tablet:items-center',
-                  errors.proof_of_payment ? 'border-red-500' : 'hover:border-blue-600 dark:hover:border-white',
-                )}
-              >
-                <p className="w-full text-sm xs-phone:max-w-32 sm-phone:max-w-[inherit] lg-tablet:max-w-40 lg-tablet:text-base">
-                  Subir comprobante
-                </p>
-                <span id="file-name" className="w-full text-xs text-[#6B7280] lg-tablet:text-sm">
-                  No hay archivo seleccionado
-                </span>
-              </div>
-            </label>
-            <div className="flex h-full flex-col">
-              <input
-                id="proof_of_payment"
-                type="file"
-                disabled={blockAll}
-                placeholder="SUBIR COMPROBANTE"
-                onChange={handleChange}
-                {...restRegister}
-                className={clsx(
-                  'hidden h-full w-full rounded border border-[#6B7280] bg-gray-200 px-5 py-2 dark:bg-lightText',
-                  errors.proof_of_payment && 'Este campo es obligatorio'
-                    ? 'border-red-500 hover:border-blue-600 dark:hover:border-white'
-                    : 'hover:border-blue-600 dark:hover:border-white',
-                )}
-              />
-              {errors.proof_of_payment && 'Este campo es obligatorio' && (
-                <p className="text-sm text-red-500">• Este campo es obligatorio</p>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="flex w-full flex-col gap-4">
           <div className="flex h-full flex-col">
             <label
               htmlFor="note"
-              className={clsx('ml-1 h-5 text-xs', errors.note ? 'text-red-500' : 'text-lightText dark:text-darkText')}
+              className={clsx(
+                'font-textFont text-lightText dark:text-darkText',
+                'mb-1 ml-2.5 text-sm transition-opacity duration-300',
+                isFocused || watch('note') ? 'opacity-100' : 'opacity-0',
+              )}
             >
               Nota (opcional)
             </label>
             <textarea
               {...register('note', { required: false })}
               id="note"
+              rows={1}
               disabled={blockAll}
-              placeholder="Añade una nota si lo deseas ;)"
+              placeholder={isFocused ? '' : 'Nota (opcional)'}
               className={clsx(
-                'h-full w-full rounded border bg-gray-200 px-5 py-2 dark:bg-lightText',
-                errors.note ? 'border-red-500' : 'hover:border-blue-600 dark:hover:border-white',
+                `block w-full rounded-2xl border border-inputLightDisabled px-3 py-2 placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight focus:placeholder-transparent dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText hover:dark:border-transparent dark:hover:placeholder-lightText focus:dark:border-transparent focus:dark:ring-transparent`,
               )}
+              onFocus={() => setIsFocused(true)}
+              onBlur={(e) => setIsFocused(e.target.value !== '')}
             ></textarea>
-            {errors.note && <p className="text-sm text-red-500">Este campo es obligatorio</p>}
           </div>
+        </div>
+        <div className="flex w-full flex-col gap-4">
+          <label
+            htmlFor="proof_of_payment"
+            className={clsx(
+              'relative flex h-full cursor-pointer flex-col',
+              errors.proof_of_payment ? 'text-errorColor' : 'text-lightText dark:text-darkText',
+            )}
+          >
+            <p className="ml-1 h-5 text-xs">Comprobante</p>
+            <div
+              className={clsx(
+                'group flex h-full w-full flex-col items-center justify-center gap-2.5 rounded-2xl border-[1px] border-inputLightDisabled py-2 text-center hover:border-inputLight dark:border-disabledDarkText dark:text-lightText dark:hover:border-darkText',
+                errors.proof_of_payment
+                  ? 'border-errorColor dark:border-errorColor'
+                  : 'hover:border-blue-600 dark:hover:border-white',
+              )}
+            >
+              <p className="mb-1 hidden text-sm text-inputLightDisabled group-hover:text-buttonsLigth dark:text-disabledDarkText group-hover:dark:text-darkText lg:inline-block">
+                SUBIR COMPROBANTE
+              </p>
+              <div
+                className={`${
+                  isDark ? 'buttonSecondDark' : 'buttonSecond'
+                } relative mt-5 h-[48px] w-full max-w-[200px] items-center justify-center rounded-3xl border border-disabledButtonsLigth bg-disabledButtonsLigth p-[10px] text-lg text-darkText group-hover:border-buttonsLigth group-hover:bg-buttonsLigth group-hover:text-darkText dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText group-hover:dark:border-darkText group-hover:dark:bg-darkText group-hover:dark:text-lightText lg:mt-0`}
+              >
+                Subir Archivo
+              </div>
+              <span id="file-name" className="w-full text-xs text-[#6B7280] lg-tablet:text-sm">
+                No hay archivo seleccionado
+              </span>
+              {errors.proof_of_payment && 'Este campo es obligatorio' && (
+                <p className="text-sm text-errorColor">Este campo es obligatorio, accepta: .png, .jpg y .pdf</p>
+              )}
+            </div>
+          </label>
+          <input
+            accept=".png,.jpg,.pdf"
+            id="proof_of_payment"
+            type="file"
+            disabled={blockAll}
+            placeholder="SUBIR COMPROBANTE"
+            onChange={handleChange}
+            {...restRegister}
+            className={clsx(
+              'hidden h-full w-full rounded border border-[#6B7280] bg-gray-200 px-5 py-2 dark:bg-lightText',
+              errors.proof_of_payment && 'Este campo es obligatorio'
+                ? 'border-errorColor hover:border-blue-600 dark:hover:border-white'
+                : 'hover:border-blue-600 dark:hover:border-white',
+            )}
+          />
         </div>
       </div>
     </>

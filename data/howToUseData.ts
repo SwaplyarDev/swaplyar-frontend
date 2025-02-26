@@ -1,18 +1,19 @@
-import howToUse1 from '@/public/images/howToUse1.png';
-import howToUse2 from '@/public/images/howToUse2.png';
-import howToUse3 from '@/public/images/howToUse3.png';
-import howToUseDark1 from '@/public/images/howToUseDark1.png';
-import howToUseDark2 from '@/public/images/howToUseDark2.png';
-import howToUseDark3 from '@/public/images/howToUseDark3.png';
-import { StaticImageData } from 'next/image';
+import {
+  howToUse1,
+  howToUse2,
+  howToUse3,
+  howToUseDark1,
+  howToUseDark2,
+  howToUseDark3,
+} from '@/utils/assets/imgDatabaseCloudinary';
 
 export interface IHowToUseListItem {
   item: string;
 }
 
 export interface IHowToUse {
-  src: StaticImageData;
-  srcDark: StaticImageData;
+  src: string;
+  srcDark: string;
   title: string;
   text: string;
   list?: boolean;

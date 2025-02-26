@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { EditorMobile, EditorPC } from '@/utils/assets/img-database';
+import { EditorMobile, EditorPC } from '@/utils/assets/imgDatabaseCloudinary';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 const ImageSectionEditSoli = () => {
@@ -14,7 +14,7 @@ const ImageSectionEditSoli = () => {
           alt="Imagen de Editor de solicitud de pc"
           width={1000}
           height={0}
-          className="h-full object-cover"
+          className="h-full object-cover drop-shadow-light dark:drop-shadow-darkmode"
         />
       </div>
       <div className="mt-5 flex w-full flex-col flex-wrap content-center">
@@ -25,7 +25,7 @@ const ImageSectionEditSoli = () => {
               alt="imagen del Editor de solicitud de mobile"
               width={200}
               height={0}
-              className="h-full object-contain"
+              className="h-full object-contain drop-shadow-light dark:drop-shadow-darkmode"
             />
           </div>
           <div

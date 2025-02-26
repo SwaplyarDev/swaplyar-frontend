@@ -12,11 +12,9 @@ import { useMargins } from '@/context/MarginProvider';
 import { ResponsiveMarginHook } from '@/hooks/ResponsiveMarginHook';
 import useQuestion from '@/components/ui/top-menu/UseQuestion/useQuestion';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
-import BannerQuestions from '@/public/images/baner_questions.png';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 import SkeletonQuestions from '@/components/ui/SkeletonQuestions/SkeletonQuestions';
-//C:\Users\Administrator\swaplyar-frontend\components\info\questions\Questions.tsx
-//C:\Users\Administrator\swaplyar-frontend\public\images
+import { BannerQuestions } from '@/utils/assets/imgDatabaseCloudinary';
 
 const Accordion = styled((props: AccordionProps & { isDark: boolean; expanded: boolean }) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -176,7 +174,7 @@ const FrequentlyQuestions = () => {
         )}
       </section>
       <section className="mt-10 h-auto w-full">
-        <FlyerTrabajo imageSrc={BannerQuestions.src} />
+        <FlyerTrabajo href="" imageSrc={BannerQuestions} />
       </section>
     </main>
   );

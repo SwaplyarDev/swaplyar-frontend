@@ -19,6 +19,7 @@ import Cronometro from './Cronometro';
 import useChronometerState from '@/store/chronometerStore';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
+import { alertaSirena, alertaSirenaDark } from '@/utils/assets/imgDatabaseCloudinary';
 
 const StepperContainer = () => {
   const { activeStep, completedSteps, setActiveStep, submitAllData } = useStepperStore();
@@ -54,16 +55,28 @@ const StepperContainer = () => {
 
   const handleCancelRequest = () => {
     Swal.fire({
-      title: '<h2 style="font-size: 24px;">¿Estás seguro de que deseas cancelar esta solicitud?</h2>',
-      icon: 'info',
-      html: `
-        <p style="font-size: 16px;">Si cancela esta solicitud, debe generar una nueva solicitud</p>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; gap: 40px; padding: 0 13px">
-          <div id="back-button-container"></div>
-          <div style="height: 49px;" class="flex items-center justify-center">   
-          <button id="cancel-button" class="m-1 text-base h-[42px] min-w-[110px] flex relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white dark:border-darkText dark:bg-darkText dark:text-lightText  ${isDark ? 'buttonSecondDark' : 'buttonSecond'}">Cancelar</button></div>
+      title: '<h2>¿Estás seguro de que deseas cancelar esta solicitud?</h2>',
+      imageUrl: !isDark ? alertaSirena : alertaSirenaDark,
+      imageWidth: 100,
+      imageHeight: 100,
+      html: `<div class="flex flex-col gap-5">
+      <p class="text-base font-light font-roboto">
+        Si cancela esta solicitud, debe generar una nueva solicitud
+      </p>
+      <div class="flex xs-mini-phone:flex-row flex-col justify-between items-center mt-5 gap-10 px-[13px]">
+        <div id="back-button-container"></div>
+        <div class="h-[49px] flex items-center justify-center">   
+          <button id="cancel-button" class="m-1 text-base h-[42px] min-w-[110px] flex relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}">
+            Cancelar
+          </button>
         </div>
-      `,
+      </div>
+    </div>`,
+      customClass: {
+        image: 'swal-custom-image',
+        popup: 'my-popup',
+      },
+      width: '400px',
       showConfirmButton: false,
       showCancelButton: false,
       background: isDark ? 'rgb(69 69 69)' : '#ffffff',
@@ -118,11 +131,10 @@ const StepperContainer = () => {
     }
     setLoading(false);
   };
-  console.log(blockAll || errorSend);
   return (
     <div
       className={clsx(
-        'flex w-full max-w-[1000px] flex-col gap-5',
+        'flex w-full max-w-[800px] flex-col gap-5',
         correctSend && 'mt-48 xs:mt-32',
         (blockAll || errorSend) && 'mt-72 xs:mt-52',
       )}
@@ -147,7 +159,7 @@ const StepperContainer = () => {
           <div className="flex w-full max-w-[1000px] flex-col gap-2 px-5 py-5 xs-phone:px-10">
             {correctSend ? (
               <>
-                <h2 className="w-full text-center text-3xl font-bold text-darkText sm-phone:text-end">
+                <h2 className="w-full text-center font-textFont text-3xl font-bold text-darkText sm-phone:text-end">
                   Solicitud enviada con exito
                 </h2>
               </>
@@ -156,14 +168,14 @@ const StepperContainer = () => {
                 {isStopped ? (
                   <h2
                     className={clsx(
-                      'w-full text-center text-3xl font-bold sm-phone:text-end',
+                      'w-full text-center font-textFont text-3xl font-bold sm-phone:text-end',
                       isDark ? 'text-darkText' : 'text-[#252526]',
                     )}
                   >
                     Tiempo agotado
                   </h2>
                 ) : (
-                  <h2 className="w-full text-center text-3xl font-bold text-darkText sm-phone:text-end">
+                  <h2 className="w-full text-center font-textFont text-3xl font-bold text-darkText sm-phone:text-end">
                     Solicitud cancelada
                   </h2>
                 )}
@@ -171,7 +183,7 @@ const StepperContainer = () => {
                   <>
                     <p
                       className={clsx(
-                        'w-full text-center sm-phone:hidden',
+                        'w-full text-center font-textFont sm-phone:hidden',
                         isDark ? 'text-darkText' : 'text-[#252526]',
                       )}
                     >
@@ -181,7 +193,7 @@ const StepperContainer = () => {
                     <div className="w-full">
                       <p
                         className={clsx(
-                          'hidden w-full text-end sm-phone:block',
+                          'hidden w-full text-end font-textFont sm-phone:block',
                           isDark ? 'text-darkText' : 'text-[#252526]',
                         )}
                       >
@@ -189,7 +201,7 @@ const StepperContainer = () => {
                       </p>
                       <p
                         className={clsx(
-                          'hidden w-full text-end sm-phone:block',
+                          'hidden w-full text-end font-textFont sm-phone:block',
                           isDark ? 'text-darkText' : 'text-[#252526]',
                         )}
                       >
@@ -199,14 +211,14 @@ const StepperContainer = () => {
                   </>
                 ) : (
                   <>
-                    <p className="w-full text-center text-darkText sm-phone:hidden">
+                    <p className="w-full text-center font-textFont text-darkText sm-phone:hidden">
                       Puedes crear una nueva, y si tienes alguna pregunta o necesitas ayuda, estamos aquí para ti.
                     </p>
                     <div className="w-full">
-                      <p className="hidden w-full text-end text-darkText sm-phone:block">
+                      <p className="hidden w-full text-end font-textFont text-darkText sm-phone:block">
                         Puedes crear una nueva, y si tienes alguna pregunta
                       </p>
-                      <p className="hidden w-full text-end text-darkText sm-phone:block">
+                      <p className="hidden w-full text-end font-textFont text-darkText sm-phone:block">
                         o necesitas ayuda, estamos aquí para ti.
                       </p>
                     </div>
@@ -231,7 +243,7 @@ const StepperContainer = () => {
               </Link>
               <Link
                 className={clsx(
-                  'text-center underline sm-phone:text-start',
+                  'text-center font-textFont underline sm-phone:text-start',
                   isStopped ? (isDark ? 'text-darkText' : 'text-[#252526]') : 'text-darkText',
                 )}
                 href="/info/help-center"
@@ -245,26 +257,28 @@ const StepperContainer = () => {
       {errorSend && (
         <div className={clsx('absolute left-0 top-36 flex w-full justify-center bg-[#d50102]')}>
           <div className="flex w-full max-w-[1000px] flex-col gap-2 px-5 py-5 xs-phone:px-10">
-            <h2 className="w-full text-center text-3xl font-bold text-darkText sm-phone:text-end">
+            <h2 className="w-full text-center font-textFont text-3xl font-bold text-darkText sm-phone:text-end">
               Error en la solicitud
             </h2>
             <>
-              <p className={clsx('w-full text-center text-darkText sm-phone:hidden')}>
+              <p className={clsx('w-full text-center font-textFont text-darkText sm-phone:hidden')}>
                 Si el problema persiste, vuelve a intentarlo más tarde y si tienes alguna pregunta o necesitas ayuda,
                 estamos aquí para ti.
               </p>
               <div className="w-full">
-                <p className={clsx('hidden w-full text-end text-darkText sm-phone:block')}>
+                <p className={clsx('hidden w-full text-end font-textFont text-darkText sm-phone:block')}>
                   Si el problema persiste, vuelve a intentarlo más tarde y si tienes alguna pregunta
                 </p>
-                <p className={clsx('hidden w-full text-end text-darkText sm-phone:block')}>
+                <p className={clsx('hidden w-full text-end font-textFont text-darkText sm-phone:block')}>
                   o necesitas ayuda, estamos aquí para ti.
                 </p>
               </div>
             </>
             <div className="flex w-full flex-col-reverse items-center justify-between gap-2 xs:flex-row">
               <Link
-                className={clsx('group flex items-center gap-1 text-center text-darkText sm-phone:text-start')}
+                className={clsx(
+                  'group flex items-center gap-1 text-center font-textFont text-darkText sm-phone:text-start',
+                )}
                 href="/"
               >
                 <div className="relative h-[15px] w-[15px] overflow-hidden">
@@ -275,7 +289,7 @@ const StepperContainer = () => {
                 Volver al home
               </Link>
               <Link
-                className={clsx('text-center text-darkText underline sm-phone:text-start')}
+                className={clsx('text-center font-textFont text-darkText underline sm-phone:text-start')}
                 href="/info/help-center"
               >
                 ¡No dudes en contactarnos!
@@ -284,13 +298,11 @@ const StepperContainer = () => {
           </div>
         </div>
       )}
-      <div className="flex flex-col items-center justify-between gap-2 px-2 sm-phone:flex-row sm-phone:gap-0">
-        <h1 className="text-2xl font-bold text-lightText dark:text-darkText xs:text-3xl sm-phone:text-2xl">
-          Formulario de Solicitud
-        </h1>
-        <div>
-          <Cronometro setBlockAll={setBlockAll} />
-        </div>
+      <h1 className="w-full text-center font-titleFont text-[40px]/[120%] font-medium text-lightText dark:text-darkText">
+        Formulario de Solicitud
+      </h1>
+      <div className="flex flex-col items-center justify-end px-2 sm-phone:flex-row sm-phone:gap-0">
+        <Cronometro setBlockAll={setBlockAll} />
       </div>
       {steps.map((step, index) => {
         return (
@@ -298,24 +310,42 @@ const StepperContainer = () => {
             key={index}
             className={clsx(
               completedSteps[index] || index == activeStep ? 'flex-col' : 'flex-row',
-              'flex min-h-20 w-full gap-4 rounded-2xl bg-calculatorDark p-4 dark:bg-calculatorLight',
+              'relative flex min-h-20 w-full gap-4 rounded-2xl bg-calculatorDark p-4 dark:bg-calculatorLight',
             )}
           >
             <div
-              className={`w-full justify-between xs-phone:flex md-tablet:relative md-tablet:flex-col ${completedSteps[index] ? 'flex md-tablet:items-end' : 'md-tablet:items-center'} ${
+              className={`relative w-full justify-between sm:flex ${completedSteps[index] ? 'flex md-tablet:items-start' : 'flex-col items-center'} ${
                 !completedSteps[index] && index !== activeStep ? 'opacity-50' : ''
               }`}
             >
-              <h2
-                className={`mb-2 ${completedSteps[index] ? 'pr-5 text-left' : 'text-center'} w-full text-xl xs-phone:mb-0 xs-phone:text-left md-tablet:absolute md-tablet:left-0`}
+              <div
+                className={clsx(
+                  activeStep === index && completedSteps[index]
+                    ? 'mb-2 flex w-full items-center justify-start pr-8 sm:mb-0 sm:block'
+                    : activeStep === index && !completedSteps[index]
+                      ? 'flex w-full justify-center sm:justify-start'
+                      : 'flex w-full justify-start',
+                )}
               >
-                {step.title}
-              </h2>
+                <h2
+                  className={`${activeStep != index || activeStep == 0 || activeStep == 2 ? 'top-0 md-tablet:absolute' : 'flex max-w-[260px] flex-col items-center justify-center sm:block'} ${activeStep === index && completedSteps[index] && 'text-start'} ${completedSteps[index] && activeStep != index && 'mr-[60px]'} ${completedSteps[index] || (activeStep != index && 'pr-8')} mb-2 ${completedSteps[index] || activeStep != index ? 'text-left' : 'text-center'} ${activeStep != index ? 'text-left' : 'text-center'} w-full font-textFont text-4xl xs-phone:mb-0 sm:text-left md-tablet:left-0 ${activeStep !== index && 'relative'}`}
+                >
+                  {activeStep === 1 && !completedSteps[1]
+                    ? step.title.split('del').map((part, index) => (
+                        <span key={index} className={index === 1 ? 'block' : ''}>
+                          {index === 1 ? 'del' + part : part}
+                        </span>
+                      ))
+                    : step.title}
+                </h2>
+              </div>
               {activeStep === index && !completedSteps[index] && (
                 <StepIndicator currentStep={activeStep} completedSteps={completedSteps} />
               )}
               {(index < activeStep || completedSteps[index]) && (
-                <div className={`flex flex-col items-end`}>
+                <div
+                  className={`absolute right-0 top-1/2 flex -translate-y-1/2 flex-col items-end justify-between sm:relative sm:translate-y-0`}
+                >
                   <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
                     <Tick color={isDark ? '#414244' : '#FCFBFA'} />
                   </div>
@@ -323,7 +353,7 @@ const StepperContainer = () => {
                     <button
                       disabled={blockAll}
                       onClick={() => handleStepClick(index)}
-                      className="flex items-center justify-center gap-1 text-base text-lightText underline dark:text-darkText"
+                      className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
                       type="button"
                     >
                       Tratar
@@ -339,26 +369,25 @@ const StepperContainer = () => {
         );
       })}
       <div className="flex flex-col items-center gap-4 sm-phone:flex-row sm-phone:justify-between sm-phone:gap-0">
-        <button className="text-2xl font-light" onClick={handleCancelRequest} disabled={blockAll}>
+        <button className="font-textFont text-base" onClick={handleCancelRequest} disabled={blockAll}>
           Cancelar esta Solicitud
         </button>
-        <button
-          disabled={completedSteps[2] == false || blockAll || loading}
-          onClick={() => {
-            handleSubmit();
-            setStop(true);
-          }}
-          className={`relative h-12 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-9 py-[3px] font-bold text-white disabled:border-gray-400 disabled:bg-calculatorLight2 disabled:text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 ${isDark ? completedSteps[2] == true && 'buttonSecondDark' : completedSteps[2] == true && 'buttonSecond'}`}
-        >
-          {loading ? (
-            <div id="loading" className="flex items-center justify-center gap-2">
-              <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
-              <span>Procesando...</span>
-            </div>
-          ) : (
-            'ENVIAR'
-          )}
-        </button>
+        {loading ? (
+          <div id="loading" className="flex w-full max-w-[200px] items-center justify-center gap-2">
+            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="56px" />
+          </div>
+        ) : (
+          <button
+            disabled={completedSteps[2] == false || blockAll || loading}
+            onClick={() => {
+              handleSubmit();
+              setStop(true);
+            }}
+            className={`relative h-[60px] w-full max-w-[200px] items-center justify-center rounded-full border border-buttonsLigth bg-buttonsLigth px-9 py-[3px] font-titleFont text-2xl font-semibold text-darkText disabled:border-calculatorLight2 disabled:bg-custom-blue-300 disabled:text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorLight2 dark:disabled:text-darkText ${isDark ? completedSteps[2] == true && 'buttonSecondDark' : completedSteps[2] == true && 'buttonSecond'}`}
+          >
+            Enviar
+          </button>
+        )}
       </div>
     </div>
   );

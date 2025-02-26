@@ -133,9 +133,9 @@ const AboutUs = () => {
       <section className="mt-[47px] overflow-hidden text-center">
         <FlyerTrabajo
           imageSrc={FlyerGif}
-          title="¿Nuevo en SwaplyAr?"
-          description="Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma sencilla y segura."
-          nameButton="¡Empieza ahora!"
+          href="/info/how-to-use"
+          description="Hacemos que tus envíos sean más simples. Te explicamos cómo hacer una transferencia en 3 simples pasos"
+          nameButton="Quiero aprender a transferir"
         />
       </section>
     </>

@@ -37,7 +37,7 @@ import useStatusManager from '@/hooks/useStatusManager';
 import { searchRequest } from '@/actions/request/action.search-request/action.searchRecuest';
 import { showStatusAlert } from './swalConfig';
 import ReactDOMServer from 'react-dom/server';
-import { IconoVacio, RevisionCamino, Modificada, Cancelada, Discrepancia, Reembolso } from './icons';
+import { Modificada, Cancelada, Discrepancia, Reembolso, Enviada, Revision, DineroEnCamino, Finalizada } from './icons';
 import LoadingGif from '../ui/LoadingGif/LoadingGif';
 import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
 import ButtonBack from '../ui/ButtonBack/ButtonBack';
@@ -77,15 +77,14 @@ const SearchRequest = () => {
 
   const handleSearchRequest = (statusObject: Record<string, any>) => {
     const statusMessages = {
-      received: { text: 'Solicitud Recibida', icon: ReactDOMServer.renderToString(<IconoVacio />) },
-      pending: { text: 'Solicitud enviada', icon: ReactDOMServer.renderToString(<IconoVacio />) },
-      review_payment: { text: 'Pago en Revisión', icon: ReactDOMServer.renderToString(<RevisionCamino />) },
-      completed: { text: 'Solicitud Finalizada con Éxito', icon: ReactDOMServer.renderToString(<IconoVacio />) },
-      in_transit: { text: 'Dinero en Camino', icon: ReactDOMServer.renderToString(<RevisionCamino />) },
-      canceled: { text: 'Solicitud Cancelada', icon: ReactDOMServer.renderToString(<Cancelada />) },
-      modified: { text: 'Solicitud modificada', icon: ReactDOMServer.renderToString(<Modificada />) },
-      refunded: { text: 'Reembolso solicitado', icon: ReactDOMServer.renderToString(<Reembolso />) },
-      discrepancy: { text: 'Discrepancia en la Solicitud', icon: ReactDOMServer.renderToString(<Discrepancia />) },
+      received: { text: 'Solicitud Enviada', icon: ReactDOMServer.renderToString(<Enviada />) },
+      pending: { text: 'Pago en Revisión', icon: ReactDOMServer.renderToString(<Revision />) },
+      review_payment: { text: 'Dinero en Camino', icon: ReactDOMServer.renderToString(<DineroEnCamino />) },
+      completed: { text: 'Discrepancia en la Solicitud', icon: ReactDOMServer.renderToString(<Discrepancia />) },
+      in_transit: { text: 'Solicitud Cancelada', icon: ReactDOMServer.renderToString(<Cancelada />) },
+      canceled: { text: 'Solicitud Modificada', icon: ReactDOMServer.renderToString(<Modificada />) },
+      modified: { text: 'Dinero Reembolsado con Éxito', icon: ReactDOMServer.renderToString(<Reembolso />) },
+      discrepancy: { text: 'Solicitud Finalizada con Éxito', icon: ReactDOMServer.renderToString(<Finalizada />) },
     };
 
     const uniqueStatuses = Array.from(new Set(Object.keys(statusObject)));
@@ -122,7 +121,7 @@ const SearchRequest = () => {
       handleSearchRequest(statuses);
       console.log(response);
 
-      reset();
+      reset({ numberOfRequest: '', lastNameRequest: '' });
     } catch (error) {
       if (error instanceof Error) {
         console.error('Error!', error.message);
@@ -153,7 +152,7 @@ const SearchRequest = () => {
         </div>
         <section className="relative mt-10 flex min-h-[500px] flex-col items-center justify-center">
           <Image
-            className="absolute left-0 hidden w-[588px] lg2:block"
+            className="absolute left-0 hidden w-[588px] drop-shadow-light dark:drop-shadow-darkmode lg2:block"
             src="/images/search-request-web.png"
             alt="SwaplyAr Search Request™"
             width={700}
@@ -161,7 +160,7 @@ const SearchRequest = () => {
           />
           <div className="flex w-full max-w-[506px] flex-col items-center border-b border-buttonsLigth dark:border-darkText lg2:hidden">
             <Image
-              className="h-[200px] w-[200px]"
+              className="h-[200px] w-[200px] drop-shadow-light dark:drop-shadow-darkmode"
               src="/images/search-request-phone.png"
               alt="SwaplyAr Search Request Mobile™"
               width={300}
@@ -225,9 +224,9 @@ const SearchRequest = () => {
       <div className="mt-10">
         <FlyerTrabajo
           imageSrc={FlyerGif}
-          title="¿Nuevo en SwaplyAr?"
-          description="Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma sencilla y segura."
-          nameButton="¡Empieza ahora!"
+          href="/auth/login-register"
+          description="Crea tu cuenta para hacer seguimiento de tus solicitudes en tiempo real"
+          nameButton="Crear mi cuenta"
         />
       </div>
     </div>

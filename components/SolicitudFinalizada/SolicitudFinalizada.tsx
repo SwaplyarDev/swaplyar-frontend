@@ -1,24 +1,44 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import Cloud from '../ui/Cloud/Cloud';
-import nube1 from '@/public/images/nube1.svg';
-import nube2 from '@/public/images/nube2.svg';
 import { useForm } from 'react-hook-form';
 import clsx from 'clsx';
 import { FormRequestCompleted } from '@/types/repentance/repentance';
 import { useParams, useSearchParams } from 'next/navigation';
-
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+import { applicationCompleted, getApplicationCompleted } from '@/actions/applicationCompleted/applicationCompleted';
+import Swal from 'sweetalert2';
+import { nube1, nube2 } from '@/utils/assets/imgDatabaseCloudinary';
 
 const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const [isQualified, setIsQualified] = useState<boolean>(false);
   const { isDark } = useDarkTheme();
   const params = useParams();
   const searchParams = useSearchParams();
 
-  const transactionId = params?.id;
+  const transactionId = Array.isArray(params.id) ? params.id[0] : params.id;
+
+  const { register, handleSubmit, setValue, watch, reset } = useForm<FormRequestCompleted>({
+    mode: 'onChange',
+    defaultValues: {
+      transaction_id: transactionId,
+      stars_amount: 0,
+      note: '',
+    },
+  });
+
+  useEffect(() => {
+    (async () => {
+      const data = await getApplicationCompleted(transactionId);
+
+      if (data) {
+        setIsQualified(true);
+        setValue('stars_amount', Number(data.qualification.stars));
+      }
+    })();
+  }, [transactionId, setValue]);
 
   const rawParams = decodeURIComponent(searchParams.toString());
 
@@ -33,27 +53,98 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
   const paymentMethod = queryParams.get('payment_method');
   const receivedMethod = queryParams.get('received_method');
 
-  const { register, handleSubmit, setValue, watch, reset } = useForm<FormRequestCompleted>({
-    mode: 'onChange',
-    defaultValues: {
-      message: '',
-      stars_amount: 0,
-    },
-  });
-
   const selectedRating = watch('stars_amount');
 
   const onSubmit = async (data: FormRequestCompleted) => {
-    const response = await fetch(`${API_URL}/v1/qualification`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ data }),
-    });
+    await applicationCompleted(data);
 
-    console.log(response);
-    console.log(data);
+    const arrowIcon = isDark
+      ? `
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      class="absolute left-0 transition-all group-hover:left-2"
+    >
+      <path d="M5 12L11 6M5 12L11 18M5 12L23 12" stroke="#EBE7E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  `
+      : `
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      class="absolute left-0 transition-all group-hover:left-2"
+    >
+      <path d="M5 12L11 6M5 12L11 18M5 12L23 12" stroke="#012A8E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  `;
+
+    Swal.fire({
+      html: `
+        <div class="flex items-center flex-col">
+          <button id="close-modal-btn-x" class="absolute top-0 right-3 text-buttonsLigth text-xl dark:text-darkText">
+            x
+          </button>
+          <div class="flex justify-center gap-2">
+            ${[...Array(5)]
+              .map(
+                (_, index) => `
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="34"
+                height="34"
+                viewBox="0 0 100 100"
+                fill="none"
+                class="h-[34px] w-[34px] ${index < selectedRating ? 'fill-[rgba(255,217,0,1)]' : 'fill-[rgba(188,188,188,1)]'}"
+              >
+                <path d="M50 0L61.2257 34.5491H97.5528L68.1636 55.9017L79.3893 90.4509L50 69.0983L20.6107 90.4509L31.8364 55.9017L2.44717 34.5491H38.7743L50 0Z" />
+              </svg>
+            `,
+              )
+              .join('')}
+          </div>
+          <h2 class="font-textFont text-[21px] font-bold mt-[10px] text-lightText dark:text-darkText">Gracias por tu voto</h2>
+          <p class="font-textFont max-w-[212px] text-lightText mt-2 dark:text-darkText">Tu votación es muy importante para nosotros para seguir mejorando.</p>
+          <div class="flex justify-between w-full items-center mt-[10px]">
+            <button id="close-modal-btn" class="w-[51px] py-3 h-[30px] border border-buttonsLigth rounded-[50px] group flex items-center justify-start dark:border-darkText">
+            <div class="relative w-[24px] h-[24px] overflow-hidden">
+              ${arrowIcon}
+            </div>
+            </button>
+            <a href='/' class="flex justify-center items-center w-[120px] h-[34px] rounded-[50px] font-titleFont font-semibold  ${isDark ? 'text-lightText bg-darkText buttonSecondDark' : 'text-darkText bg-buttonsLigth buttonSecond'}">Ir a Home</a>
+          </div>
+        </div>
+      `,
+      showConfirmButton: false,
+      customClass: {
+        popup: 'custom-modal-width',
+      },
+      background: isDark ? '#323232' : '',
+      width: '300px',
+      didRender: () => {
+        document.getElementById('close-modal-btn')?.addEventListener('click', async () => {
+          Swal.close();
+          const updatedData = await getApplicationCompleted(transactionId);
+          if (updatedData) {
+            setIsQualified(true);
+            setValue('stars_amount', Number(updatedData.qualification.stars));
+          }
+        });
+        document.getElementById('close-modal-btn-x')?.addEventListener('click', async () => {
+          Swal.close();
+          const updatedData = await getApplicationCompleted(transactionId);
+          if (updatedData) {
+            setIsQualified(true);
+            setValue('stars_amount', Number(updatedData.qualification.stars));
+          }
+        });
+      },
+    });
 
     reset();
   };
@@ -66,9 +157,9 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
       viewBox="0 0 100 100"
       fill="none"
       className={`h-[50px] w-[50px] cursor-pointer ${index <= selectedRating ? 'fill-[rgba(255,217,0,1)]' : 'fill-[rgba(188,188,188,1)]'} md:h-[100px] md:w-[100px]`}
-      onMouseOver={() => setHoverIndex(index)}
-      onMouseLeave={() => setHoverIndex(null)}
-      onClick={() => setValue('stars_amount', index)}
+      onMouseOver={() => !isQualified && setHoverIndex(index)}
+      onMouseLeave={() => !isQualified && setHoverIndex(null)}
+      onClick={() => !isQualified && setValue('stars_amount', index)}
     >
       <path d="M50 0L61.2257 34.5491H97.5528L68.1636 55.9017L79.3893 90.4509L50 69.0983L20.6107 90.4509L31.8364 55.9017L2.44717 34.5491H38.7743L50 0Z" />
     </svg>
@@ -224,39 +315,43 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
             <StarIcon key={index} index={index + 1} />
           ))}
         </div>
-        <input type="hidden" {...register('stars_amount', { required: true })} />
+        <input type="hidden" {...register('stars_amount', { required: true })} disabled={isQualified} />
 
-        <div className="max-h-[148px]">
-          <label className="font-textFont text-xs font-light">
-            Mensaje
-            <textarea
-              {...register('message')}
+        {!isQualified && (
+          <>
+            <div className="max-h-[148px]">
+              <label className="font-textFont text-xs font-light">
+                Mensaje
+                <textarea
+                  {...register('note')}
+                  className={clsx(
+                    'placeholder-text-gray-900 h-[45px] max-h-[128px] min-h-[45px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
+                    isDark
+                      ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
+                      : 'border-b-buttonsLigth bg-transparent outline-none placeholder:text-buttonExpandDark focus:border-buttonsLigth focus:outline-none',
+                  )}
+                  placeholder="Tu comentario es muy valioso para nosotros"
+                />
+              </label>
+            </div>
+            <button
+              type="submit"
+              disabled={selectedRating === 0}
               className={clsx(
-                'placeholder-text-gray-900 h-[45px] max-h-[128px] min-h-[45px] w-full border-0 border-b-[1px] border-solid ps-0 text-xs placeholder:font-light xs:text-lg',
-                isDark
-                  ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
-                  : 'border-b-buttonsLigth bg-transparent outline-none placeholder:text-buttonExpandDark focus:border-buttonsLigth focus:outline-none',
+                'mx-auto mt-2 flex h-[42px] w-[280px] items-center justify-center rounded-3xl py-3 text-center font-titleFont font-semibold',
+                selectedRating > 0
+                  ? isDark
+                    ? 'buttonSecondDark hover:bg-relative border-darkText bg-darkText text-lightText'
+                    : 'buttonSecond border border-buttonsLigth bg-buttonsLigth text-darkText hover:bg-buttonsLigth'
+                  : isDark
+                    ? 'cursor-not-allowed bg-placeholderDark'
+                    : 'cursor-not-allowed bg-buttonExpandDark text-darkText',
               )}
-              placeholder="Tu comentario es muy valioso para nosotros"
-            />
-          </label>
-        </div>
-        <button
-          type="submit"
-          disabled={selectedRating === 0}
-          className={clsx(
-            'mx-auto mt-2 flex h-[42px] w-[280px] items-center justify-center rounded-3xl py-3 text-center font-titleFont font-semibold',
-            selectedRating > 0
-              ? isDark
-                ? 'buttonSecondDark hover:bg-relative border-darkText bg-darkText text-lightText'
-                : 'buttonSecond border border-buttonsLigth bg-buttonsLigth text-darkText hover:bg-buttonsLigth'
-              : isDark
-                ? 'cursor-not-allowed bg-placeholderDark'
-                : 'cursor-not-allowed bg-buttonExpandDark text-darkText',
-          )}
-        >
-          Enviar
-        </button>
+            >
+              Enviar
+            </button>
+          </>
+        )}
       </form>
     </div>
   );

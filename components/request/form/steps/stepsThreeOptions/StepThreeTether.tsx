@@ -2,12 +2,12 @@ import React from 'react';
 import clsx from 'clsx';
 import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch } from 'react-hook-form';
 import InputCopy from '../../inputs/InputCopy';
-import InputField from '@/components/ui/contact-form/InputField';
 import IconTron from '@/components/ui/IconsRed/IconTron';
 import Image from 'next/image';
 import { System } from '@/types/data';
 import InputSteps from '@/components/inputSteps/InputSteps';
 import { FieldError } from 'react-hook-form';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 interface StepThreeTetherProps {
   register: UseFormRegister<any>;
@@ -31,15 +31,14 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
   formData,
   sendAmount,
   selectedSendingSystem,
-  selectedReceivingSystem,
-  receiveAmount,
   handleChange,
   restRegister,
   watch,
 }) => {
+  const { isDark } = useDarkTheme();
   return (
     <>
-      <p className="text-left">
+      <p className="text-left font-textFont">
         tienes que realizar el pago de{' '}
         <span className="font-semibold underline">
           {sendAmount} {selectedSendingSystem?.coin}
@@ -75,7 +74,6 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
             name="send_amount"
             label="Monto a pagar"
             type="number"
-            value={`${selectedSendingSystem?.coinSign} ${sendAmount?.toString()}`}
             disabled={true}
             placeholder="Monto Enviar"
             register={register}
@@ -96,64 +94,86 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
               required: 'Este campo es obligatorio',
             }}
             error={errors.receive_amount ? (errors.receive_amount as FieldError) : undefined}
+            disabledWithoutMargin={true}
           />
 
           <div className="flex flex-col">
             <label
               htmlFor="proof_of_payment"
               className={clsx(
-                'cursor-pointer',
-                errors.proof_of_payment ? 'text-red-500' : 'text-lightText dark:text-darkText',
+                'relative flex h-full cursor-pointer flex-col',
+                errors.proof_of_payment ? 'text-errorColor' : 'text-lightText dark:text-darkText',
               )}
             >
-              <p className="ml-1 h-5 text-xs">Comprobante con formato: PNG o JPG</p>
-              <div
+              <p
                 className={clsx(
-                  'flex w-full flex-col items-center gap-2 rounded border border-[#6B7280] bg-gray-200 px-5 py-2 dark:bg-lightText xs-phone:flex-row sm-phone:flex-col lg-tablet:h-[38px] lg-tablet:flex-row lg-tablet:items-center',
-                  errors.proof_of_payment ? 'border-red-500' : 'hover:border-blue-600 dark:hover:border-white',
+                  'font-textFont text-lightText dark:text-darkText',
+                  'mb-1 ml-2.5 text-sm transition-opacity duration-300',
                 )}
               >
-                <p className="w-full text-sm xs-phone:max-w-32 sm-phone:max-w-[inherit] lg-tablet:max-w-40 lg-tablet:text-base">
-                  Subir comprobante
+                Comprobante
+              </p>
+              <div
+                className={clsx(
+                  'group flex h-full w-full flex-col items-center justify-center gap-2.5 rounded-2xl border-[1px] border-inputLightDisabled py-2 text-center hover:border-inputLight dark:border-disabledDarkText dark:text-lightText dark:hover:border-darkText',
+                  errors.proof_of_payment
+                    ? 'border-errorColor dark:border-errorColor'
+                    : 'hover:border-blue-600 dark:hover:border-white',
+                )}
+              >
+                <p className="mb-1 hidden text-sm text-inputLightDisabled group-hover:text-buttonsLigth dark:text-disabledDarkText group-hover:dark:text-darkText lg:inline-block">
+                  SUBIR COMPROBANTE
                 </p>
+                <div
+                  className={`${
+                    isDark ? 'buttonSecondDark' : 'buttonSecond'
+                  } relative mt-5 h-[48px] w-full max-w-[200px] items-center justify-center rounded-3xl border border-disabledButtonsLigth bg-disabledButtonsLigth p-[10px] text-lg text-darkText group-hover:border-buttonsLigth group-hover:bg-buttonsLigth group-hover:text-darkText dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText group-hover:dark:border-darkText group-hover:dark:bg-darkText group-hover:dark:text-lightText lg:mt-0`}
+                >
+                  Subir Archivo
+                </div>
                 <span id="file-name" className="w-full text-xs text-[#6B7280] lg-tablet:text-sm">
                   No hay archivo seleccionado
                 </span>
+                {errors.proof_of_payment && 'Este campo es obligatorio' && (
+                  <p className="text-sm text-errorColor">Este campo es obligatorio, accepta: .png, .jpg y .pdf</p>
+                )}
               </div>
             </label>
-            <div className="flex h-full flex-col">
-              <input
-                id="proof_of_payment"
-                type="file"
-                disabled={blockAll}
-                placeholder="SUBIR COMPROBANTE"
-                onChange={handleChange}
-                {...restRegister}
-                className={clsx(
-                  'hidden h-full w-full rounded border border-[#6B7280] bg-gray-200 px-5 py-2 dark:bg-lightText',
-                  errors.proof_of_payment && 'Este campo es obligatorio'
-                    ? 'border-red-500 hover:border-blue-600 dark:hover:border-white'
-                    : 'hover:border-blue-600 dark:hover:border-white',
-                )}
-              />
-              {errors.proof_of_payment && 'Este campo es obligatorio' && (
-                <p className="text-sm text-red-500">• Este campo es obligatorio</p>
+            <input
+              accept=".png,.jpg,.pdf"
+              id="proof_of_payment"
+              type="file"
+              disabled={blockAll}
+              placeholder="SUBIR COMPROBANTE"
+              onChange={handleChange}
+              {...restRegister}
+              className={clsx(
+                'hidden h-full w-full rounded border border-[#6B7280] bg-gray-200 px-5 py-2 dark:bg-lightText',
+                errors.proof_of_payment && 'Este campo es obligatorio'
+                  ? 'border-errorColor hover:border-blue-600 dark:hover:border-white'
+                  : 'hover:border-blue-600 dark:hover:border-white',
               )}
-            </div>
+            />
           </div>
         </div>
         <div className="flex w-full flex-col gap-4">
           <div className="flex h-full flex-col">
             <div className="ml-1 flex gap-2 text-xs">
-              <p>Red: Tron (TRC-20)</p>
-              <IconTron />
+              <p
+                className={clsx(
+                  'font-textFont text-lightText dark:text-darkText',
+                  'mb-1 ml-2.5 text-sm transition-opacity duration-300',
+                )}
+              >
+                Red: Tron (TRC-20)
+              </p>
+              <IconTron size="18px" />
             </div>
             <div
               className={clsx(
-                'h-full w-full rounded border border-[#6B7280] px-5 py-2 hover:border-blue-600 dark:bg-lightText dark:hover:border-white',
+                'group flex h-full w-full flex-col items-center justify-center gap-2.5 rounded-2xl border-[1px] border-inputLightDisabled py-2 text-center hover:border-inputLight dark:border-disabledDarkText dark:text-lightText dark:hover:border-darkText',
               )}
             >
-              <p>QR</p>
               <div className="flex w-full items-center justify-center">
                 <Image src={'/images/QR_image.png'} alt="qr" width={200} height={200} />
               </div>

@@ -8,10 +8,7 @@ import { useDarkTheme } from '../theme-Provider/themeProvider';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
-import Swal from 'sweetalert2';
-import Tick from '@/components/ui/Tick/Tick';
-import { createRoot } from 'react-dom/client';
-import Arrow from '@/components/ui/Arrow/Arrow';
+import { PopUp } from '../PopUp/PopUp';
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -76,50 +73,13 @@ const ContactForm = () => {
     }
   };
 
-  // <div class="flex w-full items-start justify-start">
-  //   <p class="ml-[0.9rem] w-[230px] text-left">
-  //     Gracias por tu mensaje, en la brevedad nos pondremos en contacto contigo
-  //   </p>
-  // </div>;
-
-  const handleSendRequest = () => {
-    Swal.fire({
-      title: '',
-      html: `
-        <div class="flex justify-center items-center flex-col gap-4">
-          <div id="tick-container" class="flex justify-center items-center h-[100px] w-[100px] rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText"></div>
-          <h1 class="text-4xl">Mensaje enviado con éxito</h1>
-          <p>Gracias por tu mensaje, en la brevedad nos pondremos en contacto contigo</p>
-          <div id="back-button-container"></div>
-        </div>
-      `,
-      showConfirmButton: false,
-      showCancelButton: false,
-      background: isDark ? 'rgb(69 69 69)' : '#ffffff',
-      color: isDark ? '#ffffff' : '#000000',
-
-      didRender: () => {
-        const tickContainer = document.getElementById('tick-container');
-        if (tickContainer) {
-          const root = createRoot(tickContainer);
-          root.render(<Tick color={isDark ? '#414244' : '#FCFBFA'} size="70px" />);
-        }
-        const backElement = document.getElementById('back-button-container');
-        if (backElement) {
-          const root = createRoot(backElement);
-          root.render(
-            <button
-              onClick={() => Swal.close()}
-              className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 flex h-[42px] min-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-sm text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
-            >
-              <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} backRequest={true} />
-              Volver
-            </button>,
-          );
-        }
-      },
+  const handleSendRequest = () =>
+    PopUp({
+      icon: 'success',
+      title: 'Mensaje enviado con éxito',
+      text: 'Gracias por tu mensaje, en la brevedad nos pondremos en contacto contigo',
+      isDark,
     });
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-4">
@@ -217,24 +177,27 @@ const ContactForm = () => {
         </div>
       </div>
       <div className="flex justify-center">
-        <button
-          disabled={!isValid || loading}
-          type="submit"
-          className={clsx(
-            isDark && isValid ? 'buttonSecondDark dark:bg-darkText dark:text-lightText' : isValid ? 'buttonSecond' : '',
-            'relative flex w-[300px] items-center justify-center rounded-3xl px-[14px] py-3 font-titleFont font-semibold text-[#fffff8]',
-            isValid ? 'cursor-pointer bg-buttonsLigth' : 'cursor-default bg-inputLightDisabled dark:bg-placeholderDark',
-          )}
-        >
-          {loading ? (
-            <div className="flex items-center justify-center gap-2">
-              <LoadingGif color={isDark ? '#012c8a' : '#ebe7e0'} />
-              Enviando...
-            </div>
-          ) : (
-            'Enviar Mensaje'
-          )}
-        </button>
+        {loading ? (
+          <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="44px" />
+        ) : (
+          <button
+            disabled={!isValid || loading}
+            type="submit"
+            className={clsx(
+              isDark && isValid
+                ? 'buttonSecondDark dark:bg-darkText dark:text-lightText'
+                : isValid
+                  ? 'buttonSecond'
+                  : '',
+              'relative flex w-[300px] items-center justify-center rounded-3xl px-[14px] py-3 font-titleFont font-semibold text-[#fffff8]',
+              isValid
+                ? 'cursor-pointer bg-buttonsLigth'
+                : 'cursor-default bg-inputLightDisabled dark:bg-placeholderDark',
+            )}
+          >
+            Enviar Mensaje
+          </button>
+        )}
       </div>
     </form>
   );

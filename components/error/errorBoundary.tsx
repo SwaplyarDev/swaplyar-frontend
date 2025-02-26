@@ -2,9 +2,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Error_500_clear, Error_500_dark, Post1_500, Post2_500 } from '@/utils/assets/img-database';
-import Link from 'next/link';
-import { inter } from '@/config/fonts/fonts';
+import { Error_500_clear, Error_500_dark, Post1_500, Post2_500 } from '@/utils/assets/imgDatabaseCloudinary';
 import { useRouter } from 'next/navigation';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import RedirectButton from '../ui/RedirectButton/RedirectButton';

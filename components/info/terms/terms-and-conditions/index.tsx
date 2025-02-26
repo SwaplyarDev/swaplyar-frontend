@@ -14,7 +14,7 @@ const TermsAndConditions = () => {
           Términos y Condiciones de Uso y Navegación del Sitio SwaplyAr
         </h1>
         <Image
-          className="hero-img mt-4 h-[358px] w-[358px] md:h-[331px] md:w-[331px]"
+          className="hero-img mt-4 h-[358px] w-[358px] drop-shadow-light dark:drop-shadow-darkmode md:h-[331px] md:w-[331px]"
           src={TerminosCondiciones}
           alt="terminos-y-condiciones"
           width={358}

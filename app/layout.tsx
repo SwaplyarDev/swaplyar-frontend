@@ -20,8 +20,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="es">
       <head>
-        <GoogleTagManager gtmId="GTM-W2VLHMCW" />
-        <meta name="google-site-verification" content="bZu9PkFbaRVlAaT4NKUHZPD0o17JxMv08rBT-gzfpC0" />
+        {/* Integración de Google Tag Manager */}
+        <GoogleTagManager gtmId="GTM-TGBHM97R" />
+        {/* Verificación de propiedad en Google Search Console */}
+        <meta name="google-site-verification" content="TDYMmlsmcxOohMXHebZJtRXZ-Y0otZk006ExVzrbPqs" />
+
+        {/* Script para establecer el tema de la aplicación según las preferencias del usuario o del sistema */}
         <Script id="theme-script" strategy="beforeInteractive">
           {`
             (function() {
@@ -39,7 +43,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body className={`bg-white text-lightText dark:bg-lightText dark:text-darkText`}>
         <SessionProvider>
-          <GoogleAnalytics gaId="G-F7NZPRXT31" />
+          {/* Integración de Google Analytics */}
+          <GoogleAnalytics gaId="G-PX1MMJCPQL" />
+          {/* {process.env.NODE_ENV === 'production' && <GoogleAnalytics gaId="G-F7NZPRXT31" />} */}
           <ThemeProvider>
             <MarginProvider>
               <SpeedInsights />

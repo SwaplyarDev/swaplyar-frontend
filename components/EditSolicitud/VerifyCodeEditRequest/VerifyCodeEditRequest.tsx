@@ -7,6 +7,7 @@ import Modal1 from '@/components/modals/ModalTipos';
 import { fetchCode, resendCodeAction } from '@/actions/editRequest/editRequest.action';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import { useForm } from 'react-hook-form';
+import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
 
 interface FormInputs {
   verificationCode: string[];
@@ -142,14 +143,14 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
             Ingrese el código de 6 dígitos que recibiste por email
           </label>
           <div className="flex w-full justify-center">
-            <div className="my-5 flex h-[52px] w-full max-w-[350px] justify-between gap-0 xs:max-w-[500px]">
+            <div className="mb-5 flex h-[46px] justify-between gap-2 xs:h-[57px] xs:gap-1 sm:h-[65.33px]">
               {[...Array(6)].map((_, index) => (
                 <>
                   <div
                     key={index}
                     className={clsx(
                       isCodeCorrect === false ? 'border-errorColor' : 'border-buttonsLigth dark:border-darkText',
-                      `flex h-[51px] min-w-[51px] items-center justify-center rounded-full border-[2px] p-[3px] xs:w-[57px] sm:w-[51px]`,
+                      `w-[46px] rounded-full border-[0.5px] border-buttonsLigth p-[3px] dark:border-darkText xs:w-[57px] sm:w-full`,
                     )}
                   >
                     <input
@@ -158,7 +159,7 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
                       maxLength={1}
                       disabled={isLocked || loading}
                       className={clsx(
-                        'h-[45px] w-[45px] rounded-full border-0 text-center text-base text-buttonsLigth focus:outline-none dark:border-[0.5px] dark:bg-darkText dark:text-lightText sm:text-[2.5rem] lg:text-2xl',
+                        'h-full w-full rounded-full border-0 text-center text-base focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem]',
                         isCodeCorrect === false ? 'border-errorColor' : '',
                       )}
                       {...register(`verificationCode.${index}`)}
@@ -167,8 +168,8 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
                     />
                   </div>
                   {index < 5 && (
-                    <div className="mx-1 hidden min-h-full w-full items-center justify-center xs:flex">
-                      <div className="h-1 w-full flex-1 rounded-full bg-buttonsLigth dark:bg-darkText"></div>
+                    <div className="hidden min-h-full min-w-[0.5rem] items-center justify-center xs:flex">
+                      <div className="h-[2px] w-full flex-1 bg-buttonsLigth dark:bg-darkText"></div>
                     </div>
                   )}
                 </>
@@ -189,39 +190,47 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
           )}
 
           <div className="my-5 flex flex-col-reverse items-center justify-evenly gap-5 text-buttonsLigth dark:text-darkText xs:flex-row">
-            <button
-              onClick={toggle}
-              className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} group relative m-1 flex h-[42px] min-w-[150px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 font-bold text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent xs:min-w-[150px]`}
-            >
-              <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
-              <p>Volver</p>
-            </button>
+            <ButtonBack route="/info/help-center" isDark={isDark} />
 
-            <button
-              type="button"
-              onClick={resendCode}
-              disabled={reLoading || timer > 0 || loading}
-              className={`${
-                isDark
-                  ? reLoading || timer > 0 || loading
-                    ? 'buttonSecondDarkDisabled'
-                    : 'buttonSecondDark'
-                  : reLoading || timer > 0 || loading
-                    ? 'buttonSecondDisabled'
-                    : 'buttonSecond'
-              } flex h-[42px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-darkText disabled:border-disabledButtonsLigth disabled:bg-disabledButtonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText disabled:dark:border-disabledButtonsDark disabled:dark:bg-disabledButtonsDark`}
-            >
-              {reLoading ? (
-                <div id="loading" className="flex items-center justify-center gap-2">
-                  <LoadingGif color={!isDark ? '#ebe7e0' : '#012c8a'} />
-                  <span>Reenviando...</span>
-                </div>
-              ) : timer > 0 ? (
-                `Reenviar en ${timer}s`
-              ) : (
-                'Reenviar código'
-              )}
-            </button>
+            {reLoading ? (
+              <div className="flex min-w-[150px] items-center justify-center">
+                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
+              </div>
+            ) : timer > 0 ? (
+              <button
+                type="button"
+                onClick={resendCode}
+                disabled={reLoading || timer > 0 || loading}
+                className={`${
+                  isDark
+                    ? reLoading || timer > 0 || loading
+                      ? 'buttonSecondDarkDisabled'
+                      : 'buttonSecondDark'
+                    : reLoading || timer > 0 || loading
+                      ? 'buttonSecondDisabled'
+                      : 'buttonSecond'
+                } flex h-[42px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-darkText disabled:border-disabledButtonsLigth disabled:bg-disabledButtonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText disabled:dark:border-disabledButtonsDark disabled:dark:bg-disabledButtonsDark`}
+              >
+                Reenviar en {timer}s
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={resendCode}
+                disabled={reLoading || timer > 0 || loading}
+                className={`${
+                  isDark
+                    ? reLoading || timer > 0 || loading
+                      ? 'buttonSecondDarkDisabled'
+                      : 'buttonSecondDark'
+                    : reLoading || timer > 0 || loading
+                      ? 'buttonSecondDisabled'
+                      : 'buttonSecond'
+                } flex h-[42px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-darkText disabled:border-disabledButtonsLigth disabled:bg-disabledButtonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText disabled:dark:border-disabledButtonsDark disabled:dark:bg-disabledButtonsDark`}
+              >
+                Reenviar código
+              </button>
+            )}
           </div>
         </form>
       </div>

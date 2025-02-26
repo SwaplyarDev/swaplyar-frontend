@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { calculateAmount } from '@/utils/currencyApis';
 import { useSystemStore } from '@/store/useSystemStore';
-import { useExchangeRateStore } from '@/store/exchangeRateStore';
+import { getExchangeRateStore } from '@/store/exchangeRateStore';
 
 export const useAmountCalculator = () => {
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
-  const { rates } = useExchangeRateStore();
+  const { rates } = getExchangeRateStore();
   const [sendAmount, setSendAmount] = useState<string>('');
   const [receiveAmount, setReceiveAmount] = useState<string>('');
   const [isSendActive, setIsSendActive] = useState<boolean>(true);
