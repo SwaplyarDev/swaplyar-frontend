@@ -1,13 +1,3 @@
-// /app/layout.tsx
-
-/**
- * Configuración del layout principal de la aplicación en Next.js 14.
- *
- * Este archivo define la estructura global de la aplicación, incluyendo el HTML, head, y body.
- * También integra varios proveedores de contexto, herramientas de análisis y seguimiento,
- * y componentes globales como el menú de navegación y el pie de página.
- */
-
 import type { Metadata } from 'next';
 import Footer from '@/components/footer/Footer';
 import { TopMenu } from '@/components/ui/top-menu/TopMenu';
@@ -15,11 +5,11 @@ import ThemeProvider from '../components/ui/theme-Provider/themeProvider';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
-import { roboto } from '@/config/fonts/fonts';
 import { MarginProvider } from '@/context/MarginProvider';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 import Script from 'next/script';
+import Footerblog from '@/components/footerblog/Footerblog';
 
 /**
  * Metadatos globales de la aplicación.
@@ -52,11 +42,8 @@ export const metadata: Metadata = {
  * @param children - Contenido de la página renderizada.
  * @returns Estructura principal del HTML y elementos globales.
  */
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
       <head>
@@ -82,7 +69,6 @@ export default function RootLayout({
         </Script>
       </head>
       <body className={`bg-white text-lightText dark:bg-lightText dark:text-darkText`}>
-        {/* Proveedores de contexto y herramientas de análisis */}
         <SessionProvider>
           {/* Integración de Google Analytics */}
           <GoogleAnalytics gaId="G-PX1MMJCPQL" />
@@ -91,7 +77,6 @@ export default function RootLayout({
             <MarginProvider>
               <SpeedInsights />
               <Analytics />
-              {/* Componentes globales de UI */}
               <TopMenu />
               {children}
               <Footer />

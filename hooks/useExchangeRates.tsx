@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useSystemStore } from '@/store/useSystemStore';
-import { updateCurrentValueUSD } from '@/utils/conversion/convArs_Usd';
-import { updateCurrentValueEUR } from '@/utils/conversion/convArs_Eur';
+import { getCurrentValueUSD } from '@/utils/conversion/convArs_Usd';
+import { getCurrentValueEUR } from '@/utils/conversion/convArs_Eur';
 import { updateCurrentValueUSDToEUR } from '@/utils/conversion/convUsd_Eur';
 import { updateCurrentValueUSDToBRL } from '@/utils/conversion/convUsd_Brl';
 import { updateCurrentValueEURToBRL } from '@/utils/conversion/convEur_Brl';
@@ -10,6 +10,8 @@ import { exchangeRates } from '@/utils/exchangeRates';
 export const useExchangeRate = () => {
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
   const [exchangeRate, setExchangeRate] = useState<number>(0);
+
+  const { handleSameCurrencyRate } = getHandleSameCurrencyRate(); // Usamos el hook para acceder a la función
 
   const findExchangeRate = useCallback(async () => {
     if (selectedSendingSystem && selectedReceivingSystem) {
@@ -30,21 +32,33 @@ export const useExchangeRate = () => {
         setExchangeRate(rate);
       }
     }
-  }, [selectedSendingSystem, selectedReceivingSystem]);
+  }, [selectedSendingSystem, selectedReceivingSystem, handleSameCurrencyRate]); // Agregamos el hook a la lista de dependencias
 
   return { exchangeRate, findExchangeRate };
 };
 
-const handleSameCurrencyRate = async (coin: string) => {
-  if (coin === 'USD') {
-    const { currentValueUSDBlueSale } = await updateCurrentValueUSD();
-    return currentValueUSDBlueSale || 0;
-  } else if (coin === 'EUR') {
-    const { currentValueEURBlueSale } = await updateCurrentValueEUR();
-    return currentValueEURBlueSale || 0;
-  }
-  return 0;
-};
+export function getHandleSameCurrencyRate() {
+  const currentValue = getCurrentValueUSD();
+  const currentValueEur = getCurrentValueEUR();
+
+  const handleSameCurrencyRate = async (coin: string) => {
+    if (!currentValue || !currentValueEur) {
+      return 0;
+    }
+
+    const { currentValueUSDBlueSale } = currentValue;
+    const { currentValueEURBlueSale } = currentValueEur;
+
+    if (coin === 'USD') {
+      return currentValueUSDBlueSale || 0; // Retorna 0 si no se encuentra el valor
+    } else if (coin === 'EUR') {
+      return currentValueEURBlueSale || 0;
+    }
+    return 0;
+  };
+
+  return { handleSameCurrencyRate };
+}
 
 const handleDifferentCurrencyRate = async (fromCoin: string, toCoin: string) => {
   if (fromCoin === 'USD' && toCoin === 'EUR') {

@@ -436,11 +436,6 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   border-radius: 1rem !important;
 }
 
-div:where(.swal2-icon).swal2-info {
-  border-color: #facea8 !important;
-  color: #f8bb86 !important;
-}
-
 .swal-custom-image {
   margin-top: 0 !important;
 }

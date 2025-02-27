@@ -10,6 +10,8 @@ import AlertIncorrect from './AlertIncorrect';
 import AlertError from './AlertError';
 import clsx from 'clsx';
 import AlertSuccess from './AlertSuccess';
+import { info } from 'console';
+import PopUp from '@/components/ui/PopUp/PopUp';
 
 const AlertProcess = async ({
   isDark,
@@ -27,15 +29,27 @@ const AlertProcess = async ({
         setIsLoading(false);
 
         if (response.status === 404) {
-          AlertIncorrect({ isDark, toggleTooltip, setIsTooltipVisible, setIsLoading });
+          PopUp({
+            icon: 'warning',
+            title: 'Algunos de los datos son incorrectos por favor verifique los datos ingresados e intente nuevamente',
+            isDark: isDark,
+          });
         }
 
         if (response.status === 400) {
-          AlertError({ isDark, toggleTooltip, setIsTooltipVisible, setIsLoading });
+          PopUp({
+            icon: 'error',
+            title: 'Esta solicitud ya genero una alerta de cancelacion y/o reembolso',
+            isDark: isDark,
+          });
         }
 
         if (response.ok === true) {
-          AlertSuccess({ isDark, toggleTooltip, setIsTooltipVisible, setIsLoading });
+          PopUp({
+            icon: 'success',
+            title: 'Solicitud de cancelamiento realizada con éxito',
+            isDark: isDark,
+          });
         }
       }
     } catch (error: any) {
@@ -44,9 +58,7 @@ const AlertProcess = async ({
   };
 
   Swal.fire({
-    imageUrl: !isDark ? proccessIcon : proccessIconDark,
-    imageWidth: 100,
-    imageHeight: 100,
+    icon: 'info',
     html: ReactDOMServer.renderToString(
       <>
         <div id="back-button-container"></div>
@@ -68,10 +80,6 @@ const AlertProcess = async ({
         </div>
       </>,
     ),
-    customClass: {
-      image: 'swal-custom-image2',
-      popup: 'my-popup2',
-    },
     width: '400px',
     showConfirmButton: false,
     showCancelButton: false,

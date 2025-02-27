@@ -1,10 +1,10 @@
 // /utils/currencyApis.tsx
 
-import { useExchangeRateStore } from '@/store/exchangeRateStore';
+import { getExchangeRateStore } from '@/store/exchangeRateStore';
 
 import { updateCurrentValueUSDToEUR } from './conversion/convUsd_Eur';
-import { updateCurrentValueUSD } from './conversion/convArs_Usd';
-import { updateCurrentValueEUR } from './conversion/convArs_Eur';
+import { getCurrentValueUSD } from './conversion/convArs_Usd';
+import { getCurrentValueEUR } from './conversion/convArs_Eur';
 import { updateCurrentValueEURToBRL } from './conversion/convEur_Brl';
 import { updateCurrentValueUSDToBRL } from './conversion/convUsd_Brl';
 import { exchangeRates } from './exchangeRates';
@@ -12,9 +12,8 @@ import { exchangeRates } from './exchangeRates';
 //* Función para obtener todas las tasas de cambio
 export async function getExchangeRates() {
   try {
-    const { currentValueUSDBlueSale, currentValueUSDBluePurchase } = await updateCurrentValueUSD();
-
-    const { currentValueEURBlueSale, currentValueEURBluePurchase } = await updateCurrentValueEUR();
+    const { currentValueUSDBlueSale, currentValueUSDBluePurchase } = getCurrentValueUSD();
+    const { currentValueEURBlueSale, currentValueEURBluePurchase } = getCurrentValueEUR();
 
     return {
       currentValueUSDBlueSale,
@@ -89,7 +88,7 @@ export async function getExchangeRatesEUR_BRL() {
 // Función para calcular el monto convertido entre diferentes monedas
 export function calculateAmount(from: string, to: string, amount: number, inverse: boolean = false): number {
   try {
-    const { rates } = useExchangeRateStore.getState();
+    const { rates } = getExchangeRateStore.getState(); // Accede al estado directamente
 
     if (!rates || Object.keys(rates).length === 0) {
       throw new Error('Las tasas de cambio no están disponibles.');
