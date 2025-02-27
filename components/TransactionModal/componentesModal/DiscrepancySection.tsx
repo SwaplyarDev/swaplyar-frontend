@@ -48,12 +48,12 @@ const DiscrepancySection: React.FC<DiscrepancySectionProps> = ({ trans, setValue
           <CustomButton
             onClick={() => handleClick(true)}
             text="SI"
-            className={`hover:bg-[#0B5300] ${discrepancy ? 'bg-[#0B5300] text-darkText' : 'bg-[#D4D4D4] text-lightText'}`}
+            className={`hover:bg-[#0B5300] hover:text-darkText ${discrepancy ? 'bg-[#0B5300] text-darkText' : 'bg-[#D4D4D4] text-lightText'}`}
           />
           <CustomButton
             onClick={() => handleClick(false)}
             text="NO"
-            className={`hover:bg-[#CE1818] ${discrepancy === false ? 'bg-[#CE1818] text-darkText' : 'bg-[#D4D4D4] text-lightText'} `}
+            className={`hover:bg-[#CE1818] hover:text-darkText ${discrepancy === false ? 'bg-[#CE1818] text-darkText' : 'bg-[#D4D4D4] text-lightText'} `}
           />
         </div>
       </article>

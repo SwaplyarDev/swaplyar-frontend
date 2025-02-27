@@ -4,6 +4,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
+import Link from 'next/link';
 
 import { Drawer, Sidebar, Navbar } from 'flowbite-react';
 import { GiHamburgerMenu } from 'react-icons/gi';
@@ -192,6 +193,13 @@ export function TopMenu() {
                           <div className="flex flex-col items-start">
                             <p className="ml-5 text-2xl">Bienvenido!</p>
                             <p className="ml-5 text-sm underline">{session?.user?.email}</p>
+                            {session?.user?.role === 'admin' ? (
+                              <Link href={'/admin/transactions'}>
+                                <p className="text-blue-600 underline decoration-white transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 active:text-blue-900">
+                                  Administración
+                                </p>
+                              </Link>
+                            ) : null}
                           </div>
                         </div>
                       )}
@@ -335,6 +343,13 @@ export function TopMenu() {
                   >
                     <p>Bienvenido!</p>
                     <p className="text-sm underline">{session?.user?.email}</p>
+                    {session?.user?.role === 'admin' ? (
+                      <Link href={'/admin/transactions'}>
+                        <p className="text-blue-600 underline decoration-white transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 active:text-blue-900">
+                          Administración
+                        </p>
+                      </Link>
+                    ) : null}
                     <button
                       onClick={() => signOut()}
                       className={clsx(

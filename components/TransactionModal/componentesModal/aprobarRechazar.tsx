@@ -2,10 +2,10 @@ import { useTransactionStore } from '@/store/transactionModalStorage';
 import Swal from 'sweetalert2';
 
 interface AprobarRechazarProps {
-  selected: 'stop' | 'accepted' | 'rejected' | null;
-  onSelectChange: (value: 'stop' | 'accepted' | 'rejected' | null) => void;
+  selected: 'stop' | 'accepted' | 'canceled' | null;
+  onSelectChange: (value: 'stop' | 'accepted' | 'canceled' | null) => void;
   componentStates: {
-    aprooveReject: 'stop' | 'accepted' | 'rejected' | null;
+    aprooveReject: 'stop' | 'accepted' | 'canceled' | null;
     confirmTransButton: boolean | null;
     discrepancySection: boolean | null;
     transferRealized: boolean;
@@ -15,8 +15,8 @@ interface AprobarRechazarProps {
 const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectChange }) => {
   const { componentStates } = useTransactionStore();
 
-  if (componentStates.confirmTransButton === false && selected !== 'rejected') {
-    onSelectChange('rejected');
+  if (componentStates.confirmTransButton === false && selected !== 'canceled') {
+    onSelectChange('canceled');
   }
   const buttonAction = (action: string) => {
     Swal.fire({
@@ -53,7 +53,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectCha
           <article className="inline-flex items-center justify-start gap-4 self-stretch">
             {/* BOTONES */}
             <article
-              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${
+              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 hover:bg-[#0b5300] hover:text-[#ebe7e0] hover:shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] ${
                 selected === 'accepted'
                   ? 'bg-[#0b5300] text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
                   : 'bg-[#d3d3d3]'
@@ -71,7 +71,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectCha
               </button>
             </article>
             <article
-              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg border-2 px-2.5 py-1 ${
+              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg border-2 px-2.5 py-1 hover:border-[#cd1818] hover:font-extrabold hover:text-[#cd1818] hover:shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] ${
                 selected === 'stop'
                   ? 'border-[#cd1818] font-extrabold text-[#cd1818] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
                   : 'border-[#d3d3d3]'
@@ -89,19 +89,19 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectCha
               </button>
             </article>
             <article
-              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 ${
-                selected === 'rejected'
+              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 hover:bg-[#cd1818] hover:text-[#ebe7e0] hover:shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] ${
+                selected === 'canceled'
                   ? 'bg-[#cd1818] text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
                   : 'bg-[#d3d3d3]'
               }`}
-              onClick={() => onSelectChange('rejected')}
+              onClick={() => onSelectChange('canceled')}
             >
               <button className="titleFont titleFont self-stretch text-center text-base font-normal">Rechazar</button>
             </article>
           </article>
         </article>
       </article>
-      {(selected === 'rejected' || componentStates.confirmTransButton === false) && (
+      {(selected === 'canceled' || componentStates.confirmTransButton === false) && (
         <article>
           <div className="inline-flex h-[81px] w-[375px] flex-col items-start justify-start gap-1">
             <div className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
@@ -114,7 +114,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectCha
               <article className="w-[1 0px] inline-flex flex-col items-center justify-center gap-2.5 rounded-lg bg-custom-blue px-2.5 py-1 text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
                 <button
                   className="titleFont titleFont self-stretch text-center text-base font-normal"
-                  onClick={() => buttonAction('rejected')}
+                  onClick={() => buttonAction('canceled')}
                 >
                   Enviar
                 </button>

@@ -8,12 +8,13 @@ import { TransactionTypeSingle } from '@/types/transactions/transactionsType';
 
 interface ClientInformationProps {
   trans: TransactionTypeSingle;
+  modal: boolean;
+  setModal: (arg: boolean) => void;
 }
 
-const ClientInformation: React.FC<ClientInformationProps> = () => {
+const ClientInformation: React.FC<ClientInformationProps> = ({ modal, setModal }) => {
   const { trans } = useTransactionStore();
   const { transaction } = trans;
-  const [modal, setModal] = useState<boolean>(false);
 
   return (
     <div className="flex flex-col items-center gap-2">
