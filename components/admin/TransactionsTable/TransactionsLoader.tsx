@@ -1,5 +1,4 @@
 import { getAllTransactions } from '@/actions/transactions/transactions.action';
-import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import TransactionsTable from '@/components/admin/TransactionsTable/TransactionsTable/TransactionsTable';
 
 interface TransactionsLoaderProps {
@@ -14,17 +13,7 @@ const TransactionsLoader: React.FC<TransactionsLoaderProps> = async ({ currentPa
     throw new Promise(() => {});
   }
 
-  return (
-    <div className="flex w-[80%] flex-col">
-      <TransactionsTable transactions={data} />
-      <PaginationButtons
-        route="/admin/transactions"
-        totalPages={data.meta.totalPages}
-        currentPage={currentPage}
-        isLoading={false}
-      />
-    </div>
-  );
+  return <TransactionsTable transactions={data} currentPage={currentPage} />;
 };
 
 export default TransactionsLoader;

@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import TransactionModal from '@/components/TransactionModal/transactionModal';
+import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import { TransactionArray, TransactionTypeAll } from '@/types/transactions/transactionsType';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
@@ -8,10 +9,12 @@ import { SessionProvider } from 'next-auth/react';
 
 interface TransactionsTableProps {
   transactions: TransactionArray;
+  currentPage: number;
 }
 
-const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions }) => {
+const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, currentPage }) => {
   const MySwal = withReactContent(Swal);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [transId, setTransId] = useState<string>('');
 
   const handleModal = (id: string) => {
@@ -66,82 +69,91 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions }) =
   );
 
   return (
-    <table className={`w-full ${transactions.data.length >= 10 ? 'h-[25rem]' : ''} cursor-pointer`}>
-      <thead>
-        <tr className="text-left">
-          <th className="px-4 font-normal"></th>
-          <th className="px-4 font-normal">Fecha</th>
-          <th className="px-4 font-normal">Transaction ID</th>
-          <th className="px-4 font-normal">Nombre/Email</th>
-          <th className="px-4 font-normal">Billetera a recibir</th>
-          <th className="px-4 font-normal">Destinatario</th>
-          <th className="px-4 font-normal">Billetera a Pagar</th>
-          <th className="px-4 font-normal"></th>
-        </tr>
-      </thead>
-      <tbody className="table-fixed">
-        {transactions.data.length > 0 ? (
-          transactions.data.map((transaction: TransactionTypeAll, index: number) => (
-            <tr key={index}>
-              <td className="bg-transparen pl-2 pr-2">
-                <span className={`flex h-5 w-5 rounded-full ${getStatusColor(transaction.status)}`}></span>
-              </td>
-              {renderTr(
-                handleModal,
-                new Date(transaction.transaction.created_at).toLocaleDateString(),
-                index,
-                transaction.transaction.transaction_id,
-              )}
-              {renderTr(
-                handleModal,
-                transaction.transaction.transaction_id,
-                index,
-                transaction.transaction.transaction_id,
-              )}
-              {renderTr(
-                handleModal,
-                transaction.sender.first_name,
-                index,
-                transaction.transaction.transaction_id,
-                transaction.sender.last_name,
-              )}
-              {renderTr(
-                handleModal,
-                transaction.payment_method.sender.value,
-                index,
-                transaction.transaction.transaction_id,
-              )}
-              {renderTr(
-                handleModal,
-                transaction.receiver.first_name,
-                index,
-                transaction.transaction.transaction_id,
-                transaction.receiver.last_name,
-              )}
-              {renderTr(
-                handleModal,
-                transaction.payment_method.receiver.value,
-                index,
-                transaction.transaction.transaction_id,
-              )}
-              <td
-                className={`items-end border border-white ${index % 2 === 0 ? 'bg-[#B1BFDF] dark:bg-dark-blue' : ''} pl-5 dark:border-lightText`}
-              >
-                <span
-                  className={`flex h-5 w-5 rounded-full ${transaction.transaction.regret_id ? 'bg-[#530000] outline outline-1 outline-offset-2 outline-[#CE1818]' : transaction.transaction.note_id ? 'bg-[#6a3718] outline outline-1 outline-offset-2 outline-[#ff6200]' : 'invisible'}`}
-                ></span>
+    <div className="flex w-[80%] flex-col">
+      <table className={`w-full ${transactions.data.length >= 10 ? 'h-[25rem]' : ''} cursor-pointer`}>
+        <thead>
+          <tr className="text-left">
+            <th className="px-4 font-normal"></th>
+            <th className="px-4 font-normal">Fecha</th>
+            <th className="px-4 font-normal">Transaction ID</th>
+            <th className="px-4 font-normal">Nombre/Email</th>
+            <th className="px-4 font-normal">Billetera a recibir</th>
+            <th className="px-4 font-normal">Destinatario</th>
+            <th className="px-4 font-normal">Billetera a Pagar</th>
+            <th className="px-4 font-normal"></th>
+          </tr>
+        </thead>
+        <tbody className="table-fixed">
+          {transactions.data.length > 0 ? (
+            transactions.data.map((transaction: TransactionTypeAll, index: number) => (
+              <tr key={index}>
+                <td className="bg-transparen pl-2 pr-2">
+                  <span className={`flex h-5 w-5 rounded-full ${getStatusColor(transaction.status)}`}></span>
+                </td>
+                {renderTr(
+                  handleModal,
+                  new Date(transaction.transaction.created_at).toLocaleDateString(),
+                  index,
+                  transaction.transaction.transaction_id,
+                )}
+                {renderTr(
+                  handleModal,
+                  transaction.transaction.transaction_id,
+                  index,
+                  transaction.transaction.transaction_id,
+                )}
+                {renderTr(
+                  handleModal,
+                  transaction.sender.first_name,
+                  index,
+                  transaction.transaction.transaction_id,
+                  transaction.sender.last_name,
+                )}
+                {renderTr(
+                  handleModal,
+                  transaction.payment_method.sender.value,
+                  index,
+                  transaction.transaction.transaction_id,
+                )}
+                {renderTr(
+                  handleModal,
+                  transaction.receiver.first_name,
+                  index,
+                  transaction.transaction.transaction_id,
+                  transaction.receiver.last_name,
+                )}
+                {renderTr(
+                  handleModal,
+                  transaction.payment_method.receiver.value,
+                  index,
+                  transaction.transaction.transaction_id,
+                )}
+                <td
+                  className={`items-end border border-white ${index % 2 === 0 ? 'bg-[#B1BFDF] dark:bg-dark-blue' : ''} pl-5 dark:border-lightText`}
+                >
+                  <span
+                    className={`flex h-5 w-5 rounded-full ${transaction.transaction.regret_id ? 'bg-[#530000] outline outline-1 outline-offset-2 outline-[#CE1818]' : transaction.transaction.note_id ? 'bg-[#6a3718] outline outline-1 outline-offset-2 outline-[#ff6200]' : 'invisible'}`}
+                  ></span>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={8} className="py-4 text-center">
+                No se encontraron resultados
               </td>
             </tr>
-          ))
-        ) : (
-          <tr>
-            <td colSpan={8} className="py-4 text-center">
-              No se encontraron resultados
-            </td>
-          </tr>
-        )}
-      </tbody>
-    </table>
+          )}
+        </tbody>
+      </table>
+      <PaginationButtons
+        route="/admin/transactions"
+        totalPages={transactions.meta.totalPages}
+        currentPage={transactions.meta.page}
+        isLoading={false}
+        setIsLoading={setIsLoading}
+      />
+    </div>
   );
 };
 

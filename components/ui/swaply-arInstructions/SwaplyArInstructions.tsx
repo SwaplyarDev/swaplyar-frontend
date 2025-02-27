@@ -49,6 +49,8 @@ export default function SwaplyArInstructions() {
             className="w-full max-w-[500px] flex-1 drop-shadow-light dark:drop-shadow-darkmode"
             src={isDark ? howToUseDark : howToUse}
             alt="Imagen principal"
+            width={500}
+            height={500}
             priority
           />
         </section>
