@@ -121,7 +121,7 @@ const Blog: React.FC = () => {
         )}
       </div>
 
-      <PaginationButtonsProps currentPage={currentPage} totalPages={totalPages} isLoading={isLoading} />
+      <PaginationButtonsProps route="/blog" currentPage={currentPage} totalPages={totalPages} isLoading={isLoading} />
     </div>
   );
 };
