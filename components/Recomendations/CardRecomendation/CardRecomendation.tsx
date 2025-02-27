@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import Image from 'next/image';
 import '../../ui/cards/CardsCss.css';
@@ -16,10 +16,10 @@ export const CardRecomendation: React.FC<ICardRecomendationProps> = ({ items }) 
   const [activeCards, setActiveCards] = useState<{ [key: number]: boolean }>({});
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setCurrentIndex((prevIndex) => (prevIndex === items.length - 1 ? 0 : prevIndex + 1));
     setIsVisible(false);
-  };
+  }, [setCurrentIndex, setIsVisible, items.length]);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? items.length - 1 : prevIndex - 1));
@@ -40,7 +40,7 @@ export const CardRecomendation: React.FC<ICardRecomendationProps> = ({ items }) 
       handleNext();
     }, 30000);
     return () => clearTimeout(timeout);
-  }, []);
+  }, [currentIndex, items.length, handleNext]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

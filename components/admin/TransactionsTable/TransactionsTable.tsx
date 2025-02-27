@@ -177,7 +177,13 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ currentPage }) =>
           )}
         </table>
       </div>
-      <PaginationButtons totalPages={stateTrans.meta.totalPages} currentPage={currentPage} isLoading={isLoading} />
+      <PaginationButtons
+        totalPages={stateTrans.meta.totalPages}
+        currentPage={currentPage}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+        route="/admin/transactions"
+      />
     </main>
   );
 };
