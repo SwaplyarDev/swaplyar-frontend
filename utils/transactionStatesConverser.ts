@@ -4,14 +4,14 @@ const TransactionStates = {
   IN_TRANSIT: '3',
   MODIFIED: '4',
   DISCREPANCY: '5',
-  REJECTED: '6',
+  canceled: '6',
   REFUNDED: '7',
   COMPLETED: '8',
   CANCELED: '9',
 } as const;
 
 interface ComponentStatesType {
-  aprooveReject: 'stop' | 'accepted' | 'rejected' | null;
+  aprooveReject: 'stop' | 'accepted' | 'canceled' | null;
   confirmTransButton: boolean | null;
   discrepancySection: boolean;
   transferRealized: boolean;
@@ -21,7 +21,7 @@ type TransactionStateKeys = keyof typeof TransactionStates;
 type TransactionStateValues = (typeof TransactionStates)[TransactionStateKeys];
 
 interface ComponentStates {
-  aprooveReject: 'stop' | 'rejected' | 'accepted' | null;
+  aprooveReject: 'stop' | 'canceled' | 'accepted' | null;
   confirmTransButton: boolean | null;
   discrepancySection: boolean | null;
   transferRealized: boolean;
@@ -33,10 +33,9 @@ const stateToNumberMap: Record<string, TransactionStateValues> = {
   in_transit: TransactionStates.IN_TRANSIT,
   modified: TransactionStates.MODIFIED,
   discrepancy: TransactionStates.DISCREPANCY,
-  rejected: TransactionStates.REJECTED,
+  canceled: TransactionStates.CANCELED,
   refunded: TransactionStates.REFUNDED,
   completed: TransactionStates.COMPLETED,
-  canceled: TransactionStates.CANCELED,
 };
 
 const numberToStateMap: Record<TransactionStateValues, string> = {
@@ -45,7 +44,7 @@ const numberToStateMap: Record<TransactionStateValues, string> = {
   '3': 'in_transit',
   '4': 'modified',
   '5': 'discrepancy',
-  '6': 'rejected',
+  '6': 'canceled',
   '7': 'refunded',
   '8': 'completed',
   '9': 'canceled',
@@ -72,9 +71,9 @@ export const getComponentStatesFromStatus = (value: string | undefined): Compone
           transferRealized: false,
         };
 
-      case '6': // REJECTED
+      case '6': // canceled
         return {
-          aprooveReject: 'rejected',
+          aprooveReject: 'canceled',
           confirmTransButton: false,
           discrepancySection: null,
           transferRealized: false,

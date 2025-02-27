@@ -70,7 +70,7 @@ const ConfirmTransButton: React.FC<ConfirmarTransProps> = ({ trans, value, setVa
           />
           <article
             className="w-[1 0px] inline-flex w-[65px] flex-col items-center justify-center rounded-lg bg-custom-blue px-2.5 py-1 text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
-            onClick={() => buttonAction('rejected')}
+            onClick={() => buttonAction('canceled')}
           >
             <button className="titleFont titleFont self-stretch text-center text-base font-normal">Enviar</button>
           </article>

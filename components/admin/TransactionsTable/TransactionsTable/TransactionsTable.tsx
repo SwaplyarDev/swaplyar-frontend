@@ -50,7 +50,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
     switch (status.toLowerCase()) {
       case 'pending':
         return 'bg-[#000C29] outline-offset-2 outline outline-1 outline-[#012A8E]';
-      case 'rejected':
+      case 'canceled':
         return 'bg-[#530000] outline-offset-2 outline outline-1 outline-[#CE1818]';
       case 'accepted':
         return 'bg-[#002C00] outline-offset-2 outline outline-1 outline-[#18CE18]';

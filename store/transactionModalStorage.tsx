@@ -12,6 +12,7 @@ import {
 import { getNoteById } from '@/actions/transactions/notes.action';
 import { getRegret } from '@/actions/repentance/repentanceForm.action';
 import { convertTransactionState, getComponentStatesFromStatus } from '@/utils/transactionStatesConverser';
+import { TransactionService } from '@/components/TransactionModal/componentesModal/ui/TransactionService';
 
 interface TransactionState {
   trans: TransactionTypeSingle;
@@ -21,19 +22,19 @@ interface TransactionState {
   transIdAdmin: string;
   status: string;
   componentStates: {
-    aprooveReject: 'stop' | 'accepted' | 'rejected' | null;
+    aprooveReject: 'stop' | 'accepted' | 'canceled' | null;
     confirmTransButton: boolean | null;
     discrepancySection: boolean | null;
     transferRealized: boolean;
   };
-  selected: 'stop' | 'accepted' | 'rejected' | null;
+  selected: 'stop' | 'accepted' | 'canceled' | null;
   fetchTransaction: (transId: string) => Promise<void>;
   fetchNote: (noteId: string) => Promise<void>;
   fetchRegret: (regretId: string) => Promise<void>;
-  updateTransactionStatus: (transId: string, transIdAdmin: string) => Promise<void>;
   setComponentStates: (key: keyof TransactionState['componentStates'], value: any) => void;
   setStatus: (status: string) => void;
-  setSelected: (selected: 'stop' | 'accepted' | 'rejected' | null) => void;
+  updateTransactionStatusFromStore: (transId: string) => Promise<void>;
+  setSelected: (selected: 'stop' | 'accepted' | 'canceled' | null) => void;
   updateStatusFromComponents: () => void;
 }
 
@@ -44,6 +45,7 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
   isLoading: true,
   transIdAdmin: '',
   status: 'pending',
+
   componentStates: {
     aprooveReject: null,
     confirmTransButton: null,
@@ -74,6 +76,23 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
       set({ isLoading: false });
     }
   },
+  updateTransactionStatusFromStore: async (transId) => {
+    const { status } = get();
+    console.log('📌 Estado antes de enviar al servicio:', status, transId);
+
+    try {
+      const response = await TransactionService(status, transId);
+
+      if (response?.newStatus) {
+        set({ status: response.newStatus });
+        console.log('✅ Estado actualizado en el store:', response.newStatus);
+      } else {
+        console.warn('⚠️ No se recibió un nuevo estado en la respuesta.');
+      }
+    } catch (error) {
+      console.error('❌ Error al actualizar el estado desde el store:', error);
+    }
+  },
   fetchNote: async (idNote: string) => {
     try {
       const note = await getNoteById(idNote);
@@ -95,26 +114,6 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
       console.error('Error al obtener el rechazo:', error);
     }
   },
-  updateTransactionStatus: async (transId: string) => {
-    try {
-      const { status } = get();
-
-      if (!transId) return;
-
-      console.log(`🔄 Actualizando estado de la transacción ${transId} a: ${status}`);
-
-      const response = await updateStatusClient(transId, status);
-
-      if (response) {
-        console.log(' Estado actualizado con éxito:', response);
-      }
-      if (!response) {
-        console.log(' no se ha actualizado con éxito:', response);
-      }
-    } catch (error) {
-      console.error('❌ Error al actualizar el estado:', error);
-    }
-  },
 
   setComponentStates: (key, value) => {
     set((state) => ({
@@ -126,31 +125,21 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
   updateStatusFromComponents: () => {
     const { componentStates, setStatus } = get();
     let newStatus = 'pending';
-    if (componentStates.aprooveReject === 'rejected') {
-      newStatus = 'rejected';
+    if (componentStates.aprooveReject === 'canceled') {
+      newStatus = 'canceled';
     }
 
-    if (
-      componentStates.confirmTransButton &&
-      componentStates.aprooveReject === 'stop' &&
-      componentStates.discrepancySection
-    ) {
+    if (componentStates.aprooveReject === 'stop' && componentStates.discrepancySection) {
       newStatus = 'discrepancy';
-    } else if (
-      componentStates.confirmTransButton &&
-      componentStates.aprooveReject === 'stop' &&
-      !componentStates.discrepancySection
-    ) {
+    } else if (componentStates.aprooveReject === 'stop' && !componentStates.discrepancySection) {
       newStatus = 'review_payment';
     } else if (
-      componentStates.confirmTransButton &&
       componentStates.aprooveReject === 'accepted' &&
       !componentStates.discrepancySection &&
       !componentStates.transferRealized
     ) {
       newStatus = 'in_transit';
     } else if (
-      componentStates.confirmTransButton &&
       componentStates.aprooveReject === 'accepted' &&
       !componentStates.discrepancySection &&
       componentStates.transferRealized

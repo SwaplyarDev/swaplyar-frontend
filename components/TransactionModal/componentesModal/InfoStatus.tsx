@@ -19,7 +19,7 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
             En Proceso
           </div>
         );
-      case 'rejected':
+      case 'canceled':
         return (
           <div className="flex rounded-full bg-[#530000] px-4 py-2 font-titleFont text-2xl text-darkText outline outline-1 outline-offset-2 outline-[#CE1818]">
             Rechazada
