@@ -6,8 +6,10 @@ const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 //General Transactions Fetchs
 export const getAllTransactions = async (page: number) => {
+  console.log('all transactions');
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions?page=${page}&perPage=12`);
+
     if (!response.ok) throw new Error('Failed to fetch transactions');
 
     const data: TransactionArray = await response.json();
@@ -64,21 +66,25 @@ export const updateTransaction = async ({ transaction }: TransactionTypeSingle) 
 
 //Status Transaction Client syde Fetchs
 
-export const updateStatusClient = async (transactionId: string, status: string) => {
+export const updateStatusClient = async (transactionId: any, status: any) => {
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus/${transactionId}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status }),
     });
+
+    console.log('🔄 1status:', status);
+
     if (!response.ok) throw new Error('Failed to update transaction client');
 
-    return response.json();
-  } catch (error: any) {
-    console.error('Error updating transaction:', error);
-    return null;
+    const data = await response.json();
+    console.log('📥 Respuesta del servidor:', data);
+
+    return data; // Asegurar que siempre devuelve un objeto válido
+  } catch (error) {
+    console.error('❌ Error updating transaction:', error);
+    return { message: 'Error', error }; // Devolver siempre un objeto para evitar undefined
   }
 };
 
@@ -144,5 +150,3 @@ export const updateStatusAdmin = async (transactionId: string, status: string) =
     return null;
   }
 };
-
-// El CREATE esta en request

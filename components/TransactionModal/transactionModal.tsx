@@ -25,6 +25,7 @@ const TransactionModal = ({ transId }: { transId: string }) => {
   useEffect(() => {
     setIsVisible(true);
   }, []);
+
   const [modal, setModal] = useState<boolean>(false);
   const {
     isLoading,
@@ -38,20 +39,16 @@ const TransactionModal = ({ transId }: { transId: string }) => {
     fetchTransaction,
     fetchNote,
     fetchRegret,
-    updateTransactionStatus,
+    updateTransactionStatusFromStore, // Aquí llamamos la nueva función
     setComponentStates,
     setSelected,
   } = useTransactionStore();
   const { transaction } = trans;
 
-  /* useEffect(() => {
-    console.log('Nuevo estado de componentStates:', componentStates);
-  }, [componentStates]);*/
-
   useEffect(() => {
-    updateTransactionStatus(transId, transIdAdmin);
-  }, [status, transId, componentStates]);
-
+    console.log('🔄 Se detectó un cambio en status, actualizando estado...');
+    updateTransactionStatusFromStore(transId);
+  }, [status, transId]);
   useEffect(() => {
     if (transId) {
       fetchTransaction(transId);
@@ -78,7 +75,6 @@ const TransactionModal = ({ transId }: { transId: string }) => {
           <SkeletonModal />
         ) : (
           <section className="flex flex-col gap-5 p-6 font-textFont text-lightText">
-            {' '}
             <CloseButton close={() => MySwal.close()} />
             <InfoStatus trans={trans} transId={transId} />
             <TransactionDetail transaction={trans} isLoading={isLoading} />
@@ -103,7 +99,7 @@ const TransactionModal = ({ transId }: { transId: string }) => {
               <div className="flex flex-col">
                 <p className="text-base font-medium">El Cliente solicito Editar la Solicitud</p>
                 <ClientMessage
-                  headerMessage="mensage"
+                  headerMessage="mensaje"
                   message={noteEdit.note}
                   classnames="border-[#D75600] min-h-[4.25rem]"
                 />
@@ -124,7 +120,7 @@ const TransactionModal = ({ transId }: { transId: string }) => {
                 }}
               />
             )}
-            {componentStates.aprooveReject !== null && componentStates.aprooveReject !== 'rejected' && (
+            {componentStates.aprooveReject !== null && componentStates.aprooveReject !== 'canceled' && (
               <DiscrepancySection
                 trans={trans}
                 value={componentStates.discrepancySection}
