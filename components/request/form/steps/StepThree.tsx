@@ -34,23 +34,13 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   const { isDark } = useDarkTheme();
 
   const [initialValues, setInitialValues] = useState<FormData | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const formValues = useWatch({ control });
 
   const receiveAmount = localStorage.getItem('receiveAmount');
   const sendAmount = localStorage.getItem('sendAmount');
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
-
-  function showFileName(event: any) {
-    const file = event.target.files[0] || null;
-
-    console.log(file);
-    if (file) {
-      document.getElementById('file-name')!.textContent = file.name;
-    } else {
-      document.getElementById('file-name')!.textContent = 'No hay archivo seleccionado';
-    }
-  }
 
   useEffect(() => {
     const { proof_of_payment, note } = formData.stepThree;
@@ -96,8 +86,16 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      if (file.type.startsWith('image/')) {
+        const imageUrl = URL.createObjectURL(file);
+        setPreviewImage(imageUrl);
+      } else {
+        setPreviewImage(null);
+      }
+    }
     onChange(event);
-    if (showFileName) showFileName(event);
   };
 
   const renderSelectedSystem = () => {
@@ -123,6 +121,8 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
             handleChange={handleChange}
             watch={watch}
             restRegister={restRegister}
+            previewImage={previewImage}
+            setPreviewImage={setPreviewImage}
           />
         );
       case 'tether':

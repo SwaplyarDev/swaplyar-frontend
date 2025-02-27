@@ -369,7 +369,11 @@ const StepperContainer = () => {
         );
       })}
       <div className="flex flex-col items-center gap-4 sm-phone:flex-row sm-phone:justify-between sm-phone:gap-0">
-        <button className="font-textFont text-base" onClick={handleCancelRequest} disabled={blockAll}>
+        <button
+          className="font-textFont text-base transition-all hover:text-buttonsLigth dark:hover:text-darkText dark:hover:underline"
+          onClick={handleCancelRequest}
+          disabled={blockAll}
+        >
           Cancelar esta Solicitud
         </button>
         {loading ? (

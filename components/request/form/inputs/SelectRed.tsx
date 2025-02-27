@@ -101,9 +101,12 @@ const SelectRed: React.FC<SelectRedProps> = ({ selectedRed, setSelectedRed, erro
             {options.map((option, index) => (
               <li
                 key={index}
-                className={cn('flex cursor-pointer items-center gap-2 px-4 py-2 font-textFont hover:bg-gray-200', {
-                  'bg-gray-100': selectedRed?.value === option.value,
-                })}
+                className={cn(
+                  'flex cursor-pointer items-center gap-2 px-4 py-2 font-textFont hover:bg-buttonsLigth hover:text-darkText',
+                  {
+                    'bg-gray-100': selectedRed?.value === option.value,
+                  },
+                )}
                 onClick={() => {
                   setSelectedRed(option);
                   setIsOpen(false);
