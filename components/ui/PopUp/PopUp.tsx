@@ -26,7 +26,7 @@ export const PopUp = ({ icon, title, text, isDark }: IPopUpProps) => {
       </div>,
     ),
     showConfirmButton: false,
-    background: isDark ? '#252526' : '#ebe7e0',
+    background: isDark ? '#252526' : '#ffffff',
     didRender: () => {
       const backElement = document.getElementById('back-button-container');
       if (backElement) {

@@ -38,7 +38,7 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelect
       <div
         ref={dropdownRef}
         className={clsx(
-          'relative flex max-h-[38px] max-w-full items-center rounded-2xl border bg-transparent py-2 pr-5 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
+          'relative flex max-h-[42px] max-w-full items-center rounded-2xl border bg-transparent py-2 pr-5 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
           errorMessage
             ? 'border-errorColor text-errorColor placeholder-errorColor'
             : 'border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
@@ -64,14 +64,17 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelect
             initial={{ opacity: 0, y: -5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -5 }}
-            className="scrollable-list absolute top-10 z-10 mt-2 max-h-64 w-full overflow-y-auto rounded-2xl border border-custom-grayD-300 bg-custom-whiteD shadow-lg"
+            className="absolute top-10 z-10 mt-2 max-h-64 w-full overflow-y-auto rounded-2xl border border-custom-grayD-300 bg-custom-whiteD shadow-lg"
           >
             {options.map((option, index) => (
               <li
                 key={index}
-                className={cn('flex cursor-pointer justify-between px-4 py-2 font-textFont hover:bg-gray-200', {
-                  'bg-gray-100': selectedOption === option.value,
-                })}
+                className={cn(
+                  'flex cursor-pointer justify-between px-4 py-2 font-textFont hover:bg-buttonsLigth hover:text-darkText',
+                  {
+                    'bg-gray-100': selectedOption === option.value,
+                  },
+                )}
                 onClick={() => {
                   setSelectedOption(option.value);
                   setIsOpen(false);

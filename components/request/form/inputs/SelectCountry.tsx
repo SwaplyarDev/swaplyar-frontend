@@ -69,9 +69,12 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
           {countryOptions.map((country, index) => (
             <li
               key={index}
-              className={cn('flex cursor-pointer justify-between px-4 py-2 font-textFont hover:bg-gray-200', {
-                'bg-gray-100': selectedCodeCountry?.callingCode === country.callingCode,
-              })}
+              className={cn(
+                'flex cursor-pointer justify-between px-4 py-2 font-textFont hover:bg-buttonsLigth hover:text-darkText',
+                {
+                  'bg-gray-100': selectedCodeCountry?.callingCode === country.callingCode,
+                },
+              )}
               onClick={() => {
                 setSelectedCodeCountry(country);
                 setIsOpen(false);
