@@ -32,6 +32,12 @@ export default auth((req) => {
         return NextResponse.redirect(new URL('/', req.url)); // Redirigir al home si no es admin
       }
     }
+    if (nextUrl.pathname === '/request') {
+      const referer = req.headers.get('referer'); // Obtener la URL previa
+      if (!referer || !referer.includes('/')) {
+        return NextResponse.redirect(new URL('/', req.url)); // Bloquear acceso directo
+      }
+    }
 
     // Permitir el acceso si no hay problemas
     return NextResponse.next();

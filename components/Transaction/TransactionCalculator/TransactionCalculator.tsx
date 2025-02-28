@@ -49,7 +49,7 @@ export default function TransactionCalculator() {
   }, [pass, pathname, router]);
 
   const handleDirection = () => {
-    setPass();
+    sessionStorage.setItem('accesoPermitido', 'true');
     router.push('/request');
   };
 
