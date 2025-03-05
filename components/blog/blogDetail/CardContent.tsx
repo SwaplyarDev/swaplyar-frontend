@@ -8,6 +8,12 @@ import useBlogStore from '@/store/useBlogStore';
 import { useEffect, useState } from 'react';
 import { fetchBlogs } from '@/actions/blogs/blogs.actions';
 import SkeletonLoader from '@/components/ui/SkeletonLoader/SkeletonLoader';
+import CardBlogOption from './CardBlogOption';
+import { cardInfoBlog } from '@/utils/assets/imgDatabaseCloudinary';
+import { footerLinks } from '@/components/footer/footerLinks';
+import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ProgressBar from '@/components/ui/ProgressBar/ProgressBar';
 
 interface CardContentProps {
   blogData: BlogPostCardProps;
@@ -51,6 +57,20 @@ const renderListBlog = (array: any[]) => {
 const CardContent: React.FC<CardContentProps> = ({ blogData }) => {
   const [randomBlog, setRandomBlog] = useState<BlogPostCardProps | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+
+      const progressValue = (scrollTop / scrollHeight) * 100;
+      setProgress(progressValue);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,8 +96,13 @@ const CardContent: React.FC<CardContentProps> = ({ blogData }) => {
   }, [blogData]);
 
   return (
-    <main className="mx-auto w-full max-w-screen-phone px-4 xs-mini-phone2:max-w-screen-tablet md:max-w-screen-desktop md:px-8 lg:px-4">
-      <div className="mx-auto flex max-w-[975px] flex-col gap-7 pb-5 pt-10">
+    <main className="relative mx-auto w-full max-w-screen-phone px-4 xs-mini-phone2:max-w-screen-tablet md:max-w-screen-desktop md:px-8 lg:px-4">
+      <div className="sticky top-28 flex w-full flex-col items-center sm:top-36">
+        <div className="rounded-2xl border-2 border-buttonsLigth bg-custom-whiteD-100 p-2 dark:border-custom-whiteD-100">
+          <ProgressBar value={progress} width="300px" />
+        </div>
+      </div>
+      <div className="mx-auto hidden max-w-[975px] flex-col gap-7 pb-5 pt-10 lg:flex">
         <p className="font-textFont text-lg">
           El tiempo de lectura estimado para este artículo es de <span className="font-bold">4 a 5 minutos</span>
         </p>
@@ -87,7 +112,7 @@ const CardContent: React.FC<CardContentProps> = ({ blogData }) => {
         </div>
       </div>
       <div className="flex gap-5">
-        <div className="w-full max-w-[286px]">
+        <div className="hidden w-full max-w-[286px] lg:block">
           <div className="sticky top-32 flex flex-col gap-4">
             <h2 className="font-textFont text-xl font-semibold">Contenido:</h2>
             {blogData.subtitulos && blogData.subtitulos.length > 0 && (
@@ -104,9 +129,9 @@ const CardContent: React.FC<CardContentProps> = ({ blogData }) => {
             )}
           </div>
         </div>
-        <div className="flex w-full flex-col gap-7">
+        <div className="flex w-full flex-col gap-7 sm:mt-20 lg:mt-0">
           <div className="flex w-full flex-col gap-4">
-            <h1 className="p-2.5 font-titleFont text-4xl font-semibold text-buttonsLigth dark:text-darkText">
+            <h1 className="p-2.5 text-center font-titleFont text-4xl font-semibold text-buttonsLigth dark:text-darkText lg:text-start">
               {blogData.title}
             </h1>
             <Image
@@ -114,10 +139,10 @@ const CardContent: React.FC<CardContentProps> = ({ blogData }) => {
               alt={blogData.title}
               width={500}
               height={286}
-              className="h-[286px] w-full object-cover"
+              className="mx-auto h-[214px] object-cover sm-tablet:w-full sm-tablet:px-20 lg:h-[286px] lg:px-0"
             />
           </div>
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6" id="blog-content">
             {blogData.subtitulos &&
               blogData.subtitulos.length > 0 &&
               blogData.subtitulos.map((sub, index) => (
@@ -130,23 +155,38 @@ const CardContent: React.FC<CardContentProps> = ({ blogData }) => {
           </div>
         </div>
       </div>
-      <div className="flex justify-between">
-        <div className="w-full max-w-[425px] rounded-2xl p-2">
-          {isLoaded || !randomBlog ? (
-            <div className="w-full animate-pulse overflow-hidden rounded-lg border border-gray-300 bg-white shadow-lg">
-              <div className="h-40 w-full bg-gray-300"></div>
-              <div className="space-y-3 p-4">
-                <div className="h-6 w-full rounded bg-gray-300"></div>
-                <div className="h-4 w-3/4 rounded bg-gray-300"></div>
-                <div className="h-4 w-5/6 rounded bg-gray-300"></div>
-                <div className="mt-4 h-4 w-2/3 rounded bg-gray-300"></div>
-              </div>
+      <div className="mb-[70px] mt-20 flex flex-col-reverse items-center justify-between gap-10 lg:flex-row">
+        <CardBlogOption isLoaded={isLoaded} randomBlog={randomBlog} />
+        <div className="relative ml-[120px] hidden w-full max-w-[500px] sm:block lg:ml-0">
+          <Image
+            src={cardInfoBlog}
+            alt="cardImage"
+            width={500}
+            height={262}
+            className="h-[262px] w-full object-cover"
+          />
+          <div className="absolute left-[68px] top-[33px] flex w-[240px] flex-col gap-4">
+            <p className="text-center font-textFont text-xl font-semibold text-lightText">
+              Si este artículo te resultó útil, ¡compártelo con tu comunidad! Etiquétanos @SwaplyAr y cuéntanos qué
+              opinas.
+            </p>
+            <div className="flex justify-between">
+              {footerLinks.social.map(({ href, icon, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  title={`SwaplyAr en ${label}`}
+                  className="transition-opacity duration-200 hover:opacity-75"
+                >
+                  <FontAwesomeIcon icon={icon} className="text-4xl text-lightText" />
+                </Link>
+              ))}
             </div>
-          ) : (
-            <Image src={randomBlog.url_image} alt={randomBlog.title} width={500} height={286} />
-          )}
+          </div>
         </div>
-        <div></div>
       </div>
     </main>
   );
