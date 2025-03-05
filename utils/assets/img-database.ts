@@ -213,3 +213,12 @@ export const nube2 = '/images/nube2.svg';
 export const plane = '/images/plane.svg';
 
 export const homeSearch = '/images/homeSearch.png';
+
+export const enchufeClear = '/images/enchufe_clear.svg';
+export const enchufeDark = '/images/enchufe_dark.svg';
+
+export const enchufeLargoClear = '/images/enchufeLargoClear.svg';
+export const enchufeLargoDark = '/images/enchufeLargoDark.svg';
+
+export const error404Clear = '/images/error404Clear.svg';
+export const error404Dark = '/images/error404Dark.svg';
