@@ -175,7 +175,7 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
               ) : null}
               <p
                 className={clsx(
-                  'mb-1 hidden text-sm lg:inline-block',
+                  'mb-1 text-sm',
                   previewImage
                     ? 'text-base text-[#011b5b]'
                     : 'text-inputLightDisabled group-hover:text-buttonsLigth dark:text-darkText',
@@ -189,7 +189,7 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
                 <button
                   type="button"
                   onClick={handleRemoveImage}
-                  className="bg-errborder-errorColor mt-5 h-[48px] w-full max-w-[200px] items-center justify-center rounded-3xl border border-errorColor bg-errorColor p-[10px] font-textFont text-base text-darkText lg:mt-0"
+                  className="bg-errborder-errorColor h-[48px] w-full max-w-[200px] items-center justify-center rounded-3xl border border-errorColor bg-errorColor p-[10px] font-textFont text-base text-darkText lg:mt-0"
                 >
                   Eliminar IMG
                 </button>
@@ -197,7 +197,7 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
                 <div
                   className={`${
                     isDark ? 'buttonSecondDark' : 'buttonSecond'
-                  } relative mt-5 h-[48px] w-full max-w-[200px] items-center justify-center rounded-3xl border border-disabledButtonsLigth bg-disabledButtonsLigth p-[10px] text-lg text-darkText group-hover:border-buttonsLigth group-hover:bg-buttonsLigth group-hover:text-darkText dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText group-hover:dark:border-darkText group-hover:dark:bg-darkText group-hover:dark:text-lightText lg:mt-0`}
+                  } relative h-[48px] w-full max-w-[200px] items-center justify-center rounded-3xl border border-disabledButtonsLigth bg-disabledButtonsLigth p-[10px] text-lg text-darkText group-hover:border-buttonsLigth group-hover:bg-buttonsLigth group-hover:text-darkText dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText group-hover:dark:border-darkText group-hover:dark:bg-darkText group-hover:dark:text-lightText lg:mt-0`}
                 >
                   Subir Archivo
                 </div>
