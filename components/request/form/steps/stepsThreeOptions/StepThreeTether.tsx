@@ -8,7 +8,7 @@ import { System } from '@/types/data';
 import InputSteps from '@/components/inputSteps/InputSteps';
 import { FieldError } from 'react-hook-form';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { qrDark, qrLight } from '@/utils/assets/img-database';
+import { qrDark, qrLight } from '@/utils/assets/imgDatabaseCloudinary';
 
 interface StepThreeTetherProps {
   register: UseFormRegister<any>;
@@ -211,7 +211,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
               )}
             >
               <div className="flex w-full items-center justify-center">
-                <Image className="w-full" src={isDark ? qrLight : qrDark} alt="qr" width={200} height={200} />
+                <Image className="w-full" src={isDark ? qrDark : qrLight} alt="qr" width={200} height={200} />
               </div>
             </div>
           </div>
