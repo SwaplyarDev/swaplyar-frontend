@@ -10,9 +10,9 @@ export default auth((req) => {
     const isLoggedIn = !!req.auth;
 
     // Redirigir al home si la ruta contiene "blog"
-    // if (nextUrl.pathname.includes('blog')) {
-    //   return NextResponse.redirect(new URL('/maintenance', req.url));
-    // }
+    if (nextUrl.pathname.includes('blog')) {
+      return NextResponse.redirect(new URL('/maintenance', req.url));
+    }
 
     // Verificar si la ruta está bajo /admin
     const isAdminRoute = nextUrl.pathname.startsWith('/admin');
@@ -30,6 +30,12 @@ export default auth((req) => {
       const userRole = req.auth?.user?.role; // Obtener el rol del usuario desde el token JWT
       if (userRole !== 'admin') {
         return NextResponse.redirect(new URL('/', req.url)); // Redirigir al home si no es admin
+      }
+    }
+    if (nextUrl.pathname === '/request') {
+      const referer = req.headers.get('referer'); // Obtener la URL previa
+      if (!referer || !referer.includes('/')) {
+        return NextResponse.redirect(new URL('/', req.url)); // Bloquear acceso directo
       }
     }
 

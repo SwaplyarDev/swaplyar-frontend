@@ -19,15 +19,47 @@ import Cronometro from './Cronometro';
 import useChronometerState from '@/store/chronometerStore';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
-import { alertaSirena, alertaSirenaDark } from '@/utils/assets/imgDatabaseCloudinary';
+import ReactDOMServer from 'react-dom/server';
 
 const StepperContainer = () => {
-  const { activeStep, completedSteps, setActiveStep, submitAllData } = useStepperStore();
+  const { activeStep, completedSteps, setActiveStep, submitAllData, resetToDefault } = useStepperStore();
   const [blockAll, setBlockAll] = useState(false);
-
   const { isStopped, setStop } = useChronometerState();
   const [correctSend, setCorrectSend] = useState(false);
   const [errorSend, setErrorSend] = useState(false);
+  const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
+  const [loading, setLoading] = useState(false);
+  const { isDark } = useDarkTheme();
+  const router = useRouter();
+  const [validAccess, setValidAccess] = useState(false);
+
+  useEffect(() => {
+    const accesoPermitido = sessionStorage.getItem('accesoPermitido');
+
+    if (!accesoPermitido) {
+      router.replace('/home');
+    } else {
+      setValidAccess(true);
+    }
+
+    const handleRouteChange = () => {
+      sessionStorage.removeItem('accesoPermitido');
+    };
+
+    window.addEventListener('beforeunload', handleRouteChange);
+    window.history.pushState(null, '', window.location.href);
+    window.addEventListener('popstate', () => {
+      sessionStorage.removeItem('accesoPermitido');
+      router.replace('/home');
+    });
+
+    return () => {
+      window.removeEventListener('beforeunload', handleRouteChange);
+      window.removeEventListener('popstate', handleRouteChange);
+    };
+  }, [router]);
+
+  if (!validAccess) return null;
 
   const steps = [
     { title: 'Mis Datos', component: <StepOne blockAll={blockAll} /> },
@@ -38,59 +70,54 @@ const StepperContainer = () => {
     { title: 'Pago', component: <StepThree blockAll={blockAll} /> },
   ];
 
-  const router = useRouter();
-  const { pass } = useControlRouteRequestStore((state) => state);
   const handleStepClick = (index: number) => {
     if (completedSteps[index] || index === activeStep) {
       setActiveStep(index);
     }
   };
-  const { isDark } = useDarkTheme();
-
-  useEffect(() => {
-    if (!pass) {
-      router.push('/home');
-    }
-  }, [pass, router]);
 
   const handleCancelRequest = () => {
     Swal.fire({
-      title: '<h2>¿Estás seguro de que deseas cancelar esta solicitud?</h2>',
-      imageUrl: !isDark ? alertaSirena : alertaSirenaDark,
-      imageWidth: 100,
-      imageHeight: 100,
-      html: `<div class="flex flex-col gap-5">
-      <p class="text-base font-light font-roboto">
-        Si cancela esta solicitud, debe generar una nueva solicitud
-      </p>
-      <div class="flex xs-mini-phone:flex-row flex-col justify-between items-center mt-5 gap-10 px-[13px]">
-        <div id="back-button-container"></div>
-        <div class="h-[49px] flex items-center justify-center">   
-          <button id="cancel-button" class="m-1 text-base h-[42px] min-w-[110px] flex relative items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}">
-            Cancelar
-          </button>
-        </div>
-      </div>
-    </div>`,
-      customClass: {
-        image: 'swal-custom-image',
-        popup: 'my-popup',
-      },
-      width: '400px',
+      icon: 'warning',
+      html: ReactDOMServer.renderToString(
+        <div className="flex flex-col gap-3 text-[#545454]">
+          <h2 className="font-textFont text-2xl font-medium dark:text-darkText">
+            ¿Estás seguro de que deseas cancelar esta solicitud?
+          </h2>
+          <p className="font-textFont dark:text-darkText">
+            Si cancela esta solicitud, debe generar una nueva solicitud
+          </p>
+          <div className="flex flex-col items-center justify-between gap-10 px-[13px] xs-mini-phone:flex-row">
+            <div id="back-button-container"></div>
+            <div className="flex h-[49px] items-center justify-center">
+              <button
+                id="cancel-button"
+                className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 flex h-[42px] min-w-[110px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-base text-white dark:border-darkText dark:bg-darkText dark:text-lightText`}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>,
+      ),
       showConfirmButton: false,
       showCancelButton: false,
-      background: isDark ? 'rgb(69 69 69)' : '#ffffff',
-      color: isDark ? '#ffffff' : '#000000',
+      background: isDark ? '#252526' : '#ffffff',
       didRender: () => {
         const backElement = document.getElementById('back-button-container');
         if (backElement) {
           const root = createRoot(backElement);
           root.render(
             <button
+              type="button"
               onClick={() => Swal.close()}
-              className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 flex h-[42px] min-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-sm text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
+              className={`group relative m-1 flex h-[46px] min-w-[48px] max-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 font-textFont text-lg font-light text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
             >
-              <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} backRequest={true} />
+              <div className="relative h-5 w-5 overflow-hidden">
+                <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
+                  <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
+                </div>
+              </div>
               Volver
             </button>,
           );
@@ -102,14 +129,24 @@ const StepperContainer = () => {
           cancelButton.addEventListener('click', () => {
             setBlockAll(true);
             setStop(true);
+            resetToDefault();
+            setActiveStep(0);
+            setCorrectSend(false);
+            setErrorSend(false);
             Swal.close();
+            window.scrollTo({ top: 0 });
+            Swal.fire({
+              icon: 'error',
+              background: '#ffffff00',
+              showConfirmButton: false,
+              timer: 1000,
+            });
           });
         }
       },
     });
   };
-  const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
-  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async () => {
     setLoading(true);
     try {
@@ -118,10 +155,17 @@ const StepperContainer = () => {
       const isSuccess = await submitAllData(selectedSendingSystem, selectedReceivingSystem);
 
       if (isSuccess) {
+        Swal.fire({
+          icon: 'success',
+          background: '#ffffff00',
+          showConfirmButton: false,
+          timer: 1000,
+        });
         console.log('Datos enviados correctamente');
         setBlockAll(true);
         setCorrectSend(true);
         setErrorSend(false);
+        window.scrollTo({ top: 0 });
       } else {
         setErrorSend(true);
         console.error('Hubo un error al enviar los datos');
@@ -131,6 +175,7 @@ const StepperContainer = () => {
     }
     setLoading(false);
   };
+
   return (
     <div
       className={clsx(

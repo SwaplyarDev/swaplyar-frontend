@@ -101,12 +101,8 @@ export const WiseEurDarkImg = 'https://res.cloudinary.com/dwrhturiy/image/upload
 /** 404 Error **/
 export const Post1_404 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732486012/post1-404_rz6g6k.png';
 export const Post2_404 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732486215/post2-404_qycpu0.png';
-export const Enchufe_dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732486335/enchufe_dark_f5y6ny.png';
-export const Enchufe_clear = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732486336/enchufe_clear_fkay11.png';
-export const Enchufe_dark_largo =
-  'https://res.cloudinary.com/dwrhturiy/image/upload/v1732486335/enchufe_dark_largo_dtkxoq.png';
-export const Enchufe_clear_largo =
-  'https://res.cloudinary.com/dwrhturiy/image/upload/v1732486335/enchufe_clear_largo_dyh2ce.png';
+export const Enchufe_dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1741184277/enchufe_dark_veg7a4.png';
+export const Enchufe_clear = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1741184086/enchufe_clear_bdoy2z.png';
 
 export const tlf_404_clear = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732487578/tlf_404_clear_skszrs.png';
 export const tlf_404_dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732488318/tlf_404_dark_jior67.png';
