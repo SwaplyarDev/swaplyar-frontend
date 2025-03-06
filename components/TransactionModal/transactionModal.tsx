@@ -17,16 +17,13 @@ import ModalEditReciever from './componentesModal/ModalEditReciever/ModalEditRec
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import ClientInformation from '@/components/TransactionModal/componentesModal/ClientInformation';
+
 const MySwal = withReactContent(Swal);
 
 const TransactionModal = ({ transId }: { transId: string }) => {
   const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
   const [modal, setModal] = useState<boolean>(false);
+
   const {
     isLoading,
     trans,
@@ -42,14 +39,15 @@ const TransactionModal = ({ transId }: { transId: string }) => {
     updateTransactionStatusFromStore, // Aquí llamamos la nueva función
     setComponentStates,
     setSelected,
+    getStatusClient,
   } = useTransactionStore();
+
   const { transaction } = trans;
 
   useEffect(() => {
-    console.log('🔄 Se detectó un cambio en status, actualizando estado...');
-    updateTransactionStatusFromStore(transId);
-    console.log(status);
-  }, [status, transId]);
+    setIsVisible(true);
+  }, []);
+
   useEffect(() => {
     if (transId) {
       fetchTransaction(transId);
@@ -57,12 +55,19 @@ const TransactionModal = ({ transId }: { transId: string }) => {
   }, [transId, fetchTransaction]);
 
   useEffect(() => {
-    if (transaction.regret_id) {
+    if (transaction && transaction.regret_id) {
       fetchRegret(transaction.regret_id);
-    } else if (transaction.note_id) {
+    } else if (transaction && transaction.note_id) {
       fetchNote(transaction.note_id);
     }
-  }, [transaction.regret_id, transaction.note_id, fetchRegret, fetchNote]);
+  }, [transaction, fetchRegret, fetchNote]);
+
+  useEffect(() => {
+    updateTransactionStatusFromStore(transId, trans);
+    console.log(trans.status);
+
+    getStatusClient(transId, trans);
+  }, [status, transId, trans, updateTransactionStatusFromStore, getStatusClient]);
 
   return (
     <section className="fixed inset-0 top-0 z-[5] flex w-full translate-x-0 items-center justify-end bg-black bg-opacity-50 opacity-100">
@@ -134,7 +139,7 @@ const TransactionModal = ({ transId }: { transId: string }) => {
             {componentStates.discrepancySection !== null && <FinalSection />}
           </section>
         )}
-        <p className="flex justify-center text-center">Estado actual: {status}</p>
+        <h1 className="bg-red-300">{trans.status}</h1>
       </section>
       <ModalEditReciever modal={modal} setModal={setModal} trans={trans} />
     </section>

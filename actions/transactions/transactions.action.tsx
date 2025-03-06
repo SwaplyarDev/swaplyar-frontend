@@ -32,6 +32,29 @@ export const getTransactionById = async (id: string) => {
   }
 };
 
+export const getStatusById = async (transId: string) => {
+  console.log('🟡 Ejecutando getStatusById con id:', transId, 'y trans:');
+  if (!transId) {
+    console.error('❌ transId o trans son inválidos:', { transId });
+    throw new Error('❌ Error: transId o trans no son válidos.');
+  }
+
+  try {
+    const response = await fetch(
+      `${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus?transaction_id=${transId}&last_name=righi`,
+    );
+
+    if (!response.ok) throw new Error('Failed to fetch transactions');
+
+    const info: TransactionTypeSingle = await response.json();
+    console.log('📥 Datos recibidos en getStatusById:', info);
+    return info;
+  } catch (error: any) {
+    console.error('❌ Error en getStatusById:', error);
+    return null;
+  }
+};
+
 export const deleteTransactionById = async (id: string) => {
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions/${id}`, {
