@@ -31,7 +31,7 @@ const CardDetail: React.FC = () => {
     };
 
     fetchData();
-  }, [id]);
+  }, [id, slug]);
 
   if (isLoading) {
     return <p className="p-6 text-center text-gray-500">Cargando...</p>;
