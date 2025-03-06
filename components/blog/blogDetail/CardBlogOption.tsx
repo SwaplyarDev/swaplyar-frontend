@@ -3,7 +3,6 @@ import React from 'react';
 import { BlogPostCardProps } from '@/types/blogs/blog';
 import slugify from 'slugify';
 import Link from 'next/link';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 interface CardBlogOptionProps {
   isLoaded: boolean;

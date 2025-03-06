@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import PaginationButtons from '../ui/PaginationButtonsProps/PaginationButtonsProps';
 import ImageCarousel from '@/components/ui/ImageCarousel/imageCarousel';
@@ -9,7 +9,6 @@ import BlogPostCard from './BlogPostCard/BlogPostCard';
 import { gifImage } from '@/utils/assets/img-database';
 import useBlogStore from '@/store/useBlogStore';
 import useFetchBlogs from '@/hooks/useFetchBlogs/useFetchBlogs';
-import SearchInput from '../ui/SearchInput/SearchInput';
 
 interface BlogProps {
   currentPage: number;

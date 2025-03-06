@@ -4,10 +4,8 @@
 
 import Image from 'next/image';
 import { BlogPostCardProps } from '@/types/blogs/blog';
-import useBlogStore from '@/store/useBlogStore';
 import { useEffect, useState } from 'react';
 import { fetchBlogs } from '@/actions/blogs/blogs.actions';
-import SkeletonLoader from '@/components/ui/SkeletonLoader/SkeletonLoader';
 import CardBlogOption from './CardBlogOption';
 import { cardInfoBlog } from '@/utils/assets/imgDatabaseCloudinary';
 import { footerLinks } from '@/components/footer/footerLinks';
