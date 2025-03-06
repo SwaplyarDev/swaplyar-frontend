@@ -12,8 +12,38 @@ import {
 import { getNoteById } from '@/actions/transactions/notes.action';
 import { getRegret } from '@/actions/repentance/repentanceForm.action';
 import { convertTransactionState, getComponentStatesFromStatus } from '@/utils/transactionStatesConverser';
-import { TransactionService } from '@/components/TransactionModal/componentesModal/ui/TransactionService';
+import {
+  TransactionService,
+  GetTransactionStatus,
+} from '@/components/TransactionModal/componentesModal/ui/TransactionService';
+import { useSession } from 'next-auth/react';
 
+interface TransactionStatus {
+  refunded: {
+    sec: number;
+    id: string;
+    date: string;
+    description: string;
+  };
+  pending: {
+    sec: number;
+    id: string;
+    date: string;
+    description: string;
+  };
+  review_payment: {
+    sec: number;
+    id: string;
+    date: string;
+    description: string;
+  };
+  modified: {
+    sec: number;
+    id: string;
+    date: string;
+    description: string;
+  };
+}
 interface TransactionState {
   trans: TransactionTypeSingle;
   noteEdit: NoteTypeSingle;
@@ -27,15 +57,17 @@ interface TransactionState {
     discrepancySection: boolean | null;
     transferRealized: boolean;
   };
+
   selected: 'stop' | 'accepted' | 'canceled' | null;
   fetchTransaction: (transId: string) => Promise<void>;
   fetchNote: (noteId: string) => Promise<void>;
   fetchRegret: (regretId: string) => Promise<void>;
   setComponentStates: (key: keyof TransactionState['componentStates'], value: any) => void;
   setStatus: (status: string) => void;
-  updateTransactionStatusFromStore: (transId: string) => Promise<void>;
+  updateTransactionStatusFromStore: (transId: string, trans: any) => Promise<void>;
   setSelected: (selected: 'stop' | 'accepted' | 'canceled' | null) => void;
   updateStatusFromComponents: () => void;
+  getStatusClient: (transId: string, trans: any) => Promise<void>;
 }
 
 export const useTransactionStore = create<TransactionState>((set, get) => ({
@@ -76,16 +108,18 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
       set({ isLoading: false });
     }
   },
-  updateTransactionStatusFromStore: async (transId) => {
+  updateTransactionStatusFromStore: async (transId, trans) => {
     const { status } = get();
-    console.log('📌 Estado antes de enviar al servicio:', status, transId);
 
+    if (!status || !trans) {
+      console.warn('⚠️ Estado no definido, cancelando actualización.');
+      return;
+    }
     try {
-      const response = await TransactionService(status, transId);
+      const response = await GetTransactionStatus(status, transId);
 
       if (response?.newStatus) {
         set({ status: response.newStatus });
-        console.log('✅ Estado actualizado en el store:', response.newStatus);
       } else {
         console.warn('⚠️ No se recibió un nuevo estado en la respuesta.');
       }
@@ -93,6 +127,24 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
       console.error('❌ Error al actualizar el estado desde el store:', error);
     }
   },
+  getStatusClient: async (transId, trans) => {
+    if (!trans) {
+      throw new Error('error');
+    }
+
+    try {
+      const response = await GetTransactionStatus(transId, trans);
+
+      if (response?.newStatus) {
+        set({ status: response.newStatus });
+      } else {
+        console.warn('⚠️ No se recibió un nuevo estado en la respuesta.');
+      }
+    } catch (error) {
+      console.error('❌ Error al actualizar el estado desde el store:', error);
+    }
+  },
+
   fetchNote: async (idNote: string) => {
     try {
       const note = await getNoteById(idNote);
