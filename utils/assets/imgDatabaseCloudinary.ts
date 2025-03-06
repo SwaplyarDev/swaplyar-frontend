@@ -239,3 +239,6 @@ export const swaplyArAvatar = 'https://res.cloudinary.com/dwrhturiy/image/upload
 // Questions
 export const BannerQuestions =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1739981532/baner_questions_lnxujx.png';
+
+// Blog
+export const cardInfoBlog = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1741180457/cardInfoBlog_gavy9u.png';

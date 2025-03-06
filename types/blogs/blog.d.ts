@@ -8,12 +8,15 @@ export interface BlogPost {
 }
 
 interface BlogPostCardProps {
+  id?: string;
   blog_id: string;
   category: string;
   title: string;
   body: string;
   url_image: string;
   created_at: string;
+  subtitulos: any[];
+  create_at: string;
 }
 
 export interface BlogResponse {

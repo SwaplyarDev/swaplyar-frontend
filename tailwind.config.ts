@@ -125,7 +125,7 @@ const config: Config = {
 
         //whiteDark
         'custom-whiteD': 'rgba(235, 231, 224, 1)', //#EBE7E0 COLOR DEL TEXTO EN MODO OSCURO Usos (generalmente en modo oscuro): Boton blanco, inputs blanco, ...
-        'custom-whiteD-100': 'rgba(255, 255, 251, 1)',
+        'custom-whiteD-100': 'rgba(255, 255, 251, 1)', //#FFFFFB
         'custom-whiteD-200': 'rgba(255, 255, 248, 1)',
         'custom-whiteD-300': 'rgba(255, 252, 245, 1)',
         'custom-whiteD-400': 'rgba(253, 249, 242, 1)',
