@@ -64,8 +64,9 @@ const CardContent: React.FC<CardContentProps> = ({ blogData }) => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
 
-      const progressValue = (scrollTop / scrollHeight) * 100;
-      setProgress(progressValue);
+      const progressValue = Math.min((scrollTop / scrollHeight) * 100, 100);
+
+      setProgress((prev) => (prev >= 100 ? 100 : progressValue));
     };
 
     window.addEventListener('scroll', handleScroll);
