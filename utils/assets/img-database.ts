@@ -222,6 +222,3 @@ export const enchufeLargoDark = '/images/enchufeLargoDark.svg';
 
 export const error404Clear = '/images/error404Clear.svg';
 export const error404Dark = '/images/error404Dark.svg';
-
-export const qrLight = '/images/qrLight.png';
-export const qrDark = '/images/qrDark.png';
