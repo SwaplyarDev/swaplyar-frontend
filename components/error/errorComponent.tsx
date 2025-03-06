@@ -27,7 +27,7 @@ const NotFoundComponent = () => {
 
     const timer = setInterval(() => {
       setCounter((prev) => prev - 1);
-    }, 100000);
+    }, 1000);
 
     return () => clearInterval(timer);
   }, [counter, router]);
