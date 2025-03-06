@@ -140,6 +140,8 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
             handleChange={handleChange}
             watch={watch}
             restRegister={restRegister}
+            previewImage={previewImage}
+            setPreviewImage={setPreviewImage}
           />
         );
       default:

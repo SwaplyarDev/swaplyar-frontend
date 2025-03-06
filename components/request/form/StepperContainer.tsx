@@ -17,7 +17,6 @@ import { useSystemStore } from '@/store/useSystemStore';
 import Tick from '@/components/ui/Tick/Tick';
 import Cronometro from './Cronometro';
 import useChronometerState from '@/store/chronometerStore';
-import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import ReactDOMServer from 'react-dom/server';
 

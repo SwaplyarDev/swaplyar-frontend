@@ -4,6 +4,7 @@ import InputSteps from '@/components/inputSteps/InputSteps';
 import { FieldError } from 'react-hook-form';
 import InfoStep from '@/components/ui/InfoStep/InfoStep';
 import clsx from 'clsx';
+import { formatTaxId } from '@/utils/formatedTaxId';
 
 interface StepTwoPixProps {
   register: UseFormRegister<any>;
@@ -92,7 +93,7 @@ const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, blockAll, for
           type="text"
           placeholder={errors.reciever_last_name ? 'Apellido *' : 'Apellido'}
           disabled={blockAll || formData.stepOne?.own_account === 'Si'}
-          value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_first_name : undefined}
+          value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_last_name : undefined}
           defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
           register={register}
           watch={watch}
@@ -116,12 +117,10 @@ const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, blockAll, for
           disabled={blockAll}
           register={register}
           watch={watch}
+          maxLength={14}
+          disabledLetters
           rules={{
             required: 'El CPF es obligatorio',
-            pattern: {
-              value: /^\d{3}\.\d{3}\.\d{3}-\d{2}$/,
-              message: 'Debe ser XXX.XXX.XXX-XX',
-            },
           }}
           error={errors.individual_tax_id ? (errors.individual_tax_id as FieldError) : undefined}
           className="order-4"
