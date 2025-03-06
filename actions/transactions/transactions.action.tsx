@@ -32,8 +32,8 @@ export const getTransactionById = async (id: string) => {
   }
 };
 
-export const getStatusById = async (transId: string) => {
-  console.log('🟡 Ejecutando getStatusById con id:', transId, 'y trans:');
+export const getStatusById = async (transId: string, trans: any) => {
+  console.log('🟡 Ejecutando getStatusByI');
   if (!transId) {
     console.error('❌ transId o trans son inválidos:', { transId });
     throw new Error('❌ Error: transId o trans no son válidos.');
@@ -41,7 +41,7 @@ export const getStatusById = async (transId: string) => {
 
   try {
     const response = await fetch(
-      `${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus?transaction_id=${transId}&last_name=righi`,
+      `${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus?transaction_id=${transId}&last_name=Righi`,
     );
 
     if (!response.ok) throw new Error('Failed to fetch transactions');
@@ -86,10 +86,9 @@ export const updateTransaction = async ({ transaction }: TransactionTypeSingle) 
   }
 };
 
-//Status Transaction Client syde Fetchs
-
 export const updateStatusClient = async (transactionId: any, status: any) => {
   try {
+    console.log('updated');
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus/${transactionId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },

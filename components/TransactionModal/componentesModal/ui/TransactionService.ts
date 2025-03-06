@@ -10,17 +10,13 @@ export const TransactionService = async (
   transId: string,
 ): Promise<TransactionServiceResponse | null> => {
   try {
-    console.log(`🔄 Intentando actualizar la transacción ${transId} a: ${status}. `);
-
     if (!status || !transId) {
       console.error('❌ Error: status o transId no válido', { status, transId });
       throw new Error('Datos inválidos');
     }
 
-    console.log('📤 Llamando a updateStatusClient...');
     const response = await updateStatusClient(transId, status);
 
-    console.log('📥 Respuesta recibida de updateStatusClient', response);
     return response;
   } catch (error) {
     console.error('❌ Error al actualizar el estado:', error);
@@ -29,27 +25,23 @@ export const TransactionService = async (
 };
 
 export const GetTransactionStatus = async (transId: string, trans: any) => {
-  console.log('GetTransactionStatus', trans);
+  console.log('Valores recibidos:', { transId, trans });
 
   if (!transId || !trans) {
-    throw new Error('error');
+    throw new Error('error'); // Si ves este error, transId o trans están vacíos
   }
 
+  console.log('transID:', transId);
+
   try {
-    console.log(`📌 Llamando a getStatusById con transId: ${transId}`);
-
-    if (!transId || !trans) {
-      console.error('❌ Error: transId o trans no válido', { transId, trans });
-      throw new Error('error');
-    }
-
-    const response = await getStatusById(transId);
+    console.log('✅ Llamando a getStatusById con transId:', transId);
+    const response = await getStatusById(transId, trans);
+    console.log('📤 Respuesta de getStatusById:', response);
 
     if (!response) {
       throw new Error(`❌ Error en la respuesta del servicio`);
     }
 
-    console.log('📥 Respuesta recibida:', response.status);
     return { newStatus: response.status };
   } catch (error) {
     console.error('❌ Error al obtener la transacción:', error);

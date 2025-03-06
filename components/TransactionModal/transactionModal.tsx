@@ -64,10 +64,9 @@ const TransactionModal = ({ transId }: { transId: string }) => {
 
   useEffect(() => {
     updateTransactionStatusFromStore(transId, trans);
-    console.log(trans.status);
 
     getStatusClient(transId, trans);
-  }, [status, transId, trans, updateTransactionStatusFromStore, getStatusClient]);
+  }, [transId, componentStates]);
 
   return (
     <section className="fixed inset-0 top-0 z-[5] flex w-full translate-x-0 items-center justify-end bg-black bg-opacity-50 opacity-100">
@@ -139,7 +138,6 @@ const TransactionModal = ({ transId }: { transId: string }) => {
             {componentStates.discrepancySection !== null && <FinalSection />}
           </section>
         )}
-        <h1 className="bg-red-300">{trans.status}</h1>
       </section>
       <ModalEditReciever modal={modal} setModal={setModal} trans={trans} />
     </section>

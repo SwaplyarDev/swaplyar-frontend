@@ -110,17 +110,16 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
   },
   updateTransactionStatusFromStore: async (transId, trans) => {
     const { status } = get();
-    console.log('📌 Estado antes de enviar al servicio:', status, transId, trans);
+
     if (!status || !trans) {
       console.warn('⚠️ Estado no definido, cancelando actualización.');
       return;
     }
     try {
-      const response = await TransactionService(status, transId);
+      const response = await GetTransactionStatus(status, transId);
 
       if (response?.newStatus) {
         set({ status: response.newStatus });
-        console.log('✅ Estado actualizado en el store:', response.newStatus);
       } else {
         console.warn('⚠️ No se recibió un nuevo estado en la respuesta.');
       }
@@ -129,8 +128,6 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
     }
   },
   getStatusClient: async (transId, trans) => {
-    console.log('getStatusClient', trans);
-
     if (!trans) {
       throw new Error('error');
     }
@@ -140,7 +137,6 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
 
       if (response?.newStatus) {
         set({ status: response.newStatus });
-        console.log('✅ Estado actualizado en el store:', response.newStatus);
       } else {
         console.warn('⚠️ No se recibió un nuevo estado en la respuesta.');
       }
