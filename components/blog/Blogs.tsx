@@ -9,6 +9,7 @@ import BlogPostCard from './BlogPostCard/BlogPostCard';
 import { gifImage } from '@/utils/assets/img-database';
 import useBlogStore from '@/store/useBlogStore';
 import useFetchBlogs from '@/hooks/useFetchBlogs/useFetchBlogs';
+import SearchInput from '../ui/SearchInput/SearchInput';
 
 interface BlogProps {
   currentPage: number;
@@ -26,14 +27,9 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
 
   const [totalPages, setTotalPages] = useState<number>(1);
 
-  useFetchBlogs({
-    currentPage,
-    searchTerm,
-    setTotalPages,
-  });
-
   // Filtrar los blogs según el término de búsqueda
   const filteredBlogs = useMemo(() => {
+    if (searchTerm === '') return blogs;
     return blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
   }, [blogs, searchTerm]);
 
@@ -48,6 +44,12 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
     [router],
   );
 
+  useFetchBlogs({
+    currentPage,
+    searchTerm,
+    setTotalPages,
+  });
+
   return (
     <>
       <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:px-20">
@@ -59,12 +61,12 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
         {randomImages && randomImages.length > 0 && <ImageCarousel images={randomImages} />}
 
         {/* Hasta que se pueda agregar paginado al filtrado */}
-        {/* <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} /> */}
+        <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} />
 
         {!isLoading ? (
           <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
-            {filteredBlogs.length >= 1 ? (
-              filteredBlogs.map((post) => (
+            {blogs.length >= 1 ? (
+              blogs.map((post) => (
                 <BlogPostCard
                   key={post.blog_id}
                   blog_id={post.blog_id}

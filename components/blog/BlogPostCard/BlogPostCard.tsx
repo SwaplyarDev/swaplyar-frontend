@@ -16,7 +16,8 @@ interface BlogPostProps {
 }
 
 const BlogPostCard: React.FC<BlogPostProps> = ({ blog_id, title, body, url_image, created_at, category }) => {
-  const slug = slugify(title, { lower: true, strict: true });
+  const title2 = title || '';
+  const slug = slugify(title2, { lower: true, strict: true });
 
   const formattedDate = created_at ? new Date(created_at) : null;
   const displayDate =

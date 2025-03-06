@@ -31,14 +31,67 @@ const PaginationButtons: React.FC<PaginationButtonsProps> = ({
 
   let pageButtons: (number | string)[] = [];
 
-  if (totalPages <= 2) {
+  // if (totalPages <= 2) {
+  //   pageButtons = [1, 2, '...', totalPages];
+  // } else if (currentPage >= totalPages - 2) {
+  //   pageButtons = [1, '...', totalPages - 2, totalPages - 1, totalPages];
+  // } else if (currentPage === 1) {
+  //   pageButtons = [currentPage, currentPage + 1, '...', totalPages];
+  // } else {
+  //   pageButtons = [currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+  // }
+  if (totalPages === 1) {
+    pageButtons = [1];
+  } else if (totalPages === 2) {
+    pageButtons = [1, 2];
+  } else if (totalPages === 3) {
+    pageButtons = [1, 2, 3];
+  } else if (totalPages === 4) {
+    pageButtons = [1, 2, '...', 4];
+    if (currentPage === 2 || currentPage === 3) {
+      pageButtons = [1, 2, 3, 4];
+    } else if (currentPage === 4) {
+      pageButtons = [1, '...', 3, 4];
+    }
+  } else if (totalPages === 5) {
+    pageButtons = [1, 2, '...', 5];
+    if (currentPage === 2) {
+      pageButtons = [1, 2, 3, '...', 5];
+    } else if (currentPage === 3) {
+      pageButtons = [1, 2, 3, 4, 5];
+    } else if (currentPage === 4) {
+      pageButtons = [1, '...', 3, 4, 5];
+    } else if (currentPage === 5) {
+      pageButtons = [1, '...', 4, 5];
+    }
+  } else if (totalPages === 6) {
+    pageButtons = [1, 2, '...', 6];
+    if (currentPage === 2) {
+      pageButtons = [1, 2, 3, '...', 6];
+    } else if (currentPage === 3) {
+      pageButtons = [1, 2, 3, 4, '...', 6];
+    } else if (currentPage === 4) {
+      pageButtons = [1, '...', 3, 4, 5, 6];
+    } else if (currentPage === 5) {
+      pageButtons = [1, '...', 4, 5, 6];
+    } else if (currentPage === 6) {
+      pageButtons = [1, '...', 5, 6];
+    }
+  } else if (totalPages >= 7) {
     pageButtons = [1, 2, '...', totalPages];
-  } else if (currentPage >= totalPages - 2) {
-    pageButtons = [1, '...', totalPages - 2, totalPages - 1, totalPages];
-  } else if (currentPage === 1) {
-    pageButtons = [currentPage, currentPage + 1, '...', totalPages];
-  } else {
-    pageButtons = [currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+    if (currentPage === 2) {
+      pageButtons = [1, 2, 3, '...', totalPages];
+    } else if (currentPage === 3) {
+      pageButtons = [1, 2, 3, 4, '...', totalPages];
+    } else if (currentPage >= 4 && currentPage < totalPages - 2) {
+      pageButtons = [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+    } else if (currentPage === totalPages - 2) {
+      pageButtons = [1, '...', currentPage - 1, currentPage, currentPage + 1, totalPages];
+    } else if (currentPage === totalPages - 1) {
+      pageButtons = [1, '...', currentPage - 1, currentPage, totalPages];
+    } else if (currentPage === totalPages) {
+      pageButtons = [1, '...', totalPages - 1, totalPages];
+    }
   }
 
   return (
