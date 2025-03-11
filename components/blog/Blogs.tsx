@@ -3,7 +3,6 @@ import React, { useState, useMemo, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import PaginationButtons from '../ui/PaginationButtonsProps/PaginationButtonsProps';
 import ImageCarousel from '@/components/ui/ImageCarousel/imageCarousel';
-import { useRandomImages } from '@/components/ui/useRandomImages/useRandomImages';
 import SkeletonLoader from '@/components/ui/SkeletonLoader/SkeletonLoader';
 import BlogPostCard from './BlogPostCard/BlogPostCard';
 import { gifImage } from '@/utils/assets/img-database';
@@ -33,8 +32,6 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
     return blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
   }, [blogs, searchTerm]);
 
-  const randomImages = useRandomImages(blogs);
-
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const term = e.target.value;
@@ -53,12 +50,11 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
   return (
     <>
       <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:px-20">
-        <h1 className="mb-6 text-left font-titleFont text-[61.04px] font-semibold leading-[73.25px] text-inputLight dark:text-darkText">
-          Blog
+        <h1 className="mb-4 text-left font-titleFont text-[61.04px] font-semibold leading-[73.25px] text-inputLight dark:text-darkText">
+          BLOG
         </h1>
 
-        {/* Asegúrate de que randomImages tenga varias imágenes */}
-        {randomImages && randomImages.length > 0 && <ImageCarousel images={randomImages} />}
+        <ImageCarousel images={blogs} />
 
         {/* Hasta que se pueda agregar paginado al filtrado */}
         <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} />
