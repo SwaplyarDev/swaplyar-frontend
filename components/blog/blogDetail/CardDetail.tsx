@@ -7,9 +7,12 @@ import { useEffect, useState } from 'react';
 import CardContent from './CardContent';
 import { fetchBlogById } from '@/actions/blogs/blogById.action';
 import { BlogPostCardProps } from '@/types/blogs/blog';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 const CardDetail: React.FC = () => {
   const searchParams = useSearchParams();
+  const { isDark } = useDarkTheme();
   const id = searchParams.get('id'); // Obtiene el parámetro `id` de la URL
   const slug = searchParams.get('slug'); // Obtiene el parámetro `slug` de la URL
   const [blogData, setBlogData] = useState<BlogPostCardProps | null>(null);
@@ -34,7 +37,11 @@ const CardDetail: React.FC = () => {
   }, [id, slug]);
 
   if (isLoading) {
-    return <p className="p-6 text-center text-gray-500">Cargando...</p>;
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="100px" />
+      </div>
+    );
   }
 
   if (!blogData) {
