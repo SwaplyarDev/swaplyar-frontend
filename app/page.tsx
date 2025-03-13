@@ -1,5 +1,6 @@
 import HomePage from '@/components/home/HomePage';
 import { Metadata } from 'next';
+import NavbarInternal from '@/components/NavbarInternal/NavbarInternal';
 
 export const metadata: Metadata = {
   title: 'SwaplyAr | Tu Aliado en Transferencias, cambio y dólar cripto',
@@ -33,6 +34,8 @@ export default function Home() {
   return (
     <main className="relative py-10">
       <HomePage />
+      {/* Pruebas Navbar Internal */}
+      {/* <NavbarInternal /> */}
     </main>
   );
 }

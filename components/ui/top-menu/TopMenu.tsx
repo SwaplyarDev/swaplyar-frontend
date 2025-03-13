@@ -23,6 +23,7 @@ import { SwaplyArLogoSolo, SwaplyArLogoComplete } from '@/utils/assets/imgDataba
 import { swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
 import { Button, Popover } from '@mui/material';
 import clsx from 'clsx';
+import NavbarInternal from '@/components/NavbarInternal/NavbarInternal';
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -74,6 +75,16 @@ export function TopMenu() {
   return (
     <main className="sticky top-0 z-[1000] flex flex-col bg-white shadow-md dark:bg-lightText">
       <TopPopUp />
+
+      {/* Verificación usuario autenticado para mostrar navbar*/}
+
+      {/* {status === 'authenticated' ? <NavbarInternal /> : 
+        <Navbar
+          fluid
+          rounded
+          className="sticky mx-auto w-full px-4 py-3 dark:bg-lightText md:px-8 lg:max-w-[1204px] lg:px-4"
+        >
+      } */}
 
       <Navbar
         fluid
