@@ -26,7 +26,7 @@ export default function SearchInput({ searchTerm, onSearchChange, results }: Sea
     setTimeout(() => {
       setIsExpanded(false);
       setShowResults(false);
-    }, 150); // Permitir clic en resultados antes de cerrar
+    }, 150);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

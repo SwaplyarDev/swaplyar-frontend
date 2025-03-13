@@ -54,7 +54,6 @@ const renderListBlog = (array: any[]) => {
 };
 
 const CardContent: React.FC<CardContentProps> = ({ blogData }) => {
-  console.log(blogData);
   const [randomBlog, setRandomBlog] = useState<BlogPostCardProps | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [progress, setProgress] = useState(0);

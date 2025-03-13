@@ -26,7 +26,6 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
 
   const [totalPages, setTotalPages] = useState<number>(1);
 
-  // Filtrar los blogs según el término de búsqueda
   const filteredBlogs = useMemo(() => {
     if (searchTerm === '') return blogs;
     return blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -56,7 +55,6 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
 
         <ImageCarousel images={blogs} />
 
-        {/* Hasta que se pueda agregar paginado al filtrado */}
         <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} />
 
         {!isLoading ? (

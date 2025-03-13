@@ -12,7 +12,6 @@ const ImageCarousel: React.FC<{ images: Blog[] }> = ({ images }) => {
   const [allImagesLoaded, setAllImagesLoaded] = useState(false);
   const sliderRef = useRef<Slider>(null);
 
-  // Tomar los primeros 6 blogs con imagen
   const limitedImages = images.filter((blog) => blog.url_image).slice(0, 6);
 
   useEffect(() => {
@@ -82,7 +81,6 @@ const ImageCarousel: React.FC<{ images: Blog[] }> = ({ images }) => {
             })}
           </Slider>
 
-          {/* Indicadores */}
           <div className="absolute bottom-0 flex min-h-[30px] w-full items-center justify-center gap-2">
             {limitedImages.map((_, index) => (
               <div
