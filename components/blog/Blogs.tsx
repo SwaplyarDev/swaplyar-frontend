@@ -3,12 +3,12 @@ import React, { useState, useMemo, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import PaginationButtons from '../ui/PaginationButtonsProps/PaginationButtonsProps';
 import ImageCarousel from '@/components/ui/ImageCarousel/imageCarousel';
-import { useRandomImages } from '@/components/ui/useRandomImages/useRandomImages';
 import SkeletonLoader from '@/components/ui/SkeletonLoader/SkeletonLoader';
 import BlogPostCard from './BlogPostCard/BlogPostCard';
 import { gifImage } from '@/utils/assets/img-database';
 import useBlogStore from '@/store/useBlogStore';
 import useFetchBlogs from '@/hooks/useFetchBlogs/useFetchBlogs';
+import SearchInput from '../ui/SearchInput/SearchInput';
 
 interface BlogProps {
   currentPage: number;
@@ -26,18 +26,10 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
 
   const [totalPages, setTotalPages] = useState<number>(1);
 
-  useFetchBlogs({
-    currentPage,
-    searchTerm,
-    setTotalPages,
-  });
-
-  // Filtrar los blogs según el término de búsqueda
   const filteredBlogs = useMemo(() => {
+    if (searchTerm === '') return blogs;
     return blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
   }, [blogs, searchTerm]);
-
-  const randomImages = useRandomImages(blogs);
 
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,23 +40,27 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
     [router],
   );
 
+  useFetchBlogs({
+    currentPage,
+    searchTerm,
+    setTotalPages,
+  });
+
   return (
     <>
       <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:px-20">
-        <h1 className="mb-6 text-left font-titleFont text-[61.04px] font-semibold leading-[73.25px] text-inputLight dark:text-darkText">
-          Blog
+        <h1 className="mb-4 text-left font-titleFont text-[61.04px] font-semibold leading-[73.25px] text-inputLight dark:text-darkText">
+          BLOG
         </h1>
 
-        {/* Asegúrate de que randomImages tenga varias imágenes */}
-        {randomImages && randomImages.length > 0 && <ImageCarousel images={randomImages} />}
+        <ImageCarousel images={blogs} />
 
-        {/* Hasta que se pueda agregar paginado al filtrado */}
-        {/* <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} /> */}
+        <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} />
 
         {!isLoading ? (
-          <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
-            {filteredBlogs.length >= 1 ? (
-              filteredBlogs.map((post) => (
+          blogs.length >= 1 ? (
+            <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
+              {blogs.map((post) => (
                 <BlogPostCard
                   key={post.blog_id}
                   blog_id={post.blog_id}
@@ -74,11 +70,11 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
                   url_image={post.url_image}
                   created_at={post.created_at}
                 />
-              ))
-            ) : (
-              <p className="text-center text-gray-500">No se encontraron resultados.</p>
-            )}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <SkeletonLoader />
+          )
         ) : (
           <SkeletonLoader />
         )}

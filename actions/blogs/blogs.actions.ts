@@ -26,9 +26,10 @@ export const fetchBlogs = async (page: number, searchTerm: string): Promise<Blog
 };
 
 export const filterBlogs = async (searchTerm: string): Promise<BlogResponse> => {
+  console.log(encodeURIComponent(searchTerm));
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/blogs/content/${encodeURIComponent(searchTerm)}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/blogs/content/${encodeURIComponent(searchTerm)}`,
       {
         method: 'GET',
         cache: 'no-store',

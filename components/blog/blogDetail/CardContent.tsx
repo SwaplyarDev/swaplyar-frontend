@@ -41,7 +41,8 @@ const renderListBlog = (array: any[]) => {
             <ul className="list-decimal pl-5">
               {item.sub_items.map((subItem: any) => (
                 <li key={subItem.subItem_id} id={subItem.subItem_id}>
-                  <span className="font-semibold">{subItem.title}</span> {subItem.dsc_subItem}
+                  <span className="font-semibold">{subItem.title}</span>{' '}
+                  <span className="font-light">{subItem.dsc_subItem}</span>
                 </li>
               ))}
             </ul>
@@ -147,7 +148,7 @@ const CardContent: React.FC<CardContentProps> = ({ blogData }) => {
               blogData.subtitulos.map((sub, index) => (
                 <div key={sub.subtitulo_id} id={sub.subtitulo_id} className="scroll-mt-32 font-textFont">
                   <p className="font-semibold">{sub.subtitulo}</p>
-                  <p>{sub.dsc_subtitulo}</p>
+                  <p className="font-light">{sub.dsc_subtitulo}</p>
                   {sub.items && sub.items.length > 0 && renderListBlog(sub.items)}
                 </div>
               ))}
