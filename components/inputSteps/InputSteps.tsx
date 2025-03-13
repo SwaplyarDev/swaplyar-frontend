@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import { FieldError, UseFormRegister, UseFormWatch, RegisterOptions } from 'react-hook-form';
+import { formatTaxId } from '@/utils/formatedTaxId';
 
 interface InputStepsProps {
   label: string;
   name: string;
   id: string;
+  maxLength?: number;
   type: string;
   placeholder: string;
   disabled?: boolean;
@@ -19,6 +21,7 @@ interface InputStepsProps {
   file?: boolean;
   className?: string;
   disabledWithoutMargin?: boolean;
+  disabledLetters?: boolean;
 }
 
 const InputSteps: React.FC<InputStepsProps> = ({
@@ -32,7 +35,9 @@ const InputSteps: React.FC<InputStepsProps> = ({
   watch,
   rules,
   error,
+  maxLength,
   value,
+  disabledLetters,
   defaultValue,
   onCustomChange,
   file,
@@ -45,8 +50,14 @@ const InputSteps: React.FC<InputStepsProps> = ({
   const { onChange, ...restRegister } = register(name, rules);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = formatTaxId(event.target.value);
+    event.target.value = formattedValue;
     onChange(event);
     if (onCustomChange) onCustomChange(event);
+  };
+
+  const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
+    event.currentTarget.value = event.currentTarget.value.replace(/[^0-9.-]/g, '');
   };
 
   return (
@@ -66,10 +77,12 @@ const InputSteps: React.FC<InputStepsProps> = ({
         id={id}
         type={type}
         value={value}
+        maxLength={maxLength}
         defaultValue={defaultValue}
         disabled={disabled}
         placeholder={isFocused || watch(name) ? '' : placeholder}
         onChange={handleChange}
+        onInput={disabledLetters ? handleInput : undefined}
         {...restRegister}
         className={clsx(
           file ? 'hidden' : '',

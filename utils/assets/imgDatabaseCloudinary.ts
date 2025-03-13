@@ -242,3 +242,8 @@ export const BannerQuestions =
 
 // Blog
 export const cardInfoBlog = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1741180457/cardInfoBlog_gavy9u.png';
+
+export const qrLight =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1741270782/48338805-QR_BYBIT_CLARO_wehfx8.png';
+export const qrDark =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1741270782/48235050-QR_BYBIT_OSCURO_hacxbp.png';

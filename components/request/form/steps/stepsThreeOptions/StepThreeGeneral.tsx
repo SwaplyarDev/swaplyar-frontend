@@ -45,7 +45,7 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
   const emailAccount = detectarMail(selectedSendingSystem);
 
   const proofOfPayment = watch('proof_of_payment');
-  console.log(previewImage);
+
   const handleRemoveImage = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setPreviewImage(null);
