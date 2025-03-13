@@ -14,6 +14,7 @@ import { useStepperStore } from '@/store/stateStepperStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 import { systems } from '@/utils/dataCoins';
+import { useLocalizedPath } from '@/i18n/useLocalizedPath';
 
 export default function TransactionCalculator() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -39,18 +40,19 @@ export default function TransactionCalculator() {
     useAmountCalculator();
 
   const pathname = usePathname();
+  const getPath = useLocalizedPath();
   const { pass } = useControlRouteRequestStore((state) => state);
   const { setPass } = useControlRouteRequestStore((state) => state);
 
   useEffect(() => {
     if (!pass && pathname === '/request') {
-      router.push('/home');
+      router.push('/');
     }
   }, [pass, pathname, router]);
 
   const handleDirection = () => {
     sessionStorage.setItem('accesoPermitido', 'true');
-    router.push('/request');
+    router.push(getPath('request'));
   };
 
   const handleSubmit = () => {

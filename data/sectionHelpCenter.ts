@@ -1,21 +1,30 @@
-export const sectionLinksHelpCenter = [
+import { routes } from '@/i18n/routes';
+
+interface ISectionLinksHelpCenter {
+  image: string;
+  title: string;
+  text: string;
+  href: keyof typeof routes;
+}
+
+export const sectionLinksHelpCenter: ISectionLinksHelpCenter[] = [
   {
     image: '/images/helpCenter1.png',
     title: 'Cancelacion y Reembolso',
     text: 'Cancela tu transferencia para obtener un reembolso.',
-    href: '/repentance',
+    href: 'repentance',
   },
   {
     image: '/images/helpCenter2.png',
     title: 'Buscar Solicitud',
     text: 'Consulte el estado de la transferencia.',
-    href: '/request/search-request',
+    href: 'requestSearchRequest',
   },
   {
     image: '/images/helpCenter3.png',
     title: 'Editar Solicitud',
     text: 'Edita el nombre de tu destinatario en caso de que creas que cometiste un error.',
-    href: '/editRequest',
+    href: 'editRequest',
   },
 ];
 

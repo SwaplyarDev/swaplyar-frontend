@@ -14,14 +14,16 @@ import {
   FlyerGif,
 } from '@/utils/assets/imgDatabaseCloudinary';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import { useLocalizedPath } from '@/i18n/useLocalizedPath';
 
 function LoyaltyProgram() {
   const { setView } = useStore();
   const { isDark } = useDarkTheme();
+  const getPath = useLocalizedPath();
 
   const handleChange = () => {
     setView('register');
-    window.location.href = '/auth/login-register';
+    window.location.href = getPath('authLoginRegisterRegister');
   };
 
   return (
@@ -35,7 +37,7 @@ function LoyaltyProgram() {
 
           <div className="mt-10 text-center">
             <section className="mx-auto max-w-[796px] text-center font-light">
-              <strong className="text-lg"> Cada transacción es una oportunidad de obtener más.</strong>
+              <strong className="text-lg"> Cada transacción es una oportunidad de obtener más. </strong>
               Únete a SwaplyAr Plus Rewards y disfruta de beneficios exclusivos cada vez que realices un intercambio.
             </section>
             <button
@@ -46,10 +48,10 @@ function LoyaltyProgram() {
               ¡Únete ya!
             </button>
             <p className="mx-auto mt-10 max-w-[504px] text-start font-light">
-              ¿Aún no formas parte? <LinkWithHover href="/auth/login-register">Crea</LinkWithHover> tu perfil en
-              SwaplyAr o <LinkWithHover href="/auth/login-register">Inicia Sesión</LinkWithHover> en tu cuenta y da el
-              primer paso hacia una experiencia que te recompensa en cada movimiento. ¡Inscríbete hoy y comienza a
-              disfrutar las ventajas!
+              ¿Aún no formas parte? <LinkWithHover href={getPath('authLoginRegisterRegister')}>Crea</LinkWithHover> tu
+              perfil en SwaplyAr o <LinkWithHover href={getPath('authLoginRegisterLogin')}>Inicia Sesión</LinkWithHover>{' '}
+              en tu cuenta y da el primer paso hacia una experiencia que te recompensa en cada movimiento. ¡Inscríbete
+              hoy y comienza a disfrutar las ventajas!
             </p>
           </div>
 
@@ -86,7 +88,7 @@ function LoyaltyProgram() {
       </div>
       <FlyerTrabajo
         imageSrc={FlyerGif}
-        href="/auth/login-register"
+        href={getPath('authLoginRegisterRegister')}
         description="Registrate gratis para empezar a obtener beneficios exclusivos"
         nameButton="Me quiero registrar"
       />

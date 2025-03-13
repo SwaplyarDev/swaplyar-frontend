@@ -6,9 +6,11 @@ import { useDarkTheme } from '../../../ui/theme-Provider/themeProvider';
 import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 import { sectionTermsAndConditionsPlus } from '@/data/sectionTermsAndConditions';
+import { useLocalizedPath } from '@/i18n/useLocalizedPath';
 
 const SaprTermsConditions = () => {
   const { isDark } = useDarkTheme();
+  const getPath = useLocalizedPath();
 
   return (
     <div className="relative mx-auto flex max-w-[1000px] flex-col items-center px-4 py-10 text-custom-grayD dark:text-darkText md:px-8 lg:px-4">
@@ -56,7 +58,7 @@ const SaprTermsConditions = () => {
                         .split(/(swaplyar\.com\/info\/help-center|WhatsApp|centrodeayuda@swaplyar\.com)/)
                         .map((item, i: number) =>
                           item === 'swaplyar.com/info/help-center' ? (
-                            <LinkWithHover key={i} href="/info/help-center">
+                            <LinkWithHover key={i} href={getPath('helpCenter')}>
                               swaplyar.com/info/help-center
                             </LinkWithHover>
                           ) : item === 'WhatsApp' ? (

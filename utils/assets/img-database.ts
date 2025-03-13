@@ -1,7 +1,3 @@
-// img-database.ts
-export const CentroDeAyuda = '/images/centro-ayuda.png';
-export const FlyerGif = '/gif/flyer.gif';
-
 //gif animacion swipe
 export const swipeGif = '/gif/swipe.gif';
 
@@ -222,3 +218,9 @@ export const enchufeLargoDark = '/images/enchufeLargoDark.svg';
 
 export const error404Clear = '/images/error404Clear.svg';
 export const error404Dark = '/images/error404Dark.svg';
+
+/* Subir a Cloudinary */
+
+export const rotateCard = '/images/rotate-card-icon.svg';
+export const FlyerGif = '/gif/flyer.gif';
+export const CentroDeAyuda = '/images/centro-ayuda.png';

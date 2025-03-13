@@ -10,9 +10,11 @@ import { useSystemStore } from '@/store/useSystemStore';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import Recommendations from '../Recomendations/Recomendations';
 import Link from 'next/link';
+import { useLocalizedPath } from '@/i18n/useLocalizedPath';
 
 export default function HomePage() {
   const resetToDefault = useSystemStore((state) => state.resetToDefault);
+  const getPath = useLocalizedPath();
 
   useEffect(() => {
     resetToDefault();
@@ -79,7 +81,7 @@ export default function HomePage() {
         <div className="mt-20 flex flex-col gap-[14px] text-center font-textFont">
           <p className="font-light">Descubre por qué SwaplyAr es la clave que necesitas.</p>
           <Link
-            href="/info/why-choose-swaplyar"
+            href={getPath('whyChooseSwaplyar')}
             className="block text-[28px] text-buttonsLigth underline dark:text-darkText"
           >
             ¿Por Que SwaplyAr?
@@ -89,7 +91,7 @@ export default function HomePage() {
       <section className="mt-10">
         <FlyerTrabajo
           imageSrc={FlyerGif}
-          href="/info/how-to-use"
+          href={getPath('howToUse')}
           description="Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma sencilla y segura."
           nameButton="¡Empieza ahora!"
         />

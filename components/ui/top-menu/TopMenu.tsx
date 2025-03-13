@@ -211,7 +211,7 @@ export function TopMenu() {
                               : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                           }`}
                           onClick={() => handleSelect('about-us')}
-                          href="/info/about-us"
+                          href="/info/about-uss"
                         >
                           Quienes Somos
                         </Sidebar.Item>

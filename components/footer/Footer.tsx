@@ -13,9 +13,11 @@ import { footerLinks } from './footerLinks';
 import useStore from '@/store/authViewStore';
 import { SwaplyArLogoSolo } from '@/utils/assets/imgDatabaseCloudinary';
 import { usePathname } from 'next/navigation';
+import { useLocalizedPath } from '@/i18n/useLocalizedPath';
+import { routes } from '@/i18n/routes';
 
 interface FooterLinkProps {
-  href: string;
+  href: keyof typeof routes;
   label: string;
   view?: 'login' | 'register';
 }
@@ -23,12 +25,13 @@ interface FooterLinkProps {
 function FooterLink({ href, label, view }: FooterLinkProps) {
   const { setView } = useStore();
   const pathname = usePathname();
+  const getPath = useLocalizedPath();
 
-  const isActive = pathname === href;
+  const isActive = pathname === getPath(href);
 
   return (
     <Link
-      href={href}
+      href={getPath(href)}
       {...(view ? { onClick: () => setView(view) } : {})}
       className={`rs-link w-fit font-textFont text-base transition-all duration-300 ease-in-out hover:text-[17px] hover:text-buttonsLigth dark:text-buttonsExtraLigthDark dark:hover:text-buttonsLigthDark ${isActive ? 'relative font-bold text-buttonsLigth after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:bg-buttonsLigth after:content-[""] dark:text-buttonsLigthDark dark:after:bg-buttonsLigthDark' : 'font-light text-buttonsExtraLigth'}`}
     >

@@ -11,6 +11,7 @@ import useEmailVerificationStore from '@/store/emailVerificationStore';
 import { useRouter } from 'next/navigation';
 import userInfoStore from '@/store/userInfoStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
+import { useLocalizedPath } from '@/i18n/useLocalizedPath';
 
 type FormInputs = {
   firstName: string;
@@ -31,6 +32,7 @@ export const RegisterForm = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [isFocused2, setIsFocused2] = useState(false);
   const [isFocused3, setIsFocused3] = useState(false);
+  const getPath = useLocalizedPath();
 
   const {
     register,
@@ -212,7 +214,7 @@ export const RegisterForm = () => {
             })}
           />
           <label htmlFor="termsConditions" className="ml-2 text-lightText dark:text-darkText">
-            <Link href="/info/terms/terms-and-conditions" className="font-textFont underline">
+            <Link href={getPath('termsAndConditions')} className="font-textFont underline">
               Acepto Términos & Condiciones
             </Link>
           </label>

@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import Link from 'next/link';
 import clsx from 'clsx';
+import { useLocalizedPath } from '@/i18n/useLocalizedPath';
 const questions = [
   {
     title: '¿Es seguro usar SwaplyAr?',
@@ -137,6 +138,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 const QuestionHowToUse = () => {
   const { isDark } = useDarkTheme();
+  const getPath = useLocalizedPath();
 
   const [expanded, setExpanded] = useState<string | false>(false);
 
@@ -204,7 +206,7 @@ const QuestionHowToUse = () => {
             'flex w-[244px] items-center justify-center rounded-full border border-buttonsLigth bg-transparent p-2 font-titleFont font-semibold text-buttonsLigth dark:border-darkText dark:text-darkText',
             isDark ? 'buttonSecondDark' : 'buttonSecond',
           )}
-          href="/info/questions"
+          href={getPath('questions')}
         >
           Ir a Preguntas Frecuentes
         </Link>

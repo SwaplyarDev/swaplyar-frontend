@@ -4,8 +4,11 @@ import { TerminosCondiciones } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 import { sectionTermsAndConditions } from '@/data/sectionTermsAndConditions';
+import { useLocalizedPath } from '@/i18n/useLocalizedPath';
 
 const TermsAndConditions = () => {
+  const getPath = useLocalizedPath();
+
   return (
     <div className="relative mx-auto flex max-w-[1000px] flex-col items-center px-4 py-10 text-custom-grayD md:px-8 lg:px-4">
       <AnimatedBlurredCircles tope="top-[-1675px]" />
@@ -38,7 +41,7 @@ const TermsAndConditions = () => {
                 {item.text.includes('Política de Privacidad') ? (
                   <>
                     {item.text.split('Política de Privacidad')[0]}
-                    <LinkWithHover href="/politica-de-privacidad">Política de Privacidad</LinkWithHover>
+                    <LinkWithHover href={getPath('termsAndConditions')}>Política de Privacidad</LinkWithHover>
                   </>
                 ) : item.text.includes('Dirección General de Defensa y Protección al Consumidor.') ? (
                   <>
@@ -93,7 +96,7 @@ const TermsAndConditions = () => {
                       ) : item.includes('Plataforma de soporte:') ? (
                         <>
                           Plataforma de soporte:{' '}
-                          <LinkWithHover href="/info/help-center">swaplyar.com/info/help-center</LinkWithHover>
+                          <LinkWithHover href={getPath('helpCenter')}>swaplyar.com/info/help-center</LinkWithHover>
                         </>
                       ) : (
                         item

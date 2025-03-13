@@ -8,9 +8,11 @@ import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import Link from 'next/link';
 import QuestionHowToUse from '../QuestionHowToUse/QuestionHowToUse';
 import { FlyerGif, howToUseDark, howToUse } from '@/utils/assets/imgDatabaseCloudinary';
+import { useLocalizedPath } from '@/i18n/useLocalizedPath';
 
 export default function SwaplyArInstructions() {
   const { isDark } = useDarkTheme();
+  const getPath = useLocalizedPath();
 
   return (
     <>
@@ -153,7 +155,7 @@ export default function SwaplyArInstructions() {
         <QuestionHowToUse />
       </div>
       <FlyerTrabajo
-        href="/info/loyalty-program"
+        href={getPath('loyaltyProgram')}
         description="¿Sabias que en SwaplyAr podes sumar descuentos con cada transacción?"
         nameButton="Unite a Plus Rewards"
         imageSrc={FlyerGif}

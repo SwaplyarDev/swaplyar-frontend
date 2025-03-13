@@ -8,6 +8,7 @@ import { Apoyo, Transparencia, Simplicidad, Eficiencia, FlyerGif } from '@/utils
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import './about.css';
+import { useLocalizedPath } from '@/i18n/useLocalizedPath';
 
 const cardsData = [
   {
@@ -65,6 +66,7 @@ const sectionsData = [
 
 const AboutUs = () => {
   const { isDark } = useDarkTheme();
+  const getPath = useLocalizedPath();
 
   return (
     <>
@@ -133,7 +135,7 @@ const AboutUs = () => {
       <section className="mt-[47px] overflow-hidden text-center">
         <FlyerTrabajo
           imageSrc={FlyerGif}
-          href="/info/how-to-use"
+          href={getPath('howToUse')}
           description="Hacemos que tus envíos sean más simples. Te explicamos cómo hacer una transferencia en 3 simples pasos"
           nameButton="Quiero aprender a transferir"
         />

@@ -8,9 +8,11 @@ import { sectionBottomHelpCenter, sectionLinksHelpCenter } from '@/data/sectionH
 import clsx from 'clsx';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import { FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
+import { useLocalizedPath } from '@/i18n/useLocalizedPath';
 
 const HelpCenterPage = () => {
   const { isDark } = useDarkTheme();
+  const getPath = useLocalizedPath();
 
   return (
     <>
@@ -25,7 +27,7 @@ const HelpCenterPage = () => {
               {sectionLinksHelpCenter.map((item, i: number) => (
                 <Link
                   key={i}
-                  href={item.href}
+                  href={getPath(item.href)}
                   className="group relative flex flex-1 flex-col items-center lg2:after:absolute lg2:after:-right-4 lg2:after:h-full lg2:after:w-[1px] lg2:after:bg-buttonsLigth lg2:after:content-[''] lg2:after:last:hidden lg2:after:dark:bg-darkText"
                 >
                   <Image
@@ -52,7 +54,7 @@ const HelpCenterPage = () => {
             <div className="mt-20 flex flex-col text-center font-textFont lg2:flex-row lg2:items-center lg2:justify-center lg2:gap-4">
               <p className="font-light">¿Sospechas que eres víctima de un fraude?</p>
               <Link
-                href="/info/terms/fraud-prevention"
+                href={getPath('termsFraudPrevention')}
                 className="block text-[28px] text-buttonsLigth underline dark:text-darkText"
               >
                 obtén información aquí
@@ -78,7 +80,7 @@ const HelpCenterPage = () => {
                 Obtené beneficios exclusivos cada vez que realices un cambio de divisas con SwaplyAr Plus Rewards™.
               </p>
               <Link
-                href="/info/loyalty-program"
+                href={getPath('loyaltyProgram')}
                 className={clsx(
                   isDark
                     ? 'buttonSecondDark border-darkText bg-darkText dark:text-lightText'
@@ -120,7 +122,7 @@ const HelpCenterPage = () => {
         imageSrc={FlyerGif}
         description="Encontrá respuestas a tus dudas"
         nameButton="Preguntas frecuentes"
-        href="/info/questions"
+        href={getPath('questions')}
       />
     </>
   );

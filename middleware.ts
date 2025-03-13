@@ -1,84 +1,53 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { auth } from './auth'; // Importa NextAuth correctamente
-import { configRoutes } from './config/routes';
-import { createRouteMatchers } from './lib/route';
-import { routeTranslations } from './lib/routes';
+import { middleware as localeMiddleware } from './middleware/locale';
+import { middleware as authMiddleware } from './middleware/auth';
+import { routing } from '@/i18n/routing';
+import { routes } from './i18n/routes';
 
-export default async function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
-  const locale = req.nextUrl.locale;
+export default function middleware(req: NextRequest) {
+  const { nextUrl } = req;
+  const pathname = nextUrl.pathname;
+  const segments = pathname.split('/').filter(Boolean);
+  const locale = segments.length > 0 ? segments[0] : null;
 
-  // Eliminar el prefijo del idioma
-  const pathnameWithoutLocale = pathname.replace(`/${locale}`, '');
+  // 🔴 **Si la URL es `/`, redirigir a `/es` en lugar de `/en`**
+  if (pathname === '/') {
+    return NextResponse.redirect(new URL(`/${routing.defaultLocale}`, req.url));
+  }
 
-  // Buscar la ruta traducida
-  for (const [originalPath, translations] of Object.entries(routeTranslations)) {
-    // Si estamos en la ruta original pero en un idioma diferente
-    if (pathnameWithoutLocale === originalPath && locale !== 'en' && translations[locale] !== originalPath) {
-      // Redirigir a la versión traducida
-      return NextResponse.redirect(new URL(`/${locale}${translations[locale]}`, req.url));
-    }
+  // 🔴 **Si la URL tiene un idioma no permitido, redirigir a `/es`**
+  if (!routing.locales.includes(locale as any)) {
+    console.warn(`Idioma no permitido: ${locale}. Redirigiendo a /${routing.defaultLocale}`);
+    const newUrl = new URL(`/${routing.defaultLocale}`, req.url);
+    return NextResponse.redirect(newUrl);
+  }
 
-    // Si estamos en una ruta traducida pero en otro idioma
-    if (locale !== 'en') {
-      const isTranslatedPath = Object.values(translations).includes(pathnameWithoutLocale);
-      if (isTranslatedPath) {
-        // Encontrar la ruta correcta para el idioma actual
-        const correctPath = translations[locale];
-        if (pathnameWithoutLocale !== correctPath) {
-          return NextResponse.redirect(new URL(`/${locale}${correctPath}`, req.url));
-        }
-      }
+  // Obtener la ruta base sin el prefijo de idioma
+  const cleanPath = pathname.replace(`/${locale}`, '') || '/';
+
+  // Buscar si la ruta existe en `routes.ts`
+  const translatedPath = Object.entries(routes).find(([_, paths]) =>
+    Object.values(paths).includes(cleanPath as (typeof paths)[keyof typeof paths]),
+  );
+
+  if (translatedPath) {
+    const routeKey = translatedPath[0] as keyof typeof routes;
+    const newPath = routes[routeKey][locale as keyof (typeof routes)[typeof routeKey]];
+
+    // Si la URL no está en su versión traducida correcta, redirigir
+    if (newPath && cleanPath !== newPath) {
+      return NextResponse.redirect(new URL(`/${locale}${newPath}`, req.url));
     }
   }
 
-  // 2️⃣ Obtener la sesión de autenticación
-  const session = await auth(); // ⚠️ `auth()` NO recibe `req` como parámetro
-
-  try {
-    const { isPublicRoute, isProtectedRoute, isApiRoute, isAuthRoute } = createRouteMatchers(configRoutes, req);
-    const { nextUrl } = req;
-    const isLoggedIn = !!session; // Verifica si hay un usuario autenticado
-
-    // 3️⃣ Redirigir al mantenimiento si la ruta contiene "blog"
-    if (nextUrl.pathname.includes('blog')) {
-      return NextResponse.redirect(new URL('/maintenance', req.url));
-    }
-
-    // 4️⃣ Protección de rutas /admin
-    const isAdminRoute = nextUrl.pathname.startsWith('/admin');
-
-    if (isProtectedRoute && !isLoggedIn) {
-      return NextResponse.redirect(new URL('/auth/login', req.url));
-    }
-
-    if (isAdminRoute) {
-      if (!isLoggedIn) {
-        return NextResponse.redirect(new URL('/', req.url));
-      }
-      const userRole = session?.user?.role;
-      if (userRole !== 'admin') {
-        return NextResponse.redirect(new URL('/', req.url));
-      }
-    }
-
-    // 5️⃣ Bloquear acceso directo a `/request` sin referer válido
-    if (nextUrl.pathname === '/request') {
-      const referer = req.headers.get('referer');
-      if (!referer || !referer.includes('/')) {
-        return NextResponse.redirect(new URL('/', req.url));
-      }
-    }
-
-    return NextResponse.next();
-  } catch (err) {
-    console.error('Error en middleware:', err);
-    return NextResponse.redirect(new URL('/error-500', req.url));
-  }
+  // ✅ Si la URL ya tiene un idioma válido (`/es` o `/en`), continuar normalmente
+  return localeMiddleware(req) ?? authMiddleware(req, { params: {} });
 }
 
-// Aplicar el middleware en todas las rutas excepto API, estáticos e imágenes
+// ✅ Ahora solo permitimos `/en` y `/es` en las rutas
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|public).*)', // ❌ Excluye archivos estáticos
+  ],
 };

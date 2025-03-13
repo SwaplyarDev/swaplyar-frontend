@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Footer from '@/components/footer/Footer';
 import { TopMenu } from '@/components/ui/top-menu/TopMenu';
-import ThemeProvider from '../components/ui/theme-Provider/themeProvider';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/react';
@@ -10,6 +9,8 @@ import './globals.css';
 import { SessionProvider } from 'next-auth/react';
 import Script from 'next/script';
 import Footerblog from '@/components/footerblog/Footerblog';
+import ThemeProvider from '@/components/ui/theme-Provider/themeProvider';
+import { NextIntlClientProvider } from 'next-intl';
 
 /**
  * Metadatos globales de la aplicación.
@@ -69,20 +70,22 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </Script>
       </head>
       <body className={`bg-white text-lightText dark:bg-lightText dark:text-darkText`}>
-        <SessionProvider>
-          {/* Integración de Google Analytics */}
-          <GoogleAnalytics gaId="G-PX1MMJCPQL" />
-          {/* {process.env.NODE_ENV === 'production' && <GoogleAnalytics gaId="G-F7NZPRXT31" />} */}
-          <ThemeProvider>
-            <MarginProvider>
-              <SpeedInsights />
-              <Analytics />
-              <TopMenu />
-              {children}
-              <Footer />
-            </MarginProvider>
-          </ThemeProvider>
-        </SessionProvider>
+        <NextIntlClientProvider>
+          <SessionProvider>
+            {/* Integración de Google Analytics */}
+            <GoogleAnalytics gaId="G-PX1MMJCPQL" />
+            {/* {process.env.NODE_ENV === 'production' && <GoogleAnalytics gaId="G-F7NZPRXT31" />} */}
+            <ThemeProvider>
+              <MarginProvider>
+                <SpeedInsights />
+                <Analytics />
+                <TopMenu />
+                {children}
+                <Footer />
+              </MarginProvider>
+            </ThemeProvider>
+          </SessionProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
