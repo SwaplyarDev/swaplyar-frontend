@@ -35,7 +35,7 @@ export default function Home() {
     <main className="relative py-10">
       <HomePage />
       {/* Pruebas Navbar Internal */}
-      {/* <NavbarInternal /> */}
+      <NavbarInternal />
     </main>
   );
 }
