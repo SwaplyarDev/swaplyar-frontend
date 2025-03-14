@@ -9,7 +9,23 @@ import { FormRequestCompleted } from '@/types/repentance/repentance';
 import { useParams, useSearchParams } from 'next/navigation';
 import { applicationCompleted, getApplicationCompleted } from '@/actions/applicationCompleted/applicationCompleted';
 import Swal from 'sweetalert2';
-import { nube1, nube2 } from '@/utils/assets/imgDatabaseCloudinary';
+import {
+  nube1,
+  nube2,
+  PaypalImg,
+  PaypalDarkImg,
+  PayoneerUsdImg,
+  PayoneerUsdDarkImg,
+  PayoneerEurImg,
+  PayoneerEurDarkImg,
+  BankImg,
+  BankDarkImg,
+  WiseUsdImg,
+  WiseUsdDarkImg,
+  PixImg,
+  TetherImg,
+  TetherDarkImg,
+} from '@/utils/assets/imgDatabaseCloudinary';
 
 const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
@@ -54,7 +70,7 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
   const receivedMethod = queryParams.get('received_method');
 
   const selectedRating = watch('stars_amount');
-
+  console.log(paymentMethod);
   const onSubmit = async (data: FormRequestCompleted) => {
     await applicationCompleted(data);
 
@@ -214,99 +230,93 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
 
         {paymentMethod == 'bank' ? (
           isDark ? (
-            <Image src="/images/21.png" alt="ARS" width={200} height={70} />
+            <Image src={BankDarkImg} alt="Banco" width={200} height={70} />
           ) : (
-            <Image src="/images/22.png" alt="ARS" width={200} height={70} />
+            <Image src={BankImg} alt="Banco" width={200} height={70} />
           )
         ) : paymentMethod == 'payoneer_eur' ? (
           isDark ? (
-            <Image src="/images/25.png" alt="ARS" width={200} height={70} />
+            <Image src={PayoneerEurDarkImg} alt="Payoneer Euro" width={200} height={70} />
           ) : (
-            <Image src="/images/26.png" alt="ARS" width={200} height={70} />
+            <Image src={PayoneerEurImg} alt="Payoneer Euro" width={200} height={70} />
           )
         ) : paymentMethod == 'payoneer_usd' ? (
           isDark ? (
-            <Image src="/images/23.png" alt="ARS" width={200} height={70} />
+            <Image src={PayoneerUsdDarkImg} alt="Payoneer USD" width={200} height={70} />
           ) : (
-            <Image src="/images/24.png" alt="ARS" width={200} height={70} />
+            <Image src={PayoneerUsdImg} alt="Payoneer USD" width={200} height={70} />
           )
         ) : paymentMethod == 'pix' ? (
           isDark ? (
-            <Image src="/images/35.png" alt="ARS" width={200} height={70} />
+            <Image src={PixImg} alt="Pix" width={200} height={70} />
           ) : (
-            <Image src="/images/36.png" alt="ARS" width={200} height={70} />
+            <Image src={PixImg} alt="Pix" width={200} height={70} />
           )
         ) : paymentMethod == 'paypal' ? (
           isDark ? (
-            <Image src="/images/31.png" alt="ARS" width={200} height={70} />
+            <Image src={PaypalDarkImg} alt="Paypal" width={200} height={70} />
           ) : (
-            <Image src="/images/32.png" alt="ARS" width={200} height={70} />
+            <Image src={PaypalImg} alt="Paypal" width={200} height={70} />
           )
         ) : paymentMethod == 'wise_usd' ? (
           isDark ? (
-            <Image src="/images/27.png" alt="ARS" width={200} height={70} />
+            <Image src={WiseUsdDarkImg} alt="Wise USD" width={200} height={70} />
           ) : (
-            <Image src="/images/28.png" alt="ARS" width={200} height={70} />
+            <Image src={WiseUsdImg} alt="Wise USD" width={200} height={70} />
           )
-        ) : paymentMethod == 'theter' ? (
-          isDark ? (
-            <Image src="/images/33.png" alt="ARS" width={200} height={70} />
-          ) : (
-            <Image src="/images/34.png" alt="ARS" width={200} height={70} />
-          )
-        ) : isDark ? (
-          <Image src="/images/29.png" alt="ARS" width={200} height={70} />
         ) : (
-          <Image src="/images/30.png" alt="ARS" width={200} height={70} />
+          paymentMethod == 'theter' &&
+          (isDark ? (
+            <Image src={TetherDarkImg} alt="Tether" width={200} height={70} />
+          ) : (
+            <Image src={TetherImg} alt="Tether" width={200} height={70} />
+          ))
         )}
 
-        <p className="text-[24px] font-normal">a la cuenta</p>
-        {receivedMethod == 'bank=' ? (
+        <p className="text-[24px] font-normal">a la cwuenta</p>
+        {receivedMethod == 'bank' ? (
           isDark ? (
-            <Image src="/images/21.png" alt="bank" width={200} height={70} />
+            <Image src={BankDarkImg} alt="Banco" width={200} height={70} />
           ) : (
-            <Image src="/images/22.png" alt="ARS" width={200} height={70} />
+            <Image src={BankImg} alt="Banco" width={200} height={70} />
           )
-        ) : receivedMethod == 'payoneer_eur=' ? (
+        ) : paymentMethod == 'payoneer_eur' ? (
           isDark ? (
-            <Image src="/images/25.png" alt="ARS" width={200} height={70} />
+            <Image src={PayoneerEurDarkImg} alt="Payoneer Euro" width={200} height={70} />
           ) : (
-            <Image src="/images/26.png" alt="ARS" width={200} height={70} />
+            <Image src={PayoneerEurImg} alt="Payoneer Euro" width={200} height={70} />
           )
-        ) : receivedMethod == 'payoneer_usd=' ? (
+        ) : paymentMethod == 'payoneer_usd' ? (
           isDark ? (
-            <Image src="/images/23.png" alt="ARS" width={200} height={70} />
+            <Image src={PayoneerUsdDarkImg} alt="Payoneer USD" width={200} height={70} />
           ) : (
-            <Image src="/images/24.png" alt="ARS" width={200} height={70} />
+            <Image src={PayoneerUsdImg} alt="Payoneer USD" width={200} height={70} />
           )
-        ) : receivedMethod == 'pix=' ? (
+        ) : paymentMethod == 'pix' ? (
           isDark ? (
-            <Image src="/images/35.png" alt="ARS" width={200} height={70} />
+            <Image src={PixImg} alt="Pix" width={200} height={70} />
           ) : (
-            <Image src="/images/36.png" alt="ARS" width={200} height={70} />
+            <Image src={PixImg} alt="Pix" width={200} height={70} />
           )
-        ) : receivedMethod == 'paypal=' ? (
+        ) : paymentMethod == 'paypal' ? (
           isDark ? (
-            <Image src="/images/31.png" alt="ARS" width={200} height={70} />
+            <Image src={PaypalDarkImg} alt="Paypal" width={200} height={70} />
           ) : (
-            <Image src="/images/32.png" alt="ARS" width={200} height={70} />
+            <Image src={PaypalImg} alt="Paypal" width={200} height={70} />
           )
-        ) : receivedMethod == 'wise_usd=' ? (
+        ) : paymentMethod == 'wise_usd' ? (
           isDark ? (
-            <Image src="/images/27.png" alt="ARS" width={200} height={70} />
+            <Image src={WiseUsdDarkImg} alt="Wise USD" width={200} height={70} />
           ) : (
-            <Image src="/images/28.png" alt="ARS" width={200} height={70} />
+            <Image src={WiseUsdImg} alt="Wise USD" width={200} height={70} />
           )
-        ) : receivedMethod == 'theter=' ? (
-          isDark ? (
-            <Image src="/images/33.png" alt="ARS" width={200} height={70} />
-          ) : (
-            <Image src="/images/34.png" alt="ARS" width={200} height={70} />
-          )
-        ) : isDark ? (
-          <Image src="/images/29.png" alt="ARS" width={200} height={70} />
         ) : (
-          <Image src="/images/30.png" alt="ARS" width={200} height={70} />
+          paymentMethod == 'theter' &&
+          (isDark ? (
+            <Image src={TetherDarkImg} alt="Tether" width={200} height={70} />
+          ) : (
+            <Image src={TetherImg} alt="Tether" width={200} height={70} />
+          ))
         )}
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="mx-auto flex w-full max-w-[465px] flex-col gap-4">

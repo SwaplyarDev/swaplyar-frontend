@@ -97,6 +97,10 @@ export const WiseUsdImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v17
 export const WiseUsdDarkImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1726600631/wise.usd.dark_s8bmil.png';
 export const WiseEurImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225416/wise.eur.big_etdolw.png';
 export const WiseEurDarkImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1726600630/wise.eur.dark_zkxrnp.png';
+export const TetherImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1731938858/34_y8zv3p.png?quality=lossless';
+export const TetherDarkImg =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1731938857/33_epfdat.png?quality=lossless';
+export const PixImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1731938859/35_kg1kyk.png?quality=lossless';
 
 /** 404 Error **/
 export const Post1_404 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732486012/post1-404_rz6g6k.png';
