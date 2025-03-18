@@ -23,10 +23,14 @@ import { SwaplyArLogoSolo, SwaplyArLogoComplete } from '@/utils/assets/imgDataba
 import { swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
 import { Button, Popover } from '@mui/material';
 import clsx from 'clsx';
+import { usePathname } from 'next/navigation';
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [drawerMenu, setDrawerMenu] = useState(false);
+
+  const pathname = usePathname();
+  const isAdminPage = pathname?.includes('/admin');
 
   const { isDark } = useDarkTheme();
 
@@ -72,7 +76,9 @@ export function TopMenu() {
   // Hasta aca, sacado de MUI
 
   return (
-    <main className="sticky top-0 z-[1000] flex flex-col bg-white shadow-md dark:bg-lightText">
+    <main
+      className={`sticky top-0 z-[1000] flex flex-col bg-white shadow-md dark:bg-lightText ${isAdminPage && 'hidden'}`}
+    >
       <TopPopUp />
 
       <Navbar
