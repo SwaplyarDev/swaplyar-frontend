@@ -17,7 +17,7 @@ interface TransactionsTableProps {
 }
 
 const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, currentPage }) => {
-  const MySwal = withReactContent(Swal);
+  const MySwal: any = withReactContent(Swal);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [transId, setTransId] = useState<string>('');
 
@@ -210,6 +210,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
             totalPages={transactions.meta.totalPages}
             currentPage={transactions.meta.page}
             isLoading={isLoading}
+            /* @ts-ignore */
             setIsLoading={setIsLoading}
           />
         </div>
