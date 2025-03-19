@@ -38,6 +38,7 @@ const DiscrepancySection: React.FC<DiscrepancySectionProps> = ({ trans, setValue
 
   const handleSubmitDiscrepancy = () => {
     if (!discrepancyReason.trim()) {
+      /* @ts-expect-error */
       Swal.fire({
         title: 'Campo requerido',
         text: 'Por favor ingresa el motivo de la discrepancia',

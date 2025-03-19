@@ -33,6 +33,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectCha
 
   const handleSubmitRejection = () => {
     if (!rejectionReason.trim()) {
+      /* @ts-expect-error */
       Swal.fire({
         title: 'Campo requerido',
         text: 'Por favor ingresa el motivo del rechazo',
