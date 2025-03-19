@@ -179,6 +179,18 @@ export const VerifyCodePage = () => {
     }
   };
 
+  const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const pastedData = event.clipboardData.getData('text');
+    const characters = pastedData.slice(0, 6).split('');
+
+    characters.forEach((char, i) => {
+      if (i < 6) {
+        setValue(`verificationCode.${i}`, char);
+      }
+    });
+  };
+
   return (
     <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-start py-5 xs:mt-0 xs:justify-center">
       <AnimatedBlurredCircles tope="top-[124px]" />
@@ -213,6 +225,7 @@ export const VerifyCodePage = () => {
                       errors.verificationCode ? 'border-red-500' : '',
                     )}
                     {...register(`verificationCode.${index}`)}
+                    onPaste={handlePaste}
                     onChange={(event) => handleInputChange(index, event)}
                     onKeyDown={(event) => handleInputKeyDown(index, event)}
                   />

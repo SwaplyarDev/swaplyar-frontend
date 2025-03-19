@@ -30,6 +30,7 @@ npm install
 Crea un archivo `.env.local` en la raíz del proyecto y agrega las variables de entorno necesarias. A continuación, un ejemplo:
 
 <<<<<<< HEAD
+
 ```env
 # Environment Configuration
 APP_ENV=development
@@ -70,9 +71,9 @@ NEXT_PUBLIC_FREE_CURRENCY_APY_KEY=fca_live_jDqUTcYj3stjWVDFqGZCmIBAt3hIEEtiTBPSM
 NEXT_PUBLIC_PAYPAL_CLIENT_ID="Acdb_cNhM35Qa7UNeEpdSePRS6Oswvx5ohLo1KEC04ADt64RGPUuOMUZXN_Kt84b93RXFFujqDKjB8u1"
 ```
 
-> **Nota**: Asegúrate de reemplazar los valores `your_google_id`, `your_google_secret`, y otros tokens con tus credenciales reales.
-=======
->>>>>>> 5abfc2417a7311da888256a3d1791e60c3dace22
+> # **Nota**: Asegúrate de reemplazar los valores `your_google_id`, `your_google_secret`, y otros tokens con tus credenciales reales.
+>
+> > > > > > > 5abfc2417a7311da888256a3d1791e60c3dace22
 
 ---
 
