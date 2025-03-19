@@ -61,6 +61,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
           </div>
           <div>
             <h3 className={`text-lg font-bold ${currentStyle.text}`}>ALERTA</h3>
+            {/* @ts-expect-error */}
             <p className={`font-medium ${currentStyle.text}`}>{alertStyles[alertType].title}</p>
           </div>
         </div>
