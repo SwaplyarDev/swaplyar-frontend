@@ -181,7 +181,8 @@ export const VerifyCodePage = () => {
 
   const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const pastedData = event.clipboardData.getData('text');
+    clearErrors('verificationCode');
+    const pastedData = event.clipboardData.getData('text').replace(/\s/g, '');
     const characters = pastedData.slice(0, 6).split('');
 
     characters.forEach((char, i) => {
@@ -189,6 +190,7 @@ export const VerifyCodePage = () => {
         setValue(`verificationCode.${i}`, char);
       }
     });
+    if (characters.length === 6) handleSubmit(verifyCode)();
   };
 
   return (
@@ -225,6 +227,7 @@ export const VerifyCodePage = () => {
                       errors.verificationCode ? 'border-red-500' : '',
                     )}
                     {...register(`verificationCode.${index}`)}
+                    onPaste={handlePaste}
                     onPaste={handlePaste}
                     onChange={(event) => handleInputChange(index, event)}
                     onKeyDown={(event) => handleInputKeyDown(index, event)}
