@@ -29,7 +29,6 @@ npm install
 
 Crea un archivo `.env.local` en la raíz del proyecto y agrega las variables de entorno necesarias. A continuación, un ejemplo:
 
-<<<<<<< HEAD
 ```env
 # Environment Configuration
 APP_ENV=development
