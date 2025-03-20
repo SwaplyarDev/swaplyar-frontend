@@ -7,9 +7,12 @@ import FooterPrincipal from './FooterPrincipal/FooterPrincipal';
 
 export default function Footer() {
   const pathname = usePathname();
+  const isAdminPage = pathname?.includes('/admin');
 
   return (
-    <footer className="rs-wrapper-v4 mx-auto w-full px-4 py-8 md:px-8 lg:max-w-[1204px] lg:px-4">
+    <footer
+      className={`rs-wrapper-v4 mx-auto w-full px-4 py-8 md:px-8 lg:max-w-[1204px] lg:px-4 ${isAdminPage && 'hidden'}`}
+    >
       {pathname.includes('blog') ? <FooterBlog /> : <FooterPrincipal />}
     </footer>
   );

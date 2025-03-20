@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import StatusSection from '@/components/admin/TransactionsTable/Status/StatusSection';
+import TransactionsStatus from '@/components/admin/TransactionsTable/Status/StatusSection';
 import SkeletonTable from '@/components/admin/TransactionsTable/SkeletonTble/SkeletonTable';
 
 const TransactionsLoader = lazy(() => import('@/components/admin/TransactionsTable/TransactionsLoader'));
@@ -8,21 +8,29 @@ interface TransactionPageProps {
   searchParams: { page?: string };
 }
 
-export default function Page({ searchParams }: TransactionPageProps) {
+export default function TransactionsPage({ searchParams }: TransactionPageProps) {
   const currentPage = Number(searchParams.page) || 1;
 
   return (
-    <main className="flex w-full flex-col items-center justify-center pt-2">
-      <section className="flex w-[100%] flex-row justify-between">
-        <h1 className="pl-44 font-titleFont text-lg font-normal">Transacciones</h1>{' '}
-      </section>
-      <div className="flex w-[95%] flex-row items-start gap-2 overflow-x-auto">
-        <StatusSection />
-        <div className="ml-5 mt-4 h-[25rem] w-1 border-l-[1px] border-black"></div>
-        <Suspense fallback={<SkeletonTable />}>
-          <TransactionsLoader currentPage={currentPage} />
-        </Suspense>
+    <div className="w-full">
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-2xl font-medium text-gray-800 dark:text-gray-200">Transacciones</h1>
+        {/* Aquí podrías agregar botones de acción si es necesario */}
       </div>
-    </main>
+
+      <div className="flex flex-col gap-6">
+        {/* Panel de estado - responsive */}
+        <div className="w-full shrink-0">
+          <TransactionsStatus />
+        </div>
+
+        {/* Tabla de transacciones - toma el espacio restante */}
+        <div className="w-full flex-1 overflow-hidden">
+          <Suspense fallback={<SkeletonTable />}>
+            <TransactionsLoader currentPage={currentPage} />
+          </Suspense>
+        </div>
+      </div>
+    </div>
   );
 }

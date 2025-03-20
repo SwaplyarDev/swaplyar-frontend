@@ -1,5 +1,11 @@
+'use client';
+
+import type React from 'react';
+
+import { useState, useEffect } from 'react';
 import { useTransactionStore } from '@/store/transactionModalStorage';
 import Swal from 'sweetalert2';
+import { CheckCircle, XCircle, AlertTriangle, Send, Info } from 'lucide-react';
 
 interface AprobarRechazarProps {
   selected: 'stop' | 'accepted' | 'canceled' | null;
@@ -14,132 +20,242 @@ interface AprobarRechazarProps {
 
 const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectChange }) => {
   const { componentStates } = useTransactionStore();
+  const [rejectionReason, setRejectionReason] = useState('');
+  const [isInputFocused, setIsInputFocused] = useState(false);
+  const [isHovering, setIsHovering] = useState<string | null>(null);
 
-  if (componentStates.confirmTransButton === false && selected !== 'canceled') {
-    onSelectChange('canceled');
-  }
-  const buttonAction = (action: string) => {
+  // Automatically select 'canceled' if confirmTransButton is false
+  useEffect(() => {
+    if (componentStates.confirmTransButton === false && selected !== 'canceled') {
+      onSelectChange('canceled');
+    }
+  }, [componentStates.confirmTransButton, selected, onSelectChange]);
+
+  const handleSubmitRejection = () => {
+    if (!rejectionReason.trim()) {
+      /* @ts-expect-error */
+      Swal.fire({
+        title: 'Campo requerido',
+        text: 'Por favor ingresa el motivo del rechazo',
+        icon: 'warning',
+        iconColor: '#D75600',
+        confirmButtonColor: 'rgb(1,42,142)',
+        background: '#FFFFFF',
+        customClass: {
+          title: 'text-gray-800 font-titleFont',
+          content: 'text-gray-700',
+        },
+      });
+      return;
+    }
+
     Swal.fire({
-      title: '¿Estás seguro que deseas rechazarlo?',
-
+      title: 'Confirmar rechazo',
+      html: `
+        <div class="flex flex-col items-center">
+          <p class="mb-2 text-gray-700">¿Estás seguro que deseas rechazar esta solicitud?</p>
+          <div class="bg-gray-100 p-3 rounded-lg w-full max-w-xs text-left">
+            <p class="font-medium text-gray-800 mb-1">Motivo:</p>
+            <p class="text-gray-700">${rejectionReason}</p>
+          </div>
+        </div>
+      `,
       showCancelButton: true,
-      confirmButtonText: 'Aceptar',
+      confirmButtonText: 'Confirmar rechazo',
       cancelButtonText: 'Cancelar',
-      confirmButtonColor: 'rgb(1,42,142)',
-      cancelButtonColor: 'rgb(205,24,24)',
-      preConfirm: (value) => {
-        if (!value) {
-          Swal.showValidationMessage('Debes ingresar un motivo');
-        }
-        return value;
+      confirmButtonColor: '#CE1818',
+      cancelButtonColor: '#64748b',
+      background: '#FFFFFF',
+      showClass: {
+        popup: 'animate__animated animate__fadeIn animate__faster',
+      },
+      hideClass: {
+        popup: 'animate__animated animate__fadeOut animate__faster',
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log('Motivo enviado:', result.value);
+        Swal.fire({
+          title: 'Solicitud rechazada',
+          text: 'La solicitud ha sido rechazada exitosamente',
+          icon: 'success',
+          confirmButtonColor: 'rgb(1,42,142)',
+          timer: 2000,
+          timerProgressBar: true,
+        });
+        console.log('Motivo de rechazo enviado:', rejectionReason);
+        // Aquí puedes agregar la lógica para guardar el motivo
       }
     });
+  };
 
-    console.log(action);
+  const getButtonClass = (type: 'accepted' | 'stop' | 'canceled') => {
+    const isDisabled = !componentStates.confirmTransButton && type !== 'canceled';
+    const baseClass =
+      'relative flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-medium transition-all duration-300';
+
+    if (isDisabled) {
+      return `${baseClass} bg-gray-200 text-gray-400 cursor-not-allowed`;
+    }
+
+    switch (type) {
+      case 'accepted':
+        return `${baseClass} ${
+          selected === 'accepted'
+            ? 'bg-green-600 text-white shadow-lg shadow-green-200'
+            : 'bg-white text-gray-700 border border-gray-300 hover:border-green-500 hover:text-green-600'
+        }`;
+      case 'stop':
+        return `${baseClass} ${
+          selected === 'stop'
+            ? 'bg-amber-500 text-white shadow-lg shadow-amber-200'
+            : 'bg-white text-gray-700 border-2 border-amber-500 hover:bg-amber-50'
+        }`;
+      case 'canceled':
+        return `${baseClass} ${
+          selected === 'canceled'
+            ? 'bg-red-600 text-white shadow-lg shadow-red-200'
+            : 'bg-white text-gray-700 border border-gray-300 hover:border-red-500 hover:text-red-600'
+        }`;
+    }
   };
 
   return (
-    <article className="inline-flex items-center justify-start self-stretch">
-      <article className="inline-flex w-[382px] flex-col items-start justify-center gap-2.5 py-2.5">
-        <article className="flex h-[59px] flex-col items-center justify-start gap-2 self-stretch">
-          <article className="flex h-6 flex-col items-center justify-start gap-2 self-stretch">
-            <h2 className="lightText titleFont self-stretch text-xl font-medium">Aprobar/Rechazar Solicitud</h2>
-          </article>
+    <section className="mt-6 w-full overflow-hidden rounded-xl border border-gray-100 bg-white shadow-md transition-all duration-300">
+      <div className="p-6">
+        <h2 className="mb-5 flex items-center justify-center text-center font-titleFont text-xl font-semibold text-gray-800">
+          <Info className="mr-2 h-5 w-5 text-blue-600" />
+          Aprobar/Rechazar Solicitud
+        </h2>
 
-          <article className="inline-flex items-center justify-start gap-4 self-stretch">
-            {/* BOTONES */}
-            <article
-              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 hover:bg-[#0b5300] hover:text-[#ebe7e0] hover:shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] ${
-                selected === 'accepted'
-                  ? 'bg-[#0b5300] text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
-                  : 'bg-[#d3d3d3]'
-              } ${!componentStates.confirmTransButton && 'cursor-not-allowed'} `}
-              onClick={() => {
-                if (componentStates.confirmTransButton) {
-                  onSelectChange('accepted');
-                }
-              }}
+        <div className="flex flex-col space-y-6">
+          {/* Botones de acción */}
+          <div className="flex flex-wrap justify-center gap-4">
+            <button
+              onClick={() => componentStates.confirmTransButton && onSelectChange('accepted')}
+              onMouseEnter={() => setIsHovering('accepted')}
+              onMouseLeave={() => setIsHovering(null)}
+              disabled={!componentStates.confirmTransButton}
+              className={getButtonClass('accepted')}
+              aria-pressed={selected === 'accepted'}
             >
-              <button
-                className={`titleFont titleFont self-stretch text-center text-base font-normal ${!componentStates.confirmTransButton && 'cursor-not-allowed'}`}
-              >
-                Aprobar
-              </button>
-            </article>
-            <article
-              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg border-2 px-2.5 py-1 hover:border-[#cd1818] hover:font-extrabold hover:text-[#cd1818] hover:shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] ${
-                selected === 'stop'
-                  ? 'border-[#cd1818] font-extrabold text-[#cd1818] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
-                  : 'border-[#d3d3d3]'
-              } ${!componentStates.confirmTransButton && 'cursor-not-allowed'}`}
-              onClick={() => {
-                if (componentStates.confirmTransButton) {
-                  onSelectChange('stop');
-                }
-              }}
+              <CheckCircle className={`h-5 w-5 ${selected === 'accepted' ? 'text-white' : 'text-green-500'}`} />
+              <span>Aprobar</span>
+              {isHovering === 'accepted' && componentStates.confirmTransButton && selected !== 'accepted' && (
+                <span className="absolute -top-10 left-1/2 -translate-x-1/2 transform whitespace-nowrap rounded bg-green-600 px-2 py-1 text-xs text-white">
+                  Aprobar solicitud
+                </span>
+              )}
+            </button>
+
+            <button
+              onClick={() => componentStates.confirmTransButton && onSelectChange('stop')}
+              onMouseEnter={() => setIsHovering('stop')}
+              onMouseLeave={() => setIsHovering(null)}
+              disabled={!componentStates.confirmTransButton}
+              className={getButtonClass('stop')}
+              aria-pressed={selected === 'stop'}
             >
-              <button
-                className={`titleFont self-stretch text-center text-base ${!componentStates.confirmTransButton && 'cursor-not-allowed'}`}
-              >
-                STOP
-              </button>
-            </article>
-            <article
-              className={`inline-flex w-[110px] flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-1 hover:bg-[#cd1818] hover:text-[#ebe7e0] hover:shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] ${
-                selected === 'canceled'
-                  ? 'bg-[#cd1818] text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]'
-                  : 'bg-[#d3d3d3]'
-              }`}
+              <AlertTriangle className={`h-5 w-5 ${selected === 'stop' ? 'text-white' : 'text-amber-500'}`} />
+              <span className="font-bold">STOP</span>
+              {isHovering === 'stop' && componentStates.confirmTransButton && selected !== 'stop' && (
+                <span className="absolute -top-10 left-1/2 -translate-x-1/2 transform whitespace-nowrap rounded bg-amber-500 px-2 py-1 text-xs text-white">
+                  Pausar para revisión
+                </span>
+              )}
+            </button>
+
+            <button
               onClick={() => onSelectChange('canceled')}
+              onMouseEnter={() => setIsHovering('canceled')}
+              onMouseLeave={() => setIsHovering(null)}
+              className={getButtonClass('canceled')}
+              aria-pressed={selected === 'canceled'}
             >
-              <button className="titleFont titleFont self-stretch text-center text-base font-normal">Rechazar</button>
-            </article>
-          </article>
-        </article>
-      </article>
-      {(selected === 'canceled' || componentStates.confirmTransButton === false) && (
-        <article>
-          <div className="inline-flex h-[81px] w-[375px] flex-col items-start justify-start gap-1">
-            <div className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-              <div className="flex shrink grow basis-0 font-['Inter'] font-normal leading-none text-[#252526]">
-                Motivo del Rechazo
-              </div>
-            </div>
-            <div className="inline-flex h-[41px] items-center justify-start gap-2.5 self-stretch rounded-lg py-2 pl-[9px] pr-2.5">
-              <input className="shrink grow basis-0 rounded-lg font-['Inter'] text-base font-normal leading-none text-[#252526]"></input>
-              <article className="w-[1 0px] inline-flex flex-col items-center justify-center gap-2.5 rounded-lg bg-custom-blue px-2.5 py-1 text-[#ebe7e0] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
-                <button
-                  className="titleFont titleFont self-stretch text-center text-base font-normal"
-                  onClick={() => buttonAction('canceled')}
-                >
-                  Enviar
-                </button>
-              </article>
-            </div>
-            <div className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5"></div>
+              <XCircle className={`h-5 w-5 ${selected === 'canceled' ? 'text-white' : 'text-red-500'}`} />
+              <span>Rechazar</span>
+              {isHovering === 'canceled' && selected !== 'canceled' && (
+                <span className="absolute -top-10 left-1/2 -translate-x-1/2 transform whitespace-nowrap rounded bg-red-600 px-2 py-1 text-xs text-white">
+                  Rechazar solicitud
+                </span>
+              )}
+            </button>
           </div>
-        </article>
-      )}
-      {selected === 'stop' && (
-        <article className="flex items-start justify-start gap-2">
-          <article className="inline-flex h-[81px] w-[375px] flex-col items-start justify-start gap-1">
-            <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-              <p className="titleFont titleFont shrink grow basis-0 text-xs font-normal leading-none">STOP</p>
-            </article>
-            <article className="inline-flex items-center justify-center gap-2.5 self-stretch px-2.5">
-              <p className="titleFont titleFont shrink grow basis-0 text-xs font-normal leading-none">
+
+          {/* Contenido condicional basado en la selección */}
+          {(selected === 'canceled' || componentStates.confirmTransButton === false) && (
+            <div className="animate-fadeIn mt-4 rounded-lg border-l-4 border-red-500 bg-red-50 p-4">
+              <label htmlFor="rejection-reason" className="mb-2 block text-sm font-medium text-gray-700">
+                Motivo del Rechazo <span className="text-red-500">*</span>
+              </label>
+
+              <div
+                className={`flex w-full items-center gap-3 rounded-lg p-1 transition-all duration-300 ${isInputFocused ? 'bg-white ring-2 ring-red-300' : 'border border-gray-300 bg-white'} `}
+              >
+                <input
+                  id="rejection-reason"
+                  type="text"
+                  placeholder="Ingresa el motivo del rechazo"
+                  className="h-10 flex-1 border-none bg-transparent px-3 text-gray-800 focus:outline-none"
+                  value={rejectionReason}
+                  onChange={(e) => setRejectionReason(e.target.value)}
+                  onFocus={() => setIsInputFocused(true)}
+                  onBlur={() => setIsInputFocused(false)}
+                  aria-required="true"
+                />
+
+                <button
+                  onClick={handleSubmitRejection}
+                  className="flex h-10 items-center gap-2 rounded-lg bg-red-600 px-4 font-medium text-white transition-colors duration-200 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  aria-label="Enviar motivo de rechazo"
+                >
+                  <Send className="h-4 w-4" />
+                  <span>Enviar</span>
+                </button>
+              </div>
+
+              <p className="mt-2 text-xs text-gray-500">
+                Este motivo será comunicado al cliente como razón del rechazo.
+              </p>
+            </div>
+          )}
+
+          {selected === 'stop' && (
+            <div className="animate-fadeIn mt-4 rounded-lg border-l-4 border-amber-500 bg-amber-50 p-4">
+              <h3 className="mb-2 flex items-center font-medium text-amber-800">
+                <AlertTriangle className="mr-2 h-5 w-5 text-amber-500" />
+                Información sobre STOP
+              </h3>
+              <p className="text-sm text-amber-700">
                 Si los datos de la operación no coinciden (por ejemplo, si el monto es mayor o menor al acordado),
                 comunícate con el solicitante para resolverlo antes de continuar.
               </p>
-            </article>
-          </article>
-        </article>
-      )}
-    </article>
+              <p className="mt-2 text-sm text-amber-700">
+                Esta acción pausará el proceso hasta que se resuelvan las discrepancias.
+              </p>
+            </div>
+          )}
+
+          {selected === 'accepted' && (
+            <div className="animate-fadeIn mt-4 rounded-lg border-l-4 border-green-500 bg-green-50 p-4">
+              <h3 className="mb-2 flex items-center font-medium text-green-800">
+                <CheckCircle className="mr-2 h-5 w-5 text-green-500" />
+                Información sobre Aprobación
+              </h3>
+              <p className="text-sm text-green-700">
+                Al aprobar esta solicitud, confirmas que todos los datos son correctos y que la transferencia puede ser
+                procesada.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Indicador de estado */}
+      <div
+        className={`h-1.5 w-full transition-all duration-500 ${selected === 'accepted' ? 'bg-green-500' : selected === 'stop' ? 'bg-amber-500' : selected === 'canceled' ? 'bg-red-500' : 'bg-gray-200'} `}
+      ></div>
+    </section>
   );
 };
+
 export default AprobarRechazar;
