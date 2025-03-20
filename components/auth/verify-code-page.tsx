@@ -228,7 +228,6 @@ export const VerifyCodePage = () => {
                     )}
                     {...register(`verificationCode.${index}`)}
                     onPaste={handlePaste}
-                    onPaste={handlePaste}
                     onChange={(event) => handleInputChange(index, event)}
                     onKeyDown={(event) => handleInputKeyDown(index, event)}
                   />
