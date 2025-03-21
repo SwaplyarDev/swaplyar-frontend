@@ -19,7 +19,6 @@ import {
 } from 'lucide-react';
 import { Avatar, Button, Popover, styled, Typography, Box } from '@mui/material';
 import { signOut, useSession } from 'next-auth/react';
-import clsx from 'clsx';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 // Create a custom event to communicate sidebar state
@@ -29,6 +28,21 @@ export const createSidebarEvent = (isCollapsed: boolean) => {
     window.dispatchEvent(event);
   }
 };
+
+// Botón estilizado para el perfil que se adapta al estado del sidebar
+const ProfileButton = styled(Button)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+  padding: '8px 12px',
+  borderRadius: '0.5rem',
+  width: '100%',
+  textTransform: 'none',
+  transition: 'all 0.2s ease',
+  '&:hover': {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  },
+}));
 
 // Botón de logout estilizado
 const LogoutButton = styled(Button)(({ theme }) => ({
@@ -40,6 +54,11 @@ const LogoutButton = styled(Button)(({ theme }) => ({
   marginTop: '8px',
   border: '1px solid',
   textTransform: 'none',
+  backgroundColor: '#012a8d',
+  color: 'white',
+  '&:hover': {
+    backgroundColor: '#001d5f',
+  },
 }));
 
 const Sidebar = () => {
@@ -59,21 +78,6 @@ const Sidebar = () => {
       createSidebarEvent(isCollapsed);
     }
   }, []);
-
-  // Botón estilizado para el perfil que se adapta al estado del sidebar
-  const ProfileButton = styled(Button)(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    padding: '8px 12px',
-    borderRadius: '0.5rem',
-    width: '100%',
-    textTransform: 'none',
-    transition: 'all 0.2s ease',
-    '&:hover': {
-      backgroundColor: 'rgba(0, 0, 0, 0.04)',
-    },
-  }));
 
   // Function to create URL with preserved query params
   const createStatusUrl = (statusId: string) => {
@@ -119,21 +123,24 @@ const Sidebar = () => {
       items: [
         {
           id: 'en-proceso',
-          color: 'text-blue-600',
+          color: 'bg-blue-500/20 text-white',
+          iconColor: 'text-blue-300',
           icon: Clock,
           label: 'En Proceso',
           description: 'La transacción sigue su curso',
         },
         {
           id: 'rechazada',
-          color: 'text-red-600',
+          color: 'bg-red-500/20 text-white',
+          iconColor: 'text-red-300',
           icon: XCircle,
           label: 'Rechazada',
           description: 'El cliente solicitó la cancelación y el reembolso',
         },
         {
           id: 'finalizado',
-          color: 'text-green-600',
+          color: 'bg-green-500/20 text-white',
+          iconColor: 'text-green-300',
           icon: CheckCircle,
           label: 'Finalizado',
           description: 'La solicitud fue finalizada con éxito',
@@ -145,14 +152,16 @@ const Sidebar = () => {
       items: [
         {
           id: 'editar',
-          color: 'text-amber-600',
+          color: 'bg-amber-500/20 text-white',
+          iconColor: 'text-amber-300',
           icon: Edit,
           label: 'Editar',
           description: 'El cliente solicitó editar la solicitud',
         },
         {
           id: 'cancelar',
-          color: 'text-red-600',
+          color: 'bg-red-500/20 text-white',
+          iconColor: 'text-red-300',
           icon: AlertTriangle,
           label: 'Cancelar',
           description: 'El cliente solicitó la cancelación y el reembolso',
@@ -184,7 +193,7 @@ const Sidebar = () => {
       {/* Mobile menu button */}
       <button
         onClick={toggleMobileSidebar}
-        className="fixed left-4 top-4 z-40 rounded-md bg-white p-2 shadow-md dark:bg-gray-800 md:hidden"
+        className="fixed left-4 top-4 z-40 rounded-md bg-[#012a8d] p-2 text-white shadow-md md:hidden"
         aria-label="Toggle menu"
       >
         <Menu size={20} />
@@ -195,29 +204,26 @@ const Sidebar = () => {
 
       {/* Status Dropdown for collapsed sidebar */}
       {collapsed && statusDropdownOpen && (
-        <div className="fixed left-16 top-1/4 z-50 w-64 rounded-md border border-gray-200 bg-white p-3 shadow-lg dark:border-gray-700 dark:bg-gray-800">
-          <div className="mb-2 flex items-center justify-between border-b pb-2">
-            <span className="font-medium">Atajos de Status</span>
-            <button
-              onClick={toggleStatusDropdown}
-              className="rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
+        <div className="fixed left-16 top-1/4 z-50 w-64 rounded-md border border-blue-800 bg-[#012a8d] p-3 shadow-lg">
+          <div className="mb-2 flex items-center justify-between border-b border-blue-800 pb-2">
+            <span className="font-medium text-white">Atajos de Status</span>
+            <button onClick={toggleStatusDropdown} className="rounded-full p-1 text-white hover:bg-blue-800">
               <XCircle size={16} />
             </button>
           </div>
           {statusShortcuts.map((group, groupIndex) => (
             <div key={groupIndex} className="mb-3">
-              <h4 className="mb-1 text-xs font-medium text-gray-600 dark:text-gray-300">{group.title}</h4>
+              <h4 className="mb-1 text-xs font-medium text-blue-200">{group.title}</h4>
               <ul className="space-y-1">
                 {group.items.map((item) => (
                   <li key={item.id}>
                     <Link
                       href={createStatusUrl(item.id)}
-                      className="flex items-center rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50"
+                      className={`flex items-center rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-blue-800 ${item.color}`}
                       onClick={() => setStatusDropdownOpen(false)}
                     >
-                      <item.icon size={16} className={`${item.color} mr-2`} />
-                      <span className={item.color}>{item.label}</span>
+                      <item.icon size={16} className={`${item.iconColor} mr-2`} />
+                      <span>{item.label}</span>
                     </Link>
                   </li>
                 ))}
@@ -229,24 +235,22 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 z-40 h-screen border-r border-gray-100 bg-white transition-all duration-300 ease-in-out dark:border-gray-700 dark:bg-gray-800 ${
+        className={`fixed left-0 top-0 z-40 h-screen border-r border-blue-800 bg-[#012a8d] transition-all duration-300 ease-in-out ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         } md:translate-x-0 ${collapsed ? 'w-16' : 'w-72'}`}
       >
         <div className="flex h-full flex-col">
           {/* Logo and collapse button */}
-          <div className="flex h-16 items-center justify-between border-b border-gray-100 px-4 dark:border-gray-700">
+          <div className="flex h-16 items-center justify-between border-b border-blue-800 px-4">
             {!collapsed && (
               <>
-                <img className="h-8" src="/images/logo.png" alt="" />
+                <img className="h-8" src="/images/logo-blanco.png" alt="Logo" />
               </>
             )}
 
             <button
               onClick={toggleSidebar}
-              className={`rounded-md p-1.5 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 ${
-                collapsed ? 'mx-auto' : 'ml-auto'
-              }`}
+              className={`rounded-md p-1.5 text-white hover:bg-blue-800 ${collapsed ? 'mx-auto' : 'ml-auto'}`}
               aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
               {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
@@ -259,9 +263,7 @@ const Sidebar = () => {
               {/* Inicio Group */}
               <div className="mb-6">
                 {!collapsed && (
-                  <h3 className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                    Inicio
-                  </h3>
+                  <h3 className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-blue-200">Inicio</h3>
                 )}
                 <ul className="space-y-1.5">
                   <li>
@@ -269,8 +271,8 @@ const Sidebar = () => {
                       href="/admin/transactions"
                       className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
                         pathname === '/admin/transactions' || pathname?.startsWith('/admin/transactions')
-                          ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
-                          : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700/50'
+                          ? 'bg-white/10 font-medium text-white'
+                          : 'text-white hover:bg-white/10'
                       } ${collapsed ? 'justify-center' : ''}`}
                     >
                       <CreditCard size={20} className={collapsed ? '' : 'mr-3'} />
@@ -282,8 +284,8 @@ const Sidebar = () => {
                       href="/admin/reports"
                       className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
                         pathname === '/admin/reports' || pathname?.startsWith('/admin/reports')
-                          ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
-                          : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700/50'
+                          ? 'bg-white/10 font-medium text-white'
+                          : 'text-white hover:bg-white/10'
                       } ${collapsed ? 'justify-center' : ''}`}
                     >
                       <BarChart3 size={20} className={collapsed ? '' : 'mr-3'} />
@@ -296,9 +298,7 @@ const Sidebar = () => {
               {/* Gestión Group */}
               <div className="mb-6">
                 {!collapsed && (
-                  <h3 className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                    Gestión
-                  </h3>
+                  <h3 className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-blue-200">Gestión</h3>
                 )}
                 <ul className="space-y-1.5">
                   <li>
@@ -306,8 +306,8 @@ const Sidebar = () => {
                       href="/admin/users"
                       className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
                         pathname === '/admin/users' || pathname?.startsWith('/admin/users')
-                          ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
-                          : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700/50'
+                          ? 'bg-white/10 font-medium text-white'
+                          : 'text-white hover:bg-white/10'
                       } ${collapsed ? 'justify-center' : ''}`}
                     >
                       <Users size={20} className={collapsed ? '' : 'mr-3'} />
@@ -320,27 +320,23 @@ const Sidebar = () => {
               {/* Atajos Group */}
               <div className="mb-6">
                 {!collapsed && (
-                  <h3 className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                    Atajos
-                  </h3>
+                  <h3 className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-blue-200">Atajos</h3>
                 )}
 
                 {!collapsed ? (
                   <div>
                     {statusShortcuts.map((group, groupIndex) => (
                       <div key={groupIndex} className="mb-3">
-                        <h4 className="mb-1.5 px-3 text-xs font-medium text-gray-600 dark:text-gray-300">
-                          {group.title}
-                        </h4>
+                        <h4 className="mb-1.5 px-3 text-xs font-medium text-blue-200">{group.title}</h4>
                         <ul className="space-y-1.5">
                           {group.items.map((item) => (
                             <li key={item.id}>
                               <Link
                                 href={createStatusUrl(item.id)}
-                                className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50 ${collapsed ? 'justify-center' : ''}`}
+                                className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${item.color} hover:bg-opacity-30 ${collapsed ? 'justify-center' : ''}`}
                               >
-                                <item.icon size={20} className={`${item.color} ${collapsed ? '' : 'mr-3'}`} />
-                                {!collapsed && <span className={item.color}>{item.label}</span>}
+                                <item.icon size={20} className={`${item.iconColor} ${collapsed ? '' : 'mr-3'}`} />
+                                {!collapsed && <span>{item.label}</span>}
                               </Link>
                             </li>
                           ))}
@@ -352,7 +348,9 @@ const Sidebar = () => {
                   <div>
                     <button
                       onClick={toggleStatusDropdown}
-                      className={`flex w-full justify-center rounded-md px-3 py-2.5 text-sm transition-colors ${statusDropdownOpen ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700/50'}`}
+                      className={`flex w-full justify-center rounded-md px-3 py-2.5 text-sm transition-colors ${
+                        statusDropdownOpen ? 'bg-white/10 text-white' : 'text-white hover:bg-white/10'
+                      }`}
                       aria-label="Mostrar atajos"
                     >
                       <Tag size={20} />
@@ -420,7 +418,7 @@ const Sidebar = () => {
                             variant="body2"
                             sx={{
                               fontWeight: 500,
-                              color: isDark ? '#fff' : '#000',
+                              color: 'white',
                             }}
                           >
                             {session.user.name || 'Usuario'}
@@ -428,7 +426,7 @@ const Sidebar = () => {
                           <Typography
                             variant="caption"
                             sx={{
-                              color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)',
+                              color: 'rgba(255,255,255,0.7)',
                               textOverflow: 'ellipsis',
                               overflow: 'hidden',
                               whiteSpace: 'nowrap',
@@ -460,8 +458,8 @@ const Sidebar = () => {
                       '& .MuiPaper-root': {
                         borderRadius: '1rem',
                         padding: '16px',
-                        backgroundColor: isDark ? '#424141' : '#FBFCFD',
-                        color: isDark ? '#FFFFFF' : '#000000',
+                        backgroundColor: '#FBFCFD',
+                        color: '#000000',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -481,19 +479,12 @@ const Sidebar = () => {
                       sx={{
                         textDecoration: 'underline',
                         mb: 1,
-                        color: isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)',
+                        color: 'rgba(0,0,0,0.7)',
                       }}
                     >
                       {session.user.email}
                     </Typography>
-                    <LogoutButton
-                      onClick={() => signOut()}
-                      className={clsx(
-                        isDark ? 'dark:text-lightText' : '',
-                        'border-buttonsLigth bg-buttonsLigth text-darkText dark:border-darkText dark:bg-darkText',
-                      )}
-                      variant="contained"
-                    >
+                    <LogoutButton onClick={() => signOut()} variant="contained">
                       Salir
                     </LogoutButton>
                   </Popover>
