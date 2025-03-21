@@ -38,7 +38,7 @@ const RequestPage = () => {
         <StepperContainer />
       </div>
       <FlyerTrabajo
-        href="/auth/login-register"
+        href="/es/iniciar-sesion-o-registro"
         description="Para acceder a más beneficios y seguimiento en tiempo real registrate gratis"
         nameButton="¡Me quiero registrar!"
         imageSrc={FlyerGif}

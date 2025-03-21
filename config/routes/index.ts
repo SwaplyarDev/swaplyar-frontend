@@ -3,7 +3,7 @@ import type { ConfigRoutes } from '@/types/routes';
 export const configRoutes: ConfigRoutes = {
   publicRoutes: [
     '/',
-    '/auth/change-password',
+    // '/auth/change-password',
     '/info/about-us',
     '/info/blog',
     '/info/blog/:cardId',
@@ -20,7 +20,7 @@ export const configRoutes: ConfigRoutes = {
     '/repentance',
     '/editRequest',
   ],
-  authRoutes: ['/auth/login-register', '/auth/login-register/email-verification'],
+  authRoutes: ['/es/iniciar-sesion-o-registro', '/es/iniciar-sesion-o-registro/verificacion-email'],
   apiRoutes: ['/api/login', '/api/users', '/api/company', '/api/roles', '/api/paypal'],
-  protectedRoutes: ['/products/:path*', '/admin/:path*'],
+  protectedRoutes: ['/es/auth/:path*', '/es/admin/:path*'],
 };

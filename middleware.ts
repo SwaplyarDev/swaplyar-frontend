@@ -5,7 +5,7 @@ import { createRouteMatchers } from './lib/route';
 
 export default auth((req) => {
   try {
-    const { isPublicRoute, isProtectedRoute, isApiRoute, isAuthRoute } = createRouteMatchers(configRoutes, req);
+    const { isPublicRoute, isProtectedRoute, isApiRoute } = createRouteMatchers(configRoutes, req);
     const { nextUrl } = req;
     const isLoggedIn = !!req.auth;
 
@@ -15,17 +15,26 @@ export default auth((req) => {
     }
 
     // Verificar si la ruta está bajo /admin
-    const isAdminRoute = nextUrl.pathname.startsWith('/admin');
+    const isAdminRoute = nextUrl.pathname.startsWith('/es/admin');
+
+    // Verificar si la ruta está bajo /es/auth
+
+    const isAuthRoute = nextUrl.pathname.startsWith('/es/auth');
 
     // Redirigir si la ruta es protegida y el usuario no está logueado
     if (isProtectedRoute && !isLoggedIn) {
-      return NextResponse.redirect(new URL('/auth/login', req.url));
+      return NextResponse.redirect(new URL('/es/iniciar-sesion-o-registro', req.url));
     }
 
     // Verificar si la ruta es /admin y el usuario no es admin
     if (isAdminRoute && !isLoggedIn) {
       return NextResponse.redirect(new URL('/', req.url));
     }
+
+    if (isAuthRoute && !isLoggedIn) {
+      return NextResponse.redirect(new URL('/es/iniciar-sesion-o-registro', req.url));
+    }
+
     if (isAdminRoute && isLoggedIn) {
       const userRole = req.auth?.user?.role; // Obtener el rol del usuario desde el token JWT
       if (userRole !== 'admin') {

@@ -1,4 +1,4 @@
-// /auth/login-register
+// /es/iniciar-sesion-o-registro
 import AuthForm from '@/components/auth/auth-form';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import { Metadata } from 'next';

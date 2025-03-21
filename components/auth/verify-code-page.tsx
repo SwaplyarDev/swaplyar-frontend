@@ -48,7 +48,7 @@ export const VerifyCodePage = () => {
 
   useEffect(() => {
     if (email === '') {
-      router.push('/auth/login-register');
+      router.push('/es/iniciar-sesion-o-registro');
     }
 
     if (isLocked) {
@@ -244,7 +244,7 @@ export const VerifyCodePage = () => {
           {errors.verificationCode && <p className="mb-5 text-sm text-red-500">• {errors.verificationCode.message}</p>}
 
           <div className="my-5 flex justify-between text-buttonsLigth dark:text-darkText">
-            <ButtonBack route="/auth/login-register" isDark={isDark} />
+            <ButtonBack route="/es/iniciar-sesion-o-registro" isDark={isDark} />
             <button
               type="button"
               onClick={resendCode}
