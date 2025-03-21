@@ -133,22 +133,24 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
     }).format(date);
   };
 
+  console.log();
+
   return (
     <div className="w-full">
       <div className="overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
         {/* Tabla de transacciones */}
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50 text-left dark:bg-gray-700/50">
+            <thead className="bg-[#012a8d] text-left text-white">
               <tr>
-                <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">Estado</th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">Fecha</th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">ID</th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">Remitente</th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">Billetera Origen</th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">Destinatario</th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">Billetera Destino</th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">Acción Cliente</th>
+                <th className="px-4 py-3 text-sm font-medium">Estado</th>
+                <th className="px-4 py-3 text-sm font-medium">Fecha</th>
+                <th className="px-4 py-3 text-sm font-medium">ID</th>
+                <th className="px-4 py-3 text-sm font-medium">Remitente</th>
+                <th className="px-4 py-3 text-sm font-medium">Billetera Origen</th>
+                <th className="px-4 py-3 text-sm font-medium">Destinatario</th>
+                <th className="px-4 py-3 text-sm font-medium">Billetera Destino</th>
+                <th className="px-4 py-3 text-sm font-medium">Acción Cliente</th>
                 {/* <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">Acciones</th> */}
               </tr>
             </thead>
@@ -215,6 +217,8 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
           />
         </div>
       </div>
+
+      <pre>{JSON.stringify(transactions, null, 2)}</pre>
     </div>
   );
 };

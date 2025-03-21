@@ -73,7 +73,7 @@ const TransactionModal = ({ transId }: TransactionModalProps) => {
   // Update transaction status and client status
   useEffect(() => {
     if (!transId || !trans) return;
-
+    console.log(transId, trans);
     updateTransactionStatusFromStore(transId, trans);
     getStatusClient(transId, trans);
   }, [transId, trans, componentStates, updateTransactionStatusFromStore, getStatusClient]);
@@ -91,6 +91,7 @@ const TransactionModal = ({ transId }: TransactionModalProps) => {
     (value: any) => {
       setComponentStates('aprooveReject', value);
       setSelected(value);
+      console.log(value);
     },
     [setComponentStates, setSelected],
   );
@@ -101,6 +102,8 @@ const TransactionModal = ({ transId }: TransactionModalProps) => {
     // Give time for the animation to complete before actually closing
     setTimeout(() => MySwal.close(), 300);
   }, []);
+
+  console.log(trans);
 
   return (
     <div
@@ -175,6 +178,7 @@ const TransactionModal = ({ transId }: TransactionModalProps) => {
                 selected={selected}
                 componentStates={componentStates}
                 onSelectChange={handleSelectionChange}
+                transId={transId}
               />
             )}
 
@@ -193,7 +197,7 @@ const TransactionModal = ({ transId }: TransactionModalProps) => {
             {componentStates.discrepancySection !== null && <FinalSection />}
           </div>
         )}
-        <ModalEditReciever modal={modal} setModal={setModal} trans={trans} />
+        {/* <ModalEditReciever modal={modal} setModal={setModal} trans={trans} /> */}
       </div>
     </div>
   );

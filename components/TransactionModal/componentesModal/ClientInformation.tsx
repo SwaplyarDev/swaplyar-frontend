@@ -7,6 +7,7 @@ import TransferClient from './TransferClient';
 import { useState } from 'react';
 import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
 import { Edit, AlertTriangle, ArrowLeftRight } from 'lucide-react';
+import ModalEditReciever from './ModalEditReciever/ModalEditReciever';
 
 interface ClientInformationProps {
   trans: TransactionTypeSingle;
@@ -32,7 +33,9 @@ const ClientInformation: React.FC<ClientInformationProps> = ({ modal, setModal }
           </h2>
 
           <button
-            onClick={() => setModal(!modal)}
+            onClick={() => {
+              setModal(!modal);
+            }}
             className="relative mt-4 flex items-center gap-2 rounded-lg bg-gradient-to-r from-amber-600 to-orange-700 px-4 py-2 font-medium text-white transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-500 md:mt-0"
             aria-label="Editar destinatario"
           >
@@ -40,6 +43,8 @@ const ClientInformation: React.FC<ClientInformationProps> = ({ modal, setModal }
             <span>Editar Destinatario</span>
           </button>
         </div>
+
+        {modal && <ModalEditReciever modal={modal} setModal={setModal} trans={trans} />}
 
         {transaction.regret_id && (
           <div className="animate-fadeIn mb-6 rounded-lg border-l-4 border-red-500 bg-red-50 p-4">
