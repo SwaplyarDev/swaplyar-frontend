@@ -33,7 +33,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <section className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Sidebar />
-      <div className={`transition-all duration-300 ease-in-out ${sidebarCollapsed ? 'md:ml-16' : 'md:ml-60'}`}>
+      <div className={`transition-all duration-300 ease-in-out ${sidebarCollapsed ? 'md:ml-16' : 'md:ml-72'}`}>
         {/* <LayoutAdmin /> */}
         <main className="p-4 md:p-6">{children}</main>
       </div>

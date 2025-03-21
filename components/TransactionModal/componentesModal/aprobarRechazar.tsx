@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { useTransactionStore } from '@/store/transactionModalStorage';
 import Swal from 'sweetalert2';
 import { CheckCircle, XCircle, AlertTriangle, Send, Info } from 'lucide-react';
+import { TransactionService } from './ui/TransactionService';
 
 interface AprobarRechazarProps {
   selected: 'stop' | 'accepted' | 'canceled' | null;
@@ -16,9 +17,12 @@ interface AprobarRechazarProps {
     discrepancySection: boolean | null;
     transferRealized: boolean;
   };
+  transId: string;
 }
 
-const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectChange }) => {
+const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectChange, transId }) => {
   const { componentStates } = useTransactionStore();
   const [rejectionReason, setRejectionReason] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -31,7 +35,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectCha
     }
   }, [componentStates.confirmTransButton, selected, onSelectChange]);
 
-  const handleSubmitRejection = () => {
+  const handleSubmitRejection = async () => {
     if (!rejectionReason.trim()) {
       /* @ts-expect-error */
       Swal.fire({
@@ -72,18 +76,43 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectCha
       hideClass: {
         popup: 'animate__animated animate__fadeOut animate__faster',
       },
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Solicitud rechazada',
-          text: 'La solicitud ha sido rechazada exitosamente',
-          icon: 'success',
-          confirmButtonColor: 'rgb(1,42,142)',
-          timer: 2000,
-          timerProgressBar: true,
-        });
-        console.log('Motivo de rechazo enviado:', rejectionReason);
-        // Aquí puedes agregar la lógica para guardar el motivo
+        try {
+          // Mostrar indicador de carga
+          Swal.fire({
+            title: 'Procesando...',
+            text: 'Estamos procesando tu solicitud',
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+
+          const response = await TransactionService('canceled', transId);
+
+          /* @ts-expect-error */
+          if (response?.message === 'Status updated successfully') {
+            Swal.fire({
+              title: 'Solicitud rechazada',
+              text: 'La solicitud ha sido rechazada exitosamente',
+              icon: 'success',
+              confirmButtonColor: 'rgb(1,42,142)',
+              timer: 2000,
+              timerProgressBar: true,
+            });
+          } else {
+            throw new Error('Error al procesar la solicitud');
+          }
+        } catch (error) {
+          console.log('Error al rechazar la transacción:', error);
+          Swal.fire({
+            title: 'Error',
+            text: 'Ocurrió un error al procesar la solicitud. Por favor intenta nuevamente.',
+            icon: 'error',
+            confirmButtonColor: 'rgb(1,42,142)',
+          });
+        }
       }
     });
   };
