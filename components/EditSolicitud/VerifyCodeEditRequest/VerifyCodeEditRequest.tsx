@@ -190,7 +190,7 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
           )}
 
           <div className="my-5 flex flex-col-reverse items-center justify-evenly gap-5 text-buttonsLigth dark:text-darkText xs:flex-row">
-            <ButtonBack route="/info/help-center" isDark={isDark} />
+            <ButtonBack route="/es/centro-de-ayuda" isDark={isDark} />
 
             {reLoading ? (
               <div className="flex min-w-[150px] items-center justify-center">

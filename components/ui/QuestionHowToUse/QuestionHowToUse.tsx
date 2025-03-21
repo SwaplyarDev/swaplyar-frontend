@@ -204,7 +204,7 @@ const QuestionHowToUse = () => {
             'flex w-[244px] items-center justify-center rounded-full border border-buttonsLigth bg-transparent p-2 font-titleFont font-semibold text-buttonsLigth dark:border-darkText dark:text-darkText',
             isDark ? 'buttonSecondDark' : 'buttonSecond',
           )}
-          href="/info/questions"
+          href="/es/centro-de-ayuda/preguntas-frecuentes"
         >
           Ir a Preguntas Frecuentes
         </Link>

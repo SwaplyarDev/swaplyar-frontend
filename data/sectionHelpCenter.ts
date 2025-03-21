@@ -3,19 +3,19 @@ export const sectionLinksHelpCenter = [
     image: '/images/helpCenter1.png',
     title: 'Cancelacion y Reembolso',
     text: 'Cancela tu transferencia para obtener un reembolso.',
-    href: '/repentance',
+    href: '/es/centro-de-ayuda/cancelacion-y-reembolso',
   },
   {
     image: '/images/helpCenter2.png',
     title: 'Buscar Solicitud',
     text: 'Consulte el estado de la transferencia.',
-    href: '/request/search-request',
+    href: '/es/centro-de-ayuda/estado-de-solicitud',
   },
   {
     image: '/images/helpCenter3.png',
     title: 'Editar Solicitud',
     text: 'Edita el nombre de tu destinatario en caso de que creas que cometiste un error.',
-    href: '/editRequest',
+    href: '/es/centro-de-ayuda/editar-solicitud',
   },
 ];
 

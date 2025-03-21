@@ -155,7 +155,7 @@ export const sectionTermsAndConditionsPlus = [
   },
   {
     title: 'Quinta. Contacto con SwaplyAr',
-    text: 'Puede contactar a SwaplyAr en línea en swaplyar.com/info/help-center, por WhatsApp, o por correo de atención: centrodeayuda@swaplyar.com.',
+    text: 'Puede contactar a SwaplyAr en línea en swaplyar.com/es/centro-de-ayuda, por WhatsApp, o por correo de atención: centrodeayuda@swaplyar.com.',
   },
   {
     title: 'Sexta. Marcas Registradas',

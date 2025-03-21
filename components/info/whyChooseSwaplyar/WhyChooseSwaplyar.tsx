@@ -99,7 +99,7 @@ const WhyChooseSwaplyar: React.FC = () => {
 
       <FlyerTrabajo
         imageSrc={FlyerGif}
-        href="/info/how-to-use"
+        href="/es/como-usar-swaplyar"
         description="Descubrí cómo aprovechar al máximo SwaplyAr"
         nameButton="Aprendé a transferir"
       />

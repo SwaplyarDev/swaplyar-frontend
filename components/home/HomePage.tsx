@@ -89,7 +89,7 @@ export default function HomePage() {
       <section className="mt-10">
         <FlyerTrabajo
           imageSrc={FlyerGif}
-          href="/info/how-to-use"
+          href="/es/como-usar-swaplyar"
           description="Conoce cómo funciona nuestra plataforma y comienza a transferir dinero de forma sencilla y segura."
           nameButton="¡Empieza ahora!"
         />

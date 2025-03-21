@@ -217,7 +217,7 @@ const SearchRequest = () => {
                 </button>
               )}
             </div>
-            <ButtonBack route="/info/help-center" isDark={isDark} />
+            <ButtonBack route="/es/centro-de-ayuda" isDark={isDark} />
           </form>
         </section>
       </div>

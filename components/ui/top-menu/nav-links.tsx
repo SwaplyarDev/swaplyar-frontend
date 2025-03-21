@@ -7,9 +7,9 @@ import Link from 'next/link';
 import useStore from '@/store/authViewStore';
 
 export const Links = [
-  { name: 'Quienes Somos', href: '/info/about-us' },
-  { name: 'Como Usar SwaplyAr', href: '/info/how-to-use' },
-  { name: 'Programa de Fidelización', href: '/info/loyalty-program' },
+  { name: 'Quienes Somos', href: '/es/quienes-somos' },
+  { name: 'Como Usar SwaplyAr', href: '/es/como-usar-swaplyar' },
+  { name: 'Programa de Fidelización', href: '/es/programa-de-fidelizacion' },
 ];
 
 export default function NavLinks() {

@@ -290,7 +290,7 @@ const StepperContainer = () => {
                   'text-center font-textFont underline sm-phone:text-start',
                   isStopped ? (isDark ? 'text-darkText' : 'text-[#252526]') : 'text-darkText',
                 )}
-                href="/info/help-center"
+                href="/es/centro-de-ayuda"
               >
                 ¡No dudes en contactarnos!
               </Link>
@@ -334,7 +334,7 @@ const StepperContainer = () => {
               </Link>
               <Link
                 className={clsx('text-center font-textFont text-darkText underline sm-phone:text-start')}
-                href="/info/help-center"
+                href="/es/centro-de-ayuda"
               >
                 ¡No dudes en contactarnos!
               </Link>

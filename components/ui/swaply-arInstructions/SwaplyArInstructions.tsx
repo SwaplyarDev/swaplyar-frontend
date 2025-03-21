@@ -153,7 +153,7 @@ export default function SwaplyArInstructions() {
         <QuestionHowToUse />
       </div>
       <FlyerTrabajo
-        href="/info/loyalty-program"
+        href="/es/programa-de-fidelizacion"
         description="¿Sabias que en SwaplyAr podes sumar descuentos con cada transacción?"
         nameButton="Unite a Plus Rewards"
         imageSrc={FlyerGif}

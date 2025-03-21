@@ -55,9 +55,9 @@ const SaprTermsConditions = () => {
                       item.text
                         .split(/(swaplyar\.com\/info\/help-center|WhatsApp|centrodeayuda@swaplyar\.com)/)
                         .map((item, i: number) =>
-                          item === 'swaplyar.com/info/help-center' ? (
-                            <LinkWithHover key={i} href="/info/help-center">
-                              swaplyar.com/info/help-center
+                          item === 'swaplyar.com/es/centro-de-ayuda' ? (
+                            <LinkWithHover key={i} href="/es/centro-de-ayuda">
+                              swaplyar.com/es/centro-de-ayuda
                             </LinkWithHover>
                           ) : item === 'WhatsApp' ? (
                             <LinkWithHover key={i} href="https://wa.me/+5491123832198">

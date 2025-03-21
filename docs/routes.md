@@ -10,10 +10,10 @@ Este documento describe las rutas principales de la aplicación **SwaplyAr**, or
 - `/_not-found`: Página de error 404.
 - `/auth/login`: Página de inicio de sesión.
 - `/auth/new-account`: Página de registro de nueva cuenta.
-- `/info/about-us`: Página "Quienes Somos".
-- `/info/help-center`: Página de centro de ayuda.
-- `/info/how-to-use`: Página "Cómo usar Swaplyar".
-- `/info/loyalty-program`: Página del programa de fidelización.
+- `/es/quienes-somos`: Página "Quienes Somos".
+- `/es/centro-de-ayuda`: Página de centro de ayuda.
+- `/es/como-usar-swaplyar`: Página "Cómo usar Swaplyar".
+- `/es/programa-de-fidelizacion`: Página del programa de fidelización.
 - `/info/terms-and-conditions`: Página de términos y condiciones.
 - `/info/warranty`: Página de garantía.
 - `/info/why-choose-swaplyar`: Página "Por qué elegir Swaplyar".
@@ -56,28 +56,28 @@ Este documento describe las rutas principales de la aplicación **SwaplyAr**, or
 
 ## 📄 Rutas de Información
 
-- **`/info/about-us` - Sobre Nosotros**
+- **`/es/quienes-somos` - Sobre Nosotros**
 
   - **Descripción:** Página con información sobre la misión y visión de SwaplyAr.
   - **Componentes Clave:**
     - Texto estático.
     - Sección de contacto.
 
-- **`/info/help-center` - Centro de Ayuda**
+- **`/es/centro-de-ayuda` - Centro de Ayuda**
 
   - **Descripción:** Proporciona soporte y respuestas a preguntas frecuentes.
   - **Componentes Clave:**
     - FAQ.
     - Botones de contacto.
 
-- **`/info/how-to-use` - Cómo Usar SwaplyAr**
+- **`/es/como-usar-swaplyar` - Cómo Usar SwaplyAr**
 
   - **Descripción:** Instrucciones para que los usuarios aprovechen al máximo la plataforma.
   - **Componentes Clave:**
     - Tutoriales.
     - Consejos para nuevos usuarios.
 
-- **`/info/loyalty-program` - Programa de Fidelización**
+- **`/es/programa-de-fidelizacion` - Programa de Fidelización**
 
   - **Descripción:** Explica los beneficios y recompensas del programa de fidelización.
   - **Componentes Clave:**
