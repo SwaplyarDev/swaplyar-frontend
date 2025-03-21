@@ -21,6 +21,10 @@ import { Avatar, Button, Popover, styled, Typography, Box } from '@mui/material'
 import { signOut, useSession } from 'next-auth/react';
 import clsx from 'clsx';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import Image from 'next/image';
+import LogoSidebar from './componentsSidebar/LogoSidebar';
+import InicioGroup from './componentsSidebar/Navigation/InicioGroup';
+import GestionGroup from './componentsSidebar/Navigation/GestionGroup';
 
 // Create a custom event to communicate sidebar state
 export const createSidebarEvent = (isCollapsed: boolean) => {
@@ -235,87 +239,16 @@ const Sidebar = () => {
       >
         <div className="flex h-full flex-col">
           {/* Logo and collapse button */}
-          <div className="flex h-16 items-center justify-between border-b border-gray-100 px-4 dark:border-gray-700">
-            {!collapsed && (
-              <>
-                <img className="h-8" src="/images/logo.png" alt="" />
-              </>
-            )}
-
-            <button
-              onClick={toggleSidebar}
-              className={`rounded-md p-1.5 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 ${
-                collapsed ? 'mx-auto' : 'ml-auto'
-              }`}
-              aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            >
-              {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-            </button>
-          </div>
+          <LogoSidebar collapsed={collapsed} toggleSidebar={toggleSidebar} />
 
           {/* Navigation */}
           <nav className="flex flex-1 flex-col justify-between overflow-y-auto px-3 py-4">
             <div>
               {/* Inicio Group */}
-              <div className="mb-6">
-                {!collapsed && (
-                  <h3 className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                    Inicio
-                  </h3>
-                )}
-                <ul className="space-y-1.5">
-                  <li>
-                    <Link
-                      href="/admin/transactions"
-                      className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
-                        pathname === '/admin/transactions' || pathname?.startsWith('/admin/transactions')
-                          ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
-                          : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700/50'
-                      } ${collapsed ? 'justify-center' : ''}`}
-                    >
-                      <CreditCard size={20} className={collapsed ? '' : 'mr-3'} />
-                      {!collapsed && <span>Operación de Transacciones</span>}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/admin/reports"
-                      className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
-                        pathname === '/admin/reports' || pathname?.startsWith('/admin/reports')
-                          ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
-                          : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700/50'
-                      } ${collapsed ? 'justify-center' : ''}`}
-                    >
-                      <BarChart3 size={20} className={collapsed ? '' : 'mr-3'} />
-                      {!collapsed && <span>Reportes</span>}
-                    </Link>
-                  </li>
-                </ul>
-              </div>
+              <InicioGroup collapsed={collapsed} pathname={pathname} />
 
               {/* Gestión Group */}
-              <div className="mb-6">
-                {!collapsed && (
-                  <h3 className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                    Gestión
-                  </h3>
-                )}
-                <ul className="space-y-1.5">
-                  <li>
-                    <Link
-                      href="/admin/users"
-                      className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
-                        pathname === '/admin/users' || pathname?.startsWith('/admin/users')
-                          ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
-                          : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700/50'
-                      } ${collapsed ? 'justify-center' : ''}`}
-                    >
-                      <Users size={20} className={collapsed ? '' : 'mr-3'} />
-                      {!collapsed && <span>Gestión de Usuarios</span>}
-                    </Link>
-                  </li>
-                </ul>
-              </div>
+              <GestionGroup collapsed={collapsed} pathname={pathname} />
 
               {/* Atajos Group */}
               <div className="mb-6">
