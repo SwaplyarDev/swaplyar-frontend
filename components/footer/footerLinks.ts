@@ -21,8 +21,8 @@ export const footerLinks = {
   ] as FooterLink[],
   normativa: [
     { href: '/es/garantia', label: 'Garantía' },
-    { href: '/es/terminos-y-condiciones/tc-swaplyar', label: 'Términos y Condiciones' },
-    { href: '/es/terminos-y-condiciones/tc-plus-rewards', label: 'T&C Plus Rewards' },
+    { href: '/es/terminos-y-condiciones/tyc-swaplyar', label: 'Términos y Condiciones' },
+    { href: '/es/terminos-y-condiciones/tyc-plus-rewards', label: 'T&C Plus Rewards' },
   ] as FooterLink[],
   atencion: [
     { href: '/es/centro-de-ayuda', label: 'Centro de Ayuda' },
@@ -44,8 +44,8 @@ export const footerLinksBlog = {
     { href: '/es/programa-de-fidelizacion', label: 'Programa de Fidelización' },
   ] as FooterLink[],
   linea2: [
-    { href: '/es/terminos-y-condiciones/tc-swaplyar', label: 'Términos y Condiciones' },
-    { href: '/es/terminos-y-condiciones/tc-plus-rewards', label: 'T&C Plus Rewards' },
+    { href: '/es/terminos-y-condiciones/tyc-swaplyar', label: 'Términos y Condiciones' },
+    { href: '/es/terminos-y-condiciones/tyc-plus-rewards', label: 'T&C Plus Rewards' },
   ] as FooterLink[],
   social: [
     { href: 'https://www.linkedin.com/company/swaplyar/', icon: faLinkedin, label: 'LinkedIn' },

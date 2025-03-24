@@ -15,7 +15,7 @@ export const configRoutes: ConfigRoutes = {
     '/info/why-choose-swaplyar',
     '/info/sapr-terms-conditions',
     '/es/centro-de-ayuda/preguntas-frecuentes',
-    '/request',
+    '/es/inicio/formulario-de-solicitud',
     '/es/centro-de-ayuda/estado-de-solicitud',
     '/repentance',
     '/es/centro-de-ayuda/editar-solicitud',

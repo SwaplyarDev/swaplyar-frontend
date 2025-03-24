@@ -41,7 +41,7 @@ export default auth((req) => {
         return NextResponse.redirect(new URL('/', req.url)); // Redirigir al home si no es admin
       }
     }
-    if (nextUrl.pathname === '/request') {
+    if (nextUrl.pathname === '/es/inicio/formulario-de-solicitud') {
       const referer = req.headers.get('referer'); // Obtener la URL previa
       if (!referer || !referer.includes('/')) {
         return NextResponse.redirect(new URL('/', req.url)); // Bloquear acceso directo
