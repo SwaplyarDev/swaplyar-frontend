@@ -200,7 +200,7 @@ export function TopMenu() {
                             <p className="ml-5 text-2xl">Bienvenido!</p>
                             <p className="ml-5 text-sm underline">{session?.user?.email}</p>
                             {session?.user?.role === 'admin' ? (
-                              <Link href={'/admin/transactions'}>
+                              <Link href={'/es/+admin/transactions'}>
                                 <p className="text-blue-600 underline decoration-white transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 active:text-blue-900">
                                   Administración
                                 </p>
@@ -350,7 +350,7 @@ export function TopMenu() {
                     <p>Bienvenido!</p>
                     <p className="text-sm underline">{session?.user?.email}</p>
                     {session?.user?.role === 'admin' ? (
-                      <Link href={'/admin/transactions'}>
+                      <Link href={'/es/admin/transactions'}>
                         <p className="text-blue-600 underline decoration-white transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 active:text-blue-900">
                           Administración
                         </p>

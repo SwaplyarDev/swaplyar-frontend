@@ -13,7 +13,7 @@ const InicioGroup = ({ collapsed, pathname }: { collapsed: boolean; pathname: st
       <ul className="space-y-1.5">
         <li>
           <Link
-            href="/admin/transactions"
+            href="/es/admin/transactions"
             className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
               pathname === '/admin/transactions' || pathname?.startsWith('/admin/transactions')
                 ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
@@ -26,7 +26,7 @@ const InicioGroup = ({ collapsed, pathname }: { collapsed: boolean; pathname: st
         </li>
         <li>
           <Link
-            href="/admin/reports"
+            href="/es/admin/reports"
             className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
               pathname === '/admin/reports' || pathname?.startsWith('/admin/reports')
                 ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'

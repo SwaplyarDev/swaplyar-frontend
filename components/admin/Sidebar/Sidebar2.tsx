@@ -268,7 +268,7 @@ const Sidebar = () => {
                 <ul className="space-y-1.5">
                   <li>
                     <Link
-                      href="/admin/transactions"
+                      href="/es/admin/transactions"
                       className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
                         pathname === '/admin/transactions' || pathname?.startsWith('/admin/transactions')
                           ? 'bg-white/10 font-medium text-white'
@@ -281,7 +281,7 @@ const Sidebar = () => {
                   </li>
                   <li>
                     <Link
-                      href="/admin/reports"
+                      href="/es/admin/reports"
                       className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
                         pathname === '/admin/reports' || pathname?.startsWith('/admin/reports')
                           ? 'bg-white/10 font-medium text-white'
@@ -303,7 +303,7 @@ const Sidebar = () => {
                 <ul className="space-y-1.5">
                   <li>
                     <Link
-                      href="/admin/users"
+                      href="/es/admin/users"
                       className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
                         pathname === '/admin/users' || pathname?.startsWith('/admin/users')
                           ? 'bg-white/10 font-medium text-white'

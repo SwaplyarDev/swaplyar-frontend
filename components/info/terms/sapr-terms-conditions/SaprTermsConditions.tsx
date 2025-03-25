@@ -57,7 +57,7 @@ const SaprTermsConditions = () => {
                         .map((item, i: number) =>
                           item === 'swaplyar.com/es/centro-de-ayuda' ? (
                             <LinkWithHover key={i} href="/es/centro-de-ayuda">
-                              swaplyar.com/es/centro-de-ayuda
+                              swaplyar.com/es/centro-de-ayuda++
                             </LinkWithHover>
                           ) : item === 'WhatsApp' ? (
                             <LinkWithHover key={i} href="https://wa.me/+5491123832198">

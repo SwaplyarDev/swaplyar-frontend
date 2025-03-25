@@ -44,7 +44,7 @@ export default function TransactionCalculator() {
 
   useEffect(() => {
     if (!pass && pathname === '/es/inicio/formulario-de-solicitud') {
-      router.push('/home');
+      router.push('/es/inicio');
     }
   }, [pass, pathname, router]);
 
