@@ -194,7 +194,7 @@ const TransactionModal = ({ transId }: TransactionModalProps) => {
               <ClientInformation modal={modal} setModal={setModal} trans={trans} />
             )}
 
-            {componentStates.discrepancySection !== null && <FinalSection />}
+            {componentStates.discrepancySection !== null && <FinalSection transId={transId} />}
           </div>
         )}
         {/* <ModalEditReciever modal={modal} setModal={setModal} trans={trans} /> */}
