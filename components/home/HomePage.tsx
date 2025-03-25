@@ -79,7 +79,7 @@ export default function HomePage() {
         <div className="mt-20 flex flex-col gap-[14px] text-center font-textFont">
           <p className="font-light">Descubre por qué SwaplyAr es la clave que necesitas.</p>
           <Link
-            href="/info/why-choose-swaplyar"
+            href="/es/por-que-elegir-swaplyar"
             className="block text-[28px] text-buttonsLigth underline dark:text-darkText"
           >
             ¿Por Que SwaplyAr?

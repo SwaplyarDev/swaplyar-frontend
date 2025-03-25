@@ -11,7 +11,7 @@ export default auth((req) => {
 
     // Redirigir al home si la ruta contiene "blog"
     if (nextUrl.pathname.includes('blog')) {
-      return NextResponse.redirect(new URL('/maintenance', req.url));
+      return NextResponse.redirect(new URL('/es/pagina-en-mantenimiento', req.url));
     }
 
     // Verificar si la ruta está bajo /admin
