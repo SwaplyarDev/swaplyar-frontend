@@ -126,10 +126,10 @@ export default function TransactionCalculator() {
                       buttonSecondDark: !(
                         isProcessing ||
                         sendAmount === '' ||
-                        (selectedSendingSystem?.id === 'paypal' && parseInt(sendAmount) < 5) ||
+                        parseInt(sendAmount) < 10 ||
+                        parseInt(receiveAmount) < 10 ||
                         (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
                         (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
-                        (selectedReceivingSystem?.id === 'paypal' && parseInt(receiveAmount) < 5) ||
                         (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
                         (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
                       ),
@@ -138,10 +138,10 @@ export default function TransactionCalculator() {
                       buttonSecond: !(
                         isProcessing ||
                         sendAmount === '' ||
-                        (selectedSendingSystem?.id === 'paypal' && parseInt(sendAmount) < 5) ||
+                        parseInt(sendAmount) < 10 ||
+                        parseInt(receiveAmount) < 10 ||
                         (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
                         (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
-                        (selectedReceivingSystem?.id === 'paypal' && parseInt(receiveAmount) < 5) ||
                         (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
                         (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
                       ),
@@ -152,10 +152,10 @@ export default function TransactionCalculator() {
               disabled={
                 isProcessing ||
                 sendAmount === '' ||
-                (selectedSendingSystem?.id === 'paypal' && parseInt(sendAmount) < 5) ||
+                parseInt(sendAmount) < 10 ||
+                parseInt(receiveAmount) < 10 ||
                 (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
                 (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
-                (selectedReceivingSystem?.id === 'paypal' && parseInt(receiveAmount) < 5) ||
                 (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
                 (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
               }
@@ -172,45 +172,47 @@ export default function TransactionCalculator() {
                   (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
                   (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
                   (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50) ||
-                  (selectedSendingSystem?.id === 'paypal' && parseInt(sendAmount) < 5) ||
-                  (selectedReceivingSystem?.id === 'paypal' && parseInt(receiveAmount) < 5)
+                  parseInt(receiveAmount) < 10 ||
+                  parseInt(sendAmount) < 10
                   ? 'mt-8'
                   : 'hidden',
               )}
             >
-              <p
-                className={clsx(
-                  (selectedSendingSystem?.id === 'paypal' && parseInt(sendAmount) < 5) ||
-                    (selectedReceivingSystem?.id === 'paypal' && parseInt(receiveAmount) < 5)
-                    ? 'block'
-                    : 'hidden',
-                  'text-[#f44336]',
-                )}
-              >
-                La transferencia mínima es de 5 USD en PayPal
-              </p>
-              <p
-                className={clsx(
-                  (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
-                    (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50)
-                    ? 'block'
-                    : 'hidden',
-                  'text-[#f44336]',
-                )}
-              >
-                La transferencia mínima es de 50 USD en Payoneer
-              </p>
-              <p
-                className={clsx(
-                  (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
-                    (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
-                    ? 'block'
-                    : 'hidden',
-                  'text-[#f44336]',
-                )}
-              >
-                La transferencia mínima es de 50 EUR en Payoneer
-              </p>
+              {selectedSendingSystem?.id === 'payoneer_usd' || selectedSendingSystem?.id === 'payoneer_eur' ? (
+                <>
+                  <p
+                    className={clsx(
+                      (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
+                        (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50)
+                        ? 'block'
+                        : 'hidden',
+                      'text-[#f44336]',
+                    )}
+                  >
+                    La transferencia mínima es de 50 USD en Payoneer
+                  </p>
+                  <p
+                    className={clsx(
+                      (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
+                        (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
+                        ? 'block'
+                        : 'hidden',
+                      'text-[#f44336]',
+                    )}
+                  >
+                    La transferencia mínima es de 50 EUR en Payoneer
+                  </p>
+                </>
+              ) : (
+                <p
+                  className={clsx(
+                    parseInt(receiveAmount) < 10 || parseInt(sendAmount) < 10 ? 'block' : 'hidden',
+                    'text-[#f44336]',
+                  )}
+                >
+                  La transferencia mínima es de 10 USD
+                </p>
+              )}
             </div>
           )}
         </div>
