@@ -218,7 +218,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
         </div>
       </div>
 
-      <pre>{JSON.stringify(transactions, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(transactions, null, 2)}</pre> */}
     </div>
   );
 };
