@@ -2,11 +2,11 @@
 
 import type React from 'react';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { SessionProvider } from 'next-auth/react';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
-import { Eye, AlertCircle, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { AlertCircle, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, Filter } from 'lucide-react';
 import type { TransactionArray, TransactionTypeAll } from '@/types/transactions/transactionsType';
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import TransactionModal from '@/components/TransactionModal/transactionModal';
@@ -20,6 +20,95 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
   const MySwal: any = withReactContent(Swal);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [transId, setTransId] = useState<string>('');
+  const [filters, setFilters] = useState({
+    status: [],
+    stock_status: [],
+    wallet_status: [],
+    min_date: null,
+    max_date: null,
+    orderby: 'date',
+    order: 'desc',
+    search: '',
+  });
+
+  const [activePopover, setActivePopover] = useState<string | null>(null);
+  const popoverRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        activePopover &&
+        popoverRefs.current[activePopover] &&
+        !popoverRefs.current[activePopover]?.contains(event.target as Node)
+      ) {
+        setActivePopover(null);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [activePopover]);
+
+  const togglePopover = (name: string) => {
+    setActivePopover(activePopover === name ? null : name);
+  };
+
+  const handleStatusFilterChange = (status: string) => {
+    /* @ts-expect-error */
+    const newStatusFilters = filters.status.includes(status)
+      ? filters.status.filter((s) => s !== status)
+      : [...filters.status, status];
+
+    setFilters({
+      ...filters,
+      /* @ts-expect-error */
+      status: newStatusFilters,
+    });
+  };
+
+  const handleSortChange = (field: string) => {
+    setFilters({
+      ...filters,
+      orderby: field,
+      order: filters.orderby === field && filters.order === 'asc' ? 'desc' : 'asc',
+    });
+  };
+
+  const handleWalletFilterChange = (type: 'origin' | 'destination', value: string) => {
+    const fieldName = type === 'origin' ? 'stock_status' : 'wallet_status';
+    const currentValues = filters[fieldName] as string[];
+
+    const newValues = currentValues.includes(value)
+      ? currentValues.filter((v) => v !== value)
+      : [...currentValues, value];
+
+    setFilters({
+      ...filters,
+      [fieldName]: newValues,
+    });
+  };
+
+  const handleDateChange = (type: 'min' | 'max', value: string) => {
+    setFilters({
+      ...filters,
+      [type === 'min' ? 'min_date' : 'max_date']: value,
+    });
+  };
+
+  const clearFilters = () => {
+    setFilters({
+      status: [],
+      stock_status: [],
+      wallet_status: [],
+      min_date: null,
+      max_date: null,
+      orderby: 'date',
+      order: 'desc',
+      search: '',
+    });
+  };
 
   // Función para abrir el modal de transacción
   const handleOpenModal = (id: string) => {
@@ -135,6 +224,10 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
 
   console.log();
 
+  useEffect(() => {
+    console.log('Current filters:', filters);
+  }, [filters]);
+
   return (
     <div className="w-full">
       <div className="overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -143,15 +236,316 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
           <table className="w-full">
             <thead className="bg-[#012a8d] text-left text-white">
               <tr>
-                <th className="px-4 py-3 text-sm font-medium">Estado</th>
-                <th className="px-4 py-3 text-sm font-medium">Fecha</th>
-                <th className="px-4 py-3 text-sm font-medium">ID</th>
-                <th className="px-4 py-3 text-sm font-medium">Remitente</th>
-                <th className="px-4 py-3 text-sm font-medium">Billetera Origen</th>
-                <th className="px-4 py-3 text-sm font-medium">Destinatario</th>
-                <th className="px-4 py-3 text-sm font-medium">Billetera Destino</th>
-                <th className="px-4 py-3 text-sm font-medium">Acción Cliente</th>
-                {/* <th className="px-4 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">Acciones</th> */}
+                <th className="px-4 py-3 text-sm font-medium">
+                  <div className="relative flex cursor-pointer items-center" onClick={() => togglePopover('status')}>
+                    Estado
+                    {filters.orderby === 'status' ? (
+                      filters.order === 'asc' ? (
+                        <ChevronUp size={16} className="ml-1" />
+                      ) : (
+                        <ChevronDown size={16} className="ml-1" />
+                      )
+                    ) : (
+                      <ChevronDown size={16} className="ml-1" />
+                    )}
+                    {activePopover === 'status' && (
+                      <div
+                        /* @ts-expect-error */
+                        ref={(el) => (popoverRefs.current['status'] = el)}
+                        className="absolute left-0 top-full z-50 mt-1 w-48 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="p-2">
+                          <div className="mb-2 font-medium text-gray-800 dark:text-gray-200">Filtrar por estado</div>
+                          <div className="space-y-2">
+                            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
+                              <input
+                                type="checkbox"
+                                className="mr-2 h-4 w-4"
+                                /* @ts-expect-error */
+                                checked={filters.status.includes('pending')}
+                                onChange={() => handleStatusFilterChange('pending')}
+                              />
+                              En Proceso
+                            </label>
+                            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
+                              <input
+                                type="checkbox"
+                                className="mr-2 h-4 w-4"
+                                /* @ts-expect-error */
+                                checked={filters.status.includes('canceled')}
+                                onChange={() => handleStatusFilterChange('canceled')}
+                              />
+                              Cancelada
+                            </label>
+                            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
+                              <input
+                                type="checkbox"
+                                className="mr-2 h-4 w-4"
+                                /* @ts-expect-error */
+                                checked={filters.status.includes('accepted')}
+                                onChange={() => handleStatusFilterChange('accepted')}
+                              />
+                              Finalizada
+                            </label>
+                          </div>
+                          <div className="mt-3 flex justify-between border-t border-gray-200 pt-2 dark:border-gray-700">
+                            <button
+                              className="text-xs text-blue-600 dark:text-blue-400"
+                              onClick={() => handleSortChange('status')}
+                            >
+                              {filters.orderby === 'status' && filters.order === 'asc' ? 'Ordenar Z-A' : 'Ordenar A-Z'}
+                            </button>
+                            <button className="text-xs text-red-600 dark:text-red-400" onClick={clearFilters}>
+                              Limpiar
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </th>
+                <th className="px-4 py-3 text-sm font-medium">
+                  <div className="relative flex cursor-pointer items-center" onClick={() => togglePopover('date')}>
+                    Fecha
+                    {filters.orderby === 'date' ? (
+                      filters.order === 'asc' ? (
+                        <ChevronUp size={16} className="ml-1" />
+                      ) : (
+                        <ChevronDown size={16} className="ml-1" />
+                      )
+                    ) : (
+                      <ChevronDown size={16} className="ml-1" />
+                    )}
+                    {activePopover === 'date' && (
+                      <div
+                        /* @ts-expect-error */
+                        ref={(el) => (popoverRefs.current['date'] = el)}
+                        className="absolute left-0 top-full z-50 mt-1 w-64 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="p-2">
+                          <div className="mb-2 font-medium text-gray-800 dark:text-gray-200">Filtrar por fecha</div>
+                          <div className="space-y-2">
+                            <div>
+                              <label className="mb-1 block text-sm text-gray-700 dark:text-gray-300">Desde:</label>
+                              <input
+                                type="date"
+                                className="w-full rounded border border-gray-300 p-1 text-sm text-black dark:border-gray-600 dark:bg-gray-700"
+                                value={filters.min_date || ''}
+                                onChange={(e) => handleDateChange('min', e.target.value)}
+                              />
+                            </div>
+                            <div>
+                              <label className="mb-1 block text-sm text-gray-700 dark:text-gray-300">Hasta:</label>
+                              <input
+                                type="date"
+                                className="w-full rounded border border-gray-300 p-1 text-sm text-black dark:border-gray-600 dark:bg-gray-700"
+                                value={filters.max_date || ''}
+                                onChange={(e) => handleDateChange('max', e.target.value)}
+                              />
+                            </div>
+                          </div>
+                          <div className="mt-3 flex justify-between border-t border-gray-200 pt-2 dark:border-gray-700">
+                            <button
+                              className="text-xs text-blue-600 dark:text-blue-400"
+                              onClick={() => handleSortChange('date')}
+                            >
+                              {filters.orderby === 'date' && filters.order === 'asc' ? 'Más recientes' : 'Más antiguos'}
+                            </button>
+                            <button className="text-xs text-red-600 dark:text-red-400" onClick={clearFilters}>
+                              Limpiar
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </th>
+                <th className="px-4 py-3 text-sm font-medium">
+                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('id')}>
+                    ID
+                    {filters.orderby === 'id' ? (
+                      filters.order === 'asc' ? (
+                        <ChevronUp size={16} className="ml-1" />
+                      ) : (
+                        <ChevronDown size={16} className="ml-1" />
+                      )
+                    ) : (
+                      <ChevronDown size={16} className="ml-1" />
+                    )}
+                  </div>
+                </th>
+                <th className="px-4 py-3 text-sm font-medium">
+                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('sender')}>
+                    Remitente
+                    {filters.orderby === 'sender' ? (
+                      filters.order === 'asc' ? (
+                        <ChevronUp size={16} className="ml-1" />
+                      ) : (
+                        <ChevronDown size={16} className="ml-1" />
+                      )
+                    ) : (
+                      <ChevronDown size={16} className="ml-1" />
+                    )}
+                  </div>
+                </th>
+                <th className="px-4 py-3 text-sm font-medium">
+                  <div
+                    className="relative flex cursor-pointer items-center"
+                    onClick={() => togglePopover('origin_wallet')}
+                  >
+                    Billetera Origen
+                    {filters.orderby === 'origin_wallet' ? (
+                      filters.order === 'asc' ? (
+                        <ChevronUp size={16} className="ml-1" />
+                      ) : (
+                        <ChevronDown size={16} className="ml-1" />
+                      )
+                    ) : (
+                      <ChevronDown size={16} className="ml-1" />
+                    )}
+                    {activePopover === 'origin_wallet' && (
+                      <div
+                        /* @ts-expect-error */
+                        ref={(el) => (popoverRefs.current['origin_wallet'] = el)}
+                        className="absolute left-0 top-full z-50 mt-1 w-48 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="p-2">
+                          <div className="mb-2 font-medium text-gray-800 dark:text-gray-200">Filtrar por billetera</div>
+                          <div className="space-y-2">
+                            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
+                              <input
+                                type="checkbox"
+                                className="mr-2 h-4 w-4"
+                                /* @ts-expect-error */
+                                checked={filters.stock_status.includes('payoneer')}
+                                onChange={() => handleWalletFilterChange('origin', 'payoneer')}
+                              />
+                              Payoneer
+                            </label>
+                            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
+                              <input
+                                type="checkbox"
+                                className="mr-2 h-4 w-4"
+                                /* @ts-expect-error */
+                                checked={filters.stock_status.includes('paypal')}
+                                onChange={() => handleWalletFilterChange('origin', 'paypal')}
+                              />
+                              PayPal
+                            </label>
+                          </div>
+                          <div className="mt-3 flex justify-between border-t border-gray-200 pt-2 dark:border-gray-700">
+                            <button
+                              className="text-xs text-blue-600 dark:text-blue-400"
+                              onClick={() => handleSortChange('origin_wallet')}
+                            >
+                              {filters.orderby === 'origin_wallet' && filters.order === 'asc'
+                                ? 'Ordenar Z-A'
+                                : 'Ordenar A-Z'}
+                            </button>
+                            <button className="text-xs text-red-600 dark:text-red-400" onClick={clearFilters}>
+                              Limpiar
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </th>
+                <th className="px-4 py-3 text-sm font-medium">
+                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('recipient')}>
+                    Destinatario
+                    {filters.orderby === 'recipient' ? (
+                      filters.order === 'asc' ? (
+                        <ChevronUp size={16} className="ml-1" />
+                      ) : (
+                        <ChevronDown size={16} className="ml-1" />
+                      )
+                    ) : (
+                      <ChevronDown size={16} className="ml-1" />
+                    )}
+                  </div>
+                </th>
+                <th className="px-4 py-3 text-sm font-medium">
+                  <div
+                    className="relative flex cursor-pointer items-center"
+                    onClick={() => togglePopover('dest_wallet')}
+                  >
+                    Billetera Destino
+                    {filters.orderby === 'dest_wallet' ? (
+                      filters.order === 'asc' ? (
+                        <ChevronUp size={16} className="ml-1" />
+                      ) : (
+                        <ChevronDown size={16} className="ml-1" />
+                      )
+                    ) : (
+                      <ChevronDown size={16} className="ml-1" />
+                    )}
+                    {activePopover === 'dest_wallet' && (
+                      <div
+                        /* @ts-expect-error */
+                        ref={(el) => (popoverRefs.current['dest_wallet'] = el)}
+                        className="absolute left-0 top-full z-50 mt-1 w-48 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="p-2">
+                          <div className="mb-2 font-medium text-gray-800 dark:text-gray-200">Filtrar por billetera</div>
+                          <div className="space-y-2">
+                            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
+                              <input
+                                type="checkbox"
+                                className="mr-2 h-4 w-4"
+                                /* @ts-expect-error */
+                                checked={filters.wallet_status?.includes('payoneer')}
+                                onChange={() => handleWalletFilterChange('destination', 'payoneer')}
+                              />
+                              Payoneer
+                            </label>
+                            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
+                              <input
+                                type="checkbox"
+                                className="mr-2 h-4 w-4"
+                                /* @ts-expect-error */
+                                checked={filters.wallet_status?.includes('paypal')}
+                                onChange={() => handleWalletFilterChange('destination', 'paypal')}
+                              />
+                              PayPal
+                            </label>
+                          </div>
+                          <div className="mt-3 flex justify-between border-t border-gray-200 pt-2 dark:border-gray-700">
+                            <button
+                              className="text-xs text-blue-600 dark:text-blue-400"
+                              onClick={() => handleSortChange('dest_wallet')}
+                            >
+                              {filters.orderby === 'dest_wallet' && filters.order === 'asc'
+                                ? 'Ordenar Z-A'
+                                : 'Ordenar A-Z'}
+                            </button>
+                            <button className="text-xs text-red-600 dark:text-red-400" onClick={clearFilters}>
+                              Limpiar
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </th>
+                <th className="px-4 py-3 text-sm font-medium">
+                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('client_action')}>
+                    Acción Cliente
+                    {filters.orderby === 'client_action' ? (
+                      filters.order === 'asc' ? (
+                        <ChevronUp size={16} className="ml-1" />
+                      ) : (
+                        <ChevronDown size={16} className="ml-1" />
+                      )
+                    ) : (
+                      <ChevronDown size={16} className="ml-1" />
+                    )}
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">

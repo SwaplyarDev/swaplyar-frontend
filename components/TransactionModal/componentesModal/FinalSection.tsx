@@ -5,10 +5,11 @@ import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { useSession } from 'next-auth/react';
 import { CheckCircle, XCircle, Clock, X, User, FileText } from 'lucide-react';
+import { TransactionService } from './ui/TransactionService';
 
 const MySwal = withReactContent(Swal);
 
-const FinalSection = () => {
+const FinalSection = ({ transId }: { transId: string }) => {
   const { data: session } = useSession();
   const userName = session?.user.name;
   const [note, setNote] = useState('');
@@ -91,18 +92,43 @@ const FinalSection = () => {
       hideClass: {
         popup: 'animate__animated animate__fadeOut animate__faster',
       },
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Solicitud rechazada',
-          text: 'La solicitud ha sido rechazada',
-          icon: 'error',
-          confirmButtonColor: '#CE1818',
-          timer: 2000,
-          timerProgressBar: true,
-        });
-        console.log('Solicitud rechazada con nota:', note);
-        // Aquí puedes agregar la lógica para guardar el rechazo
+        try {
+          // Mostrar indicador de carga
+          Swal.fire({
+            title: 'Procesando...',
+            text: 'Estamos procesando tu solicitud',
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+
+          const response = await TransactionService('canceled', transId);
+
+          /* @ts-expect-error */
+          if (response?.message === 'Status updated successfully') {
+            Swal.fire({
+              title: 'Solicitud rechazada',
+              text: 'La solicitud ha sido rechazada exitosamente',
+              icon: 'success',
+              confirmButtonColor: 'rgb(1,42,142)',
+              timer: 2000,
+              timerProgressBar: true,
+            });
+          } else {
+            throw new Error('Error al procesar la solicitud');
+          }
+        } catch (error) {
+          console.log('Error al rechazar la transacción:', error);
+          Swal.fire({
+            title: 'Error',
+            text: 'Ocurrió un error al procesar la solicitud. Por favor intenta nuevamente.',
+            icon: 'error',
+            confirmButtonColor: 'rgb(1,42,142)',
+          });
+        }
       }
     });
   };
