@@ -2,13 +2,12 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ChevronLeft,
   ChevronRight,
   BarChart3,
   Users,
-  Settings,
   CreditCard,
   Menu,
   Clock,
@@ -18,6 +17,16 @@ import {
   AlertTriangle,
   Tag,
 } from 'lucide-react';
+import { Avatar, Button, Popover, styled, Typography, Box } from '@mui/material';
+import { signOut, useSession } from 'next-auth/react';
+import clsx from 'clsx';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import Image from 'next/image';
+import LogoSidebar from './componentsSidebar/LogoSidebar';
+import InicioGroup from './componentsSidebar/Navigation/InicioGroup';
+import GestionGroup from './componentsSidebar/Navigation/GestionGroup';
+import AtajosGroup from './componentsSidebar/Navigation/AtajosGroup';
+import UserBotton from './componentsSidebar/Navigation/UserBotton';
 
 // Create a custom event to communicate sidebar state
 export const createSidebarEvent = (isCollapsed: boolean) => {
@@ -27,11 +36,25 @@ export const createSidebarEvent = (isCollapsed: boolean) => {
   }
 };
 
+// Botón de logout estilizado
+const LogoutButton = styled(Button)(({ theme }) => ({
+  minHeight: '38px',
+  width: '90%',
+  borderRadius: '1.5rem',
+  padding: '6px 16px',
+  fontSize: '0.875rem',
+  marginTop: '8px',
+  border: '1px solid',
+  textTransform: 'none',
+}));
+
 const Sidebar = () => {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
+  const searchParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+  const { isDark } = useDarkTheme();
 
   // Load sidebar state from localStorage on mount
   useEffect(() => {
@@ -43,12 +66,57 @@ const Sidebar = () => {
     }
   }, []);
 
+  // Botón estilizado para el perfil que se adapta al estado del sidebar
+  const ProfileButton = styled(Button)(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: '8px 12px',
+    borderRadius: '0.5rem',
+    width: '100%',
+    textTransform: 'none',
+    transition: 'all 0.2s ease',
+    '&:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0.04)',
+    },
+  }));
+
   // Function to create URL with preserved query params
-  /*   const createStatusUrl = (statusId: string) => {
+  const createStatusUrl = (statusId: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set('status', statusId);
     return `${pathname}?${params.toString()}`;
-  }; */
+  };
+
+  const { data: session, status } = useSession();
+
+  // Popover para el perfil de usuario
+  const [profileAnchorEl, setProfileAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  const handleProfileClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setProfileAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileClose = () => {
+    setProfileAnchorEl(null);
+  };
+
+  const profileOpen = Boolean(profileAnchorEl);
+  const profileId = profileOpen ? 'user-profile-popover' : undefined;
+
+  // Popover para status
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
 
   // Status shortcuts data with icons
   const statusShortcuts = [
@@ -143,7 +211,7 @@ const Sidebar = () => {
               <XCircle size={16} />
             </button>
           </div>
-          {/* {statusShortcuts.map((group, groupIndex) => (
+          {statusShortcuts.map((group, groupIndex) => (
             <div key={groupIndex} className="mb-3">
               <h4 className="mb-1 text-xs font-medium text-gray-600 dark:text-gray-300">{group.title}</h4>
               <ul className="space-y-1">
@@ -161,7 +229,7 @@ const Sidebar = () => {
                 ))}
               </ul>
             </div>
-          ))} */}
+          ))}
         </div>
       )}
 
@@ -173,146 +241,42 @@ const Sidebar = () => {
       >
         <div className="flex h-full flex-col">
           {/* Logo and collapse button */}
-          <div className="flex h-16 items-center justify-between border-b border-gray-100 px-4 dark:border-gray-700">
-            {!collapsed && <div className="text-lg font-medium text-blue-600 dark:text-blue-400">SwaplyAr</div>}
-            <button
-              onClick={toggleSidebar}
-              className={`rounded-md p-1.5 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 ${
-                collapsed ? 'mx-auto' : 'ml-auto'
-              }`}
-              aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            >
-              {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-            </button>
-          </div>
+          <LogoSidebar collapsed={collapsed} toggleSidebar={toggleSidebar} />
 
           {/* Navigation */}
           <nav className="flex flex-1 flex-col justify-between overflow-y-auto px-3 py-4">
             <div>
               {/* Inicio Group */}
-              <div className="mb-6">
-                {!collapsed && (
-                  <h3 className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                    Inicio
-                  </h3>
-                )}
-                <ul className="space-y-1.5">
-                  <li>
-                    <Link
-                      href="/admin/transactions"
-                      className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
-                        pathname === '/admin/transactions' || pathname?.startsWith('/admin/transactions')
-                          ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
-                          : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700/50'
-                      } ${collapsed ? 'justify-center' : ''}`}
-                    >
-                      <CreditCard size={20} className={collapsed ? '' : 'mr-3'} />
-                      {!collapsed && <span>Operación de Transacciones</span>}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/admin/reports"
-                      className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
-                        pathname === '/admin/reports' || pathname?.startsWith('/admin/reports')
-                          ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
-                          : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700/50'
-                      } ${collapsed ? 'justify-center' : ''}`}
-                    >
-                      <BarChart3 size={20} className={collapsed ? '' : 'mr-3'} />
-                      {!collapsed && <span>Reportes</span>}
-                    </Link>
-                  </li>
-                </ul>
-              </div>
+              <InicioGroup collapsed={collapsed} pathname={pathname} />
 
               {/* Gestión Group */}
-              <div className="mb-6">
-                {!collapsed && (
-                  <h3 className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                    Gestión
-                  </h3>
-                )}
-                <ul className="space-y-1.5">
-                  <li>
-                    <Link
-                      href="/admin/users"
-                      className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
-                        pathname === '/admin/users' || pathname?.startsWith('/admin/users')
-                          ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
-                          : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700/50'
-                      } ${collapsed ? 'justify-center' : ''}`}
-                    >
-                      <Users size={20} className={collapsed ? '' : 'mr-3'} />
-                      {!collapsed && <span>Gestión de Usuarios</span>}
-                    </Link>
-                  </li>
-                </ul>
-              </div>
+              <GestionGroup collapsed={collapsed} pathname={pathname} />
 
               {/* Atajos Group */}
-              <div className="mb-6">
-                {!collapsed && (
-                  <h3 className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-                    Atajos
-                  </h3>
-                )}
-
-                {!collapsed ? (
-                  <div>
-                    {/*  {statusShortcuts.map((group, groupIndex) => (
-                      <div key={groupIndex} className="mb-3">
-                        <h4 className="mb-1.5 px-3 text-xs font-medium text-gray-600 dark:text-gray-300">
-                          {group.title}
-                        </h4>
-                        <ul className="space-y-1.5">
-                          {group.items.map((item) => (
-                            <li key={item.id}>
-                              <Link
-                                href={createStatusUrl(item.id)}
-                                className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50 ${collapsed ? 'justify-center' : ''}`}
-                              >
-                                <item.icon size={20} className={`${item.color} ${collapsed ? '' : 'mr-3'}`} />
-                                {!collapsed && <span className={item.color}>{item.label}</span>}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))} */}
-                  </div>
-                ) : (
-                  <div>
-                    <button
-                      onClick={toggleStatusDropdown}
-                      className={`flex w-full justify-center rounded-md px-3 py-2.5 text-sm transition-colors ${statusDropdownOpen ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700/50'}`}
-                      aria-label="Mostrar atajos"
-                    >
-                      <Tag size={20} />
-                    </button>
-                  </div>
-                )}
-              </div>
+              <AtajosGroup
+                collapsed={collapsed}
+                pathname={pathname}
+                statusDropdownOpen={statusDropdownOpen}
+                toggleStatusDropdown={toggleStatusDropdown}
+                statusShortcuts={statusShortcuts}
+                createStatusUrl={createStatusUrl}
+              />
             </div>
 
-            {/* Settings at the bottom */}
-            <div className="mt-auto">
-              <ul>
-                <li>
-                  <Link
-                    href="/admin/settings"
-                    className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
-                      pathname === '/admin/settings' || pathname?.startsWith('/admin/settings')
-                        ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
-                        : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700/50'
-                    } ${collapsed ? 'justify-center' : ''}`}
-                  >
-                    <Settings size={20} className={collapsed ? '' : 'mr-3'} />
-                    {!collapsed && <span>Configuración</span>}
-                  </Link>
-                </li>
-              </ul>
-            </div>
+            {/* User at the bottom */}
+            <UserBotton
+              collapsed={collapsed}
+              session={session}
+              status={status}
+              profileId={profileId}
+              handleProfileClick={handleProfileClick}
+              handleProfileClose={handleProfileClose}
+              profileOpen={profileOpen}
+              profileAnchorEl={profileAnchorEl}
+              isDark={isDark}
+              ProfileButton={ProfileButton}
+              LogoutButton={LogoutButton}
+            />
           </nav>
         </div>
       </aside>
