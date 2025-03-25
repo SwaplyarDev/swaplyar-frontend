@@ -267,6 +267,7 @@ const Sidebar = () => {
             <UserBotton
               collapsed={collapsed}
               session={session}
+              status={status}
               profileId={profileId}
               handleProfileClick={handleProfileClick}
               handleProfileClose={handleProfileClose}

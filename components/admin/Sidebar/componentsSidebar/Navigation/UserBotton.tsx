@@ -1,11 +1,13 @@
+'use client';
+
 import { signOut } from '@/auth';
 import { Avatar, Box, Popover, Typography } from '@mui/material';
 import clsx from 'clsx';
-import React from 'react';
 
 const UserBotton = ({
   collapsed,
   session,
+  status,
   profileId,
   handleProfileClick,
   handleProfileClose,
@@ -17,6 +19,7 @@ const UserBotton = ({
 }: {
   collapsed: boolean;
   session: any;
+  status: any;
   profileId: any;
   handleProfileClick: any;
   handleProfileClose: () => void;
@@ -26,6 +29,8 @@ const UserBotton = ({
   ProfileButton: any;
   LogoutButton: any;
 }) => {
+  console.log(session, status);
+
   return (
     <div className={`mt-auto ${collapsed ? 'pl-1' : 'px-3 py-2'}`}>
       {status === 'authenticated' && session?.user && (
@@ -112,15 +117,14 @@ const UserBotton = ({
             anchorEl={profileAnchorEl}
             onClose={handleProfileClose}
             anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
+              vertical: 'bottom',
+              horizontal: 'left',
             }}
             transformOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
+              vertical: 'top',
+              horizontal: 'left',
             }}
             sx={{
-              mt: -1,
               '& .MuiPaper-root': {
                 borderRadius: '1rem',
                 padding: '16px',
