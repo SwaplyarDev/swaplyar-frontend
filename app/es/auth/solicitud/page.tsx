@@ -1,7 +1,9 @@
-import React from 'react';
+import RequestPage from "@/components/request/auth/RequestPage";
 
-const RequestPage = () => {
-  return <h2>RequestPage</h2>;
+const Page = () => {
+  return <>
+    <RequestPage />
+  </>;
 };
 
-export default RequestPage;
+export default Page;
