@@ -49,7 +49,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
 
   return (
     <section
-      className={`relative overflow-hidden rounded-lg ${currentStyle.border} ${currentStyle.bg} mt-5 border transition-all duration-300`}
+      className={`relative overflow-hidden rounded-lg ${currentStyle.border} ${currentStyle.bg} border transition-all duration-300`}
     >
       {/* Alert Banner (if applicable) */}
       {hasAlert && (
