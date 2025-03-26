@@ -222,13 +222,3 @@ export const enchufeLargoDark = '/images/enchufeLargoDark.svg';
 
 export const error404Clear = '/images/error404Clear.svg';
 export const error404Dark = '/images/error404Dark.svg';
-
-//Navbar Interno
-
-export const montana = '/images/montañaSvg.svg';
-export const solicitud = '/images/solicitud.svg';
-export const historialTransacciones = 'images/historialTransacciones.svg';
-export const plusRewards = 'images/plusRewards.svg';
-export const cuentasAsociadas = 'images/cuentasAsociadas.svg';
-export const centroDeAyuda = 'images/centroDeAyuda.svg';
-export const cerrarSesion = 'images/cerrarSesion.svg';
