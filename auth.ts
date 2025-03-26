@@ -12,7 +12,7 @@ export const {
     strategy: 'jwt',
   },
   pages: {
-    signIn: '/auth/login-register',
+    signIn: '/es/iniciar-sesion-o-registro',
   },
 
   callbacks: {

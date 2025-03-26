@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Estado de tu Solicitud - Swaplyar',
     description: 'Consulta el estado de tu solicitud en Swaplyar y obtén actualizaciones en tiempo real.',
-    url: 'https://www.swaplyar.com/request/search-request',
+    url: 'https://www.swaplyar.com/es/centro-de-ayuda/estado-de-solicitud',
     type: 'website',
     images: [
       {

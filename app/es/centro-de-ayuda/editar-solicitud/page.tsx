@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Editar tu Solicitud - Swaplyar',
     description: 'Modifica los detalles de tu solicitud de forma rápida y sencilla en Swaplyar.',
-    url: 'https://www.swaplyar.com/editRequest',
+    url: 'https://www.swaplyar.com/es/centro-de-ayuda/editar-solicitud',
     type: 'website',
     images: [
       {

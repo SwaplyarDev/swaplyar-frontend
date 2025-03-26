@@ -602,7 +602,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
         {/* Paginación */}
         <div className="border-t border-gray-200 p-4 dark:border-gray-700">
           <PaginationButtons
-            route="/admin/transactions"
+            route="/es/admin/transactions"
             totalPages={transactions.meta.totalPages}
             currentPage={transactions.meta.page}
             isLoading={isLoading}

@@ -39,7 +39,7 @@ const Page: React.FC = () => {
         <RepentanceForm />
       </div>
       <FlyerTrabajo
-        href="/auth/login-register"
+        href="/es/iniciar-sesion-o-registro"
         imageSrc={FlyerGif}
         description="Creá una cuenta gratuita en SwaplyAr para gestionar tus reembolsos sin complicaciones"
         nameButton="Registrate"

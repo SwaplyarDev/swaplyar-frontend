@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Programa de Fidelización - Swaplyar',
     description: 'Gana beneficios exclusivos con nuestro Programa de Fidelización. Únete y disfruta de recompensas.',
-    url: 'https://www.swaplyar.com/info/loyalty-program',
+    url: 'https://www.swaplyar.com/es/programa-de-fidelizacion',
     type: 'website',
     images: [
       {

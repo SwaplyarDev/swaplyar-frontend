@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Quiénes Somos - Swaplyar',
     description: 'Conoce la historia, valores y misión de Swaplyar, tu aliado en soluciones financieras innovadoras.',
-    url: 'https://www.swaplyar.com/info/about-us',
+    url: 'https://www.swaplyar.com/es/quienes-somos',
     type: 'website',
     images: [
       {

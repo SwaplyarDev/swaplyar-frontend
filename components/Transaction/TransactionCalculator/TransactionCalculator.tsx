@@ -43,14 +43,14 @@ export default function TransactionCalculator() {
   const { setPass } = useControlRouteRequestStore((state) => state);
 
   useEffect(() => {
-    if (!pass && pathname === '/request') {
-      router.push('/home');
+    if (!pass && pathname === '/es/inicio/formulario-de-solicitud') {
+      router.push('/es/inicio');
     }
   }, [pass, pathname, router]);
 
   const handleDirection = () => {
     sessionStorage.setItem('accesoPermitido', 'true');
-    router.push('/request');
+    router.push('/es/inicio/formulario-de-solicitud');
   };
 
   const handleSubmit = () => {

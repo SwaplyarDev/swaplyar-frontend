@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Preguntas Frecuentes - Swaplyar',
     description: 'Encuentra respuestas a las preguntas más frecuentes sobre nuestros servicios financieros.',
-    url: 'https://www.swaplyar.com/info/questions',
+    url: 'https://www.swaplyar.com/es/centro-de-ayuda/preguntas-frecuentes',
     type: 'website',
     images: [
       {

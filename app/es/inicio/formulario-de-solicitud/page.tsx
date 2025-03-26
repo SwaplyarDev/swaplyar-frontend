@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Formulario de Solicitud - Swaplyar',
     description: 'Completa tu solicitud con Swaplyar de forma rápida y segura. Accede al formulario aquí.',
-    url: 'https://www.swaplyar.com/request',
+    url: 'https://www.swaplyar.com/home/formulario-de-solicitud',
     type: 'website',
     images: [
       {
@@ -38,7 +38,7 @@ const RequestPage = () => {
         <StepperContainer />
       </div>
       <FlyerTrabajo
-        href="/auth/login-register"
+        href="/es/iniciar-sesion-o-registro"
         description="Para acceder a más beneficios y seguimiento en tiempo real registrate gratis"
         nameButton="¡Me quiero registrar!"
         imageSrc={FlyerGif}

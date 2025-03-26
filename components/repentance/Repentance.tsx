@@ -54,7 +54,7 @@ const RepentanceForm = () => {
             className={`relative mt-10 flex h-full w-full flex-col items-center justify-center gap-4 border-0 lg2:mr-3 lg2:flex-1 lg2:after:absolute lg2:after:-left-3 lg2:after:top-5 lg2:after:h-[75%] lg2:after:w-[1px] lg2:after:bg-buttonsLigth lg2:after:content-[''] ${isDark ? 'lg2:after:bg-darkText' : ''}`}
           >
             <Form></Form>
-            <ButtonBack route="/info/help-center" isDark={isDark} />
+            <ButtonBack route="/es/centro-de-ayuda" isDark={isDark} />
           </div>
         </div>
       </div>

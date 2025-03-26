@@ -52,7 +52,7 @@ const HelpCenterPage = () => {
             <div className="mt-20 flex flex-col text-center font-textFont lg2:flex-row lg2:items-center lg2:justify-center lg2:gap-4">
               <p className="font-light">¿Sospechas que eres víctima de un fraude?</p>
               <Link
-                href="/info/terms/fraud-prevention"
+                href="/es/centro-de-ayuda/prevencion-y-fraude"
                 className="block text-[28px] text-buttonsLigth underline dark:text-darkText"
               >
                 obtén información aquí
@@ -78,7 +78,7 @@ const HelpCenterPage = () => {
                 Obtené beneficios exclusivos cada vez que realices un cambio de divisas con SwaplyAr Plus Rewards™.
               </p>
               <Link
-                href="/info/loyalty-program"
+                href="/es/programa-de-fidelizacion"
                 className={clsx(
                   isDark
                     ? 'buttonSecondDark border-darkText bg-darkText dark:text-lightText'
@@ -120,7 +120,7 @@ const HelpCenterPage = () => {
         imageSrc={FlyerGif}
         description="Encontrá respuestas a tus dudas"
         nameButton="Preguntas frecuentes"
-        href="/info/questions"
+        href="/es/centro-de-ayuda/preguntas-frecuentes"
       />
     </>
   );
