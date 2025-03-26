@@ -86,7 +86,7 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({ trans, value, s
   };
 
   return (
-    <section className="mt-5 w-full overflow-hidden rounded-xl border border-gray-100 bg-gradient-to-r from-gray-50 to-white transition-all duration-300">
+    <section className="mt-5 w-full overflow-hidden rounded-xl border bg-white transition-all duration-300">
       <div className="p-6">
         <h3 className="mb-5 text-center font-titleFont text-xl font-semibold text-gray-800">
           <span className="inline-flex items-center">

@@ -149,7 +149,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectCha
   };
 
   return (
-    <section className="mt-6 w-full overflow-hidden rounded-xl border border-gray-100 bg-white shadow-md transition-all duration-300">
+    <section className="w-full overflow-hidden rounded-xl border bg-white shadow-md transition-all duration-300">
       <div className="p-6">
         <h2 className="mb-5 flex items-center justify-center text-center font-titleFont text-xl font-semibold text-gray-800">
           <Info className="mr-2 h-5 w-5 text-blue-600" />

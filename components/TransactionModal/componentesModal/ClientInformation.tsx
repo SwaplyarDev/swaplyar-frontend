@@ -20,7 +20,7 @@ const ClientInformation: React.FC<ClientInformationProps> = ({ modal, setModal }
   const { transaction } = trans;
 
   return (
-    <section className="mt-6 w-full overflow-hidden rounded-xl border border-gray-100 bg-white shadow-md transition-all duration-300">
+    <section className="w-full overflow-hidden rounded-xl border bg-white shadow-md transition-all duration-300">
       <div className="p-6">
         <div className="mb-6 flex flex-col items-start justify-between md:flex-row md:items-center">
           <h2 className="flex items-center text-xl font-semibold text-gray-800 md:text-2xl">

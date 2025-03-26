@@ -134,7 +134,7 @@ const FinalSection = ({ transId }: { transId: string }) => {
   };
 
   return (
-    <section className="mt-6 w-full overflow-hidden rounded-xl border border-gray-100 bg-white shadow-md transition-all duration-300">
+    <section className="w-full overflow-hidden rounded-xl border bg-white shadow-md transition-all duration-300">
       <div className="p-6">
         <div className="flex flex-col space-y-6">
           {/* Campo de notas */}
@@ -201,33 +201,6 @@ const FinalSection = ({ transId }: { transId: string }) => {
               Esta solicitud fue operada por:
               <span className="ml-1 font-medium text-gray-800">{userName || 'Usuario no identificado'}</span>
             </p>
-          </div>
-
-          {/* Botones de estado y cierre */}
-          <div className="mt-2 flex flex-wrap items-center justify-end gap-4">
-            <button
-              className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition-all duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-              aria-label="Marcar como en proceso"
-            >
-              <Clock className="h-4 w-4" />
-              <span>En Proceso</span>
-            </button>
-
-            <button
-              onClick={() => MySwal.close()}
-              onMouseEnter={() => setIsHovering('close')}
-              onMouseLeave={() => setIsHovering(null)}
-              className="relative flex items-center gap-2 rounded-lg px-4 py-2 font-medium text-gray-700 transition-all duration-300 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300"
-              aria-label="Cerrar modal"
-            >
-              <X className="h-4 w-4" />
-              <span>Cerrar</span>
-              {isHovering === 'close' && (
-                <span className="animate-fadeIn absolute -top-10 right-0 whitespace-nowrap rounded bg-gray-700 px-2 py-1 text-xs text-white">
-                  Cerrar sin guardar cambios
-                </span>
-              )}
-            </button>
           </div>
         </div>
       </div>
