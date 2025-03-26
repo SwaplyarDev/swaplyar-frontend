@@ -1,13 +1,14 @@
+'use client';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import Image from 'next/image';
 
 function PlusRewardSection() {
   const { isDark } = useDarkTheme();
-
+  console.log(isDark);
   return (
     <>
       <section className="relative m-auto flex w-full max-w-7xl items-center">
-        <section className="relative mx-auto w-full max-w-md rounded-lg bg-black p-6 text-white xs-mini-phone:p-7 xs-phone:p-8 md-phone:p-10">
+        <section className="relative mx-auto w-full max-w-md rounded-lg p-6 text-white xs-mini-phone:p-7 xs-phone:p-8 md-phone:p-10">
           <article className="mb-6 flex w-full justify-start xs-phone:mb-8">
             <div className="w-40 xs-mini-phone:w-44 xs-phone:w-48 md-phone:w-52">
               <Image
@@ -36,7 +37,7 @@ function PlusRewardSection() {
             <p className="text-sm text-gray-300 xs-mini-phone:text-base">se aplica automáticamente en tu solicitud.</p>
           </article>
 
-          <article className="relative mb-6 rounded-lg bg-zinc-900 p-4 xs-mini-phone:p-5 xs-phone:p-6 md-phone:p-7">
+          <article className="relative mb-6 rounded-lg p-4 xs-mini-phone:p-5 xs-phone:p-6 md-phone:p-7">
             <div className="mb-4 text-center">
               <p className="font-medium xs-phone:text-lg">Aún no has verificado tu cuenta.</p>
               <p className="text-sm xs-mini-phone:text-base">
