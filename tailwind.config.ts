@@ -53,7 +53,6 @@ const config: Config = {
         '2k': '2048px',
         '4k': '3840px',
       },
-
       colors: {
         'nav-blue': '#012D8A',
         'gray-blue': '#020919',

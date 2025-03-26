@@ -14,27 +14,26 @@ interface SearchInputProps {
 export default function SearchInput({ searchTerm, onSearchChange, results }: SearchInputProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const { isDark } = useDarkTheme();
-
-  const handleFocus = () => setIsExpanded(true);
-  const handleClose = () => {
-    setIsExpanded(false);
-    onSearchChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>);
-  };
-
   const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
-    if (searchTerm.length > 0 && results.length > 0) {
-      setShowResults(true);
-    } else {
-      setShowResults(false);
-    }
+    setShowResults(searchTerm.length > 0 && results.length > 0);
   }, [searchTerm, results]);
+
+  const handleFocus = () => setIsExpanded(true);
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      setIsExpanded(false);
+      setShowResults(false);
+    }, 150);
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && searchTerm) {
-      // Cierra el popup y la X al presionar Enter
-      handleClose();
+      setIsExpanded(false);
+      setShowResults(false);
+      e.currentTarget.blur();
     }
   };
 
@@ -71,45 +70,37 @@ export default function SearchInput({ searchTerm, onSearchChange, results }: Sea
             className="w-full rounded-2xl border-none bg-transparent p-3 pl-10 pr-10 text-sm text-black focus:border-none focus:outline-none focus:ring-0 dark:text-darkText sm:text-base"
             value={searchTerm}
             onFocus={handleFocus}
+            onBlur={handleBlur}
             onChange={onSearchChange}
-            onKeyDown={handleKeyDown} // Agregamos el evento de teclado
+            onKeyDown={handleKeyDown}
           />
           {isExpanded && (
             <button
-              onClick={handleClose}
+              onClick={() => onSearchChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-inputLight dark:text-darkText"
             >
               <X size={25} />
             </button>
           )}
         </div>
-        <div
-          className={`z-50 transform overflow-hidden rounded-b-2xl bg-transparent shadow-lg transition-all duration-300 ease-in-out ${
-            showResults
-              ? 'mt-1 max-h-[300px] w-full translate-y-0 opacity-100'
-              : 'm-0 max-h-0 w-0 translate-y-[-20px] opacity-0'
-          }`}
-        >
-          {results.slice(0, 4).map((post) => {
-            const slug = slugify(post.title, { lower: true, strict: true });
-            return (
-              <>
-                <div className="mx-5 h-[1px] w-full max-w-[200px] bg-custom-grayD-500"></div>
+        {showResults && (
+          <div className="z-50 mt-1 max-h-[300px] w-full transform overflow-hidden rounded-b-2xl bg-transparent shadow-lg transition-all duration-300 ease-in-out">
+            {results.slice(0, 4).map((post) => {
+              const slug = slugify(post.title || '', { lower: true, strict: true });
+              return (
                 <Link
+                  key={post.blog_id}
                   href={`blog/blogDetail?slug=${encodeURIComponent(slug)}&id=${encodeURIComponent(post.blog_id)}`}
-                  onClick={handleClose}
+                  onMouseDown={(e) => e.preventDefault()} // Evita que `onBlur` se active antes del click
                 >
-                  <div
-                    key={post.blog_id}
-                    className="cursor-pointer px-4 py-2 text-gray-800 hover:bg-gray-300 dark:text-gray-200 dark:hover:bg-gray-700"
-                  >
+                  <div className="cursor-pointer px-4 py-2 text-gray-800 hover:bg-gray-300 dark:text-gray-200 dark:hover:bg-gray-700">
                     {post.title}
                   </div>
                 </Link>
-              </>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

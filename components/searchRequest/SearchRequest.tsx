@@ -217,14 +217,14 @@ const SearchRequest = () => {
                 </button>
               )}
             </div>
-            <ButtonBack route="/info/help-center" isDark={isDark} />
+            <ButtonBack route="/es/centro-de-ayuda" isDark={isDark} />
           </form>
         </section>
       </div>
       <div className="mt-10">
         <FlyerTrabajo
           imageSrc={FlyerGif}
-          href="/auth/login-register"
+          href="/es/iniciar-sesion-o-registro"
           description="Crea tu cuenta para hacer seguimiento de tus solicitudes en tiempo real"
           nameButton="Crear mi cuenta"
         />

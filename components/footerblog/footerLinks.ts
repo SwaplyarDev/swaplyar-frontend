@@ -15,19 +15,19 @@ interface SocialLink {
 
 export const footerLinks = {
   registro: [
-    { href: '/auth/login-register', label: 'Iniciar Sesión', view: 'login' },
-    { href: '/auth/login-register', label: 'Registrarse', view: 'register' },
-    { href: '/info/loyalty-program', label: 'Programa de Fidelización' },
+    { href: '/es/iniciar-sesion-o-registro', label: 'Iniciar Sesión', view: 'login' },
+    { href: '/es/iniciar-sesion-o-registro', label: 'Registrarse', view: 'register' },
+    { href: '/es/programa-de-fidelizacion', label: 'Programa de Fidelización' },
   ] as FooterLink[],
   normativa: [
-    { href: '/info/warranty', label: 'Garantía' },
-    { href: '/info/terms/terms-and-conditions', label: 'Términos y Condiciones' },
-    { href: '/info/terms/sapr-terms-conditions', label: 'T&C Plus Rewards' },
+    { href: '/es/garantia', label: 'Garantía' },
+    { href: '/es/terminos-y-condiciones/tyc-swaplyar', label: 'Términos y Condiciones' },
+    { href: '/es/terminos-y-condiciones/tyc-plus-rewards', label: 'T&C Plus Rewards' },
   ] as FooterLink[],
   atencion: [
-    { href: '/info/help-center', label: 'Centro de Ayuda' },
-    { href: '/info/about-us', label: 'Preguntas Frecuentes' },
-    { href: '/maintenance', label: 'SwaplyAr Blog' },
+    { href: '/es/centro-de-ayuda', label: 'Centro de Ayuda' },
+    { href: '/es/quienes-somos', label: 'Preguntas Frecuentes' },
+    { href: '/es/pagina-en-mantenimiento', label: 'SwaplyAr Blog' },
   ] as FooterLink[],
   social: [
     { href: 'https://www.linkedin.com/company/swaplyar/', icon: faLinkedin, label: 'LinkedIn' },

@@ -133,7 +133,7 @@ const AboutUs = () => {
       <section className="mt-[47px] overflow-hidden text-center">
         <FlyerTrabajo
           imageSrc={FlyerGif}
-          href="/info/how-to-use"
+          href="/es/como-usar-swaplyar"
           description="Hacemos que tus envíos sean más simples. Te explicamos cómo hacer una transferencia en 3 simples pasos"
           nameButton="Quiero aprender a transferir"
         />

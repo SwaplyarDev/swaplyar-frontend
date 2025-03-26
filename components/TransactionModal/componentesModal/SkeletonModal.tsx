@@ -12,7 +12,6 @@ const SkeletonModal = () => {
             className="flex min-h-16 w-[30%] animate-pulse overflow-hidden rounded-lg bg-gray-300 p-3"
           ></div>
         ))}
-        <CloseButton close={() => MySwal.close()} />
       </div>
       <div className="flex w-[100%] flex-row justify-between gap-5">
         {Array.from({ length: 4 }).map((_, index) => (

@@ -16,14 +16,15 @@ interface BlogPostProps {
 }
 
 const BlogPostCard: React.FC<BlogPostProps> = ({ blog_id, title, body, url_image, created_at, category }) => {
-  const slug = slugify(title, { lower: true, strict: true });
+  const title2 = title || '';
+  const slug = slugify(title2, { lower: true, strict: true });
 
   const formattedDate = created_at ? new Date(created_at) : null;
   const displayDate =
     formattedDate && !isNaN(formattedDate.getTime()) ? formattedDate.toLocaleDateString() : 'Fecha inválida';
 
   return (
-    <Link href={`blog/blogDetail?slug=${encodeURIComponent(slug)}&id=${encodeURIComponent(blog_id)}`}>
+    <Link href={`es/blog/blogDetail?slug=${encodeURIComponent(slug)}&id=${encodeURIComponent(blog_id)}`}>
       <div className="flex h-[443px] w-full max-w-[350px] transform flex-col overflow-hidden rounded-[16px] border border-[#012A8E] bg-white shadow-md shadow-black/25 transition-transform dark:border-inputDark dark:bg-[#323232]">
         <Image
           src={url_image}
