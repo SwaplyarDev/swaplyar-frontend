@@ -1,9 +1,11 @@
-import RequestPage from "@/components/request/auth/RequestPage";
+import RequestPage from '@/components/request/auth/RequestPage';
 
 const Page = () => {
-  return <>
-    <RequestPage />
-  </>;
+  return (
+    <>
+      <RequestPage />
+    </>
+  );
 };
 
 export default Page;
