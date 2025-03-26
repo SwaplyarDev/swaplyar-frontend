@@ -77,7 +77,7 @@ export const RegisterForm = () => {
       setEmail(email);
       setTimeout(() => {
         setLoading(false);
-        router.push('/auth/login-register/email-verification');
+        router.push('/es/iniciar-sesion-o-registro/email-verification');
       }, 3000);
     } catch (error) {
       setLoading(false);
@@ -212,7 +212,7 @@ export const RegisterForm = () => {
             })}
           />
           <label htmlFor="termsConditions" className="ml-2 text-lightText dark:text-darkText">
-            <Link href="/info/terms/terms-and-conditions" className="font-textFont underline">
+            <Link href="/es/terminos-y-condiciones/tyc-swaplyar" className="font-textFont underline">
               Acepto Términos & Condiciones
             </Link>
           </label>

@@ -93,7 +93,7 @@ const TermsAndConditions = () => {
                       ) : item.includes('Plataforma de soporte:') ? (
                         <>
                           Plataforma de soporte:{' '}
-                          <LinkWithHover href="/info/help-center">swaplyar.com/info/help-center</LinkWithHover>
+                          <LinkWithHover href="/es/centro-de-ayuda">swaplyar.com/es/centro-de-ayuda</LinkWithHover>
                         </>
                       ) : (
                         item

@@ -200,7 +200,7 @@ export function TopMenu() {
                             <p className="ml-5 text-2xl">Bienvenido!</p>
                             <p className="ml-5 text-sm underline">{session?.user?.email}</p>
                             {session?.user?.role === 'admin' ? (
-                              <Link href={'/admin/transactions'}>
+                              <Link href={'/es/+admin/transactions'}>
                                 <p className="text-blue-600 underline decoration-white transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 active:text-blue-900">
                                   Administración
                                 </p>
@@ -217,7 +217,7 @@ export function TopMenu() {
                               : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                           }`}
                           onClick={() => handleSelect('about-us')}
-                          href="/info/about-us"
+                          href="/es/quienes-somos"
                         >
                           Quienes Somos
                         </Sidebar.Item>
@@ -228,7 +228,7 @@ export function TopMenu() {
                               : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                           }`}
                           onClick={() => handleSelect('how-to-use')}
-                          href="/info/how-to-use"
+                          href="/es/como-usar-swaplyar"
                         >
                           Como Usar SwaplyAr
                         </Sidebar.Item>
@@ -239,7 +239,7 @@ export function TopMenu() {
                               : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                           }`}
                           onClick={() => handleSelect('loyalty-program')}
-                          href="/info/loyalty-program"
+                          href="/es/programa-de-fidelizacion"
                         >
                           Programa de Fidelización
                         </Sidebar.Item>
@@ -253,7 +253,7 @@ export function TopMenu() {
                             : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                         }`}
                         onClick={() => handleSelect('about-us')}
-                        href="/info/about-us"
+                        href="/es/quienes-somos"
                       >
                         Quienes Somos
                       </Sidebar.Item>
@@ -264,7 +264,7 @@ export function TopMenu() {
                             : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                         }`}
                         onClick={() => handleSelect('how-to-use')}
-                        href="/info/how-to-use"
+                        href="/es/como-usar-swaplyar"
                       >
                         Como Usar SwaplyAr
                       </Sidebar.Item>
@@ -275,7 +275,7 @@ export function TopMenu() {
                             : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                         }`}
                         onClick={() => handleSelect('loyalty-program')}
-                        href="/info/loyalty-program"
+                        href="/es/programa-de-fidelizacion"
                       >
                         Programa de Fidelización
                       </Sidebar.Item>
@@ -350,7 +350,7 @@ export function TopMenu() {
                     <p>Bienvenido!</p>
                     <p className="text-sm underline">{session?.user?.email}</p>
                     {session?.user?.role === 'admin' ? (
-                      <Link href={'/admin/transactions'}>
+                      <Link href={'/es/admin/transactions'}>
                         <p className="text-blue-600 underline decoration-white transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 active:text-blue-900">
                           Administración
                         </p>

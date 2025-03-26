@@ -11,7 +11,7 @@ function LogInButton() {
   return (
     <>
       <Link
-        href="/auth/login-register"
+        href="/es/iniciar-sesion-o-registro"
         onClick={() => setView('login')}
         className={`relative flex h-[48px] w-[200px] items-center justify-center rounded-3xl border border-buttonsLigth p-3 font-titleFont font-semibold text-buttonsLigth dark:border-darkText dark:text-darkText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} lg2:w-[130px]`}
       >

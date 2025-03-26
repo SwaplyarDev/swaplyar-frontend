@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Cómo Usar Swaplyar',
     description: 'Aprende cómo usar Swaplyar en simples pasos y aprovecha nuestras soluciones financieras.',
-    url: 'https://www.swaplyar.com/info/how-to-use',
+    url: 'https://www.swaplyar.com/es/como-usar-swaplyar',
     type: 'website',
     images: [
       {

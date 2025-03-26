@@ -45,7 +45,7 @@ export const LoginForm = () => {
       setEmail(email); // Guardar el email en Zustand
       setTimeout(() => {
         setLoading(false);
-        router.push('/auth/login-register/email-verification');
+        router.push('/es/iniciar-sesion-o-registro/verificacion-email');
       }, 3000); // Redirigir a la página de verificación
     } catch (error) {
       setLoading(false);

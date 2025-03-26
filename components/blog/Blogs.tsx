@@ -35,7 +35,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const term = e.target.value;
       setSearchTerm(term);
-      router.replace(`/blog?page=1&search=${term}`, { scroll: false });
+      router.replace(`/es/blog?page=1&search=${term}`, { scroll: false });
     },
     [router],
   );

@@ -13,7 +13,7 @@ const GestionGroup = ({ collapsed, pathname }: { collapsed: boolean; pathname: s
       <ul className="space-y-1.5">
         <li>
           <Link
-            href="/admin/users"
+            href="/es/admin/users"
             className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
               pathname === '/admin/users' || pathname?.startsWith('/admin/users')
                 ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
