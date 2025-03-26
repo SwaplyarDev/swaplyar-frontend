@@ -11,9 +11,10 @@ interface DiscrepancySectionProps {
   trans: TransactionTypeSingle;
   setValue: (arg: boolean) => void;
   value: boolean | null;
+  setDiscrepancySend: any;
 }
 
-const DiscrepancySection: React.FC<DiscrepancySectionProps> = ({ trans, setValue, value }) => {
+const DiscrepancySection: React.FC<DiscrepancySectionProps> = ({ trans, setValue, value, setDiscrepancySend }) => {
   const [discrepancy, setDiscrepancy] = useState<boolean | null>(value);
   const [resolved, setResolved] = useState<boolean | null>(null);
   const [discrepancyReason, setDiscrepancyReason] = useState('');
@@ -30,10 +31,10 @@ const DiscrepancySection: React.FC<DiscrepancySectionProps> = ({ trans, setValue
     setDiscrepancy(newValue);
 
     // Si se cambia a "NO", resetear el estado de resolución
-    if (!newValue) {
+    /* if (!newValue) {
       setResolved(null);
       setDiscrepancyReason('');
-    }
+    } */
   };
 
   const handleSubmitDiscrepancy = () => {
@@ -88,13 +89,14 @@ const DiscrepancySection: React.FC<DiscrepancySectionProps> = ({ trans, setValue
           timerProgressBar: true,
         });
         console.log('Motivo de discrepancia enviado:', discrepancyReason);
+        setDiscrepancySend(true);
         // Aquí puedes agregar la lógica para guardar el motivo
       }
     });
   };
 
   return (
-    <section className="mt-6 w-full overflow-hidden rounded-xl border border-gray-100 bg-white shadow-md transition-all duration-300">
+    <section className="w-full overflow-hidden rounded-xl border bg-white shadow-md transition-all duration-300">
       <div className="p-6">
         <h3 className="mb-5 flex items-center justify-center text-center font-titleFont text-xl font-semibold text-gray-800">
           <AlertCircle className="mr-2 h-5 w-5 text-amber-500" />
@@ -175,6 +177,7 @@ const DiscrepancySection: React.FC<DiscrepancySectionProps> = ({ trans, setValue
                   />
 
                   <button
+                    disabled={discrepancyReason.length === 0}
                     onClick={handleSubmitDiscrepancy}
                     className="flex h-10 items-center gap-2 rounded-lg bg-amber-500 px-4 font-medium text-white transition-colors duration-200 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500"
                     aria-label="Enviar motivo de discrepancia"
