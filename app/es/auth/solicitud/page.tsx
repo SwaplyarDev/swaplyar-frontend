@@ -1,4 +1,4 @@
-import RequestPage from '@/components/request/auth/RequestPage';
+import RequestPage from '@/components/auth-components/request-page/RequestPage';
 
 const Page = () => {
   return (
