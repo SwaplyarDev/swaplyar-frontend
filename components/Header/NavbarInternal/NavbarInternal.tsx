@@ -54,9 +54,9 @@ const NavbarInternal = () => {
       <div className="flex h-16 items-center justify-around mini-phone:mx-8 mini-phone:justify-between xs:mx-10 md:mx-20">
         <Image
           src={isDark ? isMobileDark() : isMobile()}
-          className="my-5 ml-5 h-16 w-16 xs-mini-phone:my-5 xs-mini-phone:h-16 xs-mini-phone:w-48 xs-mini-phone:dark:mb-0 xs-mini-phone:dark:h-56 xs-mini-phone:dark:w-56 md:w-64"
+          className="max-h-14 w-full max-w-14 xs-mini-phone:max-h-16 xs-mini-phone:max-w-[200px]"
           alt="Cambiar saldo online"
-          width={80}
+          width={200}
           height={80}
         />
         <div className="">
