@@ -13,10 +13,7 @@ export function TopMenu() {
   return (
     <main className={`sticky top-0 z-[1000] flex flex-col bg-white shadow-md dark:bg-lightText`}>
       <TopPopUp />
-
-      {/* Verificación usuario autenticado para mostrar navbar*/}
-
-      {status === 'authenticated' ? <NavbarInternal /> : <NavbarLanding />}
+      <NavbarLanding />
     </main>
   );
 }
