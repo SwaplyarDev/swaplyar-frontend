@@ -6,6 +6,7 @@ import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { AlertCircle, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp } from 'lucide-react';
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
+import { useRouter } from 'next/navigation';
 
 interface User {
   id: number;
@@ -38,6 +39,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage }) => {
     search: '',
   });
 
+  const router = useRouter();
   const [activePopover, setActivePopover] = useState<string | null>(null);
   const popoverRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
@@ -411,7 +413,8 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage }) => {
                   {users.map((user) => (
                     <tr
                       key={user.id}
-                      onClick={() => handleOpenModal(user.id)}
+                      /* onClick={() => handleOpenModal(user.id)} */
+                      onClick={() => router.push(`/es/admin/users/${user.id}`)}
                       className="cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
                     >
                       <td className="px-4 py-3 text-sm">{getStatusBadge(user.status)}</td>
