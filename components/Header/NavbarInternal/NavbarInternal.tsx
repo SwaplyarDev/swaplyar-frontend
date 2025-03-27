@@ -82,7 +82,7 @@ const NavbarInternal = () => {
         {/* Iconos Desktop */}
         <div className="hidden md:flex">
           <div className="justify-arround relative flex items-end">
-            <div onClick={() => setTabDesktop(TabView.SOLICITUD)}>
+            <div className="cursor-pointer" onClick={() => setTabDesktop(TabView.SOLICITUD)}>
               {tabDesktop === TabView.SOLICITUD ? (
                 <IconsTablet text="Solcitud" classname="relative translate-y-9">
                   <SolicitudIcon />
@@ -91,7 +91,7 @@ const NavbarInternal = () => {
                 <SolicitudIcon classname="lg:pr-5" />
               )}
             </div>
-            <div onClick={() => setTabDesktop(TabView.HISTORIAL)}>
+            <div className="cursor-pointer" onClick={() => setTabDesktop(TabView.HISTORIAL)}>
               {tabDesktop === TabView.HISTORIAL ? (
                 <IconsTablet text="Historial" classname="relative translate-y-9">
                   <HistorialIcon />
@@ -100,7 +100,7 @@ const NavbarInternal = () => {
                 <HistorialIcon classname="lg:pr-5" />
               )}
             </div>
-            <div onClick={() => setTabDesktop(TabView.PLUSREWARDS)}>
+            <div className="cursor-pointer" onClick={() => setTabDesktop(TabView.PLUSREWARDS)}>
               {tabDesktop === TabView.PLUSREWARDS ? (
                 <IconsTablet text="Plus Rewards" classname="relative translate-y-9">
                   <PlusRewardsIcon />
@@ -109,7 +109,7 @@ const NavbarInternal = () => {
                 <PlusRewardsIcon classname="lg:pr-5" />
               )}
             </div>
-            <div onClick={() => setTabDesktop(TabView.CUENTASASOCIADAS)}>
+            <div className="cursor-pointer" onClick={() => setTabDesktop(TabView.CUENTASASOCIADAS)}>
               {tabDesktop === TabView.CUENTASASOCIADAS ? (
                 <IconsTablet text="Cuentas Asociadas" classname="relative translate-y-9">
                   <CuentasAsociadasIcon />
@@ -118,7 +118,7 @@ const NavbarInternal = () => {
                 <CuentasAsociadasIcon classname="lg:pr-5" />
               )}
             </div>
-            <div onClick={() => setTabDesktop(TabView.CENTRODEAYUDA)}>
+            <div className="cursor-pointer" onClick={() => setTabDesktop(TabView.CENTRODEAYUDA)}>
               {tabDesktop === TabView.CENTRODEAYUDA ? (
                 <IconsTablet text="Ayuda" classname="relative translate-y-9">
                   <CentroDeAyudaIcon />
