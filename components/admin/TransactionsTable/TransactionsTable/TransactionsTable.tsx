@@ -10,6 +10,7 @@ import { AlertCircle, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, Filte
 import type { TransactionArray, TransactionTypeAll } from '@/types/transactions/transactionsType';
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import TransactionModal from '@/components/TransactionModal/transactionModal';
+import { useRouter } from 'next/navigation';
 
 interface TransactionsTableProps {
   transactions: TransactionArray;
@@ -227,6 +228,8 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
   useEffect(() => {
     console.log('Current filters:', filters);
   }, [filters]);
+
+  const router = useRouter();
 
   return (
     <div className="w-full">
@@ -554,7 +557,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                   <tr
                     key={transaction.transaction.transaction_id}
                     className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
-                    onClick={() => handleOpenModal(transaction.transaction.transaction_id)}
+                    onClick={() => router.push(`/es/admin/transactions/${transaction.transaction.transaction_id}`)}
                   >
                     <td className="px-4 py-3 text-sm">{getStatusBadge(transaction.status)}</td>
                     <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">

@@ -26,6 +26,7 @@ interface TransactionModalProps {
 const TransactionModal = ({ transId }: TransactionModalProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [modal, setModal] = useState<boolean>(false);
+  const [discrepancySend, setDiscrepancySend] = useState(false);
 
   const {
     isLoading,
@@ -187,6 +188,7 @@ const TransactionModal = ({ transId }: TransactionModalProps) => {
                 trans={trans}
                 value={componentStates.discrepancySection}
                 setValue={(value) => handleComponentStateChange('discrepancySection', value)}
+                setDiscrepancySend={setDiscrepancySend}
               />
             )}
 

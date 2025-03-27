@@ -79,7 +79,7 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
   };
 
   return (
-    <header className="mb-4 flex flex-col gap-4 border-b pb-4 sm:flex-row sm:items-center sm:justify-between">
+    <header className="flex flex-col gap-4 rounded-lg border border-gray-200 bg-white p-3 sm:flex-row sm:items-center sm:justify-between">
       {getStatusBadge(status)}
 
       <h1 className="order-first font-sans text-2xl font-semibold text-lightText sm:order-none sm:text-3xl">
