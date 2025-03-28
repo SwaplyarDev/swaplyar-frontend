@@ -7,9 +7,9 @@ export function VerifyButton() {
 
   return (
     <button
-      className={`relative mt-4 h-[48px] w-full max-w-[280px] items-center justify-center rounded-3xl border ${
+      className={`relative mt-4 max-w-[280px] items-center justify-center rounded-3xl border ${
         isDark ? 'border-darkText bg-darkText text-lightText' : 'border-buttonsLigth bg-buttonsLigth text-white'
-      } px-[14px] py-3 font-titleFont font-semibold transition-opacity hover:opacity-90`}
+      } px-[34px] py-2 font-titleFont font-semibold transition-opacity hover:opacity-90`}
     >
       Verificar ahora
     </button>

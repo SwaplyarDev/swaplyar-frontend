@@ -74,26 +74,32 @@
   background-color: rgba(117, 117, 119, 0.601);
   transform: rotate(-6deg) translateX(420px);
 }
+
 .ball7Dark {
   background-color: rgba(117, 117, 119, 0.601);
   transform: rotate(189deg) translateX(368px);
 }
+
 .ball5Dark {
   background-color: rgba(117, 117, 119, 0.601);
   transform: rotate(308deg) translateX(225px);
 }
+
 .ball4Dark {
   background-color: rgba(117, 117, 119, 0.601);
   transform: rotate(234deg) translateX(302px);
 }
+
 .ball3Dark {
   background-color: rgba(117, 117, 119, 0.601);
   transform: rotate(134deg) translateX(252px);
 }
+
 .ball2Dark {
   background-color: rgba(117, 117, 119, 0.601);
   transform: rotate(72deg) translateX(264px);
 }
+
 .ball1Dark {
   background-color: rgba(117, 117, 119, 0.601);
   transform: rotate(33deg) translateX(429px);
@@ -103,14 +109,18 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
 }
 
-@media (max-width: 640px) {
+/* Comentado para evitar problemas de compatibilidad con el diseño móvil salto en 640px de la pantalla */
+
+/* @media (max-width: 640px) {
+
   /* Contenedor estilo móvil */
-  .mobile-container {
+/* .mobile-container {
     @apply relative flex h-[70vh] w-full justify-center overflow-hidden;
     position: absolute;
     top: 0;
@@ -119,19 +129,19 @@
     bottom: 0;
     clip-path: inset(0 0 -5% 0);
     overflow: hidden;
-  }
+  } */
 
-  /* Caja interna estilo móvil */
-  .mobile-box {
+/* Caja interna estilo móvil */
+/* .mobile-box {
     @apply absolute h-[60%] w-full rounded-full;
     animation: spin 30s infinite linear;
     bottom: 0;
     left: 0%;
     transform: translateX(-50%);
-  }
+  } */
 
-  /* Bolas más pequeñas */
-  .small-ball {
+/* Bolas más pequeñas */
+/* .small-ball {
     width: 10px;
     height: 10px;
     margin: 5px;
@@ -200,31 +210,37 @@
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(-6deg) translateX(420px);
   }
+
   .ball7Dark {
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(189deg) translateX(368px);
   }
+
   .ball5Dark {
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(308deg) translateX(225px);
   }
+
   .ball4Dark {
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(234deg) translateX(302px);
   }
+
   .ball3Dark {
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(134deg) translateX(252px);
   }
+
   .ball2Dark {
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(72deg) translateX(264px);
   }
+
   .ball1Dark {
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(33deg) translateX(429px);
-  }
-}
+  } */
+/* }  */
 
 .p-revert {
   padding: revert;
@@ -243,11 +259,15 @@
 .loader {
   position: relative;
   width: 100%;
-  max-width: 512px; /* Igual al tamaño máximo del formulario */
+  max-width: 512px;
+  /* Igual al tamaño máximo del formulario */
   padding: 15px;
-  background: #ffffff; /* Fondo blanco similar al del formulario */
-  border-radius: 1rem; /* Bordes redondeados del formulario */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra del formulario */
+  background: #ffffff;
+  /* Fondo blanco similar al del formulario */
+  border-radius: 1rem;
+  /* Bordes redondeados del formulario */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* Sombra del formulario */
   overflow: hidden;
 }
 
@@ -258,14 +278,12 @@
   height: 100%;
   top: 0;
   left: 0;
-  background: linear-gradient(
-    110deg,
-    rgba(227, 227, 227, 0) 0%,
-    rgba(227, 227, 227, 0) 40%,
-    rgba(227, 227, 227, 0.5) 50%,
-    rgba(227, 227, 227, 0) 60%,
-    rgba(227, 227, 227, 0) 100%
-  );
+  background: linear-gradient(110deg,
+      rgba(227, 227, 227, 0) 0%,
+      rgba(227, 227, 227, 0) 40%,
+      rgba(227, 227, 227, 0.5) 50%,
+      rgba(227, 227, 227, 0) 60%,
+      rgba(227, 227, 227, 0) 100%);
   animation: gradient-animation 1.2s linear infinite;
 }
 
@@ -284,43 +302,51 @@
 .line-5,
 .line-6 {
   background-color: #cacaca;
-  border-radius: 0.375rem; /* Bordes redondeados */
+  border-radius: 0.375rem;
+  /* Bordes redondeados */
 }
 
 .loader .line-1 {
   height: 3.5rem;
-  width: 60%; /* Ajustado para el ancho del input de nombre */
+  width: 60%;
+  /* Ajustado para el ancho del input de nombre */
 }
 
 .loader .line-2 {
   height: 3rem;
-  width: 90%; /* Ajustado para el ancho del input de correo electrónico */
+  width: 90%;
+  /* Ajustado para el ancho del input de correo electrónico */
 }
 
 .loader .line-3 {
   height: 3rem;
-  width: 90%; /* Ajustado para el ancho del input de contraseña */
+  width: 90%;
+  /* Ajustado para el ancho del input de contraseña */
 }
 
 .loader .line-4 {
   height: 3rem;
-  width: 90%; /* Ajustado para el ancho del botón */
+  width: 90%;
+  /* Ajustado para el ancho del botón */
 }
 
 .loader .line-5 {
   height: 2rem;
-  width: 40%; /* Ajustado para el ancho del botón */
+  width: 40%;
+  /* Ajustado para el ancho del botón */
 }
 
 .loader .line-6 {
   height: 2rem;
-  width: 40%; /* Ajustado para el ancho del botón */
+  width: 40%;
+  /* Ajustado para el ancho del botón */
 }
 
 @keyframes gradient-animation {
   0% {
     transform: translateX(-100%);
   }
+
   100% {
     transform: translateX(100%);
   }
@@ -384,14 +410,18 @@ ul.scrollable-list {
   margin-top: 5px;
   clip-path: inset(0 round 16px);
 }
+
 ul.scrollable-list-repentance {
   margin-top: 5px;
   clip-path: inset(0 0 0 0 round 0 0 16px 16px);
 }
+
 ul.scrollable-list,
 ul.scrollable-list-repentance {
-  padding-right: 0.5rem; /* Ajusta según sea necesario */
+  padding-right: 0.5rem;
+  /* Ajusta según sea necesario */
 }
+
 ul.scrollable-list::-webkit-scrollbar,
 ul.scrollable-list-repentance::-webkit-scrollbar {
   width: var(--sb-size);
@@ -410,6 +440,7 @@ ul.scrollable-list-repentance::-webkit-scrollbar-thumb {
 }
 
 @supports not selector(::-webkit-scrollbar) {
+
   ul.scrollable-list,
   ul.scrollable-list-repentance {
     scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
@@ -454,7 +485,8 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 .my-popup {
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Agrega espacio entre elementos internos */
+  gap: 20px;
+  /* Agrega espacio entre elementos internos */
 }
 
 .custom-container-payment {
@@ -511,6 +543,7 @@ div:where(.swal2-container).swal2-noanimation {
   .confirmAlert {
     padding: 0px !important;
   }
+
   /* Estilos de fuentes H1*/
   h1 {
     font-family: 'Open Sans', sans-serif;
@@ -539,6 +572,7 @@ div:where(.swal2-container).swal2-noanimation {
     opacity: 0;
     transform: translateY(20px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -555,6 +589,7 @@ div:where(.swal2-container).swal2-noanimation {
     height: 0;
     bottom: 0;
   }
+
   to {
     height: 30px;
     bottom: -30px;
@@ -566,9 +601,11 @@ div:where(.swal2-container).swal2-noanimation {
     0% {
       transform: translateY(5px);
     }
+
     50% {
       transform: translateY(-5px);
     }
+
     100% {
       transform: translateY(5px);
     }
@@ -581,7 +618,7 @@ div:where(.swal2-container).swal2-noanimation {
 
 /*Carrusel*/
 
-.slick-slide > div {
+.slick-slide>div {
   margin: 0 0px;
 }
 
@@ -609,12 +646,12 @@ div:where(.swal2-container).swal2-noanimation {
 
 /* Navbar internal */
 
-.montana{
+.montana {
   background-image: url('../public/images/montañaBlanca.png');
   background-repeat: no-repeat;
 }
 
-.montanaDark{
+.montanaDark {
   background-image: url('../public/images/MontanaDark.png');
   background-repeat: no-repeat;
 }
