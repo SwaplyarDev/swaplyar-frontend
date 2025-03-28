@@ -606,3 +606,15 @@ div:where(.swal2-container).swal2-noanimation {
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: rgba(37, 37, 38, 1) !important;
 }
+
+/* Navbar internal */
+
+.montana{
+  background-image: url('../public/images/montañaBlanca.png');
+  background-repeat: no-repeat;
+}
+
+.montanaDark{
+  background-image: url('../public/images/MontanaDark.png');
+  background-repeat: no-repeat;
+}

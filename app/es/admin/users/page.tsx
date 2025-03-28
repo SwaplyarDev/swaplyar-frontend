@@ -1,6 +1,6 @@
 import { Suspense, lazy } from 'react';
-import TransactionsStatus from '@/components/admin/TransactionsTable/Status/StatusSection';
 import SkeletonTable from '@/components/admin/TransactionsTable/SkeletonTble/SkeletonTable';
+import UsersStatus from '@/components/admin/UsersTable/StatusSection';
 
 const UsersLoader = lazy(() => import('@/components/admin/UsersTable/UsersLoader'));
 
@@ -21,7 +21,7 @@ export default function UsersPage({ searchParams }: TransactionPageProps) {
       <div className="flex flex-col gap-6">
         {/* Panel de estado - responsive */}
         <div className="w-full shrink-0">
-          <TransactionsStatus />
+          <UsersStatus />
         </div>
 
         {/* Tabla de transacciones - toma el espacio restante */}

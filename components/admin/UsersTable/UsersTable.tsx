@@ -149,23 +149,23 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage }) => {
   // Función para obtener el badge de estado
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      active: {
+      verified: {
         bgColor: 'bg-green-100 dark:bg-green-900/30',
         textColor: 'text-green-800 dark:text-green-300',
         icon: <CheckCircle size={14} className="mr-1" />,
-        label: 'Activo',
+        label: 'Verificado',
       },
-      inactive: {
+      inprogress: {
+        bgColor: 'bg-yellow-100 dark:bg-yellow-900/30',
+        textColor: 'text-yellow-800 dark:text-yellow-300',
+        icon: <Clock size={14} className="mr-1" />,
+        label: 'En Progreso',
+      },
+      rejected: {
         bgColor: 'bg-red-100 dark:bg-red-900/30',
         textColor: 'text-red-800 dark:text-red-300',
         icon: <XCircle size={14} className="mr-1" />,
-        label: 'Inactivo',
-      },
-      pending: {
-        bgColor: 'bg-blue-100 dark:bg-blue-900/30',
-        textColor: 'text-blue-800 dark:text-blue-300',
-        icon: <Clock size={14} className="mr-1" />,
-        label: 'Pendiente',
+        label: 'Rechazado',
       },
       default: {
         bgColor: 'bg-gray-100 dark:bg-gray-800',
@@ -236,30 +236,30 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage }) => {
                                 type="checkbox"
                                 className="mr-2 h-4 w-4"
                                 /* @ts-expect-error */
-                                checked={filters.status.includes('active')}
-                                onChange={() => handleStatusFilterChange('active')}
+                                checked={filters.status.includes('verified')}
+                                onChange={() => handleStatusFilterChange('verified')}
                               />
-                              Activo
+                              Verificado
                             </label>
                             <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
                               <input
                                 type="checkbox"
                                 className="mr-2 h-4 w-4"
                                 /* @ts-expect-error */
-                                checked={filters.status.includes('inactive')}
-                                onChange={() => handleStatusFilterChange('inactive')}
+                                checked={filters.status.includes('inprogress')}
+                                onChange={() => handleStatusFilterChange('inprogress')}
                               />
-                              Inactivo
+                              En Progreso
                             </label>
                             <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
                               <input
                                 type="checkbox"
                                 className="mr-2 h-4 w-4"
                                 /* @ts-expect-error */
-                                checked={filters.status.includes('pending')}
-                                onChange={() => handleStatusFilterChange('pending')}
+                                checked={filters.status.includes('rejected')}
+                                onChange={() => handleStatusFilterChange('rejected')}
                               />
-                              Pendiente
+                              Rechazado
                             </label>
                           </div>
                           <div className="mt-3 flex justify-between border-t border-gray-200 pt-2 dark:border-gray-700">
