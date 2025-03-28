@@ -24,6 +24,7 @@ import { swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
 import { Button, Popover } from '@mui/material';
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
+import ProfileCards from '@/components/profile/profileCards/ProfileCards';
 
 export function TopMenu() {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
