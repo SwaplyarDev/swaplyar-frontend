@@ -3,9 +3,23 @@
 import { useParams } from 'next/navigation';
 import type React from 'react';
 import { useState } from 'react';
-import { X, CheckCircle, CreditCard, User, FileText, Clock, ArrowLeft, ArrowRight } from 'lucide-react';
+import {
+  X,
+  CheckCircle,
+  CreditCard,
+  User,
+  FileText,
+  Clock,
+  ArrowLeft,
+  ArrowRight,
+  ChevronLeft,
+  Search,
+  Trash2,
+  Plus,
+} from 'lucide-react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import Image from 'next/image';
 
 const MySwal = withReactContent(Swal);
 
@@ -14,6 +28,9 @@ const UserDetailPage = () => {
   const userId = Number.parseInt(params.id as string);
   const [activeTab, setActiveTab] = useState('frente');
   const [note, setNote] = useState('');
+  const [activeTab2, setActiveTab2] = useState<'wallets' | 'history'>('wallets');
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedWallet, setSelectedWallet] = useState<any>(null);
 
   const data = [
     {
@@ -146,6 +163,10 @@ const UserDetailPage = () => {
 
       document.querySelector('.swal2-html-container')?.classList.remove('opacity-0');
     }, 300);
+  };
+
+  const handleSelectWallet = (wallet: any) => {
+    setSelectedWallet(wallet);
   };
 
   return (
@@ -372,18 +393,121 @@ const UserDetailPage = () => {
             <div className="rounded-lg border bg-white p-4">
               <h3 className="mb-2 font-medium">Recompensas en Plus Rewards</h3>
               <ul className="space-y-2">
-                <li className="flex items-center space-x-2 text-blue-600">
-                  <CreditCard className="h-4 w-4" />
-                  <span className="text-sm">Billeteras Agregadas</span>
+                <li>
+                  <button
+                    onClick={() => {
+                      setActiveTab2('wallets');
+                      setSelectedWallet(null);
+                      setIsOpen(true);
+                    }}
+                    className="flex w-full items-center space-x-2 rounded-lg p-2 text-blue-600 transition-colors hover:bg-blue-50"
+                  >
+                    <CreditCard className="h-4 w-4" />
+                    <span className="text-sm">Billeteras Agregadas</span>
+                  </button>
                 </li>
-                <li className="flex items-center space-x-2 text-blue-600">
-                  <Clock className="h-4 w-4" />
-                  <span className="text-sm">Historial de Transacciones</span>
+                <li>
+                  <button
+                    onClick={() => {
+                      setActiveTab2('history');
+                      setSelectedWallet(null);
+                      setIsOpen(true);
+                    }}
+                    className="flex w-full items-center space-x-2 rounded-lg p-2 text-blue-600 transition-colors hover:bg-blue-50"
+                  >
+                    <Clock className="h-4 w-4" />
+                    <span className="text-sm">Historial de Transacciones</span>
+                  </button>
                 </li>
               </ul>
             </div>
           </div>
         </div>
+        {/* Modal */}
+        {isOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <div
+              className="animate-in fade-in zoom-in w-full max-w-md overflow-hidden rounded-xl bg-white shadow-xl duration-300"
+              style={{ height: '600px' }}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between border-b p-4">
+                <div className="flex items-center gap-2">
+                  <ChevronLeft
+                    className="h-5 w-5 cursor-pointer text-gray-500"
+                    onClick={() => (selectedWallet ? setSelectedWallet(null) : setIsOpen(false))}
+                  />
+                  <h2 className="text-lg font-semibold">
+                    {selectedWallet ? `Detalles de ${selectedWallet.name}` : 'Plus Rewards'}
+                  </h2>
+                </div>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-full p-1 transition-colors hover:bg-gray-100"
+                >
+                  <X className="h-5 w-5 text-gray-500" />
+                </button>
+              </div>
+
+              {!selectedWallet ? (
+                <>
+                  {/* Tabs */}
+                  <div className="flex border-b">
+                    <button
+                      className={`flex flex-1 items-center justify-center gap-2 px-4 py-3 transition-colors ${
+                        activeTab2 === 'wallets' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'
+                      }`}
+                      onClick={() => setActiveTab2('wallets')}
+                    >
+                      <CreditCard className="h-4 w-4" />
+                      <span>Billeteras Agregadas</span>
+                    </button>
+                    <button
+                      className={`flex flex-1 items-center justify-center gap-2 px-4 py-3 transition-colors ${
+                        activeTab2 === 'history' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'
+                      }`}
+                      onClick={() => setActiveTab2('history')}
+                    >
+                      <Clock className="h-4 w-4" />
+                      <span>Historial</span>
+                    </button>
+                  </div>
+
+                  {/* Search */}
+                  <div className="border-b p-3">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
+                      <input
+                        type="text"
+                        placeholder="Buscar billetera o transacción"
+                        className="w-full rounded-lg border border-gray-200 py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="overflow-y-auto" style={{ height: 'calc(600px - 170px)' }}>
+                    {activeTab2 === 'wallets' ? (
+                      <WalletsList onSelectWallet={handleSelectWallet} />
+                    ) : (
+                      <TransactionHistory />
+                    )}
+                  </div>
+
+                  {/* Footer */}
+                  <div className="border-t p-4">
+                    <button className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 py-2.5 text-white transition-colors hover:bg-blue-700">
+                      <Plus className="h-4 w-4" />
+                      <span>{activeTab2 === 'wallets' ? 'Agregar nueva billetera' : 'Ver más transacciones'}</span>
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <WalletDetail wallet={selectedWallet} />
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -583,5 +707,345 @@ const VerificationModal: React.FC<VerificationModalProps> = ({ user, onClose }) 
     </div>
   );
 };
+
+// Update the WalletsList component to handle wallet selection (replace the entire function):
+function WalletsList({ onSelectWallet }: { onSelectWallet: (wallet: any) => void }) {
+  const wallets = [
+    {
+      id: 1,
+      name: 'Mastercard',
+      number: '0180539262018029334',
+      status: 'active',
+      isPrimary: true,
+      country: 'ES',
+    },
+    {
+      id: 2,
+      name: 'BBVA',
+      number: 'usuario0879',
+      status: 'inactive',
+      isPrimary: false,
+    },
+    {
+      id: 3,
+      name: 'PayPal',
+      number: 'ejemplo@ejemplo.com',
+      status: 'active',
+      isPrimary: false,
+    },
+    {
+      id: 4,
+      name: 'Wire',
+      number: 'ejemplo@ejemplo.com',
+      status: 'active',
+      isPrimary: false,
+      country: 'ES',
+    },
+  ];
+
+  return (
+    <div className="divide-y">
+      {wallets.map((wallet) => (
+        <div
+          key={wallet.id}
+          className="cursor-pointer p-4 transition-colors hover:bg-gray-50"
+          onClick={() => onSelectWallet(wallet)}
+        >
+          <div className="flex items-start justify-between">
+            <div className="flex gap-3">
+              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-blue-50">
+                <div className="relative h-6 w-6">
+                  <Image
+                    src="/placeholder.svg?height=24&width=24"
+                    alt={wallet.name}
+                    width={24}
+                    height={24}
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <p className="font-medium">{wallet.name}</p>
+                  {wallet.isPrimary && (
+                    <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-800">Principal</span>
+                  )}
+                </div>
+                <p className="mt-0.5 text-sm text-gray-600">{wallet.number}</p>
+                <div className="mt-2 flex items-center gap-2">
+                  <span
+                    className={`inline-block h-2 w-2 rounded-full ${wallet.status === 'active' ? 'bg-green-500' : 'bg-red-500'}`}
+                  ></span>
+                  <span className="text-xs text-gray-500">{wallet.status === 'active' ? 'Activa' : 'Inactiva'}</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <button
+                className="rounded-full bg-red-50 p-1.5 transition-colors hover:bg-red-100"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // Handle delete logic here
+                }}
+              >
+                <Trash2 className="h-4 w-4 text-red-500" />
+              </button>
+              {wallet.country && (
+                <div className="flex items-center justify-center rounded-full bg-blue-50 p-1.5">
+                  <span className="text-xs font-medium text-blue-600">{wallet.country}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function TransactionHistory() {
+  return (
+    <div className="divide-y">
+      {/* Today */}
+      <div className="bg-gray-50 p-3">
+        <h3 className="text-sm font-medium text-gray-500">Hoy</h3>
+      </div>
+
+      <div className="p-4 transition-colors hover:bg-gray-50">
+        <div className="flex items-start justify-between">
+          <div className="flex gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-50">
+              <CreditCard className="h-5 w-5 text-green-600" />
+            </div>
+            <div>
+              <p className="font-medium">Depósito recibido</p>
+              <p className="mt-0.5 text-sm text-gray-600">Mastercard •••• 9334</p>
+              <p className="mt-1 text-xs text-gray-500">10:45 AM</p>
+            </div>
+          </div>
+          <p className="font-semibold text-green-600">+$250.00</p>
+        </div>
+      </div>
+
+      <div className="p-4 transition-colors hover:bg-gray-50">
+        <div className="flex items-start justify-between">
+          <div className="flex gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50">
+              <CreditCard className="h-5 w-5 text-blue-600" />
+            </div>
+            <div>
+              <p className="font-medium">Pago de servicio</p>
+              <p className="mt-0.5 text-sm text-gray-600">PayPal</p>
+              <p className="mt-1 text-xs text-gray-500">08:30 AM</p>
+            </div>
+          </div>
+          <p className="font-semibold text-red-600">-$45.99</p>
+        </div>
+      </div>
+
+      {/* Yesterday */}
+      <div className="bg-gray-50 p-3">
+        <h3 className="text-sm font-medium text-gray-500">Ayer</h3>
+      </div>
+
+      <div className="p-4 transition-colors hover:bg-gray-50">
+        <div className="flex items-start justify-between">
+          <div className="flex gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-50">
+              <CreditCard className="h-5 w-5 text-purple-600" />
+            </div>
+            <div>
+              <p className="font-medium">Transferencia enviada</p>
+              <p className="mt-0.5 text-sm text-gray-600">Wire Transfer</p>
+              <p className="mt-1 text-xs text-gray-500">15:22 PM</p>
+            </div>
+          </div>
+          <p className="font-semibold text-red-600">-$120.50</p>
+        </div>
+      </div>
+
+      <div className="p-4 transition-colors hover:bg-gray-50">
+        <div className="flex items-start justify-between">
+          <div className="flex gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-50">
+              <CreditCard className="h-5 w-5 text-green-600" />
+            </div>
+            <div>
+              <p className="font-medium">Reembolso</p>
+              <p className="mt-0.5 text-sm text-gray-600">Mastercard •••• 9334</p>
+              <p className="mt-1 text-xs text-gray-500">11:15 AM</p>
+            </div>
+          </div>
+          <p className="font-semibold text-green-600">+$35.00</p>
+        </div>
+      </div>
+
+      {/* Last Week */}
+      <div className="bg-gray-50 p-3">
+        <h3 className="text-sm font-medium text-gray-500">Semana pasada</h3>
+      </div>
+
+      <div className="p-4 transition-colors hover:bg-gray-50">
+        <div className="flex items-start justify-between">
+          <div className="flex gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50">
+              <CreditCard className="h-5 w-5 text-blue-600" />
+            </div>
+            <div>
+              <p className="font-medium">Suscripción mensual</p>
+              <p className="mt-0.5 text-sm text-gray-600">PayPal</p>
+              <p className="mt-1 text-xs text-gray-500">Mar 20, 2025</p>
+            </div>
+          </div>
+          <p className="font-semibold text-red-600">-$15.99</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Add the WalletDetail component at the end of the file (before the export default):
+function WalletDetail({ wallet }: { wallet: any }) {
+  const transactions = [
+    {
+      id: 1,
+      type: 'deposit',
+      title: 'Depósito recibido',
+      amount: '+$250.00',
+      date: '27 Mar 2025',
+      time: '10:45 AM',
+    },
+    {
+      id: 2,
+      type: 'payment',
+      title: 'Pago de servicio',
+      amount: '-$45.99',
+      date: '25 Mar 2025',
+      time: '08:30 AM',
+    },
+    {
+      id: 3,
+      type: 'transfer',
+      title: 'Transferencia enviada',
+      amount: '-$120.50',
+      date: '20 Mar 2025',
+      time: '15:22 PM',
+    },
+    {
+      id: 4,
+      type: 'refund',
+      title: 'Reembolso',
+      amount: '+$35.00',
+      date: '18 Mar 2025',
+      time: '11:15 AM',
+    },
+  ];
+
+  return (
+    <div className="flex h-full flex-col">
+      {/* Wallet Info */}
+      <div className="border-b p-4">
+        <div className="flex items-center gap-4">
+          <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-blue-50">
+            <div className="relative h-8 w-8">
+              <Image
+                src="/placeholder.svg?height=32&width=32"
+                alt={wallet.name}
+                width={32}
+                height={32}
+                className="object-contain"
+              />
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <h3 className="text-lg font-semibold">{wallet.name}</h3>
+              {wallet.isPrimary && (
+                <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-800">Principal</span>
+              )}
+            </div>
+            <p className="text-gray-600">{wallet.number}</p>
+            <div className="mt-1 flex items-center gap-2">
+              <span
+                className={`inline-block h-2 w-2 rounded-full ${wallet.status === 'active' ? 'bg-green-500' : 'bg-red-500'}`}
+              ></span>
+              <span className="text-sm text-gray-500">{wallet.status === 'active' ? 'Activa' : 'Inactiva'}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Wallet Stats */}
+      <div className="grid grid-cols-2 gap-4 border-b p-4">
+        <div className="rounded-lg bg-gray-50 p-3">
+          <p className="mb-1 text-xs text-gray-500">Balance disponible</p>
+          <p className="text-lg font-semibold text-green-600">$1,250.00</p>
+        </div>
+        <div className="rounded-lg bg-gray-50 p-3">
+          <p className="mb-1 text-xs text-gray-500">Transacciones</p>
+          <p className="text-lg font-semibold">24</p>
+        </div>
+      </div>
+
+      {/* Recent Transactions */}
+      <div className="border-b p-4">
+        <h4 className="mb-2 font-medium">Transacciones recientes</h4>
+      </div>
+
+      {/* Transactions List */}
+      <div className="flex-1 divide-y overflow-y-auto">
+        {transactions.map((transaction) => (
+          <div key={transaction.id} className="p-4 transition-colors hover:bg-gray-50">
+            <div className="flex items-start justify-between">
+              <div className="flex gap-3">
+                <div
+                  className={`flex h-10 w-10 items-center justify-center rounded-full ${
+                    transaction.type === 'deposit' || transaction.type === 'refund'
+                      ? 'bg-green-50'
+                      : transaction.type === 'transfer'
+                        ? 'bg-purple-50'
+                        : 'bg-blue-50'
+                  }`}
+                >
+                  <CreditCard
+                    className={`h-5 w-5 ${
+                      transaction.type === 'deposit' || transaction.type === 'refund'
+                        ? 'text-green-600'
+                        : transaction.type === 'transfer'
+                          ? 'text-purple-600'
+                          : 'text-blue-600'
+                    }`}
+                  />
+                </div>
+                <div>
+                  <p className="font-medium">{transaction.title}</p>
+                  <p className="mt-0.5 text-sm text-gray-600">{transaction.date}</p>
+                  <p className="mt-1 text-xs text-gray-500">{transaction.time}</p>
+                </div>
+              </div>
+              <p className={`font-semibold ${transaction.amount.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
+                {transaction.amount}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Footer */}
+      <div className="mt-auto border-t p-4">
+        <div className="grid grid-cols-2 gap-3">
+          <button className="flex items-center justify-center gap-2 rounded-lg bg-gray-100 py-2.5 text-gray-800 transition-colors hover:bg-gray-200">
+            <Trash2 className="h-4 w-4" />
+            <span>Eliminar</span>
+          </button>
+          <button className="flex items-center justify-center gap-2 rounded-lg bg-blue-600 py-2.5 text-white transition-colors hover:bg-blue-700">
+            <CreditCard className="h-4 w-4" />
+            <span>Editar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default UserDetailPage;
