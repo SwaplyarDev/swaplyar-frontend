@@ -3,8 +3,9 @@
 import type React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
-import { CheckCircle, XCircle, Send, AlertCircle } from 'lucide-react';
-import CustomModal from '@/components/ui/custom-modal';
+import { CheckCircle, XCircle, Send, AlertCircle, Loader2 } from 'lucide-react';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/Dialog';
+import { Button } from '@/components/ui/Button';
 
 interface ConfirmTransButtonProps {
   value: boolean | null;
@@ -101,6 +102,20 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
   const handleClick = (newValue: boolean) => {
     setValue(newValue);
     setSelected(newValue);
+  };
+
+  // Función para obtener el icono según la variante
+  const getIcon = (variant: 'success' | 'error' | 'warning' | 'default' = 'default') => {
+    switch (variant) {
+      case 'success':
+        return <CheckCircle className="h-10 w-10 text-green-500" />;
+      case 'error':
+        return <XCircle className="h-10 w-10 text-red-500" />;
+      case 'warning':
+        return <XCircle className="h-10 w-10 text-amber-500" />;
+      default:
+        return null;
+    }
   };
 
   return (
@@ -210,63 +225,93 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
       </section>
 
       {/* Modal de validación (campo requerido) */}
-      <CustomModal
-        isOpen={showValidationModal}
-        onClose={() => setShowValidationModal(false)}
-        title="Campo requerido"
-        confirmText="Entendido"
-        showCancel={false}
-        variant="warning"
-        onConfirm={() => setShowValidationModal(false)}
-      >
-        <p className="text-center text-gray-700">Por favor ingresa el ID de la transferencia.</p>
-      </CustomModal>
+      <Dialog open={showValidationModal} onOpenChange={setShowValidationModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="flex flex-col items-center text-center">
+              {getIcon('warning')}
+              <DialogTitle className="mt-2 text-xl font-semibold">Campo requerido</DialogTitle>
+            </div>
+          </DialogHeader>
+          <div className="flex flex-col items-center">
+            <p className="text-center text-gray-700">Por favor ingresa el ID de la transferencia.</p>
+          </div>
+          <DialogFooter className="sm:justify-center">
+            <Button onClick={() => setShowValidationModal(false)} className="bg-amber-600 hover:bg-amber-700">
+              Entendido
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Modal de confirmación */}
-      <CustomModal
-        isOpen={showConfirmModal}
-        onClose={() => !isSubmitting && setShowConfirmModal(false)}
-        title="Confirmar ID de transferencia"
-        confirmText="Confirmar"
-        cancelText="Cancelar"
-        onConfirm={handleConfirmSubmit}
-        isLoading={isSubmitting}
-      >
-        <div className="flex flex-col items-center">
-          <p className="mb-2 text-gray-700">¿Estás seguro de agregar este ID?</p>
-          <div className="w-full max-w-xs rounded-lg bg-gray-100 p-3 text-center">
-            <span className="font-medium text-gray-800">{transferId}</span>
+      <Dialog open={showConfirmModal} onOpenChange={(open) => !isSubmitting && setShowConfirmModal(open)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-center">Confirmar ID de transferencia</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col items-center">
+            <p className="mb-2 text-gray-700">¿Estás seguro de agregar este ID?</p>
+            <div className="w-full max-w-xs rounded-lg bg-gray-100 p-3 text-center">
+              <span className="font-medium text-gray-800">{transferId}</span>
+            </div>
           </div>
-        </div>
-      </CustomModal>
+          <DialogFooter className="flex justify-end gap-3">
+            {!isSubmitting && (
+              <Button variant="outline" onClick={() => setShowConfirmModal(false)}>
+                Cancelar
+              </Button>
+            )}
+            <Button onClick={handleConfirmSubmit} disabled={isSubmitting} className="bg-custom-blue hover:bg-blue-700">
+              {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+              Confirmar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Modal de resultado */}
-      <CustomModal
-        isOpen={showResultModal}
-        onClose={handleResultModalClose}
-        title={submitResult ? 'ID registrado' : 'Error'}
-        confirmText={submitResult ? 'Aceptar' : 'Intentar de nuevo'}
-        showCancel={!submitResult}
-        variant={submitResult ? 'success' : 'error'}
-        onConfirm={handleResultModalClose}
-      >
-        {submitResult ? (
-          <p className="text-center text-gray-700">El ID de transferencia ha sido registrado exitosamente.</p>
-        ) : (
-          <div className="flex flex-col items-center">
-            <p className="mb-2 font-bold text-red-700">No se pudo registrar el ID de transferencia</p>
-            {errorMessage ? (
-              <div className="w-full max-w-xs rounded-lg bg-red-100 p-3">
-                <span className="font-medium text-red-800">{errorMessage}</span>
-              </div>
-            ) : (
-              <div className="w-full max-w-xs rounded-lg bg-red-100 p-3 text-center">
-                <span className="font-medium text-red-800">{transferId}</span>
-              </div>
+      <Dialog open={showResultModal} onOpenChange={handleResultModalClose}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="flex flex-col items-center text-center">
+              {getIcon(submitResult ? 'success' : 'error')}
+              <DialogTitle className="mt-2 text-xl font-semibold">
+                {submitResult ? 'ID registrado' : 'Error'}
+              </DialogTitle>
+            </div>
+          </DialogHeader>
+          {submitResult ? (
+            <p className="text-center text-gray-700">El ID de transferencia ha sido registrado exitosamente.</p>
+          ) : (
+            <div className="flex flex-col items-center">
+              <p className="mb-2 font-bold text-red-700">No se pudo registrar el ID de transferencia</p>
+              {errorMessage ? (
+                <div className="w-full max-w-xs rounded-lg bg-red-100 p-3">
+                  <span className="font-medium text-red-800">{errorMessage}</span>
+                </div>
+              ) : (
+                <div className="w-full max-w-xs rounded-lg bg-red-100 p-3 text-center">
+                  <span className="font-medium text-red-800">{transferId}</span>
+                </div>
+              )}
+            </div>
+          )}
+          <DialogFooter className="flex justify-end gap-3">
+            {!submitResult && (
+              <Button variant="outline" onClick={handleResultModalClose}>
+                Cancelar
+              </Button>
             )}
-          </div>
-        )}
-      </CustomModal>
+            <Button
+              onClick={handleResultModalClose}
+              className={submitResult ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}
+            >
+              {submitResult ? 'Aceptar' : 'Intentar de nuevo'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
