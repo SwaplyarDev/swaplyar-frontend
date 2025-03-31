@@ -101,6 +101,10 @@ const TransactionModal = () => {
     setTimeout(() => MySwal.close(), 300);
   }, []);
 
+  useEffect(() => {
+    console.log('componentStates', componentStates);
+  }, [componentStates]);
+
   return (
     <div
       onClick={(e) => e.stopPropagation()}
@@ -159,27 +163,22 @@ const TransactionModal = () => {
               componentStates={componentStates}
               onSelectChange={handleSelectionChange}
               transId={transId}
+              trans={trans}
+              handleComponentStateChange={handleComponentStateChange}
+              setDiscrepancySend={setDiscrepancySend}
             />
           )}
 
-          {componentStates.aprooveReject !== null && componentStates.aprooveReject !== 'canceled' && (
-            <>
-              <DiscrepancySection
-                trans={trans}
-                value={componentStates.discrepancySection}
-                setValue={(value) => handleComponentStateChange('discrepancySection', value)}
-                setDiscrepancySend={setDiscrepancySend} // Añadido el prop que faltaba
-              />
-
-              {componentStates.discrepancySection !== null &&
-                (componentStates.discrepancySection !== true || discrepancySend) && (
-                  <>
-                    <ClientInformation modal={modal} setModal={setModal} trans={trans} />
-                    <FinalSection transId={transId} />
-                  </>
-                )}
-            </>
-          )}
+          {componentStates.confirmTransButton !== null &&
+            (componentStates.aprooveReject === 'accepted' ||
+              (componentStates.aprooveReject !== 'canceled' &&
+                componentStates.discrepancySection !== null &&
+                (componentStates.discrepancySection !== true || discrepancySend))) && (
+              <>
+                <ClientInformation modal={modal} setModal={setModal} trans={trans} />
+                <FinalSection transId={transId} />
+              </>
+            )}
         </div>
       )}
     </div>

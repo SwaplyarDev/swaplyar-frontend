@@ -147,58 +147,57 @@ const TransferClient = () => {
                   />
                 </div>
               </div>
+
+              <div className="animate-fadeIn flex flex-col items-center gap-4 pt-2">
+                <h4 className="text-center text-base font-semibold text-gray-800">Comprobante de Transferencia</h4>
+
+                <div
+                  className={`flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed transition-all duration-300 ${isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-gray-50 hover:border-blue-400 hover:bg-blue-50'} `}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
+                  <Upload className="h-8 w-8 text-blue-500" />
+                  <p className="px-4 text-center text-sm text-gray-600">
+                    Arrastra y suelta el comprobante aquí o
+                    <button
+                      className="ml-1 font-medium text-blue-600 hover:text-blue-700 focus:outline-none"
+                      onClick={() => document.getElementById('file-upload')?.click()}
+                    >
+                      selecciona un archivo
+                    </button>
+                  </p>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    className="hidden"
+                    accept="image/*,.pdf"
+                    onChange={(e) => {
+                      if (e.target.files?.length) {
+                        console.log('Archivo seleccionado:', e.target.files[0].name);
+                        // Implementar lógica de carga de archivos
+                      }
+                    }}
+                  />
+                  <p className="text-xs text-gray-500">Formatos aceptados: JPG, PNG, PDF (máx. 5MB)</p>
+                </div>
+
+                <button
+                  className="flex items-center gap-2 text-blue-600 transition-colors duration-200 hover:text-blue-800 focus:outline-none"
+                  onMouseEnter={() => setIsHovering('link')}
+                  onMouseLeave={() => setIsHovering(null)}
+                >
+                  <LinkIcon className="h-4 w-4" />
+                  <span className="text-sm font-medium underline">Agregar link del comprobante</span>
+                  {isHovering === 'link' && (
+                    <span className="animate-fadeIn absolute mt-8 whitespace-nowrap rounded bg-blue-600 px-2 py-1 text-xs text-white">
+                      Usar URL en lugar de archivo
+                    </span>
+                  )}
+                </button>
+              </div>
             </div>
           )}
-
-          {/* Sección de comprobante */}
-          <div className="animate-fadeIn flex flex-col items-center gap-4 pt-2">
-            <h4 className="text-center text-base font-semibold text-gray-800">Comprobante de Transferencia</h4>
-
-            <div
-              className={`flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed transition-all duration-300 ${isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-gray-50 hover:border-blue-400 hover:bg-blue-50'} `}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-            >
-              <Upload className="h-8 w-8 text-blue-500" />
-              <p className="px-4 text-center text-sm text-gray-600">
-                Arrastra y suelta el comprobante aquí o
-                <button
-                  className="ml-1 font-medium text-blue-600 hover:text-blue-700 focus:outline-none"
-                  onClick={() => document.getElementById('file-upload')?.click()}
-                >
-                  selecciona un archivo
-                </button>
-              </p>
-              <input
-                id="file-upload"
-                type="file"
-                className="hidden"
-                accept="image/*,.pdf"
-                onChange={(e) => {
-                  if (e.target.files?.length) {
-                    console.log('Archivo seleccionado:', e.target.files[0].name);
-                    // Implementar lógica de carga de archivos
-                  }
-                }}
-              />
-              <p className="text-xs text-gray-500">Formatos aceptados: JPG, PNG, PDF (máx. 5MB)</p>
-            </div>
-
-            <button
-              className="flex items-center gap-2 text-blue-600 transition-colors duration-200 hover:text-blue-800 focus:outline-none"
-              onMouseEnter={() => setIsHovering('link')}
-              onMouseLeave={() => setIsHovering(null)}
-            >
-              <LinkIcon className="h-4 w-4" />
-              <span className="text-sm font-medium underline">Agregar link del comprobante</span>
-              {isHovering === 'link' && (
-                <span className="animate-fadeIn absolute mt-8 whitespace-nowrap rounded bg-blue-600 px-2 py-1 text-xs text-white">
-                  Usar URL en lugar de archivo
-                </span>
-              )}
-            </button>
-          </div>
         </div>
       </div>
     </section>
