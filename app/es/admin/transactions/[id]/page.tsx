@@ -161,12 +161,22 @@ const TransactionModal = () => {
     }
 
     try {
-      const response = await axios.post(`/admin/transactions/status/${status}`, payload);
+      const response = await fetch(`/admin/transactions/status/${status}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
 
-      console.log('Respuesta exitosa:', response.data);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('Respuesta exitosa:', data);
       setSubmitSuccess(true);
 
-      // Resetear el formulario después de un envío exitoso
       setTimeout(() => {
         setSubmitSuccess(false);
       }, 3000);
