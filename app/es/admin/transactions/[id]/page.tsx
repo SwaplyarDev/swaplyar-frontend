@@ -16,6 +16,7 @@ import AprobarRechazar from '@/components/TransactionModal/componentesModal/apro
 import DiscrepancySection from '@/components/TransactionModal/componentesModal/DiscrepancySection';
 import ClientInformation from '@/components/TransactionModal/componentesModal/ClientInformation';
 import FinalSection from '@/components/TransactionModal/componentesModal/FinalSection';
+import axios from 'axios';
 
 const MySwal = withReactContent(Swal);
 
@@ -101,6 +102,84 @@ const TransactionModal = () => {
     setTimeout(() => MySwal.close(), 300);
   }, []);
 
+  useEffect(() => {
+    console.log('componentStates', componentStates);
+  }, [componentStates]);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const handleSubmit = async (
+    status: string,
+    form: any,
+    setIsSubmitting: (isSubmitting: boolean) => void,
+    setSubmitError: (error: string | null) => void,
+    setSubmitSuccess: (success: boolean) => void,
+  ) => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    let payload = {};
+
+    // Preparar el payload según el estado
+    switch (status) {
+      case 'review_payment':
+        payload = {
+          review: form.transfer_id,
+        };
+        break;
+      case 'approved':
+        // No se envía información adicional
+        break;
+      case 'discrepancy':
+        payload = {
+          descripcion: form.description,
+        };
+        break;
+      case 'canceled':
+        payload = {
+          descripcion: form.reason,
+        };
+        break;
+      case 'modified':
+        payload = {
+          descripcion: form.description,
+        };
+        break;
+      case 'refunded':
+        payload = {
+          codigo_transferencia: form.refund_code,
+        };
+        break;
+      case 'completed':
+      case 'in_transit':
+        // No se requiere enviar información adicional
+        break;
+      default:
+        break;
+    }
+
+    try {
+      const response = await axios.post(`/admin/transactions/status/${status}`, payload);
+
+      console.log('Respuesta exitosa:', response.data);
+      setSubmitSuccess(true);
+
+      // Resetear el formulario después de un envío exitoso
+      setTimeout(() => {
+        setSubmitSuccess(false);
+      }, 3000);
+    } catch (error) {
+      console.error('Error al enviar los datos:', error);
+      setSubmitError(axios.isAxiosError(error) ? error.message : 'Error desconocido');
+      setSubmitSuccess(false);
+      setIsSubmitting(false);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div
       onClick={(e) => e.stopPropagation()}
@@ -147,10 +226,15 @@ const TransactionModal = () => {
             </div>
           ) : null}
 
+          {/* Confirmar Transferencia */}
           <ConfirmTransButton
             value={componentStates.confirmTransButton}
             setValue={(value) => handleComponentStateChange('confirmTransButton', value)}
             trans={trans}
+            submit={handleSubmit}
+            setIsSubmitting={setIsSubmitting}
+            setSubmitError={setSubmitError}
+            setSubmitSuccess={setSubmitSuccess}
           />
 
           {componentStates.confirmTransButton != null && (
@@ -159,27 +243,22 @@ const TransactionModal = () => {
               componentStates={componentStates}
               onSelectChange={handleSelectionChange}
               transId={transId}
+              trans={trans}
+              handleComponentStateChange={handleComponentStateChange}
+              setDiscrepancySend={setDiscrepancySend}
             />
           )}
 
-          {componentStates.aprooveReject !== null && componentStates.aprooveReject !== 'canceled' && (
-            <>
-              <DiscrepancySection
-                trans={trans}
-                value={componentStates.discrepancySection}
-                setValue={(value) => handleComponentStateChange('discrepancySection', value)}
-                setDiscrepancySend={setDiscrepancySend} // Añadido el prop que faltaba
-              />
-
-              {componentStates.discrepancySection !== null &&
-                (componentStates.discrepancySection !== true || discrepancySend) && (
-                  <>
-                    <ClientInformation modal={modal} setModal={setModal} trans={trans} />
-                    <FinalSection transId={transId} />
-                  </>
-                )}
-            </>
-          )}
+          {componentStates.confirmTransButton !== null &&
+            (componentStates.aprooveReject === 'accepted' ||
+              (componentStates.aprooveReject !== 'canceled' &&
+                componentStates.discrepancySection !== null &&
+                (componentStates.discrepancySection !== true || discrepancySend))) && (
+              <>
+                <ClientInformation modal={modal} setModal={setModal} trans={trans} />
+                <FinalSection transId={transId} />
+              </>
+            )}
         </div>
       )}
     </div>
