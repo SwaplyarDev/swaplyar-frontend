@@ -2,31 +2,31 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useTransactionStore } from '@/store/transactionModalStorage';
-import AprobarRechazar from './componentesModal/aprobarRechazar';
-import TransactionDetail from './componentesModal/DetailTransaction';
-import ConfirmTransButton from './componentesModal/ConfirmTransButton';
-import DiscrepancySection from './componentesModal/DiscrepancySection';
-import ClientMessage from './componentesModal/ui/ClientMessage';
-import SkeletonModal from './componentesModal/SkeletonModal';
-import InfoStatus from './componentesModal/InfoStatus';
-import TransferImages from './componentesModal/TransferImages';
-import FinalSection from './componentesModal/FinalSection';
-import CloseButton from './componentesModal/ui/CloseButton';
-import ModalEditReciever from './componentesModal/ModalEditReciever/ModalEditReciever';
+import SkeletonModal from '@/components/TransactionModal/componentesModal/SkeletonModal';
+import InfoStatus from '@/components/TransactionModal/componentesModal/InfoStatus';
+import CloseButton from '@/components/TransactionModal/componentesModal/ui/CloseButton';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
+import { useParams } from 'next/navigation';
+import TransactionDetail from '@/components/TransactionModal/componentesModal/DetailTransaction';
+import ClientMessage from '@/components/TransactionModal/componentesModal/ui/ClientMessage';
+import TransferImages from '@/components/TransactionModal/componentesModal/TransferImages';
+import ConfirmTransButton from '@/components/TransactionModal/componentesModal/ConfirmTransButton';
+import AprobarRechazar from '@/components/TransactionModal/componentesModal/aprobarRechazar';
+import DiscrepancySection from '@/components/TransactionModal/componentesModal/DiscrepancySection';
 import ClientInformation from '@/components/TransactionModal/componentesModal/ClientInformation';
+import FinalSection from '@/components/TransactionModal/componentesModal/FinalSection';
+import axios from 'axios';
 
 const MySwal = withReactContent(Swal);
 
-interface TransactionModalProps {
-  transId: string;
-}
-
-const TransactionModal = ({ transId }: TransactionModalProps) => {
+const TransactionModal = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [modal, setModal] = useState<boolean>(false);
   const [discrepancySend, setDiscrepancySend] = useState(false);
+  const [modal, setModal] = useState<boolean>(false);
+
+  const params = useParams();
+  const transId = params.id as string;
 
   const {
     isLoading,
@@ -74,7 +74,6 @@ const TransactionModal = ({ transId }: TransactionModalProps) => {
   // Update transaction status and client status
   useEffect(() => {
     if (!transId || !trans) return;
-    console.log(transId, trans);
     updateTransactionStatusFromStore(transId, trans);
     getStatusClient(transId, trans);
   }, [transId, trans, componentStates, updateTransactionStatusFromStore, getStatusClient]);
@@ -92,7 +91,6 @@ const TransactionModal = ({ transId }: TransactionModalProps) => {
     (value: any) => {
       setComponentStates('aprooveReject', value);
       setSelected(value);
-      console.log(value);
     },
     [setComponentStates, setSelected],
   );
@@ -104,7 +102,83 @@ const TransactionModal = ({ transId }: TransactionModalProps) => {
     setTimeout(() => MySwal.close(), 300);
   }, []);
 
-  console.log(trans);
+  useEffect(() => {
+    console.log('componentStates', componentStates);
+  }, [componentStates]);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const handleSubmit = async (
+    status: string,
+    form: any,
+    setIsSubmitting: (isSubmitting: boolean) => void,
+    setSubmitError: (error: string | null) => void,
+    setSubmitSuccess: (success: boolean) => void,
+  ) => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    let payload = {};
+
+    // Preparar el payload según el estado
+    switch (status) {
+      case 'review_payment':
+        payload = {
+          review: form.transfer_id,
+        };
+        break;
+      case 'approved':
+        // No se envía información adicional
+        break;
+      case 'discrepancy':
+        payload = {
+          descripcion: form.description,
+        };
+        break;
+      case 'canceled':
+        payload = {
+          descripcion: form.reason,
+        };
+        break;
+      case 'modified':
+        payload = {
+          descripcion: form.description,
+        };
+        break;
+      case 'refunded':
+        payload = {
+          codigo_transferencia: form.refund_code,
+        };
+        break;
+      case 'completed':
+      case 'in_transit':
+        // No se requiere enviar información adicional
+        break;
+      default:
+        break;
+    }
+
+    try {
+      const response = await axios.post(`/admin/transactions/status/${status}`, payload);
+
+      console.log('Respuesta exitosa:', response.data);
+      setSubmitSuccess(true);
+
+      // Resetear el formulario después de un envío exitoso
+      setTimeout(() => {
+        setSubmitSuccess(false);
+      }, 3000);
+    } catch (error) {
+      console.error('Error al enviar los datos:', error);
+      setSubmitError(axios.isAxiosError(error) ? error.message : 'Error desconocido');
+      setSubmitSuccess(false);
+      setIsSubmitting(false);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div
@@ -152,10 +226,15 @@ const TransactionModal = ({ transId }: TransactionModalProps) => {
             </div>
           ) : null}
 
+          {/* Confirmar Transferencia */}
           <ConfirmTransButton
             value={componentStates.confirmTransButton}
             setValue={(value) => handleComponentStateChange('confirmTransButton', value)}
             trans={trans}
+            submit={handleSubmit}
+            setIsSubmitting={setIsSubmitting}
+            setSubmitError={setSubmitError}
+            setSubmitSuccess={setSubmitSuccess}
           />
 
           {componentStates.confirmTransButton != null && (
