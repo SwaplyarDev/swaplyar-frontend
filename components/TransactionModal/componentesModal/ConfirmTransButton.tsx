@@ -237,7 +237,10 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
             <p className="text-center text-gray-700">Por favor ingresa el ID de la transferencia.</p>
           </div>
           <DialogFooter className="sm:justify-center">
-            <Button onClick={() => setShowValidationModal(false)} className="bg-amber-600 hover:bg-amber-700">
+            <Button
+              onClick={() => setShowValidationModal(false)}
+              className="bg-amber-600 text-white hover:bg-amber-700"
+            >
               Entendido
             </Button>
           </DialogFooter>
@@ -262,7 +265,11 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
                 Cancelar
               </Button>
             )}
-            <Button onClick={handleConfirmSubmit} disabled={isSubmitting} className="bg-custom-blue hover:bg-blue-700">
+            <Button
+              onClick={handleConfirmSubmit}
+              disabled={isSubmitting}
+              className="bg-custom-blue text-white hover:bg-blue-700"
+            >
               {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
               Confirmar
             </Button>
@@ -305,7 +312,9 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
             )}
             <Button
               onClick={handleResultModalClose}
-              className={submitResult ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}
+              className={
+                submitResult ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-red-600 text-white hover:bg-red-700'
+              }
             >
               {submitResult ? 'Aceptar' : 'Intentar de nuevo'}
             </Button>
