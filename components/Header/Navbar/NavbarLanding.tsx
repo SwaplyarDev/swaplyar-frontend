@@ -127,14 +127,14 @@ const NavbarLanding = () => {
           {/* Logo */}
           <Navbar.Brand href="/">
             <Image
-              alt="Your Company"
+              alt="SwaplyAr Logo"
               src={SwaplyArLogoComplete}
               width={200}
               height={200}
               className="hidden h-12 w-auto rounded-xl filter dark:brightness-[0%] dark:invert md:block"
             />
             <Image
-              alt="Your Company"
+              alt="SwaplyAr Logo"
               src={SwaplyArLogoSolo}
               width={200}
               height={200}

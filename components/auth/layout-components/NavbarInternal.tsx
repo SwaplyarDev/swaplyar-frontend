@@ -15,8 +15,9 @@ import CentroDeAyudaIcon from '@/components/icons-internal/icons-desktop/CentroD
 import { GiHamburgerMenu } from 'react-icons/gi';
 import IconsTablet from '@/components/icons-internal/icons-tablet/IconsTablet';
 import useWindowWidth from '@/hooks/useWindowWidth';
+import { NavIcons } from './NavIcons';
 
-enum TabView {
+export enum TabView {
   NONE,
   SOLICITUD,
   HISTORIAL,
@@ -81,55 +82,8 @@ const NavbarInternal = () => {
             Nombre Usuario
           </p>
         </div>
-        {/* Iconos Desktop */}
         <div className="hidden md:flex">
-          <div className="justify-arround relative flex items-end">
-            <div className="cursor-pointer" onClick={() => setTabDesktop(TabView.SOLICITUD)}>
-              {tabDesktop === TabView.SOLICITUD ? (
-                <IconsTablet text="Solcitud" classname="relative translate-y-9">
-                  <SolicitudIcon />
-                </IconsTablet>
-              ) : (
-                <SolicitudIcon classname="lg:pr-5" />
-              )}
-            </div>
-            <div className="cursor-pointer" onClick={() => setTabDesktop(TabView.HISTORIAL)}>
-              {tabDesktop === TabView.HISTORIAL ? (
-                <IconsTablet text="Historial" classname="relative translate-y-9">
-                  <HistorialIcon />
-                </IconsTablet>
-              ) : (
-                <HistorialIcon classname="lg:pr-5" />
-              )}
-            </div>
-            <div className="cursor-pointer" onClick={() => setTabDesktop(TabView.PLUSREWARDS)}>
-              {tabDesktop === TabView.PLUSREWARDS ? (
-                <IconsTablet text="Plus Rewards" classname="relative translate-y-9">
-                  <PlusRewardsIcon />
-                </IconsTablet>
-              ) : (
-                <PlusRewardsIcon classname="lg:pr-5" />
-              )}
-            </div>
-            <div className="cursor-pointer" onClick={() => setTabDesktop(TabView.CUENTASASOCIADAS)}>
-              {tabDesktop === TabView.CUENTASASOCIADAS ? (
-                <IconsTablet text="Cuentas Asociadas" classname="relative translate-y-9">
-                  <CuentasAsociadasIcon />
-                </IconsTablet>
-              ) : (
-                <CuentasAsociadasIcon classname="lg:pr-5" />
-              )}
-            </div>
-            <div className="cursor-pointer" onClick={() => setTabDesktop(TabView.CENTRODEAYUDA)}>
-              {tabDesktop === TabView.CENTRODEAYUDA ? (
-                <IconsTablet text="Ayuda" classname="relative translate-y-9">
-                  <CentroDeAyudaIcon />
-                </IconsTablet>
-              ) : (
-                <CentroDeAyudaIcon classname="lg:pr-5" />
-              )}
-            </div>
-          </div>
+          <NavIcons setTabDesktop={setTabDesktop} tabDesktop={tabDesktop} />
         </div>
         <button className="block xs:hidden md:block">
           <CerrarSesion />
@@ -178,7 +132,7 @@ const NavbarInternal = () => {
                 </div>
                 <div onClick={() => setTabTablet(TabView.CUENTASASOCIADAS)}>
                   {tabTablet === TabView.CUENTASASOCIADAS ? (
-                    <IconsTablet text="Cuentas Asociadas">
+                    <IconsTablet text="Cuentas">
                       <CuentasAsociadasIcon />
                     </IconsTablet>
                   ) : (
