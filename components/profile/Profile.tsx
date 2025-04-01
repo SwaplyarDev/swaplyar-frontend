@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 import { Email, Instagram, WhatsApp } from '@mui/icons-material';
 import Image from 'next/image';
 import { useState } from 'react';
-import EditarInfo from './editarInfo/EditarInfo';
+import WhatsAppVerification from './Modals/WhatsappModal';
 
 const Profile = () => {
   const [showModal, setShowModal] = useState(false);
@@ -14,29 +14,23 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-900 font-textFont text-white">
+    <div className="min-h-screen font-textFont text-white">
       {/* Header */}
-      <header className="flex items-center justify-between p-4">
+      <header className="flex items-center justify-between bg-[#4B4B4B] p-4">
         <h1 className="text-lg font-medium">Perfil</h1>
         <div className="relative h-12 w-12">
-          <Image
-            src="/placeholder.svg?height=48&width=48"
-            alt="Profile picture"
-            width={48}
-            height={48}
-            className="rounded-full object-cover"
-          />
+          <Image src={``} alt="Profile picture" width={48} height={48} className="rounded-full object-cover" />
         </div>
       </header>
 
       {/* User Info */}
-      <div className="mb-4 flex flex-col items-end px-4">
+      <div className="mb-4 flex flex-col items-end bg-[#4B4B4B] px-4">
         <p className="text-sm">Oa Johan Javier Suarez Merchan</p>
         <p className="text-xs text-gray-400">Registrado en 2019</p>
       </div>
 
       {/* Personal Information */}
-      <div className="mx-4 mb-4 rounded-lg bg-zinc-800 p-4">
+      <div className="mx-4 mb-4 rounded-lg bg-[#4B4B4B] p-4">
         <h2 className="mb-3 text-lg">Informacion Personal</h2>
 
         <div className="grid grid-cols-2 gap-y-2">
@@ -61,7 +55,7 @@ const Profile = () => {
       </div>
 
       {/* Email */}
-      <div className="mx-4 mb-4 rounded-lg bg-zinc-800 p-4">
+      <div className="mx-4 mb-4 rounded-lg bg-[#4B4B4B] p-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg">Correo Electrónico</h2>
           <Email className="h-5 w-5" />
@@ -70,7 +64,7 @@ const Profile = () => {
       </div>
 
       {/* WhatsApp */}
-      <div className="mx-4 mb-4 rounded-lg bg-zinc-800 p-4">
+      <div className="mx-4 mb-4 rounded-lg bg-[#4B4B4B] p-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg">WhatsApp</h2>
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="white">
@@ -83,11 +77,11 @@ const Profile = () => {
             Editar
           </Button>
         </div>
-        {showModal && <EditarInfo open={showModal} handleClose={handleClose} />}
+        {showModal && <WhatsAppVerification show={showModal} setShow={setShowModal} />}
       </div>
 
       {/* Social Network */}
-      <div className="mx-4 mb-4 rounded-lg bg-zinc-800 p-4">
+      <div className="mx-4 mb-4 rounded-lg bg-[#4B4B4B] p-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg">Red Social</h2>
           <Instagram className="h-5 w-5" />
