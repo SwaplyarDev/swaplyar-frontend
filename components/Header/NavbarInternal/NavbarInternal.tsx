@@ -77,7 +77,7 @@ const NavbarInternal = () => {
               className="h-full w-full overflow-hidden rounded-full bg-white dark:bg-lightText"
             />
           </div>
-          <p className="hidden pl-2 pt-4 font-sans text-white dark:text-black xs:block md:hidden lg:block">
+          <p className="hidden pl-2 pt-4 font-textFont text-white dark:text-black xs:block md:hidden lg:block">
             Nombre Usuario
           </p>
         </div>

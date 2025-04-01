@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import ProfileCards from './profileCards/ProfileCards';
+import { swaplyArAvatar } from '@/utils/assets/img-database';
 
 export enum Card {
   INFOPERSONAL,
@@ -10,16 +11,18 @@ export enum Card {
 
 const Profile = () => {
   return (
-    <div>
-      <div>
-        <h1>Perfil</h1>
-        <div>
-          <p>Nombre Usuario</p>
-          <p>Registrado en: 2019</p>
+    <div className="font-textFont">
+      <div className="flex h-[184px] items-start justify-between bg-[#4B4B4B] px-16 xs:h-[150px]">
+        <h1 className="weight-bold font-titleFont text-3xl xs:text-2xl">Perfil De Usuario</h1>
+        <div className="mt-12 flex justify-evenly gap-5">
+          <div className="flex flex-col justify-end">
+            <p>Oa Johan Javier Suarez</p>
+            <p className="underline">Registrado en: 2019</p>
+          </div>
+          <Image src={swaplyArAvatar} height={100} width={100} alt="imagen de perfil" className="rounded-full" />
         </div>
-        <Image src="" height={100} width={100} alt="imagen de perfil" />
       </div>
-      <div className="flex flex-col items-center">
+      <div className="flex h-[800px] min-h-screen flex-col items-center justify-around">
         <ProfileCards content={Card.INFOPERSONAL} />
         <ProfileCards content={Card.EMAIL} />
         <ProfileCards content={Card.WHATSAPP} />

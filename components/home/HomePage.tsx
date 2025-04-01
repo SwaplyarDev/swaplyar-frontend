@@ -11,6 +11,7 @@ import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import Recommendations from '../Recomendations/Recomendations';
 import Link from 'next/link';
 import Profile from '../profile/Profile';
+import ProfileDos from '../profile/ProfileDos';
 
 export default function HomePage() {
   const resetToDefault = useSystemStore((state) => state.resetToDefault);
@@ -95,7 +96,7 @@ export default function HomePage() {
           nameButton="¡Empieza ahora!"
         />
       </section>
-      <Profile />
+      <ProfileDos />
     </>
   );
 }
