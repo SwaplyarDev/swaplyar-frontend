@@ -17,6 +17,7 @@ import DiscrepancySection from '@/components/TransactionModal/componentesModal/D
 import ClientInformation from '@/components/TransactionModal/componentesModal/ClientInformation';
 import FinalSection from '@/components/TransactionModal/componentesModal/FinalSection';
 import axios from 'axios';
+import { useSession } from 'next-auth/react';
 
 const MySwal = withReactContent(Swal);
 
@@ -110,6 +111,10 @@ const TransactionModal = () => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
+  const { data: session, status } = useSession();
+  const token = session?.accessToken;
+  console.log('🟡 Token:', token);
+
   const handleSubmit = async (
     status: string,
     form: any,
@@ -127,6 +132,7 @@ const TransactionModal = () => {
       case 'review_payment':
         payload = {
           review: form.transfer_id,
+          transaction_id: transId,
         };
         break;
       case 'approved':
@@ -160,11 +166,14 @@ const TransactionModal = () => {
         break;
     }
 
+    console.log('payload', payload);
+
     try {
-      const response = await fetch(`/admin/transactions/status/${status}`, {
+      const response = await fetch(`http://localhost:8080/api/v1/admin/transactions/status/${status}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(payload),
       });
@@ -201,74 +210,84 @@ const TransactionModal = () => {
       {isLoading ? (
         <SkeletonModal />
       ) : (
-        <div className="flex flex-col gap-4 font-textFont">
-          <InfoStatus trans={trans} transId={transId} />
+        <div className="grid grid-cols-2 gap-4 font-textFont">
+          <div className="col-span-2">
+            <InfoStatus trans={trans} transId={transId} />
+          </div>
 
-          <TransactionDetail transaction={trans} isLoading={isLoading} />
-
-          <ClientMessage
-            message={trans.transaction.message}
-            headerMessage="Mensaje del cliente"
-            classnames="min-h-[4.25rem] border-black"
-          />
-
-          <TransferImages trans={trans} />
-
-          {transaction.regret_id ? (
-            <div className="flex flex-col">
-              <p className="text-left text-base font-medium">
-                El Cliente solicito la Cancelacion y el Reembolso - Se realiza el reembolso a la cuenta de origen
-              </p>
-              <ClientMessage
-                headerMessage="Mensaje"
-                message={regretCancel.note}
-                classnames="border-[#CE1818] min-h-[4.25rem]"
+          <div>
+            <div className="grid gap-4">
+              {/* Confirmar Transferencia */}
+              <ConfirmTransButton
+                value={componentStates.confirmTransButton}
+                setValue={(value) => handleComponentStateChange('confirmTransButton', value)}
+                trans={trans}
+                submit={handleSubmit}
+                setIsSubmitting={setIsSubmitting}
+                setSubmitError={setSubmitError}
+                setSubmitSuccess={setSubmitSuccess}
               />
+
+              {componentStates.confirmTransButton != null && (
+                <AprobarRechazar
+                  selected={selected}
+                  componentStates={componentStates}
+                  onSelectChange={handleSelectionChange}
+                  transId={transId}
+                  trans={trans}
+                  handleComponentStateChange={handleComponentStateChange}
+                  setDiscrepancySend={setDiscrepancySend}
+                />
+              )}
+
+              {componentStates.confirmTransButton !== null &&
+                (componentStates.aprooveReject === 'accepted' ||
+                  (componentStates.aprooveReject !== 'canceled' &&
+                    componentStates.discrepancySection !== null &&
+                    (componentStates.discrepancySection !== true || discrepancySend))) && (
+                  <>
+                    <ClientInformation modal={modal} setModal={setModal} trans={trans} />
+                    <FinalSection transId={transId} />
+                  </>
+                )}
             </div>
-          ) : transaction.note_id ? (
-            <div className="flex flex-col">
-              <p className="text-base font-medium">El Cliente solicito Editar la Solicitud</p>
+          </div>
+
+          <div>
+            <div className="grid gap-4">
+              <TransferImages trans={trans} />
+
+              <TransactionDetail transaction={trans} isLoading={isLoading} />
+
               <ClientMessage
-                headerMessage="mensaje"
-                message={noteEdit.note}
-                classnames="border-[#D75600] min-h-[4.25rem]"
+                message={trans.transaction.message}
+                headerMessage="Mensaje del cliente"
+                classnames="min-h-[4.25rem] border-black"
               />
+
+              {transaction.regret_id ? (
+                <div className="flex flex-col">
+                  <p className="text-left text-base font-medium">
+                    El Cliente solicito la Cancelacion y el Reembolso - Se realiza el reembolso a la cuenta de origen
+                  </p>
+                  <ClientMessage
+                    headerMessage="Mensaje"
+                    message={regretCancel.note}
+                    classnames="border-[#CE1818] min-h-[4.25rem]"
+                  />
+                </div>
+              ) : transaction.note_id ? (
+                <div className="flex flex-col">
+                  <p className="text-base font-medium">El Cliente solicito Editar la Solicitud</p>
+                  <ClientMessage
+                    headerMessage="mensaje"
+                    message={noteEdit.note}
+                    classnames="border-[#D75600] min-h-[4.25rem]"
+                  />
+                </div>
+              ) : null}
             </div>
-          ) : null}
-
-          {/* Confirmar Transferencia */}
-          <ConfirmTransButton
-            value={componentStates.confirmTransButton}
-            setValue={(value) => handleComponentStateChange('confirmTransButton', value)}
-            trans={trans}
-            submit={handleSubmit}
-            setIsSubmitting={setIsSubmitting}
-            setSubmitError={setSubmitError}
-            setSubmitSuccess={setSubmitSuccess}
-          />
-
-          {componentStates.confirmTransButton != null && (
-            <AprobarRechazar
-              selected={selected}
-              componentStates={componentStates}
-              onSelectChange={handleSelectionChange}
-              transId={transId}
-              trans={trans}
-              handleComponentStateChange={handleComponentStateChange}
-              setDiscrepancySend={setDiscrepancySend}
-            />
-          )}
-
-          {componentStates.confirmTransButton !== null &&
-            (componentStates.aprooveReject === 'accepted' ||
-              (componentStates.aprooveReject !== 'canceled' &&
-                componentStates.discrepancySection !== null &&
-                (componentStates.discrepancySection !== true || discrepancySend))) && (
-              <>
-                <ClientInformation modal={modal} setModal={setModal} trans={trans} />
-                <FinalSection transId={transId} />
-              </>
-            )}
+          </div>
         </div>
       )}
     </div>

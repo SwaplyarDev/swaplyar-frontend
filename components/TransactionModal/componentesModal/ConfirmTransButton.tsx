@@ -6,6 +6,12 @@ import type { TransactionTypeSingle } from '@/types/transactions/transactionsTyp
 import { CheckCircle, XCircle, Send, AlertCircle, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
+import { TooltipContent } from '@/components/ui/Tooltip';
+import { Tooltip, TooltipTrigger } from '@/components/ui/Tooltip';
+import { TooltipProvider } from '@/components/ui/Tooltip';
+import { Label } from '@/components/ui/Label';
+import { Input } from '@/components/ui/Input';
+import { useSession } from 'next-auth/react';
 
 interface ConfirmTransButtonProps {
   value: boolean | null;
@@ -120,109 +126,106 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
 
   return (
     <>
-      <section className="mt-5 w-full overflow-hidden rounded-xl border bg-white transition-all duration-300">
-        <div className="p-6">
-          <h3 className="mb-5 text-center font-titleFont text-xl font-semibold text-gray-800">
-            <span className="inline-flex items-center">
-              <AlertCircle className="mr-2 h-5 w-5 text-blue-600" />
-              Confirmación de transferencia
-            </span>
-          </h3>
+      <div className="rounded-lg border bg-white p-4">
+        <h3 className="text-lg font-semibold">Confirmación de transferencia</h3>
+        <p className="text-sm text-gray-800">
+          ¿La transferencia ha sido recibida y ya está reflejada en nuestra cuenta?
+        </p>
 
-          <div className="flex flex-col space-y-6">
-            <div className="rounded-lg border-l-4 border-blue-500 bg-blue-50 p-4">
-              <p className="font-medium text-gray-800">
-                ¿La transferencia ha sido recibida y ya está reflejada en nuestra cuenta?
-              </p>
-            </div>
+        <div className="mt-2 flex gap-4">
+          <TooltipProvider delayDuration={300}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={() => handleClick(true)}
+                  variant={selected === true ? 'default' : 'outline'}
+                  className={`relative min-w-[160px] transition-all duration-300 ${
+                    selected === true
+                      ? 'bg-green-600 text-white hover:bg-green-700'
+                      : 'hover:border-green-500 hover:text-green-600'
+                  }`}
+                  size="lg"
+                >
+                  <CheckCircle className={`mr-2 h-5 w-5 ${selected === true ? 'text-white' : 'text-green-500'}`} />
+                  <span>Sí, confirmado</span>
+                </Button>
+              </TooltipTrigger>
+              {selected !== true && (
+                <TooltipContent side="top" className="border-green-600 bg-green-600 text-white">
+                  <p>Confirmar recepción</p>
+                </TooltipContent>
+              )}
+            </Tooltip>
 
-            <div className="flex justify-center gap-4">
-              <button
-                onClick={() => handleClick(true)}
-                onMouseEnter={() => setIsHovering('yes')}
-                onMouseLeave={() => setIsHovering(null)}
-                className={`relative flex items-center justify-center gap-2 rounded-lg px-6 py-3 font-medium transition-all duration-300 ${
-                  selected === true
-                    ? 'bg-green-600 text-white shadow-lg shadow-green-200'
-                    : 'border border-gray-300 bg-white text-gray-700 hover:border-green-500 hover:text-green-600'
-                } `}
-              >
-                <CheckCircle className={`h-5 w-5 ${selected === true ? 'text-white' : 'text-green-500'}`} />
-                <span>Sí, confirmado</span>
-                {isHovering === 'yes' && selected !== true && (
-                  <span className="absolute -top-10 left-1/2 -translate-x-1/2 transform whitespace-nowrap rounded bg-green-600 px-2 py-1 text-xs text-white">
-                    Confirmar recepción
-                  </span>
-                )}
-              </button>
-
-              <button
-                onClick={() => handleClick(false)}
-                onMouseEnter={() => setIsHovering('no')}
-                onMouseLeave={() => setIsHovering(null)}
-                className={`relative flex items-center justify-center gap-2 rounded-lg px-6 py-3 font-medium transition-all duration-300 ${
-                  selected === false
-                    ? 'bg-red-600 text-white shadow-lg shadow-red-200'
-                    : 'border border-gray-300 bg-white text-gray-700 hover:border-red-500 hover:text-red-600'
-                } `}
-              >
-                <XCircle className={`h-5 w-5 ${selected === false ? 'text-white' : 'text-red-500'}`} />
-                <span>No recibida</span>
-                {isHovering === 'no' && selected !== false && (
-                  <span className="absolute -top-10 left-1/2 -translate-x-1/2 transform whitespace-nowrap rounded bg-red-600 px-2 py-1 text-xs text-white">
-                    Marcar como no recibida
-                  </span>
-                )}
-              </button>
-            </div>
-
-            {selected === true && (
-              <div className="animate-fadeIn mt-4">
-                <div className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
-                  <label htmlFor="transfer-id" className="mb-2 block text-sm font-medium text-gray-700">
-                    ID de la Transferencia <span className="text-red-500">*</span>
-                  </label>
-
-                  <div
-                    className={`flex w-full items-center gap-3 rounded-lg p-1 transition-all duration-300 ${isInputFocused ? 'bg-blue-50 ring-2 ring-blue-300' : 'border border-gray-300 bg-white'} `}
-                  >
-                    <input
-                      id="transfer-id"
-                      type="text"
-                      placeholder="Ingresa el ID de la transferencia"
-                      className="h-10 flex-1 border-none bg-transparent px-3 text-gray-800 focus:outline-none"
-                      value={transferId}
-                      onChange={(e) => setTransferId(e.target.value)}
-                      onFocus={() => setIsInputFocused(true)}
-                      onBlur={() => setIsInputFocused(false)}
-                      aria-required="true"
-                    />
-
-                    <button
-                      ref={sendButtonRef}
-                      onClick={handleSubmitTransferId}
-                      className="flex h-10 items-center gap-2 rounded-lg bg-custom-blue px-4 font-medium text-white transition-colors duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      aria-label="Enviar ID de transferencia"
-                    >
-                      <Send className="h-4 w-4" />
-                      <span>Enviar</span>
-                    </button>
-                  </div>
-
-                  <p className="mt-2 text-xs text-gray-500">
-                    Este ID será utilizado para verificar la transferencia en nuestro sistema.
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={() => handleClick(false)}
+                  variant={selected === false ? 'destructive' : 'outline'}
+                  className={`relative min-w-[160px] transition-all duration-300 ${
+                    selected === false
+                      ? 'bg-red-600 text-white hover:bg-red-700'
+                      : 'hover:border-red-500 hover:text-red-600'
+                  }`}
+                  size="lg"
+                >
+                  <XCircle className={`mr-2 h-5 w-5 ${selected === false ? 'text-white' : 'text-red-500'}`} />
+                  <span>No recibida</span>
+                </Button>
+              </TooltipTrigger>
+              {selected !== false && (
+                <TooltipContent side="top" className="border-red-600 bg-red-600 text-white">
+                  <p>Marcar como no recibida</p>
+                </TooltipContent>
+              )}
+            </Tooltip>
+          </TooltipProvider>
         </div>
 
-        {/* Indicador de estado */}
-        <div
-          className={`h-1.5 w-full transition-all duration-500 ${selected === true ? 'bg-green-500' : selected === false ? 'bg-red-500' : 'bg-gray-200'} `}
-        ></div>
-      </section>
+        {selected === true && (
+          <div className="animate-in fade-in mt-6 max-w-xl duration-300">
+            <div className="space-y-3">
+              <div className="flex items-center">
+                <Label htmlFor="transfer-id" className="text-sm font-medium">
+                  ID de la Transferencia
+                  <span className="ml-1 text-red-500">*</span>
+                </Label>
+              </div>
+
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <Input
+                    id="transfer-id"
+                    type="text"
+                    placeholder="Ingresa el ID de la transferencia"
+                    value={transferId}
+                    onChange={(e) => setTransferId(e.target.value)}
+                    onFocus={() => setIsInputFocused(true)}
+                    onBlur={() => setIsInputFocused(false)}
+                    className={`h-11 transition-all duration-300 ${
+                      isInputFocused ? 'ring-primary border-primary ring-2' : ''
+                    }`}
+                    aria-required="true"
+                  />
+                </div>
+
+                <Button
+                  ref={sendButtonRef}
+                  onClick={handleSubmitTransferId}
+                  className="h-11 bg-custom-blue text-white hover:bg-blue-700"
+                  aria-label="Enviar ID de transferencia"
+                >
+                  <span>Enviar</span>
+                </Button>
+              </div>
+
+              <p className="text-muted-foreground text-xs">
+                Este ID será utilizado para verificar la transferencia en nuestro sistema.
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Modal de validación (campo requerido) */}
       <Dialog open={showValidationModal} onOpenChange={setShowValidationModal}>
