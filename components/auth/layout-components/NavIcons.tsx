@@ -4,73 +4,120 @@ import HistorialIcon from '@/components/icons-internal/icons-desktop/historial/H
 import PlusRewardsIcon from '@/components/icons-internal/icons-desktop/PlusRewards/PlusRewardsIcon';
 import SolicitudIcon from '@/components/icons-internal/icons-desktop/solicitud/SolicitudIcon';
 import IconsTablet from '@/components/icons-internal/icons-tablet/IconsTablet';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import useWindowWidth from '@/hooks/useWindowWidth';
-import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-enum TabView {
-  NONE,
-  SOLICITUD,
-  HISTORIAL,
-  PLUSREWARDS,
-  CUENTASASOCIADAS,
-  CENTRODEAYUDA,
+enum ActiveTab {
+  SOLICITUD = 'solicitud',
+  HISTORIAL = 'historial',
+  PLUSREWARDS = 'plus-rewards',
+  CUENTASASOCIADAS = 'cuentas',
+  CENTRODEAYUDA = 'ayuda',
 }
 
-export const NavIcons = ({
-  setTabDesktop,
-  tabDesktop,
-}: {
-  setTabDesktop: (tab: TabView) => void;
-  tabDesktop: TabView;
-}) => {
-  const windowWidth = useWindowWidth();
-  const isMobile = () => (windowWidth >= 390 ? false : true);
+export const NavIcons = () => {
+  const pathname = usePathname();
+  const isActive = pathname.split('/')[3];
+  const { isDark } = useDarkTheme();
+  const isMobile = useWindowWidth() >= 390 ? false : true;
   return (
     <div className="relative flex w-full items-end justify-around">
-      <div className="cursor-pointer" onClick={() => setTabDesktop(TabView.SOLICITUD)}>
-        {tabDesktop === TabView.SOLICITUD ? (
-          <IconsTablet text="Solcitud" classname="relative -translate-y-9 md:translate-y-9">
-            <SolicitudIcon />
-          </IconsTablet>
-        ) : (
-          <SolicitudIcon classname="lg:pr-5" />
-        )}
+      <div
+        className={
+          isMobile && isActive === 'solicitud'
+            ? `relative bottom-0 w-full ${isDark ? 'montanaDark-footer' : 'montana-footer'}`
+            : ''
+        }
+      >
+        <div className="flex items-center justify-center">
+          <Link href={`/es/auth/solicitud`} className="cursor-pointer">
+            {isActive === 'solicitud' ? (
+              <IconsTablet text="Solicitud" classname="relative -translate-y-6 md:translate-y-9">
+                <SolicitudIcon />
+              </IconsTablet>
+            ) : (
+              <SolicitudIcon classname="lg:pr-5" />
+            )}
+          </Link>
+        </div>
       </div>
-      <div className="cursor-pointer" onClick={() => setTabDesktop(TabView.HISTORIAL)}>
-        {tabDesktop === TabView.HISTORIAL ? (
-          <IconsTablet text="Historial" classname="relative -translate-y-9 md:translate-y-9">
-            <HistorialIcon />
-          </IconsTablet>
-        ) : (
-          <HistorialIcon classname="lg:pr-5" />
-        )}
+      <div
+        className={
+          isMobile && isActive === ActiveTab.HISTORIAL
+            ? `relative bottom-0 w-full ${isDark ? 'montanaDark-footer' : 'montana-footer'}`
+            : ''
+        }
+      >
+        <div className="flex items-center justify-center">
+          <Link href={`/es/auth/historial`} className="cursor-pointer">
+            {isActive === ActiveTab.HISTORIAL ? (
+              <IconsTablet text="Historial" classname="relative -translate-y-6 md:translate-y-9">
+                <HistorialIcon />
+              </IconsTablet>
+            ) : (
+              <HistorialIcon classname="lg:pr-5" />
+            )}
+          </Link>
+        </div>
       </div>
-      <div className="cursor-pointer" onClick={() => setTabDesktop(TabView.PLUSREWARDS)}>
-        {tabDesktop === TabView.PLUSREWARDS ? (
-          <IconsTablet text="Plus Rewards" classname="relative -translate-y-9 md:translate-y-9">
-            <PlusRewardsIcon />
-          </IconsTablet>
-        ) : (
-          <PlusRewardsIcon classname="lg:pr-5" />
-        )}
+      <div
+        className={
+          isMobile && isActive === ActiveTab.PLUSREWARDS
+            ? `relative bottom-0 w-full ${isDark ? 'montanaDark-footer' : 'montana-footer'}`
+            : ''
+        }
+      >
+        <div className="flex items-center justify-center">
+          <Link href={`/es/auth/plus-rewards`} className="cursor-pointer">
+            {isActive === ActiveTab.PLUSREWARDS ? (
+              <IconsTablet text="Plus Rewards" classname="relative -translate-y-6 md:translate-y-9">
+                <PlusRewardsIcon />
+              </IconsTablet>
+            ) : (
+              <PlusRewardsIcon classname="lg:pr-5" />
+            )}
+          </Link>
+        </div>
       </div>
-      <div className="cursor-pointer" onClick={() => setTabDesktop(TabView.CUENTASASOCIADAS)}>
-        {tabDesktop === TabView.CUENTASASOCIADAS ? (
-          <IconsTablet text="Cuentas" classname="relative -translate-y-9 md:translate-y-9">
-            <CuentasAsociadasIcon />
-          </IconsTablet>
-        ) : (
-          <CuentasAsociadasIcon classname="lg:pr-5" />
-        )}
+      <div
+        className={
+          isMobile && isActive === ActiveTab.CUENTASASOCIADAS
+            ? `relative bottom-0 w-full ${isDark ? 'montanaDark-footer' : 'montana-footer'}`
+            : ''
+        }
+      >
+        <div className="flex items-center justify-center">
+          <Link href={`/es/auth/cuentas`} className="cursor-pointer">
+            {isActive === ActiveTab.CUENTASASOCIADAS ? (
+              <IconsTablet text="Cuentas" classname="relative -translate-y-6 md:translate-y-9">
+                <CuentasAsociadasIcon />
+              </IconsTablet>
+            ) : (
+              <CuentasAsociadasIcon classname="lg:pr-5" />
+            )}
+          </Link>
+        </div>
       </div>
-      <div className="cursor-pointer" onClick={() => setTabDesktop(TabView.CENTRODEAYUDA)}>
-        {tabDesktop === TabView.CENTRODEAYUDA ? (
-          <IconsTablet text="Ayuda" classname="relative -translate-y-9 md:translate-y-9">
-            <CentroDeAyudaIcon />
-          </IconsTablet>
-        ) : (
-          <CentroDeAyudaIcon classname="lg:pr-5" />
-        )}
+      <div
+        className={
+          isMobile && isActive === ActiveTab.CENTRODEAYUDA
+            ? `relative bottom-0 w-full ${isDark ? 'montanaDark-footer' : 'montana-footer'}`
+            : ''
+        }
+      >
+        <div className="flex items-center justify-center">
+          <Link href={`/es/auth/ayuda`} className="cursor-pointer">
+            {isActive === ActiveTab.CENTRODEAYUDA ? (
+              <IconsTablet text="Ayuda" classname="relative -translate-y-6 md:translate-y-9">
+                <CentroDeAyudaIcon />
+              </IconsTablet>
+            ) : (
+              <CentroDeAyudaIcon classname="lg:pr-5" />
+            )}
+          </Link>
+        </div>
       </div>
     </div>
   );

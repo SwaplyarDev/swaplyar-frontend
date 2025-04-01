@@ -63,6 +63,7 @@ const NavbarInternal = () => {
         <div className="">
           <Switch />
         </div>
+        +
       </div>
       <div className={`flex h-16 ${isDark ? 'bg-white' : 'bg-nav-blue'} xs:px-0 md:justify-between md:px-20`}>
         <div className={`relative top-1 ml-10 flex h-full w-full ${isDark ? 'montanaDark' : 'montana'} md:ml-0`}>
@@ -105,7 +106,7 @@ const NavbarInternal = () => {
               <div className="max-w-56 pr-5 pt-7">
                 <div onClick={() => setTabTablet(TabView.SOLICITUD)}>
                   {tabTablet === TabView.SOLICITUD ? (
-                    <IconsTablet text="Solcitud">
+                    <IconsTablet link="es/auth/solicitud" text="Solcitud">
                       <SolicitudIcon />
                     </IconsTablet>
                   ) : (
@@ -114,7 +115,7 @@ const NavbarInternal = () => {
                 </div>
                 <div onClick={() => setTabTablet(TabView.HISTORIAL)}>
                   {tabTablet === TabView.HISTORIAL ? (
-                    <IconsTablet text="Historial">
+                    <IconsTablet link="es/auth/historial" text="Historial">
                       <HistorialIcon />
                     </IconsTablet>
                   ) : (
@@ -123,7 +124,7 @@ const NavbarInternal = () => {
                 </div>
                 <div onClick={() => setTabTablet(TabView.PLUSREWARDS)}>
                   {tabTablet === TabView.PLUSREWARDS ? (
-                    <IconsTablet text="Plus Rewards">
+                    <IconsTablet link="es/auth/plus-rewards" text="Plus Rewards">
                       <PlusRewardsIcon />
                     </IconsTablet>
                   ) : (
@@ -132,7 +133,7 @@ const NavbarInternal = () => {
                 </div>
                 <div onClick={() => setTabTablet(TabView.CUENTASASOCIADAS)}>
                   {tabTablet === TabView.CUENTASASOCIADAS ? (
-                    <IconsTablet text="Cuentas">
+                    <IconsTablet link="es/auth/cuentas" text="Cuentas">
                       <CuentasAsociadasIcon />
                     </IconsTablet>
                   ) : (
@@ -141,7 +142,7 @@ const NavbarInternal = () => {
                 </div>
                 <div onClick={() => setTabTablet(TabView.CENTRODEAYUDA)}>
                   {tabTablet === TabView.CENTRODEAYUDA ? (
-                    <IconsTablet text="Ayuda">
+                    <IconsTablet link="es/auth/ayuda" text="Ayuda">
                       <CentroDeAyudaIcon />
                     </IconsTablet>
                   ) : (

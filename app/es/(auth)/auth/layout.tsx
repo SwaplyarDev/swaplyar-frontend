@@ -3,7 +3,7 @@ import NavbarInternal from '@/components/auth/layout-components/NavbarInternal';
 
 export default function layout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="flex min-h-screen flex-col bg-white dark:bg-gray-900">
+    <main className="flex min-h-screen flex-col bg-white dark:bg-lightText">
       <NavbarInternal />
       {children}
       <FooterInternal />
