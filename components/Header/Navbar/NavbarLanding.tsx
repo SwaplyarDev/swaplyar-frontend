@@ -203,7 +203,7 @@ const NavbarLanding = () => {
                               : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                           }`}
                           onClick={() => handleSelect('about-us')}
-                          href="/info/about-us"
+                          href="/es/quienes-somos"
                         >
                           Quienes Somos
                         </Sidebar.Item>
@@ -214,7 +214,7 @@ const NavbarLanding = () => {
                               : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                           }`}
                           onClick={() => handleSelect('how-to-use')}
-                          href="/info/how-to-use"
+                          href="/es/como-usar-swaplyar"
                         >
                           Como Usar SwaplyAr
                         </Sidebar.Item>
@@ -225,7 +225,7 @@ const NavbarLanding = () => {
                               : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                           }`}
                           onClick={() => handleSelect('loyalty-program')}
-                          href="/info/loyalty-program"
+                          href="/es/programa-de-fidelizacion"
                         >
                           Programa de Fidelización
                         </Sidebar.Item>
@@ -239,7 +239,7 @@ const NavbarLanding = () => {
                             : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                         }`}
                         onClick={() => handleSelect('about-us')}
-                        href="/info/about-us"
+                        href="/es/quienes-somos"
                       >
                         Quienes Somos
                       </Sidebar.Item>
@@ -250,7 +250,7 @@ const NavbarLanding = () => {
                             : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                         }`}
                         onClick={() => handleSelect('how-to-use')}
-                        href="/info/how-to-use"
+                        href="/es/como-usar-swaplyar"
                       >
                         Como Usar SwaplyAr
                       </Sidebar.Item>
@@ -261,7 +261,7 @@ const NavbarLanding = () => {
                             : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                         }`}
                         onClick={() => handleSelect('loyalty-program')}
-                        href="/info/loyalty-program"
+                        href="/es/programa-de-fidelizacion"
                       >
                         Programa de Fidelización
                       </Sidebar.Item>

@@ -7,6 +7,8 @@ import { useTransactionStore } from '@/store/transactionModalStorage';
 import Swal from 'sweetalert2';
 import { CheckCircle, XCircle, AlertTriangle, Send, Info } from 'lucide-react';
 import { TransactionService } from './ui/TransactionService';
+import DiscrepancySection from './DiscrepancySection';
+import { TransactionTypeSingle } from '@/types/transactions/transactionsType';
 
 interface AprobarRechazarProps {
   selected: 'stop' | 'accepted' | 'canceled' | null;
@@ -18,11 +20,21 @@ interface AprobarRechazarProps {
     transferRealized: boolean;
   };
   transId: string;
+  trans: TransactionTypeSingle;
+  handleComponentStateChange: (key: keyof any['componentStates'], value: any) => void;
+  setDiscrepancySend: (value: boolean) => void;
 }
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectChange, transId }) => {
+const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
+  selected,
+  onSelectChange,
+  transId,
+  trans,
+  handleComponentStateChange,
+  setDiscrepancySend,
+}) => {
   const { componentStates } = useTransactionStore();
   const [rejectionReason, setRejectionReason] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -249,19 +261,28 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({ selected, onSelectCha
           )}
 
           {selected === 'stop' && (
-            <div className="animate-fadeIn mt-4 rounded-lg border-l-4 border-amber-500 bg-amber-50 p-4">
-              <h3 className="mb-2 flex items-center font-medium text-amber-800">
-                <AlertTriangle className="mr-2 h-5 w-5 text-amber-500" />
-                Información sobre STOP
-              </h3>
-              <p className="text-sm text-amber-700">
-                Si los datos de la operación no coinciden (por ejemplo, si el monto es mayor o menor al acordado),
-                comunícate con el solicitante para resolverlo antes de continuar.
-              </p>
-              <p className="mt-2 text-sm text-amber-700">
-                Esta acción pausará el proceso hasta que se resuelvan las discrepancias.
-              </p>
-            </div>
+            <>
+              <div className="animate-fadeIn mt-4 rounded-lg border-l-4 border-amber-500 bg-amber-50 p-4">
+                <h3 className="mb-2 flex items-center font-medium text-amber-800">
+                  <AlertTriangle className="mr-2 h-5 w-5 text-amber-500" />
+                  Información sobre STOP
+                </h3>
+                <p className="text-sm text-amber-700">
+                  Si los datos de la operación no coinciden (por ejemplo, si el monto es mayor o menor al acordado),
+                  comunícate con el solicitante para resolverlo antes de continuar.
+                </p>
+                <p className="mt-2 text-sm text-amber-700">
+                  Esta acción pausará el proceso hasta que se resuelvan las discrepancias.
+                </p>
+              </div>
+
+              <DiscrepancySection
+                trans={trans}
+                value={true}
+                /*  setValue={(value) => handleComponentStateChange('discrepancySection', value)} */
+                setDiscrepancySend={setDiscrepancySend} // Añadido el prop que faltaba
+              />
+            </>
           )}
 
           {selected === 'accepted' && (
