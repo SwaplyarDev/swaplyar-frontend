@@ -15,24 +15,14 @@ import CentroDeAyudaIcon from '@/components/icons-internal/icons-desktop/CentroD
 import { GiHamburgerMenu } from 'react-icons/gi';
 import IconsTablet from '@/components/icons-internal/icons-tablet/IconsTablet';
 import useWindowWidth from '@/hooks/useWindowWidth';
-import { NavIcons } from './NavIcons';
-
-export enum TabView {
-  NONE,
-  SOLICITUD,
-  HISTORIAL,
-  PLUSREWARDS,
-  CUENTASASOCIADAS,
-  CENTRODEAYUDA,
-}
+import { ActiveTab, NavIcons } from './NavIcons';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const NavbarInternal = () => {
   const [drawerMenu, setDrawerMenu] = useState(false);
-  const [tabDesktop, setTabDesktop] = useState<TabView>(TabView.NONE);
-  const [tabTablet, setTabTablet] = useState<TabView>(TabView.NONE);
 
   const closeDrawerMenu = () => {
-    setTabTablet(TabView.NONE);
     setDrawerMenu(false);
   };
 
@@ -49,6 +39,8 @@ const NavbarInternal = () => {
   };
 
   const { isDark } = useDarkTheme();
+  const pathname = usePathname();
+  const isActive = pathname.split('/')[3];
 
   return (
     <div>
@@ -63,13 +55,12 @@ const NavbarInternal = () => {
         <div className="">
           <Switch />
         </div>
-        +
       </div>
       <div className={`flex h-16 ${isDark ? 'bg-white' : 'bg-nav-blue'} xs:px-0 md:justify-between md:px-20`}>
         <div className={`relative top-1 ml-10 flex h-full w-full ${isDark ? 'montanaDark' : 'montana'} md:ml-0`}>
-          <div
-            onClick={() => setTabDesktop(TabView.NONE)}
-            className="relative left-4 top-1 h-24 w-24 rounded-full bg-gradient-to-t from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] xs:-left-1 xs:ml-5"
+          <Link
+            href="/es/auth/perfil"
+            className="relative left-4 top-1 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t xs:-left-1 xs:ml-5"
           >
             <Image
               src={swaplyArAvatar}
@@ -78,13 +69,13 @@ const NavbarInternal = () => {
               height={100}
               className="h-full w-full overflow-hidden rounded-full bg-white dark:bg-lightText"
             />
-          </div>
+          </Link>
           <p className="hidden pl-2 pt-4 font-sans text-white dark:text-black xs:block md:hidden lg:block">
             Nombre Usuario
           </p>
         </div>
         <div className="hidden md:flex">
-          <NavIcons setTabDesktop={setTabDesktop} tabDesktop={tabDesktop} />
+          <NavIcons />
         </div>
         <button className="block xs:hidden md:block">
           <CerrarSesion />
@@ -97,60 +88,60 @@ const NavbarInternal = () => {
           open={drawerMenu}
           onClose={() => closeDrawerMenu()}
           position="right"
-          className="mt-[4.5rem] w-40 transform overflow-visible bg-transparent p-0 transition-all duration-500 ease-in-out dark:bg-transparent"
+          className={`${isActive === 'perfil' ? 'w-20' : 'w-40'} mt-[4.5rem] transform overflow-visible bg-transparent p-0 transition-all duration-500 ease-in-out dark:bg-transparent`}
         >
           <Drawer.Items>
             <div
-              className={`absolute mt-14 flex h-[500px] w-40 flex-col items-end justify-between overflow-visible rounded-l-3xl ${isDark ? 'bg-white' : 'bg-nav-blue'}`}
+              className={`absolute mt-14 flex h-[500px] ${isActive === 'perfil' ? 'w-24' : 'w-40'} flex-col items-end justify-between overflow-visible rounded-l-3xl ${isDark ? 'bg-white' : 'bg-nav-blue'}`}
             >
               <div className="max-w-56 pr-5 pt-7">
-                <div onClick={() => setTabTablet(TabView.SOLICITUD)}>
-                  {tabTablet === TabView.SOLICITUD ? (
-                    <IconsTablet link="es/auth/solicitud" text="Solcitud">
+                <Link href={'/es/auth/solicitud'} onClick={() => closeDrawerMenu()}>
+                  {isActive === ActiveTab.SOLICITUD ? (
+                    <IconsTablet text="Solicitud">
                       <SolicitudIcon />
                     </IconsTablet>
                   ) : (
                     <SolicitudIcon classname="flex justify-end" />
                   )}
-                </div>
-                <div onClick={() => setTabTablet(TabView.HISTORIAL)}>
-                  {tabTablet === TabView.HISTORIAL ? (
-                    <IconsTablet link="es/auth/historial" text="Historial">
+                </Link>
+                <Link href={'/es/auth/historial'} onClick={() => closeDrawerMenu()}>
+                  {isActive === ActiveTab.HISTORIAL ? (
+                    <IconsTablet text="Historial">
                       <HistorialIcon />
                     </IconsTablet>
                   ) : (
                     <HistorialIcon classname="flex justify-end" />
                   )}
-                </div>
-                <div onClick={() => setTabTablet(TabView.PLUSREWARDS)}>
-                  {tabTablet === TabView.PLUSREWARDS ? (
-                    <IconsTablet link="es/auth/plus-rewards" text="Plus Rewards">
+                </Link>
+                <Link href={'/es/auth/plus-rewards'} onClick={() => closeDrawerMenu()}>
+                  {isActive === ActiveTab.PLUSREWARDS ? (
+                    <IconsTablet text="Plus Rewards">
                       <PlusRewardsIcon />
                     </IconsTablet>
                   ) : (
                     <PlusRewardsIcon classname="flex justify-end" />
                   )}
-                </div>
-                <div onClick={() => setTabTablet(TabView.CUENTASASOCIADAS)}>
-                  {tabTablet === TabView.CUENTASASOCIADAS ? (
-                    <IconsTablet link="es/auth/cuentas" text="Cuentas">
+                </Link>
+                <Link href={'/es/auth/cuentas'} onClick={() => closeDrawerMenu()}>
+                  {isActive === ActiveTab.CUENTASASOCIADAS ? (
+                    <IconsTablet text="Cuentas">
                       <CuentasAsociadasIcon />
                     </IconsTablet>
                   ) : (
                     <CuentasAsociadasIcon classname="flex justify-end" />
                   )}
-                </div>
-                <div onClick={() => setTabTablet(TabView.CENTRODEAYUDA)}>
-                  {tabTablet === TabView.CENTRODEAYUDA ? (
-                    <IconsTablet link="es/auth/ayuda" text="Ayuda">
+                </Link>
+                <Link href={'/es/auth/ayuda'} onClick={() => closeDrawerMenu()}>
+                  {isActive === ActiveTab.CENTRODEAYUDA ? (
+                    <IconsTablet text="Ayuda">
                       <CentroDeAyudaIcon />
                     </IconsTablet>
                   ) : (
                     <CentroDeAyudaIcon classname="flex justify-end" />
                   )}
-                </div>
+                </Link>
               </div>
-              <div className="mb-7">
+              <div className={`mb-7 ${isActive === 'perfil' ? 'w-28' : ''}`}>
                 <CerrarSesion />
               </div>
             </div>

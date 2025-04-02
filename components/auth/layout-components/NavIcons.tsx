@@ -9,7 +9,7 @@ import useWindowWidth from '@/hooks/useWindowWidth';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-enum ActiveTab {
+export enum ActiveTab {
   SOLICITUD = 'solicitud',
   HISTORIAL = 'historial',
   PLUSREWARDS = 'plus-rewards',
