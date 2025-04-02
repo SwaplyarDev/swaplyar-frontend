@@ -11,7 +11,7 @@ type WhatsappVerificationProps = {
   setShow: (arg: boolean) => void;
 };
 
-const WhatsAppVerification = ({ show, setShow }: WhatsappVerificationProps) => {
+const WhatsAppModal = ({ show, setShow }: WhatsappVerificationProps) => {
   const [countryCode, setCountryCode] = useState('+54');
 
   const handleSubmit = () => {
@@ -72,4 +72,4 @@ const WhatsAppVerification = ({ show, setShow }: WhatsappVerificationProps) => {
   );
 };
 
-export default WhatsAppVerification;
+export default WhatsAppModal;

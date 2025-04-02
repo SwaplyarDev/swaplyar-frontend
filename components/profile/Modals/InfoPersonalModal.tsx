@@ -1,28 +1,26 @@
 'use client';
 
 import { useState } from 'react';
-import { X } from 'lucide-react';
 import { Button } from '../../ui/Button';
 import { Input } from '../../ui/Input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../ui/Dialog';
 import { Label } from '../../ui/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/Select';
 
-export default function PersonalInfoModal() {
-  const [open, setOpen] = useState(true);
+type InfoPersonalModalProps = {
+  show: boolean;
+  setShow: (show: boolean) => void;
+};
+
+const PersonalInfoModal = ({ show, setShow }: InfoPersonalModalProps) => {
+  const handleSubmit = () => {
+    setShow(false);
+  };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={show} onOpenChange={setShow}>
       <DialogContent className="border-none bg-zinc-800 text-white sm:max-w-md">
         <DialogHeader className="relative">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute right-0 top-0 rounded-full text-white hover:bg-zinc-700"
-            onClick={() => setOpen(false)}
-          >
-            <X className="h-4 w-4" />
-          </Button>
           <DialogTitle className="pt-4 text-center text-xl font-normal">Información personal</DialogTitle>
         </DialogHeader>
 
@@ -50,15 +48,33 @@ export default function PersonalInfoModal() {
                 <SelectValue placeholder="Seleccione su nacionalidad" />
               </SelectTrigger>
               <SelectContent className="border-zinc-700 bg-zinc-800 text-white">
-                <SelectItem value="argentina">Argentina</SelectItem>
-                <SelectItem value="brasil">Brasil</SelectItem>
-                <SelectItem value="chile">Chile</SelectItem>
-                <SelectItem value="colombia">Colombia</SelectItem>
-                <SelectItem value="mexico">México</SelectItem>
-                <SelectItem value="peru">Perú</SelectItem>
-                <SelectItem value="uruguay">Uruguay</SelectItem>
-                <SelectItem value="venezuela">Venezuela</SelectItem>
-                <SelectItem value="espana">España</SelectItem>
+                <SelectItem className="hover:bg-zinc-700" value="argentina">
+                  Argentina
+                </SelectItem>
+                <SelectItem className="hover:bg-zinc-700" value="brasil">
+                  Brasil
+                </SelectItem>
+                <SelectItem className="hover:bg-zinc-700" value="chile">
+                  Chile
+                </SelectItem>
+                <SelectItem className="hover:bg-zinc-700" value="colombia">
+                  Colombia
+                </SelectItem>
+                <SelectItem className="hover:bg-zinc-700" value="mexico">
+                  México
+                </SelectItem>
+                <SelectItem className="hover:bg-zinc-700" value="peru">
+                  Perú
+                </SelectItem>
+                <SelectItem className="hover:bg-zinc-700" value="uruguay">
+                  Uruguay
+                </SelectItem>
+                <SelectItem className="hover:bg-zinc-700" value="venezuela">
+                  Venezuela
+                </SelectItem>
+                <SelectItem className="hover:bg-zinc-700" value="espana">
+                  España
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -98,12 +114,18 @@ export default function PersonalInfoModal() {
         </div>
 
         <div className="mt-4 flex justify-between">
-          <Button variant="ghost" className="rounded-full px-4 text-white hover:bg-zinc-700">
+          <Button
+            onClick={() => setShow(false)}
+            variant="ghost"
+            className="rounded-full px-4 text-white hover:bg-zinc-700"
+          >
             ← Volver
           </Button>
-          <Button className="rounded-md bg-green-600 text-white hover:bg-green-700">Guardar</Button>
+          <Button className="rounded-md text-white hover:bg-white hover:text-[#4B4B4B]">Guardar</Button>
         </div>
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default PersonalInfoModal;
