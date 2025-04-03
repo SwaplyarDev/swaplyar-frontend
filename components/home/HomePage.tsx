@@ -10,7 +10,6 @@ import { useSystemStore } from '@/store/useSystemStore';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import Recommendations from '../Recomendations/Recomendations';
 import Link from 'next/link';
-import Profile from '../profile/Profile';
 
 export default function HomePage() {
   const resetToDefault = useSystemStore((state) => state.resetToDefault);
@@ -95,7 +94,6 @@ export default function HomePage() {
           nameButton="¡Empieza ahora!"
         />
       </section>
-      <Profile />
     </>
   );
 }

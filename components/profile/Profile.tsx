@@ -11,6 +11,7 @@ import EmailModal from './Modals/EmailModal';
 import { profileMock } from './utils/ProfileMock';
 import SocialMediaModal from './Modals/RedesSocialesModal';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
+import InfoPersonalValidacion from './Modals/InfoPersonalValidacion';
 
 const Profile = () => {
   const { isDark } = useDarkTheme();
@@ -21,17 +22,19 @@ const Profile = () => {
   const [showSocialMediaModal, setShowSocialMediaModal] = useState(false);
 
   return (
-    <div className="min-h-screen font-textFont text-white">
+    <div className="mt-14 min-h-screen font-textFont text-white">
       {/* Header */}
-      <header className={`flex items-center justify-between ${isDark ? 'bg-[#4B4B4B]' : 'bg-nav-blue text-white'} p-4`}>
-        <h1 className="text-lg font-medium">Perfil</h1>
+      <header
+        className={`flex max-h-[150px] items-center justify-between ${isDark ? 'bg-[#4B4B4B]' : 'bg-nav-blue text-white'} p-4`}
+      >
+        <h1 className="text-xl font-bold">Perfil</h1>
         {/* User Info */}
         <div className="flex items-end">
           <div className={`mb-4 flex flex-col items-end ${isDark ? 'bg-[#4B4B4B]' : 'bg-nav-blue text-white'} px-10`}>
             <p className="text-sm">{profileMock.informacionPersonal.nombreLegal}</p>
             <p className="text-xs text-gray-400 underline">Registrado en {profileMock.anioRegistro}</p>
           </div>
-          <div className="relative h-40 w-40">
+          <div className="relative h-32 w-32">
             <Image
               src={swaplyArAvatar}
               alt="Profile picture"
@@ -70,7 +73,7 @@ const Profile = () => {
                 Editar
               </Button>
             </div>
-            {showProfileModal && <InfoPersonalModal show={showProfileModal} setShow={setShowProfileModal} />}
+            {showProfileModal && <InfoPersonalValidacion show={showProfileModal} setShow={setShowProfileModal} />}
           </div>
         </div>
 
@@ -118,8 +121,10 @@ const Profile = () => {
           </div>
           {profileMock.redesSociales.map((redSocial, index) => (
             <div key={`ProifileRedSocial-${index}`} className="flex justify-between">
-              <p className="text-sm">{redSocial[0]}</p>
-              <p className="text-sm">@{redSocial[1]}</p>
+              <p className="text-sm">
+                {redSocial.type[0].toUpperCase() + redSocial.type.slice(1, redSocial.type.length)}
+              </p>
+              <p className="text-sm">@{redSocial.username}</p>
             </div>
           ))}
           <div className="text-end">
@@ -128,7 +133,13 @@ const Profile = () => {
             </Button>
           </div>
         </div>
-        {showSocialMediaModal && <SocialMediaModal show={showSocialMediaModal} setShow={setShowSocialMediaModal} />}
+        {showSocialMediaModal && (
+          <SocialMediaModal
+            show={showSocialMediaModal}
+            setShow={setShowSocialMediaModal}
+            socialNetworks={profileMock.redesSociales}
+          />
+        )}
       </div>
     </div>
   );

@@ -13,8 +13,24 @@ type InfoPersonalModalProps = {
   setShow: (show: boolean) => void;
 };
 
+type UserInfo = {
+  name: string;
+  nationality: string;
+  documentNumber: string;
+  birthDate: string;
+  alias: string;
+};
+
 const PersonalInfoModal = ({ show, setShow }: InfoPersonalModalProps) => {
   const { isDark } = useDarkTheme();
+
+  const [userInfo, setUserInfo] = useState<UserInfo>({
+    name: '',
+    nationality: '',
+    documentNumber: '',
+    birthDate: '',
+    alias: '',
+  });
 
   const handleSubmit = () => {
     setShow(false);
@@ -127,6 +143,7 @@ const PersonalInfoModal = ({ show, setShow }: InfoPersonalModalProps) => {
           </Button>
           <Button
             className={`rounded-full px-4 ${isDark ? 'bg-white text-[#4B4B4B]' : 'bg-blue-400 text-white hover:bg-blue-700'}`}
+            onClick={handleSubmit}
           >
             Guardar
           </Button>

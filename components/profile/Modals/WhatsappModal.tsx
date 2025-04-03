@@ -17,8 +17,16 @@ const WhatsAppModal = ({ show, setShow }: WhatsappVerificationProps) => {
 
   const [countryCode, setCountryCode] = useState('+54');
 
+  const [telNumber, setTelNumber] = useState(countryCode);
+
   const handleSubmit = () => {
-    setShow(false);
+    const telRegex = /^\+?\d{1,4}[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{2,4}[-.\s]?\d{2,4}[-.\s]?\d{0,4}$/;
+    const isValid = telRegex.test(telNumber);
+
+    if (isValid) {
+      //logica para conectar con el backend
+      setShow(false);
+    }
   };
 
   return (
@@ -54,7 +62,12 @@ const WhatsAppModal = ({ show, setShow }: WhatsappVerificationProps) => {
                 </SelectContent>
               </Select>
             </div>
-            <Input className="border-0 bg-transparent" type="tel" placeholder="Numero de WhatsApp" />
+            <Input
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTelNumber(countryCode + e.target.value)}
+              className="border-0 bg-transparent"
+              type="tel"
+              placeholder="Numero de WhatsApp"
+            />
           </div>
         </div>
 

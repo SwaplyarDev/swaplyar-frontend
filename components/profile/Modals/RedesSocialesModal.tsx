@@ -1,44 +1,38 @@
 'use client';
 
 import { useState } from 'react';
-import { X, Plus, Trash2, Facebook, Instagram, Twitter } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
+import { Facebook, Instagram, Twitter, LinkedIn } from '@mui/icons-material';
 import { Button } from '../../ui/Button';
 import { Input } from '../../ui/Input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../ui/Dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/Select';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
-// Tipo para las redes sociales
 type SocialMedia = {
   id: string;
-  type: 'facebook' | 'instagram' | 'twitter' | 'linkedin';
+  type: 'facebook' | 'instagram' | 'twitter' | 'linkedin' | any;
   username: string;
 };
 
 type SocialMediaModalProps = {
   show: boolean;
   setShow: (show: boolean) => void;
+  socialNetworks: SocialMedia[];
 };
 
-const RedesSocialesModal = ({ show, setShow }: SocialMediaModalProps) => {
+const RedesSocialesModal = ({ show, setShow, socialNetworks }: SocialMediaModalProps) => {
   const { isDark } = useDarkTheme();
 
-  // Estado para las redes sociales conectadas (ejemplos)
-  const [socialAccounts, setSocialAccounts] = useState<SocialMedia[]>([
-    { id: '1', type: 'instagram', username: 'usuario.ejemplo' },
-    { id: '2', type: 'twitter', username: '@usuarioejemplo' },
-  ]);
+  const [socialAccounts, setSocialAccounts] = useState<SocialMedia[]>(socialNetworks);
 
-  // Estado para nueva red social
   const [newSocialType, setNewSocialType] = useState<string>('');
   const [newSocialUsername, setNewSocialUsername] = useState('');
 
-  // Función para eliminar una red social
   const removeSocialAccount = (id: string) => {
     setSocialAccounts(socialAccounts.filter((account) => account.id !== id));
   };
 
-  // Función para agregar una nueva red social
   const addSocialAccount = () => {
     if (newSocialType && newSocialUsername) {
       const newAccount: SocialMedia = {
@@ -52,7 +46,6 @@ const RedesSocialesModal = ({ show, setShow }: SocialMediaModalProps) => {
     }
   };
 
-  // Función para renderizar el icono según el tipo de red social
   const getSocialIcon = (type: string) => {
     switch (type) {
       case 'facebook':
@@ -64,6 +57,11 @@ const RedesSocialesModal = ({ show, setShow }: SocialMediaModalProps) => {
       default:
         return null;
     }
+  };
+
+  const handleSubmit = () => {
+    setShow(false);
+    //logica para conectar con el backend
   };
 
   return (
@@ -129,8 +127,8 @@ const RedesSocialesModal = ({ show, setShow }: SocialMediaModalProps) => {
                     <SelectItem className="hover:bg-zinc-700" value="twitter">
                       Twitter/X
                     </SelectItem>
-                    <SelectItem className="hover:bg-zinc-700" value="other">
-                      Otra
+                    <SelectItem className="hover:bg-zinc-700" value="LinkedIn">
+                      LinkedIn
                     </SelectItem>
                   </SelectContent>
                 </Select>
@@ -165,6 +163,7 @@ const RedesSocialesModal = ({ show, setShow }: SocialMediaModalProps) => {
           </Button>
           <Button
             className={`rounded-full px-4 ${isDark ? 'bg-white text-[#4B4B4B]' : 'bg-blue-400 text-white hover:bg-blue-700'}`}
+            onClick={handleSubmit}
           >
             Guardar
           </Button>

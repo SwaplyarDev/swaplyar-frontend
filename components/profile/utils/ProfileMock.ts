@@ -1,3 +1,5 @@
+import { id } from 'date-fns/locale';
+
 export const profileMock = {
   informacionPersonal: {
     nombreLegal: 'Oa Johan Javier Suarez Merchan',
@@ -9,5 +11,8 @@ export const profileMock = {
   anioRegistro: '2019',
   email: 'ceo_oa@swaplyar.com',
   whatsapp: '+5491123832198',
-  redesSociales: [['Instagram', 'Suarez_Oa']],
+  redesSociales: [
+    { id: '1', type: 'instagram', username: 'suarez_oa' },
+    { id: '2', type: 'twitter', username: 'suarez_oa' },
+  ],
 };
