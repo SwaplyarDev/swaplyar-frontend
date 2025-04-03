@@ -6,7 +6,6 @@ type HistorialIconProps = {
 
 const HistorialIcon = ({ classname }: HistorialIconProps) => {
   const { isDark } = useDarkTheme();
-
   return (
     <div className={`${classname}`}>
       <svg width="51" height="50" viewBox="0 0 51 50" fill="none" xmlns="http://www.w3.org/2000/svg">
