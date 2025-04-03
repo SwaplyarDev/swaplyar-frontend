@@ -1,6 +1,4 @@
 import type { Metadata } from 'next';
-import Footer from '@/components/footer/Footer';
-import { TopMenu } from '@/components/ui/top-menu/TopMenu';
 import ThemeProvider from '../components/ui/theme-Provider/themeProvider';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
@@ -77,9 +75,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <MarginProvider>
               <SpeedInsights />
               <Analytics />
-              <TopMenu />
               {children}
-              <Footer />
             </MarginProvider>
           </ThemeProvider>
         </SessionProvider>
