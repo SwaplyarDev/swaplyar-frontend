@@ -212,20 +212,24 @@
     transform: rotate(-6deg) translateX(420px);
   }
 
+
   .ball7Dark {
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(189deg) translateX(368px);
   }
+
 
   .ball5Dark {
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(308deg) translateX(225px);
   }
 
+
   .ball4Dark {
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(234deg) translateX(302px);
   }
+
 
   .ball3Dark {
     background-color: rgba(117, 117, 119, 0.601);
@@ -655,4 +659,24 @@ div:where(.swal2-container).swal2-noanimation {
 .montanaDark {
   background-image: url('../public/images/MontanaDark.png');
   background-repeat: no-repeat;
+}
+
+.montana-footer {
+  width: 77px;
+  height: 32px;
+  bottom: 16px;
+  background-image: url('../public/images/montana-footer.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.montanaDark-footer {
+  width: 77px;
+  height: 32px;
+  bottom: 16px;
+  background-image: url('../public/images/montanaDark-footer.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
