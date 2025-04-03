@@ -9,7 +9,7 @@ import { SwaplyArLogoSolo } from '@/utils/assets/imgDatabaseCloudinary';
 export const FooterInternal = () => {
   const { isDark } = useDarkTheme();
   const windowWidth = useWindowWidth();
-  const isMobile = () => (windowWidth >= 390 ? false : true);
+  const isMobile = () => (windowWidth >= 480 ? false : true);
   return isMobile() ? (
     <footer
       className={`fixed bottom-0 left-0 flex h-16 w-full justify-center pb-4 ${isDark ? 'bg-white' : 'bg-nav-blue'}`}
