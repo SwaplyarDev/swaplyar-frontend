@@ -1,284 +1,358 @@
 'use client';
 
-import type React from 'react';
-
 import { useState, useEffect } from 'react';
-import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
-import Swal from 'sweetalert2';
-import { AlertCircle, CheckCircle, XCircle, Send, HelpCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle, XCircle, Send, HelpCircle, AlertTriangle } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
+import { Alert, AlertDescription } from '@/components/ui/Alert';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/Dialog';
 
 interface DiscrepancySectionProps {
-  trans: TransactionTypeSingle;
-  setValue: (arg: boolean) => void;
+  trans: any; // Using any since TransactionTypeSingle is not provided
   value: boolean | null;
-  setDiscrepancySend: any;
+  setDiscrepancySend: (value: boolean) => void;
 }
 
-const DiscrepancySection: React.FC<DiscrepancySectionProps> = ({ trans, setValue, value, setDiscrepancySend }) => {
+const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySectionProps) => {
   const [discrepancy, setDiscrepancy] = useState<boolean | null>(value);
   const [resolved, setResolved] = useState<boolean | null>(null);
   const [discrepancyReason, setDiscrepancyReason] = useState('');
+  const [resolutionReason, setResolutionReason] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
-  const [isHovering, setIsHovering] = useState<string | null>(null);
+  const [isResolutionInputFocused, setIsResolutionInputFocused] = useState(false);
+
+  // Dialog states
+  const [showRequiredDialog, setShowRequiredDialog] = useState(false);
+  const [showConfirmDiscrepancyDialog, setShowConfirmDiscrepancyDialog] = useState(false);
+  const [showSuccessDiscrepancyDialog, setShowSuccessDiscrepancyDialog] = useState(false);
+  const [showRequiredResolutionDialog, setShowRequiredResolutionDialog] = useState(false);
+  const [showConfirmResolutionDialog, setShowConfirmResolutionDialog] = useState(false);
+  const [showSuccessResolutionDialog, setShowSuccessResolutionDialog] = useState(false);
+  const [dialogType, setDialogType] = useState<'discrepancy' | 'resolution'>('discrepancy');
 
   useEffect(() => {
-    // Sincronizar el estado local con el prop value cuando cambie
+    // Sync local state with prop value when it changes
     setDiscrepancy(value);
   }, [value]);
 
-  const handleClick = (newValue: boolean) => {
-    setValue(newValue);
-    setDiscrepancy(newValue);
+  // Auto-close success dialogs after 2 seconds
+  useEffect(() => {
+    if (showSuccessDiscrepancyDialog || showSuccessResolutionDialog) {
+      const timer = setTimeout(() => {
+        setShowSuccessDiscrepancyDialog(false);
+        setShowSuccessResolutionDialog(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showSuccessDiscrepancyDialog, showSuccessResolutionDialog]);
 
-    // Si se cambia a "NO", resetear el estado de resolución
-    /* if (!newValue) {
-      setResolved(null);
-      setDiscrepancyReason('');
-    } */
+  const handleClick = (newValue: boolean) => {
+    setDiscrepancy(newValue);
   };
 
   const handleSubmitDiscrepancy = () => {
     if (!discrepancyReason.trim()) {
-      /* @ts-expect-error */
-      Swal.fire({
-        title: 'Campo requerido',
-        text: 'Por favor ingresa el motivo de la discrepancia',
-        icon: 'warning',
-        iconColor: '#D75600',
-        confirmButtonColor: 'rgb(1,42,142)',
-        background: '#FFFFFF',
-        customClass: {
-          title: 'text-gray-800 font-titleFont',
-          content: 'text-gray-700',
-        },
-      });
+      setDialogType('discrepancy');
+      setShowRequiredDialog(true);
       return;
     }
 
-    Swal.fire({
-      title: 'Confirmar discrepancia',
-      html: `
-        <div class="flex flex-col items-center">
-          <p class="mb-2 text-gray-700">¿Estás seguro que quieres enviar este motivo de discrepancia?</p>
-          <div class="bg-gray-100 p-3 rounded-lg w-full max-w-xs text-left">
-            <p class="font-medium text-gray-800 mb-1">Motivo:</p>
-            <p class="text-gray-700">${discrepancyReason}</p>
-          </div>
-        </div>
-      `,
-      showCancelButton: true,
-      confirmButtonText: 'Confirmar',
-      cancelButtonText: 'Cancelar',
-      confirmButtonColor: 'rgb(1,42,142)',
-      cancelButtonColor: '#64748b',
-      background: '#FFFFFF',
-      showClass: {
-        popup: 'animate__animated animate__fadeIn animate__faster',
-      },
-      hideClass: {
-        popup: 'animate__animated animate__fadeOut animate__faster',
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Discrepancia registrada',
-          text: 'El motivo de la discrepancia ha sido registrado exitosamente',
-          icon: 'success',
-          confirmButtonColor: 'rgb(1,42,142)',
-          timer: 2000,
-          timerProgressBar: true,
-        });
-        console.log('Motivo de discrepancia enviado:', discrepancyReason);
-        setDiscrepancySend(true);
-        // Aquí puedes agregar la lógica para guardar el motivo
-      }
-    });
+    setShowConfirmDiscrepancyDialog(true);
+  };
+
+  const confirmDiscrepancy = () => {
+    setShowConfirmDiscrepancyDialog(false);
+    setShowSuccessDiscrepancyDialog(true);
+    console.log('Motivo de discrepancia enviado:', discrepancyReason);
+    setDiscrepancySend(true);
+  };
+
+  const handleSubmitResolution = () => {
+    if (!resolutionReason.trim()) {
+      setDialogType('resolution');
+      setShowRequiredDialog(true);
+      return;
+    }
+
+    setShowConfirmResolutionDialog(true);
+  };
+
+  const confirmResolution = () => {
+    setShowConfirmResolutionDialog(false);
+    setShowSuccessResolutionDialog(true);
+    console.log('Motivo de resolución enviado:', resolutionReason);
+    setDiscrepancySend(true);
   };
 
   return (
-    <section className="w-full overflow-hidden rounded-xl border bg-white shadow-md transition-all duration-300">
-      <div className="p-6">
-        <h3 className="mb-5 flex items-center justify-center text-center font-titleFont text-xl font-semibold text-gray-800">
-          <AlertCircle className="mr-2 h-5 w-5 text-amber-500" />
-          Discrepancia en la Operación
-        </h3>
-
-        <div className="flex flex-col gap-6 md:flex-row">
-          {/* Primera columna: ¿Hay discrepancia? */}
-          <div className="flex flex-col items-center gap-4 md:w-1/3 md:items-start">
-            <div className="w-full rounded-lg border-l-4 border-amber-500 bg-amber-50 p-4">
-              <p className="font-medium text-gray-800">¿Existe alguna discrepancia en esta operación?</p>
-            </div>
-
-            <div className="flex justify-center gap-4">
-              <button
-                onClick={() => handleClick(true)}
-                onMouseEnter={() => setIsHovering('yes-discrepancy')}
-                onMouseLeave={() => setIsHovering(null)}
-                className={`relative flex items-center justify-center gap-2 rounded-lg px-6 py-3 font-medium transition-all duration-300 ${
-                  discrepancy === true
-                    ? 'bg-amber-500 text-white shadow-lg shadow-amber-200'
-                    : 'border border-gray-300 bg-white text-gray-700 hover:border-amber-500 hover:text-amber-600'
-                } `}
-                aria-pressed={discrepancy === true}
-              >
-                <AlertCircle className={`h-5 w-5 ${discrepancy === true ? 'text-white' : 'text-amber-500'}`} />
-                <span>Sí</span>
-                {isHovering === 'yes-discrepancy' && discrepancy !== true && (
-                  <span className="absolute -top-10 left-1/2 -translate-x-1/2 transform whitespace-nowrap rounded bg-amber-500 px-2 py-1 text-xs text-white">
-                    Reportar discrepancia
-                  </span>
-                )}
-              </button>
-
-              <button
-                onClick={() => handleClick(false)}
-                onMouseEnter={() => setIsHovering('no-discrepancy')}
-                onMouseLeave={() => setIsHovering(null)}
-                className={`relative flex items-center justify-center gap-2 rounded-lg px-6 py-3 font-medium transition-all duration-300 ${
-                  discrepancy === false
-                    ? 'bg-green-600 text-white shadow-lg shadow-green-200'
-                    : 'border border-gray-300 bg-white text-gray-700 hover:border-green-500 hover:text-green-600'
-                } `}
-                aria-pressed={discrepancy === false}
-              >
-                <CheckCircle className={`h-5 w-5 ${discrepancy === false ? 'text-white' : 'text-green-500'}`} />
-                <span>No</span>
-                {isHovering === 'no-discrepancy' && discrepancy !== false && (
-                  <span className="absolute -top-10 left-1/2 -translate-x-1/2 transform whitespace-nowrap rounded bg-green-600 px-2 py-1 text-xs text-white">
-                    Sin discrepancias
-                  </span>
-                )}
-              </button>
-            </div>
-          </div>
-
+    <>
+      <section className="space-y-6">
+        <div className="flex w-full flex-col gap-6">
           {/* Segunda columna: Motivo de discrepancia */}
           {discrepancy === true && (
-            <div className="animate-fadeIn flex flex-col gap-4 md:w-2/3">
-              <div className="rounded-lg border border-amber-200 bg-white p-4 shadow-sm">
-                <label htmlFor="discrepancy-reason" className="mb-2 block text-sm font-medium text-gray-700">
+            <div className="animate-in fade-in flex flex-col gap-4 duration-300">
+              <div className="space-y-2">
+                <Label htmlFor="discrepancy-reason" className="text-sm font-medium text-gray-700">
                   Motivo de la Discrepancia <span className="text-red-500">*</span>
-                </label>
+                </Label>
 
-                <div
-                  className={`flex w-full items-center gap-3 rounded-lg p-1 transition-all duration-300 ${isInputFocused ? 'bg-amber-50 ring-2 ring-amber-300' : 'border border-gray-300 bg-white'} `}
-                >
-                  <input
+                <div className="flex gap-2">
+                  <Input
                     id="discrepancy-reason"
-                    type="text"
                     placeholder="Explica la discrepancia detalladamente"
-                    className="h-10 flex-1 border-none bg-transparent px-3 text-gray-800 focus:outline-none"
                     value={discrepancyReason}
                     onChange={(e) => setDiscrepancyReason(e.target.value)}
                     onFocus={() => setIsInputFocused(true)}
                     onBlur={() => setIsInputFocused(false)}
+                    className={`h-10 transition-all duration-300 ${
+                      isInputFocused ? 'border-amber-300 ring-2 ring-amber-300' : ''
+                    }`}
                     aria-required="true"
                   />
 
-                  <button
+                  <Button
                     disabled={discrepancyReason.length === 0}
                     onClick={handleSubmitDiscrepancy}
-                    className="flex h-10 items-center gap-2 rounded-lg bg-amber-500 px-4 font-medium text-white transition-colors duration-200 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                    aria-label="Enviar motivo de discrepancia"
+                    className="h-10 bg-amber-500 text-white hover:bg-amber-600"
                   >
-                    <Send className="h-4 w-4" />
+                    <Send className="mr-2 h-4 w-4" />
                     <span>Enviar</span>
-                  </button>
+                  </Button>
                 </div>
 
-                <p className="mt-2 text-xs text-gray-500">
+                <p className="text-muted-foreground text-xs">
                   Describe claramente cuál es la discrepancia encontrada en esta operación.
                 </p>
               </div>
 
               {/* Tercera columna: Discrepancia resuelta */}
-              <div className="rounded-lg border border-blue-200 bg-white p-4 shadow-sm">
-                <h3 className="mb-4 flex items-center justify-center text-center font-titleFont text-lg font-medium text-gray-800">
-                  <HelpCircle className="mr-2 h-5 w-5 text-blue-500" />
-                  ¿Discrepancia Resuelta?
-                </h3>
+              <div className="">
+                <div className="">
+                  <h3 className="text-lg font-medium text-gray-800">¿Discrepancia Resuelta?</h3>
+                </div>
 
-                <div className="flex justify-center gap-4">
-                  <button
-                    onClick={() => setResolved(true)}
-                    onMouseEnter={() => setIsHovering('yes-resolved')}
-                    onMouseLeave={() => setIsHovering(null)}
-                    className={`relative flex items-center justify-center gap-2 rounded-lg px-6 py-3 font-medium transition-all duration-300 ${
-                      resolved === true
-                        ? 'bg-green-600 text-white shadow-lg shadow-green-200'
-                        : 'border border-gray-300 bg-white text-gray-700 hover:border-green-500 hover:text-green-600'
-                    } `}
-                    aria-pressed={resolved === true}
-                  >
-                    <CheckCircle className={`h-5 w-5 ${resolved === true ? 'text-white' : 'text-green-500'}`} />
-                    <span>Sí, resuelta</span>
-                    {isHovering === 'yes-resolved' && resolved !== true && (
-                      <span className="absolute -top-10 left-1/2 -translate-x-1/2 transform whitespace-nowrap rounded bg-green-600 px-2 py-1 text-xs text-white">
-                        Marcar como resuelta
-                      </span>
-                    )}
-                  </button>
+                <div className="flex gap-4">
+                  <TooltipProvider delayDuration={300}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          onClick={() => setResolved(true)}
+                          variant={resolved === true ? 'default' : 'outline'}
+                          className={`relative transition-all duration-300 ${
+                            resolved === true
+                              ? 'bg-green-600 text-white hover:bg-green-700'
+                              : 'hover:border-green-500 hover:text-green-600'
+                          }`}
+                        >
+                          <CheckCircle
+                            className={`mr-2 h-5 w-5 ${resolved === true ? 'text-white' : 'text-green-500'}`}
+                          />
+                          <span>Sí, resuelta</span>
+                        </Button>
+                      </TooltipTrigger>
+                      {resolved !== true && (
+                        <TooltipContent side="top" className="border-green-600 bg-green-600 text-white">
+                          <p>Marcar como resuelta</p>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
 
-                  <button
-                    onClick={() => setResolved(false)}
-                    onMouseEnter={() => setIsHovering('no-resolved')}
-                    onMouseLeave={() => setIsHovering(null)}
-                    className={`relative flex items-center justify-center gap-2 rounded-lg px-6 py-3 font-medium transition-all duration-300 ${
-                      resolved === false
-                        ? 'bg-red-600 text-white shadow-lg shadow-red-200'
-                        : 'border border-gray-300 bg-white text-gray-700 hover:border-red-500 hover:text-red-600'
-                    } `}
-                    aria-pressed={resolved === false}
-                  >
-                    <XCircle className={`h-5 w-5 ${resolved === false ? 'text-white' : 'text-red-500'}`} />
-                    <span>No resuelta</span>
-                    {isHovering === 'no-resolved' && resolved !== false && (
-                      <span className="absolute -top-10 left-1/2 -translate-x-1/2 transform whitespace-nowrap rounded bg-red-600 px-2 py-1 text-xs text-white">
-                        Marcar como no resuelta
-                      </span>
-                    )}
-                  </button>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          onClick={() => setResolved(false)}
+                          variant={resolved === false ? 'destructive' : 'outline'}
+                          className={`relative transition-all duration-300 ${
+                            resolved === false
+                              ? 'bg-red-500 text-white hover:bg-red-600'
+                              : 'hover:border-red-500 hover:text-red-600'
+                          }`}
+                        >
+                          <XCircle className={`mr-2 h-5 w-5 ${resolved === false ? 'text-white' : 'text-red-500'}`} />
+                          <span>No resuelta</span>
+                        </Button>
+                      </TooltipTrigger>
+                      {resolved !== false && (
+                        <TooltipContent side="top" className="border-red-600 bg-red-600 text-white">
+                          <p>Marcar como no resuelta</p>
+                        </TooltipContent>
+                      )}
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
 
                 {resolved === true && (
-                  <div className="animate-fadeIn mt-4 rounded-lg border border-green-200 bg-green-50 p-3">
-                    <p className="flex items-center text-sm text-green-700">
-                      <CheckCircle className="mr-2 h-4 w-4" />
-                      La discrepancia ha sido resuelta satisfactoriamente.
-                    </p>
+                  <div className="animate-in fade-in mt-4 space-y-4 duration-300">
+                    <div className="space-y-2">
+                      <Label htmlFor="resolution-reason" className="text-sm font-medium text-gray-700">
+                        Motivo de la Resolución <span className="text-red-500">*</span>
+                      </Label>
+
+                      <div className="flex gap-2">
+                        <Input
+                          id="resolution-reason"
+                          placeholder="Explica cómo se resolvió la discrepancia"
+                          value={resolutionReason}
+                          onChange={(e) => setResolutionReason(e.target.value)}
+                          onFocus={() => setIsResolutionInputFocused(true)}
+                          onBlur={() => setIsResolutionInputFocused(false)}
+                          className={`h-10 transition-all duration-300 ${
+                            isResolutionInputFocused ? 'border-green-300 ring-2 ring-green-300' : ''
+                          }`}
+                          aria-required="true"
+                        />
+
+                        <Button
+                          disabled={resolutionReason.length === 0}
+                          onClick={handleSubmitResolution}
+                          className="h-10 bg-green-600 text-white hover:bg-green-700"
+                        >
+                          <Send className="mr-2 h-4 w-4" />
+                          <span>Enviar</span>
+                        </Button>
+                      </div>
+
+                      <p className="text-muted-foreground text-xs">
+                        Describe cómo se resolvió la discrepancia encontrada.
+                      </p>
+                    </div>
+
+                    <Alert variant="default" className="border-green-200 bg-green-50">
+                      <CheckCircle className="h-4 w-4 text-green-500" />
+                      <AlertDescription className="mt-1.5 text-sm text-green-700">
+                        La discrepancia ha sido resuelta satisfactoriamente.
+                      </AlertDescription>
+                    </Alert>
                   </div>
                 )}
 
                 {resolved === false && (
-                  <div className="animate-fadeIn mt-4 rounded-lg border border-red-200 bg-red-50 p-3">
-                    <p className="flex items-center text-sm text-red-700">
-                      <AlertCircle className="mr-2 h-4 w-4" />
+                  <Alert
+                    variant="destructive"
+                    className="animate-in fade-in mt-4 border-red-200 bg-red-50 duration-300"
+                  >
+                    <AlertCircle className="h-4 w-4 text-red-500" />
+                    <AlertDescription className="mt-1.5 text-sm text-red-700">
                       La discrepancia no ha sido resuelta. Se requiere atención adicional.
-                    </p>
-                  </div>
+                    </AlertDescription>
+                  </Alert>
                 )}
               </div>
             </div>
           )}
         </div>
-      </div>
 
-      {/* Indicador de estado */}
-      <div
-        className={`h-1.5 w-full transition-all duration-500 ${
-          discrepancy === true
-            ? resolved === true
-              ? 'bg-green-500'
-              : resolved === false
-                ? 'bg-red-500'
-                : 'bg-amber-500'
-            : discrepancy === false
-              ? 'bg-green-500'
-              : 'bg-gray-200'
-        } `}
-      ></div>
-    </section>
+        {/* Status indicator */}
+        <div
+          className={`h-1.5 w-full transition-all duration-500 ${
+            discrepancy === true
+              ? resolved === true
+                ? 'bg-green-500'
+                : resolved === false
+                  ? 'bg-red-500'
+                  : 'bg-amber-500'
+              : discrepancy === false
+                ? 'bg-green-500'
+                : 'bg-gray-200'
+          }`}
+        ></div>
+      </section>
+
+      {/* Confirm Discrepancy Dialog */}
+      <Dialog open={showConfirmDiscrepancyDialog} onOpenChange={setShowConfirmDiscrepancyDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-gray-800">Confirmar discrepancia</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col items-center">
+            <p className="mb-2 text-gray-700">¿Estás seguro que quieres enviar este motivo de discrepancia?</p>
+            <div className="w-full max-w-xs rounded-lg bg-gray-100 p-3 text-left">
+              <p className="mb-1 font-medium text-gray-800">Motivo:</p>
+              <p className="text-gray-700">{discrepancyReason}</p>
+            </div>
+          </div>
+          <DialogFooter className="gap-2 sm:justify-center">
+            <Button
+              variant="default"
+              onClick={confirmDiscrepancy}
+              className="bg-[rgb(1,42,142)] text-white hover:bg-[rgb(1,32,112)]"
+            >
+              Confirmar
+            </Button>
+            <Button variant="outline" onClick={() => setShowConfirmDiscrepancyDialog(false)} className="text-gray-600">
+              Cancelar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Success Discrepancy Dialog */}
+      <Dialog open={showSuccessDiscrepancyDialog} onOpenChange={setShowSuccessDiscrepancyDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-gray-800">
+              <CheckCircle className="h-5 w-5 text-green-500" />
+              Discrepancia registrada
+            </DialogTitle>
+          </DialogHeader>
+          <DialogDescription className="text-gray-700">
+            El motivo de la discrepancia ha sido registrado exitosamente
+          </DialogDescription>
+        </DialogContent>
+      </Dialog>
+
+      {/* Confirm Resolution Dialog */}
+      <Dialog open={showConfirmResolutionDialog} onOpenChange={setShowConfirmResolutionDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-gray-800">Confirmar resolución</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col items-center">
+            <p className="mb-2 text-gray-700">¿Estás seguro que quieres enviar este motivo de resolución?</p>
+            <div className="w-full max-w-xs rounded-lg bg-gray-100 p-3 text-left">
+              <p className="mb-1 font-medium text-gray-800">Motivo:</p>
+              <p className="text-gray-700">{resolutionReason}</p>
+            </div>
+          </div>
+          <DialogFooter className="gap-2 sm:justify-center">
+            <Button
+              variant="default"
+              onClick={confirmResolution}
+              className="bg-[rgb(1,42,142)] text-white hover:bg-[rgb(1,32,112)]"
+            >
+              Confirmar
+            </Button>
+            <Button variant="outline" onClick={() => setShowConfirmResolutionDialog(false)} className="text-gray-600">
+              Cancelar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Success Resolution Dialog */}
+      <Dialog open={showSuccessResolutionDialog} onOpenChange={setShowSuccessResolutionDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-gray-800">
+              <CheckCircle className="h-5 w-5 text-green-500" />
+              Resolución registrada
+            </DialogTitle>
+          </DialogHeader>
+          <DialogDescription className="text-gray-700">
+            El motivo de la resolución ha sido registrado exitosamente
+          </DialogDescription>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

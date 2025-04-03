@@ -16,6 +16,8 @@ import AprobarRechazar from '@/components/TransactionModal/componentesModal/apro
 import DiscrepancySection from '@/components/TransactionModal/componentesModal/DiscrepancySection';
 import ClientInformation from '@/components/TransactionModal/componentesModal/ClientInformation';
 import FinalSection from '@/components/TransactionModal/componentesModal/FinalSection';
+import axios from 'axios';
+import { useSession } from 'next-auth/react';
 
 const MySwal = withReactContent(Swal);
 
@@ -101,6 +103,102 @@ const TransactionModal = () => {
     setTimeout(() => MySwal.close(), 300);
   }, []);
 
+  useEffect(() => {
+    console.log('componentStates', componentStates);
+  }, [componentStates]);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const { data: session, status } = useSession();
+  const token = session?.accessToken;
+  console.log('🟡 Token:', token);
+
+  const handleSubmit = async (
+    status: string,
+    form: any,
+    setIsSubmitting: (isSubmitting: boolean) => void,
+    setSubmitError: (error: string | null) => void,
+    setSubmitSuccess: (success: boolean) => void,
+  ) => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    let payload = {};
+
+    // Preparar el payload según el estado
+    switch (status) {
+      case 'review_payment':
+        payload = {
+          review: form.transfer_id,
+          transaction_id: transId,
+        };
+        break;
+      case 'approved':
+        // No se envía información adicional
+        break;
+      case 'discrepancy':
+        payload = {
+          descripcion: form.description,
+        };
+        break;
+      case 'canceled':
+        payload = {
+          descripcion: form.reason,
+        };
+        break;
+      case 'modified':
+        payload = {
+          descripcion: form.description,
+        };
+        break;
+      case 'refunded':
+        payload = {
+          codigo_transferencia: form.refund_code,
+        };
+        break;
+      case 'completed':
+      case 'in_transit':
+        // No se requiere enviar información adicional
+        break;
+      default:
+        break;
+    }
+
+    console.log('payload', payload);
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/v1/admin/transactions/status/${status}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('Respuesta exitosa:', data);
+      setSubmitSuccess(true);
+
+      setTimeout(() => {
+        setSubmitSuccess(false);
+      }, 3000);
+    } catch (error) {
+      console.error('Error al enviar los datos:', error);
+      setSubmitError(axios.isAxiosError(error) ? error.message : 'Error desconocido');
+      setSubmitSuccess(false);
+      setIsSubmitting(false);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div
       onClick={(e) => e.stopPropagation()}
@@ -112,74 +210,84 @@ const TransactionModal = () => {
       {isLoading ? (
         <SkeletonModal />
       ) : (
-        <div className="flex flex-col gap-4 font-textFont">
-          <InfoStatus trans={trans} transId={transId} />
+        <div className="grid grid-cols-2 gap-4 font-textFont">
+          <div className="col-span-2">
+            <InfoStatus trans={trans} transId={transId} />
+          </div>
 
-          <TransactionDetail transaction={trans} isLoading={isLoading} />
-
-          <ClientMessage
-            message={trans.transaction.message}
-            headerMessage="Mensaje del cliente"
-            classnames="min-h-[4.25rem] border-black"
-          />
-
-          <TransferImages trans={trans} />
-
-          {transaction.regret_id ? (
-            <div className="flex flex-col">
-              <p className="text-left text-base font-medium">
-                El Cliente solicito la Cancelacion y el Reembolso - Se realiza el reembolso a la cuenta de origen
-              </p>
-              <ClientMessage
-                headerMessage="Mensaje"
-                message={regretCancel.note}
-                classnames="border-[#CE1818] min-h-[4.25rem]"
-              />
-            </div>
-          ) : transaction.note_id ? (
-            <div className="flex flex-col">
-              <p className="text-base font-medium">El Cliente solicito Editar la Solicitud</p>
-              <ClientMessage
-                headerMessage="mensaje"
-                message={noteEdit.note}
-                classnames="border-[#D75600] min-h-[4.25rem]"
-              />
-            </div>
-          ) : null}
-
-          <ConfirmTransButton
-            value={componentStates.confirmTransButton}
-            setValue={(value) => handleComponentStateChange('confirmTransButton', value)}
-            trans={trans}
-          />
-
-          {componentStates.confirmTransButton != null && (
-            <AprobarRechazar
-              selected={selected}
-              componentStates={componentStates}
-              onSelectChange={handleSelectionChange}
-              transId={transId}
-            />
-          )}
-
-          {componentStates.aprooveReject !== null && componentStates.aprooveReject !== 'canceled' && (
-            <>
-              <DiscrepancySection
+          <div>
+            <div className="grid gap-4">
+              {/* Confirmar Transferencia */}
+              <ConfirmTransButton
+                value={componentStates.confirmTransButton}
+                setValue={(value) => handleComponentStateChange('confirmTransButton', value)}
                 trans={trans}
-                value={componentStates.discrepancySection}
-                setValue={(value) => handleComponentStateChange('discrepancySection', value)}
-                setDiscrepancySend={setDiscrepancySend} // Añadido el prop que faltaba
+                submit={handleSubmit}
+                setIsSubmitting={setIsSubmitting}
+                setSubmitError={setSubmitError}
+                setSubmitSuccess={setSubmitSuccess}
               />
 
-              {componentStates.discrepancySection !== null &&
-                (componentStates.discrepancySection !== true || discrepancySend) && (
+              {componentStates.confirmTransButton != null && (
+                <AprobarRechazar
+                  selected={selected}
+                  componentStates={componentStates}
+                  onSelectChange={handleSelectionChange}
+                  transId={transId}
+                  trans={trans}
+                  handleComponentStateChange={handleComponentStateChange}
+                  setDiscrepancySend={setDiscrepancySend}
+                />
+              )}
+
+              {componentStates.confirmTransButton !== null &&
+                (componentStates.aprooveReject === 'accepted' ||
+                  (componentStates.aprooveReject !== 'canceled' &&
+                    componentStates.discrepancySection !== null &&
+                    (componentStates.discrepancySection !== true || discrepancySend))) && (
                   <>
                     <ClientInformation modal={modal} setModal={setModal} trans={trans} />
                     <FinalSection transId={transId} />
                   </>
                 )}
-            </>
-          )}
+            </div>
+          </div>
+
+          <div>
+            <div className="grid gap-4">
+              <TransferImages trans={trans} />
+
+              <TransactionDetail transaction={trans} isLoading={isLoading} />
+
+              <ClientMessage
+                message={trans.transaction.message}
+                headerMessage="Mensaje del cliente"
+                classnames="min-h-[4.25rem] border-black"
+              />
+
+              {transaction.regret_id ? (
+                <div className="flex flex-col">
+                  <p className="text-left text-base font-medium">
+                    El Cliente solicito la Cancelacion y el Reembolso - Se realiza el reembolso a la cuenta de origen
+                  </p>
+                  <ClientMessage
+                    headerMessage="Mensaje"
+                    message={regretCancel.note}
+                    classnames="border-[#CE1818] min-h-[4.25rem]"
+                  />
+                </div>
+              ) : transaction.note_id ? (
+                <div className="flex flex-col">
+                  <p className="text-base font-medium">El Cliente solicito Editar la Solicitud</p>
+                  <ClientMessage
+                    headerMessage="mensaje"
+                    message={noteEdit.note}
+                    classnames="border-[#D75600] min-h-[4.25rem]"
+                  />
+                </div>
+              ) : null}
+            </div>
+          </div>
         </div>
       )}
     </div>

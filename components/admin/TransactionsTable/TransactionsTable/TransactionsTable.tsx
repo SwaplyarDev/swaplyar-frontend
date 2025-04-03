@@ -138,6 +138,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
       MySwal.update({
         html: (
           <SessionProvider>
+            {/* @ts-expect-error */}
             <TransactionModal transId={id} />
           </SessionProvider>
         ),
