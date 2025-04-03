@@ -1,4 +1,6 @@
 import NotFoundComponent from '@/components/error/errorComponent';
+import Footer from '@/components/footer/Footer';
+import { TopMenu } from '@/components/ui/top-menu/TopMenu';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -10,7 +12,9 @@ export const metadata: Metadata = {
 export default function NotFoundPage() {
   return (
     <>
+      <TopMenu />
       <NotFoundComponent />
+      <Footer />
     </>
   );
 }
