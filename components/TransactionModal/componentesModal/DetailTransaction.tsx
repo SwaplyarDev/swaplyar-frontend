@@ -25,86 +25,73 @@ const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading 
   };
 
   return (
-    <section className="w-full space-y-6">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <section className="w-full">
+      <div className="rounded-lg border bg-white p-4">
+        <h3 className="mb-4 text-lg font-semibold">Detalles de la Transacción</h3>
+
         {/* Sender Information */}
-        <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <div className="mb-3 flex items-center">
-            <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-500 dark:bg-blue-900/30 dark:text-blue-300">
-              <User size={20} />
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Datos del Solicitante</h3>
+        <div className="mb-4 space-y-2">
+          <div className="mb-2 flex items-center">
+            <span className="font-medium">Datos del Solicitante</span>
           </div>
-
-          <div className="space-y-3">
-            <div className="border-b border-gray-200 pb-2 dark:border-gray-700">
-              <p className="text-sm text-gray-500 dark:text-gray-400">Nombre y Apellido</p>
-              <p className="text-xs font-medium text-gray-900 dark:text-gray-100">
-                {sender?.first_name ? `${sender.first_name} ${sender.last_name || ''}` : 'No disponible'}
-              </p>
-            </div>
-
-            <div className="border-b border-gray-200 pb-2 dark:border-gray-700">
-              <p className="text-sm text-gray-500 dark:text-gray-400">Email</p>
-              <p className="text-xs font-medium text-gray-900 dark:text-gray-100">{sender?.email || 'No disponible'}</p>
-            </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-gray-600">Nombre y Apellido:</span>
+            <span className="font-medium">
+              {sender?.first_name ? `${sender.first_name} ${sender.last_name || ''}` : 'No disponible'}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-gray-600">Email:</span>
+            <span className="font-medium">{sender?.email || 'No disponible'}</span>
           </div>
         </div>
 
         {/* Receiver Information */}
-        <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <h3 className="mb-3 text-lg font-semibold text-gray-900 dark:text-gray-100">Datos del Destinatario</h3>
-
-          <div className="space-y-3">
-            {getReceiverLabels(transaction).map((item, index) => (
-              <div key={index} className="border-b border-gray-200 pb-2 dark:border-gray-700">
-                <p className="text-sm text-gray-500 dark:text-gray-400">{item.label}</p>
-                <p className="text-xs font-medium text-gray-900 dark:text-gray-100">{item.value || 'No disponible'}</p>
-              </div>
-            ))}
-          </div>
+        <div className="mb-4 space-y-2">
+          <div className="mb-2 font-medium">Datos del Destinatario</div>
+          {getReceiverLabels(transaction).map((item, index) => (
+            <div key={index} className="flex justify-between">
+              <span className="text-sm text-gray-600">{item.label}:</span>
+              <span className="font-medium">{item.value || 'No disponible'}</span>
+            </div>
+          ))}
         </div>
 
         {/* Payment Information */}
-        <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <h3 className="mb-3 text-lg font-semibold text-gray-900 dark:text-gray-100">Datos del Pago</h3>
-
-          <div className="space-y-3">
-            <div className="border-b border-gray-200 pb-2 dark:border-gray-700">
-              <p className="text-sm text-gray-500 dark:text-gray-400">Monto a Transferir</p>
-              <p className="text-xs font-medium text-gray-900 dark:text-gray-100">
-                {amounts?.sent
-                  ? `${amounts.sent.amount} / ${payment_method?.sender.value || ''} / ${amounts.sent.currency}`
-                  : 'No disponible'}
-              </p>
-            </div>
-
-            <div className="border-b border-gray-200 pb-2 dark:border-gray-700">
-              <p className="text-sm text-gray-500 dark:text-gray-400">Monto a recibir</p>
-              <p className="text-xs font-medium text-gray-900 dark:text-gray-100">
-                {amounts?.received
-                  ? `${amounts.received.amount} / ${payment_method?.receiver.value || ''} / ${amounts.received.currency}`
-                  : 'No disponible'}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Link del comprobante</p>
-              {proof_of_payment?.img_transaction ? (
-                <a
-                  href={proof_of_payment.img_transaction}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-1 inline-flex items-center text-xs text-blue-600 hover:text-blue-800 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
-                  aria-label="Ver comprobante de pago"
-                >
-                  <span>{truncateUrl(proof_of_payment.img_transaction)}</span>
-                  <ExternalLink size={14} className="ml-1" />
-                </a>
-              ) : (
-                <p className="text-xs font-medium text-gray-900 dark:text-gray-100">No disponible</p>
-              )}
-            </div>
+        <div className="space-y-2">
+          <div className="mb-2 font-medium">Datos del Pago</div>
+          <div className="flex justify-between">
+            <span className="text-sm text-gray-600">Monto a Transferir:</span>
+            <span className="font-medium">
+              {amounts?.sent
+                ? `${amounts.sent.amount} / ${payment_method?.sender.value || ''} / ${amounts.sent.currency}`
+                : 'No disponible'}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-gray-600">Monto a recibir:</span>
+            <span className="font-medium">
+              {amounts?.received
+                ? `${amounts.received.amount} / ${payment_method?.receiver.value || ''} / ${amounts.received.currency}`
+                : 'No disponible'}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-gray-600">Link del comprobante:</span>
+            {proof_of_payment?.img_transaction ? (
+              <a
+                href={proof_of_payment.img_transaction}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-blue-600 hover:text-blue-800 hover:underline"
+                aria-label="Ver comprobante de pago"
+              >
+                <span>{truncateUrl(proof_of_payment.img_transaction)}</span>
+                <ExternalLink size={14} className="ml-1 inline" />
+              </a>
+            ) : (
+              <span className="font-medium">No disponible</span>
+            )}
           </div>
         </div>
       </div>

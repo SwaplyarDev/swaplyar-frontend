@@ -79,20 +79,24 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
   };
 
   return (
-    <header className="flex flex-col gap-4 rounded-lg border border-gray-200 bg-white p-3 sm:flex-row sm:items-center sm:justify-between">
-      {getStatusBadge(status)}
+    <>
+      <div className="flex w-full items-center justify-between rounded-lg border bg-white p-6">
+        <div className="flex w-full items-center justify-between gap-x-4">
+          <div>{getStatusBadge(status)}</div>
 
-      <h1 className="order-first font-sans text-2xl font-semibold text-lightText sm:order-none sm:text-3xl">
-        Solicitud <span className="font-bold">#{transId}</span>
-      </h1>
+          <div className="flex items-center justify-center gap-4 text-xl">
+            Solicitud <span className="font-bold">#{transId}</span>
+          </div>
 
-      <div className="flex flex-col items-end text-lightText">
-        <time dateTime={transaction?.created_at} className="text-xs text-gray-500 dark:text-gray-400 sm:text-sm">
-          {transaction?.created_at ? formatDate(transaction.created_at) : 'Fecha no disponible'}
-        </time>
-        <p className="text-sm font-medium sm:text-base">{userName || 'Usuario'}</p>
+          <div className="flex flex-col items-end text-lightText">
+            <time dateTime={transaction?.created_at} className="text-xs text-gray-500 dark:text-gray-400 sm:text-sm">
+              {transaction?.created_at ? formatDate(transaction.created_at) : 'Fecha no disponible'}
+            </time>
+            <p className="text-sm font-medium sm:text-base">{userName || 'Usuario'}</p>
+          </div>
+        </div>
       </div>
-    </header>
+    </>
   );
 };
 
