@@ -5,6 +5,7 @@ import { Button } from '../../ui/Button';
 import { Input } from '../../ui/Input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/Select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../ui/Dialog';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 type WhatsappVerificationProps = {
   show: boolean;
@@ -12,6 +13,8 @@ type WhatsappVerificationProps = {
 };
 
 const WhatsAppModal = ({ show, setShow }: WhatsappVerificationProps) => {
+  const { isDark } = useDarkTheme();
+
   const [countryCode, setCountryCode] = useState('+54');
 
   const handleSubmit = () => {
@@ -20,7 +23,7 @@ const WhatsAppModal = ({ show, setShow }: WhatsappVerificationProps) => {
 
   return (
     <Dialog open={show} onOpenChange={setShow}>
-      <DialogContent className="border-none bg-zinc-800 text-white sm:max-w-md">
+      <DialogContent className={`border-none ${isDark ? 'bg-zinc-800 text-white' : 'text-black'} sm:max-w-md`}>
         <DialogHeader className="relative">
           <DialogTitle className="pt-4 text-center text-xl font-normal">Verificar numero de WhatsApp</DialogTitle>
         </DialogHeader>
@@ -29,10 +32,10 @@ const WhatsAppModal = ({ show, setShow }: WhatsappVerificationProps) => {
           <div className="flex overflow-hidden rounded-md border border-zinc-600">
             <div className="flex-shrink-0">
               <Select value={countryCode} onValueChange={setCountryCode}>
-                <SelectTrigger className="w-[80px] border-0 bg-transparent text-white">
+                <SelectTrigger className="w-[80px] border-0 bg-transparent">
                   <SelectValue placeholder="+54" />
                 </SelectTrigger>
-                <SelectContent className="border-zinc-700 bg-zinc-800 text-white">
+                <SelectContent className="border-zinc-700 bg-zinc-800">
                   <SelectItem className="hover:bg-zinc-700" value="+54">
                     +54
                   </SelectItem>
@@ -51,7 +54,7 @@ const WhatsAppModal = ({ show, setShow }: WhatsappVerificationProps) => {
                 </SelectContent>
               </Select>
             </div>
-            <Input className="border-0 bg-transparent text-white" placeholder="Numero de WhatsApp" />
+            <Input className="border-0 bg-transparent" type="tel" placeholder="Numero de WhatsApp" />
           </div>
         </div>
 
@@ -59,11 +62,14 @@ const WhatsAppModal = ({ show, setShow }: WhatsappVerificationProps) => {
           <Button
             onClick={() => setShow(false)}
             variant="ghost"
-            className="rounded-full px-4 text-white hover:bg-zinc-700"
+            className={`rounded-full px-4 ${isDark ? 'border border-white text-white hover:bg-white hover:text-[#4B4B4B]' : 'border border-blue-400 bg-white text-blue-400'}`}
           >
             ← Volver
           </Button>
-          <Button onClick={handleSubmit} className="rounded-md text-white hover:bg-white hover:text-[#4B4B4B]">
+          <Button
+            onClick={handleSubmit}
+            className={`rounded-full px-4 ${isDark ? 'bg-white text-[#4B4B4B]' : 'bg-blue-400 text-white hover:bg-blue-700'}`}
+          >
             Enviar Código
           </Button>
         </div>

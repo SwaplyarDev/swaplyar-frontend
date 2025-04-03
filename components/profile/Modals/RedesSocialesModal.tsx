@@ -6,11 +6,12 @@ import { Button } from '../../ui/Button';
 import { Input } from '../../ui/Input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../ui/Dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/Select';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 // Tipo para las redes sociales
 type SocialMedia = {
   id: string;
-  type: 'facebook' | 'instagram' | 'twitter' | 'linkedin' | 'youtube' | 'github' | 'other';
+  type: 'facebook' | 'instagram' | 'twitter' | 'linkedin';
   username: string;
 };
 
@@ -20,6 +21,8 @@ type SocialMediaModalProps = {
 };
 
 const RedesSocialesModal = ({ show, setShow }: SocialMediaModalProps) => {
+  const { isDark } = useDarkTheme();
+
   // Estado para las redes sociales conectadas (ejemplos)
   const [socialAccounts, setSocialAccounts] = useState<SocialMedia[]>([
     { id: '1', type: 'instagram', username: 'usuario.ejemplo' },
@@ -65,7 +68,7 @@ const RedesSocialesModal = ({ show, setShow }: SocialMediaModalProps) => {
 
   return (
     <Dialog open={show} onOpenChange={setShow}>
-      <DialogContent className="border-none bg-zinc-800 text-white sm:max-w-md">
+      <DialogContent className={`border-none ${isDark ? 'bg-zinc-800 text-white' : 'text-black'} sm:max-w-md`}>
         <DialogHeader className="relative">
           <DialogTitle className="pt-4 text-center text-xl font-normal">Redes sociales</DialogTitle>
         </DialogHeader>
@@ -73,16 +76,20 @@ const RedesSocialesModal = ({ show, setShow }: SocialMediaModalProps) => {
         <div className="mb-6 mt-4 space-y-5">
           {/* Redes sociales conectadas */}
           <div className="space-y-3">
-            <h3 className="text-sm font-medium text-gray-300">Cuentas conectadas</h3>
+            <h3 className="text-sm font-medium">Cuentas conectadas</h3>
 
             {socialAccounts.length === 0 ? (
-              <div className="py-6 text-center text-sm text-gray-400">No tienes redes sociales conectadas</div>
+              <div
+                className={`py-6 text-center text-sm ${isDark ? 'bg-zinc-800 text-white' : 'text-gray-400 underline'}`}
+              >
+                No tienes redes sociales conectadas
+              </div>
             ) : (
               <div className="space-y-2">
                 {socialAccounts.map((account) => (
                   <div
                     key={`social-account-modal-${account.id}`}
-                    className="flex items-center justify-between rounded-lg bg-zinc-700/50 p-3"
+                    className={`flex items-center justify-between rounded-lg ${isDark ? 'bg-zinc-700/50' : 'border border-zinc-600'} p-3`}
                   >
                     <div className="flex items-center space-x-3">
                       {getSocialIcon(account.type)}
@@ -104,12 +111,12 @@ const RedesSocialesModal = ({ show, setShow }: SocialMediaModalProps) => {
 
           {/* Agregar nueva red social */}
           <div className="space-y-3">
-            <h3 className="text-sm font-medium text-gray-300">Agregar nueva cuenta</h3>
+            <h3 className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-black'}`}>Agregar nueva cuenta</h3>
 
             <div className="grid grid-cols-12 gap-2">
               <div className="col-span-5">
                 <Select value={newSocialType} onValueChange={setNewSocialType}>
-                  <SelectTrigger className="border border-zinc-600 bg-transparent text-white focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0">
+                  <SelectTrigger className="border border-zinc-600 bg-transparent focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0">
                     <SelectValue placeholder="Red social" />
                   </SelectTrigger>
                   <SelectContent className="border-zinc-700 bg-zinc-800 text-white">
@@ -139,7 +146,7 @@ const RedesSocialesModal = ({ show, setShow }: SocialMediaModalProps) => {
                 <Button
                   onClick={addSocialAccount}
                   disabled={!newSocialType || !newSocialUsername}
-                  className="bg-green-600 px-2 text-white hover:bg-green-700"
+                  className="bg-green-500 px-2 text-white hover:bg-green-700"
                 >
                   <Plus className="h-4 w-4" />
                 </Button>
@@ -152,11 +159,15 @@ const RedesSocialesModal = ({ show, setShow }: SocialMediaModalProps) => {
           <Button
             onClick={() => setShow(false)}
             variant="ghost"
-            className="rounded-full px-4 text-white hover:bg-zinc-700"
+            className={`rounded-full px-4 ${isDark ? 'border border-white text-white hover:bg-white hover:text-[#4B4B4B]' : 'border border-blue-400 bg-white text-blue-400'}`}
           >
             Cancelar
           </Button>
-          <Button className="rounded-md text-white hover:bg-white hover:text-[#4B4B4B]">Guardar</Button>
+          <Button
+            className={`rounded-full px-4 ${isDark ? 'bg-white text-[#4B4B4B]' : 'bg-blue-400 text-white hover:bg-blue-700'}`}
+          >
+            Guardar
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
