@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '../../ui/Button';
 import { Input } from '../../ui/Input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../ui/Dialog';
 import { Label } from '../../ui/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/Select';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import clsx from 'clsx';
 
 type InfoPersonalModalProps = {
   show: boolean;
@@ -21,7 +22,15 @@ type UserInfo = {
   alias: string;
 };
 
-const PersonalInfoModal = ({ show, setShow }: InfoPersonalModalProps) => {
+type ValidationErrors = {
+  name?: string;
+  nationality?: string;
+  documentNumber?: string;
+  birthDate?: string;
+  alias?: string;
+};
+
+const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
   const { isDark } = useDarkTheme();
 
   const [userInfo, setUserInfo] = useState<UserInfo>({
@@ -32,13 +41,102 @@ const PersonalInfoModal = ({ show, setShow }: InfoPersonalModalProps) => {
     alias: '',
   });
 
+  const [errors, setErrors] = useState<ValidationErrors>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (field: keyof UserInfo, value: string) => {
+    setUserInfo((prev) => ({ ...prev, [field]: value }));
+
+    if (!touched[field]) {
+      setTouched((prev) => ({ ...prev, [field]: true }));
+    }
+  };
+
+  const handleBlur = (field: keyof UserInfo) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+  };
+
+  const validateForm = (): ValidationErrors => {
+    const newErrors: ValidationErrors = {};
+
+    // Name validation
+    if (!userInfo.name.trim()) {
+      newErrors.name = 'El nombre es obligatorio';
+    } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(userInfo.name)) {
+      newErrors.name = 'El nombre solo debe contener letras';
+    }
+
+    // Nationality validation
+    if (!userInfo.nationality) {
+      newErrors.nationality = 'Debe seleccionar una nacionalidad';
+    }
+
+    // Document number validation
+    if (!userInfo.documentNumber) {
+      newErrors.documentNumber = 'El número de documento es obligatorio';
+    } else if (!/^\d{1,2}(\.\d{3}){1,2}$|^\d{7,8}$/.test(userInfo.documentNumber)) {
+      newErrors.documentNumber = 'El documento debe contener solo números';
+    }
+
+    // Birth date validation
+    if (!userInfo.birthDate) {
+      newErrors.birthDate = 'La fecha de nacimiento es obligatoria';
+    } else {
+      const birthDate = new Date(userInfo.birthDate);
+      const today = new Date();
+
+      if (isNaN(birthDate.getTime())) {
+        newErrors.birthDate = 'Fecha inválida';
+      } else if (birthDate > today) {
+        newErrors.birthDate = 'La fecha no puede ser futura';
+      }
+    }
+
+    // Alias validation (optional but with constraints if provided)
+    if (userInfo.alias && userInfo.alias.length < 2) {
+      newErrors.alias = 'El apodo debe tener al menos 2 caracteres';
+    }
+
+    return newErrors;
+  };
+
+  useEffect(() => {
+    if (Object.keys(touched).length > 0) {
+      const validationErrors = validateForm();
+      setErrors(validationErrors);
+    }
+  }, [userInfo, touched]);
+
   const handleSubmit = () => {
-    setShow(false);
+    setIsSubmitting(true);
+
+    const allTouched = Object.keys(userInfo).reduce(
+      (acc, key) => {
+        acc[key] = true;
+        return acc;
+      },
+      {} as Record<string, boolean>,
+    );
+
+    setTouched(allTouched);
+
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
+      console.log('Form submitted successfully:', userInfo);
+      setShow(false);
+    } else {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <Dialog open={show} onOpenChange={setShow}>
-      <DialogContent className={`border-none ${isDark ? 'bg-zinc-800 text-white' : 'text-black'} sm:max-w-md`}>
+      <DialogContent
+        className={`max-h-[700px] border-none ${isDark ? 'bg-zinc-800 text-white' : 'text-black'} sm:max-w-md`}
+      >
         <DialogHeader className="relative">
           <DialogTitle className="pt-4 text-center text-xl font-normal">Información personal</DialogTitle>
         </DialogHeader>
@@ -50,23 +148,37 @@ const PersonalInfoModal = ({ show, setShow }: InfoPersonalModalProps) => {
             </Label>
             <Input
               id="nombre"
-              className={`border border-zinc-600 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0`}
+              className={clsx(
+                'inputChangeAutofill border bg-transparent focus:border-[#90B0FE] focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0',
+                errors.nationality && touched.nationality ? 'border-red-500' : 'border-zinc-600',
+              )}
               placeholder="Ingrese su nombre legal"
+              value={userInfo.name}
+              onChange={(e) => handleChange('name', e.target.value)}
+              onBlur={() => handleBlur('name')}
             />
+            {errors.name && touched.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="nacionalidad" className={`text-sm ${isDark ? 'text-white' : 'text-black'}`}>
               Nacionalidad
             </Label>
-            <Select>
+            <Select
+              value={userInfo.nationality}
+              onValueChange={(value) => handleChange('nationality', value)}
+              onOpenChange={() => handleBlur('nationality')}
+            >
               <SelectTrigger
                 id="nacionalidad"
-                className="border border-zinc-600 bg-transparent focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                className={clsx(
+                  'inputChangeAutofill appearance-none border bg-transparent focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0',
+                  errors.nationality && touched.nationality ? 'border-red-500' : 'border-zinc-600',
+                )}
               >
                 <SelectValue placeholder="Seleccione su nacionalidad" />
               </SelectTrigger>
-              <SelectContent className="border-zinc-700 bg-zinc-800 text-white">
+              <SelectContent className="border-zinc-700 bg-zinc-800 text-white focus:border-[#90B0FE]">
                 <SelectItem className="hover:bg-zinc-700" value="argentina">
                   Argentina
                 </SelectItem>
@@ -96,6 +208,9 @@ const PersonalInfoModal = ({ show, setShow }: InfoPersonalModalProps) => {
                 </SelectItem>
               </SelectContent>
             </Select>
+            {errors.nationality && touched.nationality && (
+              <p className="mt-1 text-xs text-red-500">{errors.nationality}</p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -104,10 +219,20 @@ const PersonalInfoModal = ({ show, setShow }: InfoPersonalModalProps) => {
             </Label>
             <Input
               id="documento"
-              type="number"
-              className="border border-zinc-600 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+              type="text"
+              inputMode="numeric"
+              className={clsx(
+                'inputChangeAutofill !appearance-none border bg-transparent focus:border-[#90B0FE] focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0',
+                errors.nationality && touched.nationality ? 'border-red-500' : 'border-zinc-600',
+              )}
               placeholder="Ingrese su número de documento"
+              value={userInfo.documentNumber}
+              onChange={(e) => handleChange('documentNumber', e.target.value)}
+              onBlur={() => handleBlur('documentNumber')}
             />
+            {errors.documentNumber && touched.documentNumber && (
+              <p className="mt-1 text-xs text-red-500">{errors.documentNumber}</p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -117,8 +242,15 @@ const PersonalInfoModal = ({ show, setShow }: InfoPersonalModalProps) => {
             <Input
               id="fecha"
               type="date"
-              className="border border-zinc-600 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+              className={clsx(
+                'inputChangeAutofill appearance-none border bg-transparent focus:border-[#90B0FE] focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0',
+                errors.nationality && touched.nationality ? 'border-red-500' : 'border-zinc-600',
+              )}
+              value={userInfo.birthDate}
+              onChange={(e) => handleChange('birthDate', e.target.value)}
+              onBlur={() => handleBlur('birthDate')}
             />
+            {errors.birthDate && touched.birthDate && <p className="mt-1 text-xs text-red-500">{errors.birthDate}</p>}
           </div>
 
           <div className="space-y-2">
@@ -127,9 +259,16 @@ const PersonalInfoModal = ({ show, setShow }: InfoPersonalModalProps) => {
             </Label>
             <Input
               id="apodo"
-              className="border border-zinc-600 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+              className={clsx(
+                'inputChangeAutofill appearance-none border bg-transparent focus:border-[#90B0FE] focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0',
+                errors.nationality && touched.nationality ? 'border-red-500' : 'border-zinc-600',
+              )}
               placeholder="Ingrese su apodo"
+              value={userInfo.alias}
+              onChange={(e) => handleChange('alias', e.target.value)}
+              onBlur={() => handleBlur('alias')}
             />
+            {errors.alias && touched.alias && <p className="mt-1 text-xs text-red-500">{errors.alias}</p>}
           </div>
         </div>
 
@@ -142,10 +281,17 @@ const PersonalInfoModal = ({ show, setShow }: InfoPersonalModalProps) => {
             ← Volver
           </Button>
           <Button
-            className={`rounded-full px-4 ${isDark ? 'bg-white text-[#4B4B4B]' : 'bg-blue-400 text-white hover:bg-blue-700'}`}
+            className={`rounded-full px-4 ${
+              isSubmitting
+                ? 'opacity-70'
+                : isDark
+                  ? 'bg-white text-[#4B4B4B]'
+                  : 'bg-blue-400 text-white hover:bg-blue-700'
+            }`}
             onClick={handleSubmit}
+            disabled={isSubmitting}
           >
-            Guardar
+            {isSubmitting ? 'Guardando...' : 'Guardar'}
           </Button>
         </div>
       </DialogContent>
@@ -153,4 +299,4 @@ const PersonalInfoModal = ({ show, setShow }: InfoPersonalModalProps) => {
   );
 };
 
-export default PersonalInfoModal;
+export default InfoPersonalModal;

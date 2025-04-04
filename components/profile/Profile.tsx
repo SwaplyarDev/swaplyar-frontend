@@ -5,20 +5,18 @@ import { Email, Instagram, WhatsApp } from '@mui/icons-material';
 import Image from 'next/image';
 import { useState } from 'react';
 import { swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
-import InfoPersonalModal from './Modals/InfoPersonalModal';
 import WhatsAppModal from './Modals/WhatsappModal';
 import EmailModal from './Modals/EmailModal';
 import { profileMock } from './utils/ProfileMock';
 import SocialMediaModal from './Modals/RedesSocialesModal';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
-import InfoPersonalValidacion from './Modals/InfoPersonalValidacion';
+import InfoPersonalModal from './Modals/InfoPersonalModal';
 
 const Profile = () => {
   const { isDark } = useDarkTheme();
 
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
-  const [showEmailModal, setShowEmailModal] = useState(false);
   const [showSocialMediaModal, setShowSocialMediaModal] = useState(false);
 
   return (
@@ -73,7 +71,7 @@ const Profile = () => {
                 Editar
               </Button>
             </div>
-            {showProfileModal && <InfoPersonalValidacion show={showProfileModal} setShow={setShowProfileModal} />}
+            {showProfileModal && <InfoPersonalModal show={showProfileModal} setShow={setShowProfileModal} />}
           </div>
         </div>
 
@@ -95,6 +93,7 @@ const Profile = () => {
         </div>
 
         {/* WhatsApp */}
+        {/* Inputs redondeados */}
         <div
           className={`mx-4 mb-4 w-[75%] max-w-[796px] rounded-lg ${isDark ? 'bg-[#4B4B4B]' : 'bg-white text-black shadow-xl'} bg-[#4B4B4B] p-4 md-tablet:w-full`}
         >
@@ -121,7 +120,7 @@ const Profile = () => {
           </div>
           {profileMock.redesSociales.map((redSocial, index) => (
             <div key={`ProifileRedSocial-${index}`} className="flex justify-between">
-              <p className="text-sm">
+              <p className="mb-2 text-sm">
                 {redSocial.type[0].toUpperCase() + redSocial.type.slice(1, redSocial.type.length)}
               </p>
               <p className="text-sm">@{redSocial.username}</p>

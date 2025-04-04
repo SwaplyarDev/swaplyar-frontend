@@ -37,7 +37,7 @@ const WhatsAppModal = ({ show, setShow }: WhatsappVerificationProps) => {
         </DialogHeader>
 
         <div className="mb-6 mt-4">
-          <div className="flex overflow-hidden rounded-md border border-zinc-600">
+          <div className="flex overflow-hidden rounded-2xl border border-zinc-600">
             <div className="flex-shrink-0">
               <Select value={countryCode} onValueChange={setCountryCode}>
                 <SelectTrigger className="w-[80px] border-0 bg-transparent">
@@ -47,17 +47,29 @@ const WhatsAppModal = ({ show, setShow }: WhatsappVerificationProps) => {
                   <SelectItem className="hover:bg-zinc-700" value="+54">
                     +54
                   </SelectItem>
-                  <SelectItem className="hover:bg-zinc-700" value="+1">
-                    +1
+                  <SelectItem className="hover:bg-zinc-700" value="+55">
+                    +55
                   </SelectItem>
-                  <SelectItem className="hover:bg-zinc-700" value="+34">
-                    +34
+                  <SelectItem className="hover:bg-zinc-700" value="+56">
+                    +56
+                  </SelectItem>
+                  <SelectItem className="hover:bg-zinc-700" value="+57">
+                    +57
                   </SelectItem>
                   <SelectItem className="hover:bg-zinc-700" value="+52">
                     +52
                   </SelectItem>
-                  <SelectItem className="hover:bg-zinc-700" value="+55">
-                    +55
+                  <SelectItem className="hover:bg-zinc-700" value="+51">
+                    +51
+                  </SelectItem>
+                  <SelectItem className="hover:bg-zinc-700" value="+589">
+                    +589
+                  </SelectItem>
+                  <SelectItem className="hover:bg-zinc-700" value="+58">
+                    +58
+                  </SelectItem>
+                  <SelectItem className="hover:bg-zinc-700" value="+34">
+                    +34
                   </SelectItem>
                 </SelectContent>
               </Select>

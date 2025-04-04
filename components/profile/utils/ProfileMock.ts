@@ -10,7 +10,7 @@ export const profileMock = {
   },
   anioRegistro: '2019',
   email: 'ceo_oa@swaplyar.com',
-  whatsapp: '+5491123832198',
+  whatsapp: '+54 91123832198',
   redesSociales: [
     { id: '1', type: 'instagram', username: 'suarez_oa' },
     { id: '2', type: 'twitter', username: 'suarez_oa' },
