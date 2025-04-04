@@ -24,53 +24,40 @@ export default function VirtualWallets() {
       name: 'PayPal',
       identifier: 'ejemplo@ejemplo.com',
       details: [
-        { label: 'Tipo', value: { text: 'Correo electrónico' } },
-        { label: 'Estado', value: { text: 'Activo', color: 'green' } },
-        { label: 'Fecha de registro', value: { text: '15 mar 2025' } },
+        {
+          correo: 'ejemplo@ejemplo.com',
+          nombre: 'Juan Perez',
+        },
+        {
+          correo: 'ejemplo@ejemplo.com',
+          nombre: 'Juan Perez',
+        },
       ],
     },
     {
       id: '2',
       type: 'transferencia',
       name: 'Transferencia',
-      identifier: 'BBVA',
+      identifier: '1234567890',
       details: [
-        { label: 'Cuenta', value: { text: '01234567' } },
-        { label: 'CLABE', value: { text: '012345678901234567' } },
-        { label: 'Estado', value: { text: 'Verificada', color: 'green' } },
+        {
+          cvu: '1234567890',
+          dni: '1234567890',
+          nombreBanco: 'Banco de ejemplo',
+          nombreUsuario: 'Juan Perez',
+        },
       ],
     },
     {
       id: '3',
       type: 'tether',
       name: 'Tether',
-      identifier: '0x1f5e4d5c6b7a8d9e0f1a2b3c',
+      identifier: '1234567890',
       details: [
-        { label: 'Tipo', value: { text: 'Wallet' } },
-        { label: 'Red', value: { text: 'ERC-20' } },
-        { label: 'Estado', value: { text: 'Activo', color: 'green' } },
-      ],
-    },
-    {
-      id: '4',
-      type: 'wise',
-      name: 'Wise',
-      identifier: 'ejemplo@ejemplo.com',
-      details: [
-        { label: 'Tipo', value: { text: 'Correo electrónico' } },
-        { label: 'Moneda', value: { text: 'USD' } },
-        { label: 'Estado', value: { text: 'Pendiente', color: 'yellow' } },
-      ],
-    },
-    {
-      id: '5',
-      type: 'blockchain',
-      name: 'Blockchain',
-      identifier: '2f5e4d5c6b',
-      details: [
-        { label: 'IP', value: { text: '192.175.250.32' } },
-        { label: 'Red', value: { text: 'Bitcoin' } },
-        { label: 'Estado', value: { text: 'Verificada', color: 'green' } },
+        {
+          direction: 'GJJHalsjdfjJOjjhsvdhfcssduhfHHON',
+          red: 'Tron (TRC20)',
+        },
       ],
     },
   ]);
@@ -104,17 +91,19 @@ export default function VirtualWallets() {
   }, []);
 
   return (
-    <div className="mx-auto mb-24 mt-8 w-full max-w-xl rounded-xl p-6 sm:my-6">
+    <div className="mx-auto mb-24 mt-8 w-full max-w-[1000px] rounded-xl p-6 sm:my-6">
       <div className="mb-8 flex flex-col items-center gap-4">
-        <h1 className="text-center text-3xl font-bold text-gray-800">Cuentas de Billeteras Virtuales</h1>
+        <h1 className="text-center text-3xl font-bold text-gray-800 dark:text-white">
+          Cuentas de Billeteras Virtuales
+        </h1>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="rounded-md bg-blue-600 px-6 py-2 text-white hover:bg-blue-700">Añadir Cuenta</Button>
+            <Button className="rounded-md bg-[#012d8a] px-6 py-2 text-white">Añadir Cuenta</Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-md">
+          <DialogContent className="dark:border-[#373737] dark:bg-[#4B4B4B] sm:max-w-md">
             <DialogHeader>
-              <DialogTitle className="text-center text-xl">Datos de la Cuenta</DialogTitle>
-              <DialogDescription className="text-center text-gray-500">
+              <DialogTitle className="text-center text-xl dark:text-white">Datos de la Cuenta</DialogTitle>
+              <DialogDescription className="text-center text-gray-500 dark:text-white">
                 Complete los datos para agregar una nueva cuenta
               </DialogDescription>
             </DialogHeader>
@@ -131,7 +120,7 @@ export default function VirtualWallets() {
                 </svg>
                 Volver
               </Button>
-              <Button type="submit" className="bg-blue-500 px-8 text-white hover:bg-blue-600">
+              <Button type="submit" className="bg-[#012d8a] px-8 text-white">
                 Agregar
               </Button>
             </DialogFooter>

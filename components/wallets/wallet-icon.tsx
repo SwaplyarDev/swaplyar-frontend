@@ -1,3 +1,22 @@
+'use client';
+
+import {
+  PaypalLightImg,
+  PaypalDarkImg,
+  WiseUsdImg,
+  WiseUsdDarkImg,
+  WiseEurImg,
+  WiseEurDarkImg,
+  PayoneerUsdImg,
+  PayoneerUsdDarkImg,
+  PayoneerEurImg,
+  PayoneerEurDarkImg,
+  TetherDarkImg,
+  TetherImg,
+} from '@/utils/assets/img-database';
+import { BankImg } from '@/utils/assets/imgDatabaseCloudinary';
+import { BankDarkImg } from '@/utils/assets/imgDatabaseCloudinary';
+
 interface WalletIconProps {
   type: string;
 }
@@ -6,44 +25,74 @@ export default function WalletIcon({ type }: WalletIconProps) {
   switch (type) {
     case 'paypal':
       return (
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#003087]">
-          <svg viewBox="0 0 24 24" className="h-4 w-4 text-white">
-            <path
-              fill="currentColor"
-              d="M20.067 8.478c.492.88.556 2.014.3 3.327-.74 3.806-3.276 5.12-6.514 5.12h-.5a.805.805 0 0 0-.794.68l-.04.22-.63 4.023-.024.13a.804.804 0 0 1-.794.68h-2.52a.67.67 0 0 1-.662-.78l.04-.18 1.067-6.816.034-.18a.804.804 0 0 1 .794-.68h.5c3.238 0 5.774-1.314 6.514-5.12.256-1.313.192-2.447-.3-3.327"
-            />
-          </svg>
+        <div className="flex h-10 w-full items-center justify-center">
+          <img src={PaypalLightImg || '/placeholder.svg'} alt="Paypal" className="h-10 text-white dark:hidden" />
+          <img src={PaypalDarkImg || '/placeholder.svg'} alt="Paypal" className="hidden h-10 text-white dark:block" />
         </div>
       );
     case 'transferencia':
       return (
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600">
-          <span className="text-xs font-bold text-white">TB</span>
+        <div className="flex h-10 w-full items-center justify-center">
+          <img src={BankImg || '/placeholder.svg'} alt="Paypal" className="h-10 text-white dark:hidden" />
+          <img src={BankDarkImg || '/placeholder.svg'} alt="Paypal" className="hidden h-10 text-white dark:block" />
         </div>
       );
     case 'tether':
       return (
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#26A17B]">
-          <svg viewBox="0 0 24 24" className="h-4 w-4 text-white">
-            <path fill="currentColor" d="M12 4.5l4.5 4.5-4.5 4.5-4.5-4.5L12 4.5z" />
-          </svg>
+        <div className="flex h-10 w-full items-center justify-center">
+          <img src={TetherImg || '/placeholder.svg'} alt="Paypal" className="h-10 text-white dark:hidden" />
+          <img src={TetherDarkImg || '/placeholder.svg'} alt="Paypal" className="hidden h-10 text-white dark:block" />
         </div>
       );
     case 'wise':
+    case 'wise-usd':
       return (
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#00B9FF]">
-          <svg viewBox="0 0 24 24" className="h-4 w-4 text-white">
-            <path
-              fill="currentColor"
-              d="M16.617 7.382c-.71 0-1.286.576-1.286 1.286 0 .71.576 1.286 1.286 1.286.71 0 1.286-.576 1.286-1.286 0-.71-.576-1.286-1.286-1.286zm-9.234 0c-.71 0-1.286.576-1.286 1.286 0 .71.576 1.286 1.286 1.286.71 0 1.286-.576 1.286-1.286 0-.71-.576-1.286-1.286-1.286zm4.617 0c-.71 0-1.286.576-1.286 1.286 0 .71.576 1.286 1.286 1.286.71 0 1.286-.576 1.286-1.286 0-.71-.576-1.286-1.286-1.286z"
-            />
-          </svg>
+        <div className="flex h-10 w-full items-center justify-center">
+          <img src={WiseUsdImg || '/placeholder.svg'} alt="Wise USD" className="h-10 text-white dark:hidden" />
+          <img
+            src={WiseUsdDarkImg || '/placeholder.svg'}
+            alt="Wise USD"
+            className="hidden h-10 text-white dark:block"
+          />
+        </div>
+      );
+    case 'wise-eur':
+      return (
+        <div className="flex h-10 w-full items-center justify-center">
+          <img src={WiseEurImg || '/placeholder.svg'} alt="Wise EUR" className="h-10 text-white dark:hidden" />
+          <img
+            src={WiseEurDarkImg || '/placeholder.svg'}
+            alt="Wise EUR"
+            className="hidden h-10 text-white dark:block"
+          />
+        </div>
+      );
+    case 'payoneer-usd':
+      return (
+        <div className="flex h-10 w-full items-center justify-center">
+          <img src={PayoneerUsdImg || '/placeholder.svg'} alt="Payoneer USD" className="h-10 text-white dark:hidden" />
+          <img
+            src={PayoneerUsdDarkImg || '/placeholder.svg'}
+            alt="Payoneer USD"
+            className="hidden h-10 text-white dark:block"
+          />
+        </div>
+      );
+    case 'payoneer-eur':
+      return (
+        <div className="flex h-10 w-full items-center justify-center">
+          <img src={PayoneerEurImg || '/placeholder.svg'} alt="Payoneer EUR" className="h-10 text-white dark:hidden" />
+          <img
+            src={PayoneerEurDarkImg || '/placeholder.svg'}
+            alt="Payoneer EUR"
+            className="hidden h-10 text-white dark:block"
+          />
         </div>
       );
     case 'blockchain':
       return (
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#00E5FF]">
-          <svg viewBox="0 0 24 24" className="h-4 w-4 text-white">
+        <div className="flex h-10 w-full items-center justify-center">
+          <svg viewBox="0 0 24 24" className="h-10 w-10 text-white">
             <path
               fill="currentColor"
               d="M12 4.5l4.5 4.5-4.5 4.5-4.5-4.5L12 4.5zM7.5 10.5L12 15l4.5-4.5L12 19.5l-4.5-4.5z"
@@ -53,8 +102,8 @@ export default function WalletIcon({ type }: WalletIconProps) {
       );
     default:
       return (
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-500">
-          <span className="text-xs font-bold text-white">W</span>
+        <div className="flex h-10 w-full items-center justify-center">
+          <span className="text-xs font-bold text-white">ARS</span>
         </div>
       );
   }

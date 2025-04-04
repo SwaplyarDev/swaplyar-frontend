@@ -30,7 +30,7 @@ export default function HistorialTransacciones() {
   }
 
   return (
-    <div className="mx-auto mb-24 mt-8 w-full max-w-xl rounded-xl p-6 sm:my-6">
+    <div className="mx-auto mb-24 mt-8 w-full max-w-[1000px] rounded-xl p-6 sm:my-6">
       <h1 className="mb-8 text-center text-3xl font-bold">Historial de Transacciones</h1>
 
       {transactions.length === 0 ? (

@@ -38,22 +38,46 @@ export default function AddAccountForm() {
 
       <div className="grid gap-2">
         <Label htmlFor="nombre">Nombre</Label>
-        <Input id="nombre" placeholder="Ingrese su nombre" value={formData.nombre} onChange={handleChange} />
+        <Input
+          className="dark:placeholder:text-gray-400"
+          id="nombre"
+          placeholder="Ingrese su nombre"
+          value={formData.nombre}
+          onChange={handleChange}
+        />
       </div>
 
       <div className="grid gap-2">
         <Label htmlFor="apellido">Apellido</Label>
-        <Input id="apellido" placeholder="Ingrese su apellido" value={formData.apellido} onChange={handleChange} />
+        <Input
+          className="dark:placeholder:text-gray-400"
+          id="apellido"
+          placeholder="Ingrese su apellido"
+          value={formData.apellido}
+          onChange={handleChange}
+        />
       </div>
 
       <div className="grid gap-2">
         <Label htmlFor="pix">PIX KEY</Label>
-        <Input id="pix" placeholder="Ingrese su clave PIX" value={formData.pix} onChange={handleChange} />
+        <Input
+          className="dark:placeholder:text-gray-400"
+          id="pix"
+          placeholder="Ingrese su clave PIX"
+          value={formData.pix}
+          onChange={handleChange}
+        />
       </div>
 
       <div className="grid gap-2">
         <Label htmlFor="cpf">CPF</Label>
-        <Input id="cpf" placeholder="Ingrese su CPF" value={formData.cpf} onChange={handleChange} />
+        <Input
+          className="dark:placeholder:text-gray-400"
+          id="cpf"
+          placeholder="Ingrese su CPF"
+          value={formData.cpf}
+          onChange={handleChange}
+        />
       </div>
     </div>
   );
