@@ -34,8 +34,11 @@ export function TransactionCard({ transaction, index }: TransactionCardProps) {
         <div className="relative">
           <div className="flex items-start justify-between p-4">
             <div className="flex-1">
-              <div className="mb-1 flex items-center gap-2">
-                <h3 className="text-lg font-semibold">N° de Solicitud #{transaction.transaction.transaction_id}</h3>
+              <div className="mb-1 flex items-center justify-between gap-2">
+                <h3 className="text-lg font-semibold">N° de Solicitud</h3>
+
+                <span className="text-xl font-bold dark:text-white">#{transaction.transaction.transaction_id}</span>
+
                 {completada ? (
                   <span className="text-green-500">
                     <Check className="h-5 w-5" />
@@ -65,7 +68,7 @@ export function TransactionCard({ transaction, index }: TransactionCardProps) {
 
           {expanded && (
             <div className="px-4 pb-4 pt-1">
-              <div className="mb-3 grid grid-cols-2 gap-y-1 border-b pb-3 text-sm">
+              <div className="mb-3 grid grid-cols-2 gap-y-1 border-b-2 border-[#012d8a] pb-3 text-sm">
                 <div className="text-gray-500 dark:text-white">Estado de la Solicitud</div>
                 <div className={`text-right ${completada ? 'text-green-600 dark:text-green-300' : 'text-red-600'}`}>
                   {estado}
@@ -78,8 +81,8 @@ export function TransactionCard({ transaction, index }: TransactionCardProps) {
                 <div className="text-right">{horario}</div>
               </div>
 
-              <div className="mb-3 grid grid-cols-2 gap-y-1 border-b pb-3 text-sm">
-                <div className="font-medium text-gray-500 dark:text-white">Datos del Solicitante</div>
+              <div className="mb-3 grid grid-cols-2 gap-y-1 border-b-2 border-[#012d8a] pb-3 text-sm">
+                <div className="font-medium text-gray-800 dark:text-white">Datos del Solicitante</div>
                 <div className="text-right"></div>
 
                 <div className="text-gray-500 dark:text-white">Nombre y Apellido</div>
@@ -92,8 +95,8 @@ export function TransactionCard({ transaction, index }: TransactionCardProps) {
                 <div className="text-right font-medium">{montoEnviado}</div>
               </div>
 
-              <div className="mb-3 grid grid-cols-2 gap-y-1 border-b pb-3 text-sm">
-                <div className="font-medium text-gray-500 dark:text-white">Destinatario</div>
+              <div className="mb-3 grid grid-cols-2 gap-y-1 border-b-2 border-[#012d8a] pb-3 text-sm">
+                <div className="font-medium text-gray-800 dark:text-white">Destinatario</div>
                 <div className="text-right"></div>
 
                 <div className="text-gray-500 dark:text-white">Nombre del Destinatario</div>
@@ -127,7 +130,7 @@ export function TransactionCard({ transaction, index }: TransactionCardProps) {
               {transaction.proof_of_payment?.img_transaction && (
                 <div className="flex justify-center">
                   <Button
-                    className="rounded-full bg-blue-700 px-6 text-white hover:bg-blue-800"
+                    className="rounded-full bg-[#012d8a] px-6 text-white hover:bg-[#012d8a]"
                     onClick={() => window.open(transaction.proof_of_payment.img_transaction, '_blank')}
                   >
                     Ver Comprobante
