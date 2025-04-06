@@ -88,7 +88,10 @@ const NavbarInternal = () => {
             <div className="hidden lg:mr-10 lg:flex lg:max-w-[460px]">
               <NavIcons />
             </div>
-            <button onClick={() => signOut()} className="block xs:hidden lg:block">
+            <button
+              onClick={() => signOut()}
+              className="block w-auto transition-all duration-300 hover:w-[180px] xs:hidden lg:block"
+            >
               <CerrarSesion />
             </button>
             <div onClick={() => setDrawerMenu(true)} className="hidden xs:block xs:pr-14 xs:pt-3 lg:hidden">
