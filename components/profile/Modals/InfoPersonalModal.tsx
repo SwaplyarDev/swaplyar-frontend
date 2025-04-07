@@ -60,26 +60,22 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
   const validateForm = (): ValidationErrors => {
     const newErrors: ValidationErrors = {};
 
-    // Name validation
     if (!userInfo.name.trim()) {
       newErrors.name = 'El nombre es obligatorio';
     } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(userInfo.name)) {
       newErrors.name = 'El nombre solo debe contener letras';
     }
 
-    // Nationality validation
     if (!userInfo.nationality) {
       newErrors.nationality = 'Debe seleccionar una nacionalidad';
     }
 
-    // Document number validation
     if (!userInfo.documentNumber) {
       newErrors.documentNumber = 'El número de documento es obligatorio';
     } else if (!/^\d{1,2}(\.\d{3}){1,2}$|^\d{7,8}$/.test(userInfo.documentNumber)) {
       newErrors.documentNumber = 'El documento debe contener solo números';
     }
 
-    // Birth date validation
     if (!userInfo.birthDate) {
       newErrors.birthDate = 'La fecha de nacimiento es obligatoria';
     } else {
@@ -93,7 +89,6 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
       }
     }
 
-    // Alias validation (optional but with constraints if provided)
     if (userInfo.alias && userInfo.alias.length < 2) {
       newErrors.alias = 'El apodo debe tener al menos 2 caracteres';
     }
@@ -135,13 +130,13 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
   return (
     <Dialog open={show} onOpenChange={setShow}>
       <DialogContent
-        className={`max-h-[700px] border-none ${isDark ? 'bg-zinc-800 text-white' : 'text-black'} sm:max-w-md`}
+        className={`max-h-[750px] border-none ${isDark ? 'bg-zinc-800 text-white' : 'text-black'} sm:max-w-md`}
       >
         <DialogHeader className="relative">
           <DialogTitle className="pt-4 text-center text-xl font-normal">Información personal</DialogTitle>
         </DialogHeader>
 
-        <div className="mb-6 mt-4 space-y-4">
+        <div className="mb-6 mt-4 space-y-6">
           <div className="space-y-2">
             <Label htmlFor="nombre" className={`text-sm ${isDark ? 'text-white' : 'text-black'}`}>
               Nombre legal
@@ -157,7 +152,7 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
               onChange={(e) => handleChange('name', e.target.value)}
               onBlur={() => handleBlur('name')}
             />
-            {errors.name && touched.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
+            {errors.name && touched.name && <p className="absolute text-xs text-red-500">{errors.name}</p>}
           </div>
 
           <div className="space-y-2">
@@ -209,7 +204,7 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
               </SelectContent>
             </Select>
             {errors.nationality && touched.nationality && (
-              <p className="mt-1 text-xs text-red-500">{errors.nationality}</p>
+              <p className="absolute text-xs text-red-500">{errors.nationality}</p>
             )}
           </div>
 
@@ -231,7 +226,7 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
               onBlur={() => handleBlur('documentNumber')}
             />
             {errors.documentNumber && touched.documentNumber && (
-              <p className="mt-1 text-xs text-red-500">{errors.documentNumber}</p>
+              <p className="absolute text-xs text-red-500">{errors.documentNumber}</p>
             )}
           </div>
 
@@ -250,7 +245,9 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
               onChange={(e) => handleChange('birthDate', e.target.value)}
               onBlur={() => handleBlur('birthDate')}
             />
-            {errors.birthDate && touched.birthDate && <p className="mt-1 text-xs text-red-500">{errors.birthDate}</p>}
+            {errors.birthDate && touched.birthDate && (
+              <p className="absolute text-xs text-red-500">{errors.birthDate}</p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -268,7 +265,7 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
               onChange={(e) => handleChange('alias', e.target.value)}
               onBlur={() => handleBlur('alias')}
             />
-            {errors.alias && touched.alias && <p className="mt-1 text-xs text-red-500">{errors.alias}</p>}
+            {errors.alias && touched.alias && <p className="absolute text-xs text-red-500">{errors.alias}</p>}
           </div>
         </div>
 
