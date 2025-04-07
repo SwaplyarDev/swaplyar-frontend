@@ -5,16 +5,14 @@ import { SwaplyArLogoSolo } from '@/utils/assets/imgDatabaseCloudinary';
 
 export const FooterInternal = () => {
   return (
-    <>
+    <footer>
       {/* Footer Mobile */}
-      <footer
-        className={`fixed bottom-0 left-0 flex h-16 w-full justify-center bg-nav-blue pb-4 dark:bg-white xs:hidden`}
-      >
+      <div className={`fixed bottom-0 left-0 flex h-16 w-full justify-center bg-nav-blue pb-4 dark:bg-white xs:hidden`}>
         <NavIcons isFooter={true} />
-      </footer>
+      </div>
 
       {/* Footer Desktop */}
-      <footer className="hidden w-full justify-center pb-4 xs:flex">
+      <div className="hidden w-full justify-center pb-4 xs:flex">
         <div className="flex w-full items-center justify-center px-4">
           <ul className="flex flex-col items-center justify-between gap-4">
             <li>
@@ -34,7 +32,7 @@ export const FooterInternal = () => {
             </li>
           </ul>
         </div>
-      </footer>
-    </>
+      </div>
+    </footer>
   );
 };

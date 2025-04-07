@@ -50,25 +50,25 @@ const NavbarInternal = () => {
   const isActive = pathname.split('/')[3];
 
   return (
-    <div>
-      {/* <div className="max-width-screen md:max-w-[1300px] mx-auto"> */}
-      <div className="flex h-16 w-full items-center justify-around mini-phone:mx-8 mini-phone:justify-between xs:mx-10 md:mx-20">
-        <Image
-          src={isDark ? isMobileDark() : isMobile()}
-          className="max-h-14 w-full max-w-14 xs-mini-phone:max-h-16 xs-mini-phone:max-w-[200px]"
-          alt="Cambiar saldo online"
-          width={200}
-          height={80}
-        />
-        <div className="">
-          <Switch />
+    <header>
+      <div className="max-width-screen mx-auto md:max-w-[1300px]">
+        <div className="flex h-16 items-center justify-around mini-phone:mx-8 mini-phone:justify-between xs:mx-10 md:mx-20">
+          <Image
+            src={isDark ? isMobileDark() : isMobile()}
+            className="max-h-14 w-full max-w-14 xs-mini-phone:max-h-16 xs-mini-phone:max-w-[200px]"
+            alt="Cambiar saldo online"
+            width={200}
+            height={80}
+          />
+          <div className="">
+            <Switch />
+          </div>
         </div>
-        {/* </div> */}
       </div>
       <div className="bg-nav-blue dark:bg-white">
         <div className={`flex h-16 flex-grow xs:px-0 md:justify-between md:px-20`}>
           <div className="mx-auto flex h-full w-full max-w-[1200px] items-center justify-between px-4">
-            <div className={`dark:montanaDark montana relative top-1 ml-10 flex h-full w-full md:ml-0`}>
+            <div className={`${isDark ? 'montanaDark' : 'montana'} relative top-1 ml-10 flex h-full w-full xs:ml-0`}>
               <Link
                 href="/es/auth/perfil"
                 className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} relative left-4 top-1 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t xs:-left-1 xs:ml-5`}
@@ -81,20 +81,18 @@ const NavbarInternal = () => {
                   className="h-full w-full overflow-hidden rounded-full bg-white dark:bg-lightText"
                 />
               </Link>
-              <p className="hidden pl-2 pt-4 font-sans text-white dark:text-black xs:block md:hidden lg:block">
-                Nombre Usuario
-              </p>
+              <p className="hidden pl-2 pt-4 font-sans text-white dark:text-black xs:block lg:ml-4">Nombre Usuario</p>
             </div>
             <div className="hidden lg:mr-10 lg:flex lg:max-w-[460px]">
               <NavIcons />
             </div>
             <button
               onClick={() => signOut()}
-              className="block w-auto transition-all duration-300 hover:w-[180px] xs:hidden lg:block"
+              className="block transition-all duration-300 hover:w-[180px] xs:hidden lg:block"
             >
               <CerrarSesion />
             </button>
-            <div onClick={() => setDrawerMenu(true)} className="hidden xs:block xs:pr-14 xs:pt-3 lg:hidden">
+            <div onClick={() => setDrawerMenu(true)} className="hidden xs:block xs:pr-10 md:pr-0 lg:hidden">
               <GiHamburgerMenu className="size-8 text-white dark:text-black" />
             </div>
             {/* Menu desplegable tablet */}
@@ -103,13 +101,11 @@ const NavbarInternal = () => {
                 open={drawerMenu}
                 onClose={closeDrawerMenu}
                 position="right"
-                className={`duration-400 mt-[4.5rem] w-40 transform overflow-visible bg-transparent p-0 transition-all ease-in-out dark:bg-transparent ${
-                  isClosing ? 'opacity-0' : 'opacity-100'
-                }`}
+                className={`duration-400 mt-[4.5rem] w-40 transform overflow-visible bg-transparent p-0 transition-all ease-in-out dark:bg-transparent ${isClosing ? 'opacity-0' : 'opacity-100'}`}
               >
                 <Drawer.Items>
                   <div
-                    className={`darK:bg-white' absolute mt-14 flex h-[500px] w-40 flex-col items-end justify-between overflow-visible rounded-l-3xl bg-nav-blue`}
+                    className={`absolute mt-14 flex h-[500px] w-40 flex-col items-end justify-between overflow-visible rounded-l-3xl bg-nav-blue dark:bg-white`}
                   >
                     <div className="max-w-56 pr-5 pt-7">
                       <Link href="/es/auth/perfil" onClick={() => closeDrawerMenu()}>
@@ -195,7 +191,7 @@ const NavbarInternal = () => {
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 
