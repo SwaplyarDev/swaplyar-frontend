@@ -116,10 +116,12 @@
   }
 }
 
-@media (max-width: 640px) {
+/* Comentado para evitar problemas de compatibilidad con el diseño móvil salto en 640px de la pantalla */
+
+/* @media (max-width: 640px) {
 
   /* Contenedor estilo móvil */
-  .mobile-container {
+/* .mobile-container {
     @apply relative flex h-[70vh] w-full justify-center overflow-hidden;
     position: absolute;
     top: 0;
@@ -128,19 +130,19 @@
     bottom: 0;
     clip-path: inset(0 0 -5% 0);
     overflow: hidden;
-  }
+  } */
 
-  /* Caja interna estilo móvil */
-  .mobile-box {
+/* Caja interna estilo móvil */
+/* .mobile-box {
     @apply absolute h-[60%] w-full rounded-full;
     animation: spin 30s infinite linear;
     bottom: 0;
     left: 0%;
     transform: translateX(-50%);
-  }
+  } */
 
-  /* Bolas más pequeñas */
-  .small-ball {
+/* Bolas más pequeñas */
+/* .small-ball {
     width: 10px;
     height: 10px;
     margin: 5px;
@@ -210,20 +212,24 @@
     transform: rotate(-6deg) translateX(420px);
   }
 
+
   .ball7Dark {
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(189deg) translateX(368px);
   }
+
 
   .ball5Dark {
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(308deg) translateX(225px);
   }
 
+
   .ball4Dark {
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(234deg) translateX(302px);
   }
+
 
   .ball3Dark {
     background-color: rgba(117, 117, 119, 0.601);
@@ -238,8 +244,8 @@
   .ball1Dark {
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(33deg) translateX(429px);
-  }
-}
+  } */
+/* }  */
 
 .p-revert {
   padding: revert;
