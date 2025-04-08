@@ -1,106 +1,139 @@
-'use client';
-
-import { useState } from 'react';
-import { Button } from '../../ui/Button';
-import { Input } from '../../ui/Input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/Select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../ui/Dialog';
+import SelectCountry from '@/components/request/form/inputs/SelectCountry';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import clsx from 'clsx';
+import { useEffect, useState } from 'react';
+import { Controller, useForm, useWatch } from 'react-hook-form';
+import { useWhatsAppFormStore } from '../store/WhatsAppFormStore';
+import { CountryOption } from '@/types/request/request';
 
 type WhatsappVerificationProps = {
   show: boolean;
   setShow: (arg: boolean) => void;
 };
 
-const WhatsAppModal = ({ show, setShow }: WhatsappVerificationProps) => {
+interface FormData {
+  phone: string;
+  calling_code: CountryOption | undefined;
+}
+
+const WhatsappModal = ({ show, setShow }: WhatsappVerificationProps) => {
   const { isDark } = useDarkTheme();
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isValid },
+    setValue,
+    watch,
+  } = useForm<FormData>({ mode: 'onChange' });
 
-  const [countryCode, setCountryCode] = useState('+54');
+  const [initialValues, setInitialValues] = useState<FormData | null>(null);
 
-  const [telNumber, setTelNumber] = useState(countryCode);
+  const formValues = useWatch({ control });
 
-  const handleSubmit = () => {
-    const telRegex = /^\+?\d{1,4}[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{2,4}[-.\s]?\d{2,4}[-.\s]?\d{0,4}$/;
-    const isValid = telRegex.test(telNumber);
+  const phone = useWhatsAppFormStore((state) => state.phone);
 
-    if (isValid) {
-      //logica para conectar con el backend
-      setShow(false);
-    }
+  useEffect(() => {
+    // const newValues = {
+    //     phone,
+    // };
+
+    setValue('phone', phone);
+
+    // setInitialValues(newValues);
+  }, [setValue]);
+
+  const [isFocused, setIsFocused] = useState(false);
+
+  const onSubmit = async (data: FormData) => {
+    console.log(data);
   };
 
   return (
-    <Dialog open={show} onOpenChange={setShow}>
-      <DialogContent className={`border-none ${isDark ? 'bg-zinc-800 text-white' : 'text-black'} sm:max-w-md`}>
-        <DialogHeader className="relative">
-          <DialogTitle className="pt-4 text-center text-xl font-normal">Verificar numero de WhatsApp</DialogTitle>
-        </DialogHeader>
-
-        <div className="mb-6 mt-4">
-          <div className="flex overflow-hidden rounded-2xl border border-zinc-600">
-            <div className="flex-shrink-0">
-              <Select value={countryCode} onValueChange={setCountryCode}>
-                <SelectTrigger className="w-[80px] border-0 bg-transparent">
-                  <SelectValue placeholder="+54" />
-                </SelectTrigger>
-                <SelectContent className="border-zinc-700 bg-zinc-800">
-                  <SelectItem className="hover:bg-zinc-700" value="+54">
-                    +54
-                  </SelectItem>
-                  <SelectItem className="hover:bg-zinc-700" value="+55">
-                    +55
-                  </SelectItem>
-                  <SelectItem className="hover:bg-zinc-700" value="+56">
-                    +56
-                  </SelectItem>
-                  <SelectItem className="hover:bg-zinc-700" value="+57">
-                    +57
-                  </SelectItem>
-                  <SelectItem className="hover:bg-zinc-700" value="+52">
-                    +52
-                  </SelectItem>
-                  <SelectItem className="hover:bg-zinc-700" value="+51">
-                    +51
-                  </SelectItem>
-                  <SelectItem className="hover:bg-zinc-700" value="+589">
-                    +589
-                  </SelectItem>
-                  <SelectItem className="hover:bg-zinc-700" value="+58">
-                    +58
-                  </SelectItem>
-                  <SelectItem className="hover:bg-zinc-700" value="+34">
-                    +34
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <Input
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTelNumber(countryCode + e.target.value)}
-              className="border-0 bg-transparent"
+    <>
+      <div onClick={() => setShow(false)} className="fixed inset-0 z-40 bg-black bg-opacity-80"></div>
+      <div
+        className={`fixed left-1/2 top-1/2 z-50 flex h-[250px] w-[300px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-4 rounded-2xl border-none xs:w-[400px] md:w-[592px] ${isDark ? 'bg-zinc-800 text-white' : 'bg-white text-black'} sm:max-w-md`}
+      >
+        <h2 className="xs:text-2x1 text-lg font-light md:text-3xl">Verificar Número de WhatsApp</h2>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <label
+            htmlFor="phone"
+            className={clsx(
+              'mb-1 ml-2.5 h-5 font-textFont text-sm text-lightText transition-opacity duration-300 dark:text-darkText',
+              isFocused || !!watch('phone') ? 'opacity-100' : 'opacity-0',
+            )}
+          >
+            Telefono
+          </label>
+          <div
+            className={clsx(
+              'flex max-h-[42px] max-w-full items-center rounded-2xl border bg-transparent py-2 pr-5 text-lightText focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
+              watch('phone') && 'border-inputLight dark:border-lightText',
+              errors.phone
+                ? 'mb-0 border-errorColor placeholder-errorColor'
+                : 'mb-5 border-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:hover:border-lightText dark:hover:placeholder-lightText',
+            )}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+          >
+            <Controller
+              name="calling_code"
+              control={control}
+              defaultValue={undefined}
+              rules={{
+                required: 'Este campo es obligatorio',
+              }}
+              render={({ field, fieldState }) => (
+                <SelectCountry
+                  selectedCodeCountry={field.value}
+                  setSelectedCodeCountry={(option) => field.onChange(option)}
+                  errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
+                  textColor={['lightText', 'lightText']}
+                  classNames="pl-4 w-[118px]"
+                />
+              )}
+            />
+            <input
+              placeholder={isFocused ? '' : errors.phone ? 'Telefono*' : 'Telefono'}
+              className={clsx(
+                'inputChangeAutofillReverse w-full border-none bg-transparent font-textFont focus:border-none focus:outline-none focus:ring-0',
+                errors.phone
+                  ? 'placeholder-errorColor'
+                  : 'placeholder-inputLightDisabled dark:placeholder-placeholderDark',
+              )}
               type="tel"
-              placeholder="Numero de WhatsApp"
+              {...register('phone', {
+                required: 'El número de teléfono es obligatorio',
+                pattern: {
+                  value: /^\d{9,11}$/,
+                  message: 'Introduce un número válido de entre 9 y 11 dígitos',
+                },
+              })}
             />
           </div>
-        </div>
+          {errors.phone && (
+            <p className="px-[10px] font-textFont text-sm text-errorColor">{errors.phone.message as string}</p>
+          )}
 
-        <div className="mt-4 flex justify-between">
-          <Button
-            onClick={() => setShow(false)}
-            variant="ghost"
-            className={`rounded-full px-4 ${isDark ? 'border border-white text-white hover:bg-white hover:text-[#4B4B4B]' : 'border border-blue-400 bg-white text-blue-400'}`}
-          >
-            ← Volver
-          </Button>
-          <Button
-            onClick={handleSubmit}
-            className={`rounded-full px-4 ${isDark ? 'bg-white text-[#4B4B4B]' : 'bg-blue-400 text-white hover:bg-blue-700'}`}
-          >
-            Enviar Código
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+          <div className="flex justify-between gap-4 pt-5">
+            <button
+              onClick={() => setShow(false)}
+              className={`rounded-full px-4 ${isDark ? 'border border-white text-white hover:bg-white hover:text-[#4B4B4B]' : 'border border-blue-400 bg-white text-blue-400'}`}
+            >
+              Volver
+            </button>
+            <button
+              type="submit"
+              className={`h-8 rounded-full px-4 ${isDark ? 'bg-white text-[#4B4B4B]' : 'bg-blue-400 text-white hover:bg-blue-700'}`}
+            >
+              Enviar Código
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
   );
 };
 
-export default WhatsAppModal;
+export default WhatsappModal;

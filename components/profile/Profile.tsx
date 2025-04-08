@@ -3,14 +3,14 @@
 import { Button } from '@mui/material';
 import { Email, Instagram, WhatsApp } from '@mui/icons-material';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
-import WhatsAppModal from './Modals/WhatsappModal';
-import EmailModal from './Modals/EmailModal';
 import { profileMock } from './utils/ProfileMock';
 import SocialMediaModal from './Modals/RedesSocialesModal';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
-import InfoPersonalModal from './Modals/InfoPersonalModal';
+// import InfoPersonalModal from './Modals/InfoPersonalModal';
+import InfoPersonalNuevo from './Modals/InfoPersonalNuevo';
+import WhatsappModal from './Modals/WhatsappModal';
 
 const Profile = () => {
   const { isDark } = useDarkTheme();
@@ -19,8 +19,16 @@ const Profile = () => {
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const [showSocialMediaModal, setShowSocialMediaModal] = useState(false);
 
+  useEffect(() => {
+    if (showWhatsAppModal || showProfileModal || showSocialMediaModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [showWhatsAppModal]);
+
   return (
-    <div className="mt-14 min-h-screen font-textFont text-white">
+    <div className="my-14 min-h-screen font-textFont text-white">
       {/* Header */}
       <header
         className={`flex max-h-[150px] items-center justify-between ${isDark ? 'bg-[#4B4B4B]' : 'bg-nav-blue text-white'} p-4`}
@@ -71,7 +79,7 @@ const Profile = () => {
                 Editar
               </Button>
             </div>
-            {showProfileModal && <InfoPersonalModal show={showProfileModal} setShow={setShowProfileModal} />}
+            {showProfileModal && <InfoPersonalNuevo show={showProfileModal} setShow={setShowProfileModal} />}
           </div>
         </div>
 
@@ -85,15 +93,10 @@ const Profile = () => {
           </div>
           <div className="mt-2 flex items-center justify-between">
             <p className="text-sm">{profileMock.email}</p>
-            {/* <Button onClick={() => setShowEmailModal(true)} className="h-6 px-2 text-xs">
-              Editar
-            </Button> */}
           </div>
-          {/* {showEmailModal && <EmailModal show={showEmailModal} setShow={setShowEmailModal} />} */}
         </div>
 
         {/* WhatsApp */}
-        {/* Inputs redondeados */}
         <div
           className={`mx-4 mb-4 w-[75%] max-w-[796px] rounded-lg ${isDark ? 'bg-[#4B4B4B]' : 'bg-white text-black shadow-xl'} bg-[#4B4B4B] p-4 md-tablet:w-full`}
         >
@@ -107,7 +110,7 @@ const Profile = () => {
               Editar
             </Button>
           </div>
-          {showWhatsAppModal && <WhatsAppModal show={showWhatsAppModal} setShow={setShowWhatsAppModal} />}
+          {showWhatsAppModal && <WhatsappModal show={showWhatsAppModal} setShow={setShowWhatsAppModal} />}
         </div>
 
         {/* Social Network */}

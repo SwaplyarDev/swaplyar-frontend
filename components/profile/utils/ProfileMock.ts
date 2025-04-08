@@ -1,5 +1,3 @@
-import { id } from 'date-fns/locale';
-
 export const profileMock = {
   informacionPersonal: {
     nombreLegal: 'Oa Johan Javier Suarez Merchan',
