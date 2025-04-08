@@ -14,7 +14,6 @@ import CuentasAsociadasIcon from '@/components/icons-internal/icons-desktop/Cuen
 import CentroDeAyudaIcon from '@/components/icons-internal/icons-desktop/CentroDeAyuda/CentroDeAyudaIcon';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import IconsTablet from '@/components/icons-internal/icons-tablet/IconsTablet';
-import useWindowWidth from '@/hooks/useWindowWidth';
 import { ActiveTab, NavIcons } from './NavIcons';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -35,31 +34,28 @@ const NavbarInternal = () => {
     }, 400);
   };
 
-  const windowWidth = useWindowWidth();
-
-  const isMobile = () => {
-    if (windowWidth >= 390) return SwaplyArLogoComplete;
-    else return SwaplyArLogoSolo;
-  };
-
-  const isMobileDark = () => {
-    if (windowWidth >= 390) return SwaplyArlogoMobileWhite;
-    else return SwaplyArlogoWhite;
-  };
-
   const isActive = pathname.split('/')[3];
 
   return (
-    <header>
+    <header className="sticky top-0 z-[1000] w-full bg-white dark:bg-lightText">
       <div className="max-width-screen mx-auto md:max-w-[1300px]">
         <div className="flex h-16 items-center justify-around mini-phone:mx-8 mini-phone:justify-between xs:mx-10 md:mx-20">
-          <Image
-            src={isDark ? isMobileDark() : isMobile()}
-            className="max-h-14 w-full max-w-14 xs-mini-phone:max-h-16 xs-mini-phone:max-w-[200px]"
-            alt="Cambiar saldo online"
-            width={200}
-            height={80}
-          />
+          <Link href="/es/auth/solicitud">
+            <Image
+              src={isDark ? SwaplyArlogoMobileWhite : SwaplyArLogoComplete}
+              className="hidden max-h-14 w-full max-w-14 mini-phone:block mini-phone:max-w-[200px]"
+              alt="Cambiar saldo online"
+              width={200}
+              height={80}
+            />
+            <Image
+              src={isDark ? SwaplyArlogoWhite : SwaplyArLogoSolo}
+              className="max-h-14 w-full max-w-14 mini-phone:hidden"
+              alt="Cambiar saldo online"
+              width={200}
+              height={80}
+            />
+          </Link>
           <div className="">
             <Switch />
           </div>
@@ -81,15 +77,14 @@ const NavbarInternal = () => {
                   className="h-full w-full overflow-hidden rounded-full bg-white dark:bg-lightText"
                 />
               </Link>
-              <p className="hidden pl-2 pt-4 font-sans text-white dark:text-black xs:block lg:ml-4">Nombre Usuario</p>
+              <p className="hidden pl-2 pt-4 font-sans text-white dark:text-black xs:block lg:ml-4 lg:hidden lg2:block">
+                Nombre Usuario
+              </p>
             </div>
             <div className="hidden lg:mr-10 lg:flex lg:max-w-[460px]">
               <NavIcons />
             </div>
-            <button
-              onClick={() => signOut()}
-              className="block transition-all duration-300 hover:w-[180px] xs:hidden lg:block"
-            >
+            <button onClick={() => signOut()} className="block xs:hidden lg:block">
               <CerrarSesion />
             </button>
             <div onClick={() => setDrawerMenu(true)} className="hidden xs:block xs:pr-10 md:pr-0 lg:hidden">
