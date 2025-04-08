@@ -3,7 +3,7 @@
 'use client';
 
 import Image from 'next/image';
-import { BlogPostCardProps } from '@/types/blogs/blog';
+import { BlogPostCardProps, dataBlog } from '@/types/blogs/blog';
 import { useEffect, useState } from 'react';
 import { fetchBlogs } from '@/actions/blogs/blogs.actions';
 import CardBlogOption from './CardBlogOption';
@@ -15,6 +15,7 @@ import ProgressBar from '@/components/ui/ProgressBar/ProgressBar';
 
 interface CardContentProps {
   blogData: BlogPostCardProps;
+  content: dataBlog;
 }
 
 const renderList = (array: any[]) => {
@@ -53,11 +54,10 @@ const renderListBlog = (array: any[]) => {
   );
 };
 
-const CardContent: React.FC<CardContentProps> = ({ blogData }) => {
+const CardContent: React.FC<CardContentProps> = ({ blogData }, { content }) => {
   const [randomBlog, setRandomBlog] = useState<BlogPostCardProps | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [progress, setProgress] = useState(0);
-
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;

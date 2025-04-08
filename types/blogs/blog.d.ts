@@ -18,6 +18,26 @@ interface BlogPostCardProps {
   subtitulos: any[];
   create_at: string;
 }
+interface dataBlog {
+  slug: string;
+  sections: {
+    sidebar: {
+      content: (string | string[])[];
+    };
+    mainContent: {
+      content: (
+        | {
+            text: string;
+            style: string;
+          }
+        | {
+            text: (string | string[])[];
+            style: string;
+          }
+      )[];
+    };
+  };
+}
 
 export interface BlogResponse {
   blogsPerPage: any[];

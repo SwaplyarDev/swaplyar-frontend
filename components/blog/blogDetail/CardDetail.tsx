@@ -9,6 +9,9 @@ import { fetchBlogById } from '@/actions/blogs/blogById.action';
 import { BlogPostCardProps } from '@/types/blogs/blog';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import { paypalEnArgentina } from '@/data/dataBlogs';
+import { content } from 'flowbite-react/tailwind';
+import { pl } from 'date-fns/locale';
 
 const CardDetail: React.FC = () => {
   const searchParams = useSearchParams();
@@ -16,8 +19,8 @@ const CardDetail: React.FC = () => {
   const id = searchParams.get('id');
   const slug = searchParams.get('slug');
   const [blogData, setBlogData] = useState<BlogPostCardProps | null>(null);
+  const [content, SetContent] = useState<BlogPostCardProps | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     if (!id) return;
 
@@ -46,8 +49,7 @@ const CardDetail: React.FC = () => {
   if (!blogData) {
     return <p className="p-6 text-center text-gray-500">Blog no encontrado.</p>;
   }
-
-  return <CardContent blogData={blogData} />;
+  return <CardContent blogData={blogData} content={paypalEnArgentina} />;
 };
 
 export default CardDetail;

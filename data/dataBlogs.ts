@@ -1,5 +1,5 @@
-const paypalEnArgentina = {
-  id: '',
+export const paypalEnArgentina = {
+  slug: 'paypal-en-argentina',
   sections: {
     sidebar: {
       content: [
