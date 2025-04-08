@@ -24,7 +24,7 @@ const BlogPostCard: React.FC<BlogPostProps> = ({ blog_id, title, body, url_image
     formattedDate && !isNaN(formattedDate.getTime()) ? formattedDate.toLocaleDateString() : 'Fecha inválida';
 
   return (
-    <Link href={`es/blog/blogDetail?slug=${encodeURIComponent(slug)}&id=${encodeURIComponent(blog_id)}`}>
+    <Link href={`blog/blogDetail?slug=${encodeURIComponent(slug)}&id=${encodeURIComponent(blog_id)}`}>
       <div className="flex h-[443px] w-full max-w-[350px] transform flex-col overflow-hidden rounded-[16px] border border-[#012A8E] bg-white shadow-md shadow-black/25 transition-transform dark:border-inputDark dark:bg-[#323232]">
         <Image
           src={url_image}
