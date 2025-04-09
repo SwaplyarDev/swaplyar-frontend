@@ -5,8 +5,7 @@ import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCi
 
 const RequestPage = () => {
   return (
-    <div className="flex flex-col gap-4 lg:flex-row-reverse">
-      <AnimatedBlurredCircles tope="top-[200]" />
+    <div className="mx-auto mt-24 flex w-full max-w-[1000px] flex-col gap-4 p-6 sm:my-6 lg:flex-row-reverse">
       <PlusRewardSection />
       <TransactionCalculator />
     </div>

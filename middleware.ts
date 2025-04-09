@@ -17,10 +17,19 @@ export default auth((req) => {
     // Verificar si la ruta está bajo /admin
     const isAdminRoute = nextUrl.pathname.startsWith('/es/admin');
 
+    if (isAdminRoute && isLoggedIn) {
+      const userRole = req.auth?.user?.role; // Obtener el rol del usuario desde el token JWT
+      if (userRole !== 'admin') {
+        return NextResponse.redirect(new URL('/', req.url)); // Redirigir al home si no es admin
+      }
+    }
     // Verificar si la ruta está bajo /es/auth
 
     const isAuthRoute = nextUrl.pathname.startsWith('/es/auth');
 
+    if (!isAuthRoute && isLoggedIn && !isAdminRoute) {
+      return NextResponse.redirect(new URL('/es/auth/solicitud', req.url));
+    }
     // Redirigir si la ruta es protegida y el usuario no está logueado
     if (isProtectedRoute && !isLoggedIn) {
       return NextResponse.redirect(new URL('/es/iniciar-sesion-o-registro', req.url));
@@ -35,12 +44,6 @@ export default auth((req) => {
       return NextResponse.redirect(new URL('/es/iniciar-sesion-o-registro', req.url));
     }
 
-    if (isAdminRoute && isLoggedIn) {
-      const userRole = req.auth?.user?.role; // Obtener el rol del usuario desde el token JWT
-      if (userRole !== 'admin') {
-        return NextResponse.redirect(new URL('/', req.url)); // Redirigir al home si no es admin
-      }
-    }
     if (nextUrl.pathname === '/es/inicio/formulario-de-solicitud') {
       const referer = req.headers.get('referer'); // Obtener la URL previa
       if (!referer || !referer.includes('/')) {
