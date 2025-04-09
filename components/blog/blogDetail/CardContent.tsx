@@ -3,7 +3,7 @@
 'use client';
 
 import Image from 'next/image';
-import { BlogPostCardProps, dataBlog } from '@/types/blogs/blog';
+import { BlogPostCardProps } from '@/types/blogs/blog';
 import { useEffect, useState } from 'react';
 import { fetchBlogs } from '@/actions/blogs/blogs.actions';
 import CardBlogOption from './CardBlogOption';
@@ -12,10 +12,41 @@ import { footerLinks } from '@/components/footer/footerLinks';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProgressBar from '@/components/ui/ProgressBar/ProgressBar';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+function isString(value: unknown): value is string {
+  return typeof value === 'string' || value instanceof String;
+}
+
+export function highlightText(text: string) {
+  if (isString(text)) {
+    const parts = text.split(/(\*\*.*?\*\*)/);
+    return (
+      Array.isArray(parts) &&
+      parts.map((part, i) =>
+        part.startsWith('**') && part.endsWith('**') ? (
+          <span key={i} style={{ fontWeight: '700' }}>
+            {part.slice(2, -2)}
+          </span>
+        ) : (
+          part
+        ),
+      )
+    );
+  }
+}
 
 interface CardContentProps {
-  blogData: BlogPostCardProps;
-  content: dataBlog;
+  data: {
+    slug: string;
+    sections: {
+      sidebar: {
+        content: (string | string[])[];
+      };
+      mainContent: {
+        content: ({ text: string; style: string } | { text: (string | string[])[]; style: string })[];
+      };
+    };
+  };
 }
 
 const renderList = (array: any[]) => {
@@ -54,7 +85,8 @@ const renderListBlog = (array: any[]) => {
   );
 };
 
-const CardContent: React.FC<CardContentProps> = ({ blogData }, { content }) => {
+const CardContent: React.FC<CardContentProps> = ({ data }) => {
+  const { isDark } = useDarkTheme();
   const [randomBlog, setRandomBlog] = useState<BlogPostCardProps | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -72,7 +104,7 @@ const CardContent: React.FC<CardContentProps> = ({ blogData }, { content }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     const fetchData = async () => {
       setIsLoaded(true);
 
@@ -93,102 +125,18 @@ const CardContent: React.FC<CardContentProps> = ({ blogData }, { content }) => {
     };
 
     fetchData();
-  }, [blogData]);
+  }, [blogData]); */
 
   return (
-    <main className="relative mx-auto w-full max-w-screen-phone px-4 xs-mini-phone2:max-w-screen-tablet md:max-w-screen-desktop md:px-8 lg:px-4">
-      <div className="sticky top-28 flex w-full flex-col items-center sm:top-36">
-        <div className="rounded-2xl border-2 border-buttonsLigth bg-custom-whiteD-100 p-2 dark:border-custom-whiteD-100">
-          <ProgressBar value={progress} width="300px" />
+    <section className="m-auto flex w-[1366px] flex-col">
+      <div className="ml-[181px] mt-[100px]">
+        <p className="">{highlightText('El tiempo de lectura estimado para este artículo es de **4 a 5 minutos**')}</p>
+        <div className="mt-[20px]">
+          <p>16 Noviembre 2024</p>
+          <p className={!isDark ? 'font-bold text-[#012A8E]' : 'font-bold text-[#EBE7E0]'}>SwaplyAr</p>
         </div>
       </div>
-      <div className="mx-auto hidden max-w-[975px] flex-col gap-7 pb-5 pt-10 lg:flex">
-        <p className="font-textFont text-lg">
-          El tiempo de lectura estimado para este artículo es de <span className="font-bold">4 a 5 minutos</span>
-        </p>
-        <div className="flex flex-col gap-1.5">
-          <p className="font-textFont text-lg">{blogData.create_at}</p>
-          <p className="font-textFont text-lg font-bold text-buttonsLigth dark:text-darkText">SwaplyAr</p>
-        </div>
-      </div>
-      <div className="flex gap-5">
-        <div className="hidden w-full max-w-[286px] lg:block">
-          <div className="sticky top-32 flex flex-col gap-4">
-            <h2 className="font-textFont text-xl font-semibold">Contenido:</h2>
-            {blogData.subtitulos && blogData.subtitulos.length > 0 && (
-              <ul className="list-disc pl-5 font-textFont">
-                {blogData.subtitulos.map((sub, index) => (
-                  <li key={sub.subtitulo_id}>
-                    <a href={`#${sub.subtitulo_id}`} className="hover:text-buttonsExtraLigth hover:underline">
-                      {sub.subtitulo}
-                    </a>
-                    {sub.items && sub.items.length > 0 && renderList(sub.items)}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
-        <div className="flex w-full flex-col gap-7 sm:mt-20 lg:mt-0">
-          <div className="flex w-full flex-col gap-4">
-            <h1 className="p-2.5 text-center font-titleFont text-4xl font-semibold text-buttonsLigth dark:text-darkText lg:text-start">
-              {blogData.title}
-            </h1>
-            <Image
-              src={blogData.url_image}
-              alt={blogData.title}
-              width={500}
-              height={286}
-              className="mx-auto h-[214px] object-cover sm-tablet:w-full sm-tablet:px-20 lg:h-[286px] lg:px-0"
-            />
-          </div>
-          <div className="flex flex-col gap-6" id="blog-content">
-            {blogData.subtitulos &&
-              blogData.subtitulos.length > 0 &&
-              blogData.subtitulos.map((sub, index) => (
-                <div key={sub.subtitulo_id} id={sub.subtitulo_id} className="scroll-mt-32 font-textFont">
-                  <p className="font-semibold">{sub.subtitulo}</p>
-                  <p className="font-light">{sub.dsc_subtitulo}</p>
-                  {sub.items && sub.items.length > 0 && renderListBlog(sub.items)}
-                </div>
-              ))}
-          </div>
-        </div>
-      </div>
-      <div className="mb-[70px] mt-20 flex flex-col-reverse items-center justify-between gap-10 lg:flex-row">
-        <CardBlogOption isLoaded={isLoaded} randomBlog={randomBlog} />
-        <div className="relative ml-[120px] hidden w-full max-w-[500px] sm:block lg:ml-0">
-          <Image
-            src={cardInfoBlog}
-            alt="cardImage"
-            width={500}
-            height={262}
-            className="h-[262px] w-full object-cover"
-          />
-          <div className="absolute left-[68px] top-[33px] flex w-[240px] flex-col gap-4">
-            <p className="text-center font-textFont text-xl font-semibold text-lightText">
-              Si este artículo te resultó útil, ¡compártelo con tu comunidad! Etiquétanos @SwaplyAr y cuéntanos qué
-              opinas.
-            </p>
-            <div className="flex justify-between">
-              {footerLinks.social.map(({ href, icon, label }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  title={`SwaplyAr en ${label}`}
-                  className="transition-opacity duration-200 hover:opacity-75"
-                >
-                  <FontAwesomeIcon icon={icon} className="text-4xl text-lightText" />
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
+    </section>
   );
 };
 

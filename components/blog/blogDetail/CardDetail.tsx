@@ -2,54 +2,40 @@
 
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import CardContent from './CardContent';
 import { fetchBlogById } from '@/actions/blogs/blogById.action';
 import { BlogPostCardProps } from '@/types/blogs/blog';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { paypalEnArgentina } from '@/data/dataBlogs';
+import { dataBlogs } from '@/data/dataBlogs';
 import { content } from 'flowbite-react/tailwind';
 import { pl } from 'date-fns/locale';
 
-const CardDetail: React.FC = () => {
-  const searchParams = useSearchParams();
+function CardDetail() {
   const { isDark } = useDarkTheme();
-  const id = searchParams.get('id');
-  const slug = searchParams.get('slug');
-  const [blogData, setBlogData] = useState<BlogPostCardProps | null>(null);
-  const [content, SetContent] = useState<BlogPostCardProps | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    if (!id) return;
-
-    const fetchData = async () => {
-      try {
-        const data = await fetchBlogById(id);
-        setBlogData(data);
-      } catch (error) {
-        console.error('Error al obtener el blog:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [id, slug]);
-
-  if (isLoading) {
+  const slug = useSearchParams().get('slug');
+  const blog = dataBlogs.find((blog) => blog.slug === slug);
+  /*   if (isLoading) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
         <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="100px" />
       </div>
     );
+  } */
+
+  if (!blog) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="100px" />
+        <p className="text-center text-gray-500">Blog not found</p>
+      </div>
+    );
   }
 
-  if (!blogData) {
-    return <p className="p-6 text-center text-gray-500">Blog no encontrado.</p>;
-  }
-  return <CardContent blogData={blogData} content={paypalEnArgentina} />;
-};
+  return <CardContent data={blog} />;
+}
 
 export default CardDetail;
