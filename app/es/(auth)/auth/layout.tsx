@@ -5,9 +5,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <NavbarInternal />
-      <main className="flex min-h-screen flex-col bg-white dark:bg-lightText">
-        <div className="flex flex-grow items-center justify-center">{children}</div>
-      </main>
+      <main className="bg-white dark:bg-lightText">{children}</main>
       <FooterInternal />
     </>
   );
