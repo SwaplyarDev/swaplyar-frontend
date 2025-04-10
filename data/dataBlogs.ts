@@ -176,10 +176,78 @@ export const dataBlogs = [
     },
   },
   {
-    slug: '',
+    title: 'Billeteras virtuales internacionales',
+    image: '/images/billeterasvirtuales.png',
+    slug: 'billeteras-virtuales-internacionales',
+
     sections: {
-      sidebar: { content: [] },
-      mainContent: { content: [] },
+      sidebar: {
+        content: ['Principales Billeteras Virtuales Internacionales', ['PayPal', 'Skrill', 'Neteller', 'Payoneer']],
+      },
+      mainContent: {
+        content: [
+          {
+            text: 'En el mundo digital actual, las billeteras virtuales internacionales se han convertido en herramientas esenciales para gestionar y transferir dinero de manera eficiente. Para los usuarios de SwaplyAr, es fundamental conocer las opciones disponibles y elegir la que mejor se adapte a sus necesidades.',
+            style: 'normal',
+          },
+          {
+            text: '**Principales Billeteras Virtuales Internacionales**',
+            style: 'subtitle',
+          },
+          {
+            text: [
+              'PayPal',
+              [
+                '**Descripción**: PayPal es una de las plataformas de pago en línea más reconocidas a nivel mundial, permitiendo enviar y recibir dinero de forma segura',
+                '**Ventajas**:',
+                ['Amplia aceptación en comercios internacionales.', 'Facilidad de uso y configuración.'],
+                '**Desventajas**:',
+                [
+                  'Comisiones elevadas en ciertas transacciones.',
+                  'Limitaciones para retirar fondos en algunos países.',
+                ],
+              ],
+              '**Skrill**',
+              [
+                'Descripción: Skrill es una billetera digital que facilita pagos y transferencias internacionales, especialmente popular en el sector de las apuestas y el comercio en línea',
+                '**Ventajas**:',
+                ['Transacciones rápidas y seguras', 'Programa de lealtad para usuarios frecuentes.'],
+                '**Desventajas**:',
+                [
+                  'Comisiones por inactividad si no se utiliza la cuenta durante un período prolongado.',
+                  'No ampliamente aceptada en todos los comercios.',
+                ],
+              ],
+              '**Neteller**',
+              [
+                '**Descripción**: Neteller es una plataforma de pagos en línea que permite a los usuarios transferir dinero y realizar compras en línea de manera segura.',
+              ],
+              [
+                '**Ventajas**:',
+                [
+                  'Ofrece una tarjeta prepaga para retiros en cajeros automáticos.',
+                  'Compatible con múltiples monedas.',
+                ],
+                '**Desventajas**:',
+                ['Comisiones por conversión de moneda.', 'Restricciones en ciertos países.'],
+              ],
+              '**Payoneer**',
+              [
+                '**Descripción**: Payoneer es una plataforma que facilita pagos internacionales, ideal para freelancers y empresas que operan globalmente',
+                '**Ventajas**:',
+                [
+                  'Proporciona cuentas bancarias virtuales en múltiples países.',
+                  'Tarjeta de débito para retiros y compras.',
+                ],
+                '**Desventajas**:',
+                ['Comisiones por retiro y conversión de moneda.', 'Proceso de verificación puede ser extenso.'],
+              ],
+            ],
+
+            style: 'ol',
+          },
+        ],
+      },
     },
   },
 ];

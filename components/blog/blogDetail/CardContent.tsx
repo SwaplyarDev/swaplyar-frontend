@@ -191,9 +191,27 @@ function CardContent({ data }: CardContentProps) {
               } else if (content.style === 'ol') {
                 return Array.isArray(content.text) ? (
                   <ol className="list-decimal pl-5">
-                    {content.text.map((item: string, index: number) => (
-                      <li key={index}>{highlightText(item)}</li>
-                    ))}
+                    {content.text.map((item: string, idx: number) => {
+                      return Array.isArray(item) ? (
+                        <ul key={idx} className="list-disc pl-5">
+                          {item.map((subItem, subIdx) => {
+                            return Array.isArray(subItem) ? (
+                              <ul>
+                                {subItem.map((subSubitem: string, idx: number) => (
+                                  <li className="ml-5 list-disc" key={idx}>
+                                    {highlightText(subSubitem)}
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <li key={subIdx}>{highlightText(subItem)}</li>
+                            );
+                          })}
+                        </ul>
+                      ) : (
+                        <li key={idx}>{highlightText(item)}</li>
+                      );
+                    })}
                   </ol>
                 ) : null;
               }
