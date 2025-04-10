@@ -5,11 +5,6 @@ import type { DefaultSession } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 declare module 'next-auth' {
   interface Session {
-    // user: {
-    //   id: string;
-    //   role: UserRole;
-    //   name: string;
-    // } & DefaultSession['user'];
     decodedToken: DecodedUser & DefaultSession['user'];
   }
   interface User {
@@ -25,6 +20,7 @@ declare module 'next-auth' {
     isActive: boolean;
     createdAt: string;
     profile: Profile;
+    token: string;
     social: Social[];
   }
 

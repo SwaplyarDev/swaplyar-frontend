@@ -8,9 +8,9 @@ import { swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
 import { profileMock } from './utils/ProfileMock';
 import SocialMediaModal from './Modals/RedesSocialesModal';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
-import InfoPersonalNuevo from './Modals/InfoPersonalNuevo';
 import WhatsappModal from './Modals/WhatsappModal';
 import { useSession } from 'next-auth/react';
+import InfoPersonalModal from './Modals/InfoPersonalModal';
 
 const Profile = () => {
   const { isDark } = useDarkTheme();
@@ -85,7 +85,7 @@ const Profile = () => {
                 Editar
               </Button>
             </div>
-            {showProfileModal && <InfoPersonalNuevo show={showProfileModal} setShow={setShowProfileModal} />}
+            {showProfileModal && <InfoPersonalModal show={showProfileModal} setShow={setShowProfileModal} />}
           </div>
         </div>
 
