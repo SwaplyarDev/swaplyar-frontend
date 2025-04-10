@@ -6,7 +6,7 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import CardContent from './CardContent';
 import { fetchBlogById } from '@/actions/blogs/blogById.action';
-import { BlogPostCardProps } from '@/types/blogs/blog';
+import { CardContentProps } from '@/types/blogs/blog';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { dataBlogs } from '@/data/dataBlogs';
@@ -17,7 +17,24 @@ function CardDetail() {
   const { isDark } = useDarkTheme();
   const [isLoading, setIsLoading] = useState(true);
   const slug = useSearchParams().get('slug');
-  const blog = dataBlogs.find((blog) => blog.slug === slug);
+  const blog = dataBlogs
+    .map((blog) => ({
+      title: blog.title || '',
+      image: blog.image || '',
+      slug: blog.slug,
+      sections: {
+        sidebar: {
+          content: blog.sections.sidebar.content,
+        },
+        mainContent: {
+          content: blog.sections.mainContent.content.map((item) => ({
+            text: item.text,
+            style: item.style,
+          })),
+        },
+      },
+    }))
+    .find((blog) => blog.slug === slug) as CardContentProps['data'];
   /*   if (isLoading) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
@@ -34,6 +51,7 @@ function CardDetail() {
       </div>
     );
   }
+  console.log(blog);
 
   return <CardContent data={blog} />;
 }

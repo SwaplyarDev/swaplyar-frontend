@@ -3,7 +3,7 @@
 'use client';
 
 import Image from 'next/image';
-import { BlogPostCardProps } from '@/types/blogs/blog';
+import { BlogPostCardProps, CardContentProps } from '@/types/blogs/blog';
 import { useEffect, useState } from 'react';
 import { fetchBlogs } from '@/actions/blogs/blogs.actions';
 import CardBlogOption from './CardBlogOption';
@@ -35,20 +35,6 @@ export function highlightText(text: string) {
   }
 }
 
-interface CardContentProps {
-  data: {
-    slug: string;
-    sections: {
-      sidebar: {
-        content: (string | string[])[];
-      };
-      mainContent: {
-        content: ({ text: string; style: string } | { text: (string | string[])[]; style: string })[];
-      };
-    };
-  };
-}
-
 const renderList = (array: any[]) => {
   return (
     <ul className="list-disc pl-5">
@@ -65,7 +51,7 @@ const renderList = (array: any[]) => {
 
 const renderListBlog = (array: any[]) => {
   return (
-    <ul className="list-disc pl-5">
+    <ul className="list-disc">
       {array.map((item) => (
         <li key={item.item_id} id={item.item_id}>
           <span className="font-semibold">{item.dsc_item}</span>
@@ -85,11 +71,14 @@ const renderListBlog = (array: any[]) => {
   );
 };
 
-const CardContent: React.FC<CardContentProps> = ({ data }) => {
+function CardContent({ data }: CardContentProps) {
   const { isDark } = useDarkTheme();
   const [randomBlog, setRandomBlog] = useState<BlogPostCardProps | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [progress, setProgress] = useState(0);
+  const sideBar = data?.sections.sidebar.content;
+  const mainContent = data?.sections.mainContent.content;
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -136,8 +125,43 @@ const CardContent: React.FC<CardContentProps> = ({ data }) => {
           <p className={!isDark ? 'font-bold text-[#012A8E]' : 'font-bold text-[#EBE7E0]'}>SwaplyAr</p>
         </div>
       </div>
+      <div className="flex gap-10">
+        {/* SideBar */}
+        <article className="mt-[50px] flex h-[756px] w-[286px] flex-col gap-5">
+          <h4 className="font-semibold">Contenido: </h4>
+          <ul className="list-disc pl-5">
+            {sideBar.map((content: string | string[], index: number) => {
+              if (Array.isArray(content)) {
+                return (
+                  <ul key={index} className="list-disc pl-5">
+                    {content.map((text: string, idx: number) => (
+                      <li key={idx}>
+                        <a href="">{text}</a>
+                      </li>
+                    ))}
+                  </ul>
+                );
+              } else {
+                return (
+                  <li key={index}>
+                    <a href="">{content}</a>
+                  </li>
+                );
+              }
+            })}
+          </ul>
+        </article>
+        {/* Main Content */}
+        <main className="flex flex-col gap-5">
+          <h1 className={!isDark ? 'text-center text-4xl text-[#012A8E]' : 'text-center text-4xl text-[#EBE7E0]'}>
+            {data.title}
+          </h1>
+          <Image src={data.image} width={898} height={286} alt="Imagen del blog" />
+          <section></section>
+        </main>
+      </div>
     </section>
   );
-};
+}
 
 export default CardContent;

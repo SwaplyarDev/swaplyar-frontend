@@ -7,6 +7,25 @@ export interface BlogPost {
   blog_id: string;
 }
 
+export interface CardContentProps {
+  data: {
+    title: string;
+    image: string;
+    slug: string;
+    sections: {
+      sidebar: {
+        content: string[];
+      };
+      mainContent: {
+        content: {
+          text: string | string[];
+          style: string;
+        }[];
+      };
+    };
+  };
+}
+
 interface BlogPostCardProps {
   id?: string;
   blog_id: string;

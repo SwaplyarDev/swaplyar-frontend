@@ -1,7 +1,7 @@
 export const dataBlogs = [
   {
     title: 'PayPal en Argentina',
-    image: '',
+    image: '/images/paypalenarg.png',
     slug: 'paypal-en-argentina',
     sections: {
       sidebar: {
