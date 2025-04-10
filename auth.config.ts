@@ -17,7 +17,7 @@ export default {
           const user_id = credentials.user_id as string;
           let URL_VERIFICATION = '';
           if (email) {
-            URL_VERIFICATION = 'login/email/validate';
+            URL_VERIFICATION = 'email/validate';
           }
           if (user_id) {
             URL_VERIFICATION = 'users/email-validation/validate';
@@ -29,7 +29,7 @@ export default {
             ...(user_id ? { user_id } : {}),
           };
 
-          const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/${URL_VERIFICATION}`, {
+          const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/login/${URL_VERIFICATION}`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -47,13 +47,17 @@ export default {
 
           const data = await response.json();
 
+          const decodeJWT = (token: string) => {
+            const payload = token.split('.')[1];
+            const decodedPayload = atob(payload);
+            return JSON.parse(decodedPayload);
+          };
+
+          const decodedToken = decodeJWT(data.token);
+
           if (data && data.token) {
-            const { user } = data;
             return {
-              id: user.user_id,
-              name: user.full_name,
-              email: user.email,
-              role: user.role,
+              ...decodedToken,
               token: data.token,
             };
           } else {

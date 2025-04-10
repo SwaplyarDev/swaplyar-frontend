@@ -5,17 +5,47 @@ import type { DefaultSession } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 declare module 'next-auth' {
   interface Session {
-    user: {
-      id: string;
-      role: UserRole;
-      name: string;
-    } & DefaultSession['user'];
-    accessToken: string;
+    // user: {
+    //   id: string;
+    //   role: UserRole;
+    //   name: string;
+    // } & DefaultSession['user'];
+    decodedToken: DecodedUser & DefaultSession['user'];
   }
   interface User {
     id: string;
     role: UserRole;
     name: string;
+  }
+  interface DecodedUser {
+    id: string;
+    fullName: string;
+    email: string;
+    terms: string;
+    isActive: boolean;
+    createdAt: string;
+    profile: Profile;
+    social: Social[];
+  }
+
+  interface Profile {
+    firstName: string;
+    middleName: string;
+    lastName: string;
+    email: string;
+    identification: string;
+    phone: string;
+    birthDate: string;
+    age: string;
+    gender: string;
+    profilePictureUrl: string;
+    locationId: string;
+    lastActivity: string;
+  }
+
+  interface Social {
+    network: string;
+    profile: string;
   }
 }
 

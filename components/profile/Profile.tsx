@@ -8,12 +8,14 @@ import { swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
 import { profileMock } from './utils/ProfileMock';
 import SocialMediaModal from './Modals/RedesSocialesModal';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
-// import InfoPersonalModal from './Modals/InfoPersonalModal';
 import InfoPersonalNuevo from './Modals/InfoPersonalNuevo';
 import WhatsappModal from './Modals/WhatsappModal';
+import { useSession } from 'next-auth/react';
 
 const Profile = () => {
   const { isDark } = useDarkTheme();
+
+  const { data: session } = useSession();
 
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
@@ -31,23 +33,27 @@ const Profile = () => {
     <div className="my-14 min-h-screen font-textFont text-white">
       {/* Header */}
       <header
-        className={`flex max-h-[150px] items-center justify-between ${isDark ? 'bg-[#4B4B4B]' : 'bg-nav-blue text-white'} p-4`}
+        className={`flex max-h-[150px] items-center justify-center ${isDark ? 'bg-[#4B4B4B]' : 'bg-nav-blue text-white'} `}
       >
-        <h1 className="text-xl font-bold">Perfil</h1>
-        {/* User Info */}
-        <div className="flex items-end">
-          <div className={`mb-4 flex flex-col items-end ${isDark ? 'bg-[#4B4B4B]' : 'bg-nav-blue text-white'} px-10`}>
-            <p className="text-sm">{profileMock.informacionPersonal.nombreLegal}</p>
-            <p className="text-xs text-gray-400 underline">Registrado en {profileMock.anioRegistro}</p>
-          </div>
-          <div className="relative h-32 w-32">
-            <Image
-              src={swaplyArAvatar}
-              alt="Profile picture"
-              width={100}
-              height={100}
-              className="h-full w-full rounded-full object-cover"
-            />
+        <div className="flex w-full max-w-[1200px] justify-between xs:p-4">
+          <h1 className="ml-4 text-xl font-bold xs:ml-8 md:ml-[183px]">Perfil</h1>
+          {/* User Info */}
+          <div className="mr-4 flex flex-col-reverse items-end xs:flex-row">
+            <div
+              className={`flex flex-col items-end px-2 xs:mb-4 ${isDark ? 'bg-[#4B4B4B]' : 'bg-nav-blue text-white'} xs:px-10`}
+            >
+              <p className="">{session?.decodedToken.fullName}</p>
+              <p className="text-xs text-gray-400 underline">Registrado en 2019</p>
+            </div>
+            <div className="relative h-[110px] w-[110px] xs:h-32 xs:w-32">
+              <Image
+                src={swaplyArAvatar}
+                alt="Profile picture"
+                width={100}
+                height={100}
+                className="h-full w-full rounded-full object-cover"
+              />
+            </div>
           </div>
         </div>
       </header>
@@ -55,27 +61,27 @@ const Profile = () => {
       <div className="mt-5 flex flex-col items-center">
         {/* Personal Information */}
         <div
-          className={`mx-4 mb-4 w-[75%] max-w-[796px] rounded-lg ${isDark ? 'bg-[#4B4B4B]' : 'bg-white text-black shadow-xl'} p-4 md-tablet:w-full`}
+          className={`mx-4 mb-4 w-[75%] max-w-[796px] rounded-2xl ${isDark ? 'bg-[#4B4B4B]' : 'bg-white text-black shadow-xl'} p-4 md-tablet:w-full`}
         >
           <h2 className="mb-3 text-lg">Informacion Personal</h2>
 
           <div className="grid grid-cols-2 gap-y-2">
-            <p className="text-sm text-gray-400">Nombre Legal</p>
-            <p className="text-right text-sm">{profileMock.informacionPersonal.nombreLegal}</p>
+            <p className="">Nombre Legal</p>
+            <p className="text-right">{session?.decodedToken.fullName}</p>
 
-            <p className="text-sm text-gray-400">Nacionalidad</p>
-            <p className="text-right text-sm">{profileMock.informacionPersonal.nacionalidad}</p>
+            <p className="">Nacionalidad</p>
+            <p className="text-right">{session?.decodedToken.id}</p>
 
-            <p className="text-sm text-gray-400">N° de Documento</p>
-            <p className="text-right text-sm">{profileMock.informacionPersonal.numeroDocumento}</p>
+            <p className="">N° de Documento</p>
+            <p className="text-right">{session?.decodedToken.profile.identification}</p>
 
-            <p className="text-sm text-gray-400">Fecha de Nacimiento</p>
-            <p className="text-right text-sm">Mayo 25 1995</p>
+            <p className="">Fecha de Nacimiento</p>
+            <p className="text-right">{session?.decodedToken.profile.birthDate}</p>
 
-            <p className="text-sm text-gray-400">Apodo</p>
-            <div className="flex items-center justify-end gap-2 text-right text-sm">
-              {profileMock.informacionPersonal.apodo}
-              <Button onClick={() => setShowProfileModal(true)} className="h-6 px-2 text-xs">
+            <p className="">Apodo</p>
+            <div className="flex items-center justify-end gap-2 text-right">
+              {session?.decodedToken.fullName}
+              <Button onClick={() => setShowProfileModal(true)} className="h-6 px-2 text-xs text-gray-400">
                 Editar
               </Button>
             </div>
@@ -85,28 +91,28 @@ const Profile = () => {
 
         {/* Email */}
         <div
-          className={`mx-4 mb-4 w-[75%] max-w-[796px] rounded-lg ${isDark ? 'bg-[#4B4B4B]' : 'bg-white text-black shadow-xl'} p-4 md-tablet:w-full`}
+          className={`mx-4 mb-4 w-[75%] max-w-[796px] rounded-2xl ${isDark ? 'bg-[#4B4B4B]' : 'bg-white text-black shadow-xl'} p-4 md-tablet:w-full`}
         >
           <div className="flex items-center justify-between">
             <h2 className="text-lg">Correo Electrónico</h2>
-            <Email className="h-5 w-5" />
+            <Email className="h-[50px] w-[50px]" />
           </div>
           <div className="mt-2 flex items-center justify-between">
-            <p className="text-sm">{profileMock.email}</p>
+            <p className="">{session?.decodedToken.email}</p>
           </div>
         </div>
 
         {/* WhatsApp */}
         <div
-          className={`mx-4 mb-4 w-[75%] max-w-[796px] rounded-lg ${isDark ? 'bg-[#4B4B4B]' : 'bg-white text-black shadow-xl'} bg-[#4B4B4B] p-4 md-tablet:w-full`}
+          className={`mx-4 mb-4 w-[75%] max-w-[796px] rounded-2xl ${isDark ? 'bg-[#4B4B4B]' : 'bg-white text-black shadow-xl'} bg-[#4B4B4B] p-4 md-tablet:w-full`}
         >
           <div className="flex items-center justify-between">
             <h2 className="text-lg">WhatsApp</h2>
-            <WhatsApp />
+            <WhatsApp className="h-[50px] w-[50px]" />
           </div>
           <div className="mt-2 flex items-center justify-between">
-            <p className="text-sm">{profileMock.whatsapp}</p>
-            <Button onClick={() => setShowWhatsAppModal(true)} className="h-6 px-2 text-xs">
+            <p className="">{session?.decodedToken.profile.phone}</p>
+            <Button onClick={() => setShowWhatsAppModal(true)} className="h-6 px-2 text-xs text-gray-400">
               Editar
             </Button>
           </div>
@@ -115,22 +121,20 @@ const Profile = () => {
 
         {/* Social Network */}
         <div
-          className={`mx-10 mb-4 w-[75%] max-w-[796px] rounded-lg ${isDark ? 'bg-[#4B4B4B]' : 'bg-white text-black shadow-xl'} p-4 md-tablet:w-full`}
+          className={`mx-10 mb-4 w-[75%] max-w-[796px] rounded-2xl ${isDark ? 'bg-[#4B4B4B]' : 'bg-white text-black shadow-xl'} p-4 md-tablet:w-full`}
         >
           <div className="mb-2 flex items-center justify-between">
             <h2 className="text-lg">Red Social</h2>
-            <Instagram className="h-5 w-5" />
+            <Instagram className="h-[50px] w-[50px]" />
           </div>
           {profileMock.redesSociales.map((redSocial, index) => (
             <div key={`ProifileRedSocial-${index}`} className="flex justify-between">
-              <p className="mb-2 text-sm">
-                {redSocial.type[0].toUpperCase() + redSocial.type.slice(1, redSocial.type.length)}
-              </p>
-              <p className="text-sm">@{redSocial.username}</p>
+              <p className="mb-2">{redSocial.type[0].toUpperCase() + redSocial.type.slice(1, redSocial.type.length)}</p>
+              <p className="">@{redSocial.username}</p>
             </div>
           ))}
           <div className="text-end">
-            <Button onClick={() => setShowSocialMediaModal(true)} className="h-6 px-2 text-xs">
+            <Button onClick={() => setShowSocialMediaModal(true)} className="h-6 px-2 text-xs text-gray-400">
               Editar
             </Button>
           </div>
