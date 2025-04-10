@@ -196,7 +196,7 @@ export const dataBlogs = [
           },
           {
             text: [
-              'PayPal',
+              '**PayPal**',
               [
                 '**Descripción**: PayPal es una de las plataformas de pago en línea más reconocidas a nivel mundial, permitiendo enviar y recibir dinero de forma segura',
                 '**Ventajas**:',
@@ -243,7 +243,6 @@ export const dataBlogs = [
                 ['Comisiones por retiro y conversión de moneda.', 'Proceso de verificación puede ser extenso.'],
               ],
             ],
-
             style: 'ol',
           },
         ],
