@@ -78,7 +78,6 @@ function CardContent({ data }: CardContentProps) {
   const [progress, setProgress] = useState(0);
   const sideBar = data?.sections.sidebar.content;
   const mainContent = data?.sections.mainContent.content;
-
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -93,7 +92,7 @@ function CardContent({ data }: CardContentProps) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  /*   useEffect(() => {
+  /*    useEffect(() => {
     const fetchData = async () => {
       setIsLoaded(true);
 
@@ -114,7 +113,7 @@ function CardContent({ data }: CardContentProps) {
     };
 
     fetchData();
-  }, [blogData]); */
+  }, [blogData]);  */
 
   return (
     <section className="m-auto flex w-[1366px] flex-col">
@@ -152,12 +151,55 @@ function CardContent({ data }: CardContentProps) {
           </ul>
         </article>
         {/* Main Content */}
-        <main className="flex flex-col gap-5">
+        <main className="flex w-[897px] flex-col gap-5">
           <h1 className={!isDark ? 'text-center text-4xl text-[#012A8E]' : 'text-center text-4xl text-[#EBE7E0]'}>
             {data.title}
           </h1>
-          <Image src={data.image} width={898} height={286} alt="Imagen del blog" />
-          <section></section>
+          <Image className="mx-auto" src={data.image} width={898} height={286} alt="Imagen del blog" />
+          <section className="flex flex-col gap-3">
+            {mainContent.map((content: { text: string | string[]; style: string }, index: number) => {
+              if (content.style === 'normal') {
+                return (
+                  <p key={index} className="mb-4">
+                    {highlightText(content.text as string)}
+                  </p>
+                );
+              } else if (content.style === 'subtitle') {
+                return (
+                  <h2 key={index} className="">
+                    {highlightText(content.text as string)}
+                  </h2>
+                );
+              } else if (content.style === 'ul') {
+                if (Array.isArray(content.text)) {
+                  return (
+                    <ul key={index} className="list-disc pl-5">
+                      {content.text.map((item: string, idx: number) => {
+                        return Array.isArray(item) ? (
+                          <ul key={idx} className="list-disc pl-5">
+                            {item.map((subItem, subIdx) => (
+                              <li key={subIdx}>{highlightText(subItem)}</li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <li key={idx}>{highlightText(item)}</li>
+                        );
+                      })}
+                    </ul>
+                  );
+                }
+              } else if (content.style === 'ol') {
+                return Array.isArray(content.text) ? (
+                  <ol className="list-decimal pl-5">
+                    {content.text.map((item: string, index: number) => (
+                      <li key={index}>{highlightText(item)}</li>
+                    ))}
+                  </ol>
+                ) : null;
+              }
+              return null;
+            })}
+          </section>
         </main>
       </div>
     </section>
