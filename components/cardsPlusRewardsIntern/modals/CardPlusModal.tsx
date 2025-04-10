@@ -41,11 +41,11 @@ const CardPlusModal = ({ setShowModal }: { setShowModal: React.Dispatch<React.Se
 
   return (
     <div
-      className="fixed inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50 font-textFont text-[16px]"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 font-textFont text-[16px]"
       onClick={() => setShowModal(false)}
     >
       <div
-        className="relative mx-2 w-full max-w-[896px] overflow-y-auto rounded-2xl bg-[#FFF] px-[9px] pt-[30px] xs:px-[56px]"
+        className="relative mx-2 mt-2 w-full max-w-[896px] overflow-y-auto rounded-2xl bg-[#FFF] px-[9px] pt-[30px] xs:px-[56px]"
         onClick={(e) => e.stopPropagation()}
       >
         <button

@@ -15,12 +15,12 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const user = false;
 
   return (
-    <div>
-      {/*<AnimatedBlurredCircles tope='z-30 absolute'/>*/}
+    <>
+      <AnimatedBlurredCircles tope="z-10 absolute" />
       {showModal && <CardPlusModal setShowModal={setShowModal} />}
       {showVerify && <ModalVerify showVerify={showVerify} setShowVerify={setShowVerify} />}
       <div className="relative z-10 mx-auto flex max-w-[500px] flex-col px-5 text-[40px] lg:max-w-[1200px] lg:px-[100px]">
-        <h1 className="mb-10 mt-[208px] font-textFont font-medium">SwaplyAr Plus Rewards</h1>
+        <h1 className="mb-10 mt-10 font-textFont font-medium sm:mt-20">SwaplyAr Plus Rewards</h1>
 
         <div className="relative z-10 mx-auto flex max-w-[1000px] flex-col gap-5 text-[16px] lg:flex-row">
           <div>
@@ -55,7 +55,7 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

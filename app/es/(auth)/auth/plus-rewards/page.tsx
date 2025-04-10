@@ -14,9 +14,9 @@ const CardPlus = () => {
     rewardsPerMonth: 3,
   };
   return (
-    <div className="absolute w-full">
+    <>
       <SwaplyPlusRewards RewardsData={RewardsData} />
-    </div>
+    </>
   );
 };
 
