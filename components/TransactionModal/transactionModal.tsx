@@ -16,7 +16,6 @@ import AprobarRechazar from '@/components/TransactionModal/componentesModal/apro
 import DiscrepancySection from '@/components/TransactionModal/componentesModal/DiscrepancySection';
 import ClientInformation from '@/components/TransactionModal/componentesModal/ClientInformation';
 import FinalSection from '@/components/TransactionModal/componentesModal/FinalSection';
-import axios from 'axios';
 
 const MySwal = withReactContent(Swal);
 
@@ -161,9 +160,20 @@ const TransactionModal = () => {
     }
 
     try {
-      const response = await axios.post(`/admin/transactions/status/${status}`, payload);
+      const response = await fetch(`/admin/transactions/status/${status}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
 
-      console.log('Respuesta exitosa:', response.data);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('Respuesta exitosa:', data);
       setSubmitSuccess(true);
 
       // Resetear el formulario después de un envío exitoso
@@ -172,7 +182,11 @@ const TransactionModal = () => {
       }, 3000);
     } catch (error) {
       console.error('Error al enviar los datos:', error);
-      setSubmitError(axios.isAxiosError(error) ? error.message : 'Error desconocido');
+      if (error instanceof Error) {
+        setSubmitError(error.message);
+      } else {
+        setSubmitError('Error desconocido');
+      }
       setSubmitSuccess(false);
       setIsSubmitting(false);
     } finally {

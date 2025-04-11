@@ -16,7 +16,6 @@ import AprobarRechazar from '@/components/TransactionModal/componentesModal/apro
 import DiscrepancySection from '@/components/TransactionModal/componentesModal/DiscrepancySection';
 import ClientInformation from '@/components/TransactionModal/componentesModal/ClientInformation';
 import FinalSection from '@/components/TransactionModal/componentesModal/FinalSection';
-import axios from 'axios';
 import { useSession } from 'next-auth/react';
 
 const MySwal = withReactContent(Swal);
@@ -169,11 +168,10 @@ const TransactionModal = () => {
     console.log('payload', payload);
 
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/admin/transactions/status/${status}`, {
+      const response = await fetch(`/admin/transactions/status/${status}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(payload),
       });
@@ -186,12 +184,17 @@ const TransactionModal = () => {
       console.log('Respuesta exitosa:', data);
       setSubmitSuccess(true);
 
+      // Resetear el formulario después de un envío exitoso
       setTimeout(() => {
         setSubmitSuccess(false);
       }, 3000);
     } catch (error) {
       console.error('Error al enviar los datos:', error);
-      setSubmitError(axios.isAxiosError(error) ? error.message : 'Error desconocido');
+      if (error instanceof Error) {
+        setSubmitError(error.message || 'Error desconocido');
+      } else {
+        setSubmitError('Error desconocido');
+      }
       setSubmitSuccess(false);
       setIsSubmitting(false);
     } finally {
