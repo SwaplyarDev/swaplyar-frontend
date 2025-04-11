@@ -1,4 +1,4 @@
-import NextAuth from 'next-auth';
+import NextAuth, { Session } from 'next-auth';
 import authConfig from './auth.config';
 
 export const {
@@ -22,25 +22,17 @@ export const {
     async redirect({ url, baseUrl }) {
       return baseUrl;
     },
+
     async jwt({ token, user }) {
-      if (user && user.id) {
-        token.id = user.id;
-        token.role = user.role;
-        token.name = user.name!;
-        token.email = user.email;
-        token.accessToken = (user as any).token;
+      if (user) {
+        token.accessToken = '';
+        token.decodedToken = user;
       }
       return token;
     },
 
-    async session({ session, token }) {
-      if (session.user && token) {
-        session.user.id = token.id;
-        session.user.role = token.role;
-        session.user.name = token.name;
-        session.user.email = token.email!;
-        session.accessToken = token.accessToken;
-      }
+    async session({ session, token }: { session: Session; token: any }) {
+      session = token;
       return session;
     },
   },
