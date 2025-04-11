@@ -13,6 +13,8 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProgressBar from '@/components/ui/ProgressBar/ProgressBar';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import { dataBlogs } from '@/data/dataBlogs';
+import { set } from 'date-fns';
 function isString(value: unknown): value is string {
   return typeof value === 'string' || value instanceof String;
 }
@@ -35,47 +37,13 @@ export function highlightText(text: string) {
   }
 }
 
-const renderList = (array: any[]) => {
-  return (
-    <ul className="list-disc pl-5">
-      {array.map((item) => (
-        <li key={item.item_id} id={item.item_id}>
-          <a href={`#${item.item_id}`} className="hover:text-buttonsExtraLigth hover:underline">
-            {item.dsc_item}
-          </a>
-        </li>
-      ))}
-    </ul>
-  );
-};
-
-const renderListBlog = (array: any[]) => {
-  return (
-    <ul className="list-disc">
-      {array.map((item) => (
-        <li key={item.item_id} id={item.item_id}>
-          <span className="font-semibold">{item.dsc_item}</span>
-          {item.sub_items && item.sub_items.length > 0 && (
-            <ul className="list-decimal pl-5">
-              {item.sub_items.map((subItem: any) => (
-                <li key={subItem.subItem_id} id={subItem.subItem_id}>
-                  <span className="font-semibold">{subItem.title}</span>{' '}
-                  <span className="font-light">{subItem.dsc_subItem}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </li>
-      ))}
-    </ul>
-  );
-};
-
 function CardContent({ data }: CardContentProps) {
   const { isDark } = useDarkTheme();
   const [randomBlog, setRandomBlog] = useState<BlogPostCardProps | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [progress, setProgress] = useState(0);
+  const indexBlog = dataBlogs.findIndex((blog) => blog.slug === data.slug);
+
   const sideBar = data?.sections.sidebar.content;
   const mainContent = data?.sections.mainContent.content;
   useEffect(() => {
@@ -215,6 +183,39 @@ function CardContent({ data }: CardContentProps) {
             })}
           </section>
         </main>
+      </div>
+      <div className="mb-[70px] mt-20 flex flex-col-reverse items-center justify-between gap-10 lg:flex-row">
+        <CardBlogOption isLoaded={isLoaded} randomBlog={randomBlog} />
+        <div className="relative ml-[120px] hidden w-full max-w-[500px] sm:block lg:ml-0">
+          <Image
+            src={cardInfoBlog}
+            alt="cardImage"
+            width={500}
+            height={262}
+            className="h-[262px] w-full object-cover"
+          />
+          <div className="absolute left-[68px] top-[33px] flex w-[240px] flex-col gap-4">
+            <p className="text-center font-textFont text-xl font-semibold text-lightText">
+              Si este artículo te resultó útil, ¡compártelo con tu comunidad! Etiquétanos @SwaplyAr y cuéntanos qué
+              opinas.
+            </p>
+            <div className="flex justify-between">
+              {footerLinks.social.map(({ href, icon, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  title={`SwaplyAr en ${label}`}
+                  className="transition-opacity duration-200 hover:opacity-75"
+                >
+                  <FontAwesomeIcon icon={icon} className="text-4xl text-lightText" />
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

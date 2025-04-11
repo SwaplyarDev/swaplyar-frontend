@@ -30,7 +30,7 @@ const CardBlogOption = ({ isLoaded, randomBlog }: CardBlogOptionProps) => {
           className="flex flex-col gap-4 rounded-2xl border-2 border-buttonsLigth bg-custom-whiteD-100 p-2 text-lightText dark:border-custom-whiteD-100"
         >
           <Image
-            src={randomBlog.url_image}
+            src={randomBlog.image}
             alt={randomBlog.title}
             width={500}
             height={286}
