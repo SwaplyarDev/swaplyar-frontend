@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
-import { Plus, Trash2 } from 'lucide-react';
-import { Facebook, Instagram, Twitter, LinkedIn } from '@mui/icons-material';
-import { Button } from '../../ui/Button';
-import { Input } from '../../ui/Input';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../ui/Dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/Select';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import { Facebook, Instagram, LinkedIn, Twitter } from '@mui/icons-material';
+import { Plus, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { Button } from '../../ui/Button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../ui/Dialog';
+import { Input } from '../../ui/Input';
+import AddSocialNetwork from '../ui/AddSocialNetwork';
 
 type SocialMedia = {
   id: string;
@@ -24,14 +24,9 @@ type SocialMediaModalProps = {
 const RedesSocialesModal = ({ show, setShow, socialNetworks }: SocialMediaModalProps) => {
   const { isDark } = useDarkTheme();
 
-  const [socialAccounts, setSocialAccounts] = useState<SocialMedia[]>(socialNetworks);
-
   const [newSocialType, setNewSocialType] = useState<string>('');
+  const [socialAccounts, setSocialAccounts] = useState<SocialMedia[]>(socialNetworks);
   const [newSocialUsername, setNewSocialUsername] = useState('');
-
-  const removeSocialAccount = (id: string) => {
-    setSocialAccounts(socialAccounts.filter((account) => account.id !== id));
-  };
 
   const addSocialAccount = () => {
     if (newSocialType && newSocialUsername) {
@@ -54,9 +49,15 @@ const RedesSocialesModal = ({ show, setShow, socialNetworks }: SocialMediaModalP
         return <Instagram className="h-5 w-5 text-pink-500" />;
       case 'twitter':
         return <Twitter className="h-5 w-5 text-sky-500" />;
+      case 'LinkedIn':
+        return <LinkedIn className="h-5 w-5" />;
       default:
         return null;
     }
+  };
+
+  const removeSocialAccount = (id: string) => {
+    setSocialAccounts(socialAccounts.filter((account) => account.id !== id));
   };
 
   const handleSubmit = () => {
@@ -109,46 +110,21 @@ const RedesSocialesModal = ({ show, setShow, socialNetworks }: SocialMediaModalP
 
           {/* Agregar nueva red social */}
           <div className="space-y-3">
-            <h3 className={`text-sm font-medium ${isDark ? 'text-gray-300' : 'text-black'}`}>Agregar nueva cuenta</h3>
-
-            <div className="grid grid-cols-12 gap-2">
-              <div className="col-span-5">
-                <Select value={newSocialType} onValueChange={setNewSocialType}>
-                  <SelectTrigger className="border border-zinc-600 bg-transparent focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0">
-                    <SelectValue placeholder="Red social" />
-                  </SelectTrigger>
-                  <SelectContent className="border-zinc-700 bg-zinc-800 text-white">
-                    <SelectItem className="hover:bg-zinc-700" value="facebook">
-                      Facebook
-                    </SelectItem>
-                    <SelectItem className="hover:bg-zinc-700" value="instagram">
-                      Instagram
-                    </SelectItem>
-                    <SelectItem className="hover:bg-zinc-700" value="twitter">
-                      Twitter/X
-                    </SelectItem>
-                    <SelectItem className="hover:bg-zinc-700" value="LinkedIn">
-                      LinkedIn
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="col-span-7 flex space-x-1">
-                <Input
-                  value={newSocialUsername}
-                  onChange={(e) => setNewSocialUsername(e.target.value)}
-                  className="border border-zinc-600 bg-transparent text-white focus-visible:ring-0 focus-visible:ring-offset-0"
-                  placeholder="Nombre de usuario"
-                />
-                <Button
-                  onClick={addSocialAccount}
-                  disabled={!newSocialType || !newSocialUsername}
-                  className="bg-green-500 px-2 text-white hover:bg-green-700"
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
+            <AddSocialNetwork newSocialType={newSocialType} setNewSocialType={setNewSocialType} />
+            <div className="col-span-7 flex space-x-1">
+              <Input
+                value={newSocialUsername}
+                onChange={(e) => setNewSocialUsername(e.target.value)}
+                className="border border-zinc-600 bg-transparent text-white focus-visible:ring-0 focus-visible:ring-offset-0"
+                placeholder="Nombre de usuario"
+              />
+              <Button
+                onClick={addSocialAccount}
+                disabled={!newSocialType || !newSocialUsername}
+                className="bg-blue-400 px-2 text-white hover:bg-blue-700"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
             </div>
           </div>
         </div>

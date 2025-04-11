@@ -27,20 +27,10 @@ const WhatsappModal = ({ show, setShow }: WhatsappVerificationProps) => {
     watch,
   } = useForm<FormData>({ mode: 'onChange' });
 
-  const [initialValues, setInitialValues] = useState<FormData | null>(null);
-
-  const formValues = useWatch({ control });
-
   const phone = useWhatsAppFormStore((state) => state.phone);
 
   useEffect(() => {
-    // const newValues = {
-    //     phone,
-    // };
-
     setValue('phone', phone);
-
-    // setInitialValues(newValues);
   }, [setValue]);
 
   const [isFocused, setIsFocused] = useState(false);

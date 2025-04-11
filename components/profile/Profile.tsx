@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@mui/material';
-import { Email, Instagram, WhatsApp } from '@mui/icons-material';
+import { Instagram } from '@mui/icons-material';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
@@ -11,6 +11,9 @@ import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import WhatsappModal from './Modals/WhatsappModal';
 import { useSession } from 'next-auth/react';
 import InfoPersonalModal from './Modals/InfoPersonalModal';
+import InfoCard from './ui/ProfileCards/InfoCard';
+import EmailCard from './ui/ProfileCards/EmailCard';
+import WhatsAppCard from './ui/ProfileCards/WhatsAppCard';
 
 const Profile = () => {
   const { isDark } = useDarkTheme();
@@ -60,62 +63,16 @@ const Profile = () => {
 
       <div className="mt-5 flex flex-col items-center">
         {/* Personal Information */}
-        <div
-          className={`mx-4 mb-4 w-[75%] max-w-[796px] rounded-2xl ${isDark ? 'bg-[#4B4B4B]' : 'bg-white text-black shadow-xl'} p-4 md-tablet:w-full`}
-        >
-          <h2 className="mb-3 text-lg">Informacion Personal</h2>
+        <InfoCard setShow={setShowProfileModal} />
+        <div>{showProfileModal && <InfoPersonalModal show={showProfileModal} setShow={setShowProfileModal} />}</div>
 
-          <div className="grid grid-cols-2 gap-y-2">
-            <p className="">Nombre Legal</p>
-            <p className="text-right">{session?.decodedToken.fullName}</p>
-
-            <p className="">Nacionalidad</p>
-            <p className="text-right">{session?.decodedToken.id}</p>
-
-            <p className="">N° de Documento</p>
-            <p className="text-right">{session?.decodedToken.profile.identification}</p>
-
-            <p className="">Fecha de Nacimiento</p>
-            <p className="text-right">{session?.decodedToken.profile.birthDate}</p>
-
-            <p className="">Apodo</p>
-            <div className="flex items-center justify-end gap-2 text-right">
-              {session?.decodedToken.fullName}
-              <Button onClick={() => setShowProfileModal(true)} className="h-6 px-2 text-xs text-gray-400">
-                Editar
-              </Button>
-            </div>
-            {showProfileModal && <InfoPersonalModal show={showProfileModal} setShow={setShowProfileModal} />}
-          </div>
-        </div>
-
-        {/* Email */}
-        <div
-          className={`mx-4 mb-4 w-[75%] max-w-[796px] rounded-2xl ${isDark ? 'bg-[#4B4B4B]' : 'bg-white text-black shadow-xl'} p-4 md-tablet:w-full`}
-        >
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg">Correo Electrónico</h2>
-            <Email className="h-[50px] w-[50px]" />
-          </div>
-          <div className="mt-2 flex items-center justify-between">
-            <p className="">{session?.decodedToken.email}</p>
-          </div>
-        </div>
+        <EmailCard />
 
         {/* WhatsApp */}
         <div
           className={`mx-4 mb-4 w-[75%] max-w-[796px] rounded-2xl ${isDark ? 'bg-[#4B4B4B]' : 'bg-white text-black shadow-xl'} bg-[#4B4B4B] p-4 md-tablet:w-full`}
         >
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg">WhatsApp</h2>
-            <WhatsApp className="h-[50px] w-[50px]" />
-          </div>
-          <div className="mt-2 flex items-center justify-between">
-            <p className="">{session?.decodedToken.profile.phone}</p>
-            <Button onClick={() => setShowWhatsAppModal(true)} className="h-6 px-2 text-xs text-gray-400">
-              Editar
-            </Button>
-          </div>
+          <WhatsAppCard setShow={setShowWhatsAppModal} />
           {showWhatsAppModal && <WhatsappModal show={showWhatsAppModal} setShow={setShowWhatsAppModal} />}
         </div>
 

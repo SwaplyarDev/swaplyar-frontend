@@ -14,19 +14,15 @@ export default {
         try {
           const email = credentials.email as string;
           const code = credentials.verificationCode as string;
-          const user_id = credentials.user_id as string;
+
           let URL_VERIFICATION = '';
           if (email) {
             URL_VERIFICATION = 'email/validate';
-          }
-          if (user_id) {
-            URL_VERIFICATION = 'users/email-validation/validate';
           }
 
           const bodyData = {
             code: code,
             ...(email ? { email } : {}),
-            ...(user_id ? { user_id } : {}),
           };
 
           const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/login/${URL_VERIFICATION}`, {
