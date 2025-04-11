@@ -20,6 +20,7 @@ declare module 'next-auth' {
     isActive: boolean;
     createdAt: string;
     profile: Profile;
+    role: string;
     token: string;
     social: Social[];
   }
