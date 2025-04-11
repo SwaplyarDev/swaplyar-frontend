@@ -9,14 +9,13 @@ import { gifImage } from '@/utils/assets/img-database';
 import useBlogStore from '@/store/useBlogStore';
 import useFetchBlogs from '@/hooks/useFetchBlogs/useFetchBlogs';
 import SearchInput from '../ui/SearchInput/SearchInput';
-
+import { dataBlogs } from '@/data/dataBlogs';
 interface BlogProps {
   currentPage: number;
 }
 
 const Blog: React.FC<BlogProps> = ({ currentPage }) => {
   const { blogs, isLoading, setIsLoading } = useBlogStore();
-
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -53,22 +52,33 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
           BLOG
         </h1>
 
-        <ImageCarousel images={blogs} />
+        <ImageCarousel
+          images={dataBlogs.map((post) => ({
+            blog_id: post.blog_id,
+            title: post.title,
+            sub_title: post.description, // Adjust as needed
+            body: post.description, // Adjust as needed
+            url_image: post.image,
+            created_at: new Date().toISOString(), // Replace with actual date if available
+            category: post.category,
+            ver: 'true',
+            status: 'active',
+          }))}
+        />
 
         <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} />
 
         {!isLoading ? (
-          blogs.length >= 1 ? (
+          dataBlogs.length >= 1 ? (
             <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
-              {blogs.map((post) => (
+              {dataBlogs.map((post) => (
                 <BlogPostCard
                   key={post.blog_id}
                   blog_id={post.blog_id}
-                  body={post.body}
+                  description={post.description}
                   title={post.title}
                   category={post.category}
-                  url_image={post.url_image}
-                  created_at={post.created_at}
+                  image={post.image}
                 />
               ))}
             </div>
@@ -79,14 +89,16 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
           <SkeletonLoader />
         )}
       </div>
-      <PaginationButtons
-        route="/blog"
-        /* @ts-ignore */
-        setIsLoading={setIsLoading}
-        totalPages={totalPages}
-        isLoading={isLoading}
-        currentPage={currentPage}
-      />
+      {
+        <PaginationButtons
+          route="/blog"
+          /* @ts-ignore */
+          setIsLoading={setIsLoading}
+          totalPages={1}
+          isLoading={isLoading}
+          currentPage={currentPage}
+        />
+      }
 
       <div
         className="mt-12 flex h-[272px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"

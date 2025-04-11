@@ -1,8 +1,15 @@
+import { Sidebar } from 'flowbite-react';
+
 export const dataBlogs = [
   {
+    blog_id: '1',
     title: 'PayPal en Argentina',
     image: '/images/paypalenarg.png',
     slug: 'paypal-en-argentina',
+    description:
+      'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de rellue se dedica a la imprenta)dar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica...',
+    category: 'Mercado',
+    date: '',
     sections: {
       sidebar: {
         content: [
@@ -176,10 +183,14 @@ export const dataBlogs = [
     },
   },
   {
+    blog_id: '2',
     title: 'Billeteras virtuales internacionales',
     image: '/images/billeterasvirtuales.png',
     slug: 'billeteras-virtuales-internacionales',
-
+    description:
+      'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de rellue se dedica a la imprenta)dar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica...',
+    category: 'Mercado',
+    date: '',
     sections: {
       sidebar: {
         content: ['Principales Billeteras Virtuales Internacionales', ['PayPal', 'Skrill', 'Neteller', 'Payoneer']],
@@ -244,6 +255,138 @@ export const dataBlogs = [
               ],
             ],
             style: 'ol',
+          },
+        ],
+      },
+    },
+  },
+  {
+    blog_id: '3',
+    title: 'Payoneer en Argentina',
+    image: '/images/payonerarg.png',
+    slug: 'payoneer-en-argentina',
+    description:
+      'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de rellue se dedica a la imprenta)dar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica...',
+    category: 'Mercado',
+    date: '',
+    sections: {
+      sidebar: {
+        content: [
+          'Que es Payoneer',
+          'Como funcona Payoneer en Argenntna',
+          ['Regstro y Confguracion', 'Recepcion de Pagos', 'Retiro de Fondos'],
+          'Comisiones Asociados',
+          'Ventajas y desventajas de usar Payoneer en Argentna',
+          'Alternatvas a Payoneer',
+          'Conclusión',
+        ],
+      },
+      mainContent: {
+        content: [
+          {
+            text: 'Payoneer es una plataforma de pagos en línea diseñada para facilitar transacciones internacionales, especialmente útil para freelancers y empresas que operan globalmente. En Argentina, su uso ha crecido significativamente, ofreciendo una alternativa eficiente para recibir y enviar fondos desde el extranjero.',
+            style: 'normal',
+          },
+          {
+            text: '**¿Qué es Payoneer?**',
+            style: 'subtitle',
+          },
+          {
+            text: 'Payoneer es un servicio que permite a sus usuarios recibir pagos de clientes y empresas en diferentes monedas, acceder a fondos a través de una tarjeta de débito y transferir dinero a cuentas bancarias locales. Es especialmente popular entre profesionales independientes y empresas que necesitan gestionar pagos internacionales de manera efectiva.',
+            style: 'normal',
+          },
+          {
+            text: ['**Cómo Funciona Payoneer en Argentina**'],
+            style: 'ol',
+          },
+          {
+            text: '**a. Registro y Configuración**',
+            style: 'subtitle',
+          },
+          {
+            text: [
+              '**Creación de Cuenta**: Visita el sitio web de Payoneer y regístrate proporcionando tus datos personales y bancarios.',
+              '**Verificación**: Es posible que se te solicite documentación adicional para verificar tu identidad y domicilio.',
+            ],
+            style: 'ul',
+          },
+          {
+            text: '**b. Recepción de Pagos**',
+            style: 'subtitle',
+          },
+          {
+            text: [
+              '**Cuentas Receptoras**: Payoneer te asigna cuentas bancarias virtuales en diferentes países, permitiéndote recibir pagos como si tuvieras una cuenta local en esas regiones.',
+              '**Integración con Marketplaces**: La plataforma es compatible con sitios como Fiverr, Upwork y Airbnb, facilitando la recepción de fondos desde estas plataformas.',
+            ],
+            style: 'ul',
+          },
+          {
+            text: '**c. Retiro de Fondos**',
+            style: [
+              '**Transferencia Bancaria Local**: Podés transferir tus fondos de Payoneer a una cuenta bancaria en Argentina.',
+              '**Tarjeta de Débito Payoneer**: Utilizá la tarjeta para retirar efectivo en cajeros automáticos o realizar compras en comercios que acepten MasterCard.',
+            ],
+          },
+          {
+            text: '**Comisiones Asociadas**',
+            style: 'subtitle',
+          },
+          {
+            text: [
+              '**Recepción de Pagos**: Las comisiones varían según la fuente del pago. Por ejemplo, recibir fondos de otra cuenta Payoneer es gratuito, mientras que desde una solicitud de pago puede implicar una comisión de hasta el 3%.',
+              '**Retiro de Fondos**: Transferir dinero a una cuenta bancaria local puede tener una comisión de hasta el 2%.',
+              '**Conversión de Moneda**  : Si es necesario convertir divisas, se aplica una comisión adicional del 0,5% al tipo de cambio oficial.',
+            ],
+            style: 'ul',
+          },
+          {
+            text: '**Ventajas y Desventajas de Usar Payoneer en Argentina**',
+            style: 'subtitle',
+          },
+          {
+            text: '**Ventajas**:',
+            style: 'normal',
+          },
+          {
+            text: [
+              '**Acceso a Múltiples Monedas**: Facilita la recepción de pagos en diversas divisas, lo que es beneficioso para quienes trabajan con clientes internacionales.',
+              '**Tarjeta de Débito**: Proporciona una tarjeta que permite acceder a los fondos de manera inmediata.',
+            ],
+            style: 'ul',
+          },
+          {
+            text: '**Desventajas**:',
+            style: 'normal',
+          },
+          {
+            text: [
+              '**Comisiones**: Algunas transacciones pueden tener costos elevados, especialmente en conversiones de moneda.',
+              '**Tiempo de Procesamiento**: Los retiros a cuentas bancarias locales pueden tardar entre 2 y 5 días hábiles.',
+            ],
+            style: 'ul',
+          },
+          {
+            text: '**Alternativas a Payoneer**',
+            style: 'subtitle',
+          },
+          {
+            text: 'Si bien Payoneer es una opción sólida, existen otras plataformas que podrían adaptarse mejor a tus necesidades:',
+            style: 'normal',
+          },
+          {
+            text: [
+              '**SwaplyAr**: Ofrece servicios de intercambio de divisas y transferencias internacionales con comisiones competitivas y tiempos de procesamiento más rápidos.',
+              '**PayPal**: Popular a nivel mundial, aunque con ciertas limitaciones y comisiones más altas en Argentina.',
+            ],
+          },
+          {
+            text: '**Conclusión**',
+            style: 'subtitle',
+          },
+          {
+            text: 'Payoneer se presenta como una herramienta valiosa para quienes necesitan gestionar pagos internacionales en Argentina. Sin embargo, es esencial evaluar las comisiones y tiempos de procesamiento asociados para determinar si es la opción más adecuada para tus operaciones financieras. Considerar alternativas como SwaplyAr puede ofrecer beneficios adicionales en términos de costos y eficiencia.',
+            style: 'normal',
           },
         ],
       },

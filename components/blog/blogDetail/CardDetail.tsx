@@ -24,12 +24,12 @@ function CardDetail() {
       slug: blog.slug,
       sections: {
         sidebar: {
-          content: blog.sections.sidebar.content,
+          content: blog.sections?.sidebar?.content,
         },
         mainContent: {
           content: blog.sections.mainContent.content.map((item) => ({
-            text: item.text,
-            style: item.style,
+            text: item?.text,
+            style: item?.style,
           })),
         },
       },

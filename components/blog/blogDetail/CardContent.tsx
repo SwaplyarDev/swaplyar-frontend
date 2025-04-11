@@ -129,25 +129,21 @@ function CardContent({ data }: CardContentProps) {
         <article className="mt-[50px] flex h-[756px] w-[286px] flex-col gap-5">
           <h4 className="font-semibold">Contenido: </h4>
           <ul className="list-disc pl-5">
-            {sideBar.map((content: string | string[], index: number) => {
-              if (Array.isArray(content)) {
-                return (
-                  <ul key={index} className="list-disc pl-5">
-                    {content.map((text: string, idx: number) => (
-                      <li key={idx}>
-                        <a href="">{text}</a>
-                      </li>
-                    ))}
-                  </ul>
-                );
-              } else {
-                return (
-                  <li key={index}>
-                    <a href="">{content}</a>
-                  </li>
-                );
-              }
-            })}
+            {(sideBar as string[]).map((content, index) =>
+              Array.isArray(content) ? (
+                <ul key={`${index}-sub`} className="list-disc pl-5">
+                  {content.map((text, idx) => (
+                    <li key={`${index}-${idx}`}>
+                      <a href="">{text}</a>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <li key={index}>
+                  <a href="">{content}</a>
+                </li>
+              ),
+            )}
           </ul>
         </article>
         {/* Main Content */}
