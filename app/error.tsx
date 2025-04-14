@@ -16,7 +16,6 @@ export default function ErrorPage({ error, reset }: { error: Error; reset: () =>
       <TopMenu />
       <ErrorBoundary reset={reset} />;
       <Footer />
-      df
     </>
   );
 }

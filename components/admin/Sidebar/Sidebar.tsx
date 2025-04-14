@@ -27,7 +27,7 @@ import InicioGroup from './componentsSidebar/Navigation/InicioGroup';
 import GestionGroup from './componentsSidebar/Navigation/GestionGroup';
 import AtajosGroup from './componentsSidebar/Navigation/AtajosGroup';
 import UserBotton from './componentsSidebar/Navigation/UserBotton';
-
+import ThemeToggleAside from './ThemeToggleAside';
 // Create a custom event to communicate sidebar state
 export const createSidebarEvent = (isCollapsed: boolean) => {
   if (typeof window !== 'undefined') {
@@ -277,11 +277,13 @@ const Sidebar = () => {
               ProfileButton={ProfileButton}
               LogoutButton={LogoutButton}
             />
+            <div className={clsx('mt-6 justify-self-end', collapsed ? 'px-0' : 'px-2')}>
+              <ThemeToggleAside collapsed={collapsed} />
+            </div>
           </nav>
         </div>
       </aside>
     </>
   );
 };
-
 export default Sidebar;

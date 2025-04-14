@@ -24,7 +24,7 @@ const InicioGroup = ({ collapsed, pathname }: { collapsed: boolean; pathname: st
             {!collapsed && <span>Operación de Transacciones</span>}
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link
             href="/es/admin/reports"
             className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
@@ -36,7 +36,7 @@ const InicioGroup = ({ collapsed, pathname }: { collapsed: boolean; pathname: st
             <BarChart3 size={20} className={collapsed ? '' : 'mr-3'} />
             {!collapsed && <span>Reportes</span>}
           </Link>
-        </li>
+        </li> */}
       </ul>
     </div>
   );
