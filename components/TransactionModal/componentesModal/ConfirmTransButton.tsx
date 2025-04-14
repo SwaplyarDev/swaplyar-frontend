@@ -126,11 +126,9 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
 
   return (
     <>
-      <div className="rounded-lg border bg-white p-4">
+      <div className="rounded-lg border border-black p-4">
         <h3 className="text-lg font-semibold">Confirmación de transferencia</h3>
-        <p className="text-sm text-gray-800">
-          ¿La transferencia ha sido recibida y ya está reflejada en nuestra cuenta?
-        </p>
+        <p className="text-sm">¿La transferencia ha sido recibida y ya está reflejada en nuestra cuenta?</p>
 
         <div className="mt-2 flex gap-4">
           <TooltipProvider delayDuration={300}>

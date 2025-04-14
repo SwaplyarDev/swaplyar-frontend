@@ -13,7 +13,7 @@ interface InfoStatusProps {
 const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
   const { status, transaction } = trans;
   const { data: session } = useSession();
-  const userName = session?.user.name;
+  const userName = session?.decodedToken.fullName;
 
   // Format date with better localization
   const formatDate = (dateString: string) => {
@@ -80,7 +80,7 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
 
   return (
     <>
-      <div className="flex w-full items-center justify-between rounded-lg border bg-white p-6">
+      <div className="flex w-full items-center justify-between rounded-lg border border-black p-6">
         <div className="flex w-full items-center justify-between gap-x-4">
           <div>{getStatusBadge(status)}</div>
 
@@ -89,10 +89,10 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
           </div>
 
           <div className="flex flex-col items-end text-lightText">
-            <time dateTime={transaction?.created_at} className="text-xs text-gray-500 dark:text-gray-400 sm:text-sm">
+            <time dateTime={transaction?.created_at} className="text-xs dark:text-white sm:text-sm">
               {transaction?.created_at ? formatDate(transaction.created_at) : 'Fecha no disponible'}
             </time>
-            <p className="text-sm font-medium sm:text-base">{userName || 'Usuario'}</p>
+            <p className="text-sm font-medium dark:text-white sm:text-base">{userName || 'Usuario'}</p>
           </div>
         </div>
       </div>

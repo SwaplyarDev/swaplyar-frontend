@@ -19,9 +19,14 @@ export const getAllTransactions = async (page: number) => {
   }
 };
 
-export const getTransactionById = async (id: string) => {
+export const getTransactionById = async (transaction_id: string, token: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions/${id}`);
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions/${transaction_id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(response);
     if (!response.ok) throw new Error('Failed to fetch transactions');
 
     const data: TransactionTypeSingle = await response.json();

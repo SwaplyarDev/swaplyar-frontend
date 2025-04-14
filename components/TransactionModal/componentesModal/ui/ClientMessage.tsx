@@ -9,7 +9,7 @@ interface ClientMessageProps {
 
 const ClientMessage: React.FC<ClientMessageProps> = ({ message, headerMessage, classnames }) => {
   return (
-    <section className="flex flex-col rounded-lg border border-t border-gray-200 bg-white p-3 text-left">
+    <section className="flex flex-col rounded-lg border border-t border-black p-3 text-left">
       <div className="mb-2 flex items-center gap-2 pl-2">
         <MessageSquare size={18} className="text-blue-600 dark:text-blue-400" />
         <p className="font-medium text-gray-800 dark:text-gray-200">{headerMessage}</p>

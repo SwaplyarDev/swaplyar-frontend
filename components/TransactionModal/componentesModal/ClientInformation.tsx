@@ -31,7 +31,7 @@ const ClientInformation: React.FC<ClientInformationProps> = ({ modal, setModal }
   };
 
   return (
-    <Card className="w-full overflow-hidden bg-white transition-all duration-300">
+    <Card className="w-full overflow-hidden transition-all duration-300">
       <CardHeader className="p-6">
         <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
           <h2 className="flex items-center text-xl font-semibold text-gray-800 md:text-2xl">

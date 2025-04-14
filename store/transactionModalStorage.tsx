@@ -59,7 +59,7 @@ interface TransactionState {
   };
 
   selected: 'stop' | 'accepted' | 'canceled' | null;
-  fetchTransaction: (transId: string) => Promise<void>;
+  fetchTransaction: (transId: string, token: string) => Promise<void>;
   fetchNote: (noteId: string) => Promise<void>;
   fetchRegret: (regretId: string) => Promise<void>;
   setComponentStates: (key: keyof TransactionState['componentStates'], value: any) => void;
@@ -86,10 +86,10 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
   },
   selected: null,
 
-  fetchTransaction: async (transId) => {
+  fetchTransaction: async (transId, token) => {
     set({ isLoading: true });
     try {
-      const trans = await getTransactionById(transId);
+      const trans = await getTransactionById(transId, token);
       const existOnAdmin: any = await getStatusTransactionAdmin(transId);
       if (trans) {
         if (existOnAdmin?.success) {
