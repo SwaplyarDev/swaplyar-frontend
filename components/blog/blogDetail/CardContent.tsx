@@ -98,6 +98,11 @@ function CardContent({ data }: CardContentProps) {
 
   return (
     <section className="m-auto flex w-[1366px] flex-col">
+      <div className="sticky top-28 flex w-full flex-col items-center sm:top-36">
+        <div className="rounded-2xl border-2 border-buttonsLigth bg-custom-whiteD-100 p-2 dark:border-custom-whiteD-100">
+          <ProgressBar value={progress} width="300px" />
+        </div>
+      </div>
       <div className="ml-[181px] mt-[100px]">
         <p className="">{highlightText('El tiempo de lectura estimado para este artículo es de **4 a 5 minutos**')}</p>
         <div className="mt-[20px]">
@@ -132,7 +137,7 @@ function CardContent({ data }: CardContentProps) {
           <h1 className={!isDark ? 'text-center text-4xl text-[#012A8E]' : 'text-center text-4xl text-[#EBE7E0]'}>
             {data.title}
           </h1>
-          <Image className="mx-auto" src={data.image} width={898} height={286} alt="Imagen del blog" />
+          <Image className="mx-auto" src={data.image} width={898} height={286} alt={data.title} />
           <section className="flex flex-col gap-3">
             {mainContent.map((content: { text: string | string[]; style: string }, index: number) => {
               if (content.style === 'normal') {
@@ -205,7 +210,7 @@ function CardContent({ data }: CardContentProps) {
             alt="cardImage"
             width={500}
             height={262}
-            className="h-[262px] w-full object-cover"
+            className="h-[262px] w-auto object-cover"
           />
           <div className="absolute left-[68px] top-[33px] flex w-[240px] flex-col gap-4">
             <p className="text-center font-textFont text-xl font-semibold text-lightText">

@@ -1,5 +1,3 @@
-import { Sidebar } from 'flowbite-react';
-
 export const dataBlogs = [
   {
     blog_id: '1',
