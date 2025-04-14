@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import { AlertCircle, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, Filter } from 'lucide-react';
 import type { TransactionArray, TransactionTypeAll } from '@/types/transactions/transactionsType';
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
-import TransactionModal from '@/components/TransactionModal/transactionModal';
+import TransactionModal from '@/components/admin/TransactionModal/transactionModal';
 import { useRouter } from 'next/navigation';
 
 interface TransactionsTableProps {

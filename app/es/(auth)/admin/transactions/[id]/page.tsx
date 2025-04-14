@@ -2,18 +2,18 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useTransactionStore } from '@/store/transactionModalStorage';
-import SkeletonModal from '@/components/TransactionModal/componentesModal/SkeletonModal';
-import InfoStatus from '@/components/TransactionModal/componentesModal/InfoStatus';
+import SkeletonModal from '@/components/admin/TransactionModal/componentesModal/SkeletonModal';
+import InfoStatus from '@/components/admin/TransactionModal/componentesModal/InfoStatus';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { useParams } from 'next/navigation';
-import TransactionDetail from '@/components/TransactionModal/componentesModal/DetailTransaction';
-import ClientMessage from '@/components/TransactionModal/componentesModal/ui/ClientMessage';
-import TransferImages from '@/components/TransactionModal/componentesModal/TransferImages';
-import ConfirmTransButton from '@/components/TransactionModal/componentesModal/ConfirmTransButton';
-import AprobarRechazar from '@/components/TransactionModal/componentesModal/aprobarRechazar';
-import ClientInformation from '@/components/TransactionModal/componentesModal/ClientInformation';
-import FinalSection from '@/components/TransactionModal/componentesModal/FinalSection';
+import TransactionDetail from '@/components/admin/TransactionModal/componentesModal/DetailTransaction';
+import ClientMessage from '@/components/admin/TransactionModal/componentesModal/ui/ClientMessage';
+import TransferImages from '@/components/admin/TransactionModal/componentesModal/TransferImages';
+import ConfirmTransButton from '@/components/admin/TransactionModal/componentesModal/ConfirmTransButton';
+import AprobarRechazar from '@/components/admin/TransactionModal/componentesModal/aprobarRechazar';
+import ClientInformation from '@/components/admin/TransactionModal/componentesModal/ClientInformation';
+import FinalSection from '@/components/admin/TransactionModal/componentesModal/FinalSection';
 import { useSession } from 'next-auth/react';
 
 const MySwal = withReactContent(Swal);
@@ -202,7 +202,7 @@ const TransactionModal = () => {
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className={`relative flex h-full w-full flex-col overflow-y-auto rounded-lg transition-transform duration-300 ease-out dark:bg-gray-900 ${
+      className={`relative flex h-full w-full flex-col overflow-y-auto rounded-lg bg-gray-50 shadow-sm transition-all duration-300 ease-out dark:bg-gray-900 ${
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
       }`}
       tabIndex={-1}
@@ -262,7 +262,7 @@ const TransactionModal = () => {
               <ClientMessage
                 message={trans.transaction.message}
                 headerMessage="Mensaje del cliente"
-                classnames="min-h-[4.25rem] border-black"
+                classnames="min-h-[4.25rem] border"
               />
 
               {transaction.regret_id ? (

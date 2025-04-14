@@ -15,7 +15,7 @@ import { convertTransactionState, getComponentStatesFromStatus } from '@/utils/t
 import {
   TransactionService,
   GetTransactionStatus,
-} from '@/components/TransactionModal/componentesModal/ui/TransactionService';
+} from '@/components/admin/TransactionModal/componentesModal/ui/TransactionService';
 import { useSession } from 'next-auth/react';
 
 interface TransactionStatus {

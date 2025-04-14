@@ -24,24 +24,27 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
   // Alert styling based on type
   const alertStyles = {
     cancel: {
-      border: 'border-red-600',
+      border: 'border-red-600 dark:border-red-700',
       bg: 'bg-red-100 dark:bg-red-900/30',
       text: 'text-red-700 dark:text-red-300',
       icon: 'text-red-600 dark:text-red-400',
       title: 'CANCELACIÓN SOLICITADA',
+      hover: 'hover:bg-red-50 dark:hover:bg-red-900/40',
     },
     edit: {
-      border: 'border-amber-600',
+      border: 'border-amber-600 dark:border-amber-700',
       bg: 'bg-amber-100 dark:bg-amber-900/30',
       text: 'text-amber-700 dark:text-amber-300',
       icon: 'text-amber-600 dark:text-amber-400',
       title: 'SOLICITUD DE EDICIÓN',
+      hover: 'hover:bg-amber-50 dark:hover:bg-amber-900/40',
     },
     normal: {
-      border: 'border-blue-600',
+      border: 'border-blue-600 dark:border-blue-700',
       bg: 'bg-white dark:bg-gray-800',
       text: 'text-gray-900 dark:text-gray-100',
       icon: 'text-blue-600 dark:text-blue-400',
+      hover: 'hover:bg-gray-50 dark:hover:bg-gray-800/80',
     },
   };
 
@@ -49,11 +52,11 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
 
   return (
     <section
-      className={`relative overflow-hidden rounded-lg ${currentStyle.border} ${currentStyle.bg} border transition-all duration-300`}
+      className={`relative overflow-hidden rounded-lg ${currentStyle.border} ${currentStyle.bg} ${currentStyle.hover} border shadow-sm transition-all duration-300 hover:shadow-md`}
     >
       {/* Alert Banner (if applicable) */}
       {hasAlert && (
-        <div className={`flex items-center gap-3 border-b ${currentStyle.border} p-3`}>
+        <div className={`flex items-center gap-3 border-b ${currentStyle.border} p-3 ${currentStyle.hover}`}>
           <div
             className={`flex h-10 w-10 items-center justify-center rounded-full ${currentStyle.bg} ${currentStyle.icon}`}
           >
@@ -87,7 +90,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
         {/* Transfer Flow */}
         <div className="flex flex-1 flex-col items-center gap-3 md:flex-row md:justify-center">
           {/* Sender */}
-          <div className="group relative flex h-20 w-full max-w-[200px] items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-white p-2 shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
+          <div className="group relative flex h-20 w-full max-w-[200px] items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-white p-2 shadow-sm transition-all duration-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-800/80">
             {senderImg ? (
               <Image
                 src={senderImg || '/placeholder.svg'}
@@ -98,7 +101,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
                 unoptimized
               />
             ) : (
-              <div className="flex h-full w-full items-center justify-center text-red-500">
+              <div className="flex h-full w-full items-center justify-center text-red-500 dark:text-red-400">
                 <p>Imagen no disponible</p>
               </div>
             )}
@@ -117,7 +120,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
           </div>
 
           {/* Receiver */}
-          <div className="group relative flex h-20 w-full max-w-[200px] items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-white p-2 shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
+          <div className="group relative flex h-20 w-full max-w-[200px] items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-white p-2 shadow-sm transition-all duration-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-800/80">
             {receiverImg ? (
               <Image
                 src={receiverImg || '/placeholder.svg'}
@@ -128,7 +131,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
                 unoptimized
               />
             ) : (
-              <div className="flex h-full w-full items-center justify-center text-red-500">
+              <div className="flex h-full w-full items-center justify-center text-red-500 dark:text-red-400">
                 <p>Imagen no disponible</p>
               </div>
             )}

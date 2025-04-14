@@ -5,10 +5,10 @@ import type React from 'react';
 import { useState, useEffect } from 'react';
 import { useTransactionStore } from '@/store/transactionModalStorage';
 import Swal from 'sweetalert2';
-import { CheckCircle, XCircle, AlertTriangle, Send, Info } from 'lucide-react';
+import { CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 import { TransactionService } from './ui/TransactionService';
 import DiscrepancySection from './DiscrepancySection';
-import { TransactionTypeSingle } from '@/types/transactions/transactionsType';
+import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
 import { Label } from '@/components/ui/Label';
 import { Input } from '@/components/ui/Input';
 import { TooltipContent, TooltipTrigger } from '@/components/ui/Tooltip';
@@ -143,35 +143,35 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
       'relative flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-medium transition-all duration-300';
 
     if (isDisabled) {
-      return `${baseClass} bg-gray-200 text-gray-400 cursor-not-allowed`;
+      return `${baseClass} bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed`;
     }
 
     switch (type) {
       case 'accepted':
         return `${baseClass} ${
           selected === 'accepted'
-            ? 'bg-green-600 text-white shadow-lg shadow-green-200'
-            : 'bg-white text-gray-700 border border-gray-300 hover:border-green-500 hover:text-green-600'
+            ? 'bg-green-600 dark:bg-green-700 text-white shadow-lg shadow-green-200 dark:shadow-green-900/20'
+            : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:border-green-500 hover:text-green-600 dark:hover:text-green-400'
         }`;
       case 'stop':
         return `${baseClass} ${
           selected === 'stop'
-            ? 'bg-amber-500 text-white shadow-lg shadow-amber-200'
-            : 'bg-white text-gray-700 border-2 border-amber-500 hover:bg-amber-50'
+            ? 'bg-amber-500 dark:bg-amber-600 text-white shadow-lg shadow-amber-200 dark:shadow-amber-900/20'
+            : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-amber-500 dark:border-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20'
         }`;
       case 'canceled':
         return `${baseClass} ${
           selected === 'canceled'
-            ? 'bg-red-600 text-white shadow-lg shadow-red-200'
-            : 'bg-white text-gray-700 border border-gray-300 hover:border-red-500 hover:text-red-600'
+            ? 'bg-red-600 dark:bg-red-700 text-white shadow-lg shadow-red-200 dark:shadow-red-900/20'
+            : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:border-red-500 hover:text-red-600 dark:hover:text-red-400'
         }`;
     }
   };
 
   return (
     <>
-      <div className="rounded-lg border p-4">
-        <h3 className="text-lg font-semibold">Aprobar/Rechazar Solicitud</h3>
+      <div className="rounded-lg border bg-white p-4 shadow-sm transition-all duration-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800/90 dark:hover:bg-gray-800">
+        <h3 className="text-lg font-semibold dark:text-white">Aprobar/Rechazar Solicitud</h3>
 
         <div className="mt-2 flex flex-wrap gap-4">
           <TooltipProvider delayDuration={300}>
@@ -185,7 +185,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                   aria-pressed={selected === 'accepted'}
                 >
                   <CheckCircle
-                    className={`mr-2 h-5 w-5 ${selected === 'accepted' ? 'text-white' : 'text-green-500'}`}
+                    className={`mr-2 h-5 w-5 ${selected === 'accepted' ? 'text-white' : 'text-green-500 dark:text-green-400'}`}
                   />
                   <span>Aprobar</span>
                 </Button>
@@ -206,7 +206,9 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                   className={getButtonClass('stop')}
                   aria-pressed={selected === 'stop'}
                 >
-                  <AlertTriangle className={`mr-2 h-5 w-5 ${selected === 'stop' ? 'text-white' : 'text-amber-500'}`} />
+                  <AlertTriangle
+                    className={`mr-2 h-5 w-5 ${selected === 'stop' ? 'text-white' : 'text-amber-500 dark:text-amber-400'}`}
+                  />
                   <span className="font-bold">STOP</span>
                 </Button>
               </TooltipTrigger>
@@ -225,7 +227,9 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                   className={getButtonClass('canceled')}
                   aria-pressed={selected === 'canceled'}
                 >
-                  <XCircle className={`mr-2 h-5 w-5 ${selected === 'canceled' ? 'text-white' : 'text-red-500'}`} />
+                  <XCircle
+                    className={`mr-2 h-5 w-5 ${selected === 'canceled' ? 'text-white' : 'text-red-500 dark:text-red-400'}`}
+                  />
                   <span>Rechazar</span>
                 </Button>
               </TooltipTrigger>
@@ -243,7 +247,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
           <div className="animate-in fade-in mt-6 duration-300">
             <div className="space-y-3">
               <div className="flex items-center">
-                <Label htmlFor="transfer-id" className="text-sm font-medium">
+                <Label htmlFor="transfer-id" className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Motivo del Rechazo
                   <span className="ml-1 text-red-500">*</span>
                 </Label>
@@ -259,7 +263,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                     onChange={(e) => setRejectionReason(e.target.value)}
                     onFocus={() => setIsInputFocused(true)}
                     onBlur={() => setIsInputFocused(false)}
-                    className={`h-11 transition-all duration-300 ${
+                    className={`h-11 transition-all duration-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 ${
                       isInputFocused ? 'ring-primary border-primary ring-2' : ''
                     }`}
                     aria-required="true"
@@ -268,14 +272,14 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
 
                 <Button
                   onClick={handleSubmitRejection}
-                  className="h-11 bg-custom-blue text-white hover:bg-blue-700"
+                  className="h-11 bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20"
                   aria-label="Enviar ID de transferencia"
                 >
                   <span>Enviar</span>
                 </Button>
               </div>
 
-              <p className="text-muted-foreground text-xs">Este motivo será enviado al cliente.</p>
+              <p className="text-muted-foreground text-xs dark:text-gray-400">Este motivo será enviado al cliente.</p>
             </div>
           </div>
         )}
@@ -283,10 +287,10 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
         {/* Stop Section */}
         {selected === 'stop' && (
           <div className="animate-in fade-in mt-6 space-y-4 duration-300">
-            <Alert className="border-l-4 border-l-amber-500 bg-amber-50">
-              <AlertTriangle className="h-5 w-5 text-amber-500" />
-              <AlertTitle className="text-amber-800">Información sobre STOP</AlertTitle>
-              <AlertDescription className="text-amber-700">
+            <Alert className="border-l-4 border-l-amber-500 bg-amber-50 transition-all duration-300 hover:bg-amber-100 dark:border-l-amber-600 dark:bg-amber-900/20 dark:hover:bg-amber-900/30">
+              <AlertTriangle className="h-5 w-5 text-amber-500 dark:text-amber-400" />
+              <AlertTitle className="text-amber-800 dark:text-amber-300">Información sobre STOP</AlertTitle>
+              <AlertDescription className="text-amber-700 dark:text-amber-400">
                 <p className="mt-1">
                   Si los datos de la operación no coinciden (por ejemplo, si el monto es mayor o menor al acordado),
                   comunícate con el solicitante para resolverlo antes de continuar.
@@ -302,10 +306,10 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
         {/* Accepted Section */}
         {selected === 'accepted' && (
           <div className="animate-in fade-in mt-6 duration-300">
-            <Alert className="border-l-4 border-l-green-500 bg-green-50">
-              <CheckCircle className="h-5 w-5 text-green-500" />
-              <AlertTitle className="text-green-800">Información sobre Aprobación</AlertTitle>
-              <AlertDescription className="text-green-700">
+            <Alert className="border-l-4 border-l-green-500 bg-green-50 transition-all duration-300 hover:bg-green-100 dark:border-l-green-600 dark:bg-green-900/20 dark:hover:bg-green-900/30">
+              <CheckCircle className="h-5 w-5 text-green-500 dark:text-green-400" />
+              <AlertTitle className="text-green-800 dark:text-green-300">Información sobre Aprobación</AlertTitle>
+              <AlertDescription className="text-green-700 dark:text-green-400">
                 Al aprobar esta solicitud, confirmas que todos los datos son correctos y que la transferencia puede ser
                 procesada.
               </AlertDescription>
