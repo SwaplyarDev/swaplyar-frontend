@@ -4,10 +4,10 @@
 
 import { signIn } from '@/auth';
 
-export const registerUser = async (user_id: string, verificationCode: string) => {
+export const registerUser = async (email: string, verificationCode: string) => {
   try {
     const result = await signIn('credentials', {
-      user_id,
+      email,
       verificationCode,
       redirect: false,
     });

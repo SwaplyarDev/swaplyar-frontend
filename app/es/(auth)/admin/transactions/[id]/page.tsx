@@ -112,7 +112,7 @@ const TransactionModal = () => {
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const { data: session, status } = useSession();
-  const token = session?.accessToken;
+  const token = session?.decodedToken.token;
   console.log('🟡 Token:', token);
 
   const handleSubmit = async (
