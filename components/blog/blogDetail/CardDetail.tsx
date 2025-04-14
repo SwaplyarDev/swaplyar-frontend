@@ -22,6 +22,7 @@ function CardDetail() {
       title: blog.title || '',
       image: blog.image || '',
       slug: blog.slug,
+
       sections: {
         sidebar: {
           content: blog.sections?.sidebar?.content,

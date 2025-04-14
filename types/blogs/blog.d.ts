@@ -10,12 +10,11 @@ export interface BlogPost {
 export interface CardContentProps {
   data: {
     blog_id?: string;
-    title: string;
-    image: string;
     slug: string;
-    description?: string;
-    category?: string;
-
+    title: string;
+    description: string;
+    image: string;
+    blog_id: string;
     sections: {
       sidebar: {
         content: string[];
@@ -28,6 +27,14 @@ export interface CardContentProps {
       };
     };
   };
+}
+
+export interface RandomCardProps {
+  blog_id: string;
+  title: string;
+  description: string;
+  image: string;
+  slug: string; // Added slug property
 }
 
 interface BlogPostCardProps {

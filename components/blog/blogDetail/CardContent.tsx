@@ -4,7 +4,7 @@
 
 import Image from 'next/image';
 import { BlogPostCardProps, CardContentProps } from '@/types/blogs/blog';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { fetchBlogs } from '@/actions/blogs/blogs.actions';
 import CardBlogOption from './CardBlogOption';
 import { cardInfoBlog } from '@/utils/assets/imgDatabaseCloudinary';
@@ -15,6 +15,7 @@ import ProgressBar from '@/components/ui/ProgressBar/ProgressBar';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { dataBlogs } from '@/data/dataBlogs';
 import { set } from 'date-fns';
+import { get } from 'http';
 function isString(value: unknown): value is string {
   return typeof value === 'string' || value instanceof String;
 }
@@ -39,13 +40,25 @@ export function highlightText(text: string) {
 
 function CardContent({ data }: CardContentProps) {
   const { isDark } = useDarkTheme();
-  const [randomBlog, setRandomBlog] = useState<BlogPostCardProps | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [progress, setProgress] = useState(0);
   const indexBlog = dataBlogs.findIndex((blog) => blog.slug === data.slug);
-
   const sideBar = data?.sections.sidebar.content;
   const mainContent = data?.sections.mainContent.content;
+
+  const getRandomBlog = useCallback(() => {
+    if (dataBlogs.length <= 1) return null;
+
+    const otherBlogs = dataBlogs.filter((blog) => blog.slug !== data.slug);
+
+    if (otherBlogs.length === 0) return null;
+
+    const randomIndex = Math.floor(Math.random() * otherBlogs.length);
+    return otherBlogs[randomIndex];
+  }, [data.slug]);
+  console.log(getRandomBlog());
+  const randomBlog = getRandomBlog();
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -185,7 +198,7 @@ function CardContent({ data }: CardContentProps) {
         </main>
       </div>
       <div className="mb-[70px] mt-20 flex flex-col-reverse items-center justify-between gap-10 lg:flex-row">
-        <CardBlogOption isLoaded={isLoaded} randomBlog={randomBlog} />
+        <CardBlogOption isLoaded={false} blog={randomBlog} />
         <div className="relative ml-[120px] hidden w-full max-w-[500px] sm:block lg:ml-0">
           <Image
             src={cardInfoBlog}
