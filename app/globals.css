@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @font-face {
   font-family: 'OpenSans';
   src: url('/assets/fonts/OpenSans.ttf');
@@ -283,12 +282,14 @@
   height: 100%;
   top: 0;
   left: 0;
-  background: linear-gradient(110deg,
-      rgba(227, 227, 227, 0) 0%,
-      rgba(227, 227, 227, 0) 40%,
-      rgba(227, 227, 227, 0.5) 50%,
-      rgba(227, 227, 227, 0) 60%,
-      rgba(227, 227, 227, 0) 100%);
+  background: linear-gradient(
+    110deg,
+    rgba(227, 227, 227, 0) 0%,
+    rgba(227, 227, 227, 0) 40%,
+    rgba(227, 227, 227, 0.5) 50%,
+    rgba(227, 227, 227, 0) 60%,
+    rgba(227, 227, 227, 0) 100%
+  );
   animation: gradient-animation 1.2s linear infinite;
 }
 
@@ -445,7 +446,6 @@ ul.scrollable-list-repentance::-webkit-scrollbar-thumb {
 }
 
 @supports not selector(::-webkit-scrollbar) {
-
   ul.scrollable-list,
   ul.scrollable-list-repentance {
     scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
@@ -623,7 +623,7 @@ div:where(.swal2-container).swal2-noanimation {
 
 /*Carrusel*/
 
-.slick-slide>div {
+.slick-slide > div {
   margin: 0 0px;
 }
 

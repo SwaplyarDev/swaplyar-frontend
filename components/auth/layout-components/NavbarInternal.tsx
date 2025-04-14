@@ -37,8 +37,8 @@ const NavbarInternal = () => {
   const isActive = pathname.split('/')[3];
 
   return (
-    <header className="sticky top-0 z-[1000] w-full bg-white dark:bg-lightText">
-      <div className="max-width-screen mx-auto md:max-w-[1300px]">
+    <header className={`sticky top-0 z-[1000] w-full bg-white dark:bg-lightText`}>
+      <div className={`max-width-screen mx-auto md:max-w-[1300px] ${isDark ? 'montanaDark' : 'montana'}`}>
         <div className="flex h-16 items-center justify-around mini-phone:mx-8 mini-phone:justify-between xs:mx-10 md:mx-20">
           <Link href="/es/auth/solicitud">
             <Image
@@ -61,10 +61,11 @@ const NavbarInternal = () => {
           </div>
         </div>
       </div>
-      <div className="bg-nav-blue dark:bg-white">
+      <div className={`bg-nav-blue dark:bg-white`}>
         <div className={`flex h-16 flex-grow xs:px-0 md:justify-between md:px-20`}>
           <div className="mx-auto flex h-full w-full max-w-[1200px] items-center justify-between px-4">
-            <div className={`${isDark ? 'montanaDark' : 'montana'} relative top-1 ml-10 flex h-full w-full xs:ml-0`}>
+            {/* ${isDark ? 'montanaDark' : 'montana'} */}
+            <div className={`relative top-1 ml-10 flex h-full w-full xs:ml-0`}>
               <Link
                 href="/es/auth/perfil"
                 className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} relative left-4 top-1 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t xs:-left-1 xs:ml-5`}

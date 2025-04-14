@@ -17,7 +17,7 @@ export default {
           const user_id = credentials.user_id as string;
           let URL_VERIFICATION = '';
           if (email) {
-            URL_VERIFICATION = 'login/email/verify-code';
+            URL_VERIFICATION = 'login/email/validate';
           }
           if (user_id) {
             URL_VERIFICATION = 'users/email-validation/validate';
