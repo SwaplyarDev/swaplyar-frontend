@@ -170,7 +170,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
 
   return (
     <>
-      <div className="rounded-lg border bg-white p-4">
+      <div className="rounded-lg border p-4">
         <h3 className="text-lg font-semibold">Aprobar/Rechazar Solicitud</h3>
 
         <div className="mt-2 flex flex-wrap gap-4">

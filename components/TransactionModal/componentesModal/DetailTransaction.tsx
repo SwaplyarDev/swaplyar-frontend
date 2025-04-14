@@ -26,7 +26,7 @@ const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading 
 
   return (
     <section className="w-full">
-      <div className="rounded-lg border bg-white p-4">
+      <div className="rounded-lg border border-black p-4">
         <h3 className="mb-4 text-lg font-semibold">Detalles de la Transacción</h3>
 
         {/* Sender Information */}

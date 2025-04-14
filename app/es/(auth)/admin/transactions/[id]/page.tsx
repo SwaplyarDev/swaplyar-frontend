@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { useTransactionStore } from '@/store/transactionModalStorage';
 import SkeletonModal from '@/components/TransactionModal/componentesModal/SkeletonModal';
 import InfoStatus from '@/components/TransactionModal/componentesModal/InfoStatus';
-import CloseButton from '@/components/TransactionModal/componentesModal/ui/CloseButton';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { useParams } from 'next/navigation';
@@ -13,7 +12,6 @@ import ClientMessage from '@/components/TransactionModal/componentesModal/ui/Cli
 import TransferImages from '@/components/TransactionModal/componentesModal/TransferImages';
 import ConfirmTransButton from '@/components/TransactionModal/componentesModal/ConfirmTransButton';
 import AprobarRechazar from '@/components/TransactionModal/componentesModal/aprobarRechazar';
-import DiscrepancySection from '@/components/TransactionModal/componentesModal/DiscrepancySection';
 import ClientInformation from '@/components/TransactionModal/componentesModal/ClientInformation';
 import FinalSection from '@/components/TransactionModal/componentesModal/FinalSection';
 import { useSession } from 'next-auth/react';
@@ -56,7 +54,7 @@ const TransactionModal = () => {
   // Fetch transaction data and related information
   useEffect(() => {
     if (transId) {
-      fetchTransaction(transId);
+      fetchTransaction(transId, token || '');
     }
   }, [transId, fetchTransaction]);
 
@@ -112,7 +110,6 @@ const TransactionModal = () => {
 
   const { data: session, status } = useSession();
   const token = session?.decodedToken.token;
-  console.log('🟡 Token:', token);
 
   const handleSubmit = async (
     status: string,

@@ -16,6 +16,7 @@ import AprobarRechazar from '@/components/TransactionModal/componentesModal/apro
 import DiscrepancySection from '@/components/TransactionModal/componentesModal/DiscrepancySection';
 import ClientInformation from '@/components/TransactionModal/componentesModal/ClientInformation';
 import FinalSection from '@/components/TransactionModal/componentesModal/FinalSection';
+import { useSession } from 'next-auth/react';
 
 const MySwal = withReactContent(Swal);
 
@@ -23,6 +24,9 @@ const TransactionModal = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [discrepancySend, setDiscrepancySend] = useState(false);
   const [modal, setModal] = useState<boolean>(false);
+
+  const { data: session } = useSession();
+  const token = session?.decodedToken.token;
 
   const params = useParams();
   const transId = params.id as string;
@@ -55,7 +59,7 @@ const TransactionModal = () => {
   // Fetch transaction data and related information
   useEffect(() => {
     if (transId) {
-      fetchTransaction(transId);
+      fetchTransaction(transId, token || '');
     }
   }, [transId, fetchTransaction]);
 

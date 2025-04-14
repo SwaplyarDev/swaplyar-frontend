@@ -20,7 +20,7 @@ import { cn } from '@/lib/utils';
 
 const FinalSection = ({ transId }: { transId: string }) => {
   const { data: session } = useSession();
-  const userName = session?.user.name;
+  const userName = session?.decodedToken.fullName;
   const [note, setNote] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -101,7 +101,7 @@ const FinalSection = ({ transId }: { transId: string }) => {
 
   return (
     <TooltipProvider>
-      <section className="w-full overflow-hidden rounded-xl border bg-white shadow-md transition-all duration-300">
+      <section className="w-full overflow-hidden rounded-xl border shadow-md transition-all duration-300">
         <div className="p-6">
           <div className="flex flex-col space-y-6">
             {/* Notes field */}
