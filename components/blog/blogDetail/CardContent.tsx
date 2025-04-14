@@ -56,7 +56,6 @@ function CardContent({ data }: CardContentProps) {
     const randomIndex = Math.floor(Math.random() * otherBlogs.length);
     return otherBlogs[randomIndex];
   }, [data.slug]);
-  console.log(getRandomBlog());
   const randomBlog = getRandomBlog();
 
   useEffect(() => {
@@ -203,7 +202,7 @@ function CardContent({ data }: CardContentProps) {
         </main>
       </div>
       <div className="mb-[70px] mt-20 flex flex-col-reverse items-center justify-between gap-10 lg:flex-row">
-        <CardBlogOption isLoaded={false} blog={randomBlog} />
+        <CardBlogOption isLoaded={isLoaded} blog={randomBlog} />
         <div className="relative ml-[120px] hidden w-full max-w-[500px] sm:block lg:ml-0">
           <Image
             src={cardInfoBlog}
