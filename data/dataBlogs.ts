@@ -4,8 +4,7 @@ export const dataBlogs = [
     title: 'PayPal en Argentina',
     image: '/images/paypalenarg.png',
     slug: 'paypal-en-argentina',
-    description:
-      'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de rellue se dedica a la imprenta)dar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica...',
+    description: '',
     category: 'Mercado',
     date: '',
     sections: {
@@ -186,7 +185,7 @@ export const dataBlogs = [
     image: '/images/billeterasvirtuales.png',
     slug: 'billeteras-virtuales-internacionales',
     description:
-      'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de rellue se dedica a la imprenta)dar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica...',
+      'En el mundo digital actual, las billeteras virtuales internacionales se han convertido en herramientas esenciales para gestionar y transferir dinero de manera eficiente. Para los usuarios de SwaplyAr, es fundamental conocer las opciones disponibles y elegir la que mejor se adapte a sus necesidades.',
     category: 'Mercado',
     date: '',
     sections: {
@@ -264,7 +263,7 @@ export const dataBlogs = [
     image: '/images/payonerarg.png',
     slug: 'payoneer-en-argentina',
     description:
-      'Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de rellue se dedica a la imprenta)dar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica...',
+      'Payoneer es una plataforma de pagos en línea diseñada para facilitar transacciones internacionales, especialmente útil para freelancers y empresas que operan globalmente. En Argentina, su uso ha crecido significativamente, ofreciendo una alternativa eficiente para recibir y enviar fondos desde el extranjero.',
     category: 'Mercado',
     date: '',
     sections: {

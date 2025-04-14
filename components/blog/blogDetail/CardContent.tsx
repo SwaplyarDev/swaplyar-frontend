@@ -49,15 +49,16 @@ function CardContent({ data }: CardContentProps) {
   const getRandomBlog = useCallback(() => {
     if (dataBlogs.length <= 1) return null;
 
+    const seed = data.slug.length;
     const otherBlogs = dataBlogs.filter((blog) => blog.slug !== data.slug);
 
     if (otherBlogs.length === 0) return null;
 
-    const randomIndex = Math.floor(Math.random() * otherBlogs.length);
+    const randomIndex = Math.floor((seed * 9301 + 49297) % otherBlogs.length);
     return otherBlogs[randomIndex];
   }, [data.slug]);
-  const randomBlog = getRandomBlog();
 
+  const randomBlog = getRandomBlog();
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -71,29 +72,6 @@ function CardContent({ data }: CardContentProps) {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  /*    useEffect(() => {
-    const fetchData = async () => {
-      setIsLoaded(true);
-
-      try {
-        const allBlogs = await fetchBlogs(1, '');
-        if (allBlogs && allBlogs.blogsPerPage.length > 0) {
-          let firstBlog = allBlogs.blogsPerPage[0];
-          setRandomBlog(firstBlog);
-          if (blogData.id === firstBlog.blog_id && allBlogs.blogsPerPage[1]) {
-            setRandomBlog(allBlogs.blogsPerPage[1]);
-          }
-        }
-      } catch (error) {
-        console.error('Error al obtener el blog:', error);
-      } finally {
-        setIsLoaded(false);
-      }
-    };
-
-    fetchData();
-  }, [blogData]);  */
 
   return (
     <section className="m-auto flex w-[1366px] flex-col">

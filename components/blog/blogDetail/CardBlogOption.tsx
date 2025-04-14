@@ -37,7 +37,9 @@ const CardBlogOption = ({ isLoaded, blog }: CardBlogOptionProps) => {
           <div className="flex flex-col items-center gap-2">
             <div>
               <p className="font-textFont text-xl font-bold">{blog.title}</p>
-              <p className="font-textFont text-base">{blog.description}</p>
+              <p className="font-roboto min mb-4 line-clamp-3 text-[16px] font-light leading-[24px] text-black dark:text-darkText">
+                {blog.description}
+              </p>
             </div>
             <button
               className={`buttonSecond relative flex h-[48px] w-[200px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-textFont font-semibold text-white`}
