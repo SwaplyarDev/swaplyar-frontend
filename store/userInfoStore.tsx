@@ -11,7 +11,6 @@ interface User {
 interface UserVerification {
   email: string;
   message: string;
-  user_id: string;
 }
 
 interface UserInfoStoreState {
