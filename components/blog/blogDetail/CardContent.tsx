@@ -16,6 +16,7 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { dataBlogs } from '@/data/dataBlogs';
 import { set } from 'date-fns';
 import { get } from 'http';
+import { gifImage } from '@/utils/assets/img-database';
 function isString(value: unknown): value is string {
   return typeof value === 'string' || value instanceof String;
 }
@@ -80,38 +81,37 @@ function CardContent({ data }: CardContentProps) {
           <ProgressBar value={progress} width="300px" />
         </div>
       </div>
-      <div className="ml-[300px] mt-[100px] hidden lg:block">
-        <p className="">{highlightText('El tiempo de lectura estimado para este artículo es de **4 a 5 minutos**')}</p>
-        <div className="mt-[20px]">
-          <p>16 Noviembre 2024</p>
-          <p className={!isDark ? 'font-bold text-[#012A8E]' : 'font-bold text-[#EBE7E0]'}>SwaplyAr</p>
+
+      <section className="m-auto mt-5 flex w-full max-w-[357px] flex-col overflow-x-hidden px-4 md:mt-12 md:max-w-[729px] lg:mt-0 lg:max-w-[1368px]">
+        <div className="ml-[200px] mt-[100px] hidden flex-col lg:flex lg:max-w-full">
+          <p className="">
+            {highlightText('El tiempo de lectura estimado para este artículo es de **4 a 5 minutos**')}
+          </p>
+          <div className="mt-[20px]">
+            <p>16 Noviembre 2024</p>
+            <p className={!isDark ? 'font-bold text-[#012A8E]' : 'font-bold text-[#EBE7E0]'}>SwaplyAr</p>
+          </div>
         </div>
-      </div>
-      <section className="item-center m-auto flex w-[357px] flex-col md:w-[729px] lg:w-[1366px]">
-        <div className="flex w-full gap-10">
+        <div className="mx-auto flex w-full flex-col justify-center gap-4 lg:flex-row">
           {/* SideBar */}
-          <article className="mt-[50px] hidden h-[756px] w-[286px] flex-col gap-5 lg:flex">
+          <article className="hidden h-[756px] w-[286px] flex-col gap-5 lg:ml-1 lg:flex">
             <h4 className="font-semibold">Contenido: </h4>
             <ul className="list-disc pl-5">
               {(sideBar as string[]).map((content, index) =>
                 Array.isArray(content) ? (
                   <ul key={`${index}-sub`} className="list-disc pl-5">
                     {content.map((text, idx) => (
-                      <li key={`${index}-${idx}`}>
-                        <a href="">{text}</a>
-                      </li>
+                      <li key={`${index}-${idx}`}>{text}</li>
                     ))}
                   </ul>
                 ) : (
-                  <li key={index}>
-                    <a href="">{content}</a>
-                  </li>
+                  <li key={index}>{content}</li>
                 ),
               )}
             </ul>
           </article>
           {/* Main Content */}
-          <main className="flex w-[357px] flex-col gap-5 md:w-[680px] lg:w-[897px]">
+          <main className="flex w-full max-w-[357px] flex-col gap-5 md:max-w-[680px] lg:max-w-[897px]">
             <h1 className={!isDark ? 'text-center text-4xl text-[#012A8E]' : 'text-center text-4xl text-[#EBE7E0]'}>
               {data.title}
             </h1>
@@ -214,6 +214,21 @@ function CardContent({ data }: CardContentProps) {
           </div>
         </div>
       </section>
+      <div
+        className="mt-12 flex h-[272px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${gifImage})` }}
+      >
+        <div className="max-w-[90%] text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText md:max-w-[600px]">
+          Mantente al día
+        </div>
+        <div className="max-w-[90%] text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText md:max-w-[600px]">
+          Regístrate para recibir novedades en tu correo electrónico
+        </div>
+
+        <div className="mt-4 inline-flex h-[46px] w-[300px] items-center justify-center gap-2.5 rounded-[50px] bg-darkText px-3.5 py-3">
+          <div className="font-titleFont text-base font-semibold text-lightText">Suscribete</div>
+        </div>
+      </div>
     </>
   );
 }
