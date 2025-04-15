@@ -40,8 +40,8 @@ const NavbarInternal = () => {
     <header className={`sticky top-0 z-40 h-[134px] w-full`}>
       {/* Parte de arriba blanca*/}
 
-      <div className={`max-width-screen mx-auto bg-white md:max-w-[1300px] ${isDark ? 'montanaDark' : 'montana'}`}>
-        <div className="flex h-16 items-center justify-around mini-phone:mx-8 mini-phone:justify-between xs:mx-10 md:mx-20">
+      <div className={`max-width-screen sticky top-0 z-40 mx-auto bg-white md:max-w-[1300px]`}>
+        <div className="flex h-16 items-center mini-phone:mx-8 mini-phone:justify-between xs:mx-10 md:mx-20">
           <Link href="/es/auth/solicitud">
             <Image
               src={isDark ? SwaplyArlogoMobileWhite : SwaplyArLogoComplete}
@@ -66,9 +66,25 @@ const NavbarInternal = () => {
 
       {/* Parte de abajo azul */}
 
-      <nav className="sticky top-0 z-40 flex h-[64px] w-full flex-row overflow-visible">
-        <div className="h-full w-[500px] bg-amber-300"></div>
-        <div className="mask h-full w-[300px] bg-amber-400"></div>
+      <nav className="sticky top-0 z-40 flex h-[63px] w-full flex-row overflow-visible">
+        <div className="h-full w-[300px] bg-amber-300"></div>
+        <div className="relative flex flex-col items-center justify-center">
+          <div className="mask h-full w-[128px] bg-amber-400"></div>
+          <div className="absolute top-5 z-50 h-[70px] w-[70px] rounded-full bg-red-500"></div>
+          <Link
+            href="/es/auth/perfil"
+            className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} absolute top-1 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t xs:-left-1 xs:ml-5`}
+          >
+            <Image
+              src={swaplyArAvatar}
+              alt="Foto perfil Usuario"
+              width={100}
+              height={100}
+              className="h-full w-full overflow-hidden rounded-full bg-white dark:bg-lightText"
+            />
+          </Link>
+        </div>
+
         <div className="h-full flex-1 bg-amber-500"></div>
         {/* <div className="absolute left-[615px] top-[40px] z-50 h-[80px] w-[80px] rounded-full bg-stone-600"></div> */}
       </nav>
