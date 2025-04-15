@@ -3,13 +3,40 @@
 import { useState } from 'react';
 import { FileText, User } from 'lucide-react';
 import { VerificationModal } from './VerficationModal';
+import { UserAdditionalInfo } from './UserAdditionalInfo';
+import { UserVerificationForm } from './UserVerificationForm';
+interface UserType {
+  date_subscription: string;
+  name: string;
+  lastName: string;
+  email: string;
+  nationality: string;
+  document_number: string;
+  birth_date: string;
+  phone_full: string;
+}
 
-export function UserDocumentSection() {
+interface UserDocumentSectionProps {
+  user: Partial<UserType>;
+}
+
+export function UserDocumentSection({ user }: UserDocumentSectionProps) {
   const [activeTab, setActiveTab] = useState('frente');
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isVerified, setIsVerified] = useState(false);
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
+  };
+
+  const handleSaveUserData = (userData: Partial<UserType>) => {
+    console.log('Datos del usuario guardados:', userData);
+    // Aquí implementarías la lógica para guardar los datos
+    // Por ejemplo, una llamada a la API
+
+    // Simulación de éxito
+    setTimeout(() => {
+      setIsVerified(true);
+    }, 1000);
   };
 
   return (
@@ -69,16 +96,29 @@ export function UserDocumentSection() {
           </div>
         )}
       </div>
-      <div className="mt-4 flex justify-center">
+      {/* <div className="mt-4 flex justify-center">
         <button
           className="rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
           onClick={() => setIsModalOpen(true)}
         >
           Verificar documentación
         </button>
-      </div>
+      </div> */}
 
       {isModalOpen && <VerificationModal onClose={() => setIsModalOpen(false)} />}
+      {isVerified ? (
+        <>
+          <UserAdditionalInfo user={user as UserType} />
+        </>
+      ) : (
+        <>
+          <UserVerificationForm
+            user={user}
+            onSave={handleSaveUserData}
+            onCancel={() => console.log('Operación cancelada')}
+          />
+        </>
+      )}
     </div>
   );
 }
