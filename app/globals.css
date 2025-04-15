@@ -680,3 +680,10 @@ div:where(.swal2-container).swal2-noanimation {
   background-size: cover;
   background-position: center;
 }
+
+.mask {
+  -webkit-mask-image: url('../public/images/Mascara_nav.png');
+  -webkit-mask-repeat: no-repeat;
+  mask-image: url('../public/images/Mascara_nav.png');
+  mask-repeat: no-repeat;
+}
