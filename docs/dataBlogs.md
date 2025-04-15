@@ -41,5 +41,8 @@ El campo style puede variar segun el tipo de texto que se requiera en el momento
 - subtitle (subtitulos)
 - ul (listas desordenadas)
 - ol (listas ordenadas)
-    - **Nota importante**:  los objetos que contengan "style: ol" o "style: ul" , el campo text del mismo es un array que puede contener a su vez varios arrays anidados.
+    - **importante**:  los objetos que contengan "style: ol" o "style: ul" , el campo text del mismo es un array que puede contener a su vez varios arrays anidados.
 
+
+### Nota Adicional
+ - El contenido de la pagina (contenido de campo "text" o contenido del array "content" para la **sideBar**) puede tener palabras u oraciones encerradas entre ** para texto en negrita.
