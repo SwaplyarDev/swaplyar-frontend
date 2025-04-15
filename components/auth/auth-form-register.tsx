@@ -44,8 +44,6 @@ export const RegisterForm = () => {
     setView('login');
   };
 
-  console.log('VAlor: ', isFocused2 || !!watch('lastName'));
-
   const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
