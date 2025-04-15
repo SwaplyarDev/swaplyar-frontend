@@ -5,13 +5,20 @@ import { TransactionAdminType } from '@/types/transactions/transAdminType';
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 //General Transactions Fetchs
-export const getAllTransactions = async (page: number) => {
+export const getAllTransactions = async (page: number, token: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions?page=${page}&perPage=12`);
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions?page=${page}&perPage=12`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log(response.status, response.ok);
 
     if (!response.ok) throw new Error('Failed to fetch transactions');
 
     const data: TransactionArray = await response.json();
+
     return data;
   } catch (error: any) {
     console.error('Error fetching transactions:', error);
