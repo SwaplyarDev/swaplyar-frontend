@@ -9,10 +9,10 @@ interface User {
   phone_full: string;
 }
 
-export function UserAdditionalInfo({ user }: { user: User }) {
+export function UserInfo({ user }: { user: User }) {
   return (
     <div className="space-y-3 rounded-lg border bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
-      <h1 className="text-xl text-gray-800 dark:text-gray-100">Informacion Complementaria del Usuario</h1>
+      <h1 className="text-xl text-gray-800 dark:text-gray-100">Informacion Basica del Usuario</h1>
       <div className="grid grid-cols-2 gap-4">
         <div>
           <p className="text-sm text-gray-500 dark:text-gray-400">Fecha de Inscripción</p>
@@ -29,22 +29,6 @@ export function UserAdditionalInfo({ user }: { user: User }) {
         <div>
           <p className="text-sm text-gray-500 dark:text-gray-400">Correo Electrónico</p>
           <p className="font-medium dark:text-gray-200">{user.email}</p>
-        </div>
-        <div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Nacionalidad</p>
-          <p className="font-medium dark:text-gray-200">{user.nationality}</p>
-        </div>
-        <div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">N° de Documento</p>
-          <p className="font-medium dark:text-gray-200">{user.document_number}</p>
-        </div>
-        <div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Fecha de Nacimiento</p>
-          <p className="font-medium dark:text-gray-200">{user.birth_date}</p>
-        </div>
-        <div>
-          <p className="text-sm text-gray-500 dark:text-gray-400">N° de Whatsapp</p>
-          <p className="font-medium dark:text-gray-200">{user.phone_full}</p>
         </div>
       </div>
     </div>

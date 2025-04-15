@@ -1,15 +1,15 @@
-import { UserActionButtons } from './UserActionButtons';
 import { UserAdditionalInfo } from './UserAdditionalInfo';
 import { UserDetailsSection } from './UserDetailsSection';
 import { UserDocumentSection } from './UserDocumentSection';
 import { UserHeader } from './UserHeader';
+import { UserInfo } from './UserInfo';
 import { UserNotesSection } from './UserNotesSection';
 import { UserNotFound } from './UserNotFound';
 import { UserRewardsOptions } from './UserRewardOptions';
 import { UserRewardsSection } from './UserRewardSection';
 
-export async function UserDetailPageComponent({ userId }: { userId: number }) {
-  const user = await getUserById(userId);
+export function UserDetailPageComponent({ userId }: { userId: number }) {
+  const user = getUserById(userId);
 
   if (!user) {
     return <UserNotFound userId={userId} />;
@@ -26,10 +26,8 @@ export async function UserDetailPageComponent({ userId }: { userId: number }) {
           {/* Left Column */}
           <div className="space-y-6">
             <UserDetailsSection code={user.code} />
-            <UserAdditionalInfo user={user} />
-            <UserDocumentSection />
-            <UserAdditionalInfo user={user} />
-            <UserActionButtons />
+            <UserInfo user={user} />
+            <UserDocumentSection user={user} />
             <UserNotesSection />
           </div>
 
@@ -123,7 +121,7 @@ const data = [
   },
 ];
 
-export async function getUserById(id: number) {
+export function getUserById(id: number) {
   return data.find((user) => user.id === id);
 }
 
