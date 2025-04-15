@@ -87,7 +87,7 @@ function CardContent({ data }: CardContentProps) {
           <p className={!isDark ? 'font-bold text-[#012A8E]' : 'font-bold text-[#EBE7E0]'}>SwaplyAr</p>
         </div>
       </div>
-      <section className="item-center m-auto flex w-[357px] flex-col lg:w-[1366px]">
+      <section className="item-center m-auto flex w-[357px] flex-col md:w-[729px] lg:w-[1366px]">
         <div className="flex w-full gap-10">
           {/* SideBar */}
           <article className="mt-[50px] hidden h-[756px] w-[286px] flex-col gap-5 lg:flex">
@@ -190,7 +190,7 @@ function CardContent({ data }: CardContentProps) {
               height={262}
               className="h-[262px] w-auto object-cover"
             />
-            <div className="absolute top-[33px] flex w-[240px] flex-col gap-4 md:left-[25px] lg:left-[68px]">
+            <div className="absolute left-[68px] top-[33px] flex w-[240px] flex-col gap-4">
               <p className="text-center font-textFont text-xl font-semibold text-lightText">
                 Si este artículo te resultó útil, ¡compártelo con tu comunidad! Etiquétanos @SwaplyAr y cuéntanos qué
                 opinas.

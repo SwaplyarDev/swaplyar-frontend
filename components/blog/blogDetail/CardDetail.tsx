@@ -52,7 +52,6 @@ function CardDetail() {
       </div>
     );
   }
-  console.log(blog);
 
   return <CardContent data={blog} />;
 }
