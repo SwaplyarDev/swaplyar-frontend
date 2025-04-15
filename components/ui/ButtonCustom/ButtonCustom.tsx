@@ -4,12 +4,13 @@ type ButtonCustomProps = {
   setShowVerify?: (value: boolean) => void;
   className: string;
   title: string;
+  onClick?: () => void;
 };
 
-export const ButtonCustom: React.FC<ButtonCustomProps> = ({ setShowVerify, className, title }) => {
+export const ButtonCustom: React.FC<ButtonCustomProps> = ({ setShowVerify, className, title, onClick }) => {
   return (
-    <div id="submit-25456" className={`${className}`} onClick={() => setShowVerify?.(true)}>
-      <button id="submit-25456" className={''}>
+    <div className={`${className}`} onClick={onClick ?? (() => setShowVerify?.(true))}>
+      <button type="button" className={''}>
         {title}
       </button>
     </div>

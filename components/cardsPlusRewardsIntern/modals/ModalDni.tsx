@@ -12,7 +12,6 @@ const ModalDni: React.FC<ShowModalDniProos> = ({ ShowModalDni, className, setSho
   const stopAndSet = (e: any) => {
     e.stopPropagation();
     setShowModalDni?.(0);
-    console.log(e);
   };
   return (
     <div className="absolute z-50 h-full w-full border-2 bg-black bg-opacity-50" onClick={(e) => stopAndSet(e)}>
