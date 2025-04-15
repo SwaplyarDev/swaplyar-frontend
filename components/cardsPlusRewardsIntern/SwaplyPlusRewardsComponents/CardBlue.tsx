@@ -4,7 +4,7 @@ import Image1 from '@/public/images/plus-rewards-logo.png';
 
 const CardBlue = ({ memberCode }: { memberCode: string }) => {
   return (
-    <div>
+    <>
       <div className="relative z-10 mx-auto flex h-[210px] max-h-[288px] max-w-[358px] overflow-hidden rounded-[16px] bg-opacity-60 font-textFont text-[#000] sm:h-[288px] sm:w-[490px] sm:max-w-[490px]">
         <div
           className="absolute -top-[225px] -z-10 h-[700px] w-[540px] rotate-[80deg] rounded-[240px]"
@@ -30,7 +30,7 @@ const CardBlue = ({ memberCode }: { memberCode: string }) => {
           <p className="text-end text-[26px] sm:text-[36px]">{memberCode}</p>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -12,12 +12,12 @@ interface CardProps {
 
 export const CardPlusRewards: React.FC<CardProps> = ({ user, memberCode, showVerify, setShowVerify }) => {
   return (
-    <div>
+    <>
       {user ? (
         <CardBlue memberCode={memberCode} />
       ) : (
         <CardYellow showVerify={showVerify} setShowVerify={setShowVerify} />
       )}
-    </div>
+    </>
   );
 };

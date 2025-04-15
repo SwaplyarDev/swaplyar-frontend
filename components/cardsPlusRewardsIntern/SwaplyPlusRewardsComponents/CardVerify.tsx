@@ -1,4 +1,5 @@
 import React from 'react';
+import { ButtonCustom } from '@/components/ui/ButtonCustom/ButtonCustom';
 
 const CardVerify = ({ text }: { text: string }) => {
   return (
@@ -7,14 +8,12 @@ const CardVerify = ({ text }: { text: string }) => {
 
       <div className="flex w-auto flex-col rounded-[16px] border-2 border-[#90B0FE] bg-[#FFFFF8] p-[10px]">
         <p className="text-[8px] text-[#012A8E]">arrastra el archivo aquí o</p>
-        <button
-          id="submit-25456"
-          className={
-            'rounded-3sm relative mx-auto my-[3px] h-[34px] w-[124px] rounded-[40px] border bg-buttonsLigth font-titleFont font-semibold text-white hover:bg-buttonsLigth'
-          }
-        >
-          Subir
-        </button>
+        <div className="box-border rounded-[40px] border-[2px] border-transparent p-[2px] hover:border-2 hover:border-buttonsLigth">
+          <ButtonCustom
+            className="rounded-3sm flex h-[34px] w-[124px] cursor-pointer justify-center rounded-[40px] bg-buttonsLigth font-titleFont font-semibold text-white"
+            title="Subir"
+          />
+        </div>
         <p className="text-[8px] text-[#012A8E]">formatos de archivo: PNG, JPG, PDF</p>
       </div>
     </form>
