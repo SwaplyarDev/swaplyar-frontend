@@ -88,6 +88,7 @@ const FormAuth = () => {
       </div>
       <div className="relative mt-1 h-[81px]">
         <div className="flex flex-col">
+          {/* Falta funcionalidad para cuando el usuario tenga su numero de telefono y no haga falta que lo ingrese el */}
           <label htmlFor="phone_number" className="font-textFont text-xs font-light">
             Número Telefónico
           </label>
