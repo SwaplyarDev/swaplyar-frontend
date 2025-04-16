@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { useTransactionStore } from '@/store/transactionModalStorage';
 import SkeletonModal from '@/components/admin/TransactionModal/componentesModal/SkeletonModal';
 import InfoStatus from '@/components/admin/TransactionModal/componentesModal/InfoStatus';
-import CloseButton from '@/components/admin/TransactionModal/componentesModal/ui/CloseButton';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { useParams } from 'next/navigation';
@@ -77,8 +76,8 @@ const TransactionModal = () => {
   // Update transaction status and client status
   useEffect(() => {
     if (!transId || !trans) return;
-    updateTransactionStatusFromStore(transId, trans);
-    getStatusClient(transId, trans);
+    updateTransactionStatusFromStore(transId, trans, token || '');
+    getStatusClient(transId, trans, token || '');
   }, [transId, trans, componentStates, updateTransactionStatusFromStore, getStatusClient]);
 
   // Handle component state changes
