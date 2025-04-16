@@ -56,14 +56,15 @@ export const getStatusById = async (transId: string, trans: any, token: string) 
 
   try {
     const response = await fetch(
-      `${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus?transaction_id=${transId}&last_name=Righi`, {
+      `${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus?transaction_id=${transId}&last_name=Righi`,
+      {
         method: 'GET',
         cache: 'no-store',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
 
     if (!response.ok) throw new Error('Failed to fetch transactions');

@@ -72,8 +72,8 @@ const TransactionModal = () => {
   // Update transaction status and client status
   useEffect(() => {
     if (!transId || !trans) return;
-    updateTransactionStatusFromStore(transId, trans);
-    getStatusClient(transId, trans);
+    updateTransactionStatusFromStore(transId, trans, token);
+    getStatusClient(transId, trans, token);
   }, [transId, trans, componentStates, updateTransactionStatusFromStore, getStatusClient]);
 
   // Handle component state changes
@@ -109,7 +109,7 @@ const TransactionModal = () => {
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const { data: session, status } = useSession();
-  const token = session?.decodedToken.token;
+  const token = session?.decodedToken.token || '';
 
   const handleSubmit = async (
     status: string,

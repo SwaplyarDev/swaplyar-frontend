@@ -2,13 +2,6 @@ import { create } from 'zustand';
 import { NoteTypeSingle, emptyNote } from '@/types/transactions/notesType';
 import { RegretTypeSingle, emptyRegret } from '@/types/transactions/regretsType';
 import { TransactionTypeSingle, emptyTransaction } from '@/types/transactions/transactionsType';
-import {
-  getTransactionById,
-  updateStatusClient,
-  getStatusTransactionAdmin,
-  postStatusInAdmin,
-  updateStatusAdmin,
-} from '@/actions/transactions/transactions.action';
 import { getNoteById } from '@/actions/transactions/notes.action';
 import { getRegret } from '@/actions/repentance/repentanceForm.action';
 import { convertTransactionState, getComponentStatesFromStatus } from '@/utils/transactionStatesConverser';
@@ -16,7 +9,12 @@ import {
   TransactionService,
   GetTransactionStatus,
 } from '@/components/admin/TransactionModal/componentesModal/ui/TransactionService';
-import { useSession } from 'next-auth/react';
+import {
+  getStatusTransactionAdmin,
+  getTransactionById,
+  postStatusInAdmin,
+} from '@/actions/transactions/transactions.action';
+import auth from '@/auth';
 
 interface TransactionStatus {
   refunded: {
@@ -64,10 +62,10 @@ interface TransactionState {
   fetchRegret: (regretId: string) => Promise<void>;
   setComponentStates: (key: keyof TransactionState['componentStates'], value: any) => void;
   setStatus: (status: string) => void;
-  updateTransactionStatusFromStore: (transId: string, trans: any) => Promise<void>;
+  updateTransactionStatusFromStore: (transId: string, trans: any, token: string) => Promise<void>;
   setSelected: (selected: 'stop' | 'accepted' | 'canceled' | null) => void;
   updateStatusFromComponents: () => void;
-  getStatusClient: (transId: string, trans: any) => Promise<void>;
+  getStatusClient: (transId: string, trans: any, token: string) => Promise<void>;
 }
 
 export const useTransactionStore = create<TransactionState>((set, get) => ({
@@ -108,7 +106,7 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
       set({ isLoading: false });
     }
   },
-  updateTransactionStatusFromStore: async (transId, trans) => {
+  updateTransactionStatusFromStore: async (transId, trans, token) => {
     const { status } = get();
 
     if (!status || !trans) {
@@ -116,7 +114,7 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
       return;
     }
     try {
-      const response = await GetTransactionStatus(status, transId);
+      const response = await GetTransactionStatus(status, transId, token);
 
       if (response?.newStatus) {
         set({ status: response.newStatus });
@@ -127,13 +125,13 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
       console.error('❌ Error al actualizar el estado desde el store:', error);
     }
   },
-  getStatusClient: async (transId, trans) => {
+  getStatusClient: async (transId, trans, token) => {
     if (!trans) {
       throw new Error('error');
     }
 
     try {
-      const response = await GetTransactionStatus(transId, trans);
+      const response = await GetTransactionStatus(transId, trans, token);
 
       if (response?.newStatus) {
         set({ status: response.newStatus });

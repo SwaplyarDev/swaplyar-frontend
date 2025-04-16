@@ -1,5 +1,4 @@
-import { updateStatusClient, getStatusById } from '@/actions/transactions/transactions.action';
-import { TransactionTypeSingle } from '@/types/transactions/transactionsType';
+import { getStatusById, updateStatusClient } from '@/actions/transactions/transactions.action';
 
 interface TransactionServiceResponse {
   newStatus: string;
@@ -24,7 +23,7 @@ export const TransactionService = async (
   }
 };
 
-export const GetTransactionStatus = async (transId: string, trans: any) => {
+export const GetTransactionStatus = async (transId: string, trans: any, token: string) => {
   console.log('Valores recibidos:', { transId, trans });
 
   if (!transId || !trans) {
@@ -35,7 +34,7 @@ export const GetTransactionStatus = async (transId: string, trans: any) => {
 
   try {
     console.log('✅ Llamando a getStatusById con transId:', transId);
-    const response = await getStatusById(transId, trans);
+    const response = await getStatusById(transId, trans, token);
     console.log('📤 Respuesta de getStatusById:', response);
 
     if (!response) {

@@ -1,5 +1,3 @@
-'use server';
-
 import { sendNoteType, NoteTypeSingle } from '@/types/transactions/notesType';
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
