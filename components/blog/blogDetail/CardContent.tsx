@@ -82,8 +82,8 @@ function CardContent({ data }: CardContentProps) {
         </div>
       </div>
 
-      <section className="m-auto mt-5 flex w-full max-w-[357px] flex-col overflow-x-hidden px-4 md:mt-12 md:max-w-[729px] lg:mt-0 lg:max-w-[1368px]">
-        <div className="ml-[200px] mt-[100px] hidden flex-col lg:flex lg:max-w-full">
+      <section className="m-auto mt-12 flex w-full max-w-[357px] flex-col overflow-x-hidden px-4 md:mt-12 md:max-w-[729px] lg:mt-0 lg:max-w-[1368px]">
+        <div className="ml-[200px] mt-[50px] hidden flex-col lg:flex lg:max-w-full">
           <p className="">
             {highlightText('El tiempo de lectura estimado para este artículo es de **4 a 5 minutos**')}
           </p>
