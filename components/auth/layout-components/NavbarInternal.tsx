@@ -19,6 +19,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import PerfilIcon from '@/components/icons-internal/icons-desktop/perfil/PerfilIcon';
 import { signOut } from 'next-auth/react';
+import Iconos from './Iconos';
 
 const NavbarInternal = () => {
   const { isDark } = useDarkTheme();
@@ -70,7 +71,7 @@ const NavbarInternal = () => {
         <div className="flex h-[63px] w-full flex-row overflow-visible">
           <div className="h-full w-[388px] bg-[#012A8E]"></div>
           <div className="relative flex flex-col items-center justify-center">
-            <div className="mask h-full w-[128px] self-end bg-[#012A8E]"></div>
+            <div className="mask-nav h-full w-[128px] self-end bg-[#012A8E]"></div>
             {/* <div className="absolute top-5 z-50 h-[70px] w-[70px] rounded-full bg-red-500"></div> */}
             <Link
               href="/es/auth/perfil"
@@ -88,21 +89,25 @@ const NavbarInternal = () => {
               Nombre Usuario
             </p>
           </div>
-          <div className="h-full flex-1 bg-amber-500"></div>
-          <div className="absolute ml-[900px] hidden lg:mr-10 lg:flex lg:max-w-[460px]">
-            <NavIcons />
+          <div className="h-full flex-1 bg-amber-900"></div>
+          <div className="h-full flex-1 bg-amber-900">
+            <Iconos />
           </div>
-          <div onClick={() => setDrawerMenu(true)} className="hidden xs:block xs:pr-10 md:pr-0 lg:hidden">
+          <div className="maskIcon h-full flex-1 bg-amber-600"></div>
+          {/* <div className="absolute ml-[900px] hidden lg:mr-10 lg:flex lg:max-w-[460px]">
+            <NavIcons />
+          </div> */}
+          {/* <div onClick={() => setDrawerMenu(true)} className="hidden xs:block xs:pr-10 md:pr-0 lg:hidden">
             <GiHamburgerMenu className="size-8 text-white dark:text-black" />
           </div>
           <button onClick={() => signOut()} className="absolute ml-[1400px] self-center xs:hidden lg:block">
             <CerrarSesion />
-          </button>
+          </button> */}
 
           {/* {COMPONENTIZAR!} */}
 
           {/* Menu desplegable tablet */}
-          {drawerMenu && (
+          {/* {drawerMenu && (
             <Drawer
               open={drawerMenu}
               onClose={closeDrawerMenu}
@@ -190,7 +195,7 @@ const NavbarInternal = () => {
                 </div>
               </Drawer.Items>
             </Drawer>
-          )}
+          )} */}
         </div>
       </nav>
     </header>

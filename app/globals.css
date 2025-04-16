@@ -681,9 +681,22 @@ div:where(.swal2-container).swal2-noanimation {
   background-position: center;
 }
 
-.mask {
+.mask-nav {
   -webkit-mask-image: url('../public/images/Mascara_montana.png');
-  -webkit-mask-repeat: no-repeat;
   mask-image: url('../public/images/Mascara_montana.png');
+  -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
+
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+.mask-icon {
+  -webkit-mask-image: url('../public/images/Mascara_icon.png');
+  mask-image: url('../public/images/Mascara_icon.png');
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  mask-position: top center;
 }

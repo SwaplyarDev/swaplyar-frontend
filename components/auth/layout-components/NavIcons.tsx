@@ -27,13 +27,8 @@ export const NavIcons = ({ isFooter }: NavIconsProps) => {
   const { isDark } = useDarkTheme();
   return (
     <div className="relative flex w-full items-end justify-around">
-      <div
-        className={
-          isFooter && isActive === 'solicitud'
-            ? `${isDark ? 'montanaDark-footer' : 'montana-footer'} relative bottom-0 w-full`
-            : ''
-        }
-      >
+      {/* SOLICITUD */}
+      <div className={isFooter && isActive === 'solicitud' ? `relative bottom-0 w-full` : ''}>
         <div className="flex items-center justify-center">
           <Link href={`/es/auth/solicitud`} className="cursor-pointer">
             {isActive === 'solicitud' ? (
@@ -46,7 +41,7 @@ export const NavIcons = ({ isFooter }: NavIconsProps) => {
           </Link>
         </div>
       </div>
-      <div
+      {/* <div
         className={
           isFooter && isActive === ActiveTab.HISTORIAL
             ? `${isDark ? 'montanaDark-footer' : 'montana-footer'} relative bottom-0 w-full`
@@ -64,8 +59,8 @@ export const NavIcons = ({ isFooter }: NavIconsProps) => {
             )}
           </Link>
         </div>
-      </div>
-      <div
+      </div> */}
+      {/* <div
         className={
           isFooter && isActive === ActiveTab.PLUSREWARDS
             ? `${isDark ? 'montanaDark-footer' : 'montana-footer'} relative bottom-0 w-full`
@@ -83,8 +78,8 @@ export const NavIcons = ({ isFooter }: NavIconsProps) => {
             )}
           </Link>
         </div>
-      </div>
-      <div
+      </div> */}
+      {/* <div
         className={
           isFooter && isActive === ActiveTab.CUENTASASOCIADAS
             ? `${isDark ? 'montanaDark-footer' : 'montana-footer'} relative bottom-0 w-full`
@@ -102,8 +97,8 @@ export const NavIcons = ({ isFooter }: NavIconsProps) => {
             )}
           </Link>
         </div>
-      </div>
-      <div
+      </div> */}
+      {/* <div
         className={
           isFooter && isActive === ActiveTab.CENTRODEAYUDA
             ? `${isDark ? 'montanaDark-footer' : 'montana-footer'} relative bottom-0 w-full`
@@ -121,7 +116,7 @@ export const NavIcons = ({ isFooter }: NavIconsProps) => {
             )}
           </Link>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
