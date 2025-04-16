@@ -195,7 +195,12 @@ export const dataBlogs = [
     date: '',
     sections: {
       sidebar: {
-        content: ['Principales Billeteras Virtuales Internacionales', ['PayPal', 'Skrill', 'Neteller', 'Payoneer']],
+        content: [
+          {
+            text: ['Principales Billeteras Virtuales Internacionales', ['PayPal', 'Skrill', 'Neteller', 'Payoneer']],
+            style: 'ul',
+          },
+        ],
       },
       mainContent: {
         content: [
@@ -274,13 +279,18 @@ export const dataBlogs = [
     sections: {
       sidebar: {
         content: [
-          'Que es Payoneer',
-          'Como funcona Payoneer en Argenntna',
-          ['Regstro y Confguracion', 'Recepcion de Pagos', 'Retiro de Fondos'],
-          'Comisiones Asociados',
-          'Ventajas y desventajas de usar Payoneer en Argentna',
-          'Alternatvas a Payoneer',
-          'Conclusión',
+          {
+            text: [
+              'Que es Payoneer',
+              'Como funcona Payoneer en Argenntna',
+              ['Regstro y Confguracion', 'Recepcion de Pagos', 'Retiro de Fondos'],
+              'Comisiones Asociados',
+              'Ventajas y desventajas de usar Payoneer en Argentna',
+              'Alternatvas a Payoneer',
+              'Conclusión',
+            ],
+            style: 'ul',
+          },
         ],
       },
       mainContent: {
