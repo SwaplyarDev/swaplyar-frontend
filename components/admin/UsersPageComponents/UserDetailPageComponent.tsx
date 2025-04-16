@@ -5,7 +5,8 @@ import { UserHeader } from './UserHeader';
 import { UserInfo } from './UserInfo';
 import { UserNotesSection } from './UserNotesSection';
 import { UserNotFound } from './UserNotFound';
-import { UserRewardsOptions } from './UserRewardOptions';
+import { TransactionHistorySection } from './TransactionHistorySection';
+import { WalletsSection } from './WalletsSection';
 import { UserRewardsSection } from './UserRewardSection';
 
 export function UserDetailPageComponent({ userId }: { userId: number }) {
@@ -33,8 +34,9 @@ export function UserDetailPageComponent({ userId }: { userId: number }) {
 
           {/* Right Column */}
           <div className="space-y-6">
+            <TransactionHistorySection />
+            <WalletsSection />
             <UserRewardsSection user={user} />
-            <UserRewardsOptions />
           </div>
         </div>
       </div>

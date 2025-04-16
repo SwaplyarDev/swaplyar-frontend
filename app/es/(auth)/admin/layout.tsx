@@ -32,12 +32,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, []);
 
   return (
-    <section className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <section className="m-auto min-h-screen bg-gray-50 dark:bg-gray-900">
       <Sidebar />
       {/* <Sidebar2 /> */}
       <div className={`transition-all duration-300 ease-in-out ${sidebarCollapsed ? 'md:ml-16' : 'md:ml-72'}`}>
         {/* <LayoutAdmin /> */}
-        <main className="p-4 md:p-6">{children}</main>
+        <main className="m-auto max-w-[1400px] p-4 md:p-6">{children}</main>
       </div>
     </section>
   );
