@@ -10,23 +10,28 @@ export const dataBlogs = [
     sections: {
       sidebar: {
         content: [
-          'PayPal en Argentina: Guía Completa para Usuarios de SwaplyAr',
-          '¿Qué es PayPal y cómo funciona en Argentina?',
-          'Cómo crear una cuenta PayPal en Argentina',
-          ['Registro', 'Datos personales', 'Vinculación de medios de pago'],
-          'Envío de dinero a través de PayPal',
-          'Recepción de dinero con PayPal',
-          'Retiro de fondos de PayPal a una cuenta bancaria en Argentina',
-          'Comisiones y tipos de cambio',
-          'Alternativas a PayPal en Argentina',
-          '¿Por qué elegir SwaplyAr?',
-          [
-            'Rapidez en las transacciones',
-            'Seguridad comprobada',
-            'Soporte confiable para usuarios de PayPal',
-            'Comisiones transparentes',
-          ],
-          'Evita los riesgos comunes',
+          {
+            text: [
+              'PayPal en Argentina: Guía Completa para Usuarios de SwaplyAr',
+              '¿Qué es PayPal y cómo funciona en Argentina?',
+              'Cómo crear una cuenta PayPal en Argentina',
+              ['Registro', 'Datos personales', 'Vinculación de medios de pago'],
+              'Envío de dinero a través de PayPal',
+              'Recepción de dinero con PayPal',
+              'Retiro de fondos de PayPal a una cuenta bancaria en Argentina',
+              'Comisiones y tipos de cambio',
+              'Alternativas a PayPal en Argentina',
+              '¿Por qué elegir SwaplyAr?',
+              [
+                'Rapidez en las transacciones',
+                'Seguridad comprobada',
+                'Soporte confiable para usuarios de PayPal',
+                'Comisiones transparentes',
+              ],
+              'Evita los riesgos comunes',
+            ],
+            style: 'ul',
+          },
         ],
       },
       mainContent: {

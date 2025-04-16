@@ -9,15 +9,12 @@ export interface BlogPost {
 
 export interface CardContentProps {
   data: {
-    blog_id?: string;
-    slug: string;
-    title: string;
-    description: string;
-    image: string;
-    blog_id: string;
     sections: {
       sidebar: {
-        content: string[];
+        content: {
+          text: string | string[];
+          style: string;
+        }[];
       };
       mainContent: {
         content: {
@@ -26,6 +23,9 @@ export interface CardContentProps {
         }[];
       };
     };
+    slug: string;
+    title: string;
+    image: string;
   };
 }
 

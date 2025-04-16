@@ -44,7 +44,7 @@ function CardContent({ data }: CardContentProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [progress, setProgress] = useState(0);
   const indexBlog = dataBlogs.findIndex((blog) => blog.slug === data.slug);
-  const sideBar = data?.sections.sidebar.content;
+  const sideBar = data?.sections.sidebar.content?.map((item) => item.text);
   const mainContent = data?.sections.mainContent.content;
 
   const getRandomBlog = useCallback(() => {
