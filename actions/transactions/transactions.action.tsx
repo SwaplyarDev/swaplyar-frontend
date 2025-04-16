@@ -8,9 +8,11 @@ const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 export const getAllTransactions = async (page: number, token: string) => {
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions?page=${page}&perPage=12`, {
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      cache: 'no-store',
     });
 
     console.log(response.status, response.ok);
@@ -32,6 +34,7 @@ export const getTransactionById = async (transaction_id: string, token: string) 
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      cache: 'no-store',
     });
     console.log(response);
     if (!response.ok) throw new Error('Failed to fetch transactions');
@@ -44,7 +47,7 @@ export const getTransactionById = async (transaction_id: string, token: string) 
   }
 };
 
-export const getStatusById = async (transId: string, trans: any) => {
+export const getStatusById = async (transId: string, trans: any, token: string) => {
   console.log('🟡 Ejecutando getStatusByI');
   if (!transId) {
     console.error('❌ transId o trans son inválidos:', { transId });
@@ -53,7 +56,14 @@ export const getStatusById = async (transId: string, trans: any) => {
 
   try {
     const response = await fetch(
-      `${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus?transaction_id=${transId}&last_name=Righi`,
+      `${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus?transaction_id=${transId}&last_name=Righi`, {
+        method: 'GET',
+        cache: 'no-store',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
 
     if (!response.ok) throw new Error('Failed to fetch transactions');

@@ -1,38 +1,36 @@
-'use client';
+// /src/components/admin/TransactionsTable/TransactionsLoader.tsx
 import { getAllTransactions } from '@/actions/transactions/transactions.action';
 import TransactionsTable from '@/components/admin/TransactionsTable/TransactionsTable/TransactionsTable';
 import { TransactionArray } from '@/types/transactions/transactionsType';
-import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { auth } from "@/auth";
 
 interface TransactionsLoaderProps {
   currentPage: number;
 }
 
-const TransactionsLoader: React.FC<TransactionsLoaderProps> = ({ currentPage }) => {
-  const { data: session, status } = useSession();
-  const [transactions, setTransactions] = useState<TransactionArray | null>(null);
+const TransactionsLoader = async ({ currentPage }: TransactionsLoaderProps) => {
+  // Obtener la sesión en el servidor
+	const session = await auth();
+  const token = session?.decodedToken.token;
 
-  useEffect(() => {
-    const getTransactions = async () => {
-      if (!session?.decodedToken?.token) return;
+  // Validar que exista sesión y token
+  if (!session || !token) {
+    return <div>No autorizado</div>;
+  }
 
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        const data = await getAllTransactions(currentPage, session.decodedToken.token);
-        setTransactions(data);
-      } catch (error) {
-        console.error('Error al obtener transacciones:', error);
-      }
-    };
+  // Obtener las transacciones utilizando el token de la sesión
+  let transactions: TransactionArray | null = null;
+  try {
+    transactions = await getAllTransactions(currentPage, token);
+  } catch (error) {
+    console.error('Error al obtener transacciones:', error);
+    return <div>Error al cargar las transacciones.</div>;
+  }
 
-    if (status === 'authenticated') {
-      getTransactions();
-    }
-  }, [currentPage, session, status]);
-
-  if (status === 'loading') return <>Cargando sesión...</>;
-  if (!transactions) return <>Cargando transacciones...</>;
+  // En caso de que no existan transacciones, se muestra un mensaje de carga
+  if (!transactions) {
+    return <div>Cargando transacciones...</div>;
+  }
 
   return <TransactionsTable transactions={transactions} currentPage={currentPage} />;
 };
