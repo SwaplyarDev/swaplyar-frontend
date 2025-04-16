@@ -9,6 +9,8 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+// Agregar carga dinamica componentizando
+
 export enum ActiveTab {
   SOLICITUD = 'solicitud',
   HISTORIAL = 'historial',

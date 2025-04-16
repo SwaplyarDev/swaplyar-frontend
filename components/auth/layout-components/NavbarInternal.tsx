@@ -66,149 +66,133 @@ const NavbarInternal = () => {
 
       {/* Parte de abajo azul */}
 
-      <nav className="sticky top-0 z-40 flex h-[63px] w-full flex-row overflow-visible">
-        <div className="h-full w-[300px] bg-amber-300"></div>
-        <div className="relative flex flex-col items-center justify-center">
-          <div className="mask h-full w-[128px] bg-amber-400"></div>
-          <div className="absolute top-5 z-50 h-[70px] w-[70px] rounded-full bg-red-500"></div>
-          <Link
-            href="/es/auth/perfil"
-            className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} absolute top-1 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t xs:-left-1 xs:ml-5`}
-          >
-            <Image
+      <nav className="sticky top-0 z-40 flex h-[63px] w-full items-center justify-center overflow-visible">
+        <div className="flex h-[63px] w-full flex-row overflow-visible">
+          <div className="h-full w-[388px] bg-[#012A8E]"></div>
+          <div className="relative flex flex-col items-center justify-center">
+            <div className="mask h-full w-[128px] self-end bg-[#012A8E]"></div>
+            {/* <div className="absolute top-5 z-50 h-[70px] w-[70px] rounded-full bg-red-500"></div> */}
+            <Link
+              href="/es/auth/perfil"
+              className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} absolute top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t xs:-left-1 xs:ml-5`}
+            >
+              {/* <Image
               src={swaplyArAvatar}
               alt="Foto perfil Usuario"
               width={100}
               height={100}
               className="h-full w-full overflow-hidden rounded-full bg-white dark:bg-lightText"
-            />
-          </Link>
-        </div>
+              /> */}
+            </Link>
+            <p className="absolute left-[110px] self-center pl-2 pt-4 font-sans text-white dark:text-black xs:block lg:ml-4 lg:hidden lg2:block">
+              Nombre Usuario
+            </p>
+          </div>
+          <div className="h-full flex-1 bg-amber-500"></div>
+          <div className="absolute ml-[900px] hidden lg:mr-10 lg:flex lg:max-w-[460px]">
+            <NavIcons />
+          </div>
+          <div onClick={() => setDrawerMenu(true)} className="hidden xs:block xs:pr-10 md:pr-0 lg:hidden">
+            <GiHamburgerMenu className="size-8 text-white dark:text-black" />
+          </div>
+          <button onClick={() => signOut()} className="absolute ml-[1400px] self-center xs:hidden lg:block">
+            <CerrarSesion />
+          </button>
 
-        <div className="h-full flex-1 bg-amber-500"></div>
-        {/* <div className="absolute left-[615px] top-[40px] z-50 h-[80px] w-[80px] rounded-full bg-stone-600"></div> */}
-      </nav>
+          {/* {COMPONENTIZAR!} */}
 
-      {/* ${isDark ? 'montanaDark' : 'montana'} */}
-      {/* <div className={` `}>
-          <Link
-            href="/es/auth/perfil"
-            className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} relative left-4 top-1 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t xs:-left-1 xs:ml-5`}
-          >
-             <Image
-                  src={swaplyArAvatar}
-                  alt="Foto perfil Usuario"
-                  width={100}
-                  height={100}
-                  className="h-full w-full overflow-hidden rounded-full bg-white dark:bg-lightText"
-                />
-          </Link>
-          <p className="hidden pl-2 pt-4 font-sans text-white dark:text-black xs:block lg:ml-4 lg:hidden lg2:block">
-            Nombre Usuario
-          </p>
-        </div> */}
-      {/* <div className="hidden lg:mr-10 lg:flex lg:max-w-[460px]">
-              <NavIcons />
-            </div> */}
-      {/* <button onClick={() => signOut()} className="block xs:hidden lg:block">
-              <CerrarSesion />
-            </button> */}
-      {/* <div onClick={() => setDrawerMenu(true)} className="hidden xs:block xs:pr-10 md:pr-0 lg:hidden">
-          <GiHamburgerMenu className="size-8 text-white dark:text-black" />
-        </div> */}
-      {/* Menu desplegable tablet */}
-      {/* {drawerMenu && (
-              <Drawer
-                open={drawerMenu}
-                onClose={closeDrawerMenu}
-                position="right"
-                className={`duration-400 mt-[4.5rem] w-40 transform overflow-visible bg-transparent p-0 transition-all ease-in-out dark:bg-transparent ${isClosing ? 'opacity-0' : 'opacity-100'}`}
-              >
-                <Drawer.Items>
-                  <div
-                    className={`absolute mt-14 flex h-[500px] w-40 flex-col items-end justify-between overflow-visible rounded-l-3xl bg-nav-blue dark:bg-white`}
-                  >
-                    <div className="max-w-56 pr-5 pt-7">
-                      <Link href="/es/auth/perfil" onClick={() => closeDrawerMenu()}>
-                        {isActive === 'perfil' ? (
-                          <IconsTablet
-                            classname={`${isActive === 'perfil' ? 'w-44' : ''} justify-between`}
-                            text="Perfil"
-                          >
-                            <PerfilIcon />
-                          </IconsTablet>
-                        ) : (
-                          <PerfilIcon classname="flex justify-end" />
-                        )}
-                      </Link>
-                      <Link href={'/es/auth/solicitud'} onClick={() => closeDrawerMenu()}>
-                        {isActive === ActiveTab.SOLICITUD ? (
-                          <IconsTablet
-                            classname={`${isActive === ActiveTab.SOLICITUD ? 'w-44' : ''} justify-between`}
-                            text="Solicitud"
-                          >
-                            <SolicitudIcon />
-                          </IconsTablet>
-                        ) : (
-                          <SolicitudIcon classname="flex justify-end" />
-                        )}
-                      </Link>
-                      <Link href={'/es/auth/historial'} onClick={() => closeDrawerMenu()}>
-                        {isActive === ActiveTab.HISTORIAL ? (
-                          <IconsTablet
-                            classname={`${isActive === ActiveTab.HISTORIAL ? 'w-44' : ''} justify-between`}
-                            text="Historial"
-                          >
-                            <HistorialIcon />
-                          </IconsTablet>
-                        ) : (
-                          <HistorialIcon classname="flex justify-end" />
-                        )}
-                      </Link>
-                      <Link href={'/es/auth/plus-rewards'} onClick={() => closeDrawerMenu()}>
-                        {isActive === ActiveTab.PLUSREWARDS ? (
-                          <IconsTablet
-                            classname={`${isActive === ActiveTab.PLUSREWARDS ? 'w-44' : ''} justify-between`}
-                            text="Plus Rewards"
-                          >
-                            <PlusRewardsIcon />
-                          </IconsTablet>
-                        ) : (
-                          <PlusRewardsIcon classname="flex justify-end" />
-                        )}
-                      </Link>
-                      <Link href={'/es/auth/cuentas'} onClick={() => closeDrawerMenu()}>
-                        {isActive === ActiveTab.CUENTASASOCIADAS ? (
-                          <IconsTablet
-                            classname={`${isActive === ActiveTab.CUENTASASOCIADAS ? 'w-44' : ''} justify-between`}
-                            text="Cuentas"
-                          >
-                            <CuentasAsociadasIcon />
-                          </IconsTablet>
-                        ) : (
-                          <CuentasAsociadasIcon classname="flex justify-end" />
-                        )}
-                      </Link>
-                      <Link href={'/es/auth/ayuda'} onClick={() => closeDrawerMenu()}>
-                        {isActive === ActiveTab.CENTRODEAYUDA ? (
-                          <IconsTablet
-                            classname={`${isActive === ActiveTab.CENTRODEAYUDA ? 'w-44' : ''} justify-between`}
-                            text="Ayuda"
-                          >
-                            <CentroDeAyudaIcon />
-                          </IconsTablet>
-                        ) : (
-                          <CentroDeAyudaIcon classname="flex justify-end" />
-                        )}
-                      </Link>
-                    </div>
-                    <div onClick={() => signOut()} className=":hover:animate-pulse mb-7">
-                      <CerrarSesion />
-                    </div>
+          {/* Menu desplegable tablet */}
+          {drawerMenu && (
+            <Drawer
+              open={drawerMenu}
+              onClose={closeDrawerMenu}
+              position="right"
+              className={`duration-400 mt-[4.5rem] w-40 transform overflow-visible bg-transparent p-0 transition-all ease-in-out dark:bg-transparent ${isClosing ? 'opacity-0' : 'opacity-100'}`}
+            >
+              <Drawer.Items>
+                <div
+                  className={`absolute mt-14 flex h-[500px] w-40 flex-col items-end justify-between overflow-visible rounded-l-3xl bg-nav-blue dark:bg-white`}
+                >
+                  <div className="max-w-56 pr-5 pt-7">
+                    <Link href="/es/auth/perfil" onClick={() => closeDrawerMenu()}>
+                      {isActive === 'perfil' ? (
+                        <IconsTablet classname={`${isActive === 'perfil' ? 'w-44' : ''} justify-between`} text="Perfil">
+                          <PerfilIcon />
+                        </IconsTablet>
+                      ) : (
+                        <PerfilIcon classname="flex justify-end" />
+                      )}
+                    </Link>
+                    <Link href={'/es/auth/solicitud'} onClick={() => closeDrawerMenu()}>
+                      {isActive === ActiveTab.SOLICITUD ? (
+                        <IconsTablet
+                          classname={`${isActive === ActiveTab.SOLICITUD ? 'w-44' : ''} justify-between`}
+                          text="Solicitud"
+                        >
+                          <SolicitudIcon />
+                        </IconsTablet>
+                      ) : (
+                        <SolicitudIcon classname="flex justify-end" />
+                      )}
+                    </Link>
+                    <Link href={'/es/auth/historial'} onClick={() => closeDrawerMenu()}>
+                      {isActive === ActiveTab.HISTORIAL ? (
+                        <IconsTablet
+                          classname={`${isActive === ActiveTab.HISTORIAL ? 'w-44' : ''} justify-between`}
+                          text="Historial"
+                        >
+                          <HistorialIcon />
+                        </IconsTablet>
+                      ) : (
+                        <HistorialIcon classname="flex justify-end" />
+                      )}
+                    </Link>
+                    <Link href={'/es/auth/plus-rewards'} onClick={() => closeDrawerMenu()}>
+                      {isActive === ActiveTab.PLUSREWARDS ? (
+                        <IconsTablet
+                          classname={`${isActive === ActiveTab.PLUSREWARDS ? 'w-44' : ''} justify-between`}
+                          text="Plus Rewards"
+                        >
+                          <PlusRewardsIcon />
+                        </IconsTablet>
+                      ) : (
+                        <PlusRewardsIcon classname="flex justify-end" />
+                      )}
+                    </Link>
+                    <Link href={'/es/auth/cuentas'} onClick={() => closeDrawerMenu()}>
+                      {isActive === ActiveTab.CUENTASASOCIADAS ? (
+                        <IconsTablet
+                          classname={`${isActive === ActiveTab.CUENTASASOCIADAS ? 'w-44' : ''} justify-between`}
+                          text="Cuentas"
+                        >
+                          <CuentasAsociadasIcon />
+                        </IconsTablet>
+                      ) : (
+                        <CuentasAsociadasIcon classname="flex justify-end" />
+                      )}
+                    </Link>
+                    <Link href={'/es/auth/ayuda'} onClick={() => closeDrawerMenu()}>
+                      {isActive === ActiveTab.CENTRODEAYUDA ? (
+                        <IconsTablet
+                          classname={`${isActive === ActiveTab.CENTRODEAYUDA ? 'w-44' : ''} justify-between`}
+                          text="Ayuda"
+                        >
+                          <CentroDeAyudaIcon />
+                        </IconsTablet>
+                      ) : (
+                        <CentroDeAyudaIcon classname="flex justify-end" />
+                      )}
+                    </Link>
                   </div>
-                </Drawer.Items>
-              </Drawer>
-            )} */}
+                  <div onClick={() => signOut()} className=":hover:animate-pulse mb-7">
+                    <CerrarSesion />
+                  </div>
+                </div>
+              </Drawer.Items>
+            </Drawer>
+          )}
+        </div>
+      </nav>
     </header>
   );
 };
