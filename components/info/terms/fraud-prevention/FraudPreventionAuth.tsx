@@ -17,7 +17,7 @@ const FraudPreventionAuth = () => {
   };
 
   return (
-    <main className="flex w-full flex-col items-center gap-10 pb-16 pt-16">
+    <section className="flex w-full flex-col items-center gap-10 pb-16 pt-16">
       <AnimatedBlurredCircles tope="top-[40px]" />
       <h1 className="self-center text-center text-4xl font-medium">Concientización sobre el fraude</h1>
 
@@ -34,7 +34,7 @@ const FraudPreventionAuth = () => {
           handleButtonClick={handleButtonClick}
         />
       </section>
-    </main>
+    </section>
   );
 };
 
