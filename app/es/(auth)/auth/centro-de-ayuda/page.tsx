@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Centro de Ayuda - Swaplyar',
     description: 'Encuentra respuestas a tus preguntas y obtén asistencia en nuestro Centro de Ayuda.',
-    url: 'https://www.swaplyar.com/es/centro-de-ayuda',
+    url: 'https://www.swaplyar.com/es/auth/centro-de-ayuda',
     type: 'website',
     images: [
       {

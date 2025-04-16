@@ -31,11 +31,7 @@ export const metadata: Metadata = {
 };
 
 const Page: React.FC = () => {
-  return (
-    <div className="flex-column flex w-full flex-wrap items-center justify-center lg:px-10">
-      <RepentanceFormAuth />
-    </div>
-  );
+  return <RepentanceFormAuth />;
 };
 
 export default Page;

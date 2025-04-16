@@ -24,7 +24,7 @@ import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
 import { useSession } from 'next-auth/react';
 
 const SearchRequestAuth = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const fullName = session?.user?.name || '';
   const [firstName, lastName] = fullName.split(' ');
   const {
@@ -117,83 +117,79 @@ const SearchRequestAuth = () => {
   };
 
   return (
-    <div>
-      <div className="mx-auto flex w-full max-w-screen-lg flex-col px-4 py-8 md:gap-4 md:px-8 lg2:px-4">
-        <div className="flex flex-col items-center justify-center">
-          <h1 className="flex h-auto w-full max-w-[505px] items-center justify-center text-center font-titleFont text-[38px] font-medium text-lightText dark:text-darkText lg2:text-[40px]">
-            Consulta el estado de tu solicitud fácilmente
-          </h1>
+    <section className="mx-auto flex w-full max-w-screen-lg flex-col px-4 py-8 md:gap-4 md:px-8 lg2:px-4">
+      <div className="flex flex-col items-center justify-center">
+        <h1 className="flex h-auto w-full max-w-[505px] items-center justify-center text-center font-titleFont text-[38px] font-medium text-lightText dark:text-darkText lg2:text-[40px]">
+          Consulta el estado de tu solicitud fácilmente
+        </h1>
 
-          <p className="mt-10 flex h-auto w-full max-w-[505px] items-center justify-center text-center font-textFont font-light text-custom-grayD-1000 dark:text-custom-grayD-100 lg2:max-w-[592px]">
-            Ingresa el Número de Solicitud y el Apellido tal como figura en el correo electrónico enviado para verificar
-            el estado actual de tu solicitud de manera rápida y precisa.
-          </p>
+        <p className="mt-10 flex h-auto w-full max-w-[505px] items-center justify-center text-center font-textFont font-light text-custom-grayD-1000 dark:text-custom-grayD-100 lg2:max-w-[592px]">
+          Ingresa el Número de Solicitud y el Apellido tal como figura en el correo electrónico enviado para verificar
+          el estado actual de tu solicitud de manera rápida y precisa.
+        </p>
 
-          <p className="mt-10 flex h-auto w-full max-w-[515px] items-center justify-center text-left font-textFont text-[21px] font-light text-custom-grayD-1000 dark:text-custom-grayD-100 md:text-center lg2:max-w-full">
-            Introduce los datos exactamente como aparecen en el correo electrónico enviado.
-          </p>
-        </div>
-        <section className="relative mt-10 flex min-h-[500px] flex-col items-center justify-center">
+        <p className="mt-10 flex h-auto w-full max-w-[515px] items-center justify-center text-left font-textFont text-[21px] font-light text-custom-grayD-1000 dark:text-custom-grayD-100 md:text-center lg2:max-w-full">
+          Introduce los datos exactamente como aparecen en el correo electrónico enviado.
+        </p>
+      </div>
+      <section className="relative mt-10 flex min-h-[500px] flex-col items-center justify-center">
+        <Image
+          className="absolute left-0 hidden w-[588px] drop-shadow-light dark:drop-shadow-darkmode lg2:block"
+          src="/images/search-request-web.png"
+          alt="SwaplyAr Search Request™"
+          width={700}
+          height={700}
+        />
+        <div className="flex w-full max-w-[506px] flex-col items-center border-b border-buttonsLigth dark:border-darkText lg2:hidden">
           <Image
-            className="absolute left-0 hidden w-[588px] drop-shadow-light dark:drop-shadow-darkmode lg2:block"
-            src="/images/search-request-web.png"
-            alt="SwaplyAr Search Request™"
-            width={700}
-            height={700}
+            className="h-[200px] w-[200px] drop-shadow-light dark:drop-shadow-darkmode"
+            src="/images/search-request-phone.png"
+            alt="SwaplyAr Search Request Mobile™"
+            width={300}
+            height={300}
           />
-          <div className="flex w-full max-w-[506px] flex-col items-center border-b border-buttonsLigth dark:border-darkText lg2:hidden">
-            <Image
-              className="h-[200px] w-[200px] drop-shadow-light dark:drop-shadow-darkmode"
-              src="/images/search-request-phone.png"
-              alt="SwaplyAr Search Request Mobile™"
-              width={300}
-              height={300}
+        </div>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="mt-10 flex w-full max-w-[466px] flex-col items-center gap-4 lg2:self-end"
+        >
+          <div className="flex h-[81px] w-full flex-col">
+            <label htmlFor="numberOfRequest" className="text-right font-textFont text-xs font-light">
+              Número de Solicitud
+            </label>
+            <InputOnlyLine
+              placeholder={
+                errors.numberOfRequest ? 'Número de Solicitud*' : 'N° de Solicitud como figura en el Correo Eletrónico'
+              }
+              id="numberOfRequest"
+              register={register('numberOfRequest', { required: 'El Número de Solicitud es Obligatorio' })}
+              error={errors.numberOfRequest?.message}
             />
           </div>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="mt-10 flex w-full max-w-[466px] flex-col items-center gap-4 lg2:self-end"
-          >
-            <div className="flex h-[81px] w-full flex-col">
-              <label htmlFor="numberOfRequest" className="text-right font-textFont text-xs font-light">
-                Número de Solicitud
-              </label>
-              <InputOnlyLine
-                placeholder={
-                  errors.numberOfRequest
-                    ? 'Número de Solicitud*'
-                    : 'N° de Solicitud como figura en el Correo Eletrónico'
-                }
-                id="numberOfRequest"
-                register={register('numberOfRequest', { required: 'El Número de Solicitud es Obligatorio' })}
-                error={errors.numberOfRequest?.message}
-              />
-            </div>
-            <div className="flex h-[50px] flex-col items-center justify-center gap-[18px]">
-              {loading ? (
-                <div className="flex items-center justify-center">
-                  <LoadingGif color={isDark ? '#ebe7e0' : '#012A8E'} size="50px" />
-                </div>
-              ) : (
-                <button
-                  disabled={!isValid}
-                  className={`relative flex h-10 w-[280px] items-center justify-center rounded-3xl bg-buttonsLigth px-[14px] py-3 font-titleFont font-semibold text-darkText dark:bg-darkText ${
-                    !isValid
-                      ? 'bg-disabledButtonsLigth dark:bg-placeholderDark dark:text-darkText'
-                      : isDark && isValid
-                        ? 'buttonSecondDark text-lightText'
-                        : 'buttonSecond'
-                  }`}
-                >
-                  Editar Solicitud
-                </button>
-              )}
-            </div>
-            <ButtonBack route="/es/auth/centro-de-ayuda" isDark={isDark} />
-          </form>
-        </section>
-      </div>
-    </div>
+          <div className="flex h-[50px] flex-col items-center justify-center gap-[18px]">
+            {loading ? (
+              <div className="flex items-center justify-center">
+                <LoadingGif color={isDark ? '#ebe7e0' : '#012A8E'} size="50px" />
+              </div>
+            ) : (
+              <button
+                disabled={!isValid}
+                className={`relative flex h-10 w-[280px] items-center justify-center rounded-3xl bg-buttonsLigth px-[14px] py-3 font-titleFont font-semibold text-darkText dark:bg-darkText ${
+                  !isValid
+                    ? 'bg-disabledButtonsLigth dark:bg-placeholderDark dark:text-darkText'
+                    : isDark && isValid
+                      ? 'buttonSecondDark text-lightText'
+                      : 'buttonSecond'
+                }`}
+              >
+                Editar Solicitud
+              </button>
+            )}
+          </div>
+          <ButtonBack route="/es/auth/centro-de-ayuda" isDark={isDark} />
+        </form>
+      </section>
+    </section>
   );
 };
 
