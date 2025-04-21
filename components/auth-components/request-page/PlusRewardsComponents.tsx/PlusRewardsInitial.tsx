@@ -1,8 +1,15 @@
 import Image from 'next/image';
 import { VerifyButton } from '../VerifyButton';
 import { ImagePlusRewards } from '../ImagePlusRewards';
-
+import { useTransactions } from '@/components/historial/use-transactions';
+import { useSession } from 'next-auth/react';
+import AmountTransactions from './AmountTransactions';
 function PlusRewardInitial() {
+  const { transactions } = useTransactions();
+  const { data: session } = useSession();
+
+  console.log('session', session);
+  const hidden = transactions.length === 0 ? 'flex' : 'hidden';
   return (
     <section className="relative m-auto flex w-full max-w-7xl items-center">
       <section className="mx-auto flex w-full max-w-md flex-col justify-center rounded-lg p-6 font-light text-lightText dark:text-custom-whiteD xs-mini-phone:p-7 xs-phone:p-8 md-phone:p-10 md:flex-row-reverse lg:flex-col">
@@ -19,7 +26,7 @@ function PlusRewardInitial() {
         </article>
 
         <div>
-          <article className="flex">
+          <article className={`${hidden}`}>
             <p className="text-sm xs-mini-phone:text-base">
               <span>La recompensa de </span>
               <span className="whitespace-nowrap text-lg font-bold text-custom-blue-800 dark:text-custom-whiteD xs-phone:text-xl">
@@ -54,6 +61,7 @@ function PlusRewardInitial() {
                 adicionales
                 <br></br>
                 <span> en tu solicitud.</span>
+                <AmountTransactions />
               </p>
             </div>
             <div className="flex justify-center">
