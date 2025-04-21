@@ -1,4 +1,5 @@
 import { getStatusById, updateStatusClient } from '@/actions/transactions/transactions.action';
+import { TransactionTypeSingle } from '@/types/transactions/transactionsType';
 
 interface TransactionServiceResponse {
   newStatus: string;

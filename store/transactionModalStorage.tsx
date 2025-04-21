@@ -14,7 +14,6 @@ import {
   getTransactionById,
   postStatusInAdmin,
 } from '@/actions/transactions/transactions.action';
-import auth from '@/auth';
 
 interface TransactionStatus {
   refunded: {
@@ -114,7 +113,7 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
       return;
     }
     try {
-      const response = await GetTransactionStatus(status, transId, token);
+      const response = await GetTransactionStatus(transId, trans, token);
 
       if (response?.newStatus) {
         set({ status: response.newStatus });

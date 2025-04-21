@@ -1,6 +1,7 @@
 'use server';
 import { TransactionArray, TransactionTypeSingle } from '@/types/transactions/transactionsType';
 import { TransactionAdminType } from '@/types/transactions/transAdminType';
+import { ConstructionOutlined } from '@mui/icons-material';
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -47,8 +48,8 @@ export const getTransactionById = async (transaction_id: string, token: string) 
   }
 };
 
-export const getStatusById = async (transId: string, trans: any, token: string) => {
-  console.log('🟡 Ejecutando getStatusByI');
+export const getStatusById = async (transId: string, trans: TransactionTypeSingle, token: string) => {
+  console.log('🟡 Ejecutando getStatusByID');
   if (!transId) {
     console.error('❌ transId o trans son inválidos:', { transId });
     throw new Error('❌ Error: transId o trans no son válidos.');
@@ -56,7 +57,7 @@ export const getStatusById = async (transId: string, trans: any, token: string) 
 
   try {
     const response = await fetch(
-      `${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus?transaction_id=${transId}&last_name=Righi`,
+      `${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus?transaction_id=${transId}&last_name=${trans.sender.last_name}`,
       {
         method: 'GET',
         cache: 'no-store',
