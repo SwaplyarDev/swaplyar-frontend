@@ -5,7 +5,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <NavbarInternal />
-      <main className="bg-white dark:bg-lightText">{children}</main>
+      <main>{children}</main>
       <FooterInternal />
     </>
   );
