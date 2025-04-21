@@ -77,23 +77,22 @@ const NavbarInternal = () => {
               href="/es/auth/perfil"
               className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} absolute top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t xs:-left-1 xs:ml-5`}
             >
-              {/* <Image
-              src={swaplyArAvatar}
-              alt="Foto perfil Usuario"
-              width={100}
-              height={100}
-              className="h-full w-full overflow-hidden rounded-full bg-white dark:bg-lightText"
-              /> */}
+              <Image
+                src={swaplyArAvatar}
+                alt="Foto perfil Usuario"
+                width={100}
+                height={100}
+                className="h-full w-full overflow-hidden rounded-full bg-white dark:bg-lightText"
+              />
             </Link>
             <p className="absolute left-[110px] self-center pl-2 pt-4 font-sans text-white dark:text-black xs:block lg:ml-4 lg:hidden lg2:block">
               Nombre Usuario
             </p>
           </div>
           <div className="h-full flex-1 bg-amber-900"></div>
-          <div className="h-full flex-1 bg-amber-900">
-            <Iconos />
-          </div>
-          <div className="maskIcon h-full flex-1 bg-amber-600"></div>
+
+          <Iconos />
+          <div className="h-full flex-1 bg-amber-600"></div>
           {/* <div className="absolute ml-[900px] hidden lg:mr-10 lg:flex lg:max-w-[460px]">
             <NavIcons />
           </div> */}
