@@ -61,8 +61,8 @@ function PlusRewardInitial() {
                 adicionales
                 <br></br>
                 <span> en tu solicitud.</span>
-                <AmountTransactions />
               </p>
+              <AmountTransactions />
             </div>
             <div className="flex justify-center">
               <VerifyButton />

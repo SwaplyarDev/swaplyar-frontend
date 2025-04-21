@@ -247,3 +247,9 @@ export const qrLight =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1741270782/48338805-QR_BYBIT_CLARO_wehfx8.png';
 export const qrDark =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1741270782/48235050-QR_BYBIT_OSCURO_hacxbp.png';
+
+// home images AmountTransactions component
+
+export const star = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745244113/Star_s1l0xg.png';
+
+export const yellowStar = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745244121/yellowStar_ikqrxq.svg';
