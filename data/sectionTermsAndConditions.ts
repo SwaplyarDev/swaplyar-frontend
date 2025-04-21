@@ -108,15 +108,15 @@ export const sectionTermsAndConditionsPlus = [
     listLetters: [
       {
         title: 'a. Elegibilidad',
-        text: 'La membresía en SwaplyAr Rewards está abierta a personas mayores de dieciocho (18) años (o la mayoría de edad y capacidad contractual aplicable en su lugar de residencia). Debe proporcionar y mantener una dirección de correo electrónico precisa.',
+        text: ' La membresía en SwaplyAr Plus Rewards está disponible para personas mayores de 18 años (o la mayoría de edad legal vigente en su país de residencia) con capacidad legal para contratar. El usuario debe proporcionar y mantener una dirección de correo electrónico válida y actualizada.​',
       },
       {
         title: 'b. Inscripción',
-        text: 'Será inscrito automáticamente cuando cree un perfil en SwaplyAr proporcionando su dirección de correo electrónico. También puede inscribirse como miembro de SwaplyAr Rewards en una ubicación participante de SwaplyAr o a través de otros canales que SwaplyAr pueda poner a disposición ocasionalmente. Siempre que cumpla con los requisitos de elegibilidad, será inscrito como miembro de SwaplyAr Rewards (en adelante, “Miembro”).',
+        text: 'La inscripción es automática al crear una cuenta en SwaplyAr. También podrá inscribirse a través de otros canales habilitados por la empresa',
       },
       {
-        title: 'c. Obligaciones de la Membresía',
-        text: 'Como miembro de SwaplyAr Rewards, acepta estos Términos y Condiciones. Se compromete a proporcionar información precisa en todo momento y a notificarnos de cualquier cambio en su información de manera oportuna.',
+        title: 'c. Obligaciones del Miembro',
+        text: 'Al participar en el programa, el usuario acepta estos Términos y Condiciones y se compromete a proporcionar información precisa y mantenerla actualizada.',
       },
     ],
   },
@@ -124,53 +124,54 @@ export const sectionTermsAndConditionsPlus = [
     title: 'Segunda. Beneficios y Recompensas',
     listLetters: [
       {
-        title: 'a. Descuento de Bienvenida',
-        text: 'Como Miembro, recibirá un 10 pesos por cada dólar aplicables a su segunda Transacción Calificada después de la fecha de inscripción en SwaplyAr Rewards (en adelante, “Bono de Bienvenida”). El Bono de Bienvenida estará disponible de 24 a 48 horas después de su primera Transacción Calificada y vencerá a los 90 días de su emisión.',
+        title: 'a. Recompensa de Bienvenida Express – USD $3',
+        text: 'El usuario recibe USD $3 automáticos al registrarse, que se aplican como adicional en su primera transacción dentro de la plataforma.​',
       },
       {
-        title: 'b. Crédito por Quinta Transacción',
-        text: 'Como Miembro, después de cada quinta Transacción Calificada, recibirá 15 pesos por cada dólar aplicables a su siguiente Transacción Calificada (en adelante, “Crédito por Quinta Transacción”). El Crédito por Quinta Transacción estará disponible de 24 a 48 horas después de cada quinta Transacción Calificada y vencerá a los 90 días de su emisión.',
+        title: 'b. Recompensa de Verificación Premium – USD $5',
+        text: 'Si el usuario no ha utilizado el bono de bienvenida y verifica sus datos personales, al aprobarse dicha verificación se suman USD $5 adicionales, acumulando un total de USD $8 para aplicar en su primera transacción.​',
       },
       {
-        title: 'c. Estado Premier',
-        text: 'Como Miembro, después de su quinta Transacción Calificada dentro de un período de 12 meses, obtendrá el estado de SwaplyAr Rewards Premier (en adelante, “Estado Premier”), que incluye recompensas personalizadas y otras promociones determinadas por SwaplyAr a su entera discreción.',
+        title: 'c. SwaplyAr Plus Rewards – Ciclo de Fidelización',
+        text: 'Luego de verificar su identidad, el usuario accede al programa cíclico de fidelización: Al completar 5 transacciones exitosas por un total mínimo de USD $500, se activará una recompensa automática de USD $10 en la sexta transacción. ​Esta sexta transacción cuenta como la primera del siguiente ciclo, permitiendo ganar nuevos bonos cada vez que se repita el esquema de 5 transacciones + USD $500 acumulados.',
       },
       {
-        title: 'd. Gestión de Recompensas en Línea',
-        text: 'Como Miembro, podrá revisar su historial de transacciones y resumen de recompensas en línea.',
-      },
-      {
-        title: 'e. Transacciones Calificadas',
-        text: 'Una (“Transacción Calificada”) es una transacción de transferencia de saldo de PayPal realizada dentro de un período de 12 meses en SwaplyAr con un número de miembro de SwaplyAr Rewards válido, número de teléfono, correo electrónico y/o PIN que haya sido recibida con éxito por el destinatario designado y no cancelada por ninguna razón por el remitente, destinatario o SwaplyAr.',
+        title: 'd.  Definición de Transacción Calificada',
+
+        text: 'Una Transacción Calificada es aquella realizada dentro de SwaplyAr que:  Haya sido completada exitosamente.​ No haya sido cancelada por ninguna de las partes involucradas.​ Haya sido efectuada en un plazo de hasta 12 meses.  ​Esté asociada a una cuenta registrada con datos válidos.​',
       },
     ],
   },
   {
-    title: 'Tercera. Comunicaciones de Marketing',
-    text: 'SwaplyAr o sus terceros pueden contactarlo ocasionalmente por correo electrónico con noticias, ofertas, servicios, promociones y otras comunicaciones relacionadas con nuestros productos o servicios. Puede optar por no recibir comunicaciones de marketing de nosotros en cualquier momento enviando un correo electrónico a la siguiente dirección: centrodeayuda@swaplyar.com.',
+    title: 'Tercera. Gestión de Recompensas',
+    text: 'Los usuarios pueden consultar su historial de transacciones, el estado de sus recompensas y los avances del programa a través de su cuenta en SwaplyAr. Las recompensas se aplican automáticamente al cumplir con las condiciones.​',
   },
   {
-    title: 'Cuarta. Privacidad',
-    text: 'Su privacidad es importante para nosotros. Por favor, revise nuestro Aviso de Privacidad sobre cómo recopilamos, usamos, divulgamos o transferimos su información personal, o sus Derechos de Privacidad para ejercer cualquiera de sus derechos de privacidad.',
+    title: 'Cuarta. Comunicaciones de Marketing',
+    text: 'SwaplyAr puede enviar comunicaciones por correo electrónico, notificaciones u otros canales digitales con novedades, promociones y beneficios. El usuario puede darse de baja enviando un correo a: 📩 centrodeayuda@swaplyar.com​',
   },
   {
-    title: 'Quinta. Contacto con SwaplyAr',
-    text: 'Puede contactar a SwaplyAr en línea en swaplyar.com/es/centro-de-ayuda, por WhatsApp, o por correo de atención: centrodeayuda@swaplyar.com.',
+    title: 'Quinta.Privacidad',
+    text: 'El tratamiento de datos personales se rige por la Política de Privacidad de SwaplyAr, la cual puede consultarse en el sitio web oficial.​',
   },
   {
-    title: 'Sexta. Marcas Registradas',
-    text: 'SwaplyAr Plus Rewards y cualquier otra marca registrada asociada con SwaplyAr o SwaplyAr Plus Rewards son marcas registradas de SwaplyAr o sus afiliados y no pueden ser reproducidas o utilizadas de ninguna manera sin el consentimiento previo por escrito de SwaplyAr.',
+    title: 'Sexta. Contacto',
+    text: 'Para Consultas o asistencias, puede contactarnos en: 🌐 swaplyar.com/es/centro-de-ayuda 📩 centrodeayuda@swaplyar.com 📱 Canal de WhatsApp habilitado desde la plataforma​',
   },
   {
-    title: 'Séptima. Sujeto a Cambios o Cancelación',
-    text: 'SwaplyAr Plus Rewards, y cualquier beneficio o recompensa asociada, están sujetos a cambios en cualquier momento a la discreción exclusiva de SwaplyAr. Podemos suspender su membresía en SwaplyAr Plus Rewards, y/o cancelar sus beneficios y recompensas, por cualquier razón, incluidas representaciones fraudulentas por su parte, o si está prohibido por la ley aplicable. Los beneficios y recompensas no tienen valor en efectivo, no generan intereses y no están asegurados contra pérdida. Los beneficios y recompensas no pueden ser comprados, vendidos, combinados o transferidos de ninguna manera.',
+    title: 'Séptima. Propiedad Intelectual',
+    text: 'SwaplyAr, SwaplyAr Plus Rewards y cualquier otro nombre o logotipo relacionado son marcas registradas de SwaplyAr o sus afiliados. Está prohibido su uso sin autorización expresa y por escrito.​SwaplyAr, SwaplyAr Plus Rewards y cualquier otro nombre o logotipo relacionado son marcas registradas de SwaplyAr o sus afiliados. Está prohibido su uso sin autorización expresa y por escrito.​',
   },
   {
-    title: 'Octava. Cesión',
-    text: 'No puede ceder, transferir o permitir que nadie más use su membresía en SwaplyAr Plus Rewards. SwaplyAr puede ceder sus derechos o delegar sus deberes bajo este Acuerdo a su entera discreción.',
+    title: 'Octava. Cambios y Cancelación del Programa',
+    text: 'SwaplyAr se reserva el derecho de modificar, suspender o cancelar el programa, sus beneficios o condiciones en cualquier momento. Se podrá suspender o cancelar la participación de un usuario por uso indebido, fraude o incumplimiento de estos términos. Las recompensas no tienen valor en efectivo, no son transferibles, no generan intereses y no pueden ser vendidas ni canjeadas.',
   },
   {
-    title: 'Novena. Ley Aplicable',
-    text: 'Este Acuerdo y la relación entre las partes se regirán e interpretarán de acuerdo con las leyes de la Ciudad de Buenos Aires y resto de la República de Argentina. Las partes se someten irrevocablemente a la jurisdicción de los tribunales situados en Buenos Aires, Argentina o donde corresponda.',
+    title: 'Novena. Cesión',
+    text: 'El usuario no podrá ceder ni transferir su membresía. SwaplyAr podrá ceder sus derechos y obligaciones bajo este acuerdo a terceros a su entera discreción.​',
+  },
+  {
+    title: 'Decima. Ley Aplicable y Jurisdiccion',
+    text: 'Estos Términos se rigen por las leyes de la Ciudad Autónoma de Buenos Aires, República Argentina. Cualquier controversia será resuelta ante los tribunales competentes de dicha jurisdicción.',
   },
 ];

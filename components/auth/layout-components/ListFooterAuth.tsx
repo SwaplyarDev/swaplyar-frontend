@@ -9,10 +9,10 @@ function ListFooterAuth() {
   return (
     <>
       <li>
-        <FooterLink label="Terminos y Condiciones" href="/es/terminos-y-condiciones/tyc-swaplyar" />
+        <FooterLink label="Terminos y Condiciones" href="/es/auth/terminos-y-condiciones/tyc-swaplyar" />
       </li>
       <li>
-        <FooterLink label="Plus Rewards" href="/es/terminos-y-condiciones/tyc-plus-rewards" />
+        <FooterLink label="Plus Rewards" href="/es/auth/terminos-y-condiciones/tyc-plus-rewards" />
       </li>
     </>
   );
