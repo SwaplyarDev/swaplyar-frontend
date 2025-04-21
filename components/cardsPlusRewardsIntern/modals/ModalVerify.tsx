@@ -14,6 +14,7 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
   const [frontFile, setFrontFile] = useState<File | null>(null);
   const [backFile, setBackFile] = useState<File | null>(null);
   const [selfieFile, setSelfieFile] = useState<File | null>(null);
+  const [uploadImage, setUploadImage] = useState();
 
   const handleFrontFileChange = (file: File | null) => setFrontFile(file);
   const handleBackFileChange = (file: File | null) => setBackFile(file);
@@ -31,6 +32,7 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
   }, []);
   useEffect(() => {
     console.log(frontFile, backFile, selfieFile);
+    console.log(typeof frontFile);
   }, [frontFile, backFile, selfieFile]);
   const handleSubmit = async () => {
     if (!frontFile || !backFile || !selfieFile) {
@@ -44,13 +46,21 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
     formData.append('selfieImage', selfieFile);
 
     try {
+      console.log('frontFile', frontFile);
+      console.log('backFile', backFile);
+      console.log('selfieFile', selfieFile);
       const res = await fetch('http://localhost:8080/api/v1/verification/upload', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Mzg5MzM3NjksImV4cCI6MTczODkzNzM2OX0.imLlXL2IdTJMDOCeJl-e_T8tyoQe3iNPnJ6H75HKpI4`, // Asegúrate de pasar el token correcto
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJhcWh1Z2I5enVtIiwiZnVsbE5hbWUiOiJNYXJjb3MgZmVpam9vIiwiZW1haWwiOiJtYXJjb3NmZWlqb285N0BnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsInRlcm1zIjoiVFJVRSIsImlzQWN0aXZlIjp0cnVlLCJjcmVhdGVkQXQiOiIxNS8wNC8yMDI1LCAxMTo1OSIsImlzQmFubmVkIjpmYWxzZSwicHJvZmlsZSI6eyJmaXJzdE5hbWUiOiJNYXJjb3MiLCJtaWRkbGVOYW1lIjoiIiwibGFzdE5hbWUiOiJmZWlqb28iLCJuaWNrbmFtZSI6bnVsbCwiZW1haWwiOiJtYXJjb3NmZWlqb285N0BnbWFpbC5jb20iLCJpZGVudGlmaWNhdGlvbiI6bnVsbCwicGhvbmUiOm51bGwsImJpcnRoRGF0ZSI6bnVsbCwiYWdlIjpudWxsLCJnZW5kZXIiOm51bGwsInByb2ZpbGVQaWN0dXJlVXJsIjpudWxsLCJsb2NhdGlvbklkIjpudWxsLCJsYXN0QWN0aXZpdHkiOm51bGx9LCJzb2NpYWwiOnt9LCJjYXRlZ29yeSI6bnVsbCwiYmFuIjpudWxsLCJpYXQiOjE3NDQ4MTY5ODIsImV4cCI6MTc0NDkwMzM4Mn0.YkBGORUPxHsUFQJ_bTaBC4vsqWzNZmbYYgUyCtsC-TU
+`,
         },
         body: formData,
       });
+      if (!res.ok) {
+        console.error('Status:', res.status);
+        console.error('Texto del error:', res.statusText);
+      }
 
       const data = await res.json();
       if (res.ok) {
@@ -110,14 +120,14 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
             Sube una foto de tu pasaporte, licencia o identificación oficial emitida por el gobierno.
           </p>
           <div className="mt-[6px] flex flex-col items-center justify-center gap-[10px] sm:flex-row sm:gap-10">
-            <CardVerify text={'FRENTE'} onFileChange={handleFrontFileChange} />
+            <CardVerify text={'FRENTE'} imgDoc={frontFile} onFileChange={handleFrontFileChange} />
             <div className="hidden sm:block">
               <svg xmlns="http://www.w3.org/2000/svg" width="2" height="112" viewBox="0 0 2 112" fill="none">
                 <path d="M1 1.96301L1 110.037" stroke="#012A8E" stroke-width="2" stroke-linecap="round" />
               </svg>
             </div>
 
-            <CardVerify text={'DORSO'} onFileChange={handleBackFileChange} />
+            <CardVerify text={'DORSO'} imgDoc={backFile} onFileChange={handleBackFileChange} />
           </div>
         </div>
         <hr className="mx-[32px] mb-1 mt-3 border-t-2 border-custom-blue xs:mx-[52px]" />
@@ -134,7 +144,7 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
             claramente visibles).
           </p>
           <div className="mt-[6px] flex justify-center gap-10">
-            <CardVerify text={'FOTO'} onFileChange={handleSelfieFileChange} />
+            <CardVerify text={'FOTO'} imgDoc={selfieFile} onFileChange={handleSelfieFileChange} />
           </div>
         </div>
 
@@ -142,9 +152,7 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
         <div className="mt-[12px] flex flex-col items-center justify-end gap-3">
           <button
             id="submit-25456"
-            className={
-              'rounded-3sm relative h-[39px] w-[194px] rounded-[40px] bg-[#90B0FE] font-titleFont font-semibold text-white'
-            }
+            className={`rounded-3sm relative h-[39px] w-[194px] rounded-[40px] font-titleFont font-semibold text-white ${frontFile && backFile && selfieFile ? 'bg-custom-blue' : 'bg-[#90B0FE]'}`}
             onClick={handleSubmit}
           >
             Enviar

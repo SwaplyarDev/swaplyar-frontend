@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import { ButtonCustom } from '@/components/ui/ButtonCustom/ButtonCustom';
 
-const CardVerify = ({ text, onFileChange }: { text: string; onFileChange: (file: File | null) => void }) => {
+const CardVerify = ({
+  text,
+  onFileChange,
+  imgDoc,
+}: {
+  text: string;
+  onFileChange: (file: File | null) => void;
+  imgDoc: object | null;
+}) => {
   const [file, setFile] = useState<File | null>(null);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files ? e.target.files[0] : null;
@@ -29,7 +37,7 @@ const CardVerify = ({ text, onFileChange }: { text: string; onFileChange: (file:
           />
         </div>
         <p className="text-[8px] text-[#012A8E]">formatos de archivo: PNG, JPG, PDF</p>
-        <p className="text-green-600">imagen subida con éxito</p>
+        {imgDoc && <p className="text-[12px] text-green-600">imagen subida con éxito</p>}
       </div>
     </form>
   );
