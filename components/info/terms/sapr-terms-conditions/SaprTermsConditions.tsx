@@ -79,7 +79,7 @@ const SaprTermsConditions = () => {
 
           <div className="mb-4 flex justify-center">
             <Link
-              href="https://swaplyar.com/SAPR-Terms-Conditions-ES%20.pdf"
+              href="https://drive.google.com/file/d/1N7AuQNTzaljvF49dxOIMj2-VmTQlpHPw/view"
               target="_blank"
               className={`relative m-1 flex h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth px-[17px] py-[5px] font-titleFont font-semibold text-buttonsLigth dark:border-darkText dark:text-darkText ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
             >
