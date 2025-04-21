@@ -247,3 +247,12 @@ export const qrLight =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1741270782/48338805-QR_BYBIT_CLARO_wehfx8.png';
 export const qrDark =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1741270782/48235050-QR_BYBIT_OSCURO_hacxbp.png';
+
+// Icons NavBarInternal
+export const icono_solicitud =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_solicitud_o3a6dt.svg';
+export const icono_ayuda = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_ayuda_ettkh1.svg';
+export const icono_cuentas = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_cuentas_auko6j.svg';
+export const icono_transacciones =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_transacciones_cmjchi.svg';
+export const icono_plus = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_plus_l4f41s.svg';

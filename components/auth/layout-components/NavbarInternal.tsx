@@ -72,7 +72,6 @@ const NavbarInternal = () => {
           <div className="h-full w-[388px] bg-[#012A8E]"></div>
           <div className="relative flex flex-col items-center justify-center">
             <div className="mask-nav h-full w-[128px] self-end bg-[#012A8E]"></div>
-            {/* <div className="absolute top-5 z-50 h-[70px] w-[70px] rounded-full bg-red-500"></div> */}
             <Link
               href="/es/auth/perfil"
               className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} absolute top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t xs:-left-1 xs:ml-5`}

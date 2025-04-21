@@ -30,13 +30,20 @@
 'use client';
 import { useState } from 'react';
 import Icono from './Icono';
+import {
+  icono_solicitud,
+  icono_cuentas,
+  icono_transacciones,
+  icono_plus,
+  icono_ayuda,
+} from '@/utils/assets/imgDatabaseCloudinary';
 
 const iconos = [
-  { texto: 'Solicitud', iconoPath: '/images/icono_solicitud.svg' },
-  { texto: 'Transacciones', iconoPath: '/images/icono_transacciones.svg' },
-  { texto: 'Plus Rewards', iconoPath: '/images/icono_plus.svg' },
-  { texto: 'Cuentas', iconoPath: '/images/icono_cuentas.svg' },
-  { texto: 'Centro de Ayuda', iconoPath: '/images/icono_ayuda.svg' },
+  { texto: 'Solicitud', iconoPath: icono_solicitud },
+  { texto: 'Transacciones', iconoPath: icono_transacciones },
+  { texto: 'Plus Rewards', iconoPath: icono_plus },
+  { texto: 'Cuentas', iconoPath: icono_cuentas },
+  { texto: 'Centro de Ayuda', iconoPath: icono_ayuda },
 ];
 
 export default function Iconos() {
