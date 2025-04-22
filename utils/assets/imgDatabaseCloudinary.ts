@@ -256,3 +256,10 @@ export const icono_cuentas = 'https://res.cloudinary.com/dwrhturiy/image/upload/
 export const icono_transacciones =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_transacciones_cmjchi.svg';
 export const icono_plus = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_plus_l4f41s.svg';
+
+// Icons Dark NavBarInternal
+export const iconoDark_solicitud = '/@/images/iconoDark_solicitud.svg';
+export const iconoDark_ayuda = '/images/iconoDark_ayuda.svg';
+export const iconoDark_cuentas = '/images/iconoDark_cuentas.svg';
+export const iconoDark_transacciones = '/images/iconoDark_transacciones.svg';
+export const iconoDark_plus = '/images/iconoDark_plus.svg';

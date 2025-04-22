@@ -70,7 +70,7 @@ const NavbarInternal = () => {
       <nav className="sticky top-0 z-40 flex h-16">
         {/* Lateral izquierdo */}
 
-        <div className="h-full flex-1 bg-red-400"></div>
+        <div className={`h-full flex-1 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
 
         {/* Centro */}
 
@@ -78,19 +78,27 @@ const NavbarInternal = () => {
           <div className="flex h-16 flex-1 items-center justify-stretch">
             {/* Contenido principal (perfil, etc.) */}
             <div className="relative flex flex-col items-center justify-center">
-              <div className="mask-nav h-16 w-[128px] self-end bg-[#012A8E]"></div>
+              <div className={`mask-nav h-16 w-[128px] self-end ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
               <Link
                 href="/es/auth/perfil"
                 className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} absolute top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t xs:-left-1 xs:ml-5`}
               >
                 {/* Imagen de perfil */}
+                <Image
+                  src={swaplyArAvatar}
+                  alt="Foto perfil Usuario"
+                  width={100}
+                  height={100}
+                  className="h-full w-full overflow-hidden rounded-full bg-white dark:bg-lightText"
+                />
               </Link>
-              <p className="absolute left-[110px] self-center pl-2 pt-4 font-sans text-white dark:text-black xs:block lg:ml-4 lg:hidden lg2:block">
+            </div>
+
+            <div className={`flex ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} h-full flex-1 items-center`}>
+              <p className="absolute whitespace-nowrap font-sans text-white dark:text-black xs:block lg:ml-4 lg:hidden lg2:block">
                 Nombre Usuario
               </p>
             </div>
-
-            <div className="h-full flex-1 bg-amber-900"></div>
 
             <Iconos />
             <button onClick={() => signOut()} className="h-16 xs:hidden lg:block">
@@ -99,34 +107,9 @@ const NavbarInternal = () => {
           </div>
         </div>
 
-        {/* <div className="flex max-w-[1366px] items-center justify-stretch bg-green-700">
-          <div className="relative flex flex-col items-center justify-center">
-            <div className="mask-nav h-16 w-[128px] self-end bg-[#012A8E]"></div>
-            <Link
-              href="/es/auth/perfil"
-              className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} absolute top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t xs:-left-1 xs:ml-5`}
-            >
-              <Image
-                src={swaplyArAvatar}
-                alt="Foto perfil Usuario"
-                width={100}
-                height={100}
-                className="h-full w-full overflow-hidden rounded-full bg-white dark:bg-lightText"
-              />
-            </Link>
-            <p className="absolute left-[110px] self-center pl-2 pt-4 font-sans text-white dark:text-black xs:block lg:ml-4 lg:hidden lg2:block">
-              Nombre Usuario
-            </p>
-          </div>
-
-          <div className="h-full bg-amber-900"></div>
-
-          <Iconos />
-        </div> */}
-
         {/* Lateral derecho */}
 
-        <div className="h-full flex-1 bg-amber-200"></div>
+        <div className={`"h-full flex-1 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
 
         {/* <div className="absolute ml-[900px] hidden lg:mr-10 lg:flex lg:max-w-[460px]">
             <NavIcons />
