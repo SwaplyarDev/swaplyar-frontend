@@ -1,4 +1,4 @@
-import { getStatusById, updateStatusClient } from '@/actions/transactions/transactions.action';
+import { getStatusTransactionAdmin, updateStatusClient } from '@/actions/transactions/transactions.action';
 
 interface TransactionServiceResponse {
   newStatus: string;
@@ -34,14 +34,14 @@ export const GetTransactionStatus = async (transId: string, trans: any, token: s
 
   try {
     console.log('✅ Llamando a getStatusById con transId:', transId);
-    const response = await getStatusById(transId, trans, token);
+    const response = await getStatusTransactionAdmin(transId);
     console.log('📤 Respuesta de getStatusById:', response);
 
     if (!response) {
       throw new Error(`❌ Error en la respuesta del servicio`);
     }
 
-    return { newStatus: response.status };
+    return { newStatus: response.data?.status };
   } catch (error) {
     console.error('❌ Error al obtener la transacción:', error);
     return null;

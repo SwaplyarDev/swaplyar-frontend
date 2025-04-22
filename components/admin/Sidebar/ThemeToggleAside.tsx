@@ -9,9 +9,8 @@ const ThemeToggleAside = ({ collapsed }: { collapsed: boolean }) => {
     <button
       onClick={changeTheme}
       className={clsx(
-        'flex items-center justify-center rounded-md transition-all',
+        'dakr:hover:bg-gray-600 flex items-center justify-center rounded-md bg-gray-100 transition-all hover:bg-gray-200 dark:bg-gray-700',
         collapsed ? 'mx-auto h-9 w-9' : 'mx-2 my-2 h-9 w-full px-3',
-        isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200',
       )}
       aria-label="Toggle theme"
     >

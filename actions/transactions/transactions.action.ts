@@ -30,50 +30,20 @@ export const getAllTransactions = async (page: number, token: string) => {
 
 export const getTransactionById = async (transaction_id: string, token: string) => {
   try {
+    console.log('transaction_id', transaction_id);
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions/${transaction_id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
       cache: 'no-store',
     });
-    console.log(response);
     if (!response.ok) throw new Error('Failed to fetch transactions');
 
     const data: TransactionTypeSingle = await response.json();
     return data;
   } catch (error: any) {
+    console.log('getting transaction by id');
     console.error('Error fetching transactions:', error);
-    return null;
-  }
-};
-
-export const getStatusById = async (transId: string, trans: any, token: string) => {
-  console.log('🟡 Ejecutando getStatusByI');
-  if (!transId) {
-    console.error('❌ transId o trans son inválidos:', { transId });
-    throw new Error('❌ Error: transId o trans no son válidos.');
-  }
-
-  try {
-    const response = await fetch(
-      `${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus?transaction_id=${transId}&last_name=Righi`,
-      {
-        method: 'GET',
-        cache: 'no-store',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-
-    if (!response.ok) throw new Error('Failed to fetch transactions');
-
-    const info: TransactionTypeSingle = await response.json();
-    console.log('📥 Datos recibidos en getStatusById:', info);
-    return info;
-  } catch (error: any) {
-    console.error('❌ Error en getStatusById:', error);
     return null;
   }
 };

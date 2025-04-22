@@ -58,7 +58,7 @@ const TransactionModal = () => {
   // Fetch transaction data and related information
   useEffect(() => {
     if (transId) {
-      fetchTransaction(transId, token || '');
+      fetchTransaction(transId);
     }
   }, [transId, fetchTransaction]);
 
@@ -76,8 +76,8 @@ const TransactionModal = () => {
   // Update transaction status and client status
   useEffect(() => {
     if (!transId || !trans) return;
-    updateTransactionStatusFromStore(transId, trans, token || '');
-    getStatusClient(transId, trans, token || '');
+    updateTransactionStatusFromStore(transId, trans);
+    getStatusClient(transId, trans);
   }, [transId, trans, componentStates, updateTransactionStatusFromStore, getStatusClient]);
 
   // Handle component state changes

@@ -119,7 +119,7 @@ export function TransactionHistorySection() {
         </div>
 
         {/* Transactions List */}
-        <div className="mb-4 max-h-[500px] divide-y overflow-y-auto rounded-lg border dark:divide-gray-700 dark:border-gray-700">
+        <div className="scrollable-list mb-4 max-h-[500px] divide-y overflow-y-auto rounded-lg border scrollbar dark:divide-gray-700 dark:border-gray-700">
           {filteredTransactionGroups.length > 0 ? (
             filteredTransactionGroups.map((group, groupIndex) => (
               <div key={groupIndex}>
