@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
 import type { NoteTypeSingle } from '@/types/transactions/notesType';
 import type { RegretTypeSingle } from '@/types/transactions/regretsType';
@@ -17,6 +17,7 @@ import TransactionDetail from '../TransactionModal/componentesModal/DetailTransa
 import ClientMessage from '../TransactionModal/componentesModal/ui/ClientMessage';
 import { useTransactionStore } from '@/store/transactionModalStorage';
 import ServiceTransaction from './ServiceTransaction';
+import { set } from 'date-fns';
 
 const MySwal = withReactContent(Swal);
 
@@ -42,7 +43,6 @@ export default function TransactionPageClientComponent({
   transIdAdmin,
   noteEdit,
   regretCancel,
-  token,
 }: TransactionPageClientComponentProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [discrepancySend, setDiscrepancySend] = useState(false);
@@ -80,13 +80,12 @@ export default function TransactionPageClientComponent({
 
   // Update transaction status periodically
   useEffect(() => {
-    if (!transId) return;
-
     const updateStatus = async () => {
       try {
         const transactionDetails = await ServiceTransaction.GetTransactionDetails(transId);
         if (transactionDetails?.status) {
           setStatus(transactionDetails.status);
+          setHasFetchedStatus(true);
         }
       } catch (error) {
         console.error('Error updating status:', error);
@@ -95,10 +94,9 @@ export default function TransactionPageClientComponent({
 
     updateStatus();
 
-    // Set up interval for periodic updates
-    const intervalId = setInterval(updateStatus, 30000); // Every 30 seconds
+    // const intervalId = setInterval(updateStatus, 30000); // Every 30 seconds
 
-    return () => clearInterval(intervalId);
+    // return () => clearInterval(intervalId);
   }, [transId, setStatus]);
 
   // Handle component state changes
@@ -262,4 +260,7 @@ export default function TransactionPageClientComponent({
       )}
     </div>
   );
+}
+function setHasFetchedStatus(arg0: boolean) {
+  throw new Error('Function not implemented.');
 }

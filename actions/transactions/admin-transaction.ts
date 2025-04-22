@@ -10,7 +10,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || '';
 export async function getAllAdminTransactions(page = 1, perPage = 12) {
   try {
     const session = await auth();
-    // if (!session || session.user?.role !== "admin") {
+    // if (!session || session.decodedToken.role !== "admin") {
     //   throw new Error("No autorizado")
     // }
 
@@ -42,7 +42,7 @@ export async function getAllAdminTransactions(page = 1, perPage = 12) {
 export async function getAdminTransactionById(transactionId: string) {
   try {
     const session = await auth();
-    // if (!session || session.user?.role !== "admin") {
+    // if (!session || session.decodedToken.role !== "admin") {
     //   throw new Error("No autorizado")
     // }
 
@@ -72,7 +72,7 @@ export async function getAdminTransactionById(transactionId: string) {
 export async function updateAdminTransaction(transactionData: any) {
   try {
     const session = await auth();
-    // if (!session || session.user?.role !== "admin") {
+    // if (!session || session.decodedToken.role !== "admin") {
     //   throw new Error("No autorizado")
     // }
 
@@ -104,7 +104,7 @@ export async function updateAdminTransaction(transactionData: any) {
 export async function getTransactionStatusHistory(transactionId: string) {
   try {
     const session = await auth();
-    // if (!session || session.user?.role !== "admin") {
+    // if (!session || session.decodedToken.role !== "admin") {
     //   throw new Error("No autorizado")
     // }
 
@@ -136,7 +136,7 @@ export async function getTransactionStatusHistory(transactionId: string) {
 export async function uploadTransactionReceipt(transactionId: string, file: File) {
   try {
     const session = await auth();
-    // if (!session || session.user?.role !== "admin") {
+    // if (!session || session.decodedToken.role !== "admin") {
     //   throw new Error("No autorizado")
     // }
 
