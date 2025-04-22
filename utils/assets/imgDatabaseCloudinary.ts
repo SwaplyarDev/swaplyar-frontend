@@ -258,8 +258,12 @@ export const icono_transacciones =
 export const icono_plus = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_plus_l4f41s.svg';
 
 // Icons Dark NavBarInternal
-export const iconoDark_solicitud = '/@/images/iconoDark_solicitud.svg';
-export const iconoDark_ayuda = '/images/iconoDark_ayuda.svg';
-export const iconoDark_cuentas = '/images/iconoDark_cuentas.svg';
-export const iconoDark_transacciones = '/images/iconoDark_transacciones.svg';
-export const iconoDark_plus = '/images/iconoDark_plus.svg';
+export const iconoDark_solicitud =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336653/iconoDark_solicitud_uoqchg.svg';
+export const iconoDark_ayuda =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336652/iconoDark_ayuda_jwq0g1.svg';
+export const iconoDark_cuentas =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336652/iconoDark_cuentas_y17y8j.svg';
+export const iconoDark_transacciones =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336652/iconoDark_transacciones_eqkwvn.svg';
+export const iconoDark_plus = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336653/iconoDark_plus_rcetbk.svg';

@@ -23,9 +23,15 @@ export default function Icono({ iconoPath, texto, activo, onClick }: IconoProps)
       </div>
 
       {activo && (
-        <div className="absolute top-[60px] flex h-[50px] w-[192px] flex-row items-center justify-start rounded-[100px] bg-[#012A8E] px-[4px] text-white">
+        <div
+          className={`absolute top-[60px] flex h-[50px] w-[192px] flex-row items-center justify-start rounded-[100px] ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} px-[4px]`}
+        >
           <Image src={iconoPath} alt={texto} width={51} height={50} />
-          <span className="ml-2">{texto}</span>
+          <span
+            className={`ml-2 whitespace-nowrap text-lg font-semibold ${isDark ? 'text-[#252526]' : 'text-[#EBE7E0]'}`}
+          >
+            {texto}
+          </span>
         </div>
       )}
     </div>
