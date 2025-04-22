@@ -17,7 +17,6 @@ import TransactionDetail from '../TransactionModal/componentesModal/DetailTransa
 import ClientMessage from '../TransactionModal/componentesModal/ui/ClientMessage';
 import { useTransactionStore } from '@/store/transactionModalStorage';
 import ServiceTransaction from './ServiceTransaction';
-import { set } from 'date-fns';
 
 const MySwal = withReactContent(Swal);
 
@@ -92,7 +91,7 @@ export default function TransactionPageClientComponent({
       }
     };
 
-    updateStatus();
+    // updateStatus();
 
     // const intervalId = setInterval(updateStatus, 30000); // Every 30 seconds
 
