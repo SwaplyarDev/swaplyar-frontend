@@ -1,8 +1,5 @@
 'use client';
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { SwaplyArLogoSolo } from '@/utils/assets/imgDatabaseCloudinary';
 import { FooterLink } from '@/components/footer/FooterLink/FooterLink';
 
 function ListFooterAuth() {

@@ -13,16 +13,14 @@ export const FooterInternal = () => {
       </div>
       {/* Footer Desktop */}
       <div className="hidden w-full justify-center pb-4 xs:flex">
-        <div className="flex w-full items-center justify-center px-4">
-          <ul className="flex flex-col items-center justify-between gap-4">
-            <ListFooterAuth />
-            <li className=":hover:w-1/3 mb-4 flex justify-center filter dark:brightness-[0%] dark:invert sm:mb-0 sm:w-1/3 sm:justify-center">
-              <Link href="/es/home">
-                <Image src={SwaplyArLogoSolo} alt="Cambiar saldo online" width={65} height={70} />
-              </Link>
-            </li>
-          </ul>
-        </div>
+        <ul className="flex flex-col items-center justify-between gap-4">
+          <ListFooterAuth />
+          <li className="mb-4 flex dark:invert sm:mb-0 sm:w-1/3 sm:justify-center">
+            <Link href="/es/home">
+              <Image src={SwaplyArLogoSolo} alt="Cambiar saldo online" width={65} height={70} />
+            </Link>
+          </li>
+        </ul>
       </div>
     </footer>
   );

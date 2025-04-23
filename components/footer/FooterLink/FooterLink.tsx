@@ -15,12 +15,14 @@ export function FooterLink({ href, label, view }: FooterLinkProps) {
   const isActive = pathname === href;
 
   return (
-    <Link
-      href={href}
-      {...(view ? { onClick: () => setView(view) } : {})}
-      className={`rs-link w-fit font-textFont text-base transition-all duration-300 ease-in-out hover:text-[17px] hover:text-buttonsLigth dark:text-buttonsExtraLigthDark dark:hover:text-buttonsLigthDark ${isActive ? 'relative font-bold text-buttonsLigth after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:bg-buttonsLigth after:content-[""] dark:text-buttonsLigthDark dark:after:bg-buttonsLigthDark' : 'font-light text-buttonsExtraLigth'}`}
-    >
-      {label}
-    </Link>
+    <div className="transform transition-all duration-200 ease-in-out hover:scale-[1.01] hover:font-bold">
+      <Link
+        href={href}
+        {...(view ? { onClick: () => setView(view) } : {})}
+        className={`font-textFont text-base hover:text-buttonsLigth dark:text-buttonsExtraLigthDark dark:hover:text-buttonsLigthDark ${isActive ? 'relative font-bold text-buttonsLigth after:bg-buttonsLigth after:content-[""] dark:text-buttonsLigthDark dark:after:bg-buttonsLigthDark' : 'font-light text-buttonsExtraLigth'}`}
+      >
+        {label}
+      </Link>
+    </div>
   );
 }

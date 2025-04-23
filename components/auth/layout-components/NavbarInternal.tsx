@@ -35,14 +35,18 @@ const NavbarInternal = () => {
     }, 400);
   };
 
+  const admin = true;
+
   const isActive = pathname.split('/')[3];
 
   return (
     <header className={`sticky top-0 z-40 h-[134px] w-full`}>
       {/* Parte de arriba blanca*/}
 
-      <div className={`max-width-screen sticky top-0 z-40 mx-auto bg-white md:max-w-[1300px]`}>
-        <div className="flex h-16 items-center mini-phone:mx-8 mini-phone:justify-between xs:mx-10 md:mx-20">
+      <div
+        className={`max-width-screen sticky top-0 z-40 mx-auto ${isDark ? 'bg-[#252526]' : 'bg-[#FFFFFB]'} md:max-w-[1300px]`}
+      >
+        <div className="flex h-16 items-center mini-phone:mx-8 mini-phone:justify-between xs:mx-10 md:mx-16">
           <Link href="/es/auth/solicitud">
             <Image
               src={isDark ? SwaplyArlogoMobileWhite : SwaplyArLogoComplete}
@@ -59,9 +63,8 @@ const NavbarInternal = () => {
               height={80}
             />
           </Link>
-          <div className="">
-            <Switch />
-          </div>
+
+          <Switch />
         </div>
       </div>
 
@@ -70,17 +73,25 @@ const NavbarInternal = () => {
       <nav className="sticky top-0 z-40 flex h-16">
         {/* Lateral izquierdo */}
 
-        <div className={`h-full flex-1 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
+        <div className={`h-full flex-1 md:pr-32 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
 
         {/* Centro */}
 
-        <div className="flex w-full max-w-[1300px] items-center justify-between">
-          <div className="flex h-16 flex-1 items-center justify-stretch">
+        <div className="flex w-full max-w-[1300px] items-center">
+          <div className="flex h-16 flex-1 items-center">
             {/* Contenido principal (perfil, etc.) */}
-            <div className="relative flex flex-col items-center justify-center">
-              <div className={`mask-nav h-16 w-[128px] self-end ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
+            <div className="relative flex flex-col items-center">
+              <div
+                // style={{
+                //   clipPath: `path("M31 116L1 136V1H223V136L194 116L168 50L137 20H85L52 50L31 116Z")`,
+                // }}
+                className={`mask-nav h-16 w-[128px] self-end ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}
+              ></div>
               <Link
                 href="/es/auth/perfil"
+                onClick={() => {
+                  console.log('click en perfil');
+                }}
                 className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} absolute top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t xs:-left-1 xs:ml-5`}
               >
                 {/* Imagen de perfil */}

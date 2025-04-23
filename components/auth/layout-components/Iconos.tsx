@@ -16,11 +16,21 @@ import {
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 const iconos = [
-  { texto: 'Solicitud', iconoPath: icono_solicitud, iconoDarkPath: iconoDark_solicitud },
-  { texto: 'Transacciones', iconoPath: icono_transacciones, iconoDarkPath: iconoDark_transacciones },
-  { texto: 'Plus Rewards', iconoPath: icono_plus, iconoDarkPath: iconoDark_plus },
-  { texto: 'Cuentas', iconoPath: icono_cuentas, iconoDarkPath: iconoDark_cuentas },
-  { texto: 'Centro de Ayuda', iconoPath: icono_ayuda, iconoDarkPath: iconoDark_ayuda },
+  {
+    texto: 'Solicitud',
+    iconoPath: icono_solicitud,
+    iconoDarkPath: iconoDark_solicitud,
+    linkPath: '/es/auth/solicitud',
+  },
+  {
+    texto: 'Transacciones',
+    iconoPath: icono_transacciones,
+    iconoDarkPath: iconoDark_transacciones,
+    linkPath: '/es/auth/historial',
+  },
+  { texto: 'Plus Rewards', iconoPath: icono_plus, iconoDarkPath: iconoDark_plus, linkPath: '/es/auth/plus-rewards' },
+  { texto: 'Cuentas', iconoPath: icono_cuentas, iconoDarkPath: iconoDark_cuentas, linkPath: '/es/auth/cuentas' },
+  { texto: 'Centro de Ayuda', iconoPath: icono_ayuda, iconoDarkPath: iconoDark_ayuda, linkPath: '#' },
 ];
 
 export default function Iconos() {
@@ -36,6 +46,7 @@ export default function Iconos() {
           texto={el.texto}
           activo={activoIndex === index}
           onClick={() => setActivoIndex(index)}
+          linkPath={el.linkPath}
         />
       ))}
     </div>
