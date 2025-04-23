@@ -38,17 +38,28 @@ export interface RandomCardProps {
 }
 
 interface BlogPostCardProps {
-  id?: string;
   blog_id: string;
-  category: string;
+  slug: string;
+  seccion: string;
   title: string;
-  body: string;
+  description: string;
+  side_bar: string;
   image: string;
-  created_at: string;
-  subtitulos: any[];
-  create_at: string;
+  category: string;
+  date: string;
+  content_elements: ContentElements;
 }
-
+interface ContentElements {
+  id_element: string;
+  content: Content;
+}
+interface Content {
+  text: string | string[];
+  style: {
+    id_style: string;
+    style_name: string;
+  };
+}
 export interface BlogResponse {
   blogsPerPage: any[];
   meta: {

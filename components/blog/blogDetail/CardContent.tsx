@@ -3,7 +3,7 @@
 'use client';
 
 import Image from 'next/image';
-import { BlogPostCardProps, CardContentProps } from '@/types/blogs/blog';
+import { BlogPostCardProps, CardContentProps, Content } from '@/types/blogs/blog';
 import { useCallback, useEffect, useState } from 'react';
 import { fetchBlogs } from '@/actions/blogs/blogs.actions';
 import CardBlogOption from './CardBlogOption';
@@ -38,14 +38,78 @@ export function highlightText(text: string) {
     );
   }
 }
+interface MenuItem {
+  title: string;
+  level: number;
+  children?: MenuItem[];
+}
 
-function CardContent({ data }: CardContentProps) {
+function parseContinuousTextToMenu(text: string): MenuItem[] {
+  // Primero normalizamos el texto para manejar diferentes formatos de lista
+  const normalizedText = text
+    .replace(/(\s*-\s*)/g, '\n- ') // Asegurar saltos de línea antes de cada item
+    .replace(/(\s*#\s*)/g, '\n# ') // Manejar títulos con #
+    .trim();
+
+  const lines = normalizedText.split('\n').filter((line) => line.trim() !== '');
+  const menuStack: { item: MenuItem; level: number }[] = [];
+  const rootItems: MenuItem[] = [];
+  let currentLevel = 0;
+
+  for (const line of lines) {
+    // Determinar si es un título (#) o item de lista (-)
+    const isTitle = line.trim().startsWith('#');
+    const isListItem = line.trim().startsWith('-');
+
+    // Calcular nivel de indentación
+    const indentMatch = line.match(/^\s*/);
+    const indentLevel = indentMatch ? indentMatch[0].length / 2 : 0; // Asume 2 espacios por nivel
+
+    const level = isTitle ? 0 : indentLevel + 1;
+    const title = line.replace(/^[\s#-]*/, '').trim();
+
+    const newItem: MenuItem = {
+      title,
+      level,
+    };
+
+    // Manejar la estructura jerárquica
+    if (menuStack.length === 0) {
+      rootItems.push(newItem);
+      menuStack.push({ item: newItem, level });
+      continue;
+    }
+
+    // Buscar el padre adecuado en el stack
+    while (menuStack.length > 0 && menuStack[menuStack.length - 1].level >= level) {
+      menuStack.pop();
+    }
+
+    // Agregar como hijo o como item raíz
+    if (menuStack.length > 0) {
+      const parent = menuStack[menuStack.length - 1].item;
+      if (!parent.children) {
+        parent.children = [];
+      }
+      parent.children.push(newItem);
+    } else {
+      rootItems.push(newItem);
+    }
+
+    menuStack.push({ item: newItem, level });
+  }
+
+  return rootItems;
+}
+
+function CardContent(data: BlogPostCardProps) {
   const { isDark } = useDarkTheme();
   const [isLoaded, setIsLoaded] = useState(false);
   const [progress, setProgress] = useState(0);
   const indexBlog = dataBlogs.findIndex((blog) => blog.slug === data.slug);
-  const sideBar = data?.sections.sidebar.content?.map((item) => item.text);
-  const mainContent = data?.sections.mainContent.content;
+  console.log(data);
+
+  const sideBar = parseContinuousTextToMenu(data.side_bar);
 
   const getRandomBlog = useCallback(() => {
     if (dataBlogs.length <= 1) return null;
@@ -95,94 +159,74 @@ function CardContent({ data }: CardContentProps) {
         <div className="mx-auto flex w-full flex-col justify-center gap-4 lg:flex-row">
           {/* SideBar */}
           <article className="hidden h-[756px] w-[286px] flex-col gap-5 lg:ml-1 lg:flex">
-            <h4 className="font-semibold">Contenido: </h4>
+            <h2 className="font-semibold">Contenido:</h2>
             <ul className="list-disc pl-5">
-              {(sideBar as string[]).map((content, index) =>
-                Array.isArray(content) ? (
-                  <ul key={`${index}-sub`} className="list-disc pl-5">
-                    {content.map((text, idx) => (
-                      <li key={`${index}-${idx}`}>{text}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <li key={index}>{content}</li>
-                ),
-              )}
+              {sideBar.map((item, index) => (
+                <li className="list-disc" key={index}>
+                  {item.title}
+                  {item.children && (
+                    <ul>
+                      {item.children.map((child, childIndex) => (
+                        <li className="list-disc" key={childIndex}>
+                          {child.title}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
             </ul>
           </article>
           {/* Main Content */}
-          <main className="flex w-full max-w-[357px] flex-col gap-5 md:max-w-[680px] lg:max-w-[897px]">
-            <h1 className={!isDark ? 'text-center text-4xl text-[#012A8E]' : 'text-center text-4xl text-[#EBE7E0]'}>
+          <section className="flex w-full max-w-[357px] flex-col gap-5 md:max-w-[680px] lg:max-w-[897px]">
+            <h1
+              className={
+                !isDark
+                  ? 'text-center text-[40px] font-semibold text-[#012A8E]'
+                  : 'text-center text-[40px] font-semibold text-[#EBE7E0]'
+              }
+            >
               {data.title}
             </h1>
-            <Image className="mx-auto" src={data.image} width={898} height={286} alt={data.title} />
-            <section className="flex flex-col gap-3">
-              {mainContent.map((content: { text: string | string[]; style: string }, index: number) => {
-                if (content.style === 'normal') {
-                  return (
-                    <p key={index} className="mb-4">
-                      {highlightText(content.text as string)}
-                    </p>
-                  );
-                } else if (content.style === 'subtitle') {
-                  return (
-                    <h2 key={index} className="">
-                      {highlightText(content.text as string)}
-                    </h2>
-                  );
-                } else if (content.style === 'ul') {
-                  if (Array.isArray(content.text)) {
-                    return (
-                      <ul key={index} className="list-disc pl-5">
-                        {content.text.map((item: string, idx: number) => {
-                          return Array.isArray(item) ? (
-                            <ul key={idx} className="list-disc pl-5">
-                              {item.map((subItem, subIdx) => (
-                                <li key={subIdx}>{highlightText(subItem)}</li>
-                              ))}
-                            </ul>
-                          ) : (
-                            <li key={idx}>{highlightText(item)}</li>
-                          );
-                        })}
-                      </ul>
-                    );
+            <Image
+              className='className="mx-auto"'
+              src={'/images/paypalenarg.png'}
+              width={898}
+              height={286}
+              alt="Blog Image "
+            />
+
+            <article className="flex flex-col gap-3">
+              {Array.isArray(data.content_elements) &&
+                data.content_elements[0]?.content?.map((item: Content, index: number) => {
+                  if (item.style.style_name === 'normal') {
+                    return <p key={index}>{item.text}</p>;
+                  } else if (item.style.style_name === 'subtitle') {
+                    return <h2 key={index}>{highlightText(item.text as string)}</h2>;
+                  } else if (item.style.style_name === 'ul') {
+                    <ul>
+                      {parseContinuousTextToMenu(item.text as string).map((item, index) => (
+                        <li key={index} className="list-disc">
+                          {item.title}
+                        </li>
+                      ))}
+                    </ul>;
+                  } else if (item.style.style_name === 'ol') {
+                    <ol>
+                      {parseContinuousTextToMenu(item.text as string).map((item, index) => (
+                        <li key={index} className="list-disc">
+                          {item.title}
+                        </li>
+                      ))}
+                    </ol>;
                   }
-                } else if (content.style === 'ol') {
-                  return Array.isArray(content.text) ? (
-                    <ol className="list-decimal pl-5">
-                      {content.text.map((item: string, idx: number) => {
-                        return Array.isArray(item) ? (
-                          <ul key={idx} className="list-disc pl-5">
-                            {item.map((subItem, subIdx) => {
-                              return Array.isArray(subItem) ? (
-                                <ul>
-                                  {subItem.map((subSubitem: string, idx: number) => (
-                                    <li className="ml-5 list-disc" key={idx}>
-                                      {highlightText(subSubitem)}
-                                    </li>
-                                  ))}
-                                </ul>
-                              ) : (
-                                <li key={subIdx}>{highlightText(subItem)}</li>
-                              );
-                            })}
-                          </ul>
-                        ) : (
-                          <li key={idx}>{highlightText(item)}</li>
-                        );
-                      })}
-                    </ol>
-                  ) : null;
-                }
-                return null;
-              })}
-            </section>
-          </main>
+                })}
+            </article>
+          </section>
         </div>
         <div className="mb-[70px] mt-20 flex flex-col-reverse items-center justify-between gap-10 lg:flex-row">
           <CardBlogOption isLoaded={isLoaded} blog={randomBlog} />
-          <div className="relative ml-[120px] hidden w-full max-w-[500px] sm:block lg:ml-0">
+          <div className="lg :ml-0 relative ml-[120px] hidden w-full max-w-[500px] sm:block">
             <Image
               src={cardInfoBlog}
               alt="cardImage"
