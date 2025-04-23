@@ -204,6 +204,9 @@ function CardContent(data: BlogPostCardProps) {
                   } else if (item.style.style_name === 'subtitle') {
                     return <h2 key={index}>{highlightText(item.text as string)}</h2>;
                   } else if (item.style.style_name === 'ul') {
+                    {
+                      console.log(item.text);
+                    }
                     <ul>
                       {parseContinuousTextToMenu(item.text as string).map((item, index) => (
                         <li key={index} className="list-disc">

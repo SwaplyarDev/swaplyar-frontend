@@ -24,8 +24,6 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
 
   const [searchTerm, setSearchTerm] = useState(searchQuery);
 
-  const [totalPages, setTotalPages] = useState<number>(1);
-
   const filteredBlogs = useMemo(() => {
     if (searchTerm === '') return blogs;
     return blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -43,7 +41,6 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
   useFetchBlogs({
     currentPage,
     searchTerm,
-    setTotalPages,
   });
 
   return (

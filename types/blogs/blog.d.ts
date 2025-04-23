@@ -70,7 +70,6 @@ export interface BlogResponse {
 export interface UseFetchBlogsProps {
   currentPage: number;
   searchTerm: string;
-  setTotalPages: (pages: number) => void;
 }
 
 export interface Blog {
