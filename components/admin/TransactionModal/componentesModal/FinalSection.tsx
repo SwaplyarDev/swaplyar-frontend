@@ -51,7 +51,7 @@ const FinalSection = ({ transId }: { transId: string }) => {
     try {
       setIsLoading(true);
 
-      const response = await TransactionService('canceled', transId);
+      // const response = await TransactionService('canceled', transId);
 
       /* @ts-ignore */
       if (response?.message === 'Status updated successfully') {

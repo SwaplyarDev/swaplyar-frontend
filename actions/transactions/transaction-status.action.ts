@@ -16,6 +16,7 @@ const VALID_STATUSES = [
   'modified',
   'refunded',
   'approved',
+  'rejected',
 ];
 
 type StatusPayload = {
