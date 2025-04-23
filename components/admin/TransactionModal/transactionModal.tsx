@@ -12,7 +12,6 @@ import ClientMessage from '@/components/admin/TransactionModal/componentesModal/
 import TransferImages from '@/components/admin/TransactionModal/componentesModal/TransferImages';
 import ConfirmTransButton from '@/components/admin/TransactionModal/componentesModal/ConfirmTransButton';
 import AprobarRechazar from '@/components/admin/TransactionModal/componentesModal/aprobarRechazar';
-import DiscrepancySection from '@/components/admin/TransactionModal/componentesModal/DiscrepancySection';
 import ClientInformation from '@/components/admin/TransactionModal/componentesModal/ClientInformation';
 import FinalSection from '@/components/admin/TransactionModal/componentesModal/FinalSection';
 import { useSession } from 'next-auth/react';

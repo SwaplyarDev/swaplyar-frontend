@@ -1,5 +1,5 @@
+import { updateTransactionStatus } from '@/actions/transactions/transaction-status.action';
 import { getStatusTransactionAdmin, updateStatusClient } from '@/actions/transactions/transactions.action';
-import auth from '@/auth';
 
 interface TransactionServiceResponse {
   newStatus: string;
@@ -8,22 +8,24 @@ interface TransactionServiceResponse {
 export const TransactionService = async (
   status: string,
   transId: string,
+  payload: any,
 ): Promise<TransactionServiceResponse | null> => {
-  const session = await auth();
-
-  if (!session) return null;
-
-  const token = session?.decodedToken.token;
-
   try {
     if (!status || !transId) {
       console.error('❌ Error: status o transId no válido', { status, transId });
       throw new Error('Datos inválidos');
     }
 
-    const response = await updateStatusClient(transId, status, token);
+    const response = await updateTransactionStatus(status, { transaction_id: transId, descripcion: payload });
 
-    return response;
+    console.log(response);
+
+    if (response.success) {
+      console.error('❌ Error al actualizar el estado:', response.error);
+      throw new Error(response.error);
+    }
+
+    return { newStatus: 'success' };
   } catch (error) {
     console.error('❌ Error al actualizar el estado:', error);
     return null;

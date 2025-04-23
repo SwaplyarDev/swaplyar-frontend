@@ -17,6 +17,7 @@ import { TooltipProvider } from '@/components/ui/Tooltip';
 import { Button } from '@/components/ui/Button';
 import { AlertTitle } from '@mui/material';
 import { Alert, AlertDescription } from '@/components/ui/Alert';
+import { useSession } from 'next-auth/react';
 
 interface AprobarRechazarProps {
   selected: 'stop' | 'accepted' | 'canceled' | null;
@@ -33,7 +34,7 @@ interface AprobarRechazarProps {
   setDiscrepancySend: (value: boolean) => void;
 }
 
-const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+// const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
   selected,
@@ -54,6 +55,14 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
       onSelectChange('canceled');
     }
   }, [componentStates.confirmTransButton, selected, onSelectChange]);
+
+  // const session = useSession();
+
+  // if (!session) {
+  //   return null;
+  // }
+
+  // const token = session.data?.decodedToken.token || '';
 
   const handleSubmitRejection = async () => {
     if (!rejectionReason.trim()) {
@@ -96,45 +105,21 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
       hideClass: {
         popup: 'animate__animated animate__fadeOut animate__faster',
       },
-    }).then(async (result) => {
+    }).then((result) => {
       if (result.isConfirmed) {
-        try {
-          // Mostrar indicador de carga
-          Swal.fire({
-            title: 'Procesando...',
-            text: 'Estamos procesando tu solicitud',
-            allowOutsideClick: false,
-            didOpen: () => {
-              Swal.showLoading();
-            },
-          });
-
-          const response = await TransactionService('canceled', transId);
-
-          /* @ts-expect-error */
-          if (response?.message === 'Status updated successfully') {
-            Swal.fire({
-              title: 'Solicitud rechazada',
-              text: 'La solicitud ha sido rechazada exitosamente',
-              icon: 'success',
-              confirmButtonColor: 'rgb(1,42,142)',
-              timer: 2000,
-              timerProgressBar: true,
-            });
-          } else {
-            throw new Error('Error al procesar la solicitud');
-          }
-        } catch (error) {
-          console.log('Error al rechazar la transacción:', error);
-          Swal.fire({
-            title: 'Error',
-            text: 'Ocurrió un error al procesar la solicitud. Por favor intenta nuevamente.',
-            icon: 'error',
-            confirmButtonColor: 'rgb(1,42,142)',
-          });
-        }
+        acceptReject();
       }
     });
+  };
+
+  const acceptReject = async () => {
+    try {
+      const response = await TransactionService('rejected', transId, rejectionReason);
+      console.log(response);
+      return response;
+    } catch (error) {
+      console.log('Error al rechazar la transacción:', error);
+    }
   };
 
   const getButtonClass = (type: 'accepted' | 'stop' | 'canceled') => {

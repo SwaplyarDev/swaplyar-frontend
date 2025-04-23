@@ -40,7 +40,7 @@ export async function updateTransactionStatus(status: string, payload: StatusPay
     }
 
     // Verificar si el usuario tiene rol de admin
-    const userRole = session.user?.role || '';
+    const userRole = session.decodedToken?.role || '';
     if (userRole !== 'admin') {
       return { success: false, error: 'Se requiere rol de administrador' };
     }
@@ -61,6 +61,8 @@ export async function updateTransactionStatus(status: string, payload: StatusPay
       };
     }
 
+    // /admin/transactions/info/id
+
     // Llamar al endpoint para actualizar el estado
     const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/status/${status}`, {
       method: 'POST',
@@ -70,6 +72,8 @@ export async function updateTransactionStatus(status: string, payload: StatusPay
       },
       body: JSON.stringify(payload),
     });
+
+    console.log('response:' + response);
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
