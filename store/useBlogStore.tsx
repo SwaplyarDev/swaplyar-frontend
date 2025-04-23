@@ -1,6 +1,9 @@
 import { create } from 'zustand';
 
 interface Blog {
+  slug: any;
+  image: any;
+  description: any;
   blog_id: string;
   sub_title: string;
   category: string;

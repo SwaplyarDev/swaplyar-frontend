@@ -16,6 +16,7 @@ interface BlogProps {
 
 const Blog: React.FC<BlogProps> = ({ currentPage }) => {
   const { blogs, isLoading, setIsLoading } = useBlogStore();
+  console.log(blogs);
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -53,32 +54,30 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
         </h1>
 
         <ImageCarousel
-          images={dataBlogs.map((post) => ({
+          images={blogs.map((post) => ({
             blog_id: post.blog_id,
-            title: post.title,
-            sub_title: post.description, // Adjust as needed
-            body: post.description, // Adjust as needed
-            url_image: post.image,
-            created_at: new Date().toISOString(), // Replace with actual date if available
+            slug: post.slug, // Ensure slug is included
+            title: post.title, // Adjust as needed
+            description: post.description, // Adjust as needed
+            image: '/images/paypalenarg.png',
+            date: new Date().toISOString(), // Replace with actual date if available
             category: post.category,
-            ver: 'true',
-            status: 'active',
           }))}
         />
 
         <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} />
 
         {!isLoading ? (
-          dataBlogs.length >= 1 ? (
+          blogs.length >= 1 ? (
             <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
-              {dataBlogs.map((post) => (
+              {blogs.map((post) => (
                 <BlogPostCard
                   key={post.blog_id}
                   blog_id={post.blog_id}
                   description={post.description}
                   title={post.title}
                   category={post.category}
-                  image={post.image}
+                  image={'/images/paypalenarg.png'}
                 />
               ))}
             </div>

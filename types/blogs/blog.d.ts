@@ -64,12 +64,10 @@ export interface UseFetchBlogsProps {
 
 export interface Blog {
   blog_id: string;
-  sub_title: string;
+  slug: string;
   category: string;
   title: string;
-  body: string;
-  url_image: string;
-  created_at: string;
-  ver: string;
-  status: string;
+  description?: string;
+  image?: string;
+  date?: string;
 }

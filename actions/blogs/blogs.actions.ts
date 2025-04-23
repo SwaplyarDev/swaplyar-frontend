@@ -13,12 +13,10 @@ export const fetchBlogs = async (page: number, searchTerm: string): Promise<Blog
       method: 'GET',
       cache: 'no-store', // Evita el caché para obtener datos actualizados.
     });
-
     if (!response.ok) {
       throw new Error(`Failed to fetch blogs: ${response.status} ${response.statusText}`);
     }
-
-    const data: BlogResponse = await response.json();
+    const data = await response.json();
     return data;
   } catch (error: any) {
     throw new Error(`Failed to fetch blogs. Error: ${error.message}`);
@@ -28,13 +26,10 @@ export const fetchBlogs = async (page: number, searchTerm: string): Promise<Blog
 export const filterBlogs = async (searchTerm: string): Promise<BlogResponse> => {
   console.log(encodeURIComponent(searchTerm));
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/blogs/content/${encodeURIComponent(searchTerm)}`,
-      {
-        method: 'GET',
-        cache: 'no-store',
-      },
-    );
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/blogs/${encodeURIComponent(searchTerm)}`, {
+      method: 'GET',
+      cache: 'no-store',
+    });
 
     if (!response.ok) {
       throw new Error(`Failed to fetch blogs: ${response.status} ${response.statusText}`);
