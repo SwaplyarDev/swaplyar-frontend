@@ -2,8 +2,8 @@ import type React from 'react';
 import Image from 'next/image';
 import { MockImagesTransLight } from '@/data/mockImagesTransaction';
 import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
-import { swaplyarAvatarpopup } from '@/utils/assets/img-database';
 import { AlertTriangle, ArrowRight } from 'lucide-react';
+import { SwaplyArLogoSolo } from '@/utils/assets/imgDatabaseCloudinary';
 
 interface TransactionProps {
   trans: TransactionTypeSingle;
@@ -77,7 +77,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
           <div className={`h-full border-r pr-10 ${currentStyle.border}`}>
             <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 p-1 dark:bg-blue-900/30">
               <Image
-                src={swaplyarAvatarpopup || '/placeholder.svg'}
+                src={SwaplyArLogoSolo}
                 alt="Swaplyar"
                 width={64}
                 height={64}

@@ -42,7 +42,6 @@ export default function TransactionPageClientComponent({
   transIdAdmin,
   noteEdit,
   regretCancel,
-  token,
 }: TransactionPageClientComponentProps) {
   const [discrepancySend, setDiscrepancySend] = useState(false);
   const [modal, setModal] = useState<boolean>(false);
@@ -166,4 +165,7 @@ export default function TransactionPageClientComponent({
       )}
     </div>
   );
+}
+function setHasFetchedStatus(arg0: boolean) {
+  throw new Error('Function not implemented.');
 }

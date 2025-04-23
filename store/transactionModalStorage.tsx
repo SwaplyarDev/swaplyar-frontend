@@ -1,20 +1,12 @@
-import { create } from 'zustand';
+import { getRegretById } from '@/actions/repentance/repentanceForm.action';
+import { getAdminTransactionById } from '@/actions/transactions/admin-transaction';
+import { getNoteById } from '@/actions/transactions/notes.action';
+import { getStatusTransactionAdmin, postStatusInAdmin } from '@/actions/transactions/transactions.action';
 import { NoteTypeSingle, emptyNote } from '@/types/transactions/notesType';
 import { RegretTypeSingle, emptyRegret } from '@/types/transactions/regretsType';
 import { TransactionTypeSingle, emptyTransaction } from '@/types/transactions/transactionsType';
-import {
-  getTransactionById,
-  updateStatusClient,
-  getStatusTransactionAdmin,
-  postStatusInAdmin,
-  updateStatusAdmin,
-} from '@/actions/transactions/transactions.action';
-import { getNoteById } from '@/actions/transactions/notes.action';
 import { convertTransactionState, getComponentStatesFromStatus } from '@/utils/transactionStatesConverser';
-import { useSession } from 'next-auth/react';
-import { getAdminTransactionById } from '@/actions/transactions/admin-transaction';
-import { GetTransactionStatus } from '@/components/admin/TransactionModal/componentesModal/ui/TransactionService';
-import { getRegretById } from '@/actions/repentance/repentanceForm.action';
+import { create } from 'zustand';
 
 interface TransactionStatus {
   refunded: {
@@ -56,7 +48,10 @@ interface TransactionState {
     transferRealized: boolean;
   };
 
+  hasFetchedStatus: boolean;
+
   selected: 'stop' | 'accepted' | 'canceled' | null;
+
   fetchTransaction: (transId: string) => Promise<void>;
   fetchNote: (noteId: string) => Promise<void>;
   fetchRegret: (regretId: string) => Promise<void>;
@@ -82,6 +77,8 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
     transferRealized: false,
   },
   selected: null,
+  hasFetchedStatus: false,
+  setHasFetchedStatus: (value: boolean) => set({ hasFetchedStatus: value }),
 
   fetchTransaction: async (transId) => {
     set({ isLoading: true });

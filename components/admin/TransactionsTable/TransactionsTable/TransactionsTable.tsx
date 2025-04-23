@@ -537,7 +537,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                   </div>
                 </th>
                 <th className="px-4 py-3 text-sm font-medium">
-                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('client_action')}>
+                  {/* <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('client_action')}>
                     Acción Cliente
                     {filters.orderby === 'client_action' ? (
                       filters.order === 'asc' ? (
@@ -548,7 +548,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                     ) : (
                       <ChevronDown size={16} className="ml-1" />
                     )}
-                  </div>
+                  </div> */}
                 </th>
               </tr>
             </thead>
