@@ -2,6 +2,7 @@ import { getRegretById } from '@/actions/repentance/repentanceForm.action';
 import { getAdminTransactionById } from '@/actions/transactions/admin-transaction';
 import { getNoteById } from '@/actions/transactions/notes.action';
 import { getStatusTransactionAdmin, postStatusInAdmin } from '@/actions/transactions/transactions.action';
+import auth from '@/auth';
 import { NoteTypeSingle, emptyNote } from '@/types/transactions/notesType';
 import { RegretTypeSingle, emptyRegret } from '@/types/transactions/regretsType';
 import { TransactionTypeSingle, emptyTransaction } from '@/types/transactions/transactionsType';
@@ -82,6 +83,9 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
 
   fetchTransaction: async (transId) => {
     set({ isLoading: true });
+    const session = await auth();
+    if (!session) return;
+    const token = session?.decodedToken.token;
     try {
       const trans = await getAdminTransactionById(transId);
       const existOnAdmin: any = await getStatusTransactionAdmin(transId);
@@ -92,7 +96,7 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
           const idAdminTrans = existOnAdmin.data?.transaction_admin_id;
           set({ status: stat, componentStates: comps, transIdAdmin: idAdminTrans });
         } else {
-          postStatusInAdmin(transId, '1');
+          postStatusInAdmin(transId, '1', token);
         }
         set({ trans });
       }
