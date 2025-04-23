@@ -84,7 +84,6 @@ export default function TransactionPageClientComponent({
         const transactionDetails = await ServiceTransaction.GetTransactionDetails(transId);
         if (transactionDetails?.status) {
           setStatus(transactionDetails.status);
-          setHasFetchedStatus(true);
         }
       } catch (error) {
         console.error('Error updating status:', error);
@@ -259,7 +258,4 @@ export default function TransactionPageClientComponent({
       )}
     </div>
   );
-}
-function setHasFetchedStatus(arg0: boolean) {
-  throw new Error('Function not implemented.');
 }

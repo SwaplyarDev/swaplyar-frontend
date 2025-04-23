@@ -48,10 +48,13 @@ export const getTransactionById = async (transaction_id: string, token: string) 
   }
 };
 
-export const deleteTransactionById = async (id: string) => {
+export const deleteTransactionById = async (id: string, token: string) => {
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions/${id}`, {
       method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (!response.ok) throw new Error('Failed to delete transaction');
 
@@ -62,12 +65,13 @@ export const deleteTransactionById = async (id: string) => {
   }
 };
 
-export const updateTransaction = async ({ transaction }: TransactionTypeSingle) => {
+export const updateTransaction = async ({ transaction }: TransactionTypeSingle, token: string) => {
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions/${transaction.transaction_id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(transaction),
     });
@@ -79,12 +83,15 @@ export const updateTransaction = async ({ transaction }: TransactionTypeSingle) 
   }
 };
 
-export const updateStatusClient = async (transactionId: any, status: any) => {
+export const updateStatusClient = async (transactionId: any, status: any, token: string) => {
   try {
     console.log('updated');
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus/${transactionId}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ status }),
     });
 
@@ -120,12 +127,13 @@ export const getStatusTransactionAdmin = async (transactionId: string) => {
   }
 };
 
-export const postStatusInAdmin = async (transactionId: string, status: string) => {
+export const postStatusInAdmin = async (transactionId: string, status: string, token: string) => {
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transaction_admin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         transaction_id: transactionId,
@@ -144,13 +152,14 @@ export const postStatusInAdmin = async (transactionId: string, status: string) =
   }
 };
 
-export const updateStatusAdmin = async (transactionId: string, status: string) => {
+export const updateStatusAdmin = async (transactionId: string, status: string, token: string) => {
   try {
     console.log(transactionId, status);
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transaction_admin/${transactionId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         id_status: status,

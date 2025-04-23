@@ -271,7 +271,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                 </div>
 
                 <Button
-                  onClick={handleSubmitRejection}
+                  onClick={() => handleSubmitRejection()}
                   className="h-11 bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20"
                   aria-label="Enviar ID de transferencia"
                 >

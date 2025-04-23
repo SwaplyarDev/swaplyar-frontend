@@ -1,4 +1,5 @@
 import { getStatusTransactionAdmin, updateStatusClient } from '@/actions/transactions/transactions.action';
+import auth from '@/auth';
 
 interface TransactionServiceResponse {
   newStatus: string;
@@ -8,13 +9,19 @@ export const TransactionService = async (
   status: string,
   transId: string,
 ): Promise<TransactionServiceResponse | null> => {
+  const session = await auth();
+
+  if (!session) return null;
+
+  const token = session?.decodedToken.token;
+
   try {
     if (!status || !transId) {
       console.error('❌ Error: status o transId no válido', { status, transId });
       throw new Error('Datos inválidos');
     }
 
-    const response = await updateStatusClient(transId, status);
+    const response = await updateStatusClient(transId, status, token);
 
     return response;
   } catch (error) {
