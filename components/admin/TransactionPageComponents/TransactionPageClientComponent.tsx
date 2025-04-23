@@ -1,11 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
 import type { NoteTypeSingle } from '@/types/transactions/notesType';
 import type { RegretTypeSingle } from '@/types/transactions/regretsType';
-import withReactContent from 'sweetalert2-react-content';
-import Swal from 'sweetalert2';
 import SkeletonModal from '../TransactionModal/componentesModal/SkeletonModal';
 import InfoStatus from '../TransactionModal/componentesModal/InfoStatus';
 import ConfirmTransButton from '../TransactionModal/componentesModal/ConfirmTransButton';
@@ -16,9 +14,11 @@ import TransferImages from '../TransactionModal/componentesModal/TransferImages'
 import TransactionDetail from '../TransactionModal/componentesModal/DetailTransaction';
 import ClientMessage from '../TransactionModal/componentesModal/ui/ClientMessage';
 import { useTransactionStore } from '@/store/transactionModalStorage';
-import ServiceTransaction from './ServiceTransaction';
-
-const MySwal = withReactContent(Swal);
+import { useTransactionStoreInit } from '@/hooks/admin/transactionPageHooks/useTransactionStoreInit';
+import { useTransactionStatusUpdate } from '@/hooks/admin/transactionPageHooks/useTransactionStatusUpdate';
+import { useModalAnimation } from '@/hooks/admin/transactionPageHooks/useModalAnimation';
+import { useTransactionSubmission } from '@/hooks/admin/transactionPageHooks/useTransactionSubmision';
+import { useComponentStateManagement } from '@/hooks/admin/transactionPageHooks/useComponentStateManagement';
 
 interface TransactionPageClientComponentProps {
   initialTransaction: TransactionTypeSingle;
@@ -44,128 +44,32 @@ export default function TransactionPageClientComponent({
   regretCancel,
   token,
 }: TransactionPageClientComponentProps) {
-  const [isVisible, setIsVisible] = useState(false);
   const [discrepancySend, setDiscrepancySend] = useState(false);
   const [modal, setModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { componentStates, selected, setComponentStates, setSelected, setStatus, status } = useTransactionStore();
+  const { status, setStatus } = useTransactionStore();
 
   const transId = initialTransaction.transaction.transaction_id;
 
-  // Initialize store with server data on mount
-  useEffect(() => {
-    useTransactionStore.setState({
-      trans: initialTransaction,
-      noteEdit: noteEdit || { note: '', note_id: '', transaction_id: '', created_at: '' },
-      regretCancel: regretCancel || {
-        note: '',
-        regret_id: '',
-        transaction_id: '',
-        last_name: '',
-        email: '',
-        phone_number: '',
-        status: '',
-      },
-      status: initialStatus,
-      componentStates: initialComponentStates,
-      transIdAdmin: transIdAdmin,
-    });
-  }, [initialTransaction, initialStatus, initialComponentStates, transIdAdmin, noteEdit, regretCancel]);
+  // Usar hooks personalizados
+  useTransactionStoreInit({
+    initialTransaction,
+    initialStatus,
+    initialComponentStates,
+    transIdAdmin,
+    noteEdit,
+    regretCancel,
+  });
 
-  // Handle modal animation
-  useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 10);
-    return () => clearTimeout(timer);
-  }, []);
+  useTransactionStatusUpdate(transId, setStatus);
 
-  // Update transaction status periodically
-  useEffect(() => {
-    if (!transId) return;
+  const { isVisible } = useModalAnimation();
 
-    const updateStatus = async () => {
-      try {
-        const transactionDetails = await ServiceTransaction.GetTransactionDetails(transId);
-        if (transactionDetails?.status) {
-          setStatus(transactionDetails.status);
-        }
-      } catch (error) {
-        console.error('Error updating status:', error);
-      }
-    };
+  const { isSubmitting, submitError, submitSuccess, handleSubmit, setIsSubmitting, setSubmitError, setSubmitSuccess } =
+    useTransactionSubmission(transId, setStatus);
 
-    updateStatus();
-
-    // Set up interval for periodic updates
-    const intervalId = setInterval(updateStatus, 30000); // Every 30 seconds
-
-    return () => clearInterval(intervalId);
-  }, [transId, setStatus]);
-
-  // Handle component state changes
-  const handleComponentStateChange = (key: keyof typeof componentStates, value: any) => {
-    setComponentStates(key, value);
-  };
-
-  // Handle selection change
-  const handleSelectionChange = (value: 'stop' | 'accepted' | 'canceled' | null) => {
-    setComponentStates('aprooveReject', value);
-    setSelected(value);
-  };
-
-  // Close the modal
-  const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(() => MySwal.close(), 300);
-  };
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-
-  const handleSubmit = async (
-    status: string,
-    form: any,
-    setIsSubmitting: (isSubmitting: boolean) => void,
-    setSubmitError: (error: string | null) => void,
-    setSubmitSuccess: (success: boolean) => void,
-  ) => {
-    setIsSubmitting(true);
-    setSubmitError(null);
-
-    // Preparar el payload con el ID de transacción
-    const payload = {
-      ...form,
-      transaction_id: transId,
-    };
-
-    try {
-      // Usar el Server Action a través del TransactionService
-      const result = await ServiceTransaction.UpdateTransactionStatus(status, payload);
-
-      if (!result.success) {
-        throw new Error(result.error || 'Error al actualizar la transacción');
-      }
-
-      setSubmitSuccess(true);
-
-      // Actualizar el estado en el store
-      setStatus(status);
-
-      // Reset form after successful submission
-      setTimeout(() => {
-        setSubmitSuccess(false);
-      }, 3000);
-    } catch (error) {
-      console.error('Error submitting data:', error);
-      if (error instanceof Error) {
-        setSubmitError(error.message || 'Error desconocido');
-      } else {
-        setSubmitError('Error desconocido');
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const { componentStates, selected, handleComponentStateChange, handleSelectionChange } =
+    useComponentStateManagement();
 
   return (
     <div
