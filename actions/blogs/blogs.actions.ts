@@ -17,6 +17,7 @@ export const fetchBlogs = async (page: number, searchTerm: string): Promise<Blog
       throw new Error(`Failed to fetch blogs: ${response.status} ${response.statusText}`);
     }
     const data = await response.json();
+    console.log('Fetched blogs:', data);
     return data;
   } catch (error: any) {
     throw new Error(`Failed to fetch blogs. Error: ${error.message}`);

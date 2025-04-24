@@ -9,7 +9,6 @@ import { gifImage } from '@/utils/assets/img-database';
 import useBlogStore from '@/store/useBlogStore';
 import useFetchBlogs from '@/hooks/useFetchBlogs/useFetchBlogs';
 import SearchInput from '../ui/SearchInput/SearchInput';
-import { dataBlogs } from '@/data/dataBlogs';
 interface BlogProps {
   currentPage: number;
 }
@@ -53,11 +52,11 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
         <ImageCarousel
           images={blogs.map((post) => ({
             blog_id: post.blog_id,
-            slug: post.slug, // Ensure slug is included
-            title: post.title, // Adjust as needed
-            description: post.description, // Adjust as needed
-            image: '/images/paypalenarg.png',
-            date: new Date().toISOString(), // Replace with actual date if available
+            slug: post.slug,
+            title: post.title,
+            description: post.description,
+            image: post.image || '/images/paypalenarg.png',
+            date: new Date().toISOString(),
             category: post.category,
           }))}
         />
@@ -74,7 +73,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
                   description={post.description}
                   title={post.title}
                   category={post.category}
-                  image={'/images/paypalenarg.png'}
+                  image={post.image || '/images/paypalenarg.png'}
                 />
               ))}
             </div>
@@ -85,16 +84,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
           <SkeletonLoader />
         )}
       </div>
-      {
-        <PaginationButtons
-          route="/blog"
-          /* @ts-ignore */
-          setIsLoading={setIsLoading}
-          totalPages={1}
-          isLoading={isLoading}
-          currentPage={currentPage}
-        />
-      }
+      {<PaginationButtons route="/blog" totalPages={3} isLoading={isLoading} currentPage={currentPage} />}
 
       <div
         className="mt-12 flex h-[272px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"

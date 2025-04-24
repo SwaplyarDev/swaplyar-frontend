@@ -107,8 +107,8 @@ function CardContent(data: BlogPostCardProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [progress, setProgress] = useState(0);
   const indexBlog = dataBlogs.findIndex((blog) => blog.slug === data.slug);
-  console.log(data);
 
+  console.log(data);
   const sideBar = parseContinuousTextToMenu(data.side_bar);
 
   const getRandomBlog = useCallback(() => {
@@ -204,24 +204,45 @@ function CardContent(data: BlogPostCardProps) {
                   } else if (item.style.style_name === 'subtitle') {
                     return <h2 key={index}>{highlightText(item.text as string)}</h2>;
                   } else if (item.style.style_name === 'ul') {
-                    {
-                      console.log(item.text);
-                    }
-                    <ul>
-                      {parseContinuousTextToMenu(item.text as string).map((item, index) => (
-                        <li key={index} className="list-disc">
-                          {item.title}
-                        </li>
-                      ))}
-                    </ul>;
+                    let list = parseContinuousTextToMenu(item.text as string);
+                    return (
+                      <ul key={index}>
+                        {list.map((item, index) => (
+                          <li key={index} className="list-disc">
+                            {highlightText(item.title)}
+                            {item.children && (
+                              <ul key={index + 'ul'}>
+                                {item.children.map((child, childIndex) => (
+                                  <li className="list-disc" key={childIndex}>
+                                    {highlightText(child.title as string)}
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    );
                   } else if (item.style.style_name === 'ol') {
-                    <ol>
-                      {parseContinuousTextToMenu(item.text as string).map((item, index) => (
-                        <li key={index} className="list-disc">
-                          {item.title}
-                        </li>
-                      ))}
-                    </ol>;
+                    let list = parseContinuousTextToMenu(item.text as string);
+                    return (
+                      <ol key={index}>
+                        {list.map((item, index) => (
+                          <li key={index} className="list-decimal">
+                            {highlightText(item.title)}
+                            {item.children && (
+                              <ol key={index + 'ol'}>
+                                {item.children.map((child, childIndex) => (
+                                  <li className="list-decimal" key={childIndex}>
+                                    {highlightText(child.title as string)}
+                                  </li>
+                                ))}
+                              </ol>
+                            )}
+                          </li>
+                        ))}
+                      </ol>
+                    );
                   }
                 })}
             </article>
