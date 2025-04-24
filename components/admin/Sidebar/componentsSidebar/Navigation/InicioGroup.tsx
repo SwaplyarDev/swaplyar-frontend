@@ -15,7 +15,7 @@ const InicioGroup = ({ collapsed, pathname }: { collapsed: boolean; pathname: st
           <Link
             href="/es/admin/transactions"
             className={`flex items-center rounded-md px-3 py-2.5 text-sm transition-colors ${
-              pathname === '/admin/transactions' || pathname?.startsWith('/admin/transactions')
+              pathname === '/es/admin/transactions' || pathname?.startsWith('/es/admin/transactions')
                 ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
                 : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700/50'
             } ${collapsed ? 'justify-center' : ''}`}
