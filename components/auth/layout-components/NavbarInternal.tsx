@@ -20,12 +20,14 @@ import { usePathname } from 'next/navigation';
 import PerfilIcon from '@/components/icons-internal/icons-desktop/perfil/PerfilIcon';
 import { signOut } from 'next-auth/react';
 import Iconos from './Iconos';
+const isAdmin = true;
 
 const NavbarInternal = () => {
   const { isDark } = useDarkTheme();
   const pathname = usePathname();
   const [drawerMenu, setDrawerMenu] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [mostrarModalPerfil, setMostrarModalPerfil] = useState(false);
 
   const closeDrawerMenu = () => {
     setIsClosing(true);
@@ -34,8 +36,6 @@ const NavbarInternal = () => {
       setIsClosing(false);
     }, 400);
   };
-
-  const admin = true;
 
   const isActive = pathname.split('/')[3];
 
@@ -89,9 +89,11 @@ const NavbarInternal = () => {
                 className={`mask-nav h-16 w-[128px] self-end ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}
               ></div>
               <Link
-                href="/es/auth/perfil"
+                href={'#'}
+                // href="/es/auth/perfil"
                 onClick={() => {
                   console.log('click en perfil');
+                  setMostrarModalPerfil(!mostrarModalPerfil);
                 }}
                 className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} absolute top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t xs:-left-1 xs:ml-5`}
               >
@@ -104,6 +106,13 @@ const NavbarInternal = () => {
                   className="h-full w-full overflow-hidden rounded-full bg-white dark:bg-lightText"
                 />
               </Link>
+
+              <div
+                className={`absolute ${isAdmin && mostrarModalPerfil ? 'flex flex-col items-start justify-around' : 'hidden'} ${isDark ? 'text-[#252526]' : 'text-white'} ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} left-4 top-28 h-20 whitespace-nowrap rounded-br-3xl rounded-tr-3xl border-2 border-[#EBE7E0] pl-2 pr-4 text-lg font-semibold`}
+              >
+                <Link href={'#'}>Opcion 1</Link>
+                <Link href={'#'}>Opcion 2</Link>
+              </div>
             </div>
 
             <div className={`flex ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} h-full flex-1 items-center`}>
