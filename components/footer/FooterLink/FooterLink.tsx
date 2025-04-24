@@ -15,10 +15,10 @@ export function FooterLink({ href, label, view }: FooterLinkProps) {
   const isActive = pathname === href;
 
   return (
-    <motion.div initial={{ scale: 1 }} whileHover={{ scale: 1.04 }} transition={{ duration: 0.2 }}>
+    <motion.div initial={{ fontWeight: 300 }} whileHover={{ fontWeight: 400 }} transition={{ duration: 0.1 }}>
       <Link href={href} {...(view ? { onClick: () => setView(view) } : {})}>
         <p
-          className={`font-textFont text-base font-light hover:text-buttonsLigth dark:text-buttonsExtraLigthDark dark:hover:text-buttonsLigthDark ${isActive ? 'text-buttonsLigth after:bg-buttonsLigth after:content-[""] dark:text-buttonsLigthDark dark:after:bg-buttonsLigthDark' : 'text-buttonsExtraLigth'}`}
+          className={`font-textFont text-base hover:text-buttonsLigth dark:text-buttonsExtraLigthDark dark:hover:text-buttonsLigthDark ${isActive ? 'text-buttonsLigth after:bg-buttonsLigth after:content-[""] dark:text-buttonsLigthDark dark:after:bg-buttonsLigthDark' : 'text-buttonsExtraLigth'}`}
         >
           {label}
         </p>
