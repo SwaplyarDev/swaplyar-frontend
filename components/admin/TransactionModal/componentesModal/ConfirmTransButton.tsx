@@ -63,28 +63,28 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
   const handleConfirmSubmit = () => {
     setIsSubmittingLocal(true);
 
-    // Pasamos 'review_payment' como status y un objeto con transfer_id como form
     submit(
       'review_payment',
       { transfer_id: transferId },
-      // Manejar estado de envío
       (isSubmitting: boolean) => {
         setIsSubmitting(isSubmitting);
       },
-      // Capturar mensaje de error
       (error: string | null) => {
+        console.log('fallo: ', error);
         setSubmitError(error);
+        setIsSubmittingLocal(false);
         if (error) {
           setErrorMessage(error);
+          setSubmitResult(false);
+          setShowResultModal(true);
         }
       },
-      // Manejar resultado
       (success: boolean) => {
+        console.log('success: ', success);
         setSubmitSuccess(success);
         setIsSubmittingLocal(false);
         setShowConfirmModal(false);
 
-        // Mostrar el modal de resultado después de un breve retraso
         setTimeout(() => {
           setSubmitResult(success);
           setShowResultModal(true);

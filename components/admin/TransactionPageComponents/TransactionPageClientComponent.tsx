@@ -73,7 +73,7 @@ export default function TransactionPageClientComponent({
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className={`relative flex h-full w-full flex-col overflow-y-auto rounded-lg bg-gray-50 shadow-sm transition-all duration-300 ease-out dark:bg-gray-900 ${
+      className={`relative flex h-full w-full flex-col overflow-y-auto rounded-lg border-none bg-gray-50 shadow-sm outline-0 ring-0 transition-all duration-300 ease-out dark:bg-gray-900 ${
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
       }`}
       tabIndex={-1}
