@@ -17,6 +17,7 @@ export const SwaplyArlogoWhite =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225363/SwaplyAr-Logo-White_yvdnvm.png';
 export const SwaplyArLogoSolo = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224752/logo-solo_dgx9c5.png';
 export const SwaplyArLogoComplete = 'https://res.cloudinary.com/df5jwzuq9/image/upload/v1722209853/logo_g74htq.png';
+export const SwaplyArLogoDarkTheme = '/images/logo-dark.png';
 
 /** Request **/
 export const FormularioDeSolicitud =

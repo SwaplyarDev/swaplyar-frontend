@@ -83,8 +83,9 @@ const NavbarInternal = () => {
             <div className="relative flex flex-col items-center">
               <div
                 // style={{
-                //   clipPath: `path("M31 116L1 136V1H223V136L194 116L168 50L137 20H85L52 50L31 116Z")`,
+                //   clipPath: `path("M1 147C1 147 14.5 144 22.5 103C27.0733 79.5621 37.5 1.00003 107 1.00002C176.5 1 186.5 69 192.5 103C198.5 137 213.5 147 213.5 147V1.00002H1V147Z")`,
                 // }}
+
                 className={`mask-nav h-16 w-[128px] self-end ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}
               ></div>
               <Link

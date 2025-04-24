@@ -193,8 +193,8 @@ const config: Config = {
         inputLightDisabled: '#90B0FE', // Azul pastel con un tono más vibrante y saturado
       },
       fontFamily: {
-        titleFont: ['OpenSans', 'sans-serif'],
-        textFont: ['Roboto', 'sans-serif'],
+        titleFont: ['OpenSans', 'sans-serif', '100', '200', '300', '400', '500', '600', '700', '800', '900'],
+        textFont: ['Roboto', 'sans-serif', '100', '200', '300', '400', '500', '600', '700', '800', '900'],
       },
       width: {
         '9/10': '90%',

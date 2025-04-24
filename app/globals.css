@@ -682,8 +682,8 @@ div:where(.swal2-container).swal2-noanimation {
 }
 
 .mask-nav {
-  -webkit-mask-image: url('../public/images/Mascara_montana.png');
-  mask-image: url('../public/images/Mascara_montana.png');
+  -webkit-mask-image: url('../public/images/Vector_1.svg');
+  mask-image: url('../public/images/Vector_1.svg');
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 
