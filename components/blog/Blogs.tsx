@@ -84,7 +84,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
           <SkeletonLoader />
         )}
       </div>
-      {<PaginationButtons route="/blog" totalPages={3} isLoading={isLoading} currentPage={currentPage} />}
+      {<PaginationButtons route="blog" totalPages={3} isLoading={isLoading} currentPage={currentPage} />}
 
       <div
         className="mt-12 flex h-[272px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
