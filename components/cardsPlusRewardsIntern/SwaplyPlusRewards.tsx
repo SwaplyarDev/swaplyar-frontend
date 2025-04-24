@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import swaplyPlusRewards from '@/public/images/swaplyPlusRewards.png';
 import Image from 'next/image';
@@ -7,16 +7,37 @@ import { PlusRewards } from '@/app/es/(auth)/auth/plus-rewards/page';
 import CardPlusModal from './modals/CardPlusModal';
 import ModalVerify from './modals/ModalVerify';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
+import AplicationStateContainer from '@/components/cardsPlusRewardsIntern/SwaplyPlusRewardsComponents/AplicationStateContainer';
+import { getPlusRewards } from '@/actions/plusRewards/plusRewards.actions';
+import { useSession } from 'next-auth/react';
 
 const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const [showModal, setShowModal] = useState(false);
   const [showVerify, setShowVerify] = useState(false);
+  const { data: session } = useSession();
+  const [stateSession, setStateSession] = useState('APROBADO');
+  const [user, setUser] = useState(false);
 
-  const user = false;
+  useEffect(() => {
+    const fetchRewards = async () => {
+      try {
+        const data = await getPlusRewards(session?.decodedToken.token || '');
+        setStateSession(data.data.status);
+        stateSession === 'APROBADO' && setUser(true);
+      } catch (error) {
+        console.error('Error obteniendo plusRewards:', error);
+      }
+    };
+
+    fetchRewards();
+  }, [session?.decodedToken.token, stateSession]);
 
   return (
     <>
-      <AnimatedBlurredCircles tope="z-10 absolute" />
+      {/*<AnimatedBlurredCircles tope="z-10 absolute" />*/}
+
+      <AplicationStateContainer stateSession={stateSession} />
+      <AplicationStateContainer stateSession={stateSession} />
       {showModal && <CardPlusModal setShowModal={setShowModal} />}
       {showVerify && <ModalVerify showVerify={showVerify} setShowVerify={setShowVerify} />}
       <div className="relative z-10 mx-auto flex max-w-[500px] flex-col px-5 text-[40px] lg:max-w-[1200px] lg:px-[100px]">

@@ -10,9 +10,7 @@ type ButtonCustomProps = {
 export const ButtonCustom: React.FC<ButtonCustomProps> = ({ setShowVerify, className, title, onClick }) => {
   return (
     <div className={`${className}`} onClick={onClick ?? (() => setShowVerify?.(true))}>
-      <button type="button" className={''}>
-        {title}
-      </button>
+      <button type="button">{title}</button>
     </div>
   );
 };
