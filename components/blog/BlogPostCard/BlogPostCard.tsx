@@ -17,13 +17,10 @@ interface BlogPostProps {
 
 const BlogPostCard: React.FC<BlogPostProps> = ({ blog_id, title, description, image, category }) => {
   const title2 = title || '';
-  const slug = slugify(title2, { lower: true, strict: true });
+  const slug = slugify(title2, { strict: true });
 
   return (
-    <Link
-      href={`blog/blogDetail?slug=${encodeURIComponent(slug)}&id=${encodeURIComponent(blog_id)}`}
-      className="flex h-full w-full items-center justify-center"
-    >
+    <Link href={`blog/${slug}`} className="flex h-full w-full items-center justify-center">
       <div className="flex h-[443px] w-full max-w-[350px] transform flex-col overflow-hidden rounded-[16px] border border-[#012A8E] bg-white shadow-md shadow-black/25 transition-transform dark:border-inputDark dark:bg-[#323232]">
         <Image
           src={image}

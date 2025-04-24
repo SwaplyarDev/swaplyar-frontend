@@ -22,10 +22,9 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
   const searchQuery = searchParams.get('search') || '';
 
   const [searchTerm, setSearchTerm] = useState(searchQuery);
-
   const filteredBlogs = useMemo(() => {
     if (searchTerm === '') return blogs;
-    return blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
+    return blogs.filter((post) => post.title && post.title.toLowerCase().includes(searchTerm.toLowerCase()));
   }, [blogs, searchTerm]);
 
   const handleSearchChange = useCallback(
