@@ -28,6 +28,8 @@ export type StatusPayload = {
  * Utiliza el endpoint /transactions/status/:status
  */
 export async function updateTransactionStatus(status: string, transaction_id: string, payload: StatusPayload) {
+  console.log(payload);
+
   try {
     // Validar autenticación y rol de usuario
     const session = await auth();
@@ -57,9 +59,7 @@ export async function updateTransactionStatus(status: string, transaction_id: st
       };
     }
 
-    console.log({
-      payload,
-    });
+    console.log('payload antes de fecth ', payload);
 
     // Llamar al endpoint para actualizar el estado
     const response = await fetch(
@@ -70,7 +70,7 @@ export async function updateTransactionStatus(status: string, transaction_id: st
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ description: payload }),
       },
     );
 

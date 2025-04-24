@@ -16,7 +16,7 @@ export async function getAllAdminTransactions(page = 1, perPage = 12) {
 
     const token = session?.decodedToken?.token || '';
 
-    const response = await fetch(`${API_BASE_URL}/v1/transactions/info?page=${page}&perPage=${perPage}`, {
+    const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/info?page=${page}&perPage=${perPage}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -48,7 +48,7 @@ export async function getAdminTransactionById(transactionId: string) {
     // }
 
     const token = session?.decodedToken?.token || '';
-    const response = await fetch(`${API_BASE_URL}/v1/transactions/${transactionId}`, {
+    const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/${transactionId}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -111,7 +111,7 @@ export async function getTransactionStatusHistory(transactionId: string) {
 
     const token = session?.decodedToken?.token || '';
 
-    const response = await fetch(`${API_BASE_URL}/v1/admin-transactions/status?transaction_id=${transactionId}`, {
+    const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/status?transaction_id=${transactionId}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
