@@ -23,7 +23,7 @@ function CardDetail() {
 
     const fetchData = async () => {
       try {
-        const data = await fetchBlogById('07iutjs2mv97');
+        const data = await fetchBlogById(id);
         setBlogData(data);
       } catch (error) {
         console.error('Error al obtener el blog:', error);

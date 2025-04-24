@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 interface CardBlogOptionProps {
   isLoaded: boolean;
-  blog: RandomCardProps | null;
+  blog: BlogPostCardProps | null;
 }
 
 const CardBlogOption = ({ isLoaded, blog }: CardBlogOptionProps) => {

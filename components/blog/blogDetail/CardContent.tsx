@@ -107,23 +107,10 @@ function CardContent(data: BlogPostCardProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [progress, setProgress] = useState(0);
   const indexBlog = dataBlogs.findIndex((blog) => blog.slug === data.slug);
-
+  const [randomBlog, setRandomBlog] = useState<BlogPostCardProps | null>(null);
   console.log(data);
   const sideBar = parseContinuousTextToMenu(data.side_bar);
 
-  const getRandomBlog = useCallback(() => {
-    if (dataBlogs.length <= 1) return null;
-
-    const seed = data.slug.length;
-    const otherBlogs = dataBlogs.filter((blog) => blog.slug !== data.slug);
-
-    if (otherBlogs.length === 0) return null;
-
-    const randomIndex = Math.floor((seed * 9301 + 49297) % otherBlogs.length);
-    return otherBlogs[randomIndex];
-  }, [data.slug]);
-
-  const randomBlog = getRandomBlog();
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -137,7 +124,28 @@ function CardContent(data: BlogPostCardProps) {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoaded(true);
 
+      try {
+        const allBlogs = await fetchBlogs(1, '');
+        if (allBlogs && allBlogs.blogsPerPage.length > 0) {
+          let firstBlog = allBlogs.blogsPerPage[0];
+          setRandomBlog(firstBlog);
+          if (data.blog_id === firstBlog.blog_id && allBlogs.blogsPerPage[1]) {
+            setRandomBlog(allBlogs.blogsPerPage[1]);
+          }
+        }
+      } catch (error) {
+        console.error('Error al obtener el blog:', error);
+      } finally {
+        setIsLoaded(false);
+      }
+    };
+
+    fetchData();
+  }, [data]);
   return (
     <>
       <div className="sticky top-28 flex w-full flex-col items-center sm:top-36">
@@ -189,8 +197,8 @@ function CardContent(data: BlogPostCardProps) {
               {data.title}
             </h1>
             <Image
-              className='className="mx-auto"'
-              src={'/images/paypalenarg.png'}
+              className="mx-auto h-[286px] w-[898px] object-cover"
+              src={data.image || '/images/paypalenarg.png'}
               width={898}
               height={286}
               alt="Blog Image "
@@ -199,48 +207,50 @@ function CardContent(data: BlogPostCardProps) {
             <article className="flex flex-col gap-3">
               {Array.isArray(data.content_elements) &&
                 data.content_elements[0]?.content?.map((item: Content, index: number) => {
-                  if (item.style.style_name === 'normal') {
+                  if (item.style?.style_name === 'normal') {
                     return <p key={index}>{item.text}</p>;
-                  } else if (item.style.style_name === 'subtitle') {
+                  } else if (item.style?.style_name === 'subtitle') {
                     return <h2 key={index}>{highlightText(item.text as string)}</h2>;
-                  } else if (item.style.style_name === 'ul') {
+                  } else if (item.style?.style_name === 'ul') {
                     let list = parseContinuousTextToMenu(item.text as string);
                     return (
                       <ul key={index}>
-                        {list.map((item, index) => (
-                          <li key={index} className="list-disc">
-                            {highlightText(item.title)}
-                            {item.children && (
-                              <ul key={index + 'ul'}>
-                                {item.children.map((child, childIndex) => (
-                                  <li className="list-disc" key={childIndex}>
-                                    {highlightText(child.title as string)}
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </li>
-                        ))}
+                        {Array.isArray(list) &&
+                          list.map((item, index) => (
+                            <li key={index} className="list-disc">
+                              {highlightText(item.title)}
+                              {item.children && (
+                                <ul key={index + 'ul'}>
+                                  {item.children.map((child, childIndex) => (
+                                    <li className="list-disc" key={childIndex}>
+                                      {highlightText(child.title as string)}
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </li>
+                          ))}
                       </ul>
                     );
-                  } else if (item.style.style_name === 'ol') {
+                  } else if (item?.style?.style_name === 'ol') {
                     let list = parseContinuousTextToMenu(item.text as string);
                     return (
                       <ol key={index}>
-                        {list.map((item, index) => (
-                          <li key={index} className="list-decimal">
-                            {highlightText(item.title)}
-                            {item.children && (
-                              <ol key={index + 'ol'}>
-                                {item.children.map((child, childIndex) => (
-                                  <li className="list-decimal" key={childIndex}>
-                                    {highlightText(child.title as string)}
-                                  </li>
-                                ))}
-                              </ol>
-                            )}
-                          </li>
-                        ))}
+                        {Array.isArray(list) &&
+                          list.map((item, index) => (
+                            <li key={index} className="list-decimal">
+                              {highlightText(item.title)}
+                              {item.children && (
+                                <ol key={index + 'ol'}>
+                                  {item.children.map((child, childIndex) => (
+                                    <li className="list-decimal" key={childIndex}>
+                                      {highlightText(child.title as string)}
+                                    </li>
+                                  ))}
+                                </ol>
+                              )}
+                            </li>
+                          ))}
                       </ol>
                     );
                   }
