@@ -29,7 +29,7 @@ export function useTransactionSubmission(transId: string, setStatus: (status: st
 
     try {
       // Usar el Server Action a través del TransactionService
-      const result = await ServiceTransaction.UpdateTransactionStatus(status, payload);
+      const result = await ServiceTransaction.UpdateTransactionStatus(status, transId, payload);
 
       if (!result.success) {
         throw new Error(result.error || 'Error al actualizar la transacción');
