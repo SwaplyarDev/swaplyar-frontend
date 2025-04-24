@@ -19,19 +19,15 @@ const VALID_STATUSES = [
   'rejected',
 ];
 
-type StatusPayload = {
-  transaction_id: string;
-  review?: string;
-  descripcion?: string;
-  codigo_transferencia?: string;
-  [key: string]: any;
+export type StatusPayload = {
+  descripcion: string;
 };
 
 /**
  * Server Action para actualizar el estado de una transacción
  * Utiliza el endpoint /transactions/status/:status
  */
-export async function updateTransactionStatus(status: string, payload: StatusPayload) {
+export async function updateTransactionStatus(status: string, transaction_id: string, payload: StatusPayload) {
   try {
     // Validar autenticación y rol de usuario
     const session = await auth();
@@ -47,7 +43,6 @@ export async function updateTransactionStatus(status: string, payload: StatusPay
     }
 
     const token = session.decodedToken?.token || '';
-    const { transaction_id } = payload;
 
     // Validar que el ID de transacción existe
     if (!transaction_id) {
@@ -62,17 +57,22 @@ export async function updateTransactionStatus(status: string, payload: StatusPay
       };
     }
 
-    // /admin/transactions/info/id
+    console.log({
+      payload,
+    });
 
     // Llamar al endpoint para actualizar el estado
-    const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/status/${status}`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `${API_BASE_URL}/v1/admin/transactions/status/${status}?transactionId=${transaction_id}`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
       },
-      body: JSON.stringify(payload),
-    });
+    );
 
     console.log('response:' + response);
 

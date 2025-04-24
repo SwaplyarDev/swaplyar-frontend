@@ -1,5 +1,6 @@
 import { getAdminTransactionById, getTransactionStatusHistory } from '@/actions/transactions/admin-transaction';
 import {
+  StatusPayload,
   updateTransaction,
   updateTransactionStatus,
   uploadReceipt,
@@ -34,9 +35,9 @@ export async function GetTransactionStatusHistory(transactionId: string) {
 /**
  * Actualiza el estado de una transacción
  */
-export async function UpdateTransactionStatus(status: string, payload: any) {
+export async function UpdateTransactionStatus(status: string, transactionId: string, payload: StatusPayload) {
   try {
-    const result = await updateTransactionStatus(status, payload);
+    const result = await updateTransactionStatus(status, transactionId, payload);
     return result;
   } catch (error) {
     console.error('Error updating transaction status:', error);

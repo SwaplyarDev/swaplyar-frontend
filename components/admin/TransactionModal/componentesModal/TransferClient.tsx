@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils';
 import { TooltipContent, TooltipProvider } from '@/components/ui/Tooltip';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { TooltipTrigger } from '@/components/ui/Tooltip';
+import { updateTransactionStatus } from '@/actions/transactions/transaction-status.action';
 
 const TransferClient = () => {
   const [selected, setSelected] = useState<boolean | null>(null);
@@ -79,23 +80,23 @@ const TransferClient = () => {
     try {
       setIsLoading(true);
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      console.log(rejectionReason);
 
-      // Mock successful response
-      const response = { message: 'Status updated successfully' };
+      const response = await updateTransactionStatus('canceled', form.transfer_id, {
+        descripcion: rejectionReason,
+      });
 
-      if (response?.message === 'Status updated successfully') {
+      console.log(response);
+
+      if (!response) {
         setShowConfirmDialog(false);
         setIsLoading(false);
 
-        /*  toast({
-           title: "Solicitud rechazada",
-           description: "La solicitud ha sido rechazada exitosamente",
-           variant: "default",
-         }) */
-      } else {
-        throw new Error('Error al procesar la solicitud');
+        //   toast({
+        //    title: "Solicitud rechazada",
+        //    description: "La solicitud ha sido rechazada exitosamente",
+        //    variant: "default",
+        //  })
       }
     } catch (error) {
       console.log('Error al rechazar la transacción:', error);
@@ -309,7 +310,7 @@ const TransferClient = () => {
               <Button variant="outline" onClick={() => setShowConfirmDialog(false)} disabled={isLoading}>
                 Cancelar
               </Button>
-              <Button variant="destructive" onClick={confirmRejection} disabled={isLoading}>
+              <Button variant="destructive" onClick={() => confirmRejection()} disabled={isLoading}>
                 {isLoading ? 'Procesando...' : 'Confirmar rechazo'}
               </Button>
             </DialogFooter>

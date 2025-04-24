@@ -16,9 +16,7 @@ export const TransactionService = async (
       throw new Error('Datos inválidos');
     }
 
-    const response = await updateTransactionStatus(status, { transaction_id: transId, descripcion: payload });
-
-    console.log(response);
+    const response = await updateTransactionStatus(status, transId, payload);
 
     if (response.success) {
       console.error('❌ Error al actualizar el estado:', response.error);
