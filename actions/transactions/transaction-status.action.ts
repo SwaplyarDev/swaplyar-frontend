@@ -70,7 +70,7 @@ export async function updateTransactionStatus(status: string, transaction_id: st
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ description: payload }),
+        body: JSON.stringify({ descripcion: payload }),
       },
     );
 
