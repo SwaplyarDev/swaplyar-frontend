@@ -10,7 +10,7 @@ interface Blog {
   title: string;
   body: string;
   url_image: string;
-  created_at: string;
+  date: string;
   ver: string;
   status: string;
 }
