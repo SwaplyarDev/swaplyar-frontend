@@ -106,7 +106,6 @@ function CardContent(data: BlogPostCardProps) {
   const { isDark } = useDarkTheme();
   const [isLoaded, setIsLoaded] = useState(false);
   const [progress, setProgress] = useState(0);
-  const indexBlog = dataBlogs.findIndex((blog) => blog.slug === data.slug);
   const [randomBlog, setRandomBlog] = useState<BlogPostCardProps | null>(null);
   console.log(data);
   const sideBar = parseContinuousTextToMenu(data.side_bar);
