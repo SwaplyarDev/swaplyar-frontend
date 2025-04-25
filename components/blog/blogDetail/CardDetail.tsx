@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import CardContent from './CardContent';
 import { fetchBlogBySlug } from '@/actions/blogs/blogById.action';
 import { BlogPostCardProps } from '@/types/blogs/blog';
@@ -20,6 +20,7 @@ function CardDetail() {
 
     const fetchData = async () => {
       try {
+        console.log('slug', slug);
         const data = await fetchBlogBySlug(slug);
         setBlogData(data);
       } catch (error) {

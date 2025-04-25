@@ -120,7 +120,8 @@ const NavbarLanding = () => {
                 </Popover>
               </>
             ) : (
-              <LogInButton />
+              <></>
+              // <LogInButton />
             )}
           </span>
 
@@ -355,8 +356,8 @@ const NavbarLanding = () => {
                 </>
               ) : (
                 <>
-                  <LogInButton />
-                  <RegisterButton />
+                  {/* <LogInButton />
+                  <RegisterButton /> */}
                 </>
               )}
             </section>
