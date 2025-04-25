@@ -66,7 +66,6 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
       });
       setIsLoading(false);
     } else {
-      console.log('else');
       Swal.fire({
         icon: 'error',
         background: '#ffffff00',

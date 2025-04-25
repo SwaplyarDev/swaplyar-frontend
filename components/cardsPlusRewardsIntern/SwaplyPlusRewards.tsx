@@ -8,35 +8,50 @@ import CardPlusModal from './modals/CardPlusModal';
 import ModalVerify from './modals/ModalVerify';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import AplicationStateContainer from '@/components/cardsPlusRewardsIntern/SwaplyPlusRewardsComponents/AplicationStateContainer';
-import { getPlusRewards } from '@/actions/plusRewards/plusRewards.actions';
+import { getPlusRewards, getCardStatus } from '@/actions/plusRewards/plusRewards.actions';
 import { useSession } from 'next-auth/react';
 
 const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const [showModal, setShowModal] = useState(false);
   const [showVerify, setShowVerify] = useState(false);
   const { data: session } = useSession();
-  const [stateSession, setStateSession] = useState('APROBADO');
-  const [user, setUser] = useState(false);
+  const [verifiedStatus, setverifiedStatus] = useState('');
+  const [statusCard, setStatusCard] = useState('');
+
+  const [stateSession, setStateSession] = useState('no aprobado');
 
   useEffect(() => {
     const fetchRewards = async () => {
       try {
         const data = await getPlusRewards(session?.decodedToken.token || '');
-        setStateSession(data.data.status);
-        stateSession === 'APROBADO' && setUser(true);
+
+        setverifiedStatus(data.verification_status);
       } catch (error) {
         console.error('Error obteniendo plusRewards:', error);
       }
     };
 
     fetchRewards();
-  }, [session?.decodedToken.token, stateSession]);
+  }, [session]);
 
+  useEffect(() => {
+    const fetchRewards = async () => {
+      try {
+        const data = await getCardStatus(session?.decodedToken.token || '');
+
+        setStatusCard(data.user_validation);
+      } catch (error) {
+        console.error('Error obteniendo plusRewards:', error);
+      }
+    };
+
+    fetchRewards();
+  }, [session]);
   return (
     <>
       {/*<AnimatedBlurredCircles tope="z-10 absolute" />*/}
-
-      <AplicationStateContainer stateSession={stateSession} />
+      {!session && <p>cargando...</p>}
+      <p>{statusCard}</p>
       <AplicationStateContainer stateSession={stateSession} />
       {showModal && <CardPlusModal setShowModal={setShowModal} />}
       {showVerify && <ModalVerify showVerify={showVerify} setShowVerify={setShowVerify} />}
@@ -72,7 +87,12 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
           </div>
 
           <div className="relative my-auto items-center">
-            <CardPlusRewards user={user} showVerify={showVerify} setShowVerify={setShowVerify} memberCode="2448XPAR" />
+            <CardPlusRewards
+              verifiedStatus={verifiedStatus}
+              showVerify={showVerify}
+              setShowVerify={setShowVerify}
+              memberCode="2448XPAR"
+            />
           </div>
         </div>
       </div>

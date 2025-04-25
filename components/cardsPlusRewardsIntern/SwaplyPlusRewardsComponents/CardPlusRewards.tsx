@@ -4,16 +4,16 @@ import CardBlue from '@/components/cardsPlusRewardsIntern/SwaplyPlusRewardsCompo
 import CardYellow from '@/components/cardsPlusRewardsIntern/SwaplyPlusRewardsComponents/CardYellow';
 
 interface CardProps {
-  user: boolean;
+  verifiedStatus: string;
   memberCode: string;
   showVerify: boolean;
   setShowVerify: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const CardPlusRewards: React.FC<CardProps> = ({ user, memberCode, showVerify, setShowVerify }) => {
+export const CardPlusRewards: React.FC<CardProps> = ({ verifiedStatus, memberCode, showVerify, setShowVerify }) => {
   return (
     <>
-      {user ? (
+      {verifiedStatus === 'aprobado' ? (
         <CardBlue memberCode={memberCode} />
       ) : (
         <CardYellow showVerify={showVerify} setShowVerify={setShowVerify} />
