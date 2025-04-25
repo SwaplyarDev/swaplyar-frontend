@@ -3,7 +3,7 @@
 'use client';
 
 import Image from 'next/image';
-import { BlogPostCardProps, CardContentProps, Content } from '@/types/blogs/blog';
+import { BlogPostCardProps, Content } from '@/types/blogs/blog';
 import { useCallback, useEffect, useState } from 'react';
 import { fetchBlogs } from '@/actions/blogs/blogs.actions';
 import CardBlogOption from './CardBlogOption';
@@ -13,14 +13,12 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProgressBar from '@/components/ui/ProgressBar/ProgressBar';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { dataBlogs } from '@/data/dataBlogs';
-import { set } from 'date-fns';
-import { get } from 'http';
 import { gifImage } from '@/utils/assets/img-database';
 function isString(value: unknown): value is string {
   return typeof value === 'string' || value instanceof String;
 }
-
+// Funcion para colocar texto en negrita
+// coloca en negrita a todo texto que este entre **
 export function highlightText(text: string) {
   if (isString(text)) {
     const parts = text.split(/(\*\*.*?\*\*)/);
@@ -43,27 +41,25 @@ interface MenuItem {
   level: number;
   children?: MenuItem[];
 }
-
+/**
+ * Funcion que recibe un texto continuo y lo convierte en una lista
+ * Recibe los renglones que tengan # son titulos de listas y - cada item de la lista
+ * */
 function parseContinuousTextToMenu(text: string): MenuItem[] {
-  // Primero normalizamos el texto para manejar diferentes formatos de lista
   const normalizedText = text
-    .replace(/(\s*-\s*)/g, '\n- ') // Asegurar saltos de línea antes de cada item
-    .replace(/(\s*#\s*)/g, '\n# ') // Manejar títulos con #
+    .replace(/(\s*-\s*)/g, '\n- ')
+    .replace(/(\s*#\s*)/g, '\n# ')
     .trim();
-
   const lines = normalizedText.split('\n').filter((line) => line.trim() !== '');
   const menuStack: { item: MenuItem; level: number }[] = [];
   const rootItems: MenuItem[] = [];
   let currentLevel = 0;
-
   for (const line of lines) {
-    // Determinar si es un título (#) o item de lista (-)
     const isTitle = line.trim().startsWith('#');
     const isListItem = line.trim().startsWith('-');
 
-    // Calcular nivel de indentación
     const indentMatch = line.match(/^\s*/);
-    const indentLevel = indentMatch ? indentMatch[0].length / 2 : 0; // Asume 2 espacios por nivel
+    const indentLevel = indentMatch ? indentMatch[0].length / 2 : 0;
 
     const level = isTitle ? 0 : indentLevel + 1;
     const title = line.replace(/^[\s#-]*/, '').trim();
@@ -72,20 +68,14 @@ function parseContinuousTextToMenu(text: string): MenuItem[] {
       title,
       level,
     };
-
-    // Manejar la estructura jerárquica
     if (menuStack.length === 0) {
       rootItems.push(newItem);
       menuStack.push({ item: newItem, level });
       continue;
     }
-
-    // Buscar el padre adecuado en el stack
     while (menuStack.length > 0 && menuStack[menuStack.length - 1].level >= level) {
       menuStack.pop();
     }
-
-    // Agregar como hijo o como item raíz
     if (menuStack.length > 0) {
       const parent = menuStack[menuStack.length - 1].item;
       if (!parent.children) {
@@ -105,12 +95,18 @@ function parseContinuousTextToMenu(text: string): MenuItem[] {
 function CardContent(data: BlogPostCardProps) {
   const { isDark } = useDarkTheme();
   const [isLoaded, setIsLoaded] = useState(false);
+  // Variable que guarda el progreso de la barra de scroll
   const [progress, setProgress] = useState(0);
+
+  // Variable que guarda el blog aleatorio
   const [randomBlog, setRandomBlog] = useState<BlogPostCardProps | null>(null);
   console.log(data);
+
+  // Se convierte la informacion que me llega de la API en un formato que pueda ser utilizado como array
   const sideBar = parseContinuousTextToMenu(data.side_bar);
 
   useEffect(() => {
+    // Apartado de la barra de progreso
     const handleScroll = () => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -126,14 +122,15 @@ function CardContent(data: BlogPostCardProps) {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoaded(true);
-
       try {
-        const allBlogs = await fetchBlogs(1, '');
+        const allBlogs = await fetchBlogs(1, ''); // Se obtienen todos los blogs
         if (allBlogs && allBlogs.blogsPerPage.length > 0) {
-          let firstBlog = allBlogs.blogsPerPage[0];
-          setRandomBlog(firstBlog);
-          if (data.blog_id === firstBlog.blog_id && allBlogs.blogsPerPage[1]) {
-            setRandomBlog(allBlogs.blogsPerPage[1]);
+          const otherBlogs = allBlogs.blogsPerPage.filter((blog) => blog.blog_id !== data.blog_id); // Se obtiene todos los blogs menos el que esta renderizado
+          if (otherBlogs.length > 0) {
+            const randomIndex = Math.floor(Math.random() * otherBlogs.length); // Se obtiene un index random
+            setRandomBlog(otherBlogs[randomIndex]);
+          } else {
+            setRandomBlog(null);
           }
         }
       } catch (error) {
@@ -144,10 +141,11 @@ function CardContent(data: BlogPostCardProps) {
     };
 
     fetchData();
-  }, [data]);
+  }, [data.blog_id]);
   return (
     <>
       <div className="sticky top-28 flex w-full flex-col items-center sm:top-36">
+        {/* Barra de progreso */}
         <div className="rounded-2xl border-2 border-buttonsLigth bg-custom-whiteD-100 p-2 dark:border-custom-whiteD-100">
           <ProgressBar value={progress} width="300px" />
         </div>
@@ -206,6 +204,7 @@ function CardContent(data: BlogPostCardProps) {
             <article className="flex flex-col gap-3">
               {Array.isArray(data.content_elements) &&
                 data.content_elements[0]?.content?.map((item: Content, index: number) => {
+                  /* Validaciones segun tipo de style name (normal ,subtitle, ol , ul) */
                   if (item.style?.style_name === 'normal') {
                     return <p key={index}>{item.text}</p>;
                   } else if (item.style?.style_name === 'subtitle') {
@@ -257,6 +256,7 @@ function CardContent(data: BlogPostCardProps) {
             </article>
           </section>
         </div>
+        {/* Seccion blog random y compartir */}
         <div className="mb-[70px] mt-20 flex flex-col-reverse items-center justify-between gap-10 lg:flex-row">
           <CardBlogOption isLoaded={isLoaded} blog={randomBlog} />
           <div className="lg :ml-0 relative ml-[120px] hidden w-full max-w-[500px] sm:block">
@@ -291,6 +291,7 @@ function CardContent(data: BlogPostCardProps) {
           </div>
         </div>
       </section>
+      {/* Banner */}
       <div
         className="mt-12 flex h-[272px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${gifImage})` }}

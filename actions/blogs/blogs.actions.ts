@@ -3,7 +3,7 @@
 import { BlogResponse } from '@/types/blogs/blog';
 
 export const fetchBlogs = async (page: number, searchTerm: string): Promise<BlogResponse> => {
-  let url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/blogs?page=${page}`;
+  let url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/blogs?page=${page}`; // URL base para la API de blogs
   if (searchTerm) {
     url += `&search=${encodeURIComponent(searchTerm)}`;
   }
@@ -24,7 +24,8 @@ export const fetchBlogs = async (page: number, searchTerm: string): Promise<Blog
 };
 
 export const filterBlogs = async (searchTerm: string): Promise<BlogResponse> => {
-  console.log(encodeURIComponent(searchTerm));
+  console.log('search', encodeURIComponent(searchTerm));
+
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/blogs/${encodeURIComponent(searchTerm)}`, {
       method: 'GET',

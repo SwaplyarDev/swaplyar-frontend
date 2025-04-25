@@ -7,36 +7,6 @@ export interface BlogPost {
   blog_id: string;
 }
 
-export interface CardContentProps {
-  data: {
-    sections: {
-      sidebar: {
-        content: {
-          text: string | string[];
-          style: string;
-        }[];
-      };
-      mainContent: {
-        content: {
-          text: string | string[];
-          style: string;
-        }[];
-      };
-    };
-    slug: string;
-    title: string;
-    image: string;
-  };
-}
-
-export interface RandomCardProps {
-  blog_id: string;
-  title: string;
-  description: string;
-  image: string;
-  slug: string; // Added slug property
-}
-
 interface BlogPostCardProps {
   blog_id: string;
   slug: string;

@@ -14,19 +14,20 @@ interface BlogProps {
 }
 
 const Blog: React.FC<BlogProps> = ({ currentPage }) => {
-  const { blogs, isLoading, setIsLoading } = useBlogStore();
+  const { blogs, isLoading, setIsLoading } = useBlogStore(); // Obtengo los datos del store
   console.log(blogs);
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams(); //Se obtienen los params de la url
   const router = useRouter();
 
-  const searchQuery = searchParams.get('search') || '';
+  const searchQuery = searchParams.get('search') || ''; // Se obtiene el atributo search de la url
 
   const [searchTerm, setSearchTerm] = useState(searchQuery);
+  // Se fltran los blogs segun lo ingresado en el buscador
   const filteredBlogs = useMemo(() => {
     if (searchTerm === '') return blogs;
     return blogs.filter((post) => post.title && post.title.toLowerCase().includes(searchTerm.toLowerCase()));
   }, [blogs, searchTerm]);
-
+  // Funcion para enviar la informacion del evento por params
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const term = e.target.value;
@@ -35,7 +36,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
     },
     [router],
   );
-
+  // Se obitienen los blogs a partir de la current page (pagina) y searchTerm (buscador)
   useFetchBlogs({
     currentPage,
     searchTerm,
@@ -61,7 +62,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
         />
 
         <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} />
-
+        {/* Tarjetas de blogs */}
         {!isLoading ? (
           blogs.length >= 1 ? (
             <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
@@ -85,7 +86,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
         )}
       </div>
       {<PaginationButtons route="blog" totalPages={3} isLoading={isLoading} currentPage={currentPage} />}
-
+      {/* Banner */}
       <div
         className="mt-12 flex h-[272px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${gifImage})` }}

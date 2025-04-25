@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
-import { BlogPostCardProps, RandomCardProps } from '@/types/blogs/blog';
+import { BlogPostCardProps } from '@/types/blogs/blog';
 import slugify from 'slugify';
 import Link from 'next/link';
 
