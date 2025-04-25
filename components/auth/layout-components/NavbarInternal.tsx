@@ -44,9 +44,9 @@ const NavbarInternal = () => {
       {/* Parte de arriba blanca*/}
 
       <div
-        className={`max-width-screen sticky top-0 z-40 mx-auto ${isDark ? 'bg-[#252526]' : 'bg-[#FFFFFB]'} md:max-w-[1300px]`}
+        className={`sticky top-0 z-40 mx-auto flex items-center justify-center ${isDark ? 'bg-[#252526]' : 'bg-[#FFFFFB]'} `}
       >
-        <div className="flex h-16 items-center mini-phone:mx-8 mini-phone:justify-between xs:mx-10 md:mx-16">
+        <div className="flex h-16 w-full items-center justify-stretch px-16 mini-phone:mx-8 mini-phone:justify-between xs:mx-10 md:mx-16 md:max-w-[1300px]">
           <Link href="/es/auth/solicitud">
             <Image
               src={isDark ? SwaplyArlogoMobileWhite : SwaplyArLogoComplete}
@@ -81,13 +81,7 @@ const NavbarInternal = () => {
           <div className="flex h-16 flex-1 items-center">
             {/* Contenido principal (perfil, etc.) */}
             <div className="relative flex flex-col items-center">
-              <div
-                // style={{
-                //   clipPath: `path("M1 147C1 147 14.5 144 22.5 103C27.0733 79.5621 37.5 1.00003 107 1.00002C176.5 1 186.5 69 192.5 103C198.5 137 213.5 147 213.5 147V1.00002H1V147Z")`,
-                // }}
-
-                className={`mask-nav h-16 w-[128px] self-end ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}
-              ></div>
+              <div className={`mask-nav h-16 w-[128px] self-end ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
               <Link
                 href={'#'}
                 // href="/es/auth/perfil"
