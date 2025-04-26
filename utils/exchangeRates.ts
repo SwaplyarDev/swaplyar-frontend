@@ -191,5 +191,5 @@ export const exchangeRates: ExchangeRate[] = [
     formula: applyRateWithReduction(0.05),
     inverseFormula: inverseRateWithReduction(0.05),
   },
-  { from: 'tether', to: 'pix', formula: applyRateWithReduction(0.05), inverseFormula: applyRateWithReduction(0.05) },
+  { from: 'tether', to: 'pix', formula: applyRateWithReduction(0.05), inverseFormula: inverseRateWithReduction(0.05) },
 ];
