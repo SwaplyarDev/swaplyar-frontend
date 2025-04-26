@@ -15,8 +15,8 @@ interface SocialLink {
 
 export const footerLinks = {
   registro: [
-    { href: '/es/iniciar-sesion-o-registro', label: 'Iniciar Sesión', view: 'login' },
-    { href: '/es/iniciar-sesion-o-registro', label: 'Registrarse', view: 'register' },
+    // { href: '/es/iniciar-sesion-o-registro', label: 'Iniciar Sesión', view: 'login' },
+    // { href: '/es/iniciar-sesion-o-registro', label: 'Registrarse', view: 'register' },
     { href: '/es/programa-de-fidelizacion', label: 'Programa de Fidelización' },
   ] as FooterLink[],
   normativa: [
