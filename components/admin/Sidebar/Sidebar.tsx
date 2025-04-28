@@ -4,11 +4,11 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import {
-  ChevronLeft,
-  ChevronRight,
-  BarChart3,
-  Users,
-  CreditCard,
+  // ChevronLeft,
+  // ChevronRight,
+  // BarChart3,
+  // Users,
+  // CreditCard,
   Menu,
   Clock,
   XCircle,
@@ -17,7 +17,7 @@ import {
   AlertTriangle,
   Tag,
 } from 'lucide-react';
-import { Avatar, Button, Popover, styled, Typography, Box } from '@mui/material';
+import { Button, styled } from '@mui/material';
 import { signOut, useSession } from 'next-auth/react';
 import clsx from 'clsx';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
@@ -26,7 +26,6 @@ import LogoSidebar from './componentsSidebar/LogoSidebar';
 import InicioGroup from './componentsSidebar/Navigation/InicioGroup';
 import GestionGroup from './componentsSidebar/Navigation/GestionGroup';
 import AtajosGroup from './componentsSidebar/Navigation/AtajosGroup';
-import UserBotton from './componentsSidebar/Navigation/UserBotton';
 import AnimatedCerrarSesion from '@/components/icons-internal/CerrarSesion/AnimatedCerrarSesion';
 import CerrarSesionIcon from '@/components/icons-internal/CerrarSesion/CerrarSesionIcon';
 import { SwaplyArLogoSolo, SwaplyArlogoWhite } from '@/utils/assets/imgDatabaseCloudinary';
@@ -277,7 +276,7 @@ const Sidebar = () => {
               />
             </div>
 
-            {/* User at the bottom */}
+            {/* User at the bottom
             <UserBotton
               collapsed={collapsed}
               session={session}
@@ -290,7 +289,7 @@ const Sidebar = () => {
               isDark={isDark}
               ProfileButton={ProfileButton}
               LogoutButton={LogoutButton}
-            />
+            /> */}
             <div
               onClick={() => signOut()}
               className={clsx(
