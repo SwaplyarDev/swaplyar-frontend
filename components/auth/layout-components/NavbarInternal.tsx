@@ -176,9 +176,9 @@ const NavbarInternal = () => {
                         )}
                       </Link>
                     </div>
-                    <div onClick={() => signOut()} className=":hover:animate-pulse mb-7">
+                    <button onClick={() => signOut()} className="h-16 xs:hidden lg:block">
                       <CerrarSesion />
-                    </div>
+                    </button>
                   </div>
                 </Drawer.Items>
               </Drawer>
