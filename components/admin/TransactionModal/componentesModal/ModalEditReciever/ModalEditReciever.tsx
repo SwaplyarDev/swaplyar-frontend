@@ -13,6 +13,7 @@ import { Label } from '@/components/ui/Label';
 import { Separator } from '@/components/ui/Separator';
 import { Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { TransactionService } from '../ui/TransactionService';
 
 interface ModalEditRecieverProps {
   modal: boolean;
@@ -22,7 +23,9 @@ interface ModalEditRecieverProps {
 
 const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, trans }) => {
   const receiverLabels = getReceiverLabels(trans);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { noteEdit, regretCancel } = useTransactionStore();
+  const { transaction } = trans;
 
   const [modifiedValues, setModifiedValues] = useState<{ [key: string]: string }>(
     receiverLabels.reduce(
@@ -39,6 +42,18 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
       ...prevState,
       [label]: newValue,
     }));
+  };
+
+  const handleSubmit = () => {
+    // Aquí puedes realizar cualquier acción con los datos modificados
+    console.log('Datos modificados:', modifiedValues);
+    try {
+      const response = TransactionService('approved', transaction.transaction_id, modifiedValues);
+      console.log(response);
+    } catch (error) {
+      throw new Error(`❌ Error en la respuesta del servicio` + error);
+    }
+    setModal(false);
   };
 
   return (
@@ -107,9 +122,31 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
             <Upload className="h-5 w-5 text-blue-500" />
           </div>
           <p className="mb-3 text-sm font-medium text-gray-700">Subir Comprobante</p>
-          <Button variant="outline" className="border-blue-200 text-blue-700 hover:bg-blue-50">
-            Seleccionar archivo
-          </Button>
+
+          {/* Hidden file input */}
+          <input
+            type="file"
+            accept=".png,.jpg,.jpeg,.pdf"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                setSelectedFile(file);
+              }
+            }}
+            className="hidden"
+            id="fileInput"
+          />
+
+          {/* Label that triggers the file input */}
+          <label htmlFor="fileInput">
+            <Button variant="outline" className="cursor-pointer border-blue-200 text-blue-700 hover:bg-blue-50">
+              Seleccionar archivo
+            </Button>
+          </label>
+
+          {/* Mostrar nombre del archivo si hay */}
+          {selectedFile && <p className="mt-2 text-xs text-gray-500">Archivo seleccionado: {selectedFile.name}</p>}
+
           <p className="mt-2 text-xs text-gray-500">Formatos aceptados: PNG, JPG, PDF</p>
         </div>
       </div>
@@ -118,7 +155,9 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
 
       {/* Action Button */}
       <div className="flex justify-center">
-        <Button className="bg-green-600 px-6 text-white hover:bg-green-700">Confirmar Modificación</Button>
+        <Button onClick={handleSubmit} className="bg-green-600 px-6 text-white hover:bg-green-700">
+          Confirmar Modificación
+        </Button>
       </div>
     </div>
   );
