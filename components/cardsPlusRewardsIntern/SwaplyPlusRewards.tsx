@@ -21,17 +21,20 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const [stateSession, setStateSession] = useState('no aprobado');
 
   useEffect(() => {
-    const fetchRewards = async () => {
-      try {
-        const data = await getPlusRewards(session?.decodedToken.token || '');
+    console.log('session: ', session);
+    if (session) {
+      const fetchRewards = async () => {
+        try {
+          const data = await getPlusRewards(session?.decodedToken.token || '');
 
-        setverifiedStatus(data.verification_status);
-      } catch (error) {
-        console.error('Error obteniendo plusRewards:', error);
-      }
-    };
+          setverifiedStatus(data.verification_status);
+        } catch (error) {
+          console.error('Error obteniendo plusRewards:', error);
+        }
+      };
 
-    fetchRewards();
+      fetchRewards();
+    }
   }, [session]);
 
   useEffect(() => {
