@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 
 const FinalSection = ({ transId }: { transId: string }) => {
   const { data: session } = useSession();
-  const userName = session?.decodedToken.fullName;
+  const userName = session?.user.name;
   const [note, setNote] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

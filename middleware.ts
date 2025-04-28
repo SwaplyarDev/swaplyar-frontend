@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { auth } from './auth'; // Importa el objeto `auth` de tu configuración de NextAuth
+import { auth } from './auth';
 import { configRoutes } from './config/routes';
 import { createRouteMatchers } from './lib/route';
 

@@ -14,7 +14,7 @@ export async function getAllAdminTransactions(page = 1, perPage = 12) {
     //   throw new Error("No autorizado")
     // }
 
-    const token = session?.decodedToken?.token || '';
+    const token = session?.accessToken || '';
 
     const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/info?page=${page}&perPage=${perPage}`, {
       method: 'GET',
@@ -47,7 +47,7 @@ export async function getAdminTransactionById(transactionId: string) {
     //   throw new Error("No autorizado")
     // }
 
-    const token = session?.decodedToken?.token || '';
+    const token = session?.accessToken || '';
     const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/${transactionId}`, {
       method: 'GET',
       headers: {
@@ -77,7 +77,7 @@ export async function updateAdminTransaction(transactionData: any) {
     //   throw new Error("No autorizado")
     // }
 
-    const token = session?.decodedToken?.token || '';
+    const token = session?.accessToken || '';
 
     const response = await fetch(`${API_BASE_URL}/v1/transactions/editar`, {
       method: 'PUT',
@@ -109,7 +109,7 @@ export async function getTransactionStatusHistory(transactionId: string) {
     //   throw new Error("No autorizado")
     // }
 
-    const token = session?.decodedToken?.token || '';
+    const token = session?.accessToken || '';
 
     const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/status?transaction_id=${transactionId}`, {
       method: 'GET',
@@ -141,7 +141,7 @@ export async function uploadTransactionReceipt(transactionId: string, file: File
     //   throw new Error("No autorizado")
     // }
 
-    const token = session?.decodedToken?.token || '';
+    const token = session?.accessToken || '';
 
     const formData = new FormData();
     formData.append('comprobante', file);

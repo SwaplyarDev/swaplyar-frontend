@@ -39,12 +39,12 @@ export async function updateTransactionStatus(status: string, transaction_id: st
     }
 
     // Verificar si el usuario tiene rol de admin
-    const userRole = session.decodedToken?.role || '';
+    const userRole = session.user.role || '';
     if (userRole !== 'admin') {
       return { success: false, error: 'Se requiere rol de administrador' };
     }
 
-    const token = session.decodedToken?.token || '';
+    const token = session.accessToken || '';
 
     // Validar que el ID de transacción existe
     if (!transaction_id) {
@@ -115,7 +115,7 @@ export async function uploadReceipt(transactionId: string, file: File) {
       return { success: false, error: 'Se requiere rol de administrador' };
     }
 
-    const token = session.decodedToken?.token || '';
+    const token = session.accessToken || '';
 
     // Crear FormData para subir el archivo
     const formData = new FormData();
@@ -170,7 +170,7 @@ export async function updateTransaction(transactionData: any) {
       return { success: false, error: 'Se requiere rol de administrador' };
     }
 
-    const token = session.decodedToken?.token || '';
+    const token = session.accessToken || '';
     const { transaction_id } = transactionData;
 
     if (!transaction_id) {
