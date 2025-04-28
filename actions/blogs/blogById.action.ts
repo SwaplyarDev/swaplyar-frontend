@@ -11,7 +11,6 @@ export async function fetchBlogBySlug(slug: string): Promise<BlogPostCardProps |
     if (!response.ok) {
       return null;
     }
-    console.log('fetchBlogBySlug', response.json());
 
     return await response.json();
   } catch (error) {

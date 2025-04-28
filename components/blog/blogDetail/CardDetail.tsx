@@ -18,7 +18,7 @@ function CardDetail() {
   console.log(slug);
 
   useEffect(() => {
-    if (!slug) return;
+    if (!slug) return console.error('error al obtener slug');
     // Obtencion de los datos del blog
     const fetchData = async () => {
       try {

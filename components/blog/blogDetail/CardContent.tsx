@@ -14,6 +14,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProgressBar from '@/components/ui/ProgressBar/ProgressBar';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { gifImage } from '@/utils/assets/img-database';
+
+// Funcion para evaluar si es un string
 function isString(value: unknown): value is string {
   return typeof value === 'string' || value instanceof String;
 }
@@ -97,7 +99,7 @@ function CardContent(data: BlogPostCardProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   // Variable que guarda el progreso de la barra de scroll
   const [progress, setProgress] = useState(0);
-
+  console.log(data);
   // Variable que guarda el blog aleatorio
   const [randomBlog, setRandomBlog] = useState<BlogPostCardProps | null>(null);
   console.log(data);
@@ -158,7 +160,7 @@ function CardContent(data: BlogPostCardProps) {
           </p>
           <div className="mt-[20px]">
             <p>16 Noviembre 2024</p>
-            <p className={!isDark ? 'font-bold text-[#012A8E]' : 'font-bold text-[#EBE7E0]'}>SwaplyAr</p>
+            <p className={!isDark ? 'font-bold text-custom-blue' : 'font-bold text-custom-whiteD'}>SwaplyAr</p>
           </div>
         </div>
         <div className="mx-auto flex w-full flex-col justify-center gap-4 lg:flex-row">
@@ -187,8 +189,8 @@ function CardContent(data: BlogPostCardProps) {
             <h1
               className={
                 !isDark
-                  ? 'text-center text-[40px] font-semibold text-[#012A8E]'
-                  : 'text-center text-[40px] font-semibold text-[#EBE7E0]'
+                  ? 'text-center text-[40px] font-semibold text-custom-blue'
+                  : 'text-center text-[40px] font-semibold text-custom-whiteD'
               }
             >
               {data.title}
