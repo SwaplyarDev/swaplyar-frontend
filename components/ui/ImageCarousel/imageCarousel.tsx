@@ -55,10 +55,10 @@ const ImageCarousel: React.FC<{ images: Blog[] }> = ({ images }) => {
           >
             {images.map((imgData) => {
               const title2 = imgData.title || '';
-              const slug = slugify(title2, { lower: true, strict: true });
+              const slug = slugify(title2, { strict: true });
               return (
                 <Link
-                  href={`blog/blogDetail?slug=${encodeURIComponent(slug)}&id=${encodeURIComponent(imgData.blog_id)}`}
+                  href={`blog/${slug}`}
                   key={imgData.blog_id || imgData.title}
                   className="relative flex h-[350px] items-center rounded-[30px] outline-none"
                 >
