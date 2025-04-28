@@ -2,7 +2,7 @@
 import { getAllTransactions } from '@/actions/transactions/transactions.action';
 import TransactionsTable from '@/components/admin/TransactionsTable/TransactionsTable/TransactionsTable';
 import { TransactionArray } from '@/types/transactions/transactionsType';
-import { auth } from "@/auth";
+import { auth } from '@/auth';
 
 interface TransactionsLoaderProps {
   currentPage: number;
@@ -10,8 +10,8 @@ interface TransactionsLoaderProps {
 
 const TransactionsLoader = async ({ currentPage }: TransactionsLoaderProps) => {
   // Obtener la sesión en el servidor
-	const session = await auth();
-  const token = session?.decodedToken.token;
+  const session = await auth();
+  const token = session?.accessToken;
 
   // Validar que exista sesión y token
   if (!session || !token) {

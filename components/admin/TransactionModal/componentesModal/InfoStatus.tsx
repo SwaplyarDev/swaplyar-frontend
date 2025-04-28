@@ -13,7 +13,7 @@ interface InfoStatusProps {
 const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
   const { status, transaction } = trans;
   const { data: session } = useSession();
-  const userName = session?.decodedToken.fullName;
+  const userName = session?.user?.name;
 
   // Format date with better localization
   const formatDate = (dateString: string) => {

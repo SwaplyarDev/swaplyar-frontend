@@ -15,6 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/Dialog';
+import { TransactionService } from './ui/TransactionService';
 
 interface DiscrepancySectionProps {
   trans: any; // Using any since TransactionTypeSingle is not provided
@@ -38,6 +39,8 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
   const [showConfirmResolutionDialog, setShowConfirmResolutionDialog] = useState(false);
   const [showSuccessResolutionDialog, setShowSuccessResolutionDialog] = useState(false);
   const [dialogType, setDialogType] = useState<'discrepancy' | 'resolution'>('discrepancy');
+
+  const { transaction } = trans;
 
   useEffect(() => {
     // Sync local state with prop value when it changes
@@ -69,10 +72,14 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
     setShowConfirmDiscrepancyDialog(true);
   };
 
-  const confirmDiscrepancy = () => {
+  const confirmDiscrepancy = async () => {
     setShowConfirmDiscrepancyDialog(false);
     setShowSuccessDiscrepancyDialog(true);
-    console.log('Motivo de discrepancia enviado:', discrepancyReason);
+    try {
+      const response = await TransactionService('discrepancy', transaction.transaction_id, discrepancyReason);
+    } catch (error) {
+      console.log('Error al enviar el motivo de discrepancia:', error);
+    }
     setDiscrepancySend(true);
   };
 
@@ -86,10 +93,14 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
     setShowConfirmResolutionDialog(true);
   };
 
-  const confirmResolution = () => {
+  const confirmResolution = async () => {
     setShowConfirmResolutionDialog(false);
     setShowSuccessResolutionDialog(true);
-    console.log('Motivo de resolución enviado:', resolutionReason);
+    try {
+      const response = await TransactionService('approved', transaction.transaction_id, resolutionReason);
+    } catch (error) {
+      console.log('Error al enviar el motivo de discrepancia:', error);
+    }
     setDiscrepancySend(true);
   };
 

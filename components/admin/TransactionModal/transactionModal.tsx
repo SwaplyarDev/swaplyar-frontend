@@ -24,7 +24,7 @@ const TransactionModal = () => {
   const [modal, setModal] = useState<boolean>(false);
 
   const { data: session } = useSession();
-  const token = session?.decodedToken.token;
+  const token = session?.accessToken;
 
   const params = useParams();
   const transId = params.id as string;

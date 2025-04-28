@@ -44,7 +44,7 @@ export default async function TransactionPage({ params }: { params: { id: string
       transIdAdmin={transaction.transaction_admin_id || ''}
       noteEdit={noteEdit}
       regretCancel={regretCancel}
-      token={session?.decodedToken?.token || ''}
+      token={session?.accessToken || ''}
     />
   );
 }

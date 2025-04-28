@@ -84,8 +84,8 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
   fetchTransaction: async (transId) => {
     set({ isLoading: true });
     const session = await auth();
-    if (!session) return;
-    const token = session?.decodedToken.token;
+    if (!session?.accessToken) return;
+    const token = session?.accessToken;
     try {
       const trans = await getAdminTransactionById(transId);
       const existOnAdmin: any = await getStatusTransactionAdmin(transId);
