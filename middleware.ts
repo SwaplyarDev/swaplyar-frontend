@@ -18,7 +18,7 @@ export default auth((req) => {
     const isAdminRoute = nextUrl.pathname.startsWith('/es/admin');
 
     if (isAdminRoute && isLoggedIn) {
-      const userRole = req.auth?.decodedToken.role; // Obtener el rol del usuario desde el token JWT
+      const userRole = req.auth?.user.role;
       if (userRole !== 'admin') {
         return NextResponse.redirect(new URL('/', req.url)); // Redirigir al home si no es admin
       }
