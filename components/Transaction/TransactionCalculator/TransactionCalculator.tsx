@@ -127,7 +127,7 @@ export default function TransactionCalculator() {
                   (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50) ||
                   parseInt(receiveAmount) < 10 ||
                   parseInt(sendAmount) < 10
-                  ? 'mb-4 mt-4'
+                  ? 'absolute bottom-14 xs-mini-phone:bottom-16'
                   : 'hidden',
               )}
             >
@@ -200,8 +200,7 @@ export default function TransactionCalculator() {
                         (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
                       ),
                     },
-                sendAmount === '' ? 'mt-14' : '',
-                'w-full max-w-[340px] rounded-full bg-custom-blue-800 px-[14px] py-3 font-titleFont text-base font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-custom-grayD dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD',
+                'mt-16 w-full max-w-[340px] rounded-full bg-custom-blue-800 px-[14px] py-3 font-titleFont text-base font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-custom-grayD dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD xs-mini-phone:mt-14',
               )}
               onClick={handleSubmit}
               disabled={
