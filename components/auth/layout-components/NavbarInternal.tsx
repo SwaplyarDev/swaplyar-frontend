@@ -18,15 +18,13 @@ import { ActiveTab, NavIcons } from './NavIcons';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import PerfilIcon from '@/components/icons-internal/icons-desktop/perfil/PerfilIcon';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 
 const NavbarInternal = () => {
   const { isDark } = useDarkTheme();
   const pathname = usePathname();
   const [drawerMenu, setDrawerMenu] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  const { data: session, status } = useSession();
-  console.log('session', session?.user);
 
   const closeDrawerMenu = () => {
     setIsClosing(true);
