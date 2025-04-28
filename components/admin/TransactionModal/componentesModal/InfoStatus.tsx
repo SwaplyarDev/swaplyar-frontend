@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { AlertCircle, CheckCircle, Clock, XCircle } from 'lucide-react';
+import BackButton from '../../Sidebar/componentsSidebar/Navigation/BackButto';
 
 interface InfoStatusProps {
   trans: TransactionTypeSingle;
@@ -81,7 +82,8 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
   return (
     <>
       <div className="flex w-full items-center justify-between rounded-lg border bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-800/90 dark:hover:bg-gray-800">
-        <div className="flex w-full items-center justify-between gap-x-4">
+        <BackButton />
+        <div className="flex w-full items-center justify-between gap-x-4 pl-2">
           <div>{getStatusBadge(status)}</div>
 
           <div className="flex items-center justify-center gap-4 text-xl text-gray-800 dark:text-gray-100">

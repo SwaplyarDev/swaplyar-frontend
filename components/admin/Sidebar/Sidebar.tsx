@@ -4,11 +4,11 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import {
-  ChevronLeft,
-  ChevronRight,
-  BarChart3,
-  Users,
-  CreditCard,
+  // ChevronLeft,
+  // ChevronRight,
+  // BarChart3,
+  // Users,
+  // CreditCard,
   Menu,
   Clock,
   XCircle,
@@ -17,7 +17,7 @@ import {
   AlertTriangle,
   Tag,
 } from 'lucide-react';
-import { Avatar, Button, Popover, styled, Typography, Box } from '@mui/material';
+import { Button, styled } from '@mui/material';
 import { signOut, useSession } from 'next-auth/react';
 import clsx from 'clsx';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
@@ -26,8 +26,10 @@ import LogoSidebar from './componentsSidebar/LogoSidebar';
 import InicioGroup from './componentsSidebar/Navigation/InicioGroup';
 import GestionGroup from './componentsSidebar/Navigation/GestionGroup';
 import AtajosGroup from './componentsSidebar/Navigation/AtajosGroup';
-import UserBotton from './componentsSidebar/Navigation/UserBotton';
-import ThemeToggleAside from './ThemeToggleAside';
+import AnimatedCerrarSesion from '@/components/icons-internal/CerrarSesion/AnimatedCerrarSesion';
+import CerrarSesionIcon from '@/components/icons-internal/CerrarSesion/CerrarSesionIcon';
+import { SwaplyArLogoSolo, SwaplyArlogoWhite } from '@/utils/assets/imgDatabaseCloudinary';
+
 // Create a custom event to communicate sidebar state
 export const createSidebarEvent = (isCollapsed: boolean) => {
   if (typeof window !== 'undefined') {
@@ -246,6 +248,17 @@ const Sidebar = () => {
           {/* Navigation */}
           <nav className="flex flex-1 flex-col justify-between overflow-y-auto px-3 py-4">
             <div>
+              {collapsed && (
+                <Link href="/es/auth/solicitud">
+                  <Image
+                    src={isDark ? SwaplyArlogoWhite : SwaplyArLogoSolo}
+                    className="mb-6 max-h-14 w-full max-w-14"
+                    alt="Cambiar saldo online"
+                    width={200}
+                    height={80}
+                  />
+                </Link>
+              )}
               {/* Inicio Group */}
               <InicioGroup collapsed={collapsed} pathname={pathname} />
 
@@ -263,7 +276,7 @@ const Sidebar = () => {
               />
             </div>
 
-            {/* User at the bottom */}
+            {/* User at the bottom
             <UserBotton
               collapsed={collapsed}
               session={session}
@@ -276,9 +289,15 @@ const Sidebar = () => {
               isDark={isDark}
               ProfileButton={ProfileButton}
               LogoutButton={LogoutButton}
-            />
-            <div className={clsx('mt-6 justify-self-end', collapsed ? 'px-0' : 'px-2')}>
-              <ThemeToggleAside collapsed={collapsed} />
+            /> */}
+            <div
+              onClick={() => signOut()}
+              className={clsx(
+                'mt-6 flex cursor-pointer justify-center justify-self-end',
+                collapsed ? 'px-0' : 'justify-start px-2',
+              )}
+            >
+              {collapsed ? <CerrarSesionIcon /> : <AnimatedCerrarSesion />}
             </div>
           </nav>
         </div>

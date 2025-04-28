@@ -11,6 +11,8 @@ import type { TransactionArray, TransactionTypeAll } from '@/types/transactions/
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import TransactionModal from '@/components/admin/TransactionModal/transactionModal';
 import { useRouter } from 'next/navigation';
+import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
+import BackButton from '../../Sidebar/componentsSidebar/Navigation/BackButto';
 
 interface TransactionsTableProps {
   transactions: TransactionArray;
