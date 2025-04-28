@@ -22,8 +22,12 @@ import { TooltipContent, TooltipProvider } from '@/components/ui/Tooltip';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { TooltipTrigger } from '@/components/ui/Tooltip';
 import { updateTransactionStatus } from '@/actions/transactions/transaction-status.action';
+import { useParams } from 'next/navigation';
 
 const TransferClient = () => {
+  const params = useParams();
+  const transId = params.id as string;
+
   const [selected, setSelected] = useState<boolean | null>(null);
   const [form, setForm] = useState<{ transfer_id: string; amount: number }>({
     transfer_id: '',
@@ -70,6 +74,13 @@ const TransferClient = () => {
           description: "Por favor ingresa el motivo del rechazo",
           variant: "destructive",
         }) */
+      try {
+        const response = await updateTransactionStatus('rejected', form.transfer_id, {
+          descripcion: rejectionReason,
+        });
+      } catch (error) {
+        throw new Error(`❌ Error en la respuesta del servicio`);
+      }
       return;
     }
 
@@ -80,9 +91,9 @@ const TransferClient = () => {
     try {
       setIsLoading(true);
 
-      console.log(rejectionReason);
+      console.log(rejectionReason, 'transaction_id: ' + transId);
 
-      const response = await updateTransactionStatus('canceled', form.transfer_id, {
+      const response = await updateTransactionStatus('canceled', transId, {
         descripcion: rejectionReason,
       });
 
@@ -108,6 +119,17 @@ const TransferClient = () => {
         description: "Ocurrió un error al procesar la solicitud. Por favor intenta nuevamente.",
         variant: "destructive",
       }) */
+    }
+  };
+
+  const handleAprove = async () => {
+    try {
+      setIsLoading(true);
+
+      const response = await updateTransactionStatus('approved', form.transfer_id, { descripcion: 'aproved' });
+      console.log(response);
+    } catch (error) {
+      throw new Error(`❌ Error en la respuesta del servicio`);
     }
   };
 
@@ -250,7 +272,7 @@ const TransferClient = () => {
             </div>
 
             <Button
-              /* onClick={handleSubmitRejection} */
+              onClick={handleAprove}
               className="h-11 bg-custom-blue text-white hover:bg-blue-700"
               aria-label="Enviar ID de transferencia"
             >

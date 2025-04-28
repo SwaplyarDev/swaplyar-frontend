@@ -48,7 +48,7 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
     // Aquí puedes realizar cualquier acción con los datos modificados
     console.log('Datos modificados:', modifiedValues);
     try {
-      const response = TransactionService('approved', transaction.transaction_id, modifiedValues);
+      const response = TransactionService('modified', transaction.transaction_id, modifiedValues);
       console.log(response);
     } catch (error) {
       throw new Error(`❌ Error en la respuesta del servicio` + error);
