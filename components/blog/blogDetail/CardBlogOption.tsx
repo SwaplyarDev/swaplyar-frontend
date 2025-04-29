@@ -13,7 +13,7 @@ const CardBlogOption = ({ isLoaded, blog }: CardBlogOptionProps) => {
   const title2 = blog?.title || '';
   const slug = slugify(title2, { strict: true });
   return (
-    <div className="w-full max-w-[425px]">
+    <article className="w-full max-w-[425px]">
       {isLoaded || !blog ? (
         <div className="w-full animate-pulse overflow-hidden rounded-lg border border-gray-300 bg-white shadow-lg">
           <div className="h-40 w-full bg-gray-300"></div>
@@ -36,7 +36,7 @@ const CardBlogOption = ({ isLoaded, blog }: CardBlogOptionProps) => {
             height={286}
             className="max-h-[181px] w-full rounded-xl object-cover"
           />
-          <div className="flex flex-col items-center gap-2">
+          <section className="flex flex-col items-center gap-2">
             <div>
               <p className="font-textFont text-xl font-bold">{blog.title}</p>
               <p className="font-roboto min mb-4 line-clamp-3 text-[16px] font-light leading-[24px] text-black dark:text-darkText">
@@ -48,10 +48,10 @@ const CardBlogOption = ({ isLoaded, blog }: CardBlogOptionProps) => {
             >
               Leer más
             </button>
-          </div>
+          </section>
         </Link>
       )}
-    </div>
+    </article>
   );
 };
 

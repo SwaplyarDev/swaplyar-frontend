@@ -97,10 +97,8 @@ function parseContinuousTextToMenu(text: string): MenuItem[] {
 function CardContent(data: BlogPostCardProps) {
   const { isDark } = useDarkTheme();
   const [isLoaded, setIsLoaded] = useState(false);
-  // Variable que guarda el progreso de la barra de scroll
   const [progress, setProgress] = useState(0);
   console.log(data);
-  // Variable que guarda el blog aleatorio
   const [randomBlog, setRandomBlog] = useState<BlogPostCardProps | null>(null);
   console.log(data);
 
@@ -108,7 +106,6 @@ function CardContent(data: BlogPostCardProps) {
   const sideBar = parseContinuousTextToMenu(data.side_bar);
 
   useEffect(() => {
-    // Apartado de la barra de progreso
     const handleScroll = () => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -125,11 +122,11 @@ function CardContent(data: BlogPostCardProps) {
     const fetchData = async () => {
       setIsLoaded(true);
       try {
-        const allBlogs = await fetchBlogs(1, ''); // Se obtienen todos los blogs
+        const allBlogs = await fetchBlogs(1, '');
         if (allBlogs && allBlogs.blogsPerPage.length > 0) {
-          const otherBlogs = allBlogs.blogsPerPage.filter((blog) => blog.blog_id !== data.blog_id); // Se obtiene todos los blogs menos el que esta renderizado
+          const otherBlogs = allBlogs.blogsPerPage.filter((blog) => blog.blog_id !== data.blog_id);
           if (otherBlogs.length > 0) {
-            const randomIndex = Math.floor(Math.random() * otherBlogs.length); // Se obtiene un index random
+            const randomIndex = Math.floor(Math.random() * otherBlogs.length);
             setRandomBlog(otherBlogs[randomIndex]);
           } else {
             setRandomBlog(null);
@@ -147,7 +144,6 @@ function CardContent(data: BlogPostCardProps) {
   return (
     <>
       <div className="sticky top-28 flex w-full flex-col items-center sm:top-36">
-        {/* Barra de progreso */}
         <div className="rounded-2xl border-2 border-buttonsLigth bg-custom-whiteD-100 p-2 dark:border-custom-whiteD-100">
           <ProgressBar value={progress} width="300px" />
         </div>
@@ -164,7 +160,6 @@ function CardContent(data: BlogPostCardProps) {
           </div>
         </div>
         <div className="mx-auto flex w-full flex-col justify-center gap-4 lg:flex-row">
-          {/* SideBar */}
           <article className="hidden h-[756px] w-[286px] flex-col gap-5 lg:ml-1 lg:flex">
             <h2 className="font-semibold">Contenido:</h2>
             <ul className="list-disc pl-5">
@@ -184,7 +179,6 @@ function CardContent(data: BlogPostCardProps) {
               ))}
             </ul>
           </article>
-          {/* Main Content */}
           <section className="flex w-full max-w-[357px] flex-col gap-5 md:max-w-[680px] lg:max-w-[897px]">
             <h1
               className={
@@ -258,8 +252,7 @@ function CardContent(data: BlogPostCardProps) {
             </article>
           </section>
         </div>
-        {/* Seccion blog random y compartir */}
-        <div className="mb-[70px] mt-20 flex flex-col-reverse items-center justify-between gap-10 lg:flex-row">
+        <section className="mb-[70px] mt-20 flex flex-col-reverse items-center justify-between gap-10 lg:flex-row">
           <CardBlogOption isLoaded={isLoaded} blog={randomBlog} />
           <div className="lg :ml-0 relative ml-[120px] hidden w-full max-w-[500px] sm:block">
             <Image
@@ -291,10 +284,9 @@ function CardContent(data: BlogPostCardProps) {
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </section>
-      {/* Banner */}
-      <div
+      <section
         className="mt-12 flex h-[272px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${gifImage})` }}
       >
@@ -308,7 +300,7 @@ function CardContent(data: BlogPostCardProps) {
         <div className="mt-4 inline-flex h-[46px] w-[300px] items-center justify-center gap-2.5 rounded-[50px] bg-darkText px-3.5 py-3">
           <div className="font-titleFont text-base font-semibold text-lightText">Suscribete</div>
         </div>
-      </div>
+      </section>
     </>
   );
 }

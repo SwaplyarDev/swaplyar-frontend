@@ -19,11 +19,11 @@ function removeAccent(text: string) {
 }
 
 const Blog: React.FC<BlogProps> = ({ currentPage }) => {
-  const { blogs, isLoading, totalPages } = useBlogStore(); // Obtengo los datos del store
+  const { blogs, isLoading, totalPages } = useBlogStore();
   console.log(blogs);
-  const searchParams = useSearchParams(); //Se obtienen los params de la url
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const searchQuery = searchParams.get('search') || ''; // Se obtiene el atributo search de la url
+  const searchQuery = searchParams.get('search') || '';
 
   const [searchTerm, setSearchTerm] = useState(searchQuery);
   // Se fltran los blogs segun lo ingresado en el buscador
@@ -68,7 +68,6 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
         />
 
         <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} />
-        {/* Tarjetas de blogs */}
         {!isLoading ? (
           blogs.length >= 1 ? (
             <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
@@ -92,7 +91,6 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
         )}
       </div>
       {<PaginationButtons route="blog" totalPages={totalPages} isLoading={isLoading} currentPage={currentPage} />}
-      {/* Banner */}
       <div
         className="mt-12 flex h-[272px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${gifImage})` }}

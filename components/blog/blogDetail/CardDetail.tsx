@@ -12,14 +12,12 @@ function CardDetail() {
   const { isDark } = useDarkTheme();
   const [isLoading, setIsLoading] = useState(true);
   const [blogData, setBlogData] = useState<BlogPostCardProps | null>(null);
-  // Obtengo el slug de la URL
   const slugParam = useParams().slug;
   const slug = Array.isArray(slugParam) ? slugParam[0] : slugParam;
   console.log(slug);
 
   useEffect(() => {
     if (!slug) return console.error('error al obtener slug');
-    // Obtencion de los datos del blog
     const fetchData = async () => {
       try {
         const data = await fetchBlogBySlug(slug);
@@ -34,7 +32,6 @@ function CardDetail() {
     fetchData();
   }, [slug]);
 
-  // Validacion de si la pagina esta cargando
   if (isLoading) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
@@ -42,7 +39,6 @@ function CardDetail() {
       </div>
     );
   }
-  // Validacion de si el blog existe
   if (!blogData) {
     return <p className="p-6 text-center text-gray-500">Blog no encontrado.</p>;
   }
