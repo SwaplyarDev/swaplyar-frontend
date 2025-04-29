@@ -20,7 +20,7 @@ interface BlogStore {
   totalPages: number;
   setIsLoading: (arg: boolean) => void;
   setBlogs: (blogs: Blog[]) => void;
-  setTotalPages: (totalPages: number) => void; // Función para actualizar el estado
+  setTotalPages: (totalPages: number) => void;
 }
 
 const useBlogStore = create<BlogStore>((set) => ({
@@ -29,7 +29,7 @@ const useBlogStore = create<BlogStore>((set) => ({
   totalPages: 0,
   setIsLoading: (isLoading) => set({ isLoading }),
   setBlogs: (blogs) => set({ blogs }),
-  setTotalPages: (totalPages) => set({ totalPages }), // Actualiza el estado
+  setTotalPages: (totalPages) => set({ totalPages }),
 }));
 
 export default useBlogStore;

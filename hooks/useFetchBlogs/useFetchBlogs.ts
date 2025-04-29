@@ -1,7 +1,8 @@
 import { useEffect, useCallback } from 'react';
-import useBlogStore from '@/store/useBlogStore';
+import useBlñogStore from '@/store/useBlogStore';
 import { fetchBlogs, filterBlogs } from '@/actions/blogs/blogs.actions';
 import { UseFetchBlogsProps } from '@/types/blogs/blog';
+import useBlogStore from '@/store/useBlogStore';
 
 const useFetchBlogs = ({ currentPage, searchTerm }: UseFetchBlogsProps) => {
   const { setBlogs, setIsLoading, setTotalPages } = useBlogStore();

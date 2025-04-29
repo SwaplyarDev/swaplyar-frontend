@@ -200,7 +200,6 @@ function CardContent(data: BlogPostCardProps) {
             <article className="flex flex-col gap-3">
               {Array.isArray(data.content_elements) &&
                 data.content_elements[0]?.content?.map((item: Content, index: number) => {
-                  /* Validaciones segun tipo de style name (normal ,subtitle, ol , ul) */
                   if (item.style?.style_name === 'normal') {
                     return <p key={index}>{item.text}</p>;
                   } else if (item.style?.style_name === 'subtitle') {
