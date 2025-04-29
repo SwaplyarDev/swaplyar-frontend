@@ -18,9 +18,10 @@ import { ActiveTab, NavIcons } from './NavIcons';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import PerfilIcon from '@/components/icons-internal/icons-desktop/perfil/PerfilIcon';
-import { signOut } from 'next-auth/react';
+
 import Iconos from './Iconos';
 const isAdmin = true;
+import { signOut, useSession } from 'next-auth/react';
 
 const NavbarInternal = () => {
   const { isDark } = useDarkTheme();
@@ -28,6 +29,8 @@ const NavbarInternal = () => {
   const [drawerMenu, setDrawerMenu] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [mostrarModalPerfil, setMostrarModalPerfil] = useState(false);
+  const { data: session, status } = useSession();
+  console.log('session', session?.user);
 
   const closeDrawerMenu = () => {
     setIsClosing(true);
