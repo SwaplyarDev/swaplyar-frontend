@@ -1,6 +1,7 @@
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useState } from 'react';
 import { motion, AnimatePresence, hover } from 'framer-motion';
+import AnimatedCerrarSesion from './AnimatedCerrarSesion';
 
 const CerrarSesion = () => {
   const [hoverState, setHoverState] = useState(false);
@@ -48,6 +49,8 @@ const CerrarSesion = () => {
           </motion.div>
         </motion.div>
       </motion.div>
+
+      <AnimatedCerrarSesion />
     </div>
   );
 };

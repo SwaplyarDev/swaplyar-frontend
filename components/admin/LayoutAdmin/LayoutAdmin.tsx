@@ -9,13 +9,13 @@ const LauyOutAdmin = () => {
   const pathMap: Record<string, string> = {
     '/admin/transactions': 'Operación de Transacciones',
     '/admin/users': 'Gestión de Usuarios',
-    '/admin/reports': 'Reportes',
+    // '/admin/reports': 'Reportes',
     '/admin/settings': 'Configuración',
   };
 
   const sectionName = pathMap[path] || 'Panel de Administración';
 
-  const userName = session?.user.name;
+  const userName = session?.user?.name;
 
   return (
     <section className="px-16 py-2 text-xl font-normal">

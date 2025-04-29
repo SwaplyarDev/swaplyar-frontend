@@ -112,11 +112,22 @@ const NavbarInternal = () => {
 
           <span className={`hidden flex-1 md:block ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></span>
         </div>
+      </div>
+    </header>
+  );
+};
 
-        {/* {COMPONENTIZAR!} */}
+export default NavbarInternal;
 
-        {/* Menu desplegable tablet */}
-        {/* {drawerMenu && (
+{
+  /* {COMPONENTIZAR!} */
+}
+
+{
+  /* Menu desplegable tablet */
+}
+{
+  /* {drawerMenu && (
             <Drawer
             open={drawerMenu}
             onClose={closeDrawerMenu}
@@ -204,10 +215,5 @@ const NavbarInternal = () => {
                           </div>
                           </Drawer.Items>
                           </Drawer>
-                          )} */}
-      </div>
-    </header>
-  );
-};
-
-export default NavbarInternal;
+                          )} */
+}

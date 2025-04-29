@@ -9,8 +9,10 @@ import Swal from 'sweetalert2';
 import { AlertCircle, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, Filter } from 'lucide-react';
 import type { TransactionArray, TransactionTypeAll } from '@/types/transactions/transactionsType';
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
-import TransactionModal from '@/components/TransactionModal/transactionModal';
+import TransactionModal from '@/components/admin/TransactionModal/transactionModal';
 import { useRouter } from 'next/navigation';
+import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
+import BackButton from '../../Sidebar/componentsSidebar/Navigation/BackButto';
 
 interface TransactionsTableProps {
   transactions: TransactionArray;
@@ -537,7 +539,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                   </div>
                 </th>
                 <th className="px-4 py-3 text-sm font-medium">
-                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('client_action')}>
+                  {/* <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('client_action')}>
                     Acción Cliente
                     {filters.orderby === 'client_action' ? (
                       filters.order === 'asc' ? (
@@ -548,7 +550,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                     ) : (
                       <ChevronDown size={16} className="ml-1" />
                     )}
-                  </div>
+                  </div> */}
                 </th>
               </tr>
             </thead>

@@ -19,20 +19,20 @@ const InfoCard = ({ setShow }: InfoCardProps) => {
 
       <div className="grid grid-cols-2 gap-y-2">
         <p className="">Nombre Legal</p>
-        <p className="text-right">{session?.decodedToken.fullName}</p>
+        <p className="text-right">{session?.user.fullName}</p>
 
         <p className="">Nacionalidad</p>
-        <p className="text-right">{session?.decodedToken.id}</p>
+        <p className="text-right">{session?.user.id}</p>
 
         <p className="">N° de Documento</p>
-        <p className="text-right">{session?.decodedToken.profile.identification}</p>
+        <p className="text-right">{session?.user.identification}</p>
 
         <p className="">Fecha de Nacimiento</p>
-        <p className="text-right">{session?.decodedToken.profile.birthDate}</p>
+        <p className="text-right">{session?.user.birthDate}</p>
 
         <p className="">Apodo</p>
         <div className="flex items-center justify-end gap-2 text-right">
-          {session?.decodedToken.fullName}
+          {session?.user.fullName}
           <Button onClick={() => setShow(true)} className="h-6 px-2 text-xs text-gray-400">
             Editar
           </Button>
