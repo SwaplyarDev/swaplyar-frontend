@@ -59,8 +59,9 @@ const NavbarInternal = () => {
 
           {/* Centro */}
 
-          <div className="mx-auto flex min-w-[340px] max-w-[1300px] items-center xs:min-w-[480px] sm:min-w-[640px] md:min-w-[768px] lg:min-w-[1024px] xl:min-w-[1280px]">
+          <div className="mx-auto flex min-w-[340px] max-w-[1300px] items-center xs:min-w-[480px] sm:min-w-[640px] sm-tablet2:min-w-[720px] md:min-w-[768px] lg:min-w-[1024px] xl:min-w-[1280px]">
             {/* Contenido principal (perfil, etc.) */}
+
             <div className="relative flex w-full flex-row justify-between">
               <div className={`mask-nav h-16 w-[128px] ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
               <Link
@@ -93,7 +94,7 @@ const NavbarInternal = () => {
               </div>
               <div
                 onClick={() => setDrawerMenu(true)}
-                className={`flex items-center ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} xl-desktop:hidden`}
+                className={`hidden items-center ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} pr-10 md-phone:flex xl-desktop:hidden`}
               >
                 <GiHamburgerMenu className="size-8 text-white dark:text-black" />
               </div>
@@ -193,7 +194,7 @@ const NavbarInternal = () => {
               <span className="hidden xl-desktop:block">
                 <Iconos />
               </span>
-              <button onClick={() => signOut()} className="h-16 self-end sm-tablet:hidden xl-desktop:block">
+              <button onClick={() => signOut()} className="h-16 self-end md-phone:hidden xl-desktop:block">
                 <CerrarSesion />
               </button>
             </div>

@@ -42,6 +42,7 @@ const config: Config = {
         sm: '640px',
         'sm-phone': '660px',
         'md-phone': '700px',
+        'sm-tablet2': '744px',
         'sm-tablet': '749px',
         md: '768px',
         'md-tablet': '850px',
