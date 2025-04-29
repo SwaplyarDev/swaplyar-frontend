@@ -4,7 +4,7 @@ import { fetchBlogs, filterBlogs } from '@/actions/blogs/blogs.actions';
 import { UseFetchBlogsProps } from '@/types/blogs/blog';
 
 const useFetchBlogs = ({ currentPage, searchTerm }: UseFetchBlogsProps) => {
-  const { setBlogs, blogs, setIsLoading, isLoading, setTotalPages } = useBlogStore();
+  const { setBlogs, setIsLoading, setTotalPages } = useBlogStore();
 
   useEffect(() => {
     console.log('currentPage:', currentPage, 'searchTerm:', searchTerm);

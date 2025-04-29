@@ -10,6 +10,8 @@ interface CardBlogOptionProps {
 }
 
 const CardBlogOption = ({ isLoaded, blog }: CardBlogOptionProps) => {
+  const title2 = blog?.title || '';
+  const slug = slugify(title2, { strict: true });
   return (
     <div className="w-full max-w-[425px]">
       {isLoaded || !blog ? (
@@ -24,7 +26,7 @@ const CardBlogOption = ({ isLoaded, blog }: CardBlogOptionProps) => {
         </div>
       ) : (
         <Link
-          href={`blogDetail?slug=${encodeURIComponent(blog.slug || '')}&id=${encodeURIComponent(blog.blog_id || '')}`}
+          href={`${slug}`}
           className="flex flex-col gap-4 rounded-2xl border-2 border-buttonsLigth bg-custom-whiteD-100 p-2 text-lightText dark:border-custom-whiteD-100"
         >
           <Image
