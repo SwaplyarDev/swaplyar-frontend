@@ -9,7 +9,7 @@ const CerrarSesion = () => {
 
   return (
     <div
-      className={`flex h-16 w-[200px] items-center justify-center sm-tablet:w-[300px] ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}
+      className={`flex h-16 w-[200px] items-center justify-center sm-tablet:w-[140px] xl-desktop:w-[300px] ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}
     >
       <motion.div
         onMouseOver={() => setHoverState(true)}
@@ -49,8 +49,6 @@ const CerrarSesion = () => {
           </motion.div>
         </motion.div>
       </motion.div>
-
-      <AnimatedCerrarSesion />
     </div>
   );
 };

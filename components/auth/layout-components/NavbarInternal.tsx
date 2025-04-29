@@ -80,28 +80,119 @@ const NavbarInternal = () => {
                   className="h-full w-full overflow-hidden rounded-full bg-white dark:bg-lightText"
                 />
               </Link>
-
               <div
                 className={`absolute ${isAdmin && mostrarModalPerfil ? 'flex flex-col items-start justify-around' : 'hidden'} ${isDark ? 'text-[#252526]' : 'text-white'} ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} left-4 top-28 h-20 whitespace-nowrap rounded-br-3xl rounded-tr-3xl border-2 border-[#EBE7E0] pl-2 pr-4 text-lg font-semibold`}
               >
                 <Link href={'/es/auth/perfil'}>Ver perfil</Link>
                 <Link href={'#'}>Ver admin</Link>
               </div>
-
               <div className={`flex-1 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} flex w-full items-center`}>
                 <p className="hidden whitespace-nowrap font-sans text-white dark:text-black sm-tablet:block">
                   Nombre Usuario
                 </p>
               </div>
-
-              <div onClick={() => setDrawerMenu(true)} className="flex items-center bg-amber-600">
+              <div
+                onClick={() => setDrawerMenu(true)}
+                className={`flex items-center ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} xl-desktop:hidden`}
+              >
                 <GiHamburgerMenu className="size-8 text-white dark:text-black" />
               </div>
-
+              {/* Menu desplegable tablet */}
+              {drawerMenu && (
+                <Drawer
+                  open={drawerMenu}
+                  onClose={closeDrawerMenu}
+                  position="right"
+                  className={`duration-400 mt-[4.5rem] w-40 transform overflow-visible bg-transparent p-0 transition-all ease-in-out dark:bg-transparent ${isClosing ? 'opacity-0' : 'opacity-100'}`}
+                >
+                  <Drawer.Items>
+                    <div
+                      className={`${isDark ? 'bg-[#EBE7E0]' : 'bg-nav-blue'} absolute mt-14 flex h-[500px] w-40 flex-col items-end justify-between overflow-visible rounded-l-3xl`}
+                    >
+                      <div className="max-w-56 pr-5 pt-7">
+                        <Link href="/es/auth/perfil" onClick={() => closeDrawerMenu()}>
+                          {isActive === 'perfil' ? (
+                            <IconsTablet
+                              classname={`${isActive === 'perfil' ? 'w-44' : ''} justify-between`}
+                              text="Perfil"
+                            >
+                              <PerfilIcon />
+                            </IconsTablet>
+                          ) : (
+                            <PerfilIcon classname="flex justify-end" />
+                          )}
+                        </Link>
+                        <Link href={'/es/auth/solicitud'} onClick={() => closeDrawerMenu()}>
+                          {isActive === ActiveTab.SOLICITUD ? (
+                            <IconsTablet
+                              classname={`${isActive === ActiveTab.SOLICITUD ? 'w-44' : ''} justify-between`}
+                              text="Solicitud"
+                            >
+                              <SolicitudIcon />
+                            </IconsTablet>
+                          ) : (
+                            <SolicitudIcon classname="flex justify-end" />
+                          )}
+                        </Link>
+                        <Link href={'/es/auth/historial'} onClick={() => closeDrawerMenu()}>
+                          {isActive === ActiveTab.HISTORIAL ? (
+                            <IconsTablet
+                              classname={`${isActive === ActiveTab.HISTORIAL ? 'w-44' : ''} justify-between`}
+                              text="Historial"
+                            >
+                              <HistorialIcon />
+                            </IconsTablet>
+                          ) : (
+                            <HistorialIcon classname="flex justify-end" />
+                          )}
+                        </Link>
+                        <Link href={'/es/auth/plus-rewards'} onClick={() => closeDrawerMenu()}>
+                          {isActive === ActiveTab.PLUSREWARDS ? (
+                            <IconsTablet
+                              classname={`${isActive === ActiveTab.PLUSREWARDS ? 'w-44' : ''} justify-between`}
+                              text="Plus Rewards"
+                            >
+                              <PlusRewardsIcon />
+                            </IconsTablet>
+                          ) : (
+                            <PlusRewardsIcon classname="flex justify-end" />
+                          )}
+                        </Link>
+                        <Link href={'/es/auth/cuentas'} onClick={() => closeDrawerMenu()}>
+                          {isActive === ActiveTab.CUENTASASOCIADAS ? (
+                            <IconsTablet
+                              classname={`${isActive === ActiveTab.CUENTASASOCIADAS ? 'w-44' : ''} justify-between`}
+                              text="Cuentas"
+                            >
+                              <CuentasAsociadasIcon />
+                            </IconsTablet>
+                          ) : (
+                            <CuentasAsociadasIcon classname="flex justify-end" />
+                          )}
+                        </Link>
+                        <Link href={'/es/auth/ayuda'} onClick={() => closeDrawerMenu()}>
+                          {isActive === ActiveTab.CENTRODEAYUDA ? (
+                            <IconsTablet
+                              classname={`${isActive === ActiveTab.CENTRODEAYUDA ? 'w-44' : ''} justify-between`}
+                              text="Ayuda"
+                            >
+                              <CentroDeAyudaIcon />
+                            </IconsTablet>
+                          ) : (
+                            <CentroDeAyudaIcon classname="flex justify-end" />
+                          )}
+                        </Link>
+                      </div>
+                      <div onClick={() => signOut()} className="mb-7 self-center hover:animate-pulse">
+                        <CerrarSesion />
+                      </div>
+                    </div>
+                  </Drawer.Items>
+                </Drawer>
+              )}{' '}
               <span className="hidden xl-desktop:block">
                 <Iconos />
               </span>
-
               <button onClick={() => signOut()} className="h-16 self-end sm-tablet:hidden xl-desktop:block">
                 <CerrarSesion />
               </button>
@@ -118,102 +209,3 @@ const NavbarInternal = () => {
 };
 
 export default NavbarInternal;
-
-{
-  /* {COMPONENTIZAR!} */
-}
-
-{
-  /* Menu desplegable tablet */
-}
-{
-  /* {drawerMenu && (
-            <Drawer
-            open={drawerMenu}
-            onClose={closeDrawerMenu}
-            position="right"
-            className={`duration-400 mt-[4.5rem] w-40 transform overflow-visible bg-transparent p-0 transition-all ease-in-out dark:bg-transparent ${isClosing ? 'opacity-0' : 'opacity-100'}`}
-            >
-            <Drawer.Items>
-            <div
-            className={`absolute mt-14 flex h-[500px] w-40 flex-col items-end justify-between overflow-visible rounded-l-3xl bg-nav-blue dark:bg-white`}
-            >
-            <div className="max-w-56 pr-5 pt-7">
-            <Link href="/es/auth/perfil" onClick={() => closeDrawerMenu()}>
-            {isActive === 'perfil' ? (
-              <IconsTablet classname={`${isActive === 'perfil' ? 'w-44' : ''} justify-between`} text="Perfil">
-              <PerfilIcon />
-              </IconsTablet>
-              ) : (
-                <PerfilIcon classname="flex justify-end" />
-                )}
-                </Link>
-                <Link href={'/es/auth/solicitud'} onClick={() => closeDrawerMenu()}>
-                {isActive === ActiveTab.SOLICITUD ? (
-                  <IconsTablet
-                  classname={`${isActive === ActiveTab.SOLICITUD ? 'w-44' : ''} justify-between`}
-                  text="Solicitud"
-                  >
-                  <SolicitudIcon />
-                  </IconsTablet>
-                  ) : (
-                    <SolicitudIcon classname="flex justify-end" />
-                    )}
-                    </Link>
-                    <Link href={'/es/auth/historial'} onClick={() => closeDrawerMenu()}>
-                      {isActive === ActiveTab.HISTORIAL ? (
-                        <IconsTablet
-                        classname={`${isActive === ActiveTab.HISTORIAL ? 'w-44' : ''} justify-between`}
-                        text="Historial"
-                        >
-                        <HistorialIcon />
-                        </IconsTablet>
-                        ) : (
-                          <HistorialIcon classname="flex justify-end" />
-                          )}
-                          </Link>
-                          <Link href={'/es/auth/plus-rewards'} onClick={() => closeDrawerMenu()}>
-                          {isActive === ActiveTab.PLUSREWARDS ? (
-                            <IconsTablet
-                          classname={`${isActive === ActiveTab.PLUSREWARDS ? 'w-44' : ''} justify-between`}
-                          text="Plus Rewards"
-                          >
-                          <PlusRewardsIcon />
-                          </IconsTablet>
-                          ) : (
-                            <PlusRewardsIcon classname="flex justify-end" />
-                            )}
-                            </Link>
-                            <Link href={'/es/auth/cuentas'} onClick={() => closeDrawerMenu()}>
-                            {isActive === ActiveTab.CUENTASASOCIADAS ? (
-                              <IconsTablet
-                              classname={`${isActive === ActiveTab.CUENTASASOCIADAS ? 'w-44' : ''} justify-between`}
-                              text="Cuentas"
-                              >
-                              <CuentasAsociadasIcon />
-                              </IconsTablet>
-                              ) : (
-                                <CuentasAsociadasIcon classname="flex justify-end" />
-                      )}
-                      </Link>
-                      <Link href={'/es/auth/ayuda'} onClick={() => closeDrawerMenu()}>
-                      {isActive === ActiveTab.CENTRODEAYUDA ? (
-                        <IconsTablet
-                        classname={`${isActive === ActiveTab.CENTRODEAYUDA ? 'w-44' : ''} justify-between`}
-                        text="Ayuda"
-                        >
-                        <CentroDeAyudaIcon />
-                        </IconsTablet>
-                        ) : (
-                          <CentroDeAyudaIcon classname="flex justify-end" />
-                          )}
-                          </Link>
-                          </div>
-                          <div onClick={() => signOut()} className=":hover:animate-pulse mb-7">
-                          <CerrarSesion />
-                          </div>
-                          </div>
-                          </Drawer.Items>
-                          </Drawer>
-                          )} */
-}
