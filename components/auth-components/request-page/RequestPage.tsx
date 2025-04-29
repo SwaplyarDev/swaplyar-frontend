@@ -1,7 +1,6 @@
 'use client';
 import TransactionCalculator from '@/components/Transaction/TransactionCalculator/TransactionCalculator';
 import PlusRewardSection from './PlusRewardsComponents.tsx/PlusRewardsInitial';
-import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 
 const RequestPage = () => {
   return (

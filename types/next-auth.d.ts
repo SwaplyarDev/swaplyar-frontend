@@ -9,7 +9,7 @@ import type { DefaultJWT } from 'next-auth/jwt';
 import type { UserRole } from './lib/auth/types';
 
 declare module 'next-auth' {
-    /**
+  /**
    * Aquí ampliamos el User que recibe NextAuth en los callbacks
    */
   interface User extends DecodedUser {
@@ -46,35 +46,33 @@ declare module 'next-auth' {
     profile: string;
   }
 
-interface Profile {
-  firstName: string;
-  middleName?: string | null;
-  lastName: string;
-  nickname?: string | null;
-  email: string;
-  identification?: string | null;
-  phone?: string | null;
-  birthDate?: string | null;
-  age?: number | null;
-  gender?: string | null;
-  profilePictureUrl: string;
-  locationId?: string | null;
-  lastActivity?: string | null;
-  social: Social[] | Record<string, any>;
-}
-
-
+  interface Profile {
+    firstName: string;
+    middleName?: string | null;
+    lastName: string;
+    nickname?: string | null;
+    email: string;
+    identification?: string | null;
+    phone?: string | null;
+    birthDate?: string | null;
+    age?: number | null;
+    gender?: string | null;
+    profilePictureUrl: string;
+    locationId?: string | null;
+    lastActivity?: string | null;
+    social: Social[] | Record<string, any>;
+  }
 }
 
 declare module 'next-auth/jwt' {
   /**
    * JWT interno usado por NextAuth
    */
-declare module 'next-auth/jwt' {
-  interface JWT extends DefaultJWT {
-    user?: import('next-auth').DecodedUser;
-    accessToken?: string;
-    refreshToken?: string;
+  declare module 'next-auth/jwt' {
+    interface JWT extends DefaultJWT {
+      user?: import('next-auth').DecodedUser;
+      accessToken?: string;
+      refreshToken?: string;
+    }
   }
-}
 }

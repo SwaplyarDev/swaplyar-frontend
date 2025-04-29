@@ -144,7 +144,7 @@ export const cancelRegret = async (regretId: string) => {
   }
 };
 
-export const getRegret = async (regretId: string) => {
+export const getRegretById = async (regretId: string) => {
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/regrets/${regretId}`, {
       method: 'GET',

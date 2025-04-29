@@ -1,7 +1,6 @@
 import NextAuth, { Session } from 'next-auth';
 import { authConfig } from './auth.config';
 
-
 export const {
   handlers: { GET, POST },
   auth,
@@ -30,7 +29,7 @@ export const {
       }
       return token;
     },
-        /**
+    /**
      * Permitimos el inicio de sesión sin bloqueos adicionales
      */
     async signIn() {
