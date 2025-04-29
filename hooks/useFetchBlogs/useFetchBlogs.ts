@@ -4,7 +4,7 @@ import { fetchBlogs, filterBlogs } from '@/actions/blogs/blogs.actions';
 import { UseFetchBlogsProps } from '@/types/blogs/blog';
 
 const useFetchBlogs = ({ currentPage, searchTerm }: UseFetchBlogsProps) => {
-  const { setBlogs, blogs, setIsLoading, isLoading } = useBlogStore();
+  const { setBlogs, blogs, setIsLoading, isLoading, setTotalPages } = useBlogStore();
 
   useEffect(() => {
     console.log('currentPage:', currentPage, 'searchTerm:', searchTerm);
@@ -15,6 +15,7 @@ const useFetchBlogs = ({ currentPage, searchTerm }: UseFetchBlogsProps) => {
           const data = await fetchBlogs(currentPage, searchTerm);
           if (data.blogsPerPage) {
             setBlogs(data.blogsPerPage);
+            setTotalPages(data.meta.totalPages);
           }
         } catch (error) {
           console.error('Error fetching blogs:', error);
@@ -31,6 +32,7 @@ const useFetchBlogs = ({ currentPage, searchTerm }: UseFetchBlogsProps) => {
           console.log(data);
           if (data.blogsPerPage) {
             setBlogs(data.blogsPerPage);
+            setTotalPages(data.meta.totalPages);
           }
         } catch (error) {
           console.error('Error fetching filtered blogs:', error);

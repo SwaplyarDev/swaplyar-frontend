@@ -19,11 +19,10 @@ function removeAccent(text: string) {
 }
 
 const Blog: React.FC<BlogProps> = ({ currentPage }) => {
-  const { blogs, isLoading, setIsLoading } = useBlogStore(); // Obtengo los datos del store
+  const { blogs, isLoading, setIsLoading, totalPages } = useBlogStore(); // Obtengo los datos del store
   console.log(blogs);
   const searchParams = useSearchParams(); //Se obtienen los params de la url
   const router = useRouter();
-
   const searchQuery = searchParams.get('search') || ''; // Se obtiene el atributo search de la url
 
   const [searchTerm, setSearchTerm] = useState(searchQuery);
@@ -92,7 +91,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
           <SkeletonLoader />
         )}
       </div>
-      {<PaginationButtons route="blog" totalPages={3} isLoading={isLoading} currentPage={currentPage} />}
+      {<PaginationButtons route="blog" totalPages={totalPages} isLoading={isLoading} currentPage={currentPage} />}
       {/* Banner */}
       <div
         className="mt-12 flex h-[272px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
