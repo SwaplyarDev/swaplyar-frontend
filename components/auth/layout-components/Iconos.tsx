@@ -38,7 +38,7 @@ export default function Iconos() {
   const [activoIndex, setActivoIndex] = useState<number | null>(null);
 
   return (
-    <div className="z-40 flex h-16 flex-row justify-center">
+    <div className="z-40 hidden h-16 flex-row justify-center self-end sm:flex">
       {iconos.map((el, index) => (
         <Icono
           key={index}
