@@ -45,7 +45,7 @@ const Profile = () => {
             <div
               className={`flex flex-col items-end px-2 xs:mb-4 ${isDark ? 'bg-[#4B4B4B]' : 'bg-nav-blue text-white'} xs:px-10`}
             >
-              <p className="">{session?.decodedToken.fullName}</p>
+              <p className="">{session?.user.fullName}</p>
               <p className="text-xs text-gray-400 underline">Registrado en 2019</p>
             </div>
             <div className="relative h-[110px] w-[110px] xs:h-32 xs:w-32">

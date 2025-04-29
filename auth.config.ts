@@ -24,15 +24,12 @@ export const authConfig: NextAuthConfig = {
           throw new InvalidCredentials('Faltan email o código');
         }
         const { email, verificationCode: code } = credentials;
-        
-        const res = await fetch(
-          `${BACKEND_URL}/v1/login/email/validate`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, code }),
-          }
-        );
+
+        const res = await fetch(`${BACKEND_URL}/v1/login/email/validate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, code }),
+        });
 
         if (!res.ok) {
           if (res.status === 401 || res.status === 403) {

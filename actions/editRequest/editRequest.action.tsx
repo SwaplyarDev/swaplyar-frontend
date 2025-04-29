@@ -108,7 +108,7 @@ export const resendCodeAction = async (transactionId: string) => {
 
 export const fetchTransactionData = async (transaccionId: string): Promise<TransactionData | null> => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions/${transaccionId}`);
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions/info/${transaccionId}`);
     if (!response.ok) {
       throw new Error('Error fetching transaction data');
     }
