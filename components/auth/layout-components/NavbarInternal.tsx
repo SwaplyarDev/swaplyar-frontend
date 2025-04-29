@@ -20,8 +20,10 @@ import { usePathname } from 'next/navigation';
 import PerfilIcon from '@/components/icons-internal/icons-desktop/perfil/PerfilIcon';
 
 import Iconos from './Iconos';
-const isAdmin = true;
 import { signOut, useSession } from 'next-auth/react';
+import NavSuperiorBarInternal from './NavSuperiorBarInternal';
+
+const isAdmin = true;
 
 const NavbarInternal = () => {
   const { isDark } = useDarkTheme();
@@ -42,53 +44,29 @@ const NavbarInternal = () => {
 
   const isActive = pathname.split('/')[3];
 
+  // className="mx-auto flex min-w-[340px] flex-col justify-center xs:min-w-[480px] sm:min-w-[640px] md:min-w-[768px] lg:min-w-[1024px] xl:min-w-[1280px]"
+
   return (
     <header className={`sticky top-0 z-40 h-[134px] w-full`}>
-      <div className="mx-auto flex min-w-[340px] flex-col justify-center xs:min-w-[480px] sm:min-w-[640px] md:min-w-[768px] lg:min-w-[1024px] xl:min-w-[1280px]">
-        {/* Parte de arriba blanca*/}
-        <div
-          className={`sticky top-0 z-40 mx-auto w-full max-w-[1300px] items-center ${isDark ? 'bg-[#252526]' : 'bg-[#FFFFFB]'} `}
-        >
-          <div className="flex h-16 items-center justify-between">
-            <Link href="/es/auth/solicitud">
-              <Image
-                src={isDark ? SwaplyArlogoMobileWhite : SwaplyArLogoComplete}
-                className="hidden max-h-14 w-full max-w-14 mini-phone:block mini-phone:max-w-[200px]"
-                alt="Cambiar saldo online"
-                width={200}
-                height={80}
-              />
-              <Image
-                src={isDark ? SwaplyArlogoWhite : SwaplyArLogoSolo}
-                className="max-h-14 w-full max-w-14 mini-phone:hidden"
-                alt="Cambiar saldo online"
-                width={200}
-                height={80}
-              />
-            </Link>
-
-            <Switch />
-          </div>
-        </div>
+      <div className="mx-auto flex flex-col justify-center">
+        <NavSuperiorBarInternal />
 
         {/* Parte de abajo azul */}
 
-        <nav className="sticky top-0 z-40 mx-auto flex h-16 justify-center">
-          {/* Lateral izquierdo */}
-
-          <div className={`h-full flex-1 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
+        {/* Lateral izquierdo */}
+        <div className="flex w-full">
+          <span className={`flex-1 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></span>
 
           {/* Centro */}
 
-          <div className="mx-auto flex max-w-[1300px] items-center justify-center">
+          <div className="mx-auto flex min-w-[340px] max-w-[1300px] items-center xs:min-w-[480px] sm:min-w-[640px] md:min-w-[768px] lg:min-w-[1024px] xl:min-w-[1280px]">
             {/* Contenido principal (perfil, etc.) */}
-            <div className="relative flex flex-row items-center">
+            <div className="relative flex w-full flex-row justify-between">
               <div className={`mask-nav h-16 w-[128px] ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
               <Link
                 href={'#'}
                 // href="/es/auth/perfil"
                 onClick={() => {
-                  console.log('click en perfil');
                   setMostrarModalPerfil(!mostrarModalPerfil);
                 }}
                 className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} absolute top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t xs:-left-1 xs:ml-5`}
@@ -106,41 +84,39 @@ const NavbarInternal = () => {
               <div
                 className={`absolute ${isAdmin && mostrarModalPerfil ? 'flex flex-col items-start justify-around' : 'hidden'} ${isDark ? 'text-[#252526]' : 'text-white'} ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} left-4 top-28 h-20 whitespace-nowrap rounded-br-3xl rounded-tr-3xl border-2 border-[#EBE7E0] pl-2 pr-4 text-lg font-semibold`}
               >
-                <Link href={'#'}>Opcion 1</Link>
-                <Link href={'#'}>Opcion 2</Link>
+                <Link href={'/es/auth/perfil'}>Ver perfil</Link>
+                <Link href={'#'}>Ver admin</Link>
               </div>
 
-              <div className={`flex ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} h-full items-center`}>
-                <p className="whitespace-nowrap font-sans text-white dark:text-black">Nombre Usuario</p>
+              <div className={`flex-1 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} flex w-full items-center`}>
+                <p className="hidden whitespace-nowrap font-sans text-white dark:text-black sm-tablet:block">
+                  Nombre Usuario
+                </p>
               </div>
 
-              <div className="flex flex-row self-end">
+              <div onClick={() => setDrawerMenu(true)} className="flex items-center bg-amber-600">
+                <GiHamburgerMenu className="size-8 text-white dark:text-black" />
+              </div>
+
+              <span className="hidden xl-desktop:block">
                 <Iconos />
-                <button onClick={() => signOut()} className="block h-16 self-end">
-                  <CerrarSesion />
-                </button>
-              </div>
+              </span>
+
+              <button onClick={() => signOut()} className="h-16 self-end sm-tablet:hidden xl-desktop:block">
+                <CerrarSesion />
+              </button>
             </div>
           </div>
 
           {/* Lateral derecho */}
 
-          <div className={`"h-full w-full ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
+          <span className={`hidden flex-1 md:block ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></span>
+        </div>
 
-          {/* <div className="absolute ml-[900px] hidden lg:mr-10 lg:flex lg:max-w-[460px]">
-            <NavIcons />
-            </div> */}
-          {/* <div onClick={() => setDrawerMenu(true)} className="hidden xs:block xs:pr-10 md:pr-0 lg:hidden">
-            <GiHamburgerMenu className="size-8 text-white dark:text-black" />
-            </div>
-            <button onClick={() => signOut()} className="absolute ml-[1400px] self-center xs:hidden lg:block">
-            <CerrarSesion />
-            </button> */}
+        {/* {COMPONENTIZAR!} */}
 
-          {/* {COMPONENTIZAR!} */}
-
-          {/* Menu desplegable tablet */}
-          {/* {drawerMenu && (
+        {/* Menu desplegable tablet */}
+        {/* {drawerMenu && (
             <Drawer
             open={drawerMenu}
             onClose={closeDrawerMenu}
@@ -229,7 +205,6 @@ const NavbarInternal = () => {
                           </Drawer.Items>
                           </Drawer>
                           )} */}
-        </nav>
       </div>
     </header>
   );

@@ -7,7 +7,9 @@ const CerrarSesion = () => {
   const { isDark } = useDarkTheme();
 
   return (
-    <div className={`flex h-16 w-[300px] items-center justify-center ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}>
+    <div
+      className={`flex h-16 w-[200px] items-center justify-center sm-tablet:w-[300px] ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}
+    >
       <motion.div
         onMouseOver={() => setHoverState(true)}
         onMouseLeave={() => setHoverState(false)}
