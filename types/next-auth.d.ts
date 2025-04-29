@@ -22,6 +22,7 @@ declare module 'next-auth' {
     profile: Profile;
     token: string;
     social: Social[];
+    userVerification: string;
   }
 
   interface Profile {

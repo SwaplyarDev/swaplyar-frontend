@@ -19,9 +19,9 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const [statusCard, setStatusCard] = useState('');
 
   const [stateSession, setStateSession] = useState('no aprobado');
+  const SessionState = session?.decodedToken.userVerification;
 
   useEffect(() => {
-    console.log('session: ', session);
     if (session) {
       const fetchRewards = async () => {
         try {
@@ -38,26 +38,30 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   }, [session]);
 
   useEffect(() => {
-    const fetchRewards = async () => {
-      try {
-        const data = await getCardStatus(session?.decodedToken.token || '');
+    if (session) {
+      const fetchRewards = async () => {
+        try {
+          const data = await getCardStatus(session?.decodedToken.token || '');
+          console.log(data);
+          setStatusCard(data.user_validation);
+        } catch (error) {
+          console.error('Error obteniendo plusRewards:', error);
+        }
+      };
 
-        setStatusCard(data.user_validation);
-      } catch (error) {
-        console.error('Error obteniendo plusRewards:', error);
-      }
-    };
-
-    fetchRewards();
+      fetchRewards();
+    }
   }, [session]);
   return (
     <>
       {/*<AnimatedBlurredCircles tope="z-10 absolute" />*/}
       {!session && <p>cargando...</p>}
-      <p>{statusCard}</p>
-      <AplicationStateContainer stateSession={stateSession} />
+
+      <AplicationStateContainer verifiedStatus={verifiedStatus} />
       {showModal && <CardPlusModal setShowModal={setShowModal} />}
-      {showVerify && <ModalVerify showVerify={showVerify} setShowVerify={setShowVerify} />}
+      {showVerify && (
+        <ModalVerify showVerify={showVerify} setShowVerify={setShowVerify} verifiedStatus={verifiedStatus} />
+      )}
       <div className="relative z-10 mx-auto flex max-w-[500px] flex-col px-5 text-[40px] lg:max-w-[1200px] lg:px-[100px]">
         <h1 className="mb-10 mt-10 font-textFont font-medium sm:mt-20">SwaplyAr Plus Rewards</h1>
 
@@ -92,6 +96,7 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
           <div className="relative my-auto items-center">
             <CardPlusRewards
               verifiedStatus={verifiedStatus}
+              SessionState={SessionState}
               showVerify={showVerify}
               setShowVerify={setShowVerify}
               memberCode="2448XPAR"

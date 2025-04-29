@@ -5,7 +5,7 @@ import type { ModalProps } from '@/components/cardsPlusRewardsIntern/modals/Moda
 import { ButtonCustom } from '@/components/ui/ButtonCustom/ButtonCustom';
 import AlertIcon from '@/components/ui/AlertIcon/AlertIcon';
 
-const CardYellow: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
+const CardYellow: React.FC<ModalProps> = ({ showVerify, setShowVerify, verifiedStatus }) => {
   return (
     <>
       <div className="relative z-10 mx-auto flex h-[240px] max-h-[288px] max-w-[358px] overflow-hidden rounded-[16px] bg-opacity-60 font-textFont text-[#000] xs:h-[230px] sm:h-[288px] sm:w-[490px] sm:max-w-[490px]">
@@ -35,15 +35,25 @@ const CardYellow: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
         <div className="align-center absolute right-0 top-[130px] flex w-full justify-center gap-[7px] text-[#CE1818] xs:top-[115px] sm:top-[172.5px]">
           <AlertIcon />
           <div className="flex flex-col justify-center">
-            <p className="w-full text-[13px] font-semibold sm:text-[18px]"> TU CUENTA NO ESTA VERIFICADA</p>
-            <p className="text-[9px] sm:text-[12px]"> Necesitas cargar la documenta para la verificación</p>
+            {verifiedStatus === 'pendiente' ? (
+              <div>
+                <p className="w-full text-[13px] font-semibold sm:text-[18px]"> EN PROCESO DE REVISION</p>
+                <p>Estamos revisando la información enviada</p>
+              </div>
+            ) : (
+              <div>
+                <p className="w-full text-[13px] font-semibold sm:text-[18px]"> TU CUENTA NO ESTA VERIFICADA</p>
+                <p className="text-[9px] sm:text-[12px]"> Necesitas cargar la documenta para la verificación</p>
+              </div>
+            )}
           </div>
         </div>
         <div className="absolute bottom-3 left-1/2 box-border -translate-x-1/2 rounded-[40px] border-[2px] border-transparent p-[2px] hover:border-2 hover:border-buttonsLigth">
           <ButtonCustom
             setShowVerify={setShowVerify}
-            className="rounded-3sm flex h-[40px] w-[177px] justify-center rounded-[40px] bg-buttonsLigth font-titleFont font-semibold text-white"
+            className="rounded-3sm flex h-[40px] w-[177px] justify-center rounded-[40px] font-titleFont font-semibold text-white"
             title="Verificar ahora"
+            verifiedStatus={verifiedStatus}
           />
         </div>
       </div>

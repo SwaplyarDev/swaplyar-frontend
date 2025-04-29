@@ -24,6 +24,7 @@ const CardVerify = ({
         <p className="text-[8px] text-[#012A8E]">arrastra el archivo aquí o</p>
         <div className="box-border rounded-[40px] border-[2px] border-transparent p-[2px] hover:border-2 hover:border-buttonsLigth">
           <ButtonCustom
+            verifiedStatus=""
             className="rounded-3sm flex h-[34px] w-[124px] cursor-pointer justify-center rounded-[40px] bg-buttonsLigth font-titleFont font-semibold text-white"
             title="Subir"
             onClick={() => document.getElementById(`${text}-file-input`)?.click()} // Abrir el input al hacer click en el botón

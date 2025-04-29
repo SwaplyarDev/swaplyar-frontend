@@ -10,6 +10,7 @@ import { plusRewardsActions } from '@/actions/plusRewards/plusRewards.actions';
 export type ModalProps = {
   showVerify: boolean;
   setShowVerify: React.Dispatch<React.SetStateAction<boolean>>;
+  verifiedStatus: string;
 };
 
 const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
