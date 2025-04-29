@@ -13,6 +13,11 @@ interface BlogProps {
   currentPage: number;
 }
 
+// Funcion para remover la tilde de una palabra
+function removeAccent(text: string) {
+  return text.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '');
+}
+
 const Blog: React.FC<BlogProps> = ({ currentPage }) => {
   const { blogs, isLoading, setIsLoading } = useBlogStore(); // Obtengo los datos del store
   console.log(blogs);
@@ -25,7 +30,9 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
   // Se fltran los blogs segun lo ingresado en el buscador
   const filteredBlogs = useMemo(() => {
     if (searchTerm === '') return blogs;
-    return blogs.filter((post) => post.title && post.title.toLowerCase().includes(searchTerm.toLowerCase()));
+    return blogs.filter(
+      (post) => removeAccent(post.title) && removeAccent(post.title.toLowerCase()).includes(searchTerm.toLowerCase()),
+    );
   }, [blogs, searchTerm]);
   // Funcion para enviar la informacion del evento por params
   const handleSearchChange = useCallback(
@@ -66,7 +73,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
         {!isLoading ? (
           blogs.length >= 1 ? (
             <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
-              {filteredBlogs.map((post) => (
+              {blogs.map((post) => (
                 <BlogPostCard
                   key={post.blog_id}
                   blog_id={post.blog_id}

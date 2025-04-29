@@ -27,7 +27,7 @@ const useFetchBlogs = ({ currentPage, searchTerm }: UseFetchBlogsProps) => {
       const fetchAndSetFilteredBlogs = async () => {
         setIsLoading(true);
         try {
-          const data = await filterBlogs(searchTerm);
+          const data = await filterBlogs(searchTerm, currentPage);
           console.log(data);
           if (data.blogsPerPage) {
             setBlogs(data.blogsPerPage);

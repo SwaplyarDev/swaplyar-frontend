@@ -23,14 +23,17 @@ export const fetchBlogs = async (page: number, searchTerm: string): Promise<Blog
   }
 };
 
-export const filterBlogs = async (searchTerm: string): Promise<BlogResponse> => {
+export const filterBlogs = async (searchTerm: string, page: number): Promise<BlogResponse> => {
   console.log('search', encodeURIComponent(searchTerm));
 
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/blogs/${encodeURIComponent(searchTerm)}`, {
-      method: 'GET',
-      cache: 'no-store',
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/blogs?page=${encodeURIComponent(page)}&keyword=${encodeURIComponent(searchTerm)}`,
+      {
+        method: 'GET',
+        cache: 'no-store',
+      },
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to fetch blogs: ${response.status} ${response.statusText}`);
