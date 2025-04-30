@@ -98,17 +98,8 @@ const TransferClient = () => {
       });
 
       console.log(response);
-
-      if (!response) {
-        setShowConfirmDialog(false);
-        setIsLoading(false);
-
-        //   toast({
-        //    title: "Solicitud rechazada",
-        //    description: "La solicitud ha sido rechazada exitosamente",
-        //    variant: "default",
-        //  })
-      }
+      setShowConfirmDialog(false);
+      setIsLoading(false);
     } catch (error) {
       console.log('Error al rechazar la transacción:', error);
       setIsLoading(false);
@@ -128,7 +119,9 @@ const TransferClient = () => {
 
       const response = await updateTransactionStatus('approved', form.transfer_id, { descripcion: 'aproved' });
       console.log(response);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       throw new Error(`❌ Error en la respuesta del servicio`);
     }
   };
@@ -317,22 +310,34 @@ const TransferClient = () => {
 
         {/* Confirmation Dialog */}
         <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
-          <DialogContent>
+          <DialogContent className="border border-gray-200 bg-white transition-all duration-300 dark:border-gray-700 dark:bg-gray-800/95">
             <DialogHeader>
-              <DialogTitle>Confirmar rechazo</DialogTitle>
-              <DialogDescription>¿Estás seguro que deseas rechazar esta solicitud?</DialogDescription>
+              <DialogTitle className="text-gray-900 dark:text-gray-100">Confirmar rechazo</DialogTitle>
+              <DialogDescription className="text-gray-700 dark:text-gray-300">
+                ¿Estás seguro que deseas rechazar esta solicitud?
+              </DialogDescription>
             </DialogHeader>
 
-            <div className="w-full rounded-lg bg-gray-100 p-3 text-left">
-              <p className="mb-1 font-medium text-gray-800">Motivo:</p>
-              <p className="text-gray-700">{rejectionReason}</p>
+            <div className="w-full rounded-lg bg-gray-100 p-3 text-left dark:bg-gray-700/30">
+              <p className="mb-1 font-medium text-gray-800 dark:text-gray-200">Motivo:</p>
+              <p className="text-gray-700 dark:text-gray-300">{rejectionReason}</p>
             </div>
 
             <DialogFooter className="flex gap-2 sm:justify-end">
-              <Button variant="outline" onClick={() => setShowConfirmDialog(false)} disabled={isLoading}>
+              <Button
+                variant="outline"
+                onClick={() => setShowConfirmDialog(false)}
+                disabled={isLoading}
+                className="dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700/50"
+              >
                 Cancelar
               </Button>
-              <Button variant="destructive" onClick={() => confirmRejection()} disabled={isLoading}>
+              <Button
+                variant="destructive"
+                onClick={() => confirmRejection()}
+                disabled={isLoading}
+                className="dark:bg-red-700 dark:hover:bg-red-800"
+              >
                 {isLoading ? 'Procesando...' : 'Confirmar rechazo'}
               </Button>
             </DialogFooter>

@@ -77,6 +77,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
     setShowSuccessDiscrepancyDialog(true);
     try {
       const response = await TransactionService('discrepancy', transaction.transaction_id, discrepancyReason);
+      console.log(response);
     } catch (error) {
       console.log('Error al enviar el motivo de discrepancia:', error);
     }
@@ -280,26 +281,34 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
 
       {/* Confirm Discrepancy Dialog */}
       <Dialog open={showConfirmDiscrepancyDialog} onOpenChange={setShowConfirmDiscrepancyDialog}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="border border-gray-300 bg-white text-gray-800 transition-all duration-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-gray-800">Confirmar discrepancia</DialogTitle>
+            <DialogTitle className="text-gray-800 dark:text-gray-100">Confirmar discrepancia</DialogTitle>
           </DialogHeader>
+
           <div className="flex flex-col items-center">
-            <p className="mb-2 text-gray-700">¿Estás seguro que quieres enviar este motivo de discrepancia?</p>
-            <div className="w-full max-w-xs rounded-lg bg-gray-100 p-3 text-left">
-              <p className="mb-1 font-medium text-gray-800">Motivo:</p>
-              <p className="text-gray-700">{discrepancyReason}</p>
+            <p className="mb-2 text-gray-700 dark:text-gray-300">
+              ¿Estás seguro que quieres enviar este motivo de discrepancia?
+            </p>
+            <div className="w-full max-w-xs rounded-lg bg-gray-100 p-3 text-left dark:bg-gray-700/30">
+              <p className="mb-1 font-medium text-gray-800 dark:text-gray-200">Motivo:</p>
+              <p className="text-gray-700 dark:text-gray-300">{discrepancyReason}</p>
             </div>
           </div>
+
           <DialogFooter className="gap-2 sm:justify-center">
             <Button
               variant="default"
               onClick={confirmDiscrepancy}
-              className="bg-[rgb(1,42,142)] text-white hover:bg-[rgb(1,32,112)]"
+              className="bg-[rgb(1,42,142)] text-white hover:bg-[rgb(1,32,112)] dark:bg-blue-900 dark:hover:bg-blue-950"
             >
               Confirmar
             </Button>
-            <Button variant="outline" onClick={() => setShowConfirmDiscrepancyDialog(false)} className="text-gray-600">
+            <Button
+              variant="outline"
+              onClick={() => setShowConfirmDiscrepancyDialog(false)}
+              className="text-gray-600 dark:border-gray-500 dark:text-gray-300"
+            >
               Cancelar
             </Button>
           </DialogFooter>
@@ -308,14 +317,14 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
 
       {/* Success Discrepancy Dialog */}
       <Dialog open={showSuccessDiscrepancyDialog} onOpenChange={setShowSuccessDiscrepancyDialog}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="border border-gray-300 bg-white text-gray-800 transition-all duration-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-gray-800">
-              <CheckCircle className="h-5 w-5 text-green-500" />
+            <DialogTitle className="flex items-center gap-2 text-gray-800 dark:text-gray-100">
+              <CheckCircle className="h-5 w-5 text-green-500 dark:text-green-400" />
               Discrepancia registrada
             </DialogTitle>
           </DialogHeader>
-          <DialogDescription className="text-gray-700">
+          <DialogDescription className="text-gray-700 dark:text-gray-300">
             El motivo de la discrepancia ha sido registrado exitosamente
           </DialogDescription>
         </DialogContent>
@@ -323,26 +332,34 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
 
       {/* Confirm Resolution Dialog */}
       <Dialog open={showConfirmResolutionDialog} onOpenChange={setShowConfirmResolutionDialog}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="border border-gray-300 bg-white text-gray-800 transition-all duration-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-gray-800">Confirmar resolución</DialogTitle>
+            <DialogTitle className="text-gray-800 dark:text-gray-100">Confirmar resolución</DialogTitle>
           </DialogHeader>
+
           <div className="flex flex-col items-center">
-            <p className="mb-2 text-gray-700">¿Estás seguro que quieres enviar este motivo de resolución?</p>
-            <div className="w-full max-w-xs rounded-lg bg-gray-100 p-3 text-left">
-              <p className="mb-1 font-medium text-gray-800">Motivo:</p>
-              <p className="text-gray-700">{resolutionReason}</p>
+            <p className="mb-2 text-gray-700 dark:text-gray-300">
+              ¿Estás seguro que quieres enviar este motivo de resolución?
+            </p>
+            <div className="w-full max-w-xs rounded-lg bg-gray-100 p-3 text-left dark:bg-gray-700/30">
+              <p className="mb-1 font-medium text-gray-800 dark:text-gray-200">Motivo:</p>
+              <p className="text-gray-700 dark:text-gray-300">{resolutionReason}</p>
             </div>
           </div>
+
           <DialogFooter className="gap-2 sm:justify-center">
             <Button
               variant="default"
               onClick={confirmResolution}
-              className="bg-[rgb(1,42,142)] text-white hover:bg-[rgb(1,32,112)]"
+              className="bg-[rgb(1,42,142)] text-white hover:bg-[rgb(1,32,112)] dark:bg-blue-900 dark:hover:bg-blue-950"
             >
               Confirmar
             </Button>
-            <Button variant="outline" onClick={() => setShowConfirmResolutionDialog(false)} className="text-gray-600">
+            <Button
+              variant="outline"
+              onClick={() => setShowConfirmResolutionDialog(false)}
+              className="text-gray-600 dark:border-gray-500 dark:text-gray-300"
+            >
               Cancelar
             </Button>
           </DialogFooter>
@@ -351,14 +368,14 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
 
       {/* Success Resolution Dialog */}
       <Dialog open={showSuccessResolutionDialog} onOpenChange={setShowSuccessResolutionDialog}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="border border-gray-300 bg-white text-gray-800 transition-all duration-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-gray-800">
-              <CheckCircle className="h-5 w-5 text-green-500" />
+            <DialogTitle className="flex items-center gap-2 text-gray-800 dark:text-gray-100">
+              <CheckCircle className="h-5 w-5 text-green-500 dark:text-green-400" />
               Resolución registrada
             </DialogTitle>
           </DialogHeader>
-          <DialogDescription className="text-gray-700">
+          <DialogDescription className="text-gray-700 dark:text-gray-300">
             El motivo de la resolución ha sido registrado exitosamente
           </DialogDescription>
         </DialogContent>

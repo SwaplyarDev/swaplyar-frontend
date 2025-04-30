@@ -18,12 +18,12 @@ export const TransactionService = async (
 
     const response = await updateTransactionStatus(status, transId, payload);
 
-    if (response.success) {
+    if (response.success === false) {
       console.error('❌ Error al actualizar el estado:', response.error);
       throw new Error(response.error);
     }
 
-    return { newStatus: 'success' };
+    return { newStatus: response.data };
   } catch (error) {
     console.error('❌ Error al actualizar el estado:', error);
     return null;

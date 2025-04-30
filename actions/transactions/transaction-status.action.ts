@@ -74,7 +74,7 @@ export async function updateTransactionStatus(status: string, transaction_id: st
       },
     );
 
-    console.log('response:' + response);
+    console.log('response: ' + response.status, response.ok);
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));

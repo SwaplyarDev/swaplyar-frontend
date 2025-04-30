@@ -85,11 +85,13 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
     Swal.fire({
       title: 'Confirmar rechazo',
       html: `
-        <div class="flex flex-col items-center">
-          <p class="mb-2 text-gray-700">¿Estás seguro que deseas rechazar esta solicitud?</p>
-          <div class="bg-gray-100 p-3 rounded-lg w-full max-w-xs text-left">
-            <p class="font-medium text-gray-800 mb-1">Motivo:</p>
-            <p class="text-gray-700">${rejectionReason}</p>
+        <div class="flex flex-col items-center text-sm">
+          <p class="mb-2 text-gray-700 dark:text-gray-300">
+            ¿Estás seguro que deseas rechazar esta solicitud?
+          </p>
+          <div class="bg-gray-100 dark:bg-gray-700/30 p-3 rounded-lg w-full max-w-xs text-left">
+            <p class="font-medium text-gray-800 dark:text-gray-200 mb-1">Motivo:</p>
+            <p class="text-gray-700 dark:text-gray-300">${rejectionReason}</p>
           </div>
         </div>
       `,
@@ -98,13 +100,17 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
       cancelButtonText: 'Cancelar',
       confirmButtonColor: '#CE1818',
       cancelButtonColor: '#64748b',
-      background: '#FFFFFF',
-      showClass: {
-        popup: 'animate__animated animate__fadeIn animate__faster',
+      background: window.matchMedia('(prefers-color-scheme: dark)').matches ? '#1f2937' : '#FFFFFF',
+      color: window.matchMedia('(prefers-color-scheme: dark)').matches ? '#E5E7EB' : '#374151',
+      customClass: {
+        popup: 'dark:bg-gray-800 dark:text-gray-100 transition-all duration-300',
+        confirmButton: 'dark:bg-red-700 dark:hover:bg-red-800',
+        cancelButton: 'dark:bg-slate-600 dark:hover:bg-slate-700',
       },
-      hideClass: {
-        popup: 'animate__animated animate__fadeOut animate__faster',
-      },
+      backdrop: true,
+      allowOutsideClick: true,
+      allowEscapeKey: true,
+      reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
         acceptReject();
