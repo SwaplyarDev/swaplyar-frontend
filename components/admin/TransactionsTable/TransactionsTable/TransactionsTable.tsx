@@ -37,6 +37,8 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
   const [activePopover, setActivePopover] = useState<string | null>(null);
   const popoverRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
+  console.log(transactions);
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -226,13 +228,27 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
     }).format(date);
   };
 
-  console.log();
-
   useEffect(() => {
     console.log('Current filters:', filters);
   }, [filters]);
 
   const router = useRouter();
+
+  //provisorio
+  const items = {
+    id: 'editar',
+    colorClass: 'bg-amber-800',
+    outlineClass: 'outline outline-1 outline-offset-2 outline-orange-500',
+    label: 'Editar',
+    description: 'El cliente solicitó editar la solicitud',
+  };
+  // {
+  //   id: 'cancelar',
+  //   colorClass: 'bg-red-600',
+  //   outlineClass: 'outline outline-1 outline-offset-2 outline-red-600',
+  //   label: 'Cancelar',
+  //   description: 'El cliente solicitó la cancelación y el reembolso',
+  // },
 
   return (
     <div className="w-full">
@@ -539,8 +555,8 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                   </div>
                 </th>
                 <th className="px-4 py-3 text-sm font-medium">
-                  {/* <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('client_action')}>
-                    Acción Cliente
+                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('client_action')}>
+                    Status
                     {filters.orderby === 'client_action' ? (
                       filters.order === 'asc' ? (
                         <ChevronUp size={16} className="ml-1" />
@@ -550,7 +566,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                     ) : (
                       <ChevronDown size={16} className="ml-1" />
                     )}
-                  </div> */}
+                  </div>
                 </th>
               </tr>
             </thead>
@@ -592,6 +608,21 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                         <span className="sr-only">Ver detalles</span>
                       </button>
                     </td> */}
+                    <td className="px-4 py-3 text-sm">
+                      <div
+                        key={items.id}
+                        className={`w-full cursor-pointer p-4 transition-all duration-300 ${
+                          true
+                            ? `${items.colorClass} ${items.colorClass.replace('bg-', 'text-')} bg-opacity-10 shadow-sm`
+                            : 'hover:bg-gray-50 dark:hover:bg-gray-800/80'
+                        } `}
+                      >
+                        <div className="mb-1 flex items-center gap-2">
+                          <span className={`h-3 w-3 rounded-full ${items.colorClass} ${items.outlineClass}`}></span>
+                          <span className={`font-medium`}>{items.label}</span>
+                        </div>
+                      </div>
+                    </td>
                   </tr>
                 ))
               ) : (
