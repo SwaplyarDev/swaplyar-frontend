@@ -35,7 +35,7 @@ export default function NavSuperiorBarInternal() {
             </Link>
 
             <div
-              className={`flex-1 ${isDark ? 'bg-[#252526]' : 'bg-[#FFFFFB]'} hidden w-full items-center justify-center xl-desktop:flex`}
+              className={`flex-1 ${isDark ? 'bg-[#252526]' : 'bg-[#FFFFFB]'} hidden w-full items-center justify-center sm-tablet2:flex`}
             >
               <p className="whitespace-nowrap font-sans text-[#252526] dark:text-[#FFFFFB]">
                 Mensaje que se puede indicar al usuario

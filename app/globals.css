@@ -698,3 +698,12 @@ div:where(.swal2-container).swal2-noanimation {
   transform: scaleX(1.015);
   transform-origin: center;
 }
+
+.mask-footer-icon {
+  clip-path: path(
+    'M7 6.14351C3.5 -0.513325 0 0.0398458 0 0.0398458V63.8936C30.5473 64.0353 47.4126 64.0356 77 63.8936V0.0418504C77 0.0418504 73.5 -0.899199 70 6.14351C66.5 13.1862 64.9693 16.9404 62.5 20.227C56 28.8784 49 31.5504 39 31.5504C29 31.5504 20 27.0777 15 20.227C10 13.3764 10.5 12.8004 7 6.14351Z'
+  );
+
+  transform: scaleX(1.015);
+  transform-origin: center;
+}

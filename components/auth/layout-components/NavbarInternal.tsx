@@ -55,22 +55,22 @@ const NavbarInternal = () => {
 
         {/* Lateral izquierdo */}
         <div className="flex w-full">
-          <span className={`flex-1 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></span>
+          <span className={`flex-1 grow ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></span>
 
           {/* Centro */}
 
-          <div className="mx-auto flex min-w-[340px] max-w-[1300px] items-center xs:min-w-[480px] sm:min-w-[640px] sm-tablet2:min-w-[720px] md:min-w-[768px] lg:min-w-[1024px] xl:min-w-[1280px]">
+          <div className="mx-auto flex max-w-[1300px] items-center xs:min-w-[480px] sm:min-w-[640px] sm-tablet2:min-w-[720px] md:min-w-[768px] lg:min-w-[1024px] xl:min-w-[1280px]">
             {/* Contenido principal (perfil, etc.) */}
 
             <div className="relative flex w-full flex-row justify-between">
-              <div className={`mask-nav h-16 w-[128px] ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
+              <div className={`mask-nav h-16 w-[128px] self-start ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
               <Link
                 href={'#'}
                 // href="/es/auth/perfil"
                 onClick={() => {
                   setMostrarModalPerfil(!mostrarModalPerfil);
                 }}
-                className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} absolute top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t xs:-left-1 xs:ml-5`}
+                className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} absolute left-4 top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] hover:bg-gradient-to-t xs:-left-1 sm-tablet2:p-[4px]`}
               >
                 {/* Imagen de perfil */}
                 <Image
@@ -88,7 +88,7 @@ const NavbarInternal = () => {
                 <Link href={'#'}>Ver admin</Link>
               </div>
               <div className={`flex-1 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} flex w-full items-center`}>
-                <p className="hidden whitespace-nowrap font-sans text-white dark:text-black sm-tablet:block">
+                <p className="hidden whitespace-nowrap font-sans text-white dark:text-black sm-tablet2:block">
                   Nombre Usuario
                 </p>
               </div>
@@ -202,7 +202,7 @@ const NavbarInternal = () => {
 
           {/* Lateral derecho */}
 
-          <span className={`hidden flex-1 md:block ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></span>
+          <span className={`flex-1 grow sm-tablet2:hidden md:block ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></span>
         </div>
       </div>
     </header>

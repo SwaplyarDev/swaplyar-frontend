@@ -7,16 +7,13 @@ import Image from 'next/image';
 import { SwaplyArLogoLightTheme, SwaplyArLogoDarkTheme } from '@/utils/assets/imgDatabaseCloudinary';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { FooterLink } from '@/components/footer/FooterLink/FooterLink';
+import IconosFooter from './IconosFooter';
 
 export const FooterInternal = () => {
   const { isDark } = useDarkTheme();
 
   return (
     <footer className="relative">
-      {/* Footer Mobile */}
-      <div className={`fixed bottom-0 flex h-16 w-full justify-center bg-nav-blue pb-4 dark:bg-white xs:hidden`}>
-        <NavIcons isFooter={true} />
-      </div>
       {/* Footer Desktop */}
       <div className="bottom-0 flex w-full flex-col items-center justify-center gap-4 pb-6 xs:flex">
         <FooterLink label="Términos y Condiciones" href="/es/auth/terminos-y-condiciones/tyc-swaplyar" />
@@ -31,6 +28,12 @@ export const FooterInternal = () => {
             />
           </Link>
         </div>
+      </div>
+
+      {/* Footer Mobile */}
+      <div className={`sm-tablet2::hidden fixed bottom-0 mx-auto flex h-16 w-full justify-center`}>
+        {/* <NavIcons isFooter={true} /> */}
+        <IconosFooter />
       </div>
     </footer>
   );

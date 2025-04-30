@@ -41,7 +41,7 @@ export const NavIcons = ({ isFooter }: NavIconsProps) => {
           </Link>
         </div>
       </div>
-      {/* <div
+      <div
         className={
           isFooter && isActive === ActiveTab.HISTORIAL
             ? `${isDark ? 'montanaDark-footer' : 'montana-footer'} relative bottom-0 w-full`
@@ -59,8 +59,8 @@ export const NavIcons = ({ isFooter }: NavIconsProps) => {
             )}
           </Link>
         </div>
-      </div> */}
-      {/* <div
+      </div>
+      <div
         className={
           isFooter && isActive === ActiveTab.PLUSREWARDS
             ? `${isDark ? 'montanaDark-footer' : 'montana-footer'} relative bottom-0 w-full`
@@ -78,8 +78,8 @@ export const NavIcons = ({ isFooter }: NavIconsProps) => {
             )}
           </Link>
         </div>
-      </div> */}
-      {/* <div
+      </div>
+      <div
         className={
           isFooter && isActive === ActiveTab.CUENTASASOCIADAS
             ? `${isDark ? 'montanaDark-footer' : 'montana-footer'} relative bottom-0 w-full`
@@ -97,8 +97,8 @@ export const NavIcons = ({ isFooter }: NavIconsProps) => {
             )}
           </Link>
         </div>
-      </div> */}
-      {/* <div
+      </div>
+      <div
         className={
           isFooter && isActive === ActiveTab.CENTRODEAYUDA
             ? `${isDark ? 'montanaDark-footer' : 'montana-footer'} relative bottom-0 w-full`
@@ -116,7 +116,7 @@ export const NavIcons = ({ isFooter }: NavIconsProps) => {
             )}
           </Link>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };
