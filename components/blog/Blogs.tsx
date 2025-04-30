@@ -9,28 +9,31 @@ import { gifImage } from '@/utils/assets/img-database';
 import useBlogStore from '@/store/useBlogStore';
 import useFetchBlogs from '@/hooks/useFetchBlogs/useFetchBlogs';
 import SearchInput from '../ui/SearchInput/SearchInput';
-
 interface BlogProps {
   currentPage: number;
 }
 
-const Blog: React.FC<BlogProps> = ({ currentPage }) => {
-  const { blogs, isLoading, setIsLoading } = useBlogStore();
+// Funcion para remover la tilde de una palabra
+function removeAccent(text: string) {
+  return text.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '');
+}
 
+const Blog: React.FC<BlogProps> = ({ currentPage }) => {
+  const { blogs, isLoading, totalPages } = useBlogStore();
+  console.log(blogs);
   const searchParams = useSearchParams();
   const router = useRouter();
-
   const searchQuery = searchParams.get('search') || '';
 
   const [searchTerm, setSearchTerm] = useState(searchQuery);
-
-  const [totalPages, setTotalPages] = useState<number>(1);
-
+  // Se fltran los blogs segun lo ingresado en el buscador
   const filteredBlogs = useMemo(() => {
     if (searchTerm === '') return blogs;
-    return blogs.filter((post) => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
+    return blogs.filter(
+      (post) => removeAccent(post.title) && removeAccent(post.title.toLowerCase()).includes(searchTerm.toLowerCase()),
+    );
   }, [blogs, searchTerm]);
-
+  // Funcion para enviar la informacion del evento por params
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const term = e.target.value;
@@ -39,11 +42,10 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
     },
     [router],
   );
-
+  // Se obitienen los blogs a partir de la current page (pagina) y searchTerm (buscador)
   useFetchBlogs({
     currentPage,
     searchTerm,
-    setTotalPages,
   });
 
   return (
@@ -53,10 +55,19 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
           BLOG
         </h1>
 
-        <ImageCarousel images={blogs} />
+        <ImageCarousel
+          images={blogs.map((post) => ({
+            blog_id: post.blog_id,
+            slug: post.slug,
+            title: post.title,
+            description: post.description,
+            image: post.image || '/images/paypalenarg.png',
+            date: new Date().toISOString(),
+            category: post.category,
+          }))}
+        />
 
         <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} />
-
         {!isLoading ? (
           blogs.length >= 1 ? (
             <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
@@ -64,11 +75,11 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
                 <BlogPostCard
                   key={post.blog_id}
                   blog_id={post.blog_id}
-                  body={post.body}
+                  description={post.description}
                   title={post.title}
                   category={post.category}
-                  url_image={post.url_image}
-                  created_at={post.created_at}
+                  image={post.image || '/images/paypalenarg.png'}
+                  date={post?.date}
                 />
               ))}
             </div>
@@ -79,15 +90,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
           <SkeletonLoader />
         )}
       </div>
-      <PaginationButtons
-        route="/blog"
-        /* @ts-ignore */
-        setIsLoading={setIsLoading}
-        totalPages={totalPages}
-        isLoading={isLoading}
-        currentPage={currentPage}
-      />
-
+      {<PaginationButtons route="blog" totalPages={totalPages} isLoading={isLoading} currentPage={currentPage} />}
       <div
         className="mt-12 flex h-[272px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${gifImage})` }}
