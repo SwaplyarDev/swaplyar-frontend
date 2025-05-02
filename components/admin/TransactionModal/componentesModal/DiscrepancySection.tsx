@@ -29,8 +29,9 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
   const [discrepancyReason, setDiscrepancyReason] = useState('');
   const [resolutionReason, setResolutionReason] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const [isInputTransferIdFocused, setIsInputTransferIdFocused] = useState(false);
   const [isResolutionInputFocused, setIsResolutionInputFocused] = useState(false);
-
+  const [transferId, setTransferId] = useState('');
   // Dialog states
   const [showRequiredDialog, setShowRequiredDialog] = useState(false);
   const [showConfirmDiscrepancyDialog, setShowConfirmDiscrepancyDialog] = useState(false);
@@ -273,14 +274,20 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                               id="transfer-id"
                               type="text"
                               placeholder="Ingresa el ID de la transferencia"
+                              value={transferId}
+                              onChange={(e) => setTransferId(e.target.value)}
+                              onFocus={() => setIsInputTransferIdFocused(true)}
+                              onBlur={() => setIsInputTransferIdFocused(false)}
                               className={`h-11 transition-all duration-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 ${
-                                isInputFocused ? 'ring-primary border-primary ring-2' : ''
+                                isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                               }`}
                               aria-required="true"
                             />
                           </div>
 
                           <Button
+                            /* Sincronizar el ID de transferencia con el backend */
+                            // onClick={}
                             className="h-11 bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20"
                             aria-label="Enviar ID de transferencia"
                           >
