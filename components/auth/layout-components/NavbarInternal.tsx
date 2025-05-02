@@ -55,11 +55,13 @@ const NavbarInternal = () => {
 
         {/* Lateral izquierdo */}
         <div className="flex w-full">
-          <span className={`flex-1 grow ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></span>
+          <span
+            className={`w-7 xl-nav:pr-7 xl-blue-nav:flex-1 xl-blue-nav:pr-12 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}
+          ></span>
 
           {/* Centro */}
 
-          <div className="mx-auto flex max-w-[1300px] items-center xs:min-w-[480px] sm:min-w-[640px] sm-tablet2:min-w-[720px] md:min-w-[768px] lg:min-w-[1024px] xl:min-w-[1280px]">
+          <div className="mx-auto flex w-full items-center xl-blue-nav:max-w-[81.25rem]">
             {/* Contenido principal (perfil, etc.) */}
 
             <div className="relative flex w-full flex-row justify-between">
@@ -70,7 +72,7 @@ const NavbarInternal = () => {
                 onClick={() => {
                   setMostrarModalPerfil(!mostrarModalPerfil);
                 }}
-                className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} absolute left-4 top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] hover:bg-gradient-to-t xs:-left-1 sm-tablet2:p-[4px]`}
+                className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} absolute left-4 top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] hover:bg-gradient-to-t sm-tablet2:p-[4px]`}
               >
                 {/* Imagen de perfil */}
                 <Image
@@ -202,7 +204,9 @@ const NavbarInternal = () => {
 
           {/* Lateral derecho */}
 
-          <span className={`flex-1 grow sm-tablet2:hidden md:block ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></span>
+          <span
+            className={`w-7 sm-tablet2:hidden md:block xl-nav:flex-1 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}
+          ></span>
         </div>
       </div>
     </header>

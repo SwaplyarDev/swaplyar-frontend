@@ -51,6 +51,8 @@ const config: Config = {
         lg2: '1124px',
         'xl-desktop': '1080px',
         xl: '1280px',
+        'xl-nav': '1300px',
+        'xl-blue-nav': '1310px',
         '2k': '2048px',
         '4k': '3840px',
       },
