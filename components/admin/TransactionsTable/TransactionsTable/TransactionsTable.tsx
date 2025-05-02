@@ -234,21 +234,25 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
 
   const router = useRouter();
 
+  const mockStatus = [
+    {
+      id: 'editar',
+      colorClass: 'bg-amber-800',
+      outlineClass: 'outline outline-1 outline-offset-2 outline-orange-500',
+      label: 'Editar',
+      description: 'El cliente solicitó editar la solicitud',
+    },
+    {
+      id: 'cancelar',
+      colorClass: 'bg-red-600',
+      outlineClass: 'outline outline-1 outline-offset-2 outline-red-600',
+      label: 'Cancelar',
+      description: 'El cliente solicitó la cancelación y el reembolso',
+    },
+  ];
+
   //provisorio
-  const items = {
-    id: 'editar',
-    colorClass: 'bg-amber-800',
-    outlineClass: 'outline outline-1 outline-offset-2 outline-orange-500',
-    label: 'Editar',
-    description: 'El cliente solicitó editar la solicitud',
-  };
-  // {
-  //   id: 'cancelar',
-  //   colorClass: 'bg-red-600',
-  //   outlineClass: 'outline outline-1 outline-offset-2 outline-red-600',
-  //   label: 'Cancelar',
-  //   description: 'El cliente solicitó la cancelación y el reembolso',
-  // },
+  const items = mockStatus[1];
 
   return (
     <div className="w-full">
@@ -556,7 +560,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                 </th>
                 <th className="px-4 py-3 text-sm font-medium">
                   <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('client_action')}>
-                    Status
+                    Status Cliente
                     {filters.orderby === 'client_action' ? (
                       filters.order === 'asc' ? (
                         <ChevronUp size={16} className="ml-1" />
@@ -597,17 +601,6 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                     <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                       {transaction.payment_method.receiver.value}
                     </td>
-                    <td className="px-4 py-3 text-sm">{getClientIndicator(transaction)}</td>
-                    {/* <td className="px-4 py-3 text-sm">
-                      <button
-                        onClick={() => handleOpenModal(transaction.transaction.transaction_id)}
-                        className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 w-9 text-blue-600 dark:text-blue-400"
-                        title="Ver detalles"
-                      >
-                        <Eye size={16} />
-                        <span className="sr-only">Ver detalles</span>
-                      </button>
-                    </td> */}
                     <td className="px-4 py-3 text-sm">
                       <div
                         key={items.id}

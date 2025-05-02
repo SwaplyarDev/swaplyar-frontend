@@ -14,6 +14,7 @@ import { Separator } from '@/components/ui/Separator';
 import { Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { TransactionService } from '../ui/TransactionService';
+import { UpdateTransactionData } from '@/components/admin/TransactionPageComponents/ServiceTransaction';
 
 interface ModalEditRecieverProps {
   modal: boolean;
@@ -67,11 +68,13 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Aquí puedes realizar cualquier acción con los datos modificados
     console.log('Datos modificados:', modifiedValues);
+    console.log('transaction_id:', transaction.transaction_id);
     try {
-      const response = TransactionService('modified', transaction.transaction_id, modifiedValues);
+      const response = await UpdateTransactionData(modifiedValues, transaction.transaction_id);
+      console.log(response);
     } catch (error) {
       throw new Error(`❌ Error en la respuesta del servicio` + error);
     }
