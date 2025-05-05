@@ -18,7 +18,7 @@ export const FooterInternal = () => {
       <div className="bottom-20 flex w-full flex-col items-center justify-center gap-4 pb-20 sm-tablet2:pb-6">
         <FooterLink label="Términos y Condiciones" href="/es/auth/terminos-y-condiciones/tyc-swaplyar" />
         <FooterLink label="Plus Rewards" href="/es/auth/terminos-y-condiciones/tyc-plus-rewards" />
-        <div className="mb-4 flex sm:mb-0 sm:w-1/3 sm:justify-center">
+        <div className="mb-4 flex sm:w-1/3 sm:justify-center sm-tablet2:mb-0">
           <Link href="/es/home">
             <Image
               src={isDark ? SwaplyArLogoDarkTheme : SwaplyArLogoLightTheme}

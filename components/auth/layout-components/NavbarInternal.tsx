@@ -47,7 +47,7 @@ const NavbarInternal = () => {
   // className="mx-auto flex min-w-[340px] flex-col justify-center xs:min-w-[480px] sm:min-w-[640px] md:min-w-[768px] lg:min-w-[1024px] xl:min-w-[1280px]"
 
   return (
-    <header className={`sticky top-0 z-40 h-[134px] w-full`}>
+    <header className={`sticky top-0 z-40 h-[8.375rem] w-full`}>
       <div className="mx-auto flex flex-col justify-center">
         <NavSuperiorBarInternal />
 
@@ -65,14 +65,14 @@ const NavbarInternal = () => {
             {/* Contenido principal (perfil, etc.) */}
 
             <div className="relative flex w-full flex-row justify-between">
-              <div className={`mask-nav h-16 w-[128px] self-start ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
+              <div className={`mask-nav h-16 w-[8rem] self-start ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
               <Link
                 href={'#'}
                 // href="/es/auth/perfil"
                 onClick={() => {
                   setMostrarModalPerfil(!mostrarModalPerfil);
                 }}
-                className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} absolute left-4 top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] hover:bg-gradient-to-t sm-tablet2:p-[4px]`}
+                className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} absolute left-4 top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] hover:bg-gradient-to-t sm-tablet2:p-[0.25rem]`}
               >
                 {/* Imagen de perfil */}
                 <Image
@@ -110,7 +110,7 @@ const NavbarInternal = () => {
                 >
                   <Drawer.Items>
                     <div
-                      className={`${isDark ? 'bg-[#EBE7E0]' : 'bg-nav-blue'} absolute mt-14 flex h-[500px] w-40 flex-col items-end justify-between overflow-visible rounded-l-3xl`}
+                      className={`${isDark ? 'bg-[#EBE7E0]' : 'bg-nav-blue'} absolute mt-14 flex h-[35.21rem] w-40 flex-col items-end justify-between overflow-visible rounded-l-3xl`}
                     >
                       <div className="max-w-56 pr-5 pt-7">
                         <Link href="/es/auth/perfil" onClick={() => closeDrawerMenu()}>

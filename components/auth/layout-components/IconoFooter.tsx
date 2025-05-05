@@ -14,7 +14,7 @@ type IconoProps = {
 export default function IconoFooter({ iconoPath, texto, activo, onClick, linkPath }: IconoProps) {
   const { isDark } = useDarkTheme();
   return (
-    <div className="flex-1/6 relative flex">
+    <div className="relative flex">
       <Link href={linkPath}>
         <div
           onClick={onClick}
@@ -28,7 +28,7 @@ export default function IconoFooter({ iconoPath, texto, activo, onClick, linkPat
 
       {activo && (
         <div
-          className={`absolute left-3.5 top-[-22px] flex h-[3.125rem] w-[3.125rem] flex-row items-center justify-center self-center rounded-[100px] ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}
+          className={`absolute left-3.5 top-[-1.375rem] flex h-[3.125rem] w-[3.125rem] flex-row items-center justify-center self-center rounded-[6.25rem] ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}
         >
           <Image src={iconoPath} alt={texto} width={30} height={30} className="scale-150 transform" />
         </div>
