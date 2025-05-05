@@ -29,8 +29,9 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
   const [discrepancyReason, setDiscrepancyReason] = useState('');
   const [resolutionReason, setResolutionReason] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const [isInputTransferIdFocused, setIsInputTransferIdFocused] = useState(false);
   const [isResolutionInputFocused, setIsResolutionInputFocused] = useState(false);
-
+  const [transferId, setTransferId] = useState('');
   // Dialog states
   const [showRequiredDialog, setShowRequiredDialog] = useState(false);
   const [showConfirmDiscrepancyDialog, setShowConfirmDiscrepancyDialog] = useState(false);
@@ -113,7 +114,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
           {discrepancy === true && (
             <div className="animate-in fade-in flex flex-col gap-4 duration-300">
               <div className="space-y-2">
-                <Label htmlFor="discrepancy-reason" className="text-sm font-medium text-gray-700">
+                <Label htmlFor="discrepancy-reason" className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Motivo de la Discrepancia <span className="text-red-500">*</span>
                 </Label>
 
@@ -248,15 +249,58 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                 )}
 
                 {resolved === false && (
-                  <Alert
-                    variant="destructive"
-                    className="animate-in fade-in mt-4 border-red-200 bg-red-50 duration-300"
-                  >
-                    <AlertCircle className="h-4 w-4 text-red-500" />
-                    <AlertDescription className="mt-1.5 text-sm text-red-700">
-                      La discrepancia no ha sido resuelta. Se requiere atención adicional.
-                    </AlertDescription>
-                  </Alert>
+                  <>
+                    <Alert
+                      variant="destructive"
+                      className="animate-in fade-in mt-4 border-red-200 bg-red-50 duration-300"
+                    >
+                      <AlertCircle className="h-4 w-4 text-red-500" />
+                      <AlertDescription className="mt-1.5 text-sm text-red-700">
+                        La discrepancia no ha sido resuelta. Se requiere atención adicional.
+                      </AlertDescription>
+                    </Alert>
+                    <div className="animate-in fade-in mt-6 max-w-xl duration-300">
+                      <div className="space-y-3">
+                        <div className="flex items-center">
+                          <Label htmlFor="transfer-id" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            ID de la Transferencia de Devolución
+                            <span className="ml-1 text-red-500">*</span>
+                          </Label>
+                        </div>
+
+                        <div className="flex gap-2">
+                          <div className="relative flex-1">
+                            <Input
+                              id="transfer-id"
+                              type="text"
+                              placeholder="Ingresa el ID de la transferencia"
+                              value={transferId}
+                              onChange={(e) => setTransferId(e.target.value)}
+                              onFocus={() => setIsInputTransferIdFocused(true)}
+                              onBlur={() => setIsInputTransferIdFocused(false)}
+                              className={`h-11 transition-all duration-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 ${
+                                isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
+                              }`}
+                              aria-required="true"
+                            />
+                          </div>
+
+                          <Button
+                            /* Sincronizar el ID de transferencia con el backend */
+                            // onClick={}
+                            className="h-11 bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20"
+                            aria-label="Enviar ID de transferencia"
+                          >
+                            <span>Enviar</span>
+                          </Button>
+                        </div>
+
+                        <p className="text-muted-foreground text-xs dark:text-gray-400">
+                          Este ID será utilizado para verificar la transferencia en nuestro sistema.
+                        </p>
+                      </div>
+                    </div>
+                  </>
                 )}
               </div>
             </div>

@@ -210,6 +210,8 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
               )}
             </Tooltip>
 
+            {/* Rechazo innecesario por ahora en Aprobar/Rechazar Solicitud
+
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
@@ -229,7 +231,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                   <p>Rechazar solicitud</p>
                 </TooltipContent>
               )}
-            </Tooltip>
+            </Tooltip> */}
           </TooltipProvider>
         </div>
 
