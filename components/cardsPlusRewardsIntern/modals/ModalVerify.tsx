@@ -57,7 +57,7 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
     formData.append('backImage', backFile);
     formData.append('selfieImage', selfieFile);
 
-    const result = await plusRewardsActions(formData, session?.decodedToken.token || '');
+    const result = await plusRewardsActions(formData, session?.accessToken || '');
     if (result.success) {
       Swal.fire({
         icon: 'success',

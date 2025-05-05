@@ -16,7 +16,7 @@ const EmailCard = () => {
         <Email className="h-[50px] w-[50px]" />
       </div>
       <div className="mt-2 flex items-center justify-between">
-        <p className="">{session?.decodedToken.email}</p>
+        <p className="">{session?.user.email}</p>
       </div>
     </div>
   );

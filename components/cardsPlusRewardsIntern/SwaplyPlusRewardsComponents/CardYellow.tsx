@@ -29,7 +29,7 @@ const CardYellow: React.FC<ModalProps> = ({ showVerify, setShowVerify, verifiedS
 
         <div className="absolute top-[106px] mx-[14px] flex flex-row gap-1 xs:right-0 xs:top-0 xs:m-[14px] xs:flex-col">
           <p className="text-[13px] font-light sm:text-[18px]">Tu Codigo de Miembro:</p>
-          <p className="text-end text-[15px] sm:text-[21px]">2448XPAR</p>
+          <p className="text-end text-[15px] sm:text-[21px]">2448XPAR </p>
         </div>
 
         <div className="align-center absolute right-0 top-[130px] flex w-full justify-center gap-[7px] text-[#CE1818] xs:top-[115px] sm:top-[172.5px]">

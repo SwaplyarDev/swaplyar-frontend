@@ -6,26 +6,25 @@ import { CardPlusRewards } from '@/components/cardsPlusRewardsIntern/SwaplyPlusR
 import { PlusRewards } from '@/app/es/(auth)/auth/plus-rewards/page';
 import CardPlusModal from './modals/CardPlusModal';
 import ModalVerify from './modals/ModalVerify';
-import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import AplicationStateContainer from '@/components/cardsPlusRewardsIntern/SwaplyPlusRewardsComponents/AplicationStateContainer';
 import { getPlusRewards, getCardStatus } from '@/actions/plusRewards/plusRewards.actions';
 import { useSession } from 'next-auth/react';
+import { plusRewardsActions } from '@/actions/plusRewards/plusRewards.actions';
 
 const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const [showModal, setShowModal] = useState(false);
   const [showVerify, setShowVerify] = useState(false);
   const { data: session } = useSession();
   const [verifiedStatus, setverifiedStatus] = useState('');
-  const [statusCard, setStatusCard] = useState('');
 
-  const [stateSession, setStateSession] = useState('no aprobado');
-  const SessionState = session?.decodedToken.userVerification;
+  const sesionCardTop = session?.accessToken;
+  const sessionCardBlueYellow = session?.user.userVerification;
 
   useEffect(() => {
-    if (session) {
+    if (sesionCardTop) {
       const fetchRewards = async () => {
         try {
-          const data = await getPlusRewards(session?.decodedToken.token || '');
+          const data = await getPlusRewards(sesionCardTop || '');
 
           setverifiedStatus(data.verification_status);
         } catch (error) {
@@ -35,29 +34,15 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
 
       fetchRewards();
     }
-  }, [session]);
+  }, [sesionCardTop, sessionCardBlueYellow]);
 
-  useEffect(() => {
-    if (session) {
-      const fetchRewards = async () => {
-        try {
-          const data = await getCardStatus(session?.decodedToken.token || '');
-          console.log(data);
-          setStatusCard(data.user_validation);
-        } catch (error) {
-          console.error('Error obteniendo plusRewards:', error);
-        }
-      };
-
-      fetchRewards();
-    }
-  }, [session]);
   return (
     <>
       {/*<AnimatedBlurredCircles tope="z-10 absolute" />*/}
       {!session && <p>cargando...</p>}
 
       <AplicationStateContainer verifiedStatus={verifiedStatus} />
+
       {showModal && <CardPlusModal setShowModal={setShowModal} />}
       {showVerify && (
         <ModalVerify showVerify={showVerify} setShowVerify={setShowVerify} verifiedStatus={verifiedStatus} />
@@ -96,7 +81,7 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
           <div className="relative my-auto items-center">
             <CardPlusRewards
               verifiedStatus={verifiedStatus}
-              SessionState={SessionState}
+              sessionCardBlueYellow={sessionCardBlueYellow}
               showVerify={showVerify}
               setShowVerify={setShowVerify}
               memberCode="2448XPAR"

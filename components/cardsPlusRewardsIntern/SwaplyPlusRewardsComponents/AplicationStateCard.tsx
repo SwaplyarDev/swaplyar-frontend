@@ -9,8 +9,8 @@ type AplicationProps = {
 
 const AplicationStateCard: React.FC<AplicationProps> = ({ className, text1, text2, colorSVG }) => {
   return (
-    <div className={`mx-auto mt-10 max-w-[1200px] px-4 py-[8px] font-textFont ${className}`}>
-      <div className="flex flex-col text-end">
+    <div className={`mx-auto mt-10 w-full px-4 py-[8px] font-textFont ${className}`}>
+      <div className="mx-auto flex max-w-[1200px] flex-col text-end">
         <h2 className="pb-[13px] text-[36px]">{text1}</h2>
         <div className="ml-auto max-w-[500px] pb-[15px] font-light">{text2}</div>
 
