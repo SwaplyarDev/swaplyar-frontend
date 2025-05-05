@@ -13,6 +13,7 @@ import TransactionModal from '@/components/admin/TransactionModal/transactionMod
 import { useRouter } from 'next/navigation';
 import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
 import BackButton from '../../Sidebar/componentsSidebar/Navigation/BackButto';
+import ClientStatus from './ClientStatus';
 
 interface TransactionsTableProps {
   transactions: TransactionArray;
@@ -233,26 +234,6 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
   }, [filters]);
 
   const router = useRouter();
-
-  const mockStatus = [
-    {
-      id: 'editar',
-      colorClass: 'bg-amber-800',
-      outlineClass: 'outline outline-1 outline-offset-2 outline-orange-500',
-      label: 'Editar',
-      description: 'El cliente solicitó editar la solicitud',
-    },
-    {
-      id: 'cancelar',
-      colorClass: 'bg-red-600',
-      outlineClass: 'outline outline-1 outline-offset-2 outline-red-600',
-      label: 'Cancelar',
-      description: 'El cliente solicitó la cancelación y el reembolso',
-    },
-  ];
-
-  //provisorio
-  const items = mockStatus[1];
 
   return (
     <div className="w-full">
@@ -602,19 +583,15 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                       {transaction.payment_method.receiver.value}
                     </td>
                     <td className="px-4 py-3 text-sm">
-                      <div
-                        key={items.id}
-                        className={`w-full cursor-pointer p-4 transition-all duration-300 ${
-                          true
-                            ? `${items.colorClass} ${items.colorClass.replace('bg-', 'text-')} bg-opacity-10 shadow-sm`
-                            : 'hover:bg-gray-50 dark:hover:bg-gray-800/80'
-                        } `}
-                      >
-                        <div className="mb-1 flex items-center gap-2">
-                          <span className={`h-3 w-3 rounded-full ${items.colorClass} ${items.outlineClass}`}></span>
-                          <span className={`font-medium`}>{items.label}</span>
-                        </div>
-                      </div>
+                      <ClientStatus
+                        status={
+                          transaction.transaction.note_id
+                            ? 'editar'
+                            : transaction.transaction.regret_id
+                              ? 'cancelar'
+                              : null
+                        }
+                      />
                     </td>
                   </tr>
                 ))

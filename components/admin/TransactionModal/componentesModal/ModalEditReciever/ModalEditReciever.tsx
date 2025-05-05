@@ -43,11 +43,10 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
     e.preventDefault();
     setIsDragging(false);
 
-    // Handle file processing logic
     const files = e.dataTransfer.files;
     if (files.length > 0) {
       console.log('Archivo recibido:', files[0].name);
-      // Implement file upload logic
+      setSelectedFile(files[0]);
     }
   };
 
@@ -69,11 +68,21 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
   };
 
   const handleSubmit = async () => {
-    // Aquí puedes realizar cualquier acción con los datos modificados
-    console.log('Datos modificados:', modifiedValues);
-    console.log('transaction_id:', transaction.transaction_id);
+    const formData = new FormData();
+
+    for (const key in modifiedValues) {
+      formData.append(key, modifiedValues[key]);
+    }
+
+    if (selectedFile) {
+      formData.append('file', selectedFile);
+    }
+
     try {
-      const response = await UpdateTransactionData(modifiedValues, transaction.transaction_id);
+      const plainObject = Object.fromEntries(formData.entries());
+      console.log(plainObject);
+
+      const response = await UpdateTransactionData(formData, transaction.transaction_id);
       console.log(response);
     } catch (error) {
       throw new Error(`❌ Error en la respuesta del servicio` + error);
@@ -200,7 +209,7 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
           <label htmlFor="fileInput">
             <Button
               variant="outline"
-              className="cursor-pointer border-blue-200 text-blue-700 hover:bg-blue-50 dark:border-blue-700 dark:text-blue-300 dark:hover:bg-blue-900/10"
+              className="mt-2 cursor-pointer border-blue-200 text-blue-700 hover:bg-blue-50 dark:border-blue-700 dark:text-blue-300 dark:hover:bg-blue-900/10"
             >
               Seleccionar archivo
             </Button>
