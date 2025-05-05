@@ -25,7 +25,7 @@ import Image from 'next/image';
 import LogoSidebar from './componentsSidebar/LogoSidebar';
 import InicioGroup from './componentsSidebar/Navigation/InicioGroup';
 import GestionGroup from './componentsSidebar/Navigation/GestionGroup';
-import AtajosGroup from './componentsSidebar/Navigation/AtajosGroup';
+// import AtajosGroup from './componentsSidebar/Navigation/AtajosGroup';
 import AnimatedCerrarSesion from '@/components/icons-internal/CerrarSesion/AnimatedCerrarSesion';
 import CerrarSesionIcon from '@/components/icons-internal/CerrarSesion/CerrarSesionIcon';
 import { SwaplyArLogoSolo, SwaplyArlogoWhite } from '@/utils/assets/imgDatabaseCloudinary';
@@ -237,9 +237,8 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 z-40 h-screen border-r border-gray-100 bg-white transition-all duration-300 ease-in-out dark:border-gray-700 dark:bg-gray-800 ${
-          mobileOpen ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0 ${collapsed ? 'w-16' : 'w-72'}`}
+        className={`fixed left-0 top-0 z-40 h-screen border-r border-gray-100 bg-white transition-all duration-300 ease-in-out dark:border-gray-700 dark:bg-gray-800 ${mobileOpen ? 'translate-x-0' : '-translate-x-full'
+          } md:translate-x-0 ${collapsed ? 'w-16' : 'w-72'}`}
       >
         <div className="flex h-full flex-col">
           {/* Logo and collapse button */}
@@ -266,14 +265,14 @@ const Sidebar = () => {
               <GestionGroup collapsed={collapsed} pathname={pathname} />
 
               {/* Atajos Group */}
-              <AtajosGroup
+              {/* <AtajosGroup
                 collapsed={collapsed}
                 pathname={pathname}
                 statusDropdownOpen={statusDropdownOpen}
                 toggleStatusDropdown={toggleStatusDropdown}
                 statusShortcuts={statusShortcuts}
                 createStatusUrl={createStatusUrl}
-              />
+              /> */}
             </div>
 
             {/* User at the bottom
