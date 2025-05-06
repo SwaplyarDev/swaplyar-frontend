@@ -24,7 +24,6 @@ export function useTransactionSubmission(transId: string, setStatus: (status: st
     // Preparar el payload con el ID de transacción
     const payload = {
       ...form,
-      transaction_id: transId,
     };
 
     try {
