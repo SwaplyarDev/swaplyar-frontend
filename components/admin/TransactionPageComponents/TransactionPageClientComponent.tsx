@@ -10,7 +10,7 @@ import ConfirmTransButton from '../TransactionModal/componentesModal/ConfirmTran
 import AprobarRechazar from '../TransactionModal/componentesModal/aprobarRechazar';
 import ClientInformation from '../TransactionModal/componentesModal/ClientInformation';
 import FinalSection from '../TransactionModal/componentesModal/FinalSection';
-import TransferImages from '../TransactionModal/componentesModal/TransferImages';
+import TransferImages from '../TransactionModal/componentesModal/TransferImages/TransferImages';
 import TransactionDetail from '../TransactionModal/componentesModal/DetailTransaction';
 import ClientMessage from '../TransactionModal/componentesModal/ui/ClientMessage';
 import { useTransactionStore } from '@/store/transactionModalStorage';
@@ -131,12 +131,6 @@ export default function TransactionPageClientComponent({
               <TransferImages trans={initialTransaction} />
 
               <TransactionDetail transaction={initialTransaction} isLoading={isLoading} />
-
-              <ClientMessage
-                message={initialTransaction.transaction.message}
-                headerMessage="Mensaje del cliente"
-                classnames="min-h-[4.25rem] border"
-              />
 
               {initialTransaction.transaction.regret_id && regretCancel ? (
                 <div className="flex flex-col">
