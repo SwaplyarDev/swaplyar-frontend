@@ -297,7 +297,15 @@ const Sidebar = () => {
                 collapsed ? 'px-0' : 'justify-start px-2',
               )}
             >
-              {collapsed ? <CerrarSesionIcon /> : <AnimatedCerrarSesion />}
+              {collapsed ? (
+                <div className="flex items-center justify-center rounded-full bg-[#012A8E] p-2 dark:bg-[#EBE7E0]">
+                  <div className="flex items-center justify-center text-[#EBE7E0]">
+                    <CerrarSesionIcon isAdmin={true} />
+                  </div>
+                </div>
+              ) : (
+                <AnimatedCerrarSesion isAdmin={true} />
+              )}
             </div>
           </nav>
         </div>
