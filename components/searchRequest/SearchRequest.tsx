@@ -110,6 +110,7 @@ const SearchRequest = () => {
   const onSubmit: SubmitHandler<RequestSearch> = async (data) => {
     setLoading(true);
     handleAddNextStatus();
+    console.log();
     try {
       const response = await searchRequest(data.numberOfRequest, data.lastNameRequest);
 

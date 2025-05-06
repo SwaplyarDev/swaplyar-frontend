@@ -21,8 +21,9 @@ interface TransactionData {
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const fetchTransactionById = async (requestData: TransactionRequestData): Promise<any> => {
+  console.log(requestData.transaccionId);
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/code/send/${requestData.transaccionId}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/code/${requestData.transaccionId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,19 +45,20 @@ export const fetchTransactionById = async (requestData: TransactionRequestData):
   }
 };
 export const fetchCode = async (code: string, requestData: { transactionId: string }): Promise<any> => {
+  console.log(code);
   try {
     // Realizar la solicitud POST al backend para verificar el código
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/code/validate`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/code/validate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         code, // Código a enviar
-        transactionId: requestData.transactionId, // ID de transacción proveniente del requestData
+        transaction_id: requestData.transactionId, // ID de transacción proveniente del requestData
       }),
     });
-
+    console.log('response body', response.body);
     console.log('Respuesta del servidor del fetchCode:', response);
 
     const result = await response.json();
@@ -71,7 +73,7 @@ export const fetchCode = async (code: string, requestData: { transactionId: stri
     //   console.error('Token no encontrado en la respuesta');
     // }
 
-    return { success: true, message: result.message || 'Código verificado exitosamente.' };
+    return { success: true, message: result.message || 'Código verificado exitosamente.', data: result };
   } catch (error) {
     console.error('Error de la verificacion:', error);
     throw new Error(error instanceof Error ? error.message : 'Error desconocido.');
@@ -80,7 +82,7 @@ export const fetchCode = async (code: string, requestData: { transactionId: stri
 
 export const resendCodeAction = async (transactionId: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/code/send/${transactionId}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/code/${transactionId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -105,10 +107,14 @@ export const resendCodeAction = async (transactionId: string) => {
     return { success: false, message: 'Error al conectarse con el servidor.' };
   }
 };
-
+/* 
 export const fetchTransactionData = async (transaccionId: string): Promise<TransactionData | null> => {
+
   try {
+    
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions/info/${transaccionId}`);
+    console.log(response)
+
     if (!response.ok) {
       throw new Error('Error fetching transaction data');
     }
@@ -119,7 +125,7 @@ export const fetchTransactionData = async (transaccionId: string): Promise<Trans
     console.error('Error fetching transaction data:', error);
     return null;
   }
-};
+}; */
 
 export const sendFormData = async ({ message, file, transaccionId }: sendeForm): Promise<any> => {
   try {
