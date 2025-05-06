@@ -11,7 +11,7 @@ type IconoProps = {
   linkPath: string;
 };
 
-export default function Icono({ iconoPath, texto, activo, onClick, linkPath }: IconoProps) {
+export default function IconoNav({ iconoPath, texto, activo, onClick, linkPath }: IconoProps) {
   const { isDark } = useDarkTheme();
   return (
     <div className="relative flex justify-center">

@@ -1,10 +1,8 @@
 'use client';
-import { SwaplyArLogoComplete, SwaplyArLogoSolo, SwaplyArlogoWhite } from '@/utils/assets/imgDatabaseCloudinary';
+import { swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import { useState } from 'react';
-import { SwaplyArlogoMobileWhite, swaplyArAvatar } from '@/utils/assets/img-database';
 import { Drawer } from 'flowbite-react';
-import Switch from '@/components/ui/top-menu/switch';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import CerrarSesion from '@/components/icons-internal/CerrarSesion/CerrarSesion';
 import SolicitudIcon from '@/components/icons-internal/icons-desktop/solicitud/SolicitudIcon';
@@ -14,12 +12,12 @@ import CuentasAsociadasIcon from '@/components/icons-internal/icons-desktop/Cuen
 import CentroDeAyudaIcon from '@/components/icons-internal/icons-desktop/CentroDeAyuda/CentroDeAyudaIcon';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import IconsTablet from '@/components/icons-internal/icons-tablet/IconsTablet';
-import { ActiveTab, NavIcons } from './NavIcons';
+import { ActiveTab } from './NavIcons';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import PerfilIcon from '@/components/icons-internal/icons-desktop/perfil/PerfilIcon';
 
-import Iconos from './Iconos';
+import IconosNav from './IconosNav';
 import { signOut, useSession } from 'next-auth/react';
 import NavSuperiorBarInternal from './NavSuperiorBarInternal';
 
@@ -54,14 +52,14 @@ const NavbarInternal = () => {
         {/* Nav inferior azul */}
 
         {/* Lateral izquierdo */}
-        <div className="flex w-full">
+        <div className="flex w-full gap-0">
           <span
             className={`w-7 xl-nav:pr-7 xl-blue-nav:flex-1 xl-blue-nav:pr-12 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}
           ></span>
 
           {/* Centro */}
 
-          <div className="mx-auto flex w-full items-center xl-blue-nav:max-w-[81.25rem]">
+          <div className="mx-auto flex w-full items-center gap-0 xl-blue-nav:max-w-[81.25rem]">
             {/* Contenido principal (perfil, etc.) */}
 
             <div className="relative flex w-full flex-row justify-between">
@@ -84,7 +82,7 @@ const NavbarInternal = () => {
                 />
               </Link>
               <div
-                className={`absolute ${isAdmin && mostrarModalPerfil ? 'flex flex-col items-start justify-around' : 'hidden'} ${isDark ? 'text-[#252526]' : 'text-white'} ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} left-4 top-28 h-20 whitespace-nowrap rounded-br-3xl rounded-tr-3xl border-2 border-[#EBE7E0] pl-2 pr-4 text-lg font-semibold`}
+                className={`absolute ${isAdmin && mostrarModalPerfil ? 'flex flex-col items-start justify-center gap-1' : 'hidden'} ${isDark ? 'text-[#252526]' : 'text-white'} ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} left-2 top-28 h-20 whitespace-nowrap rounded-3xl border-2 border-[#EBE7E0] px-4 text-lg font-semibold`}
               >
                 <Link href={'/es/auth/perfil'}>Ver perfil</Link>
                 <Link href={'#'}>Ver admin</Link>
@@ -194,7 +192,7 @@ const NavbarInternal = () => {
                 </Drawer>
               )}{' '}
               <span className="hidden xl-desktop:block">
-                <Iconos />
+                <IconosNav />
               </span>
               <button onClick={() => signOut()} className="h-16 self-end md-phone:hidden xl-desktop:block">
                 <CerrarSesion />

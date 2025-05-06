@@ -1,6 +1,3 @@
-'use client';
-import { useState } from 'react';
-import Icono from './Icono';
 import {
   icono_solicitud,
   icono_cuentas,
@@ -13,9 +10,8 @@ import {
   iconoDark_solicitud,
   iconoDark_transacciones,
 } from '@/utils/assets/imgDatabaseCloudinary';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
-const iconos = [
+export const iconos = [
   {
     texto: 'Solicitud',
     iconoPath: icono_solicitud,
@@ -32,23 +28,3 @@ const iconos = [
   { texto: 'Cuentas', iconoPath: icono_cuentas, iconoDarkPath: iconoDark_cuentas, linkPath: '/es/auth/cuentas' },
   { texto: 'Centro de Ayuda', iconoPath: icono_ayuda, iconoDarkPath: iconoDark_ayuda, linkPath: '#' },
 ];
-
-export default function Iconos() {
-  const { isDark } = useDarkTheme();
-  const [activoIndex, setActivoIndex] = useState<number | null>(null);
-
-  return (
-    <div className="z-40 hidden h-16 flex-row justify-center self-end sm:flex">
-      {iconos.map((el, index) => (
-        <Icono
-          key={index}
-          iconoPath={isDark ? el.iconoDarkPath : el.iconoPath}
-          texto={el.texto}
-          activo={activoIndex === index}
-          onClick={() => setActivoIndex(index)}
-          linkPath={el.linkPath}
-        />
-      ))}
-    </div>
-  );
-}

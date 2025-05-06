@@ -3,8 +3,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { SwaplyArlogoMobileWhite, swaplyArAvatar } from '@/utils/assets/img-database';
-import { SwaplyArLogoComplete, SwaplyArLogoSolo, SwaplyArlogoWhite } from '@/utils/assets/imgDatabaseCloudinary';
+import {
+  SwaplyArLogoComplete,
+  SwaplyArLogoSolo,
+  SwaplyArlogoWhite,
+  SwaplyArlogoMobileWhite,
+} from '@/utils/assets/imgDatabaseCloudinary';
 
 export default function NavSuperiorBarInternal() {
   const { isDark } = useDarkTheme();
