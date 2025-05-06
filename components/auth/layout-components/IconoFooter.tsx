@@ -19,7 +19,9 @@ export default function IconoFooter({ iconoPath, texto, activo, onClick, linkPat
         <div
           onClick={onClick}
           className={`h-full cursor-pointer ${
-            activo ? 'mask-footer-icon w-[4.8125rem] self-center' : 'flex-1/6 flex items-end justify-center px-3'
+            activo
+              ? 'mask-footer-icon w-[4.8125rem] self-center'
+              : 'flex basis-1/6 items-end justify-center px-1 mini-phone:px-2 xs-mini-phone:px-3'
           } ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}
         >
           {!activo && <Image src={iconoPath} alt={texto} width={50} height={50} />}

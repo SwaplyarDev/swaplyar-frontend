@@ -44,14 +44,14 @@ const NavbarInternal = () => {
 
   const isActive = pathname.split('/')[3];
 
-  // className="mx-auto flex min-w-[340px] flex-col justify-center xs:min-w-[480px] sm:min-w-[640px] md:min-w-[768px] lg:min-w-[1024px] xl:min-w-[1280px]"
-
   return (
     <header className={`sticky top-0 z-40 h-[8.375rem] w-full`}>
       <div className="mx-auto flex flex-col justify-center">
+        {/* Nav superior blanco */}
+
         <NavSuperiorBarInternal />
 
-        {/* Parte de abajo azul */}
+        {/* Nav inferior azul */}
 
         {/* Lateral izquierdo */}
         <div className="flex w-full">

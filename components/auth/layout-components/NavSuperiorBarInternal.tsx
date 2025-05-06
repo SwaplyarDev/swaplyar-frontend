@@ -27,7 +27,7 @@ export default function NavSuperiorBarInternal() {
               />
               <Image
                 src={isDark ? SwaplyArlogoWhite : SwaplyArLogoSolo}
-                className="max-h-14 w-full max-w-14 mini-phone:hidden"
+                className="max-h-14 w-full max-w-14 pl-4 mini-phone:hidden"
                 alt="Cambiar saldo online"
                 width={200}
                 height={80}
