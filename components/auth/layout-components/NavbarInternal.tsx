@@ -51,8 +51,8 @@ const NavbarInternal = () => {
 
         {/* Nav inferior azul */}
 
-        {/* Lateral izquierdo */}
         <div className="flex w-full gap-0">
+          {/* Lateral izquierdo */}
           <span
             className={`w-7 xl-nav:pr-7 xl-blue-nav:flex-1 xl-blue-nav:pr-12 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}
           ></span>
@@ -84,8 +84,22 @@ const NavbarInternal = () => {
               <div
                 className={`absolute ${isAdmin && mostrarModalPerfil ? 'flex flex-col items-start justify-center gap-1' : 'hidden'} ${isDark ? 'text-[#252526]' : 'text-white'} ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} left-2 top-28 h-20 whitespace-nowrap rounded-3xl border-2 border-[#EBE7E0] px-4 text-lg font-semibold`}
               >
-                <Link href={'/es/auth/perfil'}>Ver perfil</Link>
-                <Link href={'#'}>Ver admin</Link>
+                <Link
+                  href={'/es/auth/perfil/'}
+                  onClick={() => {
+                    setMostrarModalPerfil(!mostrarModalPerfil);
+                  }}
+                >
+                  Ver perfil
+                </Link>
+                <Link
+                  href={'/es/auth/admin/'}
+                  onClick={() => {
+                    setMostrarModalPerfil(!mostrarModalPerfil);
+                  }}
+                >
+                  Ver admin
+                </Link>
               </div>
               <div className={`flex-1 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} flex w-full items-center`}>
                 <p className="hidden whitespace-nowrap font-sans text-white dark:text-black sm-tablet2:block">
