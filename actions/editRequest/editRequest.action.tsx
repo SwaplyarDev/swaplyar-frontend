@@ -6,7 +6,7 @@ export interface TransactionRequestData {
 }
 export interface sendeForm {
   message: string;
-  file: File | null;
+  file?: File | null;
   transaccionId: string;
   // token: string | null;
 }
@@ -135,13 +135,26 @@ export const sendFormData = async ({ message, file, transaccionId }: sendeForm):
     // if (!token) {
     //   throw new Error('Token no encontrado en sessionStorage');
     // }
+    if (!message) {
+      throw new Error('El mensaje  no fue encontrado.');
+    }
+    if (!transaccionId) {
+      throw new Error('El ID de la transacción no fue encontrada.');
+    }
+
+    console.log('message:', message);
+    console.log('file:', file);
+    console.log('transaccionId:', transaccionId);
     const formData = new FormData();
-    formData.append('note', JSON.stringify(message));
+
+    formData.append('note', message);
+    console.log('[sendFormData] note appended:', formData.get('note'));
     if (file) {
       formData.append('file', file);
     }
-    formData.append('transaccionId', transaccionId);
+
     // formData.append('token', token);
+
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/${transaccionId}`, {
       method: 'POST',
       // headers: {

@@ -105,7 +105,6 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId, 
       setLoading(false);
     }
   };
-  console.log('transactionData', transactionData);
   const PayMethodInfo: React.FC = () => {
     if (transactionData?.transaction?.payment_method?.receiver?.value === 'ars') {
       return (
@@ -197,7 +196,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId, 
           <div className="flex flex-col text-end text-lightText dark:text-darkText">
             <p>{transactionData?.transaction?.receiver?.first_name}</p>
             <p>{transactionData?.transaction?.receiver?.last_name}</p>
-            <p>{transactionData?.transaction?.payment_method.receiver?.details?.email_account}</p>
+            <p>{transactionData?.transaction?.payment_method?.receiver?.details?.email_account}</p>
           </div>
         </div>
       );
