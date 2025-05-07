@@ -26,8 +26,6 @@ interface TransactionStatusError {
 }
 
 export const searchRequest = async (transactionId: string, lastName: string) => {
-  console.log('transactionId', transactionId);
-  console.log('lastName', lastName);
   try {
     const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus`);
     url.searchParams.append('transaction_id', transactionId);
