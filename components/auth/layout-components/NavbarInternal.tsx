@@ -21,8 +21,6 @@ import IconosNav from './IconosNav';
 import { signOut, useSession } from 'next-auth/react';
 import NavSuperiorBarInternal from './NavSuperiorBarInternal';
 
-const isAdmin = true;
-
 const NavbarInternal = () => {
   const { isDark } = useDarkTheme();
   const pathname = usePathname();
@@ -30,7 +28,9 @@ const NavbarInternal = () => {
   const [isClosing, setIsClosing] = useState(false);
   const [mostrarModalPerfil, setMostrarModalPerfil] = useState(false);
   const { data: session, status } = useSession();
-  console.log('session', session?.user);
+
+  //const isAdmin = session?.decodedToken.role === 'admin' ? true : false;
+  const isAdmin = true;
 
   const closeDrawerMenu = () => {
     setIsClosing(true);
@@ -41,6 +41,8 @@ const NavbarInternal = () => {
   };
 
   const isActive = pathname.split('/')[3];
+
+  console.log('session', session);
 
   return (
     <header className={`sticky top-0 z-40 h-[8.375rem] w-full`}>
@@ -65,8 +67,7 @@ const NavbarInternal = () => {
             <div className="relative flex w-full flex-row justify-between">
               <div className={`mask-nav h-16 w-[8rem] self-start ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
               <Link
-                href={'#'}
-                // href="/es/auth/perfil"
+                href={isAdmin ? '#' : '/es/auth/perfil'}
                 onClick={() => {
                   setMostrarModalPerfil(!mostrarModalPerfil);
                 }}
@@ -102,8 +103,9 @@ const NavbarInternal = () => {
                 </Link>
               </div>
               <div className={`flex-1 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} flex w-full items-center`}>
-                <p className="hidden whitespace-nowrap font-sans text-white dark:text-black sm-tablet2:block">
-                  Nombre Usuario
+                <p className="hidden whitespace-nowrap pl-2 font-sans text-white dark:text-black sm-tablet2:block">
+                  {/* {session?.decodedToken.fullName} */}
+                  NOMBRE USUARIO
                 </p>
               </div>
               <div
