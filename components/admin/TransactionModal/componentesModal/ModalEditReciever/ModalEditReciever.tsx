@@ -173,7 +173,7 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
               'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed transition-all duration-300',
               isDragging
                 ? 'border-primary bg-primary/10'
-                : 'hover:border-primary/70 hover:bg-primary/5 border-gray-300 bg-gray-50',
+                : 'hover:border-primary/70 hover:bg-primary/5 border-gray-300 bg-gray-800',
             )}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}

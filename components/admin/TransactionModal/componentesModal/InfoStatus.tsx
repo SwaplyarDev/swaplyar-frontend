@@ -65,6 +65,8 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
 
     const config = statusConfig[status?.toLowerCase() as keyof typeof statusConfig] || statusConfig.default;
 
+    console.log(status?.toLowerCase());
+
     return (
       <div
         className={`flex items-center justify-center ${config.bgColor} ${config.textColor} border ${config.borderColor} rounded-full px-4 py-1 shadow-sm`}

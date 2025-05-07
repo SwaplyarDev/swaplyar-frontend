@@ -3,7 +3,7 @@
 import type React from 'react';
 
 import { useState } from 'react';
-import { CheckCircle, XCircle, Upload, LinkIcon, DollarSign, FileText, Send } from 'lucide-react';
+import { CheckCircle, XCircle, Upload, LinkIcon, DollarSign, FileText, Send, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
@@ -23,15 +23,23 @@ import { Tooltip } from '@/components/ui/Tooltip';
 import { TooltipTrigger } from '@/components/ui/Tooltip';
 import { updateTransactionStatus } from '@/actions/transactions/transaction-status.action';
 import { useParams } from 'next/navigation';
+import { Check } from '@mui/icons-material';
+
+interface Form {
+  transfer_id: string;
+  amount: number;
+  file: File | null;
+}
 
 const TransferClient = () => {
   const params = useParams();
   const transId = params.id as string;
 
   const [selected, setSelected] = useState<boolean | null>(null);
-  const [form, setForm] = useState<{ transfer_id: string; amount: number }>({
+  const [form, setForm] = useState<Form>({
     transfer_id: '',
     amount: 0,
+    file: null,
   });
   const [isDragging, setIsDragging] = useState(false);
   const [rejectionReason, setRejectionReason] = useState('');
@@ -58,12 +66,35 @@ const TransferClient = () => {
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
+    handleFile(e.dataTransfer.files);
+  };
 
-    // Handle file processing logic
-    const files = e.dataTransfer.files;
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      handleFile(e.target.files);
+    }
+  };
+
+  const handleFile = (files: FileList) => {
     if (files.length > 0) {
-      console.log('Archivo recibido:', files[0].name);
-      // Implement file upload logic
+      const file = files[0];
+
+      // Validación opcional
+      const isValidType = ['image/jpeg', 'image/png', 'application/pdf'].includes(file.type);
+      const isValidSize = file.size <= 5 * 1024 * 1024;
+
+      if (!isValidType) {
+        alert('Formato no permitido. Solo se aceptan JPG, PNG y PDF.');
+        return;
+      }
+
+      if (!isValidSize) {
+        alert('El archivo supera el tamaño máximo permitido de 5MB.');
+        return;
+      }
+
+      setForm((prev) => ({ ...prev, file }));
+      console.log('Archivo actualizado:', file.name);
     }
   };
 
@@ -75,7 +106,7 @@ const TransferClient = () => {
           variant: "destructive",
         }) */
       try {
-        const response = await updateTransactionStatus('rejected', form.transfer_id, {
+        const response = await updateTransactionStatus('rejected', transId, {
           descripcion: rejectionReason,
         });
       } catch (error) {
@@ -117,7 +148,16 @@ const TransferClient = () => {
     try {
       setIsLoading(true);
 
-      const response = await updateTransactionStatus('approved', form.transfer_id, { descripcion: 'aproved' });
+      const formData = new FormData();
+      formData.append('descripcion', 'aproved');
+      formData.append('review', form.transfer_id);
+      formData.append('amount', "'" + form.amount + "'");
+
+      if (form.file) {
+        formData.append('file', form.file);
+      }
+
+      const response = await updateTransactionStatus('approved', transId, { formData });
       console.log(response);
       setIsLoading(false);
     } catch (error) {
@@ -219,44 +259,55 @@ const TransferClient = () => {
             </div>
 
             <div className="animate-in fade-in flex flex-col items-center gap-4 pt-2 duration-300">
-              <h4 className="text-center text-base font-semibold text-gray-800">Comprobante de Transferencia</h4>
-
-              <div
-                className={cn(
-                  'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed transition-all duration-300',
-                  isDragging
-                    ? 'border-primary bg-primary/10'
-                    : 'hover:border-primary/70 hover:bg-primary/5 border-gray-300 bg-gray-50',
-                )}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
-              >
-                <Upload className="text-primary h-8 w-8" />
-                <p className="px-4 text-center text-sm text-gray-600">
-                  Arrastra y suelta el comprobante aquí o
-                  <Button
-                    variant="link"
-                    className="h-auto p-0 pl-1 font-medium"
-                    onClick={() => document.getElementById('file-upload')?.click()}
-                  >
-                    selecciona un archivo
+              <h4 className="text-center text-base font-semibold">Comprobante de Transferencia</h4>
+              {!form.file ? (
+                <div
+                  className={cn(
+                    'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed transition-all duration-300',
+                    isDragging
+                      ? 'border-primary bg-primary/10'
+                      : 'hover:border-primary/70 hover:bg-primary/5 border-gray-50 bg-gray-800',
+                  )}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
+                  <Upload className="text-primary h-8 w-8" />
+                  <p className="px-4 text-center text-sm text-gray-600">
+                    Arrastra y suelta el comprobante aquí o
+                    <Button
+                      variant="link"
+                      className="h-auto p-0 pl-1 font-medium"
+                      onClick={() => document.getElementById('file-upload')?.click()}
+                    >
+                      selecciona un archivo
+                    </Button>
+                  </p>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    className="hidden"
+                    accept="image/*,.pdf"
+                    onChange={handleFileChange}
+                  />
+                  <p className="text-xs text-gray-500">Formatos aceptados: JPG, PNG, PDF (máx. 5MB)</p>
+                </div>
+              ) : (
+                <div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-50">
+                      <Check className="h-5 w-5 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="font-medium">Comprobante cargado</p>
+                    </div>
+                  </div>
+                  <Button variant="link" className="gap-2 p-0 pt-5" onClick={() => setForm({ ...form, file: null })}>
+                    <Trash2 className="h-4 w-4 text-red-700" />
+                    <span className="text-sm font-medium">Eliminar comprobante</span>
                   </Button>
-                </p>
-                <input
-                  id="file-upload"
-                  type="file"
-                  className="hidden"
-                  accept="image/*,.pdf"
-                  onChange={(e) => {
-                    if (e.target.files?.length) {
-                      console.log('Archivo seleccionado:', e.target.files[0].name);
-                      // Implement file upload logic
-                    }
-                  }}
-                />
-                <p className="text-xs text-gray-500">Formatos aceptados: JPG, PNG, PDF (máx. 5MB)</p>
-              </div>
+                </div>
+              )}
 
               <Button variant="link" className="gap-2 p-0">
                 <LinkIcon className="h-4 w-4" />

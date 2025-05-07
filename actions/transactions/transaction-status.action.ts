@@ -22,6 +22,10 @@ const VALID_STATUSES = [
 export type StatusPayload = {
   descripcion?: string;
   additionalData?: string;
+  review?: string;
+  amount?: number;
+  file?: File | null;
+  formData?: FormData;
 };
 
 /**

@@ -56,14 +56,6 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
     }
   }, [componentStates.confirmTransButton, selected, onSelectChange]);
 
-  // const session = useSession();
-
-  // if (!session) {
-  //   return null;
-  // }
-
-  // const token = session.data?.decodedToken.token || '';
-
   const handleSubmitRejection = async () => {
     if (!rejectionReason.trim()) {
       /* @ts-expect-error */
