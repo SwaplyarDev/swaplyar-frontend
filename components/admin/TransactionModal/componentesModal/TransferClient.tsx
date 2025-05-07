@@ -24,6 +24,7 @@ import { TooltipTrigger } from '@/components/ui/Tooltip';
 import { updateTransactionStatus } from '@/actions/transactions/transaction-status.action';
 import { useParams } from 'next/navigation';
 import { Check } from '@mui/icons-material';
+import { uploadTransactionReceipt } from '@/actions/transactions/admin-transaction';
 
 interface Form {
   transfer_id: string;
@@ -148,16 +149,13 @@ const TransferClient = () => {
     try {
       setIsLoading(true);
 
-      const formData = new FormData();
-      formData.append('descripcion', 'aproved');
-      formData.append('review', form.transfer_id);
-      formData.append('amount', "'" + form.amount + "'");
+      if (!form.file) return null;
 
-      if (form.file) {
-        formData.append('file', form.file);
-      }
-
-      const response = await updateTransactionStatus('approved', transId, { formData });
+      const response = await updateTransactionStatus('approved', transId, {
+        review: form.transfer_id,
+        amount: form.amount,
+      });
+      const responseFile = await uploadTransactionReceipt(transId, form.file);
       console.log(response);
       setIsLoading(false);
     } catch (error) {
