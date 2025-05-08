@@ -1,14 +1,9 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-
 import Arrow from '../ui/Arrow/Arrow';
 import { fetchCode, sendFormData } from '@/actions/editRequest/editRequest.action';
-import Swal from 'sweetalert2';
-import { createRoot } from 'react-dom/client';
 import LoadingGif from '../ui/LoadingGif/LoadingGif';
 import clsx from 'clsx';
-import { useForm } from 'react-hook-form';
-import ButtonBack from '../ui/ButtonBack/ButtonBack';
 import PopUp from '../ui/PopUp/PopUp';
 
 interface ModalProps {
@@ -19,14 +14,6 @@ interface ModalProps {
   children?: React.ReactNode;
   transaccionId?: string;
   code: string;
-}
-interface payMethodInfo {
-  methodDestinatario: string;
-}
-
-interface FormInputs {
-  note: string;
-  file: File;
 }
 
 const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId, code }) => {
@@ -85,12 +72,6 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId, 
 
     try {
       setLoading(true);
-      // const token = sessionStorage.getItem('token');
-
-      // if (!token) {
-      //   handleEditRequestError();
-      //   return;
-      // }
       await sendFormData({
         message: note,
         file: file,
