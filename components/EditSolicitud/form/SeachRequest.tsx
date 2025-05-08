@@ -41,7 +41,7 @@ const SeachRequest: React.FC = () => {
         userEmail: data.userEmail,
       };
 
-      await fetchTransactionById(requestData);
+      await fetchTransactionById(requestData); // Fetch para saber el estado de la transaccion
 
       setIsToggled(true);
       setTransaccionId(data.transaccionId);

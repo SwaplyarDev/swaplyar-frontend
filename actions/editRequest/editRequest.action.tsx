@@ -29,9 +29,10 @@ export const fetchTransactionById = async (requestData: TransactionRequestData):
         'Content-Type': 'application/json',
       },
     });
-    // const result = await response.json();
+
     // console.log('respuesta:', result);
     // console.log('response:', response);
+
     if (!response.ok) {
       if (response.status === 404) {
         throw new Error('El ID de la transacción no fue encontrada.');
@@ -39,6 +40,8 @@ export const fetchTransactionById = async (requestData: TransactionRequestData):
         throw new Error('Ocurrió un error al buscar la transacción.');
       }
     }
+    const result = await response.json();
+    return result;
   } catch (error) {
     console.error('Error fetching transaction:', error);
     throw new Error(error instanceof Error ? error.message : 'Error desconocido.');
