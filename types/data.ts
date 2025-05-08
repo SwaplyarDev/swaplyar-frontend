@@ -26,6 +26,6 @@ export type FormValues = {
 };
 
 export type RequestSearch = {
-  numberOfRequest: string;
+  transactionId: string;
   lastNameRequest: string;
 };
