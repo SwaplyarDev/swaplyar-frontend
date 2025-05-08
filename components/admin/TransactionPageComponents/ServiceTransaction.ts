@@ -67,7 +67,7 @@ export async function UploadTransactionReceipt(transactionId: string, file: File
 /**
  * Actualiza los datos de una transacción
  */
-export async function UpdateTransactionData(transactionData: FormData, transactionId: string) {
+export async function UpdateTransactionData(transactionData: any, transactionId: string) {
   try {
     const result = await updateTransaction(transactionData, transactionId);
     return result;
