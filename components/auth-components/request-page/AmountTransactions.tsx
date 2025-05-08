@@ -3,9 +3,9 @@ import Slider from '@mui/material/Slider';
 import { star, yellowStar } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 
-function AmountTransactions({ amountTotal, cantTransactions }: { amountTotal: number; cantTransactions: number }) {
+function AmountTransactions({ amountTotal, totalTransactions }: { amountTotal: number; totalTransactions: number }) {
   const arrayStars = [star, star, star, star, star];
-  const yellowStarsCount = Math.min(cantTransactions, 5);
+  const yellowStarsCount = Math.min(totalTransactions, 5);
 
   // Asegurarnos que amountTotal es un número válido
   const safeAmountTotal = Number.isFinite(amountTotal) ? Math.min(amountTotal, 500) : 0;
