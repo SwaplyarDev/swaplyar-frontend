@@ -29,8 +29,11 @@ const NavbarInternal = () => {
   const [mostrarModalPerfil, setMostrarModalPerfil] = useState(false);
   const { data: session, status } = useSession();
 
-  //const isAdmin = session?.decodedToken.role === 'admin' ? true : false;
-  const isAdmin = true;
+  if (!session) return false;
+
+  const user = session.user;
+
+  const isAdmin = session.user.role === 'admin' ? true : false;
 
   const closeDrawerMenu = () => {
     setIsClosing(true);
@@ -75,7 +78,7 @@ const NavbarInternal = () => {
               >
                 {/* Imagen de perfil */}
                 <Image
-                  src={swaplyArAvatar}
+                  src={user.profile.profilePictureUrl ? user.profile.profilePictureUrl : swaplyArAvatar}
                   alt="Foto perfil Usuario"
                   width={100}
                   height={100}
@@ -104,8 +107,7 @@ const NavbarInternal = () => {
               </div>
               <div className={`flex-1 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} flex w-full items-center`}>
                 <p className="hidden whitespace-nowrap pl-2 font-sans text-white dark:text-black sm-tablet2:block">
-                  {/* {session?.decodedToken.fullName} */}
-                  NOMBRE USUARIO
+                  {session.user.fullName}
                 </p>
               </div>
               <div

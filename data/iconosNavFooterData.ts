@@ -26,5 +26,10 @@ export const iconos = [
   },
   { texto: 'Plus Rewards', iconoPath: icono_plus, iconoDarkPath: iconoDark_plus, linkPath: '/es/auth/plus-rewards' },
   { texto: 'Cuentas', iconoPath: icono_cuentas, iconoDarkPath: iconoDark_cuentas, linkPath: '/es/auth/cuentas' },
-  { texto: 'Centro de Ayuda', iconoPath: icono_ayuda, iconoDarkPath: iconoDark_ayuda, linkPath: '#' },
+  {
+    texto: 'Centro de Ayuda',
+    iconoPath: icono_ayuda,
+    iconoDarkPath: iconoDark_ayuda,
+    linkPath: '/es/auth/centro-de-ayuda',
+  },
 ];
