@@ -4,12 +4,21 @@ import { ImagePlusRewards } from '../ImagePlusRewards';
 import { useTransactions } from '@/components/historial/use-transactions';
 import { useSession } from 'next-auth/react';
 import AmountTransactions from '../AmountTransactions';
+import { useEffect, useState } from 'react';
 function PlusRewardInitial() {
   const { transactions } = useTransactions();
   const { data: session } = useSession();
-
+  const [totalAmount, setTotalAmount] = useState(0);
+  console.log(session);
   console.log(transactions);
   const hidden = transactions.length === 0 ? 'flex' : 'hidden';
+
+  useEffect(() => {
+    const arrayAmounts = transactions.map((transaction) => Number(transaction.amounts.sent.amount));
+    const accumulatedAmount = arrayAmounts.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    setTotalAmount(accumulatedAmount);
+  }, [transactions]);
+
   return (
     <section className="relative m-auto flex w-full max-w-7xl items-center">
       <section className="mx-auto flex w-full max-w-md flex-col justify-center rounded-lg p-6 font-light text-lightText dark:text-custom-whiteD xs-mini-phone:p-7 xs-phone:p-8 md-phone:p-10 md:flex-row-reverse lg:flex-col">
@@ -26,31 +35,39 @@ function PlusRewardInitial() {
         </article>
 
         <div>
-          <article className={`flex`}>
-            <p className="text-sm xs-mini-phone:text-base">
-              <span>La recompensa de </span>
-              <span className="whitespace-nowrap text-lg font-bold text-custom-blue-800 dark:text-custom-whiteD xs-phone:text-xl">
-                Bienvenida Express
-              </span>
-              <span className="whitespace-nowrap"> de </span>
-              <br></br>
-              <span className="titleFon align-sub text-xl font-bold text-custom-blue-800 dark:text-custom-whiteD xs-mini-phone:text-2xl xs-phone:text-3xl">
-                $3 USD
-              </span>
-              <span> se aplica automáticamente en tu</span>
-              <br></br>
-              <span className="whitespace-nowrap"> solicitud.</span>
+          {transactions.length === 0 ? (
+            <article className={`flex`}>
+              <p className="text-sm xs-mini-phone:text-base">
+                <span>La recompensa de </span>
+                <span className="whitespace-nowrap text-lg font-bold text-custom-blue-800 dark:text-custom-whiteD xs-phone:text-xl">
+                  Bienvenida Express
+                </span>
+                <span className="whitespace-nowrap"> de </span>
+                <br></br>
+                <span className="titleFon align-sub text-xl font-bold text-custom-blue-800 dark:text-custom-whiteD xs-mini-phone:text-2xl xs-phone:text-3xl">
+                  $3 USD
+                </span>
+                <span> se aplica automáticamente en tu</span>
+                <br></br>
+                <span className="whitespace-nowrap"> solicitud.</span>
+              </p>
+              <Image
+                src="/images/solicitud-image.png"
+                alt="Rewards Character"
+                width={395}
+                height={290}
+                className="object-cover xs-mini-phone:w-[220px] md-phone:w-[240px] lg:w-[260px]"
+              />
+            </article>
+          ) : (
+            <p>
+              Haz completado <b className="font-semibold">{transactions.length}/5</b> solicitudes exitosas y acumulado{' '}
+              <b className="font-semibold">{totalAmount}/500 USD</b>
             </p>
-            <Image
-              src="/images/solicitud-image.png"
-              alt="Rewards Character"
-              width={395}
-              height={290}
-              className="object-cover xs-mini-phone:w-[220px] md-phone:w-[240px] lg:w-[260px]"
-            />
-          </article>
-          {session?.decodedToken?.isActive ? (
-            <AmountTransactions />
+          )}
+
+          {session?.user.userVerification ? (
+            <AmountTransactions amountTotal={totalAmount} cantTransactions={transactions.length} />
           ) : (
             <article className="relative mb-6 rounded-lg p-2">
               <div className="text-center">
