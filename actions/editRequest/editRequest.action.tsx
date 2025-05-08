@@ -21,7 +21,6 @@ interface TransactionData {
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const fetchTransactionById = async (requestData: TransactionRequestData): Promise<any> => {
-  console.log(requestData.transaccionId);
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/code/${requestData.transaccionId}`, {
       method: 'POST',
@@ -48,7 +47,6 @@ export const fetchTransactionById = async (requestData: TransactionRequestData):
   }
 };
 export const fetchCode = async (code: string, requestData: { transactionId: string }): Promise<any> => {
-  console.log(code);
   try {
     // Realizar la solicitud POST al backend para verificar el código
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/code/validate`, {
@@ -61,8 +59,6 @@ export const fetchCode = async (code: string, requestData: { transactionId: stri
         transaction_id: requestData.transactionId, // ID de transacción proveniente del requestData
       }),
     });
-    console.log('response body', response.body);
-    console.log('Respuesta del servidor del fetchCode:', response);
 
     const result = await response.json();
     console.log('result json:', result);
