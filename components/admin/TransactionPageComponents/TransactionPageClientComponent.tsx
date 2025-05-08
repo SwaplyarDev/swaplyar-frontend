@@ -76,7 +76,7 @@ export default function TransactionPageClientComponent({
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className={`relative flex h-full w-full flex-col overflow-y-auto rounded-lg border-none bg-gray-50 shadow-sm outline-0 ring-0 transition-all duration-300 ease-out dark:bg-gray-900 ${
+      className={`relative grid h-full w-full grid-cols-1 gap-4 overflow-y-auto rounded-lg border-none bg-gray-50 font-textFont shadow-sm outline-0 ring-0 transition-all duration-300 ease-out dark:bg-gray-900 lg:grid-cols-2 ${
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
       }`}
       tabIndex={-1}
@@ -84,12 +84,12 @@ export default function TransactionPageClientComponent({
       {isLoading ? (
         <SkeletonModal />
       ) : (
-        <div className="grid grid-cols-2 gap-4 font-textFont">
+        <>
           <div className="col-span-2">
             <InfoStatus trans={initialTransaction} transId={transId} />
           </div>
 
-          <div>
+          <div className="col-span-1">
             <div className="grid gap-4">
               {/* Confirmar Transferencia */}
               <ConfirmTransButton
@@ -129,7 +129,7 @@ export default function TransactionPageClientComponent({
             </div>
           </div>
 
-          <div>
+          <div className="col-span-2 lg:col-span-1">
             <div className="grid gap-4">
               <TransferImages trans={initialTransaction} />
 
@@ -162,7 +162,7 @@ export default function TransactionPageClientComponent({
               <TransactionDetail transaction={initialTransaction} isLoading={isLoading} />
             </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
