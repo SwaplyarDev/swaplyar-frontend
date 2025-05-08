@@ -1,13 +1,11 @@
 'use client';
 
-import ListFooterAuth from './ListFooterAuth';
-import { NavIcons } from './NavIcons';
 import Link from 'next/link';
 import Image from 'next/image';
 import { SwaplyArLogoLightTheme, SwaplyArLogoDarkTheme } from '@/utils/assets/imgDatabaseCloudinary';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { FooterLink } from '@/components/footer/FooterLink/FooterLink';
-import IconosFooter from './IconosFooter';
+import FooterIconos from './FooterIconos';
 
 export const FooterInternal = () => {
   const { isDark } = useDarkTheme();
@@ -32,9 +30,8 @@ export const FooterInternal = () => {
 
       {/* Footer Mobile */}
       <div className={`fixed bottom-0 mx-auto flex h-16 w-full justify-center md-phone:hidden`}>
-        {/* <NavIcons isFooter={true} /> */}
         <span className={`flex-1 grow ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></span>
-        <IconosFooter />
+        <FooterIconos />
         <span className={`flex-1 grow ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></span>
       </div>
     </footer>
