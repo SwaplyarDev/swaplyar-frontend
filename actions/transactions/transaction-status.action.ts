@@ -160,7 +160,7 @@ export async function uploadReceipt(transactionId: string, file: File) {
 /**
  * Server Action para actualizar datos de una transacción
  */
-export async function updateTransaction(transactionData: FormData, transaction_id: string) {
+export async function updateTransaction(transactionData: any, transaction_id: string) {
   try {
     const session = await auth();
 
@@ -186,7 +186,7 @@ export async function updateTransaction(transactionData: FormData, transaction_i
     console.log('token', token);
 
     // Llamar al endpoint para actualizar la transacción
-    const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/${transaction_id}`, {
+    const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/${transaction_id}/receiver`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,

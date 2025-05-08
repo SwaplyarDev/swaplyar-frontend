@@ -14,7 +14,7 @@ interface InfoStatusProps {
 const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
   const { status, transaction } = trans;
   const { data: session } = useSession();
-  const userName = session?.user?.name;
+  const userName = session?.user?.fullName;
 
   // Format date with better localization
   const formatDate = (dateString: string) => {
@@ -65,7 +65,7 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
 
     const config = statusConfig[status?.toLowerCase() as keyof typeof statusConfig] || statusConfig.default;
 
-    console.log(status?.toLowerCase());
+    // console.log(status?.toLowerCase());
 
     return (
       <div

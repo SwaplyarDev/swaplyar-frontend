@@ -135,9 +135,18 @@ export default function TransactionPageClientComponent({
 
               {/* aca tendria que ir el mensaje de edicion o cancelacion */}
 
-              <ClientEditCancelMessage type={ClientMessageType.Edit} message="hola" />
+              <ClientEditCancelMessage
+                type={
+                  initialTransaction.transaction.note_id && regretCancel
+                    ? ClientMessageType.Cancel
+                    : initialTransaction.transaction.note_id && noteEdit
+                      ? ClientMessageType.Edit
+                      : null
+                }
+                message={regretCancel?.note || noteEdit?.note}
+              />
 
-              {initialTransaction.transaction.regret_id && regretCancel ? (
+              {/* {initialTransaction.transaction.regret_id && regretCancel ? (
                 <div className="flex flex-col">
                   <p className="text-left text-base font-medium">
                     El Cliente solicito la Cancelacion y el Reembolso - Se realiza el reembolso a la cuenta de origen
@@ -157,7 +166,7 @@ export default function TransactionPageClientComponent({
                     classnames="border-[#D75600] min-h-[4.25rem]"
                   />
                 </div>
-              ) : null}
+              ) : null} */}
 
               <TransactionDetail transaction={initialTransaction} isLoading={isLoading} />
             </div>

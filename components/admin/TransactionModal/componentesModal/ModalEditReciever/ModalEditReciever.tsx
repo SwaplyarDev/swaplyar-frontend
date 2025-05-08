@@ -68,21 +68,28 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
   };
 
   const handleSubmit = async () => {
-    const formData = new FormData();
+    // const formData = new FormData();
 
-    for (const key in modifiedValues) {
-      formData.append(key, modifiedValues[key]);
-    }
+    // for (const key in modifiedValues) {
+    //   formData.append(key, modifiedValues[key]);
+    // }
 
-    if (selectedFile) {
-      formData.append('file', selectedFile);
-    }
+    // if (selectedFile) {
+    //   formData.append('file', selectedFile);
+    // }
+
+    const body = {
+      bank_name: modifiedValues.Banco,
+      sender_method_value: modifiedValues.CBU,
+      document_value: modifiedValues.DNI,
+    };
 
     try {
-      const plainObject = Object.fromEntries(formData.entries());
-      console.log(plainObject);
+      // const plainObject = Object.fromEntries(formData.entries());
+      // console.log(plainObject);
 
-      const response = await UpdateTransactionData(formData, transaction.transaction_id);
+      console.log(body);
+      const response = await UpdateTransactionData(body, transaction.transaction_id);
       console.log(response);
     } catch (error) {
       throw new Error(`❌ Error en la respuesta del servicio` + error);
