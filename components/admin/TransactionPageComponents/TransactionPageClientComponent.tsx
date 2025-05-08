@@ -19,6 +19,9 @@ import { useTransactionStatusUpdate } from '@/hooks/admin/transactionPageHooks/u
 import { useModalAnimation } from '@/hooks/admin/transactionPageHooks/useModalAnimation';
 import { useTransactionSubmission } from '@/hooks/admin/transactionPageHooks/useTransactionSubmision';
 import { useComponentStateManagement } from '@/hooks/admin/transactionPageHooks/useComponentStateManagement';
+import ClientEditCancelMessage, {
+  ClientMessageType,
+} from '../TransactionModal/componentesModal/ui/ClientEditCancelMessage';
 
 interface TransactionPageClientComponentProps {
   initialTransaction: TransactionTypeSingle;
@@ -130,7 +133,9 @@ export default function TransactionPageClientComponent({
             <div className="grid gap-4">
               <TransferImages trans={initialTransaction} />
 
-              <TransactionDetail transaction={initialTransaction} isLoading={isLoading} />
+              {/* aca tendria que ir el mensaje de edicion o cancelacion */}
+
+              <ClientEditCancelMessage type={ClientMessageType.Edit} message="hola" />
 
               {initialTransaction.transaction.regret_id && regretCancel ? (
                 <div className="flex flex-col">
@@ -153,6 +158,8 @@ export default function TransactionPageClientComponent({
                   />
                 </div>
               ) : null}
+
+              <TransactionDetail transaction={initialTransaction} isLoading={isLoading} />
             </div>
           </div>
         </div>
