@@ -62,9 +62,6 @@ export async function updateTransactionStatus(status: string, transaction_id: st
       };
     }
 
-    console.log(`${API_BASE_URL}/v1/admin/transactions/status/${status}?transactionId=${transaction_id}`);
-    console.log('payload antes de fecth ', payload);
-
     // Llamar al endpoint para actualizar el estado
     const response = await fetch(
       `${API_BASE_URL}/v1/admin/transactions/status/${status}?transactionId=${transaction_id}`,
@@ -74,7 +71,7 @@ export async function updateTransactionStatus(status: string, transaction_id: st
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ descripcion: payload.descripcion, review: payload.additionalData }),
+        body: JSON.stringify(payload),
       },
     );
 

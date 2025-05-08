@@ -112,7 +112,8 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
 
   const acceptReject = async () => {
     try {
-      const response = await TransactionService('canceled', transId, rejectionReason);
+      console.log('rechazando transaccion', transId, { descripcion: rejectionReason });
+      const response = await TransactionService('canceled', transId, { descripcion: rejectionReason });
       console.log(response);
       return response;
     } catch (error) {
@@ -202,8 +203,6 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
               )}
             </Tooltip>
 
-            {/* Rechazo innecesario por ahora en Aprobar/Rechazar Solicitud
-
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
@@ -223,7 +222,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                   <p>Rechazar solicitud</p>
                 </TooltipContent>
               )}
-            </Tooltip> */}
+            </Tooltip>
           </TooltipProvider>
         </div>
 
