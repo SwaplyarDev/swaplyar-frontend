@@ -7,15 +7,14 @@ import {
   PayoneerEurImg,
   PayoneerUsdImg,
   PayoneerUsdDarkImg,
-  PaypalLightImg,
+  PaypalImg,
   PaypalDarkImg,
-  PixDarkImg,
   PixImg,
   TetherDarkImg,
   TetherImg,
-  TransLightImg,
-  TransDarkImg,
-} from '@/utils/assets/img-database';
+  BankImg,
+  BankDarkImg,
+} from '@/utils/assets/imgDatabaseCloudinary';
 
 interface MockImages {
   image: string;
@@ -55,7 +54,7 @@ export const MockImagesTransLight: MockImages[] = [
     id: 5,
   },
   {
-    image: PaypalLightImg,
+    image: PaypalImg,
     name: 'paypal',
     id: 6,
   },
@@ -65,7 +64,7 @@ export const MockImagesTransLight: MockImages[] = [
     id: 7,
   },
   {
-    image: TransLightImg,
+    image: BankImg,
     name: 'ars',
     id: 8,
   },

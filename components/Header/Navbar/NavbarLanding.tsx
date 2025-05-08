@@ -120,8 +120,7 @@ const NavbarLanding = () => {
                 </Popover>
               </>
             ) : (
-              <>
-              </>
+              <></>
               // <LogInButton />
             )}
           </span>

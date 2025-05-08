@@ -1,29 +1,26 @@
-// /components/info/blog/blogDetail/CardDetail.tsx
-
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useParams, useSearchParams } from 'next/navigation';
+import { use, useEffect, useState } from 'react';
 import CardContent from './CardContent';
-import { fetchBlogById } from '@/actions/blogs/blogById.action';
+import { fetchBlogBySlug } from '@/actions/blogs/blogById.action';
 import { BlogPostCardProps } from '@/types/blogs/blog';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
-const CardDetail: React.FC = () => {
-  const searchParams = useSearchParams();
+function CardDetail() {
   const { isDark } = useDarkTheme();
-  const id = searchParams.get('id');
-  const slug = searchParams.get('slug');
-  const [blogData, setBlogData] = useState<BlogPostCardProps | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [blogData, setBlogData] = useState<BlogPostCardProps | null>(null);
+  const slugParam = useParams().slug;
+  const slug = Array.isArray(slugParam) ? slugParam[0] : slugParam;
+  console.log(slug);
 
   useEffect(() => {
-    if (!id) return;
-
+    if (!slug) return console.error('error al obtener slug');
     const fetchData = async () => {
       try {
-        const data = await fetchBlogById(id);
+        const data = await fetchBlogBySlug(slug);
         setBlogData(data);
       } catch (error) {
         console.error('Error al obtener el blog:', error);
@@ -33,7 +30,7 @@ const CardDetail: React.FC = () => {
     };
 
     fetchData();
-  }, [id, slug]);
+  }, [slug]);
 
   if (isLoading) {
     return (
@@ -42,12 +39,11 @@ const CardDetail: React.FC = () => {
       </div>
     );
   }
-
   if (!blogData) {
     return <p className="p-6 text-center text-gray-500">Blog no encontrado.</p>;
   }
 
-  return <CardContent blogData={blogData} />;
-};
+  return <CardContent {...blogData} />;
+}
 
 export default CardDetail;

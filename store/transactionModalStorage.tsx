@@ -1,22 +1,13 @@
-import { create } from 'zustand';
+import { getRegretById } from '@/actions/repentance/repentanceForm.action';
+import { getAdminTransactionById } from '@/actions/transactions/admin-transaction';
+import { getNoteById } from '@/actions/transactions/notes.action';
+import { getStatusTransactionAdmin, postStatusInAdmin } from '@/actions/transactions/transactions.action';
+import auth from '@/auth';
 import { NoteTypeSingle, emptyNote } from '@/types/transactions/notesType';
 import { RegretTypeSingle, emptyRegret } from '@/types/transactions/regretsType';
 import { TransactionTypeSingle, emptyTransaction } from '@/types/transactions/transactionsType';
-import {
-  getTransactionById,
-  updateStatusClient,
-  getStatusTransactionAdmin,
-  postStatusInAdmin,
-  updateStatusAdmin,
-} from '@/actions/transactions/transactions.action';
-import { getNoteById } from '@/actions/transactions/notes.action';
-import { getRegret } from '@/actions/repentance/repentanceForm.action';
 import { convertTransactionState, getComponentStatesFromStatus } from '@/utils/transactionStatesConverser';
-import {
-  TransactionService,
-  GetTransactionStatus,
-} from '@/components/TransactionModal/componentesModal/ui/TransactionService';
-import { useSession } from 'next-auth/react';
+import { create } from 'zustand';
 
 interface TransactionStatus {
   refunded: {
@@ -58,7 +49,10 @@ interface TransactionState {
     transferRealized: boolean;
   };
 
+  hasFetchedStatus: boolean;
+
   selected: 'stop' | 'accepted' | 'canceled' | null;
+
   fetchTransaction: (transId: string) => Promise<void>;
   fetchNote: (noteId: string) => Promise<void>;
   fetchRegret: (regretId: string) => Promise<void>;
@@ -69,7 +63,6 @@ interface TransactionState {
   updateStatusFromComponents: () => void;
   getStatusClient: (transId: string, trans: any) => Promise<void>;
 }
-
 export const useTransactionStore = create<TransactionState>((set, get) => ({
   trans: emptyTransaction,
   noteEdit: emptyNote,
@@ -85,11 +78,16 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
     transferRealized: false,
   },
   selected: null,
+  hasFetchedStatus: false,
+  setHasFetchedStatus: (value: boolean) => set({ hasFetchedStatus: value }),
 
   fetchTransaction: async (transId) => {
     set({ isLoading: true });
+    const session = await auth();
+    if (!session?.accessToken) return;
+    const token = session?.accessToken;
     try {
-      const trans = await getTransactionById(transId);
+      const trans = await getAdminTransactionById(transId);
       const existOnAdmin: any = await getStatusTransactionAdmin(transId);
       if (trans) {
         if (existOnAdmin?.success) {
@@ -98,7 +96,7 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
           const idAdminTrans = existOnAdmin.data?.transaction_admin_id;
           set({ status: stat, componentStates: comps, transIdAdmin: idAdminTrans });
         } else {
-          postStatusInAdmin(transId, '1');
+          postStatusInAdmin(transId, '1', token);
         }
         set({ trans });
       }
@@ -116,10 +114,10 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
       return;
     }
     try {
-      const response = await GetTransactionStatus(status, transId);
+      const trans = await getAdminTransactionById(transId);
 
-      if (response?.newStatus) {
-        set({ status: response.newStatus });
+      if (trans?.newStatus) {
+        set({ status: trans.newStatus });
       } else {
         console.warn('⚠️ No se recibió un nuevo estado en la respuesta.');
       }
@@ -131,12 +129,11 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
     if (!trans) {
       throw new Error('error');
     }
-
     try {
-      const response = await GetTransactionStatus(transId, trans);
+      const response = await getStatusTransactionAdmin(transId);
 
-      if (response?.newStatus) {
-        set({ status: response.newStatus });
+      if (response?.data?.status) {
+        set({ status: response?.data?.status });
       } else {
         console.warn('⚠️ No se recibió un nuevo estado en la respuesta.');
       }
@@ -158,7 +155,7 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
 
   fetchRegret: async (idRegret: string) => {
     try {
-      const { regret } = await getRegret(idRegret);
+      const { regret } = await getRegretById(idRegret);
       if (regret) {
         set({ regretCancel: regret });
       }
