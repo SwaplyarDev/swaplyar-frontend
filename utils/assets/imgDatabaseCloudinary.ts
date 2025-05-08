@@ -252,7 +252,13 @@ export const qrDark =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1741270782/48235050-QR_BYBIT_OSCURO_hacxbp.png';
 
 // home images AmountTransactions component
-
 export const star = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745244113/Star_s1l0xg.png';
-
 export const yellowStar = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745244121/yellowStar_ikqrxq.svg';
+
+// home images PlusRewards component
+export const plusRewardsLight =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1746712147/solicitud-plus-rewards-light_rokqud.png';
+export const plusRewardsDark =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1746712147/solicitud-plus-rewards-dark_hfhbxr.png';
+export const solicitudImage =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1746712093/solicitud-image_kminsi.png';

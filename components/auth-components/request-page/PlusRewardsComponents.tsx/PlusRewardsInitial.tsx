@@ -3,8 +3,9 @@ import { VerifyButton } from '../VerifyButton';
 import { ImagePlusRewards } from '../ImagePlusRewards';
 import { useTransactions } from '@/components/historial/use-transactions';
 import { useSession } from 'next-auth/react';
-import AmountTransactions from '../AmountTransactions';
 import { useEffect, useState } from 'react';
+import { solicitudImage } from '@/utils/assets/imgDatabaseCloudinary';
+import AmountTransactions from '../AmountTransactions';
 function PlusRewardInitial() {
   const { transactions } = useTransactions();
   const { data: session } = useSession();
@@ -52,7 +53,7 @@ function PlusRewardInitial() {
                 <span className="whitespace-nowrap"> solicitud.</span>
               </p>
               <Image
-                src="/images/solicitud-image.png"
+                src={solicitudImage}
                 alt="Rewards Character"
                 width={395}
                 height={290}
