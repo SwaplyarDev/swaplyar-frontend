@@ -74,7 +74,7 @@ const NavbarInternal = () => {
                 onClick={() => {
                   setMostrarModalPerfil(!mostrarModalPerfil);
                 }}
-                className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} absolute left-4 top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] hover:bg-gradient-to-t sm-tablet2:p-[0.25rem]`}
+                className={`${isActive === 'perfil' || pathname === '/es/auth/perfil' ? 'bg-gradient-to-t' : ''} absolute left-4 top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[0.25rem] hover:bg-gradient-to-t`}
               >
                 {/* Imagen de perfil */}
                 <Image
