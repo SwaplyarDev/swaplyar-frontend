@@ -26,7 +26,7 @@ const ClientStatus = ({ status }: ClientStatusProps) => {
   return (
     <div
       key={statusMap.id}
-      className={`w-full cursor-pointer p-4 transition-all duration-300 ${`${statusMap.colorClass} ${statusMap.colorClass.replace('bg-', 'text-')} bg-opacity-10 shadow-sm`}`}
+      className={`cursor-pointer p-1 transition-all duration-300 ${`${statusMap.colorClass} ${statusMap.colorClass.replace('bg-', 'text-')} bg-opacity-10 shadow-sm`}`}
     >
       <div className="mb-1 flex items-center gap-2">
         <span className={`h-3 w-3 rounded-full ${statusMap.colorClass} ${statusMap.outlineClass}`}></span>

@@ -12,7 +12,8 @@ interface InfoStatusProps {
 }
 
 const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
-  const { status, transaction } = trans;
+  const { transaction } = trans;
+  const { status } = transaction;
   const { data: session } = useSession();
   const userName = session?.user?.fullName;
 
@@ -29,7 +30,7 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
   // Get status badge based on current status
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      pending: {
+      '1': {
         bgColor: 'bg-blue-100 dark:bg-blue-900/30',
         textColor: 'text-blue-800 dark:text-blue-300',
         borderColor: 'border-blue-200 dark:border-blue-800',
@@ -37,7 +38,22 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
         label: 'En Proceso',
         ariaLabel: 'Estado: En Proceso',
       },
-      canceled: {
+      '3': {
+        bgColor: 'bg-green-100 dark:bg-green-900/30',
+        textColor: 'text-green-800 dark:text-green-300',
+        borderColor: 'border-green-200 dark:border-green-800',
+        icon: <CheckCircle className="mr-1.5 h-4 w-4" />,
+        label: 'Aceptada',
+        ariaLabel: 'Estado: Aceptada',
+      },
+      '7': {
+        bgColor: 'bg-amber-100 dark:bg-amber-900/30',
+        textColor: 'text-amber-800 dark:text-amber-300',
+        icon: <AlertCircle size={14} className="mr-1" />,
+        label: 'Stop',
+        ariaLabel: 'Estado: Stop',
+      },
+      '8': {
         bgColor: 'bg-red-100 dark:bg-red-900/30',
         textColor: 'text-red-800 dark:text-red-300',
         borderColor: 'border-red-200 dark:border-red-800',
@@ -45,13 +61,21 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
         label: 'Rechazada',
         ariaLabel: 'Estado: Rechazada',
       },
-      accepted: {
-        bgColor: 'bg-green-100 dark:bg-green-900/30',
-        textColor: 'text-green-800 dark:text-green-300',
-        borderColor: 'border-green-200 dark:border-green-800',
-        icon: <CheckCircle className="mr-1.5 h-4 w-4" />,
-        label: 'Aceptada',
-        ariaLabel: 'Estado: Aceptada',
+      '9': {
+        bgColor: 'bg-red-100 dark:bg-red-900/30',
+        textColor: 'text-red-800 dark:text-red-300',
+        borderColor: 'border-red-200 dark:border-red-800',
+        icon: <XCircle className="mr-1.5 h-4 w-4" />,
+        label: 'Cancelada',
+        ariaLabel: 'Estado: Cancelada',
+      },
+      '11': {
+        bgColor: 'bg-red-100 dark:bg-red-900/30',
+        textColor: 'text-red-800 dark:text-red-300',
+        borderColor: 'border-red-200 dark:border-red-800',
+        icon: <XCircle className="mr-1.5 h-4 w-4" />,
+        label: 'Rechazada',
+        ariaLabel: 'Estado: Rechazada',
       },
       default: {
         bgColor: 'bg-gray-100 dark:bg-gray-800',
@@ -63,9 +87,8 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
       },
     };
 
-    const config = statusConfig[status?.toLowerCase() as keyof typeof statusConfig] || statusConfig.default;
-
-    // console.log(status?.toLowerCase());
+    // @ts-ignore
+    const config = status ? statusConfig[status] : statusConfig.default;
 
     return (
       <div

@@ -11,8 +11,6 @@ import type { TransactionArray, TransactionTypeAll } from '@/types/transactions/
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import TransactionModal from '@/components/admin/TransactionModal/transactionModal';
 import { useRouter } from 'next/navigation';
-import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
-import BackButton from '../../Sidebar/componentsSidebar/Navigation/BackButto';
 import ClientStatus from './ClientStatus';
 
 interface TransactionsTableProps {
@@ -161,19 +159,39 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
   // Función para obtener el badge de estado
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      pending: {
+      '1': {
         bgColor: 'bg-blue-100 dark:bg-blue-900/30',
         textColor: 'text-blue-800 dark:text-blue-300',
         icon: <Clock size={14} className="mr-1" />,
         label: 'En Proceso',
       },
-      canceled: {
+      '3': {
+        bgColor: 'bg-green-100 dark:bg-green-900/30',
+        textColor: 'text-green-800 dark:text-green-300',
+        borderColor: 'border-green-200 dark:border-green-800',
+        icon: <CheckCircle className="mr-1.5 h-4 w-4" />,
+        label: 'Aceptada',
+        ariaLabel: 'Estado: Aceptada',
+      },
+      '7': {
+        bgColor: 'bg-amber-100 dark:bg-amber-900/30',
+        textColor: 'text-amber-800 dark:text-amber-300',
+        icon: <AlertCircle size={14} className="mr-1" />,
+        label: 'Stop',
+      },
+      '8': {
         bgColor: 'bg-red-100 dark:bg-red-900/30',
         textColor: 'text-red-800 dark:text-red-300',
         icon: <XCircle size={14} className="mr-1" />,
         label: 'Cancelada',
       },
-      accepted: {
+      '9': {
+        bgColor: 'bg-blue-100 dark:bg-blue-900/30',
+        textColor: 'text-blue-800 dark:text-blue-300',
+        icon: <Clock size={14} className="mr-1" />,
+        label: 'En Proceso',
+      },
+      '11': {
         bgColor: 'bg-green-100 dark:bg-green-900/30',
         textColor: 'text-green-800 dark:text-green-300',
         icon: <CheckCircle size={14} className="mr-1" />,
@@ -187,7 +205,8 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
       },
     };
 
-    const config = statusConfig[status?.toLowerCase() as keyof typeof statusConfig] || statusConfig.default;
+    // @ts-ignore
+    const config = status ? statusConfig[status] : statusConfig.default;
 
     return (
       <span
@@ -563,7 +582,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                     className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
                     onClick={() => router.push(`/es/admin/transactions/${transaction.transaction.transaction_id}`)}
                   >
-                    <td className="px-4 py-3 text-sm">{getStatusBadge(transaction.status)}</td>
+                    <td className="px-4 py-3 text-sm">{getStatusBadge(transaction.transaction.status)}</td>
                     <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                       {formatDate(transaction.transaction.created_at)}
                     </td>

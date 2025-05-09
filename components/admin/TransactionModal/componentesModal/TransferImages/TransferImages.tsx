@@ -29,27 +29,11 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
   }
 
   // Determine alert status
-  const hasAlert = regret_id || note_id;
-  const alertType = regret_id ? 'cancel' : note_id ? 'edit' : null;
+  const hasAlert = false;
+  const alertType = false;
 
   // Alert styling based on type
   const alertStyles = {
-    cancel: {
-      border: 'border-red-600 dark:border-red-700',
-      bg: 'bg-red-100 dark:bg-red-900/30',
-      text: 'text-red-700 dark:text-red-300',
-      icon: 'text-red-600 dark:text-red-400',
-      title: 'CANCELACIÓN SOLICITADA',
-      hover: 'hover:bg-red-50 dark:hover:bg-red-900/40',
-    },
-    edit: {
-      border: 'border-amber-600 dark:border-amber-700',
-      bg: 'bg-amber-100 dark:bg-amber-900/30',
-      text: 'text-amber-700 dark:text-amber-300',
-      icon: 'text-amber-600 dark:text-amber-400',
-      title: 'SOLICITUD DE EDICIÓN',
-      hover: 'hover:bg-amber-50 dark:hover:bg-amber-900/40',
-    },
     normal: {
       border: 'border-blue-600 dark:border-blue-700',
       bg: 'bg-white dark:bg-gray-800',
@@ -59,7 +43,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
     },
   };
 
-  const currentStyle = alertType ? alertStyles[alertType] : alertStyles.normal;
+  const currentStyle = alertStyles.normal;
 
   return (
     <section
@@ -76,7 +60,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
           <div>
             <h3 className={`text-lg font-bold ${currentStyle.text}`}>ALERTA</h3>
             {/* @ts-expect-error */}
-            <p className={`font-medium ${currentStyle.text}`}>{alertStyles[alertType].title}</p>
+            <p className={`font-medium ${currentStyle.text}`}>{alertStyles.title}</p>
           </div>
         </div>
       )}

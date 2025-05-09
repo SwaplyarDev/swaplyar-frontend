@@ -137,9 +137,9 @@ export default function TransactionPageClientComponent({
 
               <ClientEditCancelMessage
                 type={
-                  initialTransaction.transaction.note_id && regretCancel
+                  initialTransaction.transaction.regret_id
                     ? ClientMessageType.Cancel
-                    : initialTransaction.transaction.note_id && noteEdit
+                    : initialTransaction.transaction.note_id
                       ? ClientMessageType.Edit
                       : null
                 }

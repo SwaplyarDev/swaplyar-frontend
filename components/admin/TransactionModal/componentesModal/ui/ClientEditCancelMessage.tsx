@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { CancelIcon, EditIcon } from './MessageIcons';
 import { fetchTransactionById } from '../../../../../actions/editRequest/editRequest.action';
 
@@ -14,9 +15,11 @@ type ClientEditCancelMessageProps = {
 const ClientEditCancelMessage = ({ type, message }: ClientEditCancelMessageProps) => {
   if (!type) return <></>;
 
+  const formatted = format(Date.now(), 'yyyy-MM-dd HH:mm');
+
   return (
     <div
-      className={`rounded-2xl border-4 ${type === ClientMessageType.Edit ? 'border-[#FF6200]' : 'border-[#CE1818]'}`}
+      className={`rounded-2xl border-4 ${type === ClientMessageType.Edit ? 'border-[#FF6200] bg-orange-100' : 'border-[#CE1818] bg-red-100'}`}
     >
       <div className="m-4 flex items-center justify-start">
         <div className="mb-5">
@@ -31,7 +34,7 @@ const ClientEditCancelMessage = ({ type, message }: ClientEditCancelMessageProps
 
             <div className="flex flex-col items-end text-xs text-[#646464]">
               Fecha
-              <p className="text-xs text-[#646464]">{Date.now()}</p>
+              <p className="text-xs text-[#646464]">{formatted}</p>
             </div>
           </div>
           <div className="">
