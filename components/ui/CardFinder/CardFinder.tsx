@@ -13,12 +13,13 @@ function CardFinder() {
       filteredBlogs.map((post) => (
         <BlogPostCard
           key={post.blog_id}
+          description=""
           blog_id={post.blog_id}
           category={post.category}
           title={post.title}
           body={post.body}
-          url_image={post.url_image}
-          created_at={post.created_at}
+          image={post.url_image}
+          /* created_at={post.created_at} */
         />
       ))
     ) : (

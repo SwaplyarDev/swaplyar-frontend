@@ -22,8 +22,8 @@ const ContactForm = () => {
   } = useForm<FormValues>({
     mode: 'onChange',
     defaultValues: {
-      Nombre: (session?.user?.name && session?.user?.name.split(' ')[0]) || '',
-      Apellido: (session?.user?.name && session?.user?.name.split(' ')[1]) || '',
+      Nombre: session?.user?.name?.split(' ')[0] ?? '',
+      Apellido: (session?.user?.name ?? '').split(' ')[1] || '',
       email: session?.user?.email || '',
     },
   });

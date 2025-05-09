@@ -1,10 +1,11 @@
 import { useEffect, useCallback } from 'react';
-import useBlogStore from '@/store/useBlogStore';
+import useBlñogStore from '@/store/useBlogStore';
 import { fetchBlogs, filterBlogs } from '@/actions/blogs/blogs.actions';
 import { UseFetchBlogsProps } from '@/types/blogs/blog';
+import useBlogStore from '@/store/useBlogStore';
 
-const useFetchBlogs = ({ currentPage, searchTerm, setTotalPages }: UseFetchBlogsProps) => {
-  const { setBlogs, blogs, setIsLoading, isLoading } = useBlogStore();
+const useFetchBlogs = ({ currentPage, searchTerm }: UseFetchBlogsProps) => {
+  const { setBlogs, setIsLoading, setTotalPages } = useBlogStore();
 
   useEffect(() => {
     console.log('currentPage:', currentPage, 'searchTerm:', searchTerm);
@@ -28,7 +29,7 @@ const useFetchBlogs = ({ currentPage, searchTerm, setTotalPages }: UseFetchBlogs
       const fetchAndSetFilteredBlogs = async () => {
         setIsLoading(true);
         try {
-          const data = await filterBlogs(searchTerm);
+          const data = await filterBlogs(searchTerm, currentPage);
           console.log(data);
           if (data.blogsPerPage) {
             setBlogs(data.blogsPerPage);
@@ -42,7 +43,7 @@ const useFetchBlogs = ({ currentPage, searchTerm, setTotalPages }: UseFetchBlogs
       };
       fetchAndSetFilteredBlogs();
     }
-  }, [currentPage, searchTerm, setTotalPages, setBlogs, setIsLoading]);
+  }, [currentPage, searchTerm, setBlogs, setIsLoading]);
 };
 
 export default useFetchBlogs;

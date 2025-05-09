@@ -12,7 +12,7 @@ const ImageCarousel: React.FC<{ images: Blog[] }> = ({ images }) => {
   const [allImagesLoaded, setAllImagesLoaded] = useState(false);
   const sliderRef = useRef<Slider>(null);
 
-  const limitedImages = images.filter((blog) => blog.url_image).slice(0, 6);
+  const limitedImages = images.map((blog) => blog.image).slice(0, 6);
 
   useEffect(() => {
     if (limitedImages.length === 0) return;
@@ -22,7 +22,7 @@ const ImageCarousel: React.FC<{ images: Blog[] }> = ({ images }) => {
         (imgData) =>
           new Promise<void>((resolve) => {
             const img = new window.Image();
-            img.src = imgData.url_image;
+            img.src = imgData || '';
             img.onload = () => resolve();
           }),
       ),
@@ -53,19 +53,19 @@ const ImageCarousel: React.FC<{ images: Blog[] }> = ({ images }) => {
             arrows={false}
             className="h-[350px] border-none bg-inherit"
           >
-            {limitedImages.map((imgData) => {
+            {images.map((imgData) => {
               const title2 = imgData.title || '';
-              const slug = slugify(title2, { lower: true, strict: true });
+              const slug = slugify(title2, { strict: true });
               return (
                 <Link
-                  href={`blog/blogDetail?slug=${encodeURIComponent(slug)}&id=${encodeURIComponent(imgData.blog_id)}`}
+                  href={`blog/${slug}`}
                   key={imgData.blog_id || imgData.title}
                   className="relative flex h-[350px] items-center rounded-[30px] outline-none"
                 >
                   <div className="absolute inset-0 rounded-[30px] bg-gradient-to-r from-[#012A8E] to-[#B614FF] p-[4px] dark:from-[#EBE7E0] dark:to-[#56D6DC]">
                     <div className="h-full w-full overflow-hidden rounded-[26px] bg-white dark:bg-black">
                       <Image
-                        src={imgData.url_image}
+                        src={imgData.image || ''}
                         alt={imgData.title}
                         className="h-[350px] w-full object-cover"
                         width={800}

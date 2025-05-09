@@ -1,5 +1,5 @@
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { useState } from 'react';
+
 import AnimatedCerrarSesion from './AnimatedCerrarSesion';
 
 const CerrarSesion = () => {
@@ -7,7 +7,7 @@ const CerrarSesion = () => {
 
   return (
     <div
-      className={`flex h-16 w-[300px] items-center justify-center pl-0 pr-24 ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}
+      className={`flex h-16 items-center justify-end pr-12 sm-tablet2:justify-center sm-tablet2:pr-0 xl-desktop:w-[300px] ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}
     >
       <AnimatedCerrarSesion />
     </div>

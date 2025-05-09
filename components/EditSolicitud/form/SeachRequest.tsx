@@ -7,7 +7,6 @@ import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import VerifycodeEditRequest from '../VerifyCodeEditRequest/VerifyCodeEditRequest';
 import clsx from 'clsx';
 import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
-import useWindowWidth from '@/hooks/useWindowWidth';
 
 interface FormValues {
   transaccionId: string;
@@ -15,8 +14,6 @@ interface FormValues {
 }
 
 const SeachRequest: React.FC = () => {
-  const windowWidth = useWindowWidth();
-  const isMobile = windowWidth < 390;
   const [isToggled, setIsToggled] = useState(false);
   const [transaccionId, setTransaccionId] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);

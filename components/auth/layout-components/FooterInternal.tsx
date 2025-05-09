@@ -1,28 +1,38 @@
-import ListFooterAuth from './ListFooterAuth';
-import { NavIcons } from './NavIcons';
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
-import { SwaplyArLogoSolo } from '@/utils/assets/imgDatabaseCloudinary';
+import { SwaplyArLogoLightTheme, SwaplyArLogoDarkTheme } from '@/utils/assets/imgDatabaseCloudinary';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import { FooterLink } from '@/components/footer/FooterLink/FooterLink';
+import FooterIconos from './FooterIconos';
 
 export const FooterInternal = () => {
+  const { isDark } = useDarkTheme();
+
   return (
-    <footer>
-      {/* Footer Mobile */}
-      <div className={`fixed bottom-0 left-0 flex h-16 w-full justify-center bg-nav-blue pb-4 dark:bg-white xs:hidden`}>
-        <NavIcons isFooter={true} />
-      </div>
+    <footer className="relative">
       {/* Footer Desktop */}
-      <div className="hidden w-full justify-center pb-4 xs:flex">
-        <div className="flex w-full items-center justify-center px-4">
-          <ul className="flex flex-col items-center justify-between gap-4">
-            <ListFooterAuth />
-            <li className=":hover:w-1/3 mb-4 flex justify-center filter dark:brightness-[0%] dark:invert sm:mb-0 sm:w-1/3 sm:justify-center">
-              <Link href="/es/home">
-                <Image src={SwaplyArLogoSolo} alt="Cambiar saldo online" width={65} height={70} />
-              </Link>
-            </li>
-          </ul>
+      <div className="bottom-20 flex w-full flex-col items-center justify-center gap-4 pb-20 md-phone:pb-6">
+        <FooterLink label="Términos y Condiciones" href="/es/auth/terminos-y-condiciones/tyc-swaplyar" />
+        <FooterLink label="Plus Rewards" href="/es/auth/terminos-y-condiciones/tyc-plus-rewards" />
+        <div className="mb-4 flex sm:w-1/3 sm:justify-center sm-tablet2:mb-0">
+          <Link href="/es/home">
+            <Image
+              src={isDark ? SwaplyArLogoDarkTheme : SwaplyArLogoLightTheme}
+              alt="Cambiar saldo online"
+              width={57}
+              height={57}
+            />
+          </Link>
         </div>
+      </div>
+
+      {/* Footer Mobile */}
+      <div className={`fixed bottom-0 mx-auto flex h-16 w-full justify-center md-phone:hidden`}>
+        <span className={`flex-1 grow ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></span>
+        <FooterIconos />
+        <span className={`flex-1 grow ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></span>
       </div>
     </footer>
   );
