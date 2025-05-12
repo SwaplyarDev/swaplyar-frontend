@@ -4,30 +4,33 @@ import { ImagePlusRewards } from '../ImagePlusRewards';
 import { useTransactions } from '@/components/historial/use-transactions';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-
 import AmountTransactions from '../AmountTransactions';
 import HasGanadoDiezDolares from './HasGanadoDiezDolares';
-import { TransactionVerificationStore } from '@/store/transactionVerificationStore';
 import BienvenidaVerificacion from './BienvenidaVerificacion';
+import { getDiscounts } from '@/actions/Discounts/discounts.action';
 function PlusRewardInitial() {
   const { transactions } = useTransactions();
   const { data: session } = useSession();
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [totalTransactions, setTotalTransactions] = useState(0);
+  const [discounts, setDiscounts] = useState<Promise<any> | null>(null);
   console.log(session);
   console.log(transactions);
-  const { isVerified, verificationTime, postVerificationTransactions, setVerified, setPostVerificationTransactions } =
-    TransactionVerificationStore();
+  const hidden = transactions.length === 0 ? 'flex' : 'hidden';
+
   useEffect(() => {
-    if (session?.user?.userVerification && !isVerified) {
-      setVerified();
+    const arrayAmounts = transactions.map((transaction) => Number(transaction.amounts.sent.amount));
+    const accumulatedAmount = arrayAmounts.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    setTotalAmount(accumulatedAmount);
+    setTotalTransactions(transactions.length);
+    try {
+      const descuentos = getDiscounts();
+      setDiscounts(descuentos);
+    } catch (error) {
+      console.error('Error fetching discounts:', error);
     }
-  }, [session, isVerified, setVerified]);
-
-  useEffect(() => {
-    setPostVerificationTransactions(transactions, verificationTime);
-  }, [transactions, verificationTime, setPostVerificationTransactions]);
-
-  const totalAmount = postVerificationTransactions.reduce((sum, tx) => sum + Number(tx.amounts.sent.amount), 0);
-  const totalTransactions = postVerificationTransactions.length;
+  }, [transactions]);
+  console.log('descuentos', discounts);
   return (
     <section className="relative m-auto flex w-full max-w-7xl items-center">
       <section className="mx-auto flex w-full max-w-md flex-col justify-center rounded-lg p-6 font-light text-lightText dark:text-custom-whiteD xs-mini-phone:p-7 xs-phone:p-8 md-phone:p-10 md:flex-row-reverse lg:flex-col">
@@ -46,20 +49,19 @@ function PlusRewardInitial() {
           <HasGanadoDiezDolares />
         ) : (
           <div>
-            {transactions.length === 0 ? (
+            {transactions.length === 0 && !session?.user.userVerification ? (
               <BienvenidaVerificacion
-                isverified={isVerified}
-                totalPostTransactions={totalTransactions}
-                totalTransactions={transactions.length}
+                cantTransactions={totalTransactions}
+                userVerification={session?.user.userVerification}
               />
             ) : (
               <p>
                 Haz completado <b className="font-semibold">{totalTransactions}/5</b> solicitudes exitosas y acumulado
-                <b className="font-semibold"> {totalAmount}/500 USD</b>
+                <b className="font-semibold">{totalAmount}/500 USD</b>
               </p>
             )}
 
-            {isVerified ? (
+            {session?.user.userVerification ? (
               <AmountTransactions amountTotal={totalAmount} totalTransactions={totalTransactions} />
             ) : (
               <article className="relative mb-6 rounded-lg p-2">
