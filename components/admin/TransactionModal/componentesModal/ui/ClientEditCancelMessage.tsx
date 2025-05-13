@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import { CancelIcon, EditIcon } from './MessageIcons';
 import { fetchTransactionById } from '../../../../../actions/editRequest/editRequest.action';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 export enum ClientMessageType {
   Edit = 'edit',
@@ -13,13 +14,15 @@ type ClientEditCancelMessageProps = {
 };
 
 const ClientEditCancelMessage = ({ type, message }: ClientEditCancelMessageProps) => {
+  const { isDark } = useDarkTheme();
+
   if (!type) return <></>;
 
   const formatted = format(Date.now(), 'yyyy-MM-dd HH:mm');
 
   return (
     <div
-      className={`rounded-2xl border-4 ${type === ClientMessageType.Edit ? 'border-[#FF6200] bg-orange-100' : 'border-[#CE1818] bg-red-100'}`}
+      className={`rounded-2xl border-4 ${type === ClientMessageType.Edit ? `border-[#FF6200] ${isDark ? 'bg-orange-300' : 'bg-orange-100'} ` : `border-[#CE1818] ${isDark ? 'bg-red-300' : 'bg-red-100'} `}`}
     >
       <div className="m-4 flex items-center justify-start">
         <div className="mb-5">

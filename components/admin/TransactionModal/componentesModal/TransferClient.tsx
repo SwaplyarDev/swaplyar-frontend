@@ -151,12 +151,16 @@ const TransferClient = () => {
 
       if (!form.file) return null;
 
+      const formData = new FormData();
+      formData.append('file', form.file);
+      formData.append('transaction_id', transId);
+
       const response = await updateTransactionStatus('approved', transId, {
         review: form.transfer_id,
         amount: form.amount,
       });
-      const responseFile = await uploadTransactionReceipt(transId, form.file);
-      console.log(response);
+      const responseFile = await uploadTransactionReceipt(formData);
+      console.log(response, responseFile);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);

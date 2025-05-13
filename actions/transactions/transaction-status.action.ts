@@ -21,11 +21,11 @@ const VALID_STATUSES = [
 
 export type StatusPayload = {
   descripcion?: string;
-  additionalData?: string;
+  additionalData?: {
+    codigo_transferencia?: string;
+  };
   review?: string;
   amount?: number;
-  file?: File | null;
-  formData?: FormData;
 };
 
 /**
