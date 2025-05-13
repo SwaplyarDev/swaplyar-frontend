@@ -45,6 +45,7 @@ const TransferClient = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [rejectionReason, setRejectionReason] = useState('');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -161,6 +162,14 @@ const TransferClient = () => {
     } catch (error) {
       setIsLoading(false);
       throw new Error(`❌ Error en la respuesta del servicio`);
+    }
+  };
+  const handleDialogAprove = () => {
+    if (!form.transfer_id || !form.amount) {
+      alert('Por favor completa todos los campos requeridos.');
+      return;
+    } else {
+      setShowAlert(true);
     }
   };
 
@@ -314,7 +323,7 @@ const TransferClient = () => {
             </div>
 
             <Button
-              onClick={handleAprove}
+              onClick={handleDialogAprove}
               className="h-11 bg-custom-blue text-white hover:bg-blue-700"
               aria-label="Enviar ID de transferencia"
             >
@@ -388,6 +397,35 @@ const TransferClient = () => {
                 className="dark:bg-red-700 dark:hover:bg-red-800"
               >
                 {isLoading ? 'Procesando...' : 'Confirmar rechazo'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        <Dialog open={showAlert} onOpenChange={setShowAlert}>
+          <DialogContent className="border border-gray-200 bg-white transition-all duration-300 dark:border-gray-700 dark:bg-gray-800/95">
+            <DialogHeader>
+              <DialogTitle className="text-gray-900 dark:text-gray-100">Confirmar solicitud</DialogTitle>
+              <DialogDescription className="text-gray-700 dark:text-gray-300">
+                ¿Estás seguro que deseas confirmar esta solicitud?
+              </DialogDescription>
+            </DialogHeader>
+
+            <DialogFooter className="flex gap-2 sm:justify-end">
+              <Button
+                variant="outline"
+                onClick={() => setShowAlert(false)}
+                disabled={isLoading}
+                className="dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700/50"
+              >
+                Cancelar
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={() => handleAprove()}
+                disabled={isLoading}
+                className="dark:bg-red-700 dark:hover:bg-red-800"
+              >
+                {isLoading ? 'Procesando...' : 'Confirmar solicitud'}
               </Button>
             </DialogFooter>
           </DialogContent>
