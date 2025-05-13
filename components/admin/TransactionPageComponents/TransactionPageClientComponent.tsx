@@ -133,8 +133,6 @@ export default function TransactionPageClientComponent({
             <div className="grid gap-4">
               <TransferImages trans={initialTransaction} />
 
-              {/* aca tendria que ir el mensaje de edicion o cancelacion */}
-
               <ClientEditCancelMessage
                 type={
                   initialTransaction.transaction.regret_id
@@ -145,28 +143,6 @@ export default function TransactionPageClientComponent({
                 }
                 message={regretCancel?.note || noteEdit?.note}
               />
-
-              {/* {initialTransaction.transaction.regret_id && regretCancel ? (
-                <div className="flex flex-col">
-                  <p className="text-left text-base font-medium">
-                    El Cliente solicito la Cancelacion y el Reembolso - Se realiza el reembolso a la cuenta de origen
-                  </p>
-                  <ClientMessage
-                    headerMessage="Mensaje"
-                    message={regretCancel.note}
-                    classnames="border-[#CE1818] min-h-[4.25rem]"
-                  />
-                </div>
-              ) : initialTransaction.transaction.note_id && noteEdit ? (
-                <div className="flex flex-col">
-                  <p className="text-base font-medium">El Cliente solicito Editar la Solicitud</p>
-                  <ClientMessage
-                    headerMessage="mensaje"
-                    message={noteEdit.note}
-                    classnames="border-[#D75600] min-h-[4.25rem]"
-                  />
-                </div>
-              ) : null} */}
 
               <TransactionDetail transaction={initialTransaction} isLoading={isLoading} />
             </div>
