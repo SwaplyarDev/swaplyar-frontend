@@ -47,7 +47,7 @@ export default function TransactionPageClientComponent({
   regretCancel,
 }: TransactionPageClientComponentProps) {
   const [discrepancySend, setDiscrepancySend] = useState(false);
-  const [modal, setModal] = useState<boolean>(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const { status, setStatus } = useTransactionStore();
 
@@ -122,7 +122,7 @@ export default function TransactionPageClientComponent({
                     componentStates.discrepancySection !== null &&
                     (componentStates.discrepancySection !== true || discrepancySend))) && (
                   <>
-                    <ClientInformation modal={modal} setModal={setModal} trans={initialTransaction} />
+                    <ClientInformation trans={initialTransaction} />
                     <FinalSection transId={transId} />
                   </>
                 )}

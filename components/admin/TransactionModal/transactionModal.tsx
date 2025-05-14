@@ -271,7 +271,7 @@ const TransactionModal = () => {
                 componentStates.discrepancySection !== null &&
                 (componentStates.discrepancySection !== true || discrepancySend))) && (
               <>
-                <ClientInformation modal={modal} setModal={setModal} trans={trans} />
+                <ClientInformation trans={trans} />
                 <FinalSection transId={transId} />
               </>
             )}

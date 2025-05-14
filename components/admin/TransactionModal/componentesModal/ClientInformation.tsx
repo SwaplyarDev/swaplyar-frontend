@@ -15,20 +15,13 @@ import ModalEditReciever from '@/components/admin/TransactionModal/componentesMo
 
 interface ClientInformationProps {
   trans: TransactionTypeSingle;
-  modal: boolean;
-  setModal: (arg: boolean) => void;
 }
 
-const ClientInformation: React.FC<ClientInformationProps> = ({ modal, setModal }) => {
+const ClientInformation: React.FC<ClientInformationProps> = () => {
   const { trans } = useTransactionStore();
   const { transaction } = trans;
-  const [open, setOpen] = useState(modal);
 
   // Update parent state when dialog changes
-  const handleOpenChange = (open: boolean) => {
-    setOpen(open);
-    setModal(open);
-  };
 
   return (
     <Card className="w-full overflow-hidden border-black bg-white shadow-sm transition-all duration-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-800/90 dark:hover:bg-gray-800">
@@ -42,22 +35,6 @@ const ClientInformation: React.FC<ClientInformationProps> = ({ modal, setModal }
             )}
             {transaction.regret_id ? 'Información para el Reembolso' : 'Información para realizar el Pago'}
           </h2>
-
-          <Dialog open={open} onOpenChange={handleOpenChange}>
-            <DialogTrigger asChild>
-              <Button
-                variant="default"
-                className="bg-gradient-to-r from-amber-600 to-orange-700 transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 dark:from-amber-700 dark:to-orange-800 dark:hover:shadow-orange-900/20"
-              >
-                <Edit className="mr-2 h-4 w-4 text-white" />
-                <span className="text-white">Editar Destinatario</span>
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="border-gray-300 bg-white transition-all duration-300 dark:border-gray-700 dark:bg-gray-800/95 sm:max-w-5xl">
-              {/* Wrap your existing modal component */}
-              <ModalEditReciever modal={open} setModal={setOpen} trans={trans} />
-            </DialogContent>
-          </Dialog>
         </div>
 
         {transaction.regret_id && (
