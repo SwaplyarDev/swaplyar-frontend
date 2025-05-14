@@ -31,6 +31,10 @@ const ClientInformation: React.FC = () => {
             )}
             {transaction.regret_id ? 'Información para el Reembolso' : 'Información para realizar el Pago'}
           </h2>
+          <Button variant="outline">
+            <AlertTriangle className={`mr-2 h-5 w-5`} />
+            <span className="font-bold">STOP</span>
+          </Button>
         </div>
 
         {transaction.regret_id && (
