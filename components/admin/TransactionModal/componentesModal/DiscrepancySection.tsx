@@ -368,7 +368,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                           </Label>
                         </div>
 
-                        <div className="flex gap-2">
+                        <div className="flex gap-5">
                           <div className="relative flex-1">
                             <Input
                               id="reject-reason"

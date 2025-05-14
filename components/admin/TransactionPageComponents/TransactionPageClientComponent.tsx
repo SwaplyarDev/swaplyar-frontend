@@ -122,7 +122,7 @@ export default function TransactionPageClientComponent({
                     componentStates.discrepancySection !== null &&
                     (componentStates.discrepancySection !== true || discrepancySend))) && (
                   <>
-                    <ClientInformation trans={initialTransaction} />
+                    <ClientInformation />
                     <FinalSection transId={transId} />
                   </>
                 )}

@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/Button';
 import { AlertTitle } from '@mui/material';
 import { Alert, AlertDescription } from '@/components/ui/Alert';
 import { useSession } from 'next-auth/react';
+import MessageWpp from './ui/MessageWpp';
 
 interface AprobarRechazarProps {
   selected: 'stop' | 'accepted' | 'canceled' | null;
@@ -282,7 +283,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                 <p className="mt-2">Esta acción pausará el proceso hasta que se resuelvan las discrepancias.</p>
               </AlertDescription>
             </Alert>
-
+            <MessageWpp text="Comunicate mediante **WhatsApp** del Remitente para solucionar la discrepancia " />
             <DiscrepancySection trans={trans} value={true} setDiscrepancySend={setDiscrepancySend} />
           </div>
         )}

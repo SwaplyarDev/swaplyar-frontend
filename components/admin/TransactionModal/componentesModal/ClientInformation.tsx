@@ -13,11 +13,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/Alert';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/Dialog';
 import ModalEditReciever from '@/components/admin/TransactionModal/componentesModal/ModalEditReciever/ModalEditReciever';
 
-interface ClientInformationProps {
-  trans: TransactionTypeSingle;
-}
-
-const ClientInformation: React.FC<ClientInformationProps> = () => {
+const ClientInformation: React.FC = () => {
   const { trans } = useTransactionStore();
   const { transaction } = trans;
 
