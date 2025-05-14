@@ -7,7 +7,6 @@ import { CheckCircle, XCircle, Upload, LinkIcon, DollarSign, FileText, Send, Tra
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import {
   Dialog,
   DialogContent,
@@ -25,10 +24,18 @@ import { updateTransactionStatus } from '@/actions/transactions/transaction-stat
 import { useParams } from 'next/navigation';
 import { Check } from '@mui/icons-material';
 import { uploadTransactionReceipt } from '@/actions/transactions/admin-transaction';
+import { useSession } from 'next-auth/react';
 
 interface Form {
   transfer_id: string;
-  amount: number;
+  amount: string;
+  file: File | null;
+}
+
+interface RefundForm {
+  transfer_id: string;
+  amount: string;
+  description: string;
   file: File | null;
 }
 
@@ -36,10 +43,21 @@ const TransferClient = () => {
   const params = useParams();
   const transId = params.id as string;
 
+  const session = useSession();
+
+  const token = session.data?.accessToken || '';
+
   const [selected, setSelected] = useState<boolean | null>(null);
   const [form, setForm] = useState<Form>({
     transfer_id: '',
-    amount: 0,
+    amount: '',
+    file: null,
+  });
+
+  const [formRefund, setFormRefund] = useState<RefundForm>({
+    transfer_id: '',
+    amount: '',
+    description: '',
     file: null,
   });
   const [isDragging, setIsDragging] = useState(false);
@@ -47,6 +65,8 @@ const TransferClient = () => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [isInputTransferIdFocused, setIsInputTransferIdFocused] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -65,23 +85,21 @@ const TransferClient = () => {
     setIsDragging(false);
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = (e: React.DragEvent, target: 'form' | 'formRefund') => {
     e.preventDefault();
     setIsDragging(false);
-    handleFile(e.dataTransfer.files);
+    handleFile(e.dataTransfer.files, target);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, target: 'form' | 'formRefund') => {
     if (e.target.files) {
-      handleFile(e.target.files);
+      handleFile(e.target.files, target);
     }
   };
 
-  const handleFile = (files: FileList) => {
+  const handleFile = (files: FileList, target: 'form' | 'formRefund') => {
     if (files.length > 0) {
       const file = files[0];
-
-      // Validación opcional
       const isValidType = ['image/jpeg', 'image/png', 'application/pdf'].includes(file.type);
       const isValidSize = file.size <= 5 * 1024 * 1024;
 
@@ -95,7 +113,12 @@ const TransferClient = () => {
         return;
       }
 
-      setForm((prev) => ({ ...prev, file }));
+      if (target === 'form') {
+        setForm((prev) => ({ ...prev, file }));
+      } else {
+        setFormRefund((prev) => ({ ...prev, file }));
+      }
+
       console.log('Archivo actualizado:', file.name);
     }
   };
@@ -158,7 +181,7 @@ const TransferClient = () => {
 
       const response = await updateTransactionStatus('approved', transId, {
         review: form.transfer_id,
-        amount: form.amount,
+        amount: Number(form.amount),
       });
       const responseFile = await uploadTransactionReceipt(formData);
       console.log(response, responseFile);
@@ -174,6 +197,41 @@ const TransferClient = () => {
       return;
     } else {
       setShowAlert(true);
+    }
+  };
+
+  const handleSendRefound = async () => {
+    try {
+      if (!formRefund.file) return null;
+
+      console.log(formRefund);
+      console.log(transId);
+
+      const formData = new FormData();
+
+      formData.append('file', formRefund.file);
+      formData.append('transaction_id', transId);
+
+      const response = await updateTransactionStatus('refunded', transId, {
+        descripcion: formRefund.description,
+        additionalData: {
+          codigo_transferencia: formRefund.transfer_id,
+        },
+        amount: Number(formRefund.amount),
+      });
+
+      const responseFile = await fetch(`http://localhost:8080/api/v1/admin/transactions/voucher`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      console.log('Respuesta de la info', response);
+      console.log('Respuesta de el archivo', responseFile);
+    } catch (error) {
+      throw new Error(`❌ Error en la respuesta del servicio ${error}`);
     }
   };
 
@@ -281,7 +339,7 @@ const TransferClient = () => {
                   )}
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
+                  onDrop={(e) => handleDrop(e, 'form')}
                 >
                   <Upload className="text-primary h-8 w-8" />
                   <p className="px-4 text-center text-sm text-gray-600">
@@ -299,7 +357,7 @@ const TransferClient = () => {
                     type="file"
                     className="hidden"
                     accept="image/*,.pdf"
-                    onChange={handleFileChange}
+                    onChange={(e) => handleFileChange(e, 'form')}
                   />
                   <p className="text-xs text-gray-500">Formatos aceptados: JPG, PNG, PDF (máx. 5MB)</p>
                 </div>
@@ -337,26 +395,123 @@ const TransferClient = () => {
         ) : (
           selected === false && (
             <div className="animate-in fade-in duration-300">
-              <Label htmlFor="rejection-reason" className="text-sm font-medium text-gray-700">
-                Motivo del Rechazo <span className="text-red-500">*</span>
-              </Label>
+              <div className="mt-5">
+                <h1>Emitir el reembolso al Usuario a la cuenta de origen</h1>
 
-              <div className="flex gap-2">
-                <div className="relative flex-1">
-                  <Input
-                    id="rejection-reason"
-                    type="text"
-                    placeholder="Ingresa el motivo del rechazo"
-                    value={rejectionReason}
-                    onChange={(e) => setRejectionReason(e.target.value)}
-                    className={`h-11 transition-all duration-300`}
-                    aria-required="true"
-                  />
+                <div className="mt-5">
+                  <Label htmlFor="rejection-reason" className="text-sm font-medium text-gray-700">
+                    Motivo del Rechazo <span className="text-red-500">*</span>
+                  </Label>
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Input
+                        id="rejection-reason"
+                        type="text"
+                        placeholder="Ingresa el motivo del rechazo"
+                        value={formRefund.description}
+                        onChange={(e) => setFormRefund({ ...formRefund, description: e.target.value })}
+                        className={`h-11 transition-all duration-300`}
+                        aria-required="true"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="relative my-5 flex-1">
+                    <Input
+                      id="transfer-id"
+                      type="text"
+                      placeholder="Id de el reembolso"
+                      value={formRefund.transfer_id}
+                      onChange={(e) => setFormRefund({ ...formRefund, transfer_id: e.target.value })}
+                      // onFocus={() => setIsInputTransferIdFocused(true)}
+                      // onBlur={() => setIsInputTransferIdFocused(false)}
+                      className={`h-11 transition-all duration-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 ${
+                        isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
+                      }`}
+                      aria-required="true"
+                    />
+                  </div>
+
+                  <div className="relative mb-5 flex-1">
+                    <Input
+                      id="mount"
+                      type="text"
+                      placeholder="Monto transferido"
+                      value={formRefund.amount}
+                      onChange={(e) => setFormRefund({ ...formRefund, amount: e.target.value })}
+                      // onFocus={() => setIsInputTransferIdFocused(true)}
+                      // onBlur={() => setIsInputTransferIdFocused(false)}
+                      className={`h-11 transition-all duration-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 ${
+                        isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
+                      }`}
+                      aria-required="true"
+                    />
+                  </div>
+                </div>
+                <div className="animate-in fade-in flex flex-col items-center gap-4 pt-2 duration-300">
+                  <h4 className="text-center text-base font-semibold">Comprobante de Transferencia</h4>
+                  {!formRefund.file ? (
+                    <div
+                      className={cn(
+                        'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed transition-all duration-300',
+                        isDragging
+                          ? 'border-primary bg-primary/10'
+                          : 'hover:border-primary/70 hover:bg-primary/5 border-gray-50 bg-gray-800',
+                      )}
+                      onDragOver={handleDragOver}
+                      onDragLeave={handleDragLeave}
+                      onDrop={(e) => handleDrop(e, 'formRefund')}
+                    >
+                      <Upload className="text-primary h-8 w-8" />
+                      <p className="px-4 text-center text-sm text-gray-600">
+                        Arrastra y suelta el comprobante aquí o
+                        <Button
+                          variant="link"
+                          className="h-auto p-0 pl-1 font-medium"
+                          onClick={() => document.getElementById('file-upload')?.click()}
+                        >
+                          selecciona un archivo
+                        </Button>
+                      </p>
+                      <input
+                        id="file-upload"
+                        type="file"
+                        className="hidden"
+                        accept="image/*,.pdf"
+                        onChange={(e) => handleFileChange(e, 'formRefund')}
+                      />
+                      <p className="text-xs text-gray-500">Formatos aceptados: JPG, PNG, PDF (máx. 5MB)</p>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-50">
+                          <Check className="h-5 w-5 text-green-600" />
+                        </div>
+                        <div>
+                          <p className="font-medium">Comprobante cargado</p>
+                        </div>
+                      </div>
+                      <Button
+                        variant="link"
+                        className="gap-2 p-0 pt-5"
+                        onClick={() => setFormRefund({ ...formRefund, file: null })}
+                      >
+                        <Trash2 className="h-4 w-4 text-red-700" />
+                        <span className="text-sm font-medium">Eliminar comprobante</span>
+                      </Button>
+                    </div>
+                  )}
+
+                  <Button variant="link" className="gap-2 p-0">
+                    <LinkIcon className="h-4 w-4" />
+                    <span className="text-sm font-medium underline">Agregar link del comprobante</span>
+                  </Button>
                 </div>
 
                 <Button
-                  onClick={handleSubmitRejection}
-                  className="h-11 bg-custom-blue text-white hover:bg-blue-700"
+                  onClick={handleSendRefound}
+                  className="h-11 w-full bg-custom-blue text-white hover:bg-blue-700"
                   aria-label="Enviar ID de transferencia"
                 >
                   <span>Enviar</span>
@@ -382,7 +537,7 @@ const TransferClient = () => {
 
             <div className="w-full rounded-lg bg-gray-100 p-3 text-left dark:bg-gray-700/30">
               <p className="mb-1 font-medium text-gray-800 dark:text-gray-200">Motivo:</p>
-              <p className="text-gray-700 dark:text-gray-300">{rejectionReason}</p>
+              <p className="text-gray-700 dark:text-gray-300">{formRefund.description}</p>
             </div>
 
             <DialogFooter className="flex gap-2 sm:justify-end">
