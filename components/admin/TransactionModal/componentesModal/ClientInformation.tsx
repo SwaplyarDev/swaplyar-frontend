@@ -91,7 +91,7 @@ const ClientInformation: React.FC = ({}) => {
             <DiscrepancySection trans={trans} value={true} setDiscrepancySend={setDiscrepancySend} />
           </div>
         )}
-        <TransferClient />
+        {!select && <TransferClient />}
       </CardHeader>
 
       {/* Status indicator */}
