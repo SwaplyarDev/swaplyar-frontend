@@ -12,12 +12,24 @@ import { Card, CardHeader } from '@/components/ui/Card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/Alert';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/Dialog';
 import ModalEditReciever from '@/components/admin/TransactionModal/componentesModal/ModalEditReciever/ModalEditReciever';
+import MessageWpp from './ui/MessageWpp';
+import DiscrepancySection from './DiscrepancySection';
 
-const ClientInformation: React.FC = () => {
+const ClientInformation: React.FC = ({}) => {
   const { trans } = useTransactionStore();
   const { transaction } = trans;
-
+  const [select, setSelect] = useState<boolean | null>(null);
   // Update parent state when dialog changes
+  const handleStopClick = () => {
+    if (select) {
+      setSelect(false);
+    } else {
+      setSelect(true);
+    }
+  };
+  function setDiscrepancySend(value: boolean): void {
+    throw new Error('Function not implemented.');
+  }
 
   return (
     <Card className="w-full overflow-hidden border-black bg-white shadow-sm transition-all duration-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-800/90 dark:hover:bg-gray-800">
@@ -31,8 +43,18 @@ const ClientInformation: React.FC = () => {
             )}
             {transaction.regret_id ? 'Información para el Reembolso' : 'Información para realizar el Pago'}
           </h2>
-          <Button variant="outline">
-            <AlertTriangle className={`mr-2 h-5 w-5`} />
+          <Button
+            variant="outline"
+            onClick={handleStopClick}
+            className={
+              select
+                ? 'bg-amber-500 text-white shadow-lg shadow-amber-200 dark:bg-amber-600 dark:shadow-amber-900/20'
+                : 'border-2 border-amber-500 bg-white text-gray-700 hover:bg-amber-50 dark:border-amber-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-amber-900/20'
+            }
+          >
+            <AlertTriangle
+              className={select ? `h-5 w-5 text-white dark:text-white` : `h-5 w-5 text-amber-500 dark:text-amber-400`}
+            />
             <span className="font-bold">STOP</span>
           </Button>
         </div>
@@ -52,7 +74,23 @@ const ClientInformation: React.FC = () => {
         )}
 
         <RecieverData trans={trans} />
-
+        {select === true && (
+          <div className="animate-in fade-in mt-6 space-y-4 duration-300">
+            <Alert className="border-l-4 border-l-amber-500 bg-amber-50 transition-all duration-300 hover:bg-amber-100 dark:border-l-amber-600 dark:bg-amber-900/20 dark:hover:bg-amber-900/30">
+              <AlertTriangle className="h-5 w-5 text-amber-500 dark:text-amber-400" />
+              <AlertTitle className="text-amber-800 dark:text-amber-300">Información sobre STOP</AlertTitle>
+              <AlertDescription className="text-amber-700 dark:text-amber-400">
+                <p className="mt-1">
+                  Si los datos de la operación no coinciden (por ejemplo, si el monto es mayor o menor al acordado),
+                  comunícate con el solicitante para resolverlo antes de continuar.
+                </p>
+                <p className="mt-2">Esta acción pausará el proceso hasta que se resuelvan las discrepancias.</p>
+              </AlertDescription>
+            </Alert>
+            <MessageWpp text="Comunicate mediante **WhatsApp** del Remitente para solucionar la discrepancia " />
+            <DiscrepancySection trans={trans} value={true} setDiscrepancySend={setDiscrepancySend} />
+          </div>
+        )}
         <TransferClient />
       </CardHeader>
 
