@@ -87,7 +87,7 @@ const ClientInformation: React.FC = ({}) => {
                 <p className="mt-2">Esta acción pausará el proceso hasta que se resuelvan las discrepancias.</p>
               </AlertDescription>
             </Alert>
-            <MessageWpp text="Comunicate mediante **WhatsApp** del Remitente para solucionar la discrepancia " />
+            <MessageWpp text="Comunicate mediante **WhatsApp** del Remitente por si los datos del Destinarario no coincide en el momento de realizar la Transaferencia, y deja esta seccion en **STOP** hasta resolver el incombeniente  " />
             <DiscrepancySection trans={trans} value={true} setDiscrepancySend={setDiscrepancySend} />
           </div>
         )}
