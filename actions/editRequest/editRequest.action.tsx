@@ -54,7 +54,6 @@ export const fetchCode = async (code: string, requestData: { transactionId: stri
     });
 
     const result = await response.json();
-    console.log('result json:', result);
     if (!response.ok) {
       throw new Error(result.message || 'Código incorrecto');
     }

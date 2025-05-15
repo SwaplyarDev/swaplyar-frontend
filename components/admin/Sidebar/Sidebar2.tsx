@@ -20,6 +20,7 @@ import {
 import { Avatar, Button, Popover, styled, Typography, Box } from '@mui/material';
 import { signOut, useSession } from 'next-auth/react';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import Image from 'next/image';
 
 // Create a custom event to communicate sidebar state
 export const createSidebarEvent = (isCollapsed: boolean) => {
@@ -244,7 +245,7 @@ const Sidebar = () => {
           <div className="flex h-16 items-center justify-between border-b border-blue-800 px-4">
             {!collapsed && (
               <>
-                <img className="h-8" src="/images/logo-blanco.png" alt="Logo" />
+                <Image className="h-8" src="/images/logo-blanco.png" alt="Logo" />
               </>
             )}
 

@@ -3,8 +3,6 @@
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export async function plusRewardsActions(formData: FormData, token: string) {
-  console.log(NEXT_PUBLIC_BACKEND_URL);
-
   try {
     const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/verification/upload`, {
       method: 'POST',
@@ -64,7 +62,7 @@ export async function getPlusRewards(token: string) {
     }
 
     const data = await res.json();
-    console.log('status', data);
+
     return data;
   } catch (error) {
     console.error('Error en getPlusRewards:', error);
@@ -89,7 +87,6 @@ export async function getCardStatus(token: string) {
     }
 
     const data = await res.json();
-    console.log('status', data);
     return data;
   } catch (error) {
     console.error('Error en getPlusRewards:', error);
