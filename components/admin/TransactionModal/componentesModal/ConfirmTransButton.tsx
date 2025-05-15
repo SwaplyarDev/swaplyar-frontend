@@ -66,9 +66,7 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
     submit(
       'review_payment',
       {
-        additionalData: {
-          codigo_transferencia: transferId,
-        },
+        review: transferId,
       },
       (isSubmitting: boolean) => {
         setIsSubmitting(isSubmitting);
