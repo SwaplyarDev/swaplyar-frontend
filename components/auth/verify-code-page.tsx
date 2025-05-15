@@ -89,7 +89,7 @@ export const VerifyCodePage = () => {
       if (view === 'login') {
         result = await login(email || '', code);
       } else if (view === 'register') {
-        result = await registerUser(userVerification?.user_id || '', code);
+        result = await registerUser(userVerification?.email || '', code);
       }
 
       if (!result.ok) {
@@ -119,13 +119,13 @@ export const VerifyCodePage = () => {
           email: email,
         };
       }
-      if (userVerification?.user_id) {
-        URL_VERIFICATION = 'users/email-validation/send';
-        bodyData = {
-          email: email,
-          ...(userVerification?.user_id && { user_id: userVerification.user_id }),
-        };
-      }
+      // if (userVerification?.email) {
+      //   URL_VERIFICATION = 'users/email-validation/send';
+      //   bodyData = {
+      //     email: email,
+      //     ...(userVerification?.email && { email: userVerification.email }),
+      //   };
+      // }
       try {
         await fetch(`${BASE_URL}/v1/${URL_VERIFICATION}`, {
           method: 'POST',

@@ -8,17 +8,28 @@ export interface BlogPost {
 }
 
 interface BlogPostCardProps {
-  id?: string;
   blog_id: string;
-  category: string;
+  slug: string;
+  seccion: string;
   title: string;
-  body: string;
-  url_image: string;
-  created_at: string;
-  subtitulos: any[];
-  create_at: string;
+  description: string;
+  side_bar: string;
+  image: string;
+  category: string;
+  date: string;
+  content_elements: ContentElements;
 }
-
+interface ContentElements {
+  id_element: string;
+  content: Content;
+}
+interface Content {
+  text: string | string[];
+  style: {
+    id_style: string;
+    style_name: string;
+  };
+}
 export interface BlogResponse {
   blogsPerPage: any[];
   meta: {
@@ -29,17 +40,14 @@ export interface BlogResponse {
 export interface UseFetchBlogsProps {
   currentPage: number;
   searchTerm: string;
-  setTotalPages: (pages: number) => void;
 }
 
 export interface Blog {
   blog_id: string;
-  sub_title: string;
+  slug: string;
   category: string;
   title: string;
-  body: string;
-  url_image: string;
-  created_at: string;
-  ver: string;
-  status: string;
+  description?: string;
+  image?: string;
+  date?: string;
 }

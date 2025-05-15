@@ -44,8 +44,6 @@ export const RegisterForm = () => {
     setView('login');
   };
 
-  console.log('VAlor: ', isFocused2 || !!watch('lastName'));
-
   const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
@@ -55,7 +53,7 @@ export const RegisterForm = () => {
     const name = `${firstName} ${lastName}`;
 
     try {
-      const response = await fetch(`${BASE_URL}/v1/users`, {
+      const response = await fetch(`${BASE_URL}/v1/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

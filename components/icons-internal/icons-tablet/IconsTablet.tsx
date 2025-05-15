@@ -1,5 +1,4 @@
-import useWindowWidth from '@/hooks/useWindowWidth';
-import Link from 'next/link';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 type IconsTabletProps = {
   children: React.ReactNode;
@@ -8,16 +7,16 @@ type IconsTabletProps = {
 };
 
 const IconsTablet: React.FC<IconsTabletProps> = ({ children, text, classname }) => {
-  const windowWidth = useWindowWidth();
-  const isMobile = () => (windowWidth >= 480 ? false : true);
+  const isDark = useDarkTheme();
+
   return (
     <div
-      className={`${classname} xs-mini-phone: flex items-center rounded-full border-white bg-nav-blue dark:border-lightText dark:bg-white xs-mini-phone:border-6`}
+      className={`${classname} items-center rounded-full bg-nav-blue dark:border-lightText dark:bg-[#EBE7E0] xs:flex xs:border-6 lg:w-[180px]`}
     >
-      {!isMobile() ? (
-        <p className="text-l text-nowrap pl-4 font-semibold leading-5 text-white dark:text-black md:mr-5">{text}</p>
-      ) : null}
       {children}
+      <p className="text-l hidden text-nowrap font-semibold leading-5 text-white dark:text-black xs:mr-5 xs:block">
+        {text}
+      </p>
     </div>
   );
 };

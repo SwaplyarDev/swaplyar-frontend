@@ -39,7 +39,7 @@ const Switch = () => {
   );
 };
 
-const StyledWrapper = styled.div<{ $isDark: boolean }>`
+export const StyledWrapper = styled.div<{ $isDark: boolean }>`
   .theme-switch {
     --toggle-size: 11px;
     /* the size is adjusted using font-size,

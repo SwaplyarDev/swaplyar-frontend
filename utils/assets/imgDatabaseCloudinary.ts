@@ -17,6 +17,10 @@ export const SwaplyArlogoWhite =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225363/SwaplyAr-Logo-White_yvdnvm.png';
 export const SwaplyArLogoSolo = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224752/logo-solo_dgx9c5.png';
 export const SwaplyArLogoComplete = 'https://res.cloudinary.com/df5jwzuq9/image/upload/v1722209853/logo_g74htq.png';
+export const SwaplyArLogoDarkTheme =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745505575/SwaplyArLogoDarkTheme_ihhfw4.png';
+export const SwaplyArLogoLightTheme =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745507783/SwaplyArLogoLightTheme_oc9zkn.png';
 
 /** Request **/
 export const FormularioDeSolicitud =
@@ -97,6 +101,9 @@ export const WiseUsdImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v17
 export const WiseUsdDarkImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1726600631/wise.usd.dark_s8bmil.png';
 export const WiseEurImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225416/wise.eur.big_etdolw.png';
 export const WiseEurDarkImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1726600630/wise.eur.dark_zkxrnp.png';
+export const TetherImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745329683/TetherLight_jkyojt.png';
+export const TetherDarkImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745329686/TetherDark_p5v68r.png';
+export const PixImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745329734/Pix1_lib603.png';
 
 /** 404 Error **/
 export const Post1_404 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732486012/post1-404_rz6g6k.png';
@@ -247,3 +254,23 @@ export const qrLight =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1741270782/48338805-QR_BYBIT_CLARO_wehfx8.png';
 export const qrDark =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1741270782/48235050-QR_BYBIT_OSCURO_hacxbp.png';
+
+// Icons NavBarInternal
+export const icono_solicitud =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_solicitud_o3a6dt.svg';
+export const icono_ayuda = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_ayuda_ettkh1.svg';
+export const icono_cuentas = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_cuentas_auko6j.svg';
+export const icono_transacciones =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_transacciones_cmjchi.svg';
+export const icono_plus = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_plus_l4f41s.svg';
+
+// Icons Dark NavBarInternal
+export const iconoDark_solicitud =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336653/iconoDark_solicitud_uoqchg.svg';
+export const iconoDark_ayuda =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336652/iconoDark_ayuda_jwq0g1.svg';
+export const iconoDark_cuentas =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336652/iconoDark_cuentas_y17y8j.svg';
+export const iconoDark_transacciones =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336652/iconoDark_transacciones_eqkwvn.svg';
+export const iconoDark_plus = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336653/iconoDark_plus_rcetbk.svg';

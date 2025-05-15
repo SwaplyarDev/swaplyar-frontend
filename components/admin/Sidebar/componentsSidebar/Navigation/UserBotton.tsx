@@ -29,8 +29,6 @@ const UserBotton = ({
   ProfileButton: any;
   LogoutButton: any;
 }) => {
-  console.log(session, status);
-
   return (
     <div className={`mt-auto ${collapsed ? 'pl-1' : 'px-3 py-2'}`}>
       {status === 'authenticated' && session?.user && (

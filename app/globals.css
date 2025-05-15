@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @font-face {
   font-family: 'OpenSans';
   src: url('/assets/fonts/OpenSans.ttf');
@@ -116,10 +115,12 @@
   }
 }
 
-@media (max-width: 640px) {
+/* Comentado para evitar problemas de compatibilidad con el diseño móvil salto en 640px de la pantalla */
+
+/* @media (max-width: 640px) {
 
   /* Contenedor estilo móvil */
-  .mobile-container {
+/* .mobile-container {
     @apply relative flex h-[70vh] w-full justify-center overflow-hidden;
     position: absolute;
     top: 0;
@@ -128,19 +129,19 @@
     bottom: 0;
     clip-path: inset(0 0 -5% 0);
     overflow: hidden;
-  }
+  } */
 
-  /* Caja interna estilo móvil */
-  .mobile-box {
+/* Caja interna estilo móvil */
+/* .mobile-box {
     @apply absolute h-[60%] w-full rounded-full;
     animation: spin 30s infinite linear;
     bottom: 0;
     left: 0%;
     transform: translateX(-50%);
-  }
+  } */
 
-  /* Bolas más pequeñas */
-  .small-ball {
+/* Bolas más pequeñas */
+/* .small-ball {
     width: 10px;
     height: 10px;
     margin: 5px;
@@ -210,20 +211,24 @@
     transform: rotate(-6deg) translateX(420px);
   }
 
+
   .ball7Dark {
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(189deg) translateX(368px);
   }
+
 
   .ball5Dark {
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(308deg) translateX(225px);
   }
 
+
   .ball4Dark {
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(234deg) translateX(302px);
   }
+
 
   .ball3Dark {
     background-color: rgba(117, 117, 119, 0.601);
@@ -238,8 +243,8 @@
   .ball1Dark {
     background-color: rgba(117, 117, 119, 0.601);
     transform: rotate(33deg) translateX(429px);
-  }
-}
+  } */
+/* }  */
 
 .p-revert {
   padding: revert;
@@ -277,12 +282,14 @@
   height: 100%;
   top: 0;
   left: 0;
-  background: linear-gradient(110deg,
-      rgba(227, 227, 227, 0) 0%,
-      rgba(227, 227, 227, 0) 40%,
-      rgba(227, 227, 227, 0.5) 50%,
-      rgba(227, 227, 227, 0) 60%,
-      rgba(227, 227, 227, 0) 100%);
+  background: linear-gradient(
+    110deg,
+    rgba(227, 227, 227, 0) 0%,
+    rgba(227, 227, 227, 0) 40%,
+    rgba(227, 227, 227, 0.5) 50%,
+    rgba(227, 227, 227, 0) 60%,
+    rgba(227, 227, 227, 0) 100%
+  );
   animation: gradient-animation 1.2s linear infinite;
 }
 
@@ -439,7 +446,6 @@ ul.scrollable-list-repentance::-webkit-scrollbar-thumb {
 }
 
 @supports not selector(::-webkit-scrollbar) {
-
   ul.scrollable-list,
   ul.scrollable-list-repentance {
     scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
@@ -617,7 +623,7 @@ div:where(.swal2-container).swal2-noanimation {
 
 /*Carrusel*/
 
-.slick-slide>div {
+.slick-slide > div {
   margin: 0 0px;
 }
 
@@ -673,4 +679,31 @@ div:where(.swal2-container).swal2-noanimation {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+}
+
+.mask-nav {
+  clip-path: path(
+    'M78.429 3.5C72.2493 2.05182 68.589 1.80867 62.2432 2L56 2.5L50.5 3.5L47 4.5L40.5 7L35.5 10L31 13.5L27.5 17L23 23L20 28L17.5 33L15 39L11 50C6.5 64.5 0 64 0 64V0H128.5V64C128.5 64 124.963 64 122.94 61.986C120.917 59.9721 119.905 58.4616 117.882 52.9233C115.859 47.3849 114.847 42.8535 112.824 37.8187C110.801 32.7838 109.798 29.4567 106.754 24.5C103.214 18.735 101.696 16.5 96.6381 12C93.7349 9.4171 89.051 7.00697 86.5219 6C83.9929 4.99303 81.6521 4.25531 78.429 3.5Z'
+  );
+
+  transform: scaleX(1.02);
+  transform-origin: center;
+}
+
+.mask-icon {
+  clip-path: path(
+    'M203 0V66.25C203 66.25 200.756 62.7424 199 60.75C194.452 55.5897 189.5 52.75 184 50.75C178.513 48.7547 173.644 48.75 173.621 48.75H30C30 48.75 25 48.75 18.5 50.75C14.8605 51.8698 11 54.75 11 54.75C8 56.75 6.5 58.25 5 59.75C2.56483 62.7817 0 66.25 0 66.25V0H203Z'
+  );
+
+  transform: scaleX(1.015);
+  transform-origin: center;
+}
+
+.mask-footer-icon {
+  clip-path: path(
+    'M7 6.14351C3.5 -0.513325 0 0.0398458 0 0.0398458V63.8936C30.5473 64.0353 47.4126 64.0356 77 63.8936V0.0418504C77 0.0418504 73.5 -0.899199 70 6.14351C66.5 13.1862 64.9693 16.9404 62.5 20.227C56 28.8784 49 31.5504 39 31.5504C29 31.5504 20 27.0777 15 20.227C10 13.3764 10.5 12.8004 7 6.14351Z'
+  );
+
+  transform: scaleX(1.015);
+  transform-origin: center;
 }

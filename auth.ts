@@ -1,5 +1,5 @@
-import NextAuth from 'next-auth';
-import authConfig from './auth.config';
+import NextAuth, { Session } from 'next-auth';
+import { authConfig } from './auth.config';
 
 export const {
   handlers: { GET, POST },
@@ -16,31 +16,31 @@ export const {
   },
 
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      return true;
-    },
-    async redirect({ url, baseUrl }) {
-      return baseUrl;
-    },
+    /**
+     * Se invoca en el momento de la autenticación y en cada petición
+     * Almacena en el JWT el user payload y los tokens
+     */
     async jwt({ token, user }) {
-      if (user && user.id) {
-        token.id = user.id;
-        token.role = user.role;
-        token.name = user.name!;
-        token.email = user.email;
-        token.accessToken = (user as any).token;
+      if (user) {
+        // Almacena el payload del usuario y los tokens en el JWT
+        token.user = user;
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
       }
       return token;
     },
+    /**
+     * Permitimos el inicio de sesión sin bloqueos adicionales
+     */
+    async signIn() {
+      return true;
+    },
+    async redirect({ baseUrl }) {
+      return baseUrl;
+    },
 
-    async session({ session, token }) {
-      if (session.user && token) {
-        session.user.id = token.id;
-        session.user.role = token.role;
-        session.user.name = token.name;
-        session.user.email = token.email!;
-        session.accessToken = token.accessToken;
-      }
+    async session({ session, token }: { session: Session; token: any }) {
+      session = token;
       return session;
     },
   },

@@ -1,0 +1,346 @@
+'use client';
+
+import type React from 'react';
+
+import { useState } from 'react';
+import { CheckCircle, XCircle, Upload, LinkIcon, DollarSign, FileText, Send } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/Dialog';
+import { Alert, AlertDescription } from '@/components/ui/Alert';
+import { cn } from '@/lib/utils';
+import { TooltipContent, TooltipProvider } from '@/components/ui/Tooltip';
+import { Tooltip } from '@/components/ui/Tooltip';
+import { TooltipTrigger } from '@/components/ui/Tooltip';
+import { updateTransactionStatus } from '@/actions/transactions/transaction-status.action';
+import { useParams } from 'next/navigation';
+
+const TransferClient = () => {
+  const params = useParams();
+  const transId = params.id as string;
+
+  const [selected, setSelected] = useState<boolean | null>(null);
+  const [form, setForm] = useState<{ transfer_id: string; amount: number }>({
+    transfer_id: '',
+    amount: 0,
+  });
+  const [isDragging, setIsDragging] = useState(false);
+  const [rejectionReason, setRejectionReason] = useState('');
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: name === 'amount' ? Number(value) : value,
+    }));
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    // Handle file processing logic
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      console.log('Archivo recibido:', files[0].name);
+      // Implement file upload logic
+    }
+  };
+
+  const handleSubmitRejection = async () => {
+    if (!rejectionReason.trim()) {
+      /*   toast({
+          title: "Campo requerido",
+          description: "Por favor ingresa el motivo del rechazo",
+          variant: "destructive",
+        }) */
+      try {
+        const response = await updateTransactionStatus('rejected', form.transfer_id, {
+          descripcion: rejectionReason,
+        });
+      } catch (error) {
+        throw new Error(`❌ Error en la respuesta del servicio`);
+      }
+      return;
+    }
+
+    setShowConfirmDialog(true);
+  };
+
+  const confirmRejection = async () => {
+    try {
+      setIsLoading(true);
+
+      console.log(rejectionReason, 'transaction_id: ' + transId);
+
+      const response = await updateTransactionStatus('canceled', transId, {
+        descripcion: rejectionReason,
+      });
+
+      console.log(response);
+
+      if (!response) {
+        setShowConfirmDialog(false);
+        setIsLoading(false);
+
+        //   toast({
+        //    title: "Solicitud rechazada",
+        //    description: "La solicitud ha sido rechazada exitosamente",
+        //    variant: "default",
+        //  })
+      }
+    } catch (error) {
+      console.log('Error al rechazar la transacción:', error);
+      setIsLoading(false);
+      setShowConfirmDialog(false);
+
+      /* toast({
+        title: "Error",
+        description: "Ocurrió un error al procesar la solicitud. Por favor intenta nuevamente.",
+        variant: "destructive",
+      }) */
+    }
+  };
+
+  const handleAprove = async () => {
+    try {
+      setIsLoading(true);
+
+      const response = await updateTransactionStatus('approved', form.transfer_id, { descripcion: 'aproved' });
+      console.log(response);
+    } catch (error) {
+      throw new Error(`❌ Error en la respuesta del servicio`);
+    }
+  };
+
+  return (
+    <>
+      <div className="!mt-4">
+        <h2 className="text-lg font-medium text-gray-800">Información de la Transferencia al Cliente</h2>
+        <p className="text-sm text-gray-500">¿La transferencia fue realizada al cliente?</p>
+
+        {/* Transfer question */}
+        <div className="flex flex-col items-center gap-3">
+          <div className="mb-4 mt-2 flex w-full gap-4">
+            <TooltipProvider delayDuration={300}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    onClick={() => setSelected(true)}
+                    variant="outline"
+                    className={`${
+                      selected === true
+                        ? 'bg-green-600 text-white shadow-lg shadow-green-200'
+                        : 'border border-gray-300 bg-white text-gray-700 hover:border-green-500 hover:text-green-600'
+                    }`}
+                  >
+                    <CheckCircle className={`mr-2 h-5 w-5 ${selected === true ? 'text-white' : 'text-green-500'}`} />
+                    <span>Si</span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="border-green-600 bg-green-600 text-white">
+                  <p>La transferencia fue realizada al cliente</p>
+                </TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    onClick={() => setSelected(false)}
+                    variant="outline"
+                    className={`${
+                      selected === false
+                        ? 'bg-red-600 text-white shadow-lg shadow-red-200'
+                        : 'border border-gray-300 bg-white text-gray-700 hover:border-red-500 hover:text-red-600'
+                    }`}
+                  >
+                    <XCircle className={`mr-2 h-5 w-5 ${selected === false ? 'text-white' : 'text-red-500'}`} />
+                    <span>No</span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="border-red-600 bg-red-600 text-white">
+                  <p>La transferencia no fue realizada al cliente</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        </div>
+
+        {/* Conditional form fields */}
+        {selected === true ? (
+          <div className="animate-in fade-in grid grid-cols-1 gap-4 duration-300">
+            <div className="space-y-2">
+              <Label htmlFor="transfer_id" className="text-sm font-medium">
+                ID de la Transferencia <span className="text-red-500">*</span>
+              </Label>
+              <div className="flex items-center rounded-md border">
+                <FileText className="ml-2 h-5 w-5 text-gray-400" />
+                <Input
+                  id="transfer_id"
+                  name="transfer_id"
+                  type="text"
+                  placeholder="Ingresa el ID de la transferencia"
+                  value={form.transfer_id}
+                  onChange={handleInputChange}
+                  className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="amount" className="text-sm font-medium">
+                Monto Transferido <span className="text-red-500">*</span>
+              </Label>
+              <div className="flex items-center rounded-md border">
+                <DollarSign className="ml-2 h-5 w-5 text-gray-400" />
+                <Input
+                  id="amount"
+                  name="amount"
+                  type="number"
+                  placeholder="Ingresa el monto transferido"
+                  value={form.amount || ''}
+                  onChange={handleInputChange}
+                  className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                />
+              </div>
+            </div>
+
+            <div className="animate-in fade-in flex flex-col items-center gap-4 pt-2 duration-300">
+              <h4 className="text-center text-base font-semibold text-gray-800">Comprobante de Transferencia</h4>
+
+              <div
+                className={cn(
+                  'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed transition-all duration-300',
+                  isDragging
+                    ? 'border-primary bg-primary/10'
+                    : 'hover:border-primary/70 hover:bg-primary/5 border-gray-300 bg-gray-50',
+                )}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                <Upload className="text-primary h-8 w-8" />
+                <p className="px-4 text-center text-sm text-gray-600">
+                  Arrastra y suelta el comprobante aquí o
+                  <Button
+                    variant="link"
+                    className="h-auto p-0 pl-1 font-medium"
+                    onClick={() => document.getElementById('file-upload')?.click()}
+                  >
+                    selecciona un archivo
+                  </Button>
+                </p>
+                <input
+                  id="file-upload"
+                  type="file"
+                  className="hidden"
+                  accept="image/*,.pdf"
+                  onChange={(e) => {
+                    if (e.target.files?.length) {
+                      console.log('Archivo seleccionado:', e.target.files[0].name);
+                      // Implement file upload logic
+                    }
+                  }}
+                />
+                <p className="text-xs text-gray-500">Formatos aceptados: JPG, PNG, PDF (máx. 5MB)</p>
+              </div>
+
+              <Button variant="link" className="gap-2 p-0">
+                <LinkIcon className="h-4 w-4" />
+                <span className="text-sm font-medium underline">Agregar link del comprobante</span>
+              </Button>
+            </div>
+
+            <Button
+              onClick={handleAprove}
+              className="h-11 bg-custom-blue text-white hover:bg-blue-700"
+              aria-label="Enviar ID de transferencia"
+            >
+              <span>Enviar</span>
+            </Button>
+          </div>
+        ) : (
+          selected === false && (
+            <div className="animate-in fade-in duration-300">
+              <Label htmlFor="rejection-reason" className="text-sm font-medium text-gray-700">
+                Motivo del Rechazo <span className="text-red-500">*</span>
+              </Label>
+
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <Input
+                    id="rejection-reason"
+                    type="text"
+                    placeholder="Ingresa el motivo del rechazo"
+                    value={rejectionReason}
+                    onChange={(e) => setRejectionReason(e.target.value)}
+                    className={`h-11 transition-all duration-300`}
+                    aria-required="true"
+                  />
+                </div>
+
+                <Button
+                  onClick={handleSubmitRejection}
+                  className="h-11 bg-custom-blue text-white hover:bg-blue-700"
+                  aria-label="Enviar ID de transferencia"
+                >
+                  <span>Enviar</span>
+                </Button>
+              </div>
+
+              <AlertDescription className="mt-2 text-xs text-gray-500">
+                Este motivo será comunicado al cliente como razón del rechazo.
+              </AlertDescription>
+            </div>
+          )
+        )}
+
+        {/* Confirmation Dialog */}
+        <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Confirmar rechazo</DialogTitle>
+              <DialogDescription>¿Estás seguro que deseas rechazar esta solicitud?</DialogDescription>
+            </DialogHeader>
+
+            <div className="w-full rounded-lg bg-gray-100 p-3 text-left">
+              <p className="mb-1 font-medium text-gray-800">Motivo:</p>
+              <p className="text-gray-700">{rejectionReason}</p>
+            </div>
+
+            <DialogFooter className="flex gap-2 sm:justify-end">
+              <Button variant="outline" onClick={() => setShowConfirmDialog(false)} disabled={isLoading}>
+                Cancelar
+              </Button>
+              <Button variant="destructive" onClick={() => confirmRejection()} disabled={isLoading}>
+                {isLoading ? 'Procesando...' : 'Confirmar rechazo'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </>
+  );
+};
+
+export default TransferClient;

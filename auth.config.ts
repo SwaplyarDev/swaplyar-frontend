@@ -1,78 +1,72 @@
-// /auth.config.ts
+/**
+ * @file Configuration de proveedores para NextAuth
+ * @module authConfig
+ * @description
+ * Define los providers de autenticación (Email/Código, GitHub, Google) y
+ * el flujo de login con el backend, devolviendo accessToken y refreshToken.
+ */
 import type { NextAuthConfig } from 'next-auth';
-import Credentials from 'next-auth/providers/credentials';
-import Github from 'next-auth/providers/github';
-import Google from 'next-auth/providers/google';
-import { InvalidCredentials } from './lib/auth/index';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import GithubProvider from 'next-auth/providers/github';
+import GoogleProvider from 'next-auth/providers/google';
+import { InvalidCredentials } from './lib/auth';
 
-const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL!;
 
-export default {
+export const authConfig: NextAuthConfig = {
   providers: [
-    Credentials({
+    CredentialsProvider({
+      /**
+       * Login mediante correo y código de verificación
+       */
       async authorize(credentials) {
-        try {
-          const email = credentials.email as string;
-          const code = credentials.verificationCode as string;
-          const user_id = credentials.user_id as string;
-          let URL_VERIFICATION = '';
-          if (email) {
-            URL_VERIFICATION = 'login/email/verify-code';
-          }
-          if (user_id) {
-            URL_VERIFICATION = 'users/email-validation/validate';
-          }
+        if (!credentials?.email || !credentials?.verificationCode) {
+          throw new InvalidCredentials('Faltan email o código');
+        }
+        const { email, verificationCode: code } = credentials;
 
-          const bodyData = {
-            code: code,
-            ...(email ? { email } : {}),
-            ...(user_id ? { user_id } : {}),
-          };
+        const res = await fetch(`${BACKEND_URL}/v1/login/email/validate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, code }),
+        });
 
-          const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/${URL_VERIFICATION}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(bodyData),
-          });
-
-          if (!response.ok) {
-            if (response.status === 401 || response.status === 403) {
-              throw new InvalidCredentials();
-            } else {
-              throw new Error(`Error inesperado durante la autenticación: ${response.statusText}`);
-            }
-          }
-
-          const data = await response.json();
-
-          if (data && data.token) {
-            const { user } = data;
-            return {
-              id: user.user_id,
-              name: user.full_name,
-              email: user.email,
-              role: user.role,
-              token: data.token,
-            };
-          } else {
+        if (!res.ok) {
+          if (res.status === 401 || res.status === 403) {
             throw new InvalidCredentials();
           }
-        } catch (error: any) {
-          throw new Error(`Authentication failed. Please try again. Error: ${error.message}`);
+          throw new Error(`Error en autenticación: ${res.statusText}`);
         }
+
+        const data = await res.json();
+        console.log('Login response', data);
+        const rawPayload = data.accessToken.split('.')[1];
+        const decoded = JSON.parse(Buffer.from(rawPayload, 'base64').toString());
+
+        return {
+          ...decoded,
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+        };
       },
     }),
-    Github({
-      clientId: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+
+    GithubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
     }),
-    Google({
-      clientId: process.env.AUTH_GOOGLE_ID,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+
+    GoogleProvider({
+      clientId: process.env.AUTH_GOOGLE_ID!,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
     }),
   ],
 
+  // Si fuera necesario: páginas personalizadas
+  pages: {
+    signIn: '/es/iniciar-sesion-o-registro',
+  },
+
+  // Evita verificaciones de host si usas deploys con dominios dinámicos
   trustHost: true,
-} satisfies NextAuthConfig;
+};
