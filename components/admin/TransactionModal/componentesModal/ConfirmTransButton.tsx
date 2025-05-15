@@ -63,11 +63,11 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
   const handleConfirmSubmit = () => {
     setIsSubmittingLocal(true);
 
-    console.log(transferId);
-
     submit(
       'review_payment',
-      { additionalData: transferId },
+      {
+        review: transferId,
+      },
       (isSubmitting: boolean) => {
         setIsSubmitting(isSubmitting);
       },

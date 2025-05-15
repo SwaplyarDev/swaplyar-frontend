@@ -6,7 +6,19 @@ import { useState, useRef, useEffect } from 'react';
 import { SessionProvider } from 'next-auth/react';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
-import { AlertCircle, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, Filter } from 'lucide-react';
+import {
+  AlertCircle,
+  CheckCircle,
+  XCircle,
+  Clock,
+  ChevronDown,
+  ChevronUp,
+  Filter,
+  Search,
+  Edit,
+  Undo2,
+  AlertTriangle,
+} from 'lucide-react';
 import type { TransactionArray, TransactionTypeAll } from '@/types/transactions/transactionsType';
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import TransactionModal from '@/components/admin/TransactionModal/transactionModal';
@@ -165,18 +177,23 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
         icon: <Clock size={14} className="mr-1" />,
         label: 'En Proceso',
       },
+      '2': {
+        bgColor: 'bg-purple-300 dark:bg-purple-900/30',
+        textColor: 'text-purple-800 dark:text-purple-300',
+        icon: <Search size={14} className="mr-1" />,
+        label: 'Review',
+      },
       '3': {
         bgColor: 'bg-green-100 dark:bg-green-900/30',
         textColor: 'text-green-800 dark:text-green-300',
         borderColor: 'border-green-200 dark:border-green-800',
-        icon: <CheckCircle className="mr-1.5 h-4 w-4" />,
+        icon: <CheckCircle size={14} className="mr-1.5 h-4 w-4" />,
         label: 'Aceptada',
-        ariaLabel: 'Estado: Aceptada',
       },
       '7': {
         bgColor: 'bg-amber-100 dark:bg-amber-900/30',
         textColor: 'text-amber-800 dark:text-amber-300',
-        icon: <AlertCircle size={14} className="mr-1" />,
+        icon: <AlertTriangle size={14} className="mr-1" />,
         label: 'Stop',
       },
       '8': {
@@ -186,10 +203,16 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
         label: 'Cancelada',
       },
       '9': {
-        bgColor: 'bg-blue-100 dark:bg-blue-900/30',
-        textColor: 'text-blue-800 dark:text-blue-300',
-        icon: <Clock size={14} className="mr-1" />,
-        label: 'En Proceso',
+        bgColor: 'bg-cyan-100 dark:bg-cyan-900/30',
+        textColor: 'text-cyan-800 dark:text-cyan-300',
+        icon: <Edit size={14} className="mr-1" />,
+        label: 'Modificada',
+      },
+      '10': {
+        bgColor: 'bg-orange-100 dark:bg-orange-900/30',
+        textColor: 'text-orange-800 dark:text-orange-300',
+        icon: <Undo2 size={14} className="mr-1" />,
+        label: 'Reembolsada',
       },
       '11': {
         bgColor: 'bg-green-100 dark:bg-green-900/30',
@@ -210,32 +233,12 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
 
     return (
       <span
-        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${config.bgColor} ${config.textColor}`}
+        className={`inline-flex min-w-[100px] items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${config.bgColor} ${config.textColor}`}
       >
         {config.icon}
         {config.label}
       </span>
     );
-  };
-
-  // Función para obtener el indicador de cliente
-  const getClientIndicator = (transaction: TransactionTypeAll) => {
-    if (transaction.transaction.regret_id) {
-      return (
-        <span className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-red-900/30 dark:text-red-300">
-          <XCircle size={14} className="mr-1" />
-          Cancelación
-        </span>
-      );
-    } else if (transaction.transaction.note_id) {
-      return (
-        <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
-          <AlertCircle size={14} className="mr-1" />
-          Edición
-        </span>
-      );
-    }
-    return null;
   };
 
   // Función para formatear la fecha

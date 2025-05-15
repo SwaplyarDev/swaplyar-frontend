@@ -173,8 +173,8 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
       <Separator className="mb-6 dark:bg-gray-700" />
 
       {/* Upload Section */}
-      <div className="mb-6 flex items-center justify-center">
-        <div className="text-center">
+      {/* <div className="mb-6 flex items-center justify-center"> 
+        {/* <div className="text-center">
           <div
             className={cn(
               'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed transition-all duration-300',
@@ -205,14 +205,14 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
               onChange={(e) => {
                 if (e.target.files?.length) {
                   console.log('Archivo seleccionado:', e.target.files[0].name);
-                  // Implement file upload logic
+                  
                 }
               }}
             />
             <p className="text-xs text-gray-500">Formatos aceptados: JPG, PNG, PDF (máx. 5MB)</p>
           </div>
 
-          {/* Label that triggers the file input */}
+          
           <label htmlFor="fileInput">
             <Button
               variant="outline"
@@ -222,14 +222,14 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
             </Button>
           </label>
 
-          {/* Mostrar nombre del archivo si hay */}
+          
           {selectedFile && (
             <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">Archivo seleccionado: {selectedFile.name}</p>
           )}
 
           <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">Formatos aceptados: PNG, JPG, PDF</p>
         </div>
-      </div>
+      </div> */}
 
       <Separator className="mb-6 dark:bg-gray-700" />
 
