@@ -39,7 +39,6 @@ export const authConfig: NextAuthConfig = {
         }
 
         const data = await res.json();
-        console.log('Login response', data);
         const rawPayload = data.accessToken.split('.')[1];
         const decoded = JSON.parse(Buffer.from(rawPayload, 'base64').toString());
 

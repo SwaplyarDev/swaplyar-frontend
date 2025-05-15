@@ -41,7 +41,6 @@ export const searchRequest = async (transactionId: string, lastName: string) => 
     });
 
     const data = await response.json();
-    console.log(data);
 
     if (!response.ok) {
       const errorData: TransactionStatusError = data;

@@ -24,7 +24,6 @@ export const fetchBlogs = async (page: number, searchTerm: string): Promise<Blog
 };
 
 export const filterBlogs = async (searchTerm: string, page: number): Promise<BlogResponse> => {
-  console.log('search', encodeURIComponent(searchTerm));
 
   try {
     const response = await fetch(
