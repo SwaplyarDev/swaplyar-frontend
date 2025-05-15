@@ -40,7 +40,6 @@ export async function getAllAdminTransactions(page = 1, perPage = 12) {
  * Obtiene una transacción específica por ID
  */
 export async function getAdminTransactionById(transactionId: string) {
-  console.log('Fetching transaction with ID:', transactionId);
   try {
     const session = await auth();
     // if (!session || session.decodedToken.role !== "admin") {
