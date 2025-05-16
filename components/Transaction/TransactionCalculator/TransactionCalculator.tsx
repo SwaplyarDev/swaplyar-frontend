@@ -127,8 +127,8 @@ export default function TransactionCalculator() {
                   (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50) ||
                   parseInt(receiveAmount) < 10 ||
                   parseInt(sendAmount) < 10
-                  ? 'mb-4 mt-4'
-                  : 'hidden',
+                  ? ''
+                  : ' ',
               )}
             >
               {selectedSendingSystem?.id === 'payoneer_usd' || selectedSendingSystem?.id === 'payoneer_eur' ? (
@@ -137,8 +137,8 @@ export default function TransactionCalculator() {
                     className={clsx(
                       (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
                         (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50)
-                        ? 'block'
-                        : 'hidden',
+                        ? 'visible mt-4 p-4'
+                        : 'invisible mt-4',
                       'text-[#f44336]',
                     )}
                   >
@@ -148,8 +148,9 @@ export default function TransactionCalculator() {
                     className={clsx(
                       (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
                         (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
-                        ? 'block'
-                        : 'hidden',
+                        ? 'visible'
+                        : 'invisible absolute',
+
                       'text-[#f44336]',
                     )}
                   >
@@ -159,7 +160,7 @@ export default function TransactionCalculator() {
               ) : (
                 <p
                   className={clsx(
-                    parseInt(receiveAmount) < 10 || parseInt(sendAmount) < 10 ? 'block' : 'hidden',
+                    parseInt(receiveAmount) < 10 || parseInt(sendAmount) < 10 ? 'visible p-4' : 'invisible p-4',
                     'text-[#f44336]',
                   )}
                 >
@@ -200,7 +201,7 @@ export default function TransactionCalculator() {
                         (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
                       ),
                     },
-                sendAmount === '' ? 'mt-14' : '',
+                sendAmount === '' ? 'mt-10' : '',
                 'w-full max-w-[340px] rounded-full bg-custom-blue-800 px-[14px] py-3 font-titleFont text-base font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-custom-grayD dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD',
               )}
               onClick={handleSubmit}
