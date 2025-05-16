@@ -25,6 +25,7 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
   const [loading, setLoading] = useState(false);
   const [reLoading, setReLoading] = useState(false);
   const [isCodeCorrect, setIsCodeCorrect] = useState<boolean | null>(null);
+  const [code, setCode] = useState('');
   const {
     register,
     handleSubmit,
@@ -163,7 +164,10 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
                         isCodeCorrect === false ? 'border-errorColor' : '',
                       )}
                       {...register(`verificationCode.${index}`)}
-                      onChange={(event) => handleInputChange(index, event)}
+                      onChange={(event) => {
+                        handleInputChange(index, event);
+                        setCode((prevcode) => prevcode + event.target.value);
+                      }}
                       onKeyDown={(event) => handleInputKeyDown(index, event)}
                     />
                   </div>
@@ -238,6 +242,7 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
         transaccionId={transaccionId}
         isDark={isDark}
         isOpen={isModalOpen}
+        code={code}
         onClose={() => {
           setIsModalOpen(false);
           toggle();

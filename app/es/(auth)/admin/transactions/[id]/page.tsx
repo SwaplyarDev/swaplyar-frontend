@@ -11,7 +11,6 @@ export default async function TransactionPage({ params }: { params: { id: string
   const transId = params.id;
 
   // Fetch transaction data on the server using admin endpoint
-  console.log('Fetching transaction with ID:', transId, ' page');
   const transaction = await getAdminTransactionById(transId);
 
   if (!transaction) {

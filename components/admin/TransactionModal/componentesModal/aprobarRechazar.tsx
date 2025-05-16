@@ -117,9 +117,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
       const response = await TransactionService('canceled', transId, { descripcion: rejectionReason });
       console.log(response);
       return response;
-    } catch (error) {
-      console.log('Error al rechazar la transacción:', error);
-    }
+    } catch (error) {}
   };
 
   const getButtonClass = (type: 'accepted' | 'stop' | 'canceled') => {

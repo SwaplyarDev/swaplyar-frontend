@@ -42,6 +42,7 @@ const config: Config = {
         sm: '640px',
         'sm-phone': '660px',
         'md-phone': '700px',
+        'sm-tablet2': '744px',
         'sm-tablet': '749px',
         md: '768px',
         'md-tablet': '850px',
@@ -50,6 +51,8 @@ const config: Config = {
         lg2: '1124px',
         'xl-desktop': '1080px',
         xl: '1280px',
+        'xl-nav': '1300px',
+        'xl-blue-nav': '1310px',
         '2k': '2048px',
         '4k': '3840px',
       },
@@ -193,8 +196,8 @@ const config: Config = {
         inputLightDisabled: '#90B0FE', // Azul pastel con un tono más vibrante y saturado
       },
       fontFamily: {
-        titleFont: ['OpenSans', 'sans-serif'],
-        textFont: ['Roboto', 'sans-serif'],
+        titleFont: ['OpenSans', 'sans-serif', '100', '200', '300', '400', '500', '600', '700', '800', '900'],
+        textFont: ['Roboto', 'sans-serif', '100', '200', '300', '400', '500', '600', '700', '800', '900'],
       },
       width: {
         '9/10': '90%',
