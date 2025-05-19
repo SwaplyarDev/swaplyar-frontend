@@ -1,4 +1,3 @@
-'use client';
 import TransactionCalculator from '@/components/Transaction/TransactionCalculator/TransactionCalculator';
 import PlusRewardSection from './PlusRewardsComponents.tsx/PlusRewardsInitial';
 
