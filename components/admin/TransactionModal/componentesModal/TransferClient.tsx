@@ -212,9 +212,6 @@ const TransferClient = () => {
     try {
       if (!formRefund.file) return null;
 
-      console.log(formRefund);
-      console.log(transId);
-
       const formData = new FormData();
 
       formData.append('file', formRefund.file);
@@ -367,7 +364,7 @@ const TransferClient = () => {
                     'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed transition-all duration-300',
                     isDragging
                       ? 'border-primary bg-primary/10'
-                      : 'hover:border-primary/70 hover:bg-primary/5 border-gray-50 bg-gray-800',
+                      : 'hover:border-primary/70 hover:bg-primary/5 border-gray-200 bg-white dark:border-gray-50 dark:bg-gray-800',
                   )}
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
@@ -442,7 +439,9 @@ const TransferClient = () => {
                         placeholder="Ingresa el motivo del rechazo"
                         value={formRefund.description}
                         onChange={(e) => setFormRefund({ ...formRefund, description: e.target.value })}
-                        className={`h-11 transition-all duration-300`}
+                        className={`h-11 transition-all duration-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 ${
+                          isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
+                        }`}
                         aria-required="true"
                       />
                     </div>
@@ -488,7 +487,7 @@ const TransferClient = () => {
                         'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed transition-all duration-300',
                         isDragging
                           ? 'border-primary bg-primary/10'
-                          : 'hover:border-primary/70 hover:bg-primary/5 border-gray-50 bg-gray-800',
+                          : 'hover:border-primary/70 hover:bg-primary/5 border-gray-200 bg-white dark:border-gray-50 dark:bg-gray-800',
                       )}
                       onDragOver={handleDragOver}
                       onDragLeave={handleDragLeave}

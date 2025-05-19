@@ -29,6 +29,7 @@ interface DiscrepancySectionProps {
 }
 
 interface Form {
+  description: string;
   transfer_id: string;
   amount: string;
   file: File | null;
@@ -54,10 +55,12 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
   const [dialogType, setDialogType] = useState<'discrepancy' | 'resolution'>('discrepancy');
 
   const [form, setForm] = useState<Form>({
+    description: '',
     transfer_id: '',
     amount: '',
     file: null,
   });
+
   const [isDragging, setIsDragging] = useState(false);
 
   const session = useSession();
@@ -166,7 +169,9 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
     setShowConfirmResolutionDialog(false);
     setShowSuccessResolutionDialog(true);
     try {
-      const response = await TransactionService('approved', transaction.transaction_id, resolutionReason);
+      const response = await TransactionService('approved', transaction.transaction_id, {
+        description: resolutionReason,
+      });
     } catch (error) {
       console.log('Error al enviar el motivo de discrepancia:', error);
     }
@@ -184,6 +189,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
       formData.append('transaction_id', transaction.transaction_id);
 
       const response = await updateTransactionStatus('refunded', transaction.transaction_id, {
+        descripcion: form.description,
         additionalData: {
           codigo_transferencia: form.transfer_id,
         },
@@ -304,6 +310,12 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
 
                 {resolved === true && (
                   <div className="animate-in fade-in mt-4 space-y-4 duration-300">
+                    <Alert variant="default" className="border-green-200 bg-green-50">
+                      <CheckCircle className="h-4 w-4 text-green-500" />
+                      <AlertDescription className="mt-1.5 text-sm text-green-700">
+                        La discrepancia ha sido resuelta satisfactoriamente.
+                      </AlertDescription>
+                    </Alert>
                     <div className="space-y-2">
                       <Label htmlFor="resolution-reason" className="text-sm font-medium text-gray-700">
                         Motivo de la Resolución <span className="text-red-500">*</span>
@@ -337,66 +349,8 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                         Describe cómo se resolvió la discrepancia encontrada.
                       </p>
                     </div>
-
-                    <Alert variant="default" className="border-green-200 bg-green-50">
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      <AlertDescription className="mt-1.5 text-sm text-green-700">
-                        La discrepancia ha sido resuelta satisfactoriamente.
-                      </AlertDescription>
-                    </Alert>
-                  </div>
-                )}
-
-                {resolved === false && (
-                  <>
-                    <Alert
-                      variant="destructive"
-                      className="animate-in fade-in mt-4 border-red-200 bg-[#F8C0C0] duration-300"
-                    >
-                      <AlertCircle className="h-4 w-4 text-red-500" />
-                      <AlertDescription className="mt-1.5 text-sm text-red-700">
-                        La discrepancia no se pudo resolver.
-                      </AlertDescription>
-                    </Alert>
-
-                    <div className="animate-in fade-in mt-6 max-w-xl duration-300">
-                      <div className="space-y-3">
-                        <div className="flex items-center">
-                          <Label htmlFor="transfer-id" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Motivo por el que no se resolvió la discrepancia
-                            <span className="ml-1 text-red-500">*</span>
-                          </Label>
-                        </div>
-
-                        <div className="flex gap-5">
-                          <div className="relative flex-1">
-                            <Input
-                              id="reject-reason"
-                              type="text"
-                              placeholder="Motivo de la resolución"
-                              value={transferId}
-                              onChange={(e) => setTransferId(e.target.value)}
-                              // onFocus={() => setIsInputTransferIdFocused(true)}
-                              // onBlur={() => setIsInputTransferIdFocused(false)}
-                              className={`h-11 transition-all duration-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 ${
-                                isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
-                              }`}
-                              aria-required="true"
-                            />
-                          </div>
-
-                          <Button
-                            className="h-11 bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20"
-                            aria-label="Motivo de la resolución"
-                          >
-                            <span>Enviar</span>
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-
                     <div className="mt-5">
-                      <h1>Emitir el reembolso al Usuario a la cuenta de origen</h1>
+                      <h1>Realizar la transferencia al destinatario</h1>
                       <div className="mt-5">
                         <div className="relative mb-5 flex-1">
                           <Input
@@ -407,7 +361,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                             onChange={(e) => setForm({ ...form, transfer_id: e.target.value })}
                             // onFocus={() => setIsInputTransferIdFocused(true)}
                             // onBlur={() => setIsInputTransferIdFocused(false)}
-                            className={`h-11 transition-all duration-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 ${
+                            className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                               isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                             }`}
                             aria-required="true"
@@ -423,7 +377,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                             onChange={(e) => setForm({ ...form, amount: e.target.value })}
                             // onFocus={() => setIsInputTransferIdFocused(true)}
                             // onBlur={() => setIsInputTransferIdFocused(false)}
-                            className={`h-11 transition-all duration-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 ${
+                            className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                               isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                             }`}
                             aria-required="true"
@@ -435,10 +389,153 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                         {!form.file ? (
                           <div
                             className={cn(
-                              'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed transition-all duration-300',
+                              'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 transition-all duration-300',
                               isDragging
-                                ? 'border-primary bg-primary/10'
-                                : 'hover:border-primary/70 hover:bg-primary/5 border-gray-50 bg-gray-800',
+                                ? 'bg-primary/10 border-[#90B0FE]'
+                                : 'hover:border-primary/70 hover:bg-primary/5 border-[#90B0FE] bg-[#FFFFF8] dark:border-gray-50 dark:bg-gray-800',
+                            )}
+                            onDragOver={handleDragOver}
+                            onDragLeave={handleDragLeave}
+                            onDrop={handleDrop}
+                          >
+                            <Upload className="text-primary h-8 w-8" />
+                            <p className="px-4 text-center text-sm text-gray-600">
+                              Arrastra y suelta el comprobante aquí o
+                              <Button
+                                variant="link"
+                                className="h-auto p-0 pl-1 font-medium"
+                                onClick={() => document.getElementById('file-upload')?.click()}
+                              >
+                                selecciona un archivo
+                              </Button>
+                            </p>
+                            <input
+                              id="file-upload"
+                              type="file"
+                              className="hidden"
+                              accept="image/*,.pdf"
+                              onChange={handleFileChange}
+                            />
+                            <p className="text-xs text-gray-500">Formatos aceptados: JPG, PNG, PDF (máx. 5MB)</p>
+                          </div>
+                        ) : (
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-50">
+                                <Check className="h-5 w-5 text-green-600" />
+                              </div>
+                              <div>
+                                <p className="font-medium">Comprobante cargado</p>
+                              </div>
+                            </div>
+                            <Button
+                              variant="link"
+                              className="gap-2 p-0 pt-5"
+                              onClick={() => setForm({ ...form, file: null })}
+                            >
+                              <Trash2 className="h-4 w-4 text-red-700" />
+                              <span className="text-sm font-medium">Eliminar comprobante</span>
+                            </Button>
+                          </div>
+                        )}
+
+                        <Button variant="link" className="gap-2 p-0">
+                          <LinkIcon className="h-4 w-4" />
+                          <span className="text-sm font-medium underline">Agregar link del comprobante</span>
+                        </Button>
+                      </div>
+
+                      <Button
+                        onClick={handleSendRefound}
+                        className="h-11 w-full bg-custom-blue text-white hover:bg-blue-700"
+                        aria-label="Enviar ID de transferencia"
+                      >
+                        <span>Enviar</span>
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {resolved === false && (
+                  <>
+                    <Alert
+                      variant="destructive"
+                      className="animate-in fade-in mt-4 border-red-200 bg-[#F8C0C0] duration-300"
+                    >
+                      <AlertCircle className="h-4 w-4 text-red-500" />
+                      <AlertDescription className="mt-1.5 text-sm text-red-700">
+                        La discrepancia no se pudo resolver.
+                      </AlertDescription>
+                    </Alert>
+
+                    <div className="mt-5">
+                      <h1>Emitir el reembolso al Usuario a la cuenta de origen</h1>
+                      <div className="mt-5">
+                        <div className="relative mb-5 flex-1">
+                          <div className="mb-2 flex items-center">
+                            <Label
+                              htmlFor="transfer-id"
+                              className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                            >
+                              Motivo por el que no se resolvió la discrepancia
+                              <span className="ml-1 text-red-500">*</span>
+                            </Label>
+                          </div>
+                          <Input
+                            id="reject-reason"
+                            type="text"
+                            placeholder="Motivo del rechazo"
+                            value={form.description}
+                            onChange={(e) => setForm({ ...form, description: e.target.value })}
+                            // onFocus={() => setIsInputTransferIdFocused(true)}
+                            // onBlur={() => setIsInputTransferIdFocused(false)}
+                            className={`dark:border[#969696] h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
+                              isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
+                            }`}
+                            aria-required="true"
+                          />
+                        </div>
+                        <div className="relative mb-5 flex-1">
+                          <Input
+                            id="transfer-id"
+                            type="text"
+                            placeholder="Id de el reembolso"
+                            value={form.transfer_id}
+                            onChange={(e) => setForm({ ...form, transfer_id: e.target.value })}
+                            // onFocus={() => setIsInputTransferIdFocused(true)}
+                            // onBlur={() => setIsInputTransferIdFocused(false)}
+                            className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
+                              isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
+                            }`}
+                            aria-required="true"
+                          />
+                        </div>
+
+                        <div className="relative mb-5 flex-1">
+                          <Input
+                            id="mount"
+                            type="text"
+                            placeholder="Monto transferido"
+                            value={form.amount}
+                            onChange={(e) => setForm({ ...form, amount: e.target.value })}
+                            // onFocus={() => setIsInputTransferIdFocused(true)}
+                            // onBlur={() => setIsInputTransferIdFocused(false)}
+                            className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
+                              isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
+                            }`}
+                            aria-required="true"
+                          />
+                        </div>
+                      </div>
+                      <div className="animate-in fade-in flex flex-col items-center gap-4 pt-2 duration-300">
+                        <h4 className="text-center text-base font-semibold">Comprobante de Transferencia</h4>
+                        {!form.file ? (
+                          <div
+                            className={cn(
+                              'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 transition-all duration-300',
+                              isDragging
+                                ? 'bg-primary/10 border-[#90B0FE]'
+                                : 'hover:border-primary/70 hover:bg-primary/5 border-[#90B0FE] bg-[#FFFFF8] dark:border-gray-50 dark:bg-gray-800',
                             )}
                             onDragOver={handleDragOver}
                             onDragLeave={handleDragLeave}
