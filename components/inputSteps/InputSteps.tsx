@@ -46,7 +46,7 @@ const InputSteps: React.FC<InputStepsProps> = ({
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const errorMessage = error?.message;
-
+  const [taxIdentificationType, setTaxIdentificationType] = useState<string>('DNI/CUIT/CUIL');
   const { onChange, ...restRegister } = register(name, rules);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
