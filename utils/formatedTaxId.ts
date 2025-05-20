@@ -13,8 +13,9 @@ export const formatTaxId = (value: string): string => {
     if (formatted.length > 2) {
       formatted = formatted.replace(/^(\d{2})(\d+)/, '$1-$2');
     }
+
     // SEGUINDO -
-    if (formatted.length > 10 && formatted.length === 11) {
+    if (formatted.length > 10) {
       formatted = formatted.replace(/^(\d{2})-(\d{8})(\d+)/, '$1-$2-$3');
     }
 
