@@ -89,6 +89,14 @@ export default function PlusRewardInitial() {
 
   // console.log('descuentos', discounts);
 
+  const isUserVerified: null | true = session?.user.userVerification;
+  const userHave3Discount: undefined | boolean = discounts?.data.some(
+    (discount) => discount.discount === '3' && discount.is_used === 'FALSE',
+  );
+  const userHave5Discount: undefined | boolean = discounts?.data.some(
+    (discount) => discount.discount === '5' && discount.is_used === 'FALSE',
+  );
+
   return (
     <section className="relative m-auto flex w-full max-w-7xl items-center">
       <section className="mx-auto flex w-full max-w-md flex-col justify-center rounded-lg p-6 font-light text-lightText dark:text-custom-whiteD xs-mini-phone:p-7 xs-phone:p-8 md-phone:p-10 md:flex-row-reverse lg:flex-col">
@@ -111,20 +119,21 @@ export default function PlusRewardInitial() {
         </article>
 
         {
-          // CASE: Usuario no verificado con descuento de 3USD
-          session?.user.userVerification === null ? (
-            discounts?.data.some((discount) => discount.discount === '3' && discount.is_used === 'FALSE') ? (
+          // Revisar si el usuario NO está verificado y si tiene descuentos
+          !isUserVerified ? (
+            userHave3Discount ? (
+              // CASE: Usuario no verificado con descuento de 3USD
               <div className="flex w-[388px] flex-col items-center gap-[19px]">
                 <WelcomeReward />
                 <VerifyAccount />
               </div>
             ) : (
-              // CASE: Usuario no verificado sin descuentos
+              // CASE: Usuario no verificado y sin descuentos
               <VerifyAccount />
             )
-          ) : // CASE: Usuario verificado con descuento de 3USD y 5USD
-          discounts?.data.some((discount) => discount.discount === '3' && discount.is_used === 'FALSE') &&
-            discounts?.data.some((discount) => discount.discount === '5' && discount.is_used === 'FALSE') ? (
+          ) : // Revisar con qué descuentos cuenta el usuario
+          userHave3Discount && userHave5Discount ? (
+            // CASE: Usuario verificado con descuento de 3USD y 5USD
             <>Usuario Verificado con 3 y 5 usd</>
           ) : (
             // CASE: Usuario verificado con descuento de 5USD
