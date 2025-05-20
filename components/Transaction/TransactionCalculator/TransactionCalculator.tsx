@@ -170,7 +170,7 @@ export default function TransactionCalculator() {
             </div>
           )}
           {isProcessing ? (
-            <div className="mt-8">
+            <div className="mt-4">
               <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="44px" />
             </div>
           ) : (

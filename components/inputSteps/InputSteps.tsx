@@ -50,8 +50,12 @@ const InputSteps: React.FC<InputStepsProps> = ({
   const { onChange, ...restRegister } = register(name, rules);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const formattedValue = formatTaxId(event.target.value);
-    event.target.value = formattedValue;
+    if (id === 'tax_identification') {
+      const formattedValue = formatTaxId(event.target.value); // Pasar el nombre del campo
+
+      event.target.value = formattedValue;
+    }
+
     onChange(event);
     if (onCustomChange) onCustomChange(event);
   };
