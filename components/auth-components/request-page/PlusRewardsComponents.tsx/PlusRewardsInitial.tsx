@@ -2,31 +2,23 @@
 import Image from 'next/image';
 import { ImagePlusRewards } from '../ImagePlusRewards';
 import { useTransactions } from '@/components/historial/use-transactions';
-import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
 import AmountTransactions from '../AmountTransactions';
 import HasGanadoDiezDolares from './HasGanadoDiezDolares';
-import WelcomeReward from './WelcomeReward';
-import PopUpSessionExpire from './PopUpSessionExpire';
 
+// Hooks
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+
+// Actions
 import { getDiscounts } from '@/actions/discounts/discounts.action';
+
+// Types
+import { IDiscountsObject } from '@/types/discounts/discounts';
+
+// Components
 import VerifyAccount from './VerifyAccount';
-
-interface IDiscountsData {
-  user_discounts_id: string;
-  code_id: string;
-  user_id: string;
-  transactions_id: string;
-  is_used: 'FALSE' | 'TRUE';
-  created_at: string;
-  used_at: string;
-  code: string;
-  discount: string;
-}
-
-interface IDiscountsObject {
-  data: IDiscountsData[];
-}
+import PopUpSessionExpire from './PopUpSessionExpire';
+import WelcomeReward from './WelcomeReward';
 
 export default function PlusRewardInitial() {
   const { data: session, status } = useSession();
@@ -60,8 +52,6 @@ export default function PlusRewardInitial() {
   }
 
   console.log(session, discounts);
-
-  // ! Continuacion del proyecto: Tengo que ver la forma de verificar mi cuenta para saber si funciona el renderizar componentes despues de estar verificado y chequear que se renderice bien el componente de solo verificar cuenta cuando el usuario no tiene descuentos
 
   // const starsAndQuantity = await get
 
