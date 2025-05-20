@@ -23,6 +23,7 @@ import UserVerifiedWithoutTransactions from './UserVerifiedWithoutTransactions';
 
 export default function PlusRewardInitial() {
   const { data: session, status } = useSession();
+  const transactions = useTransactions();
   const [discounts, setDiscounts] = useState<IDiscountsObject | null>(null);
 
   useEffect(() => {
@@ -52,54 +53,21 @@ export default function PlusRewardInitial() {
     return <PopUpSessionExpire />;
   }
 
-  // ? Nota: en la 3ra imagen (usuario verificado con 3 y 5 usd), si el usuario ya hizo uso del descuento de 3usd significa que realizó una transaccion, por lo que se debería mostrar la 4ta imagen. Pero al mostrar la 4ta imagen, el usuario ya no sabe que tiene el descuento de 5usd adicionales
+  console.log(session, discounts, transactions);
 
+  // ? El useTransactions obtiene todas las transacciones en vez de solo las del usuario (el "problema" está en el fetch), por lo cual ¿hago un fetch por mi cuenta?. Igualmente de momento hay un error en el fetch y devuelve un mockup
+  // ? En principio creo que el useTransactions ya no lo tengo que usar porque está la api que me devuelve las estrellas y el monto total de las transacciones. Estas estrellas representan las transacciones
+
+  // TODO: Crear una función que solicite las estrellas y monto total de las transacciones
+
+  // ? Nota: en la 3ra imagen (usuario verificado con 3 y 5 usd), si el usuario ya hizo uso del descuento de 3usd significa que realizó una transaccion, por lo que se debería mostrar la 4ta imagen. Pero al mostrar la 4ta imagen, el usuario ya no sabe que tiene el descuento de 5usd adicionales
   // * Solución: la 3ra imagen solo se muestra cuando el usuario no uso los 3 y 5 usd, y a la 4ta imagen habría que agregarle el descuento de 5usd en caso que no lo haya usado
 
-  console.log(session, discounts);
-
   // const starsAndQuantity = await get
-
-  // const [totalAmount, setTotalAmount] = useState(0);
-  // const [totalTransactions, setTotalTransactions] = useState(0);
-
-  // const hidden = transactions.length === 0 ? 'flex' : 'hidden';
-
-  // useEffect(() => {
-
-  //   const arrayAmounts = transactions.map((transaction) => Number(transaction.amounts.sent.amount));
-  //   const accumulatedAmount = arrayAmounts.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-  //   setTotalAmount(accumulatedAmount);
-  //   setTotalTransactions(transactions.length);
-
-  // try {
-  //   const descuentos = getDiscounts();
-  //   setDiscounts(descuentos);
-  // } catch (error) {
-  //   console.error('Error fetching discounts:', error);
-  // }
-
-  //   fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/discount/user-discounts/user`, {
-  //     method: 'GET',
-  //     headers: {
-  //       Authorization: `user_id ${session?.accessToken}`,
-  //       'Content-Type': 'application/json',
-  //     },
-  //   })
-  //     .then( response => response.json())
-  //     .then( data => setDiscounts(data))
-  //     .catch( error => console.log("Error fetching discounts:", error))
-
-  // }, [transactions]);
-
-  // console.log('descuentos', discounts);
 
   const isUserVerified: null | true = session?.user.userVerification;
   const userHave3Discount: undefined | boolean = discounts?.data.some(
     (discount) => discount.discount === '3' && discount.is_used === 'FALSE',
-  );
-  const userHave5Discount: undefined | boolean = discounts?.data.some(
-    (discount) => discount.discount === '5' && discount.is_used === 'FALSE',
   );
 
   return (
@@ -136,13 +104,16 @@ export default function PlusRewardInitial() {
               // CASE: Usuario no verificado y sin descuentos
               <VerifyAccount />
             )
-          ) : // Revisar con qué descuentos cuenta el usuario
-          // userHave3Discount && userHave5Discount
+          ) : // Revisar si el usuario NO tiene transacciones
+          // TODO: lógica para revisar que el usuario tenga transacciones (si no tiene, mostrar lo de abajo. Si tiene, mostrar directamente la 4ta imagen y ver que se hace con los 5usd que quedan colgados)
           true ? (
             // CASE: Usuario verificado con descuento de 3USD y 5USD
-            <UserVerifiedWithoutTransactions />
+            <div className="flex w-[388px] flex-col items-center gap-9">
+              <UserVerifiedWithoutTransactions />
+              <AmountTransactions amountTotal={0} totalTransactions={0} />
+            </div>
           ) : (
-            // CASE: Usuario verificado con descuento de 5USD
+            // CASE: Usuario verificado con su primera transacción hecha
             <>Usuario Verificado solo</>
           )
         }
