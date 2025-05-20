@@ -45,6 +45,13 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
   const [isResolutionInputFocused, setIsResolutionInputFocused] = useState(false);
   const [transferId, setTransferId] = useState('');
 
+  const [resolutionForm, setResolutionForm] = useState<Form>({
+    description: '',
+    transfer_id: '',
+    amount: '',
+    file: null,
+  });
+
   // Dialog states
   const [showRequiredDialog, setShowRequiredDialog] = useState(false);
   const [showConfirmDiscrepancyDialog, setShowConfirmDiscrepancyDialog] = useState(false);
@@ -94,38 +101,32 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
     setIsDragging(false);
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = (e: React.DragEvent, context: 'refund' | 'transfer') => {
     e.preventDefault();
     setIsDragging(false);
-    handleFile(e.dataTransfer.files);
+    handleFile(e.dataTransfer.files, context);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, context: 'refund' | 'transfer') => {
     if (e.target.files) {
-      handleFile(e.target.files);
+      handleFile(e.target.files, context);
     }
   };
 
-  const handleFile = (files: FileList) => {
-    if (files.length > 0) {
-      const file = files[0];
+  const handleFile = (files: FileList, context: 'refund' | 'transfer') => {
+    const file = files[0];
+    const isValidType = ['image/jpeg', 'image/png', 'application/pdf'].includes(file.type);
+    const isValidSize = file.size <= 5 * 1024 * 1024;
 
-      // Validación opcional
-      const isValidType = ['image/jpeg', 'image/png', 'application/pdf'].includes(file.type);
-      const isValidSize = file.size <= 5 * 1024 * 1024;
+    if (!isValidType || !isValidSize) {
+      alert('Archivo inválido');
+      return;
+    }
 
-      if (!isValidType) {
-        alert('Formato no permitido. Solo se aceptan JPG, PNG y PDF.');
-        return;
-      }
-
-      if (!isValidSize) {
-        alert('El archivo supera el tamaño máximo permitido de 5MB.');
-        return;
-      }
-
+    if (context === 'refund') {
       setForm((prev) => ({ ...prev, file }));
-      console.log('Archivo actualizado:', file.name);
+    } else {
+      setResolutionForm((prev) => ({ ...prev, file }));
     }
   };
 
@@ -194,6 +195,39 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
           codigo_transferencia: form.transfer_id,
         },
         amount: Number(form.amount),
+      });
+
+      const responseFile = await fetch(`http://localhost:8080/api/v1/admin/transactions/voucher`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      console.log('Respuesta de la info', response);
+      console.log('Respuesta de el archivo', responseFile);
+    } catch (error) {
+      throw new Error(`❌ Error en la respuesta del servicio ${error}`);
+    }
+  };
+
+  const transferDiscrepancyResolved = async () => {
+    console.log(resolutionForm);
+
+    try {
+      if (!resolutionForm.file) return null;
+
+      const formData = new FormData();
+      formData.append('file', resolutionForm.file);
+      formData.append('transaction_id', transaction.transaction_id);
+
+      const response = await updateTransactionStatus('approved', transaction.transaction_id, {
+        descripcion: resolutionForm.description,
+        additionalData: {
+          codigo_transferencia: resolutionForm.transfer_id,
+        },
+        amount: Number(resolutionForm.amount),
       });
 
       const responseFile = await fetch(`http://localhost:8080/api/v1/admin/transactions/voucher`, {
@@ -316,49 +350,49 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                         La discrepancia ha sido resuelta satisfactoriamente.
                       </AlertDescription>
                     </Alert>
-                    <div className="space-y-2">
-                      <Label htmlFor="resolution-reason" className="text-sm font-medium text-gray-700">
-                        Motivo de la Resolución <span className="text-red-500">*</span>
-                      </Label>
+                    <div className="mt-5">
+                      <h1>Realizar la transferencia al destinatario</h1>
+                      <div className="mt-5">
+                        <div className="space-y-2">
+                          <Label htmlFor="resolution-reason" className="text-sm font-medium text-gray-700">
+                            Motivo de la Resolución <span className="text-red-500">*</span>
+                          </Label>
 
-                      <div className="flex gap-2">
-                        <Input
-                          id="resolution-reason"
-                          placeholder="Explica cómo se resolvió la discrepancia"
-                          value={resolutionReason}
-                          onChange={(e) => setResolutionReason(e.target.value)}
-                          onFocus={() => setIsResolutionInputFocused(true)}
-                          onBlur={() => setIsResolutionInputFocused(false)}
-                          className={`h-10 transition-all duration-300 ${
-                            isResolutionInputFocused ? 'border-green-300 ring-2 ring-green-300' : ''
-                          }`}
-                          aria-required="true"
-                        />
+                          <div className="flex gap-2">
+                            <Input
+                              id="resolution-reason"
+                              placeholder="Explica cómo se resolvió la discrepancia"
+                              value={resolutionForm.description}
+                              onChange={(e) => setResolutionForm({ ...resolutionForm, description: e.target.value })}
+                              // onFocus={() => setIsResolutionInputFocused(true)}
+                              // onBlur={() => setIsResolutionInputFocused(false)}
+                              className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
+                                isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
+                              }`}
+                              aria-required="true"
+                            />
 
-                        <Button
+                            {/* <Button
                           disabled={resolutionReason.length === 0}
                           onClick={handleSubmitResolution}
                           className="h-10 bg-green-600 text-white hover:bg-green-700"
                         >
                           <Send className="mr-2 h-4 w-4" />
                           <span>Enviar</span>
-                        </Button>
-                      </div>
+                        </Button> */}
+                          </div>
 
-                      <p className="text-muted-foreground text-xs">
-                        Describe cómo se resolvió la discrepancia encontrada.
-                      </p>
-                    </div>
-                    <div className="mt-5">
-                      <h1>Realizar la transferencia al destinatario</h1>
-                      <div className="mt-5">
+                          <p className="text-muted-foreground pb-2 text-xs">
+                            Describe cómo se resolvió la discrepancia encontrada.
+                          </p>
+                        </div>
                         <div className="relative mb-5 flex-1">
                           <Input
                             id="transfer-id"
                             type="text"
                             placeholder="Id de el reembolso"
-                            value={form.transfer_id}
-                            onChange={(e) => setForm({ ...form, transfer_id: e.target.value })}
+                            value={resolutionForm.transfer_id}
+                            onChange={(e) => setResolutionForm({ ...resolutionForm, transfer_id: e.target.value })}
                             // onFocus={() => setIsInputTransferIdFocused(true)}
                             // onBlur={() => setIsInputTransferIdFocused(false)}
                             className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
@@ -373,8 +407,8 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                             id="mount"
                             type="text"
                             placeholder="Monto transferido"
-                            value={form.amount}
-                            onChange={(e) => setForm({ ...form, amount: e.target.value })}
+                            value={resolutionForm.amount}
+                            onChange={(e) => setResolutionForm({ ...resolutionForm, amount: e.target.value })}
                             // onFocus={() => setIsInputTransferIdFocused(true)}
                             // onBlur={() => setIsInputTransferIdFocused(false)}
                             className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
@@ -386,7 +420,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                       </div>
                       <div className="animate-in fade-in flex flex-col items-center gap-4 pt-2 duration-300">
                         <h4 className="text-center text-base font-semibold">Comprobante de Transferencia</h4>
-                        {!form.file ? (
+                        {!resolutionForm.file ? (
                           <div
                             className={cn(
                               'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 transition-all duration-300',
@@ -396,7 +430,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                             )}
                             onDragOver={handleDragOver}
                             onDragLeave={handleDragLeave}
-                            onDrop={handleDrop}
+                            onDrop={(e) => handleDrop(e, 'transfer')}
                           >
                             <Upload className="text-primary h-8 w-8" />
                             <p className="px-4 text-center text-sm text-gray-600">
@@ -414,7 +448,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                               type="file"
                               className="hidden"
                               accept="image/*,.pdf"
-                              onChange={handleFileChange}
+                              onChange={(e) => handleFileChange(e, 'transfer')}
                             />
                             <p className="text-xs text-gray-500">Formatos aceptados: JPG, PNG, PDF (máx. 5MB)</p>
                           </div>
@@ -446,7 +480,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                       </div>
 
                       <Button
-                        onClick={handleSendRefound}
+                        onClick={() => setShowConfirmResolutionDialog(true)}
                         className="h-11 w-full bg-custom-blue text-white hover:bg-blue-700"
                         aria-label="Enviar ID de transferencia"
                       >
@@ -539,7 +573,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                             )}
                             onDragOver={handleDragOver}
                             onDragLeave={handleDragLeave}
-                            onDrop={handleDrop}
+                            onDrop={(e) => handleDrop(e, 'refund')}
                           >
                             <Upload className="text-primary h-8 w-8" />
                             <p className="px-4 text-center text-sm text-gray-600">
@@ -557,7 +591,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                               type="file"
                               className="hidden"
                               accept="image/*,.pdf"
-                              onChange={handleFileChange}
+                              onChange={(e) => handleFileChange(e, 'refund')}
                             />
                             <p className="text-xs text-gray-500">Formatos aceptados: JPG, PNG, PDF (máx. 5MB)</p>
                           </div>
@@ -690,7 +724,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
           <DialogFooter className="gap-2 sm:justify-center">
             <Button
               variant="default"
-              onClick={confirmResolution}
+              onClick={transferDiscrepancyResolved}
               className="bg-[rgb(1,42,142)] text-white hover:bg-[rgb(1,32,112)] dark:bg-blue-900 dark:hover:bg-blue-950"
             >
               Confirmar

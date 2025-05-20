@@ -21,6 +21,8 @@ export const getNoteById = async (id: string) => {
     if (!response.ok) throw new Error('Failed to fetch notes');
 
     const data: NoteTypeSingle = await response.json();
+
+    console.log('respuesta de la nota', data);
     return data;
   } catch (error: any) {
     console.error('Error fetching notes:', error);
