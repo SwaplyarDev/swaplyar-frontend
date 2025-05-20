@@ -19,6 +19,7 @@ import { IDiscountsObject } from '@/types/discounts/discounts';
 import VerifyAccount from './VerifyAccount';
 import PopUpSessionExpire from './PopUpSessionExpire';
 import WelcomeReward from './WelcomeReward';
+import UserVerifiedWithoutTransactions from './UserVerifiedWithoutTransactions';
 
 export default function PlusRewardInitial() {
   const { data: session, status } = useSession();
@@ -50,6 +51,10 @@ export default function PlusRewardInitial() {
   if (!session || !session.accessToken) {
     return <PopUpSessionExpire />;
   }
+
+  // ? Nota: en la 3ra imagen (usuario verificado con 3 y 5 usd), si el usuario ya hizo uso del descuento de 3usd significa que realizó una transaccion, por lo que se debería mostrar la 4ta imagen. Pero al mostrar la 4ta imagen, el usuario ya no sabe que tiene el descuento de 5usd adicionales
+
+  // * Solución: la 3ra imagen solo se muestra cuando el usuario no uso los 3 y 5 usd, y a la 4ta imagen habría que agregarle el descuento de 5usd en caso que no lo haya usado
 
   console.log(session, discounts);
 
@@ -132,9 +137,10 @@ export default function PlusRewardInitial() {
               <VerifyAccount />
             )
           ) : // Revisar con qué descuentos cuenta el usuario
-          userHave3Discount && userHave5Discount ? (
+          // userHave3Discount && userHave5Discount
+          true ? (
             // CASE: Usuario verificado con descuento de 3USD y 5USD
-            <>Usuario Verificado con 3 y 5 usd</>
+            <UserVerifiedWithoutTransactions />
           ) : (
             // CASE: Usuario verificado con descuento de 5USD
             <>Usuario Verificado solo</>
