@@ -46,7 +46,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="es">
       <head>
         {/* Integración de Google Tag Manager */}
-        <GoogleTagManager gtmId="GTM-TGBHM97R" />
+        <GoogleTagManager gtmId="GTM-WMGWHJ7J" />
         {/* Verificación de propiedad en Google Search Console */}
         <meta name="google-site-verification" content="TDYMmlsmcxOohMXHebZJtRXZ-Y0otZk006ExVzrbPqs" />
 
