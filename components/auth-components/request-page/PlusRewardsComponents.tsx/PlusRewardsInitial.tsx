@@ -1,9 +1,7 @@
 'use client';
-import Image from 'next/image';
+
+// Images
 import { ImagePlusRewards } from '../ImagePlusRewards';
-import { useTransactions } from '@/components/historial/use-transactions';
-import AmountTransactions from '../AmountTransactions';
-import HasGanadoDiezDolares from './HasGanadoDiezDolares';
 
 // Hooks
 import { useSession } from 'next-auth/react';
@@ -11,6 +9,7 @@ import { useEffect, useState } from 'react';
 
 // Actions
 import { getDiscounts } from '@/actions/discounts/discounts.action';
+import { getUserStarsAndAmount } from '@/actions/userStarsAndAmount/userStarsAndAmount.action';
 
 // Types
 import { IDiscountsObject } from '@/types/discounts/discounts';
@@ -20,14 +19,27 @@ import VerifyAccount from './VerifyAccount';
 import PopUpSessionExpire from './PopUpSessionExpire';
 import WelcomeReward from './WelcomeReward';
 import UserVerifiedWithoutTransactions from './UserVerifiedWithoutTransactions';
+import HasGanadoDiezDolares from './HasGanadoDiezDolares';
+import AmountTransactions from '../AmountTransactions';
+import UncompleteRewardText from './UncompleteRewardText';
+
+interface IStarsAndAmount {
+  data: {
+    quantity: string;
+    stars: string;
+  };
+}
 
 export default function PlusRewardInitial() {
   const { data: session, status } = useSession();
-  const transactions = useTransactions();
+
   const [discounts, setDiscounts] = useState<IDiscountsObject | null>(null);
+  const [stars, setStars] = useState<number>(0);
+  // Cantidad de dinero en total por las transacciones
+  const [amountTransactions, setAmountTransactions] = useState<number>(0);
 
   useEffect(() => {
-    async function functionGetDiscounts() {
+    async function getData() {
       if (!session?.accessToken) return;
 
       try {
@@ -36,9 +48,17 @@ export default function PlusRewardInitial() {
       } catch (error) {
         console.error(error);
       }
+
+      try {
+        const starsAndAmountData: IStarsAndAmount = await getUserStarsAndAmount(session.accessToken);
+        setStars(Number(starsAndAmountData.data.stars));
+        setAmountTransactions(Number(starsAndAmountData.data.quantity));
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    functionGetDiscounts();
+    getData();
   }, [session]);
 
   // Pantalla de carga mientras se obtiene la session
@@ -53,12 +73,17 @@ export default function PlusRewardInitial() {
     return <PopUpSessionExpire />;
   }
 
-  console.log(session, discounts, transactions);
+  console.log(session, discounts);
 
   const isUserVerified: null | true = session?.user.userVerification;
+
   // Los descuentos vienen con un campo is_used, pero la api solo devuelve aquellos descuentos que no han sido usados
   const userHave3Discount: undefined | boolean = discounts?.data.some((discount) => discount.discount === '3');
   const userHave5Discount: undefined | boolean = discounts?.data.some((discount) => discount.discount === '5');
+
+  // Evaluar si requisitos para el premio
+  const haveEnoughStars: boolean = stars >= 5;
+  const haveEnoughAmount: boolean = amountTransactions >= 500;
 
   return (
     <section className="relative m-auto flex w-full max-w-7xl items-center">
@@ -76,6 +101,7 @@ export default function PlusRewardInitial() {
                 {session.user.id.toUpperCase()}
               </h2>
             ) : (
+              // Loader mientras carga el id del usuario
               <div className="ml-auto mt-2 flex h-4 w-[70%] animate-pulse overflow-hidden rounded-full bg-gray-300 p-3 md:h-8"></div>
             )}
           </article>
@@ -96,56 +122,23 @@ export default function PlusRewardInitial() {
             )
           ) : // Revisar si el usuario tiene descuentos
           userHave3Discount || userHave5Discount ? (
-            // CASE: Usuario verificado con alguno de los descuentos descuento (3USD y 5USD)
+            // CASE: Usuario verificado con alguno de los descuentos (3USD y 5USD)
             <div className="flex w-[388px] flex-col items-center gap-9">
               <UserVerifiedWithoutTransactions userHave3Discount={userHave3Discount} />
               <AmountTransactions amountTotal={0} totalTransactions={0} />
             </div>
+          ) : // TODO: Revisar si tiene las transacciones y estrellas requeridas para el premio
+          haveEnoughStars && haveEnoughAmount ? (
+            // CASE: Usuario verificado, sin descuentos y con transacciones y estrellas requeridas para el premio
+            <HasGanadoDiezDolares />
           ) : (
-            // CASE: Usuario verificado con su primera transacción hecha
-            <>Usuario Verificado solo</>
+            // CASE: Usuario verificado, sin descuentos y con transacciones o estrellas menores a las requeridas para el premio
+            <div className="flex w-[388px] flex-col items-center gap-9">
+              <UncompleteRewardText stars={stars} quantity={amountTransactions} />
+              <AmountTransactions amountTotal={amountTransactions} totalTransactions={stars} />
+            </div>
           )
         }
-
-        {/* {totalTransactions === 5 && totalAmount >= 500 ? (
-          <HasGanadoDiezDolares />
-        ) : (
-          <div>
-            {transactions.length === 0 && !session?.user.userVerification ? (
-              <BienvenidaVerificacion
-                cantTransactions={totalTransactions}
-                userVerification={session?.user.userVerification}
-              />
-            ) : (
-              <p>
-                Haz completado <b className="font-semibold">{totalTransactions}/5</b> solicitudes exitosas y acumulado
-                <b className="font-semibold">{totalAmount}/500 USD</b>
-              </p>
-            )}
-
-            {session?.user.userVerification ? (
-              <AmountTransactions amountTotal={totalAmount} totalTransactions={totalTransactions} />
-            ) : (
-              <article className="relative mb-6 rounded-lg p-2">
-                <div className="text-center">
-                  <p className="font-bold xs-phone:text-lg">Aún no has verificado tu cuenta.</p>
-                  <p className="whitespace-nowrap text-sm xs-mini-phone:text-base">
-                    Veríficala ahora y obtén{' '}
-                    <span className="whitespace-nowrap font-bold text-custom-blue-800 dark:text-custom-whiteD">
-                      $5 USD{' '}
-                    </span>
-                    adicionales
-                    <br></br>
-                    <span> en tu solicitud.</span>
-                  </p>
-                </div>
-                <div className="flex justify-center">
-                  <VerifyButton />
-                </div>
-              </article>
-            )}
-          </div>
-        )} */}
       </section>
     </section>
   );
