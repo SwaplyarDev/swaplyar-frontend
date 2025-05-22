@@ -19,7 +19,7 @@ import VerifyAccount from './VerifyAccount';
 import PopUpSessionExpire from './PopUpSessionExpire';
 import WelcomeReward from './WelcomeReward';
 import UserVerifiedWithoutTransactions from './UserVerifiedWithoutTransactions';
-import HasGanadoDiezDolares from './HasGanadoDiezDolares';
+import UserWinPlusReward from './UserWinPlusReward';
 import AmountTransactions from '../AmountTransactions';
 import UncompleteRewardText from './UncompleteRewardText';
 
@@ -61,12 +61,10 @@ export default function PlusRewardInitial() {
     getData();
   }, [session]);
 
-  // Pantalla de carga mientras se obtiene la session
   if (status === 'loading') {
-    return <div className="flex h-screen w-full items-center justify-center">Loading...</div>;
+    return <div className="flex h-[311px] w-full items-center justify-center">Loading...</div>;
   }
 
-  // Session expirada
   // TODO: mostrar el popup, a los 5seg se hace un logout, cuando sale del popup tambien, o si acepta con un boton
   // ! No se probó la funcionalidad del popup
   if (!session || !session.accessToken) {
@@ -81,7 +79,6 @@ export default function PlusRewardInitial() {
   const userHave3Discount: undefined | boolean = discounts?.data.some((discount) => discount.discount === '3');
   const userHave5Discount: undefined | boolean = discounts?.data.some((discount) => discount.discount === '5');
 
-  // Evaluar si requisitos para el premio
   const haveEnoughStars: boolean = stars >= 5;
   const haveEnoughAmount: boolean = amountTransactions >= 500;
 
@@ -107,38 +104,33 @@ export default function PlusRewardInitial() {
           </article>
         </article>
 
-        {
-          // Revisar si el usuario NO está verificado y si tiene descuentos
-          !isUserVerified ? (
-            userHave3Discount ? (
-              // CASE: Usuario no verificado con descuento de 3USD
-              <div className="flex w-[388px] flex-col items-center gap-[19px]">
-                <WelcomeReward />
-                <VerifyAccount />
-              </div>
-            ) : (
-              // CASE: Usuario no verificado y sin descuentos
+        {!isUserVerified ? (
+          userHave3Discount ? (
+            // CASE: Usuario no verificado con descuento de 3USD
+            <div className="flex w-[388px] flex-col items-center gap-[19px]">
+              <WelcomeReward />
               <VerifyAccount />
-            )
-          ) : // Revisar si el usuario tiene descuentos
-          userHave3Discount || userHave5Discount ? (
-            // CASE: Usuario verificado con alguno de los descuentos (3USD y 5USD)
-            <div className="flex w-[388px] flex-col items-center gap-9">
-              <UserVerifiedWithoutTransactions userHave3Discount={userHave3Discount} />
-              <AmountTransactions amountTotal={0} totalTransactions={0} />
             </div>
-          ) : // TODO: Revisar si tiene las transacciones y estrellas requeridas para el premio
-          haveEnoughStars && haveEnoughAmount ? (
-            // CASE: Usuario verificado, sin descuentos y con transacciones y estrellas requeridas para el premio
-            <HasGanadoDiezDolares />
           ) : (
-            // CASE: Usuario verificado, sin descuentos y con transacciones o estrellas menores a las requeridas para el premio
-            <div className="flex w-[388px] flex-col items-center gap-9">
-              <UncompleteRewardText stars={stars} quantity={amountTransactions} />
-              <AmountTransactions amountTotal={amountTransactions} totalTransactions={stars} />
-            </div>
+            // CASE: Usuario no verificado y sin descuentos
+            <VerifyAccount />
           )
-        }
+        ) : userHave5Discount ? (
+          // CASE: Usuario verificado con alguno de los descuentos (3USD y 5USD)
+          <div className="flex w-[388px] flex-col items-center gap-9">
+            <UserVerifiedWithoutTransactions userHave3Discount={userHave3Discount} />
+            <AmountTransactions amountTotal={0} totalTransactions={0} />
+          </div>
+        ) : haveEnoughAmount && haveEnoughStars ? (
+          // CASE: Usuario verificado, sin descuentos y con transacciones y estrellas requeridas para el premio
+          <UserWinPlusReward />
+        ) : (
+          // CASE: Usuario verificado, sin descuentos y con transacciones o estrellas menores a las requeridas para el premio
+          <div className="flex w-[388px] flex-col items-center gap-9">
+            <UncompleteRewardText stars={stars} quantity={amountTransactions} />
+            <AmountTransactions amountTotal={amountTransactions} totalTransactions={stars} />
+          </div>
+        )}
       </section>
     </section>
   );
