@@ -74,6 +74,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
                 <BlogPostCard
                   key={post.blog_id}
                   blog_id={post.blog_id}
+                  slug={post.slug}
                   description={post.description}
                   title={post.title}
                   category={post.category}

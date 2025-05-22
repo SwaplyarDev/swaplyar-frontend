@@ -14,15 +14,14 @@ interface BlogPostProps {
   image: string;
   body?: String;
   date?: string;
+  slug: string;
 }
 function convertDate(date: string) {
   const listDate = date.split('-').reverse();
   return `${listDate[0]}/${listDate[1]}/${listDate[2]}`;
 }
 
-const BlogPostCard: React.FC<BlogPostProps> = ({ blog_id, title, description, image, category, date }) => {
-  const title2 = title || '';
-  const slug = slugify(title2, { strict: true }); //Se convierte el titulo del blog en slug
+const BlogPostCard: React.FC<BlogPostProps> = ({ blog_id, title, description, image, category, date, slug }) => {
   return (
     <Link href={`blog/${slug}`} className="flex h-full w-full">
       <div className="flex h-full w-full flex-col overflow-hidden rounded-[16px] border border-custom-blue bg-white shadow-md shadow-black/25 transition-transform hover:scale-[1.02] dark:border-inputDark dark:bg-[#323232]">

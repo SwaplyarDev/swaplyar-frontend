@@ -1,5 +1,3 @@
-// /components/info/blog/blogDetail/CardContent.tsx
-
 'use client';
 
 import Image from 'next/image';
@@ -140,8 +138,19 @@ function CardContent(data: BlogPostCardProps) {
 
     fetchData();
   }, [data.blog_id]);
+
+  const asignarLink = () => {
+    const listSubtitles: (string | string[])[] = [];
+    const subtitles =
+      Array.isArray(data.content_elements) &&
+      data.content_elements[0]?.content?.map((item: Content) => {
+        item.style?.style_name === 'subtitle' && listSubtitles.push(item.text);
+      });
+    return listSubtitles;
+  };
   return (
     <>
+      {console.log(asignarLink())}
       <div className="sticky top-28 flex w-full flex-col items-center sm:top-36">
         <div className="rounded-2xl border-2 border-buttonsLigth bg-custom-whiteD-100 p-2 dark:border-custom-whiteD-100">
           <ProgressBar value={progress} width="300px" />
@@ -164,12 +173,12 @@ function CardContent(data: BlogPostCardProps) {
             <ul className="list-disc pl-5">
               {sideBar.map((item, index) => (
                 <li className="list-disc" key={index}>
-                  {item.title}
+                  <a href="">{item.title}</a>
                   {item.children && (
                     <ul>
                       {item.children.map((child, childIndex) => (
                         <li className="ml-5 list-disc" key={childIndex}>
-                          {child.title}
+                          <a href="">{child.title}</a>
                         </li>
                       ))}
                     </ul>
@@ -202,7 +211,11 @@ function CardContent(data: BlogPostCardProps) {
                   if (item.style?.style_name === 'normal') {
                     return <p key={index}>{item.text}</p>;
                   } else if (item.style?.style_name === 'subtitle') {
-                    return <h2 key={index}>{highlightText(item.text as string)}</h2>;
+                    return (
+                      <h2 id={item.text as string} key={index}>
+                        {highlightText(item.text as string)}
+                      </h2>
+                    );
                   } else if (item.style?.style_name === 'ul') {
                     let list = parseContinuousTextToMenu(item.text as string);
                     return (
