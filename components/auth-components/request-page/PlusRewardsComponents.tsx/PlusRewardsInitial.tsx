@@ -92,40 +92,29 @@ export default function PlusRewardInitial() {
 
           <article className="mb-5 text-end xs-phone:mb-6">
             <p className="align-text-top text-sm xs-mini-phone:text-base">Tu Código de Miembro:</p>
-
-            {session?.user.id ? (
-              <h2 className="title text-3xl font-bold xs-mini-phone:text-[32px] xs-phone:text-[36px] md-phone:text-[40px]">
-                {session.user.id.toUpperCase()}
-              </h2>
-            ) : (
-              // Loader mientras carga el id del usuario
-              <div className="ml-auto mt-2 flex h-4 w-[70%] animate-pulse overflow-hidden rounded-full bg-gray-300 p-3 md:h-8"></div>
-            )}
+            <h2 className="title text-3xl font-bold xs-mini-phone:text-[32px] xs-phone:text-[36px] md-phone:text-[40px]">
+              {session.user.id.toUpperCase()}
+            </h2>
           </article>
         </article>
 
         {!isUserVerified ? (
           userHave3Discount ? (
-            // CASE: Usuario no verificado con descuento de 3USD
             <div className="flex w-[388px] flex-col items-center gap-[19px]">
               <WelcomeReward />
               <VerifyAccount />
             </div>
           ) : (
-            // CASE: Usuario no verificado y sin descuentos
             <VerifyAccount />
           )
         ) : userHave5Discount ? (
-          // CASE: Usuario verificado con alguno de los descuentos (3USD y 5USD)
           <div className="flex w-[388px] flex-col items-center gap-9">
             <UserVerifiedWithoutTransactions userHave3Discount={userHave3Discount} />
             <AmountTransactions amountTotal={0} totalTransactions={0} />
           </div>
         ) : haveEnoughAmount && haveEnoughStars ? (
-          // CASE: Usuario verificado, sin descuentos y con transacciones y estrellas requeridas para el premio
           <UserWinPlusReward />
         ) : (
-          // CASE: Usuario verificado, sin descuentos y con transacciones o estrellas menores a las requeridas para el premio
           <div className="flex w-[388px] flex-col items-center gap-9">
             <UncompleteRewardText stars={stars} quantity={amountTransactions} />
             <AmountTransactions amountTotal={amountTransactions} totalTransactions={stars} />
