@@ -20,7 +20,6 @@ function removeAccent(text: string) {
 
 const Blog: React.FC<BlogProps> = ({ currentPage }) => {
   const { blogs, isLoading, totalPages } = useBlogStore();
-  console.log(blogs);
   const searchParams = useSearchParams();
   const router = useRouter();
   const searchQuery = searchParams.get('search') || '';

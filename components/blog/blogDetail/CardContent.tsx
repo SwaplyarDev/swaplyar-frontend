@@ -98,9 +98,8 @@ function CardContent(data: BlogPostCardProps) {
   const { isDark } = useDarkTheme();
   const [isLoaded, setIsLoaded] = useState(false);
   const [progress, setProgress] = useState(0);
-  console.log(data);
+  console.log('blogs', data);
   const [randomBlog, setRandomBlog] = useState<BlogPostCardProps | null>(null);
-  console.log(data);
 
   // Se convierte la informacion que me llega de la API en un formato que pueda ser utilizado como array
   const sideBar = parseContinuousTextToMenu(data.side_bar);
@@ -112,7 +111,7 @@ function CardContent(data: BlogPostCardProps) {
 
       const progressValue = Math.min((scrollTop / scrollHeight) * 100, 100);
 
-      setProgress((prev) => (prev >= 100 ? 100 : progressValue));
+      setProgress(progressValue);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -169,7 +168,7 @@ function CardContent(data: BlogPostCardProps) {
                   {item.children && (
                     <ul>
                       {item.children.map((child, childIndex) => (
-                        <li className="list-disc" key={childIndex}>
+                        <li className="ml-5 list-disc" key={childIndex}>
                           {child.title}
                         </li>
                       ))}
@@ -227,20 +226,21 @@ function CardContent(data: BlogPostCardProps) {
                     );
                   } else if (item?.style?.style_name === 'ol') {
                     let list = parseContinuousTextToMenu(item.text as string);
+                    console.log(list);
                     return (
                       <ol key={index}>
                         {Array.isArray(list) &&
                           list.map((item, index) => (
-                            <li key={index} className="list-decimal">
+                            <li key={index} className="ml-5 list-decimal">
                               {highlightText(item.title)}
                               {item.children && (
-                                <ol key={index + 'ol'}>
+                                <ul key={index + 'ol'}>
                                   {item.children.map((child, childIndex) => (
-                                    <li className="list-decimal" key={childIndex}>
+                                    <li className="ml-5 list-disc" key={childIndex}>
                                       {highlightText(child.title as string)}
                                     </li>
                                   ))}
-                                </ol>
+                                </ul>
                               )}
                             </li>
                           ))}
