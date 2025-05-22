@@ -190,6 +190,12 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
         icon: <CheckCircle size={14} className="mr-1.5 h-4 w-4" />,
         label: 'Aceptada',
       },
+      '4': {
+        bgColor: 'bg-red-100 dark:bg-red-900/30',
+        textColor: 'text-red-800 dark:text-red-300',
+        icon: <XCircle size={14} className="mr-1" />,
+        label: 'Rechazada',
+      },
       '7': {
         bgColor: 'bg-amber-100 dark:bg-amber-900/30',
         textColor: 'text-amber-800 dark:text-amber-300',
@@ -230,6 +236,8 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
 
     // @ts-ignore
     const config = status ? statusConfig[status] : statusConfig.default;
+
+    console.log();
 
     return (
       <span

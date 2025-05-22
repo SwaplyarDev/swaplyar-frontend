@@ -188,7 +188,10 @@ const TransferClient = () => {
       formData.append('transaction_id', transId);
 
       const response = await updateTransactionStatus('approved', transId, {
-        review: form.transfer_id,
+        descripcion: 'Proceso de transaccion exitoso',
+        additionalData: {
+          codigo_transferencia: form.transfer_id,
+        },
         amount: Number(form.amount),
       });
       const responseFile = await uploadTransactionReceipt(formData);
@@ -321,11 +324,7 @@ const TransferClient = () => {
         {selected === true ? (
           <div className="animate-in fade-in grid grid-cols-1 gap-4 duration-300">
             <div className="space-y-2">
-              <Label htmlFor="transfer_id" className="text-sm font-medium">
-                ID de la Transferencia <span className="text-red-500">*</span>
-              </Label>
-              <div className="flex items-center rounded-md border">
-                <FileText className="ml-2 h-5 w-5 text-gray-400" />
+              <div className="relative my-5 flex-1">
                 <Input
                   id="transfer_id"
                   name="transfer_id"
@@ -333,25 +332,31 @@ const TransferClient = () => {
                   placeholder="Ingresa el ID de la transferencia"
                   value={form.transfer_id}
                   onChange={handleInputChange}
-                  className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                  // onFocus={() => setIsInputTransferIdFocused(true)}
+                  // onBlur={() => setIsInputTransferIdFocused(false)}
+                  className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
+                    isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
+                  }`}
+                  aria-required="true"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="amount" className="text-sm font-medium">
-                Monto Transferido <span className="text-red-500">*</span>
-              </Label>
-              <div className="flex items-center rounded-md border">
-                <DollarSign className="ml-2 h-5 w-5 text-gray-400" />
+              <div className="relative mb-5 flex-1">
                 <Input
                   id="amount"
                   name="amount"
-                  type="number"
-                  placeholder="Ingresa el monto transferido"
-                  value={form.amount || ''}
+                  type="text"
+                  placeholder="Monto a trasnferir"
+                  value={form.amount}
                   onChange={handleInputChange}
-                  className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                  // onFocus={() => setIsInputTransferIdFocused(true)}
+                  // onBlur={() => setIsInputTransferIdFocused(false)}
+                  className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
+                    isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
+                  }`}
+                  aria-required="true"
                 />
               </div>
             </div>
@@ -361,10 +366,10 @@ const TransferClient = () => {
               {!form.file ? (
                 <div
                   className={cn(
-                    'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed transition-all duration-300',
+                    'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 transition-all duration-300',
                     isDragging
-                      ? 'border-primary bg-primary/10'
-                      : 'hover:border-primary/70 hover:bg-primary/5 border-gray-200 bg-white dark:border-gray-50 dark:bg-gray-800',
+                      ? 'bg-primary/10 border-[#90B0FE]'
+                      : 'hover:border-primary/70 hover:bg-primary/5 border-[#90B0FE] bg-[#FFFFF8] dark:border-gray-50 dark:bg-gray-800',
                   )}
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
@@ -439,7 +444,7 @@ const TransferClient = () => {
                         placeholder="Ingresa el motivo del rechazo"
                         value={formRefund.description}
                         onChange={(e) => setFormRefund({ ...formRefund, description: e.target.value })}
-                        className={`h-11 transition-all duration-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 ${
+                        className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                           isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                         }`}
                         aria-required="true"
@@ -456,7 +461,7 @@ const TransferClient = () => {
                       onChange={(e) => setFormRefund({ ...formRefund, transfer_id: e.target.value })}
                       // onFocus={() => setIsInputTransferIdFocused(true)}
                       // onBlur={() => setIsInputTransferIdFocused(false)}
-                      className={`h-11 transition-all duration-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 ${
+                      className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                         isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                       }`}
                       aria-required="true"
@@ -472,7 +477,7 @@ const TransferClient = () => {
                       onChange={(e) => setFormRefund({ ...formRefund, amount: e.target.value })}
                       // onFocus={() => setIsInputTransferIdFocused(true)}
                       // onBlur={() => setIsInputTransferIdFocused(false)}
-                      className={`h-11 transition-all duration-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 ${
+                      className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                         isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                       }`}
                       aria-required="true"
@@ -484,10 +489,10 @@ const TransferClient = () => {
                   {!formRefund.file ? (
                     <div
                       className={cn(
-                        'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed transition-all duration-300',
+                        'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 transition-all duration-300',
                         isDragging
-                          ? 'border-primary bg-primary/10'
-                          : 'hover:border-primary/70 hover:bg-primary/5 border-gray-200 bg-white dark:border-gray-50 dark:bg-gray-800',
+                          ? 'bg-primary/10 border-[#90B0FE]'
+                          : 'hover:border-primary/70 hover:bg-primary/5 border-[#90B0FE] bg-[#FFFFF8] dark:border-gray-50 dark:bg-gray-800',
                       )}
                       onDragOver={handleDragOver}
                       onDragLeave={handleDragLeave}

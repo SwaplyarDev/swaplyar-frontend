@@ -19,6 +19,8 @@ import { AlertTitle } from '@mui/material';
 import { Alert, AlertDescription } from '@/components/ui/Alert';
 import { useSession } from 'next-auth/react';
 import MessageWpp from './ui/MessageWpp';
+import { Dialog } from '@radix-ui/react-dialog';
+import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/Dialog';
 
 interface AprobarRechazarProps {
   selected: 'stop' | 'accepted' | 'canceled' | null;
@@ -50,6 +52,9 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isHovering, setIsHovering] = useState<string | null>(null);
 
+  const [openModalReject, setOpenModalReject] = useState(false);
+  const [openModalRejectResponse, setOpenModalRejectResponse] = useState(false);
+
   // Automatically select 'canceled' if confirmTransButton is false
   useEffect(() => {
     if (componentStates.confirmTransButton === false && selected !== 'canceled') {
@@ -57,69 +62,30 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
     }
   }, [componentStates.confirmTransButton, selected, onSelectChange]);
 
-  const handleSubmitRejection = async () => {
-    if (!rejectionReason.trim()) {
-      /* @ts-expect-error */
-      Swal.fire({
-        title: 'Campo requerido',
-        text: 'Por favor ingresa el motivo del rechazo',
-        icon: 'warning',
-        iconColor: '#D75600',
-        confirmButtonColor: 'rgb(1,42,142)',
-        background: '#FFFFFF',
-        customClass: {
-          title: 'text-gray-800 font-titleFont',
-          content: 'text-gray-700',
-        },
-      });
-      return;
-    }
+  const [loading, setLoading] = useState(false);
+  const [apiResponse, setApiResponse] = useState<string | null>(null);
 
-    Swal.fire({
-      title: 'Confirmar rechazo',
-      html: `
-        <div class="flex flex-col items-center text-sm">
-          <p class="mb-2 text-gray-700 dark:text-gray-300">
-            ¿Estás seguro que deseas rechazar esta solicitud?
-          </p>
-          <div class="bg-gray-100 dark:bg-gray-700/30 p-3 rounded-lg w-full max-w-xs text-left">
-            <p class="font-medium text-gray-800 dark:text-gray-200 mb-1">Motivo:</p>
-            <p class="text-gray-700 dark:text-gray-300">${rejectionReason}</p>
-          </div>
-        </div>
-      `,
-      showCancelButton: true,
-      confirmButtonText: 'Confirmar rechazo',
-      cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#CE1818',
-      cancelButtonColor: '#64748b',
-      background: window.matchMedia('(prefers-color-scheme: dark)').matches ? '#1f2937' : '#FFFFFF',
-      color: window.matchMedia('(prefers-color-scheme: dark)').matches ? '#E5E7EB' : '#374151',
-      customClass: {
-        popup: 'dark:bg-gray-800 dark:text-gray-100 transition-all duration-300',
-        confirmButton: 'dark:bg-red-700 dark:hover:bg-red-800',
-        cancelButton: 'dark:bg-slate-600 dark:hover:bg-slate-700',
-      },
-      backdrop: true,
-      allowOutsideClick: true,
-      allowEscapeKey: true,
-      reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        acceptReject();
-      }
-    });
+  const handleSubmitRejection = async () => {
+    if (!rejectionReason.trim()) return;
+
+    try {
+      const response = await acceptReject();
+      setApiResponse(response?.newStatus || 'Rechazo enviado exitosamente.'); // o lo que devuelva tu API
+      setOpenModalReject(false);
+      setOpenModalRejectResponse(true);
+    } catch (error: any) {
+      console.error('Error al rechazar la transacción:', error);
+      setApiResponse('Ocurrió un error al enviar el motivo de rechazo.');
+      setOpenModalReject(false);
+      setOpenModalRejectResponse(true);
+    }
   };
 
   const acceptReject = async () => {
-    try {
-      console.log('rechazando transaccion', transId, { descripcion: rejectionReason });
-      const response = await TransactionService('canceled', transId, { descripcion: rejectionReason });
-      console.log(response);
-      return response;
-    } catch (error) {
-      console.log('Error al rechazar la transacción:', error);
-    }
+    const response = await TransactionService('canceled', transId, {
+      descripcion: rejectionReason,
+    });
+    return response;
   };
 
   const getButtonClass = (type: 'accepted' | 'stop' | 'canceled') => {
@@ -256,7 +222,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                 </div>
 
                 <Button
-                  onClick={() => handleSubmitRejection()}
+                  onClick={() => setOpenModalReject(true)}
                   className="h-11 bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20"
                   aria-label="Enviar ID de transferencia"
                 >
@@ -302,6 +268,22 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
           </div>
         )}
       </div>
+
+      {/* Modal rechazo */}
+
+      <Dialog open={openModalRejectResponse} onOpenChange={setOpenModalRejectResponse}>
+        <DialogContent className="border border-gray-300 bg-white text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Resultado del Rechazo</DialogTitle>
+          </DialogHeader>
+          <div className="mt-2 text-center">
+            <p className="text-gray-700 dark:text-gray-300">{apiResponse}</p>
+          </div>
+          <DialogFooter className="mt-4 sm:justify-center">
+            <Button onClick={() => setOpenModalRejectResponse(false)}>Cerrar</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

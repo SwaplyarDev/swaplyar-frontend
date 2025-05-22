@@ -123,7 +123,7 @@ export default function TransactionPageClientComponent({
                     (componentStates.discrepancySection !== true || discrepancySend))) && (
                   <>
                     <ClientInformation />
-                    <FinalSection transId={transId} />
+                    {/* <FinalSection transId={transId} /> */}
                   </>
                 )}
             </div>

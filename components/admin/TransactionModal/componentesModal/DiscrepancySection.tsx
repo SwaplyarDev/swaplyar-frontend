@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils';
 import { updateTransactionStatus } from '@/actions/transactions/transaction-status.action';
 import { uploadTransactionReceipt } from '@/actions/transactions/admin-transaction';
 import { useSession } from 'next-auth/react';
+import { de } from 'date-fns/locale';
 
 interface DiscrepancySectionProps {
   trans: any; // Using any since TransactionTypeSingle is not provided
@@ -148,7 +149,9 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
     setShowConfirmDiscrepancyDialog(false);
     setShowSuccessDiscrepancyDialog(true);
     try {
-      const response = await TransactionService('discrepancy', transaction.transaction_id, discrepancyReason);
+      const response = await TransactionService('discrepancy', transaction.transaction_id, {
+        descripcion: discrepancyReason,
+      });
       console.log(response);
     } catch (error) {
       console.log('Error al enviar el motivo de discrepancia:', error);
@@ -390,7 +393,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                           <Input
                             id="transfer-id"
                             type="text"
-                            placeholder="Id de el reembolso"
+                            placeholder="Id de la transferencia"
                             value={resolutionForm.transfer_id}
                             onChange={(e) => setResolutionForm({ ...resolutionForm, transfer_id: e.target.value })}
                             // onFocus={() => setIsInputTransferIdFocused(true)}
@@ -523,7 +526,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                             onChange={(e) => setForm({ ...form, description: e.target.value })}
                             // onFocus={() => setIsInputTransferIdFocused(true)}
                             // onBlur={() => setIsInputTransferIdFocused(false)}
-                            className={`dark:border[#969696] h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
+                            className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                               isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                             }`}
                             aria-required="true"

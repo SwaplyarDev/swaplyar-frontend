@@ -54,6 +54,13 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
         label: 'Aceptada',
         ariaLabel: 'Estado: Aceptada',
       },
+      '4': {
+        bgColor: 'bg-red-100 dark:bg-red-900/30',
+        textColor: 'text-red-800 dark:text-red-300',
+        icon: <XCircle className="mr-1" />,
+        label: 'Rechazada',
+        ariaLabel: 'Estado: Rechazada',
+      },
       '7': {
         bgColor: 'bg-amber-100 dark:bg-amber-900/30',
         textColor: 'text-amber-800 dark:text-amber-300',

@@ -23,6 +23,7 @@ export type StatusPayload = {
   descripcion?: string;
   additionalData?: {
     codigo_transferencia?: string;
+    descripcion?: string;
   };
   review?: string;
   amount?: number;
