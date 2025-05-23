@@ -140,7 +140,7 @@ function CardContent(data: BlogPostCardProps) {
         setIsLoaded(false);
       }
     };
-
+    console.log(slugify('¿Qué es Payoneer?', { lower: true, strict: true }));
     fetchData();
   }, [data.blog_id]);
   // Funcion para convertir fecha tipo AÑO-MES-DIA en DIA de MES del AÑO
@@ -192,37 +192,40 @@ function CardContent(data: BlogPostCardProps) {
             <h2 className="font-semibold">Contenido:</h2>
             <ul className="list-disc pl-5">
               {sideBar.map((item, index) => (
-                <li className="list-disc" key={index}>
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      const el = document.getElementById(slugify(item.title, { lower: true, strict: true }));
-                      if (el) {
-                        el.scrollIntoView({ behavior: 'smooth' });
-                      }
-                    }}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    {item.title}
-                  </a>
+                <li
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const el = document.getElementById(slugify(item.title, { lower: true, strict: true }));
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                  style={{ cursor: 'pointer' }}
+                  className="list-disc"
+                  key={index}
+                >
+                  {item.title}
+
                   {item.children && (
                     <ul>
                       {item.children.map((child, childIndex) => (
-                        <li className="ml-5 list-disc" key={childIndex}>
-                          <a
-                            href="#"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              const el = document.getElementById(slugify(child.title, { lower: true, strict: true }));
-                              if (el) {
-                                el.scrollIntoView({ behavior: 'smooth' });
-                              }
-                            }}
-                            style={{ cursor: 'pointer' }}
-                          >
-                            {child.title}
-                          </a>
+                        <li
+                          onClick={(e) => {
+                            e.preventDefault();
+                            const el = document.getElementById(slugify(child.title, { lower: true, strict: true }));
+                            if (el) {
+                              el.scrollIntoView({ behavior: 'smooth' });
+
+                              setTimeout(() => {
+                                window.scrollBy({ behavior: 'instant' });
+                              }, 300);
+                            }
+                          }}
+                          style={{ cursor: 'pointer' }}
+                          className="ml-5 list-disc"
+                          key={childIndex}
+                        >
+                          {child.title}
                         </li>
                       ))}
                     </ul>
@@ -253,7 +256,7 @@ function CardContent(data: BlogPostCardProps) {
               {Array.isArray(data.content_elements) &&
                 data.content_elements[0]?.content?.map((item: Content, index: number) => {
                   if (item.style?.style_name === 'normal') {
-                    return <p key={index}>{item.text}</p>;
+                    return <p key={index}>{highlightText(item.text as string)}</p>;
                   } else if (item.style?.style_name === 'subtitle') {
                     return <h2 key={index}>{highlightText(item.text as string, true)}</h2>;
                   } else if (item.style?.style_name === 'ul') {
@@ -262,12 +265,12 @@ function CardContent(data: BlogPostCardProps) {
                       <ul key={index}>
                         {Array.isArray(list) &&
                           list.map((item, index) => (
-                            <li key={index} className="list-disc">
+                            <li key={index} className="ml-5 list-disc">
                               {highlightText(item.title, true)}
                               {item.children && (
                                 <ul key={index + 'ul'}>
                                   {item.children.map((child, childIndex) => (
-                                    <li className="list-disc" key={childIndex}>
+                                    <li className="ml-5 list-disc" key={childIndex}>
                                       {highlightText(child.title as string, true)}
                                     </li>
                                   ))}
