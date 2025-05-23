@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 export default function WelcomeReward() {
   return (
-    <article className={`flex`}>
+    <article className="flex flex-col xs-mini-phone:flex-row">
       <p className="text-sm xs-mini-phone:text-base">
         <span>La recompensa de </span>
         <span className="whitespace-nowrap text-lg font-bold text-custom-blue-800 dark:text-custom-whiteD xs-phone:text-xl">
@@ -23,8 +23,8 @@ export default function WelcomeReward() {
       <Image
         src={solicitudImage}
         alt="Rewards Character"
-        width={395}
-        height={290}
+        width={197}
+        height={145}
         className="object-cover xs-mini-phone:w-[220px] md-phone:w-[240px] lg:w-[260px]"
       />
     </article>

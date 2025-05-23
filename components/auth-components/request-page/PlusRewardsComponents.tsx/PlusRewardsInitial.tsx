@@ -62,7 +62,9 @@ export default function PlusRewardInitial() {
   }, [session]);
 
   if (status === 'loading') {
-    return <div className="flex h-[311px] w-full items-center justify-center">Loading...</div>;
+    return (
+      <div className="flex h-[331px] w-full animate-pulse items-center justify-center rounded-2xl bg-gray-200 lg:h-[623px]"></div>
+    );
   }
 
   // TODO: mostrar el popup, a los 5seg se hace un logout, cuando sale del popup tambien, o si acepta con un boton
@@ -70,8 +72,6 @@ export default function PlusRewardInitial() {
   if (!session || !session.accessToken) {
     return <PopUpSessionExpire />;
   }
-
-  console.log(session, discounts);
 
   const isUserVerified: null | true = session?.user.userVerification;
 
@@ -86,7 +86,7 @@ export default function PlusRewardInitial() {
     <section className="relative m-auto flex w-full max-w-7xl items-center">
       <section className="mx-auto flex w-full max-w-md flex-col justify-center rounded-lg p-6 font-light text-lightText dark:text-custom-whiteD xs-mini-phone:p-7 xs-phone:p-8 md-phone:p-10 md:flex-row-reverse lg:flex-col">
         <article className="flex flex-col justify-center xs-phone:mb-8 lg:justify-between">
-          <div className="ml-24 xs-mini-phone:w-64 xs-phone:w-48 md-phone:w-52 lg:ml-0 lg:w-64">
+          <div className="xs-mini-phone:w-64 xs-phone:w-48 md-phone:w-52 lg:ml-0 lg:w-64">
             <ImagePlusRewards />
           </div>
 
@@ -100,7 +100,7 @@ export default function PlusRewardInitial() {
 
         {!isUserVerified ? (
           userHave3Discount ? (
-            <div className="flex w-[388px] flex-col items-center gap-[19px]">
+            <div className="flex w-full flex-col items-center gap-[19px] xs-mini-phone:w-[388px]">
               <WelcomeReward />
               <VerifyAccount />
             </div>
@@ -108,14 +108,14 @@ export default function PlusRewardInitial() {
             <VerifyAccount />
           )
         ) : userHave5Discount ? (
-          <div className="flex w-[388px] flex-col items-center gap-9">
+          <div className="flex w-full flex-col items-center gap-9 xs-mini-phone:w-[388px]">
             <UserVerifiedWithoutTransactions userHave3Discount={userHave3Discount} />
             <AmountTransactions amountTotal={0} totalTransactions={0} />
           </div>
         ) : haveEnoughAmount && haveEnoughStars ? (
           <UserWinPlusReward />
         ) : (
-          <div className="flex w-[388px] flex-col items-center gap-9">
+          <div className="flex w-full flex-col items-center gap-9 xs-mini-phone:w-[388px]">
             <UncompleteRewardText stars={stars} quantity={amountTransactions} />
             <AmountTransactions amountTotal={amountTransactions} totalTransactions={stars} />
           </div>

@@ -11,10 +11,17 @@ function AmountTransactions({ amountTotal, totalTransactions }: { amountTotal: n
   const safeAmountTotal = Number.isFinite(amountTotal) ? Math.min(amountTotal, 500) : 0;
 
   return (
-    <div className="h-[113px] w-[326px]">
-      <div className="flex h-[50px] w-full justify-center gap-4">
+    <div className="h-[113px] w-full max-w-[326px]">
+      <div className="flex w-full justify-center gap-4">
         {arrayStars.map((star, index) => (
-          <Image key={index} src={index < yellowStarsCount ? yellowStar : star} alt="Star" width={50} height={50} />
+          <Image
+            key={index}
+            src={index < yellowStarsCount ? yellowStar : star}
+            alt="Star"
+            width={25}
+            height={25}
+            className="mini-phone:h-8 mini-phone:w-8 xs-mini-phone:h-[50px] xs-mini-phone:w-[50px]"
+          />
         ))}
       </div>
       <div className="flex h-[59px] items-end">

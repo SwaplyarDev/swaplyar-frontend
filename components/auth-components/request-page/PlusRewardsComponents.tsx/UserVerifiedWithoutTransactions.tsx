@@ -7,7 +7,7 @@ interface IProps {
 
 export default function UserVerifiedWithoutTransactions({ userHave3Discount }: IProps) {
   return (
-    <div className="flex items-center">
+    <div className="flex flex-col items-center">
       {userHave3Discount ? (
         <p className="min-w-[170px] text-base font-light">
           La recompensa de
