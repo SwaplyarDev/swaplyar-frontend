@@ -35,21 +35,30 @@ const BlogPostCard: React.FC<BlogPostProps> = ({ blog_id, title, description, im
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
-        <div className="flex flex-grow flex-col p-4">
-          <p className="font-roboto mb-2 text-xs font-normal text-black dark:text-darkText md:text-sm">{category}</p>
-          <h3 className="font-roboto mb-2 line-clamp-2 text-lg font-semibold text-black dark:text-darkText md:text-xl">
-            {title}
-          </h3>
-          <p className="font-roboto mb-4 line-clamp-3 text-sm font-light text-black dark:text-darkText md:text-base">
-            {description}
-          </p>
-          <div className="mt-auto border-t border-gray-300 pt-3">
+        <div className="flex flex-grow flex-col">
+          <div className="p-4">
+            <p className="font-roboto mb-2 text-xs font-normal text-black dark:text-darkText md:text-sm">{category}</p>
+            <h3 className="font-roboto mb-2 line-clamp-2 text-lg font-semibold text-black dark:text-darkText md:text-xl">
+              {title}
+            </h3>
+            <p className="font-roboto mb-4 line-clamp-3 text-sm font-light text-black dark:text-darkText md:text-base">
+              {description}
+            </p>
+          </div>
+          <div className="group mt-auto border-t border-gray-300 p-4 pt-3 transition duration-300 ease-in-out hover:bg-custom-blue hover:text-white">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <div className="flex items-center">
-                <p className="text-sm text-[#969696] md:text-base">Más información</p>
-                <FontAwesomeIcon icon={faArrowRight} className="ml-2 text-[#969696]" />
+              <div className="flex items-center gap-1 p-1">
+                <p className="text-sm text-[#969696] transition duration-300 ease-in-out group-hover:scale-110 group-hover:text-white md:text-base">
+                  Más información
+                </p>
+                <FontAwesomeIcon
+                  icon={faArrowRight}
+                  className="ease ml-2 text-[#969696] transition duration-100 group-hover:text-white"
+                />
               </div>
-              <p className="text-sm text-[#969696] md:text-base">{date ? convertDate(date) : 'Fecha no disponible'}</p>
+              <p className="text-sm text-[#969696] transition duration-300 ease-in-out group-hover:text-white md:text-base">
+                {date ? convertDate(date) : 'Fecha no disponible'}
+              </p>
             </div>
           </div>
         </div>
