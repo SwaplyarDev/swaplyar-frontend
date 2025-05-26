@@ -17,6 +17,7 @@ export const fetchBlogs = async (page: number, searchTerm: string): Promise<Blog
       throw new Error(`Failed to fetch blogs: ${response.status} ${response.statusText}`);
     }
     const data = await response.json();
+    console.log('blogs', data);
     return data;
   } catch (error: any) {
     throw new Error(`Failed to fetch blogs. Error: ${error.message}`);
@@ -24,8 +25,8 @@ export const fetchBlogs = async (page: number, searchTerm: string): Promise<Blog
 };
 
 export const filterBlogs = async (searchTerm: string, page: number): Promise<BlogResponse> => {
-
   try {
+    console.log(searchTerm);
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/blogs?page=${encodeURIComponent(page)}&keyword=${encodeURIComponent(searchTerm)}`,
       {

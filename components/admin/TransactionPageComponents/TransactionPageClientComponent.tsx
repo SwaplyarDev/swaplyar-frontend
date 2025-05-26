@@ -10,7 +10,7 @@ import ConfirmTransButton from '../TransactionModal/componentesModal/ConfirmTran
 import AprobarRechazar from '../TransactionModal/componentesModal/aprobarRechazar';
 import ClientInformation from '../TransactionModal/componentesModal/ClientInformation';
 import FinalSection from '../TransactionModal/componentesModal/FinalSection';
-import TransferImages from '../TransactionModal/componentesModal/TransferImages';
+import TransferImages from '../TransactionModal/componentesModal/TransferImages/TransferImages';
 import TransactionDetail from '../TransactionModal/componentesModal/DetailTransaction';
 import ClientMessage from '../TransactionModal/componentesModal/ui/ClientMessage';
 import { useTransactionStore } from '@/store/transactionModalStorage';
@@ -19,6 +19,9 @@ import { useTransactionStatusUpdate } from '@/hooks/admin/transactionPageHooks/u
 import { useModalAnimation } from '@/hooks/admin/transactionPageHooks/useModalAnimation';
 import { useTransactionSubmission } from '@/hooks/admin/transactionPageHooks/useTransactionSubmision';
 import { useComponentStateManagement } from '@/hooks/admin/transactionPageHooks/useComponentStateManagement';
+import ClientEditCancelMessage, {
+  ClientMessageType,
+} from '../TransactionModal/componentesModal/ui/ClientEditCancelMessage';
 
 interface TransactionPageClientComponentProps {
   initialTransaction: TransactionTypeSingle;
@@ -44,7 +47,7 @@ export default function TransactionPageClientComponent({
   regretCancel,
 }: TransactionPageClientComponentProps) {
   const [discrepancySend, setDiscrepancySend] = useState(false);
-  const [modal, setModal] = useState<boolean>(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const { status, setStatus } = useTransactionStore();
 
@@ -73,7 +76,7 @@ export default function TransactionPageClientComponent({
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className={`relative flex h-full w-full flex-col overflow-y-auto rounded-lg border-none bg-gray-50 shadow-sm outline-0 ring-0 transition-all duration-300 ease-out dark:bg-gray-900 ${
+      className={`relative grid h-full w-full grid-cols-1 gap-4 overflow-y-auto rounded-lg border-none bg-gray-50 font-textFont shadow-sm outline-0 ring-0 transition-all duration-300 ease-out dark:bg-gray-900 lg:grid-cols-2 ${
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
       }`}
       tabIndex={-1}
@@ -81,12 +84,12 @@ export default function TransactionPageClientComponent({
       {isLoading ? (
         <SkeletonModal />
       ) : (
-        <div className="grid grid-cols-2 gap-4 font-textFont">
+        <>
           <div className="col-span-2">
             <InfoStatus trans={initialTransaction} transId={transId} />
           </div>
 
-          <div>
+          <div className="col-span-1">
             <div className="grid gap-4">
               {/* Confirmar Transferencia */}
               <ConfirmTransButton
@@ -119,49 +122,32 @@ export default function TransactionPageClientComponent({
                     componentStates.discrepancySection !== null &&
                     (componentStates.discrepancySection !== true || discrepancySend))) && (
                   <>
-                    <ClientInformation modal={modal} setModal={setModal} trans={initialTransaction} />
+                    <ClientInformation />
                     <FinalSection transId={transId} />
                   </>
                 )}
             </div>
           </div>
 
-          <div>
+          <div className="col-span-2 lg:col-span-1">
             <div className="grid gap-4">
               <TransferImages trans={initialTransaction} />
 
-              <TransactionDetail transaction={initialTransaction} isLoading={isLoading} />
-
-              <ClientMessage
-                message={initialTransaction.transaction.message}
-                headerMessage="Mensaje del cliente"
-                classnames="min-h-[4.25rem] border"
+              <ClientEditCancelMessage
+                type={
+                  initialTransaction.transaction.regret_id
+                    ? ClientMessageType.Cancel
+                    : initialTransaction.transaction.note_id
+                      ? ClientMessageType.Edit
+                      : null
+                }
+                message={regretCancel?.note || noteEdit?.note}
               />
 
-              {initialTransaction.transaction.regret_id && regretCancel ? (
-                <div className="flex flex-col">
-                  <p className="text-left text-base font-medium">
-                    El Cliente solicito la Cancelacion y el Reembolso - Se realiza el reembolso a la cuenta de origen
-                  </p>
-                  <ClientMessage
-                    headerMessage="Mensaje"
-                    message={regretCancel.note}
-                    classnames="border-[#CE1818] min-h-[4.25rem]"
-                  />
-                </div>
-              ) : initialTransaction.transaction.note_id && noteEdit ? (
-                <div className="flex flex-col">
-                  <p className="text-base font-medium">El Cliente solicito Editar la Solicitud</p>
-                  <ClientMessage
-                    headerMessage="mensaje"
-                    message={noteEdit.note}
-                    classnames="border-[#D75600] min-h-[4.25rem]"
-                  />
-                </div>
-              ) : null}
+              <TransactionDetail transaction={initialTransaction} isLoading={isLoading} />
             </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

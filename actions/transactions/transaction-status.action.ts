@@ -20,7 +20,12 @@ const VALID_STATUSES = [
 ];
 
 export type StatusPayload = {
-  descripcion: string;
+  descripcion?: string;
+  additionalData?: {
+    codigo_transferencia?: string;
+  };
+  review?: string;
+  amount?: number;
 };
 
 /**
@@ -28,8 +33,6 @@ export type StatusPayload = {
  * Utiliza el endpoint /transactions/status/:status
  */
 export async function updateTransactionStatus(status: string, transaction_id: string, payload: StatusPayload) {
-  console.log(payload);
-
   try {
     // Validar autenticación y rol de usuario
     const session = await auth();
@@ -59,8 +62,6 @@ export async function updateTransactionStatus(status: string, transaction_id: st
       };
     }
 
-    console.log('payload antes de fecth ', payload);
-
     // Llamar al endpoint para actualizar el estado
     const response = await fetch(
       `${API_BASE_URL}/v1/admin/transactions/status/${status}?transactionId=${transaction_id}`,
@@ -70,11 +71,11 @@ export async function updateTransactionStatus(status: string, transaction_id: st
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ descripcion: payload }),
+        body: JSON.stringify(payload),
       },
     );
 
-    console.log('response:' + response);
+    console.log('response: ' + response.status, response.ok);
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
@@ -156,7 +157,7 @@ export async function uploadReceipt(transactionId: string, file: File) {
 /**
  * Server Action para actualizar datos de una transacción
  */
-export async function updateTransaction(transactionData: any) {
+export async function updateTransaction(transactionData: any, transaction_id: string) {
   try {
     const session = await auth();
 
@@ -171,14 +172,18 @@ export async function updateTransaction(transactionData: any) {
     }
 
     const token = session.accessToken || '';
-    const { transaction_id } = transactionData;
+    // const { transaction_id } = transactionData;
 
     if (!transaction_id) {
       return { success: false, error: 'ID de transacción requerido' };
     }
 
+    console.log('id', transaction_id);
+    console.log('data', transactionData);
+    console.log('token', token);
+
     // Llamar al endpoint para actualizar la transacción
-    const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/editar`, {
+    const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/${transaction_id}/receiver`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
