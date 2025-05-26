@@ -3,7 +3,7 @@
 import { auth } from '@/auth';
 import { revalidatePath } from 'next/cache';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || '';
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 // Lista de estados válidos para validación
 const VALID_STATUSES = [
