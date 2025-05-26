@@ -35,7 +35,7 @@ export default function UserVerifiedWithoutTransactions({ userHave3Discount }: I
         alt="Rewards Character"
         width={395}
         height={290}
-        className="object-cover xs-mini-phone:w-[220px] md-phone:w-[240px] lg:w-[260px]"
+        className="object-cover xs-mini-phone:w-[220px] md-phone:w-[240px] lg:w-[220px]"
       />
     </div>
   );
