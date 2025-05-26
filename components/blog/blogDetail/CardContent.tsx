@@ -14,6 +14,7 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { gifImage } from '@/utils/assets/img-database';
 import slugify from 'slugify';
 import { da } from 'date-fns/locale';
+import ButtonBack from '../ButtonBack/ButtonBack';
 // Funcion para evaluar si es un string
 function isString(value: unknown): value is string {
   return typeof value === 'string' || value instanceof String;
@@ -29,7 +30,7 @@ export function highlightText(text: string, withId?: boolean) {
         part.startsWith('**') && part.endsWith('**') ? (
           <span
             key={i}
-            style={{ fontWeight: '700' }}
+            style={{ fontWeight: '600' }}
             id={withId ? slugify(part.slice(2, -2), { lower: true, strict: true }) : undefined}
           >
             {part.slice(2, -2)}
@@ -168,7 +169,7 @@ function CardContent(data: BlogPostCardProps) {
   }
 
   return (
-    <>
+    <main className="font-textFont">
       <div className="sticky top-28 flex w-full flex-col items-center sm:top-36">
         <div className="rounded-2xl border-2 border-buttonsLigth bg-custom-whiteD-100 p-2 dark:border-custom-whiteD-100">
           <ProgressBar value={progress} width="300px" />
@@ -176,15 +177,18 @@ function CardContent(data: BlogPostCardProps) {
       </div>
 
       <section className="m-auto mt-12 flex w-full max-w-[357px] flex-col overflow-x-hidden px-4 md:mt-12 md:max-w-[729px] lg:mt-0 lg:max-w-[1368px]">
-        <div className="ml-[200px] mt-[50px] hidden flex-col lg:flex lg:max-w-full">
-          <p className="">
-            {highlightText(
-              `El tiempo de lectura estimado para este artículo es de **${data.reading_time[0]} a ${data.reading_time[2]}** **minutos** `,
-            )}
-          </p>
-          <div className="mt-[20px]">
-            <p>{convertirFecha(data.date)} </p>
-            <p className={!isDark ? 'font-bold text-custom-blue' : 'font-bold text-custom-whiteD'}>SwaplyAr</p>
+        <div>
+          <ButtonBack />
+          <div className="ml-[200px] mt-[50px] hidden flex-col lg:flex lg:max-w-full">
+            <p className="">
+              {highlightText(
+                `El tiempo de lectura estimado para este artículo es de **${data.reading_time[0]} a ${data.reading_time[2]}** **minutos** `,
+              )}
+            </p>
+            <div className="mt-[20px]">
+              <p>{convertirFecha(data.date)} </p>
+              <p className={!isDark ? 'font-bold text-custom-blue' : 'font-bold text-custom-whiteD'}>SwaplyAr</p>
+            </div>
           </div>
         </div>
         <div className="mx-auto flex w-full flex-col justify-center gap-4 lg:flex-row">
@@ -356,7 +360,7 @@ function CardContent(data: BlogPostCardProps) {
           <div className="font-titleFont text-base font-semibold text-lightText">Suscribete</div>
         </div>
       </section>
-    </>
+    </main>
   );
 }
 
