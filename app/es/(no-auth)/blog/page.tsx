@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://res.cloudinary.com/dwrhturiy/image/upload/v1740149014/8_kzkkwu.png',
+        url: 'https://res.cloudinary.com/dwrhturiy/image/upload/v1748268895/blog-swaplyar.png',
         width: 1200,
         height: 630,
         alt: 'SwaplyAr Blog Informativo',
