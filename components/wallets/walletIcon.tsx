@@ -34,6 +34,8 @@ export default function WalletIcon({ type }: WalletIconProps) {
         return 'transferencia';
       case 'payoneer':
         return 'payoneer-usd';
+      case 'bank':
+        return 'transferencia';
       default:
         return type;
     }

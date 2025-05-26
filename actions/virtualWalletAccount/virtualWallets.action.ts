@@ -173,7 +173,7 @@ export async function getUserWalletAccountById(userId: string, accountId: string
 }
 
 export async function deleteWalletAccount1(accountId: string, token: string, typeAccount: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/users/accounts/delete/${accountId}`, {
+  const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/users/accounts/delete/${accountId}`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token}`,

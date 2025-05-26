@@ -25,6 +25,7 @@ export function mapWalletDetails(wallet: { type: string; details: WalletDetail[]
           { label: 'Titular', value: detail.nombreUsuario, align: 'right' },
         ];
       case 'receiver_crypto':
+      case 'crypto':
         return [
           { label: 'Dirección USDT', value: detail.direction },
           { label: 'Red', value: detail.red, align: 'right' },

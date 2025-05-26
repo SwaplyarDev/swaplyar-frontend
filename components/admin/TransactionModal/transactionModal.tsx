@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import { useParams } from 'next/navigation';
 import TransactionDetail from '@/components/admin/TransactionModal/componentesModal/DetailTransaction';
 import ClientMessage from '@/components/admin/TransactionModal/componentesModal/ui/ClientMessage';
-import TransferImages from '@/components/admin/TransactionModal/componentesModal/TransferImages';
+import TransferImages from '@/components/admin/TransactionModal/componentesModal/TransferImages/TransferImages';
 import ConfirmTransButton from '@/components/admin/TransactionModal/componentesModal/ConfirmTransButton';
 import AprobarRechazar from '@/components/admin/TransactionModal/componentesModal/aprobarRechazar';
 import ClientInformation from '@/components/admin/TransactionModal/componentesModal/ClientInformation';
@@ -271,7 +271,7 @@ const TransactionModal = () => {
                 componentStates.discrepancySection !== null &&
                 (componentStates.discrepancySection !== true || discrepancySend))) && (
               <>
-                <ClientInformation modal={modal} setModal={setModal} trans={trans} />
+                <ClientInformation />
                 <FinalSection transId={transId} />
               </>
             )}

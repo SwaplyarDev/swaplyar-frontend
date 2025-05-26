@@ -25,7 +25,7 @@ import Image from 'next/image';
 import LogoSidebar from './componentsSidebar/LogoSidebar';
 import InicioGroup from './componentsSidebar/Navigation/InicioGroup';
 import GestionGroup from './componentsSidebar/Navigation/GestionGroup';
-import AtajosGroup from './componentsSidebar/Navigation/AtajosGroup';
+// import AtajosGroup from './componentsSidebar/Navigation/AtajosGroup';
 import AnimatedCerrarSesion from '@/components/icons-internal/CerrarSesion/AnimatedCerrarSesion';
 import CerrarSesionIcon from '@/components/icons-internal/CerrarSesion/CerrarSesionIcon';
 import { SwaplyArLogoSolo, SwaplyArlogoWhite } from '@/utils/assets/imgDatabaseCloudinary';
@@ -266,14 +266,14 @@ const Sidebar = () => {
               <GestionGroup collapsed={collapsed} pathname={pathname} />
 
               {/* Atajos Group */}
-              <AtajosGroup
+              {/* <AtajosGroup
                 collapsed={collapsed}
                 pathname={pathname}
                 statusDropdownOpen={statusDropdownOpen}
                 toggleStatusDropdown={toggleStatusDropdown}
                 statusShortcuts={statusShortcuts}
                 createStatusUrl={createStatusUrl}
-              />
+              /> */}
             </div>
 
             {/* User at the bottom
@@ -297,7 +297,15 @@ const Sidebar = () => {
                 collapsed ? 'px-0' : 'justify-start px-2',
               )}
             >
-              {collapsed ? <CerrarSesionIcon /> : <AnimatedCerrarSesion />}
+              {collapsed ? (
+                <div className="flex items-center justify-center rounded-full bg-[#012A8E] p-2 dark:bg-[#EBE7E0]">
+                  <div className="flex items-center justify-center text-[#EBE7E0]">
+                    <CerrarSesionIcon isAdmin={true} />
+                  </div>
+                </div>
+              ) : (
+                <AnimatedCerrarSesion isAdmin={true} />
+              )}
             </div>
           </nav>
         </div>

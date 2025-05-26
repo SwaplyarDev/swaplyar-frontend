@@ -45,7 +45,7 @@ export const mapWalletFromApi = (acc: any): Wallet => {
       };
 
     case 'virtual_bank':
-    case 'virtualBank':
+    case 'virtualbank':
       return {
         ...base,
         details: [
