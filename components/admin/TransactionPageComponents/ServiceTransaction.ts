@@ -67,9 +67,9 @@ export async function UploadTransactionReceipt(transactionId: string, file: File
 /**
  * Actualiza los datos de una transacción
  */
-export async function UpdateTransactionData(transactionData: any, transactionId: string) {
+export async function UpdateTransactionData(transactionData: any) {
   try {
-    const result = await updateTransaction(transactionData, transactionId);
+    const result = await updateTransaction(transactionData);
     return result;
   } catch (error) {
     console.error('Error updating transaction data:', error);

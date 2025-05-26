@@ -2,7 +2,6 @@ import type { TransactionTypeSingle } from '@/types/transactions/transactionsTyp
 import { getReceiverLabels } from './ui/RenderLabels';
 import type React from 'react';
 import { ExternalLink } from 'lucide-react';
-import ClientMessage from './ui/ClientMessage';
 
 interface DetailTransProps {
   isLoading: boolean;
@@ -94,11 +93,6 @@ const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading 
               <span className="font-medium dark:text-gray-200">No disponible</span>
             )}
           </div>
-          <ClientMessage
-            message={transaction.transaction.message}
-            headerMessage="Mensaje del cliente"
-            classnames="min-h-[4.25rem] border"
-          />
         </div>
       </div>
     </section>

@@ -13,7 +13,6 @@ function CardFinder() {
       filteredBlogs.map((post) => (
         <BlogPostCard
           key={post.blog_id}
-          slug={post.slug}
           description=""
           blog_id={post.blog_id}
           category={post.category}

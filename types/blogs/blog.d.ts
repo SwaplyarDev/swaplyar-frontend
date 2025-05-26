@@ -18,7 +18,6 @@ interface BlogPostCardProps {
   category: string;
   date: string;
   content_elements: ContentElements;
-  reading_time: string;
 }
 interface ContentElements {
   id_element: string;

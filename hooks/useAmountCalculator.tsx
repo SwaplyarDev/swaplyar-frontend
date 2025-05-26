@@ -78,17 +78,19 @@ export const useAmountCalculator = () => {
 
   // Funciones para manejar cambios en los montos
   const handleSendAmountChange = (value: string) => {
-    if (/^[0-9]*\.?[0-9]{0,2}$/.test(value) || value === '') {
+    if (/^[0-9]*[.,]?[0-9]{0,2}$/.test(value)) {
       setIsSendActive(true);
-      setSendAmount(value);
+      const formattedValue = value.replace(',', '.');
+      setSendAmount(formattedValue === '' || formattedValue === '0' ? '' : formattedValue);
       setReceiveAmount('');
     }
   };
 
   const handleReceiveAmountChange = (value: string) => {
-    if (/^[0-9]*\.?[0-9]{0,2}$/.test(value) || value === '') {
+    if (/^[0-9]*[.,]?[0-9]{0,2}$/.test(value)) {
       setIsSendActive(false);
-      setReceiveAmount(value);
+      const formattedValue = value.replace(',', '.');
+      setReceiveAmount(formattedValue === '' || formattedValue === '0' ? '' : formattedValue);
       setSendAmount('');
     }
   };

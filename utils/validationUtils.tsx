@@ -2,7 +2,7 @@ import { System } from '@/types/data';
 
 export function getTaxIdentificationType(input: string): string {
   const cuitCuilPattern = /^(?:\d{11}|\d{2}-\d{8}-\d{1})$/;
-  const dniPattern = /^\d{8}$/;
+  const dniPattern = /^d{8}$/;
 
   if (cuitCuilPattern.test(input)) {
     return 'CUIT/CUIL';

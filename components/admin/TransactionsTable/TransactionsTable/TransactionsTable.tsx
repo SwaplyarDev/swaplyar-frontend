@@ -6,24 +6,13 @@ import { useState, useRef, useEffect } from 'react';
 import { SessionProvider } from 'next-auth/react';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
-import {
-  AlertCircle,
-  CheckCircle,
-  XCircle,
-  Clock,
-  ChevronDown,
-  ChevronUp,
-  Filter,
-  Search,
-  Edit,
-  Undo2,
-  AlertTriangle,
-} from 'lucide-react';
+import { AlertCircle, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, Filter } from 'lucide-react';
 import type { TransactionArray, TransactionTypeAll } from '@/types/transactions/transactionsType';
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import TransactionModal from '@/components/admin/TransactionModal/transactionModal';
 import { useRouter } from 'next/navigation';
-import ClientStatus from './ClientStatus';
+import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
+import BackButton from '../../Sidebar/componentsSidebar/Navigation/BackButto';
 
 interface TransactionsTableProps {
   transactions: TransactionArray;
@@ -47,8 +36,6 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
 
   const [activePopover, setActivePopover] = useState<string | null>(null);
   const popoverRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-
-  console.log(transactions);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -171,50 +158,19 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
   // Función para obtener el badge de estado
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      '1': {
+      pending: {
         bgColor: 'bg-blue-100 dark:bg-blue-900/30',
         textColor: 'text-blue-800 dark:text-blue-300',
         icon: <Clock size={14} className="mr-1" />,
         label: 'En Proceso',
       },
-      '2': {
-        bgColor: 'bg-purple-300 dark:bg-purple-900/30',
-        textColor: 'text-purple-800 dark:text-purple-300',
-        icon: <Search size={14} className="mr-1" />,
-        label: 'Review',
-      },
-      '3': {
-        bgColor: 'bg-green-100 dark:bg-green-900/30',
-        textColor: 'text-green-800 dark:text-green-300',
-        borderColor: 'border-green-200 dark:border-green-800',
-        icon: <CheckCircle size={14} className="mr-1.5 h-4 w-4" />,
-        label: 'Aceptada',
-      },
-      '7': {
-        bgColor: 'bg-amber-100 dark:bg-amber-900/30',
-        textColor: 'text-amber-800 dark:text-amber-300',
-        icon: <AlertTriangle size={14} className="mr-1" />,
-        label: 'Stop',
-      },
-      '8': {
+      canceled: {
         bgColor: 'bg-red-100 dark:bg-red-900/30',
         textColor: 'text-red-800 dark:text-red-300',
         icon: <XCircle size={14} className="mr-1" />,
         label: 'Cancelada',
       },
-      '9': {
-        bgColor: 'bg-cyan-100 dark:bg-cyan-900/30',
-        textColor: 'text-cyan-800 dark:text-cyan-300',
-        icon: <Edit size={14} className="mr-1" />,
-        label: 'Modificada',
-      },
-      '10': {
-        bgColor: 'bg-orange-100 dark:bg-orange-900/30',
-        textColor: 'text-orange-800 dark:text-orange-300',
-        icon: <Undo2 size={14} className="mr-1" />,
-        label: 'Reembolsada',
-      },
-      '11': {
+      accepted: {
         bgColor: 'bg-green-100 dark:bg-green-900/30',
         textColor: 'text-green-800 dark:text-green-300',
         icon: <CheckCircle size={14} className="mr-1" />,
@@ -228,17 +184,36 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
       },
     };
 
-    // @ts-ignore
-    const config = status ? statusConfig[status] : statusConfig.default;
+    const config = statusConfig[status?.toLowerCase() as keyof typeof statusConfig] || statusConfig.default;
 
     return (
       <span
-        className={`inline-flex min-w-[100px] items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${config.bgColor} ${config.textColor}`}
+        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${config.bgColor} ${config.textColor}`}
       >
         {config.icon}
         {config.label}
       </span>
     );
+  };
+
+  // Función para obtener el indicador de cliente
+  const getClientIndicator = (transaction: TransactionTypeAll) => {
+    if (transaction.transaction.regret_id) {
+      return (
+        <span className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-red-900/30 dark:text-red-300">
+          <XCircle size={14} className="mr-1" />
+          Cancelación
+        </span>
+      );
+    } else if (transaction.transaction.note_id) {
+      return (
+        <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
+          <AlertCircle size={14} className="mr-1" />
+          Edición
+        </span>
+      );
+    }
+    return null;
   };
 
   // Función para formatear la fecha
@@ -250,6 +225,8 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
       year: 'numeric',
     }).format(date);
   };
+
+  console.log();
 
   useEffect(() => {
     console.log('Current filters:', filters);
@@ -562,8 +539,8 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                   </div>
                 </th>
                 <th className="px-4 py-3 text-sm font-medium">
-                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('client_action')}>
-                    Status Cliente
+                  {/* <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('client_action')}>
+                    Acción Cliente
                     {filters.orderby === 'client_action' ? (
                       filters.order === 'asc' ? (
                         <ChevronUp size={16} className="ml-1" />
@@ -573,7 +550,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                     ) : (
                       <ChevronDown size={16} className="ml-1" />
                     )}
-                  </div>
+                  </div> */}
                 </th>
               </tr>
             </thead>
@@ -585,7 +562,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                     className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
                     onClick={() => router.push(`/es/admin/transactions/${transaction.transaction.transaction_id}`)}
                   >
-                    <td className="px-4 py-3 text-sm">{getStatusBadge(transaction.transaction.status)}</td>
+                    <td className="px-4 py-3 text-sm">{getStatusBadge(transaction.status)}</td>
                     <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                       {formatDate(transaction.transaction.created_at)}
                     </td>
@@ -604,17 +581,17 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                     <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                       {transaction.payment_method.receiver.value}
                     </td>
-                    <td className="px-4 py-3 text-sm">
-                      <ClientStatus
-                        status={
-                          transaction.transaction.note_id
-                            ? 'editar'
-                            : transaction.transaction.regret_id
-                              ? 'cancelar'
-                              : null
-                        }
-                      />
-                    </td>
+                    <td className="px-4 py-3 text-sm">{getClientIndicator(transaction)}</td>
+                    {/* <td className="px-4 py-3 text-sm">
+                      <button
+                        onClick={() => handleOpenModal(transaction.transaction.transaction_id)}
+                        className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 w-9 text-blue-600 dark:text-blue-400"
+                        title="Ver detalles"
+                      >
+                        <Eye size={16} />
+                        <span className="sr-only">Ver detalles</span>
+                      </button>
+                    </td> */}
                   </tr>
                 ))
               ) : (

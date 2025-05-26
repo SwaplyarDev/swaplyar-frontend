@@ -3,7 +3,7 @@ import type { TransactionTypeSingle } from '@/types/transactions/transactionsTyp
 import { useSession } from 'next-auth/react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { AlertCircle, AlertTriangle, CheckCircle, Clock, Search, Undo2, XCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle, Clock, XCircle } from 'lucide-react';
 import BackButton from '../../Sidebar/componentsSidebar/Navigation/BackButto';
 
 interface InfoStatusProps {
@@ -12,10 +12,9 @@ interface InfoStatusProps {
 }
 
 const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
-  const { transaction } = trans;
-  const { status } = transaction;
+  const { status, transaction } = trans;
   const { data: session } = useSession();
-  const userName = session?.user?.fullName;
+  const userName = session?.user?.name;
 
   // Format date with better localization
   const formatDate = (dateString: string) => {
@@ -30,7 +29,7 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
   // Get status badge based on current status
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      '1': {
+      pending: {
         bgColor: 'bg-blue-100 dark:bg-blue-900/30',
         textColor: 'text-blue-800 dark:text-blue-300',
         borderColor: 'border-blue-200 dark:border-blue-800',
@@ -38,31 +37,7 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
         label: 'En Proceso',
         ariaLabel: 'Estado: En Proceso',
       },
-      '2': {
-        bgColor: 'bg-purple-100 dark:bg-purple-900/30',
-        textColor: 'text-purple-800 dark:text-purple-300',
-        borderColor: 'border-purple-200 dark:border-purple-800',
-        icon: <Search size={14} className="mr-1" />,
-        label: 'Review',
-        ariaLabel: 'Estado: Review',
-      },
-      '3': {
-        bgColor: 'bg-green-100 dark:bg-green-900/30',
-        textColor: 'text-green-800 dark:text-green-300',
-        borderColor: 'border-green-200 dark:border-green-800',
-        icon: <CheckCircle className="mr-1.5 h-4 w-4" />,
-        label: 'Aceptada',
-        ariaLabel: 'Estado: Aceptada',
-      },
-      '7': {
-        bgColor: 'bg-amber-100 dark:bg-amber-900/30',
-        textColor: 'text-amber-800 dark:text-amber-300',
-        borderColor: 'border-amber-200 dark:border-amber-800',
-        icon: <AlertCircle className="mr-1" />,
-        label: 'Stop',
-        ariaLabel: 'Estado: Stop',
-      },
-      '8': {
+      canceled: {
         bgColor: 'bg-red-100 dark:bg-red-900/30',
         textColor: 'text-red-800 dark:text-red-300',
         borderColor: 'border-red-200 dark:border-red-800',
@@ -70,29 +45,13 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
         label: 'Rechazada',
         ariaLabel: 'Estado: Rechazada',
       },
-      '9': {
-        bgColor: 'bg-red-100 dark:bg-red-900/30',
-        textColor: 'text-red-800 dark:text-red-300',
-        borderColor: 'border-red-200 dark:border-red-800',
-        icon: <XCircle className="mr-1.5 h-4 w-4" />,
-        label: 'Cancelada',
-        ariaLabel: 'Estado: Cancelada',
-      },
-      '10': {
-        bgColor: 'bg-rose-100 dark:bg-rose-900/30',
-        textColor: 'text-rose-800 dark:text-rose-300',
-        borderColor: 'border-rose-200 dark:border-rose-800',
-        icon: <Undo2 size={14} className="mr-1" />,
-        label: 'Reembolsada',
-        ariaLabel: 'Estado: Reembolsada',
-      },
-      '11': {
+      accepted: {
         bgColor: 'bg-green-100 dark:bg-green-900/30',
         textColor: 'text-green-800 dark:text-green-300',
         borderColor: 'border-green-200 dark:border-green-800',
         icon: <CheckCircle className="mr-1.5 h-4 w-4" />,
-        label: 'Finalizada',
-        ariaLabel: 'Estado: Finalizada',
+        label: 'Aceptada',
+        ariaLabel: 'Estado: Aceptada',
       },
       default: {
         bgColor: 'bg-gray-100 dark:bg-gray-800',
@@ -104,8 +63,7 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
       },
     };
 
-    // @ts-ignore
-    const config = status ? statusConfig[status] : statusConfig.default;
+    const config = statusConfig[status?.toLowerCase() as keyof typeof statusConfig] || statusConfig.default;
 
     return (
       <div

@@ -46,16 +46,12 @@ const InputSteps: React.FC<InputStepsProps> = ({
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const errorMessage = error?.message;
-  const [taxIdentificationType, setTaxIdentificationType] = useState<string>('DNI/CUIT/CUIL');
+
   const { onChange, ...restRegister } = register(name, rules);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (id === 'tax_identification') {
-      const formattedValue = formatTaxId(event.target.value); // Pasar el nombre del campo
-
-      event.target.value = formattedValue;
-    }
-
+    const formattedValue = formatTaxId(event.target.value);
+    event.target.value = formattedValue;
     onChange(event);
     if (onCustomChange) onCustomChange(event);
   };

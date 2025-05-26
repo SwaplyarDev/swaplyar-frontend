@@ -14,6 +14,7 @@ function CardDetail() {
   const [blogData, setBlogData] = useState<BlogPostCardProps | null>(null);
   const slugParam = useParams().slug;
   const slug = Array.isArray(slugParam) ? slugParam[0] : slugParam;
+  console.log(slug);
 
   useEffect(() => {
     if (!slug) return console.error('error al obtener slug');

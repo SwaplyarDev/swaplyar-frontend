@@ -1,11 +1,9 @@
 import type React from 'react';
 import Image from 'next/image';
-import { MockImagesTransDark, MockImagesTransLight } from '@/data/mockImagesTransaction';
+import { MockImagesTransLight } from '@/data/mockImagesTransaction';
 import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
 import { AlertTriangle, ArrowRight } from 'lucide-react';
 import { SwaplyArLogoSolo } from '@/utils/assets/imgDatabaseCloudinary';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import Flecha from './utils/Flechas';
 
 interface TransactionProps {
   trans: TransactionTypeSingle;
@@ -14,26 +12,33 @@ interface TransactionProps {
 const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
   const { payment_method, transaction } = trans;
   const { regret_id, note_id } = transaction;
-  const { isDark } = useDarkTheme();
 
   // Find payment method images
-  let senderImg = null;
-  let receiverImg = null;
-
-  if (isDark) {
-    senderImg = MockImagesTransDark.find((img) => img.name === payment_method.sender.value)?.image;
-    receiverImg = MockImagesTransDark.find((img) => img.name === payment_method.receiver.value)?.image;
-  } else {
-    senderImg = MockImagesTransLight.find((img) => img.name === payment_method.sender.value)?.image;
-    receiverImg = MockImagesTransLight.find((img) => img.name === payment_method.receiver.value)?.image;
-  }
+  const senderImg = MockImagesTransLight.find((img) => img.name === payment_method.sender.value)?.image;
+  const receiverImg = MockImagesTransLight.find((img) => img.name === payment_method.receiver.value)?.image;
 
   // Determine alert status
-  const hasAlert = false;
-  const alertType = false;
+  const hasAlert = regret_id || note_id;
+  const alertType = regret_id ? 'cancel' : note_id ? 'edit' : null;
 
   // Alert styling based on type
   const alertStyles = {
+    cancel: {
+      border: 'border-red-600 dark:border-red-700',
+      bg: 'bg-red-100 dark:bg-red-900/30',
+      text: 'text-red-700 dark:text-red-300',
+      icon: 'text-red-600 dark:text-red-400',
+      title: 'CANCELACIÓN SOLICITADA',
+      hover: 'hover:bg-red-50 dark:hover:bg-red-900/40',
+    },
+    edit: {
+      border: 'border-amber-600 dark:border-amber-700',
+      bg: 'bg-amber-100 dark:bg-amber-900/30',
+      text: 'text-amber-700 dark:text-amber-300',
+      icon: 'text-amber-600 dark:text-amber-400',
+      title: 'SOLICITUD DE EDICIÓN',
+      hover: 'hover:bg-amber-50 dark:hover:bg-amber-900/40',
+    },
     normal: {
       border: 'border-blue-600 dark:border-blue-700',
       bg: 'bg-white dark:bg-gray-800',
@@ -43,7 +48,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
     },
   };
 
-  const currentStyle = alertStyles.normal;
+  const currentStyle = alertType ? alertStyles[alertType] : alertStyles.normal;
 
   return (
     <section
@@ -60,7 +65,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
           <div>
             <h3 className={`text-lg font-bold ${currentStyle.text}`}>ALERTA</h3>
             {/* @ts-expect-error */}
-            <p className={`font-medium ${currentStyle.text}`}>{alertStyles.title}</p>
+            <p className={`font-medium ${currentStyle.text}`}>{alertStyles[alertType].title}</p>
           </div>
         </div>
       )}
@@ -85,7 +90,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
         {/* Transfer Flow */}
         <div className="flex flex-1 flex-col items-center gap-3 md:flex-row md:justify-center">
           {/* Sender */}
-          <div className="group relative flex h-20 w-full max-w-[200px] items-center justify-center overflow-hidden rounded-lg bg-white p-2 shadow-sm transition-all duration-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-800/80">
+          <div className="group relative flex h-20 w-full max-w-[200px] items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-white p-2 shadow-sm transition-all duration-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-800/80">
             {senderImg ? (
               <Image
                 src={senderImg || '/placeholder.svg'}
@@ -107,15 +112,15 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
 
           {/* Arrows */}
           <div className="flex items-center justify-center p-2">
-            <div className="flex items-center">
-              <Flecha styles={`${isDark ? '#FFFFFF' : '#012A8E'}`} />
-              <Flecha styles={`${isDark ? '#FFFFFF' : '#012A8E'}`} />
-              <Flecha styles={`${isDark ? '#FFFFFF' : '#012A8E'}`} />
+            <div className="flex items-center gap-1">
+              <ArrowRight size={24} className="text-blue-600 dark:text-blue-400" />
+              <ArrowRight size={24} className="text-blue-600 dark:text-blue-400" />
+              <ArrowRight size={24} className="text-blue-600 dark:text-blue-400" />
             </div>
           </div>
 
           {/* Receiver */}
-          <div className="group relative flex h-20 w-full max-w-[200px] items-center justify-center overflow-hidden rounded-lg bg-white p-2 shadow-sm transition-all duration-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-800/80">
+          <div className="group relative flex h-20 w-full max-w-[200px] items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-white p-2 shadow-sm transition-all duration-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-800/80">
             {receiverImg ? (
               <Image
                 src={receiverImg || '/placeholder.svg'}
