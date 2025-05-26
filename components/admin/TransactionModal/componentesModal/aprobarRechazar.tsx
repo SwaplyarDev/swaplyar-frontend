@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/Button';
 import { AlertTitle } from '@mui/material';
 import { Alert, AlertDescription } from '@/components/ui/Alert';
 import { useSession } from 'next-auth/react';
+import MessageWpp from './ui/MessageWpp';
 
 interface AprobarRechazarProps {
   selected: 'stop' | 'accepted' | 'canceled' | null;
@@ -56,14 +57,6 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
     }
   }, [componentStates.confirmTransButton, selected, onSelectChange]);
 
-  // const session = useSession();
-
-  // if (!session) {
-  //   return null;
-  // }
-
-  // const token = session.data?.decodedToken.token || '';
-
   const handleSubmitRejection = async () => {
     if (!rejectionReason.trim()) {
       /* @ts-expect-error */
@@ -85,11 +78,13 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
     Swal.fire({
       title: 'Confirmar rechazo',
       html: `
-        <div class="flex flex-col items-center">
-          <p class="mb-2 text-gray-700">¿Estás seguro que deseas rechazar esta solicitud?</p>
-          <div class="bg-gray-100 p-3 rounded-lg w-full max-w-xs text-left">
-            <p class="font-medium text-gray-800 mb-1">Motivo:</p>
-            <p class="text-gray-700">${rejectionReason}</p>
+        <div class="flex flex-col items-center text-sm">
+          <p class="mb-2 text-gray-700 dark:text-gray-300">
+            ¿Estás seguro que deseas rechazar esta solicitud?
+          </p>
+          <div class="bg-gray-100 dark:bg-gray-700/30 p-3 rounded-lg w-full max-w-xs text-left">
+            <p class="font-medium text-gray-800 dark:text-gray-200 mb-1">Motivo:</p>
+            <p class="text-gray-700 dark:text-gray-300">${rejectionReason}</p>
           </div>
         </div>
       `,
@@ -98,13 +93,17 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
       cancelButtonText: 'Cancelar',
       confirmButtonColor: '#CE1818',
       cancelButtonColor: '#64748b',
-      background: '#FFFFFF',
-      showClass: {
-        popup: 'animate__animated animate__fadeIn animate__faster',
+      background: window.matchMedia('(prefers-color-scheme: dark)').matches ? '#1f2937' : '#FFFFFF',
+      color: window.matchMedia('(prefers-color-scheme: dark)').matches ? '#E5E7EB' : '#374151',
+      customClass: {
+        popup: 'dark:bg-gray-800 dark:text-gray-100 transition-all duration-300',
+        confirmButton: 'dark:bg-red-700 dark:hover:bg-red-800',
+        cancelButton: 'dark:bg-slate-600 dark:hover:bg-slate-700',
       },
-      hideClass: {
-        popup: 'animate__animated animate__fadeOut animate__faster',
-      },
+      backdrop: true,
+      allowOutsideClick: true,
+      allowEscapeKey: true,
+      reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
         acceptReject();
@@ -114,10 +113,11 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
 
   const acceptReject = async () => {
     try {
-      const response = await TransactionService('canceled', transId, rejectionReason);
+      console.log('rechazando transaccion', transId, { descripcion: rejectionReason });
+      const response = await TransactionService('canceled', transId, { descripcion: rejectionReason });
+      console.log(response);
       return response;
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const getButtonClass = (type: 'accepted' | 'stop' | 'canceled') => {
@@ -281,7 +281,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                 <p className="mt-2">Esta acción pausará el proceso hasta que se resuelvan las discrepancias.</p>
               </AlertDescription>
             </Alert>
-
+            <MessageWpp text="Comunicate mediante **WhatsApp** del Remitente para solucionar la discrepancia " />
             <DiscrepancySection trans={trans} value={true} setDiscrepancySend={setDiscrepancySend} />
           </div>
         )}

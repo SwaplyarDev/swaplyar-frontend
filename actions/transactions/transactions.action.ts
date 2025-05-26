@@ -90,7 +90,6 @@ export const updateStatusClient = async (transactionId: any, status: any, token:
       body: JSON.stringify({ status }),
     });
 
-
     if (!response.ok) throw new Error('Failed to update transaction client');
 
     const data = await response.json();

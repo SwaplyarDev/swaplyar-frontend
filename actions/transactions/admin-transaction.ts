@@ -133,7 +133,7 @@ export async function getTransactionStatusHistory(transactionId: string) {
 /**
  * Sube un comprobante para una transacción
  */
-export async function uploadTransactionReceipt(transactionId: string, file: File) {
+export async function uploadTransactionReceipt(formData: FormData) {
   try {
     const session = await auth();
     // if (!session || session.decodedToken.role !== "admin") {
@@ -141,10 +141,6 @@ export async function uploadTransactionReceipt(transactionId: string, file: File
     // }
 
     const token = session?.accessToken || '';
-
-    const formData = new FormData();
-    formData.append('comprobante', file);
-    formData.append('transaction_id', transactionId);
 
     const response = await fetch(`${API_BASE_URL}/v1/transactions/voucher`, {
       method: 'POST',
@@ -161,6 +157,6 @@ export async function uploadTransactionReceipt(transactionId: string, file: File
     return await response.json();
   } catch (error) {
     console.error('Error uploading transaction receipt:', error);
-    return null;
+    return error;
   }
 }
