@@ -84,7 +84,7 @@ export default function PlusRewardInitial() {
 
   return (
     <section className="relative m-auto flex w-full max-w-7xl items-center">
-      <section className="mx-auto flex w-full max-w-md flex-col justify-center rounded-lg p-6 font-light text-lightText dark:text-custom-whiteD xs-mini-phone:p-7 xs-phone:p-8 md-phone:p-10 md:flex-row-reverse lg:flex-col">
+      <section className="mx-auto flex w-full max-w-md flex-col justify-center rounded-lg font-light text-lightText dark:text-custom-whiteD xs-phone:p-8 md-phone:p-10 md:flex-row-reverse lg:flex-col">
         <article className="flex flex-col justify-center xs-phone:mb-8 lg:justify-between">
           <div className="xs-mini-phone:w-64 xs-phone:w-48 md-phone:w-52 lg:ml-0 lg:w-64">
             <ImagePlusRewards />
@@ -100,7 +100,7 @@ export default function PlusRewardInitial() {
 
         {!isUserVerified ? (
           userHave3Discount ? (
-            <div className="flex w-full flex-col items-center gap-[19px] xs-mini-phone:w-[388px]">
+            <div className="flex w-full flex-col items-center gap-[19px]">
               <WelcomeReward />
               <VerifyAccount />
             </div>
@@ -108,14 +108,14 @@ export default function PlusRewardInitial() {
             <VerifyAccount />
           )
         ) : userHave5Discount ? (
-          <div className="flex w-full flex-col items-center gap-9 xs-mini-phone:w-[388px]">
+          <div className="flex w-full flex-col items-center gap-9">
             <UserVerifiedWithoutTransactions userHave3Discount={userHave3Discount} />
             <AmountTransactions amountTotal={0} totalTransactions={0} />
           </div>
-        ) : haveEnoughAmount && haveEnoughStars ? (
+        ) : true && true ? (
           <UserWinPlusReward />
         ) : (
-          <div className="flex w-full flex-col items-center gap-9 xs-mini-phone:w-[388px]">
+          <div className="flex w-full flex-col items-center gap-9">
             <UncompleteRewardText stars={stars} quantity={amountTransactions} />
             <AmountTransactions amountTotal={amountTransactions} totalTransactions={stars} />
           </div>

@@ -7,7 +7,7 @@ interface IProps {
 
 export default function UncompleteRewardText({ stars, quantity }: IProps) {
   return (
-    <p className="text-base font-light">
+    <p className="max-w-[388px] text-base font-light">
       Haz completado
       <b className="text-lg font-semibold"> {stars}/5 </b>
       solicitudes exitosas y acumulado
