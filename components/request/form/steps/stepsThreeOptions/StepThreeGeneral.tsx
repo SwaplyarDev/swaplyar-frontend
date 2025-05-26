@@ -108,20 +108,20 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
             }}
             error={errors.send_amount ? (errors.send_amount as FieldError) : undefined}
           />
-          <InputSteps
-            label="Monto a Recibir"
-            name="receive_amount"
-            id="receive_amount"
+          <InputCopy
+            label="Monto a recibir"
+            name="recieve_amount"
+            id="recieve_amount"
             type="text"
-            placeholder="Monto a Recibir"
+            placeholder="Monto Recibir"
             disabled={true}
+            value={`${selectedReceivingSystem?.coinSign} ${receiveAmount?.toString()}`}
             register={register}
             watch={watch}
             rules={{
               required: 'Este campo es obligatorio',
             }}
-            error={errors.receive_amount ? (errors.receive_amount as FieldError) : undefined}
-            disabledWithoutMargin={true}
+            error={errors.send_amount ? (errors.send_amount as FieldError) : undefined}
           />
           <div className="flex h-full flex-col">
             <label

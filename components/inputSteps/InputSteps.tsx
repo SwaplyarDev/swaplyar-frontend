@@ -51,7 +51,7 @@ const InputSteps: React.FC<InputStepsProps> = ({
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (id === 'tax_identification') {
-      const formattedValue = formatTaxId(event.target.value); // Pasar el nombre del campo
+      const formattedValue = formatTaxId(event.target.value);
 
       event.target.value = formattedValue;
     } else if (id === 'individual_tax_id') {
