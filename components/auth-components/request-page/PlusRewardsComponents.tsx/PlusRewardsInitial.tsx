@@ -107,12 +107,12 @@ export default function PlusRewardInitial() {
           ) : (
             <VerifyAccount />
           )
-        ) : true ? (
+        ) : userHave5Discount ? (
           <div className="flex w-full flex-col items-center gap-9">
             <UserVerifiedWithoutTransactions userHave3Discount={userHave3Discount} />
             <AmountTransactions amountTotal={0} totalTransactions={0} />
           </div>
-        ) : true && true ? (
+        ) : haveEnoughStars && haveEnoughAmount ? (
           <UserWinPlusReward />
         ) : (
           <div className="flex w-full flex-col items-center gap-9">
