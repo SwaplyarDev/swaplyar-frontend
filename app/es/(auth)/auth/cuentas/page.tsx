@@ -62,7 +62,12 @@ export default function VirtualWallets() {
     session,
   });
 
-  const groupedWallets = wallets.reduce(
+  const orderedWallets = [...wallets].sort((a, b) => {
+    if (a.type !== b.type) return a.type.localeCompare(b.type);
+    return a.id.localeCompare(b.id);
+  });
+
+  const groupedWallets = orderedWallets.reduce(
     (acc, wallet) => {
       if (!acc[wallet.type]) acc[wallet.type] = [];
       acc[wallet.type].push(wallet);
@@ -121,7 +126,7 @@ export default function VirtualWallets() {
   }
 
   return (
-    <div className="mx-auto mb-24 mt-8 w-full max-w-[1366px] px-4 sm:px-6 md:px-10 lg:px-14 xl:px-16">
+    <div className="mx-auto mb-24 mt-20 w-full max-w-[1366px] px-4 sm:px-6 md:px-10 lg:px-14 xl:px-16">
       <div className="mb-8 flex flex-col gap-4">
         <div className="mb-4">
           <h1 className="text-start text-4xl font-bold text-gray-800 dark:text-darkText">
@@ -167,7 +172,7 @@ export default function VirtualWallets() {
           Object.entries(groupedWallets).map(([type, group]) => (
             <div
               key={type}
-              className="mx-auto w-full items-center rounded-3xl border bg-[#FFFFFB] px-4 py-4 shadow-lg dark:border-gray-700 dark:bg-[#4B4B4B] sm:px-6"
+              className="mx-auto w-full items-center rounded-3xl border bg-[#FFFFFB] py-4 shadow-lg dark:border-gray-700 dark:bg-[#4B4B4B]"
             >
               <div className="flex items-center justify-between sm:mb-6">
                 <WalletIcon type={type} />
@@ -182,7 +187,7 @@ export default function VirtualWallets() {
                       onDelete={(accountId, typeAccount) => handleDelete(accountId, typeAccount)}
                     />
                     {index !== group.length - 1 && (
-                      <hr className="mx-auto mt-2 h-0 w-full max-w-[80%] border-t-2 border-[#012ABE] dark:border-[#EBE7E0]" />
+                      <hr className="mx-auto mt-6 h-0 w-full max-w-[80%] border-t-2 border-[#012ABE] dark:border-[#EBE7E0]" />
                     )}
                   </div>
                 ))}

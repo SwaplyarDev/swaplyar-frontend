@@ -19,11 +19,12 @@ import {
   BankImg,
   PaypalImg,
 } from '@/utils/assets/imgDatabaseCloudinary';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { DialogContent } from '@mui/material';
 import clsx from 'clsx';
 import Arrow from '../ui/Arrow/Arrow';
 import { useRouter } from 'next/navigation';
+import LoadingGif from '../ui/LoadingGif/LoadingGif';
 
 interface AccountFormData {
   nombre?: string;
@@ -301,8 +302,19 @@ export default function AddAccountForm({
     control,
     reset,
   } = useForm<AccountFormData>({ mode: 'onChange' });
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = (data: AccountFormData) => onSubmitData(data);
+  const onSubmit = async (data: AccountFormData) => {
+    setLoading(true);
+    try {
+      await onSubmitData(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const router = useRouter();
 
   const renderFields = () => {
@@ -361,7 +373,7 @@ export default function AddAccountForm({
                   </SelectTrigger>
                   <SelectContent
                     className={clsx(
-                      'max-h-[180px] overflow-y-auto scrollbar-hide sm:max-h-[300px]',
+                      'max-h-[180px] overflow-y-auto scrollbar-thin sm:max-h-[300px]',
                       isDark
                         ? 'scrollbar-track-[#4B4B4B] scrollbar-thumb-white dark:bg-[#4B4B4B]'
                         : 'bg-[#FFFFFB] scrollbar-track-[#FFFFFB] scrollbar-thumb-[#012ABE]',
@@ -399,17 +411,25 @@ export default function AddAccountForm({
         </div>
         <div className="flex w-full flex-col items-center space-y-3 pt-4 sm:flex-row sm:justify-between sm:space-x-2 sm:space-y-0 sm:p-6">
           <div className="sm:order-2">
-            <Button
-              type="submit"
-              className={`${
-                isDark
-                  ? 'bg-[#EBE7E0] text-black ring-offset-[#4B4B4B] hover:dark:ring-[#EBE7E0]'
-                  : 'bg-[#012A8E] text-white hover:ring-[#012A8E]'
-              } rounded-full px-14 py-4 text-xl font-semibold hover:ring-2 hover:ring-offset-2`}
-              disabled={!isDirty || !isValid}
-            >
-              Agregar
-            </Button>
+            <div className="h-[42px] w-[140px] sm:mb-2 sm:h-[40px] sm:w-[160px]">
+              {loading ? (
+                <div className="flex h-full w-full items-center justify-center">
+                  <LoadingGif color={isDark ? '#EBE7E0' : '#012ABE'} size="36px" />
+                </div>
+              ) : (
+                <Button
+                  type="submit"
+                  disabled={!isDirty || !isValid}
+                  className={`${
+                    isDark
+                      ? 'bg-[#EBE7E0] text-black ring-offset-[#4B4B4B] hover:dark:ring-[#EBE7E0]'
+                      : 'bg-[#012A8E] text-white hover:ring-[#012A8E]'
+                  } flex h-full w-full items-center justify-center rounded-full text-lg font-semibold hover:ring-2 hover:ring-offset-2`}
+                >
+                  Agregar
+                </Button>
+              )}
+            </div>
           </div>
           <div className="pb-2 sm:order-1">
             <button

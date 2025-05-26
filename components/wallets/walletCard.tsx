@@ -1,6 +1,9 @@
 'use client';
 
 import TrashButton from '../ui/TrashButton/TrashButton';
+import LoadingGif from '../ui/LoadingGif/LoadingGif';
+import { useState } from 'react';
+import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 
 interface DetailItem {
   label: string;
@@ -16,10 +19,13 @@ interface ReusableWalletCardProps {
 }
 
 export default function ReusableWalletCard({ details, onDelete, accountId, type }: ReusableWalletCardProps) {
+  const [isLoading, setIsLoading] = useState(false);
+  const { isDark } = useDarkTheme();
+
   return (
-    <div className="w-full space-y-6 rounded-2xl bg-[#FFFFFB] px-4 py-4 dark:bg-[#4B4B4B] sm:px-16">
+    <div className="w-full space-y-6 rounded-2xl bg-[#FFFFFB] px-4 py-4 dark:bg-[#4B4B4B] sm:px-6 md:px-6 lg:px-6 lg2:px-24">
       {details.map((group, index) => (
-        <div key={index} className="grid grid-cols-[1fr_auto] items-center gap-4 sm:gap-6">
+        <div key={index} className="grid grid-cols-[1fr_auto] items-center gap-2 sm:gap-6">
           <div
             className={`grid w-full grid-cols-1 ${
               group.length === 2
@@ -56,9 +62,10 @@ export default function ReusableWalletCard({ details, onDelete, accountId, type 
               return (
                 <div key={i} className={`${alignmentClass} max-w-full`}>
                   <p className="text-xs text-gray-500 dark:text-gray-300">{item.label}</p>
-                  <div className="max-w-full overflow-x-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[#012ABE] scrollbar-hide dark:scrollbar-thumb-white">
+                  {/* <div className="max-w-full overflow-x-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[#012ABE] scrollbar-hide dark:scrollbar-thumb-white"> */}
+                  <div className="webkit-scrollbar scrollbar-thumb max-w-full overflow-x-auto overflow-y-hidden p-1 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[#75bfff] dark:scrollbar-thumb-[#232e33]">
                     <p
-                      className={`text-base sm:text-xl ${
+                      className={`text-base sm:text-[22px] ${
                         isTitular ? 'font-normal' : 'font-semibold'
                       } whitespace-nowrap text-gray-900 dark:text-[#EBE7E0]`}
                     >
@@ -71,8 +78,23 @@ export default function ReusableWalletCard({ details, onDelete, accountId, type 
           </div>
 
           {onDelete && (
-            <div className="flex h-full items-center justify-end">
-              <TrashButton onClick={() => onDelete(accountId, type)} />
+            <div className="flex h-full min-w-[30px] items-center justify-end">
+              {isLoading ? (
+                <div className="flex h-[44px] w-[44px] items-center justify-center sm:h-[48px] sm:w-[48px]">
+                  <LoadingGif color={isDark ? '#EBE7E0' : '#012ABE'} size="32px" />
+                </div>
+              ) : (
+                <TrashButton
+                  onClick={async () => {
+                    setIsLoading(true);
+                    try {
+                      await onDelete(accountId, type);
+                    } finally {
+                      setIsLoading(false);
+                    }
+                  }}
+                />
+              )}
             </div>
           )}
         </div>
