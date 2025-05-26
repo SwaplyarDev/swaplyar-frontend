@@ -84,9 +84,9 @@ export default function PlusRewardInitial() {
 
   return (
     <section className="relative m-auto flex w-full max-w-7xl items-center">
-      <section className="mx-auto flex w-full max-w-md flex-col justify-center rounded-lg font-light text-lightText dark:text-custom-whiteD xs-phone:p-8 md-phone:p-10 md:flex-row-reverse lg:flex-col">
-        <article className="flex flex-col justify-center xs-phone:mb-8 lg:justify-between">
-          <div className="xs-mini-phone:w-64 xs-phone:w-48 md-phone:w-52 lg:ml-0 lg:w-64">
+      <section className="flex w-full flex-col justify-center rounded-lg font-light text-lightText dark:text-custom-whiteD xs-phone:p-8 md-phone:p-10 md:flex-row-reverse lg:flex-col">
+        <article className="flex flex-col justify-center xs:mx-auto xs:w-[388px] xs-phone:mb-8 lg:justify-between">
+          <div className="xs-mini-phone:w-64 xs-phone:w-48 md-phone:w-52 md:w-full lg:ml-0 lg:w-64">
             <ImagePlusRewards />
           </div>
 
@@ -112,7 +112,7 @@ export default function PlusRewardInitial() {
             <UserVerifiedWithoutTransactions userHave3Discount={userHave3Discount} />
             <AmountTransactions amountTotal={0} totalTransactions={0} />
           </div>
-        ) : true && true ? (
+        ) : haveEnoughAmount && haveEnoughStars ? (
           <UserWinPlusReward />
         ) : (
           <div className="flex w-full flex-col items-center gap-9">
