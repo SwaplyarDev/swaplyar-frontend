@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     title: 'SwaplyAr | El Blog Informativo Financiero Digital para Ahorrar',
     description:
       'Noticias, tips y análisis sobre cambio de divisas. Todo lo que necesitás saber del mundo financiero digital, en un solo lugar.',
-    images: ['https://res.cloudinary.com/dwrhturiy/image/upload/v1740149014/8_kzkkwu.png'],
+    images: ['https://res.cloudinary.com/dwrhturiy/image/upload/v1748268895/blog-swaplyar.png'],
     site: '@Swaplyar',
   },
 };
