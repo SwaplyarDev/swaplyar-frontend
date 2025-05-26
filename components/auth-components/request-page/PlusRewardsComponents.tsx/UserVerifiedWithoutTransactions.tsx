@@ -7,9 +7,9 @@ interface IProps {
 
 export default function UserVerifiedWithoutTransactions({ userHave3Discount }: IProps) {
   return (
-    <div className="flex flex-col items-center xs-mini-phone:flex-row">
+    <div className="flex flex-col items-center gap-4 xs:flex-row xs:gap-0">
       {userHave3Discount ? (
-        <p className="w-[170px] text-base font-light">
+        <p className="text-base font-light xs:w-[170px]">
           La recompensa de
           <span className="font-semibold text-custom-blue-800 dark:text-custom-whiteD"> Bienvenida Express </span>
           de
@@ -21,7 +21,7 @@ export default function UserVerifiedWithoutTransactions({ userHave3Discount }: I
           se aplica automáticamente en tu solicitud.
         </p>
       ) : (
-        <p className="w-[170px] text-base font-light">
+        <p className="text-base font-light md:w-[170px]">
           La recompensa de
           <span className="font-semibold text-custom-blue-800 dark:text-custom-whiteD"> Verificación Premium </span>
           de
