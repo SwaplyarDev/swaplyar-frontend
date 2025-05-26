@@ -9,7 +9,7 @@ export const formatTaxId = (value: string): string => {
   // Si es CUIL O CUIT
   if (cleaned.length <= 11) {
     let formatted = cleaned;
-    // PRIMER -
+    // PRIMERO -
     if (formatted.length > 2) {
       formatted = formatted.replace(/^(\d{2})(\d+)/, '$1-$2');
     }
@@ -24,4 +24,7 @@ export const formatTaxId = (value: string): string => {
 
   // Si excede la longitud máxima
   return cleaned.substring(0, 11).replace(/^(\d{2})(\d{8})(\d{1})/, '$1-$2-$3');
+};
+export const formatCpf = (taxId: string) => {
+  return taxId && taxId.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
 };

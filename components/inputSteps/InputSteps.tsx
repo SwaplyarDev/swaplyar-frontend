@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import { FieldError, UseFormRegister, UseFormWatch, RegisterOptions } from 'react-hook-form';
-import { formatTaxId } from '@/utils/formatedTaxId';
+import { formatCpf, formatTaxId } from '@/utils/formatedTaxId';
 
 interface InputStepsProps {
   label: string;
@@ -53,6 +53,9 @@ const InputSteps: React.FC<InputStepsProps> = ({
     if (id === 'tax_identification') {
       const formattedValue = formatTaxId(event.target.value); // Pasar el nombre del campo
 
+      event.target.value = formattedValue;
+    } else if (id === 'individual_tax_id') {
+      const formattedValue = formatCpf(event.target.value);
       event.target.value = formattedValue;
     }
 
