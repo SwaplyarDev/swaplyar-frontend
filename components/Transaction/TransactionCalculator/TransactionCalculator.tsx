@@ -67,6 +67,8 @@ export default function TransactionCalculator() {
   const isSendAmountValid = (sendAmountNum: number, sendingSystemId: string | undefined) => {
     if (sendingSystemId === 'payoneer_usd' || sendingSystemId === 'payoneer_eur') {
       return sendAmountNum >= 50;
+    } else if (sendingSystemId === 'wise_eur') {
+      return sendAmountNum >= 7.55;
     }
     return sendAmountNum >= 10;
   };
@@ -74,9 +76,16 @@ export default function TransactionCalculator() {
   const isReceiveAmountValid = (receiveAmountNum: number, receivingSystemId: string | undefined) => {
     if (receivingSystemId === 'payoneer_usd' || receivingSystemId === 'payoneer_eur') {
       return receiveAmountNum >= 50;
+    } else if (receivingSystemId === 'pix') {
+      return receiveAmountNum >= 48.74;
+    } else if (receivingSystemId === 'wise_eur') {
+      return receiveAmountNum >= 7.55;
+    } else if (receivingSystemId === 'tether') {
+      return receiveAmountNum >= 8.6;
     }
-    return true;
+    return receiveAmountNum >= 10;
   };
+
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
       <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight p-8 shadow-md dark:bg-calculatorDark dark:text-white sm:h-[623px] lg-tablet:min-w-[500px]">
@@ -146,7 +155,9 @@ export default function TransactionCalculator() {
                     <p className="p-1 text-sm text-[#f44336]">Payoneer USD requiere recibir al menos 50 USD</p>
                   ) : selectedReceivingSystem?.id === 'payoneer_eur' ? (
                     <p className="p-1 text-sm text-[#f44336]">Payoneer EUR requiere recibir al menos 50 EUR</p>
-                  ) : null
+                  ) : (
+                    <p className="p-1 text-sm text-[#f44336]">El monto mínimo a enviar es 10 USD</p>
+                  )
                 ) : (
                   !isSendAmountValid(sendAmountNum, selectedSendingSystem?.id) &&
                   (selectedSendingSystem?.id === 'payoneer_usd' || selectedSendingSystem?.id === 'payoneer_eur' ? (
