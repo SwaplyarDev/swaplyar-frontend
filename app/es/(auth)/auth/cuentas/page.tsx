@@ -126,7 +126,7 @@ export default function VirtualWallets() {
   }
 
   return (
-    <div className="mx-auto mb-24 mt-20 w-full max-w-[1366px] px-4 sm:px-6 md:px-10 lg:px-14 xl:px-16">
+    <section className="mx-auto mb-24 mt-20 w-full max-w-[1366px] px-4 sm:px-6 md:px-10 lg:px-14 xl:px-16">
       <div className="mb-8 flex flex-col gap-4">
         <div className="mb-4">
           <h1 className="text-start text-4xl font-bold text-gray-800 dark:text-darkText">
@@ -196,6 +196,6 @@ export default function VirtualWallets() {
           ))
         )}
       </div>
-    </div>
+    </section>
   );
 }

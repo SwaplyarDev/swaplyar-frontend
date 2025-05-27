@@ -3,7 +3,6 @@
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export async function createWalletAccount(data: any, token: string) {
-  console.log(data);
   try {
     const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/users/accounts`, {
       method: 'POST',
@@ -15,7 +14,6 @@ export async function createWalletAccount(data: any, token: string) {
     });
 
     const contentType = res.headers.get('content-type');
-    console.log('ContentType', contentType);
     if (!res.ok) {
       let errorMessage = 'Error al guardar la cuenta';
       if (contentType && contentType.includes('application/json')) {

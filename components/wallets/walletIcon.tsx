@@ -63,8 +63,6 @@ export default function WalletIcon({ type }: WalletIconProps) {
     case 'transferencia':
       return (
         <div className="ml-4 flex h-10 items-start justify-start">
-          {/* <img src={BankImg || '/placeholder.svg'} alt="Transferencia" className="h-10 text-white dark:hidden" />
-          <img src={BankDarkImg || '/placeholder.svg'} alt="Transferencia" className="hidden h-10 text-white dark:block" /> */}
           <Image
             src={BankImg || '/placeholder.svg'}
             alt="Transferencia"
@@ -84,8 +82,6 @@ export default function WalletIcon({ type }: WalletIconProps) {
     case 'tether':
       return (
         <div className="ml-4 flex h-10 items-start justify-start">
-          {/* <img src={TetherImg || '/placeholder.svg'} alt="Tether" className="h-10 text-white dark:hidden" />
-          <img src={TetherDarkImg || '/placeholder.svg'} alt="Tether" className="hidden h-10 text-white dark:block" /> */}
           <Image
             src={TetherImg || '/placeholder.svg'}
             alt="Tether"
@@ -106,12 +102,6 @@ export default function WalletIcon({ type }: WalletIconProps) {
     case 'wise-usd':
       return (
         <div className="ml-4 flex h-10 items-start justify-start">
-          {/* <img src={WiseUsdImg || '/placeholder.svg'} alt="Wise USD" className="h-10 text-white dark:hidden" />
-          <img
-            src={WiseUsdDarkImg || '/placeholder.svg'}
-            alt="Wise USD"
-            className="hidden h-10 text-white dark:block"
-          /> */}
           <Image
             src={WiseUsdImg || '/placeholder.svg'}
             alt="Wise USD"
@@ -131,12 +121,6 @@ export default function WalletIcon({ type }: WalletIconProps) {
     case 'wise-eur':
       return (
         <div className="ml-4 flex h-10 items-start justify-start">
-          {/* <img src={WiseEurImg || '/placeholder.svg'} alt="Wise EUR" className="h-10 text-white dark:hidden" />
-          <img
-            src={WiseEurDarkImg || '/placeholder.svg'}
-            alt="Wise EUR"
-            className="hidden h-10 text-white dark:block"
-          /> */}
           <Image
             src={WiseEurImg || '/placeholder.svg'}
             alt="Wise EUR"
@@ -156,12 +140,6 @@ export default function WalletIcon({ type }: WalletIconProps) {
     case 'payoneer-usd':
       return (
         <div className="ml-4 flex h-10 items-start justify-start">
-          {/* <img src={PayoneerUsdImg || '/placeholder.svg'} alt="Payoneer USD" className="h-10 text-white dark:hidden" />
-          <img
-            src={PayoneerUsdDarkImg || '/placeholder.svg'}
-            alt="Payoneer USD"
-            className="hidden h-10 text-white dark:block"
-          /> */}
           <Image
             src={PayoneerUsdImg || '/placeholder.svg'}
             alt="Payoneer USD"
@@ -181,12 +159,6 @@ export default function WalletIcon({ type }: WalletIconProps) {
     case 'payoneer-eur':
       return (
         <div className="ml-4 flex h-10 items-start justify-start">
-          {/* <img src={PayoneerEurImg || '/placeholder.svg'} alt="Payoneer EUR" className="h-10 text-white dark:hidden" />
-          <img
-            src={PayoneerEurDarkImg || '/placeholder.svg'}
-            alt="Payoneer EUR"
-            className="hidden h-10 text-white dark:block"
-          />*/}
           <Image
             src={PayoneerEurImg || '/placeholder.svg'}
             alt="Payoneer EUR"
@@ -221,18 +193,6 @@ export default function WalletIcon({ type }: WalletIconProps) {
             height={200}
             className="hidden h-12 w-auto dark:block sm:h-20"
           />
-        </div>
-      );
-
-    case 'blockchain':
-      return (
-        <div className="ml-4 flex h-10 items-start justify-start">
-          <svg viewBox="0 0 24 24" className="h-10 w-10 text-white">
-            <path
-              fill="currentColor"
-              d="M12 4.5l4.5 4.5-4.5 4.5-4.5-4.5L12 4.5zM7.5 10.5L12 15l4.5-4.5L12 19.5l-4.5-4.5z"
-            />
-          </svg>
         </div>
       );
     default:
