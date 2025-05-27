@@ -40,13 +40,12 @@ export const metadata: Metadata = {
  * @param children - Contenido de la página renderizada.
  * @returns Estructura principal del HTML y elementos globales.
  */
-
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
       <head>
         {/* Integración de Google Tag Manager */}
-        <GoogleTagManager gtmId="GTM-TGBHM97R" />
+        <GoogleTagManager gtmId="GTM-WMGWHJ7J" />
         {/* Verificación de propiedad en Google Search Console */}
         <meta name="google-site-verification" content="TDYMmlsmcxOohMXHebZJtRXZ-Y0otZk006ExVzrbPqs" />
 

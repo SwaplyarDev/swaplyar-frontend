@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: 'Cancelación y Reembolso - Swaplyar',
     description:
       'Conoce nuestra política de cancelación y reembolso para que gestiones tus transacciones con confianza.',
-    url: 'https://www.swaplyar.com/repentance',
+    url: 'https://www.swaplyar.com/es/centro-de-ayuda/cancelacion-y-reembolso',
     type: 'website',
     images: [
       {

@@ -94,7 +94,7 @@ const SearchRequestAuth = () => {
     setLoading(true);
     handleAddNextStatus();
     try {
-      const response = await searchRequest(data.numberOfRequest, lastName);
+      const response = await searchRequest(data.transactionId, lastName);
 
       if (!response.ok) {
         throw new Error(response.message || 'Hubo un problema al obtener el estado de la transacción');
@@ -104,7 +104,7 @@ const SearchRequestAuth = () => {
       handleSearchRequest(statuses);
       console.log(response);
 
-      reset({ numberOfRequest: '', lastNameRequest: '' });
+      reset({ transactionId: '', lastNameRequest: '' });
     } catch (error) {
       if (error instanceof Error) {
         console.error('Error!', error.message);
@@ -159,11 +159,11 @@ const SearchRequestAuth = () => {
             </label>
             <InputOnlyLine
               placeholder={
-                errors.numberOfRequest ? 'Número de Solicitud*' : 'N° de Solicitud como figura en el Correo Eletrónico'
+                errors.transactionId ? 'Número de Solicitud*' : 'N° de Solicitud como figura en el Correo Eletrónico'
               }
               id="numberOfRequest"
-              register={register('numberOfRequest', { required: 'El Número de Solicitud es Obligatorio' })}
-              error={errors.numberOfRequest?.message}
+              register={register('transactionId', { required: 'El Número de Solicitud es Obligatorio' })}
+              error={errors.transactionId?.message}
             />
           </div>
           <div className="flex h-[50px] flex-col items-center justify-center gap-[18px]">

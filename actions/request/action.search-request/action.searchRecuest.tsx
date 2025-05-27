@@ -30,7 +30,7 @@ export const searchRequest = async (transactionId: string, lastName: string) => 
     const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus`);
     url.searchParams.append('transaction_id', transactionId);
     url.searchParams.append('last_name', lastName);
-    console.log(url.toString());
+    console.log('url', url.toString());
 
     const response = await fetch(url.toString(), {
       method: 'GET',
@@ -41,7 +41,6 @@ export const searchRequest = async (transactionId: string, lastName: string) => 
     });
 
     const data = await response.json();
-    console.log(data);
 
     if (!response.ok) {
       const errorData: TransactionStatusError = data;

@@ -36,7 +36,6 @@ export const fetchQuestionsParams = async (params: number): Promise<QuestionResp
     }
 
     const data = await response.json();
-    console.log('data', data);
     return data;
   } catch (error: any) {
     throw new Error(`Failed to fetch questions. Error: ${error.message}`);
