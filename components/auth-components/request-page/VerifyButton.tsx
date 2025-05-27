@@ -7,7 +7,7 @@ export function VerifyButton() {
 
   return (
     <button
-      className={`relative mt-4 max-w-[280px] items-center justify-center rounded-3xl border ${
+      className={`relative max-w-[280px] items-center justify-center rounded-3xl border ${
         isDark ? 'border-darkText bg-darkText text-lightText' : 'border-buttonsLigth bg-buttonsLigth text-white'
       } px-[34px] py-2 font-titleFont font-semibold transition-opacity hover:opacity-90`}
     >
