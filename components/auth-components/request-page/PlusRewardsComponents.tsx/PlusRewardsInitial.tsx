@@ -8,8 +8,8 @@ import { useEffect, useState } from 'react';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 // Actions
-import { getDiscounts } from '@/actions/discounts/discounts.action';
-import { getUserStarsAndAmount } from '@/actions/discounts/userStarsAndAmount.action';
+import { getDiscounts } from '@/actions/Discounts/discounts.action';
+import { getUserStarsAndAmount } from '@/actions/Discounts/userStarsAndAmount.action';
 import { signOut } from 'next-auth/react';
 
 // Types
