@@ -1,15 +1,16 @@
 'use client';
-
 // Images
 import { ImagePlusRewards } from '../ImagePlusRewards';
 
 // Hooks
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 // Actions
 import { getDiscounts } from '@/actions/discounts/discounts.action';
-import { getUserStarsAndAmount } from '@/actions/userStarsAndAmount/userStarsAndAmount.action';
+import { getUserStarsAndAmount } from '@/actions/discounts/userStarsAndAmount.action';
+import { signOut } from 'next-auth/react';
 
 // Types
 import { IDiscountsObject } from '@/types/discounts/discounts';
@@ -31,12 +32,13 @@ interface IStarsAndAmount {
 }
 
 export default function PlusRewardInitial() {
+  const { isDark } = useDarkTheme();
   const { data: session, status } = useSession();
 
   const [discounts, setDiscounts] = useState<IDiscountsObject | null>(null);
   const [stars, setStars] = useState<number>(0);
-  // Cantidad de dinero en total por las transacciones
   const [amountTransactions, setAmountTransactions] = useState<number>(0);
+  const [errors, setErrors] = useState<string[]>([]);
 
   useEffect(() => {
     async function getData() {
@@ -46,7 +48,11 @@ export default function PlusRewardInitial() {
         const discountsData = await getDiscounts(session.accessToken);
         setDiscounts(discountsData);
       } catch (error) {
-        console.error(error);
+        console.error('Error al cargar los descuentos:', error);
+        setErrors((prevError) => {
+          const errorMessage = 'Error al cargar los descuentos.';
+          return prevError.includes(errorMessage) ? prevError : [...prevError, errorMessage];
+        });
       }
 
       try {
@@ -54,7 +60,11 @@ export default function PlusRewardInitial() {
         setStars(Number(starsAndAmountData.data.stars));
         setAmountTransactions(Number(starsAndAmountData.data.quantity));
       } catch (error) {
-        console.error(error);
+        console.error('Error al cargar las estrellas y montos de transacciones:', error);
+        setErrors((prevError) => {
+          const errorMessage = 'Error al cargar las estrellas y montos de transacciones.';
+          return prevError.includes(errorMessage) ? prevError : [...prevError, errorMessage];
+        });
       }
     }
 
@@ -71,6 +81,26 @@ export default function PlusRewardInitial() {
   // ! No se probó la funcionalidad del popup
   if (!session || !session.accessToken) {
     return <PopUpSessionExpire />;
+  }
+
+  if (errors.length > 0) {
+    return (
+      <div className="flex h-[331px] w-full flex-col items-center justify-center rounded-2xl bg-gray-100 p-5 lg:h-[623px]">
+        <p className="mb-3 text-base font-semibold xs-mini-phone2:text-lg">Ha ocurrido un error al cargar los datos:</p>
+        {errors.map((error, index) => (
+          <p key={index}>{error}</p>
+        ))}
+        <p className="my-3 text-base font-semibold xs-mini-phone2:text-lg">Por favor vuelva a iniciar sesión</p>
+        <button
+          className={`relative max-w-[280px] items-center justify-center rounded-3xl border ${
+            isDark ? 'border-darkText bg-darkText text-lightText' : 'border-buttonsLigth bg-buttonsLigth text-white'
+          } px-[34px] py-2 font-titleFont font-semibold transition-opacity hover:opacity-90`}
+          onClick={() => signOut()}
+        >
+          Cerrar sesión
+        </button>
+      </div>
+    );
   }
 
   const isUserVerified: null | true = session?.user.userVerification;
@@ -92,9 +122,9 @@ export default function PlusRewardInitial() {
 
           <article className="mb-5 text-end xs-phone:mb-6">
             <p className="align-text-top text-sm xs-mini-phone:text-base">Tu Código de Miembro:</p>
-            <h2 className="title text-3xl font-bold xs-mini-phone:text-[32px] xs-phone:text-[36px] md-phone:text-[40px]">
+            <p className="title text-3xl font-bold xs-mini-phone:text-[32px] xs-phone:text-[36px] md-phone:text-[40px]">
               {session.user.id.toUpperCase()}
-            </h2>
+            </p>
           </article>
         </article>
 

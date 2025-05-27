@@ -1,5 +1,3 @@
-import { star } from '@/utils/assets/imgDatabaseCloudinary';
-
 interface IProps {
   stars: number;
   quantity: number;
