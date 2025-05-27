@@ -104,7 +104,7 @@ export function useTransactions(): UseTransactionsResult {
             },
             amounts: {
               sent: {
-                amount: '2000',
+                amount: '300',
                 currency: 'USD',
               },
               received: {
