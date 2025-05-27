@@ -27,7 +27,7 @@ export const footerLinks = {
   atencion: [
     { href: '/es/centro-de-ayuda', label: 'Centro de Ayuda' },
     { href: '/es/quienes-somos', label: 'Preguntas Frecuentes' },
-    { href: '/es/pagina-en-mantenimiento', label: 'SwaplyAr Blog' },
+    // { href: '/es/pagina-en-mantenimiento', label: 'SwaplyAr Blog' },
   ] as FooterLink[],
   social: [
     { href: 'https://www.linkedin.com/company/swaplyar/', icon: faLinkedin, label: 'LinkedIn' },

@@ -36,7 +36,6 @@ export default async function TransactionPage({ params }: { params: { id: string
 
   console.log(transaction, status, noteEdit, regretCancel);
 
-  // Pass all server-fetched data to the client component
   return (
     <TransactionPageClientComponent
       initialTransaction={transaction}

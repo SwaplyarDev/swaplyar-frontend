@@ -40,7 +40,6 @@ export const metadata: Metadata = {
  * @param children - Contenido de la página renderizada.
  * @returns Estructura principal del HTML y elementos globales.
  */
-
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
