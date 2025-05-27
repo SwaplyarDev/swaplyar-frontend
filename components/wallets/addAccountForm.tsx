@@ -379,19 +379,19 @@ export default function AddAccountForm({
                         : 'bg-[#FFFFFB] scrollbar-track-[#FFFFFB] scrollbar-thumb-[#012ABE]',
                     )}
                   >
-                    <SelectItem value="virtualBank">
+                    <SelectItem value="virtualBank" className="cursor-pointer">
                       <Image src={isDark ? BankDarkImg : BankImg} alt="Virtual Bank" width={120} height={120} />
                     </SelectItem>
-                    <SelectItem value="crypto">
+                    <SelectItem value="crypto" className="cursor-pointer">
                       <Image src={isDark ? TetherDarkImg : TetherImg} alt="Crypto" width={120} height={120} />
                     </SelectItem>
-                    <SelectItem value="paypal">
+                    <SelectItem value="paypal" className="cursor-pointer">
                       <Image src={isDark ? PaypalDarkImg : PaypalImg} alt="PayPal" width={120} height={120} />
                     </SelectItem>
-                    <SelectItem value="pix">
+                    <SelectItem value="pix" className="cursor-pointer">
                       <Image src={PixImg} alt="PIX" width={120} height={120} />
                     </SelectItem>
-                    <SelectItem value="payoneer">
+                    <SelectItem value="payoneer" className="cursor-pointer">
                       <Image
                         src={isDark ? PayoneerUsdDarkImg : PayoneerUsdImg}
                         alt="Payoneer"
@@ -399,7 +399,7 @@ export default function AddAccountForm({
                         height={120}
                       />
                     </SelectItem>
-                    <SelectItem value="wise">
+                    <SelectItem value="wise" className="cursor-pointer">
                       <Image src={isDark ? WiseUsdDarkImg : WiseUsdImg} alt="Wise" width={120} height={120} />
                     </SelectItem>
                   </SelectContent>

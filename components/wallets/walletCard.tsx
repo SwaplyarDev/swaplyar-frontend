@@ -62,8 +62,7 @@ export default function ReusableWalletCard({ details, onDelete, accountId, type 
               return (
                 <div key={i} className={`${alignmentClass} max-w-full`}>
                   <p className="text-xs text-gray-500 dark:text-gray-300">{item.label}</p>
-                  {/* <div className="max-w-full overflow-x-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[#012ABE] scrollbar-hide dark:scrollbar-thumb-white"> */}
-                  <div className="webkit-scrollbar scrollbar-thumb max-w-full overflow-x-auto overflow-y-hidden p-1 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[#75bfff] dark:scrollbar-thumb-[#232e33]">
+                  <div className="webkit-scrollbar scrollbar-thumb mt-1 max-w-full overflow-x-auto overflow-y-hidden scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[#75bfff] dark:scrollbar-thumb-[#232e33]">
                     <p
                       className={`text-base sm:text-[22px] ${
                         isTitular ? 'font-normal' : 'font-semibold'
