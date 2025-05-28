@@ -14,6 +14,7 @@ import { useStepperStore } from '@/store/stateStepperStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 import { systems } from '@/utils/dataCoins';
+import { color } from 'motion/react';
 
 export default function TransactionCalculator() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -37,7 +38,7 @@ export default function TransactionCalculator() {
   const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } = useSystemSelection();
   const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne, rateForOneBank } =
     useAmountCalculator();
-
+  const colorError = isDark ? 'text-[#f78a82]' : 'text-[#f44336]';
   const pathname = usePathname();
   const { pass } = useControlRouteRequestStore((state) => state);
   const { setPass } = useControlRouteRequestStore((state) => state);
@@ -152,26 +153,26 @@ export default function TransactionCalculator() {
               >
                 {!isReceiveAmountValid(receiveAmountNum, selectedReceivingSystem?.id) ? (
                   selectedReceivingSystem?.id === 'payoneer_usd' ? (
-                    <p className="p-1 text-sm text-[#f44336]">Payoneer USD requiere recibir al menos 50 USD</p>
+                    <p className={`p-1 text-sm ${colorError}`}>Payoneer USD requiere recibir al menos 50 USD</p>
                   ) : selectedReceivingSystem?.id === 'payoneer_eur' ? (
-                    <p className="p-1 text-sm text-[#f44336]">Payoneer EUR requiere recibir al menos 50 EUR</p>
+                    <p className={`p-1 text-sm ${colorError}`}>Payoneer EUR requiere recibir al menos 50 EUR</p>
                   ) : selectedReceivingSystem?.id === 'wise_eur' ? (
-                    <p className="p-1 text-sm text-[#f44336]">El monto mínimo a enviar es 7.5 EUR</p>
+                    <p className={`p-1 text-sm ${colorError}`}>El monto mínimo a enviar es 7.5 EUR</p>
                   ) : (
-                    <p className="p-1 text-sm text-[#f44336]">El monto minimo a enviar es de 10 USD</p>
+                    <p className={`p-1 text-sm ${colorError}`}>El monto minimo a enviar es de 10 USD</p>
                   )
                 ) : (
                   !isSendAmountValid(sendAmountNum, selectedSendingSystem?.id) &&
                   (selectedSendingSystem?.id === 'payoneer_usd' || selectedSendingSystem?.id === 'payoneer_eur' ? (
-                    <p className="p-1 text-sm text-[#f44336]">
+                    <p className={`p-1 text-sm ${colorError}`}>
                       {selectedSendingSystem?.id === 'payoneer_usd'
                         ? 'El monto mínimo desde Payoneer USD es 50 USD'
                         : 'El monto mínimo desde Payoneer EUR es 50 EUR'}
                     </p>
                   ) : selectedSendingSystem?.id === 'wise_eur' ? (
-                    <p className="p-1 text-sm text-[#f44336]">El monto minimo a enviar es de 7.5 EUR</p>
+                    <p className={`p-1 text-sm ${colorError}`}>El monto minimo a enviar es de 7.5 EUR</p>
                   ) : (
-                    <p className="p-1 text-sm text-[#f44336]">El monto mínimo a enviar es 10 USD</p>
+                    <p className={`p-1 text-sm ${colorError}`}>El monto mínimo a enviar es 10 USD</p>
                   ))
                 )}
               </div>
