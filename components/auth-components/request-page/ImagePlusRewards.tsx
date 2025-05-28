@@ -2,6 +2,7 @@
 
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import Image from 'next/image';
+import { plusRewardsDark, plusRewardsLight } from '@/utils/assets/imgDatabaseCloudinary';
 
 export const ImagePlusRewards = () => {
   const { isDark } = useDarkTheme();
@@ -9,7 +10,7 @@ export const ImagePlusRewards = () => {
     <>
       {isDark ? (
         <Image
-          src="/images/solicitud-plus-rewards-dark.png"
+          src={plusRewardsDark}
           alt="Plus Rewards"
           width={250}
           height={128}
@@ -17,7 +18,7 @@ export const ImagePlusRewards = () => {
         />
       ) : (
         <Image
-          src="/images/solicitud-plus-rewards-light.png"
+          src={plusRewardsLight}
           alt="Plus Rewards"
           width={250}
           height={128}
