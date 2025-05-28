@@ -5,7 +5,6 @@ import { ImagePlusRewards } from '../ImagePlusRewards';
 // Hooks
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 // Actions
 import { getDiscounts } from '@/actions/Discounts/discounts.action';
@@ -32,7 +31,6 @@ interface IStarsAndAmount {
 }
 
 export default function PlusRewardInitial() {
-  const { isDark } = useDarkTheme();
   const { data: session, status } = useSession();
 
   const [discounts, setDiscounts] = useState<IDiscountsObject | null>(null);
@@ -73,7 +71,7 @@ export default function PlusRewardInitial() {
 
   if (status === 'loading') {
     return (
-      <div className="flex h-[331px] w-full animate-pulse items-center justify-center rounded-2xl bg-gray-200 lg:h-[623px]"></div>
+      <div className="flex h-[331px] w-full animate-pulse items-center justify-center rounded-2xl bg-gray-200 dark:bg-custom-grayD-700 lg:h-[623px]"></div>
     );
   }
 
@@ -85,16 +83,14 @@ export default function PlusRewardInitial() {
 
   if (errors.length > 0) {
     return (
-      <div className="flex h-[331px] w-full flex-col items-center justify-center rounded-2xl bg-gray-100 p-5 lg:h-[623px]">
+      <div className="flex h-[331px] w-full flex-col items-center justify-center rounded-2xl bg-gray-100 p-5 dark:bg-custom-grayD-800 lg:h-[623px]">
         <p className="mb-3 text-base font-semibold xs-mini-phone2:text-lg">Ha ocurrido un error al cargar los datos:</p>
         {errors.map((error, index) => (
           <p key={index}>{error}</p>
         ))}
         <p className="my-3 text-base font-semibold xs-mini-phone2:text-lg">Por favor vuelva a iniciar sesión</p>
         <button
-          className={`relative max-w-[280px] items-center justify-center rounded-3xl border ${
-            isDark ? 'border-darkText bg-darkText text-lightText' : 'border-buttonsLigth bg-buttonsLigth text-white'
-          } px-[34px] py-2 font-titleFont font-semibold transition-opacity hover:opacity-90`}
+          className="relative max-w-[280px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-[34px] py-2 font-titleFont font-semibold text-white transition-opacity hover:opacity-90 dark:border-darkText dark:bg-darkText dark:text-lightText"
           onClick={() => signOut()}
         >
           Cerrar sesión
