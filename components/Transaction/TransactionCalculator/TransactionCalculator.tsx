@@ -155,8 +155,10 @@ export default function TransactionCalculator() {
                     <p className="p-1 text-sm text-[#f44336]">Payoneer USD requiere recibir al menos 50 USD</p>
                   ) : selectedReceivingSystem?.id === 'payoneer_eur' ? (
                     <p className="p-1 text-sm text-[#f44336]">Payoneer EUR requiere recibir al menos 50 EUR</p>
+                  ) : selectedReceivingSystem?.id === 'wise_eur' ? (
+                    <p className="p-1 text-sm text-[#f44336]">El monto mínimo a enviar es 7.5 EUR</p>
                   ) : (
-                    <p className="p-1 text-sm text-[#f44336]">El monto mínimo a enviar es 10 USD</p>
+                    <p className="p-1 text-sm text-[#f44336]">El monto minimo a enviar es de 10 USD</p>
                   )
                 ) : (
                   !isSendAmountValid(sendAmountNum, selectedSendingSystem?.id) &&
@@ -166,6 +168,8 @@ export default function TransactionCalculator() {
                         ? 'El monto mínimo desde Payoneer USD es 50 USD'
                         : 'El monto mínimo desde Payoneer EUR es 50 EUR'}
                     </p>
+                  ) : selectedSendingSystem?.id === 'wise_eur' ? (
+                    <p className="p-1 text-sm text-[#f44336]">El monto minimo a enviar es de 7.5 EUR</p>
                   ) : (
                     <p className="p-1 text-sm text-[#f44336]">El monto mínimo a enviar es 10 USD</p>
                   ))

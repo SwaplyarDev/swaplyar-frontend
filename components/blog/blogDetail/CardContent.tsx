@@ -171,7 +171,7 @@ function CardContent(data: BlogPostCardProps) {
   return (
     <main className="font-textFont">
       <div className="sticky top-28 flex w-full flex-col items-center sm:top-36">
-        <div className="rounded-2xl border-2 border-buttonsLigth bg-custom-whiteD-100 p-2 dark:border-custom-whiteD-100">
+        <div className="rounded-2xl border-2 border-buttonsLigth bg-custom-whiteD-100 p-2 dark:border-white">
           <ProgressBar value={progress} width="300px" />
         </div>
       </div>
