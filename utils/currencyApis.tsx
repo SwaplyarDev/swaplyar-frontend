@@ -144,7 +144,7 @@ export function calculateAmount(from: string, to: string, amount: number, invers
     }
 
     const convertedAmount = formula(amount, rate, usdToBrl);
-
+    console.log('rateforone', parseFloat(convertedAmount.toFixed(2)));
     return parseFloat(convertedAmount.toFixed(2));
   } catch (error) {
     if (error instanceof Error) {
@@ -184,11 +184,10 @@ export const validSendReceive = (
       return convertUsd >= 10;
     }
   } else if (sendingSystemId === 'payoneer_usd' || sendingSystemId === 'payoneer_eur') {
-    const convertUsd = sendingSystemId !== 'payoneer_usd' ? amountSend * rates.currentValueEURToUSD : amountSend;
     if (receivingSystemId === 'payoneer_usd' || receivingSystemId === 'payoneer_eur') {
       return receiveAmountNum > 50;
     } else {
-      return convertUsd >= 10;
+      return amountSend >= 50;
     }
   }
 

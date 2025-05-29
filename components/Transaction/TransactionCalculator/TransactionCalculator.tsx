@@ -64,7 +64,7 @@ export default function TransactionCalculator() {
       setIsProcessing(false);
     }, 3000);
   };
-
+  console.log('rate', rateForOne);
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
       <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight p-8 shadow-md dark:bg-calculatorDark dark:text-white sm:h-[623px] lg-tablet:min-w-[500px]">
@@ -142,7 +142,11 @@ export default function TransactionCalculator() {
                   selectedReceivingSystem?.id === 'payoneer_usd') ||
                 selectedReceivingSystem?.id === 'payoneer_eur' ? (
                   <p className={`p-1 text-sm ${colorError}`}>
-                    El monto minimo a enviar es de 50 {selectedReceivingSystem.coin}
+                    El monto minimo a recibir en Payoneer es de 50 {selectedReceivingSystem.coin}
+                  </p>
+                ) : selectedSendingSystem?.id === 'payoneer_usd' || selectedSendingSystem?.id === 'payoneer_eur' ? (
+                  <p className={`p-1 text-sm ${colorError}`}>
+                    El monto minimo a enviar en Payoneer es de 50 {selectedSendingSystem.coin}
                   </p>
                 ) : (
                   <p className={`p-1 text-sm ${colorError}`}>El monto minimo a enviar es de 10 USD</p>
