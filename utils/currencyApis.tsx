@@ -170,7 +170,7 @@ export const validSendReceive = (
       return amountSend >= 10;
     }
   } else if (sendingSystemId === 'bank') {
-    const convertUsd = rates.currentValueUSDBlueSale * amountSend;
+    const convertUsd = amountSend / rates.currentValueUSDBlueSale;
     if (receivingSystemId === 'payoneer_usd' || receivingSystemId === 'payoneer_eur') {
       return receiveAmountNum > 50;
     } else {
