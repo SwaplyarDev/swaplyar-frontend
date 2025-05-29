@@ -1,19 +1,29 @@
 'use client';
+
+// Hooks
 import { useState, useEffect } from 'react';
-import SystemInfo from '@/components/Transaction/SystemInfo/SystemInfo';
-import InvertSystems from '@/components/Transaction/InvertSystems/InvertSystems';
 import { useSystemStore } from '@/store/useSystemStore';
 import { usePathname, useRouter } from 'next/navigation';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useAmountCalculator } from '@/hooks/useAmountCalculator';
 import { useSystemSelection } from '@/hooks/useSystemSelection';
-import TransactionSection from '@/components/ui/TransactionSection/TransactionSection';
-import clsx from 'clsx';
-import { getExchangeRateStore } from '@/store/exchangeRateStore';
 import { useStepperStore } from '@/store/stateStepperStore';
-import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
+
+// Store
+import { getExchangeRateStore } from '@/store/exchangeRateStore';
+
+import clsx from 'clsx';
+
+// Utils
+// Data de las monedas y sistemas
 import { systems } from '@/utils/dataCoins';
+
+// Components
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
+import SystemInfo from '@/components/Transaction/SystemInfo/SystemInfo';
+import InvertSystems from '@/components/Transaction/InvertSystems/InvertSystems';
+import TransactionSection from '@/components/ui/TransactionSection/TransactionSection';
 
 export default function InternalTransactionCalculator() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -44,6 +54,8 @@ export default function InternalTransactionCalculator() {
   const sendAmountNum = sendAmount ? parseFloat(sendAmount) : 0;
   const receiveAmountNum = receiveAmount ? parseFloat(receiveAmount) : 0;
 
+  // Todo: Replicar formulario de solicitud, Ver en figma
+
   useEffect(() => {
     if (!pass && pathname === '/es/inicio/formulario-de-solicitud') {
       router.push('/es/inicio');
@@ -57,6 +69,7 @@ export default function InternalTransactionCalculator() {
 
   const handleSubmit = () => {
     setIsProcessing(true);
+    // Sacarlo
     setTimeout(() => {
       handleDirection();
       resetToDefault();
@@ -118,6 +131,8 @@ export default function InternalTransactionCalculator() {
           <SystemInfo pointBorder="border" linePosition="up">
             <p className="font-textFont text-xs font-light xs:text-sm">Información del sistema de recepción</p>
           </SystemInfo>
+
+          {/* TODO: Agregar aca los cupones de decuentos */}
         </div>
         <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
           <TransactionSection
