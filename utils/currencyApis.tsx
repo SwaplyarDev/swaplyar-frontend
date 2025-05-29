@@ -155,3 +155,75 @@ export function calculateAmount(from: string, to: string, amount: number, invers
     throw new Error('Failed to calculate amount');
   }
 }
+export const validSendReceive = (
+  amountSend: number,
+  sendingSystemId: string,
+  receiveAmountNum: number,
+  receivingSystemId: string,
+) => {
+  const { rates } = getExchangeRateStore.getState();
+
+  if (sendingSystemId === 'paypal' || sendingSystemId === 'wise_usd' || sendingSystemId === 'tether') {
+    if (receivingSystemId === 'payoneer_usd' || receivingSystemId === 'payoneer_eur') {
+      return receiveAmountNum > 50;
+    } else {
+      return amountSend >= 10;
+    }
+  } else if (sendingSystemId === 'bank') {
+    const convertUsd = rates.currentValueUSDBlueSale * amountSend;
+    if (receivingSystemId === 'payoneer_usd' || receivingSystemId === 'payoneer_eur') {
+      return receiveAmountNum > 50;
+    } else {
+      return convertUsd >= 10;
+    }
+  } else if (sendingSystemId === 'wise_eur') {
+    const convertUsd = rates.currentValueEURToUSD * amountSend;
+    if (receivingSystemId === 'payoneer_usd' || receivingSystemId === 'payoneer_eur') {
+      return receiveAmountNum > 50;
+    } else {
+      return convertUsd >= 10;
+    }
+  } else if (sendingSystemId === 'payoneer_usd' || sendingSystemId === 'payoneer_eur') {
+    const convertUsd = sendingSystemId !== 'payoneer_usd' ? amountSend * rates.currentValueEURToUSD : amountSend;
+    if (receivingSystemId === 'payoneer_usd' || receivingSystemId === 'payoneer_eur') {
+      return receiveAmountNum > 50;
+    } else {
+      return convertUsd >= 10;
+    }
+  }
+
+  return true;
+};
+
+/* 
+    currentValueBRLToEUR: 
+0.15654973985963394
+currentValueBRLToUSD
+: 
+0.17586497017075473
+currentValueEURBluePurchase
+: 
+1250
+currentValueEURBlueSale
+: 
+1272
+currentValueEURToBRL
+: 
+6.387746162316352
+currentValueEURToUSD
+: 
+1.1233807882941182
+currentValueUSDBluePurchase
+: 
+1150
+currentValueUSDBlueSale
+: 
+1170
+currentValueUSDToBRL
+: 
+5.6861807046
+currentValueUSDToEUR
+: 
+0.8901701101
+    
+    */

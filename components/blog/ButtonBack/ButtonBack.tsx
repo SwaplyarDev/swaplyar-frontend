@@ -25,7 +25,7 @@ export default function ButtonBack() {
             )
       }
     >
-      {window.innerWidth > 768 ? '← Volver' : '←'}
+      {window.innerWidth > 768 ? 'Volver' : '←'}
     </button>
   );
 }

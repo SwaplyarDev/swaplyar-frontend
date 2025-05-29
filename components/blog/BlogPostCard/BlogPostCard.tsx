@@ -49,13 +49,13 @@ const BlogPostCard: React.FC<BlogPostProps> = ({ blog_id, title, description, im
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="group flex items-center gap-1 p-1">
                 <p
-                  className={`text-sm text-[#969696] transition duration-300 ease-in-out ${isDark ? 'group-hover:text-white' : 'group-hover:text-custom-blue'} md:text-base`}
+                  className={`text-sm text-[#969696] transition duration-300 ease-in-out ${isDark ? 'group-hover:text-white' : 'group-hover:text-custom-blue'} group-hover:scale-105 md:text-base`}
                 >
                   Más información
                 </p>
                 <FontAwesomeIcon
                   icon={faArrowRight}
-                  className={`ease ml-2 text-[#969696] transition duration-300 ease-in-out ${isDark ? 'group-hover:text-white' : 'group-hover:text-custom-blue'}`}
+                  className={`ease ml-2 text-[#969696] transition duration-300 ease-in-out ${isDark ? 'group-hover:text-white' : 'group-hover:text-custom-blue'} group-hover:scale-105`}
                 />
               </div>
               <p className="text-sm text-[#969696] md:text-base">{date ? convertDate(date) : 'Fecha no disponible'}</p>
