@@ -1,32 +1,31 @@
 import React from 'react';
 import AplicationStateCard from './AplicationStateCard';
+import { useVerificationStore } from '../../../store/useVerificationStore';
 
-type Props = {
-  verifiedStatus: string;
-};
-const AplicationStateContainer = ({ verifiedStatus }: Props) => {
+const AplicationStateContainer = () => {
+  const { status: verifiedStatus, showApprovedMessage } = useVerificationStore();
   return (
     <div>
-      {verifiedStatus === 'pendiente' ? (
+      {verifiedStatus === 'PENDIENTE' ? (
         <AplicationStateCard
-          className="bg-[#F0B232] text-[#252526]"
+          className="mb-[-46px] mt-12 bg-[#F0B232] text-[#252526]"
           colorSVG="#252526"
           text1="Verificación en Revisión"
           text2="Hemos recibido los datos que enviaste para el programa de recompensas SwaplyAr Plus Rewards. Nuestro equipo está revisando la información proporcionada ¡Gracias por tu participación!"
         />
-      ) : verifiedStatus === 'aprobado' ? (
+      ) : verifiedStatus === 'VERIFICADO' && showApprovedMessage ? (
         <AplicationStateCard
-          className="bg-[#0B5300] text-[#EBE7E0]"
+          className="mb-[-46px] mt-12 bg-[#0B5300] text-[#EBE7E0]"
           colorSVG="#EBE7E0"
           text1="Verificación Aprobada con Exito"
           text2=""
         />
-      ) : verifiedStatus === 'rechazado' ? (
+      ) : verifiedStatus === 'RECHAZADO' ? (
         <AplicationStateCard
-          className="bg-[#CE1818] text-[#EBE7E0]"
+          className="mb-[-46px] mt-12 bg-[#CE1818] text-[#EBE7E0]"
           colorSVG="#EBE7E0"
-          text1="Solicitud Cancelada."
-          text2="Puedes crear una nueva, y si tienes alguna pregunta o necesitas ayuda, estamos aquí para ti."
+          text1="Verificación Rechazada"
+          text2="Tu documentacion fue rechazada, por favor proporcione nuevamente la documentacion requerida."
         />
       ) : (
         <div></div>

@@ -7,48 +7,85 @@ import { PlusRewards } from '@/app/es/(auth)/auth/plus-rewards/page';
 import CardPlusModal from './modals/CardPlusModal';
 import ModalVerify from './modals/ModalVerify';
 import AplicationStateContainer from '@/components/cardsPlusRewardsIntern/SwaplyPlusRewardsComponents/AplicationStateContainer';
-import { getPlusRewards, getCardStatus } from '@/actions/plusRewards/plusRewards.actions';
-import { useSession } from 'next-auth/react';
-import { plusRewardsActions } from '@/actions/plusRewards/plusRewards.actions';
+import { getPlusRewards } from '@/actions/plusRewards/plusRewards.actions';
+import { getSession, signIn, useSession } from 'next-auth/react';
+import { useVerificationStore } from '../../store/useVerificationStore';
 
 const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const [showModal, setShowModal] = useState(false);
   const [showVerify, setShowVerify] = useState(false);
-  const { data: session } = useSession();
-  const [verifiedStatus, setverifiedStatus] = useState('');
 
+  const { status: verifiedStatus, setStatus, showApprovedMessage, setShowApprovedMessage } = useVerificationStore();
+
+  const { data: session } = useSession();
   const sesionCardTop = session?.accessToken;
-  const sessionCardBlueYellow = session?.user.userVerification;
+
+  const sessionCardBlueYellow = verifiedStatus === 'VERIFICADO';
 
   useEffect(() => {
-    if (sesionCardTop) {
-      const fetchRewards = async () => {
-        try {
-          const data = await getPlusRewards(sesionCardTop || '');
+    if (!sesionCardTop) return;
 
-          setverifiedStatus(data.verification_status);
-        } catch (error) {
-          console.error('Error obteniendo plusRewards:', error);
+    const fetchVerificationStatus = async () => {
+      try {
+        const response = await getPlusRewards(sesionCardTop);
+        const backendStatus = response.verification_status || 'NO_VERIFICADO';
+        setStatus(backendStatus);
+
+        if (backendStatus !== 'VERIFICADO') {
+          localStorage.removeItem('verificationApprovedShown');
         }
-      };
 
-      fetchRewards();
+        if (backendStatus === 'VERIFICADO' && !localStorage.getItem('verificationApprovedShown')) {
+          setShowApprovedMessage(true);
+          localStorage.setItem('verificationApprovedShown', 'true');
+          setTimeout(() => setShowApprovedMessage(false), 5000);
+        }
+      } catch (error) {
+        console.error('Error al obtener el estado de verificación:', error);
+        setStatus('NO_VERIFICADO');
+      }
+    };
+
+    fetchVerificationStatus();
+  }, [sesionCardTop, setShowApprovedMessage, setStatus]);
+
+  useEffect(() => {
+    if (verifiedStatus === 'VERIFICADO') {
+      getSession().then((session) => {
+        console.log('Sesión actualizada:', session);
+      });
     }
-  }, [sesionCardTop, sessionCardBlueYellow]);
+  }, [verifiedStatus]);
+
+  // const simularVerificacion = () => {
+  //   // setStatus('NO_VERIFICADO');
+  //   setStatus('PENDIENTE');
+  //   setTimeout(() => {
+  //     setStatus('VERIFICADO');
+  //     // setStatus('PENDIENTE');
+  //     // setStatus('RECHAZADO');
+  //     setShowApprovedMessage(true);
+
+  //     setTimeout(() => {
+  //       setShowApprovedMessage(false);
+  //     }, 5000);
+  //   }, 5000);
+  // };
 
   return (
     <>
-      {/*<AnimatedBlurredCircles tope="z-10 absolute" />*/}
+      {/* <AnimatedBlurredCircles tope="z-10 absolute" /> */}
       {!session && <p>cargando...</p>}
 
-      <AplicationStateContainer verifiedStatus={verifiedStatus} />
+      <AplicationStateContainer />
 
       {showModal && <CardPlusModal setShowModal={setShowModal} />}
       {showVerify && (
         <ModalVerify showVerify={showVerify} setShowVerify={setShowVerify} verifiedStatus={verifiedStatus} />
       )}
-      <div className="relative z-10 mx-auto flex max-w-[500px] flex-col px-5 text-[40px] lg:max-w-[1200px] lg:px-[100px]">
-        <h1 className="mb-10 mt-10 font-textFont font-medium sm:mt-20">SwaplyAr Plus Rewards</h1>
+
+      <div className="relative z-10 mx-auto mt-16 flex max-w-[500px] flex-col px-5 text-[40px] lg:max-w-[1200px] lg:px-[100px]">
+        <h1 className="mb-10 font-textFont font-medium">SwaplyAr Plus Rewards</h1>
 
         <div className="relative z-10 mx-auto flex max-w-[1000px] flex-col gap-5 text-[16px] lg:flex-row">
           <div>
@@ -73,6 +110,12 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
                   >
                     Ver detalles
                   </p>
+                  {/* <button
+                    onClick={simularVerificacion}
+                    className="w-[35%] self-center bg-blue-500 text-white px-4 py-2 rounded"
+                  >
+                    Simular verificación
+                  </button> */}
                 </div>
               </div>
             </div>
