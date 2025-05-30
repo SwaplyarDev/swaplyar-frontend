@@ -4,7 +4,6 @@
 import { useState, useEffect } from 'react';
 import { useSystemStore } from '@/store/useSystemStore';
 import { usePathname, useRouter } from 'next/navigation';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useAmountCalculator } from '@/hooks/useAmountCalculator';
 import { useSystemSelection } from '@/hooks/useSystemSelection';
 import { useStepperStore } from '@/store/stateStepperStore';
@@ -20,11 +19,11 @@ import clsx from 'clsx';
 import { systems } from '@/utils/dataCoins';
 
 // Components
-import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import SystemInfo from '@/components/Transaction/SystemInfo/SystemInfo';
 import InvertSystems from '@/components/Transaction/InvertSystems/InvertSystems';
 import TransactionSection from '@/components/ui/TransactionSection/TransactionSection';
 import Coupons from './Coupons';
+import BtnProccessPayment from './BtnProccessPayment';
 
 export default function InternalTransactionCalculator() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -44,7 +43,6 @@ export default function InternalTransactionCalculator() {
   const { activeSelect } = useSystemStore();
   const { resetToDefault } = useStepperStore();
   const router = useRouter();
-  const { isDark } = useDarkTheme();
   const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } = useSystemSelection();
   const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne, rateForOneBank } =
     useAmountCalculator();
@@ -182,30 +180,17 @@ export default function InternalTransactionCalculator() {
             )}
           </div>
 
-          {/* Botón con margen superior consistente */}
-          {isProcessing ? (
-            <div className="mt-4">
-              <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="44px" />
-            </div>
-          ) : (
-            <button
-              className={clsx(
-                isDark ? 'buttonSecondDark' : 'buttonSecond',
-                'w-full max-w-[340px] rounded-full bg-custom-blue-800 px-[14px] py-3 font-titleFont text-base font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-lightText dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD',
-              )}
-              onClick={handleSubmit}
-              disabled={
-                isProcessing ||
-                sendAmount === '' ||
-                isNaN(sendAmountNum) ||
-                isNaN(receiveAmountNum) ||
-                !isSendAmountValid(sendAmountNum, selectedSendingSystem?.id) ||
-                !isReceiveAmountValid(receiveAmountNum, selectedReceivingSystem?.id)
-              }
-            >
-              Procesar pago
-            </button>
-          )}
+          <BtnProccessPayment
+            handleSubmit={handleSubmit}
+            isProccessing={isProcessing}
+            isReceiveAmountValid={isReceiveAmountValid}
+            isSendAmountValid={isSendAmountValid}
+            receiveAmountNum={receiveAmountNum}
+            selectedReceivingSystem={selectedReceivingSystem}
+            selectedSendingSystem={selectedSendingSystem}
+            sendAmount={sendAmount}
+            sendAmountNum={sendAmountNum}
+          />
         </div>
       </div>
     </div>
