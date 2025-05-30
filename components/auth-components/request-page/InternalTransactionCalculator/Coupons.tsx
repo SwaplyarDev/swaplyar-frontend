@@ -1,5 +1,10 @@
-import { IDiscountsObject } from '@/types/discounts/discounts';
 import Image from 'next/image';
+
+// Types
+import { IDiscountsObject } from '@/types/discounts/discounts';
+
+// Components
+import { IconTrophy } from './IconTrophy';
 
 interface IProps {
   balance: number;
@@ -20,8 +25,8 @@ export default function Coupons({ balance, discountsData }: IProps) {
 
       <div className="flex flex-1 flex-col items-center gap-1">
         <p className="text-center text-xs text-lightText dark:text-darkText">Recompensa de Bienvenida Express</p>
-        <div className="flex h-[41px] min-w-[180px] max-w-[190px] items-center justify-center rounded-2xl border border-[#FCC21B] bg-[#FFFFF8] px-[10px] py-2">
-          <Image alt="coupon trophy" height={28} width={28} src={'./images/trophy.svg'} className="max-h-[28px]" />
+        <div className="flex h-[41px] min-w-[180px] max-w-[190px] items-center justify-center gap-4 rounded-2xl border border-[#FCC21B] bg-[#FFFFF8] px-[10px] py-2">
+          <IconTrophy />
           <p className="text-lg font-normal text-lightText">+3 USD</p>
         </div>
       </div>
