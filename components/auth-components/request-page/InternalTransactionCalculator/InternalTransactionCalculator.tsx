@@ -25,6 +25,8 @@ import SystemInfo from '@/components/Transaction/SystemInfo/SystemInfo';
 import InvertSystems from '@/components/Transaction/InvertSystems/InvertSystems';
 import TransactionSection from '@/components/ui/TransactionSection/TransactionSection';
 
+import Image from 'next/image';
+
 export default function InternalTransactionCalculator() {
   const [isProcessing, setIsProcessing] = useState(false);
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
@@ -92,9 +94,9 @@ export default function InternalTransactionCalculator() {
   };
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
-      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight p-8 shadow-md dark:bg-calculatorDark dark:text-white sm:h-[623px] lg-tablet:min-w-[500px]">
-        <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
-          <p className="flex w-full max-w-lg items-center gap-[7px] font-textFont text-custom-grayD dark:text-darkText">
+      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight px-[19px] py-[27px] shadow-md dark:bg-calculatorDark dark:text-white lg-tablet:min-w-[500px]">
+        <div className="relative mb-[10px] flex w-full max-w-lg flex-col items-center gap-[10px] text-[#012c8a] dark:text-darkText">
+          <p className="flex w-full max-w-lg items-center gap-[7px] font-textFont text-lightText dark:text-darkText">
             {selectedSendingSystem?.id === 'bank' ? (
               <>
                 <span className="text-[32px]/[150%] font-light">{rateForOneBank.toFixed(2)}</span>
@@ -125,14 +127,39 @@ export default function InternalTransactionCalculator() {
             label={`Envías ${selectedSendingSystem?.coin}`}
             isSending={true}
           />
-          <div className="mt-4 flex h-full items-center justify-center">
+
+          <div className="flex h-full items-center justify-center">
             <InvertSystems onInvert={handleInvertSystemsClick} selectedReceivingSystem={selectedReceivingSystem} />
           </div>
+
           <SystemInfo pointBorder="border" linePosition="up">
             <p className="font-textFont text-xs font-light xs:text-sm">Información del sistema de recepción</p>
           </SystemInfo>
 
-          {/* TODO: Agregar aca los cupones de decuentos */}
+          <div className="flex w-full gap-12">
+            <div className="w-180px flex flex-1 flex-col gap-2">
+              <p className="text-end text-xs text-lightText dark:text-darkText">Saldo sin Cupón</p>
+              <p className="text-end text-2xl font-light text-lightText dark:text-darkText">
+                20000
+                <span className="text-custom-blue-800 dark:text-darkText"> ARS</span>
+                <span className="ml-auto block h-[2px] w-[180px] bg-buttonsLigth"></span>
+              </p>
+            </div>
+
+            <div className="flex flex-1 flex-col items-center gap-1">
+              <p className="text-center text-xs text-lightText dark:text-darkText">Recompensa de Bienvenida Express</p>
+              <div className="flex h-[41px] min-w-[180px] max-w-[190px] items-center justify-center rounded-2xl border border-[#FCC21B] bg-[#FFFFF8] px-[10px] py-2">
+                <Image
+                  alt="coupon trophy"
+                  height={28}
+                  width={28}
+                  src={'./images/trophy.svg'}
+                  className="max-h-[28px]"
+                />
+                <p className="text-lg font-normal text-lightText">+3 USD</p>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
           <TransactionSection
@@ -187,7 +214,7 @@ export default function InternalTransactionCalculator() {
             <button
               className={clsx(
                 isDark ? 'buttonSecondDark' : 'buttonSecond',
-                'w-full max-w-[340px] rounded-full bg-custom-blue-800 px-[14px] py-3 font-titleFont text-base font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-custom-grayD dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD',
+                'w-full max-w-[340px] rounded-full bg-custom-blue-800 px-[14px] py-3 font-titleFont text-base font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-lightText dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD',
               )}
               onClick={handleSubmit}
               disabled={
