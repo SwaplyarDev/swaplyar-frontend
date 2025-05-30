@@ -21,7 +21,8 @@ import { cn } from '@/lib/utils';
 import { updateTransactionStatus } from '@/actions/transactions/transaction-status.action';
 import { uploadTransactionReceipt } from '@/actions/transactions/admin-transaction';
 import { useSession } from 'next-auth/react';
-import { de } from 'date-fns/locale';
+import ServerErrorModal from '../../ModalErrorServidor/ModalErrorSevidor';
+import { set } from 'date-fns';
 
 interface DiscrepancySectionProps {
   trans: any; // Using any since TransactionTypeSingle is not provided
@@ -45,6 +46,9 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
   const [isInputTransferIdFocused, setIsInputTransferIdFocused] = useState(false);
   const [isResolutionInputFocused, setIsResolutionInputFocused] = useState(false);
   const [transferId, setTransferId] = useState('');
+
+  const [modalServidor, setModalServidor] = useState(false);
+  const [showConfirmRefund, setShowConfirmRefund] = useState(false);
 
   const [resolutionForm, setResolutionForm] = useState<Form>({
     description: '',
@@ -152,9 +156,10 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
       const response = await TransactionService('discrepancy', transaction.transaction_id, {
         descripcion: discrepancyReason,
       });
-      console.log(response);
     } catch (error) {
       console.log('Error al enviar el motivo de discrepancia:', error);
+      setModalServidor(true);
+      setShowSuccessDiscrepancyDialog(false);
     }
     setDiscrepancySend(true);
   };
@@ -169,25 +174,23 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
     setShowConfirmResolutionDialog(true);
   };
 
-  const confirmResolution = async () => {
-    setShowConfirmResolutionDialog(false);
-    setShowSuccessResolutionDialog(true);
-    try {
-      const response = await TransactionService('approved', transaction.transaction_id, {
-        description: resolutionReason,
-      });
-    } catch (error) {
-      console.log('Error al enviar el motivo de discrepancia:', error);
-    }
-    setDiscrepancySend(true);
-  };
+  // const confirmResolution = async () => {
+  //   setShowConfirmResolutionDialog(false);
+  //   setShowSuccessResolutionDialog(true);
+  //   try {
+  //     const response = await TransactionService('approved', transaction.transaction_id, {
+  //       description: resolutionReason,
+  //     });
+  //   } catch (error) {
+  //     setModalServidor(true)
+  //     console.log('Error al enviar el motivo de discrepancia:', error);
+  //   }
+  //   setDiscrepancySend(true);
+  // };
 
   const handleSendRefound = async () => {
     try {
       if (!form.file) return null;
-
-      console.log(form);
-      console.log(transaction.transaction_id);
       const formData = new FormData();
       formData.append('file', form.file);
       formData.append('transaction_id', transaction.transaction_id);
@@ -207,17 +210,13 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
         },
         body: formData,
       });
-
-      console.log('Respuesta de la info', response);
-      console.log('Respuesta de el archivo', responseFile);
     } catch (error) {
-      throw new Error(`❌ Error en la respuesta del servicio ${error}`);
+      setShowConfirmResolutionDialog(false);
+      setModalServidor(true);
     }
   };
 
   const transferDiscrepancyResolved = async () => {
-    console.log(resolutionForm);
-
     try {
       if (!resolutionForm.file) return null;
 
@@ -233,6 +232,8 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
         amount: Number(resolutionForm.amount),
       });
 
+      if (!response || response.error) throw new Error('Error al actualizar transacción');
+
       const responseFile = await fetch(`http://localhost:8080/api/v1/admin/transactions/voucher`, {
         method: 'POST',
         headers: {
@@ -241,10 +242,14 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
         body: formData,
       });
 
-      console.log('Respuesta de la info', response);
-      console.log('Respuesta de el archivo', responseFile);
+      if (!responseFile.ok) {
+        const errorData = await responseFile.json();
+        throw new Error(`Error al subir el comprobante: ${errorData}`);
+      }
     } catch (error) {
-      throw new Error(`❌ Error en la respuesta del servicio ${error}`);
+      console.error('Error en transferDiscrepancyResolved:', error);
+      setShowConfirmResolutionDialog(false);
+      setModalServidor(true);
     }
   };
 
@@ -626,7 +631,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                       </div>
 
                       <Button
-                        onClick={handleSendRefound}
+                        onClick={() => setShowConfirmRefund(true)}
                         className="h-11 w-full bg-custom-blue text-white hover:bg-blue-700"
                         aria-label="Enviar ID de transferencia"
                       >
@@ -720,7 +725,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
             </p>
             <div className="w-full max-w-xs rounded-lg bg-gray-100 p-3 text-left dark:bg-gray-700/30">
               <p className="mb-1 font-medium text-gray-800 dark:text-gray-200">Motivo:</p>
-              <p className="text-gray-700 dark:text-gray-300">{resolutionReason}</p>
+              <p className="text-gray-700 dark:text-gray-300">{resolutionForm.description}</p>
             </div>
           </div>
 
@@ -736,6 +741,38 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
               variant="outline"
               onClick={() => setShowConfirmResolutionDialog(false)}
               className="text-gray-600 dark:border-gray-500 dark:text-gray-300"
+            >
+              Cancelar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de error  */}
+      {modalServidor && <ServerErrorModal isOpen={modalServidor} onClose={() => setModalServidor(false)} />}
+
+      <Dialog open={showConfirmRefund} onOpenChange={setShowConfirmRefund}>
+        <DialogContent className="border border-gray-200 bg-white transition-all duration-300 dark:border-gray-700 dark:bg-gray-800/95">
+          <DialogHeader>
+            <DialogTitle className="text-gray-900 dark:text-gray-100">Confirmar reembolso</DialogTitle>
+            <DialogDescription className="text-gray-700 dark:text-gray-300">
+              ¿Estás seguro que deseas enviar este reembolso?
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="w-full rounded-lg bg-gray-100 p-3 text-left dark:bg-gray-700/30">
+            <p className="mb-1 font-medium text-gray-800 dark:text-gray-200">Motivo:</p>
+            <p className="text-gray-700 dark:text-gray-300">{form.description}</p>
+          </div>
+
+          <DialogFooter className="flex gap-2 sm:justify-end">
+            <Button variant="destructive" onClick={handleSendRefound} className="dark:bg-red-700 dark:hover:bg-red-800">
+              Confirmar reembolso
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => setShowConfirmRefund(false)}
+              className="dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700/50"
             >
               Cancelar
             </Button>

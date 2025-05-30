@@ -28,6 +28,8 @@ import { uploadTransactionReceipt } from '@/actions/transactions/admin-transacti
 import { useSession } from 'next-auth/react';
 import ModalEditReciever from './ModalEditReciever/ModalEditReciever';
 import { useTransactionStore } from '@/store/transactionModalStorage';
+import { set } from 'date-fns';
+import ServerErrorModal from '../../ModalErrorServidor/ModalErrorSevidor';
 
 interface Form {
   transfer_id: string;
@@ -71,6 +73,11 @@ const TransferClient = () => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [modalServer, setModalServer] = useState(false);
+  const [showConfirmRefund, setShowConfirmRefund] = useState(false);
+  const [modalError, setModalError] = useState(false);
+  const [modalResponse, setModalResponse] = useState(false);
 
   const [isInputTransferIdFocused, setIsInputTransferIdFocused] = useState(false);
 
@@ -126,8 +133,6 @@ const TransferClient = () => {
       } else {
         setFormRefund((prev) => ({ ...prev, file }));
       }
-
-      console.log('Archivo actualizado:', file.name);
     }
   };
 
@@ -155,13 +160,10 @@ const TransferClient = () => {
     try {
       setIsLoading(true);
 
-      console.log(rejectionReason, 'transaction_id: ' + transId);
-
       const response = await updateTransactionStatus('canceled', transId, {
         descripcion: rejectionReason,
       });
 
-      console.log(response);
       setShowConfirmDialog(false);
       setIsLoading(false);
     } catch (error) {
@@ -195,7 +197,6 @@ const TransferClient = () => {
         amount: Number(form.amount),
       });
       const responseFile = await uploadTransactionReceipt(formData);
-      console.log(response, responseFile);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -236,9 +237,10 @@ const TransferClient = () => {
         body: formData,
       });
 
-      console.log('Respuesta de la info', response);
-      console.log('Respuesta de el archivo', responseFile);
+      setModalResponse(true);
     } catch (error) {
+      setModalError(false);
+      setModalServer(true);
       throw new Error(`❌ Error en la respuesta del servicio ${error}`);
     }
   };
@@ -546,7 +548,7 @@ const TransferClient = () => {
                 </div>
 
                 <Button
-                  onClick={handleSendRefound}
+                  onClick={() => setShowConfirmRefund(true)}
                   className="h-11 w-full bg-custom-blue text-white hover:bg-blue-700"
                   aria-label="Enviar ID de transferencia"
                 >
@@ -560,6 +562,8 @@ const TransferClient = () => {
             </div>
           )
         )}
+
+        {modalServer && <ServerErrorModal isOpen={modalServer} onClose={() => setModalServer(false)} />}
 
         {/* Confirmation Dialog */}
         <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
@@ -607,6 +611,14 @@ const TransferClient = () => {
 
             <DialogFooter className="flex gap-2 sm:justify-end">
               <Button
+                variant="destructive"
+                onClick={() => handleAprove()}
+                disabled={isLoading}
+                className="dark:bg-red-700 dark:hover:bg-red-800"
+              >
+                {isLoading ? 'Procesando...' : 'Confirmar solicitud'}
+              </Button>
+              <Button
                 variant="outline"
                 onClick={() => setShowAlert(false)}
                 disabled={isLoading}
@@ -614,13 +626,41 @@ const TransferClient = () => {
               >
                 Cancelar
               </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Confirmation Refund Dialog */}
+        <Dialog open={showConfirmRefund} onOpenChange={setShowConfirmRefund}>
+          <DialogContent className="border border-gray-200 bg-white transition-all duration-300 dark:border-gray-700 dark:bg-gray-800/95">
+            <DialogHeader>
+              <DialogTitle className="text-gray-900 dark:text-gray-100">Confirmar reembolso</DialogTitle>
+              <DialogDescription className="text-gray-700 dark:text-gray-300">
+                ¿Estás seguro que deseas enviar este reembolso?
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="w-full rounded-lg bg-gray-100 p-3 text-left dark:bg-gray-700/30">
+              <p className="mb-1 font-medium text-gray-800 dark:text-gray-200">Motivo:</p>
+              <p className="text-gray-700 dark:text-gray-300">{formRefund.description}</p>
+            </div>
+
+            <DialogFooter className="flex gap-2 sm:justify-end">
               <Button
                 variant="destructive"
-                onClick={() => handleAprove()}
+                onClick={handleSendRefound}
                 disabled={isLoading}
                 className="dark:bg-red-700 dark:hover:bg-red-800"
               >
-                {isLoading ? 'Procesando...' : 'Confirmar solicitud'}
+                {isLoading ? 'Procesando...' : 'Confirmar reembolso'}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setShowConfirmRefund(false)}
+                disabled={isLoading}
+                className="dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700/50"
+              >
+                Cancelar
               </Button>
             </DialogFooter>
           </DialogContent>

@@ -18,13 +18,15 @@ import { ActiveTab, NavIcons } from './NavIcons';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import PerfilIcon from '@/components/icons-internal/icons-desktop/perfil/PerfilIcon';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 
 const NavbarInternal = () => {
   const { isDark } = useDarkTheme();
   const pathname = usePathname();
   const [drawerMenu, setDrawerMenu] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+
+  const { data: session } = useSession();
 
   const closeDrawerMenu = () => {
     setIsClosing(true);
@@ -78,7 +80,7 @@ const NavbarInternal = () => {
                 />
               </Link>
               <p className="hidden pl-2 pt-4 font-sans text-white dark:text-black xs:block lg:ml-4 lg:hidden lg2:block">
-                Nombre Usuario
+                {session?.user.fullName}
               </p>
             </div>
             <div className="hidden lg:mr-10 lg:flex lg:max-w-[460px]">

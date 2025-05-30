@@ -14,8 +14,6 @@ export default async function TransactionPage({ params }: { params: { id: string
   console.log('Fetching transaction with ID:', transId, ' page');
   const transaction = await getAdminTransactionById(transId);
 
-  console.log('Transaction data: ', transaction);
-
   if (!transaction) {
     return <div className="p-8 text-center">Transaction not found</div>;
   }
@@ -36,8 +34,6 @@ export default async function TransactionPage({ params }: { params: { id: string
     const regretResponse = await getRegretById(transaction.transaction.regret_id);
     regretCancel = regretResponse?.regret || null;
   }
-
-  // console.log(transaction, status, noteEdit, regretCancel);
 
   // Pass all server-fetched data to the client component
   return (

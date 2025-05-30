@@ -22,7 +22,6 @@ export const getNoteById = async (id: string) => {
 
     const data: NoteTypeSingle = await response.json();
 
-    console.log('respuesta de la nota', data);
     return data;
   } catch (error: any) {
     console.error('Error fetching notes:', error);

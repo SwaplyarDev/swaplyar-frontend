@@ -102,7 +102,6 @@ const SearchRequestAuth = () => {
 
       const statuses = response.status || [];
       handleSearchRequest(statuses);
-      console.log(response);
 
       reset({ numberOfRequest: '', lastNameRequest: '' });
     } catch (error) {

@@ -21,6 +21,7 @@ import { useSession } from 'next-auth/react';
 import MessageWpp from './ui/MessageWpp';
 import { Dialog } from '@radix-ui/react-dialog';
 import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/Dialog';
+import ServerErrorModal from '../../ModalErrorServidor/ModalErrorSevidor';
 
 interface AprobarRechazarProps {
   selected: 'stop' | 'accepted' | 'canceled' | null;
@@ -54,6 +55,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
 
   const [openModalReject, setOpenModalReject] = useState(false);
   const [openModalRejectResponse, setOpenModalRejectResponse] = useState(false);
+  const [modalServidor, setModalServidor] = useState(true);
 
   // Automatically select 'canceled' if confirmTransButton is false
   useEffect(() => {
@@ -63,19 +65,19 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
   }, [componentStates.confirmTransButton, selected, onSelectChange]);
 
   const [loading, setLoading] = useState(false);
-  const [apiResponse, setApiResponse] = useState<string | null>(null);
+  const [apiResponse, setApiResponse] = useState<any>('');
 
   const handleSubmitRejection = async () => {
     if (!rejectionReason.trim()) return;
 
     try {
       const response = await acceptReject();
-      setApiResponse(response?.newStatus || 'Rechazo enviado exitosamente.'); // o lo que devuelva tu API
+      setApiResponse(response);
       setOpenModalReject(false);
       setOpenModalRejectResponse(true);
     } catch (error: any) {
       console.error('Error al rechazar la transacción:', error);
-      setApiResponse('Ocurrió un error al enviar el motivo de rechazo.');
+      setApiResponse(null);
       setOpenModalReject(false);
       setOpenModalRejectResponse(true);
     }
@@ -121,6 +123,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
 
   return (
     <>
+      {/* {modalServidor && <ServerErrorModal isOpen={modalServidor} onClose={() => setModalServidor(false)} />} */}
       <div className="rounded-lg border bg-white p-4 shadow-sm transition-all duration-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800/90 dark:hover:bg-gray-800">
         <h3 className="text-lg font-semibold dark:text-white">Aprobar/Rechazar Solicitud</h3>
 
@@ -271,13 +274,38 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
 
       {/* Modal rechazo */}
 
+      <Dialog open={openModalReject} onOpenChange={setOpenModalReject}>
+        <DialogContent className="border border-gray-300 bg-white text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Enviar Rechazo</DialogTitle>
+          </DialogHeader>
+          <div className="mt-2 text-center">
+            <p className="text-gray-700 dark:text-gray-300">Estas seguro de enviar el motivo de rechazo?</p>
+          </div>
+          <DialogFooter className="mt-4 sm:justify-center">
+            <Button onClick={handleSubmitRejection} className="bg-red-600 text-white">
+              <span>Enviar</span>
+            </Button>
+            <Button className="text-white" onClick={() => setOpenModalReject(false)}>
+              <span>Cancelar</span>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal Respuesta de api */}
+
       <Dialog open={openModalRejectResponse} onOpenChange={setOpenModalRejectResponse}>
         <DialogContent className="border border-gray-300 bg-white text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Resultado del Rechazo</DialogTitle>
           </DialogHeader>
           <div className="mt-2 text-center">
-            <p className="text-gray-700 dark:text-gray-300">{apiResponse}</p>
+            <p className="text-gray-700 dark:text-gray-300">
+              {apiResponse
+                ? apiResponse.newStatus.message
+                : 'Error del servidor, intente de nuevo en un momento. Si el error persiste contacte con el soporte.'}
+            </p>
           </div>
           <DialogFooter className="mt-4 sm:justify-center">
             <Button onClick={() => setOpenModalRejectResponse(false)}>Cerrar</Button>

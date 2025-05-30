@@ -31,8 +31,6 @@ export const TransactionService = async (
 };
 
 export const GetTransactionStatus = async (transId: string, trans: any, token: string) => {
-  console.log('Valores recibidos:', { transId, trans });
-
   if (!transId || !trans) {
     throw new Error('error'); // Si ves este error, transId o trans están vacíos
   }

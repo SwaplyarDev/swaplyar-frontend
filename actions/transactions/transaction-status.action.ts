@@ -179,10 +179,6 @@ export async function updateTransaction(transactionData: any, transaction_id: st
       return { success: false, error: 'ID de transacción requerido' };
     }
 
-    console.log('id', transaction_id);
-    console.log('data', transactionData);
-    console.log('token', token);
-
     // Llamar al endpoint para actualizar la transacción
     const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/${transaction_id}/receiver`, {
       method: 'PUT',

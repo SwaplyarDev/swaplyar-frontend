@@ -72,7 +72,6 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
         setIsSubmitting(isSubmitting);
       },
       (error: string | null) => {
-        console.log('fallo: ', error);
         setSubmitError(error);
         setIsSubmittingLocal(false);
         if (error) {
@@ -82,17 +81,16 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
         }
       },
       (success: boolean) => {
-        console.log('success: ', success);
         setSubmitSuccess(success);
         setIsSubmittingLocal(false);
         setShowConfirmModal(false);
 
         setTimeout(() => {
-          setSubmitResult(success);
+          setSubmitResult(true);
           setShowResultModal(true);
 
           if (success) {
-            console.log('ID de transferencia enviado:', transferId);
+            setTransferId('');
           }
         }, 300);
       },
@@ -268,6 +266,14 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
             </div>
           </div>
           <DialogFooter className="flex justify-end gap-3">
+            <Button
+              onClick={handleConfirmSubmit}
+              disabled={isSubmitting}
+              className="bg-custom-blue text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
+            >
+              {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+              Confirmar
+            </Button>
             {!isSubmitting && (
               <Button
                 variant="outline"
@@ -277,14 +283,6 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
                 Cancelar
               </Button>
             )}
-            <Button
-              onClick={handleConfirmSubmit}
-              disabled={isSubmitting}
-              className="bg-custom-blue text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
-            >
-              {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-              Confirmar
-            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

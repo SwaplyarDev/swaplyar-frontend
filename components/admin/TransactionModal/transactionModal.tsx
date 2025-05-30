@@ -175,7 +175,6 @@ const TransactionModal = () => {
       }
 
       const data = await response.json();
-      console.log('Respuesta exitosa:', data);
       setSubmitSuccess(true);
 
       // Resetear el formulario después de un envío exitoso

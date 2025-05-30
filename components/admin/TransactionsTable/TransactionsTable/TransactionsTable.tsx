@@ -48,8 +48,6 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
   const [activePopover, setActivePopover] = useState<string | null>(null);
   const popoverRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
-  console.log(transactions);
-
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -237,8 +235,6 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
     // @ts-ignore
     const config = status ? statusConfig[status] : statusConfig.default;
 
-    console.log();
-
     return (
       <span
         className={`inline-flex min-w-[100px] items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${config.bgColor} ${config.textColor}`}
@@ -260,7 +256,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
   };
 
   useEffect(() => {
-    console.log('Current filters:', filters);
+    // console.log('Current filters:', filters);
   }, [filters]);
 
   const router = useRouter();
