@@ -155,6 +155,8 @@ export function calculateAmount(from: string, to: string, amount: number, invers
     throw new Error('Failed to calculate amount');
   }
 }
+
+// Funcion para validar montos enviados y recibidos de la calculadora
 export const validSendReceive = (
   amountSend: number,
   sendingSystemId: string,
@@ -193,36 +195,3 @@ export const validSendReceive = (
 
   return true;
 };
-
-/* 
-    currentValueBRLToEUR: 
-0.15654973985963394
-currentValueBRLToUSD
-: 
-0.17586497017075473
-currentValueEURBluePurchase
-: 
-1250
-currentValueEURBlueSale
-: 
-1272
-currentValueEURToBRL
-: 
-6.387746162316352
-currentValueEURToUSD
-: 
-1.1233807882941182
-currentValueUSDBluePurchase
-: 
-1150
-currentValueUSDBlueSale
-: 
-1170
-currentValueUSDToBRL
-: 
-5.6861807046
-currentValueUSDToEUR
-: 
-0.8901701101
-    
-    */

@@ -155,7 +155,6 @@ export default function TransactionCalculator() {
             )}
           </div>
 
-          {/* Botón con margen superior consistente */}
           {isProcessing ? (
             <div className="mt-4">
               <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="44px" />
