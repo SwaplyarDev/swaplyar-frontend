@@ -6,6 +6,7 @@ export interface RegretTypeSingle {
   phone_number: string;
   status: string;
   note: string;
+  created_at: string;
   error?: {
     message: string;
     details: null | string;
@@ -20,4 +21,5 @@ export const emptyRegret: RegretTypeSingle = {
   phone_number: '',
   status: '',
   note: '',
+  created_at: '',
 };

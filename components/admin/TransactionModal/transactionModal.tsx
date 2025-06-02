@@ -104,7 +104,7 @@ const TransactionModal = () => {
   }, []);
 
   useEffect(() => {
-    console.log('componentStates', componentStates);
+    // console.log('componentStates', componentStates);
   }, [componentStates]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
