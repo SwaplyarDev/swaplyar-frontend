@@ -131,14 +131,14 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
           ¿La transferencia ha sido recibida y ya está reflejada en nuestra cuenta?
         </p>
 
-        <div className="mt-2 flex gap-4">
+        <div className="mt-2 flex justify-center gap-4">
           <TooltipProvider delayDuration={300}>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   onClick={() => handleClick(true)}
                   variant={selected === true ? 'default' : 'outline'}
-                  className={`relative min-w-[160px] transition-all duration-300 ${
+                  className={`relative min-w-[160px] rounded-3xl transition-all duration-300 ${
                     selected === true
                       ? 'bg-green-600 text-white shadow-sm hover:bg-green-700 hover:shadow-green-200 dark:bg-green-700 dark:hover:bg-green-600 dark:hover:shadow-green-900/20'
                       : 'hover:border-green-500 hover:bg-green-50 hover:text-green-600 dark:border-gray-600 dark:hover:bg-green-900/20 dark:hover:text-green-400'
@@ -163,7 +163,7 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
                 <Button
                   onClick={() => handleClick(false)}
                   variant={selected === false ? 'destructive' : 'outline'}
-                  className={`relative min-w-[160px] transition-all duration-300 ${
+                  className={`relative min-w-[160px] rounded-3xl transition-all duration-300 ${
                     selected === false
                       ? 'bg-red-600 text-white shadow-sm hover:bg-red-700 hover:shadow-red-200 dark:bg-red-700 dark:hover:bg-red-600 dark:hover:shadow-red-900/20'
                       : 'hover:border-red-500 hover:bg-red-50 hover:text-red-600 dark:border-gray-600 dark:hover:bg-red-900/20 dark:hover:text-red-400'
@@ -215,7 +215,7 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
                 <Button
                   ref={sendButtonRef}
                   onClick={handleSubmitTransferId}
-                  className="h-11 bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20"
+                  className="buttonSecond h-11 rounded-3xl bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20"
                   aria-label="Enviar ID de transferencia"
                 >
                   <span>Enviar</span>

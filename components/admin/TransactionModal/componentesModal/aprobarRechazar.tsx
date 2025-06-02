@@ -22,6 +22,7 @@ import MessageWpp from './ui/MessageWpp';
 import { Dialog } from '@radix-ui/react-dialog';
 import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/Dialog';
 import ServerErrorModal from '../../ModalErrorServidor/ModalErrorSevidor';
+import clsx from 'clsx';
 
 interface AprobarRechazarProps {
   selected: 'stop' | 'accepted' | 'canceled' | null;
@@ -93,10 +94,10 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
   const getButtonClass = (type: 'accepted' | 'stop' | 'canceled') => {
     const isDisabled = !componentStates.confirmTransButton && type !== 'canceled';
     const baseClass =
-      'relative flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-medium transition-all duration-300';
+      'w-[150px] h-[40px] relative flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-medium transition-all duration-300';
 
     if (isDisabled) {
-      return `${baseClass} bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed`;
+      return `${baseClass}  bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed`;
     }
 
     switch (type) {
@@ -127,7 +128,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
       <div className="rounded-lg border bg-white p-4 shadow-sm transition-all duration-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800/90 dark:hover:bg-gray-800">
         <h3 className="text-lg font-semibold dark:text-white">Aprobar/Rechazar Solicitud</h3>
 
-        <div className="mt-2 flex flex-wrap gap-4">
+        <div className="mt-2 flex flex-wrap justify-between gap-4">
           <TooltipProvider delayDuration={300}>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -135,7 +136,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                   onClick={() => componentStates.confirmTransButton && onSelectChange('accepted')}
                   disabled={!componentStates.confirmTransButton}
                   variant="outline"
-                  className={getButtonClass('accepted')}
+                  className={clsx(getButtonClass('accepted'), 'rounded-3xl')}
                   aria-pressed={selected === 'accepted'}
                 >
                   <CheckCircle
@@ -157,7 +158,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                   onClick={() => componentStates.confirmTransButton && onSelectChange('stop')}
                   disabled={!componentStates.confirmTransButton}
                   variant="outline"
-                  className={getButtonClass('stop')}
+                  className={clsx(getButtonClass('stop'), 'rounded-3xl')}
                   aria-pressed={selected === 'stop'}
                 >
                   <AlertTriangle
@@ -178,7 +179,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                 <Button
                   onClick={() => onSelectChange('canceled')}
                   variant="outline"
-                  className={getButtonClass('canceled')}
+                  className={clsx(getButtonClass('canceled'), 'rounded-3xl')}
                   aria-pressed={selected === 'canceled'}
                 >
                   <XCircle
