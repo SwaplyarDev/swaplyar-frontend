@@ -144,7 +144,7 @@ export function calculateAmount(from: string, to: string, amount: number, invers
     }
 
     const convertedAmount = formula(amount, rate, usdToBrl);
-
+    console.log('rateforone', parseFloat(convertedAmount.toFixed(2)));
     return parseFloat(convertedAmount.toFixed(2));
   } catch (error) {
     if (error instanceof Error) {
@@ -155,3 +155,43 @@ export function calculateAmount(from: string, to: string, amount: number, invers
     throw new Error('Failed to calculate amount');
   }
 }
+
+// Funcion para validar montos enviados y recibidos de la calculadora
+export const validSendReceive = (
+  amountSend: number,
+  sendingSystemId: string,
+  receiveAmountNum: number,
+  receivingSystemId: string,
+) => {
+  const { rates } = getExchangeRateStore.getState();
+
+  if (sendingSystemId === 'paypal' || sendingSystemId === 'wise_usd' || sendingSystemId === 'tether') {
+    if (receivingSystemId === 'payoneer_usd' || receivingSystemId === 'payoneer_eur') {
+      return receiveAmountNum > 50;
+    } else {
+      return amountSend >= 10;
+    }
+  } else if (sendingSystemId === 'bank') {
+    const convertUsd = amountSend / rates.currentValueUSDBlueSale;
+    if (receivingSystemId === 'payoneer_usd' || receivingSystemId === 'payoneer_eur') {
+      return receiveAmountNum > 50;
+    } else {
+      return convertUsd >= 10;
+    }
+  } else if (sendingSystemId === 'wise_eur') {
+    const convertUsd = rates.currentValueEURToUSD * amountSend;
+    if (receivingSystemId === 'payoneer_usd' || receivingSystemId === 'payoneer_eur') {
+      return receiveAmountNum > 50;
+    } else {
+      return convertUsd >= 10;
+    }
+  } else if (sendingSystemId === 'payoneer_usd' || sendingSystemId === 'payoneer_eur') {
+    if (receivingSystemId === 'payoneer_usd' || receivingSystemId === 'payoneer_eur') {
+      return receiveAmountNum > 50;
+    } else {
+      return amountSend >= 50;
+    }
+  }
+
+  return true;
+};
