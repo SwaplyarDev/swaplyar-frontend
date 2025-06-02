@@ -1,7 +1,7 @@
 interface ButtonProps {
   text: string;
   onClick: () => void;
-  className?: string; // Permite personalizar las clases del botón
+  className?: string;
 }
 
 export const CustomButton = ({ text, onClick, className }: ButtonProps) => {

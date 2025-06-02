@@ -39,8 +39,6 @@ interface AprobarRechazarProps {
   setDiscrepancySend: (value: boolean) => void;
 }
 
-// const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
 const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
   selected,
   onSelectChange,
@@ -58,7 +56,6 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
   const [openModalRejectResponse, setOpenModalRejectResponse] = useState(false);
   const [modalServidor, setModalServidor] = useState(true);
 
-  // Automatically select 'canceled' if confirmTransButton is false
   useEffect(() => {
     if (componentStates.confirmTransButton === false && selected !== 'canceled') {
       onSelectChange('canceled');
@@ -124,7 +121,6 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
 
   return (
     <>
-      {/* {modalServidor && <ServerErrorModal isOpen={modalServidor} onClose={() => setModalServidor(false)} />} */}
       <div className="rounded-lg border bg-white p-4 shadow-sm transition-all duration-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800/90 dark:hover:bg-gray-800">
         <h3 className="text-lg font-semibold dark:text-white">Aprobar/Rechazar Solicitud</h3>
 
@@ -197,7 +193,6 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
           </TooltipProvider>
         </div>
 
-        {/* Rejection Section */}
         {(selected === 'canceled' || componentStates.confirmTransButton === false) && (
           <div className="animate-in fade-in mt-6 duration-300">
             <div className="space-y-3">
@@ -239,7 +234,6 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
           </div>
         )}
 
-        {/* Stop Section */}
         {selected === 'stop' && (
           <div className="animate-in fade-in mt-6 space-y-4 duration-300">
             <Alert className="border-l-4 border-l-amber-500 bg-amber-50 transition-all duration-300 hover:bg-amber-100 dark:border-l-amber-600 dark:bg-amber-900/20 dark:hover:bg-amber-900/30">
@@ -258,7 +252,6 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
           </div>
         )}
 
-        {/* Accepted Section */}
         {selected === 'accepted' && (
           <div className="animate-in fade-in mt-6 duration-300">
             <Alert className="border-l-4 border-l-green-500 bg-green-50 transition-all duration-300 hover:bg-green-100 dark:border-l-green-600 dark:bg-green-900/20 dark:hover:bg-green-900/30">
@@ -272,8 +265,6 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
           </div>
         )}
       </div>
-
-      {/* Modal rechazo */}
 
       <Dialog open={openModalReject} onOpenChange={setOpenModalReject}>
         <DialogContent className="border border-gray-300 bg-white text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
@@ -293,8 +284,6 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      {/* Modal Respuesta de api */}
 
       <Dialog open={openModalRejectResponse} onOpenChange={setOpenModalRejectResponse}>
         <DialogContent className="border border-gray-300 bg-white text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">

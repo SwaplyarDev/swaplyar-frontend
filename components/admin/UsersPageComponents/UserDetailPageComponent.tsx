@@ -19,12 +19,9 @@ export function UserDetailPageComponent({ userId }: { userId: number }) {
   return (
     <div className="min-h-screen">
       <div className="">
-        {/* Header */}
         <UserHeader userId={user.id} />
 
-        {/* Main Content */}
         <div className="grid grid-cols-1 gap-6 pt-6 md:grid-cols-2">
-          {/* Left Column */}
           <div className="space-y-6">
             <UserDetailsSection code={user.code} />
             <UserInfo user={user} />
@@ -32,7 +29,6 @@ export function UserDetailPageComponent({ userId }: { userId: number }) {
             <UserNotesSection />
           </div>
 
-          {/* Right Column */}
           <div className="space-y-6">
             <TransactionHistorySection />
             <WalletsSection />

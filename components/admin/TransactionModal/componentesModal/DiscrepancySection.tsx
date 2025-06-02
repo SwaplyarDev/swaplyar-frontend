@@ -1,12 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { AlertCircle, CheckCircle, XCircle, Send, HelpCircle, AlertTriangle, Trash2, LinkIcon } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Label } from '@/components/ui/Label';
+import { updateTransactionStatus } from '@/actions/transactions/transaction-status.action';
 import { Alert, AlertDescription } from '@/components/ui/Alert';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip';
+import { Button } from '@/components/ui/Button';
 import {
   Dialog,
   DialogContent,
@@ -15,17 +11,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/Dialog';
-import { TransactionService } from './ui/TransactionService';
-import { Check, Upload } from '@mui/icons-material';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip';
 import { cn } from '@/lib/utils';
-import { updateTransactionStatus } from '@/actions/transactions/transaction-status.action';
-import { uploadTransactionReceipt } from '@/actions/transactions/admin-transaction';
+import { Check, Upload } from '@mui/icons-material';
+import { AlertCircle, CheckCircle, LinkIcon, Send, Trash2, XCircle } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 import ServerErrorModal from '../../ModalErrorServidor/ModalErrorSevidor';
-import { set } from 'date-fns';
+import { TransactionService } from './ui/TransactionService';
 
 interface DiscrepancySectionProps {
-  trans: any; // Using any since TransactionTypeSingle is not provided
+  trans: any;
   value: boolean | null;
   setDiscrepancySend: (value: boolean) => void;
 }
@@ -57,7 +55,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
     file: null,
   });
 
-  // Dialog states
   const [showRequiredDialog, setShowRequiredDialog] = useState(false);
   const [showConfirmDiscrepancyDialog, setShowConfirmDiscrepancyDialog] = useState(false);
   const [showSuccessDiscrepancyDialog, setShowSuccessDiscrepancyDialog] = useState(false);
@@ -82,11 +79,9 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
   const { transaction } = trans;
 
   useEffect(() => {
-    // Sync local state with prop value when it changes
     setDiscrepancy(value);
   }, [value]);
 
-  // Auto-close success dialogs after 2 seconds
   useEffect(() => {
     if (showSuccessDiscrepancyDialog || showSuccessResolutionDialog) {
       const timer = setTimeout(() => {
@@ -174,20 +169,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
     setShowConfirmResolutionDialog(true);
   };
 
-  // const confirmResolution = async () => {
-  //   setShowConfirmResolutionDialog(false);
-  //   setShowSuccessResolutionDialog(true);
-  //   try {
-  //     const response = await TransactionService('approved', transaction.transaction_id, {
-  //       description: resolutionReason,
-  //     });
-  //   } catch (error) {
-  //     setModalServidor(true)
-  //     console.log('Error al enviar el motivo de discrepancia:', error);
-  //   }
-  //   setDiscrepancySend(true);
-  // };
-
   const handleSendRefound = async () => {
     try {
       if (!form.file) return null;
@@ -257,7 +238,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
     <>
       <section className="space-y-6">
         <div className="flex w-full flex-col gap-6">
-          {/* Segunda columna: Motivo de discrepancia */}
           {discrepancy === true && (
             <div className="animate-in fade-in flex flex-col gap-4 duration-300">
               <div className="space-y-2">
@@ -294,7 +274,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                 </p>
               </div>
 
-              {/* Tercera columna: Discrepancia resuelta */}
               <div>
                 <div>
                   <h3 className="text-lg font-medium text-gray-800">¿Discrepancia Resuelta?</h3>
@@ -372,22 +351,11 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                               placeholder="Explica cómo se resolvió la discrepancia"
                               value={resolutionForm.description}
                               onChange={(e) => setResolutionForm({ ...resolutionForm, description: e.target.value })}
-                              // onFocus={() => setIsResolutionInputFocused(true)}
-                              // onBlur={() => setIsResolutionInputFocused(false)}
                               className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                                 isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                               }`}
                               aria-required="true"
                             />
-
-                            {/* <Button
-                          disabled={resolutionReason.length === 0}
-                          onClick={handleSubmitResolution}
-                          className="h-10 bg-green-600 text-white hover:bg-green-700"
-                        >
-                          <Send className="mr-2 h-4 w-4" />
-                          <span>Enviar</span>
-                        </Button> */}
                           </div>
 
                           <p className="text-muted-foreground pb-2 text-xs">
@@ -401,8 +369,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                             placeholder="Id de la transferencia"
                             value={resolutionForm.transfer_id}
                             onChange={(e) => setResolutionForm({ ...resolutionForm, transfer_id: e.target.value })}
-                            // onFocus={() => setIsInputTransferIdFocused(true)}
-                            // onBlur={() => setIsInputTransferIdFocused(false)}
                             className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                               isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                             }`}
@@ -417,8 +383,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                             placeholder="Monto transferido"
                             value={resolutionForm.amount}
                             onChange={(e) => setResolutionForm({ ...resolutionForm, amount: e.target.value })}
-                            // onFocus={() => setIsInputTransferIdFocused(true)}
-                            // onBlur={() => setIsInputTransferIdFocused(false)}
                             className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                               isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                             }`}
@@ -529,8 +493,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                             placeholder="Motivo del rechazo"
                             value={form.description}
                             onChange={(e) => setForm({ ...form, description: e.target.value })}
-                            // onFocus={() => setIsInputTransferIdFocused(true)}
-                            // onBlur={() => setIsInputTransferIdFocused(false)}
                             className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                               isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                             }`}
@@ -544,8 +506,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                             placeholder="Id de el reembolso"
                             value={form.transfer_id}
                             onChange={(e) => setForm({ ...form, transfer_id: e.target.value })}
-                            // onFocus={() => setIsInputTransferIdFocused(true)}
-                            // onBlur={() => setIsInputTransferIdFocused(false)}
                             className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                               isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                             }`}
@@ -560,8 +520,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                             placeholder="Monto transferido"
                             value={form.amount}
                             onChange={(e) => setForm({ ...form, amount: e.target.value })}
-                            // onFocus={() => setIsInputTransferIdFocused(true)}
-                            // onBlur={() => setIsInputTransferIdFocused(false)}
                             className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                               isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                             }`}
@@ -645,7 +603,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
           )}
         </div>
 
-        {/* Status indicator */}
         <div
           className={`h-1.5 w-full transition-all duration-500 ${
             discrepancy === true
@@ -661,7 +618,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
         ></div>
       </section>
 
-      {/* Confirm Discrepancy Dialog */}
       <Dialog open={showConfirmDiscrepancyDialog} onOpenChange={setShowConfirmDiscrepancyDialog}>
         <DialogContent className="border border-gray-300 bg-white text-gray-800 transition-all duration-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
           <DialogHeader>
@@ -697,7 +653,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
         </DialogContent>
       </Dialog>
 
-      {/* Success Discrepancy Dialog */}
       <Dialog open={showSuccessDiscrepancyDialog} onOpenChange={setShowSuccessDiscrepancyDialog}>
         <DialogContent className="border border-gray-300 bg-white text-gray-800 transition-all duration-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
           <DialogHeader>
@@ -712,7 +667,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
         </DialogContent>
       </Dialog>
 
-      {/* Confirm Resolution Dialog */}
       <Dialog open={showConfirmResolutionDialog} onOpenChange={setShowConfirmResolutionDialog}>
         <DialogContent className="border border-gray-300 bg-white text-gray-800 transition-all duration-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
           <DialogHeader>
@@ -748,7 +702,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
         </DialogContent>
       </Dialog>
 
-      {/* Modal de error  */}
       {modalServidor && <ServerErrorModal isOpen={modalServidor} onClose={() => setModalServidor(false)} />}
 
       <Dialog open={showConfirmRefund} onOpenChange={setShowConfirmRefund}>
@@ -780,7 +733,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
         </DialogContent>
       </Dialog>
 
-      {/* Success Resolution Dialog */}
       <Dialog open={showSuccessResolutionDialog} onOpenChange={setShowSuccessResolutionDialog}>
         <DialogContent className="border border-gray-300 bg-white text-gray-800 transition-all duration-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
           <DialogHeader>

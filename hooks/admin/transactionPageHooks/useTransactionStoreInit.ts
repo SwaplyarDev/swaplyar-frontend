@@ -20,9 +20,6 @@ interface UseTransactionStoreInitProps {
   regretCancel: RegretTypeSingle | null;
 }
 
-/**
- * Hook para inicializar el store de transacciones con datos del servidor
- */
 export function useTransactionStoreInit({
   initialTransaction,
   initialStatus,
@@ -31,7 +28,6 @@ export function useTransactionStoreInit({
   noteEdit,
   regretCancel,
 }: UseTransactionStoreInitProps) {
-  // Initialize store with server data on mount
   useEffect(() => {
     useTransactionStore.setState({
       trans: initialTransaction,

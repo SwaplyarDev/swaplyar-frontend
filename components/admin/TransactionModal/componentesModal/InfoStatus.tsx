@@ -17,7 +17,6 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
   const { data: session } = useSession();
   const userName = session?.user?.fullName;
 
-  // Format date with better localization
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
@@ -27,7 +26,6 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
     }
   };
 
-  // Get status badge based on current status
   const getStatusBadge = (status: string) => {
     const statusConfig = {
       '1': {

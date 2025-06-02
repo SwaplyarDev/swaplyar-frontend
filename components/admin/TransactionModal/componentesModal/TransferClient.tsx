@@ -28,7 +28,6 @@ import { uploadTransactionReceipt } from '@/actions/transactions/admin-transacti
 import { useSession } from 'next-auth/react';
 import ModalEditReciever from './ModalEditReciever/ModalEditReciever';
 import { useTransactionStore } from '@/store/transactionModalStorage';
-import { set } from 'date-fns';
 import ServerErrorModal from '../../ModalErrorServidor/ModalErrorSevidor';
 
 interface Form {
@@ -138,11 +137,6 @@ const TransferClient = () => {
 
   const handleSubmitRejection = async () => {
     if (!rejectionReason.trim()) {
-      /*   toast({
-          title: "Campo requerido",
-          description: "Por favor ingresa el motivo del rechazo",
-          variant: "destructive",
-        }) */
       try {
         const response = await updateTransactionStatus('rejected', transId, {
           descripcion: rejectionReason,
@@ -170,12 +164,6 @@ const TransferClient = () => {
       console.log('Error al rechazar la transacción:', error);
       setIsLoading(false);
       setShowConfirmDialog(false);
-
-      /* toast({
-        title: "Error",
-        description: "Ocurrió un error al procesar la solicitud. Por favor intenta nuevamente.",
-        variant: "destructive",
-      }) */
     }
   };
 
@@ -245,7 +233,6 @@ const TransferClient = () => {
     }
   };
 
-  // Update parent state when dialog changes
   const handleOpenChange = (open: boolean) => {
     setOpen(open);
     setModal(open);
@@ -256,7 +243,6 @@ const TransferClient = () => {
         <h2 className="text-lg font-medium text-gray-800">Información de la Transferencia al Cliente</h2>
         <p className="text-sm text-gray-500">¿La transferencia fue realizada al cliente?</p>
 
-        {/* Transfer question */}
         <div className="flex flex-col items-center gap-3">
           <div className="mb-4 mt-2 flex w-full gap-4">
             <TooltipProvider delayDuration={300}>
@@ -322,7 +308,6 @@ const TransferClient = () => {
           </div>
         </div>
 
-        {/* Conditional form fields */}
         {selected === true ? (
           <div className="animate-in fade-in grid grid-cols-1 gap-4 duration-300">
             <div className="space-y-2">
@@ -334,8 +319,6 @@ const TransferClient = () => {
                   placeholder="Ingresa el ID de la transferencia"
                   value={form.transfer_id}
                   onChange={handleInputChange}
-                  // onFocus={() => setIsInputTransferIdFocused(true)}
-                  // onBlur={() => setIsInputTransferIdFocused(false)}
                   className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                     isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                   }`}
@@ -353,8 +336,6 @@ const TransferClient = () => {
                   placeholder="Monto a trasnferir"
                   value={form.amount}
                   onChange={handleInputChange}
-                  // onFocus={() => setIsInputTransferIdFocused(true)}
-                  // onBlur={() => setIsInputTransferIdFocused(false)}
                   className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                     isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                   }`}
@@ -461,8 +442,6 @@ const TransferClient = () => {
                       placeholder="Id de el reembolso"
                       value={formRefund.transfer_id}
                       onChange={(e) => setFormRefund({ ...formRefund, transfer_id: e.target.value })}
-                      // onFocus={() => setIsInputTransferIdFocused(true)}
-                      // onBlur={() => setIsInputTransferIdFocused(false)}
                       className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                         isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                       }`}
@@ -477,8 +456,6 @@ const TransferClient = () => {
                       placeholder="Monto transferido"
                       value={formRefund.amount}
                       onChange={(e) => setFormRefund({ ...formRefund, amount: e.target.value })}
-                      // onFocus={() => setIsInputTransferIdFocused(true)}
-                      // onBlur={() => setIsInputTransferIdFocused(false)}
                       className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                         isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                       }`}
@@ -565,7 +542,6 @@ const TransferClient = () => {
 
         {modalServer && <ServerErrorModal isOpen={modalServer} onClose={() => setModalServer(false)} />}
 
-        {/* Confirmation Dialog */}
         <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
           <DialogContent className="border border-gray-200 bg-white transition-all duration-300 dark:border-gray-700 dark:bg-gray-800/95">
             <DialogHeader>
@@ -630,7 +606,6 @@ const TransferClient = () => {
           </DialogContent>
         </Dialog>
 
-        {/* Confirmation Refund Dialog */}
         <Dialog open={showConfirmRefund} onOpenChange={setShowConfirmRefund}>
           <DialogContent className="border border-gray-200 bg-white transition-all duration-300 dark:border-gray-700 dark:bg-gray-800/95">
             <DialogHeader>

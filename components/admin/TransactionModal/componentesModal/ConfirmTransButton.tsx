@@ -36,19 +36,17 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isHovering, setIsHovering] = useState<string | null>(null);
 
-  // Modal states
   const [showValidationModal, setShowValidationModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showResultModal, setShowResultModal] = useState(false);
   const [isSubmitting, setIsSubmittingLocal] = useState(false);
   const [submitResult, setSubmitResult] = useState<boolean | null>(null);
-  // Añadir un nuevo estado para el mensaje de error
+
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   const sendButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    // Sincronizar el estado local con el prop value cuando cambie
     setSelected(value);
   }, [value]);
 
@@ -109,7 +107,6 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
     setSelected(newValue);
   };
 
-  // Función para obtener el icono según la variante
   const getIcon = (variant: 'success' | 'error' | 'warning' | 'default' = 'default') => {
     switch (variant) {
       case 'success':
@@ -230,7 +227,6 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
         )}
       </div>
 
-      {/* Modal de validación (campo requerido) */}
       <Dialog open={showValidationModal} onOpenChange={setShowValidationModal}>
         <DialogContent className="dark:border-gray-700 dark:bg-gray-800 sm:max-w-md">
           <DialogHeader>
@@ -253,7 +249,6 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
         </DialogContent>
       </Dialog>
 
-      {/* Modal de confirmación */}
       <Dialog open={showConfirmModal} onOpenChange={(open) => !isSubmitting && setShowConfirmModal(open)}>
         <DialogContent className="dark:border-gray-700 dark:bg-gray-800 sm:max-w-md">
           <DialogHeader>
@@ -287,7 +282,6 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
         </DialogContent>
       </Dialog>
 
-      {/* Modal de resultado */}
       <Dialog open={showResultModal} onOpenChange={handleResultModalClose}>
         <DialogContent className="dark:border-gray-700 dark:bg-gray-800 sm:max-w-md">
           <DialogHeader>

@@ -96,16 +96,12 @@ const TransactionModal = () => {
     [setComponentStates, setSelected],
   );
 
-  // Close the modal
   const handleClose = useCallback(() => {
     setIsVisible(false);
-    // Give time for the animation to complete before actually closing
     setTimeout(() => MySwal.close(), 300);
   }, []);
 
-  useEffect(() => {
-    // console.log('componentStates', componentStates);
-  }, [componentStates]);
+  useEffect(() => {}, [componentStates]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -123,7 +119,6 @@ const TransactionModal = () => {
 
     let payload = {};
 
-    // Preparar el payload según el estado
     switch (status) {
       case 'review_payment':
         payload = {
@@ -131,7 +126,6 @@ const TransactionModal = () => {
         };
         break;
       case 'approved':
-        // No se envía información adicional
         break;
       case 'discrepancy':
         payload = {
@@ -155,7 +149,6 @@ const TransactionModal = () => {
         break;
       case 'completed':
       case 'in_transit':
-        // No se requiere enviar información adicional
         break;
       default:
         break;
@@ -177,7 +170,6 @@ const TransactionModal = () => {
       const data = await response.json();
       setSubmitSuccess(true);
 
-      // Resetear el formulario después de un envío exitoso
       setTimeout(() => {
         setSubmitSuccess(false);
       }, 3000);
@@ -241,7 +233,6 @@ const TransactionModal = () => {
             </div>
           ) : null}
 
-          {/* Confirmar Transferencia */}
           <ConfirmTransButton
             value={componentStates.confirmTransButton}
             setValue={(value) => handleComponentStateChange('confirmTransButton', value)}

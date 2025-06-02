@@ -10,7 +10,6 @@ export default async function TransactionPage({ params }: { params: { id: string
 
   const transId = params.id;
 
-  // Fetch transaction data on the server using admin endpoint
   console.log('Fetching transaction with ID:', transId, ' page');
   const transaction = await getAdminTransactionById(transId);
 
@@ -18,11 +17,9 @@ export default async function TransactionPage({ params }: { params: { id: string
     return <div className="p-8 text-center">Transaction not found</div>;
   }
 
-  // Determinar el estado y los estados de componentes basados en la respuesta
   const status = transaction.status || 'pending';
   const componentStates = getComponentStatesFromStatus(transaction.status_id || '1');
 
-  // Fetch additional data if needed
   let noteEdit = null;
   let regretCancel = null;
 
@@ -35,7 +32,6 @@ export default async function TransactionPage({ params }: { params: { id: string
     regretCancel = regretResponse?.regret || null;
   }
 
-  // Pass all server-fetched data to the client component
   return (
     <TransactionPageClientComponent
       initialTransaction={transaction}

@@ -51,7 +51,6 @@ export default function TransactionPageClientComponent({
 
   const transId = initialTransaction.transaction.transaction_id;
 
-  // Usar hooks personalizados
   useTransactionStoreInit({
     initialTransaction,
     initialStatus,
@@ -89,7 +88,6 @@ export default function TransactionPageClientComponent({
 
           <div className="col-span-1">
             <div className="grid gap-4">
-              {/* Confirmar Transferencia */}
               <ConfirmTransButton
                 value={componentStates.confirmTransButton}
                 setValue={(value) => handleComponentStateChange('confirmTransButton', value)}
@@ -121,7 +119,6 @@ export default function TransactionPageClientComponent({
                     (componentStates.discrepancySection !== true || discrepancySend))) && (
                   <>
                     <ClientInformation />
-                    {/* <FinalSection transId={transId} /> */}
                   </>
                 )}
             </div>
