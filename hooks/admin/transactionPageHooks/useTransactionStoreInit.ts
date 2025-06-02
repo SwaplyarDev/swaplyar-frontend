@@ -44,6 +44,7 @@ export function useTransactionStoreInit({
         email: '',
         phone_number: '',
         status: '',
+        created_at: '',
       },
       status: initialStatus,
       componentStates: initialComponentStates,
