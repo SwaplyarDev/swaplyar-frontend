@@ -1,146 +1,201 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/Button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/Dialog';
-/* import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/Select" */
-import AddAccountForm from '@/components/wallets/add-account-form';
-import WalletCard from '@/components/wallets/wallet-card';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/Dialog';
+import AddAccountForm from '@/components/wallets/addAccountForm';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import WalletIcon from '@/components/wallets/walletIcon';
+import { deleteWalletAccount1, getMyWalletAccounts } from '@/actions/virtualWalletAccount/virtualWallets.action';
+import { useSession } from 'next-auth/react';
+import { mapWalletFromApi } from '@/utils/wallet/mapWalletFromApi';
+import { createHandleAccountAdd } from '@/utils/wallet/handleAccountAdded';
+import ReusableWalletCard from '@/components/wallets/walletCard';
+import { mapWalletDetails } from '@/utils/wallet/mapWalletDetails';
+import clsx from 'clsx';
+
+interface Wallet {
+  id: string;
+  type: string;
+  name: string;
+  identifier: string;
+  details: any[];
+}
 
 export default function VirtualWallets() {
+  const { data: session } = useSession();
+  const { isDark } = useDarkTheme();
+  const [walletType, setWalletType] = useState('');
   const [open, setOpen] = useState(false);
-  const [wallets, setWallets] = useState([
-    {
-      id: '1',
-      type: 'paypal',
-      name: 'PayPal',
-      identifier: 'ejemplo@ejemplo.com',
-      details: [
-        {
-          correo: 'ejemplo@ejemplo.com',
-          nombre: 'Juan Perez',
-        },
-        {
-          correo: 'ejemplo@ejemplo.com',
-          nombre: 'Juan Perez',
-        },
-      ],
-    },
-    {
-      id: '2',
-      type: 'transferencia',
-      name: 'Transferencia',
-      identifier: '1234567890',
-      details: [
-        {
-          cvu: '1234567890',
-          dni: '1234567890',
-          nombreBanco: 'Banco de ejemplo',
-          nombreUsuario: 'Juan Perez',
-        },
-      ],
-    },
-    {
-      id: '3',
-      type: 'tether',
-      name: 'Tether',
-      identifier: '1234567890',
-      details: [
-        {
-          direction: 'GJJHalsjdfjJOjjhsvdhfcssduhfHHON',
-          red: 'Tron (TRC20)',
-        },
-      ],
-    },
-  ]);
+  const [wallets, setWallets] = useState<Wallet[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const hasFetched = useRef(false);
 
   useEffect(() => {
+    const token = session?.accessToken;
+    if (!token || hasFetched.current) return;
     const fetchWallets = async () => {
       try {
         setLoading(true);
-        // Replace with your actual API endpoint
-        const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/wallets`);
+        const response = await getMyWalletAccounts(token);
+        const mapped = response.map(mapWalletFromApi);
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch wallets');
-        }
-
-        const data = await response.json();
-        setWallets(data);
-        setError(null);
+        setWallets(mapped);
+        hasFetched.current = true;
       } catch (err) {
         console.error('Error fetching wallets:', err);
-        /* setError("Error loading wallets. Please try again later.") */
+        setError('Error al cargar billeteras. Intenta más tarde.');
       } finally {
         setLoading(false);
       }
     };
 
     fetchWallets();
-  }, []);
+  }, [session]);
+
+  const handleAccountAdded = createHandleAccountAdd({
+    walletType,
+    token: session?.accessToken!,
+    setWallets,
+    setOpen,
+    session,
+  });
+
+  const orderedWallets = [...wallets].sort((a, b) => {
+    if (a.type !== b.type) return a.type.localeCompare(b.type);
+    return a.id.localeCompare(b.id);
+  });
+
+  const groupedWallets = orderedWallets.reduce(
+    (acc, wallet) => {
+      if (!acc[wallet.type]) acc[wallet.type] = [];
+      acc[wallet.type].push(wallet);
+      return acc;
+    },
+    {} as { [key: string]: Wallet[] },
+  );
+
+  const normalizeType = (type: string): string => {
+    switch (type.toLowerCase()) {
+      case 'virtual_bank':
+      case 'virtualbank':
+        return 'virtualBank';
+      case 'receiver_crypto':
+      case 'crypto':
+        return 'crypto';
+      case 'paypal':
+        return 'paypal';
+      case 'wise':
+        return 'wise';
+      case 'pix':
+        return 'pix';
+      case 'payoneer':
+        return 'payoneer';
+      case 'bank':
+      case 'banco':
+      case 'transferencia':
+        return 'bank';
+      default:
+        return type;
+    }
+  };
+
+  const handleDelete = async (accountId: string, typeAccount: string) => {
+    try {
+      const token = session?.accessToken;
+      if (!token) throw new Error('No hay token disponible');
+
+      const normalizedType = normalizeType(typeAccount);
+      await deleteWalletAccount1(accountId, token, normalizedType);
+
+      const updated = await getMyWalletAccounts(token);
+
+      setWallets(updated.map(mapWalletFromApi));
+    } catch (error) {
+      console.error('Error eliminando cuenta:', error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex min-h-[50vh] w-full items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-[#012A8E] dark:border-[#EBE7E0]"></div>
+      </div>
+    );
+  }
 
   return (
-    <div className="mx-auto mb-24 mt-8 w-full max-w-[1000px] rounded-xl p-6 sm:my-6">
-      <div className="mb-8 flex flex-col items-center gap-4">
-        <h1 className="text-center text-3xl font-bold text-gray-800 dark:text-white">
-          Cuentas de Billeteras Virtuales
-        </h1>
+    <section className="mx-auto mb-24 mt-20 w-full max-w-[1366px] px-4 sm:px-6 md:px-10 lg:px-14 xl:px-16">
+      <div className="mb-8 flex flex-col gap-4">
+        <div className="mb-4">
+          <h1 className="text-start text-4xl font-bold text-gray-800 dark:text-darkText">
+            Cuentas de Billeteras Virtuales
+          </h1>
+        </div>
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button className="rounded-md bg-[#012d8a] px-6 py-2 text-white">Añadir Cuenta</Button>
-          </DialogTrigger>
-          <DialogContent className="dark:border-[#373737] dark:bg-[#4B4B4B] sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle className="text-center text-xl dark:text-white">Datos de la Cuenta</DialogTitle>
-              <DialogDescription className="text-center text-gray-500 dark:text-white">
-                Complete los datos para agregar una nueva cuenta
-              </DialogDescription>
-            </DialogHeader>
-            <AddAccountForm />
-            <DialogFooter className="flex sm:justify-between">
-              <Button variant="outline" onClick={() => setOpen(false)} className="flex items-center gap-2">
-                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M6.85355 3.14645C7.04882 3.34171 7.04882 3.65829 6.85355 3.85355L3.70711 7H12.5C12.7761 7 13 7.22386 13 7.5C13 7.77614 12.7761 8 12.5 8H3.70711L6.85355 11.1464C7.04882 11.3417 7.04882 11.6583 6.85355 11.8536C6.65829 12.0488 6.34171 12.0488 6.14645 11.8536L2.14645 7.85355C1.95118 7.65829 1.95118 7.34171 2.14645 7.14645L6.14645 3.14645C6.34171 2.95118 6.65829 2.95118 6.85355 3.14645Z"
-                    fill="currentColor"
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-                Volver
+          <div className="mb-6 flex w-full justify-end px-2 sm:justify-end sm:px-0">
+            <DialogTrigger asChild>
+              <Button
+                className={`${
+                  isDark
+                    ? 'bg-[#EBE7E0] text-black ring-offset-black hover:dark:ring-[#EBE7E0]'
+                    : 'bg-[#012A8E] text-white hover:ring-[#012A8E]'
+                } rounded-full px-8 py-4 text-xl font-semibold hover:ring-2 hover:ring-offset-2`}
+              >
+                Añadir Cuenta
               </Button>
-              <Button type="submit" className="bg-[#012d8a] px-8 text-white">
-                Agregar
-              </Button>
-            </DialogFooter>
+            </DialogTrigger>
+          </div>
+          <DialogContent
+            className={clsx(
+              'mx-auto flex h-[580px] w-[90%] max-w-md flex-col rounded-2xl p-0',
+              isDark ? 'dark:border-[#373737] dark:bg-[#4B4B4B]' : 'bg-white',
+            )}
+          >
+            <AddAccountForm
+              onSubmitData={handleAccountAdded}
+              walletType={walletType}
+              setWalletType={setWalletType}
+              isOpen={open}
+              setOpen={setOpen}
+            />
           </DialogContent>
         </Dialog>
       </div>
-
       <div className="space-y-5">
-        {loading ? (
-          <div className="flex justify-center py-10">
-            <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-blue-600"></div>
-          </div>
-        ) : error ? (
+        {error ? (
           <div className="py-10 text-center text-red-500">{error}</div>
         ) : wallets.length === 0 ? (
           <div className="py-10 text-center text-gray-500">No hay billeteras disponibles</div>
         ) : (
-          wallets.map((wallet, index) => <WalletCard key={index} wallet={wallet} />)
+          Object.entries(groupedWallets).map(([type, group]) => (
+            <div
+              key={type}
+              className="mx-auto w-full items-center rounded-3xl border bg-[#FFFFFB] py-4 shadow-lg dark:border-gray-700 dark:bg-[#4B4B4B]"
+            >
+              <div className="flex items-center justify-between sm:mb-6">
+                <WalletIcon type={type} />
+              </div>
+              <div className="space-y-6 bg-[#FFFFFB] dark:bg-[#4B4B4B]">
+                {group.map((wallet, index) => (
+                  <div key={wallet.id}>
+                    <ReusableWalletCard
+                      accountId={wallet.id}
+                      details={mapWalletDetails(wallet)}
+                      type={wallet.type}
+                      onDelete={(accountId, typeAccount) => handleDelete(accountId, typeAccount)}
+                    />
+                    {index !== group.length - 1 && (
+                      <hr className="mx-auto mt-6 h-0 w-full max-w-[80%] border-t-2 border-[#012ABE] dark:border-[#EBE7E0]" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))
         )}
       </div>
-    </div>
+    </section>
   );
 }

@@ -17,7 +17,6 @@ const ButtonBack: React.FC<ButtonBackProps> = ({
   cancel = false,
 }) => {
   const router = useRouter();
-
   return (
     <button
       type="button"
