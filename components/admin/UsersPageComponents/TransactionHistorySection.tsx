@@ -11,7 +11,6 @@ export function TransactionHistorySection() {
     setIsExpanded(!isExpanded);
   };
 
-  // Mock transaction data
   const transactionGroups = [
     {
       title: 'Hoy',
@@ -70,7 +69,6 @@ export function TransactionHistorySection() {
     },
   ];
 
-  // Filter transactions based on search query
   const filteredTransactionGroups = transactionGroups
     .map((group) => ({
       ...group,
@@ -104,7 +102,6 @@ export function TransactionHistorySection() {
           isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        {/* Search */}
         <div className="mb-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
@@ -117,8 +114,6 @@ export function TransactionHistorySection() {
             />
           </div>
         </div>
-
-        {/* Transactions List */}
         <div className="scrollable-list mb-4 max-h-[500px] divide-y overflow-y-auto rounded-lg border scrollbar dark:divide-gray-700 dark:border-gray-700">
           {filteredTransactionGroups.length > 0 ? (
             filteredTransactionGroups.map((group, groupIndex) => (

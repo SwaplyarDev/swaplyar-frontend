@@ -3,7 +3,6 @@ import { CreditCard } from 'lucide-react';
 export function TransactionHistory() {
   return (
     <div className="divide-y">
-      {/* Today */}
       <div className="bg-gray-50 p-3">
         <h3 className="text-sm font-medium text-gray-500">Hoy</h3>
       </div>
@@ -40,7 +39,6 @@ export function TransactionHistory() {
         </div>
       </div>
 
-      {/* Yesterday */}
       <div className="bg-gray-50 p-3">
         <h3 className="text-sm font-medium text-gray-500">Ayer</h3>
       </div>
@@ -77,7 +75,6 @@ export function TransactionHistory() {
         </div>
       </div>
 
-      {/* Last Week */}
       <div className="bg-gray-50 p-3">
         <h3 className="text-sm font-medium text-gray-500">Semana pasada</h3>
       </div>

@@ -35,10 +35,6 @@ export function UserDocumentSection({ user }: UserDocumentSectionProps) {
 
   const handleSaveUserData = (userData: Partial<UserType>) => {
     console.log('Datos del usuario guardados:', userData);
-    // Aquí implementarías la lógica para guardar los datos
-    // Por ejemplo, una llamada a la API
-
-    // Simulación de éxito
     setTimeout(() => {
       setIsVerified(true);
     }, 1000);

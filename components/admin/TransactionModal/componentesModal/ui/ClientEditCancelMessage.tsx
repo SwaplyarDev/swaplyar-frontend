@@ -1,7 +1,5 @@
-import { format } from 'date-fns';
-import { CancelIcon, EditIcon } from './MessageIcons';
-import { fetchTransactionById } from '../../../../../actions/editRequest/editRequest.action';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import { CancelIcon, EditIcon } from './MessageIcons';
 
 export enum ClientMessageType {
   Edit = 'edit',
@@ -11,14 +9,13 @@ export enum ClientMessageType {
 type ClientEditCancelMessageProps = {
   type: ClientMessageType | null;
   message?: string;
+  createdAt?: string;
 };
 
-const ClientEditCancelMessage = ({ type, message }: ClientEditCancelMessageProps) => {
+const ClientEditCancelMessage = ({ type, message, createdAt }: ClientEditCancelMessageProps) => {
   const { isDark } = useDarkTheme();
 
   if (!type) return <></>;
-
-  const formatted = format(Date.now(), 'yyyy-MM-dd HH:mm');
 
   return (
     <div
@@ -31,21 +28,21 @@ const ClientEditCancelMessage = ({ type, message }: ClientEditCancelMessageProps
         </div>
         <div className="ml-4 w-full">
           <div className="flex justify-between gap-32">
-            <p className="text-base font-medium">
+            <p className="text-base font-medium dark:text-gray-700">
               El cliente solicitó {type === ClientMessageType.Edit ? 'editar' : 'cancelar'} la solicitud
             </p>
 
             <div className="flex flex-col items-end text-xs text-[#646464]">
               Fecha
-              <p className="text-xs text-[#646464]">{formatted}</p>
+              <p className="text-xs text-[#646464]">{createdAt}</p>
             </div>
           </div>
           <div className="">
-            <span className="text-[10px]">Mensaje</span>
+            <span className="text-[10px] dark:text-gray-700">Mensaje</span>
             <div
               className={`border ${type === ClientMessageType.Edit ? 'border-[#FF6200]' : 'border-[#CE1818]'} h-[59px] rounded-2xl`}
             >
-              <p className="font-weight-light p-2 text-base">{message}</p>
+              <p className="font-weight-light p-2 text-base dark:text-gray-700">{message}</p>
             </div>
           </div>
         </div>

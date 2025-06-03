@@ -19,6 +19,10 @@ import { AlertTitle } from '@mui/material';
 import { Alert, AlertDescription } from '@/components/ui/Alert';
 import { useSession } from 'next-auth/react';
 import MessageWpp from './ui/MessageWpp';
+import { Dialog } from '@radix-ui/react-dialog';
+import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/Dialog';
+import ServerErrorModal from '../../ModalErrorServidor/ModalErrorSevidor';
+import clsx from 'clsx';
 
 interface AprobarRechazarProps {
   selected: 'stop' | 'accepted' | 'canceled' | null;
@@ -35,8 +39,6 @@ interface AprobarRechazarProps {
   setDiscrepancySend: (value: boolean) => void;
 }
 
-// const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
 const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
   selected,
   onSelectChange,
@@ -50,83 +52,49 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isHovering, setIsHovering] = useState<string | null>(null);
 
-  // Automatically select 'canceled' if confirmTransButton is false
+  const [openModalReject, setOpenModalReject] = useState(false);
+  const [openModalRejectResponse, setOpenModalRejectResponse] = useState(false);
+  const [modalServidor, setModalServidor] = useState(true);
+
   useEffect(() => {
     if (componentStates.confirmTransButton === false && selected !== 'canceled') {
       onSelectChange('canceled');
     }
   }, [componentStates.confirmTransButton, selected, onSelectChange]);
 
-  const handleSubmitRejection = async () => {
-    if (!rejectionReason.trim()) {
-      /* @ts-expect-error */
-      Swal.fire({
-        title: 'Campo requerido',
-        text: 'Por favor ingresa el motivo del rechazo',
-        icon: 'warning',
-        iconColor: '#D75600',
-        confirmButtonColor: 'rgb(1,42,142)',
-        background: '#FFFFFF',
-        customClass: {
-          title: 'text-gray-800 font-titleFont',
-          content: 'text-gray-700',
-        },
-      });
-      return;
-    }
+  const [loading, setLoading] = useState(false);
+  const [apiResponse, setApiResponse] = useState<any>('');
 
-    Swal.fire({
-      title: 'Confirmar rechazo',
-      html: `
-        <div class="flex flex-col items-center text-sm">
-          <p class="mb-2 text-gray-700 dark:text-gray-300">
-            ¿Estás seguro que deseas rechazar esta solicitud?
-          </p>
-          <div class="bg-gray-100 dark:bg-gray-700/30 p-3 rounded-lg w-full max-w-xs text-left">
-            <p class="font-medium text-gray-800 dark:text-gray-200 mb-1">Motivo:</p>
-            <p class="text-gray-700 dark:text-gray-300">${rejectionReason}</p>
-          </div>
-        </div>
-      `,
-      showCancelButton: true,
-      confirmButtonText: 'Confirmar rechazo',
-      cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#CE1818',
-      cancelButtonColor: '#64748b',
-      background: window.matchMedia('(prefers-color-scheme: dark)').matches ? '#1f2937' : '#FFFFFF',
-      color: window.matchMedia('(prefers-color-scheme: dark)').matches ? '#E5E7EB' : '#374151',
-      customClass: {
-        popup: 'dark:bg-gray-800 dark:text-gray-100 transition-all duration-300',
-        confirmButton: 'dark:bg-red-700 dark:hover:bg-red-800',
-        cancelButton: 'dark:bg-slate-600 dark:hover:bg-slate-700',
-      },
-      backdrop: true,
-      allowOutsideClick: true,
-      allowEscapeKey: true,
-      reverseButtons: true,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        acceptReject();
-      }
-    });
+  const handleSubmitRejection = async () => {
+    if (!rejectionReason.trim()) return;
+
+    try {
+      const response = await acceptReject();
+      setApiResponse(response);
+      setOpenModalReject(false);
+      setOpenModalRejectResponse(true);
+    } catch (error: any) {
+      console.error('Error al rechazar la transacción:', error);
+      setApiResponse(null);
+      setOpenModalReject(false);
+      setOpenModalRejectResponse(true);
+    }
   };
 
-  const acceptReject = async () => {
-    try {
-      console.log('rechazando transaccion', transId, { descripcion: rejectionReason });
-      const response = await TransactionService('canceled', transId, { descripcion: rejectionReason });
-      console.log(response);
-      return response;
-    } catch (error) {}
+ const acceptReject = async () => {
+    const response = await TransactionService('canceled', transId, {
+      descripcion: rejectionReason,
+    });
+    return response;
   };
 
   const getButtonClass = (type: 'accepted' | 'stop' | 'canceled') => {
     const isDisabled = !componentStates.confirmTransButton && type !== 'canceled';
     const baseClass =
-      'relative flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-medium transition-all duration-300';
+      'w-[150px] h-[40px] relative flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-medium transition-all duration-300';
 
     if (isDisabled) {
-      return `${baseClass} bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed`;
+      return `${baseClass}  bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed`;
     }
 
     switch (type) {
@@ -156,7 +124,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
       <div className="rounded-lg border bg-white p-4 shadow-sm transition-all duration-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800/90 dark:hover:bg-gray-800">
         <h3 className="text-lg font-semibold dark:text-white">Aprobar/Rechazar Solicitud</h3>
 
-        <div className="mt-2 flex flex-wrap gap-4">
+        <div className="mt-2 flex flex-wrap justify-between gap-4">
           <TooltipProvider delayDuration={300}>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -164,7 +132,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                   onClick={() => componentStates.confirmTransButton && onSelectChange('accepted')}
                   disabled={!componentStates.confirmTransButton}
                   variant="outline"
-                  className={getButtonClass('accepted')}
+                  className={clsx(getButtonClass('accepted'), 'rounded-3xl')}
                   aria-pressed={selected === 'accepted'}
                 >
                   <CheckCircle
@@ -186,7 +154,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                   onClick={() => componentStates.confirmTransButton && onSelectChange('stop')}
                   disabled={!componentStates.confirmTransButton}
                   variant="outline"
-                  className={getButtonClass('stop')}
+                  className={clsx(getButtonClass('stop'), 'rounded-3xl')}
                   aria-pressed={selected === 'stop'}
                 >
                   <AlertTriangle
@@ -207,7 +175,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                 <Button
                   onClick={() => onSelectChange('canceled')}
                   variant="outline"
-                  className={getButtonClass('canceled')}
+                  className={clsx(getButtonClass('canceled'), 'rounded-3xl')}
                   aria-pressed={selected === 'canceled'}
                 >
                   <XCircle
@@ -225,7 +193,6 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
           </TooltipProvider>
         </div>
 
-        {/* Rejection Section */}
         {(selected === 'canceled' || componentStates.confirmTransButton === false) && (
           <div className="animate-in fade-in mt-6 duration-300">
             <div className="space-y-3">
@@ -254,7 +221,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                 </div>
 
                 <Button
-                  onClick={() => handleSubmitRejection()}
+                  onClick={() => setOpenModalReject(true)}
                   className="h-11 bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20"
                   aria-label="Enviar ID de transferencia"
                 >
@@ -267,7 +234,6 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
           </div>
         )}
 
-        {/* Stop Section */}
         {selected === 'stop' && (
           <div className="animate-in fade-in mt-6 space-y-4 duration-300">
             <Alert className="border-l-4 border-l-amber-500 bg-amber-50 transition-all duration-300 hover:bg-amber-100 dark:border-l-amber-600 dark:bg-amber-900/20 dark:hover:bg-amber-900/30">
@@ -286,7 +252,6 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
           </div>
         )}
 
-        {/* Accepted Section */}
         {selected === 'accepted' && (
           <div className="animate-in fade-in mt-6 duration-300">
             <Alert className="border-l-4 border-l-green-500 bg-green-50 transition-all duration-300 hover:bg-green-100 dark:border-l-green-600 dark:bg-green-900/20 dark:hover:bg-green-900/30">
@@ -300,6 +265,43 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
           </div>
         )}
       </div>
+
+      <Dialog open={openModalReject} onOpenChange={setOpenModalReject}>
+        <DialogContent className="border border-gray-300 bg-white text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Enviar Rechazo</DialogTitle>
+          </DialogHeader>
+          <div className="mt-2 text-center">
+            <p className="text-gray-700 dark:text-gray-300">Estas seguro de enviar el motivo de rechazo?</p>
+          </div>
+          <DialogFooter className="mt-4 sm:justify-center">
+            <Button onClick={handleSubmitRejection} className="bg-red-600 text-white">
+              <span>Enviar</span>
+            </Button>
+            <Button className="text-white" onClick={() => setOpenModalReject(false)}>
+              <span>Cancelar</span>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={openModalRejectResponse} onOpenChange={setOpenModalRejectResponse}>
+        <DialogContent className="border border-gray-300 bg-white text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Resultado del Rechazo</DialogTitle>
+          </DialogHeader>
+          <div className="mt-2 text-center">
+            <p className="text-gray-700 dark:text-gray-300">
+              {apiResponse
+                ? apiResponse.newStatus.message
+                : 'Error del servidor, intente de nuevo en un momento. Si el error persiste contacte con el soporte.'}
+            </p>
+          </div>
+          <DialogFooter className="mt-4 sm:justify-center">
+            <Button onClick={() => setOpenModalRejectResponse(false)}>Cerrar</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
