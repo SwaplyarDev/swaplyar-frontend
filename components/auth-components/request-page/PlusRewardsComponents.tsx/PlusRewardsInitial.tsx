@@ -7,7 +7,6 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 // Actions
-import { getDiscounts } from '@/actions/Discounts/discounts.action';
 import { getUserStarsAndAmount } from '@/actions/Discounts/userStarsAndAmount.action';
 import { signOut } from 'next-auth/react';
 
@@ -23,6 +22,10 @@ import UserWinPlusReward from './UserWinPlusReward';
 import AmountTransactions from '../AmountTransactions';
 import UncompleteRewardText from './UncompleteRewardText';
 
+interface IProps {
+  discounts: IDiscountsObject | null;
+}
+
 interface IStarsAndAmount {
   data: {
     quantity: string;
@@ -30,10 +33,9 @@ interface IStarsAndAmount {
   };
 }
 
-export default function PlusRewardInitial() {
+export default function PlusRewardInitial({ discounts }: IProps) {
   const { data: session, status } = useSession();
 
-  const [discounts, setDiscounts] = useState<IDiscountsObject | null>(null);
   const [stars, setStars] = useState<number>(0);
   const [amountTransactions, setAmountTransactions] = useState<number>(0);
   const [errors, setErrors] = useState<string[]>([]);
@@ -41,17 +43,6 @@ export default function PlusRewardInitial() {
   useEffect(() => {
     async function getData() {
       if (!session?.accessToken) return;
-
-      try {
-        const discountsData = await getDiscounts(session.accessToken);
-        setDiscounts(discountsData);
-      } catch (error) {
-        console.error('Error al cargar los descuentos:', error);
-        setErrors((prevError) => {
-          const errorMessage = 'Error al cargar los descuentos.';
-          return prevError.includes(errorMessage) ? prevError : [...prevError, errorMessage];
-        });
-      }
 
       try {
         const starsAndAmountData: IStarsAndAmount = await getUserStarsAndAmount(session.accessToken);
