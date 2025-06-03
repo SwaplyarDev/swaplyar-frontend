@@ -1,5 +1,4 @@
 'use client';
-
 import { SwaplyArLogoComplete, SwaplyArLogoSolo, SwaplyArlogoWhite } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -15,20 +14,17 @@ import CuentasAsociadasIcon from '@/components/icons-internal/icons-desktop/Cuen
 import CentroDeAyudaIcon from '@/components/icons-internal/icons-desktop/CentroDeAyuda/CentroDeAyudaIcon';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import IconsTablet from '@/components/icons-internal/icons-tablet/IconsTablet';
-import { ActiveTab, NavIcons } from './NavIcons';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import PerfilIcon from '@/components/icons-internal/icons-desktop/perfil/PerfilIcon';
 import { signOut, useSession } from 'next-auth/react';
+import { ActiveTab, NavIcons } from './NavIcons';
 
-
-
-import NavSuperiorBarInternal from './NavSuperiorBarInternal';
-import NavInferiorBarInternal from './NavInferiorBarInternal';
-import { useSession } from 'next-auth/react';
 const NavbarInternal = () => {
-  const { data: session } = useSession();
-
+  const { isDark } = useDarkTheme();
+  const pathname = usePathname();
+  const [drawerMenu, setDrawerMenu] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
 
   const { data: session } = useSession();
 
@@ -96,6 +92,7 @@ const NavbarInternal = () => {
             <div onClick={() => setDrawerMenu(true)} className="hidden xs:block xs:pr-10 md:pr-0 lg:hidden">
               <GiHamburgerMenu className="size-8 text-white dark:text-black" />
             </div>
+            {/* Menu desplegable tablet */}
             {drawerMenu && (
               <Drawer
                 open={drawerMenu}
@@ -190,14 +187,6 @@ const NavbarInternal = () => {
             )}
           </div>
         </div>
-  if (!session) return false;
-
-  return (
-    <header className={`sticky top-0 z-40 h-[8.375rem] w-full`}>
-      <div className="mx-auto flex flex-col justify-center">
-        <NavSuperiorBarInternal />
-        <NavInferiorBarInternal />
-
       </div>
     </header>
   );
