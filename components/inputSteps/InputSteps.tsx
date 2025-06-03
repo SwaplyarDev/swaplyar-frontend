@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import { FieldError, UseFormRegister, UseFormWatch, RegisterOptions } from 'react-hook-form';
-import { formatTaxId } from '@/utils/formatedTaxId';
+import { formatCpf, formatTaxId } from '@/utils/formatedTaxId';
 
 interface InputStepsProps {
   label: string;
@@ -46,12 +46,19 @@ const InputSteps: React.FC<InputStepsProps> = ({
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const errorMessage = error?.message;
-
+  const [taxIdentificationType, setTaxIdentificationType] = useState<string>('DNI/CUIT/CUIL');
   const { onChange, ...restRegister } = register(name, rules);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const formattedValue = formatTaxId(event.target.value);
-    event.target.value = formattedValue;
+    if (id === 'tax_identification') {
+      const formattedValue = formatTaxId(event.target.value);
+
+      event.target.value = formattedValue;
+    } else if (id === 'individual_tax_id') {
+      const formattedValue = formatCpf(event.target.value);
+      event.target.value = formattedValue;
+    }
+
     onChange(event);
     if (onCustomChange) onCustomChange(event);
   };

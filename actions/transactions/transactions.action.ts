@@ -15,8 +15,6 @@ export const getAllTransactions = async (page: number, token: string) => {
       cache: 'no-store',
     });
 
-    console.log(response.status, response.ok);
-
     if (!response.ok) throw new Error('Failed to fetch transactions');
 
     const data: TransactionArray = await response.json();
@@ -30,7 +28,6 @@ export const getAllTransactions = async (page: number, token: string) => {
 
 export const getTransactionById = async (transaction_id: string, token: string) => {
   try {
-    console.log('transaction_id', transaction_id);
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/admin/transactions/${transaction_id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -42,7 +39,6 @@ export const getTransactionById = async (transaction_id: string, token: string) 
     const data: TransactionTypeSingle = await response.json();
     return data;
   } catch (error: any) {
-    console.log('getting transaction by id');
     console.error('Error fetching transactions:', error);
     return null;
   }
@@ -85,7 +81,6 @@ export const updateTransaction = async ({ transaction }: TransactionTypeSingle, 
 
 export const updateStatusClient = async (transactionId: any, status: any, token: string) => {
   try {
-    console.log('updated');
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus/${transactionId}`, {
       method: 'PUT',
       headers: {
@@ -95,12 +90,9 @@ export const updateStatusClient = async (transactionId: any, status: any, token:
       body: JSON.stringify({ status }),
     });
 
-    console.log('🔄 1status:', status);
-
     if (!response.ok) throw new Error('Failed to update transaction client');
 
     const data = await response.json();
-    console.log('📥 Respuesta del servidor:', data);
 
     return data; // Asegurar que siempre devuelve un objeto válido
   } catch (error) {
@@ -113,7 +105,6 @@ export const getStatusTransactionAdmin = async (transactionId: string) => {
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transaction_admin/${transactionId}`);
     const exist = response.status;
-    console.log('estado existe', exist);
 
     if (exist !== 404) {
       const data: TransactionAdminType = await response.json();
@@ -141,8 +132,6 @@ export const postStatusInAdmin = async (transactionId: string, status: string, t
       }),
     });
 
-    console.log('estado post', response.status);
-
     if (!response.ok) throw new Error('Failed to post transaction');
 
     return response.json();
@@ -154,7 +143,6 @@ export const postStatusInAdmin = async (transactionId: string, status: string, t
 
 export const updateStatusAdmin = async (transactionId: string, status: string, token: string) => {
   try {
-    console.log(transactionId, status);
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transaction_admin/${transactionId}`, {
       method: 'PUT',
       headers: {

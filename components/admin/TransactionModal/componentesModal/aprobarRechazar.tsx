@@ -81,7 +81,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
     }
   };
 
-  const acceptReject = async () => {
+ const acceptReject = async () => {
     const response = await TransactionService('canceled', transId, {
       descripcion: rejectionReason,
     });

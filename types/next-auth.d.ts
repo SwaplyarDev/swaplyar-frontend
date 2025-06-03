@@ -37,8 +37,25 @@ declare module 'next-auth' {
     isActive: boolean;
     isBanned?: boolean;
     createdAt: string;
-    category?: string | null;
-    ban?: string | null;
+    profile: Profile;
+    token: string;
+    social: Social[];
+    userVerification: string;
+  }
+
+  interface Profile {
+    firstName: string;
+    middleName: string;
+    lastName: string;
+    email: string;
+    identification: string;
+    phone: string;
+    birthDate: string;
+    age: string;
+    gender: string;
+    profilePictureUrl: string;
+    locationId: string;
+    lastActivity: string;
   }
 
   interface Social {

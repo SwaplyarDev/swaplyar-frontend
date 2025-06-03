@@ -1,69 +1,156 @@
-import Image from 'next/image';
-import { VerifyButton } from '../VerifyButton';
+'use client';
+// Images
 import { ImagePlusRewards } from '../ImagePlusRewards';
 
-function PlusRewardInitial() {
+// Hooks
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+
+// Actions
+import { getDiscounts } from '@/actions/Discounts/discounts.action';
+import { getUserStarsAndAmount } from '@/actions/Discounts/userStarsAndAmount.action';
+import { signOut } from 'next-auth/react';
+
+// Types
+import { IDiscountsObject } from '@/types/discounts/discounts';
+
+// Components
+import VerifyAccount from './VerifyAccount';
+import PopUpSessionExpire from './PopUpSessionExpire';
+import WelcomeReward from './WelcomeReward';
+import UserVerifiedWithoutTransactions from './UserVerifiedWithoutTransactions';
+import UserWinPlusReward from './UserWinPlusReward';
+import AmountTransactions from '../AmountTransactions';
+import UncompleteRewardText from './UncompleteRewardText';
+
+interface IStarsAndAmount {
+  data: {
+    quantity: string;
+    stars: string;
+  };
+}
+
+export default function PlusRewardInitial() {
+  const { isDark } = useDarkTheme();
+  const { data: session, status } = useSession();
+
+  const [discounts, setDiscounts] = useState<IDiscountsObject | null>(null);
+  const [stars, setStars] = useState<number>(0);
+  const [amountTransactions, setAmountTransactions] = useState<number>(0);
+  const [errors, setErrors] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function getData() {
+      if (!session?.accessToken) return;
+
+      try {
+        const discountsData = await getDiscounts(session.accessToken);
+        setDiscounts(discountsData);
+      } catch (error) {
+        console.error('Error al cargar los descuentos:', error);
+        setErrors((prevError) => {
+          const errorMessage = 'Error al cargar los descuentos.';
+          return prevError.includes(errorMessage) ? prevError : [...prevError, errorMessage];
+        });
+      }
+
+      try {
+        const starsAndAmountData: IStarsAndAmount = await getUserStarsAndAmount(session.accessToken);
+        setStars(Number(starsAndAmountData.data.stars));
+        setAmountTransactions(Number(starsAndAmountData.data.quantity));
+      } catch (error) {
+        console.error('Error al cargar las estrellas y montos de transacciones:', error);
+        setErrors((prevError) => {
+          const errorMessage = 'Error al cargar las estrellas y montos de transacciones.';
+          return prevError.includes(errorMessage) ? prevError : [...prevError, errorMessage];
+        });
+      }
+    }
+
+    getData();
+  }, [session]);
+
+  if (status === 'loading') {
+    return (
+      <div className="flex h-[331px] w-full animate-pulse items-center justify-center rounded-2xl bg-gray-200 lg:h-[623px]"></div>
+    );
+  }
+
+  // TODO: mostrar el popup, a los 5seg se hace un logout, cuando sale del popup tambien, o si acepta con un boton
+  // ! No se probó la funcionalidad del popup
+  if (!session || !session.accessToken) {
+    return <PopUpSessionExpire />;
+  }
+
+  if (errors.length > 0) {
+    return (
+      <div className="flex h-[331px] w-full flex-col items-center justify-center rounded-2xl bg-gray-100 p-5 lg:h-[623px]">
+        <p className="mb-3 text-base font-semibold xs-mini-phone2:text-lg">Ha ocurrido un error al cargar los datos:</p>
+        {errors.map((error, index) => (
+          <p key={index}>{error}</p>
+        ))}
+        <p className="my-3 text-base font-semibold xs-mini-phone2:text-lg">Por favor vuelva a iniciar sesión</p>
+        <button
+          className={`relative max-w-[280px] items-center justify-center rounded-3xl border ${
+            isDark ? 'border-darkText bg-darkText text-lightText' : 'border-buttonsLigth bg-buttonsLigth text-white'
+          } px-[34px] py-2 font-titleFont font-semibold transition-opacity hover:opacity-90`}
+          onClick={() => signOut()}
+        >
+          Cerrar sesión
+        </button>
+      </div>
+    );
+  }
+
+  const isUserVerified: null | true = session?.user.userVerification;
+
+  // Los descuentos vienen con un campo is_used, pero la api solo devuelve aquellos descuentos que no han sido usados
+  const userHave3Discount: undefined | boolean = discounts?.data.some((discount) => discount.discount === '3');
+  const userHave5Discount: undefined | boolean = discounts?.data.some((discount) => discount.discount === '5');
+
+  const haveEnoughStars: boolean = stars >= 5;
+  const haveEnoughAmount: boolean = amountTransactions >= 500;
+
   return (
     <section className="relative m-auto flex w-full max-w-7xl items-center">
-      <section className="mx-auto flex w-full max-w-md flex-col justify-center rounded-lg p-6 font-light text-lightText dark:text-custom-whiteD xs-mini-phone:p-7 xs-phone:p-8 md-phone:p-10 md:flex-row-reverse lg:flex-col">
-        <article className="flex flex-col justify-center xs-phone:mb-8 lg:justify-between">
-          <div className="ml-24 xs-mini-phone:w-64 xs-phone:w-48 md-phone:w-52 lg:ml-0 lg:w-64">
+      <section className="flex w-full flex-col justify-center rounded-lg font-light text-lightText dark:text-custom-whiteD xs-phone:p-8 md-phone:p-10 md:flex-row-reverse lg:flex-col">
+        <article className="flex flex-col justify-center xs:mx-auto xs:w-[388px] xs-phone:mb-8 lg:justify-between">
+          <div className="xs-mini-phone:w-64 xs-phone:w-48 md-phone:w-52 md:w-full lg:ml-0 lg:w-64">
             <ImagePlusRewards />
           </div>
+
           <article className="mb-5 text-end xs-phone:mb-6">
             <p className="align-text-top text-sm xs-mini-phone:text-base">Tu Código de Miembro:</p>
-            <h2 className="title text-3xl font-bold xs-mini-phone:text-[32px] xs-phone:text-[36px] md-phone:text-[40px]">
-              2448XPAR
-            </h2>
+            <p className="title text-3xl font-bold xs-mini-phone:text-[32px] xs-phone:text-[36px] md-phone:text-[40px]">
+              {session.user.id.toUpperCase()}
+            </p>
           </article>
         </article>
 
-        <div>
-          <article className="flex">
-            <p className="text-sm xs-mini-phone:text-base">
-              <span>La recompensa de </span>
-              <span className="whitespace-nowrap text-lg font-bold text-custom-blue-800 dark:text-custom-whiteD xs-phone:text-xl">
-                Bienvenida Express
-              </span>
-              <span className="whitespace-nowrap"> de </span>
-              <br></br>
-              <span className="titleFon align-sub text-xl font-bold text-custom-blue-800 dark:text-custom-whiteD xs-mini-phone:text-2xl xs-phone:text-3xl">
-                $3 USD
-              </span>
-              <span> se aplica automáticamente en tu</span>
-              <br></br>
-              <span className="whitespace-nowrap"> solicitud.</span>
-            </p>
-            <Image
-              src="/images/solicitud-image.png"
-              alt="Rewards Character"
-              width={395}
-              height={290}
-              className="object-cover xs-mini-phone:w-[220px] md-phone:w-[240px] lg:w-[260px]"
-            />
-          </article>
-
-          <article className="relative mb-6 rounded-lg p-2">
-            <div className="text-center">
-              <p className="font-bold xs-phone:text-lg">Aún no has verificado tu cuenta.</p>
-              <p className="whitespace-nowrap text-sm xs-mini-phone:text-base">
-                Veríficala ahora y obtén{' '}
-                <span className="whitespace-nowrap font-bold text-custom-blue-800 dark:text-custom-whiteD">
-                  $5 USD{' '}
-                </span>
-                adicionales
-                <br></br>
-                <span> en tu solicitud.</span>
-              </p>
+        {!isUserVerified ? (
+          userHave3Discount ? (
+            <div className="flex w-full flex-col items-center gap-[19px]">
+              <WelcomeReward />
+              <VerifyAccount />
             </div>
-            <div className="flex justify-center">
-              <VerifyButton />
-            </div>
-          </article>
-        </div>
+          ) : (
+            <VerifyAccount />
+          )
+        ) : userHave5Discount ? (
+          <div className="flex w-full flex-col items-center gap-9">
+            <UserVerifiedWithoutTransactions userHave3Discount={userHave3Discount} />
+            <AmountTransactions amountTotal={0} totalTransactions={0} />
+          </div>
+        ) : haveEnoughStars && haveEnoughAmount ? (
+          <UserWinPlusReward />
+        ) : (
+          <div className="flex w-full flex-col items-center gap-9">
+            <UncompleteRewardText stars={stars} quantity={amountTransactions} />
+            <AmountTransactions amountTotal={amountTransactions} totalTransactions={stars} />
+          </div>
+        )}
       </section>
     </section>
   );
 }
-
-export default PlusRewardInitial;

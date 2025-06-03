@@ -17,6 +17,10 @@ export const SwaplyArlogoWhite =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225363/SwaplyAr-Logo-White_yvdnvm.png';
 export const SwaplyArLogoSolo = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224752/logo-solo_dgx9c5.png';
 export const SwaplyArLogoComplete = 'https://res.cloudinary.com/df5jwzuq9/image/upload/v1722209853/logo_g74htq.png';
+export const SwaplyArLogoDarkTheme =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745505575/SwaplyArLogoDarkTheme_ihhfw4.png';
+export const SwaplyArLogoLightTheme =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745507783/SwaplyArLogoLightTheme_oc9zkn.png';
 
 /** Request **/
 export const FormularioDeSolicitud =
@@ -250,3 +254,36 @@ export const qrLight =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1741270782/48338805-QR_BYBIT_CLARO_wehfx8.png';
 export const qrDark =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1741270782/48235050-QR_BYBIT_OSCURO_hacxbp.png';
+
+// home images AmountTransactions component
+export const star = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745244113/Star_s1l0xg.png';
+export const yellowStar = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745244121/yellowStar_ikqrxq.svg';
+
+// home images PlusRewards component
+export const plusRewardsLight =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1746712147/solicitud-plus-rewards-light_rokqud.png';
+export const plusRewardsDark =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1746712147/solicitud-plus-rewards-dark_hfhbxr.png';
+export const solicitudImage =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1746712093/solicitud-image_kminsi.png';
+export const userWinReward =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1747917099/has-ganado-10-dolares_nccmfh.png';
+// Icons NavBarInternal
+export const icono_solicitud =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_solicitud_o3a6dt.svg';
+export const icono_ayuda = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_ayuda_ettkh1.svg';
+export const icono_cuentas = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_cuentas_auko6j.svg';
+export const icono_transacciones =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_transacciones_cmjchi.svg';
+export const icono_plus = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_plus_l4f41s.svg';
+
+// Icons Dark NavBarInternal
+export const iconoDark_solicitud =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336653/iconoDark_solicitud_uoqchg.svg';
+export const iconoDark_ayuda =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336652/iconoDark_ayuda_jwq0g1.svg';
+export const iconoDark_cuentas =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336652/iconoDark_cuentas_y17y8j.svg';
+export const iconoDark_transacciones =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336652/iconoDark_transacciones_eqkwvn.svg';
+export const iconoDark_plus = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336653/iconoDark_plus_rcetbk.svg';

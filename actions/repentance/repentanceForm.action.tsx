@@ -17,7 +17,6 @@ const transformData = (input: FormData): OutputFormat => {
 };
 
 export const createRegret = async (createRepentance: FormData) => {
-  console.log(createRepentance);
   if (!createRepentance.transaction_id || !createRepentance.last_name || !createRepentance.email) {
     throw new Error('Faltan campos requeridos en createRepentance');
   }

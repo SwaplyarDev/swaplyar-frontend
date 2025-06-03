@@ -1,5 +1,3 @@
-// /components/info/blog/blogDetail/CardContent.tsx
-
 'use client';
 
 import Image from 'next/image';
@@ -14,21 +12,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProgressBar from '@/components/ui/ProgressBar/ProgressBar';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { gifImage } from '@/utils/assets/img-database';
-
+import slugify from 'slugify';
+import { da } from 'date-fns/locale';
+import ButtonBack from '../ButtonBack/ButtonBack';
 // Funcion para evaluar si es un string
 function isString(value: unknown): value is string {
   return typeof value === 'string' || value instanceof String;
 }
 // Funcion para colocar texto en negrita
 // coloca en negrita a todo texto que este entre **
-export function highlightText(text: string) {
+export function highlightText(text: string, withId?: boolean) {
   if (isString(text)) {
     const parts = text.split(/(\*\*.*?\*\*)/);
     return (
       Array.isArray(parts) &&
       parts.map((part, i) =>
         part.startsWith('**') && part.endsWith('**') ? (
-          <span key={i} style={{ fontWeight: '700' }}>
+          <span
+            key={i}
+            style={{ fontWeight: '600' }}
+            id={withId ? slugify(part.slice(2, -2), { lower: true, strict: true }) : undefined}
+          >
             {part.slice(2, -2)}
           </span>
         ) : (
@@ -98,9 +102,8 @@ function CardContent(data: BlogPostCardProps) {
   const { isDark } = useDarkTheme();
   const [isLoaded, setIsLoaded] = useState(false);
   const [progress, setProgress] = useState(0);
-  console.log(data);
+  console.log('blogs', data);
   const [randomBlog, setRandomBlog] = useState<BlogPostCardProps | null>(null);
-  console.log(data);
 
   // Se convierte la informacion que me llega de la API en un formato que pueda ser utilizado como array
   const sideBar = parseContinuousTextToMenu(data.side_bar);
@@ -112,7 +115,7 @@ function CardContent(data: BlogPostCardProps) {
 
       const progressValue = Math.min((scrollTop / scrollHeight) * 100, 100);
 
-      setProgress((prev) => (prev >= 100 ? 100 : progressValue));
+      setProgress(progressValue);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -138,25 +141,54 @@ function CardContent(data: BlogPostCardProps) {
         setIsLoaded(false);
       }
     };
-
+    console.log(slugify('¿Qué es Payoneer?', { lower: true, strict: true }));
     fetchData();
   }, [data.blog_id]);
+  // Funcion para convertir fecha tipo AÑO-MES-DIA en DIA de MES del AÑO
+  function convertirFecha(date: string): string {
+    const [year, month, day] = date.split('-');
+
+    const months: { [key: string]: string } = {
+      '01': 'enero',
+      '02': 'febrero',
+      '03': 'marzo',
+      '04': 'abril',
+      '05': 'mayo',
+      '06': 'junio',
+      '07': 'julio',
+      '08': 'agosto',
+      '09': 'septiembre',
+      '10': 'octubre',
+      '11': 'noviembre',
+      '12': 'diciembre',
+    };
+
+    const monthName = months[month];
+
+    return `${day} de ${monthName} del ${year}`;
+  }
+
   return (
-    <>
+    <main className="font-textFont">
       <div className="sticky top-28 flex w-full flex-col items-center sm:top-36">
-        <div className="rounded-2xl border-2 border-buttonsLigth bg-custom-whiteD-100 p-2 dark:border-custom-whiteD-100">
+        <div className="rounded-2xl border-2 border-buttonsLigth bg-custom-whiteD-100 p-2 dark:border-white">
           <ProgressBar value={progress} width="300px" />
         </div>
       </div>
 
       <section className="m-auto mt-12 flex w-full max-w-[357px] flex-col overflow-x-hidden px-4 md:mt-12 md:max-w-[729px] lg:mt-0 lg:max-w-[1368px]">
-        <div className="ml-[200px] mt-[50px] hidden flex-col lg:flex lg:max-w-full">
-          <p className="">
-            {highlightText('El tiempo de lectura estimado para este artículo es de **4 a 5 minutos**')}
-          </p>
-          <div className="mt-[20px]">
-            <p>16 Noviembre 2024</p>
-            <p className={!isDark ? 'font-bold text-custom-blue' : 'font-bold text-custom-whiteD'}>SwaplyAr</p>
+        <div>
+          <ButtonBack />
+          <div className="ml-[200px] mt-[50px] hidden flex-col lg:flex lg:max-w-full">
+            <p className="">
+              {highlightText(
+                `El tiempo de lectura estimado para este artículo es de **${data.reading_time[0]} a ${data.reading_time[2]}** **minutos** `,
+              )}
+            </p>
+            <div className="mt-[20px]">
+              <p>{convertirFecha(data.date)} </p>
+              <p className={!isDark ? 'font-bold text-custom-blue' : 'font-bold text-custom-whiteD'}>SwaplyAr</p>
+            </div>
           </div>
         </div>
         <div className="mx-auto flex w-full flex-col justify-center gap-4 lg:flex-row">
@@ -164,12 +196,39 @@ function CardContent(data: BlogPostCardProps) {
             <h2 className="font-semibold">Contenido:</h2>
             <ul className="list-disc pl-5">
               {sideBar.map((item, index) => (
-                <li className="list-disc" key={index}>
+                <li
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const el = document.getElementById(slugify(item.title, { lower: true, strict: true }));
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                  style={{ cursor: 'pointer' }}
+                  className="list-disc"
+                  key={index}
+                >
                   {item.title}
+
                   {item.children && (
                     <ul>
                       {item.children.map((child, childIndex) => (
-                        <li className="list-disc" key={childIndex}>
+                        <li
+                          onClick={(e) => {
+                            e.preventDefault();
+                            const el = document.getElementById(slugify(child.title, { lower: true, strict: true }));
+                            if (el) {
+                              el.scrollIntoView({ behavior: 'smooth' });
+
+                              setTimeout(() => {
+                                window.scrollBy({ behavior: 'instant' });
+                              }, 300);
+                            }
+                          }}
+                          style={{ cursor: 'pointer' }}
+                          className="ml-5 list-disc"
+                          key={childIndex}
+                        >
                           {child.title}
                         </li>
                       ))}
@@ -201,22 +260,22 @@ function CardContent(data: BlogPostCardProps) {
               {Array.isArray(data.content_elements) &&
                 data.content_elements[0]?.content?.map((item: Content, index: number) => {
                   if (item.style?.style_name === 'normal') {
-                    return <p key={index}>{item.text}</p>;
+                    return <p key={index}>{highlightText(item.text as string)}</p>;
                   } else if (item.style?.style_name === 'subtitle') {
-                    return <h2 key={index}>{highlightText(item.text as string)}</h2>;
+                    return <h2 key={index}>{highlightText(item.text as string, true)}</h2>;
                   } else if (item.style?.style_name === 'ul') {
                     let list = parseContinuousTextToMenu(item.text as string);
                     return (
                       <ul key={index}>
                         {Array.isArray(list) &&
                           list.map((item, index) => (
-                            <li key={index} className="list-disc">
-                              {highlightText(item.title)}
+                            <li key={index} className="ml-5 list-disc">
+                              {highlightText(item.title, true)}
                               {item.children && (
                                 <ul key={index + 'ul'}>
                                   {item.children.map((child, childIndex) => (
-                                    <li className="list-disc" key={childIndex}>
-                                      {highlightText(child.title as string)}
+                                    <li className="ml-5 list-disc" key={childIndex}>
+                                      {highlightText(child.title as string, true)}
                                     </li>
                                   ))}
                                 </ul>
@@ -227,20 +286,21 @@ function CardContent(data: BlogPostCardProps) {
                     );
                   } else if (item?.style?.style_name === 'ol') {
                     let list = parseContinuousTextToMenu(item.text as string);
+                    console.log(list);
                     return (
                       <ol key={index}>
                         {Array.isArray(list) &&
                           list.map((item, index) => (
-                            <li key={index} className="list-decimal">
-                              {highlightText(item.title)}
+                            <li key={index} className="ml-5 list-decimal">
+                              {highlightText(item.title, true)}
                               {item.children && (
-                                <ol key={index + 'ol'}>
+                                <ul key={index + 'ol'}>
                                   {item.children.map((child, childIndex) => (
-                                    <li className="list-decimal" key={childIndex}>
-                                      {highlightText(child.title as string)}
+                                    <li className="ml-5 list-disc" key={childIndex}>
+                                      {highlightText(child.title as string, true)}
                                     </li>
                                   ))}
-                                </ol>
+                                </ul>
                               )}
                             </li>
                           ))}
@@ -300,7 +360,7 @@ function CardContent(data: BlogPostCardProps) {
           <div className="font-titleFont text-base font-semibold text-lightText">Suscribete</div>
         </div>
       </section>
-    </>
+    </main>
   );
 }
 

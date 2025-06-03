@@ -2,7 +2,7 @@
 
 import { auth } from '@/auth';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || '';
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 /**
  * Obtiene todas las transacciones para administradores

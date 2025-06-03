@@ -14,6 +14,7 @@ import { useStepperStore } from '@/store/stateStepperStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 import { systems } from '@/utils/dataCoins';
+import { validSendReceive } from '@/utils/currencyApis';
 
 export default function TransactionCalculator() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -37,11 +38,13 @@ export default function TransactionCalculator() {
   const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } = useSystemSelection();
   const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne, rateForOneBank } =
     useAmountCalculator();
-
+  const colorError = isDark ? 'text-[#f78a82]' : 'text-[#f44336]';
   const pathname = usePathname();
   const { pass } = useControlRouteRequestStore((state) => state);
   const { setPass } = useControlRouteRequestStore((state) => state);
-
+  const sendAmountNum = sendAmount ? parseFloat(sendAmount) : 0;
+  const receiveAmountNum = receiveAmount ? parseFloat(receiveAmount) : 0;
+  const { rates } = getExchangeRateStore.getState();
   useEffect(() => {
     if (!pass && pathname === '/es/inicio/formulario-de-solicitud') {
       router.push('/es/inicio');
@@ -61,7 +64,7 @@ export default function TransactionCalculator() {
       setIsProcessing(false);
     }, 3000);
   };
-
+  console.log('rate', rateForOne);
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
       <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight p-8 shadow-md dark:bg-calculatorDark dark:text-white sm:h-[623px] lg-tablet:min-w-[500px]">
@@ -116,103 +119,64 @@ export default function TransactionCalculator() {
             label={`Recibes ${selectedReceivingSystem?.coin}`}
             isSending={false}
           />
-          {sendAmount === '' ? (
-            ''
-          ) : (
-            <div
-              className={clsx(
-                (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
-                  (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
-                  (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
-                  (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50) ||
-                  parseInt(receiveAmount) < 10 ||
-                  parseInt(sendAmount) < 10
-                  ? 'mb-4 mt-4'
-                  : 'hidden',
-              )}
-            >
-              {selectedSendingSystem?.id === 'payoneer_usd' || selectedSendingSystem?.id === 'payoneer_eur' ? (
-                <>
-                  <p
-                    className={clsx(
-                      (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
-                        (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50)
-                        ? 'block'
-                        : 'hidden',
-                      'text-[#f44336]',
-                    )}
-                  >
-                    La transferencia mínima es de 50 USD en Payoneer
+          <div className="flex min-h-[40px] w-full items-end justify-center">
+            {sendAmount === '' ? null : (
+              <div
+                className={clsx(
+                  !validSendReceive(
+                    sendAmountNum,
+                    selectedSendingSystem?.id ?? '',
+                    receiveAmountNum,
+                    selectedReceivingSystem?.id ?? '',
+                  )
+                    ? 'block'
+                    : 'hidden',
+                )}
+              >
+                {(!validSendReceive(
+                  sendAmountNum,
+                  selectedSendingSystem?.id ?? '',
+                  receiveAmountNum,
+                  selectedReceivingSystem?.id ?? '',
+                ) &&
+                  selectedReceivingSystem?.id === 'payoneer_usd') ||
+                selectedReceivingSystem?.id === 'payoneer_eur' ? (
+                  <p className={`p-1 text-sm ${colorError}`}>
+                    El monto minimo a recibir en Payoneer es de 50 {selectedReceivingSystem.coin}
                   </p>
-                  <p
-                    className={clsx(
-                      (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
-                        (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
-                        ? 'block'
-                        : 'hidden',
-                      'text-[#f44336]',
-                    )}
-                  >
-                    La transferencia mínima es de 50 EUR en Payoneer
+                ) : selectedSendingSystem?.id === 'payoneer_usd' || selectedSendingSystem?.id === 'payoneer_eur' ? (
+                  <p className={`p-1 text-sm ${colorError}`}>
+                    El monto minimo a enviar en Payoneer es de 50 {selectedSendingSystem.coin}
                   </p>
-                </>
-              ) : (
-                <p
-                  className={clsx(
-                    parseInt(receiveAmount) < 10 || parseInt(sendAmount) < 10 ? 'block' : 'hidden',
-                    'text-[#f44336]',
-                  )}
-                >
-                  La transferencia mínima es de 10 USD
-                </p>
-              )}
-            </div>
-          )}
+                ) : (
+                  <p className={`p-1 text-sm ${colorError}`}>El monto minimo a enviar es de 10 USD</p>
+                )}
+              </div>
+            )}
+          </div>
+
           {isProcessing ? (
-            <div className="mt-8">
+            <div className="mt-4">
               <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="44px" />
             </div>
           ) : (
             <button
               className={clsx(
-                isDark
-                  ? {
-                      buttonSecondDark: !(
-                        isProcessing ||
-                        sendAmount === '' ||
-                        parseInt(sendAmount) < 10 ||
-                        parseInt(receiveAmount) < 10 ||
-                        (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
-                        (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
-                        (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
-                        (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
-                      ),
-                    }
-                  : {
-                      buttonSecond: !(
-                        isProcessing ||
-                        sendAmount === '' ||
-                        parseInt(sendAmount) < 10 ||
-                        parseInt(receiveAmount) < 10 ||
-                        (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
-                        (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
-                        (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
-                        (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
-                      ),
-                    },
-                sendAmount === '' ? 'mt-14' : '',
+                isDark ? 'buttonSecondDark' : 'buttonSecond',
                 'w-full max-w-[340px] rounded-full bg-custom-blue-800 px-[14px] py-3 font-titleFont text-base font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-custom-grayD dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD',
               )}
               onClick={handleSubmit}
               disabled={
                 isProcessing ||
                 sendAmount === '' ||
-                parseInt(sendAmount) < 10 ||
-                parseInt(receiveAmount) < 10 ||
-                (selectedSendingSystem?.id === 'payoneer_usd' && parseInt(sendAmount) < 50) ||
-                (selectedSendingSystem?.id === 'payoneer_eur' && parseInt(sendAmount) < 50) ||
-                (selectedReceivingSystem?.id === 'payoneer_usd' && parseInt(receiveAmount) < 50) ||
-                (selectedReceivingSystem?.id === 'payoneer_eur' && parseInt(receiveAmount) < 50)
+                isNaN(sendAmountNum) ||
+                isNaN(receiveAmountNum) ||
+                !validSendReceive(
+                  sendAmountNum,
+                  selectedSendingSystem?.id ?? '',
+                  receiveAmountNum,
+                  selectedReceivingSystem?.id ?? '',
+                )
               }
             >
               Procesar pago
