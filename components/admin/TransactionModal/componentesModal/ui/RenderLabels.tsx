@@ -41,9 +41,9 @@ export const getReceiverLabels = (transaction: TransactionTypeSingle) => {
 };
 
 export const renderLabels = (label: string, text: string, text2?: string, text3?: string, key?: number) => (
-  <article key={key || 0} className="flex w-full justify-between rounded-lg bg-gray-100 p-3 dark:bg-gray-800">
+  <article key={key || 0} className="flex w-full justify-between rounded-lg bg-transparent p-3">
     <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">{label}</p>
-    <p className="text-base text-gray-700 dark:text-white">
+    <p className="text-base text-black dark:text-white">
       {text} {text2} {text3}
     </p>
   </article>

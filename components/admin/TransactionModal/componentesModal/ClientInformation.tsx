@@ -48,8 +48,8 @@ const ClientInformation: React.FC = ({}) => {
             onClick={handleStopClick}
             className={
               select
-                ? 'bg-amber-500 text-white shadow-lg shadow-amber-200 dark:bg-amber-600 dark:shadow-amber-900/20'
-                : 'border-2 border-amber-500 bg-white text-gray-700 hover:bg-amber-50 dark:border-amber-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-amber-900/20'
+                ? 'h-[40px] w-[150px] rounded-3xl bg-amber-500 text-white shadow-lg shadow-amber-200 dark:bg-amber-600 dark:shadow-amber-900/20'
+                : 'h-[40px] w-[150px] rounded-3xl border-2 border-amber-500 bg-white text-gray-700 hover:bg-amber-50 dark:border-amber-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-amber-900/20'
             }
           >
             <AlertTriangle

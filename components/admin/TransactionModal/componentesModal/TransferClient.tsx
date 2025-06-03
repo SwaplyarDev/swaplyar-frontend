@@ -240,8 +240,7 @@ const TransferClient = () => {
   return (
     <>
       <div className="!mt-4">
-        <h2 className="text-lg font-medium text-gray-800">Información de la Transferencia al Cliente</h2>
-        <p className="text-sm text-gray-500">¿La transferencia fue realizada al cliente?</p>
+        <h2 className="text-lg font-medium text-gray-800">¿La transferencia fue realizada al cliente?</h2>
 
         <div className="flex flex-col items-center gap-3">
           <div className="mb-4 mt-2 flex w-full gap-4">
