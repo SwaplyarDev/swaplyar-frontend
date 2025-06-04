@@ -252,8 +252,8 @@ const TransferClient = () => {
                     variant="outline"
                     className={`${
                       selected === true
-                        ? 'bg-green-600 text-white shadow-lg shadow-green-200'
-                        : 'border border-gray-300 bg-white text-gray-700 hover:border-green-500 hover:text-green-600'
+                        ? 'h-[40px] w-[150px] rounded-3xl bg-green-600 text-white shadow-lg shadow-green-200'
+                        : 'h-[40px] w-[150px] rounded-3xl border border-gray-300 bg-white text-gray-700 hover:border-green-500 hover:text-green-600'
                     }`}
                   >
                     <CheckCircle className={`mr-2 h-5 w-5 ${selected === true ? 'text-white' : 'text-green-500'}`} />
@@ -272,8 +272,8 @@ const TransferClient = () => {
                     variant="outline"
                     className={`${
                       selected === false
-                        ? 'bg-red-600 text-white shadow-lg shadow-red-200'
-                        : 'border border-gray-300 bg-white text-gray-700 hover:border-red-500 hover:text-red-600'
+                        ? 'h-[40px] w-[150px] rounded-3xl bg-red-600 text-white shadow-lg shadow-red-200'
+                        : 'h-[40px] w-[150px] rounded-3xl border border-gray-300 bg-white text-gray-700 hover:border-red-500 hover:text-red-600'
                     }`}
                   >
                     <XCircle className={`mr-2 h-5 w-5 ${selected === false ? 'text-white' : 'text-red-500'}`} />
@@ -292,8 +292,8 @@ const TransferClient = () => {
                   variant="default"
                   className={
                     !selected
-                      ? 'bg-gradient-to-r from-amber-600 to-orange-700 transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 dark:from-amber-700 dark:to-orange-800 dark:hover:shadow-orange-900/20'
-                      : 'border-2 bg-transparent'
+                      ? 'h-[40px] rounded-3xl bg-gradient-to-r from-amber-600 to-orange-700 transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 dark:from-amber-700 dark:to-orange-800 dark:hover:shadow-orange-900/20'
+                      : 'h-[40px] rounded-3xl border-2 bg-transparent'
                   }
                 >
                   <Edit className={selected ? 'mr-2 h-4 w-4 text-[#AFAFAF]' : 'mr-2 h-4 w-4 text-white'} />
