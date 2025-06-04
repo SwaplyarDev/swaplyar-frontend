@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 
 import swaplyPlusRewards from '@/public/images/swaplyPlusRewards.png';
@@ -7,20 +9,33 @@ import { PlusRewards } from '@/app/es/(auth)/auth/plus-rewards/page';
 import CardPlusModal from './modals/CardPlusModal';
 import ModalVerify from './modals/ModalVerify';
 import AplicationStateContainer from '@/components/cardsPlusRewardsIntern/SwaplyPlusRewardsComponents/AplicationStateContainer';
-import { getPlusRewards } from '@/actions/plusRewards/plusRewards.actions';
-import { getSession, signIn, useSession } from 'next-auth/react';
+import {
+  getPlusRewards,
+  resendVerificationAfterRejection,
+  updateVerificationStatus,
+} from '@/actions/plusRewards/plusRewards.actions';
+import { getSession, signIn, signOut, useSession } from 'next-auth/react';
+
+declare module 'next-auth' {
+  interface Session {
+    verification_status?: string;
+  }
+}
 import { useVerificationStore } from '../../store/useVerificationStore';
+import { update } from '@/auth';
 
 const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const [showModal, setShowModal] = useState(false);
   const [showVerify, setShowVerify] = useState(false);
+  const [showRejectedMessage, setShowRejectedMessage] = useState(false);
 
   const { status: verifiedStatus, setStatus, showApprovedMessage, setShowApprovedMessage } = useVerificationStore();
 
   const { data: session } = useSession();
   const sesionCardTop = session?.accessToken;
+  const tokenVerification = session?.user?.userVerification;
 
-  const sessionCardBlueYellow = verifiedStatus === 'VERIFICADO';
+  const sessionCardBlueYellow = verifiedStatus === 'APROBADO';
 
   useEffect(() => {
     if (!sesionCardTop) return;
@@ -28,56 +43,67 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
     const fetchVerificationStatus = async () => {
       try {
         const response = await getPlusRewards(sesionCardTop);
-        const backendStatus = response.verification_status || 'NO_VERIFICADO';
+        const backendStatus = response.verification_status;
         setStatus(backendStatus);
+        console.log('Estado de verificación (backend):', backendStatus);
+        console.log('Token de verificación:', tokenVerification);
 
-        if (backendStatus !== 'VERIFICADO') {
-          localStorage.removeItem('verificationApprovedShown');
+        if (backendStatus === 'RECHAZADO') {
+          if (!localStorage.getItem('verificationRejectedShown')) {
+            setShowRejectedMessage(true);
+            localStorage.setItem('verificationRejectedShown', 'true');
+
+            setTimeout(() => {
+              setShowRejectedMessage(false);
+              setStatus('REENVIAR_DATOS');
+            }, 5000);
+
+            try {
+              resendVerificationAfterRejection(sesionCardTop);
+              await update({});
+              console.log('Token actualizado tras RECHAZADO');
+            } catch (err) {
+              console.error('Error al actualizar token tras RECHAZADO:', err);
+            }
+          }
+          return;
+        } else {
+          localStorage.removeItem('verificationRejectedShown');
         }
 
-        if (backendStatus === 'VERIFICADO' && !localStorage.getItem('verificationApprovedShown')) {
-          setShowApprovedMessage(true);
-          localStorage.setItem('verificationApprovedShown', 'true');
-          setTimeout(() => setShowApprovedMessage(false), 5000);
+        if (backendStatus === 'APROBADO') {
+          if (!localStorage.getItem('verificationApprovedShown')) {
+            setShowApprovedMessage(true);
+            localStorage.setItem('verificationApprovedShown', 'true');
+
+            setTimeout(() => setShowApprovedMessage(false), 5000);
+
+            try {
+              await updateVerificationStatus(sesionCardTop);
+              await update({});
+              console.log('Token actualizado con verificación');
+            } catch (err) {
+              console.error('Error al actualizar token:', err);
+            }
+          }
+        } else {
+          localStorage.removeItem('verificationApprovedShown');
         }
       } catch (error) {
         console.error('Error al obtener el estado de verificación:', error);
-        setStatus('NO_VERIFICADO');
+        setStatus('REENVIAR_DATOS');
       }
     };
 
     fetchVerificationStatus();
-  }, [sesionCardTop, setShowApprovedMessage, setStatus]);
-
-  useEffect(() => {
-    if (verifiedStatus === 'VERIFICADO') {
-      getSession().then((session) => {
-        console.log('Sesión actualizada:', session);
-      });
-    }
-  }, [verifiedStatus]);
-
-  // const simularVerificacion = () => {
-  //   // setStatus('NO_VERIFICADO');
-  //   setStatus('PENDIENTE');
-  //   setTimeout(() => {
-  //     setStatus('VERIFICADO');
-  //     // setStatus('PENDIENTE');
-  //     // setStatus('RECHAZADO');
-  //     setShowApprovedMessage(true);
-
-  //     setTimeout(() => {
-  //       setShowApprovedMessage(false);
-  //     }, 5000);
-  //   }, 5000);
-  // };
+  }, [sesionCardTop, setShowApprovedMessage, setStatus, session, tokenVerification]);
 
   return (
     <>
       {/* <AnimatedBlurredCircles tope="z-10 absolute" /> */}
       {!session && <p>cargando...</p>}
 
-      <AplicationStateContainer />
+      <AplicationStateContainer showRejectedMessage={showRejectedMessage} />
 
       {showModal && <CardPlusModal setShowModal={setShowModal} />}
       {showVerify && (
@@ -110,12 +136,6 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
                   >
                     Ver detalles
                   </p>
-                  {/* <button
-                    onClick={simularVerificacion}
-                    className="w-[35%] self-center bg-blue-500 text-white px-4 py-2 rounded"
-                  >
-                    Simular verificación
-                  </button> */}
                 </div>
               </div>
             </div>

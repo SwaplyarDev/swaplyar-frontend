@@ -6,6 +6,8 @@ import ModalDni from './ModalDni';
 import { useSession } from 'next-auth/react';
 import Swal from 'sweetalert2';
 import { plusRewardsActions } from '@/actions/plusRewards/plusRewards.actions';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 export type ModalProps = {
   showVerify: boolean;
@@ -20,6 +22,7 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
   const [backFile, setBackFile] = useState<File | null>(null);
   const [selfieFile, setSelfieFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { isDark } = useDarkTheme();
 
   const handleFrontFileChange = (file: File | null) => setFrontFile(file);
   const handleBackFileChange = (file: File | null) => setBackFile(file);
@@ -91,16 +94,18 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
       )}
 
       <div
-        className={`relative m-2 flex h-auto max-h-[670px] w-[595px] max-w-[592px] flex-col overflow-y-auto rounded-2xl bg-[#FFFFFB] px-[16px] py-[30px] sm:px-0 ${ShowModalDni && 'bg-opacity-100'}`}
+        className={`relative m-2 flex h-auto max-h-[700px] w-[595px] max-w-[592px] flex-col overflow-y-auto rounded-2xl bg-[#FFFFFB] px-[16px] py-[30px] dark:bg-[#4b4b4b] sm:px-0 ${ShowModalDni && 'bg-opacity-100'}`}
         onClick={(e) => e.stopPropagation()}
       >
         <h1 className="w-full px-[23px] text-[32px] font-light sm:text-[36px]">Verificación</h1>
         <button
-          className="absolute right-0 top-0 mr-3 text-[32px]"
+          className="absolute right-0 top-0 mr-3 text-[22px]"
           onClick={() => {
             setShowVerify(false);
           }}
-        ></button>
+        >
+          X
+        </button>
 
         <div className="flex justify-center gap-[7px] text-[#CE1818]">
           <AlertIcon />
@@ -109,7 +114,7 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
             <h3 className="text-[12px]">Necesitas cargar la documenta para la verificación</h3>
           </div>
         </div>
-        <hr className="mx-[32px] mb-1 mt-3 border-t-2 border-custom-blue xs:mx-[52px]" />
+        <hr className="mx-[32px] mb-1 mt-3 border-t-2 border-custom-blue dark:border-[#FAFAFA] xs:mx-[52px]" />
 
         <div className="relative mx-auto max-w-[428px] justify-center">
           <div className="absolute right-0 hidden xs:block" onClick={() => setShowModalDni(1)}>
@@ -120,18 +125,18 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
           <p className="mx-auto text-[14px]">
             Sube una foto de tu pasaporte, licencia o identificación oficial emitida por el gobierno.
           </p>
-          <div className="mt-[6px] flex flex-col items-center justify-center gap-[10px] sm:flex-row sm:gap-10">
+          <div className="0 mt-[6px] flex flex-col items-center justify-center gap-[10px] sm:flex-row sm:gap-1">
             <CardVerify text={'FRENTE'} imgDoc={frontFile} onFileChange={handleFrontFileChange} />
-            <div className="hidden sm:block">
-              <svg xmlns="http://www.w3.org/2000/svg" width="2" height="112" viewBox="0 0 2 112" fill="none">
-                <path d="M1 1.96301L1 110.037" stroke="#012A8E" stroke-width="2" stroke-linecap="round" />
+            <div className="hidden text-custom-blue dark:text-[#FAFAFA] sm:block">
+              <svg xmlns="http://www.w3.org/2000/svg" width="80" height="112" viewBox="0 0 2 112" fill="none">
+                <path d="M1 1.96301L1 110.037" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
               </svg>
             </div>
 
             <CardVerify text={'DORSO'} imgDoc={backFile} onFileChange={handleBackFileChange} />
           </div>
         </div>
-        <hr className="mx-[32px] mb-1 mt-3 border-t-2 border-custom-blue xs:mx-[52px]" />
+        <hr className="mx-[32px] mb-1 mt-3 border-t-2 border-custom-blue dark:border-[#FAFAFA] xs:mx-[52px]" />
 
         <div className="relative mx-auto max-w-[428px] justify-center">
           <div className="absolute right-0 hidden xs:block" onClick={() => setShowModalDni(2)}>
@@ -149,23 +154,22 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
           </div>
         </div>
 
-        <hr className="mx-[32px] mb-1 mt-3 border-t-2 border-custom-blue xs:mx-[52px]" />
+        <hr className="mx-[32px] mb-1 mt-3 border-t-2 border-custom-blue dark:border-[#FAFAFA] xs:mx-[52px]" />
         <div className="mt-[12px] flex flex-col items-center justify-end gap-3">
-          <button
-            className={`relative h-[39px] w-[194px] rounded-[40px] font-titleFont font-semibold text-white ${frontFile && backFile && selfieFile ? 'bg-custom-blue' : 'bg-[#90B0FE]'} ${isLoading ? 'cursor-not-allowed opacity-70' : ''}`}
-            onClick={handleSubmit}
-          >
-            {isLoading ? (
-              <div className="flex items-center justify-center gap-2">
-                <svg className="h-5 w-5 animate-spin text-white" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="white" strokeWidth="4" fill="none" />
-                  <path className="opacity-75" fill="white" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                </svg>
-              </div>
-            ) : (
-              'Enviar'
-            )}
-          </button>
+          {isLoading ? (
+            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="42px" />
+          ) : (
+            <button
+              className={`relative h-[39px] w-[194px] rounded-[40px] font-titleFont font-semibold text-white ${
+                frontFile && backFile && selfieFile
+                  ? 'bg-custom-blue ring-offset-[#FAFAFA] hover:ring-2 hover:ring-[#012A8E] hover:ring-offset-2 dark:bg-[#FAFAFA] dark:text-[#252526] dark:ring-offset-[#4B4B4B] hover:dark:ring-[#EBE7E0]'
+                  : 'cursor-not-allowed bg-[#90B0FE] opacity-70 dark:bg-[#FAFAFA] dark:text-[#252526]'
+              } `}
+              onClick={handleSubmit}
+            >
+              Enviar
+            </button>
+          )}
         </div>
       </div>
     </div>

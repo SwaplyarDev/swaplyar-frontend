@@ -1,7 +1,7 @@
 // useVerificationStore.ts
 import { create } from 'zustand';
 
-type VerificationStatus = 'NO_VERIFICADO' | 'PENDIENTE' | 'VERIFICADO' | 'RECHAZADO';
+type VerificationStatus = 'REENVIAR_DATOS' | 'PENDIENTE' | 'APROBADO' | 'RECHAZADO';
 
 interface VerificationStore {
   status: VerificationStatus;
@@ -11,7 +11,7 @@ interface VerificationStore {
 }
 
 export const useVerificationStore = create<VerificationStore>((set) => ({
-  status: 'NO_VERIFICADO',
+  status: 'REENVIAR_DATOS',
   showApprovedMessage: false,
   setStatus: (status) => set({ status }),
   setShowApprovedMessage: (value) => set({ showApprovedMessage: value }),

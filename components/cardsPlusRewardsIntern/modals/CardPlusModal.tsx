@@ -45,11 +45,11 @@ const CardPlusModal = ({ setShowModal }: { setShowModal: React.Dispatch<React.Se
       onClick={() => setShowModal(false)}
     >
       <div
-        className="relative mx-2 mt-2 w-full max-w-[896px] overflow-y-auto rounded-2xl bg-[#FFF] px-[9px] pt-[30px] xs:px-[56px]"
+        className="relative mx-2 mt-2 h-[680px] w-full max-w-[896px] overflow-y-auto rounded-2xl bg-[#FFF] px-[9px] pt-[30px] xs:px-[56px]"
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          className="absolute right-0 top-0 mr-3 text-[32px]"
+          className="absolute right-0 top-0 mr-3 text-[32px] dark:text-[#252526]"
           onClick={() => {
             setShowModal(false);
           }}
@@ -57,33 +57,33 @@ const CardPlusModal = ({ setShowModal }: { setShowModal: React.Dispatch<React.Se
           X
         </button>
         <h1 className="w-full pt-2 text-center text-[36px] font-normal">Más información sobre Plus Rewards</h1>
-        <h3>
+        <h3 className="">
           Fecha de inscripción: <b className="text-[#012A8E]">14 jun 2020</b>
         </h3>
-        <h3>
+        <h3 className="">
           Recompensas que obtuviste en nov:<b className="text-[#012A8E]"> 5</b>
         </h3>
-        <h3>
+        <h3 className="">
           Recompensas que obtuviste en 2024:<b className="text-[#012A8E]"> 8</b>
         </h3>
-        <h2 className="my-4 text-[21px] font-normal">Historial de Recompensas</h2>
+        <h2 className="my-4 text-[21px] font-normal dark:text-[#252526]">Historial de Recompensas</h2>
 
-        <section className="mb-[23px] max-h-[270px] overflow-y-auto rounded-2xl border-2 border-[#012A8E] p-[10px]">
+        <section className="mb-[23px] max-h-[370px] overflow-y-auto rounded-2xl border-2 border-[#012A8E] p-[10px] dark:border-[#252526]">
           {objectCard.map((elem, index) => (
             <div key={index} className="overflow-hidden">
-              <p>
+              <p className="">
                 <b>Cupón de Fidelización: </b>
                 {elem.cupon}
               </p>
-              <p>
+              <p className="dark:text-[#252526]">
                 <b>Fecha de Emisión: </b>
                 {elem.date}
               </p>
-              <p>
+              <p className="dark:text-[#252526]">
                 <b>Tipo: </b>
                 {elem.type}
               </p>
-              <p className="mb-2">
+              <p className="mb-2 dark:text-[#252526]">
                 <b>Fecha de Uso: </b>
                 {elem.dateUse}
               </p>
