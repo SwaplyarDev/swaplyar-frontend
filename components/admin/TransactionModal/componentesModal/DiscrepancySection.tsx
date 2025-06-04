@@ -288,8 +288,8 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                           variant={resolved === true ? 'default' : 'outline'}
                           className={`relative transition-all duration-300 ${
                             resolved === true
-                              ? 'bg-green-600 text-white hover:bg-green-700'
-                              : 'hover:border-green-500 hover:text-green-600'
+                              ? 'h[40px] w-[150px] rounded-3xl bg-green-600 text-white hover:bg-green-700'
+                              : 'h[40px] w-[150px] rounded-3xl hover:border-green-500 hover:text-green-600'
                           }`}
                         >
                           <CheckCircle
@@ -312,8 +312,8 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                           variant={resolved === false ? 'destructive' : 'outline'}
                           className={`relative transition-all duration-300 ${
                             resolved === false
-                              ? 'bg-red-500 text-white hover:bg-red-600'
-                              : 'hover:border-red-500 hover:text-red-600'
+                              ? 'h[40px] w-[150px] rounded-3xl bg-red-500 text-white hover:bg-red-600'
+                              : 'h[40px] w-[150px] rounded-3xl hover:border-red-500 hover:text-red-600'
                           }`}
                         >
                           <XCircle className={`mr-2 h-5 w-5 ${resolved === false ? 'text-white' : 'text-red-500'}`} />
