@@ -5,7 +5,7 @@ import { useVerificationStore } from '../../../store/useVerificationStore';
 const AplicationStateContainer = ({ showRejectedMessage }: { showRejectedMessage: boolean }) => {
   const { status: verifiedStatus, showApprovedMessage } = useVerificationStore();
   return (
-    <div>
+    <>
       {verifiedStatus === 'PENDIENTE' ? (
         <AplicationStateCard
           className="mb-[-46px] mt-12 bg-[#F0B232] text-[#252526]"
@@ -30,7 +30,7 @@ const AplicationStateContainer = ({ showRejectedMessage }: { showRejectedMessage
       ) : (
         <div></div>
       )}
-    </div>
+    </>
   );
 };
 

@@ -9,6 +9,8 @@ import { plusRewardsActions } from '@/actions/plusRewards/plusRewards.actions';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import Arrow from '@/components/ui/Arrow/Arrow';
+import DniUpload from '../SwaplyPlusRewardsComponents/DniUpload';
+import SelfieUpload from '../SwaplyPlusRewardsComponents/SelfieUpload';
 
 export type ModalProps = {
   showVerify: boolean;
@@ -98,7 +100,7 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
       )}
 
       <div
-        className={`relative m-2 flex h-[96%] max-h-[740px] w-[595px] max-w-[592px] flex-col overflow-y-auto rounded-2xl bg-[#FFFFFB] px-[16px] py-[30px] dark:bg-[#4b4b4b] sm:px-0 ${ShowModalDni && 'bg-opacity-100'}`}
+        className={`relative m-2 flex h-[96%] max-h-[770px] w-[595px] max-w-[592px] flex-col overflow-y-auto rounded-2xl bg-[#FFFFFB] px-[16px] py-[30px] dark:bg-[#4b4b4b] sm:px-0 ${ShowModalDni && 'bg-opacity-100'}`}
         onClick={(e) => e.stopPropagation()}
       >
         <h1 className="mb-4 mt-[-20px] w-full text-[32px] sm:px-4 sm:text-[36px]">Verificación</h1>
@@ -120,44 +122,21 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
         </div>
         <hr className="mb-1 mt-3 border-t-2 border-custom-blue dark:border-[#FAFAFA] xs:mx-[52px]" />
 
-        <div className="relative mx-auto max-w-[428px] justify-center">
-          <div className="absolute right-0 mt-2 hidden cursor-pointer xs:block" onClick={() => setShowModalDni(1)}>
-            <InfoIcon />
-          </div>
+        <DniUpload
+          frontFile={frontFile}
+          backFile={backFile}
+          onFrontChange={handleFrontFileChange}
+          onBackChange={handleBackFileChange}
+          onInfoClick={() => setShowModalDni(1)}
+        />
 
-          <h2 className="mt-[6px] text-[18px] font-normal">Prueba de Identidad</h2>
-          <p className="mx-auto text-[14px]">
-            Sube una foto de tu pasaporte, licencia o identificación oficial emitida por el gobierno.
-          </p>
-          <div className="mt-[6px] flex flex-col items-center justify-center gap-[10px] min-[500px]:flex-row min-[500px]:gap-1">
-            <CardVerify text="FRENTE" imgDoc={frontFile} onFileChange={handleFrontFileChange} />
-
-            <div className="hidden text-custom-blue dark:text-[#FAFAFA] min-[500px]:block">
-              <svg xmlns="http://www.w3.org/2000/svg" width="80" height="112" viewBox="0 0 2 112" fill="none">
-                <path d="M1 1.96301L1 110.037" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-            </div>
-
-            <CardVerify text="DORSO" imgDoc={backFile} onFileChange={handleBackFileChange} />
-          </div>
-        </div>
         <hr className="mb-1 mt-3 border-t-2 border-custom-blue dark:border-[#FAFAFA] xs:mx-[52px]" />
 
-        <div className="relative mx-auto max-w-[428px] justify-center">
-          <div className="absolute right-0 mt-2 hidden cursor-pointer xs:block" onClick={() => setShowModalDni(2)}>
-            {' '}
-            <InfoIcon />
-          </div>
-
-          <h2 className="mt-[6px] text-[18px] font-normal">Selfie & ID</h2>
-          <p className="mx-auto text-[14px]">
-            Sube una selfie sosteniendo tu pasaporte, ID u otro documento oficial en tus manos (con detalles personales
-            claramente visibles).
-          </p>
-          <div className="mt-[6px] flex justify-center gap-10">
-            <CardVerify text={'FOTO'} imgDoc={selfieFile} onFileChange={handleSelfieFileChange} />
-          </div>
-        </div>
+        <SelfieUpload
+          selfieFile={selfieFile}
+          onSelfieChange={handleSelfieFileChange}
+          onInfoClick={() => setShowModalDni(2)}
+        />
 
         <hr className="mb-1 mt-3 border-t-2 border-custom-blue dark:border-[#FAFAFA] xs:mx-[52px]" />
         <div className="mt-[12px] flex flex-col items-center justify-end gap-3">

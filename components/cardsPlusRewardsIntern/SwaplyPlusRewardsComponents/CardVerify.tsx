@@ -14,7 +14,7 @@ const CardVerify = ({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files ? e.target.files[0] : null;
     setFile(selectedFile);
-    onFileChange(selectedFile); // Llamamos al callback para pasar el archivo al componente padre
+    onFileChange(selectedFile);
   };
   return (
     <form className="inline-block p-2 text-center">
@@ -27,14 +27,14 @@ const CardVerify = ({
             verifiedStatus=""
             className="rounded-3sm flex h-[34px] w-[124px] cursor-pointer justify-center rounded-[40px] bg-buttonsLigth font-titleFont font-semibold text-white dark:bg-darkText dark:text-[#252526]"
             title="Subir"
-            onClick={() => document.getElementById(`${text}-file-input`)?.click()} // Abrir el input al hacer click en el botón
+            onClick={() => document.getElementById(`${text}-file-input`)?.click()}
           />
           <input
             type="file"
             id={`${text}-file-input`}
             className="hidden"
             accept="image/png, image/jpg, image/jpeg, application/pdf"
-            onChange={handleFileChange} // Manejamos el archivo cuando cambia
+            onChange={handleFileChange}
           />
         </div>
         <p className="text-[8px] text-[#012A8E] dark:text-[#252526]">formatos de archivo: PNG, JPG, PDF</p>

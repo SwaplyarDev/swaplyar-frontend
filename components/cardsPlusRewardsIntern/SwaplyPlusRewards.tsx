@@ -45,7 +45,6 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
         const response = await getPlusRewards(sesionCardTop);
         const backendStatus = response.verification_status;
         setStatus(backendStatus);
-        console.log('Token de verificación:', tokenVerification);
 
         if (backendStatus === 'RECHAZADO') {
           if (!localStorage.getItem('verificationRejectedShown')) {

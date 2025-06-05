@@ -54,11 +54,6 @@ export async function getPlusRewards(token: string) {
       },
       cache: 'no-store',
     });
-    // if (!res.ok) {
-    //   const errorBody = await res.text();
-    //   console.error('Respuesta no OK?:', errorBody);
-    //   throw new Error('Error al obtener los plus rewards');
-    // }
     const data = await res.json();
 
     if (!res.ok || !data?.verification_status) {
