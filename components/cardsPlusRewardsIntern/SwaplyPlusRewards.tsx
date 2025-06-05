@@ -14,7 +14,7 @@ import {
   resendVerificationAfterRejection,
   updateVerificationStatus,
 } from '@/actions/plusRewards/plusRewards.actions';
-import { getSession, signIn, signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 declare module 'next-auth' {
   interface Session {
@@ -45,7 +45,6 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
         const response = await getPlusRewards(sesionCardTop);
         const backendStatus = response.verification_status;
         setStatus(backendStatus);
-        console.log('Estado de verificación (backend):', backendStatus);
         console.log('Token de verificación:', tokenVerification);
 
         if (backendStatus === 'RECHAZADO') {
@@ -100,25 +99,20 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
 
   return (
     <>
-      {/* <AnimatedBlurredCircles tope="z-10 absolute" /> */}
       {!session && <p>cargando...</p>}
-
       <AplicationStateContainer showRejectedMessage={showRejectedMessage} />
-
       {showModal && <CardPlusModal setShowModal={setShowModal} />}
       {showVerify && (
         <ModalVerify showVerify={showVerify} setShowVerify={setShowVerify} verifiedStatus={verifiedStatus} />
       )}
-
-      <div className="relative z-10 mx-auto mt-16 flex max-w-[500px] flex-col px-5 text-[40px] lg:max-w-[1200px] lg:px-[100px]">
-        <h1 className="mb-10 font-textFont font-medium">SwaplyAr Plus Rewards</h1>
-
-        <div className="relative z-10 mx-auto flex max-w-[1000px] flex-col gap-5 text-[16px] lg:flex-row">
+      <div className="relative z-0 mx-auto mt-14 flex max-w-[500px] flex-col px-5 text-[40px] lg:max-w-[1200px] lg:px-[100px]">
+        <h1 className="mb-4 font-textFont font-medium">SwaplyAr Plus Rewards</h1>
+        <div className="relative z-0 mx-auto flex max-w-[1000px] flex-col gap-5 text-[16px] lg:flex-row">
           <div>
             <p>Consigue beneficios exclusivos cada vez que realices transacciones</p>
             <p>SwaplyAr Plus Rewards.</p>
             <div>
-              <div className="flex flex-col items-center">
+              <div className="mb-4 mt-4 flex flex-col items-center">
                 <Image
                   src={swaplyPlusRewards}
                   alt="swaplyPlusRewards"
@@ -126,12 +120,12 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
                   height={404}
                   className="w-[356px] sm:w-[486px]"
                 />
-                <div className="relative flex w-full flex-col">
+                <div className="relative mt-4 flex w-full flex-col">
                   <p>Fecha de inscripción:  {RewardsData.inscriptionDate}</p>
                   <p>Recompensas que obtuviste en nov: {RewardsData.rewardsPerMonth}</p>
                   <p>Recompensas que obtuviste en 2024: {RewardsData.rewardsPerYear}</p>
                   <p
-                    className="cursor-pointer self-end font-semibold underline"
+                    className="mt-4 cursor-pointer self-end font-semibold underline"
                     onClick={() => setShowModal(!showModal)}
                   >
                     Ver detalles
@@ -140,7 +134,6 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
               </div>
             </div>
           </div>
-
           <div className="relative my-auto items-center">
             <CardPlusRewards
               verifiedStatus={verifiedStatus}

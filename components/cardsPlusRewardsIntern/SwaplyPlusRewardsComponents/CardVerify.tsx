@@ -17,10 +17,10 @@ const CardVerify = ({
     onFileChange(selectedFile); // Llamamos al callback para pasar el archivo al componente padre
   };
   return (
-    <form className="inline-block text-center">
+    <form className="inline-block p-2 text-center">
       <h2 className="w-auto text-[18px] font-normal">{text}</h2>
 
-      <div className="border-1 flex w-auto flex-col rounded-[16px] border-[#90B0FE] bg-[#FFFFF8] p-[10px] dark:bg-[#969696]">
+      <div className="flex w-auto flex-col rounded-[16px] border-2 border-[#90B0FE] bg-[#FFFFF8] p-[20px] dark:border-[#969696] dark:bg-[#969696]">
         <p className="text-[10px] text-[#012A8E] dark:text-[#252526]">arrastra el archivo aquí o</p>
         <div className="box-border rounded-[40px] border-[2px] border-transparent p-[2px] hover:border-2 hover:border-buttonsLigth dark:bg-[#AFAFAF] dark:hover:border-[#E1E1E1]">
           <ButtonCustom

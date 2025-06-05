@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { plusRewardsActions } from '@/actions/plusRewards/plusRewards.actions';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import Arrow from '@/components/ui/Arrow/Arrow';
 
 export type ModalProps = {
   showVerify: boolean;
@@ -69,6 +70,9 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
         timer: 1000,
       });
       setIsLoading(false);
+      setTimeout(() => {
+        setShowVerify(false);
+      }, 1000);
     } else {
       Swal.fire({
         icon: 'error',
@@ -94,12 +98,12 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
       )}
 
       <div
-        className={`relative m-2 flex h-auto max-h-[700px] w-[595px] max-w-[592px] flex-col overflow-y-auto rounded-2xl bg-[#FFFFFB] px-[16px] py-[30px] dark:bg-[#4b4b4b] sm:px-0 ${ShowModalDni && 'bg-opacity-100'}`}
+        className={`relative m-2 flex h-[96%] max-h-[740px] w-[595px] max-w-[592px] flex-col overflow-y-auto rounded-2xl bg-[#FFFFFB] px-[16px] py-[30px] dark:bg-[#4b4b4b] sm:px-0 ${ShowModalDni && 'bg-opacity-100'}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <h1 className="w-full px-[23px] text-[32px] font-light sm:text-[36px]">Verificación</h1>
+        <h1 className="mb-4 mt-[-20px] w-full text-[32px] sm:px-4 sm:text-[36px]">Verificación</h1>
         <button
-          className="absolute right-0 top-0 mr-3 text-[22px]"
+          className="absolute right-0 top-3 mr-3 text-[22px]"
           onClick={() => {
             setShowVerify(false);
           }}
@@ -110,14 +114,14 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
         <div className="flex justify-center gap-[7px] text-[#CE1818]">
           <AlertIcon />
           <div className="flex-col justify-center">
-            <h2 className="text-[18px] font-semibold">TU CUENTA NO ESTA VERIFICADA</h2>
-            <h3 className="text-[12px]">Necesitas cargar la documenta para la verificación</h3>
+            <h2 className="text-[14px] font-semibold sm:text-[18px]">TU CUENTA NO ESTA VERIFICADA</h2>
+            <h3 className="text-[12px] sm:text-[14px]">Necesitas cargar la documenta para la verificación</h3>
           </div>
         </div>
-        <hr className="mx-[32px] mb-1 mt-3 border-t-2 border-custom-blue dark:border-[#FAFAFA] xs:mx-[52px]" />
+        <hr className="mb-1 mt-3 border-t-2 border-custom-blue dark:border-[#FAFAFA] xs:mx-[52px]" />
 
         <div className="relative mx-auto max-w-[428px] justify-center">
-          <div className="absolute right-0 hidden xs:block" onClick={() => setShowModalDni(1)}>
+          <div className="absolute right-0 mt-2 hidden cursor-pointer xs:block" onClick={() => setShowModalDni(1)}>
             <InfoIcon />
           </div>
 
@@ -125,21 +129,22 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
           <p className="mx-auto text-[14px]">
             Sube una foto de tu pasaporte, licencia o identificación oficial emitida por el gobierno.
           </p>
-          <div className="0 mt-[6px] flex flex-col items-center justify-center gap-[10px] sm:flex-row sm:gap-1">
-            <CardVerify text={'FRENTE'} imgDoc={frontFile} onFileChange={handleFrontFileChange} />
-            <div className="hidden text-custom-blue dark:text-[#FAFAFA] sm:block">
+          <div className="mt-[6px] flex flex-col items-center justify-center gap-[10px] min-[500px]:flex-row min-[500px]:gap-1">
+            <CardVerify text="FRENTE" imgDoc={frontFile} onFileChange={handleFrontFileChange} />
+
+            <div className="hidden text-custom-blue dark:text-[#FAFAFA] min-[500px]:block">
               <svg xmlns="http://www.w3.org/2000/svg" width="80" height="112" viewBox="0 0 2 112" fill="none">
-                <path d="M1 1.96301L1 110.037" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <path d="M1 1.96301L1 110.037" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </div>
 
-            <CardVerify text={'DORSO'} imgDoc={backFile} onFileChange={handleBackFileChange} />
+            <CardVerify text="DORSO" imgDoc={backFile} onFileChange={handleBackFileChange} />
           </div>
         </div>
-        <hr className="mx-[32px] mb-1 mt-3 border-t-2 border-custom-blue dark:border-[#FAFAFA] xs:mx-[52px]" />
+        <hr className="mb-1 mt-3 border-t-2 border-custom-blue dark:border-[#FAFAFA] xs:mx-[52px]" />
 
         <div className="relative mx-auto max-w-[428px] justify-center">
-          <div className="absolute right-0 hidden xs:block" onClick={() => setShowModalDni(2)}>
+          <div className="absolute right-0 mt-2 hidden cursor-pointer xs:block" onClick={() => setShowModalDni(2)}>
             {' '}
             <InfoIcon />
           </div>
@@ -154,7 +159,7 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
           </div>
         </div>
 
-        <hr className="mx-[32px] mb-1 mt-3 border-t-2 border-custom-blue dark:border-[#FAFAFA] xs:mx-[52px]" />
+        <hr className="mb-1 mt-3 border-t-2 border-custom-blue dark:border-[#FAFAFA] xs:mx-[52px]" />
         <div className="mt-[12px] flex flex-col items-center justify-end gap-3">
           {isLoading ? (
             <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="42px" />
@@ -170,6 +175,22 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
               Enviar
             </button>
           )}
+        </div>
+        <div className="mt-2 flex items-center justify-center sm:order-1 sm:hidden">
+          <button
+            type="button"
+            onClick={() => {
+              setShowVerify(false);
+            }}
+            className={`group relative m-1 flex h-[40px] min-w-[40px] max-w-[90px] items-center justify-center gap-1 rounded-3xl border border-buttonsLigth px-3 py-1 text-sm font-light text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
+          >
+            <div className="relative h-4 w-4 overflow-hidden">
+              <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
+                <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
+              </div>
+            </div>
+            Volver
+          </button>
         </div>
       </div>
     </div>
