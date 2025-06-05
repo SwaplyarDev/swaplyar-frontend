@@ -222,7 +222,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
 
                 <Button
                   onClick={() => setOpenModalReject(true)}
-                  className="buttonSecond h-11 rounded-3xl bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20"
+                  className="buttonSecond h-11 rounded-3xl bg-custom-blue text-white shadow-sm transition-all duration-300 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:shadow-blue-900/20"
                   aria-label="Enviar ID de transferencia"
                 >
                   <span>Enviar</span>

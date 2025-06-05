@@ -406,7 +406,7 @@ const TransferClient = () => {
 
             <Button
               onClick={handleDialogAprove}
-              className="buttonSecond h-11 w-full rounded-3xl bg-custom-blue text-white hover:bg-blue-700"
+              className="buttonSecond h-11 w-full rounded-3xl bg-custom-blue text-white"
               aria-label="Enviar ID de transferencia"
             >
               <span>Enviar</span>
