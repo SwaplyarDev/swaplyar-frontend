@@ -17,7 +17,6 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
   const { data: session } = useSession();
   const userName = session?.user?.fullName;
 
-  // Format date with better localization
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
@@ -27,7 +26,6 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
     }
   };
 
-  // Get status badge based on current status
   const getStatusBadge = (status: string) => {
     const statusConfig = {
       '1': {
@@ -53,6 +51,13 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
         icon: <CheckCircle className="mr-1.5 h-4 w-4" />,
         label: 'Aceptada',
         ariaLabel: 'Estado: Aceptada',
+      },
+      '4': {
+        bgColor: 'bg-red-100 dark:bg-red-900/30',
+        textColor: 'text-red-800 dark:text-red-300',
+        icon: <XCircle className="mr-1" />,
+        label: 'Rechazada',
+        ariaLabel: 'Estado: Rechazada',
       },
       '7': {
         bgColor: 'bg-amber-100 dark:bg-amber-900/30',

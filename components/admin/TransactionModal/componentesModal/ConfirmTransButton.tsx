@@ -36,19 +36,17 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isHovering, setIsHovering] = useState<string | null>(null);
 
-  // Modal states
   const [showValidationModal, setShowValidationModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showResultModal, setShowResultModal] = useState(false);
   const [isSubmitting, setIsSubmittingLocal] = useState(false);
   const [submitResult, setSubmitResult] = useState<boolean | null>(null);
-  // Añadir un nuevo estado para el mensaje de error
+
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   const sendButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    // Sincronizar el estado local con el prop value cuando cambie
     setSelected(value);
   }, [value]);
 
@@ -72,7 +70,6 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
         setIsSubmitting(isSubmitting);
       },
       (error: string | null) => {
-        console.log('fallo: ', error);
         setSubmitError(error);
         setIsSubmittingLocal(false);
         if (error) {
@@ -82,17 +79,16 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
         }
       },
       (success: boolean) => {
-        console.log('success: ', success);
         setSubmitSuccess(success);
         setIsSubmittingLocal(false);
         setShowConfirmModal(false);
 
         setTimeout(() => {
-          setSubmitResult(success);
+          setSubmitResult(true);
           setShowResultModal(true);
 
           if (success) {
-            console.log('ID de transferencia enviado:', transferId);
+            setTransferId('');
           }
         }, 300);
       },
@@ -111,7 +107,6 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
     setSelected(newValue);
   };
 
-  // Función para obtener el icono según la variante
   const getIcon = (variant: 'success' | 'error' | 'warning' | 'default' = 'default') => {
     switch (variant) {
       case 'success':
@@ -133,14 +128,14 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
           ¿La transferencia ha sido recibida y ya está reflejada en nuestra cuenta?
         </p>
 
-        <div className="mt-2 flex gap-4">
+        <div className="mt-2 flex justify-center gap-4">
           <TooltipProvider delayDuration={300}>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   onClick={() => handleClick(true)}
                   variant={selected === true ? 'default' : 'outline'}
-                  className={`relative min-w-[160px] transition-all duration-300 ${
+                  className={`relative min-w-[160px] rounded-3xl transition-all duration-300 ${
                     selected === true
                       ? 'bg-green-600 text-white shadow-sm hover:bg-green-700 hover:shadow-green-200 dark:bg-green-700 dark:hover:bg-green-600 dark:hover:shadow-green-900/20'
                       : 'hover:border-green-500 hover:bg-green-50 hover:text-green-600 dark:border-gray-600 dark:hover:bg-green-900/20 dark:hover:text-green-400'
@@ -165,7 +160,7 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
                 <Button
                   onClick={() => handleClick(false)}
                   variant={selected === false ? 'destructive' : 'outline'}
-                  className={`relative min-w-[160px] transition-all duration-300 ${
+                  className={`relative min-w-[160px] rounded-3xl transition-all duration-300 ${
                     selected === false
                       ? 'bg-red-600 text-white shadow-sm hover:bg-red-700 hover:shadow-red-200 dark:bg-red-700 dark:hover:bg-red-600 dark:hover:shadow-red-900/20'
                       : 'hover:border-red-500 hover:bg-red-50 hover:text-red-600 dark:border-gray-600 dark:hover:bg-red-900/20 dark:hover:text-red-400'
@@ -217,7 +212,7 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
                 <Button
                   ref={sendButtonRef}
                   onClick={handleSubmitTransferId}
-                  className="h-11 bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20"
+                  className="buttonSecond h-11 rounded-3xl bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20"
                   aria-label="Enviar ID de transferencia"
                 >
                   <span>Enviar</span>
@@ -232,7 +227,6 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
         )}
       </div>
 
-      {/* Modal de validación (campo requerido) */}
       <Dialog open={showValidationModal} onOpenChange={setShowValidationModal}>
         <DialogContent className="dark:border-gray-700 dark:bg-gray-800 sm:max-w-md">
           <DialogHeader>
@@ -255,7 +249,6 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
         </DialogContent>
       </Dialog>
 
-      {/* Modal de confirmación */}
       <Dialog open={showConfirmModal} onOpenChange={(open) => !isSubmitting && setShowConfirmModal(open)}>
         <DialogContent className="dark:border-gray-700 dark:bg-gray-800 sm:max-w-md">
           <DialogHeader>
@@ -268,6 +261,14 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
             </div>
           </div>
           <DialogFooter className="flex justify-end gap-3">
+            <Button
+              onClick={handleConfirmSubmit}
+              disabled={isSubmitting}
+              className="bg-custom-blue text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
+            >
+              {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+              Confirmar
+            </Button>
             {!isSubmitting && (
               <Button
                 variant="outline"
@@ -277,19 +278,10 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
                 Cancelar
               </Button>
             )}
-            <Button
-              onClick={handleConfirmSubmit}
-              disabled={isSubmitting}
-              className="bg-custom-blue text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
-            >
-              {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-              Confirmar
-            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Modal de resultado */}
       <Dialog open={showResultModal} onOpenChange={handleResultModalClose}>
         <DialogContent className="dark:border-gray-700 dark:bg-gray-800 sm:max-w-md">
           <DialogHeader>

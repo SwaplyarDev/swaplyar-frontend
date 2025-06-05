@@ -9,10 +9,8 @@ import InfoStatus from '../TransactionModal/componentesModal/InfoStatus';
 import ConfirmTransButton from '../TransactionModal/componentesModal/ConfirmTransButton';
 import AprobarRechazar from '../TransactionModal/componentesModal/aprobarRechazar';
 import ClientInformation from '../TransactionModal/componentesModal/ClientInformation';
-import FinalSection from '../TransactionModal/componentesModal/FinalSection';
 import TransferImages from '../TransactionModal/componentesModal/TransferImages/TransferImages';
 import TransactionDetail from '../TransactionModal/componentesModal/DetailTransaction';
-import ClientMessage from '../TransactionModal/componentesModal/ui/ClientMessage';
 import { useTransactionStore } from '@/store/transactionModalStorage';
 import { useTransactionStoreInit } from '@/hooks/admin/transactionPageHooks/useTransactionStoreInit';
 import { useTransactionStatusUpdate } from '@/hooks/admin/transactionPageHooks/useTransactionStatusUpdate';
@@ -53,7 +51,6 @@ export default function TransactionPageClientComponent({
 
   const transId = initialTransaction.transaction.transaction_id;
 
-  // Usar hooks personalizados
   useTransactionStoreInit({
     initialTransaction,
     initialStatus,
@@ -91,7 +88,6 @@ export default function TransactionPageClientComponent({
 
           <div className="col-span-1">
             <div className="grid gap-4">
-              {/* Confirmar Transferencia */}
               <ConfirmTransButton
                 value={componentStates.confirmTransButton}
                 setValue={(value) => handleComponentStateChange('confirmTransButton', value)}
@@ -123,7 +119,6 @@ export default function TransactionPageClientComponent({
                     (componentStates.discrepancySection !== true || discrepancySend))) && (
                   <>
                     <ClientInformation />
-                    <FinalSection transId={transId} />
                   </>
                 )}
             </div>
@@ -142,6 +137,7 @@ export default function TransactionPageClientComponent({
                       : null
                 }
                 message={regretCancel?.note || noteEdit?.note}
+                createdAt={regretCancel?.created_at || noteEdit?.created_at}
               />
 
               <TransactionDetail transaction={initialTransaction} isLoading={isLoading} />

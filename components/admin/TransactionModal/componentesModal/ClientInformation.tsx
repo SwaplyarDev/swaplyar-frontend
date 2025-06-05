@@ -19,7 +19,7 @@ const ClientInformation: React.FC = ({}) => {
   const { trans } = useTransactionStore();
   const { transaction } = trans;
   const [select, setSelect] = useState<boolean | null>(null);
-  // Update parent state when dialog changes
+
   const handleStopClick = () => {
     if (select) {
       setSelect(false);
@@ -94,7 +94,6 @@ const ClientInformation: React.FC = ({}) => {
         {!select && <TransferClient />}
       </CardHeader>
 
-      {/* Status indicator */}
       <div
         className={`h-1.5 w-full transition-all duration-500 ${
           transaction.regret_id ? 'bg-destructive dark:bg-red-700' : 'bg-primary dark:bg-blue-700'
