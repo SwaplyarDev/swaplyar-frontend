@@ -73,28 +73,30 @@ const ClientInformation: React.FC = ({}) => {
           </Alert>
         )}
 
-        <RecieverData trans={trans} />
-        {select === true && (
-          <div className="animate-in fade-in mt-6 space-y-4 duration-300">
-            <Alert className="border-l-4 border-l-amber-500 bg-amber-50 transition-all duration-300 hover:bg-amber-100 dark:border-l-amber-600 dark:bg-amber-900/20 dark:hover:bg-amber-900/30">
-              <AlertTriangle className="h-5 w-5 text-amber-500 dark:text-amber-400" />
-              <AlertTitle className="text-amber-800 dark:text-amber-300">Información sobre STOP</AlertTitle>
-              <AlertDescription className="text-amber-700 dark:text-amber-400">
-                <p className="mt-1">
-                  Si los datos de la operación no coinciden (por ejemplo, si el monto es mayor o menor al acordado),
-                  comunícate con el solicitante para resolverlo antes de continuar.
-                </p>
-                <p className="mt-2">Esta acción pausará el proceso hasta que se resuelvan las discrepancias.</p>
-              </AlertDescription>
-            </Alert>
-            <MessageWpp
-              text="Comunicate mediante **Whats
-            p** del Remitente por si los datos del Destinarario no coincide en el momento de realizar la Transaferencia, y deja esta seccion en **STOP** hasta resolver el incombeniente  "
-            />
-            <DiscrepancySection trans={trans} value={true} setDiscrepancySend={setDiscrepancySend} />
-          </div>
-        )}
-        {!select && <TransferClient />}
+        <div className="rounded-xl bg-[#F1EDE6] dark:bg-[#2A3443]">
+          <RecieverData trans={trans} />
+          {select === true && (
+            <div className="animate-in fade-in mt-6 space-y-4 duration-300">
+              <Alert className="border-l-4 border-l-amber-500 bg-amber-50 transition-all duration-300 hover:bg-amber-100 dark:border-l-amber-600 dark:bg-amber-900/20 dark:hover:bg-amber-900/30">
+                <AlertTriangle className="h-5 w-5 text-amber-500 dark:text-amber-400" />
+                <AlertTitle className="text-amber-800 dark:text-amber-300">Información sobre STOP</AlertTitle>
+                <AlertDescription className="text-amber-700 dark:text-amber-400">
+                  <p className="mt-1">
+                    Si los datos de la operación no coinciden (por ejemplo, si el monto es mayor o menor al acordado),
+                    comunícate con el solicitante para resolverlo antes de continuar.
+                  </p>
+                  <p className="mt-2">Esta acción pausará el proceso hasta que se resuelvan las discrepancias.</p>
+                </AlertDescription>
+              </Alert>
+              <MessageWpp
+                text="Comunicate mediante **Whats
+              p** del Remitente por si los datos del Destinarario no coincide en el momento de realizar la Transaferencia, y deja esta seccion en **STOP** hasta resolver el incombeniente  "
+              />
+              <DiscrepancySection trans={trans} value={true} setDiscrepancySend={setDiscrepancySend} />
+            </div>
+          )}
+          {!select && <TransferClient />}
+        </div>
       </CardHeader>
 
       <div

@@ -239,76 +239,80 @@ const TransferClient = () => {
   };
   return (
     <>
-      <div className="!mt-4">
-        <h2 className="text-lg font-medium text-gray-800">¿La transferencia fue realizada al cliente?</h2>
+      <div className="!mt-4 rounded-xl">
+        <div className="h-[100px] rounded-xl p-3">
+          <h2 className="text-lg font-medium text-gray-800 dark:text-white">
+            ¿La transferencia fue realizada al cliente?
+          </h2>
 
-        <div className="flex flex-col items-center gap-3">
-          <div className="mb-4 mt-2 flex w-full gap-4">
-            <TooltipProvider delayDuration={300}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    onClick={() => setSelected(true)}
-                    variant="outline"
-                    className={`${
-                      selected === true
-                        ? 'h-[40px] w-[150px] rounded-3xl bg-green-600 text-white shadow-lg shadow-green-200'
-                        : 'h-[40px] w-[150px] rounded-3xl border border-gray-300 bg-white text-gray-700 hover:border-green-500 hover:text-green-600'
-                    }`}
-                  >
-                    <CheckCircle className={`mr-2 h-5 w-5 ${selected === true ? 'text-white' : 'text-green-500'}`} />
-                    <span>Si</span>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="top" className="border-green-600 bg-green-600 text-white">
-                  <p>La transferencia fue realizada al cliente</p>
-                </TooltipContent>
-              </Tooltip>
+          <div className="flex flex-col items-center gap-3">
+            <div className="mb-4 mt-2 flex w-full gap-4">
+              <TooltipProvider delayDuration={300}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      onClick={() => setSelected(true)}
+                      variant="outline"
+                      className={`${
+                        selected === true
+                          ? 'h-[40px] w-[150px] rounded-3xl bg-green-600 text-white shadow-lg shadow-green-200'
+                          : 'h-[40px] w-[150px] rounded-3xl border border-gray-300 bg-white text-gray-700 hover:border-green-500 hover:text-green-600 dark:bg-transparent dark:text-white'
+                      }`}
+                    >
+                      <CheckCircle className={`mr-2 h-5 w-5 ${selected === true ? 'text-white' : 'text-green-500'}`} />
+                      <span>Si</span>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="border-green-600 bg-green-600 text-white">
+                    <p>La transferencia fue realizada al cliente</p>
+                  </TooltipContent>
+                </Tooltip>
 
-              <Tooltip>
-                <TooltipTrigger asChild>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      onClick={() => setSelected(false)}
+                      variant="outline"
+                      className={`${
+                        selected === false
+                          ? 'h-[40px] w-[150px] rounded-3xl bg-red-600 text-white shadow-lg shadow-red-200'
+                          : 'h-[40px] w-[150px] rounded-3xl border border-gray-300 bg-white text-gray-700 hover:border-red-500 hover:text-red-600 dark:bg-transparent dark:text-white'
+                      }`}
+                    >
+                      <XCircle className={`mr-2 h-5 w-5 ${selected === false ? 'text-white' : 'text-red-500'}`} />
+                      <span>No</span>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="border-red-600 bg-red-600 text-white">
+                    <p>La transferencia no fue realizada al cliente</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <Dialog open={open} onOpenChange={handleOpenChange}>
+                <DialogTrigger asChild>
                   <Button
-                    onClick={() => setSelected(false)}
-                    variant="outline"
-                    className={`${
-                      selected === false
-                        ? 'h-[40px] w-[150px] rounded-3xl bg-red-600 text-white shadow-lg shadow-red-200'
-                        : 'h-[40px] w-[150px] rounded-3xl border border-gray-300 bg-white text-gray-700 hover:border-red-500 hover:text-red-600'
-                    }`}
+                    disabled={selected === true}
+                    variant="default"
+                    className={
+                      !selected
+                        ? 'h-[40px] rounded-3xl bg-gradient-to-r from-amber-600 to-orange-700 transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 dark:from-amber-700 dark:to-orange-800 dark:hover:shadow-orange-900/20'
+                        : 'h-[40px] rounded-3xl border-2 bg-transparent'
+                    }
                   >
-                    <XCircle className={`mr-2 h-5 w-5 ${selected === false ? 'text-white' : 'text-red-500'}`} />
-                    <span>No</span>
+                    <Edit className={selected ? 'mr-2 h-4 w-4 text-[#AFAFAF]' : 'mr-2 h-4 w-4 text-white'} />
+                    <span className={selected ? 'text-[#AFAFAF]' : 'text-white'}>Editar Destinatario</span>
                   </Button>
-                </TooltipTrigger>
-                <TooltipContent side="top" className="border-red-600 bg-red-600 text-white">
-                  <p>La transferencia no fue realizada al cliente</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <Dialog open={open} onOpenChange={handleOpenChange}>
-              <DialogTrigger asChild>
-                <Button
-                  disabled={selected === true}
-                  variant="default"
-                  className={
-                    !selected
-                      ? 'h-[40px] rounded-3xl bg-gradient-to-r from-amber-600 to-orange-700 transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 dark:from-amber-700 dark:to-orange-800 dark:hover:shadow-orange-900/20'
-                      : 'h-[40px] rounded-3xl border-2 bg-transparent'
-                  }
-                >
-                  <Edit className={selected ? 'mr-2 h-4 w-4 text-[#AFAFAF]' : 'mr-2 h-4 w-4 text-white'} />
-                  <span className={selected ? 'text-[#AFAFAF]' : 'text-white'}>Editar Destinatario</span>
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="duratio n-300 border-gray-300 bg-white transition-all dark:border-gray-700 dark:bg-gray-800/95 sm:max-w-5xl">
-                <ModalEditReciever modal={open} setModal={setOpen} trans={trans} />
-              </DialogContent>
-            </Dialog>
+                </DialogTrigger>
+                <DialogContent className="duratio n-300 border-gray-300 bg-white transition-all dark:border-gray-700 dark:bg-gray-800/95 sm:max-w-5xl">
+                  <ModalEditReciever modal={open} setModal={setOpen} trans={trans} />
+                </DialogContent>
+              </Dialog>
+            </div>
           </div>
         </div>
 
         {selected === true ? (
-          <div className="animate-in fade-in grid grid-cols-1 gap-4 duration-300">
+          <div className="animate-in fade-in grid grid-cols-1 gap-4 bg-white duration-300 dark:bg-[#1F2937]">
             <div className="space-y-2">
               <div className="relative my-5 flex-1">
                 <Input
@@ -402,7 +406,7 @@ const TransferClient = () => {
 
             <Button
               onClick={handleDialogAprove}
-              className="h-11 bg-custom-blue text-white hover:bg-blue-700"
+              className="buttonSecond h-11 w-full rounded-3xl bg-custom-blue text-white hover:bg-blue-700"
               aria-label="Enviar ID de transferencia"
             >
               <span>Enviar</span>
@@ -410,7 +414,7 @@ const TransferClient = () => {
           </div>
         ) : (
           selected === false && (
-            <div className="animate-in fade-in duration-300">
+            <div className="animate-in fade-in bg-white duration-300 dark:bg-[#1F2937]">
               <div className="mt-5">
                 <h1>Emitir el reembolso al Usuario a la cuenta de origen</h1>
 
@@ -525,7 +529,7 @@ const TransferClient = () => {
 
                 <Button
                   onClick={() => setShowConfirmRefund(true)}
-                  className="h-11 w-full bg-custom-blue text-white hover:bg-blue-700"
+                  className="buttonSecond h-11 w-full rounded-3xl bg-custom-blue text-white hover:bg-blue-700"
                   aria-label="Enviar ID de transferencia"
                 >
                   <span>Enviar</span>
