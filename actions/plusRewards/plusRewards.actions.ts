@@ -54,14 +54,12 @@ export async function getPlusRewards(token: string) {
       },
       cache: 'no-store',
     });
-
-    if (!res.ok) {
-      const errorBody = await res.text();
-      console.error('Respuesta no OK:', errorBody);
-      throw new Error('Error al obtener los plus rewards');
-    }
-
     const data = await res.json();
+
+    if (!res.ok || !data?.verification_status) {
+      console.warn('Respuesta no OK:', data);
+      return { verification_status: 'REENVIAR_DATOS' };
+    }
 
     return data;
   } catch (error) {
@@ -69,6 +67,7 @@ export async function getPlusRewards(token: string) {
     return null;
   }
 }
+
 export async function getCardStatus(token: string) {
   try {
     const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/verification/user-validation`, {
@@ -91,5 +90,53 @@ export async function getCardStatus(token: string) {
   } catch (error) {
     console.error('Error en getPlusRewards:', error);
     return null;
+  }
+}
+
+export async function updateVerificationStatus(token: string) {
+  try {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/verification/verification-status`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ status: 'VERIFICADO' }),
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || 'Error al actualizar verificación');
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error('Error al hacer PUT de verificación:', err);
+    throw err;
+  }
+}
+
+export async function resendVerificationAfterRejection(token: string) {
+  try {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/verification/verification-status`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ status: 'RECHAZADO' }),
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || 'Error al actualizar estado a REENVIAR_DATOS');
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error('Error al forzar REENVIAR_DATOS desde RECHAZADO:', err);
+    throw err;
   }
 }

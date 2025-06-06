@@ -45,51 +45,60 @@ const CardPlusModal = ({ setShowModal }: { setShowModal: React.Dispatch<React.Se
       onClick={() => setShowModal(false)}
     >
       <div
-        className="relative mx-2 mt-2 w-full max-w-[896px] overflow-y-auto rounded-2xl bg-[#FFF] px-[9px] pt-[30px] xs:px-[56px]"
+        className="relative mx-2 mt-2 h-[96%] max-h-[720px] w-full max-w-[896px] overflow-y-auto rounded-2xl bg-[#FFF] px-[9px] pt-[30px] dark:bg-[#4b4b4b] xs:px-[56px]"
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          className="absolute right-0 top-0 mr-3 text-[32px]"
+          className="dark:custom-whiteD-900 absolute right-0 top-0 mr-3 text-[32px]"
           onClick={() => {
             setShowModal(false);
           }}
         >
-          X
+          x
         </button>
-        <h1 className="w-full pt-2 text-center text-[36px] font-normal">Más información sobre Plus Rewards</h1>
-        <h3>
-          Fecha de inscripción: <b className="text-[#012A8E]">14 jun 2020</b>
+        <h1 className="mb-4 w-full text-center text-[32px] font-semibold text-lightText dark:text-darkText sm:text-[36px]">
+          Más información sobre Plus Rewards
+        </h1>
+        <h3 className="text-lightText dark:text-darkText">
+          Fecha de inscripción: <b className="text-[#012A8E] dark:text-darkText">14 jun 2020</b>
         </h3>
-        <h3>
-          Recompensas que obtuviste en nov:<b className="text-[#012A8E]"> 5</b>
+        <h3 className="text-lightText dark:text-darkText">
+          Recompensas que obtuviste en nov:<b className="text-[#012A8E] dark:text-darkText"> 5</b>
         </h3>
-        <h3>
-          Recompensas que obtuviste en 2024:<b className="text-[#012A8E]"> 8</b>
+        <h3 className="text-lightText dark:text-darkText">
+          Recompensas que obtuviste en 2024:<b className="text-[#012A8E] dark:text-darkText"> 8</b>
         </h3>
-        <h2 className="my-4 text-[21px] font-normal">Historial de Recompensas</h2>
+        <h2 className="my-4 text-[21px] font-semibold text-lightText dark:text-darkText">Historial de Recompensas</h2>
 
-        <section className="mb-[23px] max-h-[270px] overflow-y-auto rounded-2xl border-2 border-[#012A8E] p-[10px]">
+        <section className="h-[54%] max-h-[450px] overflow-y-auto rounded-2xl border-2 border-[#012A8E] p-[10px] dark:border-darkText md:h-[54%] lg:h-full">
           {objectCard.map((elem, index) => (
             <div key={index} className="overflow-hidden">
-              <p>
+              <p className="text-lightText dark:text-darkText">
                 <b>Cupón de Fidelización: </b>
                 {elem.cupon}
               </p>
-              <p>
+              <p className="text-lightText dark:text-darkText">
                 <b>Fecha de Emisión: </b>
                 {elem.date}
               </p>
-              <p>
+              <p className="text-lightText dark:text-darkText">
                 <b>Tipo: </b>
                 {elem.type}
               </p>
-              <p className="mb-2">
+              <p className="mb-2 text-lightText dark:text-darkText">
                 <b>Fecha de Uso: </b>
                 {elem.dateUse}
               </p>
               {index !== objectCard.length - 1 && (
-                <svg xmlns="http://www.w3.org/2000/svg" width="772" height="2" viewBox="0 0 772 2" fill="none">
-                  <path d="M1 1H771" stroke="#C2D4FF" strokeWidth="2" strokeLinecap="round" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="772"
+                  height="2"
+                  viewBox="0 0 772 2"
+                  fill="none"
+                  className="text-[#C2D4FF] dark:text-[#969696]"
+                >
+                  <path d="M1 1H771" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                 </svg>
               )}
             </div>

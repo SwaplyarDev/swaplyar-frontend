@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 
 import swaplyPlusRewards from '@/public/images/swaplyPlusRewards.png';
@@ -7,55 +9,109 @@ import { PlusRewards } from '@/app/es/(auth)/auth/plus-rewards/page';
 import CardPlusModal from './modals/CardPlusModal';
 import ModalVerify from './modals/ModalVerify';
 import AplicationStateContainer from '@/components/cardsPlusRewardsIntern/SwaplyPlusRewardsComponents/AplicationStateContainer';
-import { getPlusRewards, getCardStatus } from '@/actions/plusRewards/plusRewards.actions';
+import {
+  getPlusRewards,
+  resendVerificationAfterRejection,
+  updateVerificationStatus,
+} from '@/actions/plusRewards/plusRewards.actions';
 import { useSession } from 'next-auth/react';
-import { plusRewardsActions } from '@/actions/plusRewards/plusRewards.actions';
+
+declare module 'next-auth' {
+  interface Session {
+    verification_status?: string;
+  }
+}
+import { useVerificationStore } from '../../store/useVerificationStore';
+import { update } from '@/auth';
 
 const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const [showModal, setShowModal] = useState(false);
   const [showVerify, setShowVerify] = useState(false);
-  const { data: session } = useSession();
-  const [verifiedStatus, setverifiedStatus] = useState('');
+  const [showRejectedMessage, setShowRejectedMessage] = useState(false);
 
+  const { status: verifiedStatus, setStatus, showApprovedMessage, setShowApprovedMessage } = useVerificationStore();
+
+  const { data: session } = useSession();
   const sesionCardTop = session?.accessToken;
-  const sessionCardBlueYellow = session?.user.userVerification;
+  const tokenVerification = session?.user?.userVerification;
+
+  const sessionCardBlueYellow = verifiedStatus === 'APROBADO';
 
   useEffect(() => {
-    if (sesionCardTop) {
-      const fetchRewards = async () => {
-        try {
-          const data = await getPlusRewards(sesionCardTop || '');
+    if (!sesionCardTop) return;
 
-          setverifiedStatus(data.verification_status);
-        } catch (error) {
-          console.error('Error obteniendo plusRewards:', error);
+    const fetchVerificationStatus = async () => {
+      try {
+        const response = await getPlusRewards(sesionCardTop);
+        const backendStatus = response.verification_status;
+        setStatus(backendStatus);
+
+        if (backendStatus === 'RECHAZADO') {
+          if (!localStorage.getItem('verificationRejectedShown')) {
+            setShowRejectedMessage(true);
+            localStorage.setItem('verificationRejectedShown', 'true');
+
+            setTimeout(() => {
+              setShowRejectedMessage(false);
+              setStatus('REENVIAR_DATOS');
+            }, 5000);
+
+            try {
+              resendVerificationAfterRejection(sesionCardTop);
+              await update({});
+              console.log('Token actualizado tras RECHAZADO');
+            } catch (err) {
+              console.error('Error al actualizar token tras RECHAZADO:', err);
+            }
+          }
+          return;
+        } else {
+          localStorage.removeItem('verificationRejectedShown');
         }
-      };
 
-      fetchRewards();
-    }
-  }, [sesionCardTop, sessionCardBlueYellow]);
+        if (backendStatus === 'APROBADO') {
+          if (!localStorage.getItem('verificationApprovedShown')) {
+            setShowApprovedMessage(true);
+            localStorage.setItem('verificationApprovedShown', 'true');
+
+            setTimeout(() => setShowApprovedMessage(false), 5000);
+
+            try {
+              await updateVerificationStatus(sesionCardTop);
+              await update({});
+              console.log('Token actualizado con verificación');
+            } catch (err) {
+              console.error('Error al actualizar token:', err);
+            }
+          }
+        } else {
+          localStorage.removeItem('verificationApprovedShown');
+        }
+      } catch (error) {
+        console.error('Error al obtener el estado de verificación:', error);
+        setStatus('REENVIAR_DATOS');
+      }
+    };
+
+    fetchVerificationStatus();
+  }, [sesionCardTop, setShowApprovedMessage, setStatus, session, tokenVerification]);
 
   return (
     <>
-      {/*<AnimatedBlurredCircles tope="z-10 absolute" />*/}
       {!session && <p>cargando...</p>}
-
-      <AplicationStateContainer verifiedStatus={verifiedStatus} />
-
+      <AplicationStateContainer showRejectedMessage={showRejectedMessage} />
       {showModal && <CardPlusModal setShowModal={setShowModal} />}
       {showVerify && (
         <ModalVerify showVerify={showVerify} setShowVerify={setShowVerify} verifiedStatus={verifiedStatus} />
       )}
-      <div className="relative z-10 mx-auto flex max-w-[500px] flex-col px-5 text-[40px] lg:max-w-[1200px] lg:px-[100px]">
-        <h1 className="mb-10 mt-10 font-textFont font-medium sm:mt-20">SwaplyAr Plus Rewards</h1>
-
-        <div className="relative z-10 mx-auto flex max-w-[1000px] flex-col gap-5 text-[16px] lg:flex-row">
+      <div className="relative z-0 mx-auto mt-14 flex max-w-[500px] flex-col px-5 text-[40px] lg:max-w-[1200px] lg:px-[100px]">
+        <h1 className="mb-4 font-textFont font-medium">SwaplyAr Plus Rewards</h1>
+        <div className="relative z-0 mx-auto flex max-w-[1000px] flex-col gap-5 text-[16px] lg:flex-row">
           <div>
             <p>Consigue beneficios exclusivos cada vez que realices transacciones</p>
             <p>SwaplyAr Plus Rewards.</p>
             <div>
-              <div className="flex flex-col items-center">
+              <div className="mb-4 mt-4 flex flex-col items-center">
                 <Image
                   src={swaplyPlusRewards}
                   alt="swaplyPlusRewards"
@@ -63,12 +119,12 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
                   height={404}
                   className="w-[356px] sm:w-[486px]"
                 />
-                <div className="relative flex w-full flex-col">
+                <div className="relative mt-4 flex w-full flex-col">
                   <p>Fecha de inscripción:  {RewardsData.inscriptionDate}</p>
                   <p>Recompensas que obtuviste en nov: {RewardsData.rewardsPerMonth}</p>
                   <p>Recompensas que obtuviste en 2024: {RewardsData.rewardsPerYear}</p>
                   <p
-                    className="cursor-pointer self-end font-semibold underline"
+                    className="mt-4 cursor-pointer self-end font-semibold underline"
                     onClick={() => setShowModal(!showModal)}
                   >
                     Ver detalles
@@ -77,7 +133,6 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
               </div>
             </div>
           </div>
-
           <div className="relative my-auto items-center">
             <CardPlusRewards
               verifiedStatus={verifiedStatus}
