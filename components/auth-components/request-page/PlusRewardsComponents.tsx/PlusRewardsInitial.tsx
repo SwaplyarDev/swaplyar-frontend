@@ -19,8 +19,6 @@ import { getUserStarsAndAmount } from '@/actions/Discounts/userStarsAndAmount.ac
 interface IProps {
   discounts: IDiscountsObject | null;
   errors: string[];
-  stars: number;
-  amountTransactions: number;
   userVerification: null | true;
   userId: string;
   accessToken: string | undefined;
@@ -33,16 +31,10 @@ interface IStarsAndAmount {
   };
 }
 
-export default async function PlusRewardInitial({
-  discounts,
-  errors,
-  stars,
-  amountTransactions,
-  userVerification,
-  userId,
-  accessToken,
-}: IProps) {
+export default async function PlusRewardInitial({ discounts, errors, userVerification, userId, accessToken }: IProps) {
   const errorsCopy = errors;
+  let stars: number = 0;
+  let amountTransactions: number = 0;
 
   if (errorsCopy[0]) {
     return <ErrorComponent errors={errors} />;

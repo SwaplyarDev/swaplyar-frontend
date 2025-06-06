@@ -17,9 +17,6 @@ export default async function RequestPage() {
   let discountsData: IDiscountsObject | null = null;
   let errors: string[] = [];
 
-  let stars: number = 0;
-  let amountTransactions: number = 0;
-
   if (!session || !session.accessToken) {
     errors.push('No se ha podido obtener el usuario.');
   } else {
@@ -46,8 +43,6 @@ export default async function RequestPage() {
           <PlusRewardSection
             discounts={discountsData}
             errors={errors}
-            stars={stars}
-            amountTransactions={amountTransactions}
             userId={session?.user.id}
             userVerification={session?.user.userVerification}
             accessToken={session?.accessToken}
