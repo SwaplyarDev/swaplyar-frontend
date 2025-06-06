@@ -29,16 +29,16 @@ export function TransactionCard({ transaction, index }: TransactionCardProps) {
   const montoRecibido = `${transaction.amounts.received.amount} ${transaction.amounts.received.currency}`;
 
   return (
-    <Card className="relative overflow-hidden shadow-sm transition-shadow hover:shadow-md dark:!border-[#4b4b4b] dark:bg-[#4b4b4b]">
+    <Card className="relative w-full max-w-[1000px] overflow-hidden rounded-xl border border-gray-200 bg-[#FFFFFB] shadow-sm transition-shadow hover:shadow-md dark:border-[#4b4b4b] dark:bg-[#4b4b4b]">
       <CardContent className="p-0">
         <div className="relative">
-          <div className="flex items-start justify-between p-4">
+          <div className="flex items-center justify-between p-4">
             <div className="flex-1">
               <div className="mb-1 flex items-center justify-between gap-2">
-                <h3 className="text-lg font-semibold">N° de Solicitud</h3>
-
-                <span className="text-xl font-bold dark:text-white">#{transaction.transaction.transaction_id}</span>
-
+                <h3 className="text-xl font-semibold">
+                  N° de Solicitud
+                  <span className="text-xl font-bold dark:text-white"> #{transaction.transaction.transaction_id}</span>
+                </h3>
                 {completada ? (
                   <span className="text-green-500">
                     <Check className="h-5 w-5" />
