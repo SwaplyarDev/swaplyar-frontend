@@ -1,8 +1,4 @@
-'use client';
-
-// Hooks
-import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import auth from '@/auth';
 
 // Actions
 import { getDiscounts } from '@/actions/Discounts/discounts.action';
@@ -10,29 +6,31 @@ import { getDiscounts } from '@/actions/Discounts/discounts.action';
 // Components
 import InternalTransactionCalculator from './InternalTransactionCalculator/InternalTransactionCalculator';
 import PlusRewardSection from './PlusRewardsComponents.tsx/PlusRewardsInitial';
+import { Suspense } from 'react';
 
 // Types
 import { IDiscountsObject } from '@/types/discounts/discounts';
 
-export default function RequestPage() {
-  const { data: session, status } = useSession();
+export default async function RequestPage() {
+  const session = await auth();
 
-  const [discounts, setDiscounts] = useState<IDiscountsObject | null>(null);
+  let discountsData: IDiscountsObject | null = null;
+  let errors: string[] = [];
 
-  useEffect(() => {
-    async function getData() {
-      if (!session?.accessToken) return;
+  let stars: number = 0;
+  let amountTransactions: number = 0;
 
-      try {
-        const discountsData = await getDiscounts(session.accessToken);
-        setDiscounts(discountsData);
-      } catch (error) {
-        console.error('Error al cargar los descuentos:', error);
-      }
+  if (!session || !session.accessToken) {
+    errors.push('No se ha podido obtener el usuario.');
+  } else {
+    try {
+      discountsData = await getDiscounts(session.accessToken);
+    } catch (error) {
+      console.log(error);
+      const errorMessage = 'No se han podido obtener los descuentos del usuario';
+      errors.push(errorMessage);
     }
-
-    getData();
-  }, [session]);
+  }
 
   return (
     <div className="mx-auto mb-24 w-full max-w-[1000px] p-6 xs:mb-0 sm:my-6">
@@ -40,7 +38,21 @@ export default function RequestPage() {
         Envía y recibe dinero de billeteras virtuales y criptomonedas
       </h1>
       <section className="flex flex-col gap-4 lg:flex-row-reverse">
-        <PlusRewardSection discounts={discounts} />
+        <Suspense
+          fallback={
+            <div className="flex h-[331px] w-full animate-pulse items-center justify-center rounded-2xl bg-gray-200 dark:bg-custom-grayD-700 lg:h-[623px]"></div>
+          }
+        >
+          <PlusRewardSection
+            discounts={discountsData}
+            errors={errors}
+            stars={stars}
+            amountTransactions={amountTransactions}
+            userId={session?.user.id}
+            userVerification={session?.user.userVerification}
+            accessToken={session?.accessToken}
+          />
+        </Suspense>
         <InternalTransactionCalculator />
       </section>
     </div>

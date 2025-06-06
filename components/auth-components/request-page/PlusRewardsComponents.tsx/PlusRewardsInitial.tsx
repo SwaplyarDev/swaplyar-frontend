@@ -1,29 +1,29 @@
-'use client';
 // Images
 import { ImagePlusRewards } from '../ImagePlusRewards';
-
-// Hooks
-import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
-
-// Actions
-import { getUserStarsAndAmount } from '@/actions/Discounts/userStarsAndAmount.action';
-import { signOut } from 'next-auth/react';
 
 // Types
 import { IDiscountsObject } from '@/types/discounts/discounts';
 
 // Components
 import VerifyAccount from './VerifyAccount';
-import PopUpSessionExpire from './PopUpSessionExpire';
 import WelcomeReward from './WelcomeReward';
 import UserVerifiedWithoutTransactions from './UserVerifiedWithoutTransactions';
 import UserWinPlusReward from './UserWinPlusReward';
 import AmountTransactions from '../AmountTransactions';
 import UncompleteRewardText from './UncompleteRewardText';
+import ErrorComponent from '../ErrorComponent';
+
+// Actions
+import { getUserStarsAndAmount } from '@/actions/Discounts/userStarsAndAmount.action';
 
 interface IProps {
   discounts: IDiscountsObject | null;
+  errors: string[];
+  stars: number;
+  amountTransactions: number;
+  userVerification: null | true;
+  userId: string;
+  accessToken: string | undefined;
 }
 
 interface IStarsAndAmount {
@@ -33,64 +33,37 @@ interface IStarsAndAmount {
   };
 }
 
-export default function PlusRewardInitial({ discounts }: IProps) {
-  const { data: session, status } = useSession();
+export default async function PlusRewardInitial({
+  discounts,
+  errors,
+  stars,
+  amountTransactions,
+  userVerification,
+  userId,
+  accessToken,
+}: IProps) {
+  const errorsCopy = errors;
 
-  const [stars, setStars] = useState<number>(0);
-  const [amountTransactions, setAmountTransactions] = useState<number>(0);
-  const [errors, setErrors] = useState<string[]>([]);
-
-  useEffect(() => {
-    async function getData() {
-      if (!session?.accessToken) return;
-
-      try {
-        const starsAndAmountData: IStarsAndAmount = await getUserStarsAndAmount(session.accessToken);
-        setStars(Number(starsAndAmountData.data.stars));
-        setAmountTransactions(Number(starsAndAmountData.data.quantity));
-      } catch (error) {
-        console.error('Error al cargar las estrellas y montos de transacciones:', error);
-        setErrors((prevError) => {
-          const errorMessage = 'Error al cargar las estrellas y montos de transacciones.';
-          return prevError.includes(errorMessage) ? prevError : [...prevError, errorMessage];
-        });
-      }
-    }
-
-    getData();
-  }, [session]);
-
-  if (status === 'loading') {
-    return (
-      <div className="flex h-[331px] w-full animate-pulse items-center justify-center rounded-2xl bg-gray-200 dark:bg-custom-grayD-700 lg:h-[623px]"></div>
-    );
+  if (errorsCopy[0]) {
+    return <ErrorComponent errors={errors} />;
   }
 
-  // TODO: mostrar el popup, a los 5seg se hace un logout, cuando sale del popup tambien, o si acepta con un boton
-  // ! No se probó la funcionalidad del popup
-  if (!session || !session.accessToken) {
-    return <PopUpSessionExpire />;
+  try {
+    // El accessToken va a existir porque sino errors[0] tendría algo
+    const starsAndAmountData: IStarsAndAmount = await getUserStarsAndAmount(accessToken!);
+    stars = Number(starsAndAmountData.data.stars);
+    amountTransactions = Number(starsAndAmountData.data.quantity);
+  } catch (error) {
+    console.log(error);
+    const errorMessage = 'Error al cargar las estrellas y montos de transacciones.';
+    errorsCopy.push(errorMessage);
   }
 
-  if (errors.length > 0) {
-    return (
-      <div className="flex h-[331px] w-full flex-col items-center justify-center rounded-2xl bg-gray-100 p-5 dark:bg-custom-grayD-800 lg:h-[623px]">
-        <p className="mb-3 text-base font-semibold xs-mini-phone2:text-lg">Ha ocurrido un error al cargar los datos:</p>
-        {errors.map((error, index) => (
-          <p key={index}>{error}</p>
-        ))}
-        <p className="my-3 text-base font-semibold xs-mini-phone2:text-lg">Por favor vuelva a iniciar sesión</p>
-        <button
-          className="relative max-w-[280px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-[34px] py-2 font-titleFont font-semibold text-white transition-opacity hover:opacity-90 dark:border-darkText dark:bg-darkText dark:text-lightText"
-          onClick={() => signOut()}
-        >
-          Cerrar sesión
-        </button>
-      </div>
-    );
+  if (errorsCopy[0]) {
+    return <ErrorComponent errors={errors} />;
   }
 
-  const isUserVerified: null | true = session?.user.userVerification;
+  const isUserVerified: null | true = userVerification;
 
   // Los descuentos vienen con un campo is_used, pero la api solo devuelve aquellos descuentos que no han sido usados
   const userHave3Discount: undefined | boolean = discounts?.data.some((discount) => discount.discount === '3');
@@ -110,7 +83,7 @@ export default function PlusRewardInitial({ discounts }: IProps) {
           <article className="mb-5 text-end xs-phone:mb-6">
             <p className="align-text-top text-sm xs-mini-phone:text-base">Tu Código de Miembro:</p>
             <p className="title text-3xl font-bold xs-mini-phone:text-[32px] xs-phone:text-[36px] md-phone:text-[40px]">
-              {session.user.id.toUpperCase()}
+              {userId.toUpperCase()}
             </p>
           </article>
         </article>
