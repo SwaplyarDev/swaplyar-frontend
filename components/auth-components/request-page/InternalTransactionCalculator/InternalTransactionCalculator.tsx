@@ -53,6 +53,7 @@ export default function InternalTransactionCalculator() {
   const receiveAmountNum = receiveAmount ? parseFloat(receiveAmount) : 0;
 
   // Todo: Replicar formulario de solicitud, Ver en figma
+  // TODO: Cambiar la ruta
 
   useEffect(() => {
     if (!pass && pathname === '/es/inicio/formulario-de-solicitud') {
@@ -93,6 +94,7 @@ export default function InternalTransactionCalculator() {
       <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight px-[19px] py-[27px] shadow-md dark:bg-calculatorDark dark:text-white lg-tablet:min-w-[500px]">
         <div className="relative mb-[10px] flex w-full max-w-lg flex-col items-center gap-[10px] text-[#012c8a] dark:text-darkText">
           <p className="flex w-full max-w-lg items-center gap-[7px] font-textFont text-lightText dark:text-darkText">
+            {/* // * Esto podría componetizarse */}
             {selectedSendingSystem?.id === 'bank' ? (
               <>
                 <span className="text-[32px]/[150%] font-light">{rateForOneBank.toFixed(2)}</span>
@@ -132,6 +134,7 @@ export default function InternalTransactionCalculator() {
             <p className="font-textFont text-xs font-light xs:text-sm">Información del sistema de recepción</p>
           </SystemInfo>
 
+          {/* // TODO: Hay que agregarle dinamismo para que renderice el valor y los cupones que corresponde */}
           <Coupons balance={20000} />
         </div>
 

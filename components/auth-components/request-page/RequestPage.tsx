@@ -5,7 +5,7 @@ import { getDiscounts } from '@/actions/Discounts/discounts.action';
 
 // Components
 import InternalTransactionCalculator from './InternalTransactionCalculator/InternalTransactionCalculator';
-import PlusRewardSection from './PlusRewardsComponents.tsx/PlusRewardsInitial';
+import PlusRewardsInitial from './PlusRewardsComponents.tsx/PlusRewardsInitial';
 import { Suspense } from 'react';
 
 // Types
@@ -40,7 +40,7 @@ export default async function RequestPage() {
             <div className="flex h-[331px] w-full animate-pulse items-center justify-center rounded-2xl bg-gray-200 dark:bg-custom-grayD-700 lg:h-[623px]"></div>
           }
         >
-          <PlusRewardSection
+          <PlusRewardsInitial
             discounts={discountsData}
             errors={errors}
             userId={session?.user.id}
@@ -48,6 +48,7 @@ export default async function RequestPage() {
             accessToken={session?.accessToken}
           />
         </Suspense>
+        {/* // TODO: Se le deben pasar los errores (si existen) */}
         <InternalTransactionCalculator />
       </section>
     </div>
