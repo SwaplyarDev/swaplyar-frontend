@@ -1,5 +1,9 @@
 import { Button } from '@/components/ui/Button';
 import type { TransactionData } from '../../types/transaction';
+import { getEstadoEspanol } from '../../utils/transactionHelpers';
+import { convertTransactionState } from '@/utils/transactionStatesConverser';
+
+const capitalizar = (texto: string) => texto.charAt(0).toUpperCase() + texto.slice(1);
 
 interface Props {
   transaction: TransactionData;
@@ -31,7 +35,7 @@ export function ExpandedTransactionDetails({
           Estado de la Solicitud
         </div>
         <div className={`text-right text-[14px] font-semibold sm:text-[16px] lg:pr-16 ${colorClase}`}>
-          {transaction.transaction.status}
+          {capitalizar(getEstadoEspanol(convertTransactionState(transaction.transaction.status) ?? 'Desconocido'))}
         </div>
 
         <div className="text-lightBlue text-[16px] font-semibold dark:text-white sm:text-[18px] lg:pl-16">
@@ -84,7 +88,7 @@ export function ExpandedTransactionDetails({
         <div className="text-lightBlue text-[16px] font-semibold dark:text-white sm:text-[18px] lg:pl-16">
           {transaction.payment_method.receiver.details.sender_method_key.toUpperCase()}
         </div>
-        <div className="overflow-x-auto whitespace-nowrap text-right text-[14px] sm:text-[16px] lg:pr-16">
+        <div className="overflow-x-auto whitespace-nowrap text-right text-[14px] sm:overflow-x-visible sm:whitespace-normal sm:text-[16px] lg:pr-16">
           {transaction.payment_method.receiver.details.sender_method_value}
         </div>
 
