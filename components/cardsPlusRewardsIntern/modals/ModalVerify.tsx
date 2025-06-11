@@ -124,7 +124,7 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
             <CardVerify text={'FRENTE'} imgDoc={frontFile} onFileChange={handleFrontFileChange} />
             <div className="hidden sm:block">
               <svg xmlns="http://www.w3.org/2000/svg" width="2" height="112" viewBox="0 0 2 112" fill="none">
-                <path d="M1 1.96301L1 110.037" stroke="#012A8E" stroke-width="2" stroke-linecap="round" />
+                <path d="M1 1.96301L1 110.037" stroke="#012A8E" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </div>
 

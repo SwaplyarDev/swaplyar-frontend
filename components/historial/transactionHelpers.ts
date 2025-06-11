@@ -14,13 +14,17 @@ export const isCompleted = (status: string): boolean => {
 export const getEstadoEspanol = (status: string): string => {
   const statusMap: Record<string, string> = {
     completed: 'Completada',
-    success: 'Completada',
-    done: 'Completada',
+    approved: 'Completada',
+    in_transit: 'En tránsito',
     refund_in_transit: 'Reembolso en tránsito',
     pending: 'Pendiente',
-    failed: 'Fallida',
+    review_payment: 'En revisión de pago',
+    modified: 'Modificada',
+    discrepancy: 'Discrepancia',
     rejected: 'Rechazada',
     cancelled: 'Cancelada',
+    canceled: 'Cancelada',
+    refunded: 'Reembolsada',
   };
 
   return statusMap[status.toLowerCase()] || status;

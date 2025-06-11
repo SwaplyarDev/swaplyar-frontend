@@ -12,12 +12,25 @@ interface PaginationProps {
 }
 
 export function Pagination({ currentPage, totalPages, totalItems, itemsCount, onPageChange }: PaginationProps) {
-  // Eliminamos esta condición para que siempre se muestre la paginación
-  // if (totalPages <= 1) return null;
-
   const goToPage = (page: number) => {
     if (page < 1 || page > totalPages) return;
     onPageChange(page);
+  };
+
+  const getVisiblePages = () => {
+    const pages: number[] = [];
+
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else if (currentPage <= 3) {
+      pages.push(1, 2, 3, 4, 5);
+    } else if (currentPage >= totalPages - 2) {
+      for (let i = totalPages - 4; i <= totalPages; i++) pages.push(i);
+    } else {
+      for (let i = currentPage - 2; i <= currentPage + 2; i++) pages.push(i);
+    }
+
+    return pages.filter((p) => p >= 1 && p <= totalPages);
   };
 
   return (
@@ -33,35 +46,16 @@ export function Pagination({ currentPage, totalPages, totalItems, itemsCount, on
           <ChevronLeft className="h-4 w-4" />
         </Button>
 
-        {/* Mostrar números de página */}
-        {Array.from({ length: Math.min(5, Math.max(1, totalPages)) }, (_, i) => {
-          // Lógica para mostrar páginas alrededor de la actual
-          let pageToShow;
-          if (totalPages <= 5) {
-            pageToShow = i + 1;
-          } else if (currentPage <= 3) {
-            pageToShow = i + 1;
-          } else if (currentPage >= totalPages - 2) {
-            pageToShow = totalPages - 4 + i;
-          } else {
-            pageToShow = currentPage - 2 + i;
-          }
-
-          // Solo mostrar si está en rango
-          if (pageToShow > 0 && pageToShow <= totalPages) {
-            return (
-              <Button
-                key={pageToShow}
-                variant={currentPage === pageToShow ? 'default' : 'outline'}
-                onClick={() => goToPage(pageToShow)}
-                className="h-8 w-8 px-0"
-              >
-                {pageToShow}
-              </Button>
-            );
-          }
-          return null;
-        })}
+        {getVisiblePages().map((page) => (
+          <Button
+            key={page}
+            variant={currentPage === page ? 'default' : 'outline'}
+            onClick={() => goToPage(page)}
+            className="h-8 w-8 px-0"
+          >
+            {page}
+          </Button>
+        ))}
 
         <Button
           variant="outline"
@@ -74,7 +68,6 @@ export function Pagination({ currentPage, totalPages, totalItems, itemsCount, on
         </Button>
       </div>
 
-      {/* Información de paginación */}
       <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
         Mostrando {itemsCount} de {totalItems} transacciones | Página {currentPage} de {Math.max(1, totalPages)}
       </div>

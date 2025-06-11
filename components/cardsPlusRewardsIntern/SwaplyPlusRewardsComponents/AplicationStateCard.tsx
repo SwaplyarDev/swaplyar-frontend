@@ -21,9 +21,9 @@ const AplicationStateCard: React.FC<AplicationProps> = ({ className, text1, text
                 <path
                   d="M5 12L11 6M5 12L11 18M5 12L23 12"
                   stroke={`${colorSVG}`}
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
               <span className="ml-2">Volver al home</span>{' '}

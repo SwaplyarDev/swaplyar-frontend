@@ -27,7 +27,7 @@ export const showStatusAlert = (statuses: { text: string; icon: string }[], isDa
       fill="none"
       class="absolute left-0 transition-all group-hover:left-2"
     >
-      <path d="M5 12L11 6M5 12L11 18M5 12L23 12" stroke="#EBE7E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M5 12L11 6M5 12L11 18M5 12L23 12" stroke="#EBE7E0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   `
     : `
@@ -39,7 +39,7 @@ export const showStatusAlert = (statuses: { text: string; icon: string }[], isDa
       fill="none"
       class="absolute left-0 transition-all group-hover:left-2"
     >
-      <path d="M5 12L11 6M5 12L11 18M5 12L23 12" stroke="#012A8E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M5 12L11 6M5 12L11 18M5 12L23 12" stroke="#012A8E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   `;
 
@@ -87,7 +87,7 @@ export const showStatusAlert = (statuses: { text: string; icon: string }[], isDa
         <button id="close-popup-btn-top" class="absolute top-2 right-5 text-white text-xl">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
             <path d="M30 10L10 30M10 10L30 30" 
-              ${isDark ? `stroke="#EBE7E0" ` : `stroke="#252526" `} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              ${isDark ? `stroke="#EBE7E0" ` : `stroke="#252526" `} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
         <img class="absolute -bottom-28 -right-28 hidden md:block" src="/images/popupRepentance.svg" alt="Avion del popup" />

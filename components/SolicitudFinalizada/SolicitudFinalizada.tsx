@@ -68,7 +68,7 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
       fill="none"
       class="absolute left-0 transition-all group-hover:left-2"
     >
-      <path d="M5 12L11 6M5 12L11 18M5 12L23 12" stroke="#EBE7E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M5 12L11 6M5 12L11 18M5 12L23 12" stroke="#EBE7E0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   `
       : `
@@ -80,7 +80,7 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
       fill="none"
       class="absolute left-0 transition-all group-hover:left-2"
     >
-      <path d="M5 12L11 6M5 12L11 18M5 12L23 12" stroke="#012A8E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M5 12L11 6M5 12L11 18M5 12L23 12" stroke="#012A8E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   `;
 
