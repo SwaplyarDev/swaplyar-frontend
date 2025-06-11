@@ -6,6 +6,7 @@ type ButtonCustomProps = {
   title: string;
   onClick?: () => void;
   verifiedStatus: string;
+  disabled?: boolean;
 };
 
 export const ButtonCustom: React.FC<ButtonCustomProps> = ({
@@ -14,14 +15,15 @@ export const ButtonCustom: React.FC<ButtonCustomProps> = ({
   className,
   title,
   onClick,
+  disabled = false,
 }) => {
-  const isDisabled = verifiedStatus === 'pendiente';
+  const isDisabled = verifiedStatus === 'PENDIENTE';
   return (
     <div
       className={`${className} ${isDisabled ? 'cursor-no-drop bg-buttonExpandDark' : 'bg-buttonsLigth'}`}
       onClick={!isDisabled ? (onClick ?? (() => setShowVerify?.(true))) : undefined}
     >
-      <button type="button" className={` ${isDisabled && 'cursor-no-drop'}`} disabled={isDisabled}>
+      <button type="button" className={` ${isDisabled && 'cursor-no-allowed'}`} disabled={isDisabled}>
         {title}
       </button>
     </div>
