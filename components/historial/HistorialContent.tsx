@@ -1,6 +1,6 @@
 'use client';
 
-import { useTransactions } from '@/components/historial/useTransactions';
+import { useTransactions } from '@/hooks/useTransactions';
 import { TransactionCard } from '@/components/historial/transactionCard';
 import { Pagination } from '@/components/historial/pagination';
 import { LoadingState } from '@/components/historial/loadingState';

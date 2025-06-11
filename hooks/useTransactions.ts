@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { getSession } from 'next-auth/react';
-import type { TransactionData } from './transaction';
+import type { TransactionData } from '../types/transaction';
 
 interface Pagination {
   currentPage: number;

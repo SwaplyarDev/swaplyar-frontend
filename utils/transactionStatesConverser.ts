@@ -12,13 +12,6 @@ const TransactionStates = {
   completed: '11',
 } as const;
 
-interface ComponentStatesType {
-  aprooveReject: 'stop' | 'accepted' | 'canceled' | null;
-  confirmTransButton: boolean | null;
-  discrepancySection: boolean;
-  transferRealized: boolean;
-}
-
 type TransactionStateKeys = keyof typeof TransactionStates;
 type TransactionStateValues = (typeof TransactionStates)[TransactionStateKeys];
 

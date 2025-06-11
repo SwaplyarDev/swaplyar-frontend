@@ -68,9 +68,9 @@ export function Pagination({ currentPage, totalPages, totalItems, itemsCount, on
         </Button>
       </div>
 
-      <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
+      <p className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
         Mostrando {itemsCount} de {totalItems} transacciones | Página {currentPage} de {Math.max(1, totalPages)}
-      </div>
+      </p>
     </>
   );
 }
