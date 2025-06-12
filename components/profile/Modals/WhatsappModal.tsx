@@ -6,10 +6,10 @@ import { Controller, useForm, useWatch } from 'react-hook-form';
 import { useWhatsAppFormStore } from '../store/WhatsAppFormStore';
 import { CountryOption } from '@/types/request/request';
 
-type WhatsappVerificationProps = {
+interface WhatsappVerificationProps {
   show: boolean;
   setShow: (arg: boolean) => void;
-};
+}
 
 interface FormData {
   phone: string;

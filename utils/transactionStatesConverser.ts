@@ -1,21 +1,16 @@
 const TransactionStates = {
-  PENDING: '1',
-  REVIEW_PAYMENT: '2',
-  IN_TRANSIT: '3',
-  MODIFIED: '4',
-  DISCREPANCY: '5',
-  canceled: '6',
-  REFUNDED: '7',
-  COMPLETED: '8',
-  CANCELED: '9',
+  pending: '1',
+  review_payment: '2',
+  approved: '3',
+  rejected: '4',
+  refund_in_transit: '5',
+  in_transit: '6',
+  discrepancy: '7',
+  canceled: '8',
+  modified: '9',
+  refunded: '10',
+  completed: '11',
 } as const;
-
-interface ComponentStatesType {
-  aprooveReject: 'stop' | 'accepted' | 'canceled' | null;
-  confirmTransButton: boolean | null;
-  discrepancySection: boolean;
-  transferRealized: boolean;
-}
 
 type TransactionStateKeys = keyof typeof TransactionStates;
 type TransactionStateValues = (typeof TransactionStates)[TransactionStateKeys];
@@ -28,26 +23,31 @@ interface ComponentStates {
 }
 
 const stateToNumberMap: Record<string, TransactionStateValues> = {
-  pending: TransactionStates.PENDING,
-  review_payment: TransactionStates.REVIEW_PAYMENT,
-  in_transit: TransactionStates.IN_TRANSIT,
-  modified: TransactionStates.MODIFIED,
-  discrepancy: TransactionStates.DISCREPANCY,
-  canceled: TransactionStates.CANCELED,
-  refunded: TransactionStates.REFUNDED,
-  completed: TransactionStates.COMPLETED,
+  pending: TransactionStates.pending,
+  review_payment: TransactionStates.review_payment,
+  aproved: TransactionStates.approved,
+  rejected: TransactionStates.rejected,
+  refund_in_transit: TransactionStates.refund_in_transit,
+  in_transit: TransactionStates.in_transit,
+  discrepancy: TransactionStates.discrepancy,
+  canceled: TransactionStates.canceled,
+  modified: TransactionStates.modified,
+  refunded: TransactionStates.refunded,
+  completed: TransactionStates.completed,
 };
 
 const numberToStateMap: Record<TransactionStateValues, string> = {
   '1': 'pending',
   '2': 'review_payment',
-  '3': 'in_transit',
-  '4': 'modified',
-  '5': 'discrepancy',
-  '6': 'canceled',
-  '7': 'refunded',
-  '8': 'completed',
-  '9': 'canceled',
+  '3': 'approved',
+  '4': 'rejected',
+  '5': 'refund_in_transit',
+  '6': 'in_transit',
+  '7': 'discrepancy',
+  '8': 'canceled',
+  '9': 'modified',
+  '10': 'refunded',
+  '11': 'completed',
 };
 
 export const convertTransactionState = (value: string | undefined): string | undefined => {
@@ -63,60 +63,82 @@ export const convertTransactionState = (value: string | undefined): string | und
 export const getComponentStatesFromStatus = (value: string | undefined): ComponentStates => {
   if (value) {
     switch (value) {
-      case '1': // PENDING
+      case '1':
         return {
           aprooveReject: null,
           confirmTransButton: false,
           discrepancySection: null,
           transferRealized: false,
         };
-
-      case '6': // canceled
+      case '2':
+        return {
+          aprooveReject: 'stop',
+          confirmTransButton: true,
+          discrepancySection: null,
+          transferRealized: false,
+        };
+      case '3':
+        return {
+          aprooveReject: 'accepted',
+          confirmTransButton: false,
+          discrepancySection: null,
+          transferRealized: false,
+        };
+      case '4':
         return {
           aprooveReject: 'canceled',
           confirmTransButton: false,
           discrepancySection: null,
           transferRealized: false,
         };
-
-      case '5': // DISCREPANCY
+      case '5':
         return {
-          aprooveReject: 'stop',
-          confirmTransButton: true,
+          aprooveReject: null,
+          confirmTransButton: false,
           discrepancySection: null,
           transferRealized: false,
         };
-
-      case '2': // REVIEW_PAYMENT
+      case '6':
         return {
-          aprooveReject: 'stop',
-          confirmTransButton: true,
+          aprooveReject: null,
+          confirmTransButton: false,
           discrepancySection: null,
           transferRealized: false,
         };
-
-      case '3': // IN_TRANSIT
+      case '7':
         return {
-          aprooveReject: 'accepted',
-          confirmTransButton: true,
+          aprooveReject: null,
+          confirmTransButton: false,
+          discrepancySection: true,
+          transferRealized: false,
+        };
+      case '8':
+        return {
+          aprooveReject: 'canceled',
+          confirmTransButton: false,
           discrepancySection: null,
           transferRealized: false,
         };
-
-      case '8': // COMPLETED
+      case '9':
         return {
-          aprooveReject: 'accepted',
-          confirmTransButton: true,
+          aprooveReject: null,
+          confirmTransButton: false,
+          discrepancySection: null,
+          transferRealized: false,
+        };
+      case '10':
+        return {
+          aprooveReject: null,
+          confirmTransButton: false,
           discrepancySection: null,
           transferRealized: true,
         };
-
-      default:
+      case '11':
         return {
           aprooveReject: null,
-          confirmTransButton: null,
+          confirmTransButton: false,
           discrepancySection: null,
-          transferRealized: false,
+          transferRealized: true,
         };
     }
   }
