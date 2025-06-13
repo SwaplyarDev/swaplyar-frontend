@@ -11,6 +11,7 @@ export async function getUserStarsAndAmount(token: string) {
       },
     });
     if (!response.ok) {
+      console.error('Error en respuesta del backend:', response.status, await response.text());
       throw new Error('Failed to fetch data');
     }
 

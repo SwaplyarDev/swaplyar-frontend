@@ -43,6 +43,7 @@ export default async function PlusRewardInitial({ discounts, errors, userVerific
   try {
     // El accessToken va a existir porque sino errors[0] tendría algo
     const starsAndAmountData: IStarsAndAmount = await getUserStarsAndAmount(accessToken!);
+
     stars = Number(starsAndAmountData.data.stars);
     amountTransactions = Number(starsAndAmountData.data.quantity);
   } catch (error) {
