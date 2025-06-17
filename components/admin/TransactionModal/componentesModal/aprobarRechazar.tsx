@@ -5,7 +5,7 @@ import type React from 'react';
 import { useState, useEffect } from 'react';
 import { useTransactionStore } from '@/store/transactionModalStorage';
 import Swal from 'sweetalert2';
-import { CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
+import { CheckCircle, XCircle, AlertTriangle, Loader2 } from 'lucide-react';
 import { TransactionService } from './ui/TransactionService';
 import DiscrepancySection from './DiscrepancySection';
 import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
@@ -21,8 +21,8 @@ import { useSession } from 'next-auth/react';
 import MessageWpp from './ui/MessageWpp';
 import { Dialog } from '@radix-ui/react-dialog';
 import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/Dialog';
-import ServerErrorModal from '../../ModalErrorServidor/ModalErrorSevidor';
 import clsx from 'clsx';
+import ServerErrorModal from '../../ModalErrorServidor/ModalErrorSevidor';
 
 interface AprobarRechazarProps {
   selected: 'stop' | 'accepted' | 'canceled' | null;
@@ -54,7 +54,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
 
   const [openModalReject, setOpenModalReject] = useState(false);
   const [openModalRejectResponse, setOpenModalRejectResponse] = useState(false);
-  const [modalServidor, setModalServidor] = useState(true);
+  const [modalServidor, setModalServidor] = useState(false);
 
   useEffect(() => {
     if (componentStates.confirmTransButton === false && selected !== 'canceled') {
@@ -69,19 +69,29 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
     if (!rejectionReason.trim()) return;
 
     try {
+      setLoading(true);
       const response = await acceptReject();
-      setApiResponse(response);
-      setOpenModalReject(false);
-      setOpenModalRejectResponse(true);
+      if (!response) {
+        setLoading(false);
+        setModalServidor(true);
+        setOpenModalReject(false);
+      } else {
+        setLoading(false);
+        setApiResponse(response);
+        setOpenModalReject(false);
+        setOpenModalRejectResponse(true);
+      }
     } catch (error: any) {
       console.error('Error al rechazar la transacción:', error);
+      setLoading(false);
       setApiResponse(null);
       setOpenModalReject(false);
       setOpenModalRejectResponse(true);
+      setModalServidor(true);
     }
   };
 
- const acceptReject = async () => {
+  const acceptReject = async () => {
     const response = await TransactionService('canceled', transId, {
       descripcion: rejectionReason,
     });
@@ -222,7 +232,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
 
                 <Button
                   onClick={() => setOpenModalReject(true)}
-                  className="h-11 bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20"
+                  className="h-11 rounded-3xl bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20"
                   aria-label="Enviar ID de transferencia"
                 >
                   <span>Enviar</span>
@@ -266,6 +276,8 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
         )}
       </div>
 
+      {modalServidor && <ServerErrorModal isOpen={modalServidor} onClose={() => setModalServidor(false)} />}
+
       <Dialog open={openModalReject} onOpenChange={setOpenModalReject}>
         <DialogContent className="border border-gray-300 bg-white text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
           <DialogHeader>
@@ -276,9 +288,9 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
           </div>
           <DialogFooter className="mt-4 sm:justify-center">
             <Button onClick={handleSubmitRejection} className="bg-red-600 text-white">
-              <span>Enviar</span>
+              <span>{loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Enviar'}</span>
             </Button>
-            <Button className="text-white" onClick={() => setOpenModalReject(false)}>
+            <Button className="text-white" onClick={() => setOpenModalReject(false)} disabled={loading}>
               <span>Cancelar</span>
             </Button>
           </DialogFooter>
@@ -298,7 +310,9 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
             </p>
           </div>
           <DialogFooter className="mt-4 sm:justify-center">
-            <Button onClick={() => setOpenModalRejectResponse(false)}>Cerrar</Button>
+            <Button className="bg-blue-700" onClick={() => setOpenModalRejectResponse(false)}>
+              Cerrar
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

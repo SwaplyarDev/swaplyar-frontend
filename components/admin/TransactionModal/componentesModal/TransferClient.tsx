@@ -3,7 +3,18 @@
 import type React from 'react';
 
 import { useState } from 'react';
-import { CheckCircle, XCircle, Upload, LinkIcon, DollarSign, FileText, Send, Trash2, Edit } from 'lucide-react';
+import {
+  CheckCircle,
+  XCircle,
+  Upload,
+  LinkIcon,
+  DollarSign,
+  FileText,
+  Send,
+  Trash2,
+  Edit,
+  Loader2,
+} from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
@@ -29,6 +40,7 @@ import { useSession } from 'next-auth/react';
 import ModalEditReciever from './ModalEditReciever/ModalEditReciever';
 import { useTransactionStore } from '@/store/transactionModalStorage';
 import ServerErrorModal from '../../ModalErrorServidor/ModalErrorSevidor';
+import { set } from 'date-fns';
 
 interface Form {
   transfer_id: string;
@@ -141,8 +153,14 @@ const TransferClient = () => {
         const response = await updateTransactionStatus('rejected', transId, {
           descripcion: rejectionReason,
         });
+
+        if (!response) {
+          setModalServer(true);
+          setShowConfirmDialog(false);
+        }
       } catch (error) {
-        throw new Error(`❌ Error en la respuesta del servicio`);
+        setModalServer(true);
+        setShowConfirmDialog(false);
       }
       return;
     }
@@ -158,12 +176,19 @@ const TransferClient = () => {
         descripcion: rejectionReason,
       });
 
-      setShowConfirmDialog(false);
-      setIsLoading(false);
+      if (!response) {
+        setModalServer(true);
+        setIsLoading(false);
+        setShowConfirmDialog(false);
+      } else {
+        setShowConfirmDialog(false);
+        setIsLoading(false);
+      }
     } catch (error) {
       console.log('Error al rechazar la transacción:', error);
       setIsLoading(false);
       setShowConfirmDialog(false);
+      setModalServer(true);
     }
   };
 
@@ -185,10 +210,15 @@ const TransferClient = () => {
         amount: Number(form.amount),
       });
       const responseFile = await uploadTransactionReceipt(formData);
-      setIsLoading(false);
+
+      if (!response || !responseFile) {
+        setModalServer(true);
+      } else {
+        setIsLoading(false);
+      }
     } catch (error) {
       setIsLoading(false);
-      throw new Error(`❌ Error en la respuesta del servicio`);
+      setModalServer(true);
     }
   };
   const handleDialogAprove = () => {
@@ -204,6 +234,7 @@ const TransferClient = () => {
     try {
       if (!formRefund.file) return null;
 
+      setIsLoading(true);
       const formData = new FormData();
 
       formData.append('file', formRefund.file);
@@ -225,11 +256,17 @@ const TransferClient = () => {
         body: formData,
       });
 
-      setModalResponse(true);
+      if (!response || !responseFile.ok) {
+        setIsLoading(false);
+        setModalServer(true);
+      } else {
+        setIsLoading(false);
+        setModalResponse(true);
+      }
     } catch (error) {
+      setIsLoading(false);
       setModalError(false);
       setModalServer(true);
-      throw new Error(`❌ Error en la respuesta del servicio ${error}`);
     }
   };
 
@@ -251,7 +288,7 @@ const TransferClient = () => {
                   <Button
                     onClick={() => setSelected(true)}
                     variant="outline"
-                    className={`${
+                    className={`rounded-3xl ${
                       selected === true
                         ? 'bg-green-600 text-white shadow-lg shadow-green-200'
                         : 'border border-gray-300 bg-white text-gray-700 hover:border-green-500 hover:text-green-600'
@@ -271,7 +308,7 @@ const TransferClient = () => {
                   <Button
                     onClick={() => setSelected(false)}
                     variant="outline"
-                    className={`${
+                    className={`rounded-3xl ${
                       selected === false
                         ? 'bg-red-600 text-white shadow-lg shadow-red-200'
                         : 'border border-gray-300 bg-white text-gray-700 hover:border-red-500 hover:text-red-600'
@@ -293,7 +330,7 @@ const TransferClient = () => {
                   variant="default"
                   className={
                     !selected
-                      ? 'bg-gradient-to-r from-amber-600 to-orange-700 transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 dark:from-amber-700 dark:to-orange-800 dark:hover:shadow-orange-900/20'
+                      ? 'rounded-3xl bg-gradient-to-r from-amber-600 to-orange-700 transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 dark:from-amber-700 dark:to-orange-800 dark:hover:shadow-orange-900/20'
                       : 'border-2 bg-transparent'
                   }
                 >
@@ -403,7 +440,7 @@ const TransferClient = () => {
 
             <Button
               onClick={handleDialogAprove}
-              className="h-11 bg-custom-blue text-white hover:bg-blue-700"
+              className="h-11 rounded-3xl bg-custom-blue text-white hover:bg-blue-700"
               aria-label="Enviar ID de transferencia"
             >
               <span>Enviar</span>
@@ -526,7 +563,7 @@ const TransferClient = () => {
 
                 <Button
                   onClick={() => setShowConfirmRefund(true)}
-                  className="h-11 w-full bg-custom-blue text-white hover:bg-blue-700"
+                  className="h-11 w-full rounded-3xl bg-custom-blue text-white hover:bg-blue-700"
                   aria-label="Enviar ID de transferencia"
                 >
                   <span>Enviar</span>
@@ -571,7 +608,7 @@ const TransferClient = () => {
                 disabled={isLoading}
                 className="dark:bg-red-700 dark:hover:bg-red-800"
               >
-                {isLoading ? 'Procesando...' : 'Confirmar rechazo'}
+                {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Confirmar rechazo'}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -592,7 +629,7 @@ const TransferClient = () => {
                 disabled={isLoading}
                 className="dark:bg-red-700 dark:hover:bg-red-800"
               >
-                {isLoading ? 'Procesando...' : 'Confirmar solicitud'}
+                {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Confirmar solicitud'}
               </Button>
               <Button
                 variant="outline"
@@ -627,7 +664,7 @@ const TransferClient = () => {
                 disabled={isLoading}
                 className="dark:bg-red-700 dark:hover:bg-red-800"
               >
-                {isLoading ? 'Procesando...' : 'Confirmar reembolso'}
+                {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Confirmar reembolso'}
               </Button>
               <Button
                 variant="outline"

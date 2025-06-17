@@ -16,11 +16,12 @@ import { Label } from '@/components/ui/Label';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip';
 import { cn } from '@/lib/utils';
 import { Check, Upload } from '@mui/icons-material';
-import { AlertCircle, CheckCircle, LinkIcon, Send, Trash2, XCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle, LinkIcon, Loader2, Send, Trash2, XCircle } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import ServerErrorModal from '../../ModalErrorServidor/ModalErrorSevidor';
 import { TransactionService } from './ui/TransactionService';
+import { set } from 'date-fns';
 
 interface DiscrepancySectionProps {
   trans: any;
@@ -55,6 +56,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
     file: null,
   });
 
+  const [isLoading, setIsLoading] = useState(false);
   const [showRequiredDialog, setShowRequiredDialog] = useState(false);
   const [showConfirmDiscrepancyDialog, setShowConfirmDiscrepancyDialog] = useState(false);
   const [showSuccessDiscrepancyDialog, setShowSuccessDiscrepancyDialog] = useState(false);
@@ -145,12 +147,20 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
   };
 
   const confirmDiscrepancy = async () => {
-    setShowConfirmDiscrepancyDialog(false);
-    setShowSuccessDiscrepancyDialog(true);
     try {
+      setIsLoading(true);
       const response = await TransactionService('discrepancy', transaction.transaction_id, {
         descripcion: discrepancyReason,
       });
+      if (!response) {
+        setIsLoading(false);
+        setShowConfirmDiscrepancyDialog(false);
+        setModalServidor(true);
+      } else {
+        setIsLoading(false);
+        setShowConfirmDiscrepancyDialog(false);
+        setShowSuccessDiscrepancyDialog(true);
+      }
     } catch (error) {
       console.log('Error al enviar el motivo de discrepancia:', error);
       setModalServidor(true);
@@ -172,6 +182,9 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
   const handleSendRefound = async () => {
     try {
       if (!form.file) return null;
+
+      setIsLoading(true);
+
       const formData = new FormData();
       formData.append('file', form.file);
       formData.append('transaction_id', transaction.transaction_id);
@@ -191,7 +204,13 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
         },
         body: formData,
       });
+
+      if (!response || !responseFile) {
+        setIsLoading(false);
+        setModalServidor(true);
+      }
     } catch (error) {
+      setIsLoading(false);
       setShowConfirmResolutionDialog(false);
       setModalServidor(true);
     }
@@ -200,6 +219,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
   const transferDiscrepancyResolved = async () => {
     try {
       if (!resolutionForm.file) return null;
+      setIsLoading(true);
 
       const formData = new FormData();
       formData.append('file', resolutionForm.file);
@@ -213,7 +233,10 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
         amount: Number(resolutionForm.amount),
       });
 
-      if (!response || response.error) throw new Error('Error al actualizar transacción');
+      if (!response || response.error) {
+        setIsLoading(false);
+        setModalServidor(true);
+      }
 
       const responseFile = await fetch(`http://localhost:8080/api/v1/admin/transactions/voucher`, {
         method: 'POST',
@@ -225,10 +248,12 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
 
       if (!responseFile.ok) {
         const errorData = await responseFile.json();
-        throw new Error(`Error al subir el comprobante: ${errorData}`);
+        setIsLoading(false);
+        setModalServidor(true);
       }
     } catch (error) {
       console.error('Error en transferDiscrepancyResolved:', error);
+      setIsLoading(false);
       setShowConfirmResolutionDialog(false);
       setModalServidor(true);
     }
@@ -262,7 +287,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                   <Button
                     disabled={discrepancyReason.length === 0}
                     onClick={handleSubmitDiscrepancy}
-                    className="h-10 bg-amber-500 text-white hover:bg-amber-600"
+                    className="h-10 rounded-3xl bg-amber-500 text-white hover:bg-amber-600"
                   >
                     <Send className="mr-2 h-4 w-4" />
                     <span>Enviar</span>
@@ -286,7 +311,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                         <Button
                           onClick={() => setResolved(true)}
                           variant={resolved === true ? 'default' : 'outline'}
-                          className={`relative transition-all duration-300 ${
+                          className={`relative rounded-3xl transition-all duration-300 ${
                             resolved === true
                               ? 'bg-green-600 text-white hover:bg-green-700'
                               : 'hover:border-green-500 hover:text-green-600'
@@ -310,7 +335,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                         <Button
                           onClick={() => setResolved(false)}
                           variant={resolved === false ? 'destructive' : 'outline'}
-                          className={`relative transition-all duration-300 ${
+                          className={`relative rounded-3xl transition-all duration-300 ${
                             resolved === false
                               ? 'bg-red-500 text-white hover:bg-red-600'
                               : 'hover:border-red-500 hover:text-red-600'
@@ -453,7 +478,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
 
                       <Button
                         onClick={() => setShowConfirmResolutionDialog(true)}
-                        className="h-11 w-full bg-custom-blue text-white hover:bg-blue-700"
+                        className="h-11 w-full rounded-3xl bg-custom-blue text-white hover:bg-blue-700"
                         aria-label="Enviar ID de transferencia"
                       >
                         <span>Enviar</span>
@@ -590,7 +615,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
 
                       <Button
                         onClick={() => setShowConfirmRefund(true)}
-                        className="h-11 w-full bg-custom-blue text-white hover:bg-blue-700"
+                        className="h-11 w-full rounded-3xl bg-custom-blue text-white hover:bg-blue-700"
                         aria-label="Enviar ID de transferencia"
                       >
                         <span>Enviar</span>
@@ -640,12 +665,13 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
               onClick={confirmDiscrepancy}
               className="bg-[rgb(1,42,142)] text-white hover:bg-[rgb(1,32,112)] dark:bg-blue-900 dark:hover:bg-blue-950"
             >
-              Confirmar
+              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Confirmar'}
             </Button>
             <Button
               variant="outline"
               onClick={() => setShowConfirmDiscrepancyDialog(false)}
               className="text-gray-600 dark:border-gray-500 dark:text-gray-300"
+              disabled={isLoading}
             >
               Cancelar
             </Button>
@@ -695,6 +721,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
               variant="outline"
               onClick={() => setShowConfirmResolutionDialog(false)}
               className="text-gray-600 dark:border-gray-500 dark:text-gray-300"
+              disabled={isLoading}
             >
               Cancelar
             </Button>
@@ -720,12 +747,13 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
 
           <DialogFooter className="flex gap-2 sm:justify-end">
             <Button variant="destructive" onClick={handleSendRefound} className="dark:bg-red-700 dark:hover:bg-red-800">
-              Confirmar reembolso
+              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Confirmar reembolso'}
             </Button>
             <Button
               variant="outline"
               onClick={() => setShowConfirmRefund(false)}
               className="dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700/50"
+              disabled={isLoading}
             >
               Cancelar
             </Button>
