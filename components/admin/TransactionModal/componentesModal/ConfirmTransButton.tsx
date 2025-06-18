@@ -60,6 +60,7 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
 
   const handleConfirmSubmit = () => {
     setIsSubmittingLocal(true);
+    setShowConfirmModal(false);
 
     submit(
       'review_payment',
@@ -70,8 +71,8 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
         setIsSubmitting(isSubmitting);
       },
       (error: string | null) => {
-        setSubmitError(error);
         setIsSubmittingLocal(false);
+        setSubmitError(error);
         if (error) {
           setErrorMessage(error);
           setSubmitResult(false);
@@ -79,27 +80,22 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
         }
       },
       (success: boolean) => {
-        setSubmitSuccess(success);
         setIsSubmittingLocal(false);
-        setShowConfirmModal(false);
+        setSubmitSuccess(success);
 
-        setTimeout(() => {
+        if (success) {
           setSubmitResult(true);
           setShowResultModal(true);
-
-          if (success) {
-            setTransferId('');
-          }
-        }, 300);
+          setTransferId('');
+        }
       },
     );
   };
 
   const handleResultModalClose = () => {
     setShowResultModal(false);
-    if (submitResult) {
-      setTransferId('');
-    }
+    setSubmitResult(null);
+    setErrorMessage('');
   };
 
   const handleClick = (newValue: boolean) => {
@@ -211,7 +207,11 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
 
                 <Button
                   ref={sendButtonRef}
-                  onClick={handleSubmitTransferId}
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleSubmitTransferId();
+                  }}
                   className="buttonSecond h-11 rounded-3xl bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20"
                   aria-label="Enviar ID de transferencia"
                 >
