@@ -2,6 +2,8 @@
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+// Falta integracion con back 2
+
 export async function plusRewardsActions(formData: FormData, token: string) {
   try {
     const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/verification/upload`, {

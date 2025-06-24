@@ -11,6 +11,8 @@ interface Pagination {
   perPage: number;
 }
 
+// Falta integracion con back 2
+
 export function useTransactions(initialPage = 1) {
   const [transactions, setTransactions] = useState<TransactionData[]>([]);
   const [loading, setLoading] = useState(true);

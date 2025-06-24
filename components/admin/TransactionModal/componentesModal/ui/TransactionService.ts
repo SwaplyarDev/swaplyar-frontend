@@ -1,5 +1,5 @@
 import { updateTransactionStatus } from '@/actions/transactions/transaction-status.action';
-import { getStatusTransactionAdmin, updateStatusClient } from '@/actions/transactions/transactions.action';
+import { getStatusTransactionAdmin } from '@/actions/transactions/transactions.action';
 
 interface TransactionServiceResponse {
   newStatus: string;
@@ -16,7 +16,10 @@ export const TransactionService = async (
       throw new Error('Datos inválidos');
     }
 
-    const response = await updateTransactionStatus(status, transId, payload);
+    const response = await updateTransactionStatus(status, {
+      transactionId: transId,
+      ...payload,
+    });
 
     if (response.success === false) {
       console.error('❌ Error al actualizar el estado:', response.error);

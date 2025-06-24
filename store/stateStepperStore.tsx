@@ -219,7 +219,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
 
     console.log(' payload: ', formDataPayload);
     try {
-      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions`, {
+      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/transactions`, {
         method: 'POST',
         body: formDataPayload,
       });
@@ -245,7 +245,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       email: stepOne.email,
       phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
     };
-
+    // Falta integracion con el backend 2
     try {
       const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/canceled_transactions`, {
         method: 'POST',
@@ -275,7 +275,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       email: stepOne.email,
       phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
     };
-
+    // Falta integracion con el backend 2
     try {
       const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/canceled_transactions/${id}`, {
         method: 'PUT',

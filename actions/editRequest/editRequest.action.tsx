@@ -17,6 +17,8 @@ interface TransactionData {
 }
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+// Falta integracion con back 2
+
 export const fetchTransactionById = async (requestData: TransactionRequestData): Promise<any> => {
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/code/${requestData.transaccionId}`, {
@@ -87,6 +89,7 @@ export const resendCodeAction = async (transactionId: string) => {
   }
 };
 
+// Este si esta integrado con el backend 2
 export const sendFormData = async ({ message, file, transaccionId }: sendeForm): Promise<any> => {
   try {
     if (!message) {
@@ -101,7 +104,7 @@ export const sendFormData = async ({ message, file, transaccionId }: sendeForm):
       formData.append('file', file);
     }
 
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/${transaccionId}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/notes/${transaccionId}`, {
       method: 'POST',
       body: formData,
     });

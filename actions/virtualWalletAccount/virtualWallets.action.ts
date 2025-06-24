@@ -4,7 +4,7 @@ const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export async function createWalletAccount(data: any, token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/users/accounts`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/users/accounts`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ export async function createWalletAccount(data: any, token: string) {
 
 export async function getMyWalletAccounts(token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/users/accounts`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/users/accounts`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -74,6 +74,7 @@ export async function getMyWalletAccounts(token: string) {
   }
 }
 
+// Falta integracion con back 2
 export async function getMyWalletAccountById(accountId: string, token: string) {
   try {
     const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/users/accounts/${accountId}`, {
@@ -106,6 +107,7 @@ export async function getMyWalletAccountById(accountId: string, token: string) {
   }
 }
 
+// Falta integracion con back 2
 export async function getUserWalletAccounts(userId: string, token: string) {
   try {
     const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/users/${userId}/accounts`, {
@@ -138,6 +140,7 @@ export async function getUserWalletAccounts(userId: string, token: string) {
   }
 }
 
+// Falta integracion con back 2
 export async function getUserWalletAccountById(userId: string, accountId: string, token: string) {
   try {
     const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/users/${userId}/accounts/${accountId}`, {
@@ -170,6 +173,7 @@ export async function getUserWalletAccountById(userId: string, accountId: string
   }
 }
 
+// Falta integracion con back 2
 export async function deleteWalletAccount1(accountId: string, token: string, typeAccount: string) {
   const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/users/accounts/delete/${accountId}`, {
     method: 'DELETE',

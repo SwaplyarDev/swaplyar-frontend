@@ -12,6 +12,8 @@ import { PopUp } from '../PopUp/PopUp';
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+// Falta integracion con back 2
+
 const ContactForm = () => {
   const { data: session, status } = useSession();
   const {

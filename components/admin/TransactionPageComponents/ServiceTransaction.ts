@@ -35,9 +35,12 @@ export async function GetTransactionStatusHistory(transactionId: string) {
 /**
  * Actualiza el estado de una transacción
  */
-export async function UpdateTransactionStatus(status: string, transactionId: string, payload: StatusPayload) {
+export async function UpdateTransactionStatus(status: string, transaction_id: string, payload: StatusPayload) {
   try {
-    const result = await updateTransactionStatus(status, transactionId, payload);
+    const result = await updateTransactionStatus(status, {
+      ...payload,
+      transactionId: transaction_id,
+    });
     return result;
   } catch (error) {
     console.error('Error updating transaction status:', error);

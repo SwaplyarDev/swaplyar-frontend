@@ -1,7 +1,8 @@
 import { FormRequestCompleted } from '@/types/repentance/repentance';
-import Swal from 'sweetalert2';
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+// Falta backend 2
 
 export const getApplicationCompleted = async (transaction_id: FormRequestCompleted['transaction_id']) => {
   try {

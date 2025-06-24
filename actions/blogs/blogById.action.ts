@@ -1,6 +1,8 @@
 'use server';
 import { BlogPostCardProps } from '@/types/blogs/blog';
 
+// No es necesario integracion con back 2
+
 export async function fetchBlogBySlug(slug: string): Promise<BlogPostCardProps | null> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/blogs/${slug}`, {

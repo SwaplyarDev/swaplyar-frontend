@@ -2,6 +2,9 @@
 
 import { QuestionResponse } from '@/types/questions/question';
 
+// Falta integracion con back 2
+// Consultar rutas si son validas
+
 export const fetchQuestions = async (): Promise<QuestionResponse> => {
   const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 

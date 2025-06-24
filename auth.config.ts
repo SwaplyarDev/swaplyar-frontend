@@ -25,7 +25,7 @@ export const authConfig: NextAuthConfig = {
         }
         const { email, verificationCode: code } = credentials;
 
-        const res = await fetch(`${BACKEND_URL}/v1/login/email/validate`, {
+        const res = await fetch(`${BACKEND_URL}/login/email/validate`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, code }),

@@ -20,6 +20,7 @@ const VALID_STATUSES = [
 ];
 
 export type StatusPayload = {
+  transactionId: string;
   descripcion?: string;
   additionalData?: {
     codigo_transferencia?: string;
@@ -33,7 +34,7 @@ export type StatusPayload = {
  * Server Action para actualizar el estado de una transacción
  * Utiliza el endpoint /transactions/status/:status
  */
-export async function updateTransactionStatus(status: string, transaction_id: string, payload: StatusPayload) {
+export async function updateTransactionStatus(status: string, payload: StatusPayload) {
   try {
     // Validar autenticación y rol de usuario
     const session = await auth();
@@ -51,7 +52,7 @@ export async function updateTransactionStatus(status: string, transaction_id: st
     const token = session.accessToken || '';
 
     // Validar que el ID de transacción existe
-    if (!transaction_id) {
+    if (!payload.transactionId) {
       return { success: false, error: 'ID de transacción requerido' };
     }
 
@@ -64,17 +65,14 @@ export async function updateTransactionStatus(status: string, transaction_id: st
     }
 
     // Llamar al endpoint para actualizar el estado
-    const response = await fetch(
-      `${API_BASE_URL}/v1/admin/transactions/status/${status}?transactionId=${transaction_id}`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
+    const response = await fetch(`${API_BASE_URL}/admin/transactions/status/${status}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify(payload),
+    });
 
     console.log('response: ' + response.status, response.ok);
 
@@ -84,7 +82,7 @@ export async function updateTransactionStatus(status: string, transaction_id: st
     }
 
     // Revalidar la página para actualizar los datos
-    revalidatePath(`/admin/transactions/${transaction_id}`);
+    revalidatePath(`/admin/transactions/${payload.transactionId}`);
 
     return {
       success: true,
@@ -125,7 +123,7 @@ export async function uploadReceipt(transactionId: string, file: File) {
     formData.append('transaction_id', transactionId);
 
     // Llamar al endpoint para subir el comprobante
-    const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/voucher`, {
+    const response = await fetch(`${API_BASE_URL}/admin/transactions/voucher`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -180,7 +178,7 @@ export async function updateTransaction(transactionData: any, transaction_id: st
     }
 
     // Llamar al endpoint para actualizar la transacción
-    const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/${transaction_id}/receiver`, {
+    const response = await fetch(`${API_BASE_URL}/admin/transactions/${transaction_id}/receiver`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,

@@ -3,6 +3,7 @@ import useBlogStore from '@/store/useBlogStore';
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+// No es necesario integracion con back 2
 const useBlogs = (currentPage: number, searchTerm: string) => {
   const { setBlogs } = useBlogStore();
   const [totalPages, setTotalPages] = useState<number>(0);

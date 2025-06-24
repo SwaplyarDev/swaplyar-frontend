@@ -2,6 +2,8 @@
 
 import { BlogResponse } from '@/types/blogs/blog';
 
+// No es necesario integracion con back 2
+
 export const fetchBlogs = async (page: number, searchTerm: string): Promise<BlogResponse> => {
   let url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/blogs?page=${page}`;
   if (searchTerm) {

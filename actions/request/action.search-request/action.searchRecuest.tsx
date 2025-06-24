@@ -25,6 +25,8 @@ interface TransactionStatusError {
   details?: string | null;
 }
 
+// Falta integración con back 2
+
 export const searchRequest = async (transactionId: string, lastName: string) => {
   try {
     const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus`);

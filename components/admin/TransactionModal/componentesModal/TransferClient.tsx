@@ -150,7 +150,8 @@ const TransferClient = () => {
   const handleSubmitRejection = async () => {
     if (!rejectionReason.trim()) {
       try {
-        const response = await updateTransactionStatus('rejected', transId, {
+        const response = await updateTransactionStatus('rejected', {
+          transactionId: transId,
           descripcion: rejectionReason,
         });
 
@@ -172,7 +173,8 @@ const TransferClient = () => {
     try {
       setIsLoading(true);
 
-      const response = await updateTransactionStatus('canceled', transId, {
+      const response = await updateTransactionStatus('canceled', {
+        transactionId: transId,
         descripcion: rejectionReason,
       });
 
@@ -202,7 +204,8 @@ const TransferClient = () => {
       formData.append('file', form.file);
       formData.append('transaction_id', transId);
 
-      const response = await updateTransactionStatus('approved', transId, {
+      const response = await updateTransactionStatus('approved', {
+        transactionId: transId,
         descripcion: 'Proceso de transaccion exitoso',
         additionalData: {
           codigo_transferencia: form.transfer_id,
@@ -240,7 +243,8 @@ const TransferClient = () => {
       formData.append('file', formRefund.file);
       formData.append('transaction_id', transId);
 
-      const response = await updateTransactionStatus('refunded', transId, {
+      const response = await updateTransactionStatus('refunded', {
+        transactionId: transId,
         descripcion: formRefund.description,
         additionalData: {
           codigo_transferencia: formRefund.transfer_id,
@@ -248,7 +252,7 @@ const TransferClient = () => {
         amount: Number(formRefund.amount),
       });
 
-      const responseFile = await fetch(`http://localhost:8080/api/v1/admin/transactions/voucher`, {
+      const responseFile = await fetch(`http://localhost:3001/admin/transactions/voucher`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

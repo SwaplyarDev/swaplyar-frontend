@@ -34,7 +34,7 @@ export const LoginForm = () => {
     setLoading(true);
     try {
       // Llamar a la API que envía el código al email
-      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/login/email/send`, {
+      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/login/email/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

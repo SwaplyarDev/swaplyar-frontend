@@ -4,6 +4,8 @@
 
 import { TransactionRequest } from '@/types/request/request';
 
+// No se esta utilizando en el Frontend, pero se deja por las dudas
+
 export const requestRegister = async (transaction: TransactionRequest) => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/transactions`, {

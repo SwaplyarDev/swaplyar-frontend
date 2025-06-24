@@ -7,7 +7,7 @@ const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 //General Transactions Fetchs
 export const getAllTransactions = async (page: number, token: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/admin/transactions?page=${page}&perPage=12`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/admin/transactions?page=${page}&perPage=12`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -28,7 +28,7 @@ export const getAllTransactions = async (page: number, token: string) => {
 
 export const getTransactionById = async (transaction_id: string, token: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/admin/transactions/${transaction_id}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/admin/transactions/${transaction_id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -46,7 +46,7 @@ export const getTransactionById = async (transaction_id: string, token: string) 
 
 export const deleteTransactionById = async (id: string, token: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/admin/transactions/${id}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/admin/transactions/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -63,7 +63,7 @@ export const deleteTransactionById = async (id: string, token: string) => {
 
 export const updateTransaction = async ({ transaction }: TransactionTypeSingle, token: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/admin/transactions/${transaction.transaction_id}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/admin/transactions/${transaction.transaction_id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -79,6 +79,7 @@ export const updateTransaction = async ({ transaction }: TransactionTypeSingle, 
   }
 };
 
+// No se esta usando en el Frontend, pero se deja por las dudas
 export const updateStatusClient = async (transactionId: any, status: any, token: string) => {
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus/${transactionId}`, {
@@ -101,6 +102,7 @@ export const updateStatusClient = async (transactionId: any, status: any, token:
   }
 };
 
+// No esta integrado al backend 1
 export const getStatusTransactionAdmin = async (transactionId: string) => {
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transaction_admin/${transactionId}`);
@@ -118,6 +120,7 @@ export const getStatusTransactionAdmin = async (transactionId: string) => {
   }
 };
 
+// No esta integrado al backend 1
 export const postStatusInAdmin = async (transactionId: string, status: string, token: string) => {
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transaction_admin`, {
@@ -141,6 +144,7 @@ export const postStatusInAdmin = async (transactionId: string, status: string, t
   }
 };
 
+// No esta integrado al backend 1
 export const updateStatusAdmin = async (transactionId: string, status: string, token: string) => {
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transaction_admin/${transactionId}`, {

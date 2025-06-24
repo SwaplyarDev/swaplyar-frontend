@@ -3,6 +3,8 @@ import { useEffect } from 'react';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+// Falta integracion con back 2
+
 const useQuestion = () => {
   const { questions, setQuestions } = useQuestionStore();
   const { currentPage } = useQuestionStore();
