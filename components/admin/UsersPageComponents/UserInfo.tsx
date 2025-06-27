@@ -2,19 +2,49 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
+// interface User {
+//   date_subscription: string;
+//   name: string;
+//   lastName: string;
+//   email: string;
+//   nationality: string;
+//   document_number: string;
+//   birth_date: string;
+//   phone_full: string;
+// }
+
 interface User {
-  date_subscription: string;
-  name: string;
-  lastName: string;
+  // jh: string;
+  fullName: string;
   email: string;
-  nationality: string;
-  document_number: string;
-  birth_date: string;
-  phone_full: string;
+  created_at: string;
+  rol: string;
+  isActive: boolean;
+  terms: boolean;
+  validation_at: string | null;
+  profile?: {
+    age: string;
+    birthdate: string;
+    email: string;
+    first_name: string;
+    middle_name: string;
+    last_name: string;
+    fullName: string;
+    gender: string;
+    identification: string;
+    phone: string;
+    users_id: string;
+    social_id: string;
+    img_url: string;
+    location_id: string;
+    last_activity: string;
+  };
 }
 
 export function UserInfo({ user }: { user: User }) {
   const [isExpanded, setIsExpanded] = useState(true);
+
+  const now: number = Date.now();
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -44,19 +74,19 @@ export function UserInfo({ user }: { user: User }) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Fecha de Inscripción</p>
-            <p className="font-medium dark:text-gray-200">{user.date_subscription}</p>
+            <p className="font-medium dark:text-gray-200">{user.created_at ? user.created_at : now.toString()}</p>
           </div>
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Nombre</p>
-            <p className="font-medium dark:text-gray-200">{user.name}</p>
+            <p className="font-medium dark:text-gray-200">{user.profile?.first_name}</p>
           </div>
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Apellido</p>
-            <p className="font-medium dark:text-gray-200">{user.lastName}</p>
+            <p className="font-medium dark:text-gray-200">{user.profile?.last_name}</p>
           </div>
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Correo Electrónico</p>
-            <p className="font-medium dark:text-gray-200">{user.email}</p>
+            <p className="font-medium dark:text-gray-200">{user.profile?.email}</p>
           </div>
         </div>
       </div>

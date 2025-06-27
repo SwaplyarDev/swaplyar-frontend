@@ -1,45 +1,30 @@
 import { getAllTransactions } from '@/actions/transactions/transactions.action';
 import TransactionsTable from '@/components/admin/TransactionsTable/TransactionsTable/TransactionsTable';
 import UsersTable from './UsersTable';
+import { getAllUsers } from '@/actions/users/users.action';
+import auth from '@/auth';
 
 interface UsersLoaderProps {
   currentPage: number;
 }
 
 const UsersLoader: React.FC<UsersLoaderProps> = async ({ currentPage }) => {
-  /* await new Promise((resolve) => setTimeout(resolve, 1000));
-    const data = await getAllTransactions(currentPage);
-  
-    if (!data) {
-      throw new Promise(() => {});
-    } */
+  const session = await auth();
 
-  const data = [
-    {
-      id: 1,
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      phone: '+1234567890',
-      status: 'active',
-      date_subscription: '2021-01-01',
-      date_verification: '2021-01-01',
-      code: '1234567890',
-      createdAt: '2021-01-01',
-      updatedAt: '2021-01-01',
-    },
-    {
-      id: 2,
-      name: 'Jane Doe',
-      email: 'jane.doe@example.com',
-      phone: '+1234567890',
-      status: 'active',
-      date_subscription: '2021-01-01',
-      date_verification: '2021-01-01',
-      code: '1234567890',
-      createdAt: '2021-01-01',
-      updatedAt: '2021-01-01',
-    },
-  ];
+  let data = await getAllUsers(session?.accessToken || '');
+  function mergeUsersWithProfiles(users: any[], profiles: any[]) {
+    const profileMap = new Map(profiles.map((profile) => [profile.users_id, profile]));
+
+    return users.map((user) => {
+      const profile = profileMap.get(user.jh);
+      return {
+        ...user,
+        profile: profile,
+      };
+    });
+  }
+
+  data = mergeUsersWithProfiles(data.user, data.profiles);
 
   return <UsersTable users={data} currentPage={currentPage} />;
 };

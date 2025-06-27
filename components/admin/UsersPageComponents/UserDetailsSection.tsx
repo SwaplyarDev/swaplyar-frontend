@@ -8,7 +8,7 @@ export function UserDetailsSection({ code }: { code: string }) {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="h-6 w-6 rounded-full bg-yellow-400"></div>
-          <span className="text-lg font-bold">{code}</span>
+          <span className="text-lg font-bold">{code ? code : 'No disponible'}</span>
         </div>
         <span className="text-sm">{new Date().toLocaleDateString()}</span>
       </div>

@@ -15,7 +15,7 @@ interface User {
   rewards_count: number;
   rewards: {
     type: string;
-    amount: string; // Cambiado de number a string
+    amount: string;
     emission_date: string;
     transaction: string;
     usage_date: string;
@@ -68,7 +68,7 @@ export function UserRewardsSection({ user }: { user: User }) {
 
         {/* Rewards List */}
         <div className="space-y-4">
-          {user.rewards.map((reward, index) => (
+          {/* {user.rewards.map((reward, index) => (
             <div key={index} className="rounded-lg border bg-white p-3 dark:border-gray-700 dark:bg-gray-700/50">
               <div className="mb-1 flex justify-between">
                 <span className="font-medium dark:text-white">{reward.type}:</span>
@@ -89,7 +89,7 @@ export function UserRewardsSection({ user }: { user: User }) {
                 </div>
               </div>
             </div>
-          ))}
+          ))} */}
         </div>
       </div>
     </div>

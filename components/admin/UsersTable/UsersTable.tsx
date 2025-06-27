@@ -8,19 +8,35 @@ import { AlertCircle, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp } from
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import { useRouter } from 'next/navigation';
 
-interface User {
-  id: number;
-  name: string;
+interface Profile {
+  age: string;
+  birthdate: string;
   email: string;
+  first_name: string;
+  middle_name: string;
+  last_name: string;
+  fullName: string;
+  gender: string;
+  identification: string;
   phone: string;
-  status: string;
-  date_subscription: string;
-  date_verification: string;
-  code: string;
-  createdAt: string;
-  updatedAt: string;
+  users_id: string;
+  social_id: string;
+  img_url: string;
+  location_id: string;
+  last_activity: string;
 }
 
+interface User {
+  jh: string;
+  fullName: string;
+  email: string;
+  created_at: string;
+  rol: string;
+  isActive: boolean;
+  terms: boolean;
+  validation_at: string | null;
+  profile?: Profile;
+}
 interface UsersTableProps {
   users: User[];
   currentPage: number;
@@ -200,6 +216,8 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage }) => {
   useEffect(() => {
     console.log('Current filters:', filters);
   }, [filters]);
+
+  console.log('Users:', users);
 
   return (
     <div className="w-full">
@@ -412,21 +430,24 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage }) => {
                 <>
                   {users.map((user) => (
                     <tr
-                      key={user.id}
-                      /* onClick={() => handleOpenModal(user.id)} */
-                      onClick={() => router.push(`/es/admin/users/${user.id}`)}
+                      key={user.jh}
+                      onClick={() => router.push(`/es/admin/users/${user.jh}`)}
                       className="cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
                     >
-                      <td className="px-4 py-3 text-sm">{getStatusBadge(user.status)}</td>
+                      <td className="px-4 py-3 text-sm">{user.isActive ? 'Activo' : 'Inactivo'}</td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                        {formatDate(user.createdAt)}
+                        {user.created_at ? formatDate(user.created_at) : 'No disponible'}
                       </td>
-                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.id}</td>
-                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.name}</td>
-                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.email}</td>
-                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.phone}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.jh}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.fullName}</td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                        {user.date_verification ? formatDate(user.date_verification) : 'No verificado'}
+                        {user?.profile?.email ? user?.profile?.email : 'No disponible'}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                        {user?.profile?.phone ? user?.profile?.phone : 'No disponible'}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                        {user.validation_at ? formatDate(user.validation_at) : 'No verificado'}
                       </td>
                     </tr>
                   ))}
