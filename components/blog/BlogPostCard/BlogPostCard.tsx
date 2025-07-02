@@ -29,7 +29,7 @@ const BlogPostCard: React.FC<BlogPostProps> = ({ blog_id, title, description, im
           {' '}
           <Image
             src={image}
-            className="absolute left-0 top-0 h-full w-full object-cover p-3"
+            className="absolute left-0 top-0 h-full w-full rounded-t-[28px] object-cover p-3"
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
