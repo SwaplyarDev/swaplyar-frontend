@@ -170,10 +170,8 @@ function CardContent(data: BlogPostCardProps) {
 
   return (
     <main className="font-textFont">
-      <div className="sticky top-28 flex w-full flex-col items-center sm:top-36">
-        <div className="rounded-2xl border-2 border-buttonsLigth bg-custom-whiteD-100 p-2 dark:border-white">
-          <ProgressBar value={progress} width="300px" />
-        </div>
+      <div className="fixed left-0 right-0 top-16 z-50 flex justify-center md:top-20 lg:top-20">
+        <ProgressBar value={progress} width="1200px" />
       </div>
 
       <section className="m-auto mt-12 flex w-full max-w-[357px] flex-col overflow-x-hidden px-4 md:mt-12 md:max-w-[729px] lg:mt-0 lg:max-w-[1200px]">
