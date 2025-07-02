@@ -12,11 +12,11 @@ export function AccordionSection({ title, links }: { title: string; links: Foote
   return (
     <Accordion
       disableGutters
-      className="before:contante-[''] group relative bg-transparent shadow-none transition-all duration-300 before:absolute before:w-0 after:absolute after:bottom-0 after:left-[50%] after:h-[1px] after:w-[70%] after:min-w-[204px] after:-translate-x-[50%] after:bg-buttonExpandDark after:transition-all after:duration-300 after:content-[''] after:hover:bg-buttonsLigth dark:after:hover:bg-buttonExpandDark after:[&.Mui-expanded]:bg-buttonsLigth dark:after:[&.Mui-expanded]:bg-buttonExpandDark"
+      className="before:contante-[''] duration-600 after:duration-600 group relative bg-transparent shadow-none transition-all before:absolute before:w-0 after:absolute after:bottom-0 after:left-[50%] after:h-[1px] after:w-[70%] after:min-w-[204px] after:-translate-x-[50%] after:bg-buttonExpandDark after:transition-all after:content-[''] after:active:bg-buttonsLigth dark:after:active:bg-buttonExpandDark after:[&.Mui-expanded]:bg-buttonsLigth dark:after:[&.Mui-expanded]:bg-buttonExpandDark"
     >
       <AccordionSummary
         expandIcon={
-          <ExpandMoreIcon className="h-10 w-10 text-buttonsExtraLigth transition-all duration-300 group-hover:text-buttonsLigth group-[&.Mui-expanded]:text-buttonsLigth group-[&:not(.Mui-expanded)]:hover:rotate-180 dark:text-buttonExpandDark dark:group-hover:text-buttonExpandDark dark:group-[&.Mui-expanded]:text-buttonExpandDark" />
+          <ExpandMoreIcon className="duration-600 h-10 w-10 text-buttonsExtraLigth transition-all group-active:text-buttonsLigth group-[&.Mui-expanded]:text-buttonsLigth group-[&:not(.Mui-expanded)]:active:rotate-180 dark:text-buttonExpandDark dark:group-active:text-buttonExpandDark dark:group-[&.Mui-expanded]:text-buttonExpandDark" />
         }
         aria-controls={`${title}-content`}
         id={`${title}-header`}
@@ -28,7 +28,7 @@ export function AccordionSection({ title, links }: { title: string; links: Foote
           },
         }}
       >
-        <h4 className="text-xl font-light text-lightText transition-all group-hover:font-semibold group-[&.Mui-expanded]:font-semibold dark:text-darkText">
+        <h4 className="text-xl font-light text-lightText transition-all group-active:font-semibold group-[&.Mui-expanded]:font-semibold dark:text-darkText">
           {title}
         </h4>
       </AccordionSummary>
