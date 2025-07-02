@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { BlogPostCardProps, Content } from '@/types/blogs/blog';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchBlogs } from '@/actions/blogs/blogs.actions';
 import CardBlogOption from './CardBlogOption';
 import { cardInfoBlog } from '@/utils/assets/imgDatabaseCloudinary';
@@ -13,7 +13,6 @@ import ProgressBar from '@/components/ui/ProgressBar/ProgressBar';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { gifImage } from '@/utils/assets/img-database';
 import slugify from 'slugify';
-import { da } from 'date-fns/locale';
 import ButtonBack from '../ButtonBack/ButtonBack';
 // Funcion para evaluar si es un string
 function isString(value: unknown): value is string {
@@ -170,27 +169,34 @@ function CardContent(data: BlogPostCardProps) {
 
   return (
     <main className="font-textFont">
-      <div className="sticky top-28 flex w-full flex-col items-center sm:top-36">
-        <div className="rounded-2xl border-2 border-buttonsLigth bg-custom-whiteD-100 p-2 dark:border-white">
-          <ProgressBar value={progress} width="300px" />
-        </div>
+      <div className="fixed left-0 right-0 top-16 z-50 flex justify-center md:top-20 lg:top-20">
+        <ProgressBar value={progress} width="1200px" />
       </div>
 
-      <section className="m-auto mt-12 flex w-full max-w-[357px] flex-col overflow-x-hidden px-4 md:mt-12 md:max-w-[729px] lg:mt-0 lg:max-w-[1368px]">
-        <div>
-          <ButtonBack />
-          <div className="ml-[200px] mt-[50px] hidden flex-col lg:flex lg:max-w-full">
-            <p className="">
-              {highlightText(
-                `El tiempo de lectura estimado para este artículo es de **${data.reading_time[0]} a ${data.reading_time[2]}** **minutos** `,
-              )}
-            </p>
-            <div className="mt-[20px]">
-              <p>{convertirFecha(data.date)} </p>
-              <p className={!isDark ? 'font-bold text-custom-blue' : 'font-bold text-custom-whiteD'}>SwaplyAr</p>
-            </div>
+      <section className="m-auto mt-12 flex w-full max-w-[357px] flex-col overflow-x-hidden px-4 md:mt-12 md:max-w-[729px] lg:mt-0 lg:max-w-[1200px]">
+        <div className="mt-2 flex w-full max-w-full items-center justify-between px-0 md:mt-3 lg:mt-5 lg:px-0">
+          <div className="ml-0 lg:ml-0">
+            <ButtonBack />
+          </div>
+
+          <div className="hidden flex-1 whitespace-nowrap text-center lg:block">
+            {highlightText(
+              `El tiempo de lectura estimado para este artículo es de **${data.reading_time[0]} a ${data.reading_time[2]}** **minutos** `,
+            )}
+          </div>
+          <div className="hidden min-w-[150px] flex-col items-end lg:flex">
+            <p>{convertirFecha(data.date)}</p>
           </div>
         </div>
+
+        <div className="-mt-4 mb-5 hidden justify-end px-4 lg:flex lg:px-0">
+          <div className="min-w-[150px] text-right">
+            <p className={`text-sm ${!isDark ? 'font-bold text-custom-blue' : 'font-bold text-custom-whiteD'}`}>
+              SwaplyAr
+            </p>
+          </div>
+        </div>
+
         <div className="mx-auto flex w-full flex-col justify-center gap-4 lg:flex-row">
           <article className="hidden h-[756px] w-[286px] flex-col gap-5 lg:ml-1 lg:flex">
             <h2 className="font-semibold">Contenido:</h2>
@@ -352,7 +358,7 @@ function CardContent(data: BlogPostCardProps) {
         <div className="max-w-[90%] text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText md:max-w-[600px]">
           Mantente al día
         </div>
-        <div className="max-w-[90%] text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText md:max-w-[600px]">
+        <div className="max-w-[90%] text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText md:max-w-[768px]">
           Regístrate para recibir novedades en tu correo electrónico
         </div>
 

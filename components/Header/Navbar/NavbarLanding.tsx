@@ -24,6 +24,18 @@ const NavbarLanding = () => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [drawerMenu, setDrawerMenu] = useState(false);
 
+  useEffect(() => {
+    if (drawerMenu) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [drawerMenu]);
+
   const { isDark } = useDarkTheme();
 
   const handleSelect = (item: string) => {
@@ -120,8 +132,10 @@ const NavbarLanding = () => {
                 </Popover>
               </>
             ) : (
-              <></>
-              // <LogInButton />
+              <>
+                {' '}
+                <LogInButton />
+              </>
             )}
           </span>
 
@@ -356,8 +370,8 @@ const NavbarLanding = () => {
                 </>
               ) : (
                 <>
-                  {/* <LogInButton />
-                  <RegisterButton /> */}
+                  <LogInButton />
+                  <RegisterButton />
                 </>
               )}
             </section>
