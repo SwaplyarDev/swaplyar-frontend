@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import Image1 from '@/public/images/plus-rewards-logo.png';
+import { plusRewardsCard } from '@/utils/assets/imgDatabaseCloudinary';
 
 const CardBlue = ({ memberCode }: { memberCode: string }) => {
   return (
@@ -22,7 +22,7 @@ const CardBlue = ({ memberCode }: { memberCode: string }) => {
         ></div>
 
         <div className="absolute m-[14px] h-full">
-          <Image src={Image1} alt="asd" className="w-[182px] sm:w-[250px]" />
+          <Image src={plusRewardsCard} alt="asd" className="w-[182px] sm:w-[250px]" />
         </div>
 
         <div className="absolute bottom-0 right-0 mx-4 gap-1 text-[#EBE7E0]">

@@ -6,6 +6,7 @@ import { useDarkTheme } from '../../../ui/theme-Provider/themeProvider';
 import LinkWithHover from '@/components/ui/LinkWithHover/LinkWithHover';
 import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCircles';
 import { sectionTermsAndConditionsPlus } from '@/data/sectionTermsAndConditions';
+import { tycDark, tycLight } from '@/utils/assets/imgDatabaseCloudinary';
 
 const SaprTermsConditions = () => {
   const { isDark } = useDarkTheme();
@@ -19,7 +20,7 @@ const SaprTermsConditions = () => {
         </h1>
         <Image
           className="hero-img mt-4 h-[179px] w-[332px] lg:h-[205px] lg:w-[380px]"
-          src={`${isDark ? '/images/tycDark.png' : '/images/tycLight.png'}`}
+          src={`${isDark ? tycDark : tycLight}`}
           alt="terminos-y-condiciones"
           width={332}
           height={179}

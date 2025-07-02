@@ -1,8 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-
-import swaplyPlusRewards from '@/public/images/swaplyPlusRewards.png';
 import Image from 'next/image';
 import { CardPlusRewards } from '@/components/cardsPlusRewardsIntern/SwaplyPlusRewardsComponents/CardPlusRewards';
 import { PlusRewards } from '@/app/es/(auth)/auth/plus-rewards/page';
@@ -23,6 +21,7 @@ declare module 'next-auth' {
 }
 import { useVerificationStore } from '../../store/useVerificationStore';
 import { update } from '@/auth';
+import { swaplyPlusRewards } from '@/utils/assets/imgDatabaseCloudinary';
 
 const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const [showModal, setShowModal] = useState(false);

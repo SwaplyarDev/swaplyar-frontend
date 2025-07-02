@@ -22,6 +22,7 @@ import {
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
 import { useSession } from 'next-auth/react';
+import { searchRequestMovile, searchRequestWeb } from '@/utils/assets/imgDatabaseCloudinary';
 
 const SearchRequestAuth = () => {
   const { data: session } = useSession();
@@ -134,7 +135,7 @@ const SearchRequestAuth = () => {
       <section className="relative mt-10 flex min-h-[500px] flex-col items-center justify-center">
         <Image
           className="absolute left-0 hidden w-[588px] drop-shadow-light dark:drop-shadow-darkmode lg2:block"
-          src="/images/search-request-web.png"
+          src={searchRequestWeb}
           alt="SwaplyAr Search Request™"
           width={700}
           height={700}
@@ -142,7 +143,7 @@ const SearchRequestAuth = () => {
         <div className="flex w-full max-w-[506px] flex-col items-center border-b border-buttonsLigth dark:border-darkText lg2:hidden">
           <Image
             className="h-[200px] w-[200px] drop-shadow-light dark:drop-shadow-darkmode"
-            src="/images/search-request-phone.png"
+            src={searchRequestMovile}
             alt="SwaplyAr Search Request Mobile™"
             width={300}
             height={300}

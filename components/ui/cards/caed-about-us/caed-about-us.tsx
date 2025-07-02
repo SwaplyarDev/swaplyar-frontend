@@ -8,6 +8,7 @@ import '../CardsCss.css';
 import SwipeHands from '../../animations/SwipeHands';
 import clsx from 'clsx';
 import { useSize } from '@/hooks/useSize';
+import { rotateCard } from '@/utils/assets/imgDatabaseCloudinary';
 
 interface CardData {
   src: string;
@@ -125,7 +126,7 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
                       className="rounded-2xl shadow-md shadow-black/50 lg:shadow-[#012A8E80]"
                     />
                     <Image
-                      src="/images/rotate-card-icon.svg"
+                      src={rotateCard}
                       alt="Icono de rotacion de la card"
                       width={25}
                       height={25}
@@ -137,7 +138,7 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
                   </div>
                   <div className="card-back backface-hidden shadow-custom-black absolute flex h-full w-full flex-col items-center justify-center rounded-lg bg-[#000c29] p-4 text-darkText dark:bg-gray-800 dark:text-darkText">
                     <Image
-                      src="/images/rotate-card-icon.svg"
+                      src={rotateCard}
                       alt="Icono de rotacion de la card"
                       width={25}
                       height={25}

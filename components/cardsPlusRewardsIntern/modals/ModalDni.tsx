@@ -1,7 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import Imagen1 from '@/public/images/PlusRewardsDNI.png';
-import Imagen2 from '@/public/images/PlusRewardsDNI2.png';
+import { swaplyPlusDNI, swaplyPlusDNI2 } from '@/utils/assets/imgDatabaseCloudinary';
 interface ShowModalDniProos {
   ShowModalDni: number;
   className?: string;
@@ -16,7 +15,7 @@ const ModalDni: React.FC<ShowModalDniProos> = ({ ShowModalDni, className, setSho
   return (
     <div className="absolute z-50 h-full w-full border-2 bg-black bg-opacity-50" onClick={(e) => stopAndSet(e)}>
       <Image
-        src={ShowModalDni == 1 ? Imagen1 : Imagen2}
+        src={ShowModalDni == 1 ? swaplyPlusDNI : swaplyPlusDNI2}
         alt="images"
         className="absolute left-1/2 top-1/2 m-auto -translate-x-1/2 -translate-y-1/2"
       />

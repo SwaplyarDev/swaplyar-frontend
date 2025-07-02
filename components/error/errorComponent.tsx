@@ -12,7 +12,7 @@ import {
   tlf_404_dark,
 } from '@/utils/assets/imgDatabaseCloudinary';
 import RedirectButton from '../ui/RedirectButton/RedirectButton';
-import { error404Clear, error404Dark } from '@/utils/assets/img-database';
+import { error404Clear, error404Dark } from '@/utils/assets/imgDatabaseCloudinary';
 
 const NotFoundComponent = () => {
   const { isDark } = useDarkTheme();

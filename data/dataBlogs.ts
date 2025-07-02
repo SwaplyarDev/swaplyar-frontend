@@ -1,8 +1,10 @@
+import { billeterasVirtuales, payonerArg, paypalEnArg } from '@/utils/assets/imgDatabaseCloudinary';
+
 export const dataBlogs = [
   {
     blog_id: '1',
     title: 'PayPal en Argentina',
-    image: '/images/paypalenarg.png',
+    image: paypalEnArg,
     slug: 'paypal-en-argentina',
     description: '',
     category: 'Mercado',
@@ -187,7 +189,7 @@ export const dataBlogs = [
   {
     blog_id: '2',
     title: 'Billeteras virtuales internacionales',
-    image: '/images/billeterasvirtuales.png',
+    image: billeterasVirtuales,
     slug: 'billeteras-virtuales-internacionales',
     description:
       'En el mundo digital actual, las billeteras virtuales internacionales se han convertido en herramientas esenciales para gestionar y transferir dinero de manera eficiente. Para los usuarios de SwaplyAr, es fundamental conocer las opciones disponibles y elegir la que mejor se adapte a sus necesidades.',
@@ -270,7 +272,7 @@ export const dataBlogs = [
   {
     blog_id: '3',
     title: 'Payoneer en Argentina',
-    image: '/images/payonerarg.png',
+    image: payonerArg,
     slug: 'payoneer-en-argentina',
     description:
       'Payoneer es una plataforma de pagos en línea diseñada para facilitar transacciones internacionales, especialmente útil para freelancers y empresas que operan globalmente. En Argentina, su uso ha crecido significativamente, ofreciendo una alternativa eficiente para recibir y enviar fondos desde el extranjero.',

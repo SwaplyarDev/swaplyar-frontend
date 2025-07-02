@@ -2,10 +2,10 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Image1 from '@/public/images/plus-rewards-logo.png';
 import type { ModalProps } from '@/components/cardsPlusRewardsIntern/modals/ModalVerify';
 import { ButtonCustom } from '@/components/ui/ButtonCustom/ButtonCustom';
 import AlertIcon from '@/components/ui/AlertIcon/AlertIcon';
+import { plusRewardsCard } from '@/utils/assets/imgDatabaseCloudinary';
 
 const CardYellow: React.FC<ModalProps> = ({ showVerify, setShowVerify, verifiedStatus }) => {
   const isPending = verifiedStatus.toUpperCase() === 'PENDIENTE';
@@ -28,7 +28,7 @@ const CardYellow: React.FC<ModalProps> = ({ showVerify, setShowVerify, verifiedS
       ></div>
 
       <div className="absolute m-[14px]">
-        <Image src={Image1} alt="Logo" className="w-[130px] sm:w-[250px] md:w-[250px]" />
+        <Image src={plusRewardsCard} alt="Logo" className="w-[130px] sm:w-[250px] md:w-[250px]" />
       </div>
 
       <div className="absolute right-[12px] top-[20px] text-right text-[13px] sm:right-0 sm:top-[30px] sm:mx-[14px] sm:text-left">

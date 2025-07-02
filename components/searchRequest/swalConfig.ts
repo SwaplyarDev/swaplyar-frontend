@@ -46,7 +46,7 @@ export const showStatusAlert = (statuses: { text: string; icon: string }[], isDa
   Swal.fire({
     html: `
       <div class="flex flex-col items-center justify-center max-w-full max-h-[90vh] pt-[50px] pb-[50px] overflow-hidden">
-        <img class="w-[193px] h-[115px] absolute -top-14 -left-20 cloud hidden md:block" src="/images/nube2.svg" alt="Nube" />
+        <img class="w-[193px] h-[115px] absolute -top-14 -left-20 cloud hidden md:block" src='https://res.cloudinary.com/dwrhturiy/image/upload/v1739980460/nube2_a0pigb.svg' alt="Nube" />
         <div class="w-full overflow-hidden">
           <ul class="flex flex-col items-center justify-center">
             ${statuses
@@ -90,12 +90,12 @@ export const showStatusAlert = (statuses: { text: string; icon: string }[], isDa
               ${isDark ? `stroke="#EBE7E0" ` : `stroke="#252526" `} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
-        <img class="absolute -bottom-28 -right-28 hidden md:block" src="/images/popupRepentance.svg" alt="Avion del popup" />
+        <img class="absolute -bottom-28 -right-28 hidden md:block" src='https://res.cloudinary.com/dwrhturiy/image/upload/v1751468799/popupRepentance_dfjiof.svg' alt="Avion del popup" />
         <div class="absolute -bottom-28 -right-28 w-[271px] h-[181px] hidden md:block">
-          <img class="w-[85px] h-[50px] absolute top-20 -left-5 cloud" src="/images/nube2.svg" alt="Nube" />
-          <img class="w-[97px] h-[57px] absolute -top-3 right-7 cloud" src="/images/nube2.svg" alt="Nube" />
-          <img class="w-[113px] h-[67px] absolute top-36 cloud" src="/images/nube2.svg" alt="Nube" />
-          <img class="w-[128px] h-[76px] absolute top-24 right-7 cloud" src="/images/nube2.svg" alt="Nube" />
+          <img class="w-[85px] h-[50px] absolute top-20 -left-5 cloud" src='https://res.cloudinary.com/dwrhturiy/image/upload/v1739980460/nube2_a0pigb.svg' alt="Nube" />
+          <img class="w-[97px] h-[57px] absolute -top-3 right-7 cloud" src='https://res.cloudinary.com/dwrhturiy/image/upload/v1739980460/nube2_a0pigb.svg' alt="Nube" />
+          <img class="w-[113px] h-[67px] absolute top-36 cloud" src='https://res.cloudinary.com/dwrhturiy/image/upload/v1739980460/nube2_a0pigb.svg' alt="Nube" />
+          <img class="w-[128px] h-[76px] absolute top-24 right-7 cloud" src='https://res.cloudinary.com/dwrhturiy/image/upload/v1739980460/nube2_a0pigb.svg' alt="Nube" />
         </div>
       </div>
     `,

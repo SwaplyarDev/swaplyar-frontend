@@ -2,7 +2,7 @@
 import { SwaplyArLogoComplete, SwaplyArLogoSolo, SwaplyArlogoWhite } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import { useState } from 'react';
-import { SwaplyArlogoMobileWhite, swaplyArAvatar } from '@/utils/assets/img-database';
+import { SwaplyArlogoMobileWhite, swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
 import { Drawer } from 'flowbite-react';
 import Switch from '@/components/ui/top-menu/switch';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';

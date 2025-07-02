@@ -1,6 +1,7 @@
 // /es/iniciar-sesion-o-registro
 import AuthForm from '@/components/auth/auth-form';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
+import { FlyerTrabajoImg } from '@/utils/assets/imgDatabaseCloudinary';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -13,7 +14,7 @@ export default function LoginPage() {
   return (
     <>
       <AuthForm />
-      <FlyerTrabajo href="" imageSrc="/images/centro-ayuda.png" />
+      <FlyerTrabajo href="" imageSrc={FlyerTrabajoImg} />
     </>
   );
 }

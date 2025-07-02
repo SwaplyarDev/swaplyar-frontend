@@ -9,6 +9,7 @@ import { gifImage } from '@/utils/assets/img-database';
 import useBlogStore from '@/store/useBlogStore';
 import useFetchBlogs from '@/hooks/useFetchBlogs/useFetchBlogs';
 import SearchInput from '../ui/SearchInput/SearchInput';
+import { paypalEnArg } from '@/utils/assets/imgDatabaseCloudinary';
 interface BlogProps {
   currentPage: number;
 }
@@ -60,7 +61,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
             slug: post.slug,
             title: post.title,
             description: post.description,
-            image: post.image || '/images/paypalenarg.png',
+            image: post.image || paypalEnArg,
             date: new Date().toISOString(),
             category: post.category,
           }))}
@@ -78,7 +79,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
                   description={post.description}
                   title={post.title}
                   category={post.category}
-                  image={post.image || '/images/paypalenarg.png'}
+                  image={post.image || paypalEnArg}
                   date={post?.date}
                 />
               ))}

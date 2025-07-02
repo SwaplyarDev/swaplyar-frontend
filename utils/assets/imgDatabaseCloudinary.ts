@@ -5,12 +5,15 @@ export const CentroDeAyuda = 'https://res.cloudinary.com/dwrhturiy/image/upload/
 export const RewardsHC = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732424782/plus-rewards_dib2g4.png';
 export const RewardsHCDark =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1732424640/plus-rewards-dark_kojk1p.png';
+export const FlyerTrabajoImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751465617/centro-ayuda_la0q3h.png';
 
 /** GIFs **/
 export const FlyerGif = '/gif/flyer.gif';
 export const SwipeGif = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732479827/swipe_sip1tg.gif';
 
 /** Logo SwaplyAr **/
+export const SwaplyArlogoWhiteSidebar =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1751465946/logo-blanco_bl3oyy.png';
 export const SwaplyArlogoMobileWhite =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225355/SwaplyAr-logo-Mobile-White_na2qoc.png';
 export const SwaplyArlogoWhite =
@@ -37,6 +40,7 @@ export const Transparencia = 'https://res.cloudinary.com/dwrhturiy/image/upload/
 export const Simplicidad = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225345/Simplicidad_ltbxqp.png';
 export const Eficiencia = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224259/Eficiencia_w20tlq.png';
 export const OaSuarez = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224837/oa-suarez_vqtic6.png';
+export const rotateCard = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751468910/rotate-card-icon_nu59um.svg';
 
 /** How to Use **/
 export const Paso1Gif = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224847/paso1_ucrl1d.gif';
@@ -47,7 +51,7 @@ export const Paso4Gif = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725
 /** Loyalty Program **/
 export const Rewards1 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225314/rewards1_hme3sh.png';
 export const Rewards1Dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732423763/rewards1Dark_rjixpi.png';
-export const Rewards2 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225322/rewards2_xxnfbs.png';
+export const Rewards2 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751470447/loyalty-program_18_1_vqwrso.png';
 export const Rewards2Dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732424005/rewards2Dark_nnxjee.png';
 export const Rewards3 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225330/rewards3_hnwcgy.png';
 export const Rewards3Dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732424010/rewards3Dark_pjxrmt.png';
@@ -74,6 +78,14 @@ export const PlusRewards = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1
 export const PlusRewardsDark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1726601342/reward1.dark_xsutks.png';
 export const Ayuda1 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732547526/Ayuda1_new_rot3ne.png';
 export const Ayuda2 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732547526/Ayuda2_new_utttp6.png';
+export const helpCenter4 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751468477/helpCenter4_ri2bjh.png';
+export const helpCenter4Dark =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1751468407/helpCenter4Dark_dhzozr.png';
+export const helpCenter1 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751469355/helpCenter1_jr0mhz.png';
+export const helpCenter2 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751469356/helpCenter2_vrw7ni.png';
+export const helpCenter3 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751469392/helpCenter3_yhtyvi.png';
+export const helpCenter5 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751469398/helpCenter5_yn13yl.png';
+export const helpCenter6 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751469407/helpCenter6_opjnui.png';
 
 /** Why Choose Us and Key Benefits **/
 export const ElegirSwaplyAr = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224460/elegirSwaplyAr_le6gqp.png';
@@ -197,6 +209,12 @@ export const Post2_500 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v173
 // Home Search
 export const homeSearch = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739979899/homeSearch_g7yg1x.png';
 
+// Search Request
+export const searchRequestWeb =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1751466093/search-request-web_ektbx6.png';
+export const searchRequestMovile =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1751466193/search-request-phone_pccnhe.png';
+
 // Fraud Prevention
 export const fraudPrevention = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980167/fraudPrevent_vd3rvf.png';
 
@@ -208,6 +226,8 @@ export const Mantenimiento =
 export const nube1 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980465/nube1_tyyitq.svg';
 export const nube2 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980460/nube2_a0pigb.svg';
 export const plane = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980330/plane_ifm8za.svg';
+export const popupRepetence =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1751468799/popupRepentance_dfjiof.svg';
 
 // Alertas
 export const alertaSirena =
@@ -242,6 +262,10 @@ export const howToUseDark3 = 'https://res.cloudinary.com/dwrhturiy/image/upload/
 
 // Avatar
 export const swaplyArAvatar = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739981267/swaplyArAvatar_gzgj1q.png';
+export const swaplyArCEO = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751465810/CEO_CPO_hbzlto.png';
+export const userRecomend1 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751469146/userRecomend1_buqiqr.png';
+export const userRecomend2 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751469145/userRecomend2_fopzzc.png';
+export const userRecomend3 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751469141/userRecomend3_zji0e1.png';
 
 // Questions
 export const BannerQuestions =
@@ -249,7 +273,12 @@ export const BannerQuestions =
 
 // Blog
 export const cardInfoBlog = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1741180457/cardInfoBlog_gavy9u.png';
+export const paypalEnArg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751466267/paypalenarg_lfsgap.png';
+export const billeterasVirtuales =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1751468995/billeterasvirtuales_uy16oa.png';
+export const payonerArg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751469048/payonerarg_ihpund.png';
 
+// QR Codes
 export const qrLight =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1741270782/48338805-QR_BYBIT_CLARO_wehfx8.png';
 export const qrDark =
@@ -262,12 +291,20 @@ export const yellowStar = 'https://res.cloudinary.com/dwrhturiy/image/upload/v17
 // home images PlusRewards component
 export const plusRewardsLight =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1746712147/solicitud-plus-rewards-light_rokqud.png';
+export const plusRewardsCard =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1751466671/plus-rewards-logo_twb9ci.png';
 export const plusRewardsDark =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1746712147/solicitud-plus-rewards-dark_hfhbxr.png';
 export const solicitudImage =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1746712093/solicitud-image_kminsi.png';
 export const userWinReward =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1747917099/has-ganado-10-dolares_nccmfh.png';
+export const swaplyPlusRewards =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1751466383/swaplyPlusRewards_q56rtb.png';
+export const swaplyPlusDNI = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751466487/PlusRewardsDNI_vi3fdr.png';
+export const swaplyPlusDNI2 =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1751466456/PlusRewardsDNI2_hdk9tz.png';
+
 // Icons NavBarInternal
 export const icono_solicitud =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1745241929/icono_solicitud_o3a6dt.svg';
@@ -287,3 +324,25 @@ export const iconoDark_cuentas =
 export const iconoDark_transacciones =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336652/iconoDark_transacciones_eqkwvn.svg';
 export const iconoDark_plus = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336653/iconoDark_plus_rcetbk.svg';
+
+// Error 404
+export const error404Clear = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751382271/error404Clear_y522fa.svg';
+export const error404Dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751382271/error404Dark_xsrf6l.svg';
+
+// NavBar internal
+export const montañaBlanca =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1751462863/monta%C3%B1aBlanca_ub1hae.png';
+export const montañaDark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751463162/MontanaDark_h50bsd.png';
+export const montañaBlancaFooter =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1751463292/montana-footer_w6anit.png';
+export const montañaDarkFooter =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1751463297/montanaDark-footer_ywgxh1.png';
+
+// Icons Metadata
+export const iconoMetadata = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751463511/favicon-light_hti0bn.png';
+export const iconoMetadataDark =
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1751463515/favicon-dark_y0jjhb.png';
+
+// TyC
+export const tycLight = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751468611/tycLight_rwsbd7.png';
+export const tycDark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751468593/tycDark_la2unh.png';

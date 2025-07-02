@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { sectionBottomHelpCenter, sectionLinksHelpCenter } from '@/data/sectionHelpCenter';
 import clsx from 'clsx';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
-import { FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
+import { FlyerGif, helpCenter4, helpCenter4Dark } from '@/utils/assets/imgDatabaseCloudinary';
 
 const HelpCenterPage = () => {
   const { isDark } = useDarkTheme();
@@ -65,7 +65,7 @@ const HelpCenterPage = () => {
           <div className="mx-auto mt-10 flex max-w-[918px] flex-col items-center gap-2 md:flex-row">
             <Image
               className="h-[320px] w-[332px] object-cover drop-shadow-light dark:drop-shadow-darkmode lg2:h-[386px] lg2:w-[388px]"
-              src={isDark ? '/images/helpCenter4Dark.png' : '/images/helpCenter4.png'}
+              src={isDark ? helpCenter4Dark : helpCenter4}
               alt="Imagen de SwaplyAr Plus Rewards"
               width={360}
               height={270}
