@@ -52,7 +52,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
     <>
       <div className="relative flex flex-col items-center justify-center">
         <AnimatedBlurredCircles tope="top-[0px]" />
-        <div className="mx-auto max-w-full p-4 sm:p-6 lg:px-20">
+        <div className="mx-auto w-full p-4 sm:p-6 lg:px-20">
           <h1 className="mb-4 text-left font-titleFont text-[61.04px] font-semibold leading-[73.25px] text-inputLight dark:text-darkText">
             BLOG
           </h1>
