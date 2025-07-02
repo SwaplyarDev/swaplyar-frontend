@@ -177,20 +177,29 @@ function CardContent(data: BlogPostCardProps) {
       </div>
 
       <section className="m-auto mt-12 flex w-full max-w-[357px] flex-col overflow-x-hidden px-4 md:mt-12 md:max-w-[729px] lg:mt-0 lg:max-w-[1368px]">
-        <div>
-          <ButtonBack />
-          <div className="ml-[200px] mt-[50px] hidden flex-col lg:flex lg:max-w-full">
-            <p className="">
-              {highlightText(
-                `El tiempo de lectura estimado para este artículo es de **${data.reading_time[0]} a ${data.reading_time[2]}** **minutos** `,
-              )}
-            </p>
-            <div className="mt-[20px]">
-              <p>{convertirFecha(data.date)} </p>
-              <p className={!isDark ? 'font-bold text-custom-blue' : 'font-bold text-custom-whiteD'}>SwaplyAr</p>
-            </div>
+        <div className="mt-2 flex w-full max-w-full items-center justify-between px-0 md:mt-3 lg:mt-5 lg:px-0">
+          <div className="ml-0 lg:ml-0">
+            <ButtonBack />
+          </div>
+
+          <div className="hidden flex-1 whitespace-nowrap text-center lg:block">
+            {highlightText(
+              `El tiempo de lectura estimado para este artículo es de **${data.reading_time[0]} a ${data.reading_time[2]}** **minutos** `,
+            )}
+          </div>
+          <div className="hidden min-w-[150px] flex-col items-end lg:flex">
+            <p>{convertirFecha(data.date)}</p>
           </div>
         </div>
+
+        <div className="-mt-4 mb-5 hidden justify-end px-4 lg:flex lg:px-0">
+          <div className="min-w-[150px] text-right">
+            <p className={`text-sm ${!isDark ? 'font-bold text-custom-blue' : 'font-bold text-custom-whiteD'}`}>
+              SwaplyAr
+            </p>
+          </div>
+        </div>
+
         <div className="mx-auto flex w-full flex-col justify-center gap-4 lg:flex-row">
           <article className="hidden h-[756px] w-[286px] flex-col gap-5 lg:ml-1 lg:flex">
             <h2 className="font-semibold">Contenido:</h2>
