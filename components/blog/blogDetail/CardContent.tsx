@@ -176,7 +176,7 @@ function CardContent(data: BlogPostCardProps) {
         </div>
       </div>
 
-      <section className="m-auto mt-12 flex w-full max-w-[357px] flex-col overflow-x-hidden px-4 md:mt-12 md:max-w-[729px] lg:mt-0 lg:max-w-[1368px]">
+      <section className="m-auto mt-12 flex w-full max-w-[357px] flex-col overflow-x-hidden px-4 md:mt-12 md:max-w-[729px] lg:mt-0 lg:max-w-[1200px]">
         <div className="mt-2 flex w-full max-w-full items-center justify-between px-0 md:mt-3 lg:mt-5 lg:px-0">
           <div className="ml-0 lg:ml-0">
             <ButtonBack />
