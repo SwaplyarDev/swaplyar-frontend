@@ -50,9 +50,9 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
 
   return (
     <>
-      <div className="relative mx-4 flex flex-col items-center justify-center md:mx-8 lg:mx-4">
+      <div className="relative flex flex-col items-center justify-center">
         <AnimatedBlurredCircles tope="top-[0px]" />
-        <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:px-20">
+        <div className="mx-auto max-w-full p-4 sm:p-6 lg:px-20">
           <h1 className="mb-4 text-left font-titleFont text-[61.04px] font-semibold leading-[73.25px] text-inputLight dark:text-darkText">
             BLOG
           </h1>
@@ -72,7 +72,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
           <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} />
           {!isLoading ? (
             blogs.length >= 1 ? (
-              <div className="mt-6 grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
+              <div className="mt-6 grid w-full grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
                 {blogs.map((post) => (
                   <BlogPostCard
                     key={post.blog_id}
@@ -100,10 +100,10 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
           className="mt-12 flex h-[272px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${gifImage})` }}
         >
-          <div className="max-w-[90%] text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText md:max-w-[600px]">
+          <div className="w-full text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText">
             Mantente al día
           </div>
-          <div className="max-w-[90%] text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText md:max-w-[600px]">
+          <div className="w-full text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText">
             Regístrate para recibir novedades en tu correo electrónico
           </div>
 
