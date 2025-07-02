@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { BlogPostCardProps, Content } from '@/types/blogs/blog';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchBlogs } from '@/actions/blogs/blogs.actions';
 import CardBlogOption from './CardBlogOption';
 import { cardInfoBlog } from '@/utils/assets/imgDatabaseCloudinary';
@@ -13,7 +13,6 @@ import ProgressBar from '@/components/ui/ProgressBar/ProgressBar';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { gifImage } from '@/utils/assets/img-database';
 import slugify from 'slugify';
-import { da } from 'date-fns/locale';
 import ButtonBack from '../ButtonBack/ButtonBack';
 // Funcion para evaluar si es un string
 function isString(value: unknown): value is string {
