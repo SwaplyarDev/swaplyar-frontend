@@ -1,7 +1,7 @@
 'use client';
 
-import { useParams, useSearchParams } from 'next/navigation';
-import { use, useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import CardContent from './CardContent';
 import { fetchBlogBySlug } from '@/actions/blogs/blogById.action';
 import { BlogPostCardProps } from '@/types/blogs/blog';
