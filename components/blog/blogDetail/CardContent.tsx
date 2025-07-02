@@ -361,7 +361,7 @@ function CardContent(data: BlogPostCardProps) {
         <div className="max-w-[90%] text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText md:max-w-[600px]">
           Mantente al día
         </div>
-        <div className="max-w-[90%] text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText md:max-w-[600px]">
+        <div className="max-w-[90%] text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText md:max-w-[768px]">
           Regístrate para recibir novedades en tu correo electrónico
         </div>
 
