@@ -78,7 +78,7 @@ export default function WalletSelect({ wallets, selectedWalletId, onChange }: Wa
   return (
     <div className="w-full max-w-lg pb-2">
       <Select value={selectedWalletId ?? ''} onValueChange={onChange}>
-        <SelectTrigger className="max-h-[90%] w-full border-blue-600 focus:shadow-none focus:outline-none focus:ring-0 focus:ring-transparent focus:ring-offset-1 focus-visible:ring-0 dark:border-white">
+        <SelectTrigger className="max-h-[90%] w-full border-blue-600 focus:shadow-none focus:outline-none focus:ring-0 focus:ring-transparent focus:ring-offset-0 focus-visible:ring-0 dark:border-white">
           <SelectValue placeholder="Selecciona una billetera" />
         </SelectTrigger>
 

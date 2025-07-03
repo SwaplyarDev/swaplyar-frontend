@@ -34,7 +34,7 @@ export default async function RequestPage() {
       <h1 className="mb-6 pt-10 text-[34px] font-bold text-gray-800 dark:text-darkText xs:mb-8">
         Envía y recibe dinero de billeteras virtuales y criptomonedas
       </h1>
-      <section className="flex flex-col gap-4 lg:flex-row-reverse">
+      <section className="flex flex-col gap-6 lg:flex-row-reverse">
         <Suspense
           fallback={
             <div className="flex h-[331px] w-full animate-pulse items-center justify-center rounded-2xl bg-gray-200 dark:bg-custom-grayD-700 lg:h-[623px]"></div>

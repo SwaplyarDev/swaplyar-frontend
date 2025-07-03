@@ -1,4 +1,4 @@
-import { System } from '@/types/data'; // Asegurate que tenga coin: 'USD' | 'ARS' etc.
+import { System } from '@/types/data';
 
 interface Params {
   couponInstance: 'THREE' | 'FIVE' | 'THREE_FIVE' | 'TEN' | 'MANUAL' | null;
