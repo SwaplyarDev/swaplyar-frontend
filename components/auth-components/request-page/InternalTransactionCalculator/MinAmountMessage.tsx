@@ -23,7 +23,7 @@ export default function MinAmountMessage({
   selectedReceivingSystem,
 }: IProps) {
   return (
-    <div className="flex min-h-[40px] w-full items-end justify-center">
+    <div className="flex min-h-[30px] w-full items-end justify-center">
       {sendAmount === '' ? null : (
         <div
           className={clsx(

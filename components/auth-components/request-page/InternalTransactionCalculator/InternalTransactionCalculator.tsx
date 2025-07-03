@@ -11,6 +11,7 @@ import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 
 // Store
 import { getExchangeRateStore } from '@/store/exchangeRateStore';
+import { useRewardsStore } from '@/store/useRewardsStore';
 
 // Utils
 // Data de las monedas y sistemas
@@ -23,11 +24,20 @@ import TransactionSection from '@/components/ui/TransactionSection/TransactionSe
 import Coupons from './Coupons';
 import BtnProccessPayment from './BtnProccessPayment';
 import MinAmountMessage from './MinAmountMessage';
+import WalletSelect from './WalletSelect';
+
+import { calculateSendAmountFromReceive } from '@/utils/calculateSendAmountFromReceive';
+import { calculateReceiveAmountWithCoupon } from '@/utils/calculateReceiveAmountWithCoupon';
 
 export default function InternalTransactionCalculator() {
   const [isProcessing, setIsProcessing] = useState(false);
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
-  const { startUpdatingRates, stopUpdatingRates } = getExchangeRateStore();
+  const { startUpdatingRates, stopUpdatingRates, rates } = getExchangeRateStore();
+  const { error, couponInstance } = useRewardsStore();
+  const isDisabled = Boolean(error);
+  const [customReceiveInput, setCustomReceiveInput] = useState('');
+  const [isCustomInputActive, setIsCustomInputActive] = useState(false);
+  // const usdToArsRateRef = useRef<number>(0);
 
   useEffect(() => {
     if (selectedSendingSystem && selectedReceivingSystem) {
@@ -51,6 +61,42 @@ export default function InternalTransactionCalculator() {
   const { setPass } = useControlRouteRequestStore((state) => state);
   const sendAmountNum = sendAmount ? parseFloat(sendAmount) : 0;
   const receiveAmountNum = receiveAmount ? parseFloat(receiveAmount) : 0;
+  const usdToArsRate = rates?.currentValueUSDBlueSale ?? 0;
+  const usdToEurRate = rates?.currentValueEURToUSD ?? 0;
+  const usdToBrlRate = rates?.currentValueUSDToBRL ?? 0;
+  const arsToBrlRate = usdToArsRate > 0 ? (1 / usdToArsRate) * usdToBrlRate : 0;
+
+  function formatAmount(value: number): string {
+    return Number.isInteger(value) ? value.toString() : value.toFixed(2);
+  }
+
+  let couponUsdAmount = 0;
+  if (couponInstance === 'THREE') couponUsdAmount = 3;
+  else if (couponInstance === 'FIVE') couponUsdAmount = 5;
+  else if (couponInstance === 'THREE_FIVE') couponUsdAmount = 8;
+  else if (couponInstance === 'TEN') couponUsdAmount = 10;
+  else if (couponInstance === 'MANUAL') couponUsdAmount = 2;
+
+  const shouldApplyCoupon = sendAmountNum > 0 && couponUsdAmount > 0;
+
+  const allowedCouponInstances = ['THREE', 'FIVE', 'THREE_FIVE', 'TEN', 'MANUAL'];
+  const couponInstanceForCalc = allowedCouponInstances.includes(couponInstance as string)
+    ? (couponInstance as 'THREE' | 'FIVE' | 'THREE_FIVE' | 'TEN' | 'MANUAL')
+    : null;
+
+  const receiveAmountWithCoupon = calculateReceiveAmountWithCoupon({
+    couponInstance: couponInstanceForCalc,
+    receiveAmountNum,
+    sendAmountNum,
+    selectedSendingSystem,
+    selectedReceivingSystem,
+    rateForOne,
+    usdToArsRate,
+    usdToEurRate,
+    usdToBrlRate,
+  });
+
+  const receiveAmountInputValue = shouldApplyCoupon ? formatAmount(receiveAmountWithCoupon) : receiveAmount;
 
   // Todo: Replicar formulario de solicitud, Ver en figma
   // TODO: Cambiar la ruta
@@ -79,6 +125,8 @@ export default function InternalTransactionCalculator() {
   const isSendAmountValid = (sendAmountNum: number, sendingSystemId: string | undefined) => {
     if (sendingSystemId === 'payoneer_usd' || sendingSystemId === 'payoneer_eur') {
       return sendAmountNum >= 50;
+    } else if (sendingSystemId === 'bank') {
+      return sendAmountNum >= rateForOneBank * couponUsdAmount && receiveAmountNum >= 10;
     }
     return sendAmountNum >= 10;
   };
@@ -89,9 +137,73 @@ export default function InternalTransactionCalculator() {
     }
     return true;
   };
+
+  const userWallets = [
+    {
+      id: 'wallet_1',
+      type: 'paypal',
+      label: 'PayPal 1',
+      email: 'alexislerch@gmail.com',
+      fullName: 'Alexis Lerch',
+      logo: '/logos/paypal.png',
+    },
+    {
+      id: 'wallet_2',
+      type: 'paypal',
+      label: 'PayPal 2',
+      email: 'empresaXYZ@gmail.com',
+      fullName: 'Empresa XYZ',
+      logo: '/logos/paypal.png',
+    },
+    {
+      id: 'wallet_3',
+      type: 'wise',
+      label: 'Wise USD',
+      email: 'alexislerch@gmail.com',
+      fullName: 'Alexis Lerch',
+      logo: '/logos/wise.png',
+    },
+    {
+      id: 'wallet_4',
+      type: 'wise',
+      label: 'Wise EUR',
+      email: 'empresaXYZ@gmail.com',
+      fullName: 'Empresa XYZ',
+      logo: '/logos/wise.png',
+    },
+    {
+      id: 'wallet_5',
+      type: 'bank',
+      label: 'Banco Personal',
+      email: 'alexislerch@gmail.com',
+      fullName: 'Alexis Lerch',
+      logo: '/logos/bank.png',
+    },
+  ];
+
+  const filteredWallets = selectedSendingSystem
+    ? userWallets.filter((wallet) => {
+        if (selectedSendingSystem.id?.includes('paypal')) return wallet.type === 'paypal';
+        if (selectedSendingSystem.id?.includes('wise')) return wallet.type === 'wise';
+        if (selectedSendingSystem.id?.includes('bank')) return wallet.type === 'bank';
+        if (selectedSendingSystem.id?.includes('payoneer')) return wallet.type === 'payoneer';
+        if (selectedSendingSystem.id?.includes('pix')) return wallet.type === 'pix';
+        if (selectedSendingSystem.id?.includes('tether')) return wallet.type === 'tether';
+        return false;
+      })
+    : [];
+  const [selectedWalletId, setSelectedWalletId] = useState<string | null>(null);
+  useEffect(() => {
+    if (filteredWallets.length === 1) {
+      setSelectedWalletId(filteredWallets[0].id);
+    } else {
+      setSelectedWalletId(null);
+    }
+  }, [selectedSendingSystem]);
+
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
-      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight px-[19px] py-[27px] shadow-md dark:bg-calculatorDark dark:text-white lg-tablet:min-w-[500px]">
+      <div className="mat-card calculator-container flex max-h-[800px] w-full flex-col items-center rounded-2xl bg-calculatorLight px-[19px] py-[27px] shadow-md dark:bg-calculatorDark dark:text-white sm:max-h-[680px] lg-tablet:min-w-[500px]">
         <div className="relative mb-[10px] flex w-full max-w-lg flex-col items-center gap-[10px] text-[#012c8a] dark:text-darkText">
           <p className="flex w-full max-w-lg items-center gap-[7px] font-textFont text-lightText dark:text-darkText">
             {/* // * Esto podría componetizarse */}
@@ -121,7 +233,11 @@ export default function InternalTransactionCalculator() {
             showOptions={activeSelect === 'send'}
             toggleSelect={() => toggleSelect('send')}
             value={sendAmount}
-            onChange={handleSendAmountChange}
+            onChange={(value) => {
+              setIsCustomInputActive(false);
+              setCustomReceiveInput('');
+              handleSendAmountChange(value);
+            }}
             label={`Envías ${selectedSendingSystem?.coin}`}
             isSending={true}
           />
@@ -135,7 +251,7 @@ export default function InternalTransactionCalculator() {
           </SystemInfo>
 
           {/* // TODO: Hay que agregarle dinamismo para que renderice el valor y los cupones que corresponde */}
-          <Coupons balance={20000} />
+          <Coupons balance={receiveAmountNum} receivingCoin={selectedReceivingSystem?.coin} isVerified={true} />
         </div>
 
         <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
@@ -145,8 +261,28 @@ export default function InternalTransactionCalculator() {
             onSystemSelect={(system) => handleSystemSelection(system, false)}
             showOptions={activeSelect === 'receive'}
             toggleSelect={() => toggleSelect('receive')}
-            value={receiveAmount}
-            onChange={handleReceiveAmountChange}
+            value={isCustomInputActive ? customReceiveInput : receiveAmountInputValue}
+            onChange={(value) => {
+              setCustomReceiveInput(value);
+              setIsCustomInputActive(true);
+              handleReceiveAmountChange(value);
+
+              const sendCalculated = calculateSendAmountFromReceive({
+                receiveValue: value,
+                couponUsdAmount,
+                selectedSendingSystem,
+                selectedReceivingSystem,
+                rateForOne,
+                rateForOneBank,
+                usdToArsRate,
+                usdToEurRate,
+                usdToBrlRate,
+                arsToBrlRate,
+                arsToEurRate: rates.currentValueEURBlueSale,
+              });
+
+              handleSendAmountChange(sendCalculated.toFixed(2));
+            }}
             label={`Recibes ${selectedReceivingSystem?.coin}`}
             isSending={false}
           />
@@ -161,6 +297,8 @@ export default function InternalTransactionCalculator() {
             sendAmountNum={sendAmountNum}
           />
 
+          <WalletSelect wallets={filteredWallets} selectedWalletId={selectedWalletId} onChange={setSelectedWalletId} />
+
           <BtnProccessPayment
             handleSubmit={handleSubmit}
             isProccessing={isProcessing}
@@ -171,6 +309,7 @@ export default function InternalTransactionCalculator() {
             selectedSendingSystem={selectedSendingSystem}
             sendAmount={sendAmount}
             sendAmountNum={sendAmountNum}
+            // isDisabled={isDisabled}
           />
         </div>
       </div>

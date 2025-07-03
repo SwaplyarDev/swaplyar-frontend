@@ -258,6 +258,7 @@ export const qrDark =
 // home images AmountTransactions component
 export const star = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745244113/Star_s1l0xg.png';
 export const yellowStar = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745244121/yellowStar_ikqrxq.svg';
+export const coupon = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1750343087/Vector_kpbkff.png';
 
 // home images PlusRewards component
 export const plusRewardsLight =

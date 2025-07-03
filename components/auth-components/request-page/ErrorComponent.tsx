@@ -8,7 +8,7 @@ interface IProps {
 
 export default function ErrorComponent({ errors }: IProps) {
   return (
-    <div className="flex h-[331px] w-full flex-col items-center justify-center rounded-2xl bg-gray-100 p-5 dark:bg-custom-grayD-800 lg:h-[623px]">
+    <div className="flex h-[331px] w-[80%] flex-col items-center justify-center rounded-2xl bg-gray-100 p-5 dark:bg-custom-grayD-800 lg:h-[640px]">
       <p className="mb-3 text-base font-semibold xs-mini-phone2:text-lg">Ha ocurrido un error al cargar los datos:</p>
       {errors.map((error, index) => (
         <p key={index}>{error}</p>

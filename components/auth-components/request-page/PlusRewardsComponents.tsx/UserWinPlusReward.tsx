@@ -4,7 +4,7 @@ import { userWinReward } from '@/utils/assets/imgDatabaseCloudinary';
 export default function UserWinPlusReward() {
   return (
     <div className="flex w-full flex-col items-center">
-      <Image src={userWinReward} alt="Has ganado 10 dolares" height={386} width={386} />
+      <Image src={userWinReward} alt="Has ganado 10 dolares" height={326} width={326} />
 
       <div>
         <p className="text-[21px] font-bold text-custom-blue-800 dark:text-custom-whiteD">

@@ -19,6 +19,7 @@ interface IProps {
   isReceiveAmountValid: (arg0: number, arg1: string | undefined) => boolean;
   selectedSendingSystem: System | null;
   selectedReceivingSystem: System | null;
+  // isDisabled: boolean;
 }
 
 export default function BtnProccessPayment({
@@ -31,6 +32,7 @@ export default function BtnProccessPayment({
   isReceiveAmountValid,
   selectedSendingSystem,
   selectedReceivingSystem,
+  // isDisabled,
 }: IProps) {
   const { isDark } = useDarkTheme();
 
@@ -49,6 +51,7 @@ export default function BtnProccessPayment({
         )}
         onClick={handleSubmit}
         disabled={
+          // isDisabled ||
           isProccessing ||
           sendAmount === '' ||
           isNaN(sendAmountNum) ||

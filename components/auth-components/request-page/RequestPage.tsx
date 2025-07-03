@@ -30,8 +30,8 @@ export default async function RequestPage() {
   }
 
   return (
-    <div className="mx-auto mb-24 w-full max-w-[1000px] p-6 xs:mb-0 sm:my-6">
-      <h1 className="mb-6 text-4xl font-medium xs:mb-10">
+    <div className="mx-auto mb-20 max-h-[1680px] w-full max-w-[1200px] p-6 xs:mb-0 sm:my-6">
+      <h1 className="mb-6 pt-10 text-[34px] font-bold text-gray-800 dark:text-darkText xs:mb-8">
         Envía y recibe dinero de billeteras virtuales y criptomonedas
       </h1>
       <section className="flex flex-col gap-4 lg:flex-row-reverse">
@@ -42,10 +42,10 @@ export default async function RequestPage() {
         >
           <PlusRewardsInitial
             discounts={discountsData}
-            errors={errors}
+            // errors={errors}
             userId={session?.user.id}
             userVerification={session?.user.userVerification}
-            accessToken={session?.accessToken}
+            accessToken={session?.accessToken ?? ''}
           />
         </Suspense>
         {/* // TODO: Se le deben pasar los errores (si existen) */}
