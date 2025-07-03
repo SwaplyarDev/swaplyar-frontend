@@ -175,11 +175,11 @@ function CardContent(data: BlogPostCardProps) {
 
   return (
     <main className="font-textFont">
-      <div className="fixed left-0 right-0 top-[60px] z-50 flex justify-center md:top-[72px] min-[1280px]:top-[80px]">
+      <div className="fixed left-0 right-0 top-[72px] z-50 flex justify-center md:top-[72px] min-[1280px]:top-[80px]">
         <ProgressBar value={progress} width="100%" />
       </div>
 
-      <section className="m-auto mt-16 flex w-full max-w-[357px] flex-col overflow-x-hidden px-4 md:mt-5 md:max-w-[768px] min-[1280px]:mt-0 min-[1280px]:max-w-[1200px]">
+      <section className="m-auto mt-3 flex w-full max-w-[357px] flex-col overflow-x-hidden px-4 md:mt-5 md:max-w-[768px] min-[1280px]:mt-0 min-[1280px]:max-w-[1200px]">
         <div className="mt-2 flex w-full max-w-full items-center justify-between px-0 md:mt-1 lg:mt-5 lg:px-0">
           <div className="flex-shrink-0">
             <ButtonBack />
@@ -191,7 +191,7 @@ function CardContent(data: BlogPostCardProps) {
             )}
           </div>
 
-          <div className="flex flex-col items-end gap-1 md:gap-0">
+          <div className="flex flex-col items-end">
             <div className="text-sm font-semibold md:text-base">
               <p>{convertirFecha(data.date)}</p>
             </div>
