@@ -39,7 +39,7 @@ export function useTransactions(initialPage = 1) {
         if (!token) throw new Error('Token no disponible');
 
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/users/transactions?page=${currentPage}&perPage=${perPage}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/transactions?page=${currentPage}&perPage=${perPage}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

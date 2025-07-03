@@ -173,15 +173,15 @@ export async function getUserWalletAccountById(userId: string, accountId: string
   }
 }
 
-// Falta integracion con back 2
+// Actualizado con el backend 2
 export async function deleteWalletAccount1(accountId: string, token: string, typeAccount: string) {
-  const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/users/accounts/delete/${accountId}`, {
+  const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/users/accounts`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ typeAccount }),
+    body: JSON.stringify({ typeAccount, accountId }),
   });
 
   const data = await res.json();

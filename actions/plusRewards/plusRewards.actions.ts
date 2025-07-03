@@ -2,11 +2,10 @@
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-// Falta integracion con back 2
-
+// Actualizado con el backend 2
 export async function plusRewardsActions(formData: FormData, token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/verification/upload`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/upload`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -25,6 +24,7 @@ export async function plusRewardsActions(formData: FormData, token: string) {
   }
 }
 
+// Falta integracion con back 2
 export async function plusRewardsActionsPut(formData: FormData, token: string) {
   try {
     const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/verification/upload`, {
@@ -46,9 +46,10 @@ export async function plusRewardsActionsPut(formData: FormData, token: string) {
   }
 }
 
+// Actualizado con el backend 2
 export async function getPlusRewards(token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/verification/verification-status`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/status`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -70,6 +71,7 @@ export async function getPlusRewards(token: string) {
   }
 }
 
+// Falta integracion con backend 2
 export async function getCardStatus(token: string) {
   try {
     const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/verification/user-validation`, {
@@ -95,6 +97,7 @@ export async function getCardStatus(token: string) {
   }
 }
 
+// Falta integracion con backend 2
 export async function updateVerificationStatus(token: string) {
   try {
     const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/verification/verification-status`, {
@@ -119,6 +122,7 @@ export async function updateVerificationStatus(token: string) {
   }
 }
 
+// Falta integracion con backend 2
 export async function resendVerificationAfterRejection(token: string) {
   try {
     const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/verification/verification-status`, {
