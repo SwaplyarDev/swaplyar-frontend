@@ -174,7 +174,7 @@ const QuestionHowToUse = () => {
                     : expanded === `panel${index}`
                       ? 'text-custom-blue-800'
                       : 'text-custom-grayD'
-                } ${expanded === `panel${index}` ? 'font-semibold' : 'font-light'}`}
+                } ${expanded === `panel${index}` ? '!font-bold' : 'font-light'}`}
               >
                 {dato.title}
               </Typography>
