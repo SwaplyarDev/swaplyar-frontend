@@ -3,7 +3,7 @@ import TransactionCalculator from '@/components/Transaction/TransactionCalculato
 
 const ConversionInstructions = () => {
   return (
-    <section className="flex w-full max-w-7xl flex-col-reverse items-center justify-between gap-4 space-y-4 py-0 sm:flex-col lg:flex-row lg:space-x-4 lg:space-y-0 lg:py-5">
+    <section className="flex w-full max-w-7xl flex-col-reverse items-center justify-between gap-4 space-y-4 py-0 sm:flex-col lg:flex-row lg:space-x-4 lg:space-y-0 lg:py-8">
       <article className="steps flex max-w-[500px] flex-1 flex-col items-start pt-6 md:pt-8 lg:max-w-[590px]">
         <h1 className="font-titleFont text-[38px]/[120%] font-medium text-custom-grayD dark:text-darkText lg:text-[40px]/[120%]">
           Envía y recibe dinero de billeteras virtuales y criptomonedas

@@ -54,7 +54,7 @@ const ImageCarousel: React.FC<{ images: Blog[] }> = ({ images }) => {
             className="h-[350px] border-none bg-inherit"
           >
             {images.map((imgData) => {
-              const title2 = imgData.slug || '';
+              const title2 = imgData.title || '';
               const slug = slugify(title2, { strict: true });
               return (
                 <Link
