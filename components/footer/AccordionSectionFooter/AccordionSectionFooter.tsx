@@ -25,7 +25,7 @@ export function AccordionSection({ title, links }: { title: string; links: Foote
           }
           aria-controls={`${title}-content`}
           id={`${title}-header`}
-          className="group min-h-10 px-0"
+          className="group min-h-10 bg-transparent px-0"
           sx={{
             minHeight: '0!important',
             '& .MuiAccordionSummary-content': {
