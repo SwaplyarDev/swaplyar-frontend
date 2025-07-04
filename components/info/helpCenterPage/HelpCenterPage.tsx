@@ -116,12 +116,14 @@ const HelpCenterPage = () => {
           </div>
         </div>
       </div>
-      <FlyerTrabajo
-        imageSrc={FlyerGif}
-        description="Encontrá respuestas a tus dudas"
-        nameButton="Preguntas frecuentes"
-        href="/es/centro-de-ayuda/preguntas-frecuentes"
-      />
+      <section className="hidden md:block">
+        <FlyerTrabajo
+          imageSrc={FlyerGif}
+          description="Encontrá respuestas a tus dudas"
+          nameButton="Preguntas frecuentes"
+          href="/es/centro-de-ayuda/preguntas-frecuentes"
+        />
+      </section>
     </>
   );
 };

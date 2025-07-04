@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { BlogPostCardProps, Content } from '@/types/blogs/blog';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchBlogs } from '@/actions/blogs/blogs.actions';
 import CardBlogOption from './CardBlogOption';
 import { cardInfoBlog } from '@/utils/assets/imgDatabaseCloudinary';
@@ -13,12 +13,13 @@ import ProgressBar from '@/components/ui/ProgressBar/ProgressBar';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { gifImage } from '@/utils/assets/img-database';
 import slugify from 'slugify';
-import { da } from 'date-fns/locale';
 import ButtonBack from '../ButtonBack/ButtonBack';
+
 // Funcion para evaluar si es un string
 function isString(value: unknown): value is string {
   return typeof value === 'string' || value instanceof String;
 }
+
 // Funcion para colocar texto en negrita
 // coloca en negrita a todo texto que este entre **
 export function highlightText(text: string, withId?: boolean) {
@@ -42,11 +43,13 @@ export function highlightText(text: string, withId?: boolean) {
     );
   }
 }
+
 interface MenuItem {
   title: string;
   level: number;
   children?: MenuItem[];
 }
+
 /**
  * Funcion que recibe un texto continuo y lo convierte en una lista
  * Recibe los renglones que tengan # son titulos de listas y - cada item de la lista
@@ -121,6 +124,7 @@ function CardContent(data: BlogPostCardProps) {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoaded(true);
@@ -144,6 +148,7 @@ function CardContent(data: BlogPostCardProps) {
     console.log(slugify('¿Qué es Payoneer?', { lower: true, strict: true }));
     fetchData();
   }, [data.blog_id]);
+
   // Funcion para convertir fecha tipo AÑO-MES-DIA en DIA de MES del AÑO
   function convertirFecha(date: string): string {
     const [year, month, day] = date.split('-');
@@ -170,29 +175,43 @@ function CardContent(data: BlogPostCardProps) {
 
   return (
     <main className="font-textFont">
-      <div className="sticky top-28 flex w-full flex-col items-center sm:top-36">
-        <div className="rounded-2xl border-2 border-buttonsLigth bg-custom-whiteD-100 p-2 dark:border-white">
-          <ProgressBar value={progress} width="300px" />
-        </div>
+      <div className="fixed left-0 right-0 top-[72px] z-50 flex justify-center md:top-[72px] min-[1280px]:top-[80px]">
+        <ProgressBar value={progress} width="100%" />
       </div>
 
-      <section className="m-auto mt-12 flex w-full max-w-[357px] flex-col overflow-x-hidden px-4 md:mt-12 md:max-w-[729px] lg:mt-0 lg:max-w-[1368px]">
-        <div>
-          <ButtonBack />
-          <div className="ml-[200px] mt-[50px] hidden flex-col lg:flex lg:max-w-full">
-            <p className="">
-              {highlightText(
-                `El tiempo de lectura estimado para este artículo es de **${data.reading_time[0]} a ${data.reading_time[2]}** **minutos** `,
-              )}
-            </p>
-            <div className="mt-[20px]">
-              <p>{convertirFecha(data.date)} </p>
-              <p className={!isDark ? 'font-bold text-custom-blue' : 'font-bold text-custom-whiteD'}>SwaplyAr</p>
+      <section className="m-auto mt-3 flex w-full max-w-[357px] flex-col overflow-x-hidden px-4 md:mt-5 md:max-w-[768px] min-[1280px]:mt-0 min-[1280px]:max-w-[1200px]">
+        <div className="mt-2 flex w-full max-w-full items-center justify-between px-0 md:mt-1 lg:mt-5 lg:px-0">
+          <div className="flex-shrink-0">
+            <ButtonBack />
+          </div>
+
+          <div className="hidden flex-1 whitespace-nowrap text-center lg:block">
+            {highlightText(
+              `El tiempo de lectura estimado para este artículo es de **${data.reading_time[0]} a ${data.reading_time[2]}** **minutos** `,
+            )}
+          </div>
+
+          <div className="flex flex-col items-end">
+            <div className="text-sm font-semibold md:text-base">
+              <p>{convertirFecha(data.date)}</p>
+            </div>
+            <div className="block lg:hidden">
+              <p className={`text-sm ${!isDark ? 'font-bold text-custom-blue' : 'font-bold text-custom-whiteD'}`}>
+                SwaplyAr
+              </p>
             </div>
           </div>
         </div>
-        <div className="mx-auto flex w-full flex-col justify-center gap-4 lg:flex-row">
-          <article className="hidden h-[756px] w-[286px] flex-col gap-5 lg:ml-1 lg:flex">
+        <div className="-mt-4 mb-5 hidden justify-end px-4 lg:flex lg:px-0">
+          <div className="min-w-[150px] text-right">
+            <p className={`text-sm ${!isDark ? 'font-bold text-custom-blue' : 'font-bold text-custom-whiteD'}`}>
+              SwaplyAr
+            </p>
+          </div>
+        </div>
+
+        <div className="mx-auto flex w-full flex-col justify-center gap-4 min-[1280px]:flex-row">
+          <article className="hidden h-[756px] w-[286px] flex-col gap-5 min-[1280px]:ml-1 min-[1280px]:flex">
             <h2 className="font-semibold">Contenido:</h2>
             <ul className="list-disc pl-5">
               {sideBar.map((item, index) => (
@@ -238,18 +257,19 @@ function CardContent(data: BlogPostCardProps) {
               ))}
             </ul>
           </article>
-          <section className="flex w-full max-w-[357px] flex-col gap-5 md:max-w-[680px] lg:max-w-[897px]">
+
+          <section className="mt-8 flex w-full max-w-[357px] flex-col gap-5 md:max-w-[729px] min-[1280px]:max-w-[897px]">
             <h1
               className={
                 !isDark
-                  ? 'text-center text-[40px] font-semibold text-custom-blue'
-                  : 'text-center text-[40px] font-semibold text-custom-whiteD'
+                  ? 'text-center text-[28px] font-semibold text-custom-blue md:text-[32px] lg:text-[40px]'
+                  : 'text-center text-[28px] font-semibold text-custom-whiteD md:text-[32px] lg:text-[40px]'
               }
             >
               {data.title}
             </h1>
             <Image
-              className="mx-auto h-[286px] w-[898px] object-cover"
+              className="mx-auto h-[200px] w-full object-cover md:h-[240px] lg:h-[286px] lg:w-[898px]"
               src={data.image || '/images/paypalenarg.png'}
               width={898}
               height={286}
@@ -311,7 +331,8 @@ function CardContent(data: BlogPostCardProps) {
             </article>
           </section>
         </div>
-        <section className="mb-[70px] mt-20 flex flex-col-reverse items-center justify-between gap-10 lg:flex-row">
+
+        <section className="mb-[70px] mt-20 flex flex-col-reverse items-center justify-between gap-10 min-[1280px]:flex-row">
           <CardBlogOption isLoaded={isLoaded} blog={randomBlog} />
           <div className="lg :ml-0 relative ml-[120px] hidden w-full max-w-[500px] sm:block">
             <Image
@@ -345,6 +366,7 @@ function CardContent(data: BlogPostCardProps) {
           </div>
         </section>
       </section>
+
       <section
         className="mt-12 flex h-[272px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${gifImage})` }}
@@ -352,7 +374,7 @@ function CardContent(data: BlogPostCardProps) {
         <div className="max-w-[90%] text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText md:max-w-[600px]">
           Mantente al día
         </div>
-        <div className="max-w-[90%] text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText md:max-w-[600px]">
+        <div className="max-w-[90%] text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText md:max-w-[768px]">
           Regístrate para recibir novedades en tu correo electrónico
         </div>
 
