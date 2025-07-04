@@ -491,13 +491,11 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   display: flex;
   flex-direction: column;
   gap: 20px;
-
 }
 
 .custom-container-payment {
   @apply p-0;
 }
-
 
 .buttonSecond {
   outline: none;
@@ -507,7 +505,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
 }
 
-.buttonSecond:hover:not(:disabled) { 
+.buttonSecond:hover:not(:disabled) {
   box-shadow:
     0px 0px 0px 2px #ffffff,
     0px 0px 0px 4px #91aeec;
@@ -518,19 +516,16 @@ div:where(.swal2-container).swal2-noanimation {
   backdrop-filter: blur(5px);
 }
 
-
-
 .buttonSecondDark {
   outline: none;
   transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
 }
 
-.buttonSecondDark:hover:not(:disabled) { 
+.buttonSecondDark:hover:not(:disabled) {
   box-shadow:
     0px 0px 0px 2px #252526,
     0px 0px 0px 4px #ebe7e0;
 }
-
 
 .buttonSecond:disabled,
 .buttonSecondDark:disabled {
@@ -653,13 +648,20 @@ div:where(.swal2-container).swal2-noanimation {
 
 /* Navbar internal */
 
+:root {
+  --montana-blanca-url: url('https://res.cloudinary.com/dwrhturiy/image/upload/v1751462863/monta%C3%B1aBlanca_ub1hae.png');
+  --montana-negra-url: url('https://res.cloudinary.com/dwrhturiy/image/upload/v1751463162/MontanaDark_h50bsd.png');
+  --montana-blanca-footer-url: url('https://res.cloudinary.com/dwrhturiy/image/upload/v1751463292/montana-footer_w6anit.png');
+  --montana-negra-footer-url: url('https://res.cloudinary.com/dwrhturiy/image/upload/v1751463297/montanaDark-footer_ywgxh1.png');
+}
+
 .montana {
-  background-image: url('../public/images/montañaBlanca.png');
+  background-image: var(--montana-blanca-url);
   background-repeat: no-repeat;
 }
 
 .montanaDark {
-  background-image: url('../public/images/MontanaDark.png');
+  background-image: var(--montana-negra-url);
   background-repeat: no-repeat;
 }
 
@@ -667,7 +669,7 @@ div:where(.swal2-container).swal2-noanimation {
   width: 77px;
   height: 32px;
   bottom: 16px;
-  background-image: url('../public/images/montana-footer.png');
+  background-image: var(--montana-blanca-footer-url);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -677,7 +679,7 @@ div:where(.swal2-container).swal2-noanimation {
   width: 77px;
   height: 32px;
   bottom: 16px;
-  background-image: url('../public/images/montanaDark-footer.png');
+  background-image: var(--montana-negra-footer-url);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

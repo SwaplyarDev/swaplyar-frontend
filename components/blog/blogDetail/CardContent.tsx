@@ -5,7 +5,7 @@ import { BlogPostCardProps, Content } from '@/types/blogs/blog';
 import { useCallback, useEffect, useState } from 'react';
 import { fetchBlogs } from '@/actions/blogs/blogs.actions';
 import CardBlogOption from './CardBlogOption';
-import { cardInfoBlog } from '@/utils/assets/imgDatabaseCloudinary';
+import { cardInfoBlog, paypalEnArg } from '@/utils/assets/imgDatabaseCloudinary';
 import { footerLinks } from '@/components/footer/footerLinks';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -250,7 +250,7 @@ function CardContent(data: BlogPostCardProps) {
             </h1>
             <Image
               className="mx-auto h-[286px] w-[898px] object-cover"
-              src={data.image || '/images/paypalenarg.png'}
+              src={data.image || paypalEnArg}
               width={898}
               height={286}
               alt="Blog Image "
