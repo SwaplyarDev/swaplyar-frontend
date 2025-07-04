@@ -50,6 +50,11 @@ const NavbarLanding = () => {
 
   const { data: session, status } = useSession();
 
+  // Función para cerrar el drawer
+  const closeDrawer = () => {
+    setDrawerMenu(false);
+  };
+
   // Popover
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
@@ -169,7 +174,7 @@ const NavbarLanding = () => {
             {/* Menú desplegable */}
             <Drawer
               open={drawerMenu}
-              onClose={() => setDrawerMenu(false)}
+              onClose={closeDrawer}
               position="right"
               className="h-full w-full max-w-full transform transition-all duration-500 ease-in-out xs-mini-phone2:w-[inherit] xs-mini-phone2:max-w-[80%]"
             >
@@ -284,7 +289,10 @@ const NavbarLanding = () => {
                     <Sidebar.ItemGroup className="w-full bg-inherit">
                       {status === 'authenticated' ? (
                         <button
-                          onClick={() => signOut()}
+                          onClick={() => {
+                            signOut();
+                            closeDrawer();
+                          }}
                           className={clsx(
                             isDark ? 'buttonSecondDark dark:text-lightText' : 'buttonSecond',
                             'relative m-1 min-h-[38px] w-11/12 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-3 py-1 text-sm text-darkText dark:border-darkText dark:bg-darkText',
@@ -295,10 +303,10 @@ const NavbarLanding = () => {
                       ) : (
                         <div className="flex flex-col items-center gap-3">
                           <div className="flex flex-col md:hidden">
-                            <LogInButton />
+                            <LogInButton onButtonClick={closeDrawer} />
                           </div>
                           <div className="flex h-[60px] flex-col">
-                            <RegisterButton />
+                            <RegisterButton onButtonClick={closeDrawer} />
                           </div>
                         </div>
                       )}
