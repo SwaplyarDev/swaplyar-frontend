@@ -258,7 +258,7 @@ function CardContent(data: BlogPostCardProps) {
             </ul>
           </article>
 
-          <section className="mt-8 flex w-full max-w-[357px] flex-col gap-5 md:max-w-[729px] min-[1280px]:max-w-[897px]">
+          <section className="mt-8 flex w-full flex-col gap-5">
             <h1
               className={
                 !isDark
@@ -269,24 +269,32 @@ function CardContent(data: BlogPostCardProps) {
               {data.title}
             </h1>
             <Image
-              className="mx-auto h-[200px] w-full object-cover md:h-[240px] lg:h-[286px] lg:w-[898px]"
+              className="mx-auto h-[200px] w-full object-cover md:h-[240px] lg:h-[286px]"
               src={data.image || paypalEnArg}
               width={898}
               height={286}
-              alt="Blog Image "
+              alt="Blog Image"
             />
 
-            <article className="flex flex-col gap-3">
+            <article className="flex w-full flex-col gap-3">
               {Array.isArray(data.content_elements) &&
                 data.content_elements[0]?.content?.map((item: Content, index: number) => {
                   if (item.style?.style_name === 'normal') {
-                    return <p key={index}>{highlightText(item.text as string)}</p>;
+                    return (
+                      <p key={index} className="w-full">
+                        {highlightText(item.text as string)}
+                      </p>
+                    );
                   } else if (item.style?.style_name === 'subtitle') {
-                    return <h2 key={index}>{highlightText(item.text as string, true)}</h2>;
+                    return (
+                      <h2 key={index} className="w-full">
+                        {highlightText(item.text as string, true)}
+                      </h2>
+                    );
                   } else if (item.style?.style_name === 'ul') {
                     let list = parseContinuousTextToMenu(item.text as string);
                     return (
-                      <ul key={index}>
+                      <ul key={index} className="w-full">
                         {Array.isArray(list) &&
                           list.map((item, index) => (
                             <li key={index} className="ml-5 list-disc">
@@ -308,7 +316,7 @@ function CardContent(data: BlogPostCardProps) {
                     let list = parseContinuousTextToMenu(item.text as string);
                     console.log(list);
                     return (
-                      <ol key={index}>
+                      <ol key={index} className="w-full">
                         {Array.isArray(list) &&
                           list.map((item, index) => (
                             <li key={index} className="ml-5 list-decimal">
