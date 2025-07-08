@@ -207,7 +207,7 @@ export const Post1_500 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v173
 export const Post2_500 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739979692/post2-500_rgxcns.png';
 
 // Home Search
-export const homeSearch = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739979899/homeSearch_g7yg1x.png';
+export const homeSearch = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752004461/Vector_sad2ui.png';
 
 // Search Request
 export const searchRequestWeb =
