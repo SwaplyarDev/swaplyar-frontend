@@ -24,7 +24,7 @@ const BlogPostCard: React.FC<BlogPostProps> = ({ blog_id, title, description, im
   const { isDark } = useDarkTheme();
   return (
     <Link href={`blog/${slug}`} className="flex h-full w-full">
-      <div className="group flex h-full w-full flex-col overflow-hidden rounded-[16px] border border-custom-blue bg-white shadow-md shadow-black/25 transition-transform hover:scale-[1.02] hover:bg-custom-blue hover:text-white dark:border-inputDark dark:bg-[#323232] dark:hover:bg-custom-blue">
+      <div className="group flex h-full w-full flex-col overflow-hidden rounded-[16px] border border-custom-blue bg-white shadow-md shadow-black/25 transition-transform hover:scale-[1.02] hover:bg-custom-blue-400 hover:text-white dark:border-inputDark dark:bg-[#323232] dark:hover:bg-custom-blue">
         <div className="relative h-0 w-full pb-[56.25%]">
           {' '}
           <div className="w-full overflow-hidden rounded-t-[16px] border-t-2 border-custom-blue p-3">
