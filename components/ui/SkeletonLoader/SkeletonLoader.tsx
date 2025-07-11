@@ -1,7 +1,7 @@
 import React from 'react';
 
 const SkeletonLoader = () => (
-  <div className="mt-6 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
+  <div className="mt-6 grid w-full gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
     {Array.from({ length: 9 }).map((_, index) => (
       <div
         key={index}

@@ -3,9 +3,12 @@
 import { useRouter } from 'next/navigation';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import clsx from 'clsx';
+import { ChevronLeft } from 'lucide-react';
+
 export default function ButtonBack() {
   const router = useRouter();
   const { isDark } = useDarkTheme();
+
   const handleBack = () => {
     router.back();
   };
@@ -13,19 +16,20 @@ export default function ButtonBack() {
   return (
     <button
       onClick={handleBack}
-      className={
-        window.innerWidth > 768
-          ? clsx(
-              isDark ? 'buttonSecondDark' : 'buttonSecond',
-              'mt-2 w-full max-w-[100px] rounded-full bg-custom-blue-800 px-[14px] py-3 font-titleFont text-base font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-custom-grayD dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD',
-            )
-          : clsx(
-              isDark ? 'buttonSecondDark' : 'buttonSecond',
-              'mt-1 w-full max-w-[50px] rounded-full bg-custom-blue-800 px-[10px] py-3 font-titleFont text-base font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-custom-grayD dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD',
-            )
-      }
+      className={clsx(
+        'group relative mt-2 flex h-[40px] w-[40px] items-center justify-center rounded-full transition-colors duration-300',
+        '-ml-4 md:-ml-4 lg:-ml-2',
+        isDark ? 'text-gray-200' : 'text-gray-700 hover:text-[#0A2A83]',
+      )}
+      aria-label="Volver"
     >
-      {window.innerWidth > 768 ? 'Volver' : '←'}
+      <span
+        className={clsx(
+          'pointer-events-none absolute h-[40px] w-[40px] rounded-full border-r-[3px] opacity-0 transition-opacity duration-300 group-hover:opacity-100',
+          isDark ? 'border-r-white' : 'border-r-[#0A2A83]',
+        )}
+      />
+      <ChevronLeft size={28} strokeWidth={2.5} className="relative z-10" />
     </button>
   );
 }

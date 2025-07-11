@@ -13,6 +13,7 @@ import {
 } from '@/utils/assets/imgDatabaseCloudinary';
 import RedirectButton from '../ui/RedirectButton/RedirectButton';
 import { error404Clear, error404Dark } from '@/utils/assets/imgDatabaseCloudinary';
+import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 
 const NotFoundComponent = () => {
   const { isDark } = useDarkTheme();
@@ -33,7 +34,10 @@ const NotFoundComponent = () => {
   }, [counter, router]);
 
   return (
-    <main className="mx-4 md:mx-8 lg:mx-4">
+    <main className="relative mx-4 overflow-hidden md:mx-8 lg:mx-4">
+      <div className="absolute inset-0 -z-10">
+        <AnimatedBlurredCircles tope="top-[0px]" />
+      </div>
       <section className="relative m-auto flex w-full max-w-[1204px] flex-col items-start gap-20 lg:px-4">
         <section className="relative mb-10 flex min-h-[520px] w-full items-end overflow-hidden xs:min-h-[530px] xs-phone:min-h-[550px] md-tablet:min-h-[630px]">
           <article className="absolute top-0 flex w-full items-center justify-center">
