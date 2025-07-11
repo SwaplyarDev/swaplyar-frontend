@@ -17,7 +17,7 @@ export function AccordionSection({ title, links }: { title: string; links: Foote
         disableGutters
         expanded={expanded}
         onChange={() => setExpanded(!expanded)}
-        className="before:contante-[''] duration-600 after:duration-600 group relative bg-transparent shadow-none transition-all before:absolute before:w-0 after:absolute after:bottom-0 after:left-[50%] after:h-[1px] after:w-[70%] after:min-w-[204px] after:-translate-x-[50%] after:bg-buttonExpandDark after:transition-all after:content-[''] after:active:bg-buttonsLigth dark:after:active:bg-buttonExpandDark after:[&.Mui-expanded]:bg-buttonsLigth dark:after:[&.Mui-expanded]:bg-buttonExpandDark"
+        className="before:contante-[''] duration-600 after:duration-600 group relative !bg-transparent shadow-none transition-all before:absolute before:w-0 after:absolute after:bottom-0 after:left-[50%] after:h-[1px] after:w-[70%] after:min-w-[204px] after:-translate-x-[50%] after:bg-buttonExpandDark after:transition-all after:content-[''] after:active:bg-buttonsLigth dark:after:active:bg-buttonExpandDark after:[&.Mui-expanded]:bg-buttonsLigth dark:after:[&.Mui-expanded]:bg-buttonExpandDark"
       >
         <AccordionSummary
           expandIcon={
