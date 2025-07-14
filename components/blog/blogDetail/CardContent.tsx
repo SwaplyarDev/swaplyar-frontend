@@ -107,10 +107,29 @@ function CardContent(data: BlogPostCardProps) {
   const [progress, setProgress] = useState(0);
   console.log('blogs', data);
   const [randomBlog, setRandomBlog] = useState<BlogPostCardProps | null>(null);
+  const [hasTopPopup, setHasTopPopup] = useState(false);
 
   // Se convierte la informacion que me llega de la API en un formato que pueda ser utilizado como array
   const sideBar = parseContinuousTextToMenu(data.side_bar);
 
+  useEffect(() => {
+    const updatePopupVisibility = () => {
+      const isVisible = !JSON.parse(sessionStorage.getItem('isClosed') || 'false');
+      setHasTopPopup(isVisible);
+    };
+
+    const handleVisibilityChange = () => updatePopupVisibility();
+
+    updatePopupVisibility();
+
+    window.addEventListener('storage', handleVisibilityChange);
+    window.addEventListener('topPopupVisibilityChange', handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener('storage', handleVisibilityChange);
+      window.removeEventListener('topPopupVisibilityChange', handleVisibilityChange);
+    };
+  }, []);
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -175,7 +194,13 @@ function CardContent(data: BlogPostCardProps) {
 
   return (
     <main className="font-textFont">
-      <div className="fixed left-0 right-0 top-[72px] z-50 flex justify-center md:top-[72px] min-[1280px]:top-[80px]">
+      <div
+        className={`fixed left-0 right-0 z-50 flex justify-center transition-all duration-200 ${
+          hasTopPopup
+            ? 'top-[calc(62px+44px)] md:top-[calc(64px+44px)] lg:top-[calc(72px+44px)] min-[1280px]:top-[calc(80px+44px)]'
+            : 'top-[72px] md:top-[72px] lg:top-[72px] min-[1280px]:top-[80px]'
+        }`}
+      >
         <ProgressBar value={progress} width="100%" />
       </div>
 
