@@ -19,7 +19,7 @@ export function FooterLink({ href, label, view }: FooterLinkProps) {
       <Link href={href} {...(view ? { onClick: () => setView(view) } : {})}>
         <div className="align-center flex justify-center">
           <p
-            className={`absolute font-textFont text-base font-[300] hover:font-[400] hover:text-buttonsLigth dark:text-buttonsExtraLigthDark dark:hover:text-buttonsLigthDark ${isActive ? 'text-buttonsLigth after:bg-buttonsLigth after:content-[""] dark:text-buttonsLigthDark dark:after:bg-buttonsLigthDark' : 'text-buttonsExtraLigth'}`}
+            className={`absolute font-textFont text-base font-[300] hover:font-[400] hover:text-buttonsLigth dark:text-buttonsExtraLigthDark dark:hover:text-buttonsLigthDark ${isActive ? 'font-[400] text-buttonsLigth underline after:bg-buttonsLigth after:content-[""] dark:text-buttonsLigthDark dark:after:bg-buttonsLigthDark' : 'text-buttonsExtraLigth'}`}
           >
             {label}
           </p>
