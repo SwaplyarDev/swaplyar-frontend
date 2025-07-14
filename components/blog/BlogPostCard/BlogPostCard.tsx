@@ -27,17 +27,13 @@ const BlogPostCard: React.FC<BlogPostProps> = ({ blog_id, title, description, im
       <div className="group flex h-full w-full flex-col overflow-hidden rounded-[16px] border border-custom-blue bg-white shadow-md shadow-black/25 transition-transform hover:scale-[1.02] hover:bg-custom-blue-400 hover:text-white dark:border-inputDark dark:bg-[#323232] dark:hover:bg-custom-blue">
         <div className="relative h-0 w-full pb-[56.25%]">
           {' '}
-          <div className="w-full overflow-hidden rounded-t-[16px] border-t-2 border-custom-blue p-3">
-            <div className="relative aspect-video">
-              <Image
-                src={image}
-                alt={title}
-                fill
-                className="rounded-t-[16px] object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
-            </div>
-          </div>
+          <Image
+            src={image}
+            className="absolute left-0 top-0 h-full w-full rounded-t-[28px] object-cover p-3"
+            alt={title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
         </div>
         <div className="flex flex-grow flex-col">
           <div className="p-4">

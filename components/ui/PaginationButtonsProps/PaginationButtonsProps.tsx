@@ -59,18 +59,18 @@ const PaginationButtons: React.FC<PaginationButtonsProps> = ({
         onClick={() => changePage(1)}
         disabled={currentPage === 1 || isLoading}
         aria-label="Go to first page"
-        className="hidden h-8 w-8 items-center justify-center rounded-full border border-gray-300 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 sm:flex"
+        className="hidden h-8 w-8 items-center justify-center rounded-md disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 sm:flex"
       >
-        <ChevronsLeft className="h-4 w-4" />
+        <ChevronsLeft className="h-6 w-6" />
       </button>
 
       <button
         onClick={() => changePage(currentPage - 1)}
         disabled={currentPage === 1 || isLoading}
         aria-label="Go to previous page"
-        className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600"
+        className="flex h-8 w-8 items-center justify-center rounded-md disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600"
       >
-        <ChevronLeft className="h-4 w-4" />
+        <ChevronLeft className="h-6 w-6" />
       </button>
 
       <div className="flex items-center gap-1 md:gap-2">
@@ -80,8 +80,8 @@ const PaginationButtons: React.FC<PaginationButtonsProps> = ({
               key={index}
               className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition-colors ${
                 currentPage === pageNumber
-                  ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
-                  : 'border border-gray-300 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800'
+                  ? 'bg-white shadow-md shadow-gray-500 dark:bg-calculatorLight dark:text-white dark:shadow-gray-300'
+                  : 'text-gray-600 hover:bg-gray-100 dark:border-gray-600 dark:text-white dark:hover:bg-calculatorLight'
               } disabled:cursor-not-allowed disabled:opacity-50`}
               onClick={() => changePage(pageNumber)}
               disabled={isLoading || currentPage === pageNumber}
@@ -102,18 +102,18 @@ const PaginationButtons: React.FC<PaginationButtonsProps> = ({
         onClick={() => changePage(currentPage + 1)}
         disabled={currentPage === totalPages || isLoading}
         aria-label="Go to next page"
-        className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600"
+        className="flex h-8 w-8 items-center justify-center rounded-md disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600"
       >
-        <ChevronRight className="h-4 w-4" />
+        <ChevronRight className="h-6 w-6" />
       </button>
 
       <button
         onClick={() => changePage(totalPages)}
         disabled={currentPage === totalPages || isLoading}
         aria-label="Go to last page"
-        className="hidden h-8 w-8 items-center justify-center rounded-full border border-gray-300 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 sm:flex"
+        className="hidden h-8 w-8 items-center justify-center rounded-md disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 sm:flex"
       >
-        <ChevronsRight className="h-4 w-4" />
+        <ChevronsRight className="h-6 w-6" />
       </button>
     </div>
   );
