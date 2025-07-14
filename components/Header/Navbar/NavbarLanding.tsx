@@ -133,7 +133,6 @@ const NavbarLanding = () => {
               </>
             ) : (
               <>
-                {' '}
                 <LogInButton />
               </>
             )}
