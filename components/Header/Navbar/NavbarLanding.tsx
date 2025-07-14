@@ -3,14 +3,10 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useDarkTheme } from '../../ui/theme-Provider/themeProvider';
-
-// import { Drawer, Sidebar, Navbar } from 'flowbite-react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdOutlineClose } from 'react-icons/md';
-
 import NavLinks from '@/components/ui/top-menu/nav-links';
 import Image from 'next/image';
-
 import LogInButton from '@/components/ui/top-menu/log-register-bt/logiInButton';
 import RegisterButton from '@/components/ui/top-menu/log-register-bt/registerButton';
 import Switch from '@/components/ui/top-menu/switch';
@@ -50,7 +46,6 @@ const NavbarLanding = () => {
 
   const { data: session, status } = useSession();
 
-  // Función para cerrar el drawer
   const closeDrawer = () => {
     setDrawerMenu(false);
   };
