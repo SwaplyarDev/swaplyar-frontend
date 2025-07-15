@@ -170,7 +170,7 @@ const NavbarLanding = () => {
               open={drawerMenu}
               onClose={closeDrawer}
               position="right"
-              className="h-full w-full max-w-full transform transition-all duration-500 ease-in-out xs-mini-phone2:w-[inherit] xs-mini-phone2:max-w-[80%]"
+              className="flex h-full w-full max-w-full transform flex-col items-center justify-between transition-all duration-500 ease-in-out xs-mini-phone2:w-[inherit] xs-mini-phone2:max-w-[80%]"
             >
               <Drawer.Header
                 title=""
@@ -299,7 +299,7 @@ const NavbarLanding = () => {
                           <div className="flex flex-col md:hidden">
                             <LogInButton onButtonClick={closeDrawer} />
                           </div>
-                          <div className="flex h-[60px] flex-col">
+                          <div className="flex flex-col">
                             <RegisterButton onButtonClick={closeDrawer} />
                           </div>
                         </div>
