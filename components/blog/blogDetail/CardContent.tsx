@@ -107,21 +107,68 @@ function CardContent(data: BlogPostCardProps) {
   const [progress, setProgress] = useState(0);
   console.log('blogs', data);
   const [randomBlog, setRandomBlog] = useState<BlogPostCardProps | null>(null);
+  const [hasTopPopup, setHasTopPopup] = useState(false);
 
   // Se convierte la informacion que me llega de la API en un formato que pueda ser utilizado como array
   const sideBar = parseContinuousTextToMenu(data.side_bar);
 
   useEffect(() => {
+    const updatePopupVisibility = () => {
+      const isVisible = !JSON.parse(sessionStorage.getItem('isClosed') || 'false');
+      setHasTopPopup(isVisible);
+    };
+
+    const handleVisibilityChange = () => updatePopupVisibility();
+
+    updatePopupVisibility();
+
+    window.addEventListener('storage', handleVisibilityChange);
+    window.addEventListener('topPopupVisibilityChange', handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener('storage', handleVisibilityChange);
+      window.removeEventListener('topPopupVisibilityChange', handleVisibilityChange);
+    };
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
-      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const articleElement = document.querySelector('article[data-article-content]');
 
-      const progressValue = Math.min((scrollTop / scrollHeight) * 100, 100);
+      if (!articleElement) return;
 
-      setProgress(progressValue);
+      const articleRect = articleElement.getBoundingClientRect();
+      const articleTop = articleRect.top + window.pageYOffset;
+      const articleHeight = articleRect.height;
+
+      const scrollTop = window.pageYOffset;
+      const windowHeight = window.innerHeight;
+
+      const startReadingPoint = articleTop - windowHeight + 150;
+
+      const endReadingPoint = articleTop + articleHeight - windowHeight + 200;
+
+      let progressValue = 0;
+
+      if (scrollTop <= 10) {
+        progressValue = 0;
+      } else if (scrollTop > startReadingPoint) {
+        if (scrollTop >= endReadingPoint) {
+          progressValue = 100;
+        } else {
+          const totalReadingDistance = endReadingPoint - startReadingPoint;
+          const currentReadingDistance = scrollTop - startReadingPoint;
+          progressValue = (currentReadingDistance / totalReadingDistance) * 100;
+        }
+      } else {
+        progressValue = 0;
+      }
+
+      setProgress(Math.max(0, Math.min(100, progressValue)));
     };
 
     window.addEventListener('scroll', handleScroll);
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -175,77 +222,88 @@ function CardContent(data: BlogPostCardProps) {
 
   return (
     <main className="font-textFont">
-      <div className="fixed left-0 right-0 top-[72px] z-50 flex justify-center md:top-[72px] min-[1280px]:top-[80px]">
+      <div
+        className={`fixed left-0 right-0 z-50 flex justify-center transition-all duration-300 ease-in-out ${
+          hasTopPopup
+            ? 'top-[calc(62px+44px)] md:top-[calc(64px+44px)] lg:top-[calc(72px+44px)] min-[1280px]:top-[calc(80px+44px)]'
+            : 'top-[72px] md:top-[72px] lg:top-[72px] min-[1280px]:top-[80px]'
+        } ${progress > 0 ? 'opacity-100' : 'opacity-0'}`}
+      >
         <ProgressBar value={progress} width="100%" />
       </div>
 
-      <section className="m-auto mt-3 flex w-full max-w-[357px] flex-col overflow-x-hidden px-4 md:mt-5 md:max-w-[768px] min-[1280px]:mt-0 min-[1280px]:max-w-[1200px]">
-        <div className="mt-2 flex w-full max-w-full items-center justify-between px-0 md:mt-1 lg:mt-5 lg:px-0">
-          <div className="flex-shrink-0">
+      <section className="m-auto mt-3 flex w-full max-w-[90%] flex-col overflow-x-hidden px-4 transition-all duration-300 ease-in-out sm:max-w-[95%] sm:px-6 md:mt-5 md:max-w-[768px] md:px-8 lg:max-w-[900px] lg:px-10 min-[1280px]:mt-0 min-[1280px]:max-w-[1200px] min-[1280px]:px-4">
+        <div className="mt-2 flex w-full max-w-full items-center justify-between px-0 transition-all duration-300 ease-in-out md:mt-1 lg:mt-5 lg:px-0">
+          <div className="flex-shrink-0 transition-all duration-300 ease-in-out">
             <ButtonBack />
           </div>
 
-          <div className="hidden flex-1 whitespace-nowrap text-center lg:block">
+          <div className="hidden flex-1 whitespace-nowrap text-center opacity-0 transition-all duration-500 ease-in-out lg:block lg:opacity-100">
             {highlightText(
               `El tiempo de lectura estimado para este artículo es de **${data.reading_time[0]} a ${data.reading_time[2]}** **minutos** `,
             )}
           </div>
 
-          <div className="flex flex-col items-end">
-            <div className="text-sm font-semibold md:text-base">
+          <div className="flex flex-col items-end transition-all duration-300 ease-in-out">
+            <div className="text-sm font-semibold transition-all duration-300 ease-in-out md:text-base lg:text-lg">
               <p>{convertirFecha(data.date)}</p>
             </div>
-            <div className="block lg:hidden">
-              <p className={`text-sm ${!isDark ? 'font-bold text-custom-blue' : 'font-bold text-custom-whiteD'}`}>
+            <div className="block transition-all duration-300 ease-in-out lg:hidden">
+              <p
+                className={`text-sm transition-colors duration-300 ease-in-out ${!isDark ? 'font-bold text-custom-blue' : 'font-bold text-custom-whiteD'}`}
+              >
                 SwaplyAr
               </p>
             </div>
           </div>
         </div>
-        <div className="-mt-4 mb-5 hidden justify-end px-4 lg:flex lg:px-0">
-          <div className="min-w-[150px] text-right">
-            <p className={`text-sm ${!isDark ? 'font-bold text-custom-blue' : 'font-bold text-custom-whiteD'}`}>
+
+        <div className="-mt-4 mb-5 hidden justify-end px-4 opacity-0 transition-all duration-500 ease-in-out lg:flex lg:px-0 lg:opacity-100">
+          <div className="min-w-[150px] text-right transition-all duration-300 ease-in-out">
+            <p
+              className={`text-sm transition-colors duration-300 ease-in-out ${!isDark ? 'font-bold text-custom-blue' : 'font-bold text-custom-whiteD'}`}
+            >
               SwaplyAr
             </p>
           </div>
         </div>
 
-        <div className="mx-auto flex w-full flex-col justify-center gap-4 min-[1280px]:flex-row">
-          <article className="hidden h-[756px] w-[286px] flex-col gap-5 min-[1280px]:ml-1 min-[1280px]:flex">
-            <h2 className="font-semibold">Contenido:</h2>
-            <ul className="list-disc pl-5">
+        <div className="mx-auto flex w-full flex-col justify-center gap-4 transition-all duration-500 ease-in-out min-[1280px]:flex-row min-[1280px]:gap-8">
+          <article className="hidden h-auto w-full flex-col gap-5 overflow-hidden transition-all duration-500 ease-in-out min-[1280px]:ml-1 min-[1280px]:flex min-[1280px]:h-[756px] min-[1280px]:w-[286px] min-[1280px]:opacity-100">
+            <h2 className="font-semibold transition-all duration-300 ease-in-out">Contenido:</h2>
+            <ul className="list-disc pl-5 transition-all duration-300 ease-in-out">
               {sideBar.map((item, index) => (
                 <li
                   onClick={(e) => {
                     e.preventDefault();
                     const el = document.getElementById(slugify(item.title, { lower: true, strict: true }));
                     if (el) {
-                      el.scrollIntoView({ behavior: 'smooth' });
+                      const yOffset = -130;
+                      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                      window.scrollTo({ top: y, behavior: 'smooth' });
                     }
                   }}
                   style={{ cursor: 'pointer' }}
-                  className="list-disc"
+                  className="list-disc transition-all duration-200 ease-in-out hover:text-custom-blue"
                   key={index}
                 >
                   {item.title}
 
                   {item.children && (
-                    <ul>
+                    <ul className="transition-all duration-300 ease-in-out">
                       {item.children.map((child, childIndex) => (
                         <li
                           onClick={(e) => {
                             e.preventDefault();
                             const el = document.getElementById(slugify(child.title, { lower: true, strict: true }));
                             if (el) {
-                              el.scrollIntoView({ behavior: 'smooth' });
-
-                              setTimeout(() => {
-                                window.scrollBy({ behavior: 'instant' });
-                              }, 300);
+                              const yOffset = -130;
+                              const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                              window.scrollTo({ top: y, behavior: 'smooth' });
                             }
                           }}
                           style={{ cursor: 'pointer' }}
-                          className="ml-5 list-disc"
+                          className="ml-5 list-disc transition-all duration-200 ease-in-out hover:text-custom-blue"
                           key={childIndex}
                         >
                           {child.title}
@@ -258,51 +316,65 @@ function CardContent(data: BlogPostCardProps) {
             </ul>
           </article>
 
-          <section className="mt-8 flex w-full flex-col gap-5">
+          <section className="mt-4 flex w-full flex-col gap-4 transition-all duration-300 ease-in-out sm:mt-6 sm:gap-5 md:mt-8 md:gap-6 lg:gap-8">
             <h1
-              className={
-                !isDark
-                  ? 'text-center text-[28px] font-semibold text-custom-blue md:text-[32px] lg:text-[40px]'
-                  : 'text-center text-[28px] font-semibold text-custom-whiteD md:text-[32px] lg:text-[40px]'
-              }
+              className={`text-center font-semibold transition-all duration-300 ease-in-out ${
+                !isDark ? 'text-custom-blue' : 'text-custom-whiteD'
+              } text-[24px] sm:text-[26px] md:text-[28px] lg:text-[32px] min-[1280px]:text-[40px]`}
             >
               {data.title}
             </h1>
+
             <Image
-              className="mx-auto h-[200px] w-full object-cover md:h-[240px] lg:h-[286px]"
+              className="mx-auto h-[160px] w-full object-cover transition-all duration-300 ease-in-out sm:h-[180px] md:h-[200px] lg:h-[240px] min-[1280px]:h-[286px]"
               src={data.image || paypalEnArg}
               width={898}
               height={286}
               alt="Blog Image"
             />
 
-            <article className="flex w-full flex-col gap-3">
+            <article
+              data-article-content
+              className="flex w-full flex-col gap-3 transition-all duration-300 ease-in-out sm:gap-4 md:gap-5 lg:gap-6"
+            >
               {Array.isArray(data.content_elements) &&
                 data.content_elements[0]?.content?.map((item: Content, index: number) => {
                   if (item.style?.style_name === 'normal') {
                     return (
-                      <p key={index} className="w-full">
+                      <p
+                        key={index}
+                        className="w-full text-sm transition-all duration-300 ease-in-out sm:text-base md:text-base lg:text-lg"
+                      >
                         {highlightText(item.text as string)}
                       </p>
                     );
                   } else if (item.style?.style_name === 'subtitle') {
                     return (
-                      <h2 key={index} className="w-full">
+                      <h2
+                        key={index}
+                        className="w-full text-lg font-semibold transition-all duration-300 ease-in-out sm:text-xl md:text-xl lg:text-2xl"
+                      >
                         {highlightText(item.text as string, true)}
                       </h2>
                     );
                   } else if (item.style?.style_name === 'ul') {
                     let list = parseContinuousTextToMenu(item.text as string);
                     return (
-                      <ul key={index} className="w-full">
+                      <ul key={index} className="w-full transition-all duration-300 ease-in-out">
                         {Array.isArray(list) &&
                           list.map((item, index) => (
-                            <li key={index} className="ml-5 list-disc">
+                            <li
+                              key={index}
+                              className="ml-5 list-disc text-sm transition-all duration-300 ease-in-out sm:text-base md:text-base lg:text-lg"
+                            >
                               {highlightText(item.title, true)}
                               {item.children && (
-                                <ul key={index + 'ul'}>
+                                <ul key={index + 'ul'} className="transition-all duration-300 ease-in-out">
                                   {item.children.map((child, childIndex) => (
-                                    <li className="ml-5 list-disc" key={childIndex}>
+                                    <li
+                                      className="ml-5 list-disc transition-all duration-300 ease-in-out"
+                                      key={childIndex}
+                                    >
                                       {highlightText(child.title as string, true)}
                                     </li>
                                   ))}
@@ -314,21 +386,26 @@ function CardContent(data: BlogPostCardProps) {
                     );
                   } else if (item?.style?.style_name === 'ol') {
                     let list = parseContinuousTextToMenu(item.text as string);
-                    console.log(list);
                     return (
-                      <ol key={index} className="w-full">
+                      <ol key={index} className="w-full transition-all duration-300 ease-in-out">
                         {Array.isArray(list) &&
                           list.map((item, index) => (
-                            <li key={index} className="ml-5 list-decimal">
+                            <li
+                              key={index}
+                              className="ml-5 list-decimal text-sm transition-all duration-300 ease-in-out sm:text-base md:text-base lg:text-lg"
+                            >
                               {highlightText(item.title, true)}
                               {item.children && (
-                                <ul key={index + 'ol'}>
+                                <ol key={index + 'ol'} className="transition-all duration-300 ease-in-out">
                                   {item.children.map((child, childIndex) => (
-                                    <li className="ml-5 list-disc" key={childIndex}>
+                                    <li
+                                      className="ml-5 list-disc transition-all duration-300 ease-in-out"
+                                      key={childIndex}
+                                    >
                                       {highlightText(child.title as string, true)}
                                     </li>
                                   ))}
-                                </ul>
+                                </ol>
                               )}
                             </li>
                           ))}
@@ -340,22 +417,23 @@ function CardContent(data: BlogPostCardProps) {
           </section>
         </div>
 
-        <section className="mb-[70px] mt-20 flex flex-col-reverse items-center justify-between gap-10 min-[1280px]:flex-row">
+        <section className="mb-[70px] mt-12 flex flex-col-reverse items-center justify-between gap-6 transition-all duration-500 ease-in-out sm:mt-16 sm:gap-8 md:mt-20 md:gap-10 lg:gap-12 min-[1280px]:flex-row min-[1280px]:gap-10">
           <CardBlogOption isLoaded={isLoaded} blog={randomBlog} />
-          <div className="lg :ml-0 relative ml-[120px] hidden w-full max-w-[500px] sm:block">
+
+          <div className="relative ml-0 hidden w-full max-w-[400px] transition-all duration-500 ease-in-out sm:ml-[60px] sm:block sm:max-w-[450px] md:ml-[80px] md:max-w-[480px] lg:ml-[100px] lg:max-w-[500px] xl:ml-[120px]">
             <Image
               src={cardInfoBlog}
               alt="cardImage"
               width={500}
               height={262}
-              className="h-[262px] w-auto object-cover"
+              className="h-auto w-full object-cover transition-all duration-300 ease-in-out"
             />
             <div className="absolute left-[68px] top-[33px] flex w-[240px] flex-col gap-4">
               <p className="text-center font-textFont text-xl font-semibold text-lightText">
                 Si este artículo te resultó útil, ¡compártelo con tu comunidad! Etiquétanos @SwaplyAr y cuéntanos qué
                 opinas.
               </p>
-              <div className="flex justify-between">
+              <div className="flex justify-between transition-opacity duration-300 ease-in-out">
                 {footerLinks.social.map(({ href, icon, label }) => (
                   <Link
                     key={href}
@@ -364,9 +442,12 @@ function CardContent(data: BlogPostCardProps) {
                     rel="noopener noreferrer"
                     aria-label={label}
                     title={`SwaplyAr en ${label}`}
-                    className="transition-opacity duration-200 hover:opacity-75"
+                    className="transition-all duration-300 ease-in-out hover:scale-110 hover:opacity-75"
                   >
-                    <FontAwesomeIcon icon={icon} className="text-4xl text-lightText" />
+                    <FontAwesomeIcon
+                      icon={icon}
+                      className="text-2xl text-lightText transition-all duration-300 ease-in-out sm:text-3xl md:text-3xl lg:text-4xl"
+                    />
                   </Link>
                 ))}
               </div>
@@ -376,18 +457,20 @@ function CardContent(data: BlogPostCardProps) {
       </section>
 
       <section
-        className="mt-12 flex h-[272px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
+        className="mt-12 flex h-[200px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat transition-all duration-300 ease-in-out sm:h-[220px] md:h-[240px] lg:h-[260px] xl:h-[272px]"
         style={{ backgroundImage: `url(${gifImage})` }}
       >
-        <div className="max-w-[90%] text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText md:max-w-[600px]">
+        <div className="max-w-[90%] text-center font-textFont text-[16px] font-extrabold leading-loose text-darkText transition-all duration-300 ease-in-out sm:text-[18px] md:max-w-[600px] md:text-[19px] lg:text-[20px] xl:text-[21px]">
           Mantente al día
         </div>
-        <div className="max-w-[90%] text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText md:max-w-[768px]">
+        <div className="max-w-[90%] text-center font-textFont text-[16px] font-extrabold leading-loose text-darkText transition-all duration-300 ease-in-out sm:text-[18px] md:max-w-[768px] md:text-[19px] lg:text-[20px] xl:text-[21px]">
           Regístrate para recibir novedades en tu correo electrónico
         </div>
 
-        <div className="mt-4 inline-flex h-[46px] w-[300px] items-center justify-center gap-2.5 rounded-[50px] bg-darkText px-3.5 py-3">
-          <div className="font-titleFont text-base font-semibold text-lightText">Suscribete</div>
+        <div className="mt-4 inline-flex h-[40px] w-[250px] items-center justify-center gap-2.5 rounded-[50px] bg-darkText px-3.5 py-3 transition-all duration-300 ease-in-out hover:scale-105 sm:h-[42px] sm:w-[270px] md:h-[44px] md:w-[290px] lg:h-[46px] lg:w-[300px]">
+          <div className="font-titleFont text-sm font-semibold text-lightText transition-all duration-300 ease-in-out sm:text-base md:text-base lg:text-base">
+            Suscribete
+          </div>
         </div>
       </section>
     </main>
