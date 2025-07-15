@@ -7,7 +7,6 @@ import ConversionInstructions from '../ui/Conversion-Instructions/ConversionInst
 import { FlyerGif, RecargaPaypal, UsdArs, homeSearch } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
-import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import Recommendations from '../Recomendations/Recomendations';
 import Link from 'next/link';
 
@@ -17,8 +16,6 @@ export default function HomePage() {
   useEffect(() => {
     resetToDefault();
   }, [resetToDefault]);
-
-  const { isDark } = useDarkTheme();
 
   return (
     <>
