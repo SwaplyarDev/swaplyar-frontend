@@ -130,17 +130,45 @@ function CardContent(data: BlogPostCardProps) {
       window.removeEventListener('topPopupVisibilityChange', handleVisibilityChange);
     };
   }, []);
+
   useEffect(() => {
     const handleScroll = () => {
-      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const articleElement = document.querySelector('article[data-article-content]');
 
-      const progressValue = Math.min((scrollTop / scrollHeight) * 100, 100);
+      if (!articleElement) return;
 
-      setProgress(progressValue);
+      const articleRect = articleElement.getBoundingClientRect();
+      const articleTop = articleRect.top + window.pageYOffset;
+      const articleHeight = articleRect.height;
+
+      const scrollTop = window.pageYOffset;
+      const windowHeight = window.innerHeight;
+
+      const startReadingPoint = articleTop - windowHeight + 150;
+
+      const endReadingPoint = articleTop + articleHeight - windowHeight + 200;
+
+      let progressValue = 0;
+
+      if (scrollTop <= 10) {
+        progressValue = 0;
+      } else if (scrollTop > startReadingPoint) {
+        if (scrollTop >= endReadingPoint) {
+          progressValue = 100;
+        } else {
+          const totalReadingDistance = endReadingPoint - startReadingPoint;
+          const currentReadingDistance = scrollTop - startReadingPoint;
+          progressValue = (currentReadingDistance / totalReadingDistance) * 100;
+        }
+      } else {
+        progressValue = 0;
+      }
+
+      setProgress(Math.max(0, Math.min(100, progressValue)));
     };
 
     window.addEventListener('scroll', handleScroll);
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -199,7 +227,7 @@ function CardContent(data: BlogPostCardProps) {
           hasTopPopup
             ? 'top-[calc(62px+44px)] md:top-[calc(64px+44px)] lg:top-[calc(72px+44px)] min-[1280px]:top-[calc(80px+44px)]'
             : 'top-[72px] md:top-[72px] lg:top-[72px] min-[1280px]:top-[80px]'
-        }`}
+        } ${progress > 0 ? 'opacity-100' : 'opacity-0'}`}
       >
         <ProgressBar value={progress} width="100%" />
       </div>
@@ -305,7 +333,10 @@ function CardContent(data: BlogPostCardProps) {
               alt="Blog Image"
             />
 
-            <article className="flex w-full flex-col gap-3 transition-all duration-300 ease-in-out sm:gap-4 md:gap-5 lg:gap-6">
+            <article
+              data-article-content
+              className="flex w-full flex-col gap-3 transition-all duration-300 ease-in-out sm:gap-4 md:gap-5 lg:gap-6"
+            >
               {Array.isArray(data.content_elements) &&
                 data.content_elements[0]?.content?.map((item: Content, index: number) => {
                   if (item.style?.style_name === 'normal') {
@@ -365,7 +396,7 @@ function CardContent(data: BlogPostCardProps) {
                             >
                               {highlightText(item.title, true)}
                               {item.children && (
-                                <ul key={index + 'ol'} className="transition-all duration-300 ease-in-out">
+                                <ol key={index + 'ol'} className="transition-all duration-300 ease-in-out">
                                   {item.children.map((child, childIndex) => (
                                     <li
                                       className="ml-5 list-disc transition-all duration-300 ease-in-out"
@@ -374,7 +405,7 @@ function CardContent(data: BlogPostCardProps) {
                                       {highlightText(child.title as string, true)}
                                     </li>
                                   ))}
-                                </ul>
+                                </ol>
                               )}
                             </li>
                           ))}
@@ -397,12 +428,12 @@ function CardContent(data: BlogPostCardProps) {
               height={262}
               className="h-auto w-full object-cover transition-all duration-300 ease-in-out"
             />
-            <div className="absolute left-[13%] top-[12%] flex w-[60%] flex-col gap-3 transition-all duration-300 ease-in-out sm:gap-4 md:left-[14%] md:top-[13%] md:w-[58%] lg:left-[13.5%] lg:top-[12.5%] lg:w-[60%]">
-              <p className="text-center font-textFont text-base font-semibold text-lightText transition-all duration-300 ease-in-out sm:text-lg md:text-lg lg:text-xl">
+            <div className="absolute left-[68px] top-[33px] flex w-[240px] flex-col gap-4">
+              <p className="text-center font-textFont text-xl font-semibold text-lightText">
                 Si este artículo te resultó útil, ¡compártelo con tu comunidad! Etiquétanos @SwaplyAr y cuéntanos qué
                 opinas.
               </p>
-              <div className="flex justify-between transition-all duration-300 ease-in-out">
+              <div className="flex justify-between transition-opacity duration-300 ease-in-out">
                 {footerLinks.social.map(({ href, icon, label }) => (
                   <Link
                     key={href}
