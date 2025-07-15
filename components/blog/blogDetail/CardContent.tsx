@@ -250,7 +250,9 @@ function CardContent(data: BlogPostCardProps) {
                     e.preventDefault();
                     const el = document.getElementById(slugify(item.title, { lower: true, strict: true }));
                     if (el) {
-                      el.scrollIntoView({ behavior: 'smooth' });
+                      const yOffset = -130;
+                      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                      window.scrollTo({ top: y, behavior: 'smooth' });
                     }
                   }}
                   style={{ cursor: 'pointer' }}
@@ -267,10 +269,9 @@ function CardContent(data: BlogPostCardProps) {
                             e.preventDefault();
                             const el = document.getElementById(slugify(child.title, { lower: true, strict: true }));
                             if (el) {
-                              el.scrollIntoView({ behavior: 'smooth' });
-                              setTimeout(() => {
-                                window.scrollBy({ behavior: 'instant' });
-                              }, 300);
+                              const yOffset = -130;
+                              const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                              window.scrollTo({ top: y, behavior: 'smooth' });
                             }
                           }}
                           style={{ cursor: 'pointer' }}
