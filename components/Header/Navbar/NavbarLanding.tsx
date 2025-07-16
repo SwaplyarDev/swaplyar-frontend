@@ -299,7 +299,7 @@ const NavbarLanding = () => {
                           <div className="flex flex-col md:hidden">
                             <LogInButton onButtonClick={closeDrawer} />
                           </div>
-                          <div className="flex flex-col">
+                          <div className="flex h-[60px] flex-col">
                             <RegisterButton onButtonClick={closeDrawer} />
                           </div>
                         </div>
