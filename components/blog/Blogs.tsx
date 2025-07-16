@@ -11,13 +11,13 @@ import useFetchBlogs from '@/hooks/useFetchBlogs/useFetchBlogs';
 import SearchInput from '../ui/SearchInput/SearchInput';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { paypalEnArg } from '@/utils/assets/imgDatabaseCloudinary';
+
 interface BlogProps {
   currentPage: number;
 }
 
-// Funcion para remover la tilde de una palabra
 function removeAccent(text: string) {
-  return text.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '');
+  return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
 const Blog: React.FC<BlogProps> = ({ currentPage }) => {
@@ -27,14 +27,14 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
   const searchQuery = searchParams.get('search') || '';
 
   const [searchTerm, setSearchTerm] = useState(searchQuery);
-  // Se fltran los blogs segun lo ingresado en el buscador
+
   const filteredBlogs = useMemo(() => {
     if (searchTerm === '') return blogs;
-    return blogs.filter(
-      (post) => removeAccent(post.title) && removeAccent(post.title.toLowerCase()).includes(searchTerm.toLowerCase()),
+    return blogs.filter((post) =>
+      removeAccent(post.title.toLowerCase()).includes(removeAccent(searchTerm.toLowerCase())),
     );
   }, [blogs, searchTerm]);
-  // Funcion para enviar la informacion del evento por params
+
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const term = e.target.value;
@@ -43,7 +43,7 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
     },
     [router],
   );
-  // Se obitienen los blogs a partir de la current page (pagina) y searchTerm (buscador)
+
   useFetchBlogs({
     currentPage,
     searchTerm,
@@ -53,50 +53,58 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
     <>
       <div className="relative flex flex-col items-center justify-center">
         <AnimatedBlurredCircles tope="top-[0px]" />
-        <div className="mx-auto w-full max-w-[1200px] p-4 sm:p-6 lg:px-20">
-          <h1 className="mb-4 text-left font-titleFont text-[61.04px] font-semibold leading-[73.25px] text-inputLight dark:text-darkText">
-            BLOG
-          </h1>
 
-          <ImageCarousel
-            images={blogs.map((post) => ({
-              blog_id: post.blog_id,
-              slug: post.slug,
-              title: post.title,
-              description: post.description,
-              image: post.image || paypalEnArg,
-              date: new Date().toISOString(),
-              category: post.category,
-            }))}
-          />
+        {/* Contenedor externo con padding */}
+        <div className="w-full px-4 sm:px-6 lg:px-20">
+          {/* Contenedor centrado con max-w sin padding incluido */}
+          <div className="mx-auto w-full max-w-[1200px] pt-4 sm:pt-6">
+            <h1 className="mb-4 text-left font-titleFont text-[61.04px] font-semibold leading-[73.25px] text-inputLight dark:text-darkText">
+              BLOG
+            </h1>
 
-          <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} />
-          {!isLoading ? (
-            blogs.length >= 1 ? (
-              <div className="mt-6 grid w-full grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
-                {blogs.map((post) => (
-                  <BlogPostCard
-                    key={post.blog_id}
-                    blog_id={post.blog_id}
-                    slug={post.slug}
-                    description={post.description}
-                    title={post.title}
-                    category={post.category}
-                    image={post.image || paypalEnArg}
-                    date={post?.date}
-                  />
-                ))}
-              </div>
+            <ImageCarousel
+              images={blogs.map((post) => ({
+                blog_id: post.blog_id,
+                slug: post.slug,
+                title: post.title,
+                description: post.description,
+                image: post.image || paypalEnArg,
+                date: new Date().toISOString(),
+                category: post.category,
+              }))}
+            />
+
+            <SearchInput searchTerm={searchTerm} onSearchChange={handleSearchChange} results={filteredBlogs} />
+
+            {!isLoading ? (
+              blogs.length >= 1 ? (
+                <div className="mt-6 grid w-full grid-cols-1 justify-items-center gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3">
+                  {blogs.map((post) => (
+                    <BlogPostCard
+                      key={post.blog_id}
+                      blog_id={post.blog_id}
+                      slug={post.slug}
+                      description={post.description}
+                      title={post.title}
+                      category={post.category}
+                      image={post.image || paypalEnArg}
+                      date={post?.date}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <SkeletonLoader />
+              )
             ) : (
               <SkeletonLoader />
-            )
-          ) : (
-            <SkeletonLoader />
-          )}
+            )}
+          </div>
         </div>
+
         {totalPages > 1 && (
           <PaginationButtons route="blog" totalPages={totalPages} isLoading={isLoading} currentPage={currentPage} />
         )}
+
         <div
           className="mt-12 flex h-[272px] w-full flex-col items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${gifImage})` }}
@@ -107,7 +115,6 @@ const Blog: React.FC<BlogProps> = ({ currentPage }) => {
           <div className="w-full text-center font-textFont text-[21px] font-extrabold leading-loose text-darkText">
             Regístrate para recibir novedades en tu correo electrónico
           </div>
-
           <div className="mt-4 inline-flex h-[46px] w-[300px] items-center justify-center gap-2.5 rounded-[50px] bg-darkText px-3.5 py-3">
             <div className="font-titleFont text-base font-semibold text-lightText">Suscribete</div>
           </div>
