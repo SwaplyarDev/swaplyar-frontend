@@ -18,6 +18,88 @@
   }
 }
 
+/* ===== Estilos del accordion del footer ===== */
+.accordion-custom {
+  position: relative !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.accordion-custom::before {
+  content: "";
+  position: absolute;
+  width: 0;
+}
+
+.accordion-custom::after {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  height: 1px;
+  width: 70%;
+  min-width: 204px;
+  transform: translateX(-50%);
+  background-color: #90b0fe; /* buttonExpandDark */
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.accordion-custom.Mui-expanded::after {
+  background-color: #012a8e; /* buttonsLigth */
+}
+
+.dark .accordion-custom::after {
+  background-color: #90b0fe; /* buttonExpandDark */
+}
+
+.dark .accordion-custom.Mui-expanded::after {
+  background-color: #90b0fe; /* buttonExpandDark */
+}
+
+.accordion-summary {
+  min-height: 40px !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.accordion-icon {
+  height: 40px !important;
+  width: 40px !important;
+  color: #2a68fe !important; /* buttonsExtraLigth */
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.accordion-icon-expanded {
+  transform: rotate(180deg) !important;
+  color: #012a8e !important; /* buttonsLigth */
+}
+
+.dark .accordion-icon {
+  color: #90b0fe !important; /* buttonExpandDark */
+}
+
+.dark .accordion-icon-expanded {
+  color: #90b0fe !important; /* buttonExpandDark */
+}
+
+.accordion-title {
+  font-size: 1.25rem !important;
+  font-weight: 300 !important;
+  color: #252526 !important; /* lightText */
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.accordion-title-expanded {
+  font-weight: 600 !important;
+}
+
+.dark .accordion-title {
+  color: #ebe7e0 !important; /* darkText */
+}
+
+/* ===== END ACCORDION CUSTOM STYLES ===== */
+
 .container-blur {
   @apply fixed top-0 flex h-full min-h-[1000px] w-full justify-center overflow-hidden;
   @apply fixed top-0 flex h-full min-h-[1000px] w-full justify-center overflow-hidden;
@@ -499,15 +581,15 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 
 .buttonSecond {
   outline: none;
-  box-shadow:
-    0px 0px 0px 0px #ffffff,
+  box-shadow: 
+    0px 0px 0px 0px #ffffff, 
     0px 0px 0px 0px #012c8a;
   transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
 }
 
 .buttonSecond:hover:not(:disabled) {
-  box-shadow:
-    0px 0px 0px 2px #ffffff,
+  box-shadow: 
+    0px 0px 0px 2px #ffffff, 
     0px 0px 0px 4px #91aeec;
 }
 
@@ -522,8 +604,8 @@ div:where(.swal2-container).swal2-noanimation {
 }
 
 .buttonSecondDark:hover:not(:disabled) {
-  box-shadow:
-    0px 0px 0px 2px #252526,
+  box-shadow: 
+    0px 0px 0px 2px #252526, 
     0px 0px 0px 4px #ebe7e0;
 }
 
@@ -553,18 +635,18 @@ div:where(.swal2-container).swal2-noanimation {
 }
 
 /**
- *   1. `fadeIn`: 
+ *   1. `fadeIn`:
  *      - Realiza una transición de opacidad y posición vertical.
  *      - Inicio: `opacity: 0` y desplazamiento hacia abajo (`translateY(20px)`).
  *      - Fin: `opacity: 1` y posición original (`translateY(0)`).
  *      - Duración: 0.5 segundos.
- *   2. `lineGrowDown`: 
+ *   2. `lineGrowDown`:
  *      - Anima la altura de una línea, simulando que crece hacia abajo.
  *      - Inicio: `height: 0` y posición inicial en la parte inferior.
  *      - Fin: `height: 30px` y posición ajustada hacia abajo.
- * 
+ *
  * - **Clase utilitaria**:
- *   - `.animate-fade-in`: 
+ *   - `.animate-fade-in`:
  *     - Aplica la animación `fadeIn` con duración de 0.5 segundos.
  *     - La animación se ejecuta una sola vez hacia adelante (`forwards`).
  */
