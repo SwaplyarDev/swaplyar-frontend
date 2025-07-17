@@ -11,6 +11,12 @@ function TopPopUp() {
   const handleClose = () => {
     sessionStorage.setItem('isClosed', JSON.stringify(true));
     setIsClosed(true);
+
+    window.dispatchEvent(
+      new CustomEvent('topPopupVisibilityChange', {
+        detail: { isVisible: false },
+      }),
+    );
   };
 
   useEffect(() => {
@@ -19,6 +25,16 @@ function TopPopUp() {
 
     const closed = JSON.parse(sessionStorage.getItem('isClosed') || 'false');
     setIsClosed(closed);
+
+    window.dispatchEvent(
+      new CustomEvent('topPopupVisibilityChange', {
+        detail: { isVisible: !closed },
+      }),
+    );
+
+    return () => {
+      window.removeEventListener('topPopupVisibilityChange', () => {});
+    };
   }, []);
 
   if (isClosed) {

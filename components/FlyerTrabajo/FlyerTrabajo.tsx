@@ -30,18 +30,18 @@ export default function FlyerTrabajo({ title, description, nameButton, imageSrc,
                 <motion.p
                   initial={
                     size >= 0 && size <= 390
-                      ? { x: '40%' }
+                      ? { x: '35%' }
                       : size > 390 && size <= 490
-                        ? { x: '50%' }
+                        ? { x: '45%' }
                         : size > 490 && size <= 590
-                          ? { x: '60%' }
+                          ? { x: '55%' }
                           : size > 590 && size <= 670
-                            ? { x: '70%' }
+                            ? { x: '65%' }
                             : size > 670 && size <= 770
-                              ? { x: '80%' }
+                              ? { x: '75%' }
                               : size > 770 && size <= 870
-                                ? { x: '90%' }
-                                : size > 870 && { x: '100%' }
+                                ? { x: '85%' }
+                                : { x: '95%' }
                   }
                   animate={{ x: '-100%' }}
                   transition={{ duration: 25, repeat: Infinity, repeatType: 'loop', ease: 'linear' }}
