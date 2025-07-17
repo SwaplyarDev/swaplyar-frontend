@@ -8,25 +8,42 @@ import { AlertCircle, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp } from
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import { useRouter } from 'next/navigation';
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  status: string;
-  date_subscription: string;
-  date_verification: string;
-  code: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 interface UsersTableProps {
   users: User[];
   currentPage: number;
+  totalPages: number;
 }
 
-const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage }) => {
+interface Profile {
+  age: string;
+  birthdate: string;
+  email: string;
+  first_name: string;
+  middle_name: string;
+  last_name: string;
+  fullName: string;
+  gender: string;
+  identification: string;
+  phone: string;
+  users_id: string;
+  social_id: string;
+  img_url: string;
+  location_id: string;
+  last_activity: string;
+}
+
+interface User {
+  jh: string;
+  fullName: string;
+  created_at: string;
+  rol: string;
+  isActive: boolean;
+  terms: boolean;
+  validation_at: string;
+  profile?: Profile;
+}
+
+const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages }) => {
   const MySwal: any = withReactContent(Swal);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>('');
@@ -189,7 +206,16 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage }) => {
 
   // Función para formatear la fecha
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
+    const parts = dateString.split(/[\/, :]/);
+    const day = parts[0];
+    const month = parts[1];
+    const year = parts[2];
+    const hour = parts[3];
+    const minute = parts[4];
+
+    const isoDateString = `${year}-${month}-${day}T${hour}:${minute}:00`;
+    const date = new Date(isoDateString);
+
     return new Intl.DateTimeFormat('es-AR', {
       day: '2-digit',
       month: '2-digit',
@@ -412,21 +438,21 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage }) => {
                 <>
                   {users.map((user) => (
                     <tr
-                      key={user.id}
+                      key={user.jh}
                       /* onClick={() => handleOpenModal(user.id)} */
-                      onClick={() => router.push(`/es/admin/users/${user.id}`)}
+                      onClick={() => router.push(`/es/admin/users/${user.jh}`)}
                       className="cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
                     >
-                      <td className="px-4 py-3 text-sm">{getStatusBadge(user.status)}</td>
+                      <td className="px-4 py-3 text-sm">{getStatusBadge(user.validation_at)}</td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                        {formatDate(user.createdAt)}
+                        {user.created_at ? formatDate(user.created_at) : 'No disponible'}
                       </td>
-                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.id}</td>
-                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.name}</td>
-                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.email}</td>
-                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.phone}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.jh}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.fullName}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.profile?.email}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.profile?.phone}</td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                        {user.date_verification ? formatDate(user.date_verification) : 'No verificado'}
+                        {user.validation_at ? formatDate(user.validation_at) : 'No verificado'}
                       </td>
                     </tr>
                   ))}
@@ -477,8 +503,8 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage }) => {
         {/* Paginación */}
         <div className="border-t border-gray-200 p-4 dark:border-gray-700">
           <PaginationButtons
-            route="/admin/users"
-            totalPages={10} // Actualizar con el número real de páginas
+            route="/es/admin/users"
+            totalPages={totalPages}
             currentPage={currentPage}
             isLoading={isLoading}
             /* @ts-expect-error */
