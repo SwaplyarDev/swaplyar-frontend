@@ -16,6 +16,7 @@ import {
   BankImg,
   BankDarkImg,
   PixImg,
+  PixDarkImg,
 } from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 
@@ -187,7 +188,7 @@ export default function WalletIcon({ type }: WalletIconProps) {
             className="h-12 w-auto dark:hidden sm:h-20"
           />
           <Image
-            src={PixImg || '/placeholder.svg'}
+            src={PixDarkImg || '/placeholder.svg'}
             alt="Pix"
             width={200}
             height={200}

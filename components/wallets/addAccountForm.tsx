@@ -18,6 +18,7 @@ import {
   BankDarkImg,
   BankImg,
   PaypalImg,
+  PixDarkImg,
 } from '@/utils/assets/imgDatabaseCloudinary';
 import { useEffect, useState } from 'react';
 import { DialogContent } from '@mui/material';
@@ -157,7 +158,7 @@ export default function AddAccountForm({
                       <Image src={isDark ? PaypalDarkImg : PaypalImg} alt="PayPal" width={120} height={120} />
                     </SelectItem>
                     <SelectItem value="pix" className="cursor-pointer">
-                      <Image src={PixImg} alt="PIX" width={120} height={120} />
+                      <Image src={isDark ? PixDarkImg : PixImg} alt="PIX" width={120} height={120} />
                     </SelectItem>
                     <SelectItem value="payoneer" className="cursor-pointer">
                       <Image

@@ -14,6 +14,7 @@ import {
   TetherImg,
   BankImg,
   BankDarkImg,
+  PixDarkImg,
 } from '@/utils/assets/imgDatabaseCloudinary';
 
 interface MockImages {
@@ -106,7 +107,7 @@ export const MockImagesTransDark: MockImages[] = [
     id: 6,
   },
   {
-    image: PixImg,
+    image: PixDarkImg,
     name: 'pix',
     id: 7,
   },

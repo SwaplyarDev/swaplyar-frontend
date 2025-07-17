@@ -25,6 +25,7 @@ import {
   WiseUsdDarkImg,
   TetherImg,
   TetherDarkImg,
+  PixDarkImg,
 } from '@/utils/assets/imgDatabaseCloudinary';
 
 const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
@@ -248,7 +249,7 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
           )
         ) : paymentMethod == 'pix' ? (
           isDark ? (
-            <Image src={PixImg} alt="pix_dark" width={200} height={70} />
+            <Image src={PixDarkImg} alt="pix_dark" width={200} height={70} />
           ) : (
             <Image src={PixImg} alt="pix_light" width={200} height={70} />
           )
@@ -297,7 +298,7 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
           )
         ) : receivedMethod == 'pix=' ? (
           isDark ? (
-            <Image src={PixImg} alt="pix_received_dark" width={200} height={70} />
+            <Image src={PixDarkImg} alt="pix_received_dark" width={200} height={70} />
           ) : (
             <Image src={PixImg} alt="pix_received_light" width={200} height={70} />
           )
