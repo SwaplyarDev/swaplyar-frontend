@@ -615,19 +615,18 @@ const TransferClient = () => {
         </Dialog>
         <Dialog open={showAlert} onOpenChange={setShowAlert}>
           <DialogContent className="border border-gray-200 bg-white transition-all duration-300 dark:border-gray-700 dark:bg-gray-800/95">
-            <DialogHeader>
+            <DialogHeader className="flex flex-col items-center text-center">
               <DialogTitle className="text-gray-900 dark:text-gray-100">Confirmar solicitud</DialogTitle>
               <DialogDescription className="text-gray-700 dark:text-gray-300">
                 ¿Estás seguro que deseas confirmar esta solicitud?
               </DialogDescription>
             </DialogHeader>
 
-            <DialogFooter className="flex gap-2 sm:justify-end">
+            <DialogFooter className="flex justify-center gap-2 sm:justify-center">
               <Button
-                variant="destructive"
-                onClick={() => handleAprove()}
+                onClick={handleAprove}
                 disabled={isLoading}
-                className="dark:bg-red-700 dark:hover:bg-red-800"
+                className="bg-red-600 text-white hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800"
               >
                 {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Confirmar solicitud'}
               </Button>
