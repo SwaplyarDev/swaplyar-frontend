@@ -287,10 +287,17 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
             <p className="text-gray-700 dark:text-gray-300">Estas seguro de enviar el motivo de rechazo?</p>
           </div>
           <DialogFooter className="mt-4 sm:justify-center">
-            <Button onClick={handleSubmitRejection} className="bg-red-600 text-white">
+            <Button
+              onClick={handleSubmitRejection}
+              className="bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
+            >
               <span>{loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Enviar'}</span>
             </Button>
-            <Button className="text-white" onClick={() => setOpenModalReject(false)} disabled={loading}>
+            <Button
+              onClick={() => setOpenModalReject(false)}
+              disabled={loading}
+              className="bg-gray-300 text-gray-800 hover:bg-gray-400 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
+            >
               <span>Cancelar</span>
             </Button>
           </DialogFooter>
