@@ -260,24 +260,26 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
               <span className="font-medium text-gray-800 dark:text-gray-200">{transferId}</span>
             </div>
           </div>
-          <DialogFooter className="flex justify-end gap-3">
-            <Button
-              onClick={handleConfirmSubmit}
-              disabled={isSubmitting}
-              className="bg-custom-blue text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
-            >
-              {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-              Confirmar
-            </Button>
-            {!isSubmitting && (
+          <DialogFooter>
+            <div className="flex w-full justify-center gap-3">
               <Button
-                variant="outline"
-                onClick={() => setShowConfirmModal(false)}
-                className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                onClick={handleConfirmSubmit}
+                disabled={isSubmitting}
+                className="bg-custom-blue text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
               >
-                Cancelar
+                {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                Confirmar
               </Button>
-            )}
+              {!isSubmitting && (
+                <Button
+                  variant="outline"
+                  onClick={() => setShowConfirmModal(false)}
+                  className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                >
+                  Cancelar
+                </Button>
+              )}
+            </div>
           </DialogFooter>
         </DialogContent>
       </Dialog>
