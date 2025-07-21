@@ -299,7 +299,7 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
               El ID de transferencia ha sido registrado exitosamente.
             </p>
           ) : (
-            <div className="flex flex-col items-center">
+            <div className="flex w-full flex-col items-center text-center">
               <p className="mb-2 font-bold text-red-700 dark:text-red-400">
                 No se pudo registrar el ID de transferencia
               </p>
@@ -314,26 +314,28 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
               )}
             </div>
           )}
-          <DialogFooter className="flex justify-end gap-3">
-            {!submitResult && (
+          <DialogFooter>
+            <div className="flex w-full justify-center gap-3">
+              {!submitResult && (
+                <Button
+                  variant="outline"
+                  onClick={handleResultModalClose}
+                  className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                >
+                  Cancelar
+                </Button>
+              )}
               <Button
-                variant="outline"
                 onClick={handleResultModalClose}
-                className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                className={
+                  submitResult
+                    ? 'bg-green-600 text-white hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600'
+                    : 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600'
+                }
               >
-                Cancelar
+                {submitResult ? 'Aceptar' : 'Intentar de nuevo'}
               </Button>
-            )}
-            <Button
-              onClick={handleResultModalClose}
-              className={
-                submitResult
-                  ? 'bg-green-600 text-white hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600'
-                  : 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600'
-              }
-            >
-              {submitResult ? 'Aceptar' : 'Intentar de nuevo'}
-            </Button>
+            </div>
           </DialogFooter>
         </DialogContent>
       </Dialog>
