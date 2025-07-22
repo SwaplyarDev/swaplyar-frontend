@@ -66,7 +66,6 @@ const TransferClient = () => {
   const token = session.data?.accessToken || '';
 
   const [selected, setSelected] = useState<boolean | null>(null);
-  const [modal, setModal] = useState<boolean>(false);
   const [form, setForm] = useState<Form>({
     transfer_id: '',
     amount: '',
@@ -92,7 +91,7 @@ const TransferClient = () => {
 
   const [isInputTransferIdFocused, setIsInputTransferIdFocused] = useState(false);
 
-  const [open, setOpen] = useState(modal);
+  const [open, setOpen] = useState<boolean>(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -272,7 +271,6 @@ const TransferClient = () => {
 
   const handleOpenChange = (open: boolean) => {
     setOpen(open);
-    setModal(open);
   };
   return (
     <>
@@ -323,25 +321,20 @@ const TransferClient = () => {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <Dialog open={open} onOpenChange={handleOpenChange}>
-              <DialogTrigger asChild>
-                <Button
-                  disabled={selected === true}
-                  variant="default"
-                  className={
-                    !selected
-                      ? 'rounded-3xl bg-gradient-to-r from-amber-600 to-orange-700 transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 dark:from-amber-700 dark:to-orange-800 dark:hover:shadow-orange-900/20'
-                      : 'border-2 bg-transparent'
-                  }
-                >
-                  <Edit className={selected ? 'mr-2 h-4 w-4 text-[#AFAFAF]' : 'mr-2 h-4 w-4 text-white'} />
-                  <span className={selected ? 'text-[#AFAFAF]' : 'text-white'}>Editar Destinatario</span>
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="duratio n-300 border-gray-300 bg-white transition-all dark:border-gray-700 dark:bg-gray-800/95 sm:max-w-5xl">
-                <ModalEditReciever modal={open} setModal={setOpen} trans={trans} />
-              </DialogContent>
-            </Dialog>
+            <Button
+              onClick={() => setOpen(true)}
+              disabled={selected === true}
+              variant="default"
+              className={
+                !selected
+                  ? 'rounded-3xl bg-gradient-to-r from-amber-600 to-orange-700 transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 dark:from-amber-700 dark:to-orange-800 dark:hover:shadow-orange-900/20'
+                  : 'border-2 bg-transparent'
+              }
+            >
+              <Edit className={selected ? 'mr-2 h-4 w-4 text-[#AFAFAF]' : 'mr-2 h-4 w-4 text-white'} />
+              <span className={selected ? 'text-[#AFAFAF]' : 'text-white'}>Editar Destinatario</span>
+            </Button>
+            <ModalEditReciever modal={open} setModal={setOpen} trans={trans} />
           </div>
         </div>
 
