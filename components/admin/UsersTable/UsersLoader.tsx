@@ -1,4 +1,3 @@
-import { getMyWalletAccounts } from '@/actions/virtualWalletAccount/virtualWallets.action';
 import UsersTable from './UsersTable';
 import auth from '@/auth';
 
@@ -22,7 +21,7 @@ async function getUsers(page: Number, perPage: number) {
     const session = await auth();
     const token = session?.accessToken;
 
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/users?page=${page}&perPage=${perPage}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/users?page=${page}&perPage=${perPage}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -44,6 +43,7 @@ const usersPagination = (users: any[], usersPerPage: number, page: number) => {
   const totalPages = Math.ceil(totalUsers / usersPerPage);
   const i = (page - 1) * usersPerPage;
   const paginatedUsers = users.slice(i, i + usersPerPage);
+
   return {
     users: paginatedUsers,
     totalUsers,
