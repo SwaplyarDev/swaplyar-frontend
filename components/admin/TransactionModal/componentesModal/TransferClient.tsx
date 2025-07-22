@@ -645,23 +645,22 @@ const TransferClient = () => {
         <Dialog open={showConfirmRefund} onOpenChange={setShowConfirmRefund}>
           <DialogContent className="border border-gray-200 bg-white transition-all duration-300 dark:border-gray-700 dark:bg-gray-800/95">
             <DialogHeader>
-              <DialogTitle className="text-gray-900 dark:text-gray-100">Confirmar reembolso</DialogTitle>
-              <DialogDescription className="text-gray-700 dark:text-gray-300">
+              <DialogTitle className="text-center text-gray-900 dark:text-gray-100">Confirmar reembolso</DialogTitle>
+              <DialogDescription className="text-center text-gray-700 dark:text-gray-300">
                 ¿Estás seguro que deseas enviar este reembolso?
               </DialogDescription>
             </DialogHeader>
 
-            <div className="w-full rounded-lg bg-gray-100 p-3 text-left dark:bg-gray-700/30">
+            <div className="w-full rounded-lg bg-gray-100 p-3 text-center dark:bg-gray-700/30">
               <p className="mb-1 font-medium text-gray-800 dark:text-gray-200">Motivo:</p>
               <p className="text-gray-700 dark:text-gray-300">{formRefund.description}</p>
             </div>
 
-            <DialogFooter className="flex gap-2 sm:justify-end">
+            <DialogFooter className="flex justify-center gap-2 sm:justify-center">
               <Button
-                variant="destructive"
                 onClick={handleSendRefound}
                 disabled={isLoading}
-                className="dark:bg-red-700 dark:hover:bg-red-800"
+                className="bg-red-600 text-white hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800"
               >
                 {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Confirmar reembolso'}
               </Button>
