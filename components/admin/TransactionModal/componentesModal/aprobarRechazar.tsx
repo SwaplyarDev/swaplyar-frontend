@@ -142,7 +142,10 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                   onClick={() => componentStates.confirmTransButton && onSelectChange('accepted')}
                   disabled={!componentStates.confirmTransButton}
                   variant="outline"
-                  className={clsx(getButtonClass('accepted'), 'rounded-3xl')}
+                  className={clsx(
+                    getButtonClass('accepted'),
+                    'rounded-3xl shadow-none ring-0 focus:outline-none focus:ring-0',
+                  )}
                   aria-pressed={selected === 'accepted'}
                 >
                   <CheckCircle
@@ -164,7 +167,10 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                   onClick={() => componentStates.confirmTransButton && onSelectChange('stop')}
                   disabled={!componentStates.confirmTransButton}
                   variant="outline"
-                  className={clsx(getButtonClass('stop'), 'rounded-3xl')}
+                  className={clsx(
+                    getButtonClass('stop'),
+                    'rounded-3xl shadow-none ring-0 focus:outline-none focus:ring-0',
+                  )}
                   aria-pressed={selected === 'stop'}
                 >
                   <AlertTriangle
@@ -185,7 +191,10 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                 <Button
                   onClick={() => onSelectChange('canceled')}
                   variant="outline"
-                  className={clsx(getButtonClass('canceled'), 'rounded-3xl')}
+                  className={clsx(
+                    getButtonClass('canceled'),
+                    'rounded-3xl shadow-none ring-0 focus:outline-none focus:ring-0',
+                  )}
                   aria-pressed={selected === 'canceled'}
                 >
                   <XCircle
