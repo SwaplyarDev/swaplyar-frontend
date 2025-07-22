@@ -15,38 +15,38 @@ interface UsersTableProps {
 }
 
 interface Profile {
-  age: string;
-  birthdate: string;
+  id: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  first_name: string;
-  middle_name: string;
-  last_name: string;
-  fullName: string;
-  gender: string;
   identification: string;
   phone: string;
-  users_id: string;
-  social_id: string;
-  img_url: string;
-  location_id: string;
-  last_activity: string;
+  birthday: string;
+  age: number;
+  gender: string;
+  lastActivity: string;
+  profilePictureUrl: string;
+  [key: string]: string | number; // Permite otras propiedades adicionales
 }
 
 interface User {
-  jh: string;
-  fullName: string;
-  created_at: string;
-  rol: string;
+  id: string;
+  role: string;
+  termsAccepted: boolean;
   isActive: boolean;
-  terms: boolean;
-  validation_at: string;
-  profile?: Profile;
+  createdAt: string;
+  validatedAt: string;
+  profile: Profile;
+  isValidated: boolean;
+  rewardsLedger: string;
+  refreshToken: string;
 }
 
 const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages }) => {
   const MySwal: any = withReactContent(Swal);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>('');
+  const [user, setUser] = useState<User[]>(users);
   const [filters, setFilters] = useState({
     status: [],
     min_date: null,
@@ -59,6 +59,46 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
   const router = useRouter();
   const [activePopover, setActivePopover] = useState<string | null>(null);
   const popoverRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+
+  const filtrarUsers = (users: User[], filters: any) => {
+    return users.filter((user) => {
+      const matchesStatus =
+        filters.status.length === 0 || filters.status.includes(user.isValidated ? 'verificado' : 'rejected');
+      const matchesMinDate = !filters.min_date || new Date(user.createdAt) >= new Date(filters.min_date);
+      const matchesMaxDate = !filters.max_date || new Date(user.createdAt) <= new Date(filters.max_date);
+
+      return matchesStatus && matchesMinDate && matchesMaxDate;
+    });
+  };
+
+  const ordenarCampoString = (users: User[], order: string, orderby: string) => {
+    if (order === 'asc') users.sort((a, b) => String(a.profile[orderby]).localeCompare(String(b.profile[orderby])));
+    if (order === 'desc') users.sort((a, b) => String(b.profile[orderby]).localeCompare(String(a.profile[orderby])));
+  };
+  const ordenarCampoNumber = (users: User[], order: string, orderby: string) => {
+    if (order === 'asc') users.sort((a, b) => Number(a.profile[orderby]) - Number(b.profile[orderby]));
+    if (order === 'desc') users.sort((a, b) => Number(b.profile[orderby]) - Number(a.profile[orderby]));
+  };
+
+  useEffect(() => {
+    const filteredList = filtrarUsers(users, filters);
+    if (filters.orderby === 'email') ordenarCampoString(filteredList, filters.order, 'email');
+    if (filters.orderby === 'name') ordenarCampoString(filteredList, filters.order, 'firstName');
+    if (filters.orderby === 'identification') ordenarCampoNumber(filteredList, filters.order, 'identification');
+    if (filters.orderby === 'phone') ordenarCampoNumber(filteredList, filters.order, 'phone');
+    if (filters.orderby === 'verification') {
+      if (filters.order === 'asc')
+        filteredList.sort(
+          (a, b) => new Date(formatDate(a['validatedAt'])).getTime() - new Date(formatDate(b['validatedAt'])).getTime(),
+        );
+      if (filters.order === 'desc')
+        filteredList.sort(
+          (a, b) => new Date(formatDate(b['validatedAt'])).getTime() - new Date(formatDate(a['validatedAt'])).getTime(),
+        );
+    }
+
+    setUser(filteredList);
+  }, [filters]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -118,6 +158,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
       order: 'desc',
       search: '',
     });
+    setUser(users);
   };
 
   // Función para abrir el modal de usuario
@@ -164,9 +205,9 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
   };
 
   // Función para obtener el badge de estado
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status: boolean | null) => {
     const statusConfig = {
-      verified: {
+      verificado: {
         bgColor: 'bg-green-100 dark:bg-green-900/30',
         textColor: 'text-green-800 dark:text-green-300',
         icon: <CheckCircle size={14} className="mr-1" />,
@@ -192,7 +233,8 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
       },
     };
 
-    const config = statusConfig[status?.toLowerCase() as keyof typeof statusConfig] || statusConfig.default;
+    //const config = statusConfig[status?.toLowerCase() as keyof typeof statusConfig] || statusConfig.default;
+    const config = statusConfig[status === null ? 'default' : status ? 'verificado' : 'rejected'];
 
     return (
       <span
@@ -205,15 +247,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
   };
 
   // Función para formatear la fecha
-  const formatDate = (dateString: string) => {
-    const parts = dateString.split(/[\/, :]/);
-    const day = parts[0];
-    const month = parts[1];
-    const year = parts[2];
-    const hour = parts[3];
-    const minute = parts[4];
-
-    const isoDateString = `${year}-${month}-${day}T${hour}:${minute}:00`;
+  const formatDate = (isoDateString: string) => {
     const date = new Date(isoDateString);
 
     return new Intl.DateTimeFormat('es-AR', {
@@ -262,8 +296,8 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
                                 type="checkbox"
                                 className="mr-2 h-4 w-4"
                                 /* @ts-expect-error */
-                                checked={filters.status.includes('verified')}
-                                onChange={() => handleStatusFilterChange('verified')}
+                                checked={filters.status.includes('verificado')}
+                                onChange={() => handleStatusFilterChange('verificado')}
                               />
                               Verificado
                             </label>
@@ -362,9 +396,9 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
                   </div>
                 </th>
                 <th className="px-4 py-3 text-sm font-medium">
-                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('id')}>
+                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('identification')}>
                     ID
-                    {filters.orderby === 'id' ? (
+                    {filters.orderby === 'identification' ? (
                       filters.order === 'asc' ? (
                         <ChevronUp size={16} className="ml-1" />
                       ) : (
@@ -434,25 +468,29 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-              {users.length > 0 ? (
+              {user.length > 0 ? (
                 <>
-                  {users.map((user) => (
+                  {user.map((u) => (
                     <tr
-                      key={user.jh}
+                      key={u.id}
                       /* onClick={() => handleOpenModal(user.id)} */
-                      onClick={() => router.push(`/es/admin/users/${user.jh}`)}
+                      onClick={() => router.push(`/es/admin/users/${u.id}`)}
                       className="cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
                     >
-                      <td className="px-4 py-3 text-sm">{getStatusBadge(user.validation_at)}</td>
+                      <td className="px-4 py-3 text-sm">{getStatusBadge(u.isValidated)}</td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                        {user.created_at ? formatDate(user.created_at) : 'No disponible'}
+                        {u.createdAt ? formatDate(u.createdAt) : 'No disponible'}
                       </td>
-                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.jh}</td>
-                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.fullName}</td>
-                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.profile?.email}</td>
-                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.profile?.phone}</td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                        {user.validation_at ? formatDate(user.validation_at) : 'No verificado'}
+                        {u.profile?.identification}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                        {u.profile?.firstName} {u.profile?.lastName}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{u.profile?.email}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{u.profile?.phone}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                        {u.validatedAt ? formatDate(u.validatedAt) : 'No verificado'}
                       </td>
                     </tr>
                   ))}
