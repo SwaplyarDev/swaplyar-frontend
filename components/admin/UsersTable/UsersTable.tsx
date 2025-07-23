@@ -7,39 +7,12 @@ import Swal from 'sweetalert2';
 import { AlertCircle, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp } from 'lucide-react';
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import { useRouter } from 'next/navigation';
+import { User } from '@/types/user';
 
 interface UsersTableProps {
   users: User[];
   currentPage: number;
   totalPages: number;
-}
-
-interface Profile {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  identification: string;
-  phone: string;
-  birthday: string;
-  age: number;
-  gender: string;
-  lastActivity: string;
-  profilePictureUrl: string;
-  [key: string]: string | number; // Permite otras propiedades adicionales
-}
-
-interface User {
-  id: string;
-  role: string;
-  termsAccepted: boolean;
-  isActive: boolean;
-  createdAt: string;
-  validatedAt: string;
-  profile: Profile;
-  isValidated: boolean;
-  rewardsLedger: string;
-  refreshToken: string;
 }
 
 const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages }) => {
@@ -256,10 +229,6 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
       year: 'numeric',
     }).format(date);
   };
-
-  useEffect(() => {
-    console.log('Current filters:', filters);
-  }, [filters]);
 
   return (
     <div className="w-full">
