@@ -289,10 +289,12 @@ const TransferClient = () => {
                     className={`rounded-3xl ${
                       selected === true
                         ? 'bg-green-600 text-white'
-                        : 'border border-gray-300 bg-white text-gray-700 hover:border-green-500 hover:text-green-600'
+                        : 'border border-gray-300 bg-white text-gray-700 hover:border-green-500 hover:text-green-600 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-green-400 dark:hover:text-green-400'
                     }`}
                   >
-                    <CheckCircle className={`mr-2 h-5 w-5 ${selected === true ? 'text-white' : 'text-green-500'}`} />
+                    <CheckCircle
+                      className={`mr-2 h-5 w-5 ${selected === true ? 'text-white' : 'text-green-500 dark:text-green-400'}`}
+                    />
                     <span>Si</span>
                   </Button>
                 </TooltipTrigger>
@@ -300,7 +302,6 @@ const TransferClient = () => {
                   <p>La transferencia fue realizada al cliente</p>
                 </TooltipContent>
               </Tooltip>
-
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
@@ -309,10 +310,12 @@ const TransferClient = () => {
                     className={`rounded-3xl ${
                       selected === false
                         ? 'bg-red-600 text-white'
-                        : 'border border-gray-300 bg-white text-gray-700 hover:border-red-500 hover:text-red-600'
+                        : 'border border-gray-300 bg-white text-gray-700 hover:border-red-500 hover:text-red-600 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-red-400 dark:hover:text-red-400'
                     }`}
                   >
-                    <XCircle className={`mr-2 h-5 w-5 ${selected === false ? 'text-white' : 'text-red-500'}`} />
+                    <XCircle
+                      className={`mr-2 h-5 w-5 ${selected === false ? 'text-white' : 'text-red-500 dark:text-red-400'}`}
+                    />
                     <span>No</span>
                   </Button>
                 </TooltipTrigger>
