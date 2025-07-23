@@ -325,15 +325,20 @@ const TransferClient = () => {
               onClick={() => setOpen(true)}
               disabled={selected === true}
               variant="default"
-              className={
-                !selected
-                  ? 'rounded-3xl bg-gradient-to-r from-amber-600 to-orange-700 transition-all duration-300 dark:from-amber-700 dark:to-orange-800 dark:hover:shadow-orange-900/20'
-                  : 'border-2 bg-transparent'
-              }
+              className={`rounded-3xl px-4 py-2 transition-all duration-300 ${
+                selected === true
+                  ? 'cursor-not-allowed bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500'
+                  : 'bg-gradient-to-r from-amber-600 to-orange-700 text-white dark:from-amber-700 dark:to-orange-800'
+              }`}
             >
-              <Edit className={selected ? 'mr-2 h-4 w-4 text-[#AFAFAF]' : 'mr-2 h-4 w-4 text-white'} />
-              <span className={selected ? 'text-[#AFAFAF]' : 'text-white'}>Editar Destinatario</span>
+              <Edit
+                className={`mr-2 h-4 w-4 ${selected === true ? 'text-gray-400 dark:text-gray-500' : 'text-white'}`}
+              />
+              <span className={selected === true ? 'text-gray-400 dark:text-gray-500' : 'text-white'}>
+                Editar Destinatario
+              </span>
             </Button>
+
             <ModalEditReciever modal={open} setModal={setOpen} trans={trans} />
           </div>
         </div>
