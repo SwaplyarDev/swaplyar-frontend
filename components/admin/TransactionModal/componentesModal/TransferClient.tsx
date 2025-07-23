@@ -288,7 +288,7 @@ const TransferClient = () => {
                     variant="outline"
                     className={`rounded-3xl ${
                       selected === true
-                        ? 'bg-green-600 text-white shadow-lg shadow-green-200'
+                        ? 'bg-green-600 text-white'
                         : 'border border-gray-300 bg-white text-gray-700 hover:border-green-500 hover:text-green-600'
                     }`}
                   >
@@ -308,7 +308,7 @@ const TransferClient = () => {
                     variant="outline"
                     className={`rounded-3xl ${
                       selected === false
-                        ? 'bg-red-600 text-white shadow-lg shadow-red-200'
+                        ? 'bg-red-600 text-white'
                         : 'border border-gray-300 bg-white text-gray-700 hover:border-red-500 hover:text-red-600'
                     }`}
                   >
@@ -327,7 +327,7 @@ const TransferClient = () => {
               variant="default"
               className={
                 !selected
-                  ? 'rounded-3xl bg-gradient-to-r from-amber-600 to-orange-700 transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 dark:from-amber-700 dark:to-orange-800 dark:hover:shadow-orange-900/20'
+                  ? 'rounded-3xl bg-gradient-to-r from-amber-600 to-orange-700 transition-all duration-300 dark:from-amber-700 dark:to-orange-800 dark:hover:shadow-orange-900/20'
                   : 'border-2 bg-transparent'
               }
             >
