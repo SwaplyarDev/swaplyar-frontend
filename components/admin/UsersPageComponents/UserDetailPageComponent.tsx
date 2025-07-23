@@ -8,13 +8,12 @@ import { UserNotFound } from './UserNotFound';
 import { TransactionHistorySection } from './TransactionHistorySection';
 import { WalletsSection } from './WalletsSection';
 import { UserRewardsSection } from './UserRewardSection';
+import auth from '@/auth';
+import { User } from '@/types/user';
 
-export function UserDetailPageComponent({ userId }: { userId: number }) {
-  const user = getUserById(userId);
-
-  if (!user) {
-    return <UserNotFound userId={userId} />;
-  }
+export async function UserDetailPageComponent({ userId }: { userId: string }) {
+  const user = await getUserById(userId);
+  if (!user) return <UserNotFound userId={userId} />;
 
   return (
     <div className="min-h-screen">
@@ -23,7 +22,7 @@ export function UserDetailPageComponent({ userId }: { userId: number }) {
 
         <div className="grid grid-cols-1 gap-6 pt-6 md:grid-cols-2">
           <div className="space-y-6">
-            <UserDetailsSection code={user.code} />
+            <UserDetailsSection code={user.id} createdAt={user.createdAt} />
             <UserInfo user={user} />
             <UserDocumentSection user={user} />
             <UserNotesSection />
@@ -39,88 +38,24 @@ export function UserDetailPageComponent({ userId }: { userId: number }) {
     </div>
   );
 }
-const data = [
-  {
-    id: 1,
-    code: '2448XPAR',
-    name: 'John Doe',
-    lastName: 'Smith',
-    email: 'john.doe@example.com',
-    phone: '+1234567890',
-    status: 'active',
-    date_subscription: '2021-01-01',
-    date_verification: '2021-01-01',
-    document_number: '25252525',
-    nationality: 'Estados Unidos',
-    birth_date: '1985-03-15',
-    phone_full: '+5493333333333',
-    rewards: [
-      {
-        type: 'Cupón de Fidelización',
-        amount: '$5 USD',
-        emission_date: '02 de Enero de 2025',
-        usage_date: '26 de Enero 2025',
-        transaction: 'Crédito de $5 USD aplicado en la siguiente transacción',
-      },
-      {
-        type: 'Cupón de Fidelización',
-        amount: '$5 USD',
-        emission_date: '31 de Octubre de 2024',
-        usage_date: '1 de Noviembre 2024',
-        transaction: 'Crédito de $5 USD aplicado en la siguiente transacción',
-      },
-      {
-        type: 'Cupón de Bienvenida',
-        amount: '$10 USD',
-        emission_date: '26 de agosto de 2024',
-        usage_date: '2 de Septiembre 2024',
-        transaction: 'Crédito de $10 USD aplicado en la siguiente transacción',
-      },
-    ],
-    rewards_count: 5,
-    rewards_year: 8,
-    createdAt: '2021-01-01',
-    updatedAt: '2021-01-01',
-  },
-  {
-    id: 2,
-    code: '3559YQBR',
-    name: 'Jane',
-    lastName: 'Doe',
-    email: 'jane.doe@example.com',
-    phone: '+9876543210',
-    status: 'pending',
-    date_subscription: '2022-05-15',
-    date_verification: '2022-05-20',
-    document_number: '98765432',
-    nationality: 'Canadá',
-    birth_date: '1990-07-22',
-    phone_full: '+5491122334455',
-    rewards: [
-      {
-        type: 'Cupón de Fidelización',
-        amount: '$5 USD',
-        emission_date: '15 de Marzo de 2025',
-        usage_date: '30 de Marzo 2025',
-        transaction: 'Crédito de $5 USD aplicado en la siguiente transacción',
-      },
-      {
-        type: 'Cupón de Bienvenida',
-        amount: '$10 USD',
-        emission_date: '10 de Diciembre de 2024',
-        usage_date: '25 de Diciembre 2024',
-        transaction: 'Crédito de $10 USD aplicado en la siguiente transacción',
-      },
-    ],
-    rewards_count: 2,
-    rewards_year: 4,
-    createdAt: '2022-05-15',
-    updatedAt: '2022-06-01',
-  },
-];
 
-export function getUserById(id: number) {
-  return data.find((user) => user.id === id);
+async function getUserById(id: string): Promise<User | undefined> {
+  try {
+    const session = await auth();
+    const token = session?.accessToken;
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      cache: 'no-store',
+    });
+    if (!response.ok) {
+      throw new Error('Error fetching user');
+    }
+    const user = await response.json();
+    return user;
+  } catch (e) {
+    console.error('Error fetching user:', e);
+  }
 }
-
-export type User = (typeof data)[0];
