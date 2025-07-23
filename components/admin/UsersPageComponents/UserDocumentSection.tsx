@@ -4,19 +4,17 @@ import { FileText, User, ChevronDown, ChevronUp } from 'lucide-react';
 import { VerificationModal } from './VerficationModal';
 import { UserAdditionalInfo } from './UserAdditionalInfo';
 import { UserVerificationForm } from './UserVerificationForm';
-interface UserType {
-  date_subscription: string;
-  name: string;
-  lastName: string;
-  email: string;
-  nationality: string;
-  document_number: string;
-  birth_date: string;
-  phone_full: string;
-}
+import { User as UserType } from '@/types/user';
+import auth from '@/auth';
 
 interface UserDocumentSectionProps {
   user: Partial<UserType>;
+}
+interface VerifyForm {
+  document_front: string;
+  document_back: string;
+  selfie_image: string;
+  note_rejection?: string;
 }
 
 export function UserDocumentSection({ user }: UserDocumentSectionProps) {
@@ -24,6 +22,12 @@ export function UserDocumentSection({ user }: UserDocumentSectionProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [isExpanded, setIsExpanded] = useState(true);
+  const [verifyForm, setVerifyForm] = useState({
+    document_front: '',
+    document_back: '',
+    selfie_image: '',
+    note_rejection: '',
+  });
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -34,6 +38,7 @@ export function UserDocumentSection({ user }: UserDocumentSectionProps) {
   };
 
   const handleSaveUserData = (userData: Partial<UserType>) => {
+    //const response = await sendVerification(userData, verifyForm); logica de envio de verificación
     console.log('Datos del usuario guardados:', userData);
     setTimeout(() => {
       setIsVerified(true);
@@ -146,3 +151,29 @@ export function UserDocumentSection({ user }: UserDocumentSectionProps) {
     </div>
   );
 }
+
+const sendVerification = async (user: Partial<UserType>, verifyForm: VerifyForm) => {
+  try {
+    const session = await auth();
+    const token = session?.accessToken;
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${user.id}/verification/upload`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(verifyForm),
+    });
+
+    if (!response.ok) {
+      throw new Error('Error al enviar la verificación');
+    }
+
+    const data = await response.json();
+    console.log('Verificación enviada:', data);
+    return data;
+  } catch (error) {
+    console.error('Error al enviar la verificación:', error);
+  }
+};

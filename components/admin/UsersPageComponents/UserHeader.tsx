@@ -1,7 +1,7 @@
 import { User } from 'lucide-react';
 import BackButton from '../Sidebar/componentsSidebar/Navigation/BackButto';
 
-export function UserHeader({ userId }: { userId: number }) {
+export function UserHeader({ userId }: { userId: string }) {
   return (
     <div className="flex items-center justify-between rounded-lg border bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
       <div className="flex items-center space-x-4">

@@ -1,32 +1,23 @@
 'use client';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
-
-interface User {
-  date_subscription: string;
-  name: string;
-  lastName: string;
-  email: string;
-  nationality: string;
-  document_number: string;
-  birth_date: string;
-  phone_full: string;
-  rewards_year: number;
-  rewards_count: number;
-  rewards: {
-    type: string;
-    amount: string; // Cambiado de number a string
-    emission_date: string;
-    transaction: string;
-    usage_date: string;
-  }[];
-}
+import { User } from '@/types/user';
 
 export function UserRewardsSection({ user }: { user: User }) {
   const [isExpanded, setIsExpanded] = useState(true);
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
+  };
+
+  const formatDate = (isoDateString: string) => {
+    const date = new Date(isoDateString);
+
+    return new Intl.DateTimeFormat('es-AR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }).format(date);
   };
 
   return (
@@ -54,21 +45,21 @@ export function UserRewardsSection({ user }: { user: User }) {
         <div className="mb-4 space-y-2">
           <div className="flex justify-between">
             <span className="text-sm text-gray-600 dark:text-gray-400">Fecha de inscripción:</span>
-            <span className="font-medium dark:text-gray-200">{user.date_subscription}</span>
+            <span className="font-medium dark:text-gray-200">{formatDate(user.createdAt)}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-sm text-gray-600 dark:text-gray-400">Recompensas que obtuviste en 2024:</span>
-            <span className="font-medium dark:text-gray-200">{user.rewards_year}</span>
+            <span className="font-medium dark:text-gray-200">{user.rewardsLedger?.timesGranted || 0}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-sm text-gray-600 dark:text-gray-400">Recompensas que obtuviste en total:</span>
-            <span className="font-medium dark:text-gray-200">{user.rewards_count}</span>
+            <span className="font-medium dark:text-gray-200">{user.rewardsLedger?.starsCount || 0}</span>
           </div>
         </div>
 
         {/* Rewards List */}
         <div className="space-y-4">
-          {user.rewards.map((reward, index) => (
+          {/* {user.rewards.map((reward, index) => (
             <div key={index} className="rounded-lg border bg-white p-3 dark:border-gray-700 dark:bg-gray-700/50">
               <div className="mb-1 flex justify-between">
                 <span className="font-medium dark:text-white">{reward.type}:</span>
@@ -89,7 +80,7 @@ export function UserRewardsSection({ user }: { user: User }) {
                 </div>
               </div>
             </div>
-          ))}
+          ))} */}
         </div>
       </div>
     </div>
