@@ -1,10 +1,3 @@
-/**
- * @file Configuration de proveedores para NextAuth
- * @module authConfig
- * @description
- * Define los providers de autenticación (Email/Código, GitHub, Google) y
- * el flujo de login con el backend, devolviendo accessToken y refreshToken.
- */
 import type { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GithubProvider from 'next-auth/providers/github';
@@ -13,16 +6,39 @@ import { InvalidCredentials } from './lib/auth';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL!;
 
+async function refreshAccessToken(refreshToken: string) {
+  try {
+    const res = await fetch(`${BACKEND_URL}/v2/refresh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken }),
+    });
+
+    if (!res.ok) {
+      throw new Error('No se pudo refrescar el token');
+    }
+
+    const data = await res.json();
+
+    return {
+      accessToken: data.access_token,
+      refreshToken: data.refresh_token ?? refreshToken, // si no cambia, se mantiene
+      expiresAt: Date.now() + 3600 * 1000, // 1 hora
+    };
+  } catch (err) {
+    console.error("❌ Error al refrescar token:", err);
+    return null;
+  }
+}
+
 export const authConfig: NextAuthConfig = {
   providers: [
     CredentialsProvider({
-      /**
-       * Login mediante correo y código de verificación
-       */
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.verificationCode) {
           throw new InvalidCredentials('Faltan email o código');
         }
+
         const { email, verificationCode: code } = credentials;
 
         const res = await fetch(`${BACKEND_URL}/v2/login/email/validate`, {
@@ -53,6 +69,7 @@ export const authConfig: NextAuthConfig = {
           ...decoded,
           accessToken,
           refreshToken,
+          expiresAt: Date.now() + 3600 * 1000, // 1h
         };
       },
     }),
@@ -68,11 +85,57 @@ export const authConfig: NextAuthConfig = {
     }),
   ],
 
-  // Si fuera necesario: páginas personalizadas
+  session: {
+    strategy: 'jwt',
+  },
+
+  callbacks: {
+    async jwt({ token, user, account }) {
+      // Primer login
+      if (user) {
+        return {
+          ...token,
+          accessToken: user.accessToken,
+          refreshToken: user.refreshToken,
+          expiresAt: user.expiresAt,
+          user,
+        };
+      }
+
+      // Si el token aún es válido
+      if (Date.now() < (token.expiresAt as number)) {
+        return token;
+      }
+
+      // Token expirado, refrescar
+      const refreshed = await refreshAccessToken(token.refreshToken as string);
+      if (refreshed) {
+        return {
+          ...token,
+          accessToken: refreshed.accessToken,
+          refreshToken: refreshed.refreshToken,
+          expiresAt: refreshed.expiresAt,
+        };
+      }
+
+      // Falló el refresh, remover sesión
+      return {
+        ...token,
+        error: 'RefreshAccessTokenError',
+      };
+    },
+
+    async session({ session, token }) {
+      session.accessToken = token.accessToken as string;
+      session.user = token.user;
+      session.error = token.error as string;
+      return session;
+    },
+  },
+
   pages: {
     signIn: '/es/iniciar-sesion-o-registro',
   },
 
-  // Evita verificaciones de host si usas deploys con dominios dinámicos
   trustHost: true,
 };
