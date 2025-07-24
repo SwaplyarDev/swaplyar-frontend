@@ -1,56 +1,70 @@
 'use client';
+
 import { useState, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import clsx from 'clsx';
+
 import SystemInfo from '../SystemInfo/SystemInfo';
 import InvertSystems from '../InvertSystems/InvertSystems';
-import { useSystemStore } from '@/store/useSystemStore';
-import { usePathname, useRouter } from 'next/navigation';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { useAmountCalculator } from '@/hooks/useAmountCalculator';
-import { useSystemSelection } from '@/hooks/useSystemSelection';
 import TransactionSection from '@/components/ui/TransactionSection/TransactionSection';
-import clsx from 'clsx';
-import { getExchangeRateStore } from '@/store/exchangeRateStore';
-import { useStepperStore } from '@/store/stateStepperStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
-import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
+
 import { systems } from '@/utils/dataCoins';
 import { validSendReceive } from '@/utils/currencyApis';
-import { useSession } from 'next-auth/react';
+
+import { useSystemStore } from '@/store/useSystemStore';
+import { getExchangeRateStore } from '@/store/exchangeRateStore';
+import { useStepperStore } from '@/store/stateStepperStore';
+import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
+
+import { useAmountCalculator } from '@/hooks/useAmountCalculator';
+import { useSystemSelection } from '@/hooks/useSystemSelection';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 export default function TransactionCalculator() {
+  const router = useRouter();
+  const pathname = usePathname();
   const { data: session } = useSession();
-  console.log('Session:', session?.user);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
-  const { startUpdatingRates, stopUpdatingRates } = getExchangeRateStore();
+  const tokenEsValido = session?.accessToken;
 
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [clicked, setClicked] = useState(false);
+
+  const { selectedSendingSystem, selectedReceivingSystem, activeSelect } = useSystemStore();
+  const { resetToDefault } = useStepperStore();
+  const { startUpdatingRates, stopUpdatingRates, rates } = getExchangeRateStore();
+  const { isDark } = useDarkTheme();
+  const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } = useSystemSelection();
+  const {
+    sendAmount,
+    receiveAmount,
+    handleSendAmountChange,
+    handleReceiveAmountChange,
+    rateForOne,
+    rateForOneBank,
+  } = useAmountCalculator();
+
+  const sendAmountNum = parseFloat(sendAmount || '0');
+  const receiveAmountNum = parseFloat(receiveAmount || '0');
+
+  const { pass, setPass } = useControlRouteRequestStore((state) => state);
+
+  const colorError = isDark ? 'text-[#f78a82]' : 'text-[#f44336]';
+
+  // --- DEBUG ---
+  console.log('DEBUG: Session:', session?.user);
+  // console.log('DEBUG: rate', rateForOne);
+
+  // Habilitar actualización de tasas solo si ambos sistemas están seleccionados
   useEffect(() => {
     if (selectedSendingSystem && selectedReceivingSystem) {
       startUpdatingRates();
     }
+    return stopUpdatingRates;
+  }, [selectedSendingSystem, selectedReceivingSystem]);
 
-    return () => {
-      stopUpdatingRates();
-    };
-  }, [selectedSendingSystem, selectedReceivingSystem, startUpdatingRates, stopUpdatingRates]);
-
-  const { activeSelect } = useSystemStore();
-  const { resetToDefault } = useStepperStore();
-  const router = useRouter();
-  const { isDark } = useDarkTheme();
-  const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } = useSystemSelection();
-  const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne, rateForOneBank } =
-    useAmountCalculator();
-  const colorError = isDark ? 'text-[#f78a82]' : 'text-[#f44336]';
-  const pathname = usePathname();
-  const { pass } = useControlRouteRequestStore((state) => state);
-  const { setPass } = useControlRouteRequestStore((state) => state);
-  const sendAmountNum = sendAmount ? parseFloat(sendAmount) : 0;
-  const receiveAmountNum = receiveAmount ? parseFloat(receiveAmount) : 0;
-  const { rates } = getExchangeRateStore.getState();
-
-  const tokenEsValido = session?.accessToken;
-
+  // Restaurar acceso si fue concedido previamente
   useEffect(() => {
     const acceso = sessionStorage.getItem('accesoPermitido');
     if (acceso === 'true') {
@@ -58,24 +72,23 @@ export default function TransactionCalculator() {
     }
   }, []);
 
-  const [clicked, setClicked] = useState(false);
-
+  // Redirección automática si se hizo clic y el token es válido
   useEffect(() => {
-    if (tokenEsValido && pathname === '/es/auth/solicitud' && clicked) {
+    if (!clicked) return;
+
+    if (pathname === '/es/auth/solicitud' && tokenEsValido) {
       router.push('/es/auth/solicitud-interna');
-    } else if (!tokenEsValido && pathname === '/es/inicio' && clicked) {
+    } else if (pathname === '/es/inicio' && !tokenEsValido) {
       router.push('/es/inicio/formulario-de-solicitud');
     }
-  }, [tokenEsValido, pathname, router, clicked]);
+  }, [clicked, pathname, tokenEsValido]);
 
   const handleDirection = () => {
     sessionStorage.setItem('accesoPermitido', 'true');
-
-    if (session?.accessToken) {
-      router.push('/es/auth/solicitud-interna');
-    } else {
-      router.push('/es/inicio/formulario-de-solicitud');
-    }
+    const route = tokenEsValido
+      ? '/es/auth/solicitud-interna'
+      : '/es/inicio/formulario-de-solicitud';
+    router.push(route);
   };
 
   const handleSubmit = () => {
@@ -86,33 +99,57 @@ export default function TransactionCalculator() {
       setIsProcessing(false);
     }, 3000);
   };
-  console.log('rate', rateForOne);
 
   const handleClick = () => {
     setClicked(true);
     handleSubmit();
   };
 
+  const isInvalidAmount = !validSendReceive(
+    sendAmountNum,
+    selectedSendingSystem?.id ?? '',
+    receiveAmountNum,
+    selectedReceivingSystem?.id ?? '',
+  );
+
+  const showErrorMessage = () => {
+    if (!isInvalidAmount || !selectedReceivingSystem || !selectedSendingSystem) return null;
+
+    if (
+      ['payoneer_usd', 'payoneer_eur'].includes(selectedReceivingSystem.id)
+    ) {
+      return `El monto minimo a recibir en Payoneer es de 50 ${selectedReceivingSystem.coin}`;
+    }
+
+    if (
+      ['payoneer_usd', 'payoneer_eur'].includes(selectedSendingSystem.id)
+    ) {
+      return `El monto minimo a enviar en Payoneer es de 50 ${selectedSendingSystem.coin}`;
+    }
+
+    return 'El monto minimo a enviar es de 10 USD';
+  };
+
   return (
-    <div className={`not-design-system flex w-full flex-col items-center`}>
+    <div className="not-design-system flex w-full flex-col items-center">
       <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight p-8 shadow-md dark:bg-calculatorDark dark:text-white sm:h-[623px] lg-tablet:min-w-[500px]">
         <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
           <p className="flex w-full max-w-lg items-center gap-[7px] font-textFont text-custom-grayD dark:text-darkText">
             {selectedSendingSystem?.id === 'bank' ? (
               <>
-                <span className="text-[32px]/[150%] font-light">{rateForOneBank.toFixed(2)}</span>
-                <span className="text-[21px]/[150%] font-semibold">{selectedSendingSystem?.coin}</span>
-                <span className="text-[21px]/[150%] font-normal">=</span>
-                <span className="text-[32px]/[150%] font-light">1</span>
-                <span className="text-[21px]/[150%] font-semibold">{selectedReceivingSystem?.coin}</span>
+                <span className="text-[32px] font-light">{rateForOneBank.toFixed(2)}</span>
+                <span className="text-[21px] font-semibold">{selectedSendingSystem?.coin}</span>
+                <span className="text-[21px] font-normal">=</span>
+                <span className="text-[32px] font-light">1</span>
+                <span className="text-[21px] font-semibold">{selectedReceivingSystem?.coin}</span>
               </>
             ) : (
               <>
-                <span className="text-[32px]/[150%] font-light">1</span>
-                <span className="text-[21px]/[150%] font-semibold">{selectedSendingSystem?.coin}</span>
-                <span className="text-[21px]/[150%] font-normal">=</span>
-                <span className="text-[32px]/[150%] font-light">{rateForOne.toFixed(2)}</span>
-                <span className="text-[21px]/[150%] font-semibold">{selectedReceivingSystem?.coin}</span>
+                <span className="text-[32px] font-light">1</span>
+                <span className="text-[21px] font-semibold">{selectedSendingSystem?.coin}</span>
+                <span className="text-[21px] font-normal">=</span>
+                <span className="text-[32px] font-light">{rateForOne.toFixed(2)}</span>
+                <span className="text-[21px] font-semibold">{selectedReceivingSystem?.coin}</span>
               </>
             )}
           </p>
@@ -128,13 +165,16 @@ export default function TransactionCalculator() {
             label={`Envías ${selectedSendingSystem?.coin}`}
             isSending={true}
           />
+
           <div className="mt-4 flex h-full items-center justify-center">
             <InvertSystems onInvert={handleInvertSystemsClick} selectedReceivingSystem={selectedReceivingSystem} />
           </div>
+
           <SystemInfo pointBorder="border" linePosition="up">
             <p className="font-textFont text-xs font-light xs:text-sm">Información del sistema de recepción</p>
           </SystemInfo>
         </div>
+
         <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
           <TransactionSection
             systems={systems}
@@ -147,39 +187,10 @@ export default function TransactionCalculator() {
             label={`Recibes ${selectedReceivingSystem?.coin}`}
             isSending={false}
           />
+
           <div className="flex min-h-[40px] w-full items-end justify-center">
-            {sendAmount === '' ? null : (
-              <div
-                className={clsx(
-                  !validSendReceive(
-                    sendAmountNum,
-                    selectedSendingSystem?.id ?? '',
-                    receiveAmountNum,
-                    selectedReceivingSystem?.id ?? '',
-                  )
-                    ? 'block'
-                    : 'hidden',
-                )}
-              >
-                {(!validSendReceive(
-                  sendAmountNum,
-                  selectedSendingSystem?.id ?? '',
-                  receiveAmountNum,
-                  selectedReceivingSystem?.id ?? '',
-                ) &&
-                  selectedReceivingSystem?.id === 'payoneer_usd') ||
-                selectedReceivingSystem?.id === 'payoneer_eur' ? (
-                  <p className={`p-1 text-sm ${colorError}`}>
-                    El monto minimo a recibir en Payoneer es de 50 {selectedReceivingSystem.coin}
-                  </p>
-                ) : selectedSendingSystem?.id === 'payoneer_usd' || selectedSendingSystem?.id === 'payoneer_eur' ? (
-                  <p className={`p-1 text-sm ${colorError}`}>
-                    El monto minimo a enviar en Payoneer es de 50 {selectedSendingSystem.coin}
-                  </p>
-                ) : (
-                  <p className={`p-1 text-sm ${colorError}`}>El monto minimo a enviar es de 10 USD</p>
-                )}
-              </div>
+            {sendAmount !== '' && isInvalidAmount && (
+              <p className={`p-1 text-sm ${colorError}`}>{showErrorMessage()}</p>
             )}
           </div>
 
@@ -200,12 +211,7 @@ export default function TransactionCalculator() {
                 sendAmount === '' ||
                 isNaN(sendAmountNum) ||
                 isNaN(receiveAmountNum) ||
-                !validSendReceive(
-                  sendAmountNum,
-                  selectedSendingSystem?.id ?? '',
-                  receiveAmountNum,
-                  selectedReceivingSystem?.id ?? '',
-                )
+                isInvalidAmount
               }
             >
               Procesar pago
