@@ -15,8 +15,11 @@ import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 import { systems } from '@/utils/dataCoins';
 import { validSendReceive } from '@/utils/currencyApis';
+import { useSession } from 'next-auth/react';
 
 export default function TransactionCalculator() {
+  const { data: session } = useSession();
+  console.log('Session:', session?.user);
   const [isProcessing, setIsProcessing] = useState(false);
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
   const { startUpdatingRates, stopUpdatingRates } = getExchangeRateStore();
@@ -45,15 +48,34 @@ export default function TransactionCalculator() {
   const sendAmountNum = sendAmount ? parseFloat(sendAmount) : 0;
   const receiveAmountNum = receiveAmount ? parseFloat(receiveAmount) : 0;
   const { rates } = getExchangeRateStore.getState();
+
+  const tokenEsValido = session?.accessToken;
+
   useEffect(() => {
-    if (!pass && pathname === '/es/inicio/formulario-de-solicitud') {
-      router.push('/es/inicio');
+    const acceso = sessionStorage.getItem('accesoPermitido');
+    if (acceso === 'true') {
+      useControlRouteRequestStore.setState({ pass: true, hasExitedForm: false });
     }
-  }, [pass, pathname, router]);
+  }, []);
+
+  const [clicked, setClicked] = useState(false);
+
+  useEffect(() => {
+    if (tokenEsValido && pathname === '/es/auth/solicitud' && clicked) {
+      router.push('/es/auth/solicitud-interna');
+    } else if (!tokenEsValido && pathname === '/es/inicio' && clicked) {
+      router.push('/es/inicio/formulario-de-solicitud');
+    }
+  }, [tokenEsValido, pathname, router, clicked]);
 
   const handleDirection = () => {
     sessionStorage.setItem('accesoPermitido', 'true');
-    router.push('/es/inicio/formulario-de-solicitud');
+
+    if (session?.accessToken) {
+      router.push('/es/auth/solicitud-interna');
+    } else {
+      router.push('/es/inicio/formulario-de-solicitud');
+    }
   };
 
   const handleSubmit = () => {
@@ -65,6 +87,12 @@ export default function TransactionCalculator() {
     }, 3000);
   };
   console.log('rate', rateForOne);
+
+  const handleClick = () => {
+    setClicked(true);
+    handleSubmit();
+  };
+
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
       <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight p-8 shadow-md dark:bg-calculatorDark dark:text-white sm:h-[623px] lg-tablet:min-w-[500px]">
@@ -165,8 +193,9 @@ export default function TransactionCalculator() {
                 isDark ? 'buttonSecondDark' : 'buttonSecond',
                 'w-full max-w-[340px] rounded-full bg-custom-blue-800 px-[14px] py-3 font-titleFont text-base font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-custom-grayD dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD',
               )}
-              onClick={handleSubmit}
+              onClick={handleClick}
               disabled={
+                clicked ||
                 isProcessing ||
                 sendAmount === '' ||
                 isNaN(sendAmountNum) ||

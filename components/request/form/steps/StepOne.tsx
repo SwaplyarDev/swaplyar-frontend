@@ -1,3 +1,5 @@
+'use client';
+
 import ArrowUp from '@/components/ui/ArrowUp/ArrowUp';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useStepperStore } from '@/store/stateStepperStore';
@@ -9,6 +11,8 @@ import { CountryOption } from '@/types/request/request';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import SelectCountry from '../inputs/SelectCountry';
 import InputSteps from '@/components/inputSteps/InputSteps';
+import userInfoStore from '@/store/userInfoStore';
+import { useSession } from 'next-auth/react';
 
 interface FormData {
   sender_first_name: string;
@@ -20,6 +24,11 @@ interface FormData {
 }
 
 const StepOne = ({ blockAll }: { blockAll: boolean }) => {
+  const { data: session } = useSession();
+  console.log('Client render', typeof window !== 'undefined');
+  console.log('Session inside StepOne', session);
+  console.log('Session:', session?.user);
+  const user = userInfoStore((state) => state.user);
   const {
     register,
     handleSubmit,
@@ -27,7 +36,18 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     formState: { errors, isValid },
     setValue,
     watch,
-  } = useForm<FormData>({ mode: 'onChange' });
+    reset,
+  } = useForm<FormData>({
+    mode: 'onChange',
+    defaultValues: {
+      sender_first_name: '',
+      sender_last_name: '',
+      email: '',
+      calling_code: undefined,
+      phone: '',
+      own_account: undefined,
+    },
+  });
 
   const {
     markStepAsCompleted,
@@ -47,6 +67,31 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
   const formValues = useWatch({ control });
 
   useEffect(() => {
+    if (!session || !session.user) return;
+
+    const [firstName, ...rest] = session?.user.fullName?.split(' ') ?? [];
+    const lastName = rest.join(' ');
+
+    reset({
+      sender_first_name: firstName,
+      sender_last_name: lastName,
+      email: session?.user.email,
+      calling_code: formData.stepOne.calling_code,
+      phone: session?.user.phone,
+      own_account: formData.stepOne.own_account,
+    });
+
+    setInitialValues({
+      sender_first_name: firstName,
+      sender_last_name: lastName,
+      email: session?.user.email,
+      calling_code: formData.stepOne.calling_code,
+      phone: session?.user.phone,
+      own_account: formData.stepOne.own_account,
+    });
+  }, [user, formData.stepOne, session, reset]);
+
+  /*useEffect(() => {
     const { sender_first_name, sender_last_name, calling_code, phone, email, own_account } = formData.stepOne;
     const newValues = {
       sender_first_name,
@@ -56,16 +101,27 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
       email,
       own_account,
     };
+
+    if (user && !formData.stepOne.sender_first_name) {
+    const [firstName, ...rest] = user.fullName.split(' ');
+    const lastName = rest.join(' ');
+
+        setValue('sender_first_name', firstName);
+        setValue('sender_last_name', lastName);
+        setValue('email', user.email);
+  } else {
+
     setValue('sender_first_name', sender_first_name);
     setValue('sender_last_name', sender_last_name);
     setValue('calling_code', calling_code);
     setValue('phone', phone);
     setValue('email', email);
     setValue('own_account', own_account);
+  }
 
     console.log(newValues);
     setInitialValues(newValues);
-  }, [formData.stepOne, setValue]);
+  }, [formData.stepOne, setValue, user]);*/
 
   const [loading, setLoading] = useState(false);
 
