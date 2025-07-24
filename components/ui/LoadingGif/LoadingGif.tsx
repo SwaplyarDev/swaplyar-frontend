@@ -17,7 +17,7 @@ const LoadingGif: FC<LoadingGifProps> = ({ color, size = '20px' }) => {
       width={size}
       height={size}
       viewBox="-13 -13 45 45"
-      enable-background="new 0 0 96 96"
+      enableBackground="new 0 0 96 96"
       xmlSpace="preserve"
       className={'mb-1'}
     >

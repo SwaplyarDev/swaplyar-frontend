@@ -25,7 +25,7 @@ export const authConfig: NextAuthConfig = {
         }
         const { email, verificationCode: code } = credentials;
 
-        const res = await fetch(`${BACKEND_URL}/v1/login/email/validate`, {
+        const res = await fetch(`${BACKEND_URL}/v2/login/email/validate`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, code }),
@@ -39,13 +39,20 @@ export const authConfig: NextAuthConfig = {
         }
 
         const data = await res.json();
-        const rawPayload = data.accessToken.split('.')[1];
+        const accessToken = data.access_token;
+        const refreshToken = data.refresh_token;
+
+        if (!accessToken) {
+          throw new Error('No se recibió accessToken del backend');
+        }
+
+        const rawPayload = accessToken.split('.')[1];
         const decoded = JSON.parse(Buffer.from(rawPayload, 'base64').toString());
 
         return {
           ...decoded,
-          accessToken: data.accessToken,
-          refreshToken: data.refreshToken,
+          accessToken,
+          refreshToken,
         };
       },
     }),
