@@ -1,27 +1,35 @@
 'use client';
 
 import type React from 'react';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, use } from 'react';
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
 import { AlertCircle, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp } from 'lucide-react';
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import { useRouter } from 'next/navigation';
 import { User } from '@/types/user';
+import { useSelectedStatusFilter } from '@/hooks/admin/usersPageHooks/useSelectedStatusFilter';
+import { formatDate } from '@/utils/utils';
 
 interface UsersTableProps {
   users: User[];
   currentPage: number;
   totalPages: number;
 }
+interface filterUsers {
+  min_date: string | null;
+  max_date: string | null;
+  orderby: string;
+  order: string;
+  search: string;
+}
 
 const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages }) => {
   const MySwal: any = withReactContent(Swal);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [userId, setUserId] = useState<string>('');
   const [user, setUser] = useState<User[]>(users);
-  const [filters, setFilters] = useState({
-    status: [],
+  const { selectedItem, handleSelect, clearSelectedItems } = useSelectedStatusFilter();
+  const [filters, setFilters] = useState<filterUsers>({
     min_date: null,
     max_date: null,
     orderby: 'date',
@@ -33,45 +41,16 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
   const [activePopover, setActivePopover] = useState<string | null>(null);
   const popoverRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
-  const filtrarUsers = (users: User[], filters: any) => {
-    return users.filter((user) => {
-      const matchesStatus =
-        filters.status.length === 0 || filters.status.includes(user.isValidated ? 'verificado' : 'rejected');
-      const matchesMinDate = !filters.min_date || new Date(user.createdAt) >= new Date(filters.min_date);
-      const matchesMaxDate = !filters.max_date || new Date(user.createdAt) <= new Date(filters.max_date);
-
-      return matchesStatus && matchesMinDate && matchesMaxDate;
-    });
-  };
-
-  const ordenarCampoString = (users: User[], order: string, orderby: string) => {
-    if (order === 'asc') users.sort((a, b) => String(a.profile[orderby]).localeCompare(String(b.profile[orderby])));
-    if (order === 'desc') users.sort((a, b) => String(b.profile[orderby]).localeCompare(String(a.profile[orderby])));
-  };
-  const ordenarCampoNumber = (users: User[], order: string, orderby: string) => {
-    if (order === 'asc') users.sort((a, b) => Number(a.profile[orderby]) - Number(b.profile[orderby]));
-    if (order === 'desc') users.sort((a, b) => Number(b.profile[orderby]) - Number(a.profile[orderby]));
-  };
-
   useEffect(() => {
-    const filteredList = filtrarUsers(users, filters);
+    const filteredList = filtrarUsers(users, selectedItem, filters);
     if (filters.orderby === 'email') ordenarCampoString(filteredList, filters.order, 'email');
     if (filters.orderby === 'name') ordenarCampoString(filteredList, filters.order, 'firstName');
     if (filters.orderby === 'identification') ordenarCampoNumber(filteredList, filters.order, 'identification');
     if (filters.orderby === 'phone') ordenarCampoNumber(filteredList, filters.order, 'phone');
-    if (filters.orderby === 'verification') {
-      if (filters.order === 'asc')
-        filteredList.sort(
-          (a, b) => new Date(formatDate(a['validatedAt'])).getTime() - new Date(formatDate(b['validatedAt'])).getTime(),
-        );
-      if (filters.order === 'desc')
-        filteredList.sort(
-          (a, b) => new Date(formatDate(b['validatedAt'])).getTime() - new Date(formatDate(a['validatedAt'])).getTime(),
-        );
-    }
+    if (filters.orderby === 'verification') ordenarCampoDate(filteredList, filters.order, 'verification');
 
     setUser(filteredList);
-  }, [filters]);
+  }, [filters, selectedItem]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -94,19 +73,6 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
     setActivePopover(activePopover === name ? null : name);
   };
 
-  const handleStatusFilterChange = (status: string) => {
-    /* @ts-expect-error */
-    const newStatusFilters = filters.status.includes(status)
-      ? filters.status.filter((s) => s !== status)
-      : [...filters.status, status];
-
-    setFilters({
-      ...filters,
-      /* @ts-expect-error */
-      status: newStatusFilters,
-    });
-  };
-
   const handleSortChange = (field: string) => {
     setFilters({
       ...filters,
@@ -122,9 +88,8 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
     });
   };
 
-  const clearFilters = () => {
+  const handleClearFilters = () => {
     setFilters({
-      status: [],
       min_date: null,
       max_date: null,
       orderby: 'date',
@@ -132,55 +97,18 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
       search: '',
     });
     setUser(users);
+    clearSelectedItems();
   };
 
   // Función para abrir el modal de usuario
-  const handleOpenModal = (id: number) => {
-    setUserId(id.toString());
-
-    // Primero mostramos un modal vacío para la transición
-    MySwal.fire({
-      html: <div className="display-hidden"></div>,
-      showConfirmButton: false,
-      showCloseButton: false,
-      allowOutsideClick: false,
-      width: '0px',
-      backdrop: true,
-      customClass: {
-        popup: 'bg-transparent shadow-none',
-        container: 'bg-transparent',
-        backdrop: 'backdrop-blur-sm',
-      },
-      hideClass: {
-        popup: 'swal2-hide-custom',
-      },
-    });
-
-    // Después de un breve retraso, actualizamos el contenido
-    setTimeout(() => {
-      MySwal.update({
-        html: (
-          <div className="p-4">
-            <h2 className="mb-4 text-xl font-bold">Detalles del Usuario</h2>
-            <p>ID: {id}</p>
-            {/* Aquí puedes agregar más detalles del usuario */}
-          </div>
-        ),
-        width: 'auto',
-        customClass: {
-          popup: 'rounded-lg shadow-xl',
-          container: '',
-        },
-      });
-
-      document.querySelector('.swal2-html-container')?.classList.remove('opacity-0');
-    }, 300);
+  const handleOpenModal = (user: User) => {
+    UserProfilePopover(user, MySwal, router);
   };
 
   // Función para obtener el badge de estado
   const getStatusBadge = (status: boolean | null) => {
     const statusConfig = {
-      verificado: {
+      verified: {
         bgColor: 'bg-green-100 dark:bg-green-900/30',
         textColor: 'text-green-800 dark:text-green-300',
         icon: <CheckCircle size={14} className="mr-1" />,
@@ -207,7 +135,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
     };
 
     //const config = statusConfig[status?.toLowerCase() as keyof typeof statusConfig] || statusConfig.default;
-    const config = statusConfig[status === null ? 'default' : status ? 'verificado' : 'rejected'];
+    const config = statusConfig[status === null ? 'default' : status ? 'verified' : 'rejected'];
 
     return (
       <span
@@ -217,17 +145,6 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
         {config.label}
       </span>
     );
-  };
-
-  // Función para formatear la fecha
-  const formatDate = (isoDateString: string) => {
-    const date = new Date(isoDateString);
-
-    return new Intl.DateTimeFormat('es-AR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    }).format(date);
   };
 
   return (
@@ -264,9 +181,8 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
                               <input
                                 type="checkbox"
                                 className="mr-2 h-4 w-4"
-                                /* @ts-expect-error */
-                                checked={filters.status.includes('verificado')}
-                                onChange={() => handleStatusFilterChange('verificado')}
+                                checked={selectedItem.includes('verified')}
+                                onChange={() => handleSelect('verified')}
                               />
                               Verificado
                             </label>
@@ -274,9 +190,8 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
                               <input
                                 type="checkbox"
                                 className="mr-2 h-4 w-4"
-                                /* @ts-expect-error */
-                                checked={filters.status.includes('inprogress')}
-                                onChange={() => handleStatusFilterChange('inprogress')}
+                                checked={selectedItem.includes('inprogress')}
+                                onChange={() => handleSelect('inprogress')}
                               />
                               En Progreso
                             </label>
@@ -284,9 +199,8 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
                               <input
                                 type="checkbox"
                                 className="mr-2 h-4 w-4"
-                                /* @ts-expect-error */
-                                checked={filters.status.includes('rejected')}
-                                onChange={() => handleStatusFilterChange('rejected')}
+                                checked={selectedItem.includes('rejected')}
+                                onChange={() => handleSelect('rejected')}
                               />
                               Rechazado
                             </label>
@@ -298,7 +212,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
                             >
                               {filters.orderby === 'status' && filters.order === 'asc' ? 'Ordenar Z-A' : 'Ordenar A-Z'}
                             </button>
-                            <button className="text-xs text-red-600 dark:text-red-400" onClick={clearFilters}>
+                            <button className="text-xs text-red-600 dark:text-red-400" onClick={handleClearFilters}>
                               Limpiar
                             </button>
                           </div>
@@ -355,7 +269,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
                             >
                               {filters.orderby === 'date' && filters.order === 'asc' ? 'Más recientes' : 'Más antiguos'}
                             </button>
-                            <button className="text-xs text-red-600 dark:text-red-400" onClick={clearFilters}>
+                            <button className="text-xs text-red-600 dark:text-red-400" onClick={handleClearFilters}>
                               Limpiar
                             </button>
                           </div>
@@ -442,8 +356,8 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
                   {user.map((u) => (
                     <tr
                       key={u.id}
-                      /* onClick={() => handleOpenModal(user.id)} */
-                      onClick={() => router.push(`/es/admin/users/${u.id}`)}
+                      onClick={() => handleOpenModal(u)}
+                      /* onClick={() => router.push(`/es/admin/users/${u.id}`)} */
                       className="cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
                     >
                       <td className="px-4 py-3 text-sm">{getStatusBadge(u.isValidated)}</td>
@@ -524,3 +438,74 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
 };
 
 export default UsersTable;
+
+const filtrarUsers = (users: User[], selectedItem: string[], filters: filterUsers): User[] => {
+  return users.filter((user) => {
+    const matchesStatus =
+      selectedItem.length === 0 || selectedItem.includes(user.isValidated ? 'verified' : 'rejected');
+    const matchesMinDate = !filters.min_date || new Date(user.createdAt) >= new Date(filters.min_date);
+    const matchesMaxDate = !filters.max_date || new Date(user.createdAt) <= new Date(filters.max_date);
+
+    return matchesStatus && matchesMinDate && matchesMaxDate;
+  });
+};
+
+const ordenarCampoString = (users: User[], order: string, orderby: string) => {
+  if (order === 'asc') users.sort((a, b) => String(a.profile[orderby]).localeCompare(String(b.profile[orderby])));
+  if (order === 'desc') users.sort((a, b) => String(b.profile[orderby]).localeCompare(String(a.profile[orderby])));
+};
+const ordenarCampoNumber = (users: User[], order: string, orderby: string) => {
+  if (order === 'asc') users.sort((a, b) => Number(a.profile[orderby]) - Number(b.profile[orderby]));
+  if (order === 'desc') users.sort((a, b) => Number(b.profile[orderby]) - Number(a.profile[orderby]));
+};
+const ordenarCampoDate = (users: User[], order: string, orderby: string) => {
+  if (orderby === 'validatedAt' || orderby === 'createdAt') {
+    if (order === 'asc')
+      users.sort((a, b) => new Date(formatDate(a[orderby])).getTime() - new Date(formatDate(b[orderby])).getTime());
+    if (order === 'desc')
+      users.sort((a, b) => new Date(formatDate(b[orderby])).getTime() - new Date(formatDate(a[orderby])).getTime());
+  }
+};
+
+function UserProfilePopover(user: User, MySwal: any, router: any) {
+  // Primero mostramos un modal vacío para la transición
+  MySwal.fire({
+    html: (
+      <div className="p-4">
+        <h2 className="mb-4 text-xl font-bold">
+          Usuario {user.profile.firstName} {user.profile.lastName}
+        </h2>
+        <div className="mb-4 flex flex-row items-stretch justify-between">
+          <p>ID:</p>
+          <p>{user.id}</p>
+        </div>
+        <div className="mb-4 flex flex-row items-stretch justify-between">
+          <p>Email:</p>
+          <p>{user.profile.email}</p>
+        </div>
+        <div className="mb-4 flex flex-row items-stretch justify-between">
+          <p>N° documento:</p>
+          <p>{user.profile.identification}</p>
+        </div>
+        <div className="mb-4 flex flex-row items-stretch justify-between">
+          <p>Role:</p>
+          <p>{user.role}</p>
+        </div>
+      </div>
+    ),
+    width: 'auto',
+    customClass: {
+      popup: 'rounded-lg shadow-xl',
+      container: '',
+    },
+    confirmButtonText: 'Ver Perfil Completo',
+    showCancelButton: true,
+    cancelButtonText: 'Cerrar',
+  }).then((result: any) => {
+    if (result.isConfirmed) {
+      router.push(`/es/admin/users/${user.id}`);
+    }
+  });
+
+  document.querySelector('.swal2-html-container')?.classList.remove('opacity-0');
+}
