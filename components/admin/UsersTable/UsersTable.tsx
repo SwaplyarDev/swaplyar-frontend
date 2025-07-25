@@ -147,6 +147,44 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
     );
   };
 
+  const states = [
+    {
+      id: 'verified',
+      label: 'Verificado',
+    },
+    {
+      id: 'inprogress',
+      label: 'En Progreso',
+    },
+    {
+      id: 'rejected',
+      label: 'Rechazado',
+    },
+  ];
+
+  const boardheaders = [
+    {
+      id: 'identification',
+      label: 'ID',
+    },
+    {
+      id: 'name',
+      label: 'Nombre',
+    },
+    {
+      id: 'email',
+      label: 'Email',
+    },
+    {
+      id: 'phone',
+      label: 'Teléfono',
+    },
+    {
+      id: 'verification',
+      label: 'Verificación',
+    },
+  ];
+
   return (
     <div className="w-full">
       <div className="rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -177,40 +215,27 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
                         <div className="p-2">
                           <div className="mb-2 font-medium text-gray-800 dark:text-gray-200">Filtrar por estado</div>
                           <div className="space-y-2">
-                            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
-                              <input
-                                type="checkbox"
-                                className="mr-2 h-4 w-4"
-                                checked={selectedItem.includes('verified')}
-                                onChange={() => handleSelect('verified')}
-                              />
-                              Verificado
-                            </label>
-                            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
-                              <input
-                                type="checkbox"
-                                className="mr-2 h-4 w-4"
-                                checked={selectedItem.includes('inprogress')}
-                                onChange={() => handleSelect('inprogress')}
-                              />
-                              En Progreso
-                            </label>
-                            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
-                              <input
-                                type="checkbox"
-                                className="mr-2 h-4 w-4"
-                                checked={selectedItem.includes('rejected')}
-                                onChange={() => handleSelect('rejected')}
-                              />
-                              Rechazado
-                            </label>
+                            {states.map((state) => (
+                              <label
+                                key={state.id}
+                                className="flex items-center text-sm text-gray-700 dark:text-gray-300"
+                              >
+                                <input
+                                  type="checkbox"
+                                  className="mr-2 h-4 w-4"
+                                  checked={selectedItem.includes(state.id)}
+                                  onChange={() => handleSelect(state.id)}
+                                />
+                                {state.label}
+                              </label>
+                            ))}
                           </div>
                           <div className="mt-3 flex justify-between border-t border-gray-200 pt-2 dark:border-gray-700">
                             <button
                               className="text-xs text-blue-600 dark:text-blue-400"
-                              onClick={() => handleSortChange('status')}
+                              onClick={() => handleSortChange('name')}
                             >
-                              {filters.orderby === 'status' && filters.order === 'asc' ? 'Ordenar Z-A' : 'Ordenar A-Z'}
+                              {filters.orderby === 'name' && filters.order === 'asc' ? 'Ordenar A-Z' : 'Ordenar Z-A'}
                             </button>
                             <button className="text-xs text-red-600 dark:text-red-400" onClick={handleClearFilters}>
                               Limpiar
@@ -278,78 +303,25 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
                     )}
                   </div>
                 </th>
-                <th className="px-4 py-3 text-sm font-medium">
-                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('identification')}>
-                    ID
-                    {filters.orderby === 'identification' ? (
-                      filters.order === 'asc' ? (
-                        <ChevronUp size={16} className="ml-1" />
+                {boardheaders.map((header) => (
+                  <th key={header.id} className="px-4 py-3 text-sm font-medium">
+                    <div className="flex cursor-pointer items-center" onClick={() => handleSortChange(header.id)}>
+                      {header.label}
+                      {filters.orderby === header.id ? (
+                        filters.order === 'asc' ? (
+                          <ChevronUp size={16} className="ml-1" />
+                        ) : (
+                          <ChevronDown size={16} className="ml-1" />
+                        )
                       ) : (
                         <ChevronDown size={16} className="ml-1" />
-                      )
-                    ) : (
-                      <ChevronDown size={16} className="ml-1" />
-                    )}
-                  </div>
-                </th>
-                <th className="px-4 py-3 text-sm font-medium">
-                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('name')}>
-                    Nombre
-                    {filters.orderby === 'name' ? (
-                      filters.order === 'asc' ? (
-                        <ChevronUp size={16} className="ml-1" />
-                      ) : (
-                        <ChevronDown size={16} className="ml-1" />
-                      )
-                    ) : (
-                      <ChevronDown size={16} className="ml-1" />
-                    )}
-                  </div>
-                </th>
-                <th className="px-4 py-3 text-sm font-medium">
-                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('email')}>
-                    Email
-                    {filters.orderby === 'email' ? (
-                      filters.order === 'asc' ? (
-                        <ChevronUp size={16} className="ml-1" />
-                      ) : (
-                        <ChevronDown size={16} className="ml-1" />
-                      )
-                    ) : (
-                      <ChevronDown size={16} className="ml-1" />
-                    )}
-                  </div>
-                </th>
-                <th className="px-4 py-3 text-sm font-medium">
-                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('phone')}>
-                    Teléfono
-                    {filters.orderby === 'phone' ? (
-                      filters.order === 'asc' ? (
-                        <ChevronUp size={16} className="ml-1" />
-                      ) : (
-                        <ChevronDown size={16} className="ml-1" />
-                      )
-                    ) : (
-                      <ChevronDown size={16} className="ml-1" />
-                    )}
-                  </div>
-                </th>
-                <th className="px-4 py-3 text-sm font-medium">
-                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('verification')}>
-                    Verificación
-                    {filters.orderby === 'verification' ? (
-                      filters.order === 'asc' ? (
-                        <ChevronUp size={16} className="ml-1" />
-                      ) : (
-                        <ChevronDown size={16} className="ml-1" />
-                      )
-                    ) : (
-                      <ChevronDown size={16} className="ml-1" />
-                    )}
-                  </div>
-                </th>
+                      )}
+                    </div>
+                  </th>
+                ))}
               </tr>
             </thead>
+
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {user.length > 0 ? (
                 <>
@@ -397,7 +369,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
               ) : (
                 <>
                   <tr>
-                    <td colSpan={7} className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
+                    <td colSpan={7} className="px-4 py-3 text-center text-gray-500 dark:text-gray-400">
                       No se encontraron usuarios
                     </td>
                   </tr>
@@ -475,19 +447,19 @@ function UserProfilePopover(user: User, MySwal: any, router: any) {
         <h2 className="mb-4 text-xl font-bold">
           Usuario {user.profile.firstName} {user.profile.lastName}
         </h2>
-        <div className="mb-4 flex flex-row items-stretch justify-between">
+        <div className="mb-4 flex flex-row items-stretch justify-between gap-5">
           <p>ID:</p>
           <p>{user.id}</p>
         </div>
-        <div className="mb-4 flex flex-row items-stretch justify-between">
+        <div className="mb-4 flex flex-row items-stretch justify-between gap-5">
           <p>Email:</p>
           <p>{user.profile.email}</p>
         </div>
-        <div className="mb-4 flex flex-row items-stretch justify-between">
+        <div className="mb-4 flex flex-row items-stretch justify-between gap-5">
           <p>N° documento:</p>
           <p>{user.profile.identification}</p>
         </div>
-        <div className="mb-4 flex flex-row items-stretch justify-between">
+        <div className="mb-4 flex flex-row items-stretch justify-between gap-5">
           <p>Role:</p>
           <p>{user.role}</p>
         </div>
