@@ -29,7 +29,7 @@ const BlogPostCard: React.FC<BlogPostProps> = ({ blog_id, title, description, im
           {' '}
           <Image
             src={image}
-            className="absolute left-0 top-0 h-full w-full rounded-t-[28px] object-cover p-3"
+            className="absolute left-0 top-0 h-full w-full rounded-t-[22px] object-cover p-3"
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -49,13 +49,13 @@ const BlogPostCard: React.FC<BlogPostProps> = ({ blog_id, title, description, im
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="group flex items-center gap-1 p-1 transition duration-300 group-hover:scale-105">
                 <p
-                  className={`text-sm text-[#969696] transition duration-300 ease-in-out ${isDark ? 'group-hover:text-white' : 'group-hover:text-custom-blue'} md:text-base`}
+                  className={`text-sm text-[#969696] transition duration-300 ease-in-out hover:font-bold hover:text-custom-blue hover:underline dark:hover:text-white md:text-base`}
                 >
                   Más información
                 </p>
                 <FontAwesomeIcon
                   icon={faArrowRight}
-                  className={`ease ml-2 text-[#969696] transition duration-300 ease-in-out ${isDark ? 'group-hover:text-white' : 'group-hover:text-custom-blue'} `}
+                  className={`ease ml-2 text-[#969696] transition duration-300 ease-in-out group-hover:font-bold ${isDark ? 'group-hover:text-white' : 'group-hover:text-custom-blue'} `}
                 />
               </div>
               <p className="text-sm text-[#969696] md:text-base">{date ? convertDate(date) : 'Fecha no disponible'}</p>

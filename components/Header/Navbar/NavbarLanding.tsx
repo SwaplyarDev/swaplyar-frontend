@@ -3,14 +3,10 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useDarkTheme } from '../../ui/theme-Provider/themeProvider';
-
-// import { Drawer, Sidebar, Navbar } from 'flowbite-react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdOutlineClose } from 'react-icons/md';
-
 import NavLinks from '@/components/ui/top-menu/nav-links';
 import Image from 'next/image';
-
 import LogInButton from '@/components/ui/top-menu/log-register-bt/logiInButton';
 import RegisterButton from '@/components/ui/top-menu/log-register-bt/registerButton';
 import Switch from '@/components/ui/top-menu/switch';
@@ -50,7 +46,6 @@ const NavbarLanding = () => {
 
   const { data: session, status } = useSession();
 
-  // Función para cerrar el drawer
   const closeDrawer = () => {
     setDrawerMenu(false);
   };
@@ -138,7 +133,6 @@ const NavbarLanding = () => {
               </>
             ) : (
               <>
-                {' '}
                 <LogInButton />
               </>
             )}
@@ -176,7 +170,7 @@ const NavbarLanding = () => {
               open={drawerMenu}
               onClose={closeDrawer}
               position="right"
-              className="h-full w-full max-w-full transform transition-all duration-500 ease-in-out xs-mini-phone2:w-[inherit] xs-mini-phone2:max-w-[80%]"
+              className="flex h-full w-full max-w-full transform flex-col items-center justify-between transition-all duration-500 ease-in-out xs-mini-phone2:w-[inherit] xs-mini-phone2:max-w-[80%]"
             >
               <Drawer.Header
                 title=""
@@ -302,12 +296,12 @@ const NavbarLanding = () => {
                         </button>
                       ) : (
                         <div className="flex flex-col items-center gap-3">
-                          <div className="flex flex-col md:hidden">
+                          {/* <div className="flex flex-col md:hidden">
                             <LogInButton onButtonClick={closeDrawer} />
                           </div>
                           <div className="flex h-[60px] flex-col">
                             <RegisterButton onButtonClick={closeDrawer} />
-                          </div>
+                          </div> */}
                         </div>
                       )}
                     </Sidebar.ItemGroup>
@@ -378,8 +372,9 @@ const NavbarLanding = () => {
                 </>
               ) : (
                 <>
-                  <LogInButton />
-                  <RegisterButton />
+                  {/* <LogInButton />
+                  <RegisterButton /> */}
+                  <></>
                 </>
               )}
             </section>

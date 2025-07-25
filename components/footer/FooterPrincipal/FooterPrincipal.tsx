@@ -10,13 +10,13 @@ import { SwaplyArLogoSolo } from '@/utils/assets/imgDatabaseCloudinary';
 const FooterPrincipal = () => {
   return (
     <>
-      <div className="one-info-footer hidden w-full flex-col items-center gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 lg2:flex">
+      <div className="one-info-footer hidden w-full flex-col items-center gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 md:flex">
         <Section title="Regístrate y Disfruta de Beneficios" links={footerLinks.registro} align="start" />
         <Section title="Normativa" links={footerLinks.normativa} align="center" />
         <Section title="Atención al Cliente" links={footerLinks.atencion} align="end" />
       </div>
 
-      <div className="flex flex-col gap-5 lg2:hidden">
+      <div className="flex flex-col gap-5 md:hidden">
         <AccordionSection title="Regístrate y Disfruta de Beneficios" links={footerLinks.registro} />
         <AccordionSection title="Normativa" links={footerLinks.normativa} />
         <AccordionSection title="Atención al Cliente" links={footerLinks.atencion} />

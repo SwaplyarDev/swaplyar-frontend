@@ -586,7 +586,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                 transactions.data.map((transaction: TransactionTypeAll, index: number) => (
                   <tr
                     key={transaction.transaction.transaction_id}
-                    className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                    className="cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
                     onClick={() => router.push(`/es/admin/transactions/${transaction.transaction.transaction_id}`)}
                   >
                     <td className="px-4 py-3 text-sm">{getStatusBadge(transaction.transaction.status)}</td>

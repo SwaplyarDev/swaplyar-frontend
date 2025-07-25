@@ -90,8 +90,6 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolea
         }}
       >
         <ExpandMore
-          /*className={` ${props.expanded || props.isDark ? 'text-white' : 'text-custom-blue-300'} group-hover:custom-grayD-500`}*/
-
           className={`${
             props.isDark
               ? props.expanded

@@ -13,7 +13,38 @@ const config: Config = {
     flowbite.content(),
   ],
 
-  safelist: ['text-custom-blue-800', 'custom-blue'],
+  ssafelist: [
+    'text-custom-blue-800',
+    'custom-blue',
+    // clases específicas del accordion del footer
+    'accordion-custom',
+    'accordion-summary',
+    'accordion-icon',
+    'accordion-icon-expanded',
+    'accordion-title',
+    'accordion-title-expanded',
+    'duration-600',
+    'transition-all',
+    'buttonsExtraLigth',
+    'buttonsLigth',
+    'buttonsExtraLigthDark',
+    'buttonsLigthDark',
+    'buttonExpandDark',
+    'darkText',
+    'lightText',
+    {
+      pattern: /Mui-.*/,
+    },
+    {
+      pattern: /accordion-.*/,
+    },
+    {
+      pattern: /duration-.*/,
+    },
+    {
+      pattern: /transition-.*/,
+    },
+  ],
   theme: {
     extend: {
       container: {
