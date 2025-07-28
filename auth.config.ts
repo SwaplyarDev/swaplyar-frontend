@@ -19,16 +19,12 @@ async function refreshAccessToken(refreshToken: string) {
     body: JSON.stringify({ refresh_token: refreshToken })
   });
 
-    console.log('Refreshing token...');
-    console.log('Received refreshToken:', refreshToken);
-    console.log('Sending body:', JSON.stringify({ refresh_token: refreshToken }));
     if (!res.ok) {
 
       throw new Error('No se pudo refrescar el token');
     }
 
     const data = await res.json();
-    
     return {
       accessToken: data.access_token,
       refreshToken: data.refresh_token ?? refreshToken,
