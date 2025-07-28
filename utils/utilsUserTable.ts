@@ -63,16 +63,6 @@ export const filtrarUsers = (users: User[], selectedItem: string[], filters: fil
   });
 };
 
-export const ordenarCampoString = (users: User[], order: string, orderby: string) => {
-  if (order === 'asc') users.sort((a, b) => String(a.profile[orderby]).localeCompare(String(b.profile[orderby])));
-  if (order === 'desc') users.sort((a, b) => String(b.profile[orderby]).localeCompare(String(a.profile[orderby])));
-};
-
-export const ordenarCampoNumber = (users: User[], order: string, orderby: string) => {
-  if (order === 'asc') users.sort((a, b) => Number(a.profile[orderby]) - Number(b.profile[orderby]));
-  if (order === 'desc') users.sort((a, b) => Number(b.profile[orderby]) - Number(a.profile[orderby]));
-};
-
 export const ordenarCampoDate = (users: User[], order: string, orderby: string) => {
   if (orderby === 'validatedAt' || orderby === 'createdAt') {
     if (order === 'asc')

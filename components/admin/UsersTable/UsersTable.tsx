@@ -1,9 +1,7 @@
 'use client';
 
 import type React from 'react';
-import { useState, useRef, useEffect, use } from 'react';
-import withReactContent from 'sweetalert2-react-content';
-import Swal from 'sweetalert2';
+import { useState, useRef, useEffect } from 'react';
 import { AlertCircle, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp } from 'lucide-react';
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import { useRouter } from 'next/navigation';
@@ -14,16 +12,12 @@ import {
   UsersTableProps,
   filterUsers,
   filtrarUsers,
-  ordenarCampoString,
-  ordenarCampoNumber,
   ordenarCampoDate,
-  UserProfilePopover,
   states,
   boardheaders,
-} from './utilsUserTable';
+} from '@/utils/utilsUserTable';
 
 const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages }) => {
-  const MySwal: any = withReactContent(Swal);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [user, setUser] = useState<User[]>(users);
   const { selectedItem, handleSelect, clearSelectedItems } = useSelectedStatusFilter();
@@ -41,10 +35,6 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
 
   useEffect(() => {
     const filteredList = filtrarUsers(users, selectedItem, filters);
-    if (filters.orderby === 'email') ordenarCampoString(filteredList, filters.order, 'email');
-    if (filters.orderby === 'name') ordenarCampoString(filteredList, filters.order, 'firstName');
-    if (filters.orderby === 'identification') ordenarCampoNumber(filteredList, filters.order, 'identification');
-    if (filters.orderby === 'phone') ordenarCampoNumber(filteredList, filters.order, 'phone');
     if (filters.orderby === 'verification') ordenarCampoDate(filteredList, filters.order, 'verification');
 
     setUser(filteredList);
@@ -96,11 +86,6 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
     });
     setUser(users);
     clearSelectedItems();
-  };
-
-  // Función para abrir el modal de usuario
-  const handleOpenModal = (user: User) => {
-    UserProfilePopover(user, MySwal, router);
   };
 
   // Función para obtener el badge de estado
@@ -207,75 +192,29 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
                   </div>
                 </th>
                 <th className="relative px-4 py-3 text-sm font-medium">
-                  <div className="relative flex cursor-pointer items-center" onClick={() => togglePopover('date')}>
+                  <div className="relative flex items-center" onClick={() => togglePopover('date')}>
                     Fecha Registro
-                    {filters.orderby === 'date' ? (
-                      filters.order === 'asc' ? (
-                        <ChevronUp size={16} className="ml-1" />
-                      ) : (
-                        <ChevronDown size={16} className="ml-1" />
-                      )
-                    ) : (
-                      <ChevronDown size={16} className="ml-1" />
-                    )}
-                    {activePopover === 'date' && (
-                      <div
-                        /* @ts-expect-error */
-                        ref={(el) => (popoverRefs.current['date'] = el)}
-                        className="absolute left-0 top-full z-[100] mt-1 w-64 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <div className="p-2">
-                          <div className="mb-2 font-medium text-gray-800 dark:text-gray-200">Filtrar por fecha</div>
-                          <div className="space-y-2">
-                            <div>
-                              <label className="mb-1 block text-sm text-gray-700 dark:text-gray-300">Desde:</label>
-                              <input
-                                type="date"
-                                className="w-full rounded border border-gray-300 p-1 text-sm text-black dark:border-gray-600 dark:bg-gray-700"
-                                value={filters.min_date || ''}
-                                onChange={(e) => handleDateChange('min', e.target.value)}
-                              />
-                            </div>
-                            <div>
-                              <label className="mb-1 block text-sm text-gray-700 dark:text-gray-300">Hasta:</label>
-                              <input
-                                type="date"
-                                className="w-full rounded border border-gray-300 p-1 text-sm text-black dark:border-gray-600 dark:bg-gray-700"
-                                value={filters.max_date || ''}
-                                onChange={(e) => handleDateChange('max', e.target.value)}
-                              />
-                            </div>
-                          </div>
-                          <div className="mt-3 flex justify-between border-t border-gray-200 pt-2 dark:border-gray-700">
-                            <button
-                              className="text-xs text-blue-600 dark:text-blue-400"
-                              onClick={() => handleSortChange('date')}
-                            >
-                              {filters.orderby === 'date' && filters.order === 'asc' ? 'Más recientes' : 'Más antiguos'}
-                            </button>
-                            <button className="text-xs text-red-600 dark:text-red-400" onClick={handleClearFilters}>
-                              Limpiar
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
                   </div>
                 </th>
                 {boardheaders.map((header) => (
                   <th key={header.id} className="px-4 py-3 text-sm font-medium">
-                    <div className="flex cursor-pointer items-center" onClick={() => handleSortChange(header.id)}>
+                    <div
+                      className="flex items-center"
+                      style={header.id === 'verification' ? { cursor: 'pointer' } : {}}
+                      onClick={() => header.id === 'verification' && handleSortChange(header.id)}
+                    >
                       {header.label}
-                      {filters.orderby === header.id ? (
-                        filters.order === 'asc' ? (
-                          <ChevronUp size={16} className="ml-1" />
+                      {header.id === 'verification' ? (
+                        filters.orderby === header.id ? (
+                          filters.order === 'asc' ? (
+                            <ChevronUp size={16} className="ml-1" />
+                          ) : (
+                            <ChevronDown size={16} className="ml-1" />
+                          )
                         ) : (
                           <ChevronDown size={16} className="ml-1" />
                         )
-                      ) : (
-                        <ChevronDown size={16} className="ml-1" />
-                      )}
+                      ) : null}
                     </div>
                   </th>
                 ))}
@@ -288,8 +227,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
                   {user.map((u) => (
                     <tr
                       key={u.id}
-                      onClick={() => handleOpenModal(u)}
-                      /* onClick={() => router.push(`/es/admin/users/${u.id}`)} */
+                      onClick={() => router.push(`/es/admin/users/${u.id}`)}
                       className="cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
                     >
                       <td className="px-4 py-3 text-sm">{getStatusBadge(u.isValidated)}</td>
