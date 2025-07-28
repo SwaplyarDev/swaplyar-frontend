@@ -1,4 +1,3 @@
-import type React from 'react';
 import { User } from '@/types/user';
 import { formatDate } from '@/utils/utils';
 
@@ -82,46 +81,3 @@ export const ordenarCampoDate = (users: User[], order: string, orderby: string) 
       users.sort((a, b) => new Date(formatDate(b[orderby])).getTime() - new Date(formatDate(a[orderby])).getTime());
   }
 };
-
-export function UserProfilePopover(user: User, MySwal: any, router: any) {
-  // Primero mostramos un modal vacío para la transición
-  MySwal.fire({
-    html: (
-      <div className="p-4">
-        <h2 className="mb-4 text-xl font-bold">
-          Usuario {user.profile.firstName} {user.profile.lastName}
-        </h2>
-        <div className="mb-4 flex flex-row items-stretch justify-between gap-5">
-          <p>ID:</p>
-          <p>{user.id}</p>
-        </div>
-        <div className="mb-4 flex flex-row items-stretch justify-between gap-5">
-          <p>Email:</p>
-          <p>{user.profile.email}</p>
-        </div>
-        <div className="mb-4 flex flex-row items-stretch justify-between gap-5">
-          <p>N° documento:</p>
-          <p>{user.profile.identification}</p>
-        </div>
-        <div className="mb-4 flex flex-row items-stretch justify-between gap-5">
-          <p>Role:</p>
-          <p>{user.role}</p>
-        </div>
-      </div>
-    ),
-    width: 'auto',
-    customClass: {
-      popup: 'rounded-lg shadow-xl',
-      container: '',
-    },
-    confirmButtonText: 'Ver Perfil Completo',
-    showCancelButton: true,
-    cancelButtonText: 'Cerrar',
-  }).then((result: any) => {
-    if (result.isConfirmed) {
-      router.push(`/es/admin/users/${user.id}`);
-    }
-  });
-
-  document.querySelector('.swal2-html-container')?.classList.remove('opacity-0');
-}
