@@ -23,7 +23,6 @@ async function refreshAccessToken(refreshToken: string) {
     return {
       accessToken: data.access_token,
       refreshToken: data.refresh_token ?? refreshToken, // si no cambia, se mantiene
-      expiresAt: Date.now() + 3600 * 1000, // 1 hora
     };
   } catch (err) {
     console.error("❌ Error al refrescar token:", err);
@@ -61,7 +60,7 @@ export const authConfig: NextAuthConfig = {
         if (!accessToken) {
           throw new Error('No se recibió accessToken del backend');
         }
-
+console.log("buscando refresh token" ,data)
         const rawPayload = accessToken.split('.')[1];
         const decoded = JSON.parse(Buffer.from(rawPayload, 'base64').toString());
 
@@ -69,7 +68,6 @@ export const authConfig: NextAuthConfig = {
           ...decoded,
           accessToken,
           refreshToken,
-          expiresAt: Date.now() + 3600 * 1000, // 1h
         };
       },
     }),
@@ -91,7 +89,6 @@ export const authConfig: NextAuthConfig = {
 
   callbacks: {
     async jwt({ token, user, account }) {
-      // Primer login
       if (user) {
         return {
           ...token,
@@ -102,23 +99,19 @@ export const authConfig: NextAuthConfig = {
         };
       }
 
-      // Si el token aún es válido
       if (Date.now() < (token.expiresAt as number)) {
         return token;
       }
 
-      // Token expirado, refrescar
       const refreshed = await refreshAccessToken(token.refreshToken as string);
       if (refreshed) {
         return {
           ...token,
           accessToken: refreshed.accessToken,
           refreshToken: refreshed.refreshToken,
-          expiresAt: refreshed.expiresAt,
         };
       }
 
-      // Falló el refresh, remover sesión
       return {
         ...token,
         error: 'RefreshAccessTokenError',
