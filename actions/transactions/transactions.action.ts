@@ -1,13 +1,13 @@
 'use server';
-import { TransactionArray, TransactionTypeSingle } from '@/types/transactions/transactionsType';
+import { TransactionArrayV2, TransactionTypeSingle } from '@/types/transactions/transactionsType';
 import { TransactionAdminType } from '@/types/transactions/transAdminType';
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 //General Transactions Fetchs
-export const getAllTransactions = async (page: number, token: string) => {
+export const getAllTransactions = async (page: number, token: string): Promise<TransactionArrayV2 | null> => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/admin/transactions?page=${page}&perPage=12`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v2/admin/transactions?page=${page}&perPage=12`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -15,16 +15,18 @@ export const getAllTransactions = async (page: number, token: string) => {
       cache: 'no-store',
     });
 
-    if (!response.ok) throw new Error('Failed to fetch transactions');
+    if (!response.ok) {
+      throw new Error(`Failed to fetch transactions: ${response.status} ${response.statusText}`)
+    }
 
-    const data: TransactionArray = await response.json();
-
+    const data: TransactionArrayV2 = await response.json();
     return data;
   } catch (error: any) {
     console.error('Error fetching transactions:', error);
     return null;
   }
 };
+
 
 export const getTransactionById = async (transaction_id: string, token: string) => {
   try {
