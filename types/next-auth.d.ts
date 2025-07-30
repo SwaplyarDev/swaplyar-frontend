@@ -15,14 +15,17 @@ declare module 'next-auth' {
   interface User extends DecodedUser {
     accessToken?: string;
     refreshToken?: string;
+    expiresAt?: number;
   }
   /**
    * Sesión en el cliente
    */
-  interface Session {
+   interface Session {
     user: DefaultSession['user'] & DecodedUser;
     accessToken?: string;
     refreshToken?: string;
+    expiresAt?: number;
+     error?: string;
   }
 
   /**
@@ -86,10 +89,12 @@ declare module 'next-auth/jwt' {
    * JWT interno usado por NextAuth
    */
   declare module 'next-auth/jwt' {
-    interface JWT extends DefaultJWT {
-      user?: import('next-auth').DecodedUser;
-      accessToken?: string;
-      refreshToken?: string;
-    }
+  interface JWT extends DefaultJWT {
+    user?: import('next-auth').DecodedUser;
+    accessToken?: string;
+    refreshToken?: string;
+    expiresAt?: number;
+    error?: string;
+  }
   }
 }
