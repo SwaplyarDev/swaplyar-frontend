@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Search, Plus, CreditCard, ChevronDown, ChevronUp, Clock } from 'lucide-react';
+import { TransactionByUserId } from '@/types/transactionsBackEnd2';
+import { formatDate } from '@/utils/utils';
 
-export function TransactionHistorySection() {
+export function TransactionHistorySection({ transactions }: { transactions: TransactionByUserId }) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -11,7 +13,7 @@ export function TransactionHistorySection() {
     setIsExpanded(!isExpanded);
   };
 
-  const transactionGroups = [
+  /*   const transactionGroups = [
     {
       title: 'Hoy',
       transactions: [
@@ -78,7 +80,7 @@ export function TransactionHistorySection() {
           transaction.subtitle.toLowerCase().includes(searchQuery.toLowerCase()),
       ),
     }))
-    .filter((group) => group.transactions.length > 0);
+    .filter((group) => group.transactions.length > 0); */
 
   return (
     <div className="rounded-lg border bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
@@ -115,14 +117,76 @@ export function TransactionHistorySection() {
           </div>
         </div>
         <div className="scrollable-list mb-4 max-h-[500px] divide-y overflow-y-auto rounded-lg border scrollbar dark:divide-gray-700 dark:border-gray-700">
-          {filteredTransactionGroups.length > 0 ? (
-            filteredTransactionGroups.map((group, groupIndex) => (
-              <div key={groupIndex}>
-                <div className="bg-gray-50 p-3 dark:bg-gray-700/50">
-                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{group.title}</h3>
+          {transactions.meta.totalTransactions > 0 ? (
+            transactions.data.map((transaction) => (
+              <div key={transaction.id} className="p-4 transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                <div className="flex flex-row items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <SvgTransactionType type={transaction.finalStatus === 'pending' ? 'subscription' : 'transfer'} />
+                    <div className="flex flex-col items-start gap-1">
+                      <p className="font-medium dark:text-white">{transaction.message}</p>
+                      <p className="mt-0.5 text-sm text-gray-600 dark:text-gray-400">
+                        To: {transaction.receiverAccount.firstName} {transaction.receiverAccount.lastName}
+                      </p>
+                      <p className="mt-1 text-xs text-gray-500 dark:text-gray-500">
+                        {formatDate(transaction.createdAt)}
+                      </p>
+                    </div>
+                  </div>
+                  <p className={`font-semibold`}>${transaction.amount.amountSent}</p>
                 </div>
+              </div>
+            ))
+          ) : (
+            <div className="p-4 text-center text-gray-500 dark:text-gray-400">
+              No se encontraron transacciones que coincidan con la búsqueda
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
-                {group.transactions.map((transaction) => (
+function SvgTransactionType({ type }: { type: 'deposit' | 'refund' | 'transfer' | 'subscription' }) {
+  return (
+    <div
+      className={`flex h-10 w-10 items-center justify-center rounded-full ${
+        type === 'deposit' || type === 'refund'
+          ? 'bg-green-50 dark:bg-green-900/50'
+          : type === 'transfer'
+            ? 'bg-purple-50 dark:bg-purple-900/50'
+            : type === 'subscription'
+              ? 'bg-amber-50 dark:bg-amber-900/50'
+              : 'bg-blue-50 dark:bg-blue-900/50'
+      }`}
+    >
+      {type === 'subscription' ? (
+        <Clock className={`h-5 w-5 text-amber-600 dark:text-amber-400`} />
+      ) : (
+        <CreditCard
+          className={`h-5 w-5 ${
+            type === 'deposit' || type === 'refund'
+              ? 'text-green-600 dark:text-green-400'
+              : type === 'transfer'
+                ? 'text-purple-600 dark:text-purple-400'
+                : 'text-blue-600 dark:text-blue-400'
+          }`}
+        />
+      )}
+    </div>
+  );
+}
+
+//codigo anterior celdas
+
+{
+  /*                 <div className="bg-gray-50 p-3 dark:bg-gray-700/50">
+                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{group.title}</h3>
+                </div> */
+}
+{
+  /*                 {group.transactions.map((transaction) => (
                   <div
                     key={transaction.id}
                     className="p-4 transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50"
@@ -171,16 +235,5 @@ export function TransactionHistorySection() {
                       </p>
                     </div>
                   </div>
-                ))}
-              </div>
-            ))
-          ) : (
-            <div className="p-4 text-center text-gray-500 dark:text-gray-400">
-              No se encontraron transacciones que coincidan con la búsqueda
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+                ))} */
 }
