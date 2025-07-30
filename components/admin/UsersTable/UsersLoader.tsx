@@ -1,47 +1,52 @@
-import { getAllTransactions } from '@/actions/transactions/transactions.action';
-import TransactionsTable from '@/components/admin/TransactionsTable/TransactionsTable/TransactionsTable';
 import UsersTable from './UsersTable';
+import auth from '@/auth';
+
+const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 interface UsersLoaderProps {
   currentPage: number;
 }
 
 const UsersLoader: React.FC<UsersLoaderProps> = async ({ currentPage }) => {
-  /* await new Promise((resolve) => setTimeout(resolve, 1000));
-    const data = await getAllTransactions(currentPage);
-  
-    if (!data) {
-      throw new Promise(() => {});
-    } */
+  const users = await getUsers(currentPage, 10);
+  const paginated = usersPagination(users, 10, currentPage);
 
-  const data = [
-    {
-      id: 1,
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      phone: '+1234567890',
-      status: 'active',
-      date_subscription: '2021-01-01',
-      date_verification: '2021-01-01',
-      code: '1234567890',
-      createdAt: '2021-01-01',
-      updatedAt: '2021-01-01',
-    },
-    {
-      id: 2,
-      name: 'Jane Doe',
-      email: 'jane.doe@example.com',
-      phone: '+1234567890',
-      status: 'active',
-      date_subscription: '2021-01-01',
-      date_verification: '2021-01-01',
-      code: '1234567890',
-      createdAt: '2021-01-01',
-      updatedAt: '2021-01-01',
-    },
-  ];
-
-  return <UsersTable users={data} currentPage={currentPage} />;
+  return <UsersTable users={paginated.users} currentPage={currentPage} totalPages={paginated.totalPages} />;
 };
 
 export default UsersLoader;
+
+async function getUsers(page: Number, perPage: number) {
+  try {
+    const session = await auth();
+    const token = session?.accessToken;
+
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v2/users?page=${page}&perPage=${perPage}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      cache: 'no-store',
+    });
+    if (!response.ok) {
+      throw new Error('Error fetching user');
+    }
+    const user = await response.json();
+    return user;
+  } catch (e) {
+    console.error('Error fetching user:', e);
+  }
+}
+
+const usersPagination = (users: any[], usersPerPage: number, page: number) => {
+  const totalUsers = users.length;
+  const totalPages = Math.ceil(totalUsers / usersPerPage);
+  const i = (page - 1) * usersPerPage;
+  const paginatedUsers = users.slice(i, i + usersPerPage);
+
+  return {
+    users: paginatedUsers,
+    totalUsers,
+    totalPages,
+  };
+};

@@ -1,4 +1,4 @@
-export function UserDetailsSection({ code }: { code: string }) {
+export function UserDetailsSection({ code, createdAt }: { code: string; createdAt: string }) {
   return (
     <div className="rounded-lg border bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
       <div className="mb-4 flex items-center justify-between">
@@ -10,7 +10,7 @@ export function UserDetailsSection({ code }: { code: string }) {
           <div className="h-6 w-6 rounded-full bg-yellow-400"></div>
           <span className="text-lg font-bold">{code}</span>
         </div>
-        <span className="text-sm">{new Date().toLocaleDateString()}</span>
+        <span className="text-sm">{new Date(createdAt).toLocaleDateString()}</span>
       </div>
     </div>
   );
