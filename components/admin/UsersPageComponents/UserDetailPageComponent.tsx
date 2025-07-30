@@ -10,10 +10,16 @@ import { WalletsSection } from './WalletsSection';
 import { UserRewardsSection } from './UserRewardSection';
 import auth from '@/auth';
 import { User } from '@/types/user';
+import {
+  getReceiveTransaction,
+  getSendTransaction,
+  getTransactionByUserId,
+} from '@/actions/transactions/admin-transaction';
 
 export async function UserDetailPageComponent({ userId }: { userId: string }) {
   const user = await getUserById(userId);
   if (!user) return <UserNotFound userId={userId} />;
+  const transactions = await getTransactionByUserId(user.id);
 
   return (
     <div className="min-h-screen">
@@ -29,7 +35,7 @@ export async function UserDetailPageComponent({ userId }: { userId: string }) {
           </div>
 
           <div className="space-y-6">
-            <TransactionHistorySection />
+            <TransactionHistorySection transactions={transactions} />
             <WalletsSection />
             <UserRewardsSection user={user} />
           </div>
