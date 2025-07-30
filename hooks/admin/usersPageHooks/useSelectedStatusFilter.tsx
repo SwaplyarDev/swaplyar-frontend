@@ -1,10 +1,11 @@
 'use client';
 
+import { VerificationStatus } from '@/types/verifiedUsers';
 import { createContext, useContext, useCallback, useState, ReactNode } from 'react';
 
 interface SelectedStatusFilterContextType {
-  selectedItem: string[];
-  handleSelect: (itemId: string | null) => void;
+  selectedItem: VerificationStatus[];
+  handleSelect: (itemId: VerificationStatus) => void;
   clearSelectedItems: () => void;
 }
 
@@ -15,11 +16,11 @@ interface SelectedStatusFilterProviderProps {
 const SelectedStatusFilterContext = createContext<SelectedStatusFilterContextType | undefined>(undefined);
 
 export function SelectedStatusFilterProvider({ children }: SelectedStatusFilterProviderProps) {
-  const [selectedItem, setSelectedItem] = useState<string[]>([]);
+  const [selectedItem, setSelectedItem] = useState<VerificationStatus[]>([]);
 
   // Manejador para seleccionar un elemento
   const handleSelect = useCallback(
-    (itemId: string | null) => {
+    (itemId: VerificationStatus) => {
       if (itemId) {
         const newStatusFilters = selectedItem.includes(itemId)
           ? selectedItem.filter((id) => id !== itemId)
