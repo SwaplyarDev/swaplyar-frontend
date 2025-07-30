@@ -49,7 +49,7 @@ async function getUserById(id: string): Promise<User | undefined> {
   try {
     const session = await auth();
     const token = session?.accessToken;
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v2/users/${id}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
