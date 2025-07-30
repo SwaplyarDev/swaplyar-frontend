@@ -3,7 +3,7 @@ import { BlogPostCardProps } from '@/types/blogs/blog';
 
 export async function fetchBlogBySlug(slug: string): Promise<BlogPostCardProps | null> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/blogs/${slug}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BLOG_BACKEND_URL}/v1/blogs/${slug}`, {
       method: 'GET',
       cache: 'no-store',
     });
