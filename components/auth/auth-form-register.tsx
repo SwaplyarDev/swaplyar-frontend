@@ -59,9 +59,10 @@ export const RegisterForm = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          full_name: name,
+          firstName: firstName,
+          lastName: lastName,
           email: email,
-          terms: termsConditions,
+          termsAccepted: termsConditions,
           role: 'user',
         }),
       });
@@ -75,7 +76,7 @@ export const RegisterForm = () => {
       setEmail(email);
       setTimeout(() => {
         setLoading(false);
-        router.push('/es/iniciar-sesion-o-registro/email-verification');
+        router.push('/es/iniciar-sesion-o-registro/verificacion-email');
       }, 3000);
     } catch (error) {
       setLoading(false);
