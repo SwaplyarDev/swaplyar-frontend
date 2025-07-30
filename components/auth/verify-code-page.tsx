@@ -47,7 +47,10 @@ export const VerifyCodePage = () => {
   const [timer, setTimer] = useState(0);
 
   useEffect(() => {
-    if (email === '') {
+    const storedEmail = localStorage.getItem('verificationEmail');
+    if (!email && storedEmail) {
+      useEmailVerificationStore.getState().setEmail(storedEmail);
+    } else if (!email && !storedEmail) {
       router.push('/es/iniciar-sesion-o-registro');
     }
 
