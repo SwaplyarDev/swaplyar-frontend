@@ -138,17 +138,8 @@ export function UserDocumentSection({ user }: { user: DetailedVerificationItem }
           )}
         </div>
 
-        {/* <div className="mt-4 flex justify-center">
-        <button
-          className="rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
-          onClick={() => setIsModalOpen(true)}
-        >
-          Verificar documentación
-        </button>
-      </div> */}
-
         {isModalOpen && <VerificationModal onClose={() => setIsModalOpen(false)} />}
-        {/* {isVerified ? (
+        {isVerified ? (
           <>
             <UserAdditionalInfo user={user} />
           </>
@@ -160,7 +151,7 @@ export function UserDocumentSection({ user }: { user: DetailedVerificationItem }
               onCancel={() => console.log('Operación cancelada')}
             />
           </>
-        )} */}
+        )}  
       </div>
     </div>
   );

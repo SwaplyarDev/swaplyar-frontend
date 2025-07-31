@@ -9,20 +9,20 @@ import { Label } from '@/components/ui/Label';
 import { Alert, AlertDescription } from '@/components/ui/Alert';
 import { cn } from '@/lib/utils';
 import { User as UserType } from '@/types/user';
+import { DetailedVerificationItem } from '@/types/verifiedUsers';
 
 interface UserVerificationFormProps {
-  user?: Partial<UserType>;
+  user?: DetailedVerificationItem;
   onSave?: (userData: Partial<UserType>) => void;
   onCancel?: () => void;
 }
 
 export function UserVerificationForm({ user, onSave, onCancel }: UserVerificationFormProps) {
   const [formData, setFormData] = useState({
-    name: user?.profile?.firstName || '',
-    lastName: user?.profile?.lastName || '',
-    nationality: user?.profile?.nationality || '',
-    document_number: user?.profile?.identification || '',
-    birth_date: user?.profile?.birthday || '',
+    firstName: user?.user.firstName || '',
+    lastName: user?.user.lastName || '',
+    identification: user?.user?.identification || '',
+    birthday: user?.user?.birthday || '',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -33,11 +33,10 @@ export function UserVerificationForm({ user, onSave, onCancel }: UserVerificatio
   useEffect(() => {
     if (user) {
       setFormData({
-        name: user?.profile?.firstName || '',
-        lastName: user?.profile?.lastName || '',
-        nationality: user?.profile?.nationality || '',
-        document_number: user?.profile?.identification || '',
-        birth_date: user?.profile?.birthday || '',
+        firstName: user?.user?.firstName || '',
+        lastName: user?.user?.lastName || '',
+        identification: user?.user?.identification || '',
+        birthday: user?.user?.birthday || '',
       });
     }
   }, [user]);
@@ -123,7 +122,7 @@ export function UserVerificationForm({ user, onSave, onCancel }: UserVerificatio
   // Configuración de los campos del formulario
   const formFields = [
     {
-      id: 'name',
+      id: 'firstName',
       label: 'Nombre',
       placeholder: 'Ingrese el nombre',
       icon: <User className="h-4 w-4 text-gray-500 dark:text-gray-400" />,
@@ -134,20 +133,14 @@ export function UserVerificationForm({ user, onSave, onCancel }: UserVerificatio
       placeholder: 'Ingrese el apellido',
       icon: <User className="h-4 w-4 text-gray-500 dark:text-gray-400" />,
     },
-    /*     {
-      id: 'nationality',  // Comentado porque no está en el modelo actual
-      label: 'Nacionalidad',
-      placeholder: 'Ingrese la nacionalidad',
-      icon: <Flag className="h-4 w-4 text-gray-500 dark:text-gray-400" />,
-    }, */
     {
-      id: 'document_number',
+      id: 'identification',
       label: 'N° de Documento',
       placeholder: 'Ingrese el número de documento',
       icon: <CreditCard className="h-4 w-4 text-gray-500 dark:text-gray-400" />,
     },
     {
-      id: 'birth_date',
+      id: 'birthday',
       label: 'Fecha de Nacimiento',
       placeholder: 'YYYY-MM-DD',
       icon: <Calendar className="h-4 w-4 text-gray-500 dark:text-gray-400" />,
