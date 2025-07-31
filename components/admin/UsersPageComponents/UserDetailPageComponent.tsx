@@ -11,10 +11,12 @@ import { UserRewardsSection } from './UserRewardSection';
 import auth from '@/auth';
 import { User } from '@/types/user';
 import { SingleVerificationResponse, VerifiedUsersResponse } from '@/types/verifiedUsers';
+import { getTransactionByUserId } from '@/actions/transactions/admin-transaction';
 
 export async function UserDetailPageComponent({ verificationId }: { verificationId: string }) {
   const verification = await getVerificationById(verificationId);
   if (!verification?.success) return <UserNotFound verificationId={verificationId} />;
+  const transactions = await getTransactionByUserId(verification?.data.users_id);
 
   return (
     <div className="min-h-screen">
