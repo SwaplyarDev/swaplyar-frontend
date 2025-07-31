@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
-export function UserNotesSection() {
-  const [note, setNote] = useState('');
+export function UserNotesSection({note_rejection}: { note_rejection: string | null }) {
+  const [note, setNote] = useState(note_rejection || '');
   const [isExpanded, setIsExpanded] = useState(true);
 
   const toggleExpand = () => {

@@ -28,7 +28,7 @@ export async function UserDetailPageComponent({ verificationId }: { verification
             <UserDetailsSection code={verification.data.users_id} createdAt={verification.data.created_at} />
             <UserInfo user={verification.data} />
             <UserDocumentSection user={verification.data} />
-            <UserNotesSection />
+            <UserNotesSection note_rejection={verification.data.note_rejection} />
           </div>
 
           <div className="space-y-6">
