@@ -10,34 +10,29 @@ import { WalletsSection } from './WalletsSection';
 import { UserRewardsSection } from './UserRewardSection';
 import auth from '@/auth';
 import { User } from '@/types/user';
-import {
-  getReceiveTransaction,
-  getSendTransaction,
-  getTransactionByUserId,
-} from '@/actions/transactions/admin-transaction';
+import { SingleVerificationResponse, VerifiedUsersResponse } from '@/types/verifiedUsers';
 
-export async function UserDetailPageComponent({ userId }: { userId: string }) {
-  const user = await getUserById(userId);
-  if (!user) return <UserNotFound userId={userId} />;
-  const transactions = await getTransactionByUserId(user.id);
+export async function UserDetailPageComponent({ verificationId }: { verificationId: string }) {
+  const verification = await getVerificationById(verificationId);
+  if (!verification?.success) return <UserNotFound verificationId={verificationId} />;
 
   return (
     <div className="min-h-screen">
       <div className="">
-        <UserHeader userId={user.id} />
+        <UserHeader userId={verification.data.users_id} />
 
         <div className="grid grid-cols-1 gap-6 pt-6 md:grid-cols-2">
           <div className="space-y-6">
-            <UserDetailsSection code={user.id} createdAt={user.createdAt} />
-            <UserInfo user={user} />
-            <UserDocumentSection user={user} />
+            <UserDetailsSection code={verification.data.users_id} createdAt={verification.data.created_at} />
+            <UserInfo user={verification.data} />
+            <UserDocumentSection user={verification.data} />
             <UserNotesSection />
           </div>
 
           <div className="space-y-6">
             <TransactionHistorySection transactions={transactions} />
             <WalletsSection />
-            <UserRewardsSection user={user} />
+            {/* <UserRewardsSection user={user} /> */}
           </div>
         </div>
       </div>
@@ -45,11 +40,11 @@ export async function UserDetailPageComponent({ userId }: { userId: string }) {
   );
 }
 
-async function getUserById(id: string): Promise<User | undefined> {
+async function getVerificationById(id: string): Promise<SingleVerificationResponse | undefined> {
   try {
     const session = await auth();
     const token = session?.accessToken;
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v2/users/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v2/verification/admin/${id}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,

@@ -1,8 +1,9 @@
 import { User } from '@/types/user';
+import { VerificationItem, VerificationStatus } from '@/types/verifiedUsers';
 import { formatDate } from '@/utils/utils';
 
 export interface UsersTableProps {
-  users: User[];
+  users: VerificationItem[];
   currentPage: number;
   totalPages: number;
 }
@@ -13,19 +14,27 @@ export interface filterUsers {
   order: string;
   search: string;
 }
+interface IStates {
+  id: VerificationStatus;
+  label: string;
+}
 
-export const states = [
+export const states: IStates[] = [
   {
     id: 'verified',
     label: 'Verificado',
   },
   {
-    id: 'inprogress',
+    id: 'pending',
     label: 'En Progreso',
   },
   {
     id: 'rejected',
     label: 'Rechazado',
+  },
+  {
+    id: 'resend-data',
+    label: 'Reenviar Datos',
   },
 ];
 
@@ -52,22 +61,23 @@ export const boardheaders = [
   },
 ];
 
-export const filtrarUsers = (users: User[], selectedItem: string[], filters: filterUsers): User[] => {
+export const filtrarUsers = (users: VerificationItem[], selectedItem: string[], filters: filterUsers): VerificationItem[] => {
   return users.filter((user) => {
     const matchesStatus =
-      selectedItem.length === 0 || selectedItem.includes(user.isValidated ? 'verified' : 'rejected');
-    const matchesMinDate = !filters.min_date || new Date(user.createdAt) >= new Date(filters.min_date);
-    const matchesMaxDate = !filters.max_date || new Date(user.createdAt) <= new Date(filters.max_date);
+      selectedItem.length === 0 || selectedItem.includes(user.verification_status);
+    const matchesMinDate = !filters.min_date || new Date(user.created_at) >= new Date(filters.min_date);
+    const matchesMaxDate = !filters.max_date || new Date(user.created_at) <= new Date(filters.max_date);
 
     return matchesStatus && matchesMinDate && matchesMaxDate;
   });
 };
 
-export const ordenarCampoDate = (users: User[], order: string, orderby: string) => {
-  if (orderby === 'validatedAt' || orderby === 'createdAt') {
+export const ordenarCampoDate = (users: VerificationItem[], order: string, orderby: string) => {
+  if (orderby === 'created_at' || orderby === 'verified_at') {
     if (order === 'asc')
-      users.sort((a, b) => new Date(formatDate(a[orderby])).getTime() - new Date(formatDate(b[orderby])).getTime());
+      users.sort((a, b) => new Date(formatDate(a[orderby] || "")).getTime() - new Date(formatDate(b[orderby] || "")).getTime());
     if (order === 'desc')
-      users.sort((a, b) => new Date(formatDate(b[orderby])).getTime() - new Date(formatDate(a[orderby])).getTime());
+      users.sort((a, b) => new Date(formatDate(b[orderby] || "")).getTime() - new Date(formatDate(a[orderby] || "")).getTime());
   }
 };
+

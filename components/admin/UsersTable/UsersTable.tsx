@@ -16,10 +16,11 @@ import {
   states,
   boardheaders,
 } from '@/utils/utilsUserTable';
+import { VerificationItem, VerificationStatus } from '@/types/verifiedUsers';
 
 const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [user, setUser] = useState<User[]>(users);
+  const [user, setUser] = useState<VerificationItem[]>(users);
   const { selectedItem, handleSelect, clearSelectedItems } = useSelectedStatusFilter();
   const [filters, setFilters] = useState<filterUsers>({
     min_date: null,
@@ -89,27 +90,27 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
   };
 
   // Función para obtener el badge de estado
-  const getStatusBadge = (status: boolean | null) => {
+  const getStatusBadge = (status: VerificationStatus) => {
     const statusConfig = {
-      verified: {
+      'verified': {
         bgColor: 'bg-green-100 dark:bg-green-900/30',
         textColor: 'text-green-800 dark:text-green-300',
         icon: <CheckCircle size={14} className="mr-1" />,
         label: 'Verificado',
       },
-      inprogress: {
+      'pending': {
         bgColor: 'bg-yellow-100 dark:bg-yellow-900/30',
         textColor: 'text-yellow-800 dark:text-yellow-300',
         icon: <Clock size={14} className="mr-1" />,
         label: 'En Progreso',
       },
-      rejected: {
+      'rejected': {
         bgColor: 'bg-red-100 dark:bg-red-900/30',
         textColor: 'text-red-800 dark:text-red-300',
         icon: <XCircle size={14} className="mr-1" />,
         label: 'Rechazado',
       },
-      default: {
+      'resend-data': {
         bgColor: 'bg-gray-100 dark:bg-gray-800',
         textColor: 'text-gray-800 dark:text-gray-300',
         icon: <AlertCircle size={14} className="mr-1" />,
@@ -117,8 +118,8 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
       },
     };
 
-    //const config = statusConfig[status?.toLowerCase() as keyof typeof statusConfig] || statusConfig.default;
-    const config = statusConfig[status === null ? 'default' : status ? 'verified' : 'rejected'];
+    const config = statusConfig[status?.toLowerCase() as keyof typeof statusConfig] || statusConfig['resend-data'];
+    //const config = statusConfig[status === null ? 'default' : status ? 'verified' : 'rejected'];
 
     return (
       <span
@@ -226,24 +227,24 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
                 <>
                   {user.map((u) => (
                     <tr
-                      key={u.id}
-                      onClick={() => router.push(`/es/admin/users/${u.id}`)}
+                      key={u.verification_id}
+                      onClick={() => router.push(`/es/admin/users/${u.verification_id}`)}
                       className="cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
                     >
-                      <td className="px-4 py-3 text-sm">{getStatusBadge(u.isValidated)}</td>
+                      <td className="px-4 py-3 text-sm">{getStatusBadge(u.verification_status)}</td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                        {u.createdAt ? formatDate(u.createdAt) : 'No disponible'}
+                        {u.created_at ? formatDate(u.created_at) : 'No disponible'}
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                        {u.profile?.identification}
+                        {u.users_id}
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                        {u.profile?.firstName} {u.profile?.lastName}
+                        {u.user.firstName}
                       </td>
-                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{u.profile?.email}</td>
-                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{u.profile?.phone}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{u.user.email}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{u.user.phone || "No disponible"}</td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                        {u.validatedAt ? formatDate(u.validatedAt) : 'No verificado'}
+                        {u.verification_status === 'verified' ? (u.verified_at ? formatDate(u.verified_at) : "Fecha sin especificar") : 'No verificado'}
                       </td>
                     </tr>
                   ))}
