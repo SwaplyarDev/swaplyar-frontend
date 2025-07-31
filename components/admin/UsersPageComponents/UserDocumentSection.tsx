@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Image from 'next/image';
 import { FileText, User, ChevronDown, ChevronUp } from 'lucide-react';
 import { VerificationModal } from './VerficationModal';
 import { UserAdditionalInfo } from './UserAdditionalInfo';
@@ -21,13 +22,13 @@ interface VerifyForm {
 export function UserDocumentSection({ user }: { user: DetailedVerificationItem }) {
   const [activeTab, setActiveTab] = useState('frente');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
+  const [isVerified, setIsVerified] = useState(user.verification_status === 'verified');
   const [isExpanded, setIsExpanded] = useState(true);
   const [verifyForm, setVerifyForm] = useState({
-    document_front: '',
-    document_back: '',
-    selfie_image: '',
-    note_rejection: '',
+    document_front: user.document_front || '',
+    document_back: user.document_back || '',
+    selfie_image: user.selfie_image || '',
+    note_rejection: user.note_rejection || '',
   });
 
   const handleTabChange = (tab: string) => {
@@ -105,21 +106,33 @@ export function UserDocumentSection({ user }: { user: DetailedVerificationItem }
           {activeTab === 'frente' && (
             <div className="relative h-48 w-full max-w-xs overflow-hidden rounded-lg border bg-gray-100 transition-all duration-300 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-700/80">
               <div className="absolute inset-0 flex items-center justify-center">
-                <FileText className="h-12 w-12 text-gray-400 dark:text-gray-500" />
+                {user.document_front ? (
+                  <Image src={user.document_front} alt="Document Front" layout="fill" objectFit="cover" />
+                ) : (
+                  <FileText className="h-12 w-12 text-gray-400 dark:text-gray-500" />
+                )}
               </div>
             </div>
           )}
           {activeTab === 'dorso' && (
             <div className="relative h-48 w-full max-w-xs overflow-hidden rounded-lg border bg-gray-100 transition-all duration-300 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-700/80">
               <div className="absolute inset-0 flex items-center justify-center">
-                <FileText className="h-12 w-12 text-gray-400 dark:text-gray-500" />
+                {user.document_back ? (
+                  <Image src={user.document_back} alt="Document Back" layout="fill" objectFit="cover" />
+                ) : (
+                  <FileText className="h-12 w-12 text-gray-400 dark:text-gray-500" />
+                )}
               </div>
             </div>
           )}
           {activeTab === 'foto' && (
             <div className="relative h-48 w-full max-w-xs overflow-hidden rounded-lg border bg-gray-100 transition-all duration-300 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-700/80">
               <div className="absolute inset-0 flex items-center justify-center">
-                <User className="h-12 w-12 text-gray-400 dark:text-gray-500" />
+                {user.selfie_image ? (
+                  <Image src={user.selfie_image} alt="Selfie" layout="fill" objectFit="cover" />
+                ) : (
+                  <User className="h-12 w-12 text-gray-400 dark:text-gray-500" />
+                )}
               </div>
             </div>
           )}
