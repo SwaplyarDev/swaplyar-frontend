@@ -228,7 +228,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
                   {user.map((u) => (
                     <tr
                       key={u.verification_id}
-                      onClick={() => router.push(`/es/admin/users/${u.users_id}`)}
+                      onClick={() => router.push(`/es/admin/users/${u.verification_id}`)}
                       className="cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
                     >
                       <td className="px-4 py-3 text-sm">{getStatusBadge(u.verification_status)}</td>
