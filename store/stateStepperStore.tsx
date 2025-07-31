@@ -219,7 +219,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
 
     console.log(' payload: ', formDataPayload);
     try {
-      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactions`, {
+      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/transactions`, {
         method: 'POST',
         body: formDataPayload,
       });
@@ -247,7 +247,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     };
 
     try {
-      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/canceled_transactions`, {
+      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/canceled_transactions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -277,7 +277,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     };
 
     try {
-      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/canceled_transactions/${id}`, {
+      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/canceled_transactions/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

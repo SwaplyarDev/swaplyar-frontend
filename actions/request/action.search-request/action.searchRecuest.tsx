@@ -8,7 +8,7 @@
  * - **Comportamiento**:
  *   1. Construye la URL de la API utilizando `NEXT_PUBLIC_BACKEND_URL` del entorno.
  *   2. Agrega los parámetros de consulta `transaction_id` y `last_name`.
- *   3. Realiza una solicitud `GET` al endpoint `/v1/transactionStatus`.
+ *   3. Realiza una solicitud `GET` al endpoint `/transactionStatus`.
  *   4. Procesa la respuesta:
  *      - Si la respuesta es exitosa (`response.ok`):
  *        - Devuelve el estado de la transacción (`data.status`) y un mensaje de éxito.
@@ -27,7 +27,7 @@ interface TransactionStatusError {
 
 export const searchRequest = async (transactionId: string, lastName: string) => {
   try {
-    const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus`);
+    const url = new URL(`${process.env.NEXT_PUBLIC_BACKEND_URL}/transactionStatus`);
     url.searchParams.append('transaction_id', transactionId);
     url.searchParams.append('last_name', lastName);
     console.log('url', url.toString());

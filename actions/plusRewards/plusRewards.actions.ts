@@ -4,7 +4,7 @@ const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export async function plusRewardsActions(formData: FormData, token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/verification/upload`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/upload`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -25,7 +25,7 @@ export async function plusRewardsActions(formData: FormData, token: string) {
 
 export async function plusRewardsActionsPut(formData: FormData, token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/verification/upload`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/upload`, {
       method: 'put',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -46,7 +46,7 @@ export async function plusRewardsActionsPut(formData: FormData, token: string) {
 
 export async function getPlusRewards(token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/verification/verification-status`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/verification-status`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -70,7 +70,7 @@ export async function getPlusRewards(token: string) {
 
 export async function getCardStatus(token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/verification/user-validation`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/user-validation`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -95,7 +95,7 @@ export async function getCardStatus(token: string) {
 
 export async function updateVerificationStatus(token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/verification/verification-status`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/verification-status`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ export async function updateVerificationStatus(token: string) {
 
 export async function resendVerificationAfterRejection(token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/verification/verification-status`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/verification-status`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

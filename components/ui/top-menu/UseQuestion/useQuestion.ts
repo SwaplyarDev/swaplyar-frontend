@@ -10,7 +10,7 @@ const useQuestion = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        let url = `${BASE_URL}/v1/questions?page=${currentPage}`;
+        let url = `${BASE_URL}/questions?page=${currentPage}`;
         const response = await fetch(url);
         if (!response.ok) throw new Error('No funcionó');
         const data = await response.json();

@@ -11,7 +11,7 @@ const useBlogs = (currentPage: number, searchTerm: string) => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        let url = `${NEXT_PUBLIC_BLOG_BACKEND_URL}/v1/blogs?page=${currentPage}`;
+        let url = `${NEXT_PUBLIC_BLOG_BACKEND_URL}/blogs?page=${currentPage}`;
 
         if (searchTerm) {
           url += `&search=${encodeURIComponent(searchTerm)}`;
