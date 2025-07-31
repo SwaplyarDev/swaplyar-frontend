@@ -47,7 +47,10 @@ export const VerifyCodePage = () => {
   const [timer, setTimer] = useState(0);
 
   useEffect(() => {
-    if (email === '') {
+    const storedEmail = localStorage.getItem('verificationEmail');
+    if (!email && storedEmail) {
+      useEmailVerificationStore.getState().setEmail(storedEmail);
+    } else if (!email && !storedEmail) {
       router.push('/es/iniciar-sesion-o-registro');
     }
 
@@ -84,12 +87,24 @@ export const VerifyCodePage = () => {
       return;
     }
 
+    const emailToUse = userVerification?.email || email || localStorage.getItem('verificationEmail');
+
+    if (!emailToUse) {
+      setError('verificationCode', {
+        type: 'manual',
+        message: 'Falta el correo electrónico. No se puede verificar el código.',
+      });
+      setLoading(false);
+      return;
+    }
+
     try {
       let result: { ok: boolean; message?: any } = { ok: false };
+
       if (view === 'login') {
-        result = await login(email || '', code);
+        result = await login(emailToUse, code);
       } else if (view === 'register') {
-        result = await registerUser(userVerification?.email || '', code);
+        result = await registerUser(emailToUse, code);
       }
 
       if (!result.ok) {
@@ -97,8 +112,9 @@ export const VerifyCodePage = () => {
           type: 'manual',
           message: 'El código ingresado es incorrecto.',
         });
-        clearVerificationInputs(); // Limpiar campos si es incorrecto
+        clearVerificationInputs();
       } else {
+        localStorage.removeItem('verificationEmail');
         window.location.href = '/es/auth/solicitud';
       }
     } catch (error) {

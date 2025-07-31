@@ -74,6 +74,8 @@ export const RegisterForm = () => {
       setUserVerification(responseData);
       setLoading(false);
       setEmail(email);
+      localStorage.setItem('verificationEmail', email); // 🆕 Guardar en localStorage
+
       setTimeout(() => {
         setLoading(false);
         router.push('/es/iniciar-sesion-o-registro/verificacion-email');
