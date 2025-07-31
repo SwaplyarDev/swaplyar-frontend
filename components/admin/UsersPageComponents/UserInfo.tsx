@@ -39,12 +39,12 @@ export function UserInfo({ user }: { user: DetailedVerificationItem }) {
           </div>
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Nombre</p>
-            <p className="font-medium dark:text-gray-200">{user.user.name}</p>
+            <p className="font-medium dark:text-gray-200">{user.user.firstName}</p>
           </div>
-{/*           <div>
+           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Apellido</p>
-            <p className="font-medium dark:text-gray-200">{user.profile.lastName}</p>
-          </div> */}
+            <p className="font-medium dark:text-gray-200">{user.user.lastName}</p>
+          </div>
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Correo Electrónico</p>
             <p className="font-medium dark:text-gray-200">{user.user.email}</p>

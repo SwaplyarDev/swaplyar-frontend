@@ -40,32 +40,28 @@ export function UserAdditionalInfo({ user }: { user: DetailedVerificationItem })
           </div>
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Nombre</p>
-            <p className="font-medium dark:text-gray-200">{user.user.name}</p>
+            <p className="font-medium dark:text-gray-200">{user.user.firstName}</p>
           </div>
-{/*           <div>
+           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Apellido</p>
             <p className="font-medium dark:text-gray-200">{user.user.lastName}</p>
-          </div> */}
+          </div> 
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Correo Electrónico</p>
             <p className="font-medium dark:text-gray-200">{user.user.email}</p>
           </div>
-{/*           <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Nacionalidad</p>
-            <p className="font-medium dark:text-gray-200">{user.profile.nationality || 'No especificado'}</p>
-          </div> */}
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">N° de Documento</p>
             <p className="font-medium dark:text-gray-200">{user.users_id}</p>
           </div>
-{/*           <div>
+           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Fecha de Nacimiento</p>
-            <p className="font-medium dark:text-gray-200">{user.profile.birthday}</p>
-          </div> */}
-{/*           <div>
+            <p className="font-medium dark:text-gray-200">{user.user.birthday}</p>
+          </div> 
+          <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">N° de Whatsapp</p>
-            <p className="font-medium dark:text-gray-200">{user.profile.phone}</p>
-          </div> */}
+            <p className="font-medium dark:text-gray-200">{user.user.phone}</p>
+          </div>
         </div>
       </div>
     </div>
