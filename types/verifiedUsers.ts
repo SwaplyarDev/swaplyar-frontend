@@ -25,3 +25,34 @@ export interface VerifiedUsersResponse {
   count: number;
   data: VerificationItem[];
 }
+
+export interface VerificationUserInfo {
+  name: string;
+  email: string;
+  //firstName: string;
+  //lastName?: string;
+  //phone?: string;
+  //identification?: string;
+  //birthday?: string;
+}
+
+export interface DetailedVerificationItem {
+  verification_id: string;
+  users_id: string;
+  document_front: string;
+  document_back: string;
+  selfie_image: string;
+  verification_status: VerificationStatus;
+  note_rejection: string | null;
+  verified_at: string;
+  created_at: string;
+  updated_at: string;
+  user: VerificationUserInfo;
+}
+
+// Interfaz para la respuesta de verificación individual
+export interface SingleVerificationResponse {
+  success: boolean;
+  message: string;
+  data: DetailedVerificationItem;
+}
