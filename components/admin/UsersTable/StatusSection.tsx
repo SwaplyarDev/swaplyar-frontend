@@ -2,10 +2,11 @@
 
 import type React from 'react';
 import { useSelectedStatusFilter } from '@/hooks/admin/usersPageHooks/useSelectedStatusFilter';
+import { VerificationStatus } from '@/types/verifiedUsers';
 
 // Definir tipos para los estados
 interface StatusItem {
-  id: string;
+  id: VerificationStatus;
   colorClass: string;
   outlineClass: string;
   label: string;
@@ -21,7 +22,7 @@ interface StatusGroup {
 const StatusGroup: React.FC<
   StatusGroup & {
     selectedItem: string[];
-    onSelectItem: (itemId: string) => void;
+    onSelectItem: (itemId: VerificationStatus) => void;
   }
 > = ({ title, items, selectedItem, onSelectItem }) => {
   return (
@@ -80,9 +81,9 @@ const UsersStatus: React.FC = () => {
           description: 'El cliente ha sido verificado',
         },
         {
-          id: 'inprogress',
-          colorClass: 'bg-orange-600',
-          outlineClass: 'outline outline-1 outline-offset-2 outline-orange-600',
+          id: 'pending',
+          colorClass: 'bg-yellow-600',
+          outlineClass: 'outline outline-1 outline-offset-2 outline-yellow-600',
           label: 'En Progreso',
           description: 'El cliente está en proceso de verificación',
         },
@@ -92,6 +93,13 @@ const UsersStatus: React.FC = () => {
           outlineClass: 'outline outline-1 outline-offset-2 outline-red-600',
           label: 'Rechazado',
           description: 'El cliente ha sido rechazado',
+        },
+        {
+          id: 'resend-data',
+          colorClass: 'bg-gray-600',
+          outlineClass: 'outline outline-1 outline-offset-2 outline-gray-600',
+          label: 'Reenviar Datos',
+          description: 'El cliente necesita reenviar datos',
         },
       ],
     },
