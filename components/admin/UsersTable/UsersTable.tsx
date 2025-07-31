@@ -114,7 +114,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
         bgColor: 'bg-gray-100 dark:bg-gray-800',
         textColor: 'text-gray-800 dark:text-gray-300',
         icon: <AlertCircle size={14} className="mr-1" />,
-        label: 'Desconocido',
+        label: 'Reenviar Datos',
       },
     };
 
@@ -239,7 +239,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
                         {u.users_id}
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                        {u.user.firstName}
+                        {u.user.firstName} {u.user.lastName}
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{u.user.email}</td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{u.user.phone || "No disponible"}</td>
