@@ -65,7 +65,7 @@ export async function updateTransactionStatus(status: string, transaction_id: st
 
     // Llamar al endpoint para actualizar el estado
     const response = await fetch(
-      `${API_BASE_URL}/v1/admin/transactions/status/${status}?transactionId=${transaction_id}`,
+      `${API_BASE_URL}/admin/transactions/status/${status}?transactionId=${transaction_id}`,
       {
         method: 'POST',
         headers: {
@@ -125,7 +125,7 @@ export async function uploadReceipt(transactionId: string, file: File) {
     formData.append('transaction_id', transactionId);
 
     // Llamar al endpoint para subir el comprobante
-    const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/voucher`, {
+    const response = await fetch(`${API_BASE_URL}/admin/transactions/voucher`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -180,7 +180,7 @@ export async function updateTransaction(transactionData: any, transaction_id: st
     }
 
     // Llamar al endpoint para actualizar la transacción
-    const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/${transaction_id}/receiver`, {
+    const response = await fetch(`${API_BASE_URL}/admin/transactions/${transaction_id}/receiver`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,

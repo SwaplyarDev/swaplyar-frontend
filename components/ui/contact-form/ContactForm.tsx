@@ -39,7 +39,7 @@ const ContactForm = () => {
     console.log('message', data.message);
     console.log('apellido', data.Apellido);
     try {
-      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/contacts`, {
+      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/contacts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

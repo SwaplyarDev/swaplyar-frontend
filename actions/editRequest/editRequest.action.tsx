@@ -19,7 +19,7 @@ const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const fetchTransactionById = async (requestData: TransactionRequestData): Promise<any> => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/code/${requestData.transaccionId}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/notes/code/${requestData.transaccionId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ export const fetchTransactionById = async (requestData: TransactionRequestData):
 };
 export const fetchCode = async (code: string, requestData: { transactionId: string }): Promise<any> => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/code/validate`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/notes/code/validate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ export const fetchCode = async (code: string, requestData: { transactionId: stri
 
 export const resendCodeAction = async (transactionId: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/code/${transactionId}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/notes/code/${transactionId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ export const sendFormData = async ({ message, file, transaccionId }: sendeForm):
       formData.append('file', file);
     }
 
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/${transaccionId}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/notes/${transaccionId}`, {
       method: 'POST',
       body: formData,
     });

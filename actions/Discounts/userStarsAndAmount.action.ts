@@ -3,7 +3,7 @@ const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 // Obtener las estrellas de los usuarios y la cantidad de dinero (en total) que tiene por las transacciones
 export async function getUserStarsAndAmount(token: string) {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/discount/stars`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/discount/stars`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
