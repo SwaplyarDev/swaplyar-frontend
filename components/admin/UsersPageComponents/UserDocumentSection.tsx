@@ -6,6 +6,7 @@ import { UserAdditionalInfo } from './UserAdditionalInfo';
 import { UserVerificationForm } from './UserVerificationForm';
 import { User as UserType } from '@/types/user';
 import auth from '@/auth';
+import { DetailedVerificationItem } from '@/types/verifiedUsers';
 
 interface UserDocumentSectionProps {
   user: Partial<UserType>;
@@ -17,7 +18,7 @@ interface VerifyForm {
   note_rejection?: string;
 }
 
-export function UserDocumentSection({ user }: UserDocumentSectionProps) {
+export function UserDocumentSection({ user }: { user: DetailedVerificationItem }) {
   const [activeTab, setActiveTab] = useState('frente');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -134,9 +135,9 @@ export function UserDocumentSection({ user }: UserDocumentSectionProps) {
       </div> */}
 
         {isModalOpen && <VerificationModal onClose={() => setIsModalOpen(false)} />}
-        {isVerified ? (
+        {/* {isVerified ? (
           <>
-            <UserAdditionalInfo user={user as UserType} />
+            <UserAdditionalInfo user={user} />
           </>
         ) : (
           <>
@@ -146,7 +147,7 @@ export function UserDocumentSection({ user }: UserDocumentSectionProps) {
               onCancel={() => console.log('Operación cancelada')}
             />
           </>
-        )}
+        )} */}
       </div>
     </div>
   );
