@@ -61,3 +61,20 @@ export interface SingleVerificationResponse {
   message: string;
   data: DetailedVerificationItem;
 }
+
+export interface VerifyForm{
+  status: VerificationStatus;
+  note_rejection: string;
+}
+
+export interface VerificationResponse {
+    success: boolean;
+    message: string;
+    data?: VerificationResponseData
+}
+
+export interface VerificationResponseData {
+    verification_id: string;
+    status: VerificationStatus;
+    note_rejection: string | null;
+}
