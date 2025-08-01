@@ -74,16 +74,3 @@ export const sendChangeStatus = async (verification_id: string, verifyForm: Veri
     return { success: false, message: error instanceof Error ? error.message : 'Error desconocido' };
   }
 };
-
-export const usersPagination = (users: VerificationItem[], usersPerPage: number, page: number) => {
-  const totalUsers = users.length;
-  const totalPages = Math.ceil(totalUsers / usersPerPage);
-  const i = (page - 1) * usersPerPage;
-  const paginatedUsers = users.slice(i, i + usersPerPage);
-
-  return {
-    users: paginatedUsers,
-    totalUsers,
-    totalPages,
-  };
-};
