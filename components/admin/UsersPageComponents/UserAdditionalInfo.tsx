@@ -1,18 +1,10 @@
 'use client';
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-interface User {
-  date_subscription: string;
-  name: string;
-  lastName: string;
-  email: string;
-  nationality: string;
-  document_number: string;
-  birth_date: string;
-  phone_full: string;
-}
+import { User } from '@/types/user';
+import { DetailedVerificationItem } from '@/types/verifiedUsers';
 
-export function UserAdditionalInfo({ user }: { user: User }) {
+export function UserAdditionalInfo({ user }: { user: DetailedVerificationItem }) {
   const [isExpanded, setIsExpanded] = useState(true);
 
   const toggleExpand = () => {
@@ -44,36 +36,36 @@ export function UserAdditionalInfo({ user }: { user: User }) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Fecha de Inscripción</p>
-            <p className="font-medium dark:text-gray-200">{user.date_subscription}</p>
+            <p className="font-medium dark:text-gray-200">{user.created_at}</p>
           </div>
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Nombre</p>
-            <p className="font-medium dark:text-gray-200">{user.name}</p>
+            <p className="font-medium dark:text-gray-200">{user.user.name}</p>
           </div>
-          <div>
+{/*           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Apellido</p>
-            <p className="font-medium dark:text-gray-200">{user.lastName}</p>
-          </div>
+            <p className="font-medium dark:text-gray-200">{user.user.lastName}</p>
+          </div> */}
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Correo Electrónico</p>
-            <p className="font-medium dark:text-gray-200">{user.email}</p>
+            <p className="font-medium dark:text-gray-200">{user.user.email}</p>
           </div>
-          <div>
+{/*           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Nacionalidad</p>
-            <p className="font-medium dark:text-gray-200">{user.nationality}</p>
-          </div>
+            <p className="font-medium dark:text-gray-200">{user.profile.nationality || 'No especificado'}</p>
+          </div> */}
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">N° de Documento</p>
-            <p className="font-medium dark:text-gray-200">{user.document_number}</p>
+            <p className="font-medium dark:text-gray-200">{user.users_id}</p>
           </div>
-          <div>
+{/*           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Fecha de Nacimiento</p>
-            <p className="font-medium dark:text-gray-200">{user.birth_date}</p>
-          </div>
-          <div>
+            <p className="font-medium dark:text-gray-200">{user.profile.birthday}</p>
+          </div> */}
+{/*           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">N° de Whatsapp</p>
-            <p className="font-medium dark:text-gray-200">{user.phone_full}</p>
-          </div>
+            <p className="font-medium dark:text-gray-200">{user.profile.phone}</p>
+          </div> */}
         </div>
       </div>
     </div>

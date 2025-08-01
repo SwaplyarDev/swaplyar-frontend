@@ -8,17 +8,7 @@ import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { Alert, AlertDescription } from '@/components/ui/Alert';
 import { cn } from '@/lib/utils';
-
-interface UserType {
-  date_subscription: string;
-  name: string;
-  lastName: string;
-  email: string;
-  nationality: string;
-  document_number: string;
-  birth_date: string;
-  phone_full: string;
-}
+import { User as UserType } from '@/types/user';
 
 interface UserVerificationFormProps {
   user?: Partial<UserType>;
@@ -28,11 +18,11 @@ interface UserVerificationFormProps {
 
 export function UserVerificationForm({ user, onSave, onCancel }: UserVerificationFormProps) {
   const [formData, setFormData] = useState({
-    name: user?.name || '',
-    lastName: user?.lastName || '',
-    nationality: user?.nationality || '',
-    document_number: user?.document_number || '',
-    birth_date: user?.birth_date || '',
+    name: user?.profile?.firstName || '',
+    lastName: user?.profile?.lastName || '',
+    nationality: user?.profile?.nationality || '',
+    document_number: user?.profile?.identification || '',
+    birth_date: user?.profile?.birthday || '',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -43,11 +33,11 @@ export function UserVerificationForm({ user, onSave, onCancel }: UserVerificatio
   useEffect(() => {
     if (user) {
       setFormData({
-        name: user.name || '',
-        lastName: user.lastName || '',
-        nationality: user.nationality || '',
-        document_number: user.document_number || '',
-        birth_date: user.birth_date || '',
+        name: user?.profile?.firstName || '',
+        lastName: user?.profile?.lastName || '',
+        nationality: user?.profile?.nationality || '',
+        document_number: user?.profile?.identification || '',
+        birth_date: user?.profile?.birthday || '',
       });
     }
   }, [user]);
@@ -70,7 +60,7 @@ export function UserVerificationForm({ user, onSave, onCancel }: UserVerificatio
     setIsFocused((prev) => ({ ...prev, [field]: false }));
 
     // Validar campo al perder el foco
-    validateField(field, formData[field as keyof typeof formData]);
+    validateField(field, String(formData[field as keyof typeof formData]));
   };
 
   const validateField = (field: string, value: string) => {
@@ -98,7 +88,7 @@ export function UserVerificationForm({ user, onSave, onCancel }: UserVerificatio
 
     // Validar todos los campos
     Object.entries(formData).forEach(([field, value]) => {
-      if (!validateField(field, value)) {
+      if (!validateField(field, String(value))) {
         newErrors[field] = errors[field] || 'Este campo es requerido';
         isValid = false;
       }
@@ -115,12 +105,12 @@ export function UserVerificationForm({ user, onSave, onCancel }: UserVerificatio
       setIsSubmitting(true);
 
       // Simular envío (reemplazar con tu lógica real)
-      setTimeout(() => {
+      /*       setTimeout(() => {
         if (onSave) {
           onSave(formData);
         }
         setIsSubmitting(false);
-      }, 1000);
+      }, 1000); */
     }
   };
 
@@ -144,12 +134,12 @@ export function UserVerificationForm({ user, onSave, onCancel }: UserVerificatio
       placeholder: 'Ingrese el apellido',
       icon: <User className="h-4 w-4 text-gray-500 dark:text-gray-400" />,
     },
-    {
-      id: 'nationality',
+    /*     {
+      id: 'nationality',  // Comentado porque no está en el modelo actual
       label: 'Nacionalidad',
       placeholder: 'Ingrese la nacionalidad',
       icon: <Flag className="h-4 w-4 text-gray-500 dark:text-gray-400" />,
-    },
+    }, */
     {
       id: 'document_number',
       label: 'N° de Documento',

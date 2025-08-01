@@ -4,7 +4,7 @@ const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export async function createWalletAccount(data: any, token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/users/accounts`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/users/accounts`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ export async function createWalletAccount(data: any, token: string) {
 
 export async function getMyWalletAccounts(token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/users/accounts`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/users/accounts`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -76,7 +76,7 @@ export async function getMyWalletAccounts(token: string) {
 
 export async function getMyWalletAccountById(accountId: string, token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/users/accounts/${accountId}`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/users/accounts/${accountId}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -108,7 +108,7 @@ export async function getMyWalletAccountById(accountId: string, token: string) {
 
 export async function getUserWalletAccounts(userId: string, token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/users/${userId}/accounts`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/users/${userId}/accounts`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -140,7 +140,7 @@ export async function getUserWalletAccounts(userId: string, token: string) {
 
 export async function getUserWalletAccountById(userId: string, accountId: string, token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/users/${userId}/accounts/${accountId}`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/users/${userId}/accounts/${accountId}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -171,7 +171,7 @@ export async function getUserWalletAccountById(userId: string, accountId: string
 }
 
 export async function deleteWalletAccount1(accountId: string, token: string, typeAccount: string) {
-  const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/users/accounts/delete/${accountId}`, {
+  const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/users/accounts/delete/${accountId}`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token}`,

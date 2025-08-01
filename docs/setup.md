@@ -62,7 +62,7 @@ AUTH_RESEND_KEY="your_resend_key"
 
 # Currency APIs
 NEXT_PUBLIC_FREE_CURRENCY_API_KEY="fca_live_YXQDkCwBwblsav5Dpe7zG0Rl1k6Nl4WuMEd1jHco&currencies=EUR%2CUSD%2CCAD"
-NEXT_PUBLIC_BLUELYTICS_API_URL="https://api.bluelytics.com.ar/v2/latest"
+NEXT_PUBLIC_BLUELYTICS_API_URL="https://api.bluelytics.com.ar/latest"
 NEXT_PUBLIC_FREE_CURRENCY_APY_KEY=fca_live_jDqUTcYj3stjWVDFqGZCmIBAt3hIEEtiTBPSMD3N
 
 # PayPal Client ID

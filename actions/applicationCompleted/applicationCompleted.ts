@@ -5,7 +5,7 @@ const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const getApplicationCompleted = async (transaction_id: FormRequestCompleted['transaction_id']) => {
   try {
-    const response = await fetch(`${API_URL}/v1/qualification/${transaction_id}`, {
+    const response = await fetch(`${API_URL}/qualification/${transaction_id}`, {
       cache: 'no-store',
     });
 
@@ -20,7 +20,7 @@ export const getApplicationCompleted = async (transaction_id: FormRequestComplet
 
 export const applicationCompleted = async (data: FormRequestCompleted) => {
   try {
-    await fetch(`${API_URL}/v1/qualification`, {
+    await fetch(`${API_URL}/qualification`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
