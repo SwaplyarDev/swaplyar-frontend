@@ -1,4 +1,4 @@
-import { UserAdditionalInfo } from './UserAdditionalInfo';
+
 import { UserDetailsSection } from './UserDetailsSection';
 import { UserDocumentSection } from './UserDocumentSection';
 import { UserHeader } from './UserHeader';
@@ -7,11 +7,8 @@ import { UserNotesSection } from './UserNotesSection';
 import { UserNotFound } from './UserNotFound';
 import { TransactionHistorySection } from './TransactionHistorySection';
 import { WalletsSection } from './WalletsSection';
-import { UserRewardsSection } from './UserRewardSection';
-import auth from '@/auth';
-import { User } from '@/types/user';
-import { SingleVerificationResponse, VerifiedUsersResponse } from '@/types/verifiedUsers';
 import { getTransactionByUserId } from '@/actions/transactions/admin-transaction';
+import { getVerificationById } from '@/actions/userVerification/verification.action';
 
 export async function UserDetailPageComponent({ verificationId }: { verificationId: string }) {
   const verification = await getVerificationById(verificationId);
@@ -27,7 +24,7 @@ export async function UserDetailPageComponent({ verificationId }: { verification
           <div className="space-y-6">
             <UserDetailsSection code={verification.data.users_id} createdAt={verification.data.created_at} />
             <UserInfo user={verification.data} />
-            <UserDocumentSection user={verification.data} />
+            <UserDocumentSection verification={verification.data} />
             <UserNotesSection note_rejection={verification.data.note_rejection} />
           </div>
 
@@ -42,23 +39,3 @@ export async function UserDetailPageComponent({ verificationId }: { verification
   );
 }
 
-async function getVerificationById(id: string): Promise<SingleVerificationResponse | undefined> {
-  try {
-    const session = await auth();
-    const token = session?.accessToken;
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v2/verification/admin/${id}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      cache: 'no-store',
-    });
-    if (!response.ok) {
-      throw new Error('Error fetching user');
-    }
-    const user = await response.json();
-    return user;
-  } catch (e) {
-    console.error('Error fetching user:', e);
-  }
-}
