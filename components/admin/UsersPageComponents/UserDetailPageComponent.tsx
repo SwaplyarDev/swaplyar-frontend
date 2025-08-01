@@ -44,7 +44,7 @@ async function getVerificationById(id: string): Promise<SingleVerificationRespon
   try {
     const session = await auth();
     const token = session?.accessToken;
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v2/verification/admin/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/verification/admin/${id}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
