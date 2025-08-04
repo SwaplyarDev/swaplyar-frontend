@@ -247,7 +247,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     };
 
     try {
-      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/canceled_transactions`, {
+      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/abandoned-transactions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -277,7 +277,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     };
 
     try {
-      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/canceled_transactions/${id}`, {
+      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/abandoned-transactions/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
