@@ -27,8 +27,8 @@ export default function PayerInfo({ register, errors, setValue }: PayerInfoProps
 
     if (storedClient) {
       const client = JSON.parse(storedClient);
-      setValue('sender_first_name', client.first_name);
-      setValue('sender_last_name', client.last_name);
+      setValue('first_name', client.first_name);
+      setValue('last_name', client.last_name);
       setValue('transfer_code', client.identifier);
       setValue('sender_email', client.email);
     }
@@ -67,28 +67,26 @@ export default function PayerInfo({ register, errors, setValue }: PayerInfoProps
   return (
     <>
       <label
-        htmlFor="sender_first_name"
-        className={clsx(errors.sender_first_name ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
+        htmlFor="first_name"
+        className={clsx(errors.first_name ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
       >
         Nombre
       </label>
       <input
         className={clsx(
           'rounded border bg-gray-200 px-5 py-2 text-gray-900 dark:bg-gray-700 dark:text-white',
-          errors.sender_first_name ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
+          errors.first_name ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
         )}
         type="text"
-        {...register('sender_first_name', {
+        {...register('first_name', {
           required: 'El nombre es obligatorio',
         })}
       />
-      {errors.sender_first_name && (
-        <p className="mb-5 text-sm text-red-500">• {errors.sender_first_name.message as string}</p>
-      )}
+      {errors.first_name && <p className="mb-5 text-sm text-red-500">• {errors.first_name.message as string}</p>}
 
       <label
-        htmlFor="sender_last_name"
-        className={clsx(errors.sender_last_name ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
+        htmlFor="last_name"
+        className={clsx(errors.last_name ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}
       >
         Apellido
       </label>
@@ -98,13 +96,11 @@ export default function PayerInfo({ register, errors, setValue }: PayerInfoProps
           errors.last_name ? 'mb-0 border-red-500' : 'mb-5 hover:border-blue-600',
         )}
         type="text"
-        {...register('sender_last_name', {
+        {...register('last_name', {
           required: 'El apellido es obligatorio',
         })}
       />
-      {errors.sender_last_name && (
-        <p className="mb-5 text-sm text-red-500">• {errors.sender_last_name.message as string}</p>
-      )}
+      {errors.last_name && <p className="mb-5 text-sm text-red-500">• {errors.last_name.message as string}</p>}
       <label
         htmlFor="amount_sent"
         className={clsx(errors.amount_sent ? 'text-red-500' : 'text-gray-900 dark:text-gray-300')}

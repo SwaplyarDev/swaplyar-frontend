@@ -11,8 +11,8 @@ import SelectCountry from '../inputs/SelectCountry';
 import InputSteps from '@/components/inputSteps/InputSteps';
 
 interface FormData {
-  sender_first_name: string;
-  sender_last_name: string;
+  first_name: string;
+  last_name: string;
   calling_code: CountryOption | undefined;
   phone: string;
   email: string;
@@ -47,17 +47,17 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
   const formValues = useWatch({ control });
 
   useEffect(() => {
-    const { sender_first_name, sender_last_name, calling_code, phone, email, own_account } = formData.stepOne;
+    const { first_name, last_name, calling_code, phone, email, own_account } = formData.stepOne;
     const newValues = {
-      sender_first_name,
-      sender_last_name,
+      first_name,
+      last_name,
       calling_code,
       phone,
       email,
       own_account,
     };
-    setValue('sender_first_name', sender_first_name);
-    setValue('sender_last_name', sender_last_name);
+    setValue('first_name', first_name);
+    setValue('last_name', last_name);
     setValue('calling_code', calling_code);
     setValue('phone', phone);
     setValue('email', email);
@@ -117,10 +117,10 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
       <div className="mx-0 grid grid-cols-1 gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:grid-cols-2 sm-phone:gap-x-8 sm-phone:gap-y-2">
         <InputSteps
           label="Nombre"
-          name="sender_first_name"
-          id="sender_first_name"
+          name="first_name"
+          id="first_name"
           type="text"
-          placeholder={errors.sender_first_name ? 'Nombre *' : 'Nombre'}
+          placeholder={errors.first_name ? 'Nombre *' : 'Nombre'}
           disabled={blockAll}
           register={register}
           watch={watch}
@@ -131,16 +131,16 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               message: 'El Nombre solo puede contener letras y espacios',
             },
           }}
-          error={errors.sender_first_name}
+          error={errors.first_name}
           className={'order-1'}
         />
 
         <InputSteps
-          id="sender_last_name"
-          name="sender_last_name"
+          id="last_name"
+          name="last_name"
           label="Apellido"
           type="text"
-          placeholder={errors.sender_last_name ? 'Apellido *' : 'Apellido'}
+          placeholder={errors.last_name ? 'Apellido *' : 'Apellido'}
           disabled={blockAll}
           register={register}
           watch={watch}
@@ -151,7 +151,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               message: 'El Apellido solo puede contener letras y espacios',
             },
           }}
-          error={errors.sender_last_name}
+          error={errors.last_name}
           className={`order-2 sm-phone:order-3`}
         />
 

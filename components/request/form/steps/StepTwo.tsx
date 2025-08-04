@@ -84,11 +84,11 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
 
     setValue(
       'receiver_first_name',
-      formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_first_name : receiver_first_name,
+      formData.stepOne?.own_account === 'Si' ? formData.stepOne?.first_name : receiver_first_name,
     );
     setValue(
       'receiver_last_name',
-      formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_last_name : receiver_last_name,
+      formData.stepOne?.own_account === 'Si' ? formData.stepOne?.last_name : receiver_last_name,
     );
     setValue('tax_identification', tax_identification);
     setValue('transfer_identification', transfer_identification);
@@ -109,8 +109,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     formData.stepTwo,
     setValue,
     formData.stepOne?.own_account,
-    formData.stepOne?.sender_first_name,
-    formData.stepOne?.sender_last_name,
+    formData.stepOne?.first_name,
+    formData.stepOne?.last_name,
   ]);
 
   const [loading, setLoading] = useState(false);
