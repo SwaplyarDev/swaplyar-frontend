@@ -3,7 +3,7 @@
 import type React from 'react';
 
 import { useState, useEffect } from 'react';
-import { AlertCircle, Calendar, User, Flag, CreditCard } from 'lucide-react';
+import { AlertCircle, Calendar, User, Flag, CreditCard, CheckCircle, XCircle } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { Alert, AlertDescription } from '@/components/ui/Alert';
@@ -13,23 +13,15 @@ import { DetailedVerificationItem, VerificationResponse, VerificationStatus, Ver
 
 interface UserVerificationFormProps {
   verification: DetailedVerificationItem;
-  onSave: (verifyForm: VerifyForm) => Promise<VerificationResponse>;
+  onSave: (status: VerificationStatus) => Promise<VerificationResponse>;
 }
 
 export function UserVerificationForm({ verification, onSave }: UserVerificationFormProps) {
-  const [formData, setFormData] = useState({
-    firstName: verification?.user.firstName || '',
-    lastName: verification?.user.lastName || '',
-    identification: verification?.user?.identification || '',
-    birthday: verification?.user?.birthday || '',
-  });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (status: VerificationStatus) => {
-
       setIsSubmitting(true);
-
-      let response = await onSave({status, note_rejection: ''});
+      let response = await onSave(status);
       
       if (response.success) {
         console.log('Usuario verificado:', verification.user, "status:", status);
@@ -121,11 +113,14 @@ export function UserVerificationForm({ verification, onSave }: UserVerificationF
           >
             {isSubmitting ? (
               <>
-                <span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+                <span className="mr-2 inline-block h-2 w-2 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
                 Procesando...
               </>
             ) : (
-              'Aprobar'
+              <div className="flex flex-row justify-center items-center gap-1">
+                <CheckCircle className="h-4 w-4 text-gray-200 " />
+                <p className="h-4 flex items-center">Aprobar</p>
+              </div>
             )}
           </button>
           <button
@@ -140,9 +135,10 @@ export function UserVerificationForm({ verification, onSave }: UserVerificationF
             type="button"
             onClick={() => handleSubmit("rejected")}
             disabled={isSubmitting}
-            className="rounded-full bg-red-600 px-6 py-2 font-medium text-gray-200 transition-all duration-200 hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-red-700 dark:text-gray-200 dark:hover:bg-red-600"
+            className=" flex flex-row justify-center items-center gap-1 rounded-full bg-red-600 px-6 py-2 font-medium text-gray-200 transition-all duration-200 hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-red-700 dark:text-gray-200 dark:hover:bg-red-600"
           >
-            Rechazar
+            <XCircle className="h-4 w-4 text-gray-200 " />
+            <p className="h-4 flex items-center">Rechazar</p>
           </button>
         </div>
       </div>

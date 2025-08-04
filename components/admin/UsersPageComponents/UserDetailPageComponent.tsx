@@ -9,6 +9,7 @@ import { TransactionHistorySection } from './TransactionHistorySection';
 import { WalletsSection } from './WalletsSection';
 import { getTransactionByUserId } from '@/actions/transactions/admin-transaction';
 import { getVerificationById } from '@/actions/userVerification/verification.action';
+import { UserVerifyProvider } from '@/hooks/admin/usersPageHooks/useUserVerifyState';
 
 export async function UserDetailPageComponent({ verificationId }: { verificationId: string }) {
   const verification = await getVerificationById(verificationId);
@@ -17,24 +18,26 @@ export async function UserDetailPageComponent({ verificationId }: { verification
 
   return (
     <div className="min-h-screen">
-      <div className="">
-        <UserHeader userId={verification.data.users_id} />
+      <UserVerifyProvider verification={verification.data}>
+        <div className="">
+          <UserHeader userId={verification.data.users_id} />
 
-        <div className="grid grid-cols-1 gap-6 pt-6 md:grid-cols-2">
-          <div className="space-y-6">
-            <UserDetailsSection code={verification.data.users_id} createdAt={verification.data.created_at} />
-            <UserInfo user={verification.data} />
-            <UserDocumentSection verification={verification.data} />
-            <UserNotesSection note_rejection={verification.data.note_rejection} />
-          </div>
+          <div className="grid grid-cols-1 gap-6 pt-6 md:grid-cols-2">
+            <div className="space-y-6">
+              <UserDetailsSection code={verification.data.users_id} createdAt={verification.data.created_at} />
+              <UserInfo />
+              <UserDocumentSection />
+              <UserNotesSection />
+            </div>
 
-          <div className="space-y-6">
-            <TransactionHistorySection transactions={transactions} />
-            <WalletsSection />
-            {/* <UserRewardsSection user={user} /> */}
+            <div className="space-y-6">
+              <TransactionHistorySection transactions={transactions} />
+              <WalletsSection />
+              {/* <UserRewardsSection user={user} /> */}
+            </div>
           </div>
         </div>
-      </div>
+      </UserVerifyProvider>
     </div>
   );
 }
