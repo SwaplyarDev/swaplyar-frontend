@@ -143,7 +143,7 @@ export const VerifyCodePage = () => {
       //   };
       // }
       try {
-        await fetch(`${BASE_URL}/v2/${URL_VERIFICATION}`, {
+        await fetch(`${BASE_URL}/${URL_VERIFICATION}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(bodyData),

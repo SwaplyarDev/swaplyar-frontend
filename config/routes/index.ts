@@ -13,7 +13,7 @@ export const configRoutes: ConfigRoutes = {
     '/es/centro-de-ayuda/prevencion-y-fraude',
     '/es/como-usar-swaplyar',
     '/es/programa-de-fidelizacion',
-    '/es/terminos-y-condiciones',
+    '/es/terminos-y-condiciones/tyc-swaplyar',
     '/es/garantia',
     '/es/inicio/formulario-de-solicitud',
   ],

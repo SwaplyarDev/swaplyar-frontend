@@ -11,7 +11,7 @@ async function refreshAccessToken(refreshToken: string) {
   try {
     const expiresIn = 3600;
     const expiresAt = Math.floor(Date.now() / 1000) + expiresIn;
-    const res = await fetch(`${BACKEND_URL}/v2/token/refresh`, {
+    const res = await fetch(`${BACKEND_URL}/token/refresh`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export const authConfig: NextAuthConfig = {
 
         const { email, verificationCode: code } = credentials;
 
-        const res = await fetch(`${BACKEND_URL}/v2/login/email/validate`, {
+        const res = await fetch(`${BACKEND_URL}/login/email/validate`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, code }),

@@ -22,7 +22,7 @@ async function getUsers(page: Number, perPage: number) {
     const session = await auth();
     const token = session?.accessToken;
 
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v2/verification/admin/list`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/admin/list`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,

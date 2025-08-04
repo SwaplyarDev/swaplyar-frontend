@@ -10,7 +10,7 @@ export const fetchQuestions = async (): Promise<QuestionResponse> => {
   }
 
   try {
-    const response = await fetch(`${BASE_URL}/question`, { method: 'GET', cache: 'no-store' });
+    const response = await fetch(`${BASE_URL}/questions`, { method: 'GET', cache: 'no-store' });
     if (!response.ok) {
       throw new Error(`Failed to fetch questions: ${response.status} ${response.statusText}`);
     }
@@ -30,7 +30,7 @@ export const fetchQuestionsParams = async (params: number): Promise<QuestionResp
   }
 
   try {
-    const response = await fetch(`${BASE_URL}/question?page=${params}`, { method: 'GET', cache: 'no-store' });
+    const response = await fetch(`${BASE_URL}/questions?page=${params}`, { method: 'GET', cache: 'no-store' });
     if (!response.ok) {
       throw new Error(`Failed to fetch questions: ${response.status} ${response.statusText}`);
     }

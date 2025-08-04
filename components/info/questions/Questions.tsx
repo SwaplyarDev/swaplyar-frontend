@@ -120,10 +120,10 @@ const FrequentlyQuestions = () => {
       </header>
 
       <section
-        className={`grid max-w-[716px] gap-6 py-12 ${questions.length < 1 ? 'w-full' : ''}`}
+        className={`grid max-w-[716px] gap-6 py-12 ${Array.isArray(questions) && questions.length < 1 ? 'w-full' : ''}`}
         style={{ marginInline: currentMargin }}
       >
-        {questions.length > 1 ? (
+        {Array.isArray(questions) && questions.length > 0 ? (
           questions.map((dato, index) => (
             <Accordion
               isDark={isDark}
