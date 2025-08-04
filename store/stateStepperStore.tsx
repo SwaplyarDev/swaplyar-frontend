@@ -12,8 +12,8 @@ import { create } from 'zustand';
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 interface StepOneData {
-  sender_first_name: string;
-  sender_last_name: string;
+  first_name: string;
+  last_name: string;
   calling_code: CountryOption | undefined;
   phone: string;
   email: string;
@@ -74,8 +74,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
   completedSteps: [false, false, false],
   formData: {
     stepOne: {
-      sender_first_name: '',
-      sender_last_name: '',
+      first_name: '',
+      last_name: '',
       calling_code: undefined,
       phone: '',
       email: '',
@@ -176,8 +176,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         idAdmin: '',
       },
       sender: {
-        sender_first_name: stepOne.sender_first_name,
-        sender_last_name: stepOne.sender_last_name,
+        first_name: stepOne.first_name,
+        last_name: stepOne.last_name,
         identification: '',
         phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
         email: stepOne.email,
@@ -241,13 +241,14 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     const { stepOne } = state.formData;
 
     const payload = {
-      full_name: `${stepOne.sender_first_name} ${stepOne.sender_last_name}`,
+      first_name: stepOne.first_name,
+      last_name: stepOne.last_name,
       email: stepOne.email,
       phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
     };
 
     try {
-      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/canceled_transactions`, {
+      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/abandoned-transactions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -271,13 +272,14 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     const { stepOne } = state.formData;
 
     const payload = {
-      full_name: `${stepOne.sender_first_name} ${stepOne.sender_last_name}`,
+      first_name: stepOne.first_name,
+      last_name: stepOne.last_name,
       email: stepOne.email,
       phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
     };
 
     try {
-      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/canceled_transactions/${id}`, {
+      const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/abandoned-transactions/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -300,8 +302,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       completedSteps: [false, false, false],
       formData: {
         stepOne: {
-          sender_first_name: '',
-          sender_last_name: '',
+          first_name: '',
+          last_name: '',
           calling_code: undefined,
           phone: '',
           email: '',

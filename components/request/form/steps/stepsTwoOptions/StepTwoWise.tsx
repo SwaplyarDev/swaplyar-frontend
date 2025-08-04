@@ -22,7 +22,7 @@ const StepTwoWise: React.FC<StepTwoWiseProps> = ({ register, errors, getValues, 
         type="text"
         placeholder="Nombre"
         disabled={blockAll || formData.stepOne?.own_account === 'Si'}
-        value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_first_name : undefined}
+        value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.first_name : undefined}
         defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
         register={register}
         watch={watch}
@@ -44,7 +44,7 @@ const StepTwoWise: React.FC<StepTwoWiseProps> = ({ register, errors, getValues, 
         type="text"
         placeholder="Apellido"
         disabled={blockAll || formData.stepOne?.own_account === 'Si'}
-        value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_last_name : undefined}
+        value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.last_name : undefined}
         defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
         register={register}
         watch={watch}

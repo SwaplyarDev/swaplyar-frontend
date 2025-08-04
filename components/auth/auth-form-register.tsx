@@ -53,7 +53,7 @@ export const RegisterForm = () => {
     const name = `${firstName} ${lastName}`;
 
     try {
-      const response = await fetch(`${BASE_URL}/v2/users/register`, {
+      const response = await fetch(`${BASE_URL}/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -74,6 +74,8 @@ export const RegisterForm = () => {
       setUserVerification(responseData);
       setLoading(false);
       setEmail(email);
+      localStorage.setItem('verificationEmail', email); // 🆕 Guardar en localStorage
+
       setTimeout(() => {
         setLoading(false);
         router.push('/es/iniciar-sesion-o-registro/verificacion-email');

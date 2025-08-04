@@ -56,7 +56,7 @@ const StepTwoBank: React.FC<StepTwoBankProps> = ({
         }}
         error={errors.receiver_first_name ? (errors.receiver_first_name as FieldError) : undefined}
         defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
-        value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_first_name : undefined}
+        value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.first_name : undefined}
         className="order-1"
       />
 

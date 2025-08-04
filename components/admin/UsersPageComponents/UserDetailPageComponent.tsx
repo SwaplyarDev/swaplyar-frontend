@@ -41,4 +41,3 @@ export async function UserDetailPageComponent({ verificationId }: { verification
     </div>
   );
 }
-
