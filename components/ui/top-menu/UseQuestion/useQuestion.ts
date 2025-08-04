@@ -12,8 +12,11 @@ const useQuestion = () => {
       try {
         let url = `${BASE_URL}/questions?page=${currentPage}`;
         const response = await fetch(url);
+        
         if (!response.ok) throw new Error('No funcionó');
         const data = await response.json();
+        console.log('[DEBUG] Data received:', data);
+        
         setQuestions(data.questionsPerPage);
       } catch (error) {
         console.log('Error fetching datos', error);
