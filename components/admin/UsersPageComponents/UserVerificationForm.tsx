@@ -1,15 +1,12 @@
 'use client';
 
 import type React from 'react';
-
-import { useState, useEffect } from 'react';
-import { AlertCircle, Calendar, User, Flag, CreditCard, CheckCircle, XCircle } from 'lucide-react';
+import { useState } from 'react';
+import { AlertCircle, Calendar, User, CreditCard, CheckCircle, XCircle } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
-import { Alert, AlertDescription } from '@/components/ui/Alert';
 import { cn } from '@/lib/utils';
-import { User as UserType } from '@/types/user';
-import { DetailedVerificationItem, VerificationResponse, VerificationStatus, VerifyForm } from '@/types/verifiedUsers';
+import { DetailedVerificationItem, VerificationResponse, VerificationStatus } from '@/types/verifiedUsers';
 
 interface UserVerificationFormProps {
   verification: DetailedVerificationItem;
@@ -20,15 +17,14 @@ export function UserVerificationForm({ verification, onSave }: UserVerificationF
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (status: VerificationStatus) => {
+    try {
       setIsSubmitting(true);
-      let response = await onSave(status);
-      
-      if (response.success) {
-        console.log('Usuario verificado:', verification.user, "status:", status);
-      } else if (response) {
-        console.error('Error al verificar el usuario:', response.message);
-      }
+      await onSave(status);
       setIsSubmitting(false);
+    } catch (error) {
+      console.error('Error al verificar el usuario:', error);
+      setIsSubmitting(false);
+    }
   };
 
   // Configuración de los campos del formulario

@@ -4,12 +4,12 @@ import { VerifyForm, VerificationResponse, SingleVerificationResponse, VerifiedU
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export const getverificationList = async (page: Number, perPage: number): Promise<VerifiedUsersResponse> => {
+export const getverificationList = async (page: Number = 1, perPage: number = 10): Promise<VerifiedUsersResponse> => {
   try {
     const session = await auth();
     const token = session?.accessToken;
 
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v2/verification/admin/list`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v2/verification/admin/list?page=${page}&limit=${perPage}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -17,13 +17,13 @@ export const getverificationList = async (page: Number, perPage: number): Promis
       cache: 'no-store',
     });
     if (!response.ok) {
-      return { success: false, message: 'Error fetching user', count: 0, data: [] };
+      return { success: false, message: 'Error fetching user', page: 0, limit: 0, total: 0, totalPages: 0, data: [] };
     }
     const user = await response.json();
     return user;
   } catch (e) {
     console.error('Error fetching user:', e);
-    return { success: false, message: 'Error fetching user', count: 0, data: [] };
+    return { success: false, message: 'Error fetching user', page: 0, limit: 0, total: 0, totalPages: 0, data: [] };
   }
 }
 

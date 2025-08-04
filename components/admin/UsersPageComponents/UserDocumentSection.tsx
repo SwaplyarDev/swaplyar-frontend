@@ -5,12 +5,9 @@ import { FileText, User, ChevronDown, ChevronUp } from 'lucide-react';
 import { VerificationModal } from './VerficationModal';
 import { UserAdditionalInfo } from './UserAdditionalInfo';
 import { UserVerificationForm } from './UserVerificationForm';
-import { User as UserType } from '@/types/user';
-import auth from '@/auth';
-import { DetailedVerificationItem, VerificationResponse, VerificationStatus, VerifyForm } from '@/types/verifiedUsers';
+import {VerificationStatus, VerifyForm } from '@/types/verifiedUsers';
 import { sendChangeStatus } from '@/actions/userVerification/verification.action';
 import { useUserVerify } from '@/hooks/admin/usersPageHooks/useUserVerifyState';
-import { set } from 'date-fns';
 
 
 export function UserDocumentSection() {
@@ -19,6 +16,8 @@ export function UserDocumentSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isVerified, setIsVerified] = useState(verificationById?.verification_status === 'verified' || verificationById?.verification_status === 'rejected');
   const [isExpanded, setIsExpanded] = useState(true);
+
+
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -29,6 +28,7 @@ export function UserDocumentSection() {
   };
 
   const handleSaveUserData = async (status: VerificationStatus) => {
+    try {
     const verifyForm: VerifyForm = {
       status,
       note_rejection: verificationById?.note_rejection || '',
@@ -37,7 +37,7 @@ export function UserDocumentSection() {
 
     if (response?.success) {
       setIsModalOpen(false);
-      updateVerificationStatus(status);
+      await updateVerificationStatus(status);
 
       if(verifyForm.status === 'verified' || verifyForm.status === 'rejected') {
         setIsVerified(true);
@@ -46,6 +46,10 @@ export function UserDocumentSection() {
       console.error('Error al guardar los datos del usuario:', response?.message);
     }
     return response;
+    } catch (error) {
+      console.error('Error al guardar los datos del usuario:', error);
+      return { success: false, message: 'Error al guardar los datos del usuario' };
+    }
   };
 
   return (

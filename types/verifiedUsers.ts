@@ -23,15 +23,13 @@ export interface VerificationItem {
 export interface VerifiedUsersResponse {
   success: boolean;
   message: string;
-  count: number;
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
   data: VerificationItem[];
 }
 
-/* export interface VerificationUserInfo {
-  name: string;
-  email: string;
-}
- */
 export interface VerificationUserInfo {
   firstName: string;
   lastName: string;

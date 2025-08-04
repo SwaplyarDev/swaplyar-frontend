@@ -3,9 +3,7 @@ import { VerificationItem, VerificationStatus } from '@/types/verifiedUsers';
 import { formatDate } from '@/utils/utils';
 
 export interface UsersTableProps {
-  users: VerificationItem[];
   currentPage: number;
-  totalPages: number;
 }
 export interface filterUsers {
   min_date: string | null;
@@ -65,10 +63,8 @@ export const filtrarUsers = (users: VerificationItem[], selectedItem: string[], 
   return users.filter((user) => {
     const matchesStatus =
       selectedItem.length === 0 || selectedItem.includes(user.verification_status);
-    const matchesMinDate = !filters.min_date || new Date(user.created_at) >= new Date(filters.min_date);
-    const matchesMaxDate = !filters.max_date || new Date(user.created_at) <= new Date(filters.max_date);
 
-    return matchesStatus && matchesMinDate && matchesMaxDate;
+    return matchesStatus;
   });
 };
 
