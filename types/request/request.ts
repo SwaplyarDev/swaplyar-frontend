@@ -1,7 +1,7 @@
 export type FormInputs = {
   //SECTION 1
-  sender_first_name: string;
-  sender_last_name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   phone: string;
   own_account: string;

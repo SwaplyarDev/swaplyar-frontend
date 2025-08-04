@@ -29,7 +29,7 @@ const StepTwoPayoneer: React.FC<StepTwoPayoneerProps> = ({
         type="text"
         placeholder={errors.reciever_first_name ? 'Nombre *' : 'Nombre'}
         disabled={blockAll || formData.stepOne?.own_account === 'Si'}
-        value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_first_name : undefined}
+        value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.first_name : undefined}
         defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
         register={register}
         watch={watch}
@@ -51,7 +51,7 @@ const StepTwoPayoneer: React.FC<StepTwoPayoneerProps> = ({
         type="text"
         placeholder={errors.reciever_last_name ? 'Apellido *' : 'Apellido'}
         disabled={blockAll || formData.stepOne?.own_account === 'Si'}
-        value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_last_name : undefined}
+        value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.last_name : undefined}
         defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
         register={register}
         watch={watch}
