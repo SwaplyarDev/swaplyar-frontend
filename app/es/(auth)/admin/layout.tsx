@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import LayoutAdmin from '@/components/admin/LayoutAdmin/LayoutAdmin';
 import Sidebar from '@/components/admin/Sidebar/Sidebar';
 import Sidebar2 from '@/components/admin/Sidebar/Sidebar2';
+import { UserVerifyListProvider } from '@/hooks/admin/usersPageHooks/useUserVerifyListState';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -37,7 +38,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* <Sidebar2 /> */}
       <div className={`transition-all duration-300 ease-in-out ${sidebarCollapsed ? 'md:ml-16' : 'md:ml-72'}`}>
         {/* <LayoutAdmin /> */}
-        <main className="m-auto max-w-[1400px] p-4 md:p-6">{children}</main>
+        <UserVerifyListProvider>
+          <main className="m-auto max-w-[1400px] p-4 md:p-6">{children}</main>
+        </UserVerifyListProvider>
       </div>
     </section>
   );

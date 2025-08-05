@@ -1,11 +1,10 @@
 'use client';
 
 import type React from 'react';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, use } from 'react';
 import { AlertCircle, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp } from 'lucide-react';
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import { useRouter } from 'next/navigation';
-import { User } from '@/types/user';
 import { useSelectedStatusFilter } from '@/hooks/admin/usersPageHooks/useSelectedStatusFilter';
 import { formatDate } from '@/utils/utils';
 import {
@@ -16,11 +15,12 @@ import {
   states,
   boardheaders,
 } from '@/utils/utilsUserTable';
-import { VerificationItem, VerificationStatus } from '@/types/verifiedUsers';
+import { VerificationStatus } from '@/types/verifiedUsers';
+import { useUserVerifyList } from '@/hooks/admin/usersPageHooks/useUserVerifyListState';
 
-const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages }) => {
+const UsersTable: React.FC<UsersTableProps> = ({ currentPage }) => {
+  const{ verificationList, verificationListFiltered, setVerificationListFiltered, updateVerificationList } = useUserVerifyList();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [user, setUser] = useState<VerificationItem[]>(users);
   const { selectedItem, handleSelect, clearSelectedItems } = useSelectedStatusFilter();
   const [filters, setFilters] = useState<filterUsers>({
     min_date: null,
@@ -35,10 +35,25 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
   const popoverRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
-    const filteredList = filtrarUsers(users, selectedItem, filters);
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        await updateVerificationList(currentPage, 10);
+      } catch (error) {
+        console.error('Error fetching verification list:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [currentPage]);
+
+  useEffect(() => {
+    const filteredList = filtrarUsers(verificationList.data, selectedItem, filters);
     if (filters.orderby === 'verification') ordenarCampoDate(filteredList, filters.order, 'verification');
 
-    setUser(filteredList);
+    setVerificationListFiltered(filteredList);
   }, [filters, selectedItem]);
 
   useEffect(() => {
@@ -85,7 +100,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
       order: 'desc',
       search: '',
     });
-    setUser(users);
+    setVerificationListFiltered(verificationList.data);
     clearSelectedItems();
   };
 
@@ -114,7 +129,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
         bgColor: 'bg-gray-100 dark:bg-gray-800',
         textColor: 'text-gray-800 dark:text-gray-300',
         icon: <AlertCircle size={14} className="mr-1" />,
-        label: 'Desconocido',
+        label: 'Reenviar Datos',
       },
     };
 
@@ -223,9 +238,9 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
             </thead>
 
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-              {user.length > 0 ? (
+              {verificationListFiltered.length > 0 ? (
                 <>
-                  {user.map((u) => (
+                  {verificationListFiltered.map((u) => (
                     <tr
                       key={u.verification_id}
                       onClick={() => router.push(`/es/admin/users/${u.verification_id}`)}
@@ -239,7 +254,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
                         {u.users_id}
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                        {u.user.firstName}
+                        {u.user.firstName} {u.user.lastName}
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{u.user.email}</td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{u.user.phone || "No disponible"}</td>
@@ -250,8 +265,8 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
                   ))}
 
                   {/* Filas vacías para mantener espacio cuando hay menos de 5 usuarios */}
-                  {users.length < 5 &&
-                    Array(5 - users.length)
+                  {verificationListFiltered.length < 5 &&
+                    Array(5 - verificationListFiltered.length)
                       .fill(0)
                       .map((_, index) => (
                         <tr key={`empty-${index}`} className="pointer-events-none">
@@ -296,7 +311,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, currentPage, totalPages 
         <div className="border-t border-gray-200 p-4 dark:border-gray-700">
           <PaginationButtons
             route="/es/admin/users"
-            totalPages={totalPages}
+            totalPages={verificationList.totalPages}
             currentPage={currentPage}
             isLoading={isLoading}
             /* @ts-expect-error */

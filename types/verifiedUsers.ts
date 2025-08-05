@@ -4,8 +4,9 @@ export type VerificationStatus = 'pending' | 'rejected' | 'verified' | 'resend-d
 // Interfaz para la información básica del usuario
 export interface UserInfo {
   firstName: string;
+  lastName: string;
   email: string;
-  phone?: string; 
+  phone: string;
 }
 
 // Interfaz para un elemento de verificación individual
@@ -22,18 +23,20 @@ export interface VerificationItem {
 export interface VerifiedUsersResponse {
   success: boolean;
   message: string;
-  count: number;
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
   data: VerificationItem[];
 }
 
 export interface VerificationUserInfo {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  //firstName: string;
-  //lastName?: string;
-  //phone?: string;
-  //identification?: string;
-  //birthday?: string;
+  phone: string;
+  identification: string;
+  birthday: string;
 }
 
 export interface DetailedVerificationItem {
@@ -55,4 +58,21 @@ export interface SingleVerificationResponse {
   success: boolean;
   message: string;
   data: DetailedVerificationItem;
+}
+
+export interface VerifyForm{
+  status: VerificationStatus;
+  note_rejection: string;
+}
+
+export interface VerificationResponse {
+    success: boolean;
+    message: string;
+    data?: VerificationResponseData
+}
+
+export interface VerificationResponseData {
+    verification_id: string;
+    status: VerificationStatus;
+    note_rejection: string | null;
 }
