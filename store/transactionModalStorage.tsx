@@ -1,11 +1,10 @@
 import { getRegretById } from '@/actions/repentance/repentanceForm.action';
-import { getAdminTransactionById } from '@/actions/transactions/admin-transaction';
 import { getNoteById } from '@/actions/transactions/notes.action';
-import { getStatusTransactionAdmin, postStatusInAdmin } from '@/actions/transactions/transactions.action';
+import { getStatusTransactionAdmin, getTransactionById, postStatusInAdmin } from '@/actions/transactions/transactions.action';
 import auth from '@/auth';
 import { NoteTypeSingle, emptyNote } from '@/types/transactions/notesType';
 import { RegretTypeSingle, emptyRegret } from '@/types/transactions/regretsType';
-import { TransactionTypeSingle, emptyTransaction } from '@/types/transactions/transactionsType';
+import { TransactionTypeSingle, TransactionV2, emptyTransaction, emptyTransactionV2 } from '@/types/transactions/transactionsType';
 import { convertTransactionState, getComponentStatesFromStatus } from '@/utils/transactionStatesConverser';
 import { create } from 'zustand';
 
@@ -36,7 +35,7 @@ interface TransactionStatus {
   };
 }
 interface TransactionState {
-  trans: TransactionTypeSingle;
+  trans: TransactionV2;
   noteEdit: NoteTypeSingle;
   regretCancel: RegretTypeSingle;
   isLoading: boolean;
@@ -64,7 +63,7 @@ interface TransactionState {
   getStatusClient: (transId: string, trans: any) => Promise<void>;
 }
 export const useTransactionStore = create<TransactionState>((set, get) => ({
-  trans: emptyTransaction,
+  trans: emptyTransactionV2,
   noteEdit: emptyNote,
   regretCancel: emptyRegret,
   isLoading: true,
@@ -87,7 +86,7 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
     if (!session?.accessToken) return;
     const token = session?.accessToken;
     try {
-      const trans = await getAdminTransactionById(transId);
+      const trans = await getTransactionById(transId, token);
       const existOnAdmin: any = await getStatusTransactionAdmin(transId);
       if (trans) {
         if (existOnAdmin?.success) {
@@ -114,10 +113,13 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
       return;
     }
     try {
-      const trans = await getAdminTransactionById(transId);
+      const session = await auth();
+      if (!session?.accessToken) return;
+      const token = session?.accessToken;
+      const trans = await getTransactionById(transId, token);
 
-      if (trans?.newStatus) {
-        set({ status: trans.newStatus });
+      if (trans?.finalStatus) {
+        set({ status: trans.finalStatus });
       } else {
         console.warn('⚠️ No se recibió un nuevo estado en la respuesta.');
       }
