@@ -2,12 +2,12 @@
 
 import { useEffect } from 'react';
 import { useTransactionStore } from '@/store/transactionModalStorage';
-import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
+import type { TransactionV2 } from '@/types/transactions/transactionsType'
 import type { NoteTypeSingle } from '@/types/transactions/notesType';
 import type { RegretTypeSingle } from '@/types/transactions/regretsType';
 
 interface UseTransactionStoreInitProps {
-  initialTransaction: TransactionTypeSingle;
+  initialTransaction: TransactionV2;
   initialStatus: string;
   initialComponentStates: {
     aprooveReject: 'stop' | 'accepted' | 'canceled' | null;
