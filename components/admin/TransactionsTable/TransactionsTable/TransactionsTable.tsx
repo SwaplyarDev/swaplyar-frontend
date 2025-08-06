@@ -186,7 +186,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
         icon: <Clock size={14} className="mr-1" />,
         label: 'Pendiente',
       },
-      review: {
+      review_payment: {
         bgColor: 'bg-purple-300 dark:bg-purple-900/30',
         textColor: 'text-purple-800 dark:text-purple-300',
         icon: <Search size={14} className="mr-1" />,
@@ -199,13 +199,20 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
         icon: <CheckCircle size={14} className="mr-1.5 h-4 w-4" />,
         label: 'Aceptada',
       },
+      approved: {
+        bgColor: 'bg-green-100 dark:bg-green-900/30',
+        textColor: 'text-green-800 dark:text-green-300',
+        borderColor: 'border-green-200 dark:border-green-800',
+        icon: <CheckCircle size={14} className="mr-1.5 h-4 w-4" />,
+        label: 'Aceptada',
+      },
       rejected: {
         bgColor: 'bg-red-100 dark:bg-red-900/30',
         textColor: 'text-red-800 dark:text-red-300',
         icon: <XCircle size={14} className="mr-1" />,
         label: 'Rechazada',
       },
-      stopped: {
+      discrepancy: {
         bgColor: 'bg-amber-100 dark:bg-amber-900/30',
         textColor: 'text-amber-800 dark:text-amber-300',
         icon: <AlertTriangle size={14} className="mr-1" />,
