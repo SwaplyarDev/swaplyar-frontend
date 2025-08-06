@@ -6,7 +6,7 @@ import { TransactionRequest } from '@/types/request/request';
 
 export const requestRegister = async (transaction: TransactionRequest) => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/transactions`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/transactions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -4,7 +4,7 @@ const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const getAllNotes = async () => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes`);
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/notes`);
     if (!response.ok) throw new Error('Failed to fetch notes');
 
     const data: NoteTypeSingle[] = await response.json();
@@ -17,7 +17,7 @@ export const getAllNotes = async () => {
 
 export const getNoteById = async (id: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/${id}`);
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/notes/${id}`);
     if (!response.ok) throw new Error('Failed to fetch notes');
 
     const data: NoteTypeSingle = await response.json();
@@ -31,7 +31,7 @@ export const getNoteById = async (id: string) => {
 
 export const deleteNoteById = async (id: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/${id}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/notes/${id}`, {
       method: 'DELETE',
     });
     if (!response.ok) throw new Error('Failed to delete note');
@@ -51,7 +51,7 @@ export const createNote = async ({ message, file, transaccionId }: sendNoteType)
       formData.append('file', file);
     }
     formData.append('transaccionId', transaccionId);
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/${transaccionId}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/notes/${transaccionId}`, {
       method: 'POST',
       body: formData,
     });
@@ -76,7 +76,7 @@ export const updateNote = async ({ message, file, transaccionId }: sendNoteType)
       formData.append('file', file);
     }
     formData.append('transaccionId', transaccionId);
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/notes/${transaccionId}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/notes/${transaccionId}`, {
       method: 'PUT',
       body: formData,
     });

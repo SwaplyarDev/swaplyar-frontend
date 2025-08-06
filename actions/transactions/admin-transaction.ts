@@ -1,6 +1,7 @@
 'use server';
 
 import { auth } from '@/auth';
+import { TransactionByUserId } from '@/types/transactionsBackEnd2';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -16,7 +17,7 @@ export async function getAllAdminTransactions(page = 1, perPage = 12) {
 
     const token = session?.accessToken || '';
 
-    const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/info?page=${page}&perPage=${perPage}`, {
+    const response = await fetch(`${API_BASE_URL}/admin/transactions/info?page=${page}&perPage=${perPage}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -78,7 +79,7 @@ export async function updateAdminTransaction(transactionData: any) {
 
     const token = session?.accessToken || '';
 
-    const response = await fetch(`${API_BASE_URL}/v1/transactions/editar`, {
+    const response = await fetch(`${API_BASE_URL}/transactions/editar`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -110,7 +111,7 @@ export async function getTransactionStatusHistory(transactionId: string) {
 
     const token = session?.accessToken || '';
 
-    const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/status?transaction_id=${transactionId}`, {
+    const response = await fetch(`${API_BASE_URL}/admin/transactions/status?transaction_id=${transactionId}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -138,7 +139,7 @@ export async function uploadTransactionReceipt(formData: FormData) {
     const session = await auth();
     const token = session?.accessToken || '';
 
-    const response = await fetch(`${API_BASE_URL}/v2/admin/transactions/voucher`, {
+    const response = await fetch(`${API_BASE_URL}/admin/transactions/voucher`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -159,5 +160,80 @@ export async function uploadTransactionReceipt(formData: FormData) {
   } catch (error) {
     console.error('Error uploading transaction receipt:', error);
     return error;
+  }
+}
+
+export async function getTransactionByUserId(user_id: string): Promise<TransactionByUserId> {
+  try {
+    const session = await auth();
+    const token = session?.accessToken;
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v2/admin/transactions?userId=${user_id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      cache: 'no-store',
+    });
+    if (!response.ok) {
+      throw new Error('Error fetching user');
+    }
+    const transactions = await response.json();
+    return transactions;
+  } catch (e) {
+    console.error('Error fetching user:', e);
+    return {} as TransactionByUserId;
+  }
+}
+
+export async function getSendTransaction(account_id: string): Promise<TransactionByUserId> {
+  try {
+    const session = await auth();
+    const token = session?.accessToken;
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/transactions?sender_account_id=${account_id}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        cache: 'no-store',
+      },
+    );
+    if (!response.ok) {
+      throw new Error('Error fetching user');
+    }
+    const transactions = await response.json();
+    return transactions;
+  } catch (e) {
+    console.error('Error fetching user:', e);
+    return {} as TransactionByUserId;
+  }
+}
+
+export async function getReceiveTransaction(account_id: string): Promise<TransactionByUserId> {
+  try {
+    const session = await auth();
+    const token = session?.accessToken;
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/transactions?receiver_account_id=${account_id}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        cache: 'no-store',
+      },
+    );
+    if (!response.ok) {
+      throw new Error('Error fetching user');
+    }
+    const transactions = await response.json();
+    return transactions;
+  } catch (e) {
+    console.error('Error fetching user:', e);
+    return {} as TransactionByUserId;
   }
 }

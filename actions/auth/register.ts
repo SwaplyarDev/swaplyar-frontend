@@ -6,6 +6,14 @@ import { signIn } from '@/auth';
 
 export const registerUser = async (email: string, verificationCode: string) => {
   try {
+    if (!email || !verificationCode) {
+      console.error('❌ registerUser: Faltan email o código', { email, verificationCode });
+      return {
+        ok: false,
+        message: 'Faltan email o código',
+      };
+    }
+
     const result = await signIn('credentials', {
       email,
       verificationCode,

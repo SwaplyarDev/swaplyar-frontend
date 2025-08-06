@@ -17,7 +17,19 @@ export const configRoutes: ConfigRoutes = {
     '/es/garantia',
     '/es/inicio/formulario-de-solicitud',
   ],
-  authRoutes: ['/es/iniciar-sesion-o-registro', '/es/iniciar-sesion-o-registro/verificacion-email'],
-  apiRoutes: ['/api/login', '/api/users', '/api/company', '/api/roles', '/api/paypal'],
-  protectedRoutes: ['/es/auth/:path*', '/es/admin/:path*'],
+  authRoutes: [
+    '/es/iniciar-sesion-o-registro',
+    '/es/iniciar-sesion-o-registro/verificacion-email',
+  ],
+  apiRoutes: [
+    '/api/login',
+    '/api/users',
+    '/api/company',
+    '/api/roles',
+    '/api/paypal',
+  ],
+  protectedRoutes: [
+    '/es/auth',
+    '/es/admin',
+  ],
 };

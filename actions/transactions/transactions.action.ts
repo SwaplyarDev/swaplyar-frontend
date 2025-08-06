@@ -7,7 +7,7 @@ const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 //General Transactions Fetchs
 export const getAllTransactions = async (page: number, token: string): Promise<TransactionArrayV2 | null> => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v2/admin/transactions?page=${page}&perPage=12`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/admin/transactions?page=${page}&perPage=12`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -30,8 +30,7 @@ export const getAllTransactions = async (page: number, token: string): Promise<T
 
 export async function getTransactionById(transactionId: string, token: string): Promise<TransactionV2 | null> {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v2/admin/transactions/${transactionId}`, {
-      method: 'GET',
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/admin/transactions/${transactionId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -54,7 +53,7 @@ export async function getTransactionById(transactionId: string, token: string): 
 
 export const deleteTransactionById = async (id: string, token: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/admin/transactions/${id}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/admin/transactions/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -71,7 +70,7 @@ export const deleteTransactionById = async (id: string, token: string) => {
 
 export const updateTransaction = async ({ transaction }: TransactionTypeSingle, token: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/admin/transactions/${transaction.transaction_id}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/admin/transactions/${transaction.transaction_id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -89,7 +88,7 @@ export const updateTransaction = async ({ transaction }: TransactionTypeSingle, 
 
 export const updateStatusClient = async (transactionId: any, status: any, token: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transactionStatus/${transactionId}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/transactionStatus/${transactionId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -111,7 +110,7 @@ export const updateStatusClient = async (transactionId: any, status: any, token:
 
 export const getStatusTransactionAdmin = async (transactionId: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transaction_admin/${transactionId}`);
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/transaction_admin/${transactionId}`);
     const exist = response.status;
 
     if (exist !== 404) {
@@ -128,7 +127,7 @@ export const getStatusTransactionAdmin = async (transactionId: string) => {
 
 export const postStatusInAdmin = async (transactionId: string, status: string, token: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transaction_admin`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/transaction_admin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -151,7 +150,7 @@ export const postStatusInAdmin = async (transactionId: string, status: string, t
 
 export const updateStatusAdmin = async (transactionId: string, status: string, token: string) => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v1/transaction_admin/${transactionId}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/transaction_admin/${transactionId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
