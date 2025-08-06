@@ -192,34 +192,39 @@ const TransferClient = () => {
   };
 
   const handleAprove = async () => {
-    try {
-      setIsLoading(true);
+  try {
+    setIsLoading(true);
 
-      if (!form.file) return null;
-
-      const formData = new FormData();
-      formData.append('file', form.file);
-      formData.append('transaction_id', transId);
-
-      const response = await updateTransactionStatus('approved', transId, {
-        descripcion: 'Proceso de transaccion exitoso',
-        additionalData: {
-          codigo_transferencia: form.transfer_id,
-        },
-        amount: Number(form.amount),
-      });
-      const responseFile = await uploadTransactionReceipt(formData);
-
-      if (!response || !responseFile) {
-        setModalServer(true);
-      } else {
-        setIsLoading(false);
-      }
-    } catch (error) {
-      setIsLoading(false);
-      setModalServer(true);
+    if (!form.file) {
+      alert("Debe subir un comprobante.");
+      return null;
     }
-  };
+
+    const formData = new FormData();
+    formData.append('comprobante', form.file); 
+    formData.append('transactionId', transId); 
+
+    const response = await updateTransactionStatus('approved', transId, {
+      descripcion: 'Proceso de transacción exitoso',
+      additionalData: {
+        codigo_transferencia: form.transfer_id,
+      },
+      amount: Number(form.amount),
+    });
+
+    const responseFile = await uploadTransactionReceipt(formData);
+
+    if (!response || !responseFile) {
+      setModalServer(true);
+    } else {
+      setIsLoading(false);
+    }
+  } catch (error) {
+    
+    setIsLoading(false);
+    setModalServer(true);
+  }
+};
   const handleDialogAprove = () => {
     if (!form.transfer_id || !form.amount) {
       alert('Por favor completa todos los campos requeridos.');
@@ -230,44 +235,41 @@ const TransferClient = () => {
   };
 
   const handleSendRefound = async () => {
-    try {
-      if (!formRefund.file) return null;
-
-      setIsLoading(true);
-      const formData = new FormData();
-
-      formData.append('file', formRefund.file);
-      formData.append('transaction_id', transId);
-
-      const response = await updateTransactionStatus('refunded', transId, {
-        descripcion: formRefund.description,
-        additionalData: {
-          codigo_transferencia: formRefund.transfer_id,
-        },
-        amount: Number(formRefund.amount),
-      });
-
-      const responseFile = await fetch(`http://localhost:8080/api/v1/admin/transactions/voucher`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-
-      if (!response || !responseFile.ok) {
-        setIsLoading(false);
-        setModalServer(true);
-      } else {
-        setIsLoading(false);
-        setModalResponse(true);
-      }
-    } catch (error) {
-      setIsLoading(false);
-      setModalError(false);
-      setModalServer(true);
+  try {
+    if (!formRefund.file) {
+      alert("Debe subir un comprobante.");
+      return null;
     }
-  };
+
+    setIsLoading(true);
+
+    const formData = new FormData();
+    formData.append('comprobante', formRefund.file);     
+    formData.append('transactionId', transId);            
+
+    const response = await updateTransactionStatus('refunded', transId, {
+      descripcion: formRefund.description,
+      additionalData: {
+        codigo_transferencia: formRefund.transfer_id,
+      },
+      amount: Number(formRefund.amount),
+    });
+
+    const responseFile = await uploadTransactionReceipt(formData);
+
+    if (!response || !responseFile || (responseFile as any).error) {
+      setIsLoading(false);
+      setModalServer(true);
+    } else {
+      setIsLoading(false);
+      setModalResponse(true);
+    }
+  } catch (error) {
+    setIsLoading(false);
+    setModalError(false);
+    setModalServer(true);
+  }
+};
 
   const handleOpenChange = (open: boolean) => {
     setOpen(open);

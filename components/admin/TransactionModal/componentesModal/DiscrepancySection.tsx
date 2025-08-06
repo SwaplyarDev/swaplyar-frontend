@@ -22,9 +22,10 @@ import { useEffect, useState } from 'react';
 import ServerErrorModal from '../../ModalErrorServidor/ModalErrorSevidor';
 import { TransactionService } from './ui/TransactionService';
 import { set } from 'date-fns';
+import { TransactionV2 } from '@/types/transactions/transactionsType';
 
 interface DiscrepancySectionProps {
-  trans: any;
+  trans: TransactionV2;
   value: boolean | null;
   setDiscrepancySend: (value: boolean) => void;
 }
@@ -78,7 +79,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
 
   const token = session.data?.accessToken || '';
 
-  const { transaction } = trans;
+  const transactionId = trans.id
 
   useEffect(() => {
     setDiscrepancy(value);
@@ -149,7 +150,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
   const confirmDiscrepancy = async () => {
     try {
       setIsLoading(true);
-      const response = await TransactionService('discrepancy', transaction.transaction_id, {
+      const response = await TransactionService('discrepancy', transactionId, {
         descripcion: discrepancyReason,
       });
       if (!response) {
@@ -186,10 +187,10 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
       setIsLoading(true);
 
       const formData = new FormData();
-      formData.append('file', form.file);
-      formData.append('transaction_id', transaction.transaction_id);
+      formData.append('comprobante', form.file);
+      formData.append('transactionId', transactionId);
 
-      const response = await updateTransactionStatus('refunded', transaction.transaction_id, {
+      const response = await updateTransactionStatus('refunded', transactionId, {
         descripcion: form.description,
         additionalData: {
           codigo_transferencia: form.transfer_id,
@@ -197,13 +198,15 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
         amount: Number(form.amount),
       });
 
-      const responseFile = await fetch(`http://localhost:8080/api/v1/admin/transactions/voucher`, {
+      const responseFile = await fetch(`http://localhost:3001/api/v2/admin/transactions/voucher`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
         },
         body: formData,
       });
+
+      console.log('Estado de respuesta:', responseFile.status);
 
       if (!response || !responseFile) {
         setIsLoading(false);
@@ -222,10 +225,10 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
       setIsLoading(true);
 
       const formData = new FormData();
-      formData.append('file', resolutionForm.file);
-      formData.append('transaction_id', transaction.transaction_id);
+      formData.append('comprobante', resolutionForm.file);
+      formData.append('transactionId', transactionId);
 
-      const response = await updateTransactionStatus('approved', transaction.transaction_id, {
+      const response = await updateTransactionStatus('approved', transactionId, {
         descripcion: resolutionForm.description,
         additionalData: {
           codigo_transferencia: resolutionForm.transfer_id,
@@ -238,13 +241,15 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
         setModalServidor(true);
       }
 
-      const responseFile = await fetch(`http://localhost:8080/api/v1/admin/transactions/voucher`, {
+      const responseFile = await fetch(`http://localhost:3001/api/v2/admin/transactions/voucher`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
         },
         body: formData,
       });
+
+      console.log('Estado de respuesta:', responseFile.status);
 
       if (!responseFile.ok) {
         const errorData = await responseFile.json();
