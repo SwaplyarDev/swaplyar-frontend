@@ -33,7 +33,7 @@ interface StepTwoData {
   re_enter_usdt_direction: string;
   red_selection: RedType | undefined;
   recieveAmountRed: string;
-  pix_key: string;
+  pixKey: string;
   individual_tax_id: string;
 }
 
@@ -94,7 +94,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       re_enter_usdt_direction: '',
       red_selection: undefined,
       recieveAmountRed: '',
-      pix_key: '',
+      pixKey: '',
       individual_tax_id: '',
     },
     stepThree: {
@@ -133,7 +133,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     const state = get();
     const { stepOne, stepTwo, stepThree } = state.formData;
 
-    const pixValue = detectarTipoPixKey(stepTwo.pix_key || 'oa@gmail.com');
+    const pixValue = detectarTipoPixKey(stepTwo.pixKey || 'oa@gmail.com');
 
     const senderDetails: Record<string, string> = {
       email_account: stepThree.pay_email || detectarMail(selectedSendingSystem),
@@ -143,7 +143,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       send_method_value: stepTwo.transfer_identification || 'SwaplyAr.com',
       document_type: getTransferIdentificationType(stepTwo.tax_identification || '20-19103601-9'),
       document_value: stepTwo.tax_identification || '20-19103601-9',
-      pix_key: stepTwo.pix_key || 'oa@gmail.com',
+      pixKey: stepTwo.pixKey || 'oa@gmail.com',
       pix_value: pixValue || '',
       cpf: stepTwo.individual_tax_id.replace(/[.-]/g, '') || '111.111.111-11',
       currency: selectedSendingSystem?.coin.toLowerCase() || '',
@@ -159,7 +159,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       send_method_value: stepTwo.transfer_identification || '',
       document_type: getTransferIdentificationType(stepTwo.tax_identification),
       document_value: stepTwo.tax_identification || '',
-      pix_key: stepTwo.pix_key || '',
+      pixKey: stepTwo.pixKey || '',
       pix_value: pixValue || '',
       cpf: stepTwo.individual_tax_id.replace(/[.-]/g, '') || '',
       currency: selectedReceivingSystem?.coin.toLowerCase() || '',
@@ -210,12 +210,42 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     } else {
       console.log('No hay archivo disponible');
     }
-    formDataPayload.append('transaction', JSON.stringify(payload.transaction));
-    formDataPayload.append('sender', JSON.stringify(payload.sender));
-    formDataPayload.append('receiver', JSON.stringify(payload.receiver));
-    formDataPayload.append('payment_method', JSON.stringify(payload.payment_method));
-    formDataPayload.append('amounts', JSON.stringify(payload.amounts));
-    formDataPayload.append('status', JSON.stringify(payload.status));
+    const createTransactionDto = {
+      countryTransaction: payload.transaction.country_transaction,
+      message: payload.transaction.message,
+      createdBy: payload.sender.email,
+      financialAccounts: {
+        senderAccount: {
+          firstName: payload.sender.first_name,
+          lastName: payload.sender.last_name,
+          phoneNumber: payload.sender.phone_number,
+          email: payload.sender.email,
+          paymentMethod: payload.payment_method.sender,
+        },
+        receiverAccount: {
+          firstName: payload.receiver.receiver_first_name,
+          lastName: payload.receiver.receiver_last_name,
+          phoneNumber: '', // lo podés agregar si lo tenés
+          email: '', // idem
+          paymentMethod: payload.payment_method.receiver,
+        },
+      },
+      amount: {
+        amountSent: parseFloat(stepThree.send_amount.replace(/[^\d.-]/g, '')) || 0,
+        currencySent: selectedSendingSystem?.coin,
+        amountReceived: parseFloat(stepThree.receive_amount.replace(/[^\d.-]/g, '')) || 0,
+        currencyReceived: selectedReceivingSystem?.coin,
+      },
+
+      proofOfPayment: {
+        type: 'image',
+        url: '',
+      },
+      createdAt: new Date().toISOString(),
+      finalStatus: payload.status.status,
+    };
+
+    formDataPayload.append('createTransactionDto', JSON.stringify(createTransactionDto));
 
     console.log(' payload: ', formDataPayload);
     try {
@@ -322,7 +352,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           re_enter_usdt_direction: '',
           red_selection: undefined,
           recieveAmountRed: '',
-          pix_key: '',
+          pixKey: '',
           individual_tax_id: '',
         },
         stepThree: {
