@@ -2,7 +2,7 @@
 
 import type React from 'react';
 
-import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
+import type { TransactionTypeSingle, TransactionV2 } from '@/types/transactions/transactionsType';
 import { getReceiverLabels } from '../ui/RenderLabels';
 import { useTransactionStore } from '@/store/transactionModalStorage';
 import { useState } from 'react';
@@ -17,14 +17,14 @@ import { UpdateTransactionData } from '@/components/admin/TransactionPageCompone
 interface ModalEditRecieverProps {
   modal: boolean;
   setModal: (arg: boolean) => void;
-  trans: TransactionTypeSingle;
+  trans: TransactionV2;
 }
 
 const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, trans }) => {
   const receiverLabels = getReceiverLabels(trans);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { noteEdit, regretCancel } = useTransactionStore();
-  const { transaction } = trans;
+  const  transaction  = trans;
 
   const [isDragging, setIsDragging] = useState(false);
 
@@ -72,7 +72,7 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
     };
 
     try {
-      const response = await UpdateTransactionData(body, transaction.transaction_id);
+      const response = await UpdateTransactionData(body, transaction.id);
     } catch (error) {
       throw new Error(`❌ Error en la respuesta del servicio` + error);
     }

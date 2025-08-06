@@ -17,7 +17,7 @@ import DiscrepancySection from './DiscrepancySection';
 
 const ClientInformation: React.FC = ({}) => {
   const { trans } = useTransactionStore();
-  const { transaction } = trans;
+  const transaction = trans;
   const [select, setSelect] = useState<boolean | null>(null);
 
   const handleStopClick = () => {

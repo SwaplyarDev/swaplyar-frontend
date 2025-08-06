@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 import { CheckCircle, XCircle, AlertTriangle, Loader2 } from 'lucide-react';
 import { TransactionService } from './ui/TransactionService';
 import DiscrepancySection from './DiscrepancySection';
-import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
+import type { TransactionTypeSingle, TransactionV2 } from '@/types/transactions/transactionsType';
 import { Label } from '@/components/ui/Label';
 import { Input } from '@/components/ui/Input';
 import { TooltipContent, TooltipTrigger } from '@/components/ui/Tooltip';
@@ -34,7 +34,7 @@ interface AprobarRechazarProps {
     transferRealized: boolean;
   };
   transId: string;
-  trans: TransactionTypeSingle;
+  trans: TransactionV2;
   handleComponentStateChange: (key: keyof any['componentStates'], value: any) => void;
   setDiscrepancySend: (value: boolean) => void;
 }

@@ -2,7 +2,7 @@
 
 import type React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
+import type { TransactionTypeSingle, TransactionV2 } from '@/types/transactions/transactionsType';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/Input';
 interface ConfirmTransButtonProps {
   value: boolean | null;
   setValue: (arg: boolean) => void;
-  trans: TransactionTypeSingle;
+  trans: TransactionV2;
   submit: any;
   setIsSubmitting: (isSubmitting: boolean) => void;
   setSubmitError: (error: string | null) => void;
@@ -32,7 +32,7 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
   setSubmitSuccess,
 }) => {
   const [selected, setSelected] = useState<boolean | null>(value);
-  const [transferId, setTransferId] = useState<string>(trans.payment_method?.sender?.details?.transfer_code || '');
+  const [transferId, setTransferId] = useState<string>(trans.receiverAccount?.paymentMethod?.sendMethodValue || '');
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isHovering, setIsHovering] = useState<string | null>(null);
 
