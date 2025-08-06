@@ -5,13 +5,26 @@ export interface SenderAccount {
   email: string | null
 }
 
+export interface PaymentMethod {
+  id: string;
+  platformId: string;
+  method: string;
+  currency: string;
+  bankName: string;
+  sendMethodKey: string;
+  sendMethodValue: string;
+  documentType: string;
+  documentValue: string;
+}
+
 export interface ReceiverAccount {
-  id: string
-  firstName: string
-  lastName: string
-  identificationNumber: string | null
-  phoneNumber: string
-  email: string
+  id: string;
+  firstName: string;
+  lastName: string;
+  identificationNumber: string | null;
+  phoneNumber: string;
+  email: string;
+  paymentMethod: PaymentMethod;
 }
 
 export interface ProofOfPayment {
@@ -41,6 +54,8 @@ export interface TransactionV2 {
   userId: string | null
   proofOfPayment: ProofOfPayment
   amount: Amount
+  regret_id?: string | null
+  note_id?: string | null
 }
 
 export interface TransactionArrayV2 {
@@ -62,6 +77,56 @@ export const emptyTransactionArrayV2: TransactionArrayV2 = {
   },
   data: [],
 }
+
+export const emptyTransactionV2: TransactionV2 = {
+  id: '',
+  countryTransaction: '',
+  message: '',
+  createdAt: '',
+  createdBy: '',
+  finalStatus: '',
+  senderAccount: {
+    id: '',
+    firstName: '',
+    lastName: '',
+    email: null,
+  },
+  receiverAccount: {
+    id: '',
+    firstName: '',
+    lastName: '',
+    identificationNumber: null,
+    phoneNumber: '',
+    email: '',
+    paymentMethod: {
+      id: '',
+      platformId: '',
+      method: '',
+      currency: '',
+      bankName: '',
+      sendMethodKey: '',
+      sendMethodValue: '',
+      documentType: '',
+      documentValue: '',
+    },
+  },
+  userId: null,
+  proofOfPayment: {
+    id: '',
+    imgUrl: '',
+    createAt: '',
+  },
+  amount: {
+    id: '',
+    amountSent: 0,
+    currencySent: '',
+    amountReceived: 0,
+    currencyReceived: '',
+    received: false,
+  },
+  regret_id: null,
+  note_id: null,
+};
 
 //Interfaces anteriores
 export interface TransactionTypeSingle {

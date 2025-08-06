@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
+import { useMemo, useEffect } from 'react'
 import type { NoteTypeSingle } from '@/types/transactions/notesType';
 import type { RegretTypeSingle } from '@/types/transactions/regretsType';
 import SkeletonModal from '../TransactionModal/componentesModal/SkeletonModal';
@@ -20,9 +20,12 @@ import { useComponentStateManagement } from '@/hooks/admin/transactionPageHooks/
 import ClientEditCancelMessage, {
   ClientMessageType,
 } from '../TransactionModal/componentesModal/ui/ClientEditCancelMessage';
+import { TransactionV2 } from '@/types/transactions/transactionsType';
+import { adaptTransactionV2ToTransactionTypeSingle } from '../utils/transactionAdapter';
+
 
 interface TransactionPageClientComponentProps {
-  initialTransaction: TransactionTypeSingle;
+  initialTransaction: TransactionV2;
   initialStatus: string;
   initialComponentStates: {
     aprooveReject: 'stop' | 'accepted' | 'canceled' | null;
@@ -43,16 +46,19 @@ export default function TransactionPageClientComponent({
   transIdAdmin,
   noteEdit,
   regretCancel,
+  token,
 }: TransactionPageClientComponentProps) {
   const [discrepancySend, setDiscrepancySend] = useState(false);
-
   const [isLoading, setIsLoading] = useState(false);
   const { status, setStatus } = useTransactionStore();
 
-  const transId = initialTransaction.transaction.transaction_id;
+  const transId = initialTransaction.id;
+  
+  const transaction = initialTransaction
+
 
   useTransactionStoreInit({
-    initialTransaction,
+    initialTransaction: initialTransaction,
     initialStatus,
     initialComponentStates,
     transIdAdmin,
@@ -60,12 +66,18 @@ export default function TransactionPageClientComponent({
     regretCancel,
   });
 
-  useTransactionStatusUpdate(transId, setStatus);
-
+  useTransactionStatusUpdate(transId, setStatus, token);
   const { isVisible } = useModalAnimation();
 
-  const { isSubmitting, submitError, submitSuccess, handleSubmit, setIsSubmitting, setSubmitError, setSubmitSuccess } =
-    useTransactionSubmission(transId, setStatus);
+  const {
+    isSubmitting,
+    submitError,
+    submitSuccess,
+    handleSubmit,
+    setIsSubmitting,
+    setSubmitError,
+    setSubmitSuccess,
+  } = useTransactionSubmission(transId, setStatus);
 
   const { componentStates, selected, handleComponentStateChange, handleSelectionChange } =
     useComponentStateManagement();
@@ -117,24 +129,22 @@ export default function TransactionPageClientComponent({
                   (componentStates.aprooveReject !== 'canceled' &&
                     componentStates.discrepancySection !== null &&
                     (componentStates.discrepancySection !== true || discrepancySend))) && (
-                  <>
-                    <ClientInformation />
-                  </>
+                  <ClientInformation />
                 )}
             </div>
           </div>
 
           <div className="col-span-2 lg:col-span-1">
             <div className="grid gap-4">
-              <TransferImages trans={initialTransaction} />
+              <TransferImages trans={adaptTransactionV2ToTransactionTypeSingle(initialTransaction)} />
 
               <ClientEditCancelMessage
                 type={
-                  initialTransaction.transaction.regret_id
+                  initialTransaction.regret_id
                     ? ClientMessageType.Cancel
-                    : initialTransaction.transaction.note_id
-                      ? ClientMessageType.Edit
-                      : null
+                    : initialTransaction.note_id
+                    ? ClientMessageType.Edit
+                    : null
                 }
                 message={regretCancel?.note || noteEdit?.note}
                 createdAt={regretCancel?.created_at || noteEdit?.created_at}
