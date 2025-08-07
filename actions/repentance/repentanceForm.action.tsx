@@ -34,8 +34,9 @@ export const createRegret = async (createRepentance: FormData) => {
       email: transformedData.email,
       phone_number: transformedData.phone_number,
       status: transformedData.status || 'pendiente',
-      note: transformedData.note,
+      description: transformedData.note || '',
     }),
+
     cache: 'no-store',
   });
   try {
