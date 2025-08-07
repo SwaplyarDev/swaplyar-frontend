@@ -1,4 +1,4 @@
-import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
+import type { TransactionV2 } from '@/types/transactions/transactionsType';
 import { getReceiverLabels } from './ui/RenderLabels';
 import type React from 'react';
 import { ExternalLink } from 'lucide-react';
@@ -6,13 +6,13 @@ import ClientMessage from './ui/ClientMessage';
 
 interface DetailTransProps {
   isLoading: boolean;
-  transaction: TransactionTypeSingle;
+  transaction: TransactionV2;
 }
 
 const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading }) => {
   if (isLoading) return null;
 
-  const { sender, payment_method, amounts, proof_of_payment } = transaction;
+  const { senderAccount, receiverAccount, amount, proofOfPayment } = transaction;
 
   const formatCurrency = (amount: string | number, currency: string) => {
     return `${amount} ${currency}`;
@@ -35,12 +35,12 @@ const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading 
           <div className="flex justify-between">
             <span className="text-sm text-gray-600 dark:text-gray-400">Nombre y Apellido:</span>
             <span className="font-medium dark:text-gray-200">
-              {sender?.first_name ? `${sender.first_name} ${sender.last_name || ''}` : 'No disponible'}
+              {senderAccount?.firstName ? `${senderAccount.firstName} ${senderAccount.lastName || ''}` : 'No disponible'}
             </span>
           </div>
           <div className="flex justify-between">
             <span className="text-sm text-gray-600 dark:text-gray-400">Email:</span>
-            <span className="font-medium dark:text-gray-200">{sender?.email || 'No disponible'}</span>
+            <span className="font-medium dark:text-gray-200">{senderAccount?.email || 'No disponible'}</span>
           </div>
         </div>
 
@@ -59,30 +59,30 @@ const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading 
           <div className="flex justify-between">
             <span className="text-sm text-gray-600 dark:text-gray-400">Monto a Transferir:</span>
             <span className="font-medium dark:text-gray-200">
-              {amounts?.sent
-                ? `${amounts.sent.amount} / ${payment_method?.sender.value || ''} / ${amounts.sent.currency}`
+              {amount?.amountSent
+                ? `${amount.amountSent} / ${receiverAccount?.paymentMethod?.method || ''} / ${amount.currencySent}`
                 : 'No disponible'}
             </span>
           </div>
           <div className="flex justify-between">
             <span className="text-sm text-gray-600 dark:text-gray-400">Monto a recibir:</span>
             <span className="font-medium dark:text-gray-200">
-              {amounts?.received
-                ? `${amounts.received.amount} / ${payment_method?.receiver.value || ''} / ${amounts.received.currency}`
+              {amount?.amountReceived
+                ? `${amount.amountReceived} / ${receiverAccount?.paymentMethod?.method || ''} / ${amount.currencyReceived}`
                 : 'No disponible'}
             </span>
           </div>
           <div className="flex justify-between">
             <span className="text-sm text-gray-600 dark:text-gray-400">Link del comprobante:</span>
-            {proof_of_payment?.img_transaction ? (
+            {proofOfPayment?.imgUrl ? (
               <a
-                href={proof_of_payment.img_transaction}
+                href={proofOfPayment.imgUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-medium text-blue-600 hover:text-blue-800 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
                 aria-label="Ver comprobante de pago"
               >
-                <span>{truncateUrl(proof_of_payment.img_transaction)}</span>
+                <span>{truncateUrl(proofOfPayment.imgUrl)}</span>
                 <ExternalLink size={14} className="ml-1 inline" />
               </a>
             ) : (
@@ -90,7 +90,7 @@ const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading 
             )}
           </div>
           <ClientMessage
-            message={transaction.transaction.message}
+            message={transaction.message}
             headerMessage="Mensaje del cliente"
             classnames="min-h-[4.25rem] border"
           />

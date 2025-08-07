@@ -40,32 +40,32 @@ export async function getAllAdminTransactions(page = 1, perPage = 12) {
 /**
  * Obtiene una transacción específica por ID
  */
-export async function getAdminTransactionById(transactionId: string) {
-  try {
-    const session = await auth();
-    // if (!session || session.decodedToken.role !== "admin") {
-    //   throw new Error("No autorizado")
-    // }
+// export async function getAdminTransactionById(transactionId: string) {
+//   try {
+//     const session = await auth();
+//     // if (!session || session.decodedToken.role !== "admin") {
+//     //   throw new Error("No autorizado")
+//     // }
 
-    const token = session?.accessToken || '';
-    const response = await fetch(`${API_BASE_URL}/admin/transactions/${transactionId}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      cache: 'no-store',
-    });
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status} ${response.statusText}`);
-    }
+//     const token = session?.accessToken || '';
+//     const response = await fetch(`${API_BASE_URL}/v1/admin/transactions/${transactionId}`, {
+//       method: 'GET',
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//         'Content-Type': 'application/json',
+//       },
+//       cache: 'no-store',
+//     });
+//     if (!response.ok) {
+//       throw new Error(`Error: ${response.status} ${response.statusText}`);
+//     }
 
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching admin transaction:', error);
-    return null;
-  }
-}
+//     return await response.json();
+//   } catch (error) {
+//     console.error('Error fetching admin transaction:', error);
+//     return null;
+//   }
+// }
 
 /**
  * Actualiza una transacción
@@ -137,13 +137,9 @@ export async function getTransactionStatusHistory(transactionId: string) {
 export async function uploadTransactionReceipt(formData: FormData) {
   try {
     const session = await auth();
-    // if (!session || session.decodedToken.role !== "admin") {
-    //   throw new Error("No autorizado")
-    // }
-
     const token = session?.accessToken || '';
 
-    const response = await fetch(`${API_BASE_URL}/transactions/voucher`, {
+    const response = await fetch(`${API_BASE_URL}/admin/transactions/voucher`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -151,11 +147,16 @@ export async function uploadTransactionReceipt(formData: FormData) {
       body: formData,
     });
 
+    console.log('Estado de respuesta:', response.status);
+
+    const result = await response.json().catch(() => null);
+    console.log('Respuesta servidor:', result);
+
     if (!response.ok) {
       throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
 
-    return await response.json();
+    return result;
   } catch (error) {
     console.error('Error uploading transaction receipt:', error);
     return error;

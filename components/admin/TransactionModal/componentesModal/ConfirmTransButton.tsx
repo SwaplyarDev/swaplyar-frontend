@@ -2,7 +2,7 @@
 
 import type React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
+import type { TransactionTypeSingle, TransactionV2 } from '@/types/transactions/transactionsType';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/Input';
 interface ConfirmTransButtonProps {
   value: boolean | null;
   setValue: (arg: boolean) => void;
-  trans: TransactionTypeSingle;
+  trans: TransactionV2;
   submit: any;
   setIsSubmitting: (isSubmitting: boolean) => void;
   setSubmitError: (error: string | null) => void;
@@ -32,7 +32,7 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
   setSubmitSuccess,
 }) => {
   const [selected, setSelected] = useState<boolean | null>(value);
-  const [transferId, setTransferId] = useState<string>(trans.payment_method?.sender?.details?.transfer_code || '');
+  const [transferId, setTransferId] = useState<string>(trans.receiverAccount?.paymentMethod?.sendMethodValue || '');
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isHovering, setIsHovering] = useState<string | null>(null);
 
@@ -260,24 +260,26 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
               <span className="font-medium text-gray-800 dark:text-gray-200">{transferId}</span>
             </div>
           </div>
-          <DialogFooter className="flex justify-end gap-3">
-            <Button
-              onClick={handleConfirmSubmit}
-              disabled={isSubmitting}
-              className="bg-custom-blue text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
-            >
-              {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-              Confirmar
-            </Button>
-            {!isSubmitting && (
+          <DialogFooter>
+            <div className="flex w-full justify-center gap-3">
               <Button
-                variant="outline"
-                onClick={() => setShowConfirmModal(false)}
-                className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                onClick={handleConfirmSubmit}
+                disabled={isSubmitting}
+                className="bg-custom-blue text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
               >
-                Cancelar
+                {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                Confirmar
               </Button>
-            )}
+              {!isSubmitting && (
+                <Button
+                  variant="outline"
+                  onClick={() => setShowConfirmModal(false)}
+                  className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                >
+                  Cancelar
+                </Button>
+              )}
+            </div>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -297,7 +299,7 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
               El ID de transferencia ha sido registrado exitosamente.
             </p>
           ) : (
-            <div className="flex flex-col items-center">
+            <div className="flex w-full flex-col items-center text-center">
               <p className="mb-2 font-bold text-red-700 dark:text-red-400">
                 No se pudo registrar el ID de transferencia
               </p>
@@ -312,26 +314,28 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
               )}
             </div>
           )}
-          <DialogFooter className="flex justify-end gap-3">
-            {!submitResult && (
+          <DialogFooter>
+            <div className="flex w-full justify-center gap-3">
+              {!submitResult && (
+                <Button
+                  variant="outline"
+                  onClick={handleResultModalClose}
+                  className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                >
+                  Cancelar
+                </Button>
+              )}
               <Button
-                variant="outline"
                 onClick={handleResultModalClose}
-                className="dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                className={
+                  submitResult
+                    ? 'bg-green-600 text-white hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600'
+                    : 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600'
+                }
               >
-                Cancelar
+                {submitResult ? 'Aceptar' : 'Intentar de nuevo'}
               </Button>
-            )}
-            <Button
-              onClick={handleResultModalClose}
-              className={
-                submitResult
-                  ? 'bg-green-600 text-white hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600'
-                  : 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600'
-              }
-            >
-              {submitResult ? 'Aceptar' : 'Intentar de nuevo'}
-            </Button>
+            </div>
           </DialogFooter>
         </DialogContent>
       </Dialog>

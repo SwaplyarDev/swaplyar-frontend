@@ -1,47 +1,43 @@
-import { getRegretById } from '@/actions/repentance/repentanceForm.action';
-import { getAdminTransactionById } from '@/actions/transactions/admin-transaction';
-import { getNoteById } from '@/actions/transactions/notes.action';
-import { auth } from '@/auth';
-import TransactionPageClientComponent from '@/components/admin/TransactionPageComponents/TransactionPageClientComponent';
 import { getComponentStatesFromStatus } from '@/utils/transactionStatesConverser';
+import TransactionPageClientComponent from '@/components/admin/TransactionPageComponents/TransactionPageClientComponent';
+import { auth } from '@/auth';
+import { getTransactionById } from '@/actions/transactions/transactions.action';
+
 
 export default async function TransactionPage({ params }: { params: { id: string } }) {
   const session = await auth();
-
+  const token = session?.accessToken || '';
   const transId = params.id;
 
-
-  console.log('Fetching transaction with ID:', transId, ' page');
-
-  const transaction = await getAdminTransactionById(transId);
-
-  if (!transaction) {
+  const transactionV2 = await getTransactionById(transId, token);
+  if (!transactionV2) {
     return <div className="p-8 text-center">Transaction not found</div>;
   }
 
-  const status = transaction.status || 'pending';
-  const componentStates = getComponentStatesFromStatus(transaction.status_id || '1');
 
-  let noteEdit = null;
-  let regretCancel = null;
+  const status = transactionV2.finalStatus || 'pending';
+  const componentStates = getComponentStatesFromStatus('1'); // usar '1' o el valor adecuado
 
-  if (transaction.transaction.note_id) {
-    noteEdit = await getNoteById(transaction.transaction.note_id);
-  }
+  // let noteEdit = null;
+  // let regretCancel = null;
 
-  if (transaction.transaction.regret_id) {
-    const regretResponse = await getRegretById(transaction.transaction.regret_id);
-    regretCancel = regretResponse?.regret || null;
-  }
+  // if (transaction.transaction.note_id) {
+  //   noteEdit = await getNoteById(transaction.transaction.note_id);
+  // }
+
+  // if (transaction.transaction.regret_id) {
+  //   const regretResponse = await getRegretById(transaction.transaction.regret_id);
+  //   regretCancel = regretResponse?.regret || null;
+  // }
 
   return (
     <TransactionPageClientComponent
-      initialTransaction={transaction}
+      initialTransaction={transactionV2}
       initialStatus={status}
       initialComponentStates={componentStates}
-      transIdAdmin={transaction.transaction_admin_id || ''}
-      noteEdit={noteEdit}
-      regretCancel={regretCancel}
+      transIdAdmin={transactionV2.id}
+      noteEdit={null}
+      regretCancel={null}
       token={session?.accessToken || ''}
     />
   );

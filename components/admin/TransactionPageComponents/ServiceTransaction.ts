@@ -1,17 +1,18 @@
-import { getAdminTransactionById, getTransactionStatusHistory } from '@/actions/transactions/admin-transaction';
+import { getTransactionStatusHistory } from '@/actions/transactions/admin-transaction';
 import {
   StatusPayload,
   updateTransaction,
   updateTransactionStatus,
   uploadReceipt,
 } from '@/actions/transactions/transaction-status.action';
+import { getTransactionById } from '@/actions/transactions/transactions.action';
 
 /**
  * Obtiene los detalles de una transacción
  */
-export async function GetTransactionDetails(transactionId: string) {
+export async function GetTransactionDetails(transactionId: string, token: string) {
   try {
-    const response = await getAdminTransactionById(transactionId);
+    const response = await getTransactionById(transactionId, token);
     return response;
   } catch (error) {
     console.error('Error getting transaction details:', error);

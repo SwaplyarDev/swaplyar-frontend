@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 import { CheckCircle, XCircle, AlertTriangle, Loader2 } from 'lucide-react';
 import { TransactionService } from './ui/TransactionService';
 import DiscrepancySection from './DiscrepancySection';
-import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
+import type { TransactionTypeSingle, TransactionV2 } from '@/types/transactions/transactionsType';
 import { Label } from '@/components/ui/Label';
 import { Input } from '@/components/ui/Input';
 import { TooltipContent, TooltipTrigger } from '@/components/ui/Tooltip';
@@ -34,7 +34,7 @@ interface AprobarRechazarProps {
     transferRealized: boolean;
   };
   transId: string;
-  trans: TransactionTypeSingle;
+  trans: TransactionV2;
   handleComponentStateChange: (key: keyof any['componentStates'], value: any) => void;
   setDiscrepancySend: (value: boolean) => void;
 }
@@ -142,7 +142,10 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                   onClick={() => componentStates.confirmTransButton && onSelectChange('accepted')}
                   disabled={!componentStates.confirmTransButton}
                   variant="outline"
-                  className={clsx(getButtonClass('accepted'), 'rounded-3xl')}
+                  className={clsx(
+                    getButtonClass('accepted'),
+                    'rounded-3xl shadow-none ring-0 focus:outline-none focus:ring-0',
+                  )}
                   aria-pressed={selected === 'accepted'}
                 >
                   <CheckCircle
@@ -164,7 +167,10 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                   onClick={() => componentStates.confirmTransButton && onSelectChange('stop')}
                   disabled={!componentStates.confirmTransButton}
                   variant="outline"
-                  className={clsx(getButtonClass('stop'), 'rounded-3xl')}
+                  className={clsx(
+                    getButtonClass('stop'),
+                    'rounded-3xl shadow-none ring-0 focus:outline-none focus:ring-0',
+                  )}
                   aria-pressed={selected === 'stop'}
                 >
                   <AlertTriangle
@@ -185,7 +191,10 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                 <Button
                   onClick={() => onSelectChange('canceled')}
                   variant="outline"
-                  className={clsx(getButtonClass('canceled'), 'rounded-3xl')}
+                  className={clsx(
+                    getButtonClass('canceled'),
+                    'rounded-3xl shadow-none ring-0 focus:outline-none focus:ring-0',
+                  )}
                   aria-pressed={selected === 'canceled'}
                 >
                   <XCircle
@@ -287,10 +296,17 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
             <p className="text-gray-700 dark:text-gray-300">Estas seguro de enviar el motivo de rechazo?</p>
           </div>
           <DialogFooter className="mt-4 sm:justify-center">
-            <Button onClick={handleSubmitRejection} className="bg-red-600 text-white">
+            <Button
+              onClick={handleSubmitRejection}
+              className="bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
+            >
               <span>{loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Enviar'}</span>
             </Button>
-            <Button className="text-white" onClick={() => setOpenModalReject(false)} disabled={loading}>
+            <Button
+              onClick={() => setOpenModalReject(false)}
+              disabled={loading}
+              className="bg-gray-300 text-gray-800 hover:bg-gray-400 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
+            >
               <span>Cancelar</span>
             </Button>
           </DialogFooter>

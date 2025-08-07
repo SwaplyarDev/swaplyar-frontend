@@ -1,11 +1,11 @@
 'use server';
-import { TransactionArray, TransactionTypeSingle } from '@/types/transactions/transactionsType';
+import { TransactionArrayV2, TransactionTypeSingle, TransactionV2 } from '@/types/transactions/transactionsType';
 import { TransactionAdminType } from '@/types/transactions/transAdminType';
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 //General Transactions Fetchs
-export const getAllTransactions = async (page: number, token: string) => {
+export const getAllTransactions = async (page: number, token: string): Promise<TransactionArrayV2 | null> => {
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/admin/transactions?page=${page}&perPage=12`, {
       method: 'GET',
@@ -15,10 +15,11 @@ export const getAllTransactions = async (page: number, token: string) => {
       cache: 'no-store',
     });
 
-    if (!response.ok) throw new Error('Failed to fetch transactions');
+    if (!response.ok) {
+      throw new Error(`Failed to fetch transactions: ${response.status} ${response.statusText}`)
+    }
 
-    const data: TransactionArray = await response.json();
-
+    const data: TransactionArrayV2 = await response.json();
     return data;
   } catch (error: any) {
     console.error('Error fetching transactions:', error);
@@ -26,23 +27,29 @@ export const getAllTransactions = async (page: number, token: string) => {
   }
 };
 
-export const getTransactionById = async (transaction_id: string, token: string) => {
+
+export async function getTransactionById(transactionId: string, token: string): Promise<TransactionV2 | null> {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/admin/transactions/${transaction_id}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/admin/transactions/${transactionId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
       },
       cache: 'no-store',
     });
-    if (!response.ok) throw new Error('Failed to fetch transactions');
 
-    const data: TransactionTypeSingle = await response.json();
-    return data;
-  } catch (error: any) {
-    console.error('Error fetching transactions:', error);
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+
+    const json = await response.json();
+    return json.data;
+  } catch (error) {
+    console.error('Error fetching admin transaction:', error);
     return null;
   }
-};
+}
+
 
 export const deleteTransactionById = async (id: string, token: string) => {
   try {

@@ -21,6 +21,7 @@ const VALID_STATUSES = [
 
 export type StatusPayload = {
   descripcion?: string;
+  message?: string;
   additionalData?: {
     codigo_transferencia?: string;
     descripcion?: string;
@@ -28,12 +29,20 @@ export type StatusPayload = {
   review?: string;
   amount?: number;
 };
-
 /**
  * Server Action para actualizar el estado de una transacción
  * Utiliza el endpoint /transactions/status/:status
  */
-export async function updateTransactionStatus(status: string, transaction_id: string, payload: StatusPayload) {
+export async function updateTransactionStatus(
+  status: string,
+  transaction_id: string,
+  payload: {
+    message?: string;
+    descripcion?: string;
+    additionalData?: Record<string, any>;
+    [key: string]: any;
+  }
+) {
   try {
     // Validar autenticación y rol de usuario
     const session = await auth();
@@ -63,24 +72,34 @@ export async function updateTransactionStatus(status: string, transaction_id: st
       };
     }
 
-    // Llamar al endpoint para actualizar el estado
-    const response = await fetch(
-      `${API_BASE_URL}/admin/transactions/status/${status}?transactionId=${transaction_id}`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
+    const body: Record<string, any> = {
+      status,
+      additionalData: payload.additionalData || {},
+    };
+
+   //  usar descripcion si 'message' no está en status review_payment (consultar)
+    if (payload.message || status === 'review_payment') {
+  body.message = payload.message ?? 'Solicitud en revisión por el administrador';
+   }
+
+
+    console.log('Enviando a backend:', body);
+
+    const response = await fetch(`${API_BASE_URL}/admin/transactions/${transaction_id}/status`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify(body),
+    });
 
     console.log('response: ' + response.status, response.ok);
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `Error: ${response.status} ${response.statusText}`);
+      const errorText = await response.text();
+      console.error('Error desde backend:', errorText);
+      throw new Error(`Error: ${response.status} - ${errorText}`);
     }
 
     // Revalidar la página para actualizar los datos

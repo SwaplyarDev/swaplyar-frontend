@@ -1,7 +1,5 @@
-'use client';
-
+"use client";
 import type React from 'react';
-
 import { useState, useRef, useEffect } from 'react';
 import { SessionProvider } from 'next-auth/react';
 import withReactContent from 'sweetalert2-react-content';
@@ -13,28 +11,37 @@ import {
   Clock,
   ChevronDown,
   ChevronUp,
-  Filter,
   Search,
   Edit,
   Undo2,
   AlertTriangle,
 } from 'lucide-react';
-import type { TransactionArray, TransactionTypeAll } from '@/types/transactions/transactionsType';
+import type { TransactionArrayV2, TransactionV2 } from '@/types/transactions/transactionsType';
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
 import TransactionModal from '@/components/admin/TransactionModal/transactionModal';
 import { useRouter } from 'next/navigation';
-import ClientStatus from './ClientStatus';
 
 interface TransactionsTableProps {
-  transactions: TransactionArray;
+  transactions: TransactionArrayV2;
   currentPage: number;
+}
+
+interface FilterState {
+  status: string[]
+  stock_status: string[]
+  wallet_status: string[]
+  min_date: string | null
+  max_date: string | null
+  orderby: string
+  order: string
+  search: string
 }
 
 const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, currentPage }) => {
   const MySwal: any = withReactContent(Swal);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [transId, setTransId] = useState<string>('');
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<FilterState>({
     status: [],
     stock_status: [],
     wallet_status: [],
@@ -44,7 +51,6 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
     order: 'desc',
     search: '',
   });
-
   const [activePopover, setActivePopover] = useState<string | null>(null);
   const popoverRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
@@ -70,14 +76,11 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
   };
 
   const handleStatusFilterChange = (status: string) => {
-    /* @ts-expect-error */
     const newStatusFilters = filters.status.includes(status)
       ? filters.status.filter((s) => s !== status)
       : [...filters.status, status];
-
     setFilters({
       ...filters,
-      /* @ts-expect-error */
       status: newStatusFilters,
     });
   };
@@ -151,8 +154,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
       MySwal.update({
         html: (
           <SessionProvider>
-            {/* @ts-expect-error */}
-            <TransactionModal transId={id} />
+            <TransactionModal />
           </SessionProvider>
         ),
         width: 'auto',
@@ -166,59 +168,75 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
     }, 300);
   };
 
-  // Función para obtener el badge de estado
+  // Función para obtener el badge de estado 
   const getStatusBadge = (status: string) => {
-    const statusConfig = {
-      '1': {
+    const statusConfig: Record<
+      string,
+      {
+        bgColor: string
+        textColor: string
+        icon: React.ReactNode
+        label: string
+        borderColor?: string
+      }
+    > = {
+      pending: {
         bgColor: 'bg-blue-100 dark:bg-blue-900/30',
         textColor: 'text-blue-800 dark:text-blue-300',
         icon: <Clock size={14} className="mr-1" />,
-        label: 'En Proceso',
+        label: 'Pendiente',
       },
-      '2': {
+      review_payment: {
         bgColor: 'bg-purple-300 dark:bg-purple-900/30',
         textColor: 'text-purple-800 dark:text-purple-300',
         icon: <Search size={14} className="mr-1" />,
         label: 'Review',
       },
-      '3': {
+      accepted: {
         bgColor: 'bg-green-100 dark:bg-green-900/30',
         textColor: 'text-green-800 dark:text-green-300',
         borderColor: 'border-green-200 dark:border-green-800',
         icon: <CheckCircle size={14} className="mr-1.5 h-4 w-4" />,
         label: 'Aceptada',
       },
-      '4': {
+      approved: {
+        bgColor: 'bg-green-100 dark:bg-green-900/30',
+        textColor: 'text-green-800 dark:text-green-300',
+        borderColor: 'border-green-200 dark:border-green-800',
+        icon: <CheckCircle size={14} className="mr-1.5 h-4 w-4" />,
+        label: 'Aceptada',
+      },
+      rejected: {
         bgColor: 'bg-red-100 dark:bg-red-900/30',
         textColor: 'text-red-800 dark:text-red-300',
         icon: <XCircle size={14} className="mr-1" />,
         label: 'Rechazada',
       },
-      '7': {
+      discrepancy: {
         bgColor: 'bg-amber-100 dark:bg-amber-900/30',
         textColor: 'text-amber-800 dark:text-amber-300',
         icon: <AlertTriangle size={14} className="mr-1" />,
         label: 'Stop',
       },
-      '8': {
+      canceled: {
         bgColor: 'bg-red-100 dark:bg-red-900/30',
         textColor: 'text-red-800 dark:text-red-300',
         icon: <XCircle size={14} className="mr-1" />,
         label: 'Cancelada',
       },
-      '9': {
+      modified: {
         bgColor: 'bg-cyan-100 dark:bg-cyan-900/30',
         textColor: 'text-cyan-800 dark:text-cyan-300',
         icon: <Edit size={14} className="mr-1" />,
         label: 'Modificada',
       },
-      '10': {
+      refunded: {
         bgColor: 'bg-orange-100 dark:bg-orange-900/30',
         textColor: 'text-orange-800 dark:text-orange-300',
         icon: <Undo2 size={14} className="mr-1" />,
         label: 'Reembolsada',
       },
-      '11': {
+      completed: {
         bgColor: 'bg-green-100 dark:bg-green-900/30',
         textColor: 'text-green-800 dark:text-green-300',
         icon: <CheckCircle size={14} className="mr-1" />,
@@ -232,9 +250,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
       },
     };
 
-    // @ts-ignore
-    const config = status ? statusConfig[status] : statusConfig.default;
-
+    const config = status ? statusConfig[status] || statusConfig.default : statusConfig.default;
     return (
       <span
         className={`inline-flex min-w-[100px] items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${config.bgColor} ${config.textColor}`}
@@ -283,8 +299,9 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                     )}
                     {activePopover === 'status' && (
                       <div
-                        /* @ts-expect-error */
-                        ref={(el) => (popoverRefs.current['status'] = el)}
+                        ref={(el) => {
+                          popoverRefs.current['status'] = el
+                        }}
                         className="absolute left-0 top-full z-50 mt-1 w-48 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
                         onClick={(e) => e.stopPropagation()}
                       >
@@ -295,17 +312,15 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                               <input
                                 type="checkbox"
                                 className="mr-2 h-4 w-4"
-                                /* @ts-expect-error */
                                 checked={filters.status.includes('pending')}
                                 onChange={() => handleStatusFilterChange('pending')}
                               />
-                              En Proceso
+                              Pendiente
                             </label>
                             <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
                               <input
                                 type="checkbox"
                                 className="mr-2 h-4 w-4"
-                                /* @ts-expect-error */
                                 checked={filters.status.includes('canceled')}
                                 onChange={() => handleStatusFilterChange('canceled')}
                               />
@@ -315,9 +330,17 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                               <input
                                 type="checkbox"
                                 className="mr-2 h-4 w-4"
-                                /* @ts-expect-error */
                                 checked={filters.status.includes('accepted')}
                                 onChange={() => handleStatusFilterChange('accepted')}
+                              />
+                              Aceptada
+                            </label>
+                            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
+                              <input
+                                type="checkbox"
+                                className="mr-2 h-4 w-4"
+                                checked={filters.status.includes("completed")}
+                                onChange={() => handleStatusFilterChange("completed")}
                               />
                               Finalizada
                             </label>
@@ -352,8 +375,9 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                     )}
                     {activePopover === 'date' && (
                       <div
-                        /* @ts-expect-error */
-                        ref={(el) => (popoverRefs.current['date'] = el)}
+                        ref={(el) => {
+                          popoverRefs.current['date'] = el
+                        }}
                         className="absolute left-0 top-full z-50 mt-1 w-64 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
                         onClick={(e) => e.stopPropagation()}
                       >
@@ -424,71 +448,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                   </div>
                 </th>
                 <th className="px-4 py-3 text-sm font-medium">
-                  <div
-                    className="relative flex cursor-pointer items-center"
-                    onClick={() => togglePopover('origin_wallet')}
-                  >
-                    Billetera Origen
-                    {filters.orderby === 'origin_wallet' ? (
-                      filters.order === 'asc' ? (
-                        <ChevronUp size={16} className="ml-1" />
-                      ) : (
-                        <ChevronDown size={16} className="ml-1" />
-                      )
-                    ) : (
-                      <ChevronDown size={16} className="ml-1" />
-                    )}
-                    {activePopover === 'origin_wallet' && (
-                      <div
-                        /* @ts-expect-error */
-                        ref={(el) => (popoverRefs.current['origin_wallet'] = el)}
-                        className="absolute left-0 top-full z-50 mt-1 w-48 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <div className="p-2">
-                          <div className="mb-2 font-medium text-gray-800 dark:text-gray-200">Filtrar por billetera</div>
-                          <div className="space-y-2">
-                            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
-                              <input
-                                type="checkbox"
-                                className="mr-2 h-4 w-4"
-                                /* @ts-expect-error */
-                                checked={filters.stock_status.includes('payoneer')}
-                                onChange={() => handleWalletFilterChange('origin', 'payoneer')}
-                              />
-                              Payoneer
-                            </label>
-                            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
-                              <input
-                                type="checkbox"
-                                className="mr-2 h-4 w-4"
-                                /* @ts-expect-error */
-                                checked={filters.stock_status.includes('paypal')}
-                                onChange={() => handleWalletFilterChange('origin', 'paypal')}
-                              />
-                              PayPal
-                            </label>
-                          </div>
-                          <div className="mt-3 flex justify-between border-t border-gray-200 pt-2 dark:border-gray-700">
-                            <button
-                              className="text-xs text-blue-600 dark:text-blue-400"
-                              onClick={() => handleSortChange('origin_wallet')}
-                            >
-                              {filters.orderby === 'origin_wallet' && filters.order === 'asc'
-                                ? 'Ordenar Z-A'
-                                : 'Ordenar A-Z'}
-                            </button>
-                            <button className="text-xs text-red-600 dark:text-red-400" onClick={clearFilters}>
-                              Limpiar
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </th>
-                <th className="px-4 py-3 text-sm font-medium">
-                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('recipient')}>
+                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange("recipient")}>
                     Destinatario
                     {filters.orderby === 'recipient' ? (
                       filters.order === 'asc' ? (
@@ -502,74 +462,10 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                   </div>
                 </th>
                 <th className="px-4 py-3 text-sm font-medium">
-                  <div
-                    className="relative flex cursor-pointer items-center"
-                    onClick={() => togglePopover('dest_wallet')}
-                  >
-                    Billetera Destino
-                    {filters.orderby === 'dest_wallet' ? (
-                      filters.order === 'asc' ? (
-                        <ChevronUp size={16} className="ml-1" />
-                      ) : (
-                        <ChevronDown size={16} className="ml-1" />
-                      )
-                    ) : (
-                      <ChevronDown size={16} className="ml-1" />
-                    )}
-                    {activePopover === 'dest_wallet' && (
-                      <div
-                        /* @ts-expect-error */
-                        ref={(el) => (popoverRefs.current['dest_wallet'] = el)}
-                        className="absolute left-0 top-full z-50 mt-1 w-48 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <div className="p-2">
-                          <div className="mb-2 font-medium text-gray-800 dark:text-gray-200">Filtrar por billetera</div>
-                          <div className="space-y-2">
-                            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
-                              <input
-                                type="checkbox"
-                                className="mr-2 h-4 w-4"
-                                /* @ts-expect-error */
-                                checked={filters.wallet_status?.includes('payoneer')}
-                                onChange={() => handleWalletFilterChange('destination', 'payoneer')}
-                              />
-                              Payoneer
-                            </label>
-                            <label className="flex items-center text-sm text-gray-700 dark:text-gray-300">
-                              <input
-                                type="checkbox"
-                                className="mr-2 h-4 w-4"
-                                /* @ts-expect-error */
-                                checked={filters.wallet_status?.includes('paypal')}
-                                onChange={() => handleWalletFilterChange('destination', 'paypal')}
-                              />
-                              PayPal
-                            </label>
-                          </div>
-                          <div className="mt-3 flex justify-between border-t border-gray-200 pt-2 dark:border-gray-700">
-                            <button
-                              className="text-xs text-blue-600 dark:text-blue-400"
-                              onClick={() => handleSortChange('dest_wallet')}
-                            >
-                              {filters.orderby === 'dest_wallet' && filters.order === 'asc'
-                                ? 'Ordenar Z-A'
-                                : 'Ordenar A-Z'}
-                            </button>
-                            <button className="text-xs text-red-600 dark:text-red-400" onClick={clearFilters}>
-                              Limpiar
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </th>
-                <th className="px-4 py-3 text-sm font-medium">
-                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('client_action')}>
-                    Status Cliente
-                    {filters.orderby === 'client_action' ? (
-                      filters.order === 'asc' ? (
+                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange("amount")}>
+                    Monto
+                    {filters.orderby === "amount" ? (
+                      filters.order === "asc" ? (
                         <ChevronUp size={16} className="ml-1" />
                       ) : (
                         <ChevronDown size={16} className="ml-1" />
@@ -579,51 +475,44 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                     )}
                   </div>
                 </th>
+                <th className="px-4 py-3 text-sm font-medium">País</th>
+                <th className="px-4 py-3 text-sm font-medium">Mensaje</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {transactions.data.length > 0 ? (
-                transactions.data.map((transaction: TransactionTypeAll, index: number) => (
+                transactions.data.map((transaction: TransactionV2, index: number) => (
                   <tr
-                    key={transaction.transaction.transaction_id}
+                    key={transaction.id}
                     className="cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
-                    onClick={() => router.push(`/es/admin/transactions/${transaction.transaction.transaction_id}`)}
+                    onClick={() => router.push(`/es/admin/transactions/${transaction.id}`)}
                   >
-                    <td className="px-4 py-3 text-sm">{getStatusBadge(transaction.transaction.status)}</td>
+                    <td className="px-4 py-3 text-sm">{getStatusBadge(transaction.finalStatus)}</td>
                     <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                      {formatDate(transaction.transaction.created_at)}
+                      {formatDate(transaction.createdAt)}
                     </td>
                     <td className="px-4 py-3 font-mono text-sm text-gray-700 dark:text-gray-300">
-                      {transaction.transaction.transaction_id.substring(0, 8)}...
+                      {transaction.id.substring(0, 8)}...
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                      {transaction.sender.first_name} {transaction.sender.last_name}
+                      {transaction.senderAccount.firstName} {transaction.senderAccount.lastName}
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                      {transaction.payment_method.sender.value}
+                      {transaction.receiverAccount.firstName} {transaction.receiverAccount.lastName}
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                      {transaction.receiver.first_name} {transaction.receiver.last_name}
+                      {transaction.amount.amountSent} {transaction.amount.currencySent} →{" "}
+                      {transaction.amount.amountReceived} {transaction.amount.currencyReceived}
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                      {transaction.payment_method.receiver.value}
+                      {transaction.countryTransaction}
                     </td>
-                    <td className="px-4 py-3 text-sm">
-                      <ClientStatus
-                        status={
-                          transaction.transaction.note_id
-                            ? 'editar'
-                            : transaction.transaction.regret_id
-                              ? 'cancelar'
-                              : null
-                        }
-                      />
-                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{transaction.message}</td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={9} className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
+                  <td colSpan={8} className="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
                     No se encontraron transacciones
                   </td>
                 </tr>
@@ -639,15 +528,11 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
             totalPages={transactions.meta.totalPages}
             currentPage={transactions.meta.page}
             isLoading={isLoading}
-            /* @ts-ignore */
-            setIsLoading={setIsLoading}
           />
         </div>
       </div>
-
-      {/* <pre>{JSON.stringify(transactions, null, 2)}</pre> */}
     </div>
-  );
-};
+  )
+}
 
-export default TransactionsTable;
+export default TransactionsTable

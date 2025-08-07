@@ -66,7 +66,6 @@ const TransferClient = () => {
   const token = session.data?.accessToken || '';
 
   const [selected, setSelected] = useState<boolean | null>(null);
-  const [modal, setModal] = useState<boolean>(false);
   const [form, setForm] = useState<Form>({
     transfer_id: '',
     amount: '',
@@ -92,7 +91,7 @@ const TransferClient = () => {
 
   const [isInputTransferIdFocused, setIsInputTransferIdFocused] = useState(false);
 
-  const [open, setOpen] = useState(modal);
+  const [open, setOpen] = useState<boolean>(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -193,34 +192,39 @@ const TransferClient = () => {
   };
 
   const handleAprove = async () => {
-    try {
-      setIsLoading(true);
+  try {
+    setIsLoading(true);
 
-      if (!form.file) return null;
-
-      const formData = new FormData();
-      formData.append('file', form.file);
-      formData.append('transaction_id', transId);
-
-      const response = await updateTransactionStatus('approved', transId, {
-        descripcion: 'Proceso de transaccion exitoso',
-        additionalData: {
-          codigo_transferencia: form.transfer_id,
-        },
-        amount: Number(form.amount),
-      });
-      const responseFile = await uploadTransactionReceipt(formData);
-
-      if (!response || !responseFile) {
-        setModalServer(true);
-      } else {
-        setIsLoading(false);
-      }
-    } catch (error) {
-      setIsLoading(false);
-      setModalServer(true);
+    if (!form.file) {
+      alert("Debe subir un comprobante.");
+      return null;
     }
-  };
+
+    const formData = new FormData();
+    formData.append('comprobante', form.file); 
+    formData.append('transactionId', transId); 
+
+    const response = await updateTransactionStatus('approved', transId, {
+      descripcion: 'Proceso de transacción exitoso',
+      additionalData: {
+        codigo_transferencia: form.transfer_id,
+      },
+      amount: Number(form.amount),
+    });
+
+    const responseFile = await uploadTransactionReceipt(formData);
+
+    if (!response || !responseFile) {
+      setModalServer(true);
+    } else {
+      setIsLoading(false);
+    }
+  } catch (error) {
+    
+    setIsLoading(false);
+    setModalServer(true);
+  }
+};
   const handleDialogAprove = () => {
     if (!form.transfer_id || !form.amount) {
       alert('Por favor completa todos los campos requeridos.');
@@ -231,48 +235,44 @@ const TransferClient = () => {
   };
 
   const handleSendRefound = async () => {
-    try {
-      if (!formRefund.file) return null;
-
-      setIsLoading(true);
-      const formData = new FormData();
-
-      formData.append('file', formRefund.file);
-      formData.append('transaction_id', transId);
-
-      const response = await updateTransactionStatus('refunded', transId, {
-        descripcion: formRefund.description,
-        additionalData: {
-          codigo_transferencia: formRefund.transfer_id,
-        },
-        amount: Number(formRefund.amount),
-      });
-
-      const responseFile = await fetch(`http://localhost:8080/api/v1/admin/transactions/voucher`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-
-      if (!response || !responseFile.ok) {
-        setIsLoading(false);
-        setModalServer(true);
-      } else {
-        setIsLoading(false);
-        setModalResponse(true);
-      }
-    } catch (error) {
-      setIsLoading(false);
-      setModalError(false);
-      setModalServer(true);
+  try {
+    if (!formRefund.file) {
+      alert("Debe subir un comprobante.");
+      return null;
     }
-  };
+
+    setIsLoading(true);
+
+    const formData = new FormData();
+    formData.append('comprobante', formRefund.file);     
+    formData.append('transactionId', transId);            
+
+    const response = await updateTransactionStatus('refunded', transId, {
+      descripcion: formRefund.description,
+      additionalData: {
+        codigo_transferencia: formRefund.transfer_id,
+      },
+      amount: Number(formRefund.amount),
+    });
+
+    const responseFile = await uploadTransactionReceipt(formData);
+
+    if (!response || !responseFile || (responseFile as any).error) {
+      setIsLoading(false);
+      setModalServer(true);
+    } else {
+      setIsLoading(false);
+      setModalResponse(true);
+    }
+  } catch (error) {
+    setIsLoading(false);
+    setModalError(false);
+    setModalServer(true);
+  }
+};
 
   const handleOpenChange = (open: boolean) => {
     setOpen(open);
-    setModal(open);
   };
   return (
     <>
@@ -290,11 +290,13 @@ const TransferClient = () => {
                     variant="outline"
                     className={`rounded-3xl ${
                       selected === true
-                        ? 'bg-green-600 text-white shadow-lg shadow-green-200'
-                        : 'border border-gray-300 bg-white text-gray-700 hover:border-green-500 hover:text-green-600'
+                        ? 'bg-green-600 text-white'
+                        : 'border border-gray-300 bg-white text-gray-700 hover:border-green-500 hover:text-green-600 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-green-400 dark:hover:text-green-400'
                     }`}
                   >
-                    <CheckCircle className={`mr-2 h-5 w-5 ${selected === true ? 'text-white' : 'text-green-500'}`} />
+                    <CheckCircle
+                      className={`mr-2 h-5 w-5 ${selected === true ? 'text-white' : 'text-green-500 dark:text-green-400'}`}
+                    />
                     <span>Si</span>
                   </Button>
                 </TooltipTrigger>
@@ -302,7 +304,6 @@ const TransferClient = () => {
                   <p>La transferencia fue realizada al cliente</p>
                 </TooltipContent>
               </Tooltip>
-
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
@@ -310,11 +311,13 @@ const TransferClient = () => {
                     variant="outline"
                     className={`rounded-3xl ${
                       selected === false
-                        ? 'bg-red-600 text-white shadow-lg shadow-red-200'
-                        : 'border border-gray-300 bg-white text-gray-700 hover:border-red-500 hover:text-red-600'
+                        ? 'bg-red-600 text-white'
+                        : 'border border-gray-300 bg-white text-gray-700 hover:border-red-500 hover:text-red-600 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-red-400 dark:hover:text-red-400'
                     }`}
                   >
-                    <XCircle className={`mr-2 h-5 w-5 ${selected === false ? 'text-white' : 'text-red-500'}`} />
+                    <XCircle
+                      className={`mr-2 h-5 w-5 ${selected === false ? 'text-white' : 'text-red-500 dark:text-red-400'}`}
+                    />
                     <span>No</span>
                   </Button>
                 </TooltipTrigger>
@@ -323,25 +326,25 @@ const TransferClient = () => {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <Dialog open={open} onOpenChange={handleOpenChange}>
-              <DialogTrigger asChild>
-                <Button
-                  disabled={selected === true}
-                  variant="default"
-                  className={
-                    !selected
-                      ? 'rounded-3xl bg-gradient-to-r from-amber-600 to-orange-700 transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 dark:from-amber-700 dark:to-orange-800 dark:hover:shadow-orange-900/20'
-                      : 'border-2 bg-transparent'
-                  }
-                >
-                  <Edit className={selected ? 'mr-2 h-4 w-4 text-[#AFAFAF]' : 'mr-2 h-4 w-4 text-white'} />
-                  <span className={selected ? 'text-[#AFAFAF]' : 'text-white'}>Editar Destinatario</span>
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="duratio n-300 border-gray-300 bg-white transition-all dark:border-gray-700 dark:bg-gray-800/95 sm:max-w-5xl">
-                <ModalEditReciever modal={open} setModal={setOpen} trans={trans} />
-              </DialogContent>
-            </Dialog>
+            <Button
+              onClick={() => setOpen(true)}
+              disabled={selected === true}
+              variant="default"
+              className={`rounded-3xl px-4 py-2 transition-all duration-300 ${
+                selected === true
+                  ? 'cursor-not-allowed bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500'
+                  : 'bg-gradient-to-r from-amber-600 to-orange-700 text-white dark:from-amber-700 dark:to-orange-800'
+              }`}
+            >
+              <Edit
+                className={`mr-2 h-4 w-4 ${selected === true ? 'text-gray-400 dark:text-gray-500' : 'text-white'}`}
+              />
+              <span className={selected === true ? 'text-gray-400 dark:text-gray-500' : 'text-white'}>
+                Editar Destinatario
+              </span>
+            </Button>
+
+            <ModalEditReciever modal={open} setModal={setOpen} trans={trans} />
           </div>
         </div>
 
@@ -615,19 +618,18 @@ const TransferClient = () => {
         </Dialog>
         <Dialog open={showAlert} onOpenChange={setShowAlert}>
           <DialogContent className="border border-gray-200 bg-white transition-all duration-300 dark:border-gray-700 dark:bg-gray-800/95">
-            <DialogHeader>
+            <DialogHeader className="flex flex-col items-center text-center">
               <DialogTitle className="text-gray-900 dark:text-gray-100">Confirmar solicitud</DialogTitle>
               <DialogDescription className="text-gray-700 dark:text-gray-300">
                 ¿Estás seguro que deseas confirmar esta solicitud?
               </DialogDescription>
             </DialogHeader>
 
-            <DialogFooter className="flex gap-2 sm:justify-end">
+            <DialogFooter className="flex justify-center gap-2 sm:justify-center">
               <Button
-                variant="destructive"
-                onClick={() => handleAprove()}
+                onClick={handleAprove}
                 disabled={isLoading}
-                className="dark:bg-red-700 dark:hover:bg-red-800"
+                className="bg-red-600 text-white hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800"
               >
                 {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Confirmar solicitud'}
               </Button>
@@ -646,23 +648,22 @@ const TransferClient = () => {
         <Dialog open={showConfirmRefund} onOpenChange={setShowConfirmRefund}>
           <DialogContent className="border border-gray-200 bg-white transition-all duration-300 dark:border-gray-700 dark:bg-gray-800/95">
             <DialogHeader>
-              <DialogTitle className="text-gray-900 dark:text-gray-100">Confirmar reembolso</DialogTitle>
-              <DialogDescription className="text-gray-700 dark:text-gray-300">
+              <DialogTitle className="text-center text-gray-900 dark:text-gray-100">Confirmar reembolso</DialogTitle>
+              <DialogDescription className="text-center text-gray-700 dark:text-gray-300">
                 ¿Estás seguro que deseas enviar este reembolso?
               </DialogDescription>
             </DialogHeader>
 
-            <div className="w-full rounded-lg bg-gray-100 p-3 text-left dark:bg-gray-700/30">
+            <div className="w-full rounded-lg bg-gray-100 p-3 text-center dark:bg-gray-700/30">
               <p className="mb-1 font-medium text-gray-800 dark:text-gray-200">Motivo:</p>
               <p className="text-gray-700 dark:text-gray-300">{formRefund.description}</p>
             </div>
 
-            <DialogFooter className="flex gap-2 sm:justify-end">
+            <DialogFooter className="flex justify-center gap-2 sm:justify-center">
               <Button
-                variant="destructive"
                 onClick={handleSendRefound}
                 disabled={isLoading}
-                className="dark:bg-red-700 dark:hover:bg-red-800"
+                className="bg-red-600 text-white hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800"
               >
                 {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Confirmar reembolso'}
               </Button>
