@@ -1,4 +1,3 @@
-import { UserAdditionalInfo } from './UserAdditionalInfo';
 import { UserDetailsSection } from './UserDetailsSection';
 import { UserDocumentSection } from './UserDocumentSection';
 import { UserHeader } from './UserHeader';
@@ -7,35 +6,39 @@ import { UserNotesSection } from './UserNotesSection';
 import { UserNotFound } from './UserNotFound';
 import { TransactionHistorySection } from './TransactionHistorySection';
 import { WalletsSection } from './WalletsSection';
-import { UserRewardsSection } from './UserRewardSection';
+import { getTransactionByUserId } from '@/actions/transactions/admin-transaction';
+import { getVerificationById } from '@/actions/userVerification/verification.action';
+import { UserVerifyProvider } from '@/hooks/admin/usersPageHooks/useUserVerifyState';
 import auth from '@/auth';
-import { User } from '@/types/user';
-import { SingleVerificationResponse, VerifiedUsersResponse } from '@/types/verifiedUsers';
+import { SingleVerificationResponse } from '@/types/verifiedUsers';
 
 export async function UserDetailPageComponent({ verificationId }: { verificationId: string }) {
   const verification = await getVerificationById(verificationId);
   if (!verification?.success) return <UserNotFound verificationId={verificationId} />;
+  const transactions = await getTransactionByUserId(verification?.data.users_id);
 
   return (
     <div className="min-h-screen">
-      <div className="">
-        <UserHeader userId={verification.data.users_id} />
+      <UserVerifyProvider verification={verification.data}>
+        <div className="">
+          <UserHeader userId={verification.data.users_id} />
 
-        <div className="grid grid-cols-1 gap-6 pt-6 md:grid-cols-2">
-          <div className="space-y-6">
-            <UserDetailsSection code={verification.data.users_id} createdAt={verification.data.created_at} />
-            <UserInfo user={verification.data} />
-            <UserDocumentSection user={verification.data} />
-            <UserNotesSection />
-          </div>
+          <div className="grid grid-cols-1 gap-6 pt-6 md:grid-cols-2">
+            <div className="space-y-6">
+              <UserDetailsSection code={verification.data.users_id} createdAt={verification.data.created_at} />
+              <UserInfo />
+              <UserDocumentSection />
+              <UserNotesSection />
+            </div>
 
-          <div className="space-y-6">
-            <TransactionHistorySection />
-            <WalletsSection />
-            {/* <UserRewardsSection user={user} /> */}
+            <div className="space-y-6">
+              <TransactionHistorySection transactions={transactions} />
+              <WalletsSection />
+              {/* <UserRewardsSection user={user} /> */}
+            </div>
           </div>
         </div>
-      </div>
+      </UserVerifyProvider>
     </div>
   );
 }

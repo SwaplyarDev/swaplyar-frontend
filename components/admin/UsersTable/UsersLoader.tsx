@@ -1,18 +1,15 @@
 import { VerificationItem } from '@/types/verifiedUsers';
 import UsersTable from './UsersTable';
+import { getverificationList } from '@/actions/userVerification/verification.action';
+import { UserVerifyListProvider } from '@/hooks/admin/usersPageHooks/useUserVerifyListState';
 import auth from '@/auth';
-
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
 interface UsersLoaderProps {
   currentPage: number;
 }
 
 const UsersLoader: React.FC<UsersLoaderProps> = async ({ currentPage }) => {
-  const users = await getUsers(currentPage, 10);
-  const paginated = usersPagination(users.data, 10, currentPage);
-
-  return <UsersTable users={paginated.users} currentPage={currentPage} totalPages={paginated.totalPages} />;
+  return <UsersTable currentPage={currentPage} />;
 };
 
 export default UsersLoader;
