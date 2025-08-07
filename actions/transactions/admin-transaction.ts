@@ -168,7 +168,7 @@ export async function getTransactionByUserId(user_id: string): Promise<Transacti
     const session = await auth();
     const token = session?.accessToken;
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v2/admin/transactions?userId=${user_id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/transactions?userId=${user_id}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,

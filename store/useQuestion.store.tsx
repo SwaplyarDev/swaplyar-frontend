@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 
 interface Question {
-  question_id: string;
+  id: string;
   title: string;
-  descripcion: string;
+  description: string;
 }
 interface QuestionStore {
   questions: Question[];
