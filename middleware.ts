@@ -13,13 +13,13 @@ export default auth((req) => {
     // if (nextUrl.pathname.includes('blog')) {
     //   return NextResponse.redirect(new URL('/es/pagina-en-mantenimiento', req.url));
     // }
-    if (
-      nextUrl.pathname.includes('estado-de-solicitud') ||
-      nextUrl.pathname.includes('editar-solicitud') ||
-      nextUrl.pathname.includes('cancelacion-y-reembolso')
-    ) {
-      return NextResponse.redirect(new URL('/es/pagina-en-mantenimiento', req.url));
-    }
+    // if (
+    //   nextUrl.pathname.includes('estado-de-solicitud') ||
+    //   nextUrl.pathname.includes('editar-solicitud') ||
+    //   nextUrl.pathname.includes('cancelacion-y-reembolso')
+    // ) {
+    //   return NextResponse.redirect(new URL('/es/pagina-en-mantenimiento', req.url));
+    // }
 
     // Verificar si la ruta está bajo /admin
     const isAdminRoute = nextUrl.pathname.startsWith('/es/admin');
