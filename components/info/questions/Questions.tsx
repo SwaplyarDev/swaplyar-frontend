@@ -119,10 +119,7 @@ const FrequentlyQuestions = () => {
         <p className="font-titleFont font-medium md:text-[38px] lg:text-[40px]">Preguntas Frecuentes</p>
       </header>
 
-      <section
-        className={`grid max-w-[716px] gap-6 py-12 ${(!questions || questions.length === 0) ? 'w-full' : ''}`}
-        style={{ marginInline: currentMargin }}
-      >
+      <section className="mx-auto grid w-full max-w-5xl gap-6 px-4 py-24">
         {Array.isArray(questions) && questions.length > 0 ? (
           questions.map((dato, index) => (
             <Accordion
