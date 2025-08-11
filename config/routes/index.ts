@@ -29,7 +29,7 @@ export const configRoutes: ConfigRoutes = {
     '/api/paypal',
   ],
   protectedRoutes: [
-    '/es/auth',
-    '/es/admin',
+    '/es/auth*',
+    '/es/admin*',
   ],
 };
