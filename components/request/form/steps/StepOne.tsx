@@ -9,6 +9,8 @@ import { CountryOption } from '@/types/request/request';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import SelectCountry from '../inputs/SelectCountry';
 import InputSteps from '@/components/inputSteps/InputSteps';
+import { useSession } from 'next-auth/react';
+import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
 
 interface FormData {
   first_name: string;
@@ -20,13 +22,14 @@ interface FormData {
 }
 
 const StepOne = ({ blockAll }: { blockAll: boolean }) => {
+    const { data: session } = useSession();
   const {
     register,
     handleSubmit,
     control,
     formState: { errors, isValid },
-    setValue,
     watch,
+    reset,
   } = useForm<FormData>({ mode: 'onChange' });
 
   const {
@@ -46,26 +49,52 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
 
   const formValues = useWatch({ control });
 
-  useEffect(() => {
-    const { first_name, last_name, calling_code, phone, email, own_account } = formData.stepOne;
-    const newValues = {
-      first_name,
-      last_name,
-      calling_code,
-      phone,
-      email,
-      own_account,
-    };
-    setValue('first_name', first_name);
-    setValue('last_name', last_name);
-    setValue('calling_code', calling_code);
-    setValue('phone', phone);
-    setValue('email', email);
-    setValue('own_account', own_account);
+  const phone = session?.user?.phone;
 
-    console.log(newValues);
-    setInitialValues(newValues);
-  }, [formData.stepOne, setValue]);
+
+//Compara el nro de telefono con los codigos de area, selecciona la coincidencia, y los separa en dos variables distintas
+function extractPhoneParts(
+  phone: string | undefined,
+  countryOptions: typeof defaultCountryOptions
+): { callingCode?: CountryOption; nationalNumber: string } {
+  if (!phone) return { callingCode: undefined, nationalNumber: '' };
+
+  const sorted = [...countryOptions].sort(
+    (a, b) => b.callingCode.length - a.callingCode.length
+  );
+
+  const match = sorted.find((option) => phone.startsWith(option.callingCode));
+
+  if (match) {
+    const nationalNumber = phone.replace(match.callingCode, '');
+    return { callingCode: match, nationalNumber };
+  }
+
+  return { callingCode: undefined, nationalNumber: phone };
+}
+
+  const { callingCode, nationalNumber } = extractPhoneParts(phone, defaultCountryOptions);
+
+
+useEffect(() => {
+  if (!session?.user) return;
+
+  const [firstName, ...rest] = session.user.fullName?.split(' ') ?? [];
+  const lastName = rest.join(' ');
+
+  const defaultFormData: FormData = {
+    first_name: firstName,
+    last_name: lastName,
+    email: session.user.email,
+    calling_code: callingCode ?? defaultCountryOptions.find(opt => opt.callingCode === '+54'),
+    phone: nationalNumber,
+    own_account: formData.stepOne.own_account,
+  };
+
+  reset(defaultFormData);
+  setInitialValues(defaultFormData);
+}, [session, formData.stepOne, phone, reset, callingCode, nationalNumber]);
+
 
   const [loading, setLoading] = useState(false);
 

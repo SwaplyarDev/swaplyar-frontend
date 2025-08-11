@@ -3,16 +3,15 @@ import { create } from 'zustand';
 interface ControlRouteRequestStoreState {
   pass: boolean;
   hasExitedForm: boolean;
-  setPass: () => void;
+  setPass: (value: boolean) => void;
   setExitedForm: () => void;
 }
 
-const useControlRouteRequestStore = create<ControlRouteRequestStoreState>((set, get) => ({
+const useControlRouteRequestStore = create<ControlRouteRequestStoreState>((set) => ({
   pass: false,
   hasExitedForm: false,
-  setPass: () => {
-    const currentPass = get().pass;
-    set({ pass: !currentPass, hasExitedForm: false });
+  setPass: (value: boolean) => {
+    set({ pass: value, hasExitedForm: false });
   },
   setExitedForm: () => set({ hasExitedForm: true }),
 }));
