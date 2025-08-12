@@ -187,3 +187,35 @@ export async function deleteWalletAccount1(accountId: string, token: string, typ
 
   return data;
 }
+
+export async function getUserWalletAccountByUserId(userId: string, token: string) {
+  try {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/users/accounts/admin/findId?userId=${userId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const contentType = res.headers.get('content-type');
+
+    if (!res.ok) {
+      let errorMessage = 'Error al obtener la cuenta específica del usuario';
+      if (contentType && contentType.includes('application/json')) {
+        const error = await res.json();
+        errorMessage = error.message || errorMessage;
+      }
+      throw new Error(errorMessage);
+    }
+
+    if (contentType && contentType.includes('application/json')) {
+      const account = await res.json();
+      return account;
+    } else {
+      throw new Error('Respuesta inesperada del servidor');
+    }
+  } catch (error) {
+    console.error('Error desde getUserWalletAccountById:', error);
+    throw error;
+  }
+}
