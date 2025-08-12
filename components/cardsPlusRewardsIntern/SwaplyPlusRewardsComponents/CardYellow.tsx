@@ -28,7 +28,13 @@ const CardYellow: React.FC<ModalProps> = ({ showVerify, setShowVerify, verifiedS
       ></div>
 
       <div className="absolute m-[14px]">
-        <Image src={plusRewardsCard} alt="Logo" className="w-[130px] sm:w-[250px] md:w-[250px]" />
+        <Image 
+          src={plusRewardsCard} 
+          alt="Plus Rewards Card Logo" 
+          width={250} 
+          height={250} 
+          className="w-[130px] sm:w-[250px] md:w-[250px]" 
+        />
       </div>
 
       <div className="absolute right-[12px] top-[20px] text-right text-[13px] sm:right-0 sm:top-[30px] sm:mx-[14px] sm:text-left">

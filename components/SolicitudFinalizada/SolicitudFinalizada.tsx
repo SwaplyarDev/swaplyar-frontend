@@ -184,13 +184,15 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
   return (
     <div className="mx-auto flex w-full max-w-screen-phone flex-col gap-4 px-4 py-10 xs-mini-phone2:max-w-screen-tablet md:max-w-screen-desktop md:gap-6 md:px-8 lg2:px-4">
       <div className="-z-30">
-        <Cloud classes="md:-left-52 -left-[500px] top-60 w-[629px] h-[451px] min-w-[629px]" src={nube2} alt="Nube 2" />
+        <Cloud classes="md:-left-52 -left-[500px] top-60 w-[629px] h-[451px] min-w-[629px]" src={nube2} alt="Nube 2" width={629} height={451} />
         <Cloud
           classes="md:-left-72 -left-[500px] top-[500px] w-[612px] h-[438px] min-w-[612px]"
           src={nube2}
           alt="Nube 2"
+          width={612}
+          height={438}
         />
-        <Cloud classes="md:-left-60 -left-[500px] top-0 w-[669px] h-[399px] min-w-[669px]" src={nube1} alt="Nube 1" />
+        <Cloud classes="md:-left-60 -left-[500px] top-0 w-[669px] h-[399px] min-w-[669px]" src={nube1} alt="Nube 1" width={669} height={399} />
       </div>
 
       <div className="-z-30">
@@ -198,12 +200,16 @@ const SolicitudFinalizada = ({ children }: { children?: React.ReactNode }) => {
           classes="md:-right-20 -right-[300px] top-72 w-[371px] h-[266px] min-w-[371px]"
           src={nube2}
           alt="Nube 2"
+          width={371}
+          height={266}
         />
-        <Cloud classes="md:-right-56 -right-[450px] top-0 w-[559px] h-[400px] min-w-[559px]" src={nube2} alt="Nube 2" />
+        <Cloud classes="md:-right-56 -right-[450px] top-0 w-[559px] h-[400px] min-w-[559px]" src={nube2} alt="Nube 2" width={559} height={400} />
         <Cloud
           classes="md:-right-60 -right-[350px] top-[460px] w-[471px] h-[281px] min-w-[471px]"
           src={nube1}
           alt="Nube 1"
+          width={471}
+          height={281}
         />
       </div>
       <h1 className="text-center font-titleFont text-[38px] font-medium lg2:text-[40px]">
