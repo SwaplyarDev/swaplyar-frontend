@@ -10,17 +10,23 @@ import { WalletsSection } from './WalletsSection';
 import { getTransactionByUserId } from '@/actions/transactions/admin-transaction';
 import { getVerificationById } from '@/actions/userVerification/verification.action';
 import { UserVerifyProvider } from '@/hooks/admin/usersPageHooks/useUserVerifyState';
+import { UserRewardsSection } from './UserRewardSection';
+import { getUserWalletAccountByUserId } from '@/actions/virtualWalletAccount/virtualWallets.action';
+import auth from '@/auth';
 
 export async function UserDetailPageComponent({ verificationId }: { verificationId: string }) {
+  const session = await auth();
+  const token = session?.accessToken;
   const verification = await getVerificationById(verificationId);
   if (!verification?.success) return <UserNotFound verificationId={verificationId} />;
   const transactions = await getTransactionByUserId(verification?.data.users_id);
+  const wallets = await getUserWalletAccountByUserId(verification?.data.users_id, token || '');
 
   return (
     <div className="min-h-screen">
       <UserVerifyProvider verification={verification.data}>
         <div className="">
-          <UserHeader userId={verification.data.users_id} />
+          <UserHeader userId={verification.data.verification_id} />
 
           <div className="grid grid-cols-1 gap-6 pt-6 md:grid-cols-2">
             <div className="space-y-6">
@@ -31,9 +37,9 @@ export async function UserDetailPageComponent({ verificationId }: { verification
             </div>
 
             <div className="space-y-6">
-              <TransactionHistorySection transactions={transactions} />
-              <WalletsSection />
-              {/* <UserRewardsSection user={user} /> */}
+              <TransactionHistorySection transactions={transactions} /> 
+              <WalletsSection wallets={wallets} /> 
+              {/* <UserRewardsSection user={user} />  */}
             </div>
           </div>
         </div>
