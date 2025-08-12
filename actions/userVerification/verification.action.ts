@@ -9,7 +9,7 @@ export const getverificationList = async (page: Number = 1, perPage: number = 10
     const session = await auth();
     const token = session?.accessToken;
 
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v2/verification/admin/list?page=${page}&limit=${perPage}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/admin/list?page=${page}&limit=${perPage}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -23,7 +23,7 @@ export const getverificationList = async (page: Number = 1, perPage: number = 10
     return user;
   } catch (e) {
     console.error('Error fetching user:', e);
-    return { success: false, message: 'Error fetching user', page: 0, limit: 0, total: 0, totalPages: 0, data: [] };
+    throw new Error(JSON.stringify({ success: false, message: 'Error fetching user', page: 0, limit: 0, total: 0, totalPages: 0, data: [] }));
   }
 }
 
@@ -31,7 +31,7 @@ export const getVerificationById = async(id: string): Promise<SingleVerification
   try {
     const session = await auth();
     const token = session?.accessToken;
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v2/verification/admin/${id}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/admin/${id}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -53,7 +53,7 @@ export const sendChangeStatus = async (verification_id: string, verifyForm: Veri
     const session = await auth();
     const token = session?.accessToken;
 
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/v2/verification/admin/${verification_id}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/admin/${verification_id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
