@@ -22,7 +22,13 @@ const CardBlue = ({ memberCode }: { memberCode: string }) => {
         ></div>
 
         <div className="absolute m-[14px] h-full">
-          <Image src={plusRewardsCard} alt="asd" className="w-[182px] sm:w-[250px]" />
+          <Image 
+            src={plusRewardsCard} 
+            alt="Plus Rewards Card Logo" 
+            width={250} 
+            height={250} 
+            className="w-[182px] sm:w-[250px]" 
+          />
         </div>
 
         <div className="absolute bottom-0 right-0 mx-4 gap-1 text-[#EBE7E0]">
