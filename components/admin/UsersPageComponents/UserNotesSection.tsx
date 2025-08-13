@@ -40,6 +40,7 @@ export function UserNotesSection() {
         <textarea
           className="w-full rounded-lg border bg-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
           rows={4}
+          style={{ resize: 'none' }}
           value={verificationById?.note_rejection || ''}
           onChange={(e) => updateVerificationNote(e.target.value)}
           placeholder="Ingrese una nota aquí..."
