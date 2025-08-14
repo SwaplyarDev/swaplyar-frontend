@@ -1,5 +1,5 @@
-import TransactionCalculator from '@/components/Transaction/TransactionCalculator/TransactionCalculator';
 import PlusRewardSection from './PlusRewardsComponents.tsx/PlusRewardsInitial';
+import TransactionCalculatorInternal from '@/components/Transaction/TransactionCalculatorInternal/TransactionCalculatorInternal';
 
 const RequestPage = () => {
   return (
@@ -9,7 +9,7 @@ const RequestPage = () => {
       </h1>
       <section className="flex flex-col gap-4 lg:flex-row-reverse">
         <PlusRewardSection />
-        <TransactionCalculator />
+        <TransactionCalculatorInternal />
       </section>
     </div>
   );
