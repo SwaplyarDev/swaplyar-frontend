@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { Wallet as WalletList, PaymentType } from '@/types/wallets';
 import { Wallet, Banknote, Coins } from 'lucide-react';
+import { logoPayoneer, logoPaypal, logoPix, logoWise } from '@/utils/assets/imgDatabaseCloudinary';
 
 interface WalletsListProps {
   wallets: WalletList[];
@@ -74,10 +75,7 @@ export const tipoCuenta = (payment_type: PaymentType) => {
 
 export const Logos = ({ payment_type }: { payment_type: PaymentType }) => {
 
-  const logoPayoneer = "https://www.svgrepo.com/show/508715/payoneer.svg";
-  const logoWise = "https://cdn.worldvectorlogo.com/logos/wise-1.svg";
-  const logoPaypal = "https://cdn.worldvectorlogo.com/logos/paypal-3.svg";
-  const logoPix = "https://cdn.worldvectorlogo.com/logos/pix-2.svg";
+
   
   switch (payment_type) {
     case PaymentType.BANK:
