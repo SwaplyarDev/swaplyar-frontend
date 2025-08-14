@@ -2,6 +2,11 @@
 
 import InputField from '@/components/ui/contact-form/InputField';
 
+const currencies = [
+  { code: 'USD', name: 'Dólar estadounidense' },
+  { code: 'EUR', name: 'Euro' },
+];
+
 const WiseFields = ({ register, errors }: any) => (
   <div className="flex flex-col gap-4">
     <InputField
@@ -23,6 +28,7 @@ const WiseFields = ({ register, errors }: any) => (
       })}
       error={errors?.apellido?.message}
     />
+
     <InputField
       id="correo"
       placeholder="Correo de Wise"
@@ -35,6 +41,7 @@ const WiseFields = ({ register, errors }: any) => (
       })}
       error={errors?.correo?.message}
     />
+
     <InputField
       id="iban"
       placeholder="IBAN / Nº de cuenta"
@@ -76,6 +83,9 @@ const WiseFields = ({ register, errors }: any) => (
       })}
       error={errors?.bic?.message}
     />
+
+    {/* Transfer code hardcodeado */}
+    <input type="hidden" {...register('transfer_code')} value="123456" />
   </div>
 );
 

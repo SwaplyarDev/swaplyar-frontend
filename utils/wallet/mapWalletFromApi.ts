@@ -7,55 +7,70 @@ export interface Wallet {
 }
 
 export const mapWalletFromApi = (acc: any): Wallet => {
-  const account = acc.account || {};
+  console.log('Entrada raw a mapWalletFromApi:', acc);
+  
+  const details = acc.details?.[0] || {};
+
   const base = {
-    id: acc.account_id || acc.id || '',
-    type: (acc.typeAccount || acc.type || '').toLowerCase(),
-    name: acc.account_name || '',
-    identifier: acc.identification || '',
+    id: details.account_id || '',
+    type: acc.payment_type?.toLowerCase() || '',
+    name: acc.accountName || '',
+    identifier: details.email_account || '',
   };
 
   switch (base.type) {
+    case 'paypal':
+    case 'wise':
+    case 'payoneer':
+      return {
+        ...base,
+        details: [{
+          id: details.account_id || '',
+          correo: details.email_account || '',  // Mapeo correcto del email
+          nombre: acc.first_name || '',
+          apellido: acc.last_name || ''
+        }],
+      };
+
+    case 'virtual_bank':
+      return {
+        ...base,
+        details: [{
+          id: details.account_id || '',
+          cvu: details.transfer_code || '',
+          dni: details.identification || '',
+          nombreBanco: acc.accountName || '',
+          nombreUsuario: details.email_account || '',
+        }],
+      };
+
     case 'receiver_crypto':
     case 'crypto':
       return {
         ...base,
-        details: [
-          {
-            id: account.account_id || '',
-            nombre: acc.first_name || '',
-            apellido: acc.last_name || '',
-            direction: account.wallet || '',
-            red: account.network || '',
-          },
-        ],
+        details: [{
+          id: details.account_id || '',
+          direction: details.wallet || '',    // Mapeo correcto de la dirección
+          red: details.network || '',         // Mapeo correcto de la red
+        }],
       };
 
-    case 'paypal':
+    case 'bank':
       return {
         ...base,
         details: [
           {
             id: base.id,
-            correo: acc.account?.transfer_code || '',
+            moneda: acc.currency || '',
+            banco: acc.bank_name || '',
+            metodoEnvio: acc.send_method_key || '',
+            valorEnvio: acc.send_method_value || '',
+            tipoDocumento: acc.document_type || '',
+            numeroDocumento: acc.document_value || '',
+            alias: acc.alias || '',
+            sucursal: acc.branch || '',
             nombre: acc.first_name || '',
             apellido: acc.last_name || '',
-          },
-        ],
-      };
-
-    case 'virtual_bank':
-    case 'virtualbank':
-      return {
-        ...base,
-        details: [
-          {
-            id: base.id,
-            cvu: account.transfer_code || '',
-            dni: acc.identification || '',
-            nombreBanco: acc.account_name || '',
-            nombreUsuario: `${acc.first_name || ''} ${acc.last_name || ''}`.trim(),
-            email_account: acc.account?.transfer_code || '',
           },
         ],
       };

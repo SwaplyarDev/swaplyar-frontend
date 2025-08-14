@@ -35,6 +35,20 @@ const PaypalFields = ({ register, errors }: any) => (
       })}
       error={errors.correo?.message}
     />
+    <InputField
+      id="dni"
+      placeholder="DNI"
+      type="text"
+      register={register('dni', {
+        required: 'El DNI es obligatorio',
+        pattern: {
+          value: /^[0-9]{6,10}$/,
+          message: 'El DNI debe tener entre 6 y 10 dígitos',
+        },
+      })}
+      error={errors.dni?.message}
+    />
+    <input type="hidden" {...register('transfer_code')} value="123456" />
   </div>
 );
 

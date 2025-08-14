@@ -14,108 +14,150 @@ export const createHandleAccountAdd = ({
   setWallets: (wallets: any[]) => void;
   setOpen: (open: boolean) => void;
 }) => {
+  const normalizeWalletType = (type: string) => {
+    switch (type.toLowerCase()) {
+      case 'virtualbank':
+      case 'virtual_bank':
+        return 'virtual_bank';
+      case 'crypto':
+      case 'receiver_crypto':
+        return 'receiver_crypto';
+      default:
+        return type.toLowerCase();
+    }
+  };
   return async (formData: any) => {
     try {
-      const profile = session?.user?.profile || {};
-      const firstName = profile.firstName || formData.nombre || '';
-      const lastName = profile.lastName || formData.apellido || '';
-      const identification = session?.sub || formData.dni || formData.cpf || formData.correo || '';
+    const normalizedWalletType = normalizeWalletType(walletType);
 
-      const payload: any = {
-        typeAccount: walletType,
-        formData: {},
-        userAccValues: {
-          first_name: formData.nombre || firstName,
-          last_name: formData.apellido || lastName,
-          identification: formData.dni || identification,
-          currency: '',
-          account_name: '',
-          account_type: 0,
-        },
-      };
+    const profile = session?.user?.profile || {};
+    const firstName = profile.firstName || formData.nombre || '';
+    const lastName = profile.lastName || formData.apellido || '';
+    const identification =
+      formData.dni ||
+      formData.cpf ||
+      formData.identification ||
+      formData.correo ||
+      session?.sub ||
+      '';
+
+    const payload: any = {
+      typeAccount: normalizedWalletType,
+      formData: {},
+      userAccValues: {
+        first_name: firstName,
+        last_name: lastName,
+        identification,
+        currency: '',
+        account_name: '',
+        account_type: normalizedWalletType,
+      },
+    };
 
       switch (walletType) {
-        case 'paypal':
+        case 'bank':
           payload.formData = {
-            email_account: formData.correo,
-            transfer_code: formData.correo,
+            currency: formData.moneda || 'ARS',
+            bank_name: formData.nombreBanco || '',
+            send_method_key: formData.metodoEnvioClave || 'CBU',
+            send_method_value: formData.metodoEnvioValor || '',
+            document_type: formData.tipoDocumento || 'DNI',
+            document_value: formData.dni || '',
+            alias: formData.alias || '',
+            branch: formData.sucursal || '',
           };
           payload.userAccValues = {
             ...payload.userAccValues,
-            currency: 'USD',
-            account_name: 'Mi cuenta PayPal',
-            account_type: 2,
-          };
-          break;
-
-        case 'crypto':
-          payload.formData = {
-            currency: 'USDT',
-            network: formData.red,
-            wallet: formData.wallet,
-          };
-          payload.userAccValues = {
-            ...payload.userAccValues,
-            currency: 'USDT',
-            account_name: `Binance ${formData.red} USDT`,
-            account_type: 7,
-          };
-          break;
-
-        case 'virtualBank':
-          payload.formData = {
-            currency: 'ARS',
-            email_account: formData.correo || session?.user?.email,
-            transfer_code: formData.cvu,
-          };
-          payload.userAccValues = {
-            ...payload.userAccValues,
-            currency: 'ARS',
-            dni: formData.dni,
-            account_name: formData.nombreBanco,
-            account_type: 6,
+            currency: formData.moneda || 'ARS',
+            account_name: formData.nombreCuenta || 'Cuenta Principal',
+            account_type: 'bank',
           };
           break;
 
         case 'wise':
           payload.formData = {
-            iban: formData.iban,
-            bic: formData.bic,
-            email_account: formData.correo,
-            transfer_code: formData.correo,
+            iban: formData.iban || '',
+            bic: formData.bic || '',
+            email_account: formData.correo || '',
+            transfer_code: Number(formData.transfer_code) || 0,
           };
           payload.userAccValues = {
             ...payload.userAccValues,
-            currency: formData.moneda || 'EUR',
-            account_name: 'Cuenta Wise',
-            account_type: 3,
-          };
-          break;
-
-        case 'payoneer':
-          payload.formData = {
-            email_account: formData.correo,
-          };
-          payload.userAccValues = {
-            ...payload.userAccValues,
-            currency: 'USD',
-            account_name: 'Mi Payoneer',
-            account_type: 4,
+            currency: formData.moneda || 'USD',
+            account_name: formData.nombreCuenta || 'Cuenta Wise',
+            account_type: 'wise',
           };
           break;
 
         case 'pix':
           payload.formData = {
-            virtual_bank_id: formData.cpf || 'Otro',
-            pix_key: formData.pix_key,
-            cpf: formData.cpf,
-            pix_value: formData.pix_key,
+            virtual_bank_id: formData.virtual_bank_id || 'otro',
+            pix_key: formData.pix_key || '',
+            cpf: Number(formData.cpf) || 0,
+            pix_value: formData.pix_value || '',
           };
           payload.userAccValues = {
             ...payload.userAccValues,
             currency: 'BRL',
-            account_name: 'Pix Bradesco',
-            account_type: 5,
+            account_name: formData.nombreCuenta || 'Pix Account',
+            account_type: 'pix',
+          };
+          break;
+
+        case 'payoneer':
+          payload.formData = {
+            iban: formData.iban || '',
+            bic: formData.bic || '',
+            email_account: formData.correo || '',
+            transfer_code: Number(formData.transfer_code) || 0,
+          };
+          payload.userAccValues = {
+            ...payload.userAccValues,
+            currency: formData.moneda || 'USD',
+            account_name: formData.nombreCuenta || 'Cuenta Payoneer',
+            account_type: 'payoneer',
+          };
+          break;
+        case"crypto":
+        case 'receiver_crypto':
+          payload.formData = {
+            currency: formData.moneda || 'USDT',
+            network: formData.network || '',
+            wallet: formData.wallet || '',
+          };
+          payload.userAccValues = {
+            ...payload.userAccValues,
+            currency: formData.moneda || 'USD',
+            account_name: formData.nombreCuenta || `Crypto ${formData.red || ''}`,
+            account_type: 'receiver_crypto',
+          };
+          break;
+          
+        case"virtualBank":
+        case 'virtual_bank':
+          payload.formData = {
+            currency: formData.moneda || 'USD',
+            email_account: formData.correo || '',
+            transfer_code: Number(formData.transfer_code) || 0,
+          };
+          payload.userAccValues = {
+            ...payload.userAccValues,
+            currency: formData.moneda || 'USD',
+            account_name: formData.nombreCuenta || 'Cuenta Virtual',
+            account_type: 'virtual_bank',
+          };
+          break;
+
+        case 'paypal':
+          payload.formData = {
+            email_account: formData.correo || '',
+            transfer_code: Number(formData.transfer_code) || 0,
+          };
+          payload.userAccValues = {
+            ...payload.userAccValues,
+            currency: 'USD',
+            account_name: formData.nombreCuenta || 'Cuenta PayPal',
+            account_type: 'paypal',
           };
           break;
 
@@ -133,3 +175,4 @@ export const createHandleAccountAdd = ({
     }
   };
 };
+

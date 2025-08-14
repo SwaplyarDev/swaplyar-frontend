@@ -18,6 +18,10 @@ import {
   BankDarkImg,
   BankImg,
   PaypalImg,
+  PayoneerEurImg,
+  PayoneerEurDarkImg,
+  WiseEurDarkImg,
+  WiseEurImg,
 } from '@/utils/assets/imgDatabaseCloudinary';
 import { useEffect, useState } from 'react';
 import { DialogContent } from '@mui/material';
@@ -31,6 +35,7 @@ import PayoneerFields from './accountFields/payoneerFields';
 import WiseFields from './accountFields/wiseFields';
 import VirtualBankFields from './accountFields/virtualBankFields';
 import CryptoFields from './accountFields/cryptoFields';
+import BankFields from './accountFields/bankFields';
 
 interface AccountFormData {
   nombre?: string;
@@ -93,6 +98,7 @@ export default function AddAccountForm({
       case 'virtualBank':
         return <VirtualBankFields register={register} errors={errors} />;
       case 'crypto':
+      case 'receiver_crypto':
         return <CryptoFields register={register} errors={errors} />;
       case 'pix':
         return <PixFields register={register} errors={errors} />;
@@ -100,6 +106,8 @@ export default function AddAccountForm({
         return <PayoneerFields register={register} errors={errors} />;
       case 'wise':
         return <WiseFields register={register} errors={errors} />;
+      case 'bank':
+        return <BankFields register={register} errors={errors} />;
       default:
         return null;
     }
@@ -147,6 +155,9 @@ export default function AddAccountForm({
                         : 'bg-[#FFFFFB] scrollbar-track-[#FFFFFB] scrollbar-thumb-[#012ABE]',
                     )}
                   >
+                    <SelectItem value="bank" className="cursor-pointer">
+                      <Image src={isDark ? BankDarkImg : BankImg} alt="Bank" width={120} height={120} />
+                    </SelectItem>
                     <SelectItem value="virtualBank" className="cursor-pointer">
                       <Image src={isDark ? BankDarkImg : BankImg} alt="Virtual Bank" width={120} height={120} />
                     </SelectItem>
@@ -167,9 +178,20 @@ export default function AddAccountForm({
                         height={120}
                       />
                     </SelectItem>
+                    {/* <SelectItem value="payoneer" className="cursor-pointer">
+                      <Image
+                        src={isDark ? PayoneerEurDarkImg : PayoneerEurImg}
+                        alt="Payoneer"
+                        width={120}
+                        height={120}
+                      />
+                    </SelectItem> */}
                     <SelectItem value="wise" className="cursor-pointer">
                       <Image src={isDark ? WiseUsdDarkImg : WiseUsdImg} alt="Wise" width={120} height={120} />
                     </SelectItem>
+                    {/* <SelectItem value="wise" className="cursor-pointer">
+                      <Image src={isDark ? WiseEurDarkImg : WiseEurImg} alt="Wise" width={120} height={120} />
+                    </SelectItem> */}
                   </SelectContent>
                 </Select>
               )}

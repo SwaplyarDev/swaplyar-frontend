@@ -39,7 +39,20 @@ export default function VirtualWallets() {
       try {
         setLoading(true);
         const response = await getMyWalletAccounts(token);
-        const mapped = response.map(mapWalletFromApi);
+        console.log('🔍 Datos crudos del backend:', JSON.stringify(response, null, 2));
+
+        // Añade validación de datos
+        if (!Array.isArray(response) || response.length === 0) {
+          console.warn('La API devolvió un array vacío o inválido');
+          return;
+        }
+
+        const mapped = response.map((wallet) => {
+          console.log('📦 Wallet individual:', wallet);
+          const mappedWallet = mapWalletFromApi(wallet);
+          console.log('🔄 Wallet mapeada:', mappedWallet);
+          return mappedWallet;
+        });
 
         setWallets(mapped);
         hasFetched.current = true;
@@ -80,7 +93,7 @@ export default function VirtualWallets() {
     switch (type.toLowerCase()) {
       case 'virtual_bank':
       case 'virtualbank':
-        return 'virtualBank';
+        return 'virtual_bank';
       case 'receiver_crypto':
       case 'crypto':
         return 'crypto';
@@ -177,8 +190,8 @@ export default function VirtualWallets() {
               <div className="flex items-center justify-between sm:mb-6">
                 <WalletIcon type={type} />
               </div>
-              <div className="space-y-6 bg-[#FFFFFB] dark:bg-[#4B4B4B]">
-                {group.map((wallet, index) => (
+              <div className="space-y-4 bg-[#FFFFFB] dark:bg-[#4B4B4B]">
+                {group.map((wallet) => (
                   <div key={wallet.id}>
                     <ReusableWalletCard
                       accountId={wallet.id}
@@ -186,9 +199,7 @@ export default function VirtualWallets() {
                       type={wallet.type}
                       onDelete={(accountId, typeAccount) => handleDelete(accountId, typeAccount)}
                     />
-                    {index !== group.length - 1 && (
-                      <hr className="mx-auto mt-6 h-0 w-full max-w-[80%] border-t-2 border-[#012ABE] dark:border-[#EBE7E0]" />
-                    )}
+                    <hr className="mx-auto mt-2 h-0 w-full max-w-[80%] border-t-2 border-[#012ABE] dark:border-[#EBE7E0]" />
                   </div>
                 ))}
               </div>

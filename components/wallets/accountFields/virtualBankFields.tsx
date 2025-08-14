@@ -28,24 +28,21 @@ const VirtualBankFields = ({ register, errors }: any) => (
       })}
       error={errors.dni?.message}
     />
+
     <InputField
-      id="nombreBanco"
-      placeholder="Nombre del banco"
-      register={register('nombreBanco', { required: 'El banco es obligatorio' })}
-      error={errors.nombreBanco?.message}
-    />
-    <InputField
-      id="cvu"
-      placeholder="CBU / CVU"
-      register={register('cvu', {
-        required: 'El CBU/CVU es obligatorio',
+      id="correo"
+      placeholder="Correo electrónico"
+      type="email"
+      register={register('correo', {
+        required: 'El correo es obligatorio',
         pattern: {
-          value: /^\d{22}$/,
-          message: 'Debe tener 22 dígitos',
+          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+          message: 'Correo electrónico inválido',
         },
       })}
-      error={errors.cvu?.message}
+      error={errors.correo?.message}
     />
+    <input type="hidden" {...register('transfer_code')} value="123456" />
   </div>
 );
 
