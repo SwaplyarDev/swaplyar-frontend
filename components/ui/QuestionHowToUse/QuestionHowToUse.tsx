@@ -79,7 +79,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolea
                 ? 'bg-custom-grayD-200'
                 : 'bg-custom-grayD-800'
               : ''
-        } ${props.isDark ? 'group-hover:bg-custom-grayD-600' : 'group-hover:bg-custom-blue'}`}
+        } ${props.isDark ? 'group-active:bg-custom-grayD-600 lg2:group-hover:bg-custom-grayD-600' : 'group-active:bg-custom-blue lg2:group-hover:bg-custom-blue'}`}
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -90,8 +90,6 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolea
         }}
       >
         <ExpandMore
-          /*className={` ${props.expanded || props.isDark ? 'text-white' : 'text-custom-blue-300'} group-hover:custom-grayD-500`}*/
-
           className={`${
             props.isDark
               ? props.expanded
@@ -100,11 +98,10 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolea
               : props.expanded
                 ? 'text-custom-whiteD'
                 : 'text-custom-blue-300'
-          } ${props.isDark ? 'group-hover:text-custom-whiteD' : 'group-hover:text-custom-whiteD'} `}
+          } ${props.isDark ? 'group-active:text-custom-whiteD lg2:group-hover:text-custom-whiteD' : 'group-active:text-custom-whiteD lg2:group-hover:text-custom-whiteD'} `}
           sx={{
             fontSize: '2rem',
             transition: 'color 0.3s ease',
-
             borderRadius: '100%',
           }}
         />
@@ -120,12 +117,14 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolea
   [`& .${accordionSummaryClasses.content}`]: {
     marginLeft: theme.spacing(0),
   },
-  '&:hover': {
-    backgroundColor: isDark ? '#333' : '#f5f5f5',
+  [theme.breakpoints.up('lg')]: {
+    '&:hover': {
+      backgroundColor: isDark ? '#333' : '#f5f5f5',
 
-    [`& .MuiTypography-root`]: {
-      color: isDark ? '#f5f5f5' : 'rgb(1, 42, 141)',
-      fontWeight: '600',
+      [`& .MuiTypography-root`]: {
+        color: isDark ? '#f5f5f5' : 'rgb(1, 42, 141)',
+        fontWeight: '600',
+      },
     },
   },
 }));
@@ -173,7 +172,7 @@ const QuestionHowToUse = () => {
                     : expanded === `panel${index}`
                       ? 'text-custom-blue-800'
                       : 'text-custom-grayD'
-                } ${expanded === `panel${index}` ? 'font-semibold' : 'font-light'}`}
+                } ${expanded === `panel${index}` ? '!font-bold' : 'font-light'}`}
               >
                 {dato.title}
               </Typography>

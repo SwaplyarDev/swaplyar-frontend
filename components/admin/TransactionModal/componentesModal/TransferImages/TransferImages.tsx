@@ -16,7 +16,6 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
   const { regret_id, note_id } = transaction;
   const { isDark } = useDarkTheme();
 
-  // Find payment method images
   let senderImg = null;
   let receiverImg = null;
 
@@ -28,11 +27,9 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
     receiverImg = MockImagesTransLight.find((img) => img.name === payment_method.receiver.value)?.image;
   }
 
-  // Determine alert status
   const hasAlert = false;
   const alertType = false;
 
-  // Alert styling based on type
   const alertStyles = {
     normal: {
       border: 'border-blue-600 dark:border-blue-700',
@@ -49,7 +46,6 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
     <section
       className={`relative overflow-hidden rounded-lg ${currentStyle.border} ${currentStyle.bg} ${currentStyle.hover} border shadow-sm transition-all duration-300 hover:shadow-md`}
     >
-      {/* Alert Banner (if applicable) */}
       {hasAlert && (
         <div className={`flex items-center gap-3 border-b ${currentStyle.border} p-3 ${currentStyle.hover}`}>
           <div
@@ -65,9 +61,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
         </div>
       )}
 
-      {/* Transfer Visualization */}
       <div className="flex flex-col items-center justify-between gap-4 p-4 md:flex-row md:items-center">
-        {/* Swaplyar Avatar (only shown when no alert) */}
         {!hasAlert && (
           <div className={`h-full border-r pr-10 ${currentStyle.border}`}>
             <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 p-1 dark:bg-blue-900/30">
@@ -82,9 +76,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
           </div>
         )}
 
-        {/* Transfer Flow */}
         <div className="flex flex-1 flex-col items-center gap-3 md:flex-row md:justify-center">
-          {/* Sender */}
           <div className="group relative flex h-20 w-full max-w-[200px] items-center justify-center overflow-hidden rounded-lg bg-white p-2 shadow-sm transition-all duration-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-800/80">
             {senderImg ? (
               <Image
@@ -105,7 +97,6 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
             </div>
           </div>
 
-          {/* Arrows */}
           <div className="flex items-center justify-center p-2">
             <div className="flex items-center">
               <Flecha styles={`${isDark ? '#FFFFFF' : '#012A8E'}`} />
@@ -114,7 +105,6 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
             </div>
           </div>
 
-          {/* Receiver */}
           <div className="group relative flex h-20 w-full max-w-[200px] items-center justify-center overflow-hidden rounded-lg bg-white p-2 shadow-sm transition-all duration-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-800/80">
             {receiverImg ? (
               <Image

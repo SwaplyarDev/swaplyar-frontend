@@ -22,28 +22,12 @@ const FinalSection = ({ transId }: { transId: string }) => {
   const handleApprove = async () => {
     try {
       setIsLoading(true);
-
-      // Simulate API call - replace with actual service call
       await new Promise((resolve) => setTimeout(resolve, 1500));
-
       setShowApproveDialog(false);
       setIsLoading(false);
-
-      /* toast({
-        title: "Solicitud aprobada",
-        description: "La solicitud ha sido aprobada exitosamente",
-        variant: "default",
-      }) */
-
       console.log('Solicitud aprobada con nota:', note);
-      // Add logic to save the approval
     } catch (error) {
       setIsLoading(false);
-      /* toast({
-        title: "Error",
-        description: "Ocurrió un error al procesar la solicitud. Por favor intenta nuevamente.",
-        variant: "destructive",
-      }) */
     }
   };
 
@@ -51,30 +35,20 @@ const FinalSection = ({ transId }: { transId: string }) => {
     try {
       setIsLoading(true);
 
-      // const response = await TransactionService('canceled', transId);
+      const response = await TransactionService('canceled', transId, {
+        descripcion: note,
+      });
 
       /* @ts-ignore */
       if (response?.message === 'Status updated successfully') {
         setShowRejectDialog(false);
         setIsLoading(false);
-
-        /*  toast({
-          title: "Solicitud rechazada",
-          description: "La solicitud ha sido rechazada exitosamente",
-          variant: "default",
-        }) */
       } else {
         throw new Error('Error al procesar la solicitud');
       }
     } catch (error) {
       console.log('Error al rechazar la transacción:', error);
       setIsLoading(false);
-
-      /* toast({
-        title: "Error",
-        description: "Ocurrió un error al procesar la solicitud. Por favor intenta nuevamente.",
-        variant: "destructive",
-      }) */
     }
   };
 
@@ -99,7 +73,6 @@ const FinalSection = ({ transId }: { transId: string }) => {
       <section className="w-full overflow-hidden rounded-xl border shadow-md transition-all duration-300 hover:shadow-lg dark:border-gray-700">
         <div className="bg-white p-6 transition-all duration-300 hover:bg-gray-50 dark:bg-gray-800/90 dark:hover:bg-gray-800">
           <div className="flex flex-col space-y-6">
-            {/* Notes field */}
             <div className="w-full">
               <Label
                 htmlFor="process-note"
@@ -128,8 +101,6 @@ const FinalSection = ({ transId }: { transId: string }) => {
                 />
               </div>
             </div>
-
-            {/* Action buttons */}
             <div className="flex flex-col justify-end gap-4 md:flex-row md:gap-6">
               <Tooltip>
                 <TooltipTrigger asChild>

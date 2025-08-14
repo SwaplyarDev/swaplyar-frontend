@@ -41,7 +41,7 @@ import { Modificada, Cancelada, Discrepancia, Reembolso, Enviada, Revision, Dine
 import LoadingGif from '../ui/LoadingGif/LoadingGif';
 import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
 import ButtonBack from '../ui/ButtonBack/ButtonBack';
-import { FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
+import { FlyerGif, searchRequestMovile, searchRequestWeb } from '@/utils/assets/imgDatabaseCloudinary';
 
 const SearchRequest = () => {
   const {
@@ -155,7 +155,7 @@ const SearchRequest = () => {
         <section className="relative mt-10 flex min-h-[500px] flex-col items-center justify-center">
           <Image
             className="absolute left-0 hidden w-[588px] drop-shadow-light dark:drop-shadow-darkmode lg2:block"
-            src="/images/search-request-web.png"
+            src={searchRequestWeb}
             alt="SwaplyAr Search Request™"
             width={700}
             height={700}
@@ -163,7 +163,7 @@ const SearchRequest = () => {
           <div className="flex w-full max-w-[506px] flex-col items-center border-b border-buttonsLigth dark:border-darkText lg2:hidden">
             <Image
               className="h-[200px] w-[200px] drop-shadow-light dark:drop-shadow-darkmode"
-              src="/images/search-request-phone.png"
+              src={searchRequestMovile}
               alt="SwaplyAr Search Request Mobile™"
               width={300}
               height={300}

@@ -60,7 +60,7 @@ export const LoginForm = () => {
   };
 
   return (
-    <div className="my-5 flex h-full min-h-[700px] flex-col items-center justify-start py-5 xs:mt-0 xs:min-h-[800px] xs:justify-center">
+    <div className="flex min-h-screen flex-col items-center justify-center py-5">
       <form
         onSubmit={handleSubmit(submitEmail)}
         className="flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"

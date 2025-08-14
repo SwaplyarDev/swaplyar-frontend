@@ -27,7 +27,7 @@ export const showStatusAlert = (statuses: { text: string; icon: string }[], isDa
       fill="none"
       class="absolute left-0 transition-all group-hover:left-2"
     >
-      <path d="M5 12L11 6M5 12L11 18M5 12L23 12" stroke="#EBE7E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M5 12L11 6M5 12L11 18M5 12L23 12" stroke="#EBE7E0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   `
     : `
@@ -39,14 +39,14 @@ export const showStatusAlert = (statuses: { text: string; icon: string }[], isDa
       fill="none"
       class="absolute left-0 transition-all group-hover:left-2"
     >
-      <path d="M5 12L11 6M5 12L11 18M5 12L23 12" stroke="#012A8E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M5 12L11 6M5 12L11 18M5 12L23 12" stroke="#012A8E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   `;
 
   Swal.fire({
     html: `
       <div class="flex flex-col items-center justify-center max-w-full max-h-[90vh] pt-[50px] pb-[50px] overflow-hidden">
-        <img class="w-[193px] h-[115px] absolute -top-14 -left-20 cloud hidden md:block" src="/images/nube2.svg" alt="Nube" />
+        <img class="w-[193px] h-[115px] absolute -top-14 -left-20 cloud hidden md:block" src='https://res.cloudinary.com/dwrhturiy/image/upload/v1739980460/nube2_a0pigb.svg' alt="Nube" />
         <div class="w-full overflow-hidden">
           <ul class="flex flex-col items-center justify-center">
             ${statuses
@@ -87,15 +87,15 @@ export const showStatusAlert = (statuses: { text: string; icon: string }[], isDa
         <button id="close-popup-btn-top" class="absolute top-2 right-5 text-white text-xl">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
             <path d="M30 10L10 30M10 10L30 30" 
-              ${isDark ? `stroke="#EBE7E0" ` : `stroke="#252526" `} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              ${isDark ? `stroke="#EBE7E0" ` : `stroke="#252526" `} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
-        <img class="absolute -bottom-28 -right-28 hidden md:block" src="/images/popupRepentance.svg" alt="Avion del popup" />
+        <img class="absolute -bottom-28 -right-28 hidden md:block" src='https://res.cloudinary.com/dwrhturiy/image/upload/v1751468799/popupRepentance_dfjiof.svg' alt="Avion del popup" />
         <div class="absolute -bottom-28 -right-28 w-[271px] h-[181px] hidden md:block">
-          <img class="w-[85px] h-[50px] absolute top-20 -left-5 cloud" src="/images/nube2.svg" alt="Nube" />
-          <img class="w-[97px] h-[57px] absolute -top-3 right-7 cloud" src="/images/nube2.svg" alt="Nube" />
-          <img class="w-[113px] h-[67px] absolute top-36 cloud" src="/images/nube2.svg" alt="Nube" />
-          <img class="w-[128px] h-[76px] absolute top-24 right-7 cloud" src="/images/nube2.svg" alt="Nube" />
+          <img class="w-[85px] h-[50px] absolute top-20 -left-5 cloud" src='https://res.cloudinary.com/dwrhturiy/image/upload/v1739980460/nube2_a0pigb.svg' alt="Nube" />
+          <img class="w-[97px] h-[57px] absolute -top-3 right-7 cloud" src='https://res.cloudinary.com/dwrhturiy/image/upload/v1739980460/nube2_a0pigb.svg' alt="Nube" />
+          <img class="w-[113px] h-[67px] absolute top-36 cloud" src='https://res.cloudinary.com/dwrhturiy/image/upload/v1739980460/nube2_a0pigb.svg' alt="Nube" />
+          <img class="w-[128px] h-[76px] absolute top-24 right-7 cloud" src='https://res.cloudinary.com/dwrhturiy/image/upload/v1739980460/nube2_a0pigb.svg' alt="Nube" />
         </div>
       </div>
     `,

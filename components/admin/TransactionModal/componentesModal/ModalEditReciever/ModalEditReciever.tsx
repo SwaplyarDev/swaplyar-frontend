@@ -45,7 +45,6 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
 
     const files = e.dataTransfer.files;
     if (files.length > 0) {
-      console.log('Archivo recibido:', files[0].name);
       setSelectedFile(files[0]);
     }
   };
@@ -85,12 +84,7 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
     };
 
     try {
-      // const plainObject = Object.fromEntries(formData.entries());
-      // console.log(plainObject);
-
-      console.log(body);
       const response = await UpdateTransactionData(body, transaction.transaction_id);
-      console.log(response);
     } catch (error) {
       throw new Error(`❌ Error en la respuesta del servicio` + error);
     }
@@ -172,7 +166,7 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
 
       <Separator className="mb-6 dark:bg-gray-700" />
 
-      {/* Upload Section */}
+      {/* Upload Section QUEDA COMENTADO POR LAS DUDAS, EN FIGMA TODAVIA NO HAY NADA SORBRE ESTA SECCION*/}
       {/* <div className="mb-6 flex items-center justify-center"> 
         {/* <div className="text-center">
           <div

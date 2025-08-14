@@ -19,7 +19,7 @@ const ClientInformation: React.FC = ({}) => {
   const { trans } = useTransactionStore();
   const { transaction } = trans;
   const [select, setSelect] = useState<boolean | null>(null);
-  // Update parent state when dialog changes
+
   const handleStopClick = () => {
     if (select) {
       setSelect(false);
@@ -46,11 +46,11 @@ const ClientInformation: React.FC = ({}) => {
           <Button
             variant="outline"
             onClick={handleStopClick}
-            className={
+            className={`rounded-3xl ${
               select
                 ? 'bg-amber-500 text-white shadow-lg shadow-amber-200 dark:bg-amber-600 dark:shadow-amber-900/20'
                 : 'border-2 border-amber-500 bg-white text-gray-700 hover:bg-amber-50 dark:border-amber-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-amber-900/20'
-            }
+            } `}
           >
             <AlertTriangle
               className={select ? `h-5 w-5 text-white dark:text-white` : `h-5 w-5 text-amber-500 dark:text-amber-400`}
@@ -94,7 +94,6 @@ const ClientInformation: React.FC = ({}) => {
         {!select && <TransferClient />}
       </CardHeader>
 
-      {/* Status indicator */}
       <div
         className={`h-1.5 w-full transition-all duration-500 ${
           transaction.regret_id ? 'bg-destructive dark:bg-red-700' : 'bg-primary dark:bg-blue-700'

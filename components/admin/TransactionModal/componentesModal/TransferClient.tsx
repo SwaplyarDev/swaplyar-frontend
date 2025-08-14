@@ -3,7 +3,18 @@
 import type React from 'react';
 
 import { useState } from 'react';
-import { CheckCircle, XCircle, Upload, LinkIcon, DollarSign, FileText, Send, Trash2, Edit } from 'lucide-react';
+import {
+  CheckCircle,
+  XCircle,
+  Upload,
+  LinkIcon,
+  DollarSign,
+  FileText,
+  Send,
+  Trash2,
+  Edit,
+  Loader2,
+} from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
@@ -28,6 +39,8 @@ import { uploadTransactionReceipt } from '@/actions/transactions/admin-transacti
 import { useSession } from 'next-auth/react';
 import ModalEditReciever from './ModalEditReciever/ModalEditReciever';
 import { useTransactionStore } from '@/store/transactionModalStorage';
+import ServerErrorModal from '../../ModalErrorServidor/ModalErrorSevidor';
+import { set } from 'date-fns';
 
 interface Form {
   transfer_id: string;
@@ -71,6 +84,11 @@ const TransferClient = () => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [modalServer, setModalServer] = useState(false);
+  const [showConfirmRefund, setShowConfirmRefund] = useState(false);
+  const [modalError, setModalError] = useState(false);
+  const [modalResponse, setModalResponse] = useState(false);
 
   const [isInputTransferIdFocused, setIsInputTransferIdFocused] = useState(false);
 
@@ -126,24 +144,23 @@ const TransferClient = () => {
       } else {
         setFormRefund((prev) => ({ ...prev, file }));
       }
-
-      console.log('Archivo actualizado:', file.name);
     }
   };
 
   const handleSubmitRejection = async () => {
     if (!rejectionReason.trim()) {
-      /*   toast({
-          title: "Campo requerido",
-          description: "Por favor ingresa el motivo del rechazo",
-          variant: "destructive",
-        }) */
       try {
         const response = await updateTransactionStatus('rejected', transId, {
           descripcion: rejectionReason,
         });
+
+        if (!response) {
+          setModalServer(true);
+          setShowConfirmDialog(false);
+        }
       } catch (error) {
-        throw new Error(`❌ Error en la respuesta del servicio`);
+        setModalServer(true);
+        setShowConfirmDialog(false);
       }
       return;
     }
@@ -155,25 +172,23 @@ const TransferClient = () => {
     try {
       setIsLoading(true);
 
-      console.log(rejectionReason, 'transaction_id: ' + transId);
-
       const response = await updateTransactionStatus('canceled', transId, {
         descripcion: rejectionReason,
       });
 
-      console.log(response);
-      setShowConfirmDialog(false);
-      setIsLoading(false);
+      if (!response) {
+        setModalServer(true);
+        setIsLoading(false);
+        setShowConfirmDialog(false);
+      } else {
+        setShowConfirmDialog(false);
+        setIsLoading(false);
+      }
     } catch (error) {
       console.log('Error al rechazar la transacción:', error);
       setIsLoading(false);
       setShowConfirmDialog(false);
-
-      /* toast({
-        title: "Error",
-        description: "Ocurrió un error al procesar la solicitud. Por favor intenta nuevamente.",
-        variant: "destructive",
-      }) */
+      setModalServer(true);
     }
   };
 
@@ -188,15 +203,22 @@ const TransferClient = () => {
       formData.append('transaction_id', transId);
 
       const response = await updateTransactionStatus('approved', transId, {
-        review: form.transfer_id,
+        descripcion: 'Proceso de transaccion exitoso',
+        additionalData: {
+          codigo_transferencia: form.transfer_id,
+        },
         amount: Number(form.amount),
       });
       const responseFile = await uploadTransactionReceipt(formData);
-      console.log(response, responseFile);
-      setIsLoading(false);
+
+      if (!response || !responseFile) {
+        setModalServer(true);
+      } else {
+        setIsLoading(false);
+      }
     } catch (error) {
       setIsLoading(false);
-      throw new Error(`❌ Error en la respuesta del servicio`);
+      setModalServer(true);
     }
   };
   const handleDialogAprove = () => {
@@ -212,9 +234,7 @@ const TransferClient = () => {
     try {
       if (!formRefund.file) return null;
 
-      console.log(formRefund);
-      console.log(transId);
-
+      setIsLoading(true);
       const formData = new FormData();
 
       formData.append('file', formRefund.file);
@@ -236,14 +256,20 @@ const TransferClient = () => {
         body: formData,
       });
 
-      console.log('Respuesta de la info', response);
-      console.log('Respuesta de el archivo', responseFile);
+      if (!response || !responseFile.ok) {
+        setIsLoading(false);
+        setModalServer(true);
+      } else {
+        setIsLoading(false);
+        setModalResponse(true);
+      }
     } catch (error) {
-      throw new Error(`❌ Error en la respuesta del servicio ${error}`);
+      setIsLoading(false);
+      setModalError(false);
+      setModalServer(true);
     }
   };
 
-  // Update parent state when dialog changes
   const handleOpenChange = (open: boolean) => {
     setOpen(open);
     setModal(open);
@@ -254,7 +280,6 @@ const TransferClient = () => {
         <h2 className="text-lg font-medium text-gray-800">Información de la Transferencia al Cliente</h2>
         <p className="text-sm text-gray-500">¿La transferencia fue realizada al cliente?</p>
 
-        {/* Transfer question */}
         <div className="flex flex-col items-center gap-3">
           <div className="mb-4 mt-2 flex w-full gap-4">
             <TooltipProvider delayDuration={300}>
@@ -263,7 +288,7 @@ const TransferClient = () => {
                   <Button
                     onClick={() => setSelected(true)}
                     variant="outline"
-                    className={`${
+                    className={`rounded-3xl ${
                       selected === true
                         ? 'bg-green-600 text-white shadow-lg shadow-green-200'
                         : 'border border-gray-300 bg-white text-gray-700 hover:border-green-500 hover:text-green-600'
@@ -283,7 +308,7 @@ const TransferClient = () => {
                   <Button
                     onClick={() => setSelected(false)}
                     variant="outline"
-                    className={`${
+                    className={`rounded-3xl ${
                       selected === false
                         ? 'bg-red-600 text-white shadow-lg shadow-red-200'
                         : 'border border-gray-300 bg-white text-gray-700 hover:border-red-500 hover:text-red-600'
@@ -305,7 +330,7 @@ const TransferClient = () => {
                   variant="default"
                   className={
                     !selected
-                      ? 'bg-gradient-to-r from-amber-600 to-orange-700 transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 dark:from-amber-700 dark:to-orange-800 dark:hover:shadow-orange-900/20'
+                      ? 'rounded-3xl bg-gradient-to-r from-amber-600 to-orange-700 transition-all duration-300 hover:shadow-lg hover:shadow-orange-200 dark:from-amber-700 dark:to-orange-800 dark:hover:shadow-orange-900/20'
                       : 'border-2 bg-transparent'
                   }
                 >
@@ -320,15 +345,10 @@ const TransferClient = () => {
           </div>
         </div>
 
-        {/* Conditional form fields */}
         {selected === true ? (
           <div className="animate-in fade-in grid grid-cols-1 gap-4 duration-300">
             <div className="space-y-2">
-              <Label htmlFor="transfer_id" className="text-sm font-medium">
-                ID de la Transferencia <span className="text-red-500">*</span>
-              </Label>
-              <div className="flex items-center rounded-md border">
-                <FileText className="ml-2 h-5 w-5 text-gray-400" />
+              <div className="relative my-5 flex-1">
                 <Input
                   id="transfer_id"
                   name="transfer_id"
@@ -336,25 +356,27 @@ const TransferClient = () => {
                   placeholder="Ingresa el ID de la transferencia"
                   value={form.transfer_id}
                   onChange={handleInputChange}
-                  className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                  className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
+                    isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
+                  }`}
+                  aria-required="true"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="amount" className="text-sm font-medium">
-                Monto Transferido <span className="text-red-500">*</span>
-              </Label>
-              <div className="flex items-center rounded-md border">
-                <DollarSign className="ml-2 h-5 w-5 text-gray-400" />
+              <div className="relative mb-5 flex-1">
                 <Input
                   id="amount"
                   name="amount"
-                  type="number"
-                  placeholder="Ingresa el monto transferido"
-                  value={form.amount || ''}
+                  type="text"
+                  placeholder="Monto a trasnferir"
+                  value={form.amount}
                   onChange={handleInputChange}
-                  className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                  className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
+                    isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
+                  }`}
+                  aria-required="true"
                 />
               </div>
             </div>
@@ -364,10 +386,10 @@ const TransferClient = () => {
               {!form.file ? (
                 <div
                   className={cn(
-                    'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed transition-all duration-300',
+                    'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 transition-all duration-300',
                     isDragging
-                      ? 'border-primary bg-primary/10'
-                      : 'hover:border-primary/70 hover:bg-primary/5 border-gray-50 bg-gray-800',
+                      ? 'bg-primary/10 border-[#90B0FE]'
+                      : 'hover:border-primary/70 hover:bg-primary/5 border-[#90B0FE] bg-[#FFFFF8] dark:border-gray-50 dark:bg-gray-800',
                   )}
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
@@ -418,7 +440,7 @@ const TransferClient = () => {
 
             <Button
               onClick={handleDialogAprove}
-              className="h-11 bg-custom-blue text-white hover:bg-blue-700"
+              className="h-11 rounded-3xl bg-custom-blue text-white hover:bg-blue-700"
               aria-label="Enviar ID de transferencia"
             >
               <span>Enviar</span>
@@ -442,7 +464,9 @@ const TransferClient = () => {
                         placeholder="Ingresa el motivo del rechazo"
                         value={formRefund.description}
                         onChange={(e) => setFormRefund({ ...formRefund, description: e.target.value })}
-                        className={`h-11 transition-all duration-300`}
+                        className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
+                          isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
+                        }`}
                         aria-required="true"
                       />
                     </div>
@@ -455,9 +479,7 @@ const TransferClient = () => {
                       placeholder="Id de el reembolso"
                       value={formRefund.transfer_id}
                       onChange={(e) => setFormRefund({ ...formRefund, transfer_id: e.target.value })}
-                      // onFocus={() => setIsInputTransferIdFocused(true)}
-                      // onBlur={() => setIsInputTransferIdFocused(false)}
-                      className={`h-11 transition-all duration-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 ${
+                      className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                         isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                       }`}
                       aria-required="true"
@@ -471,9 +493,7 @@ const TransferClient = () => {
                       placeholder="Monto transferido"
                       value={formRefund.amount}
                       onChange={(e) => setFormRefund({ ...formRefund, amount: e.target.value })}
-                      // onFocus={() => setIsInputTransferIdFocused(true)}
-                      // onBlur={() => setIsInputTransferIdFocused(false)}
-                      className={`h-11 transition-all duration-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 ${
+                      className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
                         isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
                       }`}
                       aria-required="true"
@@ -485,10 +505,10 @@ const TransferClient = () => {
                   {!formRefund.file ? (
                     <div
                       className={cn(
-                        'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed transition-all duration-300',
+                        'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 transition-all duration-300',
                         isDragging
-                          ? 'border-primary bg-primary/10'
-                          : 'hover:border-primary/70 hover:bg-primary/5 border-gray-50 bg-gray-800',
+                          ? 'bg-primary/10 border-[#90B0FE]'
+                          : 'hover:border-primary/70 hover:bg-primary/5 border-[#90B0FE] bg-[#FFFFF8] dark:border-gray-50 dark:bg-gray-800',
                       )}
                       onDragOver={handleDragOver}
                       onDragLeave={handleDragLeave}
@@ -542,8 +562,8 @@ const TransferClient = () => {
                 </div>
 
                 <Button
-                  onClick={handleSendRefound}
-                  className="h-11 w-full bg-custom-blue text-white hover:bg-blue-700"
+                  onClick={() => setShowConfirmRefund(true)}
+                  className="h-11 w-full rounded-3xl bg-custom-blue text-white hover:bg-blue-700"
                   aria-label="Enviar ID de transferencia"
                 >
                   <span>Enviar</span>
@@ -557,7 +577,8 @@ const TransferClient = () => {
           )
         )}
 
-        {/* Confirmation Dialog */}
+        {modalServer && <ServerErrorModal isOpen={modalServer} onClose={() => setModalServer(false)} />}
+
         <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
           <DialogContent className="border border-gray-200 bg-white transition-all duration-300 dark:border-gray-700 dark:bg-gray-800/95">
             <DialogHeader>
@@ -587,7 +608,7 @@ const TransferClient = () => {
                 disabled={isLoading}
                 className="dark:bg-red-700 dark:hover:bg-red-800"
               >
-                {isLoading ? 'Procesando...' : 'Confirmar rechazo'}
+                {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Confirmar rechazo'}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -603,6 +624,14 @@ const TransferClient = () => {
 
             <DialogFooter className="flex gap-2 sm:justify-end">
               <Button
+                variant="destructive"
+                onClick={() => handleAprove()}
+                disabled={isLoading}
+                className="dark:bg-red-700 dark:hover:bg-red-800"
+              >
+                {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Confirmar solicitud'}
+              </Button>
+              <Button
                 variant="outline"
                 onClick={() => setShowAlert(false)}
                 disabled={isLoading}
@@ -610,13 +639,40 @@ const TransferClient = () => {
               >
                 Cancelar
               </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={showConfirmRefund} onOpenChange={setShowConfirmRefund}>
+          <DialogContent className="border border-gray-200 bg-white transition-all duration-300 dark:border-gray-700 dark:bg-gray-800/95">
+            <DialogHeader>
+              <DialogTitle className="text-gray-900 dark:text-gray-100">Confirmar reembolso</DialogTitle>
+              <DialogDescription className="text-gray-700 dark:text-gray-300">
+                ¿Estás seguro que deseas enviar este reembolso?
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="w-full rounded-lg bg-gray-100 p-3 text-left dark:bg-gray-700/30">
+              <p className="mb-1 font-medium text-gray-800 dark:text-gray-200">Motivo:</p>
+              <p className="text-gray-700 dark:text-gray-300">{formRefund.description}</p>
+            </div>
+
+            <DialogFooter className="flex gap-2 sm:justify-end">
               <Button
                 variant="destructive"
-                onClick={() => handleAprove()}
+                onClick={handleSendRefound}
                 disabled={isLoading}
                 className="dark:bg-red-700 dark:hover:bg-red-800"
               >
-                {isLoading ? 'Procesando...' : 'Confirmar solicitud'}
+                {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Confirmar reembolso'}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setShowConfirmRefund(false)}
+                disabled={isLoading}
+                className="dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700/50"
+              >
+                Cancelar
               </Button>
             </DialogFooter>
           </DialogContent>

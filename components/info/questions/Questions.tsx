@@ -54,8 +54,6 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolea
         }}
       >
         <ExpandMore
-          /*className={` ${props.expanded || props.isDark ? 'text-white' : 'text-custom-blue-300'} group-hover:custom-grayD-500`}*/
-
           className={`${
             props.isDark
               ? props.expanded
@@ -173,7 +171,7 @@ const FrequentlyQuestions = () => {
           </div>
         )}
       </section>
-      <section className="mt-10 h-auto w-full">
+      <section className="mt-10 hidden h-auto w-full md:block">
         <FlyerTrabajo href="" imageSrc={BannerQuestions} />
       </section>
     </main>

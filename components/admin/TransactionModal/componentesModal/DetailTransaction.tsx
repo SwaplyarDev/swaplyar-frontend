@@ -14,12 +14,10 @@ const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading 
 
   const { sender, payment_method, amounts, proof_of_payment } = transaction;
 
-  // Helper function to format currency values
   const formatCurrency = (amount: string | number, currency: string) => {
     return `${amount} ${currency}`;
   };
 
-  // Helper function to truncate URLs
   const truncateUrl = (url: string, maxLength = 24) => {
     if (!url) return '';
     return url.length > maxLength ? `${url.substring(0, maxLength)}...` : url;
@@ -30,7 +28,6 @@ const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading 
       <div className="rounded-lg border bg-white p-4 shadow-sm transition-all duration-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800/90 dark:hover:bg-gray-800">
         <h3 className="mb-4 text-lg font-semibold dark:text-white">Detalles de la Transacción</h3>
 
-        {/* Sender Information */}
         <div className="mb-4 space-y-2">
           <div className="mb-2 flex items-center">
             <span className="font-medium dark:text-gray-200">Datos del Solicitante</span>
@@ -47,7 +44,6 @@ const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading 
           </div>
         </div>
 
-        {/* Receiver Information */}
         <div className="mb-4 space-y-2">
           <div className="mb-2 font-medium dark:text-gray-200">Datos del Destinatario</div>
           {getReceiverLabels(transaction).map((item, index) => (
@@ -58,7 +54,6 @@ const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading 
           ))}
         </div>
 
-        {/* Payment Information */}
         <div className="space-y-2">
           <div className="mb-2 font-medium dark:text-gray-200">Datos del Pago</div>
           <div className="flex justify-between">

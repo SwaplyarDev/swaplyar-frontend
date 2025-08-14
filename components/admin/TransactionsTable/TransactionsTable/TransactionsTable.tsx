@@ -48,8 +48,6 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
   const [activePopover, setActivePopover] = useState<string | null>(null);
   const popoverRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
-  console.log(transactions);
-
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -190,6 +188,12 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
         icon: <CheckCircle size={14} className="mr-1.5 h-4 w-4" />,
         label: 'Aceptada',
       },
+      '4': {
+        bgColor: 'bg-red-100 dark:bg-red-900/30',
+        textColor: 'text-red-800 dark:text-red-300',
+        icon: <XCircle size={14} className="mr-1" />,
+        label: 'Rechazada',
+      },
       '7': {
         bgColor: 'bg-amber-100 dark:bg-amber-900/30',
         textColor: 'text-amber-800 dark:text-amber-300',
@@ -252,7 +256,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
   };
 
   useEffect(() => {
-    console.log('Current filters:', filters);
+    // console.log('Current filters:', filters);
   }, [filters]);
 
   const router = useRouter();
@@ -582,7 +586,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                 transactions.data.map((transaction: TransactionTypeAll, index: number) => (
                   <tr
                     key={transaction.transaction.transaction_id}
-                    className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                    className="cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
                     onClick={() => router.push(`/es/admin/transactions/${transaction.transaction.transaction_id}`)}
                   >
                     <td className="px-4 py-3 text-sm">{getStatusBadge(transaction.transaction.status)}</td>

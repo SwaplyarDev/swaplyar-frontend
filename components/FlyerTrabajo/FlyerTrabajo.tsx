@@ -20,7 +20,7 @@ export default function FlyerTrabajo({ title, description, nameButton, imageSrc,
   const { size } = useSize();
 
   return (
-    <div className={`relative mb-20 mt-40 h-[272px] w-full bg-cover bg-center bg-repeat`} style={{ backgroundImage }}>
+    <div className={`relative mb-10 mt-20 h-[272px] w-full bg-cover bg-center bg-repeat`} style={{ backgroundImage }}>
       <div className={clsx('flex h-full w-full items-center justify-center', title ? 'bg-black bg-opacity-30' : '')}>
         <div className="flex flex-col items-center gap-4 overflow-hidden py-4 text-center font-textFont text-[21px] font-extrabold text-darkText">
           {title && <h2>{title}</h2>}
@@ -30,18 +30,18 @@ export default function FlyerTrabajo({ title, description, nameButton, imageSrc,
                 <motion.p
                   initial={
                     size >= 0 && size <= 390
-                      ? { x: '40%' }
+                      ? { x: '35%' }
                       : size > 390 && size <= 490
-                        ? { x: '50%' }
+                        ? { x: '45%' }
                         : size > 490 && size <= 590
-                          ? { x: '60%' }
+                          ? { x: '55%' }
                           : size > 590 && size <= 670
-                            ? { x: '70%' }
+                            ? { x: '65%' }
                             : size > 670 && size <= 770
-                              ? { x: '80%' }
+                              ? { x: '75%' }
                               : size > 770 && size <= 870
-                                ? { x: '90%' }
-                                : size > 870 && { x: '100%' }
+                                ? { x: '85%' }
+                                : { x: '95%' }
                   }
                   animate={{ x: '-100%' }}
                   transition={{ duration: 25, repeat: Infinity, repeatType: 'loop', ease: 'linear' }}

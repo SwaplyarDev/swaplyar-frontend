@@ -3,14 +3,10 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useDarkTheme } from '../../ui/theme-Provider/themeProvider';
-
-// import { Drawer, Sidebar, Navbar } from 'flowbite-react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdOutlineClose } from 'react-icons/md';
-
 import NavLinks from '@/components/ui/top-menu/nav-links';
 import Image from 'next/image';
-
 import LogInButton from '@/components/ui/top-menu/log-register-bt/logiInButton';
 import RegisterButton from '@/components/ui/top-menu/log-register-bt/registerButton';
 import Switch from '@/components/ui/top-menu/switch';
@@ -23,6 +19,18 @@ import { signOut, useSession } from 'next-auth/react';
 const NavbarLanding = () => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [drawerMenu, setDrawerMenu] = useState(false);
+
+  useEffect(() => {
+    if (drawerMenu) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [drawerMenu]);
 
   const { isDark } = useDarkTheme();
 
@@ -37,6 +45,10 @@ const NavbarLanding = () => {
   }, []);
 
   const { data: session, status } = useSession();
+
+  const closeDrawer = () => {
+    setDrawerMenu(false);
+  };
 
   // Popover
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
@@ -120,8 +132,9 @@ const NavbarLanding = () => {
                 </Popover>
               </>
             ) : (
-              <></>
-              // <LogInButton />
+              <>
+                <LogInButton />
+              </>
             )}
           </span>
 
@@ -155,9 +168,9 @@ const NavbarLanding = () => {
             {/* Menú desplegable */}
             <Drawer
               open={drawerMenu}
-              onClose={() => setDrawerMenu(false)}
+              onClose={closeDrawer}
               position="right"
-              className="h-full w-full max-w-full transform transition-all duration-500 ease-in-out xs-mini-phone2:w-[inherit] xs-mini-phone2:max-w-[80%]"
+              className="flex h-full w-full max-w-full transform flex-col items-center justify-between transition-all duration-500 ease-in-out xs-mini-phone2:w-[inherit] xs-mini-phone2:max-w-[80%]"
             >
               <Drawer.Header
                 title=""
@@ -270,7 +283,10 @@ const NavbarLanding = () => {
                     <Sidebar.ItemGroup className="w-full bg-inherit">
                       {status === 'authenticated' ? (
                         <button
-                          onClick={() => signOut()}
+                          onClick={() => {
+                            signOut();
+                            closeDrawer();
+                          }}
                           className={clsx(
                             isDark ? 'buttonSecondDark dark:text-lightText' : 'buttonSecond',
                             'relative m-1 min-h-[38px] w-11/12 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-3 py-1 text-sm text-darkText dark:border-darkText dark:bg-darkText',
@@ -280,12 +296,12 @@ const NavbarLanding = () => {
                         </button>
                       ) : (
                         <div className="flex flex-col items-center gap-3">
-                          <div className="flex flex-col md:hidden">
-                            <LogInButton />
+                          {/* <div className="flex flex-col md:hidden">
+                            <LogInButton onButtonClick={closeDrawer} />
                           </div>
                           <div className="flex h-[60px] flex-col">
-                            <RegisterButton />
-                          </div>
+                            <RegisterButton onButtonClick={closeDrawer} />
+                          </div> */}
                         </div>
                       )}
                     </Sidebar.ItemGroup>
@@ -358,6 +374,7 @@ const NavbarLanding = () => {
                 <>
                   {/* <LogInButton />
                   <RegisterButton /> */}
+                  <></>
                 </>
               )}
             </section>

@@ -7,7 +7,6 @@ import ConversionInstructions from '../ui/Conversion-Instructions/ConversionInst
 import { FlyerGif, RecargaPaypal, UsdArs, homeSearch } from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useSystemStore } from '@/store/useSystemStore';
-import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import Recommendations from '../Recomendations/Recomendations';
 import Link from 'next/link';
 
@@ -18,14 +17,12 @@ export default function HomePage() {
     resetToDefault();
   }, [resetToDefault]);
 
-  const { isDark } = useDarkTheme();
-
   return (
     <>
       <AnimatedBlurredCircles tope="top-[-175px]" />
       <section className="mx-auto w-full max-w-[1204px] overflow-hidden px-4 md:px-8 lg:px-4">
         <article className="m-auto flex w-full flex-col items-center justify-center">
-          <div className="mt-0 flex w-full flex-col items-center justify-center lg:mt-8">
+          <div className="mt-0 flex w-full flex-col items-center justify-center">
             <ConversionInstructions />
           </div>
           <div className="relative mb-10 mt-8 flex w-full max-w-[850px] flex-col items-center justify-center gap-10">

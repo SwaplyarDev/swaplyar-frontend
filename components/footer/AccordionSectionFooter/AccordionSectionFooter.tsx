@@ -1,6 +1,9 @@
-import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+'use client';
+
+import { Accordion, AccordionDetails, AccordionSummary, ClickAwayListener } from '@mui/material';
 import { FooterLink } from '../FooterLink/FooterLink';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useState } from 'react';
 
 interface FooterLinkProps {
   href: string;
@@ -9,34 +12,63 @@ interface FooterLinkProps {
 }
 
 export function AccordionSection({ title, links }: { title: string; links: FooterLinkProps[] }) {
+  const [expanded, setExpanded] = useState(false);
+
   return (
-    <Accordion
-      disableGutters
-      className="before:contante-[''] group relative bg-transparent shadow-none transition-all duration-300 before:absolute before:w-0 after:absolute after:bottom-0 after:left-[50%] after:h-[1px] after:w-[70%] after:min-w-[204px] after:-translate-x-[50%] after:bg-buttonExpandDark after:transition-all after:duration-300 after:content-[''] after:hover:bg-buttonsLigth dark:after:hover:bg-buttonExpandDark after:[&.Mui-expanded]:bg-buttonsLigth dark:after:[&.Mui-expanded]:bg-buttonExpandDark"
-    >
-      <AccordionSummary
-        expandIcon={
-          <ExpandMoreIcon className="h-10 w-10 text-buttonsExtraLigth transition-all duration-300 group-hover:text-buttonsLigth group-[&.Mui-expanded]:text-buttonsLigth group-[&:not(.Mui-expanded)]:hover:rotate-180 dark:text-buttonExpandDark dark:group-hover:text-buttonExpandDark dark:group-[&.Mui-expanded]:text-buttonExpandDark" />
-        }
-        aria-controls={`${title}-content`}
-        id={`${title}-header`}
-        className="min-h-10 px-0"
+    <ClickAwayListener onClickAway={() => setExpanded(false)}>
+      <Accordion
+        disableGutters
+        expanded={expanded}
+        onChange={() => setExpanded(!expanded)}
+        className="accordion-custom"
         sx={{
-          minHeight: '0!important',
-          '& .MuiAccordionSummary-content': {
-            margin: '0!important',
+          '&.MuiAccordion-root': {
+            backgroundColor: 'transparent',
+            boxShadow: 'none',
+            '&:before': {
+              display: 'none',
+            },
+          },
+          '&.MuiAccordion-root.Mui-expanded': {
+            margin: 0,
           },
         }}
       >
-        <h4 className="text-xl font-light text-lightText transition-all group-hover:font-semibold group-[&.Mui-expanded]:font-semibold dark:text-darkText">
-          {title}
-        </h4>
-      </AccordionSummary>
-      <AccordionDetails className="flex flex-col items-center text-center">
-        {links.map(({ href, label, view }) => (
-          <FooterLink key={href} href={href} label={label} view={view} />
-        ))}
-      </AccordionDetails>
-    </Accordion>
+        <AccordionSummary
+          expandIcon={
+            <ExpandMoreIcon
+              className={`accordion-icon duration-600 transition-all ${expanded ? 'accordion-icon-expanded' : ''}`}
+            />
+          }
+          aria-controls={`${title}-content`}
+          id={`${title}-header`}
+          className="accordion-summary"
+          sx={{
+            minHeight: '40px !important',
+            padding: 0,
+            '& .MuiAccordionSummary-content': {
+              margin: '0 !important',
+            },
+            '& .MuiAccordionSummary-content.Mui-expanded': {
+              margin: '0 !important',
+            },
+          }}
+        >
+          <h4 className={`accordion-title duration-600 transition-all ${expanded ? 'accordion-title-expanded' : ''}`}>
+            {title}
+          </h4>
+        </AccordionSummary>
+        <AccordionDetails
+          className="flex flex-col items-center text-center"
+          sx={{
+            paddingBottom: '10px',
+          }}
+        >
+          {links.map(({ href, label, view }) => (
+            <FooterLink key={href} href={href} label={label} view={view} />
+          ))}
+        </AccordionDetails>
+      </Accordion>
+    </ClickAwayListener>
   );
 }

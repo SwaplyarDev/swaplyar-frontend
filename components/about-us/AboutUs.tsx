@@ -4,7 +4,14 @@ import Image from 'next/image';
 import CaedAboutUs from '../ui/cards/caed-about-us/caed-about-us';
 import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
 import Link from 'next/link';
-import { Apoyo, Transparencia, Simplicidad, Eficiencia, FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
+import {
+  Apoyo,
+  Transparencia,
+  Simplicidad,
+  Eficiencia,
+  FlyerGif,
+  swaplyArCEO,
+} from '@/utils/assets/imgDatabaseCloudinary';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import './about.css';
@@ -120,7 +127,7 @@ const AboutUs = () => {
               </article>
 
               <article className="col-left order-2 flex flex-col items-center md:order-1">
-                <Image src="/images/CEO&CPO.png" alt="Chief Executive Officer (CEO)" width={286} height={286} />
+                <Image src={swaplyArCEO} alt="Chief Executive Officer (CEO)" width={286} height={286} />
                 <div className="text-team mt-4 text-center font-textFont text-lightText dark:text-darkText">
                   <h5 className="text-[28px]">Oa Johan Javier Suarez Merchan</h5>
                   <h5 className="text-xl font-light">Founder &amp; Chief Executive Officer (CEO)</h5>
