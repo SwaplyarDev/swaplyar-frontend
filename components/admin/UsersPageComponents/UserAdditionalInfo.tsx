@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import { AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
-import { User } from '@/types/user';
 import { DetailedVerificationItem } from '@/types/verifiedUsers';
 import { formatDate } from '@/utils/utils';
 

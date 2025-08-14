@@ -1,7 +1,6 @@
 'use client';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
-import { User } from '@/types/user';
 import { AdminDiscountsResponse } from '@/types/discounts/adminDiscounts';
 
 export function UserRewardsSection({ discounts }: { discounts: AdminDiscountsResponse }) {

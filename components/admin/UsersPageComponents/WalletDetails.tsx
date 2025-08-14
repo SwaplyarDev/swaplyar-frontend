@@ -1,8 +1,7 @@
 'use client';
 
-import Image from 'next/image';
-import { PaymentType, Wallet as WalletList } from '@/types/wallets';
-import { Search, Plus, CreditCard, ChevronDown, ChevronUp, Trash2, Wallet, Banknote } from 'lucide-react';
+import { Wallet as WalletList } from '@/types/wallets';
+import { CreditCard, ChevronDown } from 'lucide-react';
 import { Logos, tipoCuenta } from './WalletList';
 
 interface WalletsListProps {
@@ -61,7 +60,7 @@ export function WalletDetail({ wallet, onSelectWallet }: WalletsListProps) {
       <div className="rounded-t-lg border-b bg-white p-4 dark:border-gray-700 dark:bg-gray-800/90">
         <div className="flex items-center gap-4">
           <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-blue-50 dark:bg-blue-900/50">
-            <div className="flex justify-center items-centerrelative h-8 w-8">
+            <div className="flex justify-center items-center relative h-11 w-11">
               <Logos payment_type={wallet.payment_type} />
             </div>
           </div>

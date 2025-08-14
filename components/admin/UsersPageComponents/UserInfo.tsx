@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { DetailedVerificationItem } from '@/types/verifiedUsers';
 import { formatDate } from '@/utils/utils';
 import { useUserVerify } from '@/hooks/admin/usersPageHooks/useUserVerifyState';
 

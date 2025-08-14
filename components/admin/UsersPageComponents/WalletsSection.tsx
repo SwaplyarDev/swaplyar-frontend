@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Search, ChevronDown, ChevronUp } from 'lucide-react';
-import { WalletsResponse, Wallet as WalletR, PaymentType } from '@/types/wallets';
+import { Wallet as WalletR } from '@/types/wallets';
 import { WalletsList } from './WalletList';
 import { WalletDetail } from './WalletDetails';
 
