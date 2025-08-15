@@ -47,7 +47,7 @@ export default function TransactionCalculatorInternal() {
   const { rates } = getExchangeRateStore.getState();
   useEffect(() => {
     if (!pass && pathname === '/es/auth/solicitud/formulario-de-solicitud') {
-      router.push('//auth/solicitud');
+      router.push('/es/auth/solicitud');
     }
   }, [pass, pathname, router]);
 

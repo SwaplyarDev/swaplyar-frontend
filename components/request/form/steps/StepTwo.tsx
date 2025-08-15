@@ -26,7 +26,7 @@ interface FormData {
   re_enter_usdt_direction: string;
   red_selection: RedType | undefined;
   recieveAmountRed: string;
-  pix_key: string;
+  pixKey: string;
   individual_tax_id: string;
 }
 
@@ -62,7 +62,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
       re_enter_usdt_direction,
       red_selection,
       recieveAmountRed,
-      pix_key,
+      pixKey,
       individual_tax_id,
     } = formData.stepTwo;
     const newValues = {
@@ -78,7 +78,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
       re_enter_usdt_direction,
       red_selection,
       recieveAmountRed,
-      pix_key,
+      pixKey,
       individual_tax_id,
     };
 
@@ -90,7 +90,10 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
       'receiver_last_name',
       formData.stepOne?.own_account === 'Si' ? formData.stepOne?.last_name : receiver_last_name,
     );
-    setValue('tax_identification', tax_identification);
+    setValue(
+      'tax_identification',
+      formData.stepOne?.own_account === 'Si' ? formData.stepTwo?.tax_identification : '',
+    );
     setValue('transfer_identification', transfer_identification);
     setValue('re_transfer_identification', re_transfer_identification);
     setValue('name_of_bank', name_of_bank);
@@ -100,7 +103,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     setValue('re_enter_usdt_direction', re_enter_usdt_direction);
     setValue('red_selection', red_selection);
     setValue('recieveAmountRed', recieveAmountRed);
-    setValue('pix_key', pix_key);
+    setValue('pixKey', pixKey);
     setValue('individual_tax_id', individual_tax_id);
 
     setInitialValues(newValues);
