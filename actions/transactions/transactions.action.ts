@@ -50,6 +50,43 @@ export async function getTransactionById(transactionId: string, token: string): 
   }
 }
 
+export const getTransactionStatusHistory = async (
+  transactionId: string,
+  token: string
+) => {
+  try {
+    const response = await fetch(
+      `${NEXT_PUBLIC_BACKEND_URL}/admin/transactions/status/${transactionId}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-store',
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch transaction status history: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const json = await response.json();
+
+    if (!json.success || !Array.isArray(json.data)) {
+      throw new Error('Unexpected API response format');
+    }
+
+    return json.data;
+  } catch (error) {
+    console.error('Error fetching transaction status history:', error);
+    return [];
+  }
+};
+
+
 
 export const deleteTransactionById = async (id: string, token: string) => {
   try {
