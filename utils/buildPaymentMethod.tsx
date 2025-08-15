@@ -8,8 +8,8 @@ export function buildPaymentMethod(selectedSystem: string, details: Record<strin
         method: 'virtual-bank',
         virtualBank: {
           currency: details.currency || 'USD',
-          emailAccount: details.emailAccount || '',
-          transferCode: details.transferCode || '',
+          emailAccount: details.email_account || '',
+          transferCode: details.transfer_code || '',
         },
       };
 
