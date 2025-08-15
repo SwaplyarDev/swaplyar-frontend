@@ -9,7 +9,6 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import Swal from 'sweetalert2';
 import { createRoot } from 'react-dom/client';
 import Arrow from '@/components/ui/Arrow/Arrow';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -23,7 +22,7 @@ import { useSession } from 'next-auth/react';
 
 const StepperContainerInternal = () => {
   const { data: session } = useSession();
-  const { activeStep, formData, updateFormData, completedSteps, setActiveStep, submitAllData, resetToDefault } = useStepperStore();
+  const { activeStep, updateFormData, completedSteps, setActiveStep, submitAllData, resetToDefault } = useStepperStore();
   const [blockAll, setBlockAll] = useState(false);
   const { isStopped, setStop } = useChronometerState();
   const [correctSend, setCorrectSend] = useState(false);
@@ -31,73 +30,38 @@ const StepperContainerInternal = () => {
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
   const [loading, setLoading] = useState(false);
   const { isDark } = useDarkTheme();
-  const router = useRouter();
-  const [validAccess, setValidAccess] = useState(false);
 
   const rutaInicio = "/es/auth/solicitud";
 
-/*   useEffect(() => {
-    const accesoPermitido = sessionStorage.getItem('accesoPermitido');
-
-    if (!accesoPermitido) {
-      router.replace(rutaInicio);
-    } else {
-      setValidAccess(true);
-    }
-
-    const handleRouteChange = () => {
-      sessionStorage.removeItem('accesoPermitido');
+  useEffect(() => {
+      const userInfo = {
+      first_name: session?.user?.profile.firstName || '',
+      last_name: session?.user?.profile.lastName || '',
+      calling_code: undefined,
+      email: session?.user?.email || '',
+      phone: session?.user?.profile.phone || '',
+      own_account: undefined,
     };
 
-    window.addEventListener('beforeunload', handleRouteChange);
-    window.history.pushState(null, '', window.location.href);
-    window.addEventListener('popstate', () => {
-      sessionStorage.removeItem('accesoPermitido');
-      router.replace(rutaInicio);
-    });
-
-    return () => {
-      window.removeEventListener('beforeunload', handleRouteChange);
-      window.removeEventListener('popstate', handleRouteChange);
+    const transferInfo = {
+      receiver_first_name: '',
+      receiver_last_name: '',
+      tax_identification: session?.user.profile.identification,
+      transfer_identification: '',
+      re_transfer_identification: '',
+      name_of_bank: '',
+      bank_email: '',
+      re_enter_bank_email: '',
+      usdt_direction: '',
+      re_enter_usdt_direction: '',
+      red_selection: undefined,
+      recieveAmountRed: '',
+      pixKey: '',
+      individual_tax_id: '',
     };
-  }, [router]);
- */
-/*   if (!validAccess) return null; */
-
-useEffect(() => {
-    const userInfo = {
-    first_name: session?.user?.profile.firstName || '',
-    last_name: session?.user?.profile.lastName || '',
-    calling_code: undefined,
-    email: session?.user?.email || '',
-    phone: session?.user?.profile.phone || '',
-    own_account: undefined,
-  };
-
-  const transferInfo = {
-    receiver_first_name: '',
-    receiver_last_name: '',
-    tax_identification: session?.user.profile.identification,
-    transfer_identification: '',
-    re_transfer_identification: '',
-    name_of_bank: '',
-    bank_email: '',
-    re_enter_bank_email: '',
-    usdt_direction: '',
-    re_enter_usdt_direction: '',
-    red_selection: undefined,
-    recieveAmountRed: '',
-    pixKey: '',
-    individual_tax_id: '',
-  };
-  updateFormData(0, userInfo);
-  updateFormData(1, transferInfo);
-/*   formData.stepOne = userInfo;
-  formData.stepTwo = transferInfo; */
-
-},[session]);
-
-
+    updateFormData(0, userInfo);
+    updateFormData(1, transferInfo);
+  },[session]);
 
   const steps = [
     { title: 'Mis Datos', component: <StepOne blockAll={blockAll} /> },
