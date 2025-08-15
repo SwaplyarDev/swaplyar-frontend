@@ -19,11 +19,14 @@ const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const fetchTransactionById = async (requestData: TransactionRequestData): Promise<any> => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/notes/code/${requestData.transaccionId}`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/notes/request-access`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        transactionId: requestData.transaccionId,
+      }),
     });
 
     if (!response.ok) {
@@ -42,7 +45,7 @@ export const fetchTransactionById = async (requestData: TransactionRequestData):
 };
 export const fetchCode = async (code: string, requestData: { transactionId: string }): Promise<any> => {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/notes/code/validate`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/notes/verify-code`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
