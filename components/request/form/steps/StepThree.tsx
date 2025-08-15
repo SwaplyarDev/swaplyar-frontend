@@ -53,7 +53,7 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
       setValue('send_amount', sendAmount);
       setValue('receive_amount', receiveAmount);
     }
-    setValue('pay_email', '');
+    setValue('pay_email', formData.stepOne.email);
     setValue('proof_of_payment', proof_of_payment);
     setValue('note', note);
 
