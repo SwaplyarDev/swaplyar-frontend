@@ -79,7 +79,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
 
   const token = session.data?.accessToken || '';
 
-  const transactionId = trans.id
+  const transactionId = trans.id;
 
   useEffect(() => {
     setDiscrepancy(value);
@@ -278,29 +278,44 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                 <div className="flex gap-2">
                   <Input
                     id="discrepancy-reason"
-                    placeholder="Explica la discrepancia detalladamente"
+                    placeholder={
+                      trans.finalStatus === 'discrepancy'
+                        ? 'Ya se ha registrado una discrepancia para esta transacción'
+                        : 'Explica la discrepancia detalladamente'
+                    }
                     value={discrepancyReason}
                     onChange={(e) => setDiscrepancyReason(e.target.value)}
                     onFocus={() => setIsInputFocused(true)}
                     onBlur={() => setIsInputFocused(false)}
+                    disabled={trans.finalStatus === 'discrepancy'} // Deshabilitar si ya está en discrepancy
                     className={`h-10 transition-all duration-300 ${
-                      isInputFocused ? 'border-amber-300 ring-2 ring-amber-300' : ''
+                      trans.finalStatus === 'discrepancy'
+                        ? 'cursor-not-allowed bg-gray-100 opacity-50 dark:bg-gray-600' // Estilos para campo deshabilitado
+                        : isInputFocused
+                          ? 'border-amber-300 ring-2 ring-amber-300'
+                          : ''
                     }`}
                     aria-required="true"
                   />
 
                   <Button
-                    disabled={discrepancyReason.length === 0}
+                    disabled={discrepancyReason.length === 0 || trans.finalStatus === 'discrepancy'} // También deshabilitar el botón
                     onClick={handleSubmitDiscrepancy}
-                    className="h-10 rounded-3xl bg-amber-500 text-white hover:bg-amber-600"
+                    className={`h-10 rounded-3xl transition-all duration-300 ${
+                      trans.finalStatus === 'discrepancy'
+                        ? 'cursor-not-allowed bg-gray-400 opacity-50 hover:bg-gray-400' // Estilos para botón deshabilitado
+                        : 'bg-amber-500 text-white hover:bg-amber-600'
+                    }`}
                   >
                     <Send className="mr-2 h-4 w-4" />
-                    <span>Enviar</span>
+                    <span>{trans.finalStatus === 'discrepancy' ? 'Enviado' : 'Enviar'}</span>
                   </Button>
                 </div>
 
                 <p className="text-muted-foreground text-xs">
-                  Describe claramente cuál es la discrepancia encontrada en esta operación.
+                  {trans.finalStatus === 'discrepancy'
+                    ? 'El motivo de discrepancia ya ha sido registrado para esta transacción.'
+                    : 'Describe claramente cuál es la discrepancia encontrada en esta operación.'}
                 </p>
               </div>
 
