@@ -169,7 +169,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
 
     const payload = {
       transaction: {
-        country_transaction: stepOne.calling_code?.country,
+        country_transaction: stepOne.calling_code?.country || 'Argentina',
         message: 'Transaccion enviada',
         user_id: '',
         status: '',
@@ -178,7 +178,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       sender: {
         first_name: stepOne.first_name,
         last_name: stepOne.last_name,
-        identification: '',
+        identification: stepTwo.tax_identification,
         phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
         email: stepOne.email,
       },
@@ -186,6 +186,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         transaction_id: 'fj82JH5f',
         receiver_first_name: stepTwo.receiver_first_name,
         receiver_last_name: stepTwo.receiver_last_name,
+        document_value: stepTwo.tax_identification,
+        email: stepTwo.bank_email,
       },
       payment_method: {
         sender: buildPaymentMethod(selectedSendingSystem?.paymentMethod || '', senderDetails),
@@ -219,14 +221,15 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           firstName: payload.sender.first_name,
           lastName: payload.sender.last_name,
           phoneNumber: payload.sender.phone_number,
-          email: payload.sender.email,
+          createdBy: payload.sender.email,
           paymentMethod: payload.payment_method.sender,
         },
         receiverAccount: {
           firstName: payload.receiver.receiver_first_name,
           lastName: payload.receiver.receiver_last_name,
+          document_value: payload.receiver.document_value,
           phoneNumber: '', // lo podés agregar si lo tenés
-          email: '', // idem
+          email: payload.receiver.email,
           paymentMethod: payload.payment_method.receiver,
         },
       },
@@ -247,7 +250,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
 
     formDataPayload.append('createTransactionDto', JSON.stringify(createTransactionDto));
 
-    console.log(' payload: ', formDataPayload);
+    console.log(' payload: ', createTransactionDto);
     try {
       const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/transactions`, {
         method: 'POST',
