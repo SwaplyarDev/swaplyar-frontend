@@ -33,7 +33,7 @@ interface StepTwoData {
   re_enter_usdt_direction: string;
   red_selection: RedType | undefined;
   recieveAmountRed: string;
-  pixKey: string;
+  pix_key: string;
   individual_tax_id: string;
 }
 
@@ -94,7 +94,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       re_enter_usdt_direction: '',
       red_selection: undefined,
       recieveAmountRed: '',
-      pixKey: '',
+      pix_key: '',
       individual_tax_id: '',
     },
     stepThree: {
@@ -133,7 +133,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     const state = get();
     const { stepOne, stepTwo, stepThree } = state.formData;
 
-    const pixValue = detectarTipoPixKey(stepTwo.pixKey || 'oa@gmail.com');
+    const pixValue = detectarTipoPixKey(stepTwo.pix_key || 'oa@gmail.com');
 
     const senderDetails: Record<string, string> = {
       email_account: stepThree.pay_email || detectarMail(selectedSendingSystem),
@@ -143,7 +143,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       send_method_value: stepTwo.transfer_identification || 'SwaplyAr.com',
       document_type: getTransferIdentificationType(stepTwo.tax_identification || '20-19103601-9'),
       document_value: stepTwo.tax_identification || '20-19103601-9',
-      pixKey: stepTwo.pixKey || 'oa@gmail.com',
+      pixKey: stepTwo.pix_key || 'oa@gmail.com',
       pix_value: pixValue || '',
       cpf: stepTwo.individual_tax_id.replace(/[.-]/g, '') || '111.111.111-11',
       currency: selectedSendingSystem?.coin.toLowerCase() || '',
@@ -159,7 +159,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       send_method_value: stepTwo.transfer_identification || '',
       document_type: getTransferIdentificationType(stepTwo.tax_identification),
       document_value: stepTwo.tax_identification || '',
-      pixKey: stepTwo.pixKey || '',
+      pixKey: stepTwo.pix_key || '',
       pix_value: pixValue || '',
       cpf: stepTwo.individual_tax_id.replace(/[.-]/g, '') || '',
       currency: selectedReceivingSystem?.coin.toLowerCase() || '',
@@ -352,7 +352,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           re_enter_usdt_direction: '',
           red_selection: undefined,
           recieveAmountRed: '',
-          pixKey: '',
+          pix_key: '',
           individual_tax_id: '',
         },
         stepThree: {
