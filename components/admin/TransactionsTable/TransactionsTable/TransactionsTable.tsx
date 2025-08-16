@@ -204,7 +204,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
         textColor: 'text-green-800 dark:text-green-300',
         borderColor: 'border-green-200 dark:border-green-800',
         icon: <CheckCircle size={14} className="mr-1.5 h-4 w-4" />,
-        label: 'Aceptada',
+        label: 'Aprobada',
       },
       rejected: {
         bgColor: 'bg-red-100 dark:bg-red-900/30',
@@ -240,7 +240,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
         bgColor: 'bg-green-100 dark:bg-green-900/30',
         textColor: 'text-green-800 dark:text-green-300',
         icon: <CheckCircle size={14} className="mr-1" />,
-        label: 'Finalizada',
+        label: 'Completada',
       },
       default: {
         bgColor: 'bg-gray-100 dark:bg-gray-800',

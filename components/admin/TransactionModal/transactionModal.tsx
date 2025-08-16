@@ -210,7 +210,7 @@ const TransactionModal = () => {
             classnames="min-h-[4.25rem] border"
           />
 
-          <TransferImages trans={adaptTransactionV2ToTransactionTypeSingle(transaction)} />
+          <TransferImages trans={(transaction)} />
 
           {transaction.regret_id ? (
             <div className="flex flex-col">

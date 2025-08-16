@@ -23,7 +23,7 @@ export function fontSizeText(text: string) {
 }
 export default function MessageWpp({ text }: { text: string }) {
   return (
-    <article className="w-full bg-gradient-to-r from-[#012A8E] to-[#048604] p-3 text-center">
+    <article className="w-full bg-gradient-to-r from-[#012A8E] to-[#048604] p-3 text-center rounded-lg">
       <p className="font-semibold text-white">{fontSizeText(text)}</p>
     </article>
   );
