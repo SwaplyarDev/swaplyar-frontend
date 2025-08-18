@@ -1,31 +1,29 @@
 import type React from 'react';
 import Image from 'next/image';
 import { MockImagesTransDark, MockImagesTransLight } from '@/data/mockImagesTransaction';
-import type { TransactionTypeSingle } from '@/types/transactions/transactionsType';
-import { AlertTriangle, ArrowRight } from 'lucide-react';
+import type { TransactionV2 } from '@/types/transactions/transactionsType';
+import { AlertTriangle } from 'lucide-react';
 import { SwaplyArLogoSolo } from '@/utils/assets/imgDatabaseCloudinary';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import Flecha from './utils/Flechas';
 
 interface TransactionProps {
-  trans: TransactionTypeSingle;
+  trans: TransactionV2;
 }
 
 const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
-  const { payment_method, transaction } = trans;
-  const { regret_id, note_id } = transaction;
+  const senderPaymentMethodName = trans.senderAccount?.paymentMethod?.method || 'pix';
+  const receiverPaymentMethodName = trans.receiverAccount?.paymentMethod?.method || '';
+  // const { regret_id, note_id } = trans;
   const { isDark } = useDarkTheme();
 
-  let senderImg = null;
-  let receiverImg = null;
+  const senderImg = isDark
+  ? MockImagesTransDark.find(img => img.name === senderPaymentMethodName)?.image
+  : MockImagesTransLight.find(img => img.name === senderPaymentMethodName)?.image;
 
-  if (isDark) {
-    senderImg = MockImagesTransDark.find((img) => img.name === payment_method.sender.value)?.image;
-    receiverImg = MockImagesTransDark.find((img) => img.name === payment_method.receiver.value)?.image;
-  } else {
-    senderImg = MockImagesTransLight.find((img) => img.name === payment_method.sender.value)?.image;
-    receiverImg = MockImagesTransLight.find((img) => img.name === payment_method.receiver.value)?.image;
-  }
+  const receiverImg = isDark
+  ? MockImagesTransDark.find(img => img.name === receiverPaymentMethodName)?.image
+  : MockImagesTransLight.find(img => img.name === receiverPaymentMethodName)?.image;
 
   const hasAlert = false;
   const alertType = false;
@@ -81,7 +79,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
             {senderImg ? (
               <Image
                 src={senderImg || '/placeholder.svg'}
-                alt={`Método de pago: ${payment_method.sender.value}`}
+                alt={`Método de pago: ${senderPaymentMethodName}`}
                 width={180}
                 height={60}
                 className="h-auto max-h-full w-auto max-w-full object-contain"
@@ -93,7 +91,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
               </div>
             )}
             <div className="absolute -bottom-full left-0 right-0 bg-black/70 p-1 text-center text-xs text-white transition-all group-hover:bottom-0">
-              {payment_method.sender.value}
+              {senderPaymentMethodName}
             </div>
           </div>
 
@@ -109,7 +107,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
             {receiverImg ? (
               <Image
                 src={receiverImg || '/placeholder.svg'}
-                alt={`Método de recepción: ${payment_method.receiver.value}`}
+                alt={`Método de recepción: ${receiverPaymentMethodName}`}
                 width={180}
                 height={60}
                 className="h-auto max-h-full w-auto max-w-full object-contain"
@@ -121,7 +119,7 @@ const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
               </div>
             )}
             <div className="absolute -bottom-full left-0 right-0 bg-black/70 p-1 text-center text-xs text-white transition-all group-hover:bottom-0">
-              {payment_method.receiver.value}
+              {receiverPaymentMethodName}
             </div>
           </div>
         </div>

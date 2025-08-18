@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { useMemo, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react';
 import type { NoteTypeSingle } from '@/types/transactions/notesType';
 import type { RegretTypeSingle } from '@/types/transactions/regretsType';
 import SkeletonModal from '../TransactionModal/componentesModal/SkeletonModal';
@@ -21,8 +20,7 @@ import ClientEditCancelMessage, {
   ClientMessageType,
 } from '../TransactionModal/componentesModal/ui/ClientEditCancelMessage';
 import { TransactionV2 } from '@/types/transactions/transactionsType';
-import { adaptTransactionV2ToTransactionTypeSingle } from '../utils/transactionAdapter';
-
+import { getTransactionStatusHistory } from '@/actions/transactions/transactions.action';
 
 interface TransactionPageClientComponentProps {
   initialTransaction: TransactionV2;
@@ -42,45 +40,157 @@ interface TransactionPageClientComponentProps {
 export default function TransactionPageClientComponent({
   initialTransaction,
   initialStatus,
-  initialComponentStates,
+  initialComponentStates: propInitialComponentStates,
   transIdAdmin,
   noteEdit,
   regretCancel,
   token,
 }: TransactionPageClientComponentProps) {
   const [discrepancySend, setDiscrepancySend] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { status, setStatus } = useTransactionStore();
 
   const transId = initialTransaction.id;
-  
-  const transaction = initialTransaction
+  const [initialConfirmButtonSelection, setInitialConfirmButtonSelection] = useState<boolean | null>(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
+  const [hasUserChangedConfirm, setHasUserChangedConfirm] = useState(false);
+  const [isTransactionApproved, setIsTransactionApproved] = useState(false);
+
+
+  useEffect(() => {
+    const fetchHistoryAndSetInitialState = async () => {
+      setIsLoading(true);
+      if (transId && token) {
+        try {
+          const history = await getTransactionStatusHistory(transId, token);
+          if (history && history.length > 0) {
+            const lastStatusEntry = history[history.length - 1];
+            const lastStatus = lastStatusEntry.status;
+            const confirmYesStatuses = ['review_payment', 'approved', 'discrepancy', 'refunded', 'completed'];
+
+            if (confirmYesStatuses.includes(lastStatus)) {
+              setInitialConfirmButtonSelection(true);
+            } else if (lastStatus === 'rejected') {
+              setInitialConfirmButtonSelection(false);
+            } else {
+              setInitialConfirmButtonSelection(false);
+            }
+          } else {
+            setInitialConfirmButtonSelection(false);
+          }
+        } catch (error) {
+          console.error('Error fetching transaction status history:', error);
+          setInitialConfirmButtonSelection(false);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setIsLoading(false);
+      }
+    };
+
+    fetchHistoryAndSetInitialState();
+  }, [transId, token, refreshKey]);
+
+  const combinedInitialComponentStates = useMemo(() => {
+    return {
+      ...propInitialComponentStates,
+      confirmTransButton: initialConfirmButtonSelection,
+    };
+  }, [propInitialComponentStates, initialConfirmButtonSelection]);
 
   useTransactionStoreInit({
     initialTransaction: initialTransaction,
     initialStatus,
-    initialComponentStates,
+    initialComponentStates: combinedInitialComponentStates,
     transIdAdmin,
     noteEdit,
     regretCancel,
   });
 
   useTransactionStatusUpdate(transId, setStatus, token);
+
   const { isVisible } = useModalAnimation();
 
   const {
     isSubmitting,
     submitError,
     submitSuccess,
-    handleSubmit,
+    handleSubmit: baseHandleSubmit,
     setIsSubmitting,
     setSubmitError,
     setSubmitSuccess,
   } = useTransactionSubmission(transId, setStatus);
 
+  const handleFormSubmit = async (
+    status: string,
+    form: any,
+    setIsSubmittingCallback: (isSubmitting: boolean) => void,
+    setSubmitErrorCallback: (error: string | null) => void,
+    setSubmitSuccessCallback: (success: boolean) => void,
+  ) => {
+    await baseHandleSubmit(
+      status,
+      form,
+      setIsSubmittingCallback,
+      setSubmitErrorCallback,
+      setSubmitSuccessCallback
+    );
+  };
+
+  
+  useEffect(() => {
+    if (submitSuccess) {
+      setRefreshKey(prev => prev + 1);
+      setHasUserChangedConfirm(false);
+
+      (async () => {
+        if (transId && token) {
+          try {
+            const history = await getTransactionStatusHistory(transId, token);
+            if (history && history.length > 0) {
+              const lastStatusEntry = history[history.length - 1];
+              const lastStatus = lastStatusEntry.status;
+              const confirmYesStatuses = ['review_payment', 'approved', 'discrepancy', 'refunded','completed'];
+
+              if (confirmYesStatuses.includes(lastStatus)) {
+                setInitialConfirmButtonSelection(true);
+              } else if (lastStatus === 'rejected') {
+                setInitialConfirmButtonSelection(false);
+              } else {
+                setInitialConfirmButtonSelection(false);
+              }
+            }
+          } catch (error) {
+            console.error('Error refreshing status after submit:', error);
+          }
+        }
+      })();
+    }
+  }, [submitSuccess, transId, token]);
+
   const { componentStates, selected, handleComponentStateChange, handleSelectionChange } =
     useComponentStateManagement();
+
+  const handleConfirmChange = (value: boolean | null) => {
+    setHasUserChangedConfirm(true);
+    handleComponentStateChange('confirmTransButton', value);
+  };
+
+  useEffect(() => {
+    if (hasUserChangedConfirm) return;
+
+    const confirmYesStatuses = ['review_payment', 'approved', 'discrepancy', 'refunded'];
+    const shouldBeConfirmed = confirmYesStatuses.includes(status);
+    const shouldBeFalse = status === 'rejected' || !shouldBeConfirmed;
+
+    if (shouldBeConfirmed && componentStates.confirmTransButton !== true) {
+      handleComponentStateChange('confirmTransButton', true);
+    } else if (shouldBeFalse && componentStates.confirmTransButton !== false) {
+      handleComponentStateChange('confirmTransButton', false);
+    }
+  }, [status, componentStates.confirmTransButton, handleComponentStateChange, hasUserChangedConfirm]);
 
   return (
     <div
@@ -102,12 +212,14 @@ export default function TransactionPageClientComponent({
             <div className="grid gap-4">
               <ConfirmTransButton
                 value={componentStates.confirmTransButton}
-                setValue={(value) => handleComponentStateChange('confirmTransButton', value)}
+                setValue={handleConfirmChange}
                 trans={initialTransaction}
-                submit={handleSubmit}
+                submit={handleFormSubmit}
                 setIsSubmitting={setIsSubmitting}
                 setSubmitError={setSubmitError}
                 setSubmitSuccess={setSubmitSuccess}
+                token={token} 
+                transId={transId} 
               />
 
               {componentStates.confirmTransButton != null && (
@@ -119,13 +231,16 @@ export default function TransactionPageClientComponent({
                   trans={initialTransaction}
                   handleComponentStateChange={(key, value) =>
                     handleComponentStateChange(key as keyof typeof componentStates, value)
-                  }
+                    }
                   setDiscrepancySend={setDiscrepancySend}
+                  onApprovedChange={setIsTransactionApproved}
+                  token={token}
                 />
               )}
 
               {componentStates.confirmTransButton !== null &&
                 (componentStates.aprooveReject === 'accepted' ||
+                  isTransactionApproved ||
                   (componentStates.aprooveReject !== 'canceled' &&
                     componentStates.discrepancySection !== null &&
                     (componentStates.discrepancySection !== true || discrepancySend))) && (
@@ -136,7 +251,7 @@ export default function TransactionPageClientComponent({
 
           <div className="col-span-2 lg:col-span-1">
             <div className="grid gap-4">
-              <TransferImages trans={adaptTransactionV2ToTransactionTypeSingle(initialTransaction)} />
+              <TransferImages trans={initialTransaction} />
 
               <ClientEditCancelMessage
                 type={
