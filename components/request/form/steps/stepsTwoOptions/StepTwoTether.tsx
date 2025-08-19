@@ -5,6 +5,7 @@ import InputSteps from '@/components/inputSteps/InputSteps';
 import { FieldError } from 'react-hook-form';
 import InfoStep from '@/components/ui/InfoStep/InfoStep';
 import clsx from 'clsx';
+import { System } from '@/types/data';
 
 interface StepTwoTetherProps {
   register: UseFormRegister<any>;
@@ -24,11 +25,9 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
   blockAll,
   control,
   watch,
-  completedSteps,
+  completedSteps
 }) => {
   const formValues = useWatch({ control });
-  const receiveAmount = localStorage.getItem('receiveAmount');
-  console.log(formValues.red_selection);
   return (
     <>
       <div
@@ -98,23 +97,6 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
             )}
           />
         </div>
-
-        <InputSteps
-          label="Recibes exactamente"
-          name="recieveAmountRed"
-          id="recieveAmountRed"
-          type="text"
-          placeholder={`Monto a Recibir por ${formValues.red_selection?.label ? formValues.red_selection?.label : 'Red'}`}
-          disabled={true}
-          value={`${receiveAmount} USDT ${formValues.red_selection?.label ? formValues.red_selection?.label : 'Red'}`}
-          register={register}
-          watch={watch}
-          rules={{
-            required: false,
-          }}
-          error={errors.recieveAmountRed ? (errors.recieveAmountRed as FieldError) : undefined}
-          className="order-4"
-        />
       </div>
     </>
   );
