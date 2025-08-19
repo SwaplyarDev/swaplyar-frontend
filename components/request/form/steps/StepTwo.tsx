@@ -26,7 +26,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     watch,
   } = useForm<StepTwoData>({ mode: 'onChange' });
   const { markStepAsCompleted, setActiveStep, formData, updateFormData, completedSteps } = useStepperStore();
-  const { selectedReceivingSystem } = useSystemStore();
+  const { selectedReceivingSystem,  } = useSystemStore();
   const { isDark } = useDarkTheme();
 
   const [initialValues, setInitialValues] = useState<StepTwoData | null>(null);
