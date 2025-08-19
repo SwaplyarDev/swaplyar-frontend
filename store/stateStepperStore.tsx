@@ -189,14 +189,11 @@ export const useStepperStore = create<StepperState>((set, get) => ({
 
     formDataPayload.append('createTransactionDto', JSON.stringify(createTransactionDto));
 
-    console.log(' payload: ', createTransactionDto);
     try {
       const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/transactions`, {
         method: 'POST',
         body: formDataPayload,
       });
-
-      console.log('response: ', response);
 
       if (!response.ok) {
         throw new Error('Error al enviar los datos al servidor');
