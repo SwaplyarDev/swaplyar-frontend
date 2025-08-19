@@ -36,7 +36,7 @@ const StepperContainer = () => {
     const accesoPermitido = sessionStorage.getItem('accesoPermitido');
 
     if (!accesoPermitido) {
-      router.replace('/es/inicio');
+      router.replace('/es/');
     } else {
       setValidAccess(true);
     }
@@ -49,7 +49,7 @@ const StepperContainer = () => {
     window.history.pushState(null, '', window.location.href);
     window.addEventListener('popstate', () => {
       sessionStorage.removeItem('accesoPermitido');
-      router.replace('/es/inicio');
+      router.replace('/es/');
     });
 
     return () => {

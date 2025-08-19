@@ -76,7 +76,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     const state = get();
     const { stepOne, stepTwo, stepThree } = state.formData;
 
-    const pixValue = detectarTipoPixKey(stepTwo.pixKey || 'oa@gmail.com');
+    const pixKey = detectarTipoPixKey(stepTwo.pixKey || 'oa@gmail.com');
 
     const senderDetails: Record<string, string> = {
       email_account: stepOne.email || detectarMail(selectedSendingSystem),
@@ -86,10 +86,10 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       send_method_value: stepTwo.transfer_identification || 'SwaplyAr.com',
       document_type: getTaxIdentificationType(stepTwo.tax_identification || '20-19103601-9'),
       document_value: stepTwo.tax_identification || '20-19103601-9',
-      pixKey: stepTwo.pixKey || 'oa@gmail.com',
-      pix_value: pixValue || '',
+      pixKey: pixKey || '',
+      pix_value: stepTwo.pixKey || 'oa@gmail.com',
       cpf: stepTwo.individual_tax_id.replace(/[.-]/g, '') || '111.111.111-11',
-      currency: selectedSendingSystem?.coin.toLowerCase() || '',
+      currency: selectedSendingSystem?.coin || '',
       network: stepThree.network || 'tron',
       wallet: stepThree.wallet || 'TSgBPeFSb9TxJWyzDjDfuNqBktF898ZFUb',
     };
@@ -103,10 +103,10 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       document_type: getTaxIdentificationType(stepTwo.tax_identification),
       document_value: stepTwo.tax_identification || '',
       pixId: stepTwo.pixId || '',
-      pixKey: stepTwo.pixKey || '',
-      pix_value: pixValue || '',
+      pixKey: pixKey || '',
+      pixValue: stepTwo.pixKey || 'oa@gmail.com',
       cpf: stepTwo.individual_tax_id.replace(/[.-]/g, '') || '',
-      currency: selectedReceivingSystem?.coin.toLowerCase() || '',
+      currency: selectedReceivingSystem?.coin || '',
       network: stepTwo.red_selection?.value || '',
       wallet: stepTwo.usdt_direction || '',
     };
