@@ -8,8 +8,8 @@ export function buildPaymentMethod(selectedSystem: string, details: Record<strin
         method: 'virtual-bank',
         virtualBank: {
           currency: details.currency || 'USD',
-          emailAccount: details.emailAccount || '',
-          transferCode: details.transferCode || '',
+          emailAccount: details.email_account || '',
+          transferCode: details.transfer_code || '',
         },
       };
 
@@ -32,7 +32,7 @@ export function buildPaymentMethod(selectedSystem: string, details: Record<strin
         platformId: 'pix',
         method: 'pix',
         pix: {
-          virtualBankId: details.virtualBankId || '123', // Si aplica
+          pixId: details.pixId || '123', // Si aplica
           pixKey: details.pixKey || '',
           pixValue: details.pixValue || '',
           cpf: details.cpf || '',
@@ -53,4 +53,37 @@ export function buildPaymentMethod(selectedSystem: string, details: Record<strin
     default:
       throw new Error(`Unsupported payment method: ${selectedSystem}`);
   }
+}
+
+export function buildSenderMethod(selectedSystem: string){
+   switch (selectedSystem) {
+    case 'paypal':
+    case 'payoneer':
+    case 'wise':
+      return {
+        platformId: 'virtual_bank',
+        method: 'virtual-bank',
+      };
+
+    case 'ars':
+      return {
+        platformId: 'bank',
+        method: 'bank',
+      };
+
+    case 'pix':
+      return {
+        platformId: 'pix',
+        method: 'pix',
+      };
+
+    case 'tether':
+      return {
+        platformId: 'receiver_crypto',
+        method: 'receiver-crypto',
+      };
+
+    default:
+      throw new Error(`Unsupported payment method: ${selectedSystem}`);
+  } 
 }
