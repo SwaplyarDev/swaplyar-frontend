@@ -22,9 +22,10 @@ import { useEffect, useState } from 'react';
 import ServerErrorModal from '../../ModalErrorServidor/ModalErrorSevidor';
 import { TransactionService } from './ui/TransactionService';
 import { set } from 'date-fns';
+import { TransactionV2 } from '@/types/transactions/transactionsType';
 
 interface DiscrepancySectionProps {
-  trans: any;
+  trans: TransactionV2;
   value: boolean | null;
   setDiscrepancySend: (value: boolean) => void;
 }
@@ -78,7 +79,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
 
   const token = session.data?.accessToken || '';
 
-  const { transaction } = trans;
+  const transactionId = trans.id;
 
   useEffect(() => {
     setDiscrepancy(value);
@@ -149,7 +150,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
   const confirmDiscrepancy = async () => {
     try {
       setIsLoading(true);
-      const response = await TransactionService('discrepancy', transaction.transaction_id, {
+      const response = await TransactionService('discrepancy', transactionId, {
         descripcion: discrepancyReason,
       });
       if (!response) {
@@ -186,10 +187,10 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
       setIsLoading(true);
 
       const formData = new FormData();
-      formData.append('file', form.file);
-      formData.append('transaction_id', transaction.transaction_id);
+      formData.append('comprobante', form.file);
+      formData.append('transactionId', transactionId);
 
-      const response = await updateTransactionStatus('refunded', transaction.transaction_id, {
+      const response = await updateTransactionStatus('refunded', transactionId, {
         descripcion: form.description,
         additionalData: {
           codigo_transferencia: form.transfer_id,
@@ -197,13 +198,15 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
         amount: Number(form.amount),
       });
 
-      const responseFile = await fetch(`http://localhost:8080/api/v1/admin/transactions/voucher`, {
+      const responseFile = await fetch(`http://localhost:3001/api/v2/admin/transactions/voucher`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
         },
         body: formData,
       });
+
+      console.log('Estado de respuesta:', responseFile.status);
 
       if (!response || !responseFile) {
         setIsLoading(false);
@@ -222,10 +225,10 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
       setIsLoading(true);
 
       const formData = new FormData();
-      formData.append('file', resolutionForm.file);
-      formData.append('transaction_id', transaction.transaction_id);
+      formData.append('comprobante', resolutionForm.file);
+      formData.append('transactionId', transactionId);
 
-      const response = await updateTransactionStatus('approved', transaction.transaction_id, {
+      const response = await updateTransactionStatus('approved', transactionId, {
         descripcion: resolutionForm.description,
         additionalData: {
           codigo_transferencia: resolutionForm.transfer_id,
@@ -238,13 +241,15 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
         setModalServidor(true);
       }
 
-      const responseFile = await fetch(`http://localhost:8080/api/v1/admin/transactions/voucher`, {
+      const responseFile = await fetch(`http://localhost:3001/api/v2/admin/transactions/voucher`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
         },
         body: formData,
       });
+
+      console.log('Estado de respuesta:', responseFile.status);
 
       if (!responseFile.ok) {
         const errorData = await responseFile.json();
@@ -273,29 +278,44 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                 <div className="flex gap-2">
                   <Input
                     id="discrepancy-reason"
-                    placeholder="Explica la discrepancia detalladamente"
+                    placeholder={
+                      trans.finalStatus === 'discrepancy'
+                        ? 'Ya se ha registrado una discrepancia para esta transacción'
+                        : 'Explica la discrepancia detalladamente'
+                    }
                     value={discrepancyReason}
                     onChange={(e) => setDiscrepancyReason(e.target.value)}
                     onFocus={() => setIsInputFocused(true)}
                     onBlur={() => setIsInputFocused(false)}
+                    disabled={trans.finalStatus === 'discrepancy'} // Deshabilitar si ya está en discrepancy
                     className={`h-10 transition-all duration-300 ${
-                      isInputFocused ? 'border-amber-300 ring-2 ring-amber-300' : ''
+                      trans.finalStatus === 'discrepancy'
+                        ? 'cursor-not-allowed bg-gray-100 opacity-50 dark:bg-gray-600' // Estilos para campo deshabilitado
+                        : isInputFocused
+                          ? 'border-amber-300 ring-2 ring-amber-300'
+                          : ''
                     }`}
                     aria-required="true"
                   />
 
                   <Button
-                    disabled={discrepancyReason.length === 0}
+                    disabled={discrepancyReason.length === 0 || trans.finalStatus === 'discrepancy'} // También deshabilitar el botón
                     onClick={handleSubmitDiscrepancy}
-                    className="h-10 rounded-3xl bg-amber-500 text-white hover:bg-amber-600"
+                    className={`h-10 rounded-3xl transition-all duration-300 ${
+                      trans.finalStatus === 'discrepancy'
+                        ? 'cursor-not-allowed bg-gray-400 opacity-50 hover:bg-gray-400' // Estilos para botón deshabilitado
+                        : 'bg-amber-500 text-white hover:bg-amber-600'
+                    }`}
                   >
                     <Send className="mr-2 h-4 w-4" />
-                    <span>Enviar</span>
+                    <span>{trans.finalStatus === 'discrepancy' ? 'Enviado' : 'Enviar'}</span>
                   </Button>
                 </div>
 
                 <p className="text-muted-foreground text-xs">
-                  Describe claramente cuál es la discrepancia encontrada en esta operación.
+                  {trans.finalStatus === 'discrepancy'
+                    ? 'El motivo de discrepancia ya ha sido registrado para esta transacción.'
+                    : 'Describe claramente cuál es la discrepancia encontrada en esta operación.'}
                 </p>
               </div>
 

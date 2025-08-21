@@ -1,7 +1,6 @@
-// /src/components/admin/TransactionsTable/TransactionsLoader.tsx
 import { getAllTransactions } from '@/actions/transactions/transactions.action';
 import TransactionsTable from '@/components/admin/TransactionsTable/TransactionsTable/TransactionsTable';
-import { TransactionArray } from '@/types/transactions/transactionsType';
+import type { TransactionArrayV2 } from '@/types/transactions/transactionsType';
 import { auth } from '@/auth';
 
 interface TransactionsLoaderProps {
@@ -19,7 +18,7 @@ const TransactionsLoader = async ({ currentPage }: TransactionsLoaderProps) => {
   }
 
   // Obtener las transacciones utilizando el token de la sesión
-  let transactions: TransactionArray | null = null;
+  let transactions: TransactionArrayV2 | null = null;
   try {
     transactions = await getAllTransactions(currentPage, token);
   } catch (error) {

@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import CardVerify from '@/components/cardsPlusRewardsIntern/SwaplyPlusRewardsComponents/CardVerify';
-import InfoIcon from '@/components/ui/InfoIcon/InfoIcon';
 import AlertIcon from '@/components/ui/AlertIcon/AlertIcon';
 import ModalDni from './ModalDni';
 import { useSession } from 'next-auth/react';
@@ -59,9 +57,9 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
     setIsLoading(true);
 
     const formData = new FormData();
-    formData.append('frontImage', frontFile);
-    formData.append('backImage', backFile);
-    formData.append('selfieImage', selfieFile);
+    formData.append('document_front', frontFile);
+    formData.append('document_back', backFile);
+    formData.append('selfie_image', selfieFile);
 
     const result = await plusRewardsActions(formData, session?.accessToken || '');
     if (result.success) {

@@ -14,9 +14,13 @@ const useQuestion = () => {
         const response = await fetch(url);
         if (!response.ok) throw new Error('No funcionó');
         const data = await response.json();
-        setQuestions(data.questionsPerPage);
+        console.log('Response:', data);
+        // Si data es un array directamente, úsalo, si no, busca en data.questionsPerPage
+        const questionsData = Array.isArray(data) ? data : data.questionsPerPage || [];
+        setQuestions(questionsData);
       } catch (error) {
         console.log('Error fetching datos', error);
+        setQuestions([]); // Establecer un array vacío en caso de error
       }
     };
     fetchQuestions();

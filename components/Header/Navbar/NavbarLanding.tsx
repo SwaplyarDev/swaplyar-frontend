@@ -296,12 +296,12 @@ const NavbarLanding = () => {
                         </button>
                       ) : (
                         <div className="flex flex-col items-center gap-3">
-                          {/* <div className="flex flex-col md:hidden">
+                          <div className="flex flex-col md:hidden">
                             <LogInButton onButtonClick={closeDrawer} />
                           </div>
                           <div className="flex h-[60px] flex-col">
                             <RegisterButton onButtonClick={closeDrawer} />
-                          </div> */}
+                          </div>
                         </div>
                       )}
                     </Sidebar.ItemGroup>
@@ -372,9 +372,8 @@ const NavbarLanding = () => {
                 </>
               ) : (
                 <>
-                  {/* <LogInButton />
-                  <RegisterButton /> */}
-                  <></>
+                  <LogInButton />
+                  <RegisterButton />
                 </>
               )}
             </section>

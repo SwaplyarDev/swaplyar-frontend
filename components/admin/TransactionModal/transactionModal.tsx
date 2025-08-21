@@ -15,6 +15,7 @@ import AprobarRechazar from '@/components/admin/TransactionModal/componentesModa
 import ClientInformation from '@/components/admin/TransactionModal/componentesModal/ClientInformation';
 import FinalSection from '@/components/admin/TransactionModal/componentesModal/FinalSection';
 import { useSession } from 'next-auth/react';
+import { adaptTransactionV2ToTransactionTypeSingle } from '@/components/admin/utils/transactionAdapter';
 
 const MySwal = withReactContent(Swal);
 
@@ -45,7 +46,7 @@ const TransactionModal = () => {
     getStatusClient,
   } = useTransactionStore();
 
-  const { transaction } = trans;
+  const  transaction  = trans;
 
   // Handle modal animation
   useEffect(() => {
@@ -204,12 +205,12 @@ const TransactionModal = () => {
           <TransactionDetail transaction={trans} isLoading={isLoading} />
 
           <ClientMessage
-            message={trans.transaction.message}
+            message={transaction.message}
             headerMessage="Mensaje del cliente"
             classnames="min-h-[4.25rem] border"
           />
 
-          <TransferImages trans={trans} />
+          <TransferImages trans={(transaction)} />
 
           {transaction.regret_id ? (
             <div className="flex flex-col">

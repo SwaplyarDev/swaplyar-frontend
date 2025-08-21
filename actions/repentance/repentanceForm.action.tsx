@@ -12,7 +12,6 @@ const transformData = (input: FormData): OutputFormat => {
     email: input.email.trim(),
     phone_number: `${input.phone_number}`.trim(),
     note: input.note?.trim(),
-    status: input.status || 'pendiente',
   };
 };
 
@@ -23,66 +22,90 @@ export const createRegret = async (createRepentance: FormData) => {
 
   const transformedData = transformData(createRepentance);
 
-  const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/regrets`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      transaction_id: transformedData.transaction_id,
-      last_name: transformedData.last_name,
-      email: transformedData.email,
-      phone_number: transformedData.phone_number,
-      status: transformedData.status || 'pendiente',
-      note: transformedData.note,
-    }),
-    cache: 'no-store',
-  });
+  console.log('🔍 Datos enviados transformados:', transformedData);
+
   try {
-    // Intentamos parsear el cuerpo de la respuesta a JSON
-    const data = await response.json();
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/regrets`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        transaction_id: transformedData.transaction_id,
+        last_name: transformedData.last_name,
+        email: transformedData.email,
+        phone_number: transformedData.phone_number,
+        description: transformedData.note || '',
+      }),
+      cache: 'no-store',
+    });
 
-    if (response.ok) {
-      // Revisamos los posibles casos de duplicación o datos incorrectos
-      if (response.ok) {
-        return {
-          ok: true,
-          user: data.user,
-          message: 'Regret creado',
-          status: response.status,
-        };
-      }
-    } else {
-      // Si la respuesta no es exitosa, manejamos el error
-      const errorMessage = data?.error?.message
-        ? typeof data.error.message === 'string'
-          ? data.error.message
-          : JSON.stringify(data.error.message) // Aseguramos que el mensaje sea una cadena
-        : data?.message || 'Error desconocido'; // Si no existe el mensaje, retornamos 'Error desconocido'
-
+    // Manejar respuestas específicas según el status code
+    if (response.status === 404) {
       return {
         ok: false,
-        message: errorMessage,
-        status: response.status,
+        message: 'Algunos de los datos son incorrectos por favor verifique los datos ingresados e intente nuevamente',
+        status: 404,
       };
     }
-  } catch (error) {
+
+    if (response.status === 400) {
+      return {
+        ok: false,
+        message: 'Esta solicitud ya genero una alerta de cancelacion y/o reembolso',
+        status: 400,
+      };
+    }
+
     if (response.status === 409) {
       return {
         ok: false,
-        status: response.status,
+        message: 'Esta solicitud ya existe en el sistema',
+        status: 409,
       };
-    } else if (response.status === 400) {
+    }
+
+    if (response.status === 500) {
       return {
         ok: false,
+        message: 'Error interno del servidor. Por favor intente nuevamente más tarde.',
+        status: 500,
+      };
+    }
+
+    // Si la respuesta es exitosa
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        ok: true,
+        user: data.user,
+        message: 'Regret creado exitosamente',
         status: response.status,
       };
     }
-    const errorMessage = error instanceof Error ? error.message : 'Error inesperado al crear el regret';
+
+    // Para otros códigos de estado no manejados específicamente
+    let errorData;
+    try {
+      errorData = await response.json();
+    } catch {
+      errorData = { message: 'Error desconocido' };
+    }
+
+    const errorMessage = errorData?.error?.message || errorData?.message || 'Error desconocido';
 
     return {
       ok: false,
+      message: errorMessage,
       status: response.status,
+    };
+
+  } catch (error) {
+    console.error('Error en createRegret:', error);
+    return {
+      ok: false,
+      message: 'Error de conexión. Verifique su conexión a internet e intente nuevamente.',
+      status: 0,
     };
   }
 };

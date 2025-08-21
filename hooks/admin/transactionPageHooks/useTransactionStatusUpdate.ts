@@ -6,16 +6,20 @@ import ServiceTransaction from '@/components/admin/TransactionPageComponents/Ser
 /**
  * Hook para actualizar periódicamente el estado de la transacción
  */
-export function useTransactionStatusUpdate(transId: string, setStatus: (status: string) => void) {
+export function useTransactionStatusUpdate(
+  transId: string,
+  setStatus: (status: string) => void,
+  token: string
+) {
   // Update transaction status periodically
   useEffect(() => {
-    if (!transId) return;
+    if (!transId || !token) return;
 
     const updateStatus = async () => {
       try {
-        const transactionDetails = await ServiceTransaction.GetTransactionDetails(transId);
-        if (transactionDetails?.status) {
-          setStatus(transactionDetails.status);
+        const transactionDetails = await ServiceTransaction.GetTransactionDetails(transId, token);
+        if (transactionDetails?.finalStatus) {
+          setStatus(transactionDetails.finalStatus);
         }
       } catch (error) {
         console.error('Error updating status:', error);
@@ -28,5 +32,5 @@ export function useTransactionStatusUpdate(transId: string, setStatus: (status: 
     const intervalId = setInterval(updateStatus, 30000); // Every 30 seconds
 
     return () => clearInterval(intervalId);
-  }, [transId, setStatus]);
+  }, [transId, setStatus, token]);
 }

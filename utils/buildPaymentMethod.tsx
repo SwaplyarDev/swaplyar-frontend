@@ -1,65 +1,89 @@
-// utils/buildPaymentMethod.ts
-interface PaymentMethodDetails {
-  value: string;
-  details: Record<string, string>;
-}
-
-export function buildPaymentMethod(selectedSystem: string, details: Record<string, string>): PaymentMethodDetails {
+export function buildPaymentMethod(selectedSystem: string, details: Record<string, string>) {
   switch (selectedSystem) {
     case 'paypal':
-      return {
-        value: 'paypal',
-        details: {
-          email_account: details.email_account || '',
-          transfer_code: details.transfer_code || '',
-        },
-      };
     case 'payoneer':
-      return {
-        value: 'payoneer',
-        details: {
-          email_account: details.email_account || '',
-          transfer_code: details.transfer_code || '',
-        },
-      };
     case 'wise':
       return {
-        value: 'wise',
-        details: {
-          email_account: details.email_account || '',
-          transfer_code: details.transfer_code || '',
+        platformId: 'virtual_bank',
+        method: 'virtual-bank',
+        virtualBank: {
+          currency: details.currency || 'USD',
+          emailAccount: details.email_account || '',
+          transferCode: details.transfer_code || '',
         },
       };
+
     case 'ars':
       return {
-        value: 'ars',
-        details: {
-          bank_name: details.bank_name || '',
-          send_method_key: details.send_method_key || '',
-          send_method_value: details.send_method_value || '',
-          document_type: details.document_type || '',
-          document_value: details.document_value || '',
+        platformId: 'bank',
+        method: 'bank',
+        bank: {
+          currency: details.currency || 'ARS',
+          bankName: details.bank_name || '',
+          sendMethodKey: details.send_method_key || '',
+          sendMethodValue: details.send_method_value || '',
+          documentType: details.document_type || '',
+          documentValue: details.document_value || '',
         },
       };
+
     case 'pix':
       return {
-        value: 'pix',
-        details: {
-          pix_key: details.pix_key || '',
-          pix_value: details.pix_value || '',
+        platformId: 'pix',
+        method: 'pix',
+        pix: {
+          pixId: details.pixId || '123', // Si aplica
+          pixKey: details.pixKey || '',
+          pixValue: details.pixValue || '',
           cpf: details.cpf || '',
         },
       };
+
     case 'tether':
       return {
-        value: 'tether',
-        details: {
-          currency: details.currency || '',
+        platformId: 'receiver_crypto',
+        method: 'receiver-crypto',
+        receiverCrypto: {
+          currency: details.currency || 'USDT',
           network: details.network || '',
           wallet: details.wallet || '',
         },
       };
+
     default:
-      throw new Error(`Unsupported system: ${selectedSystem}`);
+      throw new Error(`Unsupported payment method: ${selectedSystem}`);
   }
+}
+
+export function buildSenderMethod(selectedSystem: string){
+   switch (selectedSystem) {
+    case 'paypal':
+    case 'payoneer':
+    case 'wise':
+      return {
+        platformId: 'virtual_bank',
+        method: 'virtual-bank',
+      };
+
+    case 'ars':
+      return {
+        platformId: 'bank',
+        method: 'bank',
+      };
+
+    case 'pix':
+      return {
+        platformId: 'pix',
+        method: 'pix',
+      };
+
+    case 'tether':
+      return {
+        platformId: 'receiver_crypto',
+        method: 'receiver-crypto',
+      };
+
+    default:
+      throw new Error(`Unsupported payment method: ${selectedSystem}`);
+  } 
 }

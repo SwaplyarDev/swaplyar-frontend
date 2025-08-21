@@ -98,7 +98,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 const FrequentlyQuestions = () => {
-  const { questions } = useQuestion();
+  const { questions = [] } = useQuestion();
   const { isDark } = useDarkTheme();
   const { margins } = useMargins();
   const currentMargin = ResponsiveMarginHook(margins);
@@ -119,15 +119,12 @@ const FrequentlyQuestions = () => {
         <p className="font-titleFont font-medium md:text-[38px] lg:text-[40px]">Preguntas Frecuentes</p>
       </header>
 
-      <section
-        className={`grid max-w-[716px] gap-6 py-12 ${questions.length < 1 ? 'w-full' : ''}`}
-        style={{ marginInline: currentMargin }}
-      >
-        {questions.length > 1 ? (
+      <section className="mx-auto grid w-full max-w-5xl gap-6 px-4 py-24">
+        {Array.isArray(questions) && questions.length > 0 ? (
           questions.map((dato, index) => (
             <Accordion
               isDark={isDark}
-              key={dato.question_id}
+              key={dato.id}
               expanded={expanded === `panel${index}`}
               onChange={handleChange(`panel${index}`)}
               className="group"
@@ -160,7 +157,7 @@ const FrequentlyQuestions = () => {
                       : { background: 'rgb(238, 234, 227)', borderRadius: '16px' }
                   }
                 >
-                  {dato.descripcion}
+                  {dato.description}
                 </Typography>
               </AccordionDetails>
             </Accordion>

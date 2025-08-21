@@ -1,6 +1,6 @@
 import { System } from '@/types/data';
-import { CountryOption, RedType } from '@/types/request/request';
-import { buildPaymentMethod } from '@/utils/buildPaymentMethod';
+import { StepperState } from '@/types/transactions/stepperStoretypes';
+import { buildPaymentMethod, buildSenderMethod } from '@/utils/buildPaymentMethod';
 import {
   detectarMail,
   detectarTipoPixKey,
@@ -10,64 +10,6 @@ import {
 import { create } from 'zustand';
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-interface StepOneData {
-  first_name: string;
-  last_name: string;
-  calling_code: CountryOption | undefined;
-  phone: string;
-  email: string;
-  own_account: string | undefined;
-}
-
-interface StepTwoData {
-  receiver_first_name: string;
-  receiver_last_name: string;
-  tax_identification: string;
-  transfer_identification: string;
-  re_transfer_identification: string;
-  name_of_bank: string;
-  bank_email: string;
-  re_enter_bank_email: string;
-  usdt_direction: string;
-  re_enter_usdt_direction: string;
-  red_selection: RedType | undefined;
-  recieveAmountRed: string;
-  pix_key: string;
-  individual_tax_id: string;
-}
-
-interface StepThreeData {
-  send_amount: string;
-  receive_amount: string;
-  pay_email: string;
-  proof_of_payment: FileList | null;
-  note: string;
-  network?: string;
-  wallet?: string;
-}
-
-interface FormData {
-  stepOne: StepOneData;
-  stepTwo: StepTwoData;
-  stepThree: StepThreeData;
-}
-
-interface StepperState {
-  activeStep: number;
-  completedSteps: boolean[];
-  formData: FormData;
-  idTransaction: string | undefined;
-  setActiveStep: (step: number) => void;
-  markStepAsCompleted: (step: number) => void;
-  updateFormData: (step: number, data: Partial<FormData[keyof FormData]>) => void; // Permite actualizaciones parciales
-  submitAllData: (selectedSendingSystem: System | null, selectedReceivingSystem: System | null) => Promise<boolean>;
-  submitOneStep: () => Promise<any>;
-  updateOneStep: (id: string) => void;
-  resetToDefault: () => void;
-  setIdTransaction: (id: string) => void;
-  resetIdTransaction: () => void;
-}
 
 export const useStepperStore = create<StepperState>((set, get) => ({
   activeStep: 0,
@@ -94,7 +36,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       re_enter_usdt_direction: '',
       red_selection: undefined,
       recieveAmountRed: '',
-      pix_key: '',
+      pixId: '',
+      pixKey: '',
       individual_tax_id: '',
     },
     stepThree: {
@@ -133,36 +76,37 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     const state = get();
     const { stepOne, stepTwo, stepThree } = state.formData;
 
-    const pixValue = detectarTipoPixKey(stepTwo.pix_key || 'oa@gmail.com');
+    const pixKey = detectarTipoPixKey(stepTwo.pixKey || 'oa@gmail.com');
 
     const senderDetails: Record<string, string> = {
-      email_account: stepThree.pay_email || detectarMail(selectedSendingSystem),
+      email_account: stepOne.email || detectarMail(selectedSendingSystem),
       transfer_code: stepTwo.transfer_identification || 'SwaplyAr.com',
       bank_name: stepTwo.name_of_bank || 'Personal Pay',
-      send_method_key: getTaxIdentificationType(stepTwo.transfer_identification || 'SwaplyAr.com'),
+      send_method_key: getTransferIdentificationType(stepTwo.transfer_identification || 'SwaplyAr.com'),
       send_method_value: stepTwo.transfer_identification || 'SwaplyAr.com',
-      document_type: getTransferIdentificationType(stepTwo.tax_identification || '20-19103601-9'),
+      document_type: getTaxIdentificationType(stepTwo.tax_identification || '20-19103601-9'),
       document_value: stepTwo.tax_identification || '20-19103601-9',
-      pix_key: stepTwo.pix_key || 'oa@gmail.com',
-      pix_value: pixValue || '',
+      pixKey: pixKey || '',
+      pix_value: stepTwo.pixKey || 'oa@gmail.com',
       cpf: stepTwo.individual_tax_id.replace(/[.-]/g, '') || '111.111.111-11',
-      currency: selectedSendingSystem?.coin.toLowerCase() || '',
+      currency: selectedSendingSystem?.coin || '',
       network: stepThree.network || 'tron',
       wallet: stepThree.wallet || 'TSgBPeFSb9TxJWyzDjDfuNqBktF898ZFUb',
     };
 
     const receiverDetails = {
       email_account: stepTwo.bank_email || '',
-      transfer_code: stepTwo.transfer_identification || '',
+      transfer_code: stepTwo.transfer_identification || 'SwaplyAr.com',
       bank_name: stepTwo.name_of_bank || '',
-      send_method_key: getTaxIdentificationType(stepTwo.transfer_identification),
+      send_method_key: getTransferIdentificationType(stepTwo.transfer_identification),
       send_method_value: stepTwo.transfer_identification || '',
-      document_type: getTransferIdentificationType(stepTwo.tax_identification),
+      document_type: getTaxIdentificationType(stepTwo.tax_identification),
       document_value: stepTwo.tax_identification || '',
-      pix_key: stepTwo.pix_key || '',
-      pix_value: pixValue || '',
+      pixId: stepTwo.pixId || '',
+      pixKey: pixKey || '',
+      pixValue: stepTwo.pixKey || 'oa@gmail.com',
       cpf: stepTwo.individual_tax_id.replace(/[.-]/g, '') || '',
-      currency: selectedReceivingSystem?.coin.toLowerCase() || '',
+      currency: selectedReceivingSystem?.coin || '',
       network: stepTwo.red_selection?.value || '',
       wallet: stepTwo.usdt_direction || '',
     };
@@ -178,9 +122,9 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       sender: {
         first_name: stepOne.first_name,
         last_name: stepOne.last_name,
-        identification: '',
+        identification: senderDetails.document_value,
         phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
-        email: stepOne.email,
+        email: senderDetails.email_account,
       },
       receiver: {
         transaction_id: 'fj82JH5f',
@@ -188,7 +132,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         receiver_last_name: stepTwo.receiver_last_name,
       },
       payment_method: {
-        sender: buildPaymentMethod(selectedSendingSystem?.paymentMethod || '', senderDetails),
+        sender: buildSenderMethod(selectedSendingSystem?.paymentMethod || ''),
         receiver: buildPaymentMethod(selectedReceivingSystem?.paymentMethod || '', receiverDetails),
       },
       amounts: {
@@ -210,21 +154,46 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     } else {
       console.log('No hay archivo disponible');
     }
-    formDataPayload.append('transaction', JSON.stringify(payload.transaction));
-    formDataPayload.append('sender', JSON.stringify(payload.sender));
-    formDataPayload.append('receiver', JSON.stringify(payload.receiver));
-    formDataPayload.append('payment_method', JSON.stringify(payload.payment_method));
-    formDataPayload.append('amounts', JSON.stringify(payload.amounts));
-    formDataPayload.append('status', JSON.stringify(payload.status));
+    const createTransactionDto = {
+      countryTransaction: payload.transaction.country_transaction,
+      message: payload.transaction.message,
+      createdBy: payload.sender.email,
+      financialAccounts: {
+        senderAccount: {
+          firstName: payload.sender.first_name,
+          lastName: payload.sender.last_name,
+          phoneNumber: payload.sender.phone_number,
+          createdBy: payload.sender.email,
+          paymentMethod: payload.payment_method.sender,
+        },
+        receiverAccount: {
+          paymentMethod: payload.payment_method.receiver,
+        },
+      },
+      userId: payload.transaction.user_id,
+      amount: {
+        amountSent: parseFloat(stepThree.send_amount.replace(/[^\d.-]/g, '')) || 0,
+        currencySent: selectedSendingSystem?.coin,
+        amountReceived: parseFloat(stepThree.receive_amount.replace(/[^\d.-]/g, '')) || 0,
+        currencyReceived: selectedReceivingSystem?.coin,
+      },
 
-    console.log(' payload: ', formDataPayload);
+      proofOfPayment: {
+        type: 'image',
+        url: '',
+      },
+      note: stepThree.note,
+      createdAt: new Date().toISOString(),
+      finalStatus: payload.status.status,
+    };
+
+    formDataPayload.append('createTransactionDto', JSON.stringify(createTransactionDto));
+
     try {
       const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/transactions`, {
         method: 'POST',
         body: formDataPayload,
       });
-
-      console.log('response: ', response);
 
       if (!response.ok) {
         throw new Error('Error al enviar los datos al servidor');
@@ -322,7 +291,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           re_enter_usdt_direction: '',
           red_selection: undefined,
           recieveAmountRed: '',
-          pix_key: '',
+          pixId: '',
+          pixKey: '',
           individual_tax_id: '',
         },
         stepThree: {
