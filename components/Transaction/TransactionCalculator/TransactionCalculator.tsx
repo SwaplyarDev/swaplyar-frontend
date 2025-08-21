@@ -53,7 +53,7 @@ export default function TransactionCalculator() {
 
   const handleDirection = () => {
     sessionStorage.setItem('accesoPermitido', 'true');
-    router.push('/es/inicio/formulario-de-solicitud');
+    router.push('/es/auth/solicitud/formulario-de-solicitud');
   };
 
   const handleSubmit = () => {

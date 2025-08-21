@@ -51,7 +51,7 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
         borderColor: 'border-green-200 dark:border-green-800',
         icon: <CheckCircle className="mr-1.5 h-4 w-4" />,
         label: 'Aceptada',
-        ariaLabel: 'Estado: Aceptada',
+        ariaLabel: 'Estado: Aprobada',
       },
       'rejected': {
         bgColor: 'bg-red-100 dark:bg-red-900/30',
@@ -91,7 +91,7 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
         borderColor: 'border-green-200 dark:border-green-800',
         icon: <CheckCircle className="mr-1.5 h-4 w-4" />,
         label: 'Finalizada',
-        ariaLabel: 'Estado: Finalizada',
+        ariaLabel: 'Estado: Completada',
       },
       default: {
         bgColor: 'bg-gray-100 dark:bg-gray-800',

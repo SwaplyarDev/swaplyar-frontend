@@ -3,6 +3,7 @@ export interface SenderAccount {
   firstName: string
   lastName: string
   email: string | null
+  paymentMethod?: PaymentMethod
 }
 
 export interface PaymentMethod {
