@@ -7,7 +7,6 @@ import { UserNotesSection } from './UserNotesSection';
 import { UserNotFound } from './UserNotFound';
 import { TransactionHistorySection } from './TransactionHistorySection';
 import { WalletsSection } from './WalletsSection';
-import { getTransactionByUserId } from '@/actions/transactions/admin-transaction';
 import { getVerificationById } from '@/actions/userVerification/verification.action';
 import { UserVerifyProvider } from '@/hooks/admin/usersPageHooks/useUserVerifyState';
 import { UserRewardsSection } from './UserRewardSection';
@@ -20,7 +19,6 @@ export async function UserDetailPageComponent({ verificationId }: { verification
   const token = session?.accessToken;
   const verification = await getVerificationById(verificationId);
   if (!verification?.success) return <UserNotFound verificationId={verificationId} />;
-  const transactions = await getTransactionByUserId(verification?.data.users_id);
   const wallets = await getUserWalletAccountByUserId(verification?.data.users_id, token || '');
   const discounts = await getDiscountsByUserId(verification?.data.users_id, token || '');
 
@@ -39,7 +37,11 @@ export async function UserDetailPageComponent({ verificationId }: { verification
             </div>
 
             <div className="space-y-6">
-              <TransactionHistorySection transactions={transactions} /> 
+              {/* 
+                No hay relacion directa entre el usuario y las transacciones, seccion a agregar dentro de componente WalletDetails
+                
+                <TransactionHistorySection transactions={transactions} />  
+              */} 
               <WalletsSection wallets={wallets} /> 
               <UserRewardsSection discounts={discounts} />  
             </div>
