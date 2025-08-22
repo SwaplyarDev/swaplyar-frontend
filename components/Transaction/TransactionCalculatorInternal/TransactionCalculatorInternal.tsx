@@ -104,6 +104,9 @@ export default function InternalTransactionCalculator() {
 
   const handleSubmit = () => {
     setIsProcessing(true);
+    setTimeout(() => {
+      router.push('/es/auth/solicitud/formulario-de-solicitud');
+    }, 2000);
   };
 
   const isSendAmountValid = (sendAmountNum: number, sendingSystemId: string | undefined) => {
