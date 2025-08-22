@@ -23,10 +23,8 @@ export function mapWalletDetails(wallet: { type: string; details: WalletDetail[]
       case 'payoneer':
       case 'wise':
         return [
-          { label: 'Nombre', value: `${safe(detail.firstName)} ${safe(detail.lastName)}` },
           { label: 'Correo electrónico', value: safe(detail.email) },
-          { label: 'Tipo de cuenta', value: safe(detail.type) },
-          { label: 'Nombre de la cuenta', value: safe(detail.accountName) },
+          { label: 'Nombre', value: `${safe(detail.firstName)} ${safe(detail.lastName)}`, align: 'right' },
         ];
 
       case 'bank':

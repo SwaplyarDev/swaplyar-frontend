@@ -80,39 +80,33 @@ export default function VirtualWallets() {
     return a.id.localeCompare(b.id);
   });
 
+  const normalizeType = (type: string, provider?: string, currency?: string): string => {
+    const prov = (provider || '').toLowerCase().trim();
+    const curr = (currency || '').toLowerCase().trim();
+
+    if (type === 'virtual_bank') {
+      if (prov.includes('paypal')) return 'paypal';
+      if (prov.includes('wise')) return curr === 'eur' ? 'wise-eur' : 'wise-usd';
+      if (prov.includes('payoneer')) return curr === 'eur' ? 'payoneer-eur' : 'payoneer-usd';
+      return 'virtual_bank';
+    }
+
+    if (type === 'receiver_crypto' || prov === 'crypto') return 'tether';
+    if (type === 'pix' || prov === 'pix') return 'pix';
+    if (type === 'bank' || prov === 'bank' || prov === 'transferencia') return 'transferencia';
+
+    return type;
+  };
+
   const groupedWallets = orderedWallets.reduce(
     (acc, wallet) => {
-      if (!acc[wallet.type]) acc[wallet.type] = [];
-      acc[wallet.type].push(wallet);
+      const normalized = normalizeType(wallet.type, wallet.name, wallet.currency);
+      if (!acc[normalized]) acc[normalized] = [];
+      acc[normalized].push(wallet);
       return acc;
     },
     {} as { [key: string]: Wallet[] },
   );
-
-  const normalizeType = (type: string): string => {
-    switch (type.toLowerCase()) {
-      case 'virtual_bank':
-      case 'virtualbank':
-        return 'virtual_bank';
-      case 'receiver_crypto':
-      case 'crypto':
-        return 'crypto';
-      case 'paypal':
-        return 'paypal';
-      case 'wise':
-        return 'wise';
-      case 'pix':
-        return 'pix';
-      case 'payoneer':
-        return 'payoneer';
-      case 'bank':
-      case 'banco':
-      case 'transferencia':
-        return 'bank';
-      default:
-        return type;
-    }
-  };
 
   const handleDelete = async (accountId: string, typeAccount: string) => {
     try {
@@ -188,7 +182,12 @@ export default function VirtualWallets() {
               className="mx-auto w-full items-center rounded-3xl border bg-[#FFFFFB] py-4 shadow-lg dark:border-gray-700 dark:bg-[#4B4B4B]"
             >
               <div className="flex items-center justify-between sm:mb-6">
-                <WalletIcon type={type} />
+                <WalletIcon
+                  accountType={group[0].type}
+                  provider={group[0].name}
+                  currency={group[0].details?.[0]?.currency}
+                  accountName={group[0].accountName}
+                />
               </div>
               <div className="space-y-4 bg-[#FFFFFB] dark:bg-[#4B4B4B]">
                 {group.map((wallet) => (

@@ -14,7 +14,6 @@ export const createHandleAccountAdd = ({
   setWallets: (wallets: any[]) => void;
   setOpen: (open: boolean) => void;
 }) => {
-  // Normaliza walletType a los valores que entiende el backend
   const normalizeWalletType = (type: string) => {
     switch (type.toLowerCase()) {
       case 'paypal':
@@ -35,7 +34,6 @@ export const createHandleAccountAdd = ({
     }
   };
 
-  // Obtiene el "type" real (paypal | payoneer | wise) a partir del walletType
   const extractVirtualBankType = (type: string) => {
     const lower = type.toLowerCase();
     if (lower.startsWith('wise')) return 'wise';
@@ -44,7 +42,6 @@ export const createHandleAccountAdd = ({
     return '';
   };
 
-  // Obtiene la currency en base al walletType
   const extractCurrency = (type: string) => {
     const lower = type.toLowerCase();
     if (lower.endsWith('eur')) return 'EUR';
@@ -55,11 +52,10 @@ export const createHandleAccountAdd = ({
     try {
       const normalizedWalletType = normalizeWalletType(walletType);
 
-      const profile = session?.user?.profile || {};
-      const firstName = profile.firstName || formData.firstName || '';
-      const lastName = profile.lastName || formData.lastName || '';
+     
+      const firstName = formData.firstName || '';
+      const lastName = formData.lastName || '';
 
-      // Payload base
       const payload: any = { userAccValues: {} };
 
       switch (normalizedWalletType) {
@@ -105,7 +101,7 @@ export const createHandleAccountAdd = ({
             email: formData.email || '',
             firstName,
             lastName,
-            type: extractVirtualBankType(walletType), // paypal | payoneer | wise
+            type: extractVirtualBankType(walletType), 
           };
           break;
 
