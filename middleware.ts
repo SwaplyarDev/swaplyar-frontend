@@ -51,7 +51,7 @@ export default auth((req) => {
       return NextResponse.redirect(new URL('/es/iniciar-sesion-o-registro', req.url));
     }
 
-    if (nextUrl.pathname === '/es/inicio/formulario-de-solicitud') {
+    if (nextUrl.pathname === '/es/inicio/formulario-de-solicitud' || nextUrl.pathname === '/es/auth/solicitud/formulario-de-solicitud') {
       const referer = req.headers.get('referer'); // Obtener la URL previa
       if (!referer || !referer.includes('/')) {
         return NextResponse.redirect(new URL('/', req.url)); // Bloquear acceso directo
