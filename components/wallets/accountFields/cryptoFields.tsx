@@ -2,36 +2,33 @@
 
 import InputField from '@/components/ui/contact-form/InputField';
 
-const CryptoFields = ({ register, errors }: any) => (
+interface CryptoFieldsProps {
+  register: any;
+  errors: any;
+  defaultValues?: {
+    accountName?: string;
+    wallet?: string;
+    currency?: string;
+    network?: string;
+  };
+}
+
+const CryptoFields = ({ register, errors, defaultValues }: CryptoFieldsProps) => (
   <div className="flex flex-col gap-4">
-    {/* Nombre */}
+    {/* Nombre de la cuenta */}
     <InputField
-      id="first_name"
-      placeholder="Nombre"
-      register={register('first_name', { required: 'El nombre es obligatorio' })}
-      error={errors.first_name?.message}
-    />
-
-    {/* Apellido */}
-    <InputField
-      id="last_name"
-      placeholder="Apellido"
-      register={register('last_name', { required: 'El apellido es obligatorio' })}
-      error={errors.last_name?.message}
-    />
-
-    {/* Identificación */}
-    <InputField
-      id="identification"
-      placeholder="Identificación (DNI, pasaporte, etc.)"
-      register={register('identification', { required: 'La identificación es obligatoria' })}
-      error={errors.identification?.message}
+      id="accountName"
+      placeholder="Nombre de la cuenta"
+      defaultValue={defaultValues?.accountName || ''}
+      register={register('accountName', { required: 'El nombre de la cuenta es obligatorio' })}
+      error={errors.accountName?.message}
     />
 
     {/* Dirección de billetera */}
     <InputField
       id="wallet"
       placeholder="Dirección de billetera"
+      defaultValue={defaultValues?.wallet || ''}
       register={register('wallet', { required: 'La dirección de billetera es obligatoria' })}
       error={errors.wallet?.message}
     />
@@ -40,7 +37,7 @@ const CryptoFields = ({ register, errors }: any) => (
     <select
       {...register('network', { required: 'La red es obligatoria' })}
       className="rounded-md border p-2 text-black"
-      defaultValue=""
+      defaultValue={defaultValues?.network?.toLowerCase() || ''}
     >
       <option value="" disabled>
         Seleccione la red
@@ -50,6 +47,8 @@ const CryptoFields = ({ register, errors }: any) => (
       <option value="bep20">BEP20 (Binance Smart Chain)</option>
     </select>
     {errors.network && <span className="text-sm text-red-500">{errors.network.message}</span>}
+    <input type="hidden" {...register('accountType')} value="receiver_crypto" />
+    <input type="hidden" {...register('currency')} value="USDT" />
   </div>
 );
 

@@ -2,62 +2,77 @@
 
 import InputField from '@/components/ui/contact-form/InputField';
 
-const BankFields = ({ register, errors }: any) => (
+interface BankFieldsProps {
+  register: any;
+  errors: any;
+  defaultValues?: {
+    accountName?: string;
+    bankName?: string;
+    send_method_key?: string;
+    send_method_value?: string;
+    document_type?: string;
+    document_value?: number;
+    currency?: string;
+  };
+}
+
+const BankFields = ({ register, errors, defaultValues }: BankFieldsProps) => (
   <div className="flex flex-col gap-4">
-    {/* Nombre */}
+    <input type="hidden" {...register('userAccValues.accountType')} defaultValue="bank" />
+    <input type="hidden" {...register('userAccValues.currency')} defaultValue={defaultValues?.currency || 'USD'} />
+
+    {/* Nombre de la cuenta */}
     <InputField
-      id="first_name"
-      placeholder="Nombre"
-      register={register('first_name', { required: 'El nombre es obligatorio' })}
-      error={errors.first_name?.message}
+      id="accountName"
+      placeholder="Titu"
+      defaultValue={defaultValues?.accountName || ''}
+      register={register('accountName', { required: 'El nombre de la cuenta es obligatorio' })}
+      error={errors.accountName?.message}
     />
 
-    {/* Apellido */}
+    {/* Nombre del banco */}
     <InputField
-      id="last_name"
-      placeholder="Apellido"
-      register={register('last_name', { required: 'El apellido es obligatorio' })}
-      error={errors.last_name?.message}
-    />
-
-    <InputField
-      id="dni"
-      placeholder="DNI"
-      register={register('dni', {
-        required: 'El DNI es obligatorio',
-        pattern: {
-          value: /^\d{7,9}$/,
-          message: 'Debe contener entre 7 y 9 dígitos',
-        },
-      })}
-      error={errors.dni?.message}
-    />
-
-    <InputField
-      id="bank_name"
+      id="bankName"
       placeholder="Nombre del banco"
-      register={register('bank_name', { required: 'El nombre del banco es obligatorio' })}
-      error={errors.bank_name?.message}
+      defaultValue={defaultValues?.bankName || ''}
+      register={register('bankName', { required: 'El nombre del banco es obligatorio' })}
+      error={errors.bankName?.message}
+    />
+
+    {/* Método de envío */}
+    <InputField
+      id="send_method_key"
+      placeholder="Tipo de envío (ej: SWIFT)"
+      defaultValue={defaultValues?.send_method_key || ''}
+      register={register('send_method_key', { required: 'El tipo de envío es obligatorio' })}
+      error={errors.send_method_key?.message}
     />
 
     <InputField
       id="send_method_value"
-      placeholder="Número CBU/CVU o Alias"
-      register={register('send_method_value', { required: 'Este campo es obligatorio' })}
+      placeholder="Valor del método de envío"
+      defaultValue={defaultValues?.send_method_value || ''}
+      register={register('send_method_value', { required: 'El valor del método de envío es obligatorio' })}
       error={errors.send_method_value?.message}
     />
 
-    <InputField id="alias" placeholder="Alias (opcional)" register={register('alias')} error={errors.alias?.message} />
-
-    {/* Sucursal */}
+    {/* Documento */}
     <InputField
-      id="branch"
-      placeholder="Sucursal"
-      register={register('branch', { required: 'La sucursal es obligatoria' })}
-      error={errors.branch?.message}
+      id="document_type"
+      placeholder="Tipo de documento (ej: CUIT)"
+      defaultValue={defaultValues?.document_type || ''}
+      register={register('document_type', { required: 'El tipo de documento es obligatorio' })}
+      error={errors.document_type?.message}
     />
 
-    <input type="hidden" {...register('account_type')} value="bank" />
+    <InputField
+      id="document_value"
+      placeholder="Número de documento"
+      type="number"
+      defaultValue={defaultValues?.document_value || ''}
+      register={register('document_value', { required: 'El número de documento es obligatorio' })}
+      error={errors.document_value?.message}
+    />
   </div>
 );
 

@@ -31,11 +31,13 @@ import { useRouter } from 'next/navigation';
 import LoadingGif from '../ui/LoadingGif/LoadingGif';
 import PaypalFields from './accountFields/paypalFields';
 import PixFields from './accountFields/pixFields';
-import PayoneerFields from './accountFields/payoneerFields';
-import WiseFields from './accountFields/wiseFields';
+import PayoneerFieldsEUR from './accountFields/payoneerFieldsEUR';
 import VirtualBankFields from './accountFields/virtualBankFields';
 import CryptoFields from './accountFields/cryptoFields';
 import BankFields from './accountFields/bankFields';
+import PayoneerFieldsUSD from './accountFields/payoneerFieldsUSD';
+import WiseFieldsEUR from './accountFields/wiseFieldsEUR';
+import WiseFieldsUSD from './accountFields/wiseFieldsUSD';
 
 interface AccountFormData {
   nombre?: string;
@@ -102,10 +104,14 @@ export default function AddAccountForm({
         return <CryptoFields register={register} errors={errors} />;
       case 'pix':
         return <PixFields register={register} errors={errors} />;
-      case 'payoneer':
-        return <PayoneerFields register={register} errors={errors} />;
-      case 'wise':
-        return <WiseFields register={register} errors={errors} />;
+      case 'payoneerUSD':
+        return <PayoneerFieldsUSD register={register} errors={errors} />;
+      case 'payoneerEUR':
+        return <PayoneerFieldsEUR register={register} errors={errors} />;
+      case 'wiseUSD':
+        return <WiseFieldsUSD register={register} errors={errors} />;
+      case 'wiseEUR':
+        return <WiseFieldsEUR register={register} errors={errors} />;
       case 'bank':
         return <BankFields register={register} errors={errors} />;
       default:
@@ -170,7 +176,7 @@ export default function AddAccountForm({
                     <SelectItem value="pix" className="cursor-pointer">
                       <Image src={PixImg} alt="PIX" width={120} height={120} />
                     </SelectItem>
-                    <SelectItem value="payoneer" className="cursor-pointer">
+                    <SelectItem value="payoneerUSD" className="cursor-pointer">
                       <Image
                         src={isDark ? PayoneerUsdDarkImg : PayoneerUsdImg}
                         alt="Payoneer"
@@ -178,20 +184,20 @@ export default function AddAccountForm({
                         height={120}
                       />
                     </SelectItem>
-                    {/* <SelectItem value="payoneer" className="cursor-pointer">
+                    <SelectItem value="payoneerEUR" className="cursor-pointer">
                       <Image
                         src={isDark ? PayoneerEurDarkImg : PayoneerEurImg}
                         alt="Payoneer"
                         width={120}
                         height={120}
                       />
-                    </SelectItem> */}
-                    <SelectItem value="wise" className="cursor-pointer">
+                    </SelectItem>
+                    <SelectItem value="wiseUSD" className="cursor-pointer">
                       <Image src={isDark ? WiseUsdDarkImg : WiseUsdImg} alt="Wise" width={120} height={120} />
                     </SelectItem>
-                    {/* <SelectItem value="wise" className="cursor-pointer">
+                    <SelectItem value="wiseEUR" className="cursor-pointer">
                       <Image src={isDark ? WiseEurDarkImg : WiseEurImg} alt="Wise" width={120} height={120} />
-                    </SelectItem> */}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               )}

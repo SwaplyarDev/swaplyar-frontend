@@ -14,19 +14,41 @@ export const createHandleAccountAdd = ({
   setWallets: (wallets: any[]) => void;
   setOpen: (open: boolean) => void;
 }) => {
+  // Normaliza walletType a los valores que entiende el backend
   const normalizeWalletType = (type: string) => {
     switch (type.toLowerCase()) {
-      case 'virtualbank':
       case 'paypal':
-      case 'payoneer':
-      case 'wise':
+      case 'payoneerusd':
+      case 'payoneereur':
+      case 'wiseusd':
+      case 'wiseeur':
         return 'virtual_bank';
       case 'crypto':
       case 'receiver_crypto':
         return 'receiver_crypto';
+      case 'pix':
+        return 'pix';
+      case 'bank':
+        return 'bank';
       default:
         return type.toLowerCase();
     }
+  };
+
+  // Obtiene el "type" real (paypal | payoneer | wise) a partir del walletType
+  const extractVirtualBankType = (type: string) => {
+    const lower = type.toLowerCase();
+    if (lower.startsWith('wise')) return 'wise';
+    if (lower.startsWith('payoneer')) return 'payoneer';
+    if (lower.startsWith('paypal')) return 'paypal';
+    return '';
+  };
+
+  // Obtiene la currency en base al walletType
+  const extractCurrency = (type: string) => {
+    const lower = type.toLowerCase();
+    if (lower.endsWith('eur')) return 'EUR';
+    return 'USD'; // default
   };
 
   return async (formData: any) => {
@@ -34,56 +56,56 @@ export const createHandleAccountAdd = ({
       const normalizedWalletType = normalizeWalletType(walletType);
 
       const profile = session?.user?.profile || {};
-      const firstName = profile.firstName || formData.nombre || '';
-      const lastName = profile.lastName || formData.apellido || '';
+      const firstName = profile.firstName || formData.firstName || '';
+      const lastName = profile.lastName || formData.lastName || '';
 
       // Payload base
-      const payload: any = {
-        typeAccount: normalizedWalletType,
-        userAccValues: {},
-      };
+      const payload: any = { userAccValues: {} };
 
       switch (normalizedWalletType) {
-        case 'virtual_bank':
-          payload.userAccValues = {
-            first_name: firstName,
-            last_name: lastName,
-            email: formData.correo || '',
-            currency: formData.moneda || 'USD',
-            account_type: walletType.toLowerCase(), // paypal | payoneer | wise
-          };
-          break;
-
-        case 'receiver_crypto':
-          payload.userAccValues = {
-            usdt_address: formData.wallet || '',
-            network: formData.network || '',
-            currency: formData.moneda || 'USDT',
-            account_type: 'usdt',
-          };
-          break;
-
         case 'pix':
           payload.userAccValues = {
-            first_name: firstName,
-            last_name: lastName,
-            pix_key: formData.pix_key || '',
-            pix_key_type: formData.pix_key_type || '',
+            accountType: 'pix',
+            accountName: formData.accountName || '',
+            currency: formData.currency || 'BRL',
             cpf: formData.cpf || '',
-            currency: formData.moneda || 'BRL',
-            account_type: 'pix',
+            pix_value: formData.pix_value || '',
+            pix_key: formData.pix_key || '',
           };
           break;
 
         case 'bank':
           payload.userAccValues = {
-            first_name: firstName,
-            last_name: lastName,
-            dni_cuit_cuil: formData.dni_cuit_cuil || '',
-            cbu_cvu_alias: formData.cbu_cvu_alias || '',
-            bank_name: formData.bank_name || '',
-            currency: formData.moneda || 'ARS',
-            account_type: 'bank',
+            accountType: 'bank',
+            accountName: formData.accountName || '',
+            currency: formData.currency || 'ARS',
+            bankName: formData.bankName || '',
+            send_method_key: formData.send_method_key || '',
+            send_method_value: formData.send_method_value || '',
+            document_type: formData.document_type || '',
+            document_value: formData.document_value || '',
+          };
+          break;
+
+        case 'receiver_crypto':
+          payload.userAccValues = {
+            accountType: 'receiver_crypto',
+            accountName: formData.accountName || '',
+            wallet: formData.wallet || '',
+            network: formData.network || '',
+            currency: formData.currency || 'USDT',
+          };
+          break;
+
+        case 'virtual_bank':
+          payload.userAccValues = {
+            accountType: 'virtual_bank',
+            accountName: formData.accountName || '',
+            currency: formData.currency || extractCurrency(walletType),
+            email: formData.email || '',
+            firstName,
+            lastName,
+            type: extractVirtualBankType(walletType), // paypal | payoneer | wise
           };
           break;
 

@@ -10,48 +10,48 @@ interface DetailItem {
 }
 
 export function mapWalletDetails(wallet: { type: string; details: WalletDetail[] }): DetailItem[][] {
-  console.log('Wallet antes de mapear:', wallet);
+  const safe = (val: any) => (val !== undefined && val !== null ? String(val) : '-');
 
   if (!wallet.details || wallet.details.length === 0) {
     return [[{ label: 'Sin información', value: '-' }]];
   }
 
-  const mappedDetails = wallet.details.map((detail) => {
-    const safe = (val: any) => (val !== undefined && val !== null ? String(val) : '-');
-
+  return wallet.details.map((detail) => {
     switch (wallet.type) {
+      case 'virtual_bank':
       case 'paypal':
       case 'payoneer':
       case 'wise':
         return [
-          { label: 'Nombre', value: `${safe(detail.first_name)} ${safe(detail.last_name)}` },
+          { label: 'Nombre', value: `${safe(detail.firstName)} ${safe(detail.lastName)}` },
           { label: 'Correo electrónico', value: safe(detail.email) },
+          { label: 'Tipo de cuenta', value: safe(detail.type) },
+          { label: 'Nombre de la cuenta', value: safe(detail.accountName) },
+        ];
+
+      case 'bank':
+        return [
+          { label: 'Nombre de la cuenta', value: safe(detail.accountName) },
+          { label: 'Banco', value: safe(detail.bankName) },
+          { label: 'Método de envío clave', value: safe(detail.send_method_key) },
+          { label: 'Valor del método de envío', value: safe(detail.send_method_value) },
+          { label: 'Tipo de documento', value: safe(detail.document_type) },
+          { label: 'Valor del documento', value: safe(detail.document_value) },
           { label: 'Moneda', value: safe(detail.currency), align: 'right' },
         ];
 
       case 'receiver_crypto':
         return [
-          { label: 'Dirección USDT', value: safe(detail.usdt_address) },
-          { label: 'Red', value: safe(detail.network) },
-          { label: 'Moneda', value: safe(detail.currency), align: 'right' },
+          { label: 'Dirección Wallet', value: safe(detail.wallet) },
+          { label: 'Red', value: safe(detail.network) , align: 'right' },
         ];
 
+      // PIX
       case 'pix':
         return [
-          { label: 'Nombre', value: `${safe(detail.first_name)} ${safe(detail.last_name)}` },
-          { label: 'PIX KEY', value: safe(detail.pix_key) },
-          { label: 'Tipo de clave PIX', value: safe(detail.pix_key_type) },
+          { label: 'Valor clave PIX', value: safe(detail.pix_value) },
           { label: 'CPF', value: safe(detail.cpf) },
-          { label: 'Moneda', value: safe(detail.currency), align: 'right' },
-        ];
-
-      case 'bank':
-        return [
-          { label: 'Nombre', value: `${safe(detail.first_name)} ${safe(detail.last_name)}` },
-          { label: 'DNI/CUIT/CUIL', value: safe(detail.dni_cuit_cuil) },
-          { label: 'CBU/CVU/Alias', value: safe(detail.cbu_cvu_alias) },
-          { label: 'Banco', value: safe(detail.bank_name) },
-          { label: 'Moneda', value: safe(detail.currency), align: 'right' },
+          { label: 'Nombre de la cuenta', value: safe(detail.userAccount.accountName) },
         ];
 
       default:
@@ -61,7 +61,4 @@ export function mapWalletDetails(wallet: { type: string; details: WalletDetail[]
         }));
     }
   });
-
-  console.log('Detalles mapeados:', mappedDetails);
-  return mappedDetails;
 }
