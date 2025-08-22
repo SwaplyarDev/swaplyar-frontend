@@ -77,11 +77,11 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
       'receiver_last_name',
       formData.stepOne?.own_account === 'Si' ? formData.stepOne?.last_name : receiver_last_name,
     );
-    setValue('tax_identification', tax_identification);
+    setValue('tax_identification', formData.stepOne?.own_account === 'Si' ? tax_identification : '');
     setValue('transfer_identification', transfer_identification);
     setValue('re_transfer_identification', re_transfer_identification);
     setValue('name_of_bank', name_of_bank);
-    setValue('bank_email', bank_email);
+    setValue('bank_email', formData.stepOne?.own_account === 'Si' ? formData.stepOne?.email : bank_email);
     setValue('re_enter_bank_email', re_enter_bank_email);
     setValue('usdt_direction', usdt_direction);
     setValue('re_enter_usdt_direction', re_enter_usdt_direction);
