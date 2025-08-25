@@ -25,7 +25,6 @@ const AlertProcess = async ({
     try {
       if (dataToSend) {
         const response: any = await createRegret(dataToSend);
-        console.log(response);
         setIsLoading(false);
 
         if (response.status === 404) {
@@ -34,6 +33,7 @@ const AlertProcess = async ({
             title: 'Algunos de los datos son incorrectos por favor verifique los datos ingresados e intente nuevamente',
             isDark: isDark,
           });
+          return;
         }
 
         if (response.status === 400) {
@@ -42,6 +42,25 @@ const AlertProcess = async ({
             title: 'Esta solicitud ya genero una alerta de cancelacion y/o reembolso',
             isDark: isDark,
           });
+          return;
+        }
+
+        if (response.status === 409) {
+          PopUp({
+            icon: 'error',
+            title: 'Esta solicitud ya existe en el sistema',
+            isDark: isDark,
+          });
+          return;
+        }
+
+        if (response.status === 500) {
+          PopUp({
+            icon: 'error',
+            title: 'Error interno del servidor. Por favor intente nuevamente más tarde.',
+            isDark: isDark,
+          });
+          return;
         }
 
         if (response.ok === true) {
@@ -50,10 +69,24 @@ const AlertProcess = async ({
             title: 'Solicitud de cancelamiento realizada con éxito',
             isDark: isDark,
           });
+          return;
         }
+
+        // Para cualquier otro error no manejado específicamente
+        PopUp({
+          icon: 'error',
+          title: response.message || 'Ha ocurrido un error inesperado. Por favor intente nuevamente.',
+          isDark: isDark,
+        });
       }
     } catch (error: any) {
+      console.error('Error in handleStatusChange:', error);
       setIsLoading(false);
+      PopUp({
+        icon: 'error',
+        title: 'Error de conexión. Verifique su conexión a internet e intente nuevamente.',
+        isDark: isDark,
+      });
     }
   };
 

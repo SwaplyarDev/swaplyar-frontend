@@ -6,7 +6,6 @@ export type FormRepentance = {
   email: string;
   phone_number: string;
   note?: string;
-  status: string;
 };
 
 export interface FormData {
@@ -16,7 +15,6 @@ export interface FormData {
   phone_number: string;
   note?: string;
   calling_code?: CountryOption;
-  status: string;
 }
 
 export interface FormRequestCompleted {
@@ -31,7 +29,6 @@ export interface OutputFormat {
   email: string;
   phone_number: string;
   note?: string;
-  status: string;
 }
 export interface AlertsProps {
   isDark: boolean;
