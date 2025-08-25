@@ -92,7 +92,6 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     setValue('individual_tax_id', individual_tax_id);
 
     setInitialValues(newValues);
-    console.log(newValues);
   }, [
     formData.stepTwo,
     setValue,

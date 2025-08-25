@@ -158,7 +158,6 @@ const StepperContainer = () => {
           showConfirmButton: false,
           timer: 1000,
         });
-        console.log('Datos enviados correctamente');
         setBlockAll(true);
         setCorrectSend(true);
         setErrorSend(false);
