@@ -1,6 +1,7 @@
 'use client';
 
 import InputField from '@/components/ui/contact-form/InputField';
+import SelectField from '../../ui/contact-form/selectField';
 
 interface CryptoFieldsProps {
   register: any;
@@ -33,20 +34,17 @@ const CryptoFields = ({ register, errors, defaultValues }: CryptoFieldsProps) =>
       error={errors.wallet?.message}
     />
 
-    {/* Red */}
-    <select
-      {...register('network', { required: 'La red es obligatoria' })}
-      className="rounded-md border p-2 text-black"
-      defaultValue={defaultValues?.network?.toLowerCase() || ''}
-    >
-      <option value="" disabled>
-        Seleccione la red
-      </option>
-      <option value="trc20">TRC20 (Tron)</option>
-      <option value="erc20">ERC20 (Ethereum)</option>
-      <option value="bep20">BEP20 (Binance Smart Chain)</option>
-    </select>
-    {errors.network && <span className="text-sm text-red-500">{errors.network.message}</span>}
+    <SelectField
+      id="network"
+      register={register('network', { required: 'La red es obligatoria' })}
+      defaultValue={defaultValues?.network?.toLowerCase()}
+      options={[
+        { value: 'trc20', label: 'TRC20 (Tron)' },
+        { value: 'erc20', label: 'ERC20 (Ethereum)' },
+        { value: 'bep20', label: 'BEP20 (Binance Smart Chain)' },
+      ]}
+    />
+
     <input type="hidden" {...register('accountType')} value="receiver_crypto" />
     <input type="hidden" {...register('currency')} value="USDT" />
   </div>
