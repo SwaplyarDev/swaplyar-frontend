@@ -2,7 +2,12 @@
 
 import InputField from '@/components/ui/contact-form/InputField';
 
-const PaypalFields = ({ register, errors }: any) => (
+const currencies = [
+  { code: 'USD', name: 'Dólar estadounidense' },
+  { code: 'EUR', name: 'Euro' },
+];
+
+const WiseFieldsUSD = ({ register, errors }: any) => (
   <div className="flex flex-col gap-4">
     {/* Nombre de la cuenta */}
     <InputField
@@ -53,8 +58,8 @@ const PaypalFields = ({ register, errors }: any) => (
     />
     <input type="hidden" {...register('currency')} value="USD" />
     <input type="hidden" {...register('accountType')} value="virtual_bank" />
-    <input type="hidden" {...register('type')} value="paypal" />
+    <input type="hidden" {...register('type')} value="wise" />
   </div>
 );
 
-export default PaypalFields;
+export default WiseFieldsUSD;

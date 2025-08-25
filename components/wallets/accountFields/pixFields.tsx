@@ -1,30 +1,22 @@
 'use client';
 
 import InputField from '@/components/ui/contact-form/InputField';
+import SelectField from '@/components/ui/contact-form/selectField';
 
 const PixFields = ({ register, errors }: any) => (
   <div className="flex flex-col gap-4">
     <InputField
-      id="nombre"
-      placeholder="Nombre"
-      register={register('nombre', { required: 'El nombre es obligatorio' })}
-      error={errors.nombre?.message}
+      id="accountName"
+      placeholder="Nombre de la cuenta (ej: Pix Principal)"
+      register={register('accountName', {
+        required: 'El nombre de la cuenta es obligatorio',
+      })}
+      error={errors.accountName?.message}
     />
-    <InputField
-      id="apellido"
-      placeholder="Apellido"
-      register={register('apellido', { required: 'El apellido es obligatorio' })}
-      error={errors.apellido?.message}
-    />
-    <InputField
-      id="pix_key"
-      placeholder="PIX KEY"
-      register={register('pix_key', { required: 'La clave PIX es obligatoria' })}
-      error={errors.pix_key?.message}
-    />
+
     <InputField
       id="cpf"
-      placeholder="CPF"
+      placeholder="CPF (solo números)"
       register={register('cpf', {
         required: 'El CPF es obligatorio',
         pattern: {
@@ -34,6 +26,31 @@ const PixFields = ({ register, errors }: any) => (
       })}
       error={errors.cpf?.message}
     />
+
+    <InputField
+      id="pix_value"
+      placeholder="Valor de la clave PIX (ej: meupix@banco.com)"
+      register={register('pix_value', {
+        required: 'El valor de la clave PIX es obligatorio',
+      })}
+      error={errors.pix_value?.message}
+    />
+
+    <SelectField
+      id="pix_key"
+      register={register('pix_key', { required: 'Debe seleccionar el tipo de clave PIX' })}
+      error={errors.pix_key?.message}
+      options={[
+        { value: 'email', label: 'Email' },
+        { value: 'phone', label: 'Teléfono' },
+        { value: 'cpf', label: 'CPF' },
+        { value: 'random', label: 'Clave Aleatoria' },
+      ]}
+      placeholder="Seleccione el tipo de clave"
+    />
+
+    <input type="hidden" {...register('currency')} value="BRL" />
+    <input type="hidden" {...register('accountType')} value="pix" />
   </div>
 );
 

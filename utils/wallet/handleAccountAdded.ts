@@ -14,108 +14,94 @@ export const createHandleAccountAdd = ({
   setWallets: (wallets: any[]) => void;
   setOpen: (open: boolean) => void;
 }) => {
+  const normalizeWalletType = (type: string) => {
+    switch (type.toLowerCase()) {
+      case 'paypal':
+      case 'payoneerusd':
+      case 'payoneereur':
+      case 'wiseusd':
+      case 'wiseeur':
+        return 'virtual_bank';
+      case 'crypto':
+      case 'receiver_crypto':
+        return 'receiver_crypto';
+      case 'pix':
+        return 'pix';
+      case 'bank':
+        return 'bank';
+      default:
+        return type.toLowerCase();
+    }
+  };
+
+  const extractVirtualBankType = (type: string) => {
+    const lower = type.toLowerCase();
+    if (lower.startsWith('wise')) return 'wise';
+    if (lower.startsWith('payoneer')) return 'payoneer';
+    if (lower.startsWith('paypal')) return 'paypal';
+    return '';
+  };
+
+  const extractCurrency = (type: string) => {
+    const lower = type.toLowerCase();
+    if (lower.endsWith('eur')) return 'EUR';
+    return 'USD'; // default
+  };
+
   return async (formData: any) => {
     try {
-      const profile = session?.user?.profile || {};
-      const firstName = profile.firstName || formData.nombre || '';
-      const lastName = profile.lastName || formData.apellido || '';
-      const identification = session?.sub || formData.dni || formData.cpf || formData.correo || '';
+      const normalizedWalletType = normalizeWalletType(walletType);
 
-      const payload: any = {
-        typeAccount: walletType,
-        formData: {},
-        userAccValues: {
-          first_name: formData.nombre || firstName,
-          last_name: formData.apellido || lastName,
-          identification: formData.dni || identification,
-          currency: '',
-          account_name: '',
-          account_type: 0,
-        },
-      };
+     
+      const firstName = formData.firstName || '';
+      const lastName = formData.lastName || '';
 
-      switch (walletType) {
-        case 'paypal':
-          payload.formData = {
-            email_account: formData.correo,
-            transfer_code: formData.correo,
-          };
-          payload.userAccValues = {
-            ...payload.userAccValues,
-            currency: 'USD',
-            account_name: 'Mi cuenta PayPal',
-            account_type: 2,
-          };
-          break;
+      const payload: any = { userAccValues: {} };
 
-        case 'crypto':
-          payload.formData = {
-            currency: 'USDT',
-            network: formData.red,
-            wallet: formData.wallet,
-          };
-          payload.userAccValues = {
-            ...payload.userAccValues,
-            currency: 'USDT',
-            account_name: `Binance ${formData.red} USDT`,
-            account_type: 7,
-          };
-          break;
-
-        case 'virtualBank':
-          payload.formData = {
-            currency: 'ARS',
-            email_account: formData.correo || session?.user?.email,
-            transfer_code: formData.cvu,
-          };
-          payload.userAccValues = {
-            ...payload.userAccValues,
-            currency: 'ARS',
-            dni: formData.dni,
-            account_name: formData.nombreBanco,
-            account_type: 6,
-          };
-          break;
-
-        case 'wise':
-          payload.formData = {
-            iban: formData.iban,
-            bic: formData.bic,
-            email_account: formData.correo,
-            transfer_code: formData.correo,
-          };
-          payload.userAccValues = {
-            ...payload.userAccValues,
-            currency: formData.moneda || 'EUR',
-            account_name: 'Cuenta Wise',
-            account_type: 3,
-          };
-          break;
-
-        case 'payoneer':
-          payload.formData = {
-            email_account: formData.correo,
-          };
-          payload.userAccValues = {
-            ...payload.userAccValues,
-            currency: 'USD',
-            account_name: 'Mi Payoneer',
-            account_type: 4,
-          };
-          break;
-
+      switch (normalizedWalletType) {
         case 'pix':
-          payload.formData = {
-            virtual_bank_id: formData.cpf || 'Otro',
-            pix_key: formData.pix_key,
-            cpf: formData.cpf,
-            pix_value: formData.pix_key,
-          };
           payload.userAccValues = {
-            ...payload.userAccValues,
-            currency: 'BRL',
-            account_name: 'Pix Bradesco',
-            account_type: 5,
+            accountType: 'pix',
+            accountName: formData.accountName || '',
+            currency: formData.currency || 'BRL',
+            cpf: formData.cpf || '',
+            pix_value: formData.pix_value || '',
+            pix_key: formData.pix_key || '',
+          };
+          break;
+
+        case 'bank':
+          payload.userAccValues = {
+            accountType: 'bank',
+            accountName: formData.accountName || '',
+            currency: formData.currency || 'ARS',
+            bankName: formData.bankName || '',
+            send_method_key: formData.send_method_key || '',
+            send_method_value: formData.send_method_value || '',
+            document_type: formData.document_type || '',
+            document_value: formData.document_value || '',
+          };
+          break;
+
+        case 'receiver_crypto':
+          payload.userAccValues = {
+            accountType: 'receiver_crypto',
+            accountName: formData.accountName || '',
+            wallet: formData.wallet || '',
+            network: formData.network || '',
+            currency: formData.currency || 'USDT',
+          };
+          break;
+
+        case 'virtual_bank':
+          payload.userAccValues = {
+            accountType: 'virtual_bank',
+            accountName: formData.accountName || '',
+            currency: formData.currency || extractCurrency(walletType),
+            email: formData.email || '',
+            firstName,
+            lastName,
+            type: extractVirtualBankType(walletType), 
           };
           break;
 
@@ -125,6 +111,7 @@ export const createHandleAccountAdd = ({
       }
 
       await createWalletAccount(payload, token);
+
       const updated = await getMyWalletAccounts(token);
       setWallets(updated.map(mapWalletFromApi));
       setOpen(false);

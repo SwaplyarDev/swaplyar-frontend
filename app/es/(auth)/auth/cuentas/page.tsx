@@ -39,7 +39,18 @@ export default function VirtualWallets() {
       try {
         setLoading(true);
         const response = await getMyWalletAccounts(token);
-        const mapped = response.map(mapWalletFromApi);
+        console.log('🔍 Datos crudos del backend:', JSON.stringify(response, null, 2));
+
+        // Añade validación de datos
+        if (!Array.isArray(response) || response.length === 0) {
+          console.warn('La API devolvió un array vacío o inválido');
+          return;
+        }
+
+        const mapped = response.map((wallet) => {
+          const mappedWallet = mapWalletFromApi(wallet);
+          return mappedWallet;
+        });
 
         setWallets(mapped);
         hasFetched.current = true;
@@ -67,51 +78,48 @@ export default function VirtualWallets() {
     return a.id.localeCompare(b.id);
   });
 
+  const normalizeType = (type: string, provider?: string, currency?: string): string => {
+    const prov = (provider || '').toLowerCase().trim();
+    const curr = (currency || '').toLowerCase().trim();
+
+    if (type === 'virtual_bank') {
+      if (prov.includes('paypal')) return 'paypal';
+      if (prov.includes('wise')) return curr === 'eur' ? 'wise-eur' : 'wise-usd';
+      if (prov.includes('payoneer')) return curr === 'eur' ? 'payoneer-eur' : 'payoneer-usd';
+      return 'virtual_bank';
+    }
+
+    if (type === 'receiver_crypto' || prov === 'crypto') return 'tether';
+    if (type === 'pix' || prov === 'pix') return 'pix';
+    if (type === 'bank' || prov === 'bank' || prov === 'transferencia') return 'transferencia';
+
+    return type;
+  };
+
   const groupedWallets = orderedWallets.reduce(
     (acc, wallet) => {
-      if (!acc[wallet.type]) acc[wallet.type] = [];
-      acc[wallet.type].push(wallet);
+      const normalized = normalizeType(wallet.type, wallet.name, wallet.currency);
+      if (!acc[normalized]) acc[normalized] = [];
+      acc[normalized].push(wallet);
       return acc;
     },
     {} as { [key: string]: Wallet[] },
   );
 
-  const normalizeType = (type: string): string => {
-    switch (type.toLowerCase()) {
-      case 'virtual_bank':
-      case 'virtualbank':
-        return 'virtualBank';
-      case 'receiver_crypto':
-      case 'crypto':
-        return 'crypto';
-      case 'paypal':
-        return 'paypal';
-      case 'wise':
-        return 'wise';
-      case 'pix':
-        return 'pix';
-      case 'payoneer':
-        return 'payoneer';
-      case 'bank':
-      case 'banco':
-      case 'transferencia':
-        return 'bank';
-      default:
-        return type;
-    }
-  };
-
   const handleDelete = async (accountId: string, typeAccount: string) => {
     try {
-      const token = session?.accessToken;
-      if (!token) throw new Error('No hay token disponible');
+      if (!session?.accessToken) {
+        throw new Error('No hay token disponible');
+      }
 
+      const token = session.accessToken;
       const normalizedType = normalizeType(typeAccount);
-      await deleteWalletAccount1(accountId, token, normalizedType);
 
-      const updated = await getMyWalletAccounts(token);
+      await deleteWalletAccount1(accountId, token);
 
-      setWallets(updated.map(mapWalletFromApi));
+      const accounts = await getMyWalletAccounts(token);
+
+      setWallets(accounts.map(mapWalletFromApi));
     } catch (error) {
       console.error('Error eliminando cuenta:', error);
     }
@@ -175,10 +183,15 @@ export default function VirtualWallets() {
               className="mx-auto w-full items-center rounded-3xl border bg-[#FFFFFB] py-4 shadow-lg dark:border-gray-700 dark:bg-[#4B4B4B]"
             >
               <div className="flex items-center justify-between sm:mb-6">
-                <WalletIcon type={type} />
+                <WalletIcon
+                  accountType={group[0].type}
+                  provider={group[0].name}
+                  currency={group[0].details?.[0]?.currency}
+                  accountName={group[0].accountName}
+                />
               </div>
-              <div className="space-y-6 bg-[#FFFFFB] dark:bg-[#4B4B4B]">
-                {group.map((wallet, index) => (
+              <div className="space-y-4 bg-[#FFFFFB] dark:bg-[#4B4B4B]">
+                {group.map((wallet) => (
                   <div key={wallet.id}>
                     <ReusableWalletCard
                       accountId={wallet.id}
@@ -186,9 +199,7 @@ export default function VirtualWallets() {
                       type={wallet.type}
                       onDelete={(accountId, typeAccount) => handleDelete(accountId, typeAccount)}
                     />
-                    {index !== group.length - 1 && (
-                      <hr className="mx-auto mt-6 h-0 w-full max-w-[80%] border-t-2 border-[#012ABE] dark:border-[#EBE7E0]" />
-                    )}
+                    <hr className="mx-auto mt-2 h-0 w-full max-w-[80%] border-t-2 border-[#012ABE] dark:border-[#EBE7E0]" />
                   </div>
                 ))}
               </div>
