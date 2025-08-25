@@ -63,7 +63,6 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
     }
 
     setInitialValues(newValues);
-    console.log(proof_of_payment);
   }, [formData.stepThree, setValue, receiveAmount, sendAmount, selectedSendingSystem]);
 
   const [loading, setLoading] = useState(false);
