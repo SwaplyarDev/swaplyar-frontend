@@ -48,9 +48,7 @@ export default function VirtualWallets() {
         }
 
         const mapped = response.map((wallet) => {
-          console.log('📦 Wallet individual:', wallet);
           const mappedWallet = mapWalletFromApi(wallet);
-          console.log('🔄 Wallet mapeada:', mappedWallet);
           return mappedWallet;
         });
 
@@ -110,15 +108,18 @@ export default function VirtualWallets() {
 
   const handleDelete = async (accountId: string, typeAccount: string) => {
     try {
-      const token = session?.accessToken;
-      if (!token) throw new Error('No hay token disponible');
+      if (!session?.accessToken) {
+        throw new Error('No hay token disponible');
+      }
 
+      const token = session.accessToken;
       const normalizedType = normalizeType(typeAccount);
-      await deleteWalletAccount1(accountId, token, normalizedType);
 
-      const updated = await getMyWalletAccounts(token);
+      await deleteWalletAccount1(accountId, token);
 
-      setWallets(updated.map(mapWalletFromApi));
+      const accounts = await getMyWalletAccounts(token);
+
+      setWallets(accounts.map(mapWalletFromApi));
     } catch (error) {
       console.error('Error eliminando cuenta:', error);
     }

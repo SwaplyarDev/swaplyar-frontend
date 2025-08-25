@@ -20,18 +20,15 @@ import {
 } from '@/utils/assets/imgDatabaseCloudinary';
 
 interface WalletIconProps {
-  accountType: string; // userAccValues.accountType
-  provider?: string; // userAccValues.type  (paypal | wise | payoneer | ...)
-  currency?: string; // userAccValues.currency (USD | EUR | ...)
-  accountName?: string; // opcional fallback (userAccValues.accountName)
+  accountType: string;
+  provider?: string;
+  currency?: string;
+  accountName?: string;
 }
 
 export default function WalletIcon({ accountType, provider, currency, accountName }: WalletIconProps) {
-  console.log('🧪 Props:', { accountType, provider, currency, accountName });
-
   const normalize = (accountType?: string, provider?: string, currency?: string, accountName?: string) => {
     const acct = (accountType || '').toLowerCase().trim();
-    // preferimos provider (type), si no existe usamos accountName como fallback
     const prov = (provider || accountName || '').toLowerCase().trim();
     const curr = (currency || '').toLowerCase().trim();
 
@@ -50,7 +47,6 @@ export default function WalletIcon({ accountType, provider, currency, accountNam
         return curr === 'usd' ? 'payoneer-usd' : 'payoneer-eur';
       }
     }
-    const typeKey = normalize(accountType, provider, currency, accountName);
 
     return acct || prov || 'unknown';
   };

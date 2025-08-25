@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { Controller, useForm } from 'react-hook-form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
-import InputField from '../ui/contact-form/InputField';
 import { Button } from '../ui/Button';
 import {
   PaypalDarkImg,
@@ -32,7 +31,6 @@ import LoadingGif from '../ui/LoadingGif/LoadingGif';
 import PaypalFields from './accountFields/paypalFields';
 import PixFields from './accountFields/pixFields';
 import PayoneerFieldsEUR from './accountFields/payoneerFieldsEUR';
-import VirtualBankFields from './accountFields/virtualBankFields';
 import CryptoFields from './accountFields/cryptoFields';
 import BankFields from './accountFields/bankFields';
 import PayoneerFieldsUSD from './accountFields/payoneerFieldsUSD';
@@ -97,8 +95,7 @@ export default function AddAccountForm({
     switch (walletType) {
       case 'paypal':
         return <PaypalFields register={register} errors={errors} />;
-      case 'virtualBank':
-        return <VirtualBankFields register={register} errors={errors} />;
+
       case 'crypto':
       case 'receiver_crypto':
         return <CryptoFields register={register} errors={errors} />;
@@ -164,9 +161,7 @@ export default function AddAccountForm({
                     <SelectItem value="bank" className="cursor-pointer">
                       <Image src={isDark ? BankDarkImg : BankImg} alt="Bank" width={120} height={120} />
                     </SelectItem>
-                    <SelectItem value="virtualBank" className="cursor-pointer">
-                      <Image src={isDark ? BankDarkImg : BankImg} alt="Virtual Bank" width={120} height={120} />
-                    </SelectItem>
+
                     <SelectItem value="crypto" className="cursor-pointer">
                       <Image src={isDark ? TetherDarkImg : TetherImg} alt="Crypto" width={120} height={120} />
                     </SelectItem>

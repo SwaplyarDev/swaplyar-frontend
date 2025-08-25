@@ -31,11 +31,8 @@ export function mapWalletDetails(wallet: { type: string; details: WalletDetail[]
         return [
           { label: 'Nombre de la cuenta', value: safe(detail.accountName) },
           { label: 'Banco', value: safe(detail.bankName) },
-          { label: 'Método de envío clave', value: safe(detail.send_method_key) },
-          { label: 'Valor del método de envío', value: safe(detail.send_method_value) },
           { label: 'Tipo de documento', value: safe(detail.document_type) },
           { label: 'Valor del documento', value: safe(detail.document_value) },
-          { label: 'Moneda', value: safe(detail.currency), align: 'right' },
         ];
 
       case 'receiver_crypto':
@@ -44,7 +41,6 @@ export function mapWalletDetails(wallet: { type: string; details: WalletDetail[]
           { label: 'Red', value: safe(detail.network) , align: 'right' },
         ];
 
-      // PIX
       case 'pix':
         return [
           { label: 'Valor clave PIX', value: safe(detail.pix_value) },

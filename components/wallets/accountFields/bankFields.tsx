@@ -21,16 +21,14 @@ const BankFields = ({ register, errors, defaultValues }: BankFieldsProps) => (
     <input type="hidden" {...register('userAccValues.accountType')} defaultValue="bank" />
     <input type="hidden" {...register('userAccValues.currency')} defaultValue={defaultValues?.currency || 'USD'} />
 
-    {/* Nombre de la cuenta */}
     <InputField
       id="accountName"
-      placeholder="Titu"
+      placeholder="Titular"
       defaultValue={defaultValues?.accountName || ''}
       register={register('accountName', { required: 'El nombre de la cuenta es obligatorio' })}
       error={errors.accountName?.message}
     />
 
-    {/* Nombre del banco */}
     <InputField
       id="bankName"
       placeholder="Nombre del banco"
