@@ -22,7 +22,7 @@ export function UserRewardsSection({ discounts }: { discounts: AdminDiscountsRes
     const month = months[date.getMonth()];
     const year = date.getFullYear();
 
-    return `${day} del ${month} del ${year}`;
+    return `${day} de ${month} del ${year}`;
   };
 
   return (
