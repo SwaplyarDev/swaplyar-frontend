@@ -19,18 +19,18 @@ export async function UserDetailPageComponent({ verificationId }: { verification
   const token = session?.accessToken;
   const verification = await getVerificationById(verificationId);
   if (!verification?.success) return <UserNotFound verificationId={verificationId} />;
-  const wallets = await getUserWalletAccountByUserId(verification?.data.users_id, token || '');
-  const discounts = await getDiscountsByUserId(verification?.data.users_id, token || '');
+  const wallets = await getUserWalletAccountByUserId(verification?.data.user_id, token || '');
+  const discounts = await getDiscountsByUserId(verification?.data.user_id, token || '');
 
   return (
     <div className="min-h-screen">
       <UserVerifyProvider verification={verification.data}>
         <div className="">
-          <UserHeader userId={verification.data.verification_id} />
+          <UserHeader userId={verification.data.id} />
 
           <div className="grid grid-cols-1 gap-6 pt-6 md:grid-cols-2">
             <div className="space-y-6">
-              <UserDetailsSection code={verification.data.users_id} createdAt={verification.data.created_at} />
+              <UserDetailsSection code={verification.data.user_id} createdAt={verification.data.submitted_at} />
               <UserInfo />
               <UserDocumentSection />
               <UserNotesSection />
@@ -43,7 +43,7 @@ export async function UserDetailPageComponent({ verificationId }: { verification
                 <TransactionHistorySection transactions={transactions} />  
               */} 
               <WalletsSection wallets={wallets} /> 
-              <UserRewardsSection discounts={discounts} />  
+              <UserRewardsSection discounts={discounts} /> 
             </div>
           </div>
         </div>
