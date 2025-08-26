@@ -36,19 +36,19 @@ export function UserInfo() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Fecha de Inscripción</p>
-            <p className="font-medium dark:text-gray-200">{formatDate(verificationById.created_at)}</p>
+            <p className="font-medium dark:text-gray-200">{formatDate(verificationById.submitted_at)}</p>
           </div>
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Nombre</p>
-            <p className="font-medium dark:text-gray-200">{verificationById.user.firstName}</p>
+            <p className="font-medium dark:text-gray-200">{verificationById.user_profile.firstName}</p>
           </div>
            <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Apellido</p>
-            <p className="font-medium dark:text-gray-200">{verificationById.user.lastName}</p>
+            <p className="font-medium dark:text-gray-200">{verificationById.user_profile.lastName}</p>
           </div>
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Correo Electrónico</p>
-            <p className="font-medium dark:text-gray-200">{verificationById.user.email}</p>
+            <p className="font-medium dark:text-gray-200">{verificationById.user_profile.email}</p>
           </div>
         </div>
       </div>

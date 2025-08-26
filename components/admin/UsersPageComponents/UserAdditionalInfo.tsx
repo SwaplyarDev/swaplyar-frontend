@@ -48,31 +48,31 @@ export function UserAdditionalInfo({ user }: { user: DetailedVerificationItem })
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Fecha de Inscripción</p>
-            <p className="font-medium dark:text-gray-200">{formatDate(user.created_at)  || 'No disponible'}</p>
+            <p className="font-medium dark:text-gray-200">{formatDate(user.submitted_at)  || 'No disponible'}</p>
           </div>
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Nombre</p>
-            <p className="font-medium dark:text-gray-200">{user.user.firstName || 'No disponible'}</p>
+            <p className="font-medium dark:text-gray-200">{user.user_profile.firstName || 'No disponible'}</p>
           </div>
            <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Apellido</p>
-            <p className="font-medium dark:text-gray-200">{user.user.lastName || 'No disponible'}</p>
+            <p className="font-medium dark:text-gray-200">{user.user_profile.lastName || 'No disponible'}</p>
           </div> 
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Correo Electrónico</p>
-            <p className="font-medium dark:text-gray-200">{user.user.email || 'No disponible'}</p>
+            <p className="font-medium dark:text-gray-200">{user.user_profile.email || 'No disponible'}</p>
           </div>
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">N° de Documento</p>
-            <p className="font-medium dark:text-gray-200">{user.user.identification || 'No disponible'}</p>
+            <p className="font-medium dark:text-gray-200">{user.user_profile.identification || 'No disponible'}</p>
           </div>
            <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">Fecha de Nacimiento</p>
-            <p className="font-medium dark:text-gray-200">{user.user.birthday || 'No disponible'}</p>
+            <p className="font-medium dark:text-gray-200">{user.user_profile.birthday || 'No disponible'}</p>
           </div> 
           <div>
             <p className="text-sm text-gray-500 dark:text-gray-400">N° de Whatsapp</p>
-            <p className="font-medium dark:text-gray-200">{user.user.phone || 'No disponible'}</p>
+            <p className="font-medium dark:text-gray-200">{user.user_profile.phone || 'No disponible'}</p>
           </div>
         </div>
       </div>
