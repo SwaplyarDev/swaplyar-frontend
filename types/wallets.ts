@@ -42,7 +42,9 @@ export interface AccountDetails {
   document_value?: string;
   iban?: string;
   bic?: string;
-  email_account?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
   transfer_code?: number;
   wise_id?: string;
   pix_key?: string;
@@ -51,6 +53,18 @@ export interface AccountDetails {
   receiver_crypto?: string;
   network?: CryptoNetwork;
   wallet?: string;
+  userAccount: AccountDetail;
+  type: PaymentType;
+}
+
+export interface AccountDetail {
+  accountName: string;
+  accountType: string;
+  account_id: string;
+  createdAt: string;
+  status: boolean;
+  updatedAt: string;
+  userId: string;
 }
 
 // Interface base para wallet
