@@ -1,7 +1,7 @@
 'use client';
 
 import InputField from '@/components/ui/contact-form/InputField';
-import SelectField from '@/components/ui/contact-form/selectField';
+import { detectarTipoPixKey } from '@/utils/validationUtils';
 
 const PixFields = ({ register, errors }: any) => (
   <div className="flex flex-col gap-4">
@@ -29,26 +29,19 @@ const PixFields = ({ register, errors }: any) => (
 
     <InputField
       id="pix_value"
-      placeholder="Valor de la clave PIX (ej: meupix@banco.com)"
+      placeholder="PIX KEY / Correo, Teléfono, CPF, CNPJ o Clave Aleatoria"
       register={register('pix_value', {
-        required: 'El valor de la clave PIX es obligatorio',
+        required: 'El PIX KEY es obligatorio',
+        validate: (value: string) => {
+          const tipo = detectarTipoPixKey(value);
+          if (tipo) return true;
+          return 'El formato de PIX KEY es inválido';
+        },
       })}
-      error={errors.pix_value?.message}
+      error={errors.pix_value?.message} //
     />
 
-    <SelectField
-      id="pix_key"
-      register={register('pix_key', { required: 'Debe seleccionar el tipo de clave PIX' })}
-      error={errors.pix_key?.message}
-      options={[
-        { value: 'email', label: 'Email' },
-        { value: 'phone', label: 'Teléfono' },
-        { value: 'cpf', label: 'CPF' },
-        { value: 'random', label: 'Clave Aleatoria' },
-      ]}
-      placeholder="Seleccione el tipo de clave"
-    />
-
+    {/* Hidden fields para enviar al backend */}
     <input type="hidden" {...register('currency')} value="BRL" />
     <input type="hidden" {...register('accountType')} value="pix" />
   </div>

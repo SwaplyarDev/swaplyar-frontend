@@ -1,6 +1,7 @@
 'use client';
 
 import InputField from '@/components/ui/contact-form/InputField';
+import { getTaxIdentificationType, getTransferIdentificationType } from '@/utils/validationUtils';
 
 interface BankFieldsProps {
   register: any;
@@ -37,39 +38,32 @@ const BankFields = ({ register, errors, defaultValues }: BankFieldsProps) => (
       error={errors.bankName?.message}
     />
 
-    {/* Método de envío */}
     <InputField
-      id="send_method_key"
-      placeholder="Tipo de envío (ej: SWIFT)"
-      defaultValue={defaultValues?.send_method_key || ''}
-      register={register('send_method_key', { required: 'El tipo de envío es obligatorio' })}
-      error={errors.send_method_key?.message}
+      id="document_value"
+      placeholder={errors.document_value ? 'DNI/CUIT/CUIL *' : 'DNI/CUIT/CUIL'}
+      register={register('document_value', {
+        required: 'El DNI/CUIT/CUIL es obligatorio',
+        validate: (value: string) => {
+          const tipo = getTaxIdentificationType(value);
+          if (tipo) return true;
+          return 'El formato de DNI/CUIT/CUIL es inválido';
+        },
+      })}
+      error={errors.document_value?.message}
     />
 
     <InputField
       id="send_method_value"
-      placeholder="Valor del método de envío"
-      defaultValue={defaultValues?.send_method_value || ''}
-      register={register('send_method_value', { required: 'El valor del método de envío es obligatorio' })}
+      placeholder={errors.send_method_value ? 'CBU/CVU/ALIAS *' : 'CBU/CVU/ALIAS'}
+      register={register('send_method_value', {
+        required: 'El CBU/CVU/ALIAS es obligatorio',
+        validate: (value: string) => {
+          const tipo = getTransferIdentificationType(value);
+          if (tipo) return true;
+          return 'El formato de CBU/CVU/ALIAS es inválido';
+        },
+      })}
       error={errors.send_method_value?.message}
-    />
-
-    {/* Documento */}
-    <InputField
-      id="document_type"
-      placeholder="Tipo de documento (ej: CUIT)"
-      defaultValue={defaultValues?.document_type || ''}
-      register={register('document_type', { required: 'El tipo de documento es obligatorio' })}
-      error={errors.document_type?.message}
-    />
-
-    <InputField
-      id="document_value"
-      placeholder="Número de documento"
-      type="number"
-      defaultValue={defaultValues?.document_value || ''}
-      register={register('document_value', { required: 'El número de documento es obligatorio' })}
-      error={errors.document_value?.message}
     />
   </div>
 );
