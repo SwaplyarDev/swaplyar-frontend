@@ -59,24 +59,22 @@ export function WalletDetail({ wallet, onSelectWallet }: WalletsListProps) {
       {/* Wallet Info */}
       <div className="rounded-t-lg border-b bg-white p-4 dark:border-gray-700 dark:bg-gray-800/90">
         <div className="flex items-center gap-4">
-          <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-blue-50 dark:bg-blue-900/50">
-            <div className="flex justify-center items-center relative h-11 w-11">
-              <Logos payment_type={wallet.payment_type} />
-            </div>
+          <div className="flex items-center justify-center">
+              <Logos wallet={wallet} />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h3 className="text-lg font-semibold dark:text-white">{wallet.accountName}</h3>
             </div>
-            <p className="text-gray-600 dark:text-gray-400">ID: {wallet.details[0].account_id}</p>
+            <p className="text-gray-600 dark:text-gray-400">ID: {wallet.details[0].userAccount.account_id}</p>
             <div className="mt-1 flex items-center gap-2">
               <span
                 className={`inline-block h-2 w-2 rounded-full ${
-                  wallet.status ? 'bg-green-500' : 'bg-red-500'
+                  wallet.details[0].userAccount.status ? 'bg-green-500' : 'bg-red-500'
                 }`}
               ></span>
               <span className="text-sm text-gray-500 dark:text-gray-400">
-                {wallet.status ? 'Activa' : 'Inactiva'}
+                {wallet.details[0].userAccount.status ? 'Activa' : 'Inactiva'}
               </span>
             </div>
           </div>
@@ -88,7 +86,9 @@ export function WalletDetail({ wallet, onSelectWallet }: WalletsListProps) {
         <h4 className="mb-2 font-medium">Detalles de la {tipoCuenta(wallet.payment_type)}</h4>
       </div> 
       <div className="border-b p-4">
-        {wallet.details[0].email_account && <p className="text-gray-600 dark:text-gray-400">Email: {wallet.details[0].email_account}</p>}
+        {wallet.details[0].email && <p className="text-gray-600 dark:text-gray-400">Email: {wallet.details[0].email}</p>}
+        {wallet.details[0].firstName && <p className="text-gray-600 dark:text-gray-400">Nombre: {wallet.details[0].firstName}</p>}
+        {wallet.details[0].lastName && <p className="text-gray-600 dark:text-gray-400">Apellido: {wallet.details[0].lastName}</p>}
         {wallet.details[0].bank_name && <p className="text-gray-600 dark:text-gray-400">Banco: {wallet.details[0].bank_name}</p>}
         {wallet.details[0].currency && <p className="text-gray-600 dark:text-gray-400">Moneda: {wallet.details[0].currency}</p>}
         {wallet.details[0].send_method_key && <p className="text-gray-600 dark:text-gray-400">{wallet.details[0].send_method_key}: {wallet.details[0].send_method_value}</p>}
@@ -103,6 +103,7 @@ export function WalletDetail({ wallet, onSelectWallet }: WalletsListProps) {
         {wallet.details[0].pix_key && <p className="text-gray-600 dark:text-gray-400">Clave PIX: {wallet.details[0].pix_key}</p>}
         {wallet.details[0].pix_value && <p className="text-gray-600 dark:text-gray-400">Valor PIX: {wallet.details[0].pix_value}</p>}
         {wallet.details[0].cpf && <p className="text-gray-600 dark:text-gray-400">CPF: {wallet.details[0].cpf}</p>}
+        {wallet.details[0].cpf && <p className="text-gray-600 dark:text-gray-400">Creada: {wallet.details[0].userAccount.createdAt}</p>}
 
       </div>
 
