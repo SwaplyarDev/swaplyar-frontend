@@ -237,3 +237,26 @@ export async function getReceiveTransaction(account_id: string): Promise<Transac
     return {} as TransactionByUserId;
   }
 }
+
+export async function getTransactionByUserEmail(user_email: string): Promise<TransactionByUserId> {
+  try {
+    const session = await auth();
+    const token = session?.accessToken;
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/transactions?created_by=${user_email}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      cache: 'no-store',
+    });
+    if (!response.ok) {
+      throw new Error('Error fetching user');
+    }
+    const transactions = await response.json();
+    return transactions;
+  } catch (e) {
+    console.error('Error fetching user:', e);
+    return {} as TransactionByUserId;
+  }
+}

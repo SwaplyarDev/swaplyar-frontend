@@ -69,7 +69,7 @@ export const filtrarUsers = (users: VerificationItem[], selectedItem: string[], 
 };
 
 export const ordenarCampoDate = (users: VerificationItem[], order: string, orderby: string) => {
-  if (orderby === 'created_at' || orderby === 'verified_at') {
+  if (orderby === 'submitted_at' || orderby === 'verified_at') {
     if (order === 'asc')
       users.sort((a, b) => new Date(formatDate(a[orderby] || "")).getTime() - new Date(formatDate(b[orderby] || "")).getTime());
     if (order === 'desc')

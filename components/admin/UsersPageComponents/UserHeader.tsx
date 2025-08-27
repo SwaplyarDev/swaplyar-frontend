@@ -11,7 +11,7 @@ export function UserHeader({ userId }: { userId: string }) {
         </div>
         <div>
           <h1 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Detalles del Usuario</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">ID: {userId}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">ID Solicitud de verificación: #{userId}</p>
         </div>
       </div>
     </div>
