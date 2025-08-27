@@ -63,7 +63,6 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     setValue('email', email);
     setValue('own_account', own_account);
 
-    console.log(newValues);
     setInitialValues(newValues);
   }, [formData.stepOne, setValue]);
 
@@ -81,7 +80,6 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
       const responseData = await submitOneStep();
 
       if (responseData) {
-        console.log('Datos enviados y respuesta recibida:', responseData);
         setIdTransaction(responseData.transaction_id);
         markStepAsCompleted(0);
         setActiveStep(1);

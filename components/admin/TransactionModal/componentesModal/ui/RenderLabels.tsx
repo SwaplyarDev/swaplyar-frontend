@@ -19,11 +19,11 @@ export const getReceiverLabels = (transaction: TransactionV2) => {
         { label: 'Email a realizar el pago', value: paymentMethod.sendMethodValue ?? 'No disponible' },
       ];
 
-    case 'crypto':
+    case 'receiver_crypto':
       return [
         { label: 'Nombre y Apellidos', value: `${receiverInfo.firstName ?? ''} ${receiverInfo.lastName ?? ''}`.trim() },
         { label: 'Dirección USDT', value: paymentMethod.sendMethodValue ?? 'No disponible' },
-        { label: 'RED', value: 'TRC20' }, // deberías reemplazarlo si lo recibís
+        { label: 'RED', value: 'TRC20' },
       ];
 
     case 'bank':
@@ -49,7 +49,6 @@ export const getReceiverLabels = (transaction: TransactionV2) => {
       ];
   }
 };
-
 
 export const renderLabels = (label: string, text: string, text2?: string, text3?: string, key?: number) => (
   <article key={key || 0} className="flex w-full justify-between rounded-lg bg-gray-100 p-3 dark:bg-gray-800">
