@@ -22,9 +22,10 @@ import { getUserStarsAndAmount } from '@/actions/Discounts/userStarsAndAmount.ac
 // Store
 import { useRewardsStore } from '@/store/useRewardsStore';
 import ErrorComponent from '../ErrorComponent';
+import { AdminDiscountsResponse } from '@/types/discounts/adminDiscounts';
 
 interface Props {
-  discounts: IDiscountsObject | null;
+  discounts: AdminDiscountsResponse;
   userVerification: null | true;
   userId: string;
   accessToken: string;
@@ -76,8 +77,8 @@ export default function PlusRewardInitial({ discounts, userVerification, userId,
 
   if (error) return <ErrorComponent errors={[error]} />;
 
-  const userHave3Discount = discounts?.data.some((d) => d.discount === '3');
-  const userHave5Discount = discounts?.data.some((d) => d.discount === '5');
+  const userHave3Discount = discounts?.data.some((d) => d.discountCode.value === 3);
+  const userHave5Discount = discounts?.data.some((d) => d.discountCode.value === 5);
   const haveEnoughStars = stars >= 5;
   const haveEnoughAmount = quantity >= 500;
 
