@@ -16,12 +16,12 @@ export function useTransactions(initialPage = 1) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(initialPage);
-  const [perPage, setPerPage] = useState(6);
+  const [perPage, setPerPage] = useState(10);
   const [pagination, setPagination] = useState<Pagination>({
     currentPage: 1,
     totalPages: 1,
     totalItems: 0,
-    perPage: 6,
+    perPage: 10,
   });
 
   const [refreshKey, setRefreshKey] = useState(0);
@@ -61,7 +61,6 @@ export function useTransactions(initialPage = 1) {
         }
 
         setTransactions(data.data || []);
-        console.log('Respuesta completa del backend:', data);
         setPagination({
           currentPage: data.pagination.page,
           totalPages: data.pagination.totalPages,
