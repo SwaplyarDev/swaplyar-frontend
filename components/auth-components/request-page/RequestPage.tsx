@@ -4,11 +4,15 @@ import TransactionCalculatorInternal from '@/components/Transaction/TransactionC
 import { IDiscountsObject } from '@/types/discounts/discounts';
 import { getDiscounts } from '@/actions/Discounts/discounts.action';
 import { Suspense } from 'react';
+import { AdminDiscountsResponse, UserStarsAndAmount } from '@/types/discounts/adminDiscounts';
+import { star } from '@/utils/assets/imgDatabaseCloudinary';
+import { getUserStarsAndAmount } from '@/actions/Discounts/userStarsAndAmount.action';
 
 export default async function RequestPage() {
   const session = await auth();
 
-  let discountsData: IDiscountsObject | null = null;
+  let discountsData: AdminDiscountsResponse = {data: []};
+  let starsData: UserStarsAndAmount = {data: {quantity: 0, stars: 0}};
   let errors: string[] = [];
 
   if (!session || !session.accessToken) {
@@ -16,6 +20,7 @@ export default async function RequestPage() {
   } else {
     try {
       discountsData = await getDiscounts(session.accessToken);
+      starsData = await getUserStarsAndAmount(session.accessToken);
     } catch (error) {
       console.log(error);
       const errorMessage = 'No se han podido obtener los descuentos del usuario';
@@ -43,7 +48,7 @@ export default async function RequestPage() {
           />
         </Suspense>
         {/* // TODO: Se le deben pasar los errores (si existen) */}
-        <TransactionCalculatorInternal />
+        <TransactionCalculatorInternal discounts={discountsData} stars={starsData} errors={errors} />
       </section>
     </div>
   );
