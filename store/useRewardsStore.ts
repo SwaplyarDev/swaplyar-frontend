@@ -13,7 +13,7 @@ interface RewardsStore {
   couponInstance: CouponInstance;
   loading: boolean;
   error: string | null;
-
+  setCouponInstanceByAmount: (couponAmount: number) => void;
   setData: (stars: number, quantity: number) => void;
   markUsed: (amount: 3 | 5) => void;
   markManualUsed: () => void;
@@ -36,6 +36,13 @@ export const useRewardsStore = create<RewardsStore>((set, get) => ({
   couponInstance: 'NONE',
   loading: true,
   error: null,
+
+  setCouponInstanceByAmount: (couponAmount: number) => {
+    if (couponAmount === 3) set({ couponInstance: 'THREE' });
+    else if (couponAmount === 5) set({ couponInstance: 'FIVE' });
+    else if (couponAmount === 8) set({ couponInstance: 'THREE_FIVE' });
+    else if (couponAmount === 10) set({ couponInstance: 'TEN' });
+  },
 
   resetUsed: () =>
     set({
