@@ -6,7 +6,6 @@ import { Analytics } from '@vercel/analytics/react';
 import { MarginProvider } from '@/context/MarginProvider';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
-import Script from 'next/script';
 import Footerblog from '@/components/footerblog/Footerblog';
 import { iconoMetadata, iconoMetadataDark } from '@/utils/assets/imgDatabaseCloudinary';
 
@@ -43,30 +42,50 @@ export const metadata: Metadata = {
  */
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es">
+    <html lang="es" className="theme-ready hydrated" suppressHydrationWarning>
       <head>
+        <style id="critical-theme-css">{`
+          html.dark { color-scheme: dark; }
+          html.dark, html.dark body { background: #121212; color: #f5f5f5; }
+          html.dark .bg-white { background-color: #121212 !important; }
+          html.dark .text-darkText { color: #f5f5f5 !important; }
+        `}</style>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const theme = localStorage.getItem('theme');
+                  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  const isDark = theme === 'dark' || (!theme && systemPrefersDark);
+
+                  if (isDark) {
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.style.backgroundColor = '#1a1a1a';
+                    document.documentElement.style.color = '#ffffff';
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+
+                  document.documentElement.classList.add('theme-ready', 'hydrated');
+                } catch (e) {
+                  console.error('Error applying theme script', e);
+                }
+              })();
+            `,
+          }}
+        />
+
         {/* Integración de Google Tag Manager */}
         <GoogleTagManager gtmId="GTM-WMGWHJ7J" />
-        {/* Verificación de propiedad en Google Search Console */}
-        <meta name="google-site-verification" content="TDYMmlsmcxOohMXHebZJtRXZ-Y0otZk006ExVzrbPqs" />
 
-        {/* Script para establecer el tema de la aplicación según las preferencias del usuario o del sistema */}
-        <Script id="theme-script" strategy="beforeInteractive">
-          {`
-            (function() {
-              const theme = localStorage.getItem('theme');
-              const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-              const isDark = theme === 'dark' || (!theme && systemPrefersDark);
-              if (isDark) {
-                document.documentElement.classList.add('dark');
-              } else {
-                document.documentElement.classList.remove('dark');
-              }
-            })();
-          `}
-        </Script>
+        {/* Verificación de propiedad en Google Search Console */}
+        <meta
+          name="google-site-verification"
+          content="TDYMmlsmcxOohMXHebZJtRXZ-Y0otZk006ExVzrbPqs"
+        />
       </head>
-      <body className={`bg-white text-lightText dark:bg-lightText dark:text-darkText`}>
+      <body className="theme-ready hydrated bg-white text-lightText dark:bg-lightText dark:text-darkText">
         <SessionProvider>
           {/* Integración de Google Analytics */}
           <GoogleAnalytics gaId="G-PX1MMJCPQL" />
@@ -76,6 +95,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <SpeedInsights />
               <Analytics />
               {children}
+              <Footerblog />
             </MarginProvider>
           </ThemeProvider>
         </SessionProvider>
