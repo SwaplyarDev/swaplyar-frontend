@@ -78,4 +78,11 @@ export interface AdminDiscountsResponse {
   data: AdminDiscount[];
 }
 
+export interface UserStarsAndAmount { 
+  data: { 
+    quantity: number; 
+    stars: number; 
+  } 
+}
+
 
