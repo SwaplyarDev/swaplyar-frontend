@@ -242,22 +242,22 @@ const UsersTable: React.FC<UsersTableProps> = ({ currentPage }) => {
                 <>
                   {verificationListFiltered.map((u) => (
                     <tr
-                      key={u.verification_id}
-                      onClick={() => router.push(`/es/admin/users/${u.verification_id}`)}
+                      key={u.id}
+                      onClick={() => router.push(`/es/admin/users/${u.id}`)}
                       className="cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
                     >
                       <td className="px-4 py-3 text-sm">{getStatusBadge(u.verification_status)}</td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                        {u.created_at ? formatDate(u.created_at) : 'No disponible'}
+                        {u.submitted_at ? formatDate(u.submitted_at) : 'No disponible'}
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                         {u.users_id}
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                        {u.user.firstName} {u.user.lastName}
+                        {u.user_profile.firstName} {u.user_profile.lastName}
                       </td>
-                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{u.user.email}</td>
-                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{u.user.phone || "No disponible"}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{u.user_profile.email}</td>
+                      <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{u.user_profile.phone || "No disponible"}</td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                         {u.verification_status === 'verified' ? (u.verified_at ? formatDate(u.verified_at) : "Fecha sin especificar") : 'No verificado'}
                       </td>
