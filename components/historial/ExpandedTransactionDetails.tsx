@@ -31,7 +31,11 @@ const LabelValueRow = ({
 }) => (
   <>
     <div className={labelClass}>{label}</div>
-    <div className={`${valueClassName}`}>{value ?? 'No disponible'}</div>
+    <div className={`${valueClassName}`}>
+      <div className="overflow-x-auto whitespace-nowrap max-w-full inline-block lg:overflow-y-hidden">
+        {value ?? 'No disponible'}
+      </div>
+    </div>
   </>
 );
 
@@ -121,7 +125,7 @@ export function ExpandedTransactionDetails({
         <LabelValueRow label="Nombre y Apellido" value={nombreSolicitante} />
         <LabelValueRow
           label="Método de Envío"
-          value={`Transferencia ${getPlatformDisplayName(transaction.senderAccount.paymentMethod.platformId)}`}
+          value={`${getPlatformDisplayName(transaction.senderAccount.paymentMethod.platformId)}`}
         />
         <LabelValueRow label="Monto Enviado" value={montoEnviado} />
       </div>

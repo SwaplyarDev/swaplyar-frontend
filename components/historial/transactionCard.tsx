@@ -15,7 +15,6 @@ interface TransactionCardProps {
 
 
 export function TransactionCard({ transaction, index }: TransactionCardProps) {
-  console.log("Transacción recibida:", transaction);
   const [expanded, setExpanded] = useState(false);
   const toggleExpand = () => setExpanded(!expanded);
 
@@ -24,7 +23,7 @@ export function TransactionCard({ transaction, index }: TransactionCardProps) {
   const fecha = formatDate(transaction.createdAt);
   const horario = formatTime(transaction.createdAt);
 
-  const nombreDestinatario = `${transaction.receiverAccount.firstName} ${transaction.receiverAccount.lastName}` || 'Sin nombre';
+  // const nombreDestinatario = `${transaction.receiverAccount.firstName} ${transaction.receiverAccount.lastName}` || 'Sin nombre';
   const nombreSolicitante = `${transaction.senderAccount.firstName} ${transaction.senderAccount.lastName}`;
 
   const montoEnviado = `${transaction.amount.amountSent} ${transaction.amount.currencySent}`;
@@ -38,24 +37,24 @@ export function TransactionCard({ transaction, index }: TransactionCardProps) {
 
   if (grupo === 'completada') {
     icono = <Check className="h-6 w-6 text-white" />;
-    bgColor = 'bg-green-500';
-    borderColor = 'border-green-500';
+    bgColor = 'bg-[#048604]';
+    borderColor = 'border-[#048604]';
   } else if (grupo === 'pendiente') {
     icono = <Clock className="h-6 w-6 text-white dark:text-[#4b4b4b]" />;
     bgColor = 'bg-[#FFC72C]';
     borderColor = 'border-[#FFC72C]';
   } else {
     icono = <X className="h-6 w-6 text-white" />;
-    bgColor = 'bg-red-500';
-    borderColor = 'border-red-500';
+    bgColor = 'bg-[#CE1818]';
+    borderColor = 'border-[#CE1818]';
   }
 
   const colorClase =
     grupo === 'completada'
-      ? 'text-green-600 dark:text-green-300'
+      ? 'text-green-600 dark:text-[#048604]'
       : grupo === 'pendiente'
       ? 'text-[#ffac33] dark:text-[#FFC72C]'
-      : 'text-red-600 dark:text-red-300';
+      : 'text-red-600 dark:text-[#CE1818]';
       
   return (
     <Card className="relative w-full max-w-[1000px] overflow-hidden rounded-xl border border-gray-200 bg-[#FFFFFB] shadow-sm transition-shadow hover:shadow-md dark:border-[#4b4b4b] dark:bg-[#4b4b4b]">
