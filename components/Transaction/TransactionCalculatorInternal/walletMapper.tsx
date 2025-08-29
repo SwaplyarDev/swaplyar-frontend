@@ -1,10 +1,19 @@
 interface Wallet {
   id: string;
   type: string;
-  fullName: string;
-  email: string;
+  label: string;
+  fullName?: string;
+  email?: string;
   logo: string;
   logoDark?: string;
+  cbu?: string;
+  alias?: string;
+  taxId?: string;
+  pixKeyType?: string;
+  pixKeyValue?: string;
+  walletAddress?: string;
+  network?: string;
+  bankName?: string;
 }
 
 type ApiAccount = {
@@ -39,7 +48,8 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
           id: detail.account_id,
           type: 'tether',
           fullName: account.accountName,
-          email: detail.wallet,
+          walletAddress: detail.wallet,
+          network: detail.network,
         };
         break;
 
@@ -53,10 +63,13 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
         break;
       case 'bank':
         mappedWallet = {
-          id: detail.userAccount.account_id,
+          id: detail.account_id,
           type: 'bank',
-          fullName: account.accountName,
-          email: detail.pix_value,
+          fullName: detail.fullName,
+          cbu: detail.cbu,
+          alias: detail.alias,
+          taxId: detail.tax_id,
+          bankName: detail.bank_name,
         };
         break;
     }

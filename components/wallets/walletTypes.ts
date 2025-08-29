@@ -1,4 +1,3 @@
-// PayPal wallet details
 export interface PayPalDetail {
   id: string;
   correo: string;
@@ -6,7 +5,6 @@ export interface PayPalDetail {
   apellido: string;
 }
 
-// Transferencia wallet details
 export interface TransferenciaDetail {
   id: string;
   cvu: string;
@@ -15,14 +13,12 @@ export interface TransferenciaDetail {
   nombreUsuario: string;
 }
 
-// Tether wallet details
 export interface TetherDetail {
   id: string;
   direction: string;
   red: string;
 }
 
-// Wise wallet details
 export interface WiseDetail {
   nombre: string;
   apellido: string;
@@ -32,7 +28,6 @@ export interface WiseDetail {
   estado: string;
 }
 
-// Blockchain wallet details
 export interface BlockchainDetail {
   id: string;
   ip: string;
@@ -40,7 +35,6 @@ export interface BlockchainDetail {
   estado: string;
 }
 
-// Legacy format
 export interface LegacyDetail {
   id: string;
   label: string;
@@ -50,7 +44,6 @@ export interface LegacyDetail {
   };
 }
 
-// Generic wallet type
 export interface WalletType {
   id: string;
   type: string;
