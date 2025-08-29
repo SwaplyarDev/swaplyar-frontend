@@ -17,8 +17,6 @@ export function UserDocumentSection() {
   const [isVerified, setIsVerified] = useState(verificationById?.verification_status === 'verified' || verificationById?.verification_status === 'rejected');
   const [isExpanded, setIsExpanded] = useState(true);
 
-
-
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
   };
@@ -31,10 +29,11 @@ export function UserDocumentSection() {
     try {
     const verifyForm: VerifyForm = {
       status,
-      note_rejection: verificationById?.note_rejection || '',
+      note_rejection: verificationById.rejection_note || '',
     };
-    const response = await sendChangeStatus(verificationById?.verification_id, verifyForm);
 
+    const response = await sendChangeStatus(verificationById.id, verifyForm);
+    
     if (response?.success) {
       setIsModalOpen(false);
       await updateVerificationStatus(status);
@@ -111,8 +110,8 @@ export function UserDocumentSection() {
           {activeTab === 'frente' && (
             <div className="relative h-48 w-full max-w-xs overflow-hidden rounded-lg border bg-gray-100 transition-all duration-300 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-700/80">
               <div className="absolute inset-0 flex items-center justify-center">
-                {verificationById.document_front ? (
-                  <Image src={verificationById.document_front} alt="Document Front" layout="fill" objectFit="cover" />
+                {verificationById.documents.front ? (
+                  <Image src={verificationById.documents.front} alt="Document Front" layout="fill" objectFit="cover" />
                 ) : (
                   <FileText className="h-12 w-12 text-gray-400 dark:text-gray-500" />
                 )}
@@ -122,8 +121,8 @@ export function UserDocumentSection() {
           {activeTab === 'dorso' && (
             <div className="relative h-48 w-full max-w-xs overflow-hidden rounded-lg border bg-gray-100 transition-all duration-300 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-700/80">
               <div className="absolute inset-0 flex items-center justify-center">
-                {verificationById.document_back ? (
-                  <Image src={verificationById.document_back} alt="Document Back" layout="fill" objectFit="cover" />
+                {verificationById.documents.back ? (
+                  <Image src={verificationById.documents.back} alt="Document Back" layout="fill" objectFit="cover" />
                 ) : (
                   <FileText className="h-12 w-12 text-gray-400 dark:text-gray-500" />
                 )}
@@ -133,8 +132,8 @@ export function UserDocumentSection() {
           {activeTab === 'foto' && (
             <div className="relative h-48 w-full max-w-xs overflow-hidden rounded-lg border bg-gray-100 transition-all duration-300 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-700/80">
               <div className="absolute inset-0 flex items-center justify-center">
-                {verificationById.selfie_image ? (
-                  <Image src={verificationById.selfie_image} alt="Selfie" layout="fill" objectFit="cover" />
+                {verificationById.documents.selfie ? (
+                  <Image src={verificationById.documents.selfie} alt="Selfie" layout="fill" objectFit="cover" />
                 ) : (
                   <User className="h-12 w-12 text-gray-400 dark:text-gray-500" />
                 )}
