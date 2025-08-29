@@ -9,14 +9,23 @@ export interface UserInfo {
   phone: string;
 }
 
+export interface Documents {
+  front: string;
+  back: string;
+  selfie: string;
+}
+
 // Interfaz para un elemento de verificación individual
 export interface VerificationItem {
-  verification_id: string;
+  id: string;
   users_id: string;
   verification_status: VerificationStatus;
-  created_at: string;
-  user: UserInfo;
+  submitted_at: string;
+  updated_at: string;
+  user_profile: UserInfo;
   verified_at?: string; 
+  rejection_note?: string;
+  documents: Documents;
 }
 
 // Interfaz para la respuesta completa de verificaciones
@@ -34,23 +43,21 @@ export interface VerificationUserInfo {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
-  identification: string;
-  birthday: string;
+  phone?: string;
+  identification?: string;
+  birthday?: string;
 }
 
 export interface DetailedVerificationItem {
-  verification_id: string;
-  users_id: string;
-  document_front: string;
-  document_back: string;
-  selfie_image: string;
+  id: string;
+  user_id: string;
+  documents: Documents;
   verification_status: VerificationStatus;
-  note_rejection: string | null;
+  rejection_note: string | null;
   verified_at: string;
-  created_at: string;
+  submitted_at: string;
   updated_at: string;
-  user: VerificationUserInfo;
+  user_profile: VerificationUserInfo;
 }
 
 // Interfaz para la respuesta de verificación individual
