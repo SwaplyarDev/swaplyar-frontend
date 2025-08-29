@@ -33,7 +33,6 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
           email: detail.email,
         };
         break;
-      // ...
 
       case 'receiver_crypto':
         mappedWallet = {
@@ -62,16 +61,14 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
         break;
     }
 
-    // Devolvemos un objeto completo que cumple con la interfaz Wallet
     return {
       id: mappedWallet.id || '',
       type: mappedWallet.type || 'default',
       fullName: mappedWallet.fullName || account.accountName,
       email: mappedWallet.email || 'N/A',
-      logo: '', // Dejamos esto vacío porque el componente lo maneja
+      logo: '',
     };
   });
 
-  // Filtramos cualquier billetera que no se haya podido mapear correctamente
   return wallets.filter((wallet) => wallet.id);
 };

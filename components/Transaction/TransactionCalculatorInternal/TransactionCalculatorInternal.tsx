@@ -41,12 +41,10 @@ export default function InternalTransactionCalculator() {
     fetchAndSetWallets,
     isLoading,
   } = useWalletStore();
-  console.log('3. Billeteras en el componente (desde el store):', userWallets);
   const [customReceiveInput, setCustomReceiveInput] = useState('');
   const [isCustomInputActive, setIsCustomInputActive] = useState(false);
   const { data: session } = useSession();
   const token = session?.accessToken;
-  console.log('🕵️‍♂️ Verificando sesión:', { token, status, sessionObject: session });
   useEffect(() => {
     if (token && userWallets.length === 0) {
       fetchAndSetWallets(token);
@@ -145,7 +143,6 @@ export default function InternalTransactionCalculator() {
     }
     return userWallets.filter((wallet) => wallet.type === selectedReceivingSystem.id);
   }, [selectedReceivingSystem, userWallets]);
-  console.log(' 4. Billeteras filtradas:', filteredWallets);
   useEffect(() => {
     if (filteredWallets.length === 1) {
       setSelectedWallet(filteredWallets[0]);

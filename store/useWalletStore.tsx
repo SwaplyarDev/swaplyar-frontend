@@ -39,10 +39,7 @@ const useWalletStore = create<WalletStoreState>((set) => ({
     try {
       const apiData = await getMyWalletAccounts(token);
 
-      console.log('✅ 1. Datos recibidos desde la Server Action:', apiData);
-
       const formattedWallets = mapApiWalletsToFrontend(apiData);
-      console.log('✅ 2. Billeteras transformadas (mapper):', formattedWallets);
 
       set({ wallets: formattedWallets, isLoading: false });
     } catch (error) {
