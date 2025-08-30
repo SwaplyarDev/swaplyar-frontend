@@ -21,7 +21,7 @@ export function UserVerifyProvider({ children, verification }: { children: React
     setVerificationById((prev) => {
       return {
         ...prev,
-        note_rejection: note,
+        rejection_note: note,
       };
     });
   }, []);

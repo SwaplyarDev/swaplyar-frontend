@@ -23,7 +23,7 @@ export const getverificationList = async (page: Number = 1, perPage: number = 10
     return user;
   } catch (e) {
     console.error('Error fetching user:', e);
-    return { success: false, message: 'Error fetching user', page: 0, limit: 0, total: 0, totalPages: 0, data: [] };
+    throw new Error(JSON.stringify({ success: false, message: 'Error fetching user', page: 0, limit: 0, total: 0, totalPages: 0, data: [] }));
   }
 }
 

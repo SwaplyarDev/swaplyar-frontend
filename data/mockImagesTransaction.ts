@@ -65,7 +65,7 @@ export const MockImagesTransLight: MockImages[] = [
   },
   {
     image: BankImg,
-    name: 'ars',
+    name: 'bank',
     id: 8,
   },
 ];
@@ -112,7 +112,7 @@ export const MockImagesTransDark: MockImages[] = [
   },
   {
     image: BankDarkImg,
-    name: 'ars',
+    name: 'bank',
     id: 8,
   },
 ];

@@ -46,7 +46,7 @@ export async function plusRewardsActionsPut(formData: FormData, token: string) {
 
 export async function getPlusRewards(token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/verification-status`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/status`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -56,15 +56,48 @@ export async function getPlusRewards(token: string) {
     });
     const data = await res.json();
 
-    if (!res.ok || !data?.verification_status) {
+    console.log('Respuesta completa del backend:', data);
+
+    if (!res.ok) {
       console.warn('Respuesta no OK:', data);
       return { verification_status: 'REENVIAR_DATOS' };
     }
 
-    return data;
+    // El backend devuelve { success: true, data: { status: 'pending' } }
+    // Necesitamos mapear esto a la estructura esperada
+    if (data.success && data.data && data.data.status) {
+      const backendStatus = data.data.status;
+      console.log('Status del backend:', backendStatus);
+
+      // Mapear estados del backend a estados del frontend
+      let frontendStatus = 'REENVIAR_DATOS'; // default fallback
+
+      switch (backendStatus.toLowerCase()) {
+        case 'pending':
+          frontendStatus = 'PENDIENTE';
+          break;
+        case 'verified':
+          frontendStatus = 'APROBADO';
+          break;
+        case 'rejected':
+          frontendStatus = 'RECHAZADO';
+          break;
+        case 'resend-data':
+          frontendStatus = 'REENVIAR_DATOS';
+          break;
+        default:
+          frontendStatus = 'REENVIAR_DATOS';
+      }
+
+      console.log('Status mapeado:', frontendStatus);
+      return { verification_status: frontendStatus };
+    }
+
+    console.warn('Estructura de respuesta inesperada:', data);
+    return { verification_status: 'REENVIAR_DATOS' };
   } catch (error) {
     console.error('Error en getPlusRewards:', error);
-    return null;
+    return { verification_status: 'REENVIAR_DATOS' };
   }
 }
 
@@ -95,7 +128,7 @@ export async function getCardStatus(token: string) {
 
 export async function updateVerificationStatus(token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/verification-status`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/status`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -119,7 +152,7 @@ export async function updateVerificationStatus(token: string) {
 
 export async function resendVerificationAfterRejection(token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/verification-status`, {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/status`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

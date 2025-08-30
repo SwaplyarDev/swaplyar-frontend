@@ -2,10 +2,8 @@
 
 import { useState } from 'react';
 import { CreditCard, Clock } from 'lucide-react';
-import { WalletsModal } from './WalletModal';
 
 export function UserRewardsOptions() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'wallets' | 'history'>('wallets');
 
   return (
@@ -16,7 +14,6 @@ export function UserRewardsOptions() {
           <button
             onClick={() => {
               setActiveTab('wallets');
-              setIsModalOpen(true);
             }}
             className="flex w-full items-center space-x-2 rounded-lg p-2 text-blue-600 transition-colors hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/20"
           >
@@ -28,7 +25,6 @@ export function UserRewardsOptions() {
           <button
             onClick={() => {
               setActiveTab('history');
-              setIsModalOpen(true);
             }}
             className="flex w-full items-center space-x-2 rounded-lg p-2 text-blue-600 transition-colors hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/20"
           >
@@ -37,10 +33,6 @@ export function UserRewardsOptions() {
           </button>
         </li>
       </ul>
-
-      {isModalOpen && (
-        <WalletsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} initialTab={activeTab} />
-      )}
     </div>
   );
 }

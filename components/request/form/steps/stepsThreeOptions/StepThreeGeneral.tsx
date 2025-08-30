@@ -4,7 +4,6 @@ import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch } from 're
 import InputCopy from '../../inputs/InputCopy';
 import { System } from '@/types/data';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import InputSteps from '@/components/inputSteps/InputSteps';
 import { FieldError } from 'react-hook-form';
 import { detectarMail } from '@/utils/validationUtils';
 

@@ -87,7 +87,7 @@ export function UserVerificationForm({ verification, onSave }: UserVerificationF
                 <Input
                   id={field.id}
                   name={field.id}
-                  value={verification.user[field.id as keyof typeof verification.user]}
+                  value={verification.user_profile[field.id as keyof typeof verification.user_profile]}
                   placeholder={field.placeholder}
                   disabled={true}
                   className={cn(

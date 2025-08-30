@@ -346,3 +346,6 @@ export const iconoMetadataDark =
 // TyC
 export const tycLight = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751468611/tycLight_rwsbd7.png';
 export const tycDark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751468593/tycDark_la2unh.png';
+
+// Cupon
+export const coupon = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1750343087/Vector_kpbkff.png';

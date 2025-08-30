@@ -19,9 +19,11 @@ import Cronometro from './Cronometro';
 import useChronometerState from '@/store/chronometerStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import ReactDOMServer from 'react-dom/server';
+import { useSession } from 'next-auth/react';
 
 const StepperContainer = () => {
-  const { activeStep, completedSteps, setActiveStep, submitAllData, resetToDefault } = useStepperStore();
+  const { formData, activeStep, completedSteps, setActiveStep, updateFormData, submitAllData, resetToDefault } = useStepperStore();
+  const { data: session } = useSession();
   const [blockAll, setBlockAll] = useState(false);
   const { isStopped, setStop } = useChronometerState();
   const [correctSend, setCorrectSend] = useState(false);
@@ -30,43 +32,39 @@ const StepperContainer = () => {
   const [loading, setLoading] = useState(false);
   const { isDark } = useDarkTheme();
   const router = useRouter();
-  const [validAccess, setValidAccess] = useState(false);
 
   useEffect(() => {
-    const accesoPermitido = sessionStorage.getItem('accesoPermitido');
+    const autoCompleteInfo = () => {
+      const userInfo = {
+        first_name: session?.user?.profile.firstName || '',
+        last_name: session?.user?.profile.lastName || '',
+        calling_code: undefined,
+        email: session?.user?.email || '',
+        phone: session?.user?.profile.phone || '',
+        own_account: undefined,
+      };
 
-    if (!accesoPermitido) {
-      router.replace('/es/inicio');
-    } else {
-      setValidAccess(true);
+      const transferInfo = {
+        ...formData.stepTwo,
+        tax_identification: session?.user.profile.identification,
+      };
+      updateFormData(0, userInfo);
+      updateFormData(1, transferInfo);
     }
 
-    const handleRouteChange = () => {
-      sessionStorage.removeItem('accesoPermitido');
-    };
+    if (session) {
+      autoCompleteInfo();
+    }
 
-    window.addEventListener('beforeunload', handleRouteChange);
-    window.history.pushState(null, '', window.location.href);
-    window.addEventListener('popstate', () => {
-      sessionStorage.removeItem('accesoPermitido');
-      router.replace('/es/inicio');
-    });
-
-    return () => {
-      window.removeEventListener('beforeunload', handleRouteChange);
-      window.removeEventListener('popstate', handleRouteChange);
-    };
-  }, [router]);
-
-  if (!validAccess) return null;
+  },[session]);
 
   const steps = [
-    { title: 'Mis Datos', component: <StepOne blockAll={blockAll} /> },
-    {
-      title: 'Información del Destinatario',
-      component: <StepTwo blockAll={blockAll} />,
-    },
-    { title: 'Pago', component: <StepThree blockAll={blockAll} /> },
+  { title: 'Mis Datos', component: <StepOne blockAll={blockAll} /> },
+  {
+    title: 'Información del Destinatario',
+    component: <StepTwo blockAll={blockAll} />,
+  },
+  { title: 'Pago', component: <StepThree blockAll={blockAll} /> },
   ];
 
   const handleStepClick = (index: number) => {
@@ -160,7 +158,6 @@ const StepperContainer = () => {
           showConfirmButton: false,
           timer: 1000,
         });
-        console.log('Datos enviados correctamente');
         setBlockAll(true);
         setCorrectSend(true);
         setErrorSend(false);

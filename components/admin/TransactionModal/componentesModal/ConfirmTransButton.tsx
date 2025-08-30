@@ -2,7 +2,7 @@
 
 import type React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import type { TransactionTypeSingle, TransactionV2 } from '@/types/transactions/transactionsType';
+import type { TransactionV2 } from '@/types/transactions/transactionsType';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
@@ -11,6 +11,7 @@ import { Tooltip, TooltipTrigger } from '@/components/ui/Tooltip';
 import { TooltipProvider } from '@/components/ui/Tooltip';
 import { Label } from '@/components/ui/Label';
 import { Input } from '@/components/ui/Input';
+import { getTransactionStatusHistory } from '@/actions/transactions/transactions.action';
 
 interface ConfirmTransButtonProps {
   value: boolean | null;
@@ -20,6 +21,8 @@ interface ConfirmTransButtonProps {
   setIsSubmitting: (isSubmitting: boolean) => void;
   setSubmitError: (error: string | null) => void;
   setSubmitSuccess: (success: boolean) => void;
+  token?: string;
+  transId?: string; 
 }
 
 const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
@@ -30,6 +33,8 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
   setIsSubmitting,
   setSubmitError,
   setSubmitSuccess,
+  token,
+  transId,
 }) => {
   const [selected, setSelected] = useState<boolean | null>(value);
   const [transferId, setTransferId] = useState<string>(trans.receiverAccount?.paymentMethod?.sendMethodValue || '');
@@ -43,14 +48,53 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
   const [submitResult, setSubmitResult] = useState<boolean | null>(null);
 
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [isTransferConfirmed, setIsTransferConfirmed] = useState(false);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(true);
+  const [currentStatus, setCurrentStatus] = useState<string>('');
 
   const sendButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const checkTransferStatus = async () => {
+      if (!transId || !token) {
+        setIsLoadingHistory(false);
+        return;
+      }
+
+      try {
+        setIsLoadingHistory(true);
+        const statusHistory = await getTransactionStatusHistory(transId, token);
+        
+        if (statusHistory && statusHistory.length > 0) {
+          const lastStatusEntry = statusHistory[0];
+          const lastStatus = lastStatusEntry.status;
+          setCurrentStatus(lastStatus);
+          const confirmedStatuses = ['review_payment', 'approved', 'discrepancy', 'refunded', 'completed'];
+          
+          if (confirmedStatuses.includes(lastStatus)) {
+            setIsTransferConfirmed(true);
+            setSelected(true);
+          } else if (lastStatus === 'rejected') {
+            setSelected(false);
+          }
+        }
+      } catch (error) {
+        console.error('Error al verificar historial de status:', error);
+      } finally {
+        setIsLoadingHistory(false);
+      }
+    };
+
+    checkTransferStatus();
+  }, [transId, token]);
 
   useEffect(() => {
     setSelected(value);
   }, [value]);
 
   const handleSubmitTransferId = () => {
+    if (isTransferConfirmed) return; 
+    
     if (!transferId.trim()) {
       setShowValidationModal(true);
       return;
@@ -59,6 +103,8 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
   };
 
   const handleConfirmSubmit = () => {
+    if (isTransferConfirmed) return; 
+    
     setIsSubmittingLocal(true);
     setShowConfirmModal(false);
 
@@ -87,6 +133,7 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
           setSubmitResult(true);
           setShowResultModal(true);
           setTransferId('');
+          setIsTransferConfirmed(true);
         }
       },
     );
@@ -99,6 +146,9 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
   };
 
   const handleClick = (newValue: boolean) => {
+    if (isTransferConfirmed && newValue === false) return; 
+    if (isTransferConfirmed && newValue === true) return; 
+    
     setValue(newValue);
     setSelected(newValue);
   };
@@ -116,13 +166,35 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
     }
   };
 
+  const getButtonClass = (buttonType: 'confirm' | 'reject') => {
+    const baseClass = 'relative min-w-[160px] rounded-3xl transition-all duration-300';
+    
+    if (buttonType === 'confirm') {
+      if (isTransferConfirmed || selected === true) {
+        return `${baseClass} bg-green-600 text-white shadow-sm hover:bg-green-700 hover:shadow-green-200 dark:bg-green-700 dark:hover:bg-green-600 dark:hover:shadow-green-900/20`;
+      }
+      return `${baseClass} hover:border-green-500 hover:bg-green-50 hover:text-green-600 dark:border-gray-600 dark:hover:bg-green-900/20 dark:hover:text-green-400`;
+    } else {
+      if (selected === false && !isTransferConfirmed) {
+        return `${baseClass} bg-red-600 text-white shadow-sm hover:bg-red-700 hover:shadow-red-200 dark:bg-red-700 dark:hover:bg-red-600 dark:hover:shadow-red-900/20`;
+      }
+      if (isTransferConfirmed) {
+        return `${baseClass} bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed`;
+      }
+      return `${baseClass} hover:border-red-500 hover:bg-red-50 hover:text-red-600 dark:border-gray-600 dark:hover:bg-red-900/20 dark:hover:text-red-400`;
+    }
+  };
+
   return (
     <>
       <div className="rounded-lg border bg-white p-4 shadow-sm transition-all duration-300 hover:bg-gray-50 hover:shadow-md dark:border-gray-700 dark:bg-gray-800/90 dark:hover:bg-gray-800">
-        <h3 className="text-lg font-semibold dark:text-white">Confirmación de transferencia</h3>
+        <h3 className="text-lg font-semibold dark:text-white">
+          Confirmación de transferencia
+        </h3>
         <p className="text-sm dark:text-gray-300">
           ¿La transferencia ha sido recibida y ya está reflejada en nuestra cuenta?
         </p>
+
 
         <div className="mt-2 flex justify-center gap-4">
           <TooltipProvider delayDuration={300}>
@@ -130,23 +202,29 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
               <TooltipTrigger asChild>
                 <Button
                   onClick={() => handleClick(true)}
-                  variant={selected === true ? 'default' : 'outline'}
-                  className={`relative min-w-[160px] rounded-3xl transition-all duration-300 ${
-                    selected === true
-                      ? 'bg-green-600 text-white shadow-sm hover:bg-green-700 hover:shadow-green-200 dark:bg-green-700 dark:hover:bg-green-600 dark:hover:shadow-green-900/20'
-                      : 'hover:border-green-500 hover:bg-green-50 hover:text-green-600 dark:border-gray-600 dark:hover:bg-green-900/20 dark:hover:text-green-400'
-                  }`}
+                  disabled={isTransferConfirmed}
+                  variant={selected === true || isTransferConfirmed ? 'default' : 'outline'}
+                  className={getButtonClass('confirm')}
                   size="lg"
                 >
                   <CheckCircle
-                    className={`mr-2 h-5 w-5 ${selected === true ? 'text-white' : 'text-green-500 dark:text-green-400'}`}
+                    className={`mr-2 h-5 w-5 ${
+                      selected === true || isTransferConfirmed 
+                        ? 'text-white' 
+                        : 'text-green-500 dark:text-green-400'
+                    }`}
                   />
                   <span>Sí, confirmado</span>
                 </Button>
               </TooltipTrigger>
-              {selected !== true && (
+              {!isTransferConfirmed && selected !== true && (
                 <TooltipContent side="top" className="border-green-600 bg-green-600 text-white">
                   <p>Confirmar recepción</p>
+                </TooltipContent>
+              )}
+              {isTransferConfirmed && (
+                <TooltipContent side="top" className="border-gray-500 bg-gray-500 text-white">
+                  <p>Transferencia ya confirmada</p>
                 </TooltipContent>
               )}
             </Tooltip>
@@ -155,30 +233,38 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
               <TooltipTrigger asChild>
                 <Button
                   onClick={() => handleClick(false)}
-                  variant={selected === false ? 'destructive' : 'outline'}
-                  className={`relative min-w-[160px] rounded-3xl transition-all duration-300 ${
-                    selected === false
-                      ? 'bg-red-600 text-white shadow-sm hover:bg-red-700 hover:shadow-red-200 dark:bg-red-700 dark:hover:bg-red-600 dark:hover:shadow-red-900/20'
-                      : 'hover:border-red-500 hover:bg-red-50 hover:text-red-600 dark:border-gray-600 dark:hover:bg-red-900/20 dark:hover:text-red-400'
-                  }`}
+                  disabled={isTransferConfirmed}
+                  variant={selected === false && !isTransferConfirmed ? 'destructive' : 'outline'}
+                  className={getButtonClass('reject')}
                   size="lg"
                 >
                   <XCircle
-                    className={`mr-2 h-5 w-5 ${selected === false ? 'text-white' : 'text-red-500 dark:text-red-400'}`}
+                    className={`mr-2 h-5 w-5 ${
+                      selected === false && !isTransferConfirmed 
+                        ? 'text-white' 
+                        : isTransferConfirmed 
+                        ? 'text-gray-400' 
+                        : 'text-red-500 dark:text-red-400'
+                    }`}
                   />
                   <span>No recibida</span>
                 </Button>
               </TooltipTrigger>
-              {selected !== false && (
+              {!isTransferConfirmed && selected !== false && (
                 <TooltipContent side="top" className="border-red-600 bg-red-600 text-white">
                   <p>Marcar como no recibida</p>
+                </TooltipContent>
+              )}
+              {isTransferConfirmed && (
+                <TooltipContent side="top" className="border-gray-500 bg-gray-500 text-white">
+                  <p>Deshabilitado - Transferencia ya confirmada</p>
                 </TooltipContent>
               )}
             </Tooltip>
           </TooltipProvider>
         </div>
 
-        {selected === true && (
+        {selected === true && !isTransferConfirmed && (
           <div className="animate-in fade-in mt-6 max-w-xl duration-300">
             <div className="space-y-3">
               <div className="flex items-center">
@@ -198,9 +284,10 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
                     onChange={(e) => setTransferId(e.target.value)}
                     onFocus={() => setIsInputFocused(true)}
                     onBlur={() => setIsInputFocused(false)}
+                    disabled={isTransferConfirmed}
                     className={`h-11 transition-all duration-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 ${
                       isInputFocused ? 'ring-primary border-primary ring-2' : ''
-                    }`}
+                    } ${isTransferConfirmed ? 'opacity-50 cursor-not-allowed' : ''}`}
                     aria-required="true"
                   />
                 </div>
@@ -212,7 +299,10 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
                     e.preventDefault();
                     handleSubmitTransferId();
                   }}
-                  className="buttonSecond h-11 rounded-3xl bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20"
+                  disabled={isTransferConfirmed}
+                  className={`buttonSecond h-11 rounded-3xl bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20 ${
+                    isTransferConfirmed ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
                   aria-label="Enviar ID de transferencia"
                 >
                   <span>Enviar</span>
@@ -264,7 +354,7 @@ const ConfirmTransButton: React.FC<ConfirmTransButtonProps> = ({
             <div className="flex w-full justify-center gap-3">
               <Button
                 onClick={handleConfirmSubmit}
-                disabled={isSubmitting}
+                disabled={isSubmitting || isTransferConfirmed}
                 className="bg-custom-blue text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
               >
                 {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}

@@ -74,7 +74,7 @@ export function HistorialContent() {
         <>
           <div className="space-y-4">
             {transactions.map((transaction, index) => (
-              <TransactionCard key={transaction.transaction.transaction_id} transaction={transaction} index={index} />
+              <TransactionCard key={transaction.id} transaction={transaction} index={index} />
             ))}
           </div>
 

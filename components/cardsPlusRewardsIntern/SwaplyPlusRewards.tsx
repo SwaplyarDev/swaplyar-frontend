@@ -28,7 +28,7 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const [showVerify, setShowVerify] = useState(false);
   const [showRejectedMessage, setShowRejectedMessage] = useState(false);
 
-  const { status: verifiedStatus, setStatus, showApprovedMessage, setShowApprovedMessage } = useVerificationStore();
+  const { status: verifiedStatus, setStatus, setShowApprovedMessage } = useVerificationStore();
 
   const { data: session } = useSession();
   const sesionCardTop = session?.accessToken;
@@ -41,8 +41,11 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
 
     const fetchVerificationStatus = async () => {
       try {
+        console.log('🔍 Obteniendo estado de verificación...');
         const response = await getPlusRewards(sesionCardTop);
-        const backendStatus = response.verification_status;
+        console.log('📦 Respuesta procesada:', response);
+        const backendStatus = response.verification_status as 'REENVIAR_DATOS' | 'PENDIENTE' | 'APROBADO' | 'RECHAZADO';
+        console.log('✅ Estado final a establecer:', backendStatus);
         setStatus(backendStatus);
 
         if (backendStatus === 'RECHAZADO') {

@@ -1,119 +1,90 @@
 'use client';
+
+import { useEffect } from 'react';
+
 // Images
 import { ImagePlusRewards } from '../ImagePlusRewards';
-
-// Hooks
-import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-
-// Actions
-import { getDiscounts } from '@/actions/Discounts/discounts.action';
-import { getUserStarsAndAmount } from '@/actions/Discounts/userStarsAndAmount.action';
-import { signOut } from 'next-auth/react';
 
 // Types
 import { IDiscountsObject } from '@/types/discounts/discounts';
 
 // Components
 import VerifyAccount from './VerifyAccount';
-import PopUpSessionExpire from './PopUpSessionExpire';
 import WelcomeReward from './WelcomeReward';
 import UserVerifiedWithoutTransactions from './UserVerifiedWithoutTransactions';
 import UserWinPlusReward from './UserWinPlusReward';
 import AmountTransactions from '../AmountTransactions';
 import UncompleteRewardText from './UncompleteRewardText';
 
-interface IStarsAndAmount {
-  data: {
-    quantity: string;
-    stars: string;
-  };
+// Actions
+import { getUserStarsAndAmount } from '@/actions/Discounts/userStarsAndAmount.action';
+
+// Store
+import { useRewardsStore } from '@/store/useRewardsStore';
+import ErrorComponent from '../ErrorComponent';
+
+interface Props {
+  discounts: IDiscountsObject | null;
+  userVerification: null | true;
+  userId: string;
+  accessToken: string;
 }
 
-export default function PlusRewardInitial() {
-  const { isDark } = useDarkTheme();
-  const { data: session, status } = useSession();
-
-  const [discounts, setDiscounts] = useState<IDiscountsObject | null>(null);
-  const [stars, setStars] = useState<number>(0);
-  const [amountTransactions, setAmountTransactions] = useState<number>(0);
-  const [errors, setErrors] = useState<string[]>([]);
+export default function PlusRewardInitial({ discounts, userVerification, userId, accessToken }: Props) {
+  const { stars, quantity, loading, error, setData, setLoading, setError } = useRewardsStore();
 
   useEffect(() => {
-    async function getData() {
-      if (!session?.accessToken) return;
-
+    const fetchData = async () => {
       try {
-        const discountsData = await getDiscounts(session.accessToken);
-        setDiscounts(discountsData);
-      } catch (error) {
-        console.error('Error al cargar los descuentos:', error);
-        setErrors((prevError) => {
-          const errorMessage = 'Error al cargar los descuentos.';
-          return prevError.includes(errorMessage) ? prevError : [...prevError, errorMessage];
-        });
+        setLoading(true);
+        const res = await getUserStarsAndAmount(accessToken);
+        setData(Number(res.data.stars), Number(res.data.quantity));
+      } catch (e) {
+        setError('Error al cargar recompensas');
+      } finally {
+        setLoading(false);
       }
+    };
 
-      try {
-        const starsAndAmountData: IStarsAndAmount = await getUserStarsAndAmount(session.accessToken);
-        setStars(Number(starsAndAmountData.data.stars));
-        setAmountTransactions(Number(starsAndAmountData.data.quantity));
-      } catch (error) {
-        console.error('Error al cargar las estrellas y montos de transacciones:', error);
-        setErrors((prevError) => {
-          const errorMessage = 'Error al cargar las estrellas y montos de transacciones.';
-          return prevError.includes(errorMessage) ? prevError : [...prevError, errorMessage];
-        });
-      }
-    }
+    fetchData();
+  }, [accessToken, setData, setError, setLoading]);
 
-    getData();
-  }, [session]);
-
-  if (status === 'loading') {
+  if (loading) {
     return (
-      <div className="flex h-[331px] w-full animate-pulse items-center justify-center rounded-2xl bg-gray-200 lg:h-[623px]"></div>
-    );
-  }
+      <div className="mx-auto flex h-[600px] w-[80%] max-w-xl animate-pulse flex-col justify-between rounded-xl bg-gray-100 p-5 dark:bg-custom-grayD-800">
+        <div className="mb-6 h-32 w-52 rounded bg-[#C2D4FF] dark:bg-custom-grayD-500" />
 
-  // TODO: mostrar el popup, a los 5seg se hace un logout, cuando sale del popup tambien, o si acepta con un boton
-  // ! No se probó la funcionalidad del popup
-  if (!session || !session.accessToken) {
-    return <PopUpSessionExpire />;
-  }
+        <div className="flex flex-col items-end">
+          <div className="mb-2 h-10 w-1/3 rounded bg-[#C2D4FF] dark:bg-custom-grayD-500" />
+          <div className="mb-6 h-16 w-1/2 rounded bg-[#C2D4FF] dark:bg-custom-grayD-500" />
+        </div>
 
-  if (errors.length > 0) {
-    return (
-      <div className="flex h-[331px] w-full flex-col items-center justify-center rounded-2xl bg-gray-100 p-5 lg:h-[623px]">
-        <p className="mb-3 text-base font-semibold xs-mini-phone2:text-lg">Ha ocurrido un error al cargar los datos:</p>
-        {errors.map((error, index) => (
-          <p key={index}>{error}</p>
-        ))}
-        <p className="my-3 text-base font-semibold xs-mini-phone2:text-lg">Por favor vuelva a iniciar sesión</p>
-        <button
-          className={`relative max-w-[280px] items-center justify-center rounded-3xl border ${
-            isDark ? 'border-darkText bg-darkText text-lightText' : 'border-buttonsLigth bg-buttonsLigth text-white'
-          } px-[34px] py-2 font-titleFont font-semibold transition-opacity hover:opacity-90`}
-          onClick={() => signOut()}
-        >
-          Cerrar sesión
-        </button>
+        <div className="mt-6 h-24 rounded bg-[#C2D4FF] dark:bg-custom-grayD-500" />
+
+        <div className="mt-auto">
+          <div className="mb-6 flex space-x-8">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="h-10 w-10 rounded-full bg-[#C2D4FF] dark:bg-custom-grayD-500" />
+            ))}
+          </div>
+
+          <div className="h-3 w-full rounded bg-[#C2D4FF] dark:bg-custom-grayD-500"></div>
+        </div>
       </div>
     );
   }
 
-  const isUserVerified: null | true = session?.user.userVerification;
+  if (error) return <ErrorComponent errors={[error]} />;
 
-  // Los descuentos vienen con un campo is_used, pero la api solo devuelve aquellos descuentos que no han sido usados
-  const userHave3Discount: undefined | boolean = discounts?.data.some((discount) => discount.discount === '3');
-  const userHave5Discount: undefined | boolean = discounts?.data.some((discount) => discount.discount === '5');
+  const userHave3Discount = discounts?.data.some((d) => d.discount === '3');
+  const userHave5Discount = discounts?.data.some((d) => d.discount === '5');
+  const haveEnoughStars = stars >= 5;
+  const haveEnoughAmount = quantity >= 500;
 
-  const haveEnoughStars: boolean = stars >= 5;
-  const haveEnoughAmount: boolean = amountTransactions >= 500;
+  const isUserVerified: null | true = userVerification;
 
   return (
-    <section className="relative m-auto flex w-full max-w-7xl items-center">
+    <section className="relative m-auto flex w-[80%] max-w-7xl items-center">
       <section className="flex w-full flex-col justify-center rounded-lg font-light text-lightText dark:text-custom-whiteD xs-phone:p-8 md-phone:p-10 md:flex-row-reverse lg:flex-col">
         <article className="flex flex-col justify-center xs:mx-auto xs:w-[388px] xs-phone:mb-8 lg:justify-between">
           <div className="xs-mini-phone:w-64 xs-phone:w-48 md-phone:w-52 md:w-full lg:ml-0 lg:w-64">
@@ -123,7 +94,7 @@ export default function PlusRewardInitial() {
           <article className="mb-5 text-end xs-phone:mb-6">
             <p className="align-text-top text-sm xs-mini-phone:text-base">Tu Código de Miembro:</p>
             <p className="title text-3xl font-bold xs-mini-phone:text-[32px] xs-phone:text-[36px] md-phone:text-[40px]">
-              {session.user.id.toUpperCase()}
+              {userId.toUpperCase()}
             </p>
           </article>
         </article>
@@ -146,8 +117,8 @@ export default function PlusRewardInitial() {
           <UserWinPlusReward />
         ) : (
           <div className="flex w-full flex-col items-center gap-9">
-            <UncompleteRewardText stars={stars} quantity={amountTransactions} />
-            <AmountTransactions amountTotal={amountTransactions} totalTransactions={stars} />
+            <UncompleteRewardText stars={stars} quantity={quantity} />
+            <AmountTransactions amountTotal={quantity} totalTransactions={stars} />
           </div>
         )}
       </section>
