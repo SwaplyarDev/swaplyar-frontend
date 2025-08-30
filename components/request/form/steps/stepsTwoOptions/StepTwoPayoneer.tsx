@@ -2,7 +2,6 @@ import React from 'react';
 import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch } from 'react-hook-form';
 import InputSteps from '@/components/inputSteps/InputSteps';
 import { FieldError } from 'react-hook-form';
-import { System } from '@/types/data';
 
 interface StepTwoPayoneerProps {
   register: UseFormRegister<any>;
@@ -21,10 +20,8 @@ const StepTwoPayoneer: React.FC<StepTwoPayoneerProps> = ({
   formData,
   watch,
 }) => {
-
   return (
     <div className="mx-0 grid grid-cols-1 gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:grid-cols-2 sm-phone:gap-x-8 sm-phone:gap-y-2">
-      
       <InputSteps
         label="Correo Electrónico de Payoneer"
         name="bank_email"

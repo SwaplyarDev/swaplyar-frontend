@@ -98,7 +98,8 @@ export default function AddAccountForm({
 
       case 'crypto':
       case 'receiver_crypto':
-        return <CryptoFields register={register} errors={errors} />;
+        return <CryptoFields register={register} errors={errors} control={control} />;
+
       case 'pix':
         return <PixFields register={register} errors={errors} />;
       case 'payoneerUSD':

@@ -15,6 +15,10 @@ import {
   BankDarkImg,
   BankImg,
   PaypalImg,
+  WiseEurImg,
+  WiseEurDarkImg,
+  PayoneerEurImg,
+  PayoneerEurDarkImg,
 } from '@/utils/assets/imgDatabaseCloudinary';
 
 interface Wallet {
@@ -39,12 +43,22 @@ const getWalletLogos = (type: string) => {
         logo: PaypalImg,
         logoDark: PaypalDarkImg,
       };
-    case 'payoneer':
+    case 'payoneer_eur':
+      return {
+        logo: PayoneerEurImg,
+        logoDark: PayoneerEurDarkImg,
+      };
+    case 'payoneer_usd':
       return {
         logo: PayoneerUsdImg,
         logoDark: PayoneerUsdDarkImg,
       };
-    case 'wise':
+    case 'wise_eur':
+      return {
+        logo: WiseEurImg,
+        logoDark: WiseEurDarkImg,
+      };
+    case 'wise_usd':
       return {
         logo: WiseUsdImg,
         logoDark: WiseUsdDarkImg,

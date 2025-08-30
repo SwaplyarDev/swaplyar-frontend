@@ -1,12 +1,7 @@
 'use client';
-
-// Hooks
-import { useState, useEffect, useMemo } from 'react';
-import { useSystemStore } from '@/store/useSystemStore';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAmountCalculator } from '@/hooks/useAmountCalculator';
 import { useSystemSelection } from '@/hooks/useSystemSelection';
-import { useStepperStore } from '@/store/stateStepperStore';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 
 // Store
@@ -29,15 +24,32 @@ import MinAmountMessage from './MinAmountMessage';
 import WalletSelect from './WalletSelect';
 import { calculateSendAmountFromReceive } from '@/utils/calculateSendAmountFromReceive';
 import { calculateReceiveAmountWithCoupon } from '@/utils/calculateReceiveAmountWithCoupon';
-
+import { useEffect, useMemo, useState } from 'react';
+import { useSystemStore } from '@/store/useSystemStore';
+import { useSession } from 'next-auth/react';
 export default function InternalTransactionCalculator() {
   const [isProcessing, setIsProcessing] = useState(false);
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
   const { startUpdatingRates, stopUpdatingRates, rates } = getExchangeRateStore();
   const { couponInstance } = useRewardsStore();
-  const { selectedWallet, setSelectedWallet, clearSelectedWallet } = useWalletStore();
+
+  const {
+    wallets: userWallets,
+    selectedWallet,
+    setSelectedWallet,
+    clearSelectedWallet,
+    fetchAndSetWallets,
+    isLoading,
+  } = useWalletStore();
   const [customReceiveInput, setCustomReceiveInput] = useState('');
   const [isCustomInputActive, setIsCustomInputActive] = useState(false);
+  const { data: session } = useSession();
+  const token = session?.accessToken;
+  useEffect(() => {
+    if (token && userWallets.length === 0) {
+      fetchAndSetWallets(token);
+    }
+  }, [token, userWallets.length, fetchAndSetWallets]);
 
   useEffect(() => {
     if (selectedSendingSystem && selectedReceivingSystem) {
@@ -125,84 +137,40 @@ export default function InternalTransactionCalculator() {
     return true;
   };
 
-  const userWallets = useMemo(() => [
-    {
-      id: 'wallet_1',
-      type: 'paypal',
-      label: 'PayPal 1',
-      email: 'alexislerch@gmail.com',
-      fullName: 'Alexis Lerch',
-      logo: '/logos/paypal.png',
-    },
-    {
-      id: 'wallet_2',
-      type: 'paypal',
-      label: 'PayPal 2',
-      email: 'empresaXYZ@gmail.com',
-      fullName: 'Empresa XYZ',
-      logo: '/logos/paypal.png',
-    },
-    {
-      id: 'wallet_3',
-      type: 'wise',
-      label: 'Wise USD',
-      email: 'alexislerch@gmail.com',
-      fullName: 'Alexis Lerch',
-      logo: '/logos/wise.png',
-    },
-    {
-      id: 'wallet_4',
-      type: 'wise',
-      label: 'Wise EUR',
-      email: 'empresaXYZ@gmail.com',
-      fullName: 'Empresa XYZ',
-      logo: '/logos/wise.png',
-    },
-    {
-      id: 'wallet_5',
-      type: 'bank',
-      label: 'Banco Personal',
-      email: 'alexislerch@gmail.com',
-      fullName: 'Alexis Lerch',
-      logo: '/logos/bank.png',
-    },
-  ], []);
-
   const filteredWallets = useMemo(() => {
-    return selectedSendingSystem
-      ? userWallets.filter((wallet) => {
-          if (selectedSendingSystem.id?.includes('paypal')) return wallet.type === 'paypal';
-          if (selectedSendingSystem.id?.includes('wise')) return wallet.type === 'wise';
-          if (selectedSendingSystem.id?.includes('bank')) return wallet.type === 'bank';
-          if (selectedSendingSystem.id?.includes('payoneer')) return wallet.type === 'payoneer';
-          if (selectedSendingSystem.id?.includes('pix')) return wallet.type === 'pix';
-          if (selectedSendingSystem.id?.includes('tether')) return wallet.type === 'tether';
-          return false;
-        })
-      : [];
-  }, [selectedSendingSystem, userWallets]);
-
-  // Efecto para manejar la selección automática de wallet cuando hay solo una disponible
+    if (!selectedReceivingSystem) {
+      return [];
+    }
+    return userWallets.filter((wallet) => wallet.type === selectedReceivingSystem.id);
+  }, [selectedReceivingSystem, userWallets]);
   useEffect(() => {
     if (filteredWallets.length === 1) {
       setSelectedWallet(filteredWallets[0]);
     } else {
       clearSelectedWallet();
     }
-  }, [selectedSendingSystem, filteredWallets, setSelectedWallet, clearSelectedWallet]);
+  }, [selectedReceivingSystem, filteredWallets, setSelectedWallet, clearSelectedWallet]);
 
-  // Función para manejar el cambio de wallet por ID
   const handleWalletChange = (walletId: string) => {
-    const wallet = filteredWallets.find(w => w.id === walletId);
+    const wallet = filteredWallets.find((w) => w.id === walletId);
     setSelectedWallet(wallet || null);
   };
+
+  if (isLoading && userWallets.length === 0) {
+    return (
+      <div className="flex w-full flex-col items-center">
+        <div className="flex h-[500px] w-full items-center justify-center rounded-2xl bg-calculatorLight dark:bg-calculatorDark lg-tablet:min-w-[500px]">
+          <p className="text-lightText dark:text-darkText">Cargando billeteras...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
       <div className="mat-card calculator-container flex max-h-[800px] w-full flex-col items-center rounded-2xl bg-calculatorLight px-[19px] py-[27px] shadow-md dark:bg-calculatorDark dark:text-white sm:max-h-[680px] lg-tablet:min-w-[500px]">
         <div className="relative mb-[10px] flex w-full max-w-lg flex-col items-center gap-[10px] text-[#012c8a] dark:text-darkText">
           <p className="flex w-full max-w-lg items-center gap-[7px] font-textFont text-lightText dark:text-darkText">
-            {/* // * Esto podría componetizarse */}
             {selectedSendingSystem?.id === 'bank' ? (
               <>
                 <span className="text-[32px]/[150%] font-light">{rateForOneBank.toFixed(2)}</span>
@@ -246,7 +214,6 @@ export default function InternalTransactionCalculator() {
             <p className="font-textFont text-xs font-light xs:text-sm">Información del sistema de recepción</p>
           </SystemInfo>
 
-          {/* // TODO: Hay que agregarle dinamismo para que renderice el valor y los cupones que corresponde */}
           <Coupons balance={receiveAmountNum} receivingCoin={selectedReceivingSystem?.coin} isVerified={true} />
         </div>
 
@@ -293,10 +260,10 @@ export default function InternalTransactionCalculator() {
             sendAmountNum={sendAmountNum}
           />
 
-          <WalletSelect 
-            wallets={filteredWallets} 
-            selectedWalletId={selectedWallet?.id || null} 
-            onChange={handleWalletChange} 
+          <WalletSelect
+            wallets={filteredWallets}
+            selectedWalletId={selectedWallet?.id || null}
+            onChange={handleWalletChange}
           />
 
           <BtnProccessPayment

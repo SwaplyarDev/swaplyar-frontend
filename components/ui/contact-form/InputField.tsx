@@ -48,7 +48,7 @@ const InputField: FC<InputFieldProps> = ({
         {...restRegister} // Usamos el resto de las props del register
         className={clsx(
           file ? 'hidden' : '',
-          'w-full rounded-2xl border bg-[#fffff8] px-[9px] py-2 font-titleFont text-lightText dark:bg-darkText',
+          'text-l w-full rounded-2xl border bg-[#fffff8] px-[9px] py-2 font-titleFont text-lightText dark:bg-darkText',
           error
             ? 'border-[#c31818] placeholder:text-[#c31818]'
             : 'border-buttonExpandDark placeholder:text-buttonExpandDark hover:border-buttonsLigth dark:border-placeholderDark dark:placeholder:text-placeholderDark dark:hover:border-white',
