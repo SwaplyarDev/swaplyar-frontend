@@ -43,9 +43,9 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [customReceiveInput, setCustomReceiveInput] = useState('');
-  const [isCustomInputActive, setIsCustomInputActive] = useState(false);
-  const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne, rateForOneBank } = useAmountCalculator();
-
+  const [isCustomInputActive, setIsCustomInputActive] = useState(false); 
+  const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne, rateForOneBank, setFinalReceiveAmount } = useAmountCalculator();
+  
   const couponUsdAmount = useRef(0);
   const shouldApplyCoupon = useRef(false);
   const couponInstanceForCalc = useRef<'THREE' | 'FIVE' | 'THREE_FIVE' | 'TEN' | 'MANUAL' | null>(null);
@@ -123,6 +123,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
 
   const handleSubmit = () => {
     setIsProcessing(true);
+    setFinalReceiveAmount(receiveAmountInputValue.current);
     setTimeout(() => {
       router.push('/es/auth/solicitud/formulario-de-solicitud');
     }, 2000);
@@ -265,7 +266,6 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
             <p className="font-textFont text-xs font-light xs:text-sm">Información del sistema de recepción</p>
           </SystemInfo>
 
-          {/* // TODO: Hay que agregarle dinamismo para que renderice el valor y los cupones que corresponde */}
           <Coupons balance={receiveAmountNum} receivingCoin={selectedReceivingSystem?.coin} isVerified={true} />
         </div>
 
@@ -305,7 +305,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
           <MinAmountMessage
             isReceiveAmountValid={isReceiveAmountValid}
             isSendAmountValid={isSendAmountValid}
-            receiveAmountNum={receiveAmountNum}
+            receiveAmountNum={receiveAmountWithCoupon.current}
             selectedReceivingSystem={selectedReceivingSystem}
             selectedSendingSystem={selectedSendingSystem}
             sendAmount={sendAmount}
@@ -323,7 +323,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
             isProccessing={isProcessing}
             isReceiveAmountValid={isReceiveAmountValid}
             isSendAmountValid={isSendAmountValid}
-            receiveAmountNum={receiveAmountNum}
+            receiveAmountNum={receiveAmountWithCoupon.current}
             selectedReceivingSystem={selectedReceivingSystem}
             selectedSendingSystem={selectedSendingSystem}
             sendAmount={sendAmount}

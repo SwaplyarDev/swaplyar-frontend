@@ -54,6 +54,7 @@ export default function BtnProccessPayment({
           // isDisabled ||
           isProccessing ||
           sendAmount === '' ||
+          receiveAmountNum === 0 ||
           isNaN(sendAmountNum) ||
           isNaN(receiveAmountNum) ||
           !isSendAmountValid(sendAmountNum, selectedSendingSystem?.id) ||
