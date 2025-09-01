@@ -32,7 +32,7 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
 
   const { data: session } = useSession();
   const sesionCardTop = session?.accessToken;
-  const tokenVerification = session?.user?.userVerification;
+  // const tokenVerification = session?.user?.userVerification;
 
   const sessionCardBlueYellow = verifiedStatus === 'APROBADO';
 
@@ -96,7 +96,7 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
     };
 
     fetchVerificationStatus();
-  }, [sesionCardTop, setShowApprovedMessage, setStatus, session, tokenVerification]);
+  }, [sesionCardTop, setShowApprovedMessage, setStatus, session]);
 
   return (
     <>

@@ -65,8 +65,8 @@ export async function getPlusRewards(token: string) {
 
     // El backend devuelve { success: true, data: { status: 'pending' } }
     // Necesitamos mapear esto a la estructura esperada
-    if (data.success && data.data && data.data.status) {
-      const backendStatus = data.data.status;
+    if (data.success && data.data && data.data.verification_status.toLowerCase()) {
+      const backendStatus = data.data.verification_status.toLowerCase();
       console.log('Status del backend:', backendStatus);
 
       // Mapear estados del backend a estados del frontend
