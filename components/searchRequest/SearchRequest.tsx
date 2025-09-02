@@ -5,6 +5,13 @@ import InputOnlyLine from '../ui/InputOnlyLine/InputOnlyLine';
 import { RequestSearch } from '@/types/data';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
+
+interface SearchResponse {
+  ok: boolean;
+  message?: string;
+  history?: { status: string; timestamp: string }[];
+  status?: AdminStatus;
+}
 import useStatusManager from '@/hooks/useStatusManager';
 import { searchRequest } from '@/actions/request/action.search-request/action.searchRecuest';
 import { showStatusAlert } from './swalConfig';
@@ -58,7 +65,7 @@ const SearchRequest = () => {
     }
   };
 
-  const handleSearchRequest = (history: { status: string }[]) => {
+  const handleSearchRequest = (history: { status: string; timestamp: string }[]) => {
     const statusMessages: Record<AdminStatus, { text: string; icon: string }> = {
       [AdminStatus.Pending]: { text: 'Pago en Revisión', icon: ReactDOMServer.renderToString(<Revision />) },
       [AdminStatus.ReviewPayment]: { text: 'Dinero en Camino', icon: ReactDOMServer.renderToString(<DineroEnCamino />) },
@@ -87,13 +94,18 @@ const SearchRequest = () => {
 
     try {
       console.log('Datos enviados:', data);
-      const response = await searchRequest(data.transactionId, data.lastNameRequest);
+      const response = await searchRequest(data.transactionId, data.lastNameRequest) as SearchResponse;
 
       if (!response.ok) {
         throw new Error(response.message || 'Hubo un problema al obtener el estado de la transacción');
       }
 
-      handleSearchRequest(response.history);
+      // Si no hay historial, crear uno con el estado actual
+      const history = response.history || 
+        (response.status ? [{ status: response.status, timestamp: new Date().toISOString() }] : 
+        [{ status: AdminStatus.Pending, timestamp: new Date().toISOString() }]);
+
+      handleSearchRequest(history);
       console.log('Respuesta completa:', response);
 
       reset({ transactionId: '', lastNameRequest: '' });
