@@ -1,10 +1,11 @@
 import { create } from 'zustand';
 
-type CouponInstance = 'NONE' | 'THREE' | 'FIVE' | 'THREE_FIVE' | 'TEN' | 'MANUAL';
+export type CouponInstance = 'NONE' | 'THREE' | 'FIVE' | 'THREE_FIVE' | 'TEN' | 'MANUAL';
 
 interface RewardsStore {
   stars: number;
   quantity: number;
+  discounts_ids: string[];
 
   used3USD: boolean;
   used5USD: boolean;
@@ -14,8 +15,10 @@ interface RewardsStore {
   loading: boolean;
   error: string | null;
   setCouponInstanceByAmount: (couponAmount: number) => void;
+  addDiscountId: (id: string) => void;
+  resetDiscounts: () => void;
   setData: (stars: number, quantity: number) => void;
-  markUsed: (amount: 3 | 5) => void;
+  markUsed: (couponInstance: CouponInstance) => void;
   markManualUsed: () => void;
   calculateCouponInstance: (isVerified: boolean) => void;
 
@@ -28,6 +31,7 @@ interface RewardsStore {
 export const useRewardsStore = create<RewardsStore>((set, get) => ({
   stars: 0,
   quantity: 0,
+  discounts_ids: [],
 
   used3USD: false,
   used5USD: false,
@@ -42,7 +46,13 @@ export const useRewardsStore = create<RewardsStore>((set, get) => ({
     else if (couponAmount === 5) set({ couponInstance: 'FIVE' });
     else if (couponAmount === 8) set({ couponInstance: 'THREE_FIVE' });
     else if (couponAmount === 10) set({ couponInstance: 'TEN' });
+    else set({ couponInstance: 'MANUAL' });
   },
+
+  addDiscountId: (id: string) => {
+    set((state) => ({ discounts_ids: [...state.discounts_ids, id] }));
+  },
+  resetDiscounts: () => set({ discounts_ids: [] }),
 
   resetUsed: () =>
     set({
@@ -54,9 +64,11 @@ export const useRewardsStore = create<RewardsStore>((set, get) => ({
     set({ stars, quantity });
   },
 
-  markUsed: (amount) => {
-    if (amount === 3) set({ used3USD: true });
-    if (amount === 5) set({ used5USD: true });
+  markUsed: (couponInstance: CouponInstance) => {
+    if (couponInstance === 'THREE') set({ used3USD: true });
+    if (couponInstance === 'FIVE') set({ used5USD: true });
+    if (couponInstance === 'THREE_FIVE') set({ used3USD: true, used5USD: true });
+    if (couponInstance === 'TEN') set({ used3USD: true, used5USD: true, usedManual: true });
   },
 
   markManualUsed: () => set({ usedManual: true }),
