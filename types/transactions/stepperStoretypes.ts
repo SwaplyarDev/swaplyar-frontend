@@ -52,7 +52,7 @@ export interface StepperState {
   setActiveStep: (step: number) => void;
   markStepAsCompleted: (step: number) => void;
   updateFormData: (step: number, data: Partial<FormData[keyof FormData]>) => void; // Permite actualizaciones parciales
-  submitAllData: (selectedSendingSystem: System | null, selectedReceivingSystem: System | null) => Promise<boolean>;
+  submitAllData: (selectedSendingSystem: System | null, selectedReceivingSystem: System | null) => Promise<any>;
   submitOneStep: () => Promise<any>;
   updateOneStep: (id: string) => void;
   resetToDefault: () => void;
