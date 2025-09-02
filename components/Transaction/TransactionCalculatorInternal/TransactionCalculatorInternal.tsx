@@ -30,6 +30,7 @@ import { calculateSendAmountFromReceive } from '@/utils/calculateSendAmountFromR
 import { calculateReceiveAmountWithCoupon } from '@/utils/calculateReceiveAmountWithCoupon';
 import { AdminDiscount, AdminDiscountsResponse, UserStarsAndAmount } from '@/types/discounts/adminDiscounts';
 import { useSession } from 'next-auth/react';
+import { se } from 'date-fns/locale';
 
 
 const allowedCouponInstances: CouponInstance[] = ['THREE', 'FIVE', 'TEN', 'MANUAL'];
@@ -85,7 +86,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
 
   useEffect(() => {
       resetDiscounts();
-  }, []);
+  }, [resetDiscounts]);
 
   // Calcula el couponUsdAmount y el couponInstance según los descuentos obtenidos por parametro
   useEffect(() => {
@@ -109,7 +110,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
     else setCouponInstanceByAmount(0);
     
     setData(stars.data.stars, sendAmountNum);
-  }, [discounts, stars]);
+  }, [discounts, stars, resetDiscounts, addDiscountId, setCouponInstanceByAmount, setData, setFinalReceiveAmount, sendAmountNum]);
 
   shouldApplyCoupon.current = sendAmountNum > 0 && couponUsdAmount.current > 0;
 

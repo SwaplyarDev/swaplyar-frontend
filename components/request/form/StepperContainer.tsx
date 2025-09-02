@@ -59,7 +59,7 @@ const StepperContainer = () => {
       autoCompleteInfo();
     }
 
-  },[session]);
+  },[session, formData.stepTwo, updateFormData]);
 
   const steps = [
   { title: 'Mis Datos', component: <StepOne blockAll={blockAll} /> },
