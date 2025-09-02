@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRewardsStore } from '@/store/useRewardsStore';
+import { CouponInstance, useRewardsStore } from '@/store/useRewardsStore';
 
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -9,6 +9,7 @@ import { yellowStar } from '@/utils/assets/imgDatabaseCloudinary';
 import { IconTrophy } from '@/components/ui/IconTrophy/IconTrophy';
 import CouponCard from './CouponCard';
 import ManualCouponInput from './ManualCouponInput';
+import { AdminDiscountsResponse, DiscountUser, UserRole } from '@/types/discounts/adminDiscounts';
 
 interface IProps {
   balance: number;
@@ -19,47 +20,11 @@ interface IProps {
 export default function Coupons({ balance, isVerified, receivingCoin }: IProps) {
   const {
     couponInstance,
-    loading,
-    setData,
-    setLoading,
-    setError,
-    calculateCouponInstance,
-    markUsed,
-    // resetUsed,
+    loading
   } = useRewardsStore();
 
   const { data: session } = useSession();
   const userVerification = session?.user.userVerification;
-
-  useEffect(() => {
-    const mockStars = 4; // 5
-    const mockQuantity = 500; // 500
-
-    setLoading(true);
-    setTimeout(() => {
-      // resetUsed();
-      setData(mockStars, mockQuantity);
-
-      markUsed(3); // Uso 3 USD
-      markUsed(5); // Uso 5 USD
-
-      // calculateCouponInstance(false);
-      calculateCouponInstance(isVerified);
-      setLoading(false);
-    }, 100);
-  }, [setData, setLoading, calculateCouponInstance, isVerified, session, userVerification, markUsed]);
-
-  const handleRedeem = (amount: 3 | 5 | 'BOTH') => {
-    if (amount === 'BOTH') {
-      markUsed(3);
-      markUsed(5);
-    } else {
-      markUsed(amount);
-    }
-    setTimeout(() => {
-      calculateCouponInstance(isVerified);
-    }, 50);
-  };
 
   if (loading) {
     return (
@@ -111,10 +76,10 @@ export default function Coupons({ balance, isVerified, receivingCoin }: IProps) 
             </div>
           </div>
         )}
-        {couponInstance === 'THREE' && <CouponCard label="+3 USD" amount={3} onRedeem={() => handleRedeem(3)} />}
-        {couponInstance === 'FIVE' && <CouponCard label="+5 USD" amount={5} onRedeem={() => handleRedeem(5)} />}
+        {couponInstance === 'THREE' && <CouponCard label="+3 USD" amount={3} /* onRedeem={() => handleRedeem(3)} */ />}
+        {couponInstance === 'FIVE' && <CouponCard label="+5 USD" amount={5} /* onRedeem={() => handleRedeem(5)} */ />}
         {couponInstance === 'THREE_FIVE' && (
-          <CouponCard label="+3USD +5USD" amount={8} onRedeem={() => handleRedeem('BOTH')} />
+          <CouponCard label="+3USD +5USD" amount={8} /* onRedeem={() => handleRedeem('BOTH')} */ />
         )}
         {couponInstance === 'MANUAL' && <ManualCouponInput />}
       </div>
