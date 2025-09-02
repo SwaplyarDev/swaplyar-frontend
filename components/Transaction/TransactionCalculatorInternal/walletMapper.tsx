@@ -76,6 +76,7 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
           cbu: cbuValue,
           alias: aliasValue,
           taxId: detail.document_value,
+          bankName: detail.bankName,
         };
         break;
     }
@@ -93,6 +94,7 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
       alias: mappedWallet.alias,
       walletAddress: mappedWallet.walletAddress,
       network: mappedWallet.network,
+      bankName: mappedWallet.bankName,
     };
   });
 

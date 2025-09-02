@@ -11,6 +11,7 @@ interface Wallet {
   logo: string;
   logoDark?: string;
   cbu?: string;
+  bankName?: string;
   alias?: string;
   taxId?: string;
   pixKeyType?: string;
