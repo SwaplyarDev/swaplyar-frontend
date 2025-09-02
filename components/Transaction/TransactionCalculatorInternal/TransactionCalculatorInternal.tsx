@@ -10,7 +10,7 @@ import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 
 // Store
 import { getExchangeRateStore } from '@/store/exchangeRateStore';
-import { useRewardsStore } from '@/store/useRewardsStore';
+import { CouponInstance, useRewardsStore } from '@/store/useRewardsStore';
 import useWalletStore from '@/store/useWalletStore';
 
 // Utils
@@ -30,13 +30,13 @@ import { calculateSendAmountFromReceive } from '@/utils/calculateSendAmountFromR
 import { calculateReceiveAmountWithCoupon } from '@/utils/calculateReceiveAmountWithCoupon';
 import { AdminDiscount, AdminDiscountsResponse, UserStarsAndAmount } from '@/types/discounts/adminDiscounts';
 
-const allowedCouponInstances = ['THREE', 'FIVE', 'THREE_FIVE', 'TEN', 'MANUAL'];
+const allowedCouponInstances: CouponInstance[] = ['THREE', 'FIVE', 'TEN', 'MANUAL'];
 
 export default function InternalTransactionCalculator({ discounts, stars, errors } : { discounts: AdminDiscountsResponse | null; stars: UserStarsAndAmount; errors: string[] }) {
 
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
   const { startUpdatingRates, stopUpdatingRates, rates } = getExchangeRateStore();
-  const { couponInstance, setData, setCouponInstanceByAmount } = useRewardsStore();
+  const { couponInstance, setData, setCouponInstanceByAmount, addDiscountId, resetDiscounts } = useRewardsStore();
   const { selectedWallet, setSelectedWallet, clearSelectedWallet } = useWalletStore();
   const { activeSelect } = useSystemStore();
   const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } = useSystemSelection();
@@ -48,7 +48,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
   
   const couponUsdAmount = useRef(0);
   const shouldApplyCoupon = useRef(false);
-  const couponInstanceForCalc = useRef<'THREE' | 'FIVE' | 'THREE_FIVE' | 'TEN' | 'MANUAL' | null>(null);
+  const couponInstanceForCalc = useRef<CouponInstance | null>(null);
   const receiveAmountWithCoupon = useRef(0);
   const receiveAmountInputValue = useRef('');
 
@@ -71,22 +71,30 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
     return () => stopUpdatingRates();
   }, [selectedSendingSystem, selectedReceivingSystem, startUpdatingRates, stopUpdatingRates]);
 
+  useEffect(() => {
+      resetDiscounts();
+  }, []);
+
   // Calcula el couponUsdAmount y el couponInstance según los descuentos obtenidos por parametro
   useEffect(() => {
     if (discounts && discounts.data) {
       discounts.data.map((discount: AdminDiscount) => {
         if (discount.discountCode.value != 10 && couponUsdAmount.current < 10) {
           couponUsdAmount.current = couponUsdAmount.current + discount.discountCode.value;
+          addDiscountId(discount.id);
         }else {
           couponUsdAmount.current = 10;
+          resetDiscounts();
+          addDiscountId(discount.id);
         }
       });
     }
-
+    
     if (couponUsdAmount.current === 3) setCouponInstanceByAmount(3);
     else if (couponUsdAmount.current === 5) setCouponInstanceByAmount(5);
     else if (couponUsdAmount.current === 8) setCouponInstanceByAmount(8);
     else if (couponUsdAmount.current === 10) setCouponInstanceByAmount(10);
+    else setCouponInstanceByAmount(0);
     
     setData(stars.data.stars, sendAmountNum);
   }, [discounts, stars]);
@@ -94,7 +102,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
   shouldApplyCoupon.current = sendAmountNum > 0 && couponUsdAmount.current > 0;
 
   // Determina el couponInstance a utilizar en el cálculo
-  couponInstanceForCalc.current = allowedCouponInstances.includes(couponInstance as string)
+  couponInstanceForCalc.current = allowedCouponInstances.includes(couponInstance as CouponInstance)
     ? (couponInstance as 'THREE' | 'FIVE' | 'THREE_FIVE' | 'TEN' | 'MANUAL')
     : null;
   
