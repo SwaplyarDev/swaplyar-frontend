@@ -51,7 +51,6 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
           walletAddress: detail.wallet,
           network: detail.network,
         };
-
         break;
 
       case 'pix':
@@ -64,12 +63,11 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
           pixKeyValue: detail.pix_value,
           taxId: detail.cpf,
         };
-
         break;
+
       case 'bank':
         const cbuValue = detail.send_method_key === 'CBU' ? detail.send_method_value : undefined;
         const aliasValue = detail.send_method_key === 'ALIAS' ? detail.send_method_value : undefined;
-
         mappedWallet = {
           id: detail.account_id,
           type: 'bank',
@@ -79,7 +77,6 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
           alias: aliasValue,
           taxId: detail.document_value,
         };
-
         break;
     }
 
