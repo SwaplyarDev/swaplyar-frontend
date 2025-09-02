@@ -34,6 +34,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   const formValues = useWatch({ control });
 
   useEffect(() => {
+    console.log('🕵️‍♂️ DEBUG StepTwo: Billetera recibida:', selectedWallet);
     const {
       receiver_first_name,
       receiver_last_name,
@@ -119,6 +120,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
         case 'pix':
           setValue('pixId', selectedWallet.pixKeyType || '');
           setValue('pixKey', selectedWallet.pixKeyValue || '');
+          setValue('individual_tax_id', selectedWallet.taxId || ''); // <-- CORREGIDO
           break;
 
         case 'wise_usd':

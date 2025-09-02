@@ -51,6 +51,7 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
           walletAddress: detail.wallet,
           network: detail.network,
         };
+
         break;
 
       case 'pix':
@@ -59,18 +60,26 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
           type: 'pix',
           fullName: account.accountName,
           email: detail.pix_value,
+          pixKeyType: detail.pix_key,
+          pixKeyValue: detail.pix_value,
+          taxId: detail.cpf,
         };
+
         break;
       case 'bank':
+        const cbuValue = detail.send_method_key === 'CBU' ? detail.send_method_value : undefined;
+        const aliasValue = detail.send_method_key === 'ALIAS' ? detail.send_method_value : undefined;
+
         mappedWallet = {
           id: detail.account_id,
           type: 'bank',
-          fullName: detail.fullName,
-          cbu: detail.cbu,
-          alias: detail.alias,
-          taxId: detail.tax_id,
-          bankName: detail.bank_name,
+          label: account.accountName,
+          fullName: account.accountName,
+          cbu: cbuValue,
+          alias: aliasValue,
+          taxId: detail.document_value,
         };
+
         break;
     }
 
@@ -80,6 +89,13 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
       fullName: mappedWallet.fullName || account.accountName,
       email: mappedWallet.email || 'N/A',
       logo: '',
+      pixKeyType: mappedWallet.pixKeyType,
+      pixKeyValue: mappedWallet.pixKeyValue,
+      taxId: mappedWallet.taxId,
+      cbu: mappedWallet.cbu,
+      alias: mappedWallet.alias,
+      walletAddress: mappedWallet.walletAddress,
+      network: mappedWallet.network,
     };
   });
 
