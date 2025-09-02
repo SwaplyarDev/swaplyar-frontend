@@ -20,9 +20,12 @@ import useChronometerState from '@/store/chronometerStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import ReactDOMServer from 'react-dom/server';
 import { useSession } from 'next-auth/react';
+import { useRewardsStore } from '@/store/useRewardsStore';
+import { putDiscountsStatus } from '@/actions/Discounts/discounts.action';
 
 const StepperContainer = () => {
-  const { formData, activeStep, completedSteps, setActiveStep, updateFormData, submitAllData, resetToDefault } = useStepperStore();
+  const { formData, activeStep, completedSteps, setActiveStep, updateFormData, submitAllData, resetToDefault } = useStepperStore();  
+  const { couponInstance, markUsed, discounts_ids } = useRewardsStore();
   const { data: session } = useSession();
   const [blockAll, setBlockAll] = useState(false);
   const { isStopped, setStop } = useChronometerState();
@@ -68,8 +71,27 @@ const StepperContainer = () => {
   ];
 
   const handleStepClick = (index: number) => {
+    console.log("couponInstance", discounts_ids);
     if (completedSteps[index] || index === activeStep) {
       setActiveStep(index);
+    }
+  };
+
+  const handleMarkCouponUsed = async (coupon_id: string[], uuid_transacción: string) => {
+    if(couponInstance === 'NONE' || session?.accessToken === undefined || !uuid_transacción) return;
+
+    try {
+      if(couponInstance === 'THREE_FIVE'){
+        const result1 = await putDiscountsStatus(session?.accessToken, coupon_id[0], uuid_transacción);
+        console.log("result1", result1);
+        const result2 = await putDiscountsStatus(session?.accessToken, coupon_id[1], uuid_transacción);
+        console.log("result2", result2);
+        return { result1, result2 };
+      } else {
+        return await putDiscountsStatus(session?.accessToken, coupon_id[0], uuid_transacción);
+      }
+    } catch (error) {
+      console.error('Error marking coupon as used:', error);
     }
   };
 
@@ -152,12 +174,14 @@ const StepperContainer = () => {
       const isSuccess = await submitAllData(selectedSendingSystem, selectedReceivingSystem);
 
       if (isSuccess) {
+        await handleMarkCouponUsed(discounts_ids, isSuccess.id)
         Swal.fire({
           icon: 'success',
           background: '#ffffff00',
           showConfirmButton: false,
           timer: 1000,
         });
+        markUsed(couponInstance);
         setBlockAll(true);
         setCorrectSend(true);
         setErrorSend(false);
