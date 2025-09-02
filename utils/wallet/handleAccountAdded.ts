@@ -1,5 +1,6 @@
 import { createWalletAccount, getMyWalletAccounts } from '@/actions/virtualWalletAccount/virtualWallets.action';
 import { mapWalletFromApi } from '@/utils/wallet/mapWalletFromApi';
+import { detectarTipoPixKey, getTaxIdentificationType, getTransferIdentificationType } from '../validationUtils';
 
 export const createHandleAccountAdd = ({
   walletType,
@@ -59,27 +60,31 @@ export const createHandleAccountAdd = ({
       const payload: any = { userAccValues: {} };
 
       switch (normalizedWalletType) {
-        case 'pix':
+          case 'pix': {
+          const pixKey = detectarTipoPixKey(formData.pix_value || ''); 
           payload.userAccValues = {
             accountType: 'pix',
             accountName: formData.accountName || '',
             currency: formData.currency || 'BRL',
             cpf: formData.cpf || '',
             pix_value: formData.pix_value || '',
-            pix_key: formData.pix_key || '',
+            pix_key: pixKey || '', 
           };
           break;
+        }
 
         case 'bank':
+          const documentType = getTaxIdentificationType(formData.document_value || '');
+          const sendMethodType = getTransferIdentificationType(formData.send_method_value || '');
           payload.userAccValues = {
             accountType: 'bank',
             accountName: formData.accountName || '',
             currency: formData.currency || 'ARS',
             bankName: formData.bankName || '',
-            send_method_key: formData.send_method_key || '',
-            send_method_value: formData.send_method_value || '',
-            document_type: formData.document_type || '',
+            document_type: documentType || '',
             document_value: formData.document_value || '',
+            send_method_key: sendMethodType || '',
+            send_method_value: formData.send_method_value || '',
           };
           break;
 

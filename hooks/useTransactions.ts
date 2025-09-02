@@ -16,12 +16,12 @@ export function useTransactions(initialPage = 1) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(initialPage);
-  const [perPage, setPerPage] = useState(6);
+  const [perPage, setPerPage] = useState(10);
   const [pagination, setPagination] = useState<Pagination>({
     currentPage: 1,
     totalPages: 1,
     totalItems: 0,
-    perPage: 6,
+    perPage: 10,
   });
 
   const [refreshKey, setRefreshKey] = useState(0);
@@ -37,7 +37,7 @@ export function useTransactions(initialPage = 1) {
         if (!token) throw new Error('Token no disponible');
 
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/transactions?page=${currentPage}&perPage=${perPage}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/transactions?page=${currentPage}&pageSize=${perPage}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -62,11 +62,12 @@ export function useTransactions(initialPage = 1) {
 
         setTransactions(data.data || []);
         setPagination({
-          currentPage: data.meta.page,
-          totalPages: data.meta.totalPages,
-          totalItems: data.meta.totalTransactions,
-          perPage: data.meta.perPage,
+          currentPage: data.pagination.page,
+          totalPages: data.pagination.totalPages,
+          totalItems: data.pagination.totalItems,
+          perPage: data.pagination.pageSize,
         });
+
 
         setError(null);
       } catch (err: any) {

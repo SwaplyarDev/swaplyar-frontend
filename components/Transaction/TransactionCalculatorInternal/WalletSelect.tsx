@@ -15,19 +15,24 @@ import {
   BankDarkImg,
   BankImg,
   PaypalImg,
+  WiseEurImg,
+  WiseEurDarkImg,
+  PayoneerEurImg,
+  PayoneerEurDarkImg,
 } from '@/utils/assets/imgDatabaseCloudinary';
+import { Wallet } from '@/store/useWalletStore';
 
-interface Wallet {
+/* interface Wallet {
   id: string;
   type: string;
   fullName: string;
   email: string;
   logo: string;
   logoDark?: string;
-}
+} */
 
 interface WalletSelectProps {
-  wallets: Wallet[];
+  filteredWallets: Wallet[];
   selectedWalletId: string | null;
   onChange: (walletId: string) => void;
 }
@@ -39,12 +44,22 @@ const getWalletLogos = (type: string) => {
         logo: PaypalImg,
         logoDark: PaypalDarkImg,
       };
-    case 'payoneer':
+    case 'payoneer_eur':
+      return {
+        logo: PayoneerEurImg,
+        logoDark: PayoneerEurDarkImg,
+      };
+    case 'payoneer_usd':
       return {
         logo: PayoneerUsdImg,
         logoDark: PayoneerUsdDarkImg,
       };
-    case 'wise':
+    case 'wise_eur':
+      return {
+        logo: WiseEurImg,
+        logoDark: WiseEurDarkImg,
+      };
+    case 'wise_usd':
       return {
         logo: WiseUsdImg,
         logoDark: WiseUsdDarkImg,
@@ -72,7 +87,7 @@ const getWalletLogos = (type: string) => {
   }
 };
 
-export default function WalletSelect({ wallets, selectedWalletId, onChange }: WalletSelectProps) {
+export default function WalletSelect({ filteredWallets, selectedWalletId, onChange }: WalletSelectProps) {
   const { isDark } = useDarkTheme();
 
   return (
@@ -83,7 +98,7 @@ export default function WalletSelect({ wallets, selectedWalletId, onChange }: Wa
         </SelectTrigger>
 
         <SelectContent className="bg-[#FFFFFB] dark:bg-[#4B4B4B]">
-          {wallets.map((wallet) => {
+          {filteredWallets.map((wallet) => {
             const { logo, logoDark } = getWalletLogos(wallet.type);
 
             return (

@@ -63,7 +63,6 @@ export const RegisterForm = () => {
           lastName: lastName,
           email: email,
           termsAccepted: termsConditions,
-          role: 'user',
         }),
       });
       if (!response.ok) {
@@ -249,7 +248,7 @@ export const RegisterForm = () => {
                   : 'buttonSecond',
               'relative m-1 min-h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-titleFont font-semibold text-darkText dark:border-darkText dark:bg-darkText',
             )}
-            disabled={loading || !watch('email')} // Desactivar el botón si está cargando
+            disabled={loading || !watch('email')}
           >
             Crear cuenta
           </button>

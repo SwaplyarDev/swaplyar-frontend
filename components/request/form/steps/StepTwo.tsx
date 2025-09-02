@@ -98,6 +98,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     formData.stepOne?.own_account,
     formData.stepOne?.first_name,
     formData.stepOne?.last_name,
+    formData.stepOne?.email, // Añadimos la dependencia faltante
   ]);
 
   const [loading, setLoading] = useState(false);
