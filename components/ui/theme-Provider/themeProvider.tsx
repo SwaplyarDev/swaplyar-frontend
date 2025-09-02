@@ -6,6 +6,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 interface ThemeContextProps {
   isDark: boolean;
   changeTheme: () => void;
+  mounted: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
@@ -20,6 +21,7 @@ export const useDarkTheme = () => {
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
   const [isDark, setIsDark] = useState(false);
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     const currentTheme = localStorage.getItem('theme');
@@ -30,6 +32,8 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
       const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       setIsDark(systemPrefersDark);
     }
+
+    setMounted(true);
   }, []);
 
   const changeTheme = () => {
@@ -39,5 +43,5 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('theme', newTheme);
   };
 
-  return <ThemeContext.Provider value={{ isDark, changeTheme }}>{children}</ThemeContext.Provider>;
+  return <ThemeContext.Provider value={{ isDark, changeTheme, mounted }}>{children}</ThemeContext.Provider>;
 }

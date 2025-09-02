@@ -18,8 +18,10 @@ interface Wallet {
   id: string;
   type: string;
   name: string;
-  identifier: string;
+  identifier?: string; // Hacemos que identifier sea opcional
   details: any[];
+  currency?: string;
+  accountName?: string;
 }
 
 export default function VirtualWallets() {
