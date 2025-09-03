@@ -34,7 +34,6 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   const formValues = useWatch({ control });
 
   useEffect(() => {
-    console.log('🕵️‍♂️ DEBUG StepTwo: Billetera recibida:', selectedWallet);
     const {
       receiver_first_name,
       receiver_last_name,
@@ -97,30 +96,35 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
         const nameParts = selectedWallet.fullName.split(' ');
         const firstName = nameParts[0] || '';
         const lastName = nameParts.slice(1).join(' ') || '';
-        setValue('receiver_first_name', firstName);
-        setValue('receiver_last_name', lastName);
+        setValue('receiver_first_name', firstName, { shouldValidate: true });
+        setValue('receiver_last_name', lastName, { shouldValidate: true });
       }
       if (selectedWallet.email) {
-        setValue('bank_email', selectedWallet.email);
-        setValue('re_enter_bank_email', selectedWallet.email);
+        setValue('bank_email', selectedWallet.email, { shouldValidate: true });
+        setValue('re_enter_bank_email', selectedWallet.email, { shouldValidate: true });
       }
       switch (selectedWallet.type) {
         case 'bank':
-          setValue('transfer_identification', selectedWallet.cbu || selectedWallet.alias || '');
-          setValue('re_transfer_identification', selectedWallet.cbu || selectedWallet.alias || '');
-          setValue('tax_identification', selectedWallet.taxId || '');
+          setValue('transfer_identification', selectedWallet.cbu || selectedWallet.alias || '', {
+            shouldValidate: true,
+          });
+          setValue('re_transfer_identification', selectedWallet.cbu || selectedWallet.alias || '', {
+            shouldValidate: true,
+          });
+          setValue('tax_identification', selectedWallet.taxId || '', { shouldValidate: true });
+          setValue('name_of_bank', selectedWallet.bankName || '', { shouldValidate: true });
           break;
 
         case 'tether':
-          setValue('usdt_direction', selectedWallet.walletAddress || '');
-          setValue('re_enter_usdt_direction', selectedWallet.walletAddress || '');
-          setValue('red_selection', selectedWallet.network || '');
+          setValue('usdt_direction', selectedWallet.walletAddress || '', { shouldValidate: true });
+          setValue('re_enter_usdt_direction', selectedWallet.walletAddress || '', { shouldValidate: true });
+          setValue('red_selection', selectedWallet.network || '', { shouldValidate: true });
           break;
 
         case 'pix':
-          setValue('pixId', selectedWallet.pixKeyType || '');
-          setValue('pixKey', selectedWallet.pixKeyValue || '');
-          setValue('individual_tax_id', selectedWallet.taxId || ''); // <-- CORREGIDO
+          setValue('pixId', selectedWallet.pixKeyType || '', { shouldValidate: true });
+          setValue('pixKey', selectedWallet.pixKeyValue || '', { shouldValidate: true });
+          setValue('individual_tax_id', selectedWallet.taxId || '', { shouldValidate: true });
           break;
 
         case 'wise_usd':

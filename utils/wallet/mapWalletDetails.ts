@@ -31,7 +31,7 @@ export function mapWalletDetails(wallet: { type: string; details: WalletDetail[]
   return [
     { label: safe(detail.send_method_key), value: safe(detail.send_method_value) },
     { label: safe(detail.document_type), value: safe(detail.document_value) },
-    { label: 'Banco', value: safe(detail.userAccount.bankName) },
+    { label: 'Banco', value: safe(detail.bankName) },
     { label: 'Titular', value: safe(detail.userAccount.accountName) },
   ];
 

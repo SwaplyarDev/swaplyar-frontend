@@ -170,22 +170,25 @@ export async function getUserWalletAccountById(userId: string, accountId: string
   }
 }
 
-export async function deleteWalletAccount1(accountId: string, token: string) {
-  const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/users/accounts`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ bankAccountId: accountId }), // 👈 importante
-  });
+export async function deleteWalletAccount(accountId: string, token: string) {
+  const API_URL = 'http://localhost:3001/api/v2/users/accounts';
 
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.message || 'Error al eliminar cuenta');
+  const response = await fetch(API_URL, {
+    method: 'DELETE', 
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`, 
+    },
+    body: JSON.stringify({
+      bankAccountId: accountId,
+    }),
+  });
+  if (!response.ok) {
+    const errorData = await response.json(); 
+    throw new Error(errorData.message || 'Error al eliminar la cuenta');
   }
 
-  return data;
+  return { success: true };
 }
 
 export async function getUserWalletAccountByUserId(userId: string, token: string) {
