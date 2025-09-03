@@ -30,10 +30,8 @@ import { calculateSendAmountFromReceive } from '@/utils/calculateSendAmountFromR
 import { calculateReceiveAmountWithCoupon } from '@/utils/calculateReceiveAmountWithCoupon';
 import { AdminDiscount, AdminDiscountsResponse, UserStarsAndAmount } from '@/types/discounts/adminDiscounts';
 import { useSession } from 'next-auth/react';
-import { se } from 'date-fns/locale';
 
-
-const allowedCouponInstances: CouponInstance[] = ['THREE', 'FIVE', 'TEN', 'MANUAL'];
+const allowedCouponInstances: CouponInstance[] = ['THREE', 'FIVE', 'THREE_FIVE', 'TEN', 'MANUAL'];
 
 export default function InternalTransactionCalculator({ discounts, stars, errors } : { discounts: AdminDiscountsResponse | null; stars: UserStarsAndAmount; errors: string[] }) {
 
@@ -86,11 +84,13 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
 
   useEffect(() => {
       resetDiscounts();
-  }, [resetDiscounts]);
+  }, []);
 
   // Calcula el couponUsdAmount y el couponInstance según los descuentos obtenidos por parametro
   useEffect(() => {
     if (discounts && discounts.data) {
+      resetDiscounts();
+      couponUsdAmount.current = 0;
       discounts.data.map((discount: AdminDiscount) => {
         if (discount.discountCode.value != 10 && couponUsdAmount.current < 10) {
           couponUsdAmount.current = couponUsdAmount.current + discount.discountCode.value;
@@ -110,7 +110,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
     else setCouponInstanceByAmount(0);
     
     setData(stars.data.stars, sendAmountNum);
-  }, [discounts, stars, resetDiscounts, addDiscountId, setCouponInstanceByAmount, setData, setFinalReceiveAmount, sendAmountNum]);
+  }, [discounts, stars]);
 
   shouldApplyCoupon.current = sendAmountNum > 0 && couponUsdAmount.current > 0;
 
@@ -172,6 +172,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
     }
     return userWallets.filter((wallet) => wallet.type === selectedReceivingSystem.id);
   }, [selectedReceivingSystem, userWallets]);
+  
   useEffect(() => {
     if (filteredWallets.length === 1) {
       setSelectedWallet(filteredWallets[0]);
