@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type CouponInstance = 'NONE' | 'THREE' | 'FIVE' | 'THREE_FIVE' | 'TEN' | 'MANUAL';
+export type CouponInstance = 'NONE' | 'THREE' | 'FIVE' | 'TEN' | 'MANUAL';
 
 interface RewardsStore {
   stars: number;
@@ -9,6 +9,7 @@ interface RewardsStore {
 
   used3USD: boolean;
   used5USD: boolean;
+  used10USD: boolean;
   usedManual: boolean;
 
   couponInstance: CouponInstance;
@@ -35,6 +36,7 @@ export const useRewardsStore = create<RewardsStore>((set, get) => ({
 
   used3USD: false,
   used5USD: false,
+  used10USD: false,
   usedManual: false,
 
   couponInstance: 'NONE',
@@ -44,7 +46,6 @@ export const useRewardsStore = create<RewardsStore>((set, get) => ({
   setCouponInstanceByAmount: (couponAmount: number) => {
     if (couponAmount === 3) set({ couponInstance: 'THREE' });
     else if (couponAmount === 5) set({ couponInstance: 'FIVE' });
-    else if (couponAmount === 8) set({ couponInstance: 'THREE_FIVE' });
     else if (couponAmount === 10) set({ couponInstance: 'TEN' });
     else set({ couponInstance: 'MANUAL' });
   },
@@ -58,6 +59,7 @@ export const useRewardsStore = create<RewardsStore>((set, get) => ({
     set({
       used3USD: false,
       used5USD: false,
+      used10USD: false,
     }),
 
   setData: (stars, quantity) => {
@@ -67,7 +69,6 @@ export const useRewardsStore = create<RewardsStore>((set, get) => ({
   markUsed: (couponInstance: CouponInstance) => {
     if (couponInstance === 'THREE') set({ used3USD: true });
     if (couponInstance === 'FIVE') set({ used5USD: true });
-    if (couponInstance === 'THREE_FIVE') set({ used3USD: true, used5USD: true });
     if (couponInstance === 'TEN') set({ used3USD: true, used5USD: true, usedManual: true });
   },
 
@@ -86,9 +87,7 @@ export const useRewardsStore = create<RewardsStore>((set, get) => ({
     const canShow3 = !used3USD && stars >= 0;
     const canShow5 = !used5USD && isVerified && stars >= 0;
 
-    if (canShow3 && canShow5) {
-      set({ couponInstance: 'THREE_FIVE' });
-    } else if (canShow3) {
+    if (canShow3) {
       set({ couponInstance: 'THREE' });
     } else if (canShow5) {
       set({ couponInstance: 'FIVE' });
