@@ -46,10 +46,10 @@ export default function InternalTransactionCalculator() {
   const { data: session } = useSession();
   const token = session?.accessToken;
   useEffect(() => {
-    if (token && userWallets.length === 0) {
+    if (token) {
       fetchAndSetWallets(token);
     }
-  }, [token, userWallets.length, fetchAndSetWallets]);
+  }, [token, fetchAndSetWallets]);
 
   useEffect(() => {
     if (selectedSendingSystem && selectedReceivingSystem) {

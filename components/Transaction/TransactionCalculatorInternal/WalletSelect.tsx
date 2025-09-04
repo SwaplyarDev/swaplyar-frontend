@@ -26,6 +26,7 @@ interface Wallet {
   type: string;
   fullName: string;
   email: string;
+  bankName?: string;
   logo: string;
   logoDark?: string;
   network: string;
@@ -120,8 +121,10 @@ export default function WalletSelect({ wallets, selectedWalletId, onChange }: Wa
                     <span className="truncate text-sm font-medium">{wallet.fullName}</span>
                   </div>
                   <div className="hidden flex-col items-end justify-end text-right md:flex">
-                    {wallet.type !== 'tether' && <span className="truncate text-sm font-medium">{wallet.email}</span>}
-
+                    {!['bank', 'tether'].includes(wallet.type) && (
+                      <span className="truncate text-sm font-medium">{wallet.email}</span>
+                    )}
+                    {wallet.type === 'bank' && <span className="truncate text-sm font-medium">{wallet.bankName}</span>}
                     {wallet.type === 'tether' && wallet.network && <span>{wallet.network.toUpperCase()}</span>}
                   </div>
                 </div>

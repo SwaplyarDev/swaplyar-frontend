@@ -42,7 +42,6 @@ export default async function RequestPage() {
             accessToken={session?.accessToken ?? ''}
           />
         </Suspense>
-        {/* // TODO: Se le deben pasar los errores (si existen) */}
         <TransactionCalculatorInternal />
       </section>
     </div>

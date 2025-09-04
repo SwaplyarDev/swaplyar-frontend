@@ -11,7 +11,7 @@ export interface Wallet {
 export const mapWalletFromApi = (walletApi: any): Wallet => {
   const detail = walletApi.details?.[0] || {};
   return {
-    id: detail.account_id || detail.userAccount?.account_id,
+    id: detail.userAccount.account_id,
     type: walletApi.payment_type, 
     name: detail.type || walletApi.accountName, 
     currency: detail.currency || '',
