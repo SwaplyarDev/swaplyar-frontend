@@ -1,30 +1,23 @@
 'use client';
 
-import { useEffect } from 'react';
-import { CouponInstance, useRewardsStore } from '@/store/useRewardsStore';
+import { useRewardsStore } from '@/store/useRewardsStore';
 
-import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { yellowStar } from '@/utils/assets/imgDatabaseCloudinary';
 import { IconTrophy } from '@/components/ui/IconTrophy/IconTrophy';
 import CouponCard from './CouponCard';
 import ManualCouponInput from './ManualCouponInput';
-import { AdminDiscountsResponse, DiscountUser, UserRole } from '@/types/discounts/adminDiscounts';
 
 interface IProps {
   balance: number;
-  isVerified: boolean;
   receivingCoin?: string;
 }
 
-export default function Coupons({ balance, isVerified, receivingCoin }: IProps) {
+export default function Coupons({ balance, receivingCoin }: IProps) {
   const {
     couponInstance,
     loading
   } = useRewardsStore();
-
-  const { data: session } = useSession();
-  const userVerification = session?.user.userVerification;
 
   if (loading) {
     return (
@@ -76,11 +69,8 @@ export default function Coupons({ balance, isVerified, receivingCoin }: IProps) 
             </div>
           </div>
         )}
-        {couponInstance === 'THREE' && <CouponCard label="+3 USD" amount={3} /* onRedeem={() => handleRedeem(3)} */ />}
-        {couponInstance === 'FIVE' && <CouponCard label="+5 USD" amount={5} /* onRedeem={() => handleRedeem(5)} */ />}
-        {couponInstance === 'THREE_FIVE' && (
-          <CouponCard label="+3USD +5USD" amount={8} /* onRedeem={() => handleRedeem('BOTH')} */ />
-        )}
+        {couponInstance === 'THREE' && <CouponCard label="+3 USD" amount={3} /> }
+        {couponInstance === 'FIVE' && <CouponCard label="+5 USD" amount={5} />}
         {couponInstance === 'MANUAL' && <ManualCouponInput />}
       </div>
     </div>
