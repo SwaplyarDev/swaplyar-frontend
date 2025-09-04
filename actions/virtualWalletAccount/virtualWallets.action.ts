@@ -1,5 +1,5 @@
 'use server';
-
+import { revalidatePath } from 'next/cache';
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export async function createWalletAccount(data: any, token: string) {
@@ -32,6 +32,8 @@ export async function createWalletAccount(data: any, token: string) {
 
     if (contentType && contentType.includes('application/json')) {
       const savedAccount = await res.json();
+      revalidatePath('/es/auth/solicitud');
+      
       return savedAccount;
     } else {
       throw new Error('Respuesta inesperada del servidor');
@@ -187,7 +189,8 @@ export async function deleteWalletAccount(accountId: string, token: string) {
     const errorData = await response.json(); 
     throw new Error(errorData.message || 'Error al eliminar la cuenta');
   }
-
+  revalidatePath('/dashboard/cuentas')
+  revalidatePath('/es/auth/solicitud');
   return { success: true };
 }
 

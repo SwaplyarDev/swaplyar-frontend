@@ -84,8 +84,9 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
     return {
       id: mappedWallet.id || '',
       type: mappedWallet.type || 'default',
+      label: mappedWallet.label || account.accountName,
       fullName: mappedWallet.fullName || account.accountName,
-      email: mappedWallet.email || 'N/A',
+      email: mappedWallet.email,
       logo: '',
       pixKeyType: mappedWallet.pixKeyType,
       pixKeyValue: mappedWallet.pixKeyValue,
@@ -95,7 +96,7 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
       walletAddress: mappedWallet.walletAddress,
       network: mappedWallet.network,
       bankName: mappedWallet.bankName,
-    };
+    } as Wallet;
   });
 
   return wallets.filter((wallet) => wallet.id);

@@ -21,7 +21,7 @@ export interface StepTwoData {
   re_enter_bank_email: string;
   usdt_direction: string;
   re_enter_usdt_direction: string;
-  red_selection: RedType | undefined;
+  red_selection: RedType | string
   recieveAmountRed: string;
   pixId: string;
   pixKey: string;
