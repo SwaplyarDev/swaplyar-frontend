@@ -59,7 +59,7 @@ const StepperContainer = () => {
       autoCompleteInfo();
     }
 
-  },[session, formData.stepTwo, updateFormData]);
+  },[session]);
 
   const steps = [
   { title: 'Mis Datos', component: <StepOne blockAll={blockAll} /> },
@@ -71,7 +71,6 @@ const StepperContainer = () => {
   ];
 
   const handleStepClick = (index: number) => {
-    console.log("couponInstance", discounts_ids);
     if (completedSteps[index] || index === activeStep) {
       setActiveStep(index);
     }
@@ -81,15 +80,9 @@ const StepperContainer = () => {
     if(couponInstance === 'NONE' || session?.accessToken === undefined || !uuid_transacción) return;
 
     try {
-      if(couponInstance === 'THREE_FIVE'){
-        const result1 = await putDiscountsStatus(session?.accessToken, coupon_id[0], uuid_transacción);
-        console.log("result1", result1);
-        const result2 = await putDiscountsStatus(session?.accessToken, coupon_id[1], uuid_transacción);
-        console.log("result2", result2);
-        return { result1, result2 };
-      } else {
-        return await putDiscountsStatus(session?.accessToken, coupon_id[0], uuid_transacción);
-      }
+        const result = await putDiscountsStatus(session?.accessToken, coupon_id[0], uuid_transacción);
+        markUsed(couponInstance);
+        return [result];
     } catch (error) {
       console.error('Error marking coupon as used:', error);
     }
@@ -181,7 +174,6 @@ const StepperContainer = () => {
           showConfirmButton: false,
           timer: 1000,
         });
-        markUsed(couponInstance);
         setBlockAll(true);
         setCorrectSend(true);
         setErrorSend(false);
