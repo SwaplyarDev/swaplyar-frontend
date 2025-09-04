@@ -30,8 +30,9 @@ import { calculateSendAmountFromReceive } from '@/utils/calculateSendAmountFromR
 import { calculateReceiveAmountWithCoupon } from '@/utils/calculateReceiveAmountWithCoupon';
 import { AdminDiscount, AdminDiscountsResponse, UserStarsAndAmount } from '@/types/discounts/adminDiscounts';
 import { useSession } from 'next-auth/react';
+import { useStepperStore } from '@/store/stateStepperStore';
 
-const allowedCouponInstances: CouponInstance[] = ['THREE', 'FIVE', 'THREE_FIVE', 'TEN', 'MANUAL'];
+export const allowedCouponInstances: CouponInstance[] = ['THREE', 'FIVE', /* 'THREE_FIVE', */ 'TEN', 'MANUAL'];
 
 export default function InternalTransactionCalculator({ discounts, stars, errors } : { discounts: AdminDiscountsResponse | null; stars: UserStarsAndAmount; errors: string[] }) {
 
@@ -39,6 +40,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
   const { startUpdatingRates, stopUpdatingRates, rates } = getExchangeRateStore();
   const { couponInstance, setData, setCouponInstanceByAmount, addDiscountId, resetDiscounts } = useRewardsStore();
   const { wallets: userWallets, selectedWallet, setSelectedWallet, clearSelectedWallet, fetchAndSetWallets, isLoading } = useWalletStore();
+  const { resetToDefault } = useStepperStore();
 
   const { data: session } = useSession();
   const token = session?.accessToken;
@@ -88,24 +90,15 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
 
   // Calcula el couponUsdAmount y el couponInstance según los descuentos obtenidos por parametro
   useEffect(() => {
-    if (discounts && discounts.data) {
+    if (discounts && discounts.data && discounts.data.length > 0) {
       resetDiscounts();
       couponUsdAmount.current = 0;
-      discounts.data.map((discount: AdminDiscount) => {
-        if (discount.discountCode.value != 10 && couponUsdAmount.current < 10) {
-          couponUsdAmount.current = couponUsdAmount.current + discount.discountCode.value;
-          addDiscountId(discount.id);
-        }else {
-          couponUsdAmount.current = 10;
-          resetDiscounts();
-          addDiscountId(discount.id);
-        }
-      });
+      couponUsdAmount.current = discounts.data[0].discountCode.value;
+      addDiscountId(discounts.data[0].id);
     }
     
     if (couponUsdAmount.current === 3) setCouponInstanceByAmount(3);
     else if (couponUsdAmount.current === 5) setCouponInstanceByAmount(5);
-    else if (couponUsdAmount.current === 8) setCouponInstanceByAmount(8);
     else if (couponUsdAmount.current === 10) setCouponInstanceByAmount(10);
     else setCouponInstanceByAmount(0);
     
@@ -116,7 +109,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
 
   // Determina el couponInstance a utilizar en el cálculo
   couponInstanceForCalc.current = allowedCouponInstances.includes(couponInstance as CouponInstance)
-    ? (couponInstance as 'THREE' | 'FIVE' | 'THREE_FIVE' | 'TEN' | 'MANUAL')
+    ? (couponInstance as 'THREE' | 'FIVE' | 'TEN' | 'MANUAL')
     : null;
   
   // Calcula el receiveAmountWithCoupon y el valor a mostrar en el input de "Recibes"
@@ -145,6 +138,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
   const handleSubmit = () => {
     setIsProcessing(true);
     setFinalReceiveAmount(receiveAmountInputValue.current);
+    resetToDefault();
     setTimeout(() => {
       router.push('/es/auth/solicitud/formulario-de-solicitud');
     }, 2000);
@@ -244,7 +238,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
             <p className="font-textFont text-xs font-light xs:text-sm">Información del sistema de recepción</p>
           </SystemInfo>
 
-          <Coupons balance={receiveAmountNum} receivingCoin={selectedReceivingSystem?.coin} isVerified={true} />
+          <Coupons balance={receiveAmountNum} receivingCoin={selectedReceivingSystem?.coin}/>
         </div>
 
         <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
@@ -294,7 +288,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
             filteredWallets={filteredWallets}
             selectedWalletId={selectedWallet?.id || null}
             onChange={handleWalletChange}
-          />
+          /> 
 
           <BtnProccessPayment
             handleSubmit={handleSubmit}
