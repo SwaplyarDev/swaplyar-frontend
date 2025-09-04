@@ -55,6 +55,7 @@ export interface AccountDetails {
   wallet?: string;
   userAccount: AccountDetail;
   type: PaymentType;
+  bankName?: string;
 }
 
 export interface AccountDetail {

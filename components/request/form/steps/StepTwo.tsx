@@ -10,10 +10,9 @@ import StepTwoPaypal from './stepsTwoOptions/StepTwoPaypal';
 import StepTwoWise from './stepsTwoOptions/StepTwoWise';
 import StepTwoTether from './stepsTwoOptions/StepTwoTether';
 import StepTwoPix from './stepsTwoOptions/StepTwoPix';
-import { RedType } from '@/types/request/request';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import { StepTwoData } from '@/types/transactions/stepperStoretypes';
-
+import useWalletStore from '@/store/useWalletStore';
 
 const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   const {
@@ -26,7 +25,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     watch,
   } = useForm<StepTwoData>({ mode: 'onChange' });
   const { markStepAsCompleted, setActiveStep, formData, updateFormData, completedSteps } = useStepperStore();
-  const { selectedReceivingSystem,  } = useSystemStore();
+  const { selectedReceivingSystem } = useSystemStore();
+  const { selectedWallet } = useWalletStore();
   const { isDark } = useDarkTheme();
 
   const [initialValues, setInitialValues] = useState<StepTwoData | null>(null);
@@ -34,6 +34,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   const formValues = useWatch({ control });
 
   useEffect(() => {
+    console.log('🕵️‍♂️ DEBUG StepTwo: Billetera recibida:', selectedWallet);
     const {
       receiver_first_name,
       receiver_last_name,
@@ -91,6 +92,45 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     setValue('pixKey', pixKey);
     setValue('individual_tax_id', individual_tax_id);
 
+    if (selectedWallet) {
+      if (selectedWallet.fullName) {
+        const nameParts = selectedWallet.fullName.split(' ');
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.slice(1).join(' ') || '';
+        setValue('receiver_first_name', firstName);
+        setValue('receiver_last_name', lastName);
+      }
+      if (selectedWallet.email) {
+        setValue('bank_email', selectedWallet.email);
+        setValue('re_enter_bank_email', selectedWallet.email);
+      }
+      switch (selectedWallet.type) {
+        case 'bank':
+          setValue('transfer_identification', selectedWallet.cbu || selectedWallet.alias || '');
+          setValue('re_transfer_identification', selectedWallet.cbu || selectedWallet.alias || '');
+          setValue('tax_identification', selectedWallet.taxId || '');
+          break;
+
+        case 'tether':
+          setValue('usdt_direction', selectedWallet.walletAddress || '');
+          setValue('re_enter_usdt_direction', selectedWallet.walletAddress || '');
+          setValue('red_selection', selectedWallet.network || '');
+          break;
+
+        case 'pix':
+          setValue('pixId', selectedWallet.pixKeyType || '');
+          setValue('pixKey', selectedWallet.pixKeyValue || '');
+          setValue('individual_tax_id', selectedWallet.taxId || ''); // <-- CORREGIDO
+          break;
+
+        case 'wise_usd':
+        case 'wise_eur':
+        case 'payoneer_usd':
+        case 'payoneer_eur':
+        case 'paypal':
+          break;
+      }
+    }
     setInitialValues(newValues);
   }, [
     formData.stepTwo,
@@ -98,7 +138,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     formData.stepOne?.own_account,
     formData.stepOne?.first_name,
     formData.stepOne?.last_name,
-    formData.stepOne?.email, // Añadimos la dependencia faltante
+    formData.stepOne?.email,
+    selectedWallet,
   ]);
 
   const [loading, setLoading] = useState(false);

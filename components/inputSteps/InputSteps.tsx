@@ -22,6 +22,7 @@ interface InputStepsProps {
   className?: string;
   disabledWithoutMargin?: boolean;
   disabledLetters?: boolean;
+  readOnly?: boolean;
 }
 
 const InputSteps: React.FC<InputStepsProps> = ({
@@ -36,6 +37,7 @@ const InputSteps: React.FC<InputStepsProps> = ({
   rules,
   error,
   maxLength,
+
   value,
   disabledLetters,
   defaultValue,
@@ -43,6 +45,7 @@ const InputSteps: React.FC<InputStepsProps> = ({
   file,
   disabledWithoutMargin = false,
   className,
+  readOnly,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const errorMessage = error?.message;
@@ -87,6 +90,7 @@ const InputSteps: React.FC<InputStepsProps> = ({
         maxLength={maxLength}
         defaultValue={defaultValue}
         disabled={disabled}
+        readOnly={readOnly}
         placeholder={isFocused || watch(name) ? '' : placeholder}
         onChange={handleChange}
         onInput={disabledLetters ? handleInput : undefined}
