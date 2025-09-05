@@ -70,18 +70,14 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     };
 
     setValue(
-      'receiver_first_name',
-      formData.stepOne?.own_account === 'Si' ? formData.stepOne?.first_name : receiver_first_name,
-    );
+      'receiver_first_name', receiver_first_name);
     setValue(
-      'receiver_last_name',
-      formData.stepOne?.own_account === 'Si' ? formData.stepOne?.last_name : receiver_last_name,
-    );
-    setValue('tax_identification', formData.stepOne?.own_account === 'Si' ? tax_identification : '');
+      'receiver_last_name',receiver_last_name);
+    setValue('tax_identification', tax_identification);
     setValue('transfer_identification', transfer_identification);
     setValue('re_transfer_identification', re_transfer_identification);
     setValue('name_of_bank', name_of_bank);
-    setValue('bank_email', formData.stepOne?.own_account === 'Si' ? formData.stepOne?.email : bank_email);
+    setValue('bank_email', bank_email);
     setValue('re_enter_bank_email', re_enter_bank_email);
     setValue('usdt_direction', usdt_direction);
     setValue('re_enter_usdt_direction', re_enter_usdt_direction);
@@ -91,7 +87,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     setValue('pixKey', pixKey);
     setValue('individual_tax_id', individual_tax_id);
 
-    if (selectedWallet) {
+    if (selectedWallet && formData.stepOne?.own_account === 'Si') {
       if (selectedWallet.fullName) {
         const nameParts = selectedWallet.fullName.split(' ');
         const firstName = nameParts[0] || '';
@@ -118,7 +114,11 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
         case 'tether':
           setValue('usdt_direction', selectedWallet.walletAddress || '', { shouldValidate: true });
           setValue('re_enter_usdt_direction', selectedWallet.walletAddress || '', { shouldValidate: true });
-          setValue('red_selection', selectedWallet.network || '', { shouldValidate: true });
+          setValue('red_selection', {
+            value: selectedWallet.network || '',
+            label: selectedWallet.network || '',
+            image: <></>,
+          });
           break;
 
         case 'pix':

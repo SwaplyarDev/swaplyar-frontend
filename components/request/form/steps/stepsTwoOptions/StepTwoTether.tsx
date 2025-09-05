@@ -82,14 +82,13 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
         <div className="realative order-3 flex w-full flex-col sm-phone:order-2">
           <InputSteps
             label="Red"
-            name="red_selection"
-            id="red_selection"
+            name="red_selection.value"
+            id="red_selection.value"
             type="text"
             placeholder="Red de la billetera"
             disabled={blockAll}
             register={register}
             watch={watch}
-            readOnly
             rules={{
               required: 'La red es obligatoria',
             }}
