@@ -4,6 +4,7 @@ interface ServerErrorModalProps {
   isOpen: boolean;
   onClose: () => void;
   message?: string;
+  title?: string;
 }
 
 const ServerErrorModal: React.FC<ServerErrorModalProps> = ({
