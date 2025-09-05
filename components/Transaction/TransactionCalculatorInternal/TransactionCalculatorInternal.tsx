@@ -38,7 +38,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
 
   const { activeSelect,selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
   const { startUpdatingRates, stopUpdatingRates, rates } = getExchangeRateStore();
-  const { couponInstance, setData, setCouponInstanceByAmount, addDiscountId, resetDiscounts } = useRewardsStore();
+  const { couponInstance, setData, setCouponInstanceByAmount, addDiscountId, resetDiscounts, isUsed } = useRewardsStore();
   const { wallets: userWallets, selectedWallet, setSelectedWallet, clearSelectedWallet, fetchAndSetWallets, isLoading } = useWalletStore();
   const { resetToDefault } = useStepperStore();
 
@@ -93,14 +93,20 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
     if (discounts && discounts.data && discounts.data.length > 0) {
       resetDiscounts();
       couponUsdAmount.current = 0;
-      couponUsdAmount.current = discounts.data[0].discountCode.value;
-      addDiscountId(discounts.data[0].id);
+      let tempDiscountIds: string = '';
+      discounts.data.map((discount: AdminDiscount) => {
+        if (couponUsdAmount.current === 0) {
+          couponUsdAmount.current = discount.discountCode.value;
+          setCouponInstanceByAmount(couponUsdAmount.current);
+          tempDiscountIds = discount.id;
+        } else if (discount.discountCode.value < couponUsdAmount.current && !isUsed(discount.discountCode.value)) {
+          couponUsdAmount.current = discount.discountCode.value;
+          setCouponInstanceByAmount(couponUsdAmount.current);
+          tempDiscountIds = discount.id;
+        }
+      });
+      addDiscountId(tempDiscountIds);
     }
-    
-    if (couponUsdAmount.current === 3) setCouponInstanceByAmount(3);
-    else if (couponUsdAmount.current === 5) setCouponInstanceByAmount(5);
-    else if (couponUsdAmount.current === 10) setCouponInstanceByAmount(10);
-    else setCouponInstanceByAmount(0);
     
     setData(stars.data.stars, sendAmountNum);
   }, [discounts, stars]);

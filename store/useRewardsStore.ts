@@ -18,6 +18,7 @@ interface RewardsStore {
   setCouponInstanceByAmount: (couponAmount: number) => void;
   addDiscountId: (id: string) => void;
   resetDiscounts: () => void;
+  isUsed: (couponValue: number) => boolean;
   setData: (stars: number, quantity: number) => void;
   markUsed: (couponInstance: CouponInstance) => void;
   markManualUsed: () => void;
@@ -44,9 +45,9 @@ export const useRewardsStore = create<RewardsStore>((set, get) => ({
   error: null,
 
   setCouponInstanceByAmount: (couponAmount: number) => {
-    if (couponAmount === 3) set({ couponInstance: 'THREE' });
-    else if (couponAmount === 5) set({ couponInstance: 'FIVE' });
-    else if (couponAmount === 10) set({ couponInstance: 'TEN' });
+    if (couponAmount === 3 && !get().used3USD) set({ couponInstance: 'THREE' });
+    else if (couponAmount === 5 && !get().used5USD) set({ couponInstance: 'FIVE' });
+    else if (couponAmount === 10 && !get().used10USD) set({ couponInstance: 'TEN' });
     else set({ couponInstance: 'MANUAL' });
   },
 
@@ -61,6 +62,13 @@ export const useRewardsStore = create<RewardsStore>((set, get) => ({
       used5USD: false,
       used10USD: false,
     }),
+  isUsed: (couponValue: number) => {
+    const { used3USD, used5USD, used10USD } = get();
+    if (couponValue === 3) return used3USD;
+    if (couponValue === 5) return used5USD;
+    if (couponValue === 10) return used10USD;
+    return false;
+  },
 
   setData: (stars, quantity) => {
     set({ stars, quantity });
@@ -69,7 +77,7 @@ export const useRewardsStore = create<RewardsStore>((set, get) => ({
   markUsed: (couponInstance: CouponInstance) => {
     if (couponInstance === 'THREE') set({ used3USD: true });
     if (couponInstance === 'FIVE') set({ used5USD: true });
-    if (couponInstance === 'TEN') set({ used3USD: true, used5USD: true, usedManual: true });
+    if (couponInstance === 'TEN') set({ used10USD: true, usedManual: true });
   },
 
   markManualUsed: () => set({ usedManual: true }),
