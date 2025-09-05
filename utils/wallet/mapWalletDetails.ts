@@ -27,13 +27,13 @@ export function mapWalletDetails(wallet: { type: string; details: WalletDetail[]
           { label: 'Nombre', value: `${safe(detail.firstName)} ${safe(detail.lastName)}`, align: 'right' },
         ];
 
-      case 'bank':
-        return [
-          { label: 'Nombre de la cuenta', value: safe(detail.accountName) },
-          { label: 'Banco', value: safe(detail.bankName) },
-          { label: 'Tipo de documento', value: safe(detail.document_type) },
-          { label: 'Valor del documento', value: safe(detail.document_value) },
-        ];
+     case 'bank':
+  return [
+    { label: safe(detail.send_method_key), value: safe(detail.send_method_value) },
+    { label: safe(detail.document_type), value: safe(detail.document_value) },
+    { label: 'Banco', value: safe(detail.bankName) },
+    { label: 'Titular', value: safe(detail.userAccount.accountName) },
+  ];
 
       case 'receiver_crypto':
         return [

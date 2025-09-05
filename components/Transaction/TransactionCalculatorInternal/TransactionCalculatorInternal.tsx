@@ -72,10 +72,10 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
 
   // Obtiene las billeteras del usuario
   useEffect(() => {
-    if (token && userWallets.length === 0) {
+    if (token) {
       fetchAndSetWallets(token);
     }
-  }, [token, userWallets.length, fetchAndSetWallets]);
+  }, [token, fetchAndSetWallets]);
 
   // Actualiza las tasas de cambio al seleccionar un sistema
   useEffect(() => {

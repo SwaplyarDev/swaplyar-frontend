@@ -27,9 +27,12 @@ import { Wallet } from '@/store/useWalletStore';
   type: string;
   fullName: string;
   email: string;
+  bankName?: string;
   logo: string;
   logoDark?: string;
+  network: string;
 } */
+
 
 interface WalletSelectProps {
   filteredWallets: Wallet[];
@@ -119,8 +122,12 @@ export default function WalletSelect({ filteredWallets, selectedWalletId, onChan
                   <div className="flex justify-start">
                     <span className="truncate text-sm font-medium">{wallet.fullName}</span>
                   </div>
-                  <div className="hidden justify-end md:flex">
-                    <span className="truncate text-sm font-medium">{wallet.email}</span>
+                  <div className="hidden flex-col items-end justify-end text-right md:flex">
+                    {!['bank', 'tether'].includes(wallet.type) && (
+                      <span className="truncate text-sm font-medium">{wallet.email}</span>
+                    )}
+                    {wallet.type === 'bank' && <span className="truncate text-sm font-medium">{wallet.bankName}</span>}
+                    {wallet.type === 'tether' && wallet.network && <span>{wallet.network.toUpperCase()}</span>}
                   </div>
                 </div>
               </SelectItem>

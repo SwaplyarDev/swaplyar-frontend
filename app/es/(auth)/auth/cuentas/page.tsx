@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/Dialog';
 import AddAccountForm from '@/components/wallets/addAccountForm';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import WalletIcon from '@/components/wallets/walletIcon';
-import { deleteWalletAccount1, getMyWalletAccounts } from '@/actions/virtualWalletAccount/virtualWallets.action';
+import { deleteWalletAccount, getMyWalletAccounts } from '@/actions/virtualWalletAccount/virtualWallets.action';
 import { useSession } from 'next-auth/react';
 import { mapWalletFromApi } from '@/utils/wallet/mapWalletFromApi';
 import { createHandleAccountAdd } from '@/utils/wallet/handleAccountAdded';
@@ -18,7 +18,7 @@ interface Wallet {
   id: string;
   type: string;
   name: string;
-  identifier?: string; // Hacemos que identifier sea opcional
+  identifier?: string;
   details: any[];
   currency?: string;
   accountName?: string;
@@ -43,17 +43,13 @@ export default function VirtualWallets() {
         const response = await getMyWalletAccounts(token);
         console.log('🔍 Datos crudos del backend:', JSON.stringify(response, null, 2));
 
-        // Añade validación de datos
-        if (!Array.isArray(response) || response.length === 0) {
-          console.warn('La API devolvió un array vacío o inválido');
+        if (!Array.isArray(response)) {
+          console.warn('La API no devolvió un array');
+          setWallets([]);
           return;
         }
 
-        const mapped = response.map((wallet) => {
-          const mappedWallet = mapWalletFromApi(wallet);
-          return mappedWallet;
-        });
-
+        const mapped = response.map(mapWalletFromApi);
         setWallets(mapped);
         hasFetched.current = true;
       } catch (err) {
@@ -83,18 +79,15 @@ export default function VirtualWallets() {
   const normalizeType = (type: string, provider?: string, currency?: string): string => {
     const prov = (provider || '').toLowerCase().trim();
     const curr = (currency || '').toLowerCase().trim();
-
     if (type === 'virtual_bank') {
       if (prov.includes('paypal')) return 'paypal';
       if (prov.includes('wise')) return curr === 'eur' ? 'wise-eur' : 'wise-usd';
       if (prov.includes('payoneer')) return curr === 'eur' ? 'payoneer-eur' : 'payoneer-usd';
       return 'virtual_bank';
     }
-
     if (type === 'receiver_crypto' || prov === 'crypto') return 'tether';
     if (type === 'pix' || prov === 'pix') return 'pix';
     if (type === 'bank' || prov === 'bank' || prov === 'transferencia') return 'transferencia';
-
     return type;
   };
 
@@ -108,22 +101,24 @@ export default function VirtualWallets() {
     {} as { [key: string]: Wallet[] },
   );
 
-  const handleDelete = async (accountId: string, typeAccount: string) => {
+  const handleDelete = async (accountId: string) => {
+    console.log('FRONTEND: Enviando ID para eliminar:', accountId);
+    const token = session?.accessToken;
+    if (!token) {
+      setError('No estás autenticado. Por favor, inicia sesión de nuevo.');
+      return;
+    }
+
+    const originalWallets = [...wallets];
+
+    setWallets((currentWallets) => currentWallets.filter((wallet) => wallet.id !== accountId));
+
     try {
-      if (!session?.accessToken) {
-        throw new Error('No hay token disponible');
-      }
-
-      const token = session.accessToken;
-      const normalizedType = normalizeType(typeAccount);
-
-      await deleteWalletAccount1(accountId, token);
-
-      const accounts = await getMyWalletAccounts(token);
-
-      setWallets(accounts.map(mapWalletFromApi));
+      await deleteWalletAccount(accountId, token);
     } catch (error) {
       console.error('Error eliminando cuenta:', error);
+      setError('No se pudo eliminar la cuenta. Inténtalo de nuevo.');
+      setWallets(originalWallets);
     }
   };
 
@@ -199,7 +194,7 @@ export default function VirtualWallets() {
                       accountId={wallet.id}
                       details={mapWalletDetails(wallet)}
                       type={wallet.type}
-                      onDelete={(accountId, typeAccount) => handleDelete(accountId, typeAccount)}
+                      onDelete={(accountId) => handleDelete(accountId)}
                     />
                     <hr className="mx-auto mt-2 h-0 w-full max-w-[80%] border-t-2 border-[#012ABE] dark:border-[#EBE7E0]" />
                   </div>

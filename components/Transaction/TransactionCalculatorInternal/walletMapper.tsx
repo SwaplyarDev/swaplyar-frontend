@@ -1,10 +1,19 @@
 interface Wallet {
   id: string;
   type: string;
-  fullName: string;
-  email: string;
+  label: string;
+  fullName?: string;
+  email?: string;
   logo: string;
   logoDark?: string;
+  cbu?: string;
+  alias?: string;
+  taxId?: string;
+  pixKeyType?: string;
+  pixKeyValue?: string;
+  walletAddress?: string;
+  network?: string;
+  bankName?: string;
 }
 
 type ApiAccount = {
@@ -39,7 +48,8 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
           id: detail.account_id,
           type: 'tether',
           fullName: account.accountName,
-          email: detail.wallet,
+          walletAddress: detail.wallet,
+          network: detail.network,
         };
         break;
 
@@ -49,14 +59,24 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
           type: 'pix',
           fullName: account.accountName,
           email: detail.pix_value,
+          pixKeyType: detail.pix_key,
+          pixKeyValue: detail.pix_value,
+          taxId: detail.cpf,
         };
         break;
+
       case 'bank':
+        const cbuValue = detail.send_method_key === 'CBU' ? detail.send_method_value : undefined;
+        const aliasValue = detail.send_method_key === 'ALIAS' ? detail.send_method_value : undefined;
         mappedWallet = {
-          id: detail.userAccount.account_id,
+          id: detail.account_id,
           type: 'bank',
+          label: account.accountName,
           fullName: account.accountName,
-          email: detail.pix_value,
+          cbu: cbuValue,
+          alias: aliasValue,
+          taxId: detail.document_value,
+          bankName: detail.bankName,
         };
         break;
     }
@@ -64,10 +84,19 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
     return {
       id: mappedWallet.id || '',
       type: mappedWallet.type || 'default',
+      label: mappedWallet.label || account.accountName,
       fullName: mappedWallet.fullName || account.accountName,
-      email: mappedWallet.email || 'N/A',
+      email: mappedWallet.email,
       logo: '',
-    };
+      pixKeyType: mappedWallet.pixKeyType,
+      pixKeyValue: mappedWallet.pixKeyValue,
+      taxId: mappedWallet.taxId,
+      cbu: mappedWallet.cbu,
+      alias: mappedWallet.alias,
+      walletAddress: mappedWallet.walletAddress,
+      network: mappedWallet.network,
+      bankName: mappedWallet.bankName,
+    } as Wallet;
   });
 
   return wallets.filter((wallet) => wallet.id);

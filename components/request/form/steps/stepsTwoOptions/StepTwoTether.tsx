@@ -25,7 +25,7 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
   blockAll,
   control,
   watch,
-  completedSteps
+  completedSteps,
 }) => {
   const formValues = useWatch({ control });
   return (
@@ -80,21 +80,21 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
         />
 
         <div className="realative order-3 flex w-full flex-col sm-phone:order-2">
-          <Controller
+          <InputSteps
+            label="Red"
             name="red_selection"
-            control={control}
-            defaultValue={undefined}
+            id="red_selection"
+            type="text"
+            placeholder="Red de la billetera"
+            disabled={blockAll}
+            register={register}
+            watch={watch}
+            readOnly
             rules={{
-              required: 'Este campo es obligatorio',
+              required: 'La red es obligatoria',
             }}
-            render={({ field, fieldState }) => (
-              <SelectRed
-                blockAll={blockAll}
-                selectedRed={field.value}
-                setSelectedRed={(option) => field.onChange(option)}
-                errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
-              />
-            )}
+            error={errors.red_selection ? (errors.red_selection as FieldError) : undefined}
+            className="order-3 sm-phone:order-2"
           />
         </div>
       </div>

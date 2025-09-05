@@ -1,5 +1,3 @@
-// store/useWalletStore.ts (VERSIÓN FINAL Y CORRECTA)
-
 import { create } from 'zustand';
 import { mapApiWalletsToFrontend } from '@/components/Transaction/TransactionCalculatorInternal/walletMapper';
 import { getMyWalletAccounts } from '@/actions/virtualWalletAccount/virtualWallets.action';
@@ -7,10 +5,19 @@ import { getMyWalletAccounts } from '@/actions/virtualWalletAccount/virtualWalle
 export interface Wallet {
   id: string;
   type: string;
+  label: string;
   fullName?: string;
   email?: string;
   logo: string;
   logoDark?: string;
+  cbu?: string;
+  bankName?: string;
+  alias?: string;
+  taxId?: string;
+  pixKeyType?: string;
+  pixKeyValue?: string;
+  walletAddress?: string;
+  network?: string;
 }
 
 interface WalletStoreState {
