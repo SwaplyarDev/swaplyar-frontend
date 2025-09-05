@@ -20,3 +20,24 @@ export async function getDiscounts(token: string) {
     throw new Error('Failed to fetch discounts');
   }
 }
+
+export async function getDiscountsByUserId(user_id: string, token: string) {
+  try {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/discounts/user-discounts/${user_id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch discounts');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching discounts:', error);
+    throw new Error('Failed to fetch discounts');
+  }
+}

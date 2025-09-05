@@ -21,7 +21,6 @@ interface ReusableWalletCardProps {
 export default function ReusableWalletCard({ details, onDelete, accountId, type }: ReusableWalletCardProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { isDark } = useDarkTheme();
-
   return (
     <div className="w-full space-y-6 rounded-2xl bg-[#FFFFFB] px-4 py-4 dark:bg-[#4B4B4B] sm:px-6 md:px-6 lg:px-6 lg2:px-24">
       {details.map((group, index) => (
@@ -62,9 +61,9 @@ export default function ReusableWalletCard({ details, onDelete, accountId, type 
               return (
                 <div key={i} className={`${alignmentClass} max-w-full`}>
                   <p className="text-xs text-gray-500 dark:text-gray-300">{item.label}</p>
-                  <div className="webkit-scrollbar scrollbar-thumb mt-1 max-w-full overflow-x-auto overflow-y-hidden scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[#75bfff] dark:scrollbar-thumb-[#232e33]">
+                  <div className="webkit-scrollbar scrollbar-thumb mt-1 max-w-full overflow-x-auto overflow-y-hidden pb-1 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[#75bfff] dark:scrollbar-thumb-[#232e33]">
                     <p
-                      className={`text-base sm:text-[22px] ${
+                      className={`text-base leading-normal sm:text-[22px] ${
                         isTitular ? 'font-normal' : 'font-semibold'
                       } whitespace-nowrap text-gray-900 dark:text-[#EBE7E0]`}
                     >
@@ -75,7 +74,6 @@ export default function ReusableWalletCard({ details, onDelete, accountId, type 
               );
             })}
           </div>
-
           {onDelete && (
             <div className="flex h-full min-w-[30px] items-center justify-end">
               {isLoading ? (

@@ -3,11 +3,9 @@
 import { useState } from 'react';
 import { Check, X, ChevronDown, ChevronUp, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import type { TransactionData } from '../../types/transaction';
-import { isCompleted, getEstadoEspanol, formatDate, formatTime } from '../../utils/transactionHelpers';
+import type { TransactionData } from '@/types/transaction';
+import { isCompleted, formatDate, formatTime, getEstadoEspanol } from '../../utils/transactionHelpers';
 import { mapEstadoToGrupo } from '@/utils/transactionStatus';
-import { convertTransactionState } from '@/utils/transactionStatesConverser';
 import ExpandedTransactionDetails from './ExpandedTransactionDetails';
 
 interface TransactionCardProps {
@@ -15,21 +13,22 @@ interface TransactionCardProps {
   index: number;
 }
 
+
 export function TransactionCard({ transaction, index }: TransactionCardProps) {
   const [expanded, setExpanded] = useState(false);
+  const toggleExpand = () => setExpanded(!expanded);
 
-  const toggleExpand = () => {
-    setExpanded(!expanded);
-  };
+  const grupo = mapEstadoToGrupo(transaction.finalStatus);
+  const completada = isCompleted(transaction.finalStatus);
+  const fecha = formatDate(transaction.createdAt);
+  const horario = formatTime(transaction.createdAt);
 
-  const grupo = mapEstadoToGrupo(convertTransactionState(transaction.transaction.status) ?? 'pending');
-  const completada = isCompleted(transaction.status);
-  const fecha = formatDate(transaction.transaction.created_at);
-  const horario = formatTime(transaction.transaction.created_at);
-  const nombreDestinatario = `${transaction.receiver.first_name} ${transaction.receiver.last_name}`;
-  const nombreSolicitante = `${transaction.sender.first_name} ${transaction.sender.last_name}`;
-  const montoEnviado = `${transaction.amounts.sent.amount} ${transaction.amounts.sent.currency}`;
-  const montoRecibido = `${transaction.amounts.received.amount} ${transaction.amounts.received.currency}`;
+  // const nombreDestinatario = `${transaction.receiverAccount.firstName} ${transaction.receiverAccount.lastName}` || 'Sin nombre';
+  const nombreSolicitante = `${transaction.senderAccount.firstName} ${transaction.senderAccount.lastName}`;
+
+  const montoEnviado = `${transaction.amount.amountSent} ${transaction.amount.currencySent}`;
+  const montoRecibido = `${transaction.amount.amountReceived} ${transaction.amount.currencyReceived}`;
+
   const capitalizar = (texto: string) => texto.charAt(0).toUpperCase() + texto.slice(1);
 
   let icono = null;
@@ -38,25 +37,25 @@ export function TransactionCard({ transaction, index }: TransactionCardProps) {
 
   if (grupo === 'completada') {
     icono = <Check className="h-6 w-6 text-white" />;
-    bgColor = 'bg-green-500';
-    borderColor = 'border-green-500';
+    bgColor = 'bg-[#048604]';
+    borderColor = 'border-[#048604]';
   } else if (grupo === 'pendiente') {
     icono = <Clock className="h-6 w-6 text-white dark:text-[#4b4b4b]" />;
     bgColor = 'bg-[#FFC72C]';
     borderColor = 'border-[#FFC72C]';
   } else {
     icono = <X className="h-6 w-6 text-white" />;
-    bgColor = 'bg-red-500';
-    borderColor = 'border-red-500';
+    bgColor = 'bg-[#CE1818]';
+    borderColor = 'border-[#CE1818]';
   }
 
   const colorClase =
     grupo === 'completada'
-      ? 'text-green-600 dark:text-green-300'
+      ? 'text-green-600 dark:text-[#048604]'
       : grupo === 'pendiente'
-        ? 'text-[#ffac33] dark:text-[#FFC72C]'
-        : 'text-red-600 dark:text-red-300';
-
+      ? 'text-[#ffac33] dark:text-[#FFC72C]'
+      : 'text-red-600 dark:text-[#CE1818]';
+      
   return (
     <Card className="relative w-full max-w-[1000px] overflow-hidden rounded-xl border border-gray-200 bg-[#FFFFFB] shadow-sm transition-shadow hover:shadow-md dark:border-[#4b4b4b] dark:bg-[#4b4b4b]">
       <CardContent className="p-0">
@@ -68,7 +67,7 @@ export function TransactionCard({ transaction, index }: TransactionCardProps) {
                   N° de Solicitud
                 </h3>
                 <span className="break-all pb-2 text-[26px] font-semibold text-[#012d8a] dark:text-white sm:pb-0 sm:text-[32px]">
-                  #{transaction.transaction.transaction_id}
+                  #{transaction.id}
                 </span>
               </div>
             </div>
@@ -80,21 +79,22 @@ export function TransactionCard({ transaction, index }: TransactionCardProps) {
               {icono}
             </div>
           </div>
+
           <div className="text-lightBlue px-4 pb-2 text-[20px] dark:text-white sm:px-6 sm:text-2xl">{fecha}</div>
+
           <div className={`grid grid-cols-2 gap-y-2 px-4 text-sm sm:px-10 ${expanded ? 'hidden' : 'block'}`}>
             <div className="text-lightBlue text-[16px] font-semibold dark:text-white sm:text-[18px] lg:pl-16">
               Estado de la Solicitud
             </div>
             <div className={`text-right text-[14px] font-semibold sm:text-[16px] lg:pr-16 ${colorClase}`}>
-              {capitalizar(getEstadoEspanol(convertTransactionState(transaction.transaction.status) ?? 'Desconocido'))}
+              {capitalizar(getEstadoEspanol(transaction.finalStatus))}
             </div>
-
-            <div className="text-lightBlue text-[16px] font-semibold dark:text-white sm:text-[18px] lg:pl-16">
+            {/* <div className="text-lightBlue text-[16px] font-semibold dark:text-white sm:text-[18px] lg:pl-16">
               Destinatario
             </div>
             <div className="text-right text-[14px] text-gray-800 dark:text-white sm:text-[16px] lg:pr-16">
               {nombreDestinatario}
-            </div>
+            </div> */}
 
             <div className="text-lightBlue text-[16px] font-semibold dark:text-white sm:text-[18px] lg:pl-16">
               Monto Enviado
@@ -108,7 +108,7 @@ export function TransactionCard({ transaction, index }: TransactionCardProps) {
               completada={completada}
               fecha={fecha}
               horario={horario}
-              nombreDestinatario={nombreDestinatario}
+              // nombreDestinatario={nombreDestinatario}
               nombreSolicitante={nombreSolicitante}
               montoEnviado={montoEnviado}
               montoRecibido={montoRecibido}

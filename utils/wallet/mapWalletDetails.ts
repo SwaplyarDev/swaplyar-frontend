@@ -1,43 +1,58 @@
 interface WalletDetail {
-  id: string;
+  id?: string;
   [key: string]: any;
 }
 
-export function mapWalletDetails(wallet: { type: string; details: WalletDetail[] }): {
+interface DetailItem {
   label: string;
   value: string;
   align?: 'right' | 'center' | 'left';
-}[][] {
+}
+
+export function mapWalletDetails(wallet: { type: string; details: WalletDetail[] }): DetailItem[][] {
+  const safe = (val: any) => (val !== undefined && val !== null ? String(val) : '-');
+
+  if (!wallet.details || wallet.details.length === 0) {
+    return [[{ label: 'Sin información', value: '-' }]];
+  }
+
   return wallet.details.map((detail) => {
     switch (wallet.type) {
-      case 'paypal':
-      case 'wise':
-      case 'payoneer':
-        return [
-          { label: 'Correo electrónico', value: detail.correo },
-          { label: 'Titular', value: `${detail.nombre} ${detail.apellido}`, align: 'right' },
-        ];
       case 'virtual_bank':
+      case 'paypal':
+      case 'payoneer':
+      case 'wise':
         return [
-          { label: 'CBU/CVU', value: detail.cvu },
-          { label: 'DNI/CUIL', value: detail.dni },
-          { label: 'Banco', value: detail.nombreBanco },
-          { label: 'Titular', value: detail.nombreUsuario, align: 'right' },
+          { label: 'Correo electrónico', value: safe(detail.email) },
+          { label: 'Nombre', value: `${safe(detail.firstName)} ${safe(detail.lastName)}`, align: 'right' },
         ];
+
+     case 'bank':
+  return [
+    { label: safe(detail.send_method_key), value: safe(detail.send_method_value) },
+    { label: safe(detail.document_type), value: safe(detail.document_value) },
+    { label: 'Banco', value: safe(detail.bankName) },
+    { label: 'Titular', value: safe(detail.userAccount.accountName) },
+  ];
+
       case 'receiver_crypto':
-      case 'crypto':
         return [
-          { label: 'Dirección USDT', value: detail.direction },
-          { label: 'Red', value: detail.red, align: 'right' },
+          { label: 'Dirección Wallet', value: safe(detail.wallet) },
+          { label: 'Red', value: safe(detail.network) , align: 'right' },
         ];
+
       case 'pix':
         return [
-          { label: 'PIX KEY', value: detail.clave },
-          { label: 'CPF', value: detail.cpf },
-          { label: 'Titular', value: `${detail.nombre} ${detail.apellido}`, align: 'right' },
+          { label: 'Valor clave PIX', value: safe(detail.pix_value) },
+          { label: 'CPF', value: safe(detail.cpf) },
+          { label: 'Nombre de la cuenta', value: safe(detail.userAccount.accountName) },
         ];
+
       default:
-        return [];
+        return Object.entries(detail).map(([key, value]) => ({
+          label: key,
+          value: safe(value),
+        }));
     }
   });
 }

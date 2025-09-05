@@ -1,31 +1,3 @@
-/**
- * **SearchRequest Component**
- *
- * Este componente se encarga de manejar la búsqueda de solicitudes en SwaplyAr.
- *
- * - **Dependencias principales**:
- *   - `useForm`: Manejo de formularios y validación.
- *   - `useDarkTheme`: Modo oscuro.
- *   - `useStatusManager`: Control del estado de las solicitudes.
- *   - `searchRequest`: Función para buscar solicitudes en la base de datos.
- *   - `showStatusAlert`: Muestra alertas personalizadas basadas en los estados.
- *
- * - **Funciones clave**:
- *   1. `handleAddNextStatus`: Agrega un estado predefinido a la lista de estados actuales.
- *   2. `handleSearchRequest`: Mapea estados únicos recibidos desde el backend a sus descripciones e íconos correspondientes, y muestra un alerta con el resultado.
- *
- *   3. `onSubmit`:
- *      - Envía el formulario, llama al backend y gestiona la respuesta de los estados de la solicitud.
- *
- * - **Interfaz de usuario**:
- *   - Formulario para capturar el número de solicitud y apellido.
- *   - Botón de búsqueda con estado de carga (usando un gif).
- *
- * - **Estados locales**:
- *   - `loading`: Indica si la solicitud está en proceso.
- *   - `currentIndex`: Controla el índice de estados predefinidos.
- */
-
 'use client';
 import Image from 'next/image';
 import React, { useState } from 'react';
@@ -33,6 +5,13 @@ import InputOnlyLine from '../ui/InputOnlyLine/InputOnlyLine';
 import { RequestSearch } from '@/types/data';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
+
+interface SearchResponse {
+  ok: boolean;
+  message?: string;
+  history?: { status: string; timestamp: string }[];
+  status?: AdminStatus;
+}
 import useStatusManager from '@/hooks/useStatusManager';
 import { searchRequest } from '@/actions/request/action.search-request/action.searchRecuest';
 import { showStatusAlert } from './swalConfig';
@@ -43,15 +22,27 @@ import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
 import ButtonBack from '../ui/ButtonBack/ButtonBack';
 import { FlyerGif, searchRequestMovile, searchRequestWeb } from '@/utils/assets/imgDatabaseCloudinary';
 
+export enum AdminStatus {
+  Pending = 'pending',
+  ReviewPayment = 'review_payment',
+  Approved = 'approved',
+  Rejected = 'rejected',
+  RefundInTransit = 'refund_in_transit',
+  InTransit = 'in_transit',
+  Discrepancy = 'discrepancy',
+  Canceled = 'canceled',
+  Modified = 'modified',
+  Refunded = 'refunded',
+  Completed = 'completed',
+}
+
 const SearchRequest = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     reset,
-  } = useForm<RequestSearch>({
-    mode: 'onChange',
-  });
+  } = useForm<RequestSearch>({ mode: 'onChange' });
   const [loading, setLoading] = useState(false);
   const { isDark } = useDarkTheme();
   const { statuses, addStatus } = useStatusManager();
@@ -62,7 +53,6 @@ const SearchRequest = () => {
     3: 'Pendiente',
     4: 'Suspendido',
   };
-
   const [currentIndex, setCurrentIndex] = useState(1);
 
   const handleAddNextStatus = () => {
@@ -75,34 +65,25 @@ const SearchRequest = () => {
     }
   };
 
-  const handleSearchRequest = (statusObject: Record<string, any>) => {
-    const statusMessages = {
-      received: { text: 'Solicitud Enviada', icon: ReactDOMServer.renderToString(<Enviada />) },
-      pending: { text: 'Pago en Revisión', icon: ReactDOMServer.renderToString(<Revision />) },
-      review_payment: { text: 'Dinero en Camino', icon: ReactDOMServer.renderToString(<DineroEnCamino />) },
-      completed: { text: 'Discrepancia en la Solicitud', icon: ReactDOMServer.renderToString(<Discrepancia />) },
-      in_transit: { text: 'Solicitud Cancelada', icon: ReactDOMServer.renderToString(<Cancelada />) },
-      canceled: { text: 'Solicitud Modificada', icon: ReactDOMServer.renderToString(<Modificada />) },
-      modified: { text: 'Dinero Reembolsado con Éxito', icon: ReactDOMServer.renderToString(<Reembolso />) },
-      discrepancy: { text: 'Solicitud Finalizada con Éxito', icon: ReactDOMServer.renderToString(<Finalizada />) },
+  const handleSearchRequest = (history: { status: string; timestamp: string }[]) => {
+    const statusMessages: Record<AdminStatus, { text: string; icon: string }> = {
+      [AdminStatus.Pending]: { text: 'Pago en Revisión', icon: ReactDOMServer.renderToString(<Revision />) },
+      [AdminStatus.ReviewPayment]: { text: 'Dinero en Camino', icon: ReactDOMServer.renderToString(<DineroEnCamino />) },
+      [AdminStatus.Completed]: { text: 'Solicitud Finalizada con Éxito', icon: ReactDOMServer.renderToString(<Finalizada />) },
+      [AdminStatus.InTransit]: { text: 'Solicitud Enviada', icon: ReactDOMServer.renderToString(<Enviada />) },
+      [AdminStatus.Canceled]: { text: 'Solicitud Cancelada', icon: ReactDOMServer.renderToString(<Cancelada />) },
+      [AdminStatus.Modified]: { text: 'Solicitud Modificada', icon: ReactDOMServer.renderToString(<Modificada />) },
+      [AdminStatus.Discrepancy]: { text: 'Discrepancia en la Solicitud', icon: ReactDOMServer.renderToString(<Discrepancia />) },
+      [AdminStatus.Refunded]: { text: 'Dinero Reembolsado con Éxito', icon: ReactDOMServer.renderToString(<Reembolso />) },
+      [AdminStatus.Approved]: { text: 'Solicitud Aprobada', icon: ReactDOMServer.renderToString(<Enviada />) },
+      [AdminStatus.Rejected]: { text: 'Solicitud Rechazada', icon: ReactDOMServer.renderToString(<Cancelada />) },
+      [AdminStatus.RefundInTransit]: { text: 'Reembolso en Proceso', icon: ReactDOMServer.renderToString(<DineroEnCamino />) },
     };
 
-    const uniqueStatuses = Array.from(new Set(Object.keys(statusObject)));
+    const uniqueStatuses = Array.from(new Set(history.map((h) => h.status)));
     const messages = uniqueStatuses
-      .map((status) => {
-        const statusInfo = statusMessages[status as keyof typeof statusMessages];
-
-        if (!statusInfo) {
-          console.warn(`Estado no reconocido: ${status}`);
-          return null;
-        }
-
-        return {
-          text: statusInfo.text,
-          icon: statusInfo.icon,
-        };
-      })
-      .filter((message): message is { text: string; icon: string } => message !== null);
+      .map((status) => statusMessages[status as AdminStatus])
+      .filter(Boolean);
 
     showStatusAlert(messages, isDark);
   };
@@ -113,15 +94,19 @@ const SearchRequest = () => {
 
     try {
       console.log('Datos enviados:', data);
-      const response = await searchRequest(data.transactionId, data.lastNameRequest);
+      const response = await searchRequest(data.transactionId, data.lastNameRequest) as SearchResponse;
 
       if (!response.ok) {
         throw new Error(response.message || 'Hubo un problema al obtener el estado de la transacción');
       }
 
-      const statuses = response.status || [];
-      handleSearchRequest(statuses);
-      console.log(response);
+      // Si no hay historial, crear uno con el estado actual
+      const history = response.history || 
+        (response.status ? [{ status: response.status, timestamp: new Date().toISOString() }] : 
+        [{ status: AdminStatus.Pending, timestamp: new Date().toISOString() }]);
+
+      handleSearchRequest(history);
+      console.log('Respuesta completa:', response);
 
       reset({ transactionId: '', lastNameRequest: '' });
     } catch (error) {
@@ -152,6 +137,7 @@ const SearchRequest = () => {
             Introduce los datos exactamente como aparecen en el correo electrónico enviado.
           </p>
         </div>
+
         <section className="relative mt-10 flex min-h-[500px] flex-col items-center justify-center">
           <Image
             className="absolute left-0 hidden w-[588px] drop-shadow-light dark:drop-shadow-darkmode lg2:block"
@@ -169,6 +155,7 @@ const SearchRequest = () => {
               height={300}
             />
           </div>
+
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="mt-10 flex w-full max-w-[466px] flex-col items-center gap-4 lg2:self-end"
@@ -186,6 +173,7 @@ const SearchRequest = () => {
                 error={errors.transactionId?.message}
               />
             </div>
+
             <div className="flex h-[81px] w-full flex-col">
               <label htmlFor="lastNameRequest" className="text-right font-textFont text-xs font-light">
                 Apellido
@@ -197,6 +185,7 @@ const SearchRequest = () => {
                 error={errors.lastNameRequest?.message}
               />
             </div>
+
             <div className="flex h-[50px] flex-col items-center justify-center gap-[18px]">
               {loading ? (
                 <div className="flex items-center justify-center">
@@ -217,10 +206,12 @@ const SearchRequest = () => {
                 </button>
               )}
             </div>
+
             <ButtonBack route="/es/centro-de-ayuda" isDark={isDark} />
           </form>
         </section>
       </div>
+
       <div className="mt-10">
         <FlyerTrabajo
           imageSrc={FlyerGif}

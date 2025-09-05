@@ -4,6 +4,19 @@ import React, { useState } from 'react';
 import InputOnlyLine from '@/components/ui/InputOnlyLine/InputOnlyLine';
 import { RequestSearch } from '@/types/data';
 import { SubmitHandler, useForm } from 'react-hook-form';
+
+interface TransactionHistoryItem {
+  status: string;
+  timestamp: string;
+}
+
+interface SearchResponse {
+  ok: boolean;
+  status?: string;
+  history?: TransactionHistoryItem[];
+  message?: string;
+  error?: any;
+}
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import useStatusManager from '@/hooks/useStatusManager';
 import { searchRequest } from '@/actions/request/action.search-request/action.searchRecuest';
@@ -95,14 +108,19 @@ const SearchRequestAuth = () => {
     setLoading(true);
     handleAddNextStatus();
     try {
-      const response = await searchRequest(data.transactionId, lastName);
+      const response = await searchRequest(data.transactionId, lastName) as SearchResponse;
 
       if (!response.ok) {
         throw new Error(response.message || 'Hubo un problema al obtener el estado de la transacción');
       }
 
-      const statuses = response.status || [];
-      handleSearchRequest(statuses);
+      // Crear un objeto de estado basado en la respuesta
+      const statusObj = response.history?.reduce((acc, item) => {
+        acc[item.status] = item.timestamp;
+        return acc;
+      }, {} as Record<string, string>) || { [response.status || 'pending']: new Date().toISOString() };
+
+      handleSearchRequest(statusObj);
 
       reset({ transactionId: '', lastNameRequest: '' });
     } catch (error) {

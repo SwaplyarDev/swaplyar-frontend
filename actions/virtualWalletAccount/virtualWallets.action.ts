@@ -1,5 +1,5 @@
 'use server';
-
+import { revalidatePath } from 'next/cache';
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export async function createWalletAccount(data: any, token: string) {
@@ -32,6 +32,8 @@ export async function createWalletAccount(data: any, token: string) {
 
     if (contentType && contentType.includes('application/json')) {
       const savedAccount = await res.json();
+      revalidatePath('/es/auth/solicitud');
+      
       return savedAccount;
     } else {
       throw new Error('Respuesta inesperada del servidor');
@@ -170,20 +172,56 @@ export async function getUserWalletAccountById(userId: string, accountId: string
   }
 }
 
-export async function deleteWalletAccount1(accountId: string, token: string, typeAccount: string) {
-  const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/users/accounts/delete/${accountId}`, {
-    method: 'DELETE',
+export async function deleteWalletAccount(accountId: string, token: string) {
+  const API_URL = 'http://localhost:3001/api/v2/users/accounts';
+
+  const response = await fetch(API_URL, {
+    method: 'DELETE', 
     headers: {
-      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`, 
     },
-    body: JSON.stringify({ typeAccount }),
+    body: JSON.stringify({
+      bankAccountId: accountId,
+    }),
   });
-
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error(data.message || 'Error al eliminar cuenta');
+  if (!response.ok) {
+    const errorData = await response.json(); 
+    throw new Error(errorData.message || 'Error al eliminar la cuenta');
   }
+  revalidatePath('/dashboard/cuentas')
+  revalidatePath('/es/auth/solicitud');
+  return { success: true };
+}
 
-  return data;
+export async function getUserWalletAccountByUserId(userId: string, token: string) {
+  try {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/users/accounts/admin/findId?userId=${userId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const contentType = res.headers.get('content-type');
+
+    if (!res.ok) {
+      let errorMessage = 'Error al obtener la cuenta específica del usuario';
+      if (contentType && contentType.includes('application/json')) {
+        const error = await res.json();
+        errorMessage = error.message || errorMessage;
+      }
+      throw new Error(errorMessage);
+    }
+
+    if (contentType && contentType.includes('application/json')) {
+      const account = await res.json();
+      return account;
+    } else {
+      throw new Error('Respuesta inesperada del servidor');
+    }
+  } catch (error) {
+    console.error('Error desde getUserWalletAccountById:', error);
+    throw error;
+  }
 }

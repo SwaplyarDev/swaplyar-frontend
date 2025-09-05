@@ -10,25 +10,9 @@ import StepTwoPaypal from './stepsTwoOptions/StepTwoPaypal';
 import StepTwoWise from './stepsTwoOptions/StepTwoWise';
 import StepTwoTether from './stepsTwoOptions/StepTwoTether';
 import StepTwoPix from './stepsTwoOptions/StepTwoPix';
-import { RedType } from '@/types/request/request';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
-
-interface FormData {
-  receiver_first_name: string;
-  receiver_last_name: string;
-  tax_identification: string;
-  transfer_identification: string;
-  re_transfer_identification: string;
-  name_of_bank: string;
-  bank_email: string;
-  re_enter_bank_email: string;
-  usdt_direction: string;
-  re_enter_usdt_direction: string;
-  red_selection: RedType | undefined;
-  recieveAmountRed: string;
-  pix_key: string;
-  individual_tax_id: string;
-}
+import { StepTwoData } from '@/types/transactions/stepperStoretypes';
+import useWalletStore from '@/store/useWalletStore';
 
 const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   const {
@@ -39,12 +23,13 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     setValue,
     getValues,
     watch,
-  } = useForm<FormData>({ mode: 'onChange' });
+  } = useForm<StepTwoData>({ mode: 'onChange' });
   const { markStepAsCompleted, setActiveStep, formData, updateFormData, completedSteps } = useStepperStore();
   const { selectedReceivingSystem } = useSystemStore();
+  const { selectedWallet } = useWalletStore();
   const { isDark } = useDarkTheme();
 
-  const [initialValues, setInitialValues] = useState<FormData | null>(null);
+  const [initialValues, setInitialValues] = useState<StepTwoData | null>(null);
 
   const formValues = useWatch({ control });
 
@@ -62,7 +47,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
       re_enter_usdt_direction,
       red_selection,
       recieveAmountRed,
-      pix_key,
+      pixId,
+      pixKey,
       individual_tax_id,
     } = formData.stepTwo;
     const newValues = {
@@ -78,7 +64,8 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
       re_enter_usdt_direction,
       red_selection,
       recieveAmountRed,
-      pix_key,
+      pixId,
+      pixKey,
       individual_tax_id,
     };
 
@@ -90,31 +77,77 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
       'receiver_last_name',
       formData.stepOne?.own_account === 'Si' ? formData.stepOne?.last_name : receiver_last_name,
     );
-    setValue('tax_identification', tax_identification);
+    setValue('tax_identification', formData.stepOne?.own_account === 'Si' ? tax_identification : '');
     setValue('transfer_identification', transfer_identification);
     setValue('re_transfer_identification', re_transfer_identification);
     setValue('name_of_bank', name_of_bank);
-    setValue('bank_email', bank_email);
+    setValue('bank_email', formData.stepOne?.own_account === 'Si' ? formData.stepOne?.email : bank_email);
     setValue('re_enter_bank_email', re_enter_bank_email);
     setValue('usdt_direction', usdt_direction);
     setValue('re_enter_usdt_direction', re_enter_usdt_direction);
     setValue('red_selection', red_selection);
     setValue('recieveAmountRed', recieveAmountRed);
-    setValue('pix_key', pix_key);
+    setValue('pixId', pixId);
+    setValue('pixKey', pixKey);
     setValue('individual_tax_id', individual_tax_id);
 
+    if (selectedWallet) {
+      if (selectedWallet.fullName) {
+        const nameParts = selectedWallet.fullName.split(' ');
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.slice(1).join(' ') || '';
+        setValue('receiver_first_name', firstName, { shouldValidate: true });
+        setValue('receiver_last_name', lastName, { shouldValidate: true });
+      }
+      if (selectedWallet.email) {
+        setValue('bank_email', selectedWallet.email, { shouldValidate: true });
+        setValue('re_enter_bank_email', selectedWallet.email, { shouldValidate: true });
+      }
+      switch (selectedWallet.type) {
+        case 'bank':
+          setValue('transfer_identification', selectedWallet.cbu || selectedWallet.alias || '', {
+            shouldValidate: true,
+          });
+          setValue('re_transfer_identification', selectedWallet.cbu || selectedWallet.alias || '', {
+            shouldValidate: true,
+          });
+          setValue('tax_identification', selectedWallet.taxId || '', { shouldValidate: true });
+          setValue('name_of_bank', selectedWallet.bankName || '', { shouldValidate: true });
+          break;
+
+        case 'tether':
+          setValue('usdt_direction', selectedWallet.walletAddress || '', { shouldValidate: true });
+          setValue('re_enter_usdt_direction', selectedWallet.walletAddress || '', { shouldValidate: true });
+          setValue('red_selection', selectedWallet.network || '', { shouldValidate: true });
+          break;
+
+        case 'pix':
+          setValue('pixId', selectedWallet.pixKeyType || '', { shouldValidate: true });
+          setValue('pixKey', selectedWallet.pixKeyValue || '', { shouldValidate: true });
+          setValue('individual_tax_id', selectedWallet.taxId || '', { shouldValidate: true });
+          break;
+
+        case 'wise_usd':
+        case 'wise_eur':
+        case 'payoneer_usd':
+        case 'payoneer_eur':
+        case 'paypal':
+          break;
+      }
+    }
     setInitialValues(newValues);
-    console.log(newValues);
   }, [
     formData.stepTwo,
     setValue,
     formData.stepOne?.own_account,
     formData.stepOne?.first_name,
     formData.stepOne?.last_name,
+    formData.stepOne?.email,
+    selectedWallet,
   ]);
 
   const [loading, setLoading] = useState(false);
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: StepTwoData) => {
     setLoading(true);
     updateFormData(1, data);
     markStepAsCompleted(1);
@@ -125,7 +158,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   const hasChanges =
     initialValues &&
     !Object.keys(initialValues).every(
-      (key) => initialValues[key as keyof FormData] === formValues[key as keyof FormData],
+      (key) => initialValues[key as keyof StepTwoData] === formValues[key as keyof StepTwoData],
     );
 
   const renderSelectedSystem = () => {

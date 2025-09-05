@@ -4,37 +4,56 @@ import InputField from '@/components/ui/contact-form/InputField';
 
 const PaypalFields = ({ register, errors }: any) => (
   <div className="flex flex-col gap-4">
+    {/* Nombre de la cuenta */}
     <InputField
-      id="nombre"
+      id="accountName"
+      placeholder="Nombre de la cuenta"
+      register={register('accountName', {
+        required: 'El nombre de la cuenta es obligatorio',
+        minLength: { value: 2, message: 'Debe tener al menos 2 caracteres' },
+      })}
+      error={errors.accountName?.message}
+    />
+
+    {/* Nombre */}
+    <InputField
+      id="firstName"
       placeholder="Nombre"
-      register={register('nombre', {
+      register={register('firstName', {
         required: 'El nombre es obligatorio',
         minLength: { value: 2, message: 'Debe tener al menos 2 caracteres' },
       })}
-      error={errors.nombre?.message}
+      error={errors.firstName?.message}
     />
+
+    {/* Apellido */}
     <InputField
-      id="apellido"
+      id="lastName"
       placeholder="Apellido"
-      register={register('apellido', {
+      register={register('lastName', {
         required: 'El apellido es obligatorio',
         minLength: { value: 2, message: 'Debe tener al menos 2 caracteres' },
       })}
-      error={errors.apellido?.message}
+      error={errors.lastName?.message}
     />
+
+    {/* Correo */}
     <InputField
-      id="correo"
+      id="email"
       placeholder="Correo electrónico"
       type="email"
-      register={register('correo', {
+      register={register('email', {
         required: 'El correo es obligatorio',
         pattern: {
           value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
           message: 'Correo electrónico inválido',
         },
       })}
-      error={errors.correo?.message}
+      error={errors.email?.message}
     />
+    <input type="hidden" {...register('currency')} value="USD" />
+    <input type="hidden" {...register('accountType')} value="virtual_bank" />
+    <input type="hidden" {...register('type')} value="paypal" />
   </div>
 );
 

@@ -30,7 +30,7 @@ function AmountTransactions({ amountTotal, totalTransactions }: { amountTotal: n
           max={500}
           aria-label="Transaction amount slider"
           valueLabelDisplay="on"
-          componentsProps={{
+          slotProps={{
             valueLabel: {
               style: {
                 backgroundColor: '#C2D4FF',

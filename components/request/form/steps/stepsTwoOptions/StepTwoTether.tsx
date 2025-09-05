@@ -5,6 +5,7 @@ import InputSteps from '@/components/inputSteps/InputSteps';
 import { FieldError } from 'react-hook-form';
 import InfoStep from '@/components/ui/InfoStep/InfoStep';
 import clsx from 'clsx';
+import { System } from '@/types/data';
 
 interface StepTwoTetherProps {
   register: UseFormRegister<any>;
@@ -27,8 +28,6 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
   completedSteps,
 }) => {
   const formValues = useWatch({ control });
-  const receiveAmount = localStorage.getItem('receiveAmount');
-  console.log(formValues.red_selection);
   return (
     <>
       <div
@@ -81,40 +80,23 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
         />
 
         <div className="realative order-3 flex w-full flex-col sm-phone:order-2">
-          <Controller
+          <InputSteps
+            label="Red"
             name="red_selection"
-            control={control}
-            defaultValue={undefined}
+            id="red_selection"
+            type="text"
+            placeholder="Red de la billetera"
+            disabled={blockAll}
+            register={register}
+            watch={watch}
+            readOnly
             rules={{
-              required: 'Este campo es obligatorio',
+              required: 'La red es obligatoria',
             }}
-            render={({ field, fieldState }) => (
-              <SelectRed
-                blockAll={blockAll}
-                selectedRed={field.value}
-                setSelectedRed={(option) => field.onChange(option)}
-                errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
-              />
-            )}
+            error={errors.red_selection ? (errors.red_selection as FieldError) : undefined}
+            className="order-3 sm-phone:order-2"
           />
         </div>
-
-        <InputSteps
-          label="Recibes exactamente"
-          name="recieveAmountRed"
-          id="recieveAmountRed"
-          type="text"
-          placeholder={`Monto a Recibir por ${formValues.red_selection?.label ? formValues.red_selection?.label : 'Red'}`}
-          disabled={true}
-          value={`${receiveAmount} USDT ${formValues.red_selection?.label ? formValues.red_selection?.label : 'Red'}`}
-          register={register}
-          watch={watch}
-          rules={{
-            required: false,
-          }}
-          error={errors.recieveAmountRed ? (errors.recieveAmountRed as FieldError) : undefined}
-          className="order-4"
-        />
       </div>
     </>
   );
