@@ -15,7 +15,8 @@ import AprobarRechazar from '@/components/admin/TransactionModal/componentesModa
 import ClientInformation from '@/components/admin/TransactionModal/componentesModal/ClientInformation';
 import FinalSection from '@/components/admin/TransactionModal/componentesModal/FinalSection';
 import { useSession } from 'next-auth/react';
-import { adaptTransactionV2ToTransactionTypeSingle } from '@/components/admin/utils/transactionAdapter';
+import { useTransactionFlow } from '../utils/useTransactionHistoryState';
+
 
 const MySwal = withReactContent(Swal);
 
@@ -29,6 +30,8 @@ const TransactionModal = () => {
 
   const params = useParams();
   const transId = params.id as string;
+
+  const transactionFlow = useTransactionFlow(transId, token || '');
 
   const {
     isLoading,
@@ -46,23 +49,19 @@ const TransactionModal = () => {
     getStatusClient,
   } = useTransactionStore();
 
-  const  transaction  = trans;
+  const transaction = trans;
 
-  // Handle modal animation
   useEffect(() => {
-    // Small delay to ensure animation works properly
     const timer = setTimeout(() => setIsVisible(true), 10);
     return () => clearTimeout(timer);
   }, []);
 
-  // Fetch transaction data and related information
   useEffect(() => {
     if (transId) {
       fetchTransaction(transId);
     }
   }, [transId, fetchTransaction]);
 
-  // Fetch additional data based on transaction properties
   useEffect(() => {
     if (!transaction) return;
 
@@ -72,15 +71,12 @@ const TransactionModal = () => {
       fetchNote(transaction.note_id);
     }
   }, [transaction, fetchRegret, fetchNote]);
-
-  // Update transaction status and client status
   useEffect(() => {
     if (!transId || !trans) return;
     updateTransactionStatusFromStore(transId, trans);
     getStatusClient(transId, trans);
   }, [transId, trans, componentStates, updateTransactionStatusFromStore, getStatusClient]);
 
-  // Handle component state changes
   const handleComponentStateChange = useCallback(
     (key: any, value: any) => {
       setComponentStates(key, value);
@@ -88,7 +84,6 @@ const TransactionModal = () => {
     [setComponentStates],
   );
 
-  // Handle selection change
   const handleSelectionChange = useCallback(
     (value: any) => {
       setComponentStates('aprooveReject', value);
@@ -242,6 +237,7 @@ const TransactionModal = () => {
             setIsSubmitting={setIsSubmitting}
             setSubmitError={setSubmitError}
             setSubmitSuccess={setSubmitSuccess}
+            transactionFlow={transactionFlow}
           />
 
           {componentStates.confirmTransButton != null && (
@@ -253,6 +249,7 @@ const TransactionModal = () => {
               trans={trans}
               handleComponentStateChange={handleComponentStateChange}
               setDiscrepancySend={setDiscrepancySend}
+              transactionFlow={transactionFlow}
             />
           )}
 
@@ -262,7 +259,7 @@ const TransactionModal = () => {
                 componentStates.discrepancySection !== null &&
                 (componentStates.discrepancySection !== true || discrepancySend))) && (
               <>
-                <ClientInformation />
+                <ClientInformation transactionFlow={transactionFlow} />
                 <FinalSection transId={transId} />
               </>
             )}

@@ -77,10 +77,9 @@ export async function updateTransactionStatus(
       additionalData: payload.additionalData || {},
     };
 
-   //  usar descripcion si 'message' no está en status review_payment (consultar)
-    if (payload.message || status === 'review_payment') {
-  body.message = payload.message ?? 'Solicitud en revisión por el administrador';
-   }
+    if (payload.message || payload.descripcion || status === 'review_payment') {
+  body.message = payload.message || payload.descripcion || 'Solicitud en revisión por el administrador';
+  }
 
 
     console.log('Enviando a backend:', body);

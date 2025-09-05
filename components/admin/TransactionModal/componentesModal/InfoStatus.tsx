@@ -3,7 +3,7 @@ import type React from 'react';
 import { useSession } from 'next-auth/react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { AlertCircle, AlertTriangle, CheckCircle, Clock, Search, Undo2, XCircle } from 'lucide-react';
+import { AlertCircle, AlertTriangle, ArrowRight, CheckCircle, Clock, Edit, Search, Undo2, XCircle } from 'lucide-react';
 import BackButton from '../../Sidebar/componentsSidebar/Navigation/BackButto';
 import { TransactionV2 } from '@/types/transactions/transactionsType';
 
@@ -29,15 +29,15 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      'pending': {
+      pending: {
         bgColor: 'bg-blue-100 dark:bg-blue-900/30',
         textColor: 'text-blue-800 dark:text-blue-300',
         borderColor: 'border-blue-200 dark:border-blue-800',
         icon: <Clock className="mr-1.5 h-4 w-4" />,
-        label: 'En Proceso',
-        ariaLabel: 'Estado: En Proceso',
+        label: 'Pendiente',
+        ariaLabel: 'Estado: Pendiente',
       },
-      'review_payment': {
+      review_payment: {
         bgColor: 'bg-purple-100 dark:bg-purple-900/30',
         textColor: 'text-purple-800 dark:text-purple-300',
         borderColor: 'border-purple-200 dark:border-purple-800',
@@ -45,15 +45,15 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
         label: 'Review',
         ariaLabel: 'Estado: Review',
       },
-      'approved': {
+      approved: {
         bgColor: 'bg-green-100 dark:bg-green-900/30',
         textColor: 'text-green-800 dark:text-green-300',
         borderColor: 'border-green-200 dark:border-green-800',
         icon: <CheckCircle className="mr-1.5 h-4 w-4" />,
-        label: 'Aceptada',
+        label: 'Aprobada',
         ariaLabel: 'Estado: Aprobada',
       },
-      'rejected': {
+      rejected: {
         bgColor: 'bg-red-100 dark:bg-red-900/30',
         textColor: 'text-red-800 dark:text-red-300',
         borderColor: 'border-red-200 dark:border-red-800',
@@ -61,7 +61,15 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
         label: 'Rechazada',
         ariaLabel: 'Estado: Rechazada',
       },
-      'discrepancy': {
+      modified: {
+        bgColor: 'bg-cyan-100 dark:bg-cyan-900/30',
+        textColor: 'text-cyan-800 dark:text-cyan-300',
+        borderColor: 'border-cyan-200 dark:border-cyan-800',
+        icon: <Edit size={14} className="mr-1" />,
+        label: 'Modificada',
+        ariaLabel: 'Estado: Modificada',
+      },
+      discrepancy: {
         bgColor: 'bg-amber-100 dark:bg-amber-900/30',
         textColor: 'text-amber-800 dark:text-amber-300',
         borderColor: 'border-amber-200 dark:border-amber-800',
@@ -69,7 +77,7 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
         label: 'Stop',
         ariaLabel: 'Estado: Stop',
       },
-      'canceled': {
+      canceled: {
         bgColor: 'bg-red-100 dark:bg-red-900/30',
         textColor: 'text-red-800 dark:text-red-300',
         borderColor: 'border-red-200 dark:border-red-800',
@@ -77,7 +85,7 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
         label: 'Cancelada',
         ariaLabel: 'Estado: Cancelada',
       },
-      'refunded': {
+      refunded: {
         bgColor: 'bg-rose-100 dark:bg-rose-900/30',
         textColor: 'text-rose-800 dark:text-rose-300',
         borderColor: 'border-rose-200 dark:border-rose-800',
@@ -85,13 +93,21 @@ const InfoStatus: React.FC<InfoStatusProps> = ({ trans, transId }) => {
         label: 'Reembolsada',
         ariaLabel: 'Estado: Reembolsada',
       },
-      'completed': {
-        bgColor: 'bg-green-100 dark:bg-green-900/30',
-        textColor: 'text-green-800 dark:text-green-300',
-        borderColor: 'border-green-200 dark:border-green-800',
+      completed: {
+        bgColor: 'bg-teal-100 dark:bg-teal-900/30',
+        textColor: 'text-teal-800 dark:text-teal-300',
+        borderColor: 'border-teal-200 dark:border-teal-800',
         icon: <CheckCircle className="mr-1.5 h-4 w-4" />,
         label: 'Finalizada',
         ariaLabel: 'Estado: Completada',
+      },
+      in_transit: {
+        bgColor: 'bg-indigo-100 dark:bg-indigo-900/30',
+        textColor: 'text-indigo-800 dark:text-indigo-300',
+        borderColor: 'border-indigo-200 dark:border-indigo-800',
+        icon: <ArrowRight className="mr-1.5 h-4 w-4" />,
+        label: 'En Camino',
+        ariaLabel: 'Estado: En Camino',
       },
       default: {
         bgColor: 'bg-gray-100 dark:bg-gray-800',

@@ -1,6 +1,6 @@
 'use client';
 
-import type React from 'react';
+import React from 'react';
 import { useState } from 'react';
 import { Edit, AlertTriangle, ArrowLeftRight } from 'lucide-react';
 import { useTransactionStore } from '@/store/transactionModalStorage';
@@ -14,11 +14,19 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/Dialog';
 import ModalEditReciever from '@/components/admin/TransactionModal/componentesModal/ModalEditReciever/ModalEditReciever';
 import MessageWpp from './ui/MessageWpp';
 import DiscrepancySection from './DiscrepancySection';
+import { TransactionFlowState } from '../../utils/useTransactionHistoryState';
 
-const ClientInformation: React.FC = ({}) => {
+interface ClientInformationProps {
+  transactionFlow: TransactionFlowState & { refreshStatus: () => void };
+}
+
+const ClientInformation: React.FC<ClientInformationProps> = React.memo(({ transactionFlow }) => {
   const { trans } = useTransactionStore();
   const transaction = trans;
   const [select, setSelect] = useState<boolean | null>(null);
+  const [transferStatus, setTransferStatus] = useState<boolean | null>(null);
+  const [userClickedNoOnTransfer, setUserClickedNoOnTransfer] = useState<boolean>(false);
+  
 
   const handleStopClick = () => {
     if (select) {
@@ -27,9 +35,19 @@ const ClientInformation: React.FC = ({}) => {
       setSelect(true);
     }
   };
-  function setDiscrepancySend(value: boolean): void {
-    throw new Error('Function not implemented.');
-  }
+
+
+  const handleTransferStatusChange = (status: boolean | null) => {
+    setTransferStatus(status);
+    
+    if (status === false) {
+      setUserClickedNoOnTransfer(true);
+    } else {
+      setUserClickedNoOnTransfer(false);
+    }
+  };
+
+const shouldDisableStopButton = transferStatus !== false && !userClickedNoOnTransfer;
 
   return (
     <Card className="w-full overflow-hidden border-black bg-white shadow-sm transition-all duration-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-800/90 dark:hover:bg-gray-800">
@@ -44,18 +62,33 @@ const ClientInformation: React.FC = ({}) => {
             {transaction.regret_id ? 'Información para el Reembolso' : 'Información para realizar el Pago'}
           </h2>
           <Button
-            variant="outline"
-            onClick={handleStopClick}
-            className={`rounded-3xl ${
-              select
-                ? 'bg-amber-500 text-white shadow-lg shadow-amber-200 dark:bg-amber-600 dark:shadow-amber-900/20'
-                : 'border-2 border-amber-500 bg-white text-gray-700 hover:bg-amber-50 dark:border-amber-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-amber-900/20'
-            } `}
-          >
+  variant="outline"
+  onClick={handleStopClick}
+  disabled={shouldDisableStopButton}
+  className={`rounded-3xl ${
+    shouldDisableStopButton
+      ? 'cursor-not-allowed bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500'
+      : select
+      ? 'bg-amber-500 text-white shadow-lg shadow-amber-200 dark:bg-amber-600 dark:shadow-amber-900/20'
+      : 'border-2 border-amber-500 bg-white text-gray-700 hover:bg-amber-50 dark:border-amber-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-amber-900/20'
+  } `}
+>
             <AlertTriangle
-              className={select ? `h-5 w-5 text-white dark:text-white` : `h-5 w-5 text-amber-500 dark:text-amber-400`}
+              className={
+                shouldDisableStopButton
+                  ? `h-5 w-5 text-gray-400 dark:text-gray-500`
+                  : select 
+                  ? `h-5 w-5 text-white dark:text-white` 
+                  : `h-5 w-5 text-amber-500 dark:text-amber-400`
+              }
             />
-            <span className="font-bold">STOP</span>
+            <span className={
+              shouldDisableStopButton
+                ? 'font-bold text-gray-400 dark:text-gray-500'
+                : 'font-bold'
+            }>
+              STOP
+            </span>
           </Button>
         </div>
 
@@ -74,6 +107,7 @@ const ClientInformation: React.FC = ({}) => {
         )}
 
         <RecieverData trans={trans} />
+
         {select === true && (
           <div className="animate-in fade-in mt-6 space-y-4 duration-300">
             <Alert className="border-l-4 border-l-amber-500 bg-amber-50 transition-all duration-300 hover:bg-amber-100 dark:border-l-amber-600 dark:bg-amber-900/20 dark:hover:bg-amber-900/30">
@@ -88,10 +122,21 @@ const ClientInformation: React.FC = ({}) => {
               </AlertDescription>
             </Alert>
             <MessageWpp text="Comunicate mediante **WhatsApp** del Remitente por si los datos del Destinarario no coincide en el momento de realizar la Transaferencia, y deja esta seccion en **STOP** hasta resolver el incombeniente  " />
-            <DiscrepancySection trans={trans} value={true} setDiscrepancySend={setDiscrepancySend} />
+    
+            <DiscrepancySection 
+              trans={trans} 
+              value={true} 
+              transactionFlow={transactionFlow}
+            />
           </div>
         )}
-        {!select && <TransferClient />}
+        
+        {!select && (
+          <TransferClient 
+            onTransferStatusChange={handleTransferStatusChange} 
+            transactionFlow={transactionFlow} 
+          />
+        )}
       </CardHeader>
 
       <div
@@ -101,6 +146,8 @@ const ClientInformation: React.FC = ({}) => {
       ></div>
     </Card>
   );
-};
+});
+
+ClientInformation.displayName = 'ClientInformation';
 
 export default ClientInformation;
