@@ -14,128 +14,92 @@ import {
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip';
-import { cn } from '@/lib/utils';
-import { Check, Upload } from '@mui/icons-material';
-import { AlertCircle, CheckCircle, LinkIcon, Loader2, Send, Trash2, XCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle, Loader2, Send, XCircle } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import ServerErrorModal from '../../ModalErrorServidor/ModalErrorSevidor';
 import { TransactionService } from './ui/TransactionService';
-import { set } from 'date-fns';
 import { TransactionV2 } from '@/types/transactions/transactionsType';
+import ClientInformation from './ClientInformation';
+import { TransactionFlowState } from '../../utils/useTransactionHistoryState';
 
 interface DiscrepancySectionProps {
   trans: TransactionV2;
   value: boolean | null;
-  setDiscrepancySend: (value: boolean) => void;
+  hasPassedThroughDiscrepancy?: boolean;
+  hasPassedThroughModified?: boolean;
+  currentStatus?: string;
+  transactionFlow: TransactionFlowState & { refreshStatus: () => void };
 }
 
-interface Form {
-  description: string;
-  transfer_id: string;
-  amount: string;
-  file: File | null;
-}
-
-const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySectionProps) => {
+const DiscrepancySection = ({
+  trans,
+  value,
+  hasPassedThroughDiscrepancy = false,
+  hasPassedThroughModified = false,
+  currentStatus = '',
+  transactionFlow
+}: DiscrepancySectionProps) => {
   const [discrepancy, setDiscrepancy] = useState<boolean | null>(value);
   const [resolved, setResolved] = useState<boolean | null>(null);
   const [discrepancyReason, setDiscrepancyReason] = useState('');
   const [resolutionReason, setResolutionReason] = useState('');
+  const [rejectionReason, setRejectionReason] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
-  const [isInputTransferIdFocused, setIsInputTransferIdFocused] = useState(false);
   const [isResolutionInputFocused, setIsResolutionInputFocused] = useState(false);
-  const [transferId, setTransferId] = useState('');
-
+  const [isRejectionInputFocused, setIsRejectionInputFocused] = useState(false);
   const [modalServidor, setModalServidor] = useState(false);
-  const [showConfirmRefund, setShowConfirmRefund] = useState(false);
-
-  const [resolutionForm, setResolutionForm] = useState<Form>({
-    description: '',
-    transfer_id: '',
-    amount: '',
-    file: null,
-  });
-
   const [isLoading, setIsLoading] = useState(false);
+  const [isResolvingLoading, setIsResolvingLoading] = useState(false);
   const [showRequiredDialog, setShowRequiredDialog] = useState(false);
   const [showConfirmDiscrepancyDialog, setShowConfirmDiscrepancyDialog] = useState(false);
   const [showSuccessDiscrepancyDialog, setShowSuccessDiscrepancyDialog] = useState(false);
   const [showRequiredResolutionDialog, setShowRequiredResolutionDialog] = useState(false);
   const [showConfirmResolutionDialog, setShowConfirmResolutionDialog] = useState(false);
   const [showSuccessResolutionDialog, setShowSuccessResolutionDialog] = useState(false);
-  const [dialogType, setDialogType] = useState<'discrepancy' | 'resolution'>('discrepancy');
+  const [showRequiredRejectionDialog, setShowRequiredRejectionDialog] = useState(false);
+  const [showConfirmRejectionDialog, setShowConfirmRejectionDialog] = useState(false);
+  const [showSuccessRejectionDialog, setShowSuccessRejectionDialog] = useState(false);
+  const [dialogType, setDialogType] = useState<'discrepancy' | 'resolution' | 'rejection'>('discrepancy');
+  const [hasMarkedAsResolved, setHasMarkedAsResolved] = useState(false);
 
-  const [form, setForm] = useState<Form>({
-    description: '',
-    transfer_id: '',
-    amount: '',
-    file: null,
-  });
+  const isDiscrepancyFieldDisabled =
+    ['discrepancy', 'modified', 'approved'].includes(trans.finalStatus) ||
+    hasPassedThroughDiscrepancy ||
+    currentStatus === 'approved';
 
-  const [isDragging, setIsDragging] = useState(false);
+  const isResolutionFieldDisabled =
+    trans.finalStatus === 'approved' || currentStatus === 'approved' || hasPassedThroughModified;
 
   const session = useSession();
-
   const token = session.data?.accessToken || '';
-
   const transactionId = trans.id;
+
+  useEffect(() => {
+    if (hasPassedThroughModified || currentStatus === 'modified' || trans.finalStatus === 'modified') {
+      setResolved(true);
+      setHasMarkedAsResolved(true);
+    }
+
+    if (hasPassedThroughDiscrepancy || currentStatus === 'discrepancy') {
+      setDiscrepancy(true);
+    }
+  }, [hasPassedThroughModified, hasPassedThroughDiscrepancy, currentStatus, trans.finalStatus]);
 
   useEffect(() => {
     setDiscrepancy(value);
   }, [value]);
 
   useEffect(() => {
-    if (showSuccessDiscrepancyDialog || showSuccessResolutionDialog) {
+    if (showSuccessDiscrepancyDialog || showSuccessResolutionDialog || showSuccessRejectionDialog) {
       const timer = setTimeout(() => {
         setShowSuccessDiscrepancyDialog(false);
         setShowSuccessResolutionDialog(false);
+        setShowSuccessRejectionDialog(false);
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [showSuccessDiscrepancyDialog, showSuccessResolutionDialog]);
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = () => {
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e: React.DragEvent, context: 'refund' | 'transfer') => {
-    e.preventDefault();
-    setIsDragging(false);
-    handleFile(e.dataTransfer.files, context);
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, context: 'refund' | 'transfer') => {
-    if (e.target.files) {
-      handleFile(e.target.files, context);
-    }
-  };
-
-  const handleFile = (files: FileList, context: 'refund' | 'transfer') => {
-    const file = files[0];
-    const isValidType = ['image/jpeg', 'image/png', 'application/pdf'].includes(file.type);
-    const isValidSize = file.size <= 5 * 1024 * 1024;
-
-    if (!isValidType || !isValidSize) {
-      alert('Archivo inválido');
-      return;
-    }
-
-    if (context === 'refund') {
-      setForm((prev) => ({ ...prev, file }));
-    } else {
-      setResolutionForm((prev) => ({ ...prev, file }));
-    }
-  };
-
-  const handleClick = (newValue: boolean) => {
-    setDiscrepancy(newValue);
-  };
+  }, [showSuccessDiscrepancyDialog, showSuccessResolutionDialog, showSuccessRejectionDialog]);
 
   const handleSubmitDiscrepancy = () => {
     if (!discrepancyReason.trim()) {
@@ -143,7 +107,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
       setShowRequiredDialog(true);
       return;
     }
-
     setShowConfirmDiscrepancyDialog(true);
   };
 
@@ -153,6 +116,7 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
       const response = await TransactionService('discrepancy', transactionId, {
         descripcion: discrepancyReason,
       });
+
       if (!response) {
         setIsLoading(false);
         setShowConfirmDiscrepancyDialog(false);
@@ -161,13 +125,40 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
         setIsLoading(false);
         setShowConfirmDiscrepancyDialog(false);
         setShowSuccessDiscrepancyDialog(true);
+        transactionFlow.refreshStatus(); 
       }
     } catch (error) {
       console.log('Error al enviar el motivo de discrepancia:', error);
       setModalServidor(true);
       setShowSuccessDiscrepancyDialog(false);
     }
-    setDiscrepancySend(true);
+  };
+
+  const handleResolvedClick = async () => {
+    try {
+      setIsResolvingLoading(true);
+      setResolved(true);
+      setHasMarkedAsResolved(true);
+
+      const response = await updateTransactionStatus('modified', transactionId, {
+        descripcion: 'Discrepancia marcada como resuelta',
+      });
+
+      if (!response || response.error) {
+        setModalServidor(true);
+        setResolved(null);
+        setHasMarkedAsResolved(false);
+      } else {
+        transactionFlow.refreshStatus(); 
+      }
+    } catch (error) {
+      console.error('Error al marcar como resuelta:', error);
+      setModalServidor(true);
+      setResolved(null);
+      setHasMarkedAsResolved(false);
+    } finally {
+      setIsResolvingLoading(false);
+    }
   };
 
   const handleSubmitResolution = () => {
@@ -176,90 +167,63 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
       setShowRequiredDialog(true);
       return;
     }
-
     setShowConfirmResolutionDialog(true);
   };
 
-  const handleSendRefound = async () => {
+  const confirmResolution = async () => {
     try {
-      if (!form.file) return null;
-
       setIsLoading(true);
-
-      const formData = new FormData();
-      formData.append('comprobante', form.file);
-      formData.append('transactionId', transactionId);
-
-      const response = await updateTransactionStatus('refunded', transactionId, {
-        descripcion: form.description,
-        additionalData: {
-          codigo_transferencia: form.transfer_id,
-        },
-        amount: Number(form.amount),
+      const response = await updateTransactionStatus('approved', transactionId, {
+        descripcion: resolutionReason,
       });
 
-      const responseFile = await fetch(`http://localhost:3001/api/v2/admin/transactions/voucher`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-
-      console.log('Estado de respuesta:', responseFile.status);
-
-      if (!response || !responseFile) {
+      if (!response || response.error) {
         setIsLoading(false);
+        setShowConfirmResolutionDialog(false);
         setModalServidor(true);
+      } else {
+        setIsLoading(false);
+        setShowConfirmResolutionDialog(false);
+        setShowSuccessResolutionDialog(true);
+        transactionFlow.refreshStatus(); 
       }
     } catch (error) {
+      console.error('Error en confirmResolution:', error);
       setIsLoading(false);
       setShowConfirmResolutionDialog(false);
       setModalServidor(true);
     }
   };
 
-  const transferDiscrepancyResolved = async () => {
+  const handleSubmitRejection = () => {
+    if (!rejectionReason.trim()) {
+      setDialogType('rejection');
+      setShowRequiredDialog(true);
+      return;
+    }
+    setShowConfirmRejectionDialog(true);
+  };
+
+  const confirmRejection = async () => {
     try {
-      if (!resolutionForm.file) return null;
       setIsLoading(true);
-
-      const formData = new FormData();
-      formData.append('comprobante', resolutionForm.file);
-      formData.append('transactionId', transactionId);
-
-      const response = await updateTransactionStatus('approved', transactionId, {
-        descripcion: resolutionForm.description,
-        additionalData: {
-          codigo_transferencia: resolutionForm.transfer_id,
-        },
-        amount: Number(resolutionForm.amount),
+      const response = await updateTransactionStatus('refunded', transactionId, {
+        descripcion: rejectionReason,
       });
 
-      if (!response || response.error) {
+      if (!response) {
         setIsLoading(false);
+        setShowConfirmRejectionDialog(false);
         setModalServidor(true);
-      }
-
-      const responseFile = await fetch(`http://localhost:3001/api/v2/admin/transactions/voucher`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-
-      console.log('Estado de respuesta:', responseFile.status);
-
-      if (!responseFile.ok) {
-        const errorData = await responseFile.json();
+      } else {
         setIsLoading(false);
-        setModalServidor(true);
+        setShowConfirmRejectionDialog(false);
+        setShowSuccessRejectionDialog(true);
+        transactionFlow.refreshStatus();
       }
     } catch (error) {
-      console.error('Error en transferDiscrepancyResolved:', error);
       setIsLoading(false);
-      setShowConfirmResolutionDialog(false);
+      setShowConfirmRejectionDialog(false);
       setModalServidor(true);
     }
   };
@@ -274,12 +238,11 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                 <Label htmlFor="discrepancy-reason" className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Motivo de la Discrepancia <span className="text-red-500">*</span>
                 </Label>
-
                 <div className="flex gap-2">
                   <Input
                     id="discrepancy-reason"
                     placeholder={
-                      trans.finalStatus === 'discrepancy'
+                      ['discrepancy', 'modified', 'approved', 'in_transit', 'completed', 'refunded'].includes(trans.finalStatus)
                         ? 'Ya se ha registrado una discrepancia para esta transacción'
                         : 'Explica la discrepancia detalladamente'
                     }
@@ -287,33 +250,36 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                     onChange={(e) => setDiscrepancyReason(e.target.value)}
                     onFocus={() => setIsInputFocused(true)}
                     onBlur={() => setIsInputFocused(false)}
-                    disabled={trans.finalStatus === 'discrepancy'} // Deshabilitar si ya está en discrepancy
+                    disabled={['discrepancy', 'modified', 'approved', 'in_transit', 'completed', 'refunded'].includes(trans.finalStatus)}
                     className={`h-10 transition-all duration-300 ${
-                      trans.finalStatus === 'discrepancy'
-                        ? 'cursor-not-allowed bg-gray-100 opacity-50 dark:bg-gray-600' // Estilos para campo deshabilitado
+                      ['discrepancy', 'modified', 'approved'].includes(trans.finalStatus)
+                        ? 'cursor-not-allowed bg-gray-100 opacity-50 dark:bg-gray-600'
                         : isInputFocused
                           ? 'border-amber-300 ring-2 ring-amber-300'
                           : ''
                     }`}
                     aria-required="true"
                   />
-
                   <Button
-                    disabled={discrepancyReason.length === 0 || trans.finalStatus === 'discrepancy'} // También deshabilitar el botón
+                    disabled={
+                      discrepancyReason.length === 0 ||
+                      ['discrepancy', 'modified', 'approved'].includes(trans.finalStatus)
+                    }
                     onClick={handleSubmitDiscrepancy}
                     className={`h-10 rounded-3xl transition-all duration-300 ${
-                      trans.finalStatus === 'discrepancy'
-                        ? 'cursor-not-allowed bg-gray-400 opacity-50 hover:bg-gray-400' // Estilos para botón deshabilitado
-                        : 'bg-amber-500 text-white hover:bg-amber-600'
+                      ['discrepancy', 'modified', 'approved'].includes(trans.finalStatus)
+                        ? 'cursor-not-allowed bg-gray-400 opacity-50 hover:bg-gray-400'
+                        : 'bg-blue-500 text-white hover:bg-blue-600'
                     }`}
                   >
                     <Send className="mr-2 h-4 w-4" />
-                    <span>{trans.finalStatus === 'discrepancy' ? 'Enviado' : 'Enviar'}</span>
+                    <span>
+                      {['discrepancy', 'modified', 'approved'].includes(trans.finalStatus) ? 'Enviado' : 'Enviar'}
+                    </span>
                   </Button>
                 </div>
-
                 <p className="text-muted-foreground text-xs">
-                  {trans.finalStatus === 'discrepancy'
+                  {['discrepancy', 'modified', 'approved'].includes(trans.finalStatus)
                     ? 'El motivo de discrepancia ya ha sido registrado para esta transacción.'
                     : 'Describe claramente cuál es la discrepancia encontrada en esta operación.'}
                 </p>
@@ -323,53 +289,102 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                 <div>
                   <h3 className="text-lg font-medium text-gray-800">¿Discrepancia Resuelta?</h3>
                 </div>
-
                 <div className="flex gap-4">
                   <TooltipProvider delayDuration={300}>
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
-                          onClick={() => setResolved(true)}
+                          onClick={handleResolvedClick}
+                          disabled={hasMarkedAsResolved || isResolvingLoading} 
                           variant={resolved === true ? 'default' : 'outline'}
                           className={`relative rounded-3xl transition-all duration-300 ${
                             resolved === true
                               ? 'bg-green-600 text-white hover:bg-green-700'
-                              : 'hover:border-green-500 hover:text-green-600'
+                              : hasMarkedAsResolved || isResolvingLoading
+                                ? 'cursor-not-allowed bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500'
+                                : 'hover:border-green-500 hover:text-green-600'
                           }`}
                         >
-                          <CheckCircle
-                            className={`mr-2 h-5 w-5 ${resolved === true ? 'text-white' : 'text-green-500'}`}
-                          />
-                          <span>Sí, resuelta</span>
+                          {isResolvingLoading ? ( 
+                            <Loader2 className="mr-2 h-5 w-5 animate-spin text-gray-400" />
+                          ) : (
+                            <CheckCircle
+                              className={`mr-2 h-5 w-5 ${
+                                resolved === true
+                                  ? 'text-white'
+                                  : hasMarkedAsResolved
+                                    ? 'text-gray-400'
+                                    : 'text-green-500'
+                              }`}
+                            />
+                          )}
+                          <span>{isResolvingLoading ? 'Procesando...' : 'Sí, resuelta'}</span> 
                         </Button>
                       </TooltipTrigger>
-                      {resolved !== true && (
-                        <TooltipContent side="top" className="border-green-600 bg-green-600 text-white">
-                          <p>Marcar como resuelta</p>
-                        </TooltipContent>
-                      )}
+                      <TooltipContent
+                        side="top"
+                        className={
+                          hasMarkedAsResolved || isResolvingLoading
+                            ? 'border-gray-500 bg-gray-500 text-white'
+                            : resolved === true
+                              ? 'border-green-600 bg-green-600 text-white'
+                              : 'border-green-600 bg-green-600 text-white'
+                        }
+                      >
+                        <p>
+                          {isResolvingLoading
+                            ? 'Procesando solicitud...'
+                            : hasMarkedAsResolved
+                              ? 'Ya marcada como resuelta'
+                              : resolved === true
+                                ? 'Marcada como resuelta'
+                                : 'Marcar como resuelta'}
+                        </p>
+                      </TooltipContent>
                     </Tooltip>
 
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
-                          onClick={() => setResolved(false)}
+                          onClick={() => !hasMarkedAsResolved && setResolved(false)}
+                          disabled={hasMarkedAsResolved || isResolvingLoading} 
                           variant={resolved === false ? 'destructive' : 'outline'}
                           className={`relative rounded-3xl transition-all duration-300 ${
                             resolved === false
                               ? 'bg-red-500 text-white hover:bg-red-600'
-                              : 'hover:border-red-500 hover:text-red-600'
+                              : hasMarkedAsResolved || isResolvingLoading
+                                ? 'cursor-not-allowed bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500'
+                                : 'hover:border-red-500 hover:text-red-600'
                           }`}
                         >
-                          <XCircle className={`mr-2 h-5 w-5 ${resolved === false ? 'text-white' : 'text-red-500'}`} />
+                          <XCircle
+                            className={`mr-2 h-5 w-5 ${
+                              resolved === false ? 'text-white' : hasMarkedAsResolved ? 'text-gray-400' : 'text-red-500'
+                            }`}
+                          />
                           <span>No resuelta</span>
                         </Button>
                       </TooltipTrigger>
-                      {resolved !== false && (
-                        <TooltipContent side="top" className="border-red-600 bg-red-600 text-white">
-                          <p>Marcar como no resuelta</p>
-                        </TooltipContent>
-                      )}
+                      <TooltipContent
+                        side="top"
+                        className={
+                          hasMarkedAsResolved || isResolvingLoading
+                            ? 'border-gray-500 bg-gray-500 text-white'
+                            : resolved === false
+                              ? 'border-red-600 bg-red-600 text-white'
+                              : 'border-red-600 bg-red-600 text-white'
+                        }
+                      >
+                        <p>
+                          {isResolvingLoading
+                            ? 'Procesando...'
+                            : hasMarkedAsResolved
+                              ? 'Deshabilitado - Ya se marcó como resuelta'
+                              : resolved === false
+                                ? 'Marcada como no resuelta'
+                                : 'Marcar como no resuelta'}
+                        </p>
+                      </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
                 </div>
@@ -379,269 +394,123 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
                     <Alert variant="default" className="border-green-200 bg-green-50">
                       <CheckCircle className="h-4 w-4 text-green-500" />
                       <AlertDescription className="mt-1.5 text-sm text-green-700">
-                        La discrepancia ha sido resuelta satisfactoriamente.
+                        {trans.finalStatus === 'modified'
+                          ? 'La discrepancia ha sido resuelta y la transacción ha sido modificada.'
+                          : 'La discrepancia ha sido resuelta satisfactoriamente.'}
                       </AlertDescription>
                     </Alert>
-                    <div className="mt-5">
-                      <h1>Realizar la transferencia al destinatario</h1>
-                      <div className="mt-5">
-                        <div className="space-y-2">
-                          <Label htmlFor="resolution-reason" className="text-sm font-medium text-gray-700">
-                            Motivo de la Resolución <span className="text-red-500">*</span>
-                          </Label>
 
-                          <div className="flex gap-2">
-                            <Input
-                              id="resolution-reason"
-                              placeholder="Explica cómo se resolvió la discrepancia"
-                              value={resolutionForm.description}
-                              onChange={(e) => setResolutionForm({ ...resolutionForm, description: e.target.value })}
-                              className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
-                                isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
-                              }`}
-                              aria-required="true"
-                            />
-                          </div>
-
-                          <p className="text-muted-foreground pb-2 text-xs">
-                            Describe cómo se resolvió la discrepancia encontrada.
-                          </p>
-                        </div>
-                        <div className="relative mb-5 flex-1">
-                          <Input
-                            id="transfer-id"
-                            type="text"
-                            placeholder="Id de la transferencia"
-                            value={resolutionForm.transfer_id}
-                            onChange={(e) => setResolutionForm({ ...resolutionForm, transfer_id: e.target.value })}
-                            className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
-                              isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
-                            }`}
-                            aria-required="true"
-                          />
-                        </div>
-
-                        <div className="relative mb-5 flex-1">
-                          <Input
-                            id="mount"
-                            type="text"
-                            placeholder="Monto transferido"
-                            value={resolutionForm.amount}
-                            onChange={(e) => setResolutionForm({ ...resolutionForm, amount: e.target.value })}
-                            className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
-                              isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
-                            }`}
-                            aria-required="true"
-                          />
-                        </div>
-                      </div>
-                      <div className="animate-in fade-in flex flex-col items-center gap-4 pt-2 duration-300">
-                        <h4 className="text-center text-base font-semibold">Comprobante de Transferencia</h4>
-                        {!resolutionForm.file ? (
-                          <div
-                            className={cn(
-                              'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 transition-all duration-300',
-                              isDragging
-                                ? 'bg-primary/10 border-[#90B0FE]'
-                                : 'hover:border-primary/70 hover:bg-primary/5 border-[#90B0FE] bg-[#FFFFF8] dark:border-gray-50 dark:bg-gray-800',
-                            )}
-                            onDragOver={handleDragOver}
-                            onDragLeave={handleDragLeave}
-                            onDrop={(e) => handleDrop(e, 'transfer')}
-                          >
-                            <Upload className="text-primary h-8 w-8" />
-                            <p className="px-4 text-center text-sm text-gray-600">
-                              Arrastra y suelta el comprobante aquí o
-                              <Button
-                                variant="link"
-                                className="h-auto p-0 pl-1 font-medium"
-                                onClick={() => document.getElementById('file-upload')?.click()}
-                              >
-                                selecciona un archivo
-                              </Button>
-                            </p>
-                            <input
-                              id="file-upload"
-                              type="file"
-                              className="hidden"
-                              accept="image/*,.pdf"
-                              onChange={(e) => handleFileChange(e, 'transfer')}
-                            />
-                            <p className="text-xs text-gray-500">Formatos aceptados: JPG, PNG, PDF (máx. 5MB)</p>
-                          </div>
-                        ) : (
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-50">
-                                <Check className="h-5 w-5 text-green-600" />
-                              </div>
-                              <div>
-                                <p className="font-medium">Comprobante cargado</p>
-                              </div>
-                            </div>
-                            <Button
-                              variant="link"
-                              className="gap-2 p-0 pt-5"
-                              onClick={() => setForm({ ...form, file: null })}
-                            >
-                              <Trash2 className="h-4 w-4 text-red-700" />
-                              <span className="text-sm font-medium">Eliminar comprobante</span>
-                            </Button>
-                          </div>
-                        )}
-
-                        <Button variant="link" className="gap-2 p-0">
-                          <LinkIcon className="h-4 w-4" />
-                          <span className="text-sm font-medium underline">Agregar link del comprobante</span>
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="resolution-reason"
+                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                      >
+                        Motivo de la Resolución <span className="text-red-500">*</span>
+                      </Label>
+                      <div className="flex gap-2">
+                        <Input
+                          id="resolution-reason"
+                          placeholder={
+                            ['approved', 'in_transit', 'completed'].includes(trans.finalStatus)
+                              ? 'La resolución ya ha sido registrada'
+                              : 'Explica cómo se resolvió la discrepancia'
+                          }
+                          value={resolutionReason}
+                          onChange={(e) => setResolutionReason(e.target.value)}
+                          onFocus={() => setIsResolutionInputFocused(true)}
+                          onBlur={() => setIsResolutionInputFocused(false)}
+                          disabled={['approved', 'in_transit', 'completed', 'refunded'].includes(trans.finalStatus)}
+                          className={`h-10 transition-all duration-300 ${
+                            trans.finalStatus === 'approved'
+                              ? 'cursor-not-allowed bg-gray-100 opacity-50 dark:bg-gray-600'
+                              : isResolutionInputFocused
+                                ? 'border-green-300 ring-2 ring-green-300'
+                                : ''
+                          }`}
+                          aria-required="true"
+                        />
+                        <Button
+                          disabled={resolutionReason.length === 0 || trans.finalStatus === 'approved'}
+                          onClick={handleSubmitResolution}
+                          className={`h-10 rounded-3xl transition-all duration-300 ${
+                            trans.finalStatus === 'approved'
+                              ? 'cursor-not-allowed bg-gray-400 opacity-50 hover:bg-gray-400'
+                              : 'bg-blue-500 text-white hover:bg-blue-600'
+                          }`}
+                        >
+                          <Send className="mr-2 h-4 w-4" />
+                          <span>{trans.finalStatus === 'approved' ? 'Enviado' : 'Enviar'}</span>
                         </Button>
                       </div>
+                      <p className="text-muted-foreground text-xs">
+                        {[ 'approved','in_transit', 'completed'].includes(trans.finalStatus)
+                          ? 'El motivo de resolución ya ha sido registrado para esta transacción.'
+                          : 'Describe cómo se resolvió la discrepancia encontrada.'}
+                      </p>
+                    </div>
 
+                    <div className="mt-4 flex justify-end">
                       <Button
-                        onClick={() => setShowConfirmResolutionDialog(true)}
-                        className="h-11 w-full rounded-3xl bg-custom-blue text-white hover:bg-blue-700"
-                        aria-label="Enviar ID de transferencia"
+                        disabled={true}
+                        className="h-10 cursor-not-allowed rounded-3xl bg-gray-300 text-gray-500 opacity-50"
                       >
-                        <span>Enviar</span>
+                        <XCircle className="mr-2 h-4 w-4" />
+                        Rechazar Solicitud
                       </Button>
                     </div>
                   </div>
                 )}
 
                 {resolved === false && (
-                  <>
-                    <Alert
-                      variant="destructive"
-                      className="animate-in fade-in mt-4 border-red-200 bg-[#F8C0C0] duration-300"
-                    >
+                  <div className="animate-in fade-in mt-4 space-y-4 duration-300">
+                    <Alert variant="destructive" className="border-red-200 bg-[#F8C0C0]">
                       <AlertCircle className="h-4 w-4 text-red-500" />
                       <AlertDescription className="mt-1.5 text-sm text-red-700">
                         La discrepancia no se pudo resolver.
                       </AlertDescription>
                     </Alert>
 
-                    <div className="mt-5">
-                      <h1>Emitir el reembolso al Usuario a la cuenta de origen</h1>
-                      <div className="mt-5">
-                        <div className="relative mb-5 flex-1">
-                          <div className="mb-2 flex items-center">
-                            <Label
-                              htmlFor="transfer-id"
-                              className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                            >
-                              Motivo por el que no se resolvió la discrepancia
-                              <span className="ml-1 text-red-500">*</span>
-                            </Label>
-                          </div>
-                          <Input
-                            id="reject-reason"
-                            type="text"
-                            placeholder="Motivo del rechazo"
-                            value={form.description}
-                            onChange={(e) => setForm({ ...form, description: e.target.value })}
-                            className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
-                              isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
-                            }`}
-                            aria-required="true"
-                          />
-                        </div>
-                        <div className="relative mb-5 flex-1">
-                          <Input
-                            id="transfer-id"
-                            type="text"
-                            placeholder="Id de el reembolso"
-                            value={form.transfer_id}
-                            onChange={(e) => setForm({ ...form, transfer_id: e.target.value })}
-                            className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
-                              isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
-                            }`}
-                            aria-required="true"
-                          />
-                        </div>
-
-                        <div className="relative mb-5 flex-1">
-                          <Input
-                            id="mount"
-                            type="text"
-                            placeholder="Monto transferido"
-                            value={form.amount}
-                            onChange={(e) => setForm({ ...form, amount: e.target.value })}
-                            className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] dark:border-[#969696] dark:bg-gray-700 dark:placeholder:text-gray-200 ${
-                              isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
-                            }`}
-                            aria-required="true"
-                          />
-                        </div>
-                      </div>
-                      <div className="animate-in fade-in flex flex-col items-center gap-4 pt-2 duration-300">
-                        <h4 className="text-center text-base font-semibold">Comprobante de Transferencia</h4>
-                        {!form.file ? (
-                          <div
-                            className={cn(
-                              'flex h-32 w-full max-w-md flex-col items-center justify-center gap-2 rounded-lg border-2 transition-all duration-300',
-                              isDragging
-                                ? 'bg-primary/10 border-[#90B0FE]'
-                                : 'hover:border-primary/70 hover:bg-primary/5 border-[#90B0FE] bg-[#FFFFF8] dark:border-gray-50 dark:bg-gray-800',
-                            )}
-                            onDragOver={handleDragOver}
-                            onDragLeave={handleDragLeave}
-                            onDrop={(e) => handleDrop(e, 'refund')}
-                          >
-                            <Upload className="text-primary h-8 w-8" />
-                            <p className="px-4 text-center text-sm text-gray-600">
-                              Arrastra y suelta el comprobante aquí o
-                              <Button
-                                variant="link"
-                                className="h-auto p-0 pl-1 font-medium"
-                                onClick={() => document.getElementById('file-upload')?.click()}
-                              >
-                                selecciona un archivo
-                              </Button>
-                            </p>
-                            <input
-                              id="file-upload"
-                              type="file"
-                              className="hidden"
-                              accept="image/*,.pdf"
-                              onChange={(e) => handleFileChange(e, 'refund')}
-                            />
-                            <p className="text-xs text-gray-500">Formatos aceptados: JPG, PNG, PDF (máx. 5MB)</p>
-                          </div>
-                        ) : (
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-50">
-                                <Check className="h-5 w-5 text-green-600" />
-                              </div>
-                              <div>
-                                <p className="font-medium">Comprobante cargado</p>
-                              </div>
-                            </div>
-                            <Button
-                              variant="link"
-                              className="gap-2 p-0 pt-5"
-                              onClick={() => setForm({ ...form, file: null })}
-                            >
-                              <Trash2 className="h-4 w-4 text-red-700" />
-                              <span className="text-sm font-medium">Eliminar comprobante</span>
-                            </Button>
-                          </div>
-                        )}
-
-                        <Button variant="link" className="gap-2 p-0">
-                          <LinkIcon className="h-4 w-4" />
-                          <span className="text-sm font-medium underline">Agregar link del comprobante</span>
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="rejection-reason"
+                        className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                      >
+                        Motivo por el que no se resolvió la discrepancia <span className="text-red-500">*</span>
+                      </Label>
+                      <div className="flex gap-2">
+                        <Input
+                          id="rejection-reason"
+                          placeholder="Motivo del rechazo"
+                          value={rejectionReason}
+                          onChange={(e) => setRejectionReason(e.target.value)}
+                          onFocus={() => setIsRejectionInputFocused(true)}
+                          onBlur={() => setIsRejectionInputFocused(false)}
+                          className={`h-10 transition-all duration-300 ${
+                            isRejectionInputFocused ? 'border-red-300 ring-2 ring-red-300' : ''
+                          }`}
+                          aria-required="true"
+                        />
+                        <Button
+                          disabled={rejectionReason.length === 0}
+                          onClick={handleSubmitRejection}
+                          className="h-10 rounded-3xl bg-blue-500 text-white hover:bg-blue-600"
+                        >
+                          <Send className="mr-2 h-4 w-4" />
+                          Enviar
                         </Button>
                       </div>
+                      <p className="text-muted-foreground text-xs">
+                        Describe por qué no se pudo resolver la discrepancia.
+                      </p>
+                    </div>
 
-                      <Button
-                        onClick={() => setShowConfirmRefund(true)}
-                        className="h-11 w-full rounded-3xl bg-custom-blue text-white hover:bg-blue-700"
-                        aria-label="Enviar ID de transferencia"
-                      >
-                        <span>Enviar</span>
+                    <div className="mt-4 flex justify-end">
+                      <Button className="h-10 rounded-3xl bg-red-500 text-white hover:bg-red-600">
+                        <XCircle className="mr-2 h-4 w-4" />
+                        Rechazar Solicitud
                       </Button>
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
             </div>
@@ -668,7 +537,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
           <DialogHeader>
             <DialogTitle className="text-gray-800 dark:text-gray-100">Confirmar discrepancia</DialogTitle>
           </DialogHeader>
-
           <div className="flex flex-col items-center">
             <p className="mb-2 text-gray-700 dark:text-gray-300">
               ¿Estás seguro que quieres enviar este motivo de discrepancia?
@@ -678,18 +546,85 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
               <p className="text-gray-700 dark:text-gray-300">{discrepancyReason}</p>
             </div>
           </div>
-
           <DialogFooter className="gap-2 sm:justify-center">
             <Button
               variant="default"
               onClick={confirmDiscrepancy}
               className="bg-[rgb(1,42,142)] text-white hover:bg-[rgb(1,32,112)] dark:bg-blue-900 dark:hover:bg-blue-950"
             >
-              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Confirmar'}
+              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Confirmar"}
             </Button>
             <Button
               variant="outline"
               onClick={() => setShowConfirmDiscrepancyDialog(false)}
+              className="text-gray-600 dark:border-gray-500 dark:text-gray-300"
+              disabled={isLoading}
+            >
+              Cancelar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showConfirmResolutionDialog} onOpenChange={setShowConfirmResolutionDialog}>
+        <DialogContent className="border border-gray-300 bg-white text-gray-800 transition-all duration-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-gray-800 dark:text-gray-100">Confirmar resolución</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col items-center">
+            <p className="mb-2 text-gray-700 dark:text-gray-300">
+              ¿Estás seguro que quieres enviar este motivo de resolución?
+            </p>
+            <div className="w-full max-w-xs rounded-lg bg-gray-100 p-3 text-left dark:bg-gray-700/30">
+              <p className="mb-1 font-medium text-gray-800 dark:text-gray-200">Motivo:</p>
+              <p className="text-gray-700 dark:text-gray-300">{resolutionReason}</p>
+            </div>
+          </div>
+          <DialogFooter className="gap-2 sm:justify-center">
+            <Button
+              variant="default"
+              onClick={confirmResolution}
+              className="bg-[rgb(1,42,142)] text-white hover:bg-[rgb(1,32,112)] dark:bg-blue-900 dark:hover:bg-blue-950"
+            >
+              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Confirmar"}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => setShowConfirmResolutionDialog(false)}
+              className="text-gray-600 dark:border-gray-500 dark:text-gray-300"
+              disabled={isLoading}
+            >
+              Cancelar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+     <Dialog open={showConfirmRejectionDialog} onOpenChange={setShowConfirmRejectionDialog}>
+        <DialogContent className="border border-gray-300 bg-white text-gray-800 transition-all duration-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-gray-800 dark:text-gray-100">Confirmar rechazo</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col items-center">
+            <p className="mb-2 text-gray-700 dark:text-gray-300">
+              ¿Estás seguro que quieres enviar este motivo de rechazo?
+            </p>
+            <div className="w-full max-w-xs rounded-lg bg-gray-100 p-3 text-left dark:bg-gray-700/30">
+              <p className="mb-1 font-medium text-gray-800 dark:text-gray-200">Motivo:</p>
+              <p className="text-gray-700 dark:text-gray-300">{rejectionReason}</p>
+            </div>
+          </div>
+          <DialogFooter className="gap-2 sm:justify-center">
+            <Button
+              variant="default"
+              onClick={confirmRejection}
+              className="bg-[rgb(1,42,142)] text-white hover:bg-[rgb(1,32,112)] dark:bg-blue-900 dark:hover:bg-blue-950"
+            >
+              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Confirmar"}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => setShowConfirmRejectionDialog(false)}
               className="text-gray-600 dark:border-gray-500 dark:text-gray-300"
               disabled={isLoading}
             >
@@ -713,74 +648,6 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
         </DialogContent>
       </Dialog>
 
-      <Dialog open={showConfirmResolutionDialog} onOpenChange={setShowConfirmResolutionDialog}>
-        <DialogContent className="border border-gray-300 bg-white text-gray-800 transition-all duration-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-gray-800 dark:text-gray-100">Confirmar resolución</DialogTitle>
-          </DialogHeader>
-
-          <div className="flex flex-col items-center">
-            <p className="mb-2 text-gray-700 dark:text-gray-300">
-              ¿Estás seguro que quieres enviar este motivo de resolución?
-            </p>
-            <div className="w-full max-w-xs rounded-lg bg-gray-100 p-3 text-left dark:bg-gray-700/30">
-              <p className="mb-1 font-medium text-gray-800 dark:text-gray-200">Motivo:</p>
-              <p className="text-gray-700 dark:text-gray-300">{resolutionForm.description}</p>
-            </div>
-          </div>
-
-          <DialogFooter className="gap-2 sm:justify-center">
-            <Button
-              variant="default"
-              onClick={transferDiscrepancyResolved}
-              className="bg-[rgb(1,42,142)] text-white hover:bg-[rgb(1,32,112)] dark:bg-blue-900 dark:hover:bg-blue-950"
-            >
-              Confirmar
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => setShowConfirmResolutionDialog(false)}
-              className="text-gray-600 dark:border-gray-500 dark:text-gray-300"
-              disabled={isLoading}
-            >
-              Cancelar
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {modalServidor && <ServerErrorModal isOpen={modalServidor} onClose={() => setModalServidor(false)} />}
-
-      <Dialog open={showConfirmRefund} onOpenChange={setShowConfirmRefund}>
-        <DialogContent className="border border-gray-200 bg-white transition-all duration-300 dark:border-gray-700 dark:bg-gray-800/95">
-          <DialogHeader>
-            <DialogTitle className="text-gray-900 dark:text-gray-100">Confirmar reembolso</DialogTitle>
-            <DialogDescription className="text-gray-700 dark:text-gray-300">
-              ¿Estás seguro que deseas enviar este reembolso?
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="w-full rounded-lg bg-gray-100 p-3 text-left dark:bg-gray-700/30">
-            <p className="mb-1 font-medium text-gray-800 dark:text-gray-200">Motivo:</p>
-            <p className="text-gray-700 dark:text-gray-300">{form.description}</p>
-          </div>
-
-          <DialogFooter className="flex gap-2 sm:justify-end">
-            <Button variant="destructive" onClick={handleSendRefound} className="dark:bg-red-700 dark:hover:bg-red-800">
-              {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Confirmar reembolso'}
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => setShowConfirmRefund(false)}
-              className="dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700/50"
-              disabled={isLoading}
-            >
-              Cancelar
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
       <Dialog open={showSuccessResolutionDialog} onOpenChange={setShowSuccessResolutionDialog}>
         <DialogContent className="border border-gray-300 bg-white text-gray-800 transition-all duration-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
           <DialogHeader>
@@ -794,6 +661,45 @@ const DiscrepancySection = ({ trans, value, setDiscrepancySend }: DiscrepancySec
           </DialogDescription>
         </DialogContent>
       </Dialog>
+
+      <Dialog open={showSuccessRejectionDialog} onOpenChange={setShowSuccessRejectionDialog}>
+        <DialogContent className="border border-gray-300 bg-white text-gray-800 transition-all duration-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-gray-800 dark:text-gray-100">
+              <CheckCircle className="h-5 w-5 text-green-500 dark:text-green-400" />
+              Rechazo registrado
+            </DialogTitle>
+          </DialogHeader>
+          <DialogDescription className="text-gray-700 dark:text-gray-300">
+            El motivo del rechazo ha sido registrado exitosamente
+          </DialogDescription>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showRequiredDialog} onOpenChange={setShowRequiredDialog}>
+        <DialogContent className="border border-gray-300 bg-white text-gray-800 transition-all duration-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-gray-800 dark:text-gray-100">
+              <AlertCircle className="h-5 w-5 text-red-500 dark:text-red-400" />
+              Campo requerido
+            </DialogTitle>
+          </DialogHeader>
+          <DialogDescription className="text-gray-700 dark:text-gray-300">
+            {dialogType === 'discrepancy'
+              ? 'Debes ingresar un motivo de discrepancia para continuar.'
+              : dialogType === 'resolution'
+                ? 'Debes ingresar un motivo de resolución para continuar.'
+                : 'Debes ingresar un motivo de rechazo para continuar.'}
+          </DialogDescription>
+        </DialogContent>
+      </Dialog>
+
+      <ServerErrorModal
+        isOpen={modalServidor}
+        onClose={() => setModalServidor(false)}
+        title="Error en el servidor"
+        message="Ha ocurrido un error en el servidor. Por favor, inténtalo de nuevo."
+      />
     </>
   );
 };

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import type React from 'react';
 import { useState, useRef, useEffect } from 'react';
 import { SessionProvider } from 'next-auth/react';
@@ -15,6 +15,7 @@ import {
   Edit,
   Undo2,
   AlertTriangle,
+  ArrowRight,
 } from 'lucide-react';
 import type { TransactionArrayV2, TransactionV2 } from '@/types/transactions/transactionsType';
 import PaginationButtons from '@/components/ui/PaginationButtonsProps/PaginationButtonsProps';
@@ -27,14 +28,14 @@ interface TransactionsTableProps {
 }
 
 interface FilterState {
-  status: string[]
-  stock_status: string[]
-  wallet_status: string[]
-  min_date: string | null
-  max_date: string | null
-  orderby: string
-  order: string
-  search: string
+  status: string[];
+  stock_status: string[];
+  wallet_status: string[];
+  min_date: string | null;
+  max_date: string | null;
+  orderby: string;
+  order: string;
+  search: string;
 }
 
 const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, currentPage }) => {
@@ -168,16 +169,15 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
     }, 300);
   };
 
-  // Función para obtener el badge de estado 
   const getStatusBadge = (status: string) => {
     const statusConfig: Record<
       string,
       {
-        bgColor: string
-        textColor: string
-        icon: React.ReactNode
-        label: string
-        borderColor?: string
+        bgColor: string;
+        textColor: string;
+        icon: React.ReactNode;
+        label: string;
+        borderColor?: string;
       }
     > = {
       pending: {
@@ -237,10 +237,17 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
         label: 'Reembolsada',
       },
       completed: {
-        bgColor: 'bg-green-100 dark:bg-green-900/30',
-        textColor: 'text-green-800 dark:text-green-300',
+        bgColor: 'bg-teal-100 dark:bg-teal-900/30',
+        textColor: 'text-teal-800 dark:text-teal-300',
         icon: <CheckCircle size={14} className="mr-1" />,
-        label: 'Completada',
+        label: 'Finalizada',
+      },
+
+      in_transit: {
+        bgColor: 'bg-indigo-100 dark:bg-indigo-900/30',
+        textColor: 'text-indigo-800 dark:text-indigo-300',
+        icon: <ArrowRight className="mr-1.5 h-4 w-4" />,
+        label: 'En Camino',
       },
       default: {
         bgColor: 'bg-gray-100 dark:bg-gray-800',
@@ -300,7 +307,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                     {activePopover === 'status' && (
                       <div
                         ref={(el) => {
-                          popoverRefs.current['status'] = el
+                          popoverRefs.current['status'] = el;
                         }}
                         className="absolute left-0 top-full z-50 mt-1 w-48 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
                         onClick={(e) => e.stopPropagation()}
@@ -339,8 +346,8 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                               <input
                                 type="checkbox"
                                 className="mr-2 h-4 w-4"
-                                checked={filters.status.includes("completed")}
-                                onChange={() => handleStatusFilterChange("completed")}
+                                checked={filters.status.includes('completed')}
+                                onChange={() => handleStatusFilterChange('completed')}
                               />
                               Finalizada
                             </label>
@@ -376,7 +383,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                     {activePopover === 'date' && (
                       <div
                         ref={(el) => {
-                          popoverRefs.current['date'] = el
+                          popoverRefs.current['date'] = el;
                         }}
                         className="absolute left-0 top-full z-50 mt-1 w-64 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
                         onClick={(e) => e.stopPropagation()}
@@ -448,7 +455,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                   </div>
                 </th>
                 <th className="px-4 py-3 text-sm font-medium">
-                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange("recipient")}>
+                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('recipient')}>
                     Destinatario
                     {filters.orderby === 'recipient' ? (
                       filters.order === 'asc' ? (
@@ -462,10 +469,10 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                   </div>
                 </th>
                 <th className="px-4 py-3 text-sm font-medium">
-                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange("amount")}>
+                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('amount')}>
                     Monto
-                    {filters.orderby === "amount" ? (
-                      filters.order === "asc" ? (
+                    {filters.orderby === 'amount' ? (
+                      filters.order === 'asc' ? (
                         <ChevronUp size={16} className="ml-1" />
                       ) : (
                         <ChevronDown size={16} className="ml-1" />
@@ -501,7 +508,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                       {transaction.receiverAccount.firstName} {transaction.receiverAccount.lastName}
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                      {transaction.amount.amountSent} {transaction.amount.currencySent} →{" "}
+                      {transaction.amount.amountSent} {transaction.amount.currencySent} →{' '}
                       {transaction.amount.amountReceived} {transaction.amount.currencyReceived}
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
@@ -532,7 +539,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TransactionsTable
+export default TransactionsTable;
