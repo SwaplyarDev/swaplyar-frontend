@@ -1,39 +1,13 @@
 import { getRegretById } from '@/actions/repentance/repentanceForm.action';
 import { getNoteById } from '@/actions/transactions/notes.action';
-import { getStatusTransactionAdmin, getTransactionById, postStatusInAdmin } from '@/actions/transactions/transactions.action';
+import {getStatusTransactionAdmin, getTransactionById, postStatusInAdmin } from '@/actions/transactions/transactions.action';
 import auth from '@/auth';
 import { NoteTypeSingle, emptyNote } from '@/types/transactions/notesType';
 import { RegretTypeSingle, emptyRegret } from '@/types/transactions/regretsType';
-import { TransactionTypeSingle, TransactionV2, emptyTransaction, emptyTransactionV2 } from '@/types/transactions/transactionsType';
+import { TransactionV2, emptyTransactionV2} from '@/types/transactions/transactionsType';
 import { convertTransactionState, getComponentStatesFromStatus } from '@/utils/transactionStatesConverser';
 import { create } from 'zustand';
 
-interface TransactionStatus {
-  refunded: {
-    sec: number;
-    id: string;
-    date: string;
-    description: string;
-  };
-  pending: {
-    sec: number;
-    id: string;
-    date: string;
-    description: string;
-  };
-  review_payment: {
-    sec: number;
-    id: string;
-    date: string;
-    description: string;
-  };
-  modified: {
-    sec: number;
-    id: string;
-    date: string;
-    description: string;
-  };
-}
 interface TransactionState {
   trans: TransactionV2;
   noteEdit: NoteTypeSingle;
@@ -61,7 +35,9 @@ interface TransactionState {
   setSelected: (selected: 'stop' | 'accepted' | 'canceled' | null) => void;
   updateStatusFromComponents: () => void;
   getStatusClient: (transId: string, trans: any) => Promise<void>;
+  setHasFetchedStatus: (value: boolean) => void;
 }
+
 export const useTransactionStore = create<TransactionState>((set, get) => ({
   trans: emptyTransactionV2,
   noteEdit: emptyNote,
@@ -108,7 +84,7 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
   updateTransactionStatusFromStore: async (transId, trans) => {
     const { status } = get();
 
-    if (!status || !trans) {
+     if (!status || !trans) {
       console.warn('⚠️ Estado no definido, cancelando actualización.');
       return;
     }
@@ -176,10 +152,11 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
   updateStatusFromComponents: () => {
     const { componentStates, setStatus } = get();
     let newStatus = 'pending';
+
     if (componentStates.aprooveReject === 'canceled') {
       newStatus = 'canceled';
     }
-
+    
     if (componentStates.aprooveReject === 'stop' && componentStates.discrepancySection) {
       newStatus = 'discrepancy';
     } else if (componentStates.aprooveReject === 'stop' && !componentStates.discrepancySection) {
@@ -201,7 +178,9 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
     setStatus(newStatus);
   },
 
-  setStatus: (status) => set({ status }),
-
+  setStatus: (status) => {
+    set({ status });
+  },
+  
   setSelected: (selected) => set({ selected }),
 }));

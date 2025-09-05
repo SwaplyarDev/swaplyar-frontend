@@ -2,7 +2,7 @@
 
 import type React from 'react';
 
-import type { TransactionTypeSingle, TransactionV2 } from '@/types/transactions/transactionsType';
+import type { TransactionV2 } from '@/types/transactions/transactionsType';
 import { getReceiverLabels } from '../ui/RenderLabels';
 import { useTransactionStore } from '@/store/transactionModalStorage';
 import { useState } from 'react';
@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/Button';
 import { Label } from '@/components/ui/Label';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { UpdateTransactionData } from '@/components/admin/TransactionPageComponents/ServiceTransaction';
+import { updateTransaction } from '@/actions/transactions/transaction-status.action';
 
 interface ModalEditRecieverProps {
   modal: boolean;
@@ -24,7 +24,8 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
   const receiverLabels = getReceiverLabels(trans);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { noteEdit, regretCancel } = useTransactionStore();
-  const  transaction  = trans;
+  const transaction = trans;
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isDragging, setIsDragging] = useState(false);
 
@@ -64,29 +65,103 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
     }));
   };
 
-  const handleSubmit = async () => {
-    const body = {
-      bank_name: modifiedValues.Banco,
-      sender_method_value: modifiedValues.CBU,
-      document_value: modifiedValues.DNI,
+  const mapLabelsToDTO = (modifiedValues: { [key: string]: string }) => {
+    const mapping: { [key: string]: string } = {
+      'Banco': 'bankName',
+      'CBU': 'sendMethodValue',
+      'CUIL': 'sendMethodValue',
+      'Cuenta': 'sendMethodValue',
+      'DNI': 'documentValue',
+      'CUIT': 'documentValue',
+      'Moneda': 'currency',
+      'Método de Pago': 'sendMethodKey',
+      'Tipo de Documento': 'documentType',
+      'Valor del Documento': 'documentValue',
     };
 
+    const dto: any = {};
+    
+    Object.entries(modifiedValues).forEach(([label, value]) => {
+      const dtoKey = mapping[label];
+      if (dtoKey && value) {
+        dto[dtoKey] = value;
+        if (dtoKey === 'documentValue') {
+          dto.documentType = label; 
+        }
+
+        if (dtoKey === 'sendMethodValue') {
+          dto.sendMethodKey = label;
+        }
+      }
+    });
+
+    return dto;
+  };
+
+  const isFieldEditable = (label: string): boolean => {
+    const editableFields = [
+      'Banco', 'CBU', 'CUIL', 'Cuenta', 'DNI', 'CUIT', 'Moneda', 
+      'Método de Pago', 'Tipo de Documento', 'Valor del Documento'
+    ];
+    return editableFields.includes(label);
+  };
+
+  const handleSubmit = async () => {
+    if (isLoading) return;
+
     try {
-      const response = await UpdateTransactionData(body, transaction.id);
+      setIsLoading(true);
+
+      const transactionData = mapLabelsToDTO(modifiedValues);
+
+      if (Object.keys(transactionData).length === 0) {
+        alert('No se han realizado cambios para actualizar');
+        return;
+      }
+
+      console.log('Enviando datos:', transactionData);
+
+      const response = await updateTransaction(transactionData, transaction.id);
+
+      if (response.success) {
+        console.log('Transacción actualizada correctamente:', response.message);
+        alert(response.message || 'Transacción actualizada correctamente');
+        setModal(false);
+        window.location.reload();
+      } else {
+        console.error('Error al actualizar la transacción:', response.error);
+        alert(`Error: ${response.error || 'Error al actualizar la transacción'}`);
+      }
     } catch (error) {
-      throw new Error(`❌ Error en la respuesta del servicio` + error);
+      console.error('Error en handleSubmit:', error);
+      alert('Error inesperado al actualizar la transacción. Por favor, inténtalo nuevamente.');
+    } finally {
+      setIsLoading(false);
     }
-    setModal(false);
+  };
+  const hasChanges = () => {
+    return receiverLabels.some(({ label, value }) => {
+      return isFieldEditable(label) && modifiedValues[label] !== value;
+    });
+  };
+
+  const handleCancel = () => {
+    if (hasChanges()) {
+      if (confirm('Tienes cambios sin guardar. ¿Estás seguro de que quieres cancelar?')) {
+        setModal(false);
+      }
+    } else {
+      setModal(false);
+    }
   };
 
   return (
-    // Backdrop con scroll habilitado
     <div
       className={cn(
-        'fixed inset-0 z-50 flex items-center justify-center bg-transparent p-4 transition-all duration-300',
+        'fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 transition-all duration-300',
         modal ? 'opacity-100' : 'pointer-events-none h-0 overflow-hidden opacity-0',
       )}
-      onClick={() => setModal(false)}
+      onClick={handleCancel}
     >
       <div
         onClick={(e) => e.stopPropagation()}
@@ -96,14 +171,14 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
           modal ? 'scale-100 opacity-100' : 'scale-95 opacity-0',
         )}
       >
-        {/* Header fijo */}
         <div className="flex flex-shrink-0 items-center justify-between border-b border-gray-200 p-6 pb-4 dark:border-gray-700">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Solicitud de edición de datos</h3>
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => setModal(false)}
+            onClick={handleCancel}
             className="h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-gray-700"
+            disabled={isLoading}
           >
             <X className="h-4 w-4" />
           </Button>
@@ -132,10 +207,7 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
               />
             )}
           </div>
-
-          {/* Data Comparison Section */}
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            {/* Original Data */}
             <div className="space-y-4">
               <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Datos Actuales</h4>
               <div className="space-y-3">
@@ -152,34 +224,61 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
               </div>
             </div>
 
-            {/* Modified Data */}
             <div className="space-y-4">
               <h4 className="text-sm font-medium text-blue-700 dark:text-blue-300">Datos Modificados</h4>
               <div className="space-y-3">
-                {receiverLabels.map(({ label }, index) => (
-                  <div key={index} className="space-y-1.5">
-                    <Label className="text-xs font-medium text-blue-600 dark:text-blue-400">{label}</Label>
-                    <Input
-                      value={modifiedValues[label] || ''}
-                      onChange={(e) => handleInputChange(label, e.target.value)}
-                      placeholder={`Nuevo ${label.toLowerCase()}`}
-                      className="border-blue-200 focus-visible:ring-blue-400 dark:border-blue-700 dark:bg-gray-700/30 dark:text-white"
-                    />
-                  </div>
-                ))}
+                {receiverLabels
+                  .filter(({ label }) => isFieldEditable(label))
+                  .map(({ label }, index) => (
+                    <div key={index} className="space-y-1.5">
+                      <Label className="text-xs font-medium text-blue-600 dark:text-blue-400">
+                        {label}
+                      </Label>
+                      <Input
+                        value={modifiedValues[label] || ''}
+                        onChange={(e) => handleInputChange(label, e.target.value)}
+                        placeholder={`Nuevo ${label.toLowerCase()}`}
+                        className="border-blue-200 focus-visible:ring-blue-400 dark:border-blue-700 dark:bg-gray-700/30 dark:text-white"
+                        disabled={isLoading}
+                      />
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
+
+          {hasChanges() && (
+            <div className="rounded-md border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/20">
+              <h5 className="text-sm font-medium text-amber-800 dark:text-amber-300 mb-2">Cambios pendientes:</h5>
+              <ul className="text-xs text-amber-700 dark:text-amber-400 space-y-1">
+                {receiverLabels
+                  .filter(({ label, value }) => isFieldEditable(label) && modifiedValues[label] !== value)
+                  .map(({ label, value }) => (
+                    <li key={label}>
+                      <strong>{label}:</strong> "{value}" → "{modifiedValues[label]}"
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          )}
         </div>
 
         <div className="flex-shrink-0 border-t border-gray-200 p-6 pt-4 dark:border-gray-700">
-          {/* Action Button */}
-          <div className="flex justify-center">
+          <div className="flex justify-center gap-4">
+            <Button
+              variant="outline"
+              onClick={handleCancel}
+              disabled={isLoading}
+              className="px-6 py-2"
+            >
+              Cancelar
+            </Button>
             <Button
               onClick={handleSubmit}
-              className="bg-green-600 px-8 py-2 text-white hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800"
+              disabled={isLoading || !hasChanges()}
+              className="bg-green-600 px-8 py-2 text-white hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Confirmar Modificación
+              {isLoading ? 'Actualizando...' : 'Confirmar Modificación'}
             </Button>
           </div>
         </div>
