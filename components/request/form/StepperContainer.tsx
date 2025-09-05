@@ -20,9 +20,12 @@ import useChronometerState from '@/store/chronometerStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import ReactDOMServer from 'react-dom/server';
 import { useSession } from 'next-auth/react';
+import { useRewardsStore } from '@/store/useRewardsStore';
+import { putDiscountsStatus } from '@/actions/Discounts/discounts.action';
 
 const StepperContainer = () => {
-  const { formData, activeStep, completedSteps, setActiveStep, updateFormData, submitAllData, resetToDefault } = useStepperStore();
+  const { formData, activeStep, completedSteps, setActiveStep, updateFormData, submitAllData, resetToDefault } = useStepperStore();  
+  const { couponInstance, markUsed, discounts_ids } = useRewardsStore();
   const { data: session } = useSession();
   const [blockAll, setBlockAll] = useState(false);
   const { isStopped, setStop } = useChronometerState();
@@ -70,6 +73,18 @@ const StepperContainer = () => {
   const handleStepClick = (index: number) => {
     if (completedSteps[index] || index === activeStep) {
       setActiveStep(index);
+    }
+  };
+
+  const handleMarkCouponUsed = async (coupon_id: string[], uuid_transacción: string) => {
+    if(couponInstance === 'NONE' || session?.accessToken === undefined || !uuid_transacción) return;
+
+    try {
+        const result = await putDiscountsStatus(session?.accessToken, coupon_id[0], uuid_transacción);
+        markUsed(couponInstance);
+        return [result];
+    } catch (error) {
+      console.error('Error marking coupon as used:', error);
     }
   };
 
@@ -152,6 +167,7 @@ const StepperContainer = () => {
       const isSuccess = await submitAllData(selectedSendingSystem, selectedReceivingSystem);
 
       if (isSuccess) {
+        await handleMarkCouponUsed(discounts_ids, isSuccess.id)
         Swal.fire({
           icon: 'success',
           background: '#ffffff00',

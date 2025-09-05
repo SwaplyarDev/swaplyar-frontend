@@ -8,7 +8,7 @@ interface CalculateSendParams {
   rateForOne: number;
   rateForOneBank: number;
   usdToArsRate: number;
-  usdToEurRate: number;
+  eurToUsdRate: number;
   usdToBrlRate: number;
   arsToBrlRate?: number;
   arsToEurRate?: number;
@@ -22,7 +22,7 @@ export function calculateSendAmountFromReceive({
   rateForOne,
   rateForOneBank,
   usdToArsRate,
-  usdToEurRate,
+  eurToUsdRate,
   usdToBrlRate,
   arsToBrlRate = 0,
   arsToEurRate = 0,
@@ -69,10 +69,10 @@ export function calculateSendAmountFromReceive({
     const bonoEnEur = couponUsdAmount * rateForOne;
     const valorFinalEUR = valorUsuario - bonoEnEur;
     sendCalculated = valorFinalEUR > 0 ? valorFinalEUR / rateForOne : 0;
-  } else if (isReceivingEUR && coinFrom === 'ARS' && usdToArsRate > 0 && usdToEurRate > 0) {
-    const bonoEnEur = couponUsdAmount / usdToEurRate;
+  } else if (isReceivingEUR && coinFrom === 'ARS' && usdToArsRate > 0 && eurToUsdRate > 0) {
+    const bonoEnEur = couponUsdAmount / eurToUsdRate;
     const valorFinalEUR = valorUsuario - bonoEnEur;
-    const finalRate = rateForOne > 0 ? rateForOne : usdToArsRate * usdToEurRate;
+    const finalRate = rateForOne > 0 ? rateForOne : usdToArsRate * eurToUsdRate;
 
     sendCalculated = valorFinalEUR > 0 ? valorFinalEUR * finalRate : 0;
   } else if (coinFrom === 'USD' && selectedReceivingSystem?.id === 'tether') {

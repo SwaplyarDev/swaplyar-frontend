@@ -93,6 +93,11 @@ export const useAmountCalculator = () => {
     }
   };
 
+  const setFinalReceiveAmount = (value: string) => {
+    if (/^[0-9]*\.?[0-9]{0,2}$/.test(value) || value === '') {
+      localStorage.setItem('receiveAmount', value);
+    }
+  };
   return {
     sendAmount,
     receiveAmount,
@@ -100,5 +105,6 @@ export const useAmountCalculator = () => {
     handleReceiveAmountChange,
     rateForOne,
     rateForOneBank,
+    setFinalReceiveAmount
   };
 };

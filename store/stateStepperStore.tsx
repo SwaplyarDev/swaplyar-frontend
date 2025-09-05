@@ -1,5 +1,6 @@
 import { System } from '@/types/data';
 import { StepperState } from '@/types/transactions/stepperStoretypes';
+import { ResponseCreateTransaction } from '@/types/transactionsBackEnd2';
 import { buildPaymentMethod, buildSenderMethod } from '@/utils/buildPaymentMethod';
 import {
   detectarMail,
@@ -34,7 +35,11 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       re_enter_bank_email: '',
       usdt_direction: '',
       re_enter_usdt_direction: '',
-      red_selection: undefined,
+      red_selection: {
+        value: '',
+        label: '',
+        image: <></>,
+      },
       recieveAmountRed: '',
       pixId: '',
       pixKey: '',
@@ -72,7 +77,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
   submitAllData: async (
     selectedSendingSystem: System | null,
     selectedReceivingSystem: System | null,
-  ): Promise<boolean> => {
+  ) : Promise<ResponseCreateTransaction | false> => {
     const state = get();
     const { stepOne, stepTwo, stepThree } = state.formData;
 
@@ -199,7 +204,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         throw new Error('Error al enviar los datos al servidor');
       }
 
-      return true;
+      const data = await response.json();
+      return data;
     } catch (error) {
       console.error('Error en la solicitud:', error);
       return false;
@@ -289,7 +295,11 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           re_enter_bank_email: '',
           usdt_direction: '',
           re_enter_usdt_direction: '',
-          red_selection: undefined,
+          red_selection: {
+            value: '',
+            label: '',
+            image: <></>,
+          },
           recieveAmountRed: '',
           pixId: '',
           pixKey: '',
