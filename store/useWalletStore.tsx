@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { mapApiWalletsToFrontend } from '@/components/Transaction/TransactionCalculatorInternal/walletMapper';
 import { getMyWalletAccounts } from '@/actions/virtualWalletAccount/virtualWallets.action';
 
-interface Wallet {
+export interface Wallet {
   id: string;
   type: string;
   label: string;

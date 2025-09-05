@@ -1,4 +1,5 @@
 import { System } from '@/types/data';
+import { is } from 'date-fns/locale';
 
 interface Params {
   couponInstance: 'THREE' | 'FIVE' | 'THREE_FIVE' | 'TEN' | 'MANUAL' | null;
@@ -8,7 +9,7 @@ interface Params {
   selectedReceivingSystem: System | null;
   rateForOne: number;
   usdToArsRate: number;
-  usdToEurRate: number;
+  eurToUsdRate: number;
   usdToBrlRate: number;
 }
 
@@ -20,7 +21,7 @@ export function calculateReceiveAmountWithCoupon({
   selectedReceivingSystem,
   rateForOne,
   usdToArsRate,
-  usdToEurRate,
+  eurToUsdRate,
   usdToBrlRate,
 }: Params): number {
   let couponUsdAmount = 0;
@@ -37,6 +38,13 @@ export function calculateReceiveAmountWithCoupon({
   const isReceivingARS = receivingCoin === 'ARS';
   const isReceivingEUR = receivingCoin === 'EUR';
   const isReceivingBRL = receivingCoin === 'BRL';
+  const isReceivingUSDT = receivingCoin === 'USDT';
+
+  const isSendingUSD = sendingCoin === 'USD';
+  const isSendingARS = sendingCoin === 'ARS';
+  const isSendingEUR = sendingCoin === 'EUR';
+  const isSendingBRL = sendingCoin === 'BRL';
+  const isSendingUSDT = sendingCoin === 'USDT';
 
   const shouldApplyCoupon = sendAmountNum > 0 && couponUsdAmount > 0;
 
@@ -44,29 +52,30 @@ export function calculateReceiveAmountWithCoupon({
 
   if (!shouldApplyCoupon) return receiveAmountNum;
 
-  if (sendingCoin === 'EUR' && (receivingCoin === 'USD' || receivingCoin === 'USDT') && rateForOne > 0) {
-    receiveAmountWithCoupon += couponUsdAmount / rateForOne;
-  } else if ((sendingCoin === 'USD' || sendingCoin === 'USDT') && receivingCoin === 'EUR' && rateForOne > 0) {
-    receiveAmountWithCoupon += couponUsdAmount * rateForOne;
-  } else if (sendingCoin === 'ARS' && (receivingCoin === 'USD' || receivingCoin === 'USDT')) {
+  if (isSendingEUR && (isReceivingUSD || isReceivingUSDT) && rateForOne > 0) {
+    receiveAmountWithCoupon += couponUsdAmount ;
+  } else if ((isSendingUSD || isSendingUSDT) && isReceivingEUR && rateForOne > 0) {
+    receiveAmountWithCoupon += (couponUsdAmount * rateForOne); 
+  } else if (isSendingARS && (isReceivingUSD || isReceivingUSDT)) {
     receiveAmountWithCoupon += couponUsdAmount;
-  } else if (sendingCoin === 'ARS' && receivingCoin === 'EUR' && usdToEurRate > 0) {
-    receiveAmountWithCoupon += couponUsdAmount / usdToEurRate;
-  } else if (sendingCoin === 'ARS' && receivingCoin === 'BRL' && usdToBrlRate > 0) {
-    receiveAmountWithCoupon += couponUsdAmount * usdToBrlRate;
-  } else if (sendingCoin === 'EUR' && receivingCoin === 'BRL' && usdToBrlRate > 0) {
-    receiveAmountWithCoupon += couponUsdAmount * usdToBrlRate;
-  } else if (receivingCoin === 'USDT' && rateForOne > 0) {
-    receiveAmountWithCoupon += couponUsdAmount * rateForOne;
-  } else if (isReceivingUSD && rateForOne > 0) {
-    receiveAmountWithCoupon += couponUsdAmount * rateForOne;
+  } else if (isSendingARS && isReceivingEUR && eurToUsdRate > 0) {
+    receiveAmountWithCoupon += (couponUsdAmount / eurToUsdRate);
+  } else if (isSendingARS && isReceivingBRL && usdToBrlRate > 0) {
+    receiveAmountWithCoupon += (couponUsdAmount * usdToBrlRate);
+  } else if (isSendingEUR && isReceivingBRL && usdToBrlRate > 0) {
+    receiveAmountWithCoupon += (couponUsdAmount * usdToBrlRate);
+  } else if (isReceivingUSDT) {
+    receiveAmountWithCoupon += couponUsdAmount;
+  } else if (isReceivingUSD) {
+    receiveAmountWithCoupon += couponUsdAmount;
   } else if (isReceivingARS && usdToArsRate > 0) {
-    receiveAmountWithCoupon += couponUsdAmount * usdToArsRate;
-  } else if (isReceivingEUR && rateForOne > 0) {
-    receiveAmountWithCoupon += couponUsdAmount * rateForOne;
-  } else if (isReceivingBRL && rateForOne > 0) {
-    receiveAmountWithCoupon += couponUsdAmount * rateForOne;
+    receiveAmountWithCoupon += (couponUsdAmount * usdToArsRate);
+  } else if (isReceivingEUR && eurToUsdRate > 0) {
+    receiveAmountWithCoupon += (couponUsdAmount / eurToUsdRate);
+  } else if (isReceivingBRL && usdToBrlRate > 0) {
+    receiveAmountWithCoupon += (couponUsdAmount * usdToBrlRate);
   }
+
 
   return receiveAmountWithCoupon;
 }

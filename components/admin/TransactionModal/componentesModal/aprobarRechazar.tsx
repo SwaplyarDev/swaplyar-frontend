@@ -22,8 +22,9 @@ import { Dialog } from '@radix-ui/react-dialog';
 import { DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/Dialog';
 import clsx from 'clsx';
 import ServerErrorModal from '../../ModalErrorServidor/ModalErrorSevidor';
-import { getTransactionStatusHistory } from '@/actions/transactions/transactions.action';
+import { TransactionFlowState } from '../../utils/useTransactionHistoryState';
 import { updateTransactionStatus } from '@/actions/transactions/transaction-status.action';
+
 
 interface AprobarRechazarProps {
   selected: 'stop' | 'accepted' | 'canceled' | null;
@@ -40,6 +41,7 @@ interface AprobarRechazarProps {
   setDiscrepancySend: (value: boolean) => void;
   onApprovedChange?: (isApproved: boolean) => void
   token?: string
+  transactionFlow: TransactionFlowState & { refreshStatus: () => void }
 }
 
 const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
@@ -51,57 +53,30 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
   setDiscrepancySend,
   onApprovedChange,
   token,
+  transactionFlow,
 }) => {
-  const { componentStates } = useTransactionStore();
-  const [rejectionReason, setRejectionReason] = useState('');
-  const [isInputFocused, setIsInputFocused] = useState(false);
-  const [isHovering, setIsHovering] = useState<string | null>(null);
-  const [isApproved, setIsApproved] = useState(false);
-  const [isRejected, setIsRejected] = useState(false);
-  const [isDiscrepancy, setIsDiscrepancy] = useState(false);
-  const [isApproving, setIsApproving] = useState(false);
-  const [isLoadingHistory, setIsLoadingHistory] = useState(true);
-  const [currentStatus, setCurrentStatus] = useState<string>("");
+  const { componentStates } = useTransactionStore()
+  const [rejectionReason, setRejectionReason] = useState("")
+  const [isInputFocused, setIsInputFocused] = useState(false)
+  const [isApproving, setIsApproving] = useState(false)
+
+  const isApproved = transactionFlow.isApproved
+  const isRejected = transactionFlow.isRejected
+  const isDiscrepancy = transactionFlow.isInDiscrepancy
+  const currentStatus = transactionFlow.currentStatus
+  const hasPassedThroughDiscrepancy = transactionFlow.hasPassedThroughDiscrepancy
+  const hasPassedThroughModified = transactionFlow.hasPassedThroughModified
+  const isLoadingHistory = transactionFlow.isLoading
+  const isUnderReview = transactionFlow.isUnderReview 
+
+
+  
 
   useEffect(() => {
-    const checkApprovalStatus = async () => {
-      if (!transId || !token) {
-        setIsLoadingHistory(false)
-        return
-      }
-
-      try {
-        setIsLoadingHistory(true)
-        const statusHistory = await getTransactionStatusHistory(transId, token)
-
-        if (statusHistory && statusHistory.length > 0) {
-          const lastStatusEntry = statusHistory[0]
-          const lastStatus = lastStatusEntry.status
-          setCurrentStatus(lastStatus)
-
-          if (lastStatus === "approved") {
-            setIsApproved(true)
-          } else if (lastStatus === "canceled" || lastStatus === "rejected") {
-            setIsRejected(true)
-          } else if (lastStatus === "discrepancy") {
-            setIsDiscrepancy(true)
-          }
-        }
-      } catch (error) {
-        console.error("Error al verificar historial de status:", error)
-      } finally {
-        setIsLoadingHistory(false)
-      }
-    }
-
-    checkApprovalStatus()
-  }, [transId, token])
-
-  useEffect(() => {
-    if (isDiscrepancy && selected !== "stop") {
+    if ((hasPassedThroughDiscrepancy || isDiscrepancy) && selected !== "stop") {
       onSelectChange("stop")
     }
-  }, [isDiscrepancy, selected, onSelectChange])
+  }, [hasPassedThroughDiscrepancy, isDiscrepancy, selected, onSelectChange])
 
   useEffect(() => {
     if (!isLoadingHistory && onApprovedChange) {
@@ -114,17 +89,57 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
   const [modalServidor, setModalServidor] = useState(false)
 
   useEffect(() => {
-    if (
+  // Solo aplicar esta lógica si no estamos cargando y no hay valor inicial definido
+  if (!transactionFlow.isLoading && 
+      transactionFlow.initialApproveRejectValue === null &&
       componentStates.confirmTransButton === false &&
       selected !== "canceled" &&
       selected !== "stop" &&
       !isApproved &&
       !isRejected &&
-      !isDiscrepancy
-    ) {
-      onSelectChange("canceled")
+      !isDiscrepancy &&
+      !transactionFlow.isUnderReview) {
+    onSelectChange("canceled");
+  }
+}, [
+  componentStates.confirmTransButton, 
+  selected, 
+  onSelectChange, 
+  isApproved, 
+  isRejected, 
+  isDiscrepancy, 
+  transactionFlow.isUnderReview,
+  transactionFlow.isLoading,
+  transactionFlow.initialApproveRejectValue
+]);
+
+   useEffect(() => {
+  if (transactionFlow.initialApproveRejectValue !== null) {
+    onSelectChange(transactionFlow.initialApproveRejectValue);
+  } else {
+    if (componentStates.confirmTransButton === false && 
+        !transactionFlow.isApproved && 
+        !transactionFlow.isRejected && 
+        !transactionFlow.isInDiscrepancy &&
+        !transactionFlow.isUnderReview) {
+      onSelectChange("canceled");
+    } else if (transactionFlow.hasPassedThroughDiscrepancy || transactionFlow.isInDiscrepancy) {
+      onSelectChange("stop");
+    } else {
+      onSelectChange(null);
     }
-  }, [componentStates.confirmTransButton, selected, onSelectChange, isApproved, isRejected, isDiscrepancy])
+  }
+}, [
+  transId, 
+  transactionFlow.initialApproveRejectValue,
+  transactionFlow.isLoading 
+]);
+
+useEffect(() => {
+  if (componentStates.confirmTransButton === true && selected === "canceled") {
+    onSelectChange(null);
+  }
+}, [componentStates.confirmTransButton, selected, onSelectChange]);
 
   const [loading, setLoading] = useState(false)
   const [apiResponse, setApiResponse] = useState<any>("")
@@ -150,7 +165,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
         throw new Error(response.error || "Error al aprobar la solicitud")
       }
 
-      setIsApproved(true)
+      transactionFlow.refreshStatus()
     } catch (error: any) {
       console.error("Error al aprobar la transacción:", error)
     } finally {
@@ -173,7 +188,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
         setApiResponse(response);
         setOpenModalReject(false);
         setOpenModalRejectResponse(true);
-        setIsRejected(true)
+        transactionFlow.refreshStatus();
       }
     } catch (error: any) {
       console.error('Error al rechazar la transacción:', error);
@@ -195,27 +210,29 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
   const getButtonClass = (type: 'accepted' | 'stop' | 'canceled') => {
     const isActionCompleted = isApproved || isRejected || isDiscrepancy
     const isStopSelected = selected === "stop"
+    const isModifiedStatus = currentStatus === "modified"
+    const shouldShowStopAsSelected = hasPassedThroughDiscrepancy || isDiscrepancy || isModifiedStatus
 
     const baseClass =
       'w-[150px] h-[40px] relative flex items-center justify-center gap-2 px-5 py-3 rounded-lg font-medium transition-all duration-300';
 
     if (type === "stop") {
-      if (isDiscrepancy) {
+      if (shouldShowStopAsSelected && !isUnderReview) {
         return `${baseClass} bg-amber-300 dark:bg-amber-400 text-amber-900 dark:text-amber-800 shadow-lg shadow-amber-200 dark:shadow-amber-900/20 cursor-not-allowed`;
       }
-      
+
       if (isStopSelected && !isActionCompleted) {
         return `${baseClass} bg-amber-500 dark:bg-amber-600 text-white shadow-lg shadow-amber-200 dark:shadow-amber-900/20`;
       }
-      
+
       if (isApproved || isRejected) {
         return `${baseClass} bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed`;
       }
-      
-      if (!componentStates.confirmTransButton) {
+
+      if (!isUnderReview) {
         return `${baseClass} bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed`;
       }
-      
+
       return `${baseClass} bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-2 border-amber-500 dark:border-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20`;
     }
 
@@ -228,41 +245,56 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
     }
 
     const isDisabled =
-      (!componentStates.confirmTransButton && type !== "canceled") ||
-      isApproving ||
-      loading ||
-      (type === "accepted" && (isRejected || isApproved || isDiscrepancy || isStopSelected)) || 
-      (type === "canceled" && (isApproved || isDiscrepancy || isStopSelected))
+  (!isUnderReview && type !== "canceled") ||
+  isApproving ||
+  (type === "accepted" && (isRejected || isApproved || isDiscrepancy || isStopSelected)) ||
+  (type === "canceled" && (isApproved || isDiscrepancy || isStopSelected || (componentStates.confirmTransButton === true && !isUnderReview)))
 
     if (isDisabled) {
-      return `${baseClass}  bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed`;
+      return `${baseClass} bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed`;
     }
 
     switch (type) {
       case 'accepted':
         return `${baseClass} bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:border-green-500 hover:text-green-600 dark:hover:text-green-400`
       case 'canceled':
-        return `${baseClass} ${
-          selected === 'canceled' && !isActionCompleted && !componentStates.confirmTransButton
-            ? 'bg-red-600 dark:bg-red-700 text-white shadow-lg shadow-red-200 dark:shadow-red-900/20'
-            : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:border-red-500 hover:text-red-600 dark:hover:text-red-400'
-        }`
+  return `${baseClass} ${
+    selected === 'canceled' && !isActionCompleted
+      ? 'bg-red-600 dark:bg-red-700 text-white shadow-lg shadow-red-200 dark:shadow-red-900/20'
+      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:border-red-500 hover:text-red-600 dark:hover:text-red-400'
+  }`
     }
- };
+  };
 
   const getTooltipContent = (type: "accepted" | "stop" | "canceled") => {
     const isStopSelected = selected === "stop"
+    const isModifiedStatus = currentStatus === "modified"
+    const shouldShowStopAsSelected = hasPassedThroughDiscrepancy || isDiscrepancy || isModifiedStatus
 
-    if (isDiscrepancy) {
+    if (shouldShowStopAsSelected) {
       if (type === "stop") {
-        return {
-          className: "border-amber-500 bg-amber-500 text-white",
-          text: "Transacción en discrepancia - Resuélvela para continuar",
+        if (isModifiedStatus) {
+          return {
+            className: "border-amber-500 bg-amber-500 text-white",
+            text: "Discrepancia resuelta - Status modificado",
+          }
+        } else if (hasPassedThroughDiscrepancy && currentStatus === "approved") {
+          return {
+            className: "border-amber-500 bg-amber-500 text-white",
+            text: "Transacción pasó por discrepancia - Ahora aprobada",
+          }
+        } else {
+          return {
+            className: "border-amber-500 bg-amber-500 text-white",
+            text: isModifiedStatus
+              ? "Discrepancia resuelta - Status modificado"
+              : "Transacción en discrepancia - Resuélvela para continuar",
+          }
         }
       }
       return {
         className: "border-gray-500 bg-gray-500 text-white",
-        text: "Deshabilitado - Transacción en discrepancia",
+        text: "Deshabilitado - Transacción pasó por discrepancia",
       }
     }
 
@@ -279,7 +311,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
     if (isRejected && type !== "canceled") {
       return { className: "border-gray-500 bg-gray-500 text-white", text: "Deshabilitado - Solicitud ya rechazada" }
     }
-    if (!componentStates.confirmTransButton && type !== "canceled") {
+    if (!isUnderReview && type !== "canceled") {
       return {
         className: "border-gray-500 bg-gray-500 text-white",
         text: "Deshabilitado - Confirmar transferencia primero",
@@ -303,24 +335,21 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
 
         <div className="mt-2 flex flex-wrap justify-between gap-4">
           <TooltipProvider delayDuration={300}>
+            {/* --- BOTÓN APROBAR --- */}
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   onClick={handleApprove}
                   disabled={
-                    !componentStates.confirmTransButton ||
                     isApproving ||
                     isApproved ||
                     isRejected ||
                     isDiscrepancy ||
-                    selected === "stop"
+                    selected === "stop" ||
+                    !isUnderReview
                   }
                   variant="outline"
-                  className={clsx(
-                    getButtonClass('accepted'),
-                    'rounded-3xl shadow-none ring-0 focus:outline-none focus:ring-0',
-                  )}
-                  aria-pressed={isApproved}
+                  className={clsx(getButtonClass('accepted'), 'rounded-3xl shadow-none')}
                 >
                   {isApproving ? (
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -332,52 +361,45 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                   <span>{isApproving ? "Aprobando..." : isApproved ? "Aprobado" : "Aprobar"}</span>
                 </Button>
               </TooltipTrigger>
-              {(() => {
-                const tooltip = getTooltipContent("accepted")
-                return (
-                  <TooltipContent side="top" className={tooltip.className}>
-                    <p>{tooltip.text}</p>
-                  </TooltipContent>
-                )
-              })()}
+              <TooltipContent 
+                side="top" 
+                className={`${getTooltipContent("accepted").className}`}
+              >
+                <p>{getTooltipContent("accepted").text}</p>
+              </TooltipContent>
             </Tooltip>
 
+            {/* --- BOTÓN STOP --- */}
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   onClick={() => {
-                    if (!isDiscrepancy && !isApproved && !isRejected && componentStates.confirmTransButton) {
+                    if (!isDiscrepancy && !isApproved && !isRejected) {
                       onSelectChange("stop");
                     }
                   }}
-                  disabled={!componentStates.confirmTransButton || isApproving || isApproved || isRejected || isDiscrepancy}
+                  disabled={
+                    isApproving ||
+                    isApproved ||
+                    isRejected ||
+                    isDiscrepancy ||
+                    !isUnderReview
+                  }
                   variant="outline"
-                  className={clsx(
-                    getButtonClass("stop"),
-                    "rounded-3xl shadow-none ring-0 focus:outline-none focus:ring-0",
-                  )}
-                  aria-pressed={selected === "stop" || isDiscrepancy}
+                  className={clsx(getButtonClass("stop"), "rounded-3xl shadow-none")}
                 >
                   <AlertTriangle
-                    className={`mr-2 h-5 w-5 ${
-                      selected === "stop" || isDiscrepancy
-                        ? isDiscrepancy
-                          ? "text-amber-900 dark:text-amber-800"
-                          : "text-white"
-                        : "text-amber-500 dark:text-amber-400"
-                    }`}
+                    className={`mr-2 h-5 w-5 ${selected === "stop" ? "text-white" : "text-amber-500 dark:text-amber-400"}`}
                   />
                   <span className="font-bold">STOP</span>
                 </Button>
               </TooltipTrigger>
-              {(() => {
-                const tooltip = getTooltipContent("stop")
-                return (
-                  <TooltipContent side="top" className={tooltip.className}>
-                    <p>{tooltip.text}</p>
-                  </TooltipContent>
-                )
-              })()}
+              <TooltipContent 
+                side="top" 
+                className={`${getTooltipContent("stop").className}`}
+              >
+                <p>{getTooltipContent("stop").text}</p>
+              </TooltipContent>
             </Tooltip>
 
             <Tooltip>
@@ -386,28 +408,20 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                   onClick={() =>
                     !isApproved && !isRejected && !isDiscrepancy && selected !== "stop" && onSelectChange('canceled')
                   }
-                  disabled={
-                    isApproved || loading || isDiscrepancy || selected === "stop"
-                  }
+                  disabled={isApproved || isDiscrepancy || selected === "stop"}
                   variant="outline"
-                  className={clsx(
-                    getButtonClass("canceled"),
-                    "rounded-3xl shadow-none ring-0 focus:outline-none focus:ring-0",
-                  )}
-                  aria-pressed={isRejected}
+                  className={clsx(getButtonClass("canceled"), "rounded-3xl shadow-none")}
                 >
                   <XCircle className={`mr-2 h-5 w-5 ${isRejected ? "text-white" : "text-red-500 dark:text-red-400"}`} />
                   <span>{isRejected ? "Rechazado" : "Rechazar"}</span>
                 </Button>
               </TooltipTrigger>
-              {(() => {
-                const tooltip = getTooltipContent("canceled")
-                return (
-                  <TooltipContent side="top" className={tooltip.className}>
-                    <p>{tooltip.text}</p>
-                  </TooltipContent>
-                )
-              })()}
+              <TooltipContent 
+                side="top" 
+                className={`${getTooltipContent("canceled").className}`}
+              >
+                <p>{getTooltipContent("canceled").text}</p>
+              </TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </div>
@@ -438,7 +452,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                       disabled={isApproved || isRejected || isDiscrepancy}
                       className={`h-11 transition-all duration-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 ${
                         isInputFocused ? 'ring-primary border-primary ring-2' : ""
-                      } ${isApproved || isRejected || isDiscrepancy ? "opacity-50 cursor-not-allowed" : ""}`}
+                      } ${isApproved || isRejected || isDiscrepancy ? "cursor-not-allowed opacity-50" : ""}`}
                       aria-required="true"
                     />
                   </div>
@@ -447,7 +461,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
                     onClick={() => setOpenModalReject(true)}
                     disabled={isApproved || isRejected || !rejectionReason.trim() || isDiscrepancy}
                     className={`h-11 rounded-3xl bg-custom-blue text-white shadow-sm transition-all duration-300 hover:bg-blue-700 hover:shadow-blue-200 dark:bg-blue-700 dark:hover:bg-blue-600 dark:hover:shadow-blue-900/20 ${
-                      isApproved || isRejected || isDiscrepancy ? "opacity-50 cursor-not-allowed" : ""
+                      isApproved || isRejected || isDiscrepancy ? "cursor-not-allowed opacity-50" : ""
                     }`}
                     aria-label="Enviar motivo de rechazo"
                   >
@@ -460,7 +474,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
             </div>
           )}
 
-        {(selected === 'stop' || isDiscrepancy) && !isApproved && !isRejected && (
+        {(selected === 'stop' || hasPassedThroughDiscrepancy || isDiscrepancy) && !isApproved && !isRejected && (
           <div className="animate-in fade-in mt-6 space-y-4 duration-300">
             <Alert className="border-l-4 border-l-amber-500 bg-amber-50 transition-all duration-300 hover:bg-amber-100 dark:border-l-amber-600 dark:bg-amber-900/20 dark:hover:bg-amber-900/30">
               <AlertTriangle className="h-5 w-5 text-amber-500 dark:text-amber-400" />
@@ -476,7 +490,14 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
 
             <MessageWpp text="Comunicate mediante **WhatsApp** del Remitente para solucionar la discrepancia " />
 
-            <DiscrepancySection trans={trans} value={true} setDiscrepancySend={setDiscrepancySend} />
+            <DiscrepancySection 
+              trans={trans}
+              value={true}
+              hasPassedThroughDiscrepancy={hasPassedThroughDiscrepancy}
+              hasPassedThroughModified={hasPassedThroughModified}
+              currentStatus={currentStatus}
+              transactionFlow={transactionFlow}
+            />
           </div>
         )}
 
@@ -515,7 +536,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
           </DialogHeader>
           <div className="mt-2 text-center">
             <p className="text-gray-700 dark:text-gray-300">¿Estás seguro de enviar el motivo de rechazo?</p>
-            <div className="w-full max-w-xs rounded-lg bg-gray-100 p-3 text-center mt-3 dark:bg-gray-700">
+            <div className="mt-3 w-full max-w-xs rounded-lg bg-gray-100 p-3 text-center dark:bg-gray-700">
               <span className="font-medium text-gray-800 dark:text-gray-200">{rejectionReason}</span>
             </div>
           </div>
@@ -525,7 +546,7 @@ const AprobarRechazar: React.FC<AprobarRechazarProps> = ({
               disabled={loading || isApproved || isRejected || isDiscrepancy}
               className="bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
             >
-              <span>{loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Enviar'}</span>
+              <span>{loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Enviar"}</span>
             </Button>
             <Button
               onClick={() => setOpenModalReject(false)}

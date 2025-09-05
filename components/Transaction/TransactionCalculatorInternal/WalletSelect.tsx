@@ -20,8 +20,9 @@ import {
   PayoneerEurImg,
   PayoneerEurDarkImg,
 } from '@/utils/assets/imgDatabaseCloudinary';
+import { Wallet } from '@/store/useWalletStore';
 
-interface Wallet {
+/* interface Wallet {
   id: string;
   type: string;
   fullName: string;
@@ -30,10 +31,11 @@ interface Wallet {
   logo: string;
   logoDark?: string;
   network: string;
-}
+} */
+
 
 interface WalletSelectProps {
-  wallets: Wallet[];
+  filteredWallets: Wallet[];
   selectedWalletId: string | null;
   onChange: (walletId: string) => void;
 }
@@ -88,7 +90,7 @@ const getWalletLogos = (type: string) => {
   }
 };
 
-export default function WalletSelect({ wallets, selectedWalletId, onChange }: WalletSelectProps) {
+export default function WalletSelect({ filteredWallets, selectedWalletId, onChange }: WalletSelectProps) {
   const { isDark } = useDarkTheme();
 
   return (
@@ -99,7 +101,7 @@ export default function WalletSelect({ wallets, selectedWalletId, onChange }: Wa
         </SelectTrigger>
 
         <SelectContent className="bg-[#FFFFFB] dark:bg-[#4B4B4B]">
-          {wallets.map((wallet) => {
+          {filteredWallets.map((wallet) => {
             const { logo, logoDark } = getWalletLogos(wallet.type);
 
             return (

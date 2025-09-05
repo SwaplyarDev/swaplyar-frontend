@@ -1,4 +1,8 @@
 'use client';
+
+// Hooks
+import { useState, useEffect, useMemo, useRef } from 'react';
+import { useSystemStore } from '@/store/useSystemStore';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAmountCalculator } from '@/hooks/useAmountCalculator';
 import { useSystemSelection } from '@/hooks/useSystemSelection';
@@ -6,7 +10,7 @@ import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 
 // Store
 import { getExchangeRateStore } from '@/store/exchangeRateStore';
-import { useRewardsStore } from '@/store/useRewardsStore';
+import { CouponInstance, useRewardsStore } from '@/store/useRewardsStore';
 import useWalletStore from '@/store/useWalletStore';
 
 // Utils
@@ -24,90 +28,113 @@ import MinAmountMessage from './MinAmountMessage';
 import WalletSelect from './WalletSelect';
 import { calculateSendAmountFromReceive } from '@/utils/calculateSendAmountFromReceive';
 import { calculateReceiveAmountWithCoupon } from '@/utils/calculateReceiveAmountWithCoupon';
-import { useEffect, useMemo, useState } from 'react';
-import { useSystemStore } from '@/store/useSystemStore';
+import { AdminDiscount, AdminDiscountsResponse, UserStarsAndAmount } from '@/types/discounts/adminDiscounts';
 import { useSession } from 'next-auth/react';
-export default function InternalTransactionCalculator() {
-  const [isProcessing, setIsProcessing] = useState(false);
-  const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
-  const { startUpdatingRates, stopUpdatingRates, rates } = getExchangeRateStore();
-  const { couponInstance } = useRewardsStore();
+import { useStepperStore } from '@/store/stateStepperStore';
 
-  const {
-    wallets: userWallets,
-    selectedWallet,
-    setSelectedWallet,
-    clearSelectedWallet,
-    fetchAndSetWallets,
-    isLoading,
-  } = useWalletStore();
-  const [customReceiveInput, setCustomReceiveInput] = useState('');
-  const [isCustomInputActive, setIsCustomInputActive] = useState(false);
+export const allowedCouponInstances: CouponInstance[] = ['THREE', 'FIVE', /* 'THREE_FIVE', */ 'TEN', 'MANUAL'];
+
+export default function InternalTransactionCalculator({ discounts, stars, errors } : { discounts: AdminDiscountsResponse | null; stars: UserStarsAndAmount; errors: string[] }) {
+
+  const { activeSelect,selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
+  const { startUpdatingRates, stopUpdatingRates, rates } = getExchangeRateStore();
+  const { couponInstance, setData, setCouponInstanceByAmount, addDiscountId, resetDiscounts, isUsed } = useRewardsStore();
+  const { wallets: userWallets, selectedWallet, setSelectedWallet, clearSelectedWallet, fetchAndSetWallets, isLoading } = useWalletStore();
+  const { resetToDefault } = useStepperStore();
+
   const { data: session } = useSession();
   const token = session?.accessToken;
+
+  const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } = useSystemSelection();
+
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [customReceiveInput, setCustomReceiveInput] = useState('');
+  const [isCustomInputActive, setIsCustomInputActive] = useState(false); 
+  const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne, rateForOneBank, setFinalReceiveAmount } = useAmountCalculator();
+  
+  const couponUsdAmount = useRef(0);
+  const shouldApplyCoupon = useRef(false);
+  const couponInstanceForCalc = useRef<CouponInstance | null>(null);
+  const receiveAmountWithCoupon = useRef(0);
+  const receiveAmountInputValue = useRef('');
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const { pass } = useControlRouteRequestStore((state) => state);
+
+  // Obtiene los valores numéricos de las cantidades enviadas y recibidas, ademas de las tasas de cambio
+  const sendAmountNum = sendAmount ? parseFloat(sendAmount) : 0;
+  const receiveAmountNum = receiveAmount ? parseFloat(receiveAmount) : 0;
+  const usdToArsRate = rates?.currentValueUSDBlueSale ?? 0;
+  const eurToUsdRate = rates?.currentValueEURToUSD ?? 0;
+  const usdToBrlRate = rates?.currentValueUSDToBRL ?? 0;
+  const arsToBrlRate = usdToArsRate > 0 ? (1 / usdToArsRate) * usdToBrlRate : 0;
+
+  // Obtiene las billeteras del usuario
   useEffect(() => {
     if (token) {
       fetchAndSetWallets(token);
     }
   }, [token, fetchAndSetWallets]);
 
+  // Actualiza las tasas de cambio al seleccionar un sistema
   useEffect(() => {
-    if (selectedSendingSystem && selectedReceivingSystem) {
-      startUpdatingRates();
-    }
+    if (selectedSendingSystem && selectedReceivingSystem) startUpdatingRates();
 
-    return () => {
-      stopUpdatingRates();
-    };
+    return () => stopUpdatingRates();
   }, [selectedSendingSystem, selectedReceivingSystem, startUpdatingRates, stopUpdatingRates]);
 
-  const { activeSelect } = useSystemStore();
-  const router = useRouter();
-  const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } = useSystemSelection();
-  const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne, rateForOneBank } =
-    useAmountCalculator();
+  useEffect(() => {
+      resetDiscounts();
+  }, []);
 
-  const pathname = usePathname();
-  const { pass } = useControlRouteRequestStore((state) => state);
-  const sendAmountNum = sendAmount ? parseFloat(sendAmount) : 0;
-  const receiveAmountNum = receiveAmount ? parseFloat(receiveAmount) : 0;
-  const usdToArsRate = rates?.currentValueUSDBlueSale ?? 0;
-  const usdToEurRate = rates?.currentValueEURToUSD ?? 0;
-  const usdToBrlRate = rates?.currentValueUSDToBRL ?? 0;
-  const arsToBrlRate = usdToArsRate > 0 ? (1 / usdToArsRate) * usdToBrlRate : 0;
+  // Calcula el couponUsdAmount y el couponInstance según los descuentos obtenidos por parametro
+  useEffect(() => {
+    if (discounts && discounts.data && discounts.data.length > 0) {
+      resetDiscounts();
+      couponUsdAmount.current = 0;
+      let tempDiscountIds: string = '';
+      discounts.data.map((discount: AdminDiscount) => {
+        if (couponUsdAmount.current === 0) {
+          couponUsdAmount.current = discount.discountCode.value;
+          setCouponInstanceByAmount(couponUsdAmount.current);
+          tempDiscountIds = discount.id;
+        } else if (discount.discountCode.value < couponUsdAmount.current && !isUsed(discount.discountCode.value)) {
+          couponUsdAmount.current = discount.discountCode.value;
+          setCouponInstanceByAmount(couponUsdAmount.current);
+          tempDiscountIds = discount.id;
+        }
+      });
+      addDiscountId(tempDiscountIds);
+    }
+    
+    setData(stars.data.stars, sendAmountNum);
+  }, [discounts, stars]);
 
-  function formatAmount(value: number): string {
-    return Number.isInteger(value) ? value.toString() : value.toFixed(2);
-  }
+  shouldApplyCoupon.current = sendAmountNum > 0 && couponUsdAmount.current > 0;
 
-  let couponUsdAmount = 0;
-  if (couponInstance === 'THREE') couponUsdAmount = 3;
-  else if (couponInstance === 'FIVE') couponUsdAmount = 5;
-  else if (couponInstance === 'THREE_FIVE') couponUsdAmount = 8;
-  else if (couponInstance === 'TEN') couponUsdAmount = 10;
-  else if (couponInstance === 'MANUAL') couponUsdAmount = 2;
-
-  const shouldApplyCoupon = sendAmountNum > 0 && couponUsdAmount > 0;
-
-  const allowedCouponInstances = ['THREE', 'FIVE', 'THREE_FIVE', 'TEN', 'MANUAL'];
-  const couponInstanceForCalc = allowedCouponInstances.includes(couponInstance as string)
-    ? (couponInstance as 'THREE' | 'FIVE' | 'THREE_FIVE' | 'TEN' | 'MANUAL')
+  // Determina el couponInstance a utilizar en el cálculo
+  couponInstanceForCalc.current = allowedCouponInstances.includes(couponInstance as CouponInstance)
+    ? (couponInstance as 'THREE' | 'FIVE' | 'TEN' | 'MANUAL')
     : null;
-
-  const receiveAmountWithCoupon = calculateReceiveAmountWithCoupon({
-    couponInstance: couponInstanceForCalc,
+  
+  // Calcula el receiveAmountWithCoupon y el valor a mostrar en el input de "Recibes"
+  receiveAmountWithCoupon.current = calculateReceiveAmountWithCoupon({
+    couponInstance: couponInstanceForCalc.current,
     receiveAmountNum,
     sendAmountNum,
     selectedSendingSystem,
     selectedReceivingSystem,
     rateForOne,
     usdToArsRate,
-    usdToEurRate,
+    eurToUsdRate,
     usdToBrlRate,
   });
 
-  const receiveAmountInputValue = shouldApplyCoupon ? formatAmount(receiveAmountWithCoupon) : receiveAmount;
+  // Convierte el valor a mostrar en el input de "Recibes" a string
+  receiveAmountInputValue.current = shouldApplyCoupon ? formatAmount(receiveAmountWithCoupon.current) : receiveAmount;
 
+  // Redirige si no hay permiso
   useEffect(() => {
     if (!pass && pathname === '/es/auth/solicitud/formulario-de-solicitud') {
       router.push('/es/auth/solicitud');
@@ -116,6 +143,8 @@ export default function InternalTransactionCalculator() {
 
   const handleSubmit = () => {
     setIsProcessing(true);
+    setFinalReceiveAmount(receiveAmountInputValue.current);
+    resetToDefault();
     setTimeout(() => {
       router.push('/es/auth/solicitud/formulario-de-solicitud');
     }, 2000);
@@ -125,7 +154,7 @@ export default function InternalTransactionCalculator() {
     if (sendingSystemId === 'payoneer_usd' || sendingSystemId === 'payoneer_eur') {
       return sendAmountNum >= 50;
     } else if (sendingSystemId === 'bank') {
-      return sendAmountNum >= rateForOneBank * couponUsdAmount && receiveAmountNum >= 10;
+      return sendAmountNum >= rateForOneBank * couponUsdAmount.current && receiveAmountNum >= 10;
     }
     return sendAmountNum >= 10;
   };
@@ -143,6 +172,7 @@ export default function InternalTransactionCalculator() {
     }
     return userWallets.filter((wallet) => wallet.type === selectedReceivingSystem.id);
   }, [selectedReceivingSystem, userWallets]);
+  
   useEffect(() => {
     if (filteredWallets.length === 1) {
       setSelectedWallet(filteredWallets[0]);
@@ -214,7 +244,7 @@ export default function InternalTransactionCalculator() {
             <p className="font-textFont text-xs font-light xs:text-sm">Información del sistema de recepción</p>
           </SystemInfo>
 
-          <Coupons balance={receiveAmountNum} receivingCoin={selectedReceivingSystem?.coin} isVerified={true} />
+          <Coupons balance={receiveAmountNum} receivingCoin={selectedReceivingSystem?.coin}/>
         </div>
 
         <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
@@ -224,7 +254,7 @@ export default function InternalTransactionCalculator() {
             onSystemSelect={(system) => handleSystemSelection(system, false)}
             showOptions={activeSelect === 'receive'}
             toggleSelect={() => toggleSelect('receive')}
-            value={isCustomInputActive ? customReceiveInput : receiveAmountInputValue}
+            value={isCustomInputActive ? customReceiveInput : receiveAmountInputValue.current}
             onChange={(value) => {
               setCustomReceiveInput(value);
               setIsCustomInputActive(true);
@@ -232,13 +262,13 @@ export default function InternalTransactionCalculator() {
 
               const sendCalculated = calculateSendAmountFromReceive({
                 receiveValue: value,
-                couponUsdAmount,
+                couponUsdAmount: couponUsdAmount.current,
                 selectedSendingSystem,
                 selectedReceivingSystem,
                 rateForOne,
                 rateForOneBank,
                 usdToArsRate,
-                usdToEurRate,
+                eurToUsdRate,
                 usdToBrlRate,
                 arsToBrlRate,
                 arsToEurRate: rates.currentValueEURBlueSale,
@@ -253,7 +283,7 @@ export default function InternalTransactionCalculator() {
           <MinAmountMessage
             isReceiveAmountValid={isReceiveAmountValid}
             isSendAmountValid={isSendAmountValid}
-            receiveAmountNum={receiveAmountNum}
+            receiveAmountNum={receiveAmountWithCoupon.current}
             selectedReceivingSystem={selectedReceivingSystem}
             selectedSendingSystem={selectedSendingSystem}
             sendAmount={sendAmount}
@@ -261,17 +291,17 @@ export default function InternalTransactionCalculator() {
           />
 
           <WalletSelect
-            wallets={filteredWallets}
+            filteredWallets={filteredWallets}
             selectedWalletId={selectedWallet?.id || null}
             onChange={handleWalletChange}
-          />
+          /> 
 
           <BtnProccessPayment
             handleSubmit={handleSubmit}
             isProccessing={isProcessing}
             isReceiveAmountValid={isReceiveAmountValid}
             isSendAmountValid={isSendAmountValid}
-            receiveAmountNum={receiveAmountNum}
+            receiveAmountNum={receiveAmountWithCoupon.current}
             selectedReceivingSystem={selectedReceivingSystem}
             selectedSendingSystem={selectedSendingSystem}
             sendAmount={sendAmount}
@@ -282,4 +312,8 @@ export default function InternalTransactionCalculator() {
       </div>
     </div>
   );
+}
+
+function formatAmount(value: number): string {
+  return Number.isInteger(value) ? value.toString() : value.toFixed(2);
 }
