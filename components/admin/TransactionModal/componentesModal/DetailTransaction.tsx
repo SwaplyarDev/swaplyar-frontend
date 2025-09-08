@@ -40,7 +40,7 @@ const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading 
           </div>
           <div className="flex justify-between">
             <span className="text-sm text-gray-600 dark:text-gray-400">Email:</span>
-            <span className="font-medium dark:text-gray-200">{senderAccount?.email || 'No disponible'}</span>
+            <span className="font-medium dark:text-gray-200">{senderAccount?.createdBy || 'No disponible'}</span>
           </div>
         </div>
 

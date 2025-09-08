@@ -2,15 +2,14 @@ import { getRegretById } from '@/actions/repentance/repentanceForm.action';
 import { getNoteById } from '@/actions/transactions/notes.action';
 import {getStatusTransactionAdmin, getTransactionById, postStatusInAdmin } from '@/actions/transactions/transactions.action';
 import auth from '@/auth';
-import { NoteTypeSingle, emptyNote } from '@/types/transactions/notesType';
 import { RegretTypeSingle, emptyRegret } from '@/types/transactions/regretsType';
-import { TransactionV2, emptyTransactionV2} from '@/types/transactions/transactionsType';
+import { Note, TransactionV2, emptyTransactionV2, emptyNote} from '@/types/transactions/transactionsType';
 import { convertTransactionState, getComponentStatesFromStatus } from '@/utils/transactionStatesConverser';
 import { create } from 'zustand';
 
 interface TransactionState {
   trans: TransactionV2;
-  noteEdit: NoteTypeSingle;
+  noteEdit: Note;
   regretCancel: RegretTypeSingle;
   isLoading: boolean;
   transIdAdmin: string;
@@ -27,7 +26,7 @@ interface TransactionState {
   selected: 'stop' | 'accepted' | 'canceled' | null;
 
   fetchTransaction: (transId: string) => Promise<void>;
-  fetchNote: (noteId: string) => Promise<void>;
+
   fetchRegret: (regretId: string) => Promise<void>;
   setComponentStates: (key: keyof TransactionState['componentStates'], value: any) => void;
   setStatus: (status: string) => void;
@@ -117,17 +116,6 @@ export const useTransactionStore = create<TransactionState>((set, get) => ({
       }
     } catch (error) {
       console.error('❌ Error al actualizar el estado desde el store:', error);
-    }
-  },
-
-  fetchNote: async (idNote: string) => {
-    try {
-      const note = await getNoteById(idNote);
-      if (note) {
-        set({ noteEdit: note });
-      }
-    } catch (error) {
-      console.error('Error al obtener la solicitud de edición:', error);
     }
   },
 

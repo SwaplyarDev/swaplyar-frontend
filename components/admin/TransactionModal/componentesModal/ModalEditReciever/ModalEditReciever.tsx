@@ -185,11 +185,10 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
         </div>
 
         <div className="flex-1 space-y-6 overflow-y-auto p-6 pt-4">
-          {/* Client Message */}
           <div className="rounded-md border-l-4 border-blue-500 bg-blue-50 p-4 dark:border-blue-400 dark:bg-blue-900/20">
-            {noteEdit.note ? (
+            {noteEdit.message ? (
               <ClientMessage
-                message={noteEdit.note}
+                message={noteEdit.message}
                 headerMessage="Mensaje del cliente"
                 classnames="text-blue-800 dark:text-blue-300"
               />

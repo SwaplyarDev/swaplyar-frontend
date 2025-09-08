@@ -1,41 +1,40 @@
-"use client"
+'use client';
 
-import { useState, useEffect, useMemo } from "react"
-import type { NoteTypeSingle } from "@/types/transactions/notesType"
-import type { RegretTypeSingle } from "@/types/transactions/regretsType"
-import SkeletonModal from "../TransactionModal/componentesModal/SkeletonModal"
-import InfoStatus from "../TransactionModal/componentesModal/InfoStatus"
-import ConfirmTransButton from "../TransactionModal/componentesModal/ConfirmTransButton"
-import AprobarRechazar from "../TransactionModal/componentesModal/aprobarRechazar"
-import ClientInformation from "../TransactionModal/componentesModal/ClientInformation"
-import TransferImages from "../TransactionModal/componentesModal/TransferImages/TransferImages"
-import TransactionDetail from "../TransactionModal/componentesModal/DetailTransaction"
-import { useTransactionStore } from "@/store/transactionModalStorage"
-import { useTransactionStoreInit } from "@/hooks/admin/transactionPageHooks/useTransactionStoreInit"
-import { useTransactionStatusUpdate } from "@/hooks/admin/transactionPageHooks/useTransactionStatusUpdate"
-import { useModalAnimation } from "@/hooks/admin/transactionPageHooks/useModalAnimation"
-import { useTransactionSubmission } from "@/hooks/admin/transactionPageHooks/useTransactionSubmision"
-import { useComponentStateManagement } from "@/hooks/admin/transactionPageHooks/useComponentStateManagement"
+import { useState, useEffect, useMemo } from 'react';
+import type { RegretTypeSingle } from '@/types/transactions/regretsType';
+import SkeletonModal from '../TransactionModal/componentesModal/SkeletonModal';
+import InfoStatus from '../TransactionModal/componentesModal/InfoStatus';
+import ConfirmTransButton from '../TransactionModal/componentesModal/ConfirmTransButton';
+import AprobarRechazar from '../TransactionModal/componentesModal/aprobarRechazar';
+import ClientInformation from '../TransactionModal/componentesModal/ClientInformation';
+import TransferImages from '../TransactionModal/componentesModal/TransferImages/TransferImages';
+import TransactionDetail from '../TransactionModal/componentesModal/DetailTransaction';
+import { useTransactionStore } from '@/store/transactionModalStorage';
+import { useTransactionStoreInit } from '@/hooks/admin/transactionPageHooks/useTransactionStoreInit';
+import { useTransactionStatusUpdate } from '@/hooks/admin/transactionPageHooks/useTransactionStatusUpdate';
+import { useModalAnimation } from '@/hooks/admin/transactionPageHooks/useModalAnimation';
+import { useTransactionSubmission } from '@/hooks/admin/transactionPageHooks/useTransactionSubmision';
+import { useComponentStateManagement } from '@/hooks/admin/transactionPageHooks/useComponentStateManagement';
 import ClientEditCancelMessage, {
   ClientMessageType,
-} from "../TransactionModal/componentesModal/ui/ClientEditCancelMessage"
-import type { TransactionV2 } from "@/types/transactions/transactionsType"
-import { useTransactionFlow } from "../utils/useTransactionHistoryState"
-
+} from '../TransactionModal/componentesModal/ui/ClientEditCancelMessage';
+import type { TransactionV2 } from '@/types/transactions/transactionsType';
+import { useTransactionFlow } from '../utils/useTransactionHistoryState';
+import type { Note } from '@/types/transactions/transactionsType'
 
 interface TransactionPageClientComponentProps {
-  initialTransaction: TransactionV2
-  initialStatus: string
+  initialTransaction: TransactionV2;
+  initialStatus: string;
   initialComponentStates: {
-    aprooveReject: "stop" | "accepted" | "canceled" | null
-    confirmTransButton: boolean | null
-    discrepancySection: boolean | null
-    transferRealized: boolean
-  }
-  transIdAdmin: string
-  noteEdit: NoteTypeSingle | null
-  regretCancel: RegretTypeSingle | null
-  token: string
+    aprooveReject: 'stop' | 'accepted' | 'canceled' | null;
+    confirmTransButton: boolean | null;
+    discrepancySection: boolean | null;
+    transferRealized: boolean;
+  };
+  transIdAdmin: string;
+  noteEdit: Note | null;
+  regretCancel: RegretTypeSingle | null;
+  token: string;
 }
 
 export default function TransactionPageClientComponent({
@@ -47,22 +46,22 @@ export default function TransactionPageClientComponent({
   regretCancel,
   token,
 }: TransactionPageClientComponentProps) {
-  const [discrepancySend, setDiscrepancySend] = useState(false)
-  const { status, setStatus } = useTransactionStore()
+  const [discrepancySend, setDiscrepancySend] = useState(false);
+  const { status, setStatus } = useTransactionStore();
 
-  const transId = initialTransaction.id
-  const [refreshKey, setRefreshKey] = useState(0)
-  const [hasUserChangedConfirm, setHasUserChangedConfirm] = useState(false)
-  const [isTransactionApproved, setIsTransactionApproved] = useState(false)
+  const transId = initialTransaction.id;
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [hasUserChangedConfirm, setHasUserChangedConfirm] = useState(false);
+  const [isTransactionApproved, setIsTransactionApproved] = useState(false);
 
-  const transactionFlow = useTransactionFlow(transId, token)
+  const transactionFlow = useTransactionFlow(transId, token);
 
   const combinedInitialComponentStates = useMemo(() => {
     return {
       ...propInitialComponentStates,
       confirmTransButton: transactionFlow.initialConfirmButtonValue,
-    }
-  }, [propInitialComponentStates, transactionFlow.initialConfirmButtonValue])
+    };
+  }, [propInitialComponentStates, transactionFlow.initialConfirmButtonValue]);
 
   useTransactionStoreInit({
     initialTransaction: initialTransaction,
@@ -71,11 +70,11 @@ export default function TransactionPageClientComponent({
     transIdAdmin,
     noteEdit,
     regretCancel,
-  })
+  });
 
-  useTransactionStatusUpdate(transId, setStatus, token)
+  useTransactionStatusUpdate(transId, setStatus, token);
 
-  const { isVisible } = useModalAnimation()
+  const { isVisible } = useModalAnimation();
 
   const {
     isSubmitting,
@@ -85,7 +84,7 @@ export default function TransactionPageClientComponent({
     setIsSubmitting,
     setSubmitError,
     setSubmitSuccess,
-  } = useTransactionSubmission(transId, setStatus)
+  } = useTransactionSubmission(transId, setStatus);
 
   const handleFormSubmit = async (
     status: string,
@@ -94,35 +93,36 @@ export default function TransactionPageClientComponent({
     setSubmitErrorCallback: (error: string | null) => void,
     setSubmitSuccessCallback: (success: boolean) => void,
   ) => {
-    await baseHandleSubmit(status, form, setIsSubmittingCallback, setSubmitErrorCallback, setSubmitSuccessCallback)
-  }
+    await baseHandleSubmit(status, form, setIsSubmittingCallback, setSubmitErrorCallback, setSubmitSuccessCallback);
+  };
 
-  const { componentStates, selected, handleComponentStateChange, handleSelectionChange } = useComponentStateManagement()
+  const { componentStates, selected, handleComponentStateChange, handleSelectionChange } =
+    useComponentStateManagement();
 
   const handleConfirmChange = (value: boolean | null) => {
-    setHasUserChangedConfirm(true)
-    handleComponentStateChange("confirmTransButton", value)
-  }
+    setHasUserChangedConfirm(true);
+    handleComponentStateChange('confirmTransButton', value);
+  };
 
   useEffect(() => {
-    if (hasUserChangedConfirm) return
+    if (hasUserChangedConfirm) return;
 
-    const confirmYesStatuses = ["review_payment", "approved", "discrepancy", "refunded", "modified"]
-    const shouldBeConfirmed = confirmYesStatuses.includes(status)
-    const shouldBeFalse = status === "rejected" || !shouldBeConfirmed
+    const confirmYesStatuses = ['review_payment', 'approved', 'discrepancy', 'refunded', 'modified'];
+    const shouldBeConfirmed = confirmYesStatuses.includes(status);
+    const shouldBeFalse = status === 'rejected' || !shouldBeConfirmed;
 
     if (shouldBeConfirmed && componentStates.confirmTransButton !== true) {
-      handleComponentStateChange("confirmTransButton", true)
+      handleComponentStateChange('confirmTransButton', true);
     } else if (shouldBeFalse && componentStates.confirmTransButton !== false) {
-      handleComponentStateChange("confirmTransButton", false)
+      handleComponentStateChange('confirmTransButton', false);
     }
-  }, [status, componentStates.confirmTransButton, handleComponentStateChange, hasUserChangedConfirm])
+  }, [status, componentStates.confirmTransButton, handleComponentStateChange, hasUserChangedConfirm]);
 
   return (
     <div
       onClick={(e) => e.stopPropagation()}
       className={`relative grid h-full w-full grid-cols-1 gap-4 overflow-y-auto rounded-lg border-none bg-gray-50 font-textFont shadow-sm outline-0 ring-0 transition-all duration-300 ease-out dark:bg-gray-900 lg:grid-cols-2 ${
-        isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
       }`}
       tabIndex={-1}
     >
@@ -168,10 +168,9 @@ export default function TransactionPageClientComponent({
                 />
               )}
 
-{transactionFlow.shouldShowClientInformationDirectly && (
-  <ClientInformation transactionFlow={transactionFlow}
-   />
-)}
+              {transactionFlow.shouldShowClientInformationDirectly && (
+                <ClientInformation transactionFlow={transactionFlow} />
+              )}
             </div>
           </div>
 
@@ -183,12 +182,12 @@ export default function TransactionPageClientComponent({
                 type={
                   initialTransaction.regret_id
                     ? ClientMessageType.Cancel
-                    : initialTransaction.note_id
+                    : initialTransaction.note?.message
                       ? ClientMessageType.Edit
                       : null
                 }
-                message={regretCancel?.note || noteEdit?.note}
-                createdAt={regretCancel?.created_at || noteEdit?.created_at}
+                message={initialTransaction.regret_id ? regretCancel?.note : initialTransaction.note?.message}
+                createdAt={initialTransaction.regret_id ? regretCancel?.created_at : initialTransaction.note?.createdAt}
               />
 
               <TransactionDetail transaction={initialTransaction} isLoading={transactionFlow.isLoading} />
@@ -197,5 +196,5 @@ export default function TransactionPageClientComponent({
         </>
       )}
     </div>
-  )
+  );
 }

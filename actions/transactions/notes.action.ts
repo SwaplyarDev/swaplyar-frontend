@@ -1,4 +1,5 @@
 import { sendNoteType, NoteTypeSingle } from '@/types/transactions/notesType';
+import { Note } from '@/types/transactions/transactionsType';
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -20,7 +21,7 @@ export const getNoteById = async (id: string) => {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/notes/${id}`);
     if (!response.ok) throw new Error('Failed to fetch notes');
 
-    const data: NoteTypeSingle = await response.json();
+    const data: Note = await response.json();
 
     return data;
   } catch (error: any) {

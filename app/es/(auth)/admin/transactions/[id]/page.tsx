@@ -17,13 +17,11 @@ export default async function TransactionPage({ params }: { params: { id: string
 
   const status = transactionV2.finalStatus || 'pending';
   const componentStates = getComponentStatesFromStatus('1'); // usar '1' o el valor adecuado
+  const noteEdit = transactionV2.note && transactionV2.note.message ? transactionV2.note : null;
 
-  // let noteEdit = null;
+
   // let regretCancel = null;
 
-  // if (transaction.transaction.note_id) {
-  //   noteEdit = await getNoteById(transaction.transaction.note_id);
-  // }
 
   // if (transaction.transaction.regret_id) {
   //   const regretResponse = await getRegretById(transaction.transaction.regret_id);
@@ -36,7 +34,7 @@ export default async function TransactionPage({ params }: { params: { id: string
       initialStatus={status}
       initialComponentStates={componentStates}
       transIdAdmin={transactionV2.id}
-      noteEdit={null}
+      noteEdit={noteEdit}
       regretCancel={null}
       token={session?.accessToken || ''}
     />
