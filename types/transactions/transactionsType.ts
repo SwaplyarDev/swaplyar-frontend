@@ -2,11 +2,18 @@ export interface SenderAccount {
   id: string
   firstName: string
   lastName: string
-  email: string | null
-  paymentMethod?: PaymentMethod
+  createdBy: string | null
+  phoneNumber: string
+  paymentMethod?: PaymentMethodSender
 }
 
-export interface PaymentMethod {
+export interface PaymentMethodSender {
+  id: string;
+  platformId: string;
+  method: string | null;
+}
+
+export interface PaymentMethodReceiver {
   id: string;
   platformId: string;
   method: string;
@@ -20,12 +27,7 @@ export interface PaymentMethod {
 
 export interface ReceiverAccount {
   id: string;
-  firstName: string;
-  lastName: string;
-  identificationNumber: string | null;
-  phoneNumber: string;
-  email: string;
-  paymentMethod: PaymentMethod;
+  paymentMethod: PaymentMethodReceiver;
 }
 
 export interface ProofOfPayment {
@@ -36,11 +38,18 @@ export interface ProofOfPayment {
 
 export interface Amount {
   id: string
-  amountSent: number
+  amountSent: string
   currencySent: string
-  amountReceived: number
+  amountReceived: string
   currencyReceived: string
   received: boolean
+}
+
+export interface Note {
+  note_id: string
+  img_url: string
+  message: string
+  createdAt: string
 }
 
 export interface TransactionV2 {
@@ -56,7 +65,9 @@ export interface TransactionV2 {
   proofOfPayment: ProofOfPayment
   amount: Amount
   regret_id?: string | null
-  note_id?: string | null
+  note?: Note 
+  isNoteVerified: boolean
+  noteVerificationExpiresAt: string
 }
 
 export interface TransactionArrayV2 {
@@ -79,6 +90,14 @@ export const emptyTransactionArrayV2: TransactionArrayV2 = {
   data: [],
 }
 
+export const emptyNote : Note = {
+     note_id: '',
+     img_url: '',
+     message: '',
+     createdAt: '',
+ 
+}
+
 export const emptyTransactionV2: TransactionV2 = {
   id: '',
   countryTransaction: '',
@@ -90,15 +109,11 @@ export const emptyTransactionV2: TransactionV2 = {
     id: '',
     firstName: '',
     lastName: '',
-    email: null,
+    phoneNumber: '',
+    createdBy: null,
   },
   receiverAccount: {
     id: '',
-    firstName: '',
-    lastName: '',
-    identificationNumber: null,
-    phoneNumber: '',
-    email: '',
     paymentMethod: {
       id: '',
       platformId: '',
@@ -119,14 +134,16 @@ export const emptyTransactionV2: TransactionV2 = {
   },
   amount: {
     id: '',
-    amountSent: 0,
+    amountSent: '',
     currencySent: '',
-    amountReceived: 0,
+    amountReceived: '',
     currencyReceived: '',
     received: false,
   },
   regret_id: null,
-  note_id: null,
+  note: emptyNote,
+  isNoteVerified: false,
+  noteVerificationExpiresAt: '',
 };
 
 //Interfaces anteriores

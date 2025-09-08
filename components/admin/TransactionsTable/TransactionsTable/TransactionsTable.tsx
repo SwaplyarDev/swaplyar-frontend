@@ -505,9 +505,6 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                       {transaction.senderAccount.firstName} {transaction.senderAccount.lastName}
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                      {transaction.receiverAccount.firstName} {transaction.receiverAccount.lastName}
-                    </td>
-                    <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                       {transaction.amount.amountSent} {transaction.amount.currencySent} →{' '}
                       {transaction.amount.amountReceived} {transaction.amount.currencyReceived}
                     </td>
