@@ -36,17 +36,15 @@ const TransactionModal = () => {
   const {
     isLoading,
     trans,
-    noteEdit,
-    regretCancel,
     componentStates,
     selected,
     fetchTransaction,
-    fetchNote,
     fetchRegret,
     updateTransactionStatusFromStore,
     setComponentStates,
     setSelected,
     getStatusClient,
+    regretCancel
   } = useTransactionStore();
 
   const transaction = trans;
@@ -65,12 +63,13 @@ const TransactionModal = () => {
   useEffect(() => {
     if (!transaction) return;
 
+    // Solo fetch del regret si existe regret_id
+    // Las notas ahora vienen directamente en transaction.note
     if (transaction.regret_id) {
       fetchRegret(transaction.regret_id);
-    } else if (transaction.note_id) {
-      fetchNote(transaction.note_id);
     }
-  }, [transaction, fetchRegret, fetchNote]);
+  }, [transaction, fetchRegret]);
+
   useEffect(() => {
     if (!transId || !trans) return;
     updateTransactionStatusFromStore(transId, trans);
@@ -218,12 +217,12 @@ const TransactionModal = () => {
                 classnames="border-[#CE1818] min-h-[4.25rem]"
               />
             </div>
-          ) : transaction.note_id ? (
+          ) : transaction.note?.message ? (
             <div className="flex flex-col">
               <p className="text-base font-medium">El Cliente solicito Editar la Solicitud</p>
               <ClientMessage
                 headerMessage="mensaje"
-                message={noteEdit.note}
+                message={transaction.note.message}
                 classnames="border-[#D75600] min-h-[4.25rem]"
               />
             </div>

@@ -15,20 +15,20 @@ export const getReceiverLabels = (transaction: TransactionV2) => {
   switch (walletType) {
     case 'wise':
       return [
-        { label: 'Nombre y Apellidos', value: `${receiverInfo.firstName ?? ''} ${receiverInfo.lastName ?? ''}`.trim() },
+        
         { label: 'Email a realizar el pago', value: paymentMethod.sendMethodValue ?? 'No disponible' },
       ];
 
     case 'receiver_crypto':
       return [
-        { label: 'Nombre y Apellidos', value: `${receiverInfo.firstName ?? ''} ${receiverInfo.lastName ?? ''}`.trim() },
+       
         { label: 'Dirección USDT', value: paymentMethod.sendMethodValue ?? 'No disponible' },
         { label: 'RED', value: 'TRC20' },
       ];
 
     case 'bank':
       return [
-        { label: 'Nombre y Apellidos', value: `${receiverInfo.firstName ?? ''} ${receiverInfo.lastName ?? ''}`.trim() },
+      
         { label: 'CBU', value: paymentMethod.sendMethodValue ?? 'No disponible' },
         { label: 'Banco', value: paymentMethod.bankName ?? 'No disponible' },
         { label: 'DNI', value: paymentMethod.documentValue ?? 'No disponible' },
@@ -36,7 +36,7 @@ export const getReceiverLabels = (transaction: TransactionV2) => {
 
     case 'pix':
       return [
-        { label: 'Nombre y Apellidos', value: `${receiverInfo.firstName ?? ''} ${receiverInfo.lastName ?? ''}`.trim() },
+        
         { label: 'Telefono/Email de Pix', value: paymentMethod.sendMethodValue ?? 'No disponible' },
         { label: 'CPF', value: paymentMethod.documentValue ?? 'No disponible' },
       ];

@@ -455,20 +455,6 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                   </div>
                 </th>
                 <th className="px-4 py-3 text-sm font-medium">
-                  <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('recipient')}>
-                    Destinatario
-                    {filters.orderby === 'recipient' ? (
-                      filters.order === 'asc' ? (
-                        <ChevronUp size={16} className="ml-1" />
-                      ) : (
-                        <ChevronDown size={16} className="ml-1" />
-                      )
-                    ) : (
-                      <ChevronDown size={16} className="ml-1" />
-                    )}
-                  </div>
-                </th>
-                <th className="px-4 py-3 text-sm font-medium">
                   <div className="flex cursor-pointer items-center" onClick={() => handleSortChange('amount')}>
                     Monto
                     {filters.orderby === 'amount' ? (
@@ -504,6 +490,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
                     <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                       {transaction.senderAccount.firstName} {transaction.senderAccount.lastName}
                     </td>
+                    
                     <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                       {transaction.amount.amountSent} {transaction.amount.currencySent} →{' '}
                       {transaction.amount.amountReceived} {transaction.amount.currencyReceived}

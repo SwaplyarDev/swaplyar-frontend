@@ -2,9 +2,9 @@
 
 import { useEffect } from 'react';
 import { useTransactionStore } from '@/store/transactionModalStorage';
-import type { TransactionV2 } from '@/types/transactions/transactionsType'
-import type { NoteTypeSingle } from '@/types/transactions/notesType';
+import { Note, TransactionV2, emptyNote} from '@/types/transactions/transactionsType'
 import type { RegretTypeSingle } from '@/types/transactions/regretsType';
+
 
 interface UseTransactionStoreInitProps {
   initialTransaction: TransactionV2;
@@ -16,7 +16,7 @@ interface UseTransactionStoreInitProps {
     transferRealized: boolean;
   };
   transIdAdmin: string;
-  noteEdit: NoteTypeSingle | null;
+  noteEdit: Note | null;
   regretCancel: RegretTypeSingle | null;
 }
 
@@ -31,7 +31,7 @@ export function useTransactionStoreInit({
   useEffect(() => {
     useTransactionStore.setState({
       trans: initialTransaction,
-      noteEdit: noteEdit || { note: '', note_id: '', transaction_id: '', created_at: '' },
+      noteEdit: noteEdit || emptyNote ,
       regretCancel: regretCancel || {
         note: '',
         regret_id: '',
