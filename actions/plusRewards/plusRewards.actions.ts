@@ -56,8 +56,6 @@ export async function getPlusRewards(token: string) {
     });
     const data = await res.json();
 
-    console.log('Respuesta completa del backend:', data);
-
     if (!res.ok) {
       console.warn('Respuesta no OK:', data);
       return { verification_status: 'REENVIAR_DATOS' };
@@ -67,7 +65,6 @@ export async function getPlusRewards(token: string) {
     // Necesitamos mapear esto a la estructura esperada
     if (data.success && data.data && data.data.verification_status.toLowerCase()) {
       const backendStatus = data.data.verification_status.toLowerCase();
-      console.log('Status del backend:', backendStatus);
 
       // Mapear estados del backend a estados del frontend
       let frontendStatus = 'REENVIAR_DATOS'; // default fallback
@@ -88,8 +85,6 @@ export async function getPlusRewards(token: string) {
         default:
           frontendStatus = 'REENVIAR_DATOS';
       }
-
-      console.log('Status mapeado:', frontendStatus);
       return { verification_status: frontendStatus };
     }
 
@@ -127,49 +122,50 @@ export async function getCardStatus(token: string) {
 }
 
 export async function updateVerificationStatus(token: string) {
-  try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/status`, {
-      method: 'PUT',
+   try {
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/validate-user`, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ status: 'VERIFICADO' }),
     });
 
+    const data = await res.json();
+
     if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.message || 'Error al actualizar verificación');
+      throw new Error(data.message || 'Error al validar verificación');
     }
 
-    const data = await res.json();
-    return data;
+    return {
+      success: true,
+      data,
+    };
   } catch (err) {
-    console.error('Error al hacer PUT de verificación:', err);
-    throw err;
+    console.error('❌ Error al validar verificación:', err);
+    return {
+      success: false,
+      message: (err as Error).message,
+    };
   }
 }
 
 export async function resendVerificationAfterRejection(token: string) {
   try {
-    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/status`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ status: 'RECHAZADO' }),
+    const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/request-resend`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
     });
-
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.message || 'Error al actualizar estado a REENVIAR_DATOS');
-    }
-
     const data = await res.json();
-    return data;
+    
+    console.log('🔁 Respuesta del backend al reenviar verificación:', data);
+    
+    if (!res.ok) {
+      throw new Error(data?.message || 'No se pudo solicitar el reenvío de datos');
+    }
+    return { success: true, data };
   } catch (err) {
-    console.error('Error al forzar REENVIAR_DATOS desde RECHAZADO:', err);
-    throw err;
+    console.error(err);
+    return { success: false, error: (err as Error).message };
   }
 }
