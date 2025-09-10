@@ -83,8 +83,12 @@ export default function VirtualWallets() {
   });
 
   const orderedWallets = [...wallets].sort((a, b) => {
-    if (a.type !== b.type) return a.type.localeCompare(b.type);
-    return a.id.localeCompare(b.id);
+    const typeA = a?.type ?? '';
+    const typeB = b?.type ?? '';
+    if (typeA !== typeB) return typeA.localeCompare(typeB);
+    const idA = a?.id ?? '';
+    const idB = b?.id ?? '';
+    return idA.localeCompare(idB);
   });
 
   const normalizeType = (type: string, provider?: string, currency?: string): string => {
