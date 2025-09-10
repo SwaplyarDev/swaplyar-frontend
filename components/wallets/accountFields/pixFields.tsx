@@ -3,7 +3,7 @@
 import InputField from '@/components/ui/contact-form/InputField';
 import { detectarTipoPixKey } from '@/utils/validationUtils';
 
-const PixFields = ({ register, errors }: any) => (
+const PixFields = ({ register, errors, defaultValues }: any) => (
   <div className="flex flex-col gap-4">
     <InputField
       id="accountName"
@@ -13,7 +13,20 @@ const PixFields = ({ register, errors }: any) => (
       })}
       error={errors.accountName?.message}
     />
-
+    <InputField
+      id="firstName"
+      placeholder="Nombre"
+      defaultValue={defaultValues?.firstName || ''}
+      register={register('firstName', { required: 'El nombre es obligatorio' })}
+      error={errors.firstName?.message}
+    />
+    <InputField
+      id="lastName"
+      placeholder="Apellido"
+      defaultValue={defaultValues?.lastName || ''}
+      register={register('lastName', { required: 'El apellido es obligatorio' })}
+      error={errors.lastName?.message}
+    />
     <InputField
       id="cpf"
       placeholder="CPF (solo números)"

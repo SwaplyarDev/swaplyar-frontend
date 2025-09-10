@@ -7,9 +7,11 @@ import InputField from '@/components/ui/contact-form/InputField';
 interface CryptoFieldsProps {
   register: any;
   errors: any;
-  control: any; // 👈 nuevo
+  control: any;
   defaultValues?: {
     accountName?: string;
+    firstName?: string;
+    lastName?: string;
     wallet?: string;
     currency?: string;
     network?: string;

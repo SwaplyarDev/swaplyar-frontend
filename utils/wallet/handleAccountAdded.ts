@@ -65,6 +65,8 @@ export const createHandleAccountAdd = ({
           payload.userAccValues = {
             accountType: 'pix',
             accountName: formData.accountName || '',
+            firstName: formData.firstName || '',
+            lastName:formData.lastName || '',
             currency: formData.currency || 'BRL',
             cpf: formData.cpf || '',
             pix_value: formData.pix_value || '',
