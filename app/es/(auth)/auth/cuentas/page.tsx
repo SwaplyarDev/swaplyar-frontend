@@ -7,7 +7,8 @@ import AddAccountForm from '@/components/wallets/addAccountForm';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import WalletIcon from '@/components/wallets/walletIcon';
 import { deleteWalletAccount, getMyWalletAccounts } from '@/actions/virtualWalletAccount/virtualWallets.action';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { mapWalletFromApi } from '@/utils/wallet/mapWalletFromApi';
 import { createHandleAccountAdd } from '@/utils/wallet/handleAccountAdded';
 import ReusableWalletCard from '@/components/wallets/walletCard';
@@ -36,6 +37,11 @@ export default function VirtualWallets() {
 
   useEffect(() => {
     const token = session?.accessToken;
+    // Si hay error en sesión (por refresh inválido), cerrar sesión
+    if ((session as any)?.error === 'RefreshAccessTokenError') {
+      signOut({ callbackUrl: '/es/iniciar-sesion-o-registro' });
+      return;
+    }
     if (!token || hasFetched.current) return;
     const fetchWallets = async () => {
       try {
@@ -52,8 +58,13 @@ export default function VirtualWallets() {
         const mapped = response.map(mapWalletFromApi);
         setWallets(mapped);
         hasFetched.current = true;
-      } catch (err) {
+      } catch (err: any) {
         console.error('Error fetching wallets:', err);
+        if (err?.message === 'Unauthorized') {
+          setError('Tu sesión expiró. Por favor, inicia sesión nuevamente.');
+          await signOut({ callbackUrl: '/es/iniciar-sesion-o-registro' });
+          return;
+        }
         setError('Error al cargar billeteras. Intenta más tarde.');
       } finally {
         setLoading(false);
@@ -172,7 +183,28 @@ export default function VirtualWallets() {
         {error ? (
           <div className="py-10 text-center text-red-500">{error}</div>
         ) : wallets.length === 0 ? (
-          <div className="py-10 text-center text-gray-500">No hay billeteras disponibles</div>
+          <div className="flex flex-col items-center justify-center gap-4 rounded-3xl border bg-[#FFFFFB] p-8 text-center shadow-lg dark:border-gray-700 dark:bg-[#4B4B4B]">
+            <h2 className="text-2xl font-semibold text-gray-800 dark:text-darkText">Aún no tienes billeteras</h2>
+            <p className="max-w-md text-sm text-gray-600 dark:text-custom-grayD-100">
+              Agrega una cuenta para recibir o enviar fondos y gestionarlas desde aquí.
+            </p>
+            <Button
+              onClick={() => setOpen(true)}
+              className={`${
+                isDark
+                  ? 'bg-[#EBE7E0] text-black ring-offset-black hover:dark:ring-[#EBE7E0]'
+                  : 'bg-[#012A8E] text-white hover:ring-[#012A8E]'
+              } rounded-full px-6 py-3 text-base font-semibold hover:ring-2 hover:ring-offset-2`}
+            >
+              Añadir Cuenta
+            </Button>
+            <p className="mt-2 text-xs text-gray-600 dark:text-custom-grayD-100">
+              ¿Necesitas ayuda?{' '}
+              <Link href="/es/centro-de-ayuda" className="font-medium text-[#012A8E] underline dark:text-[#EBE7E0]">
+                Ver guía para agregar una cuenta
+              </Link>
+            </p>
+          </div>
         ) : (
           Object.entries(groupedWallets).map(([type, group]) => (
             <div

@@ -32,9 +32,13 @@ export function useTransactions(initialPage = 1) {
       setLoading(true);
       try {
         const session = await getSession();
-        const token = session?.user?.accessToken;
+        const token = (session as any)?.accessToken as string | undefined;
 
-        if (!token) throw new Error('Token no disponible');
+        if (!token) {
+          setError('No estás autenticado. Inicia sesión para ver tus transacciones.');
+          setTransactions([]);
+          return;
+        }
 
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/transactions?page=${currentPage}&pageSize=${perPage}`,
@@ -45,6 +49,21 @@ export function useTransactions(initialPage = 1) {
             },
           },
         );
+
+        // Manejo de respuestas no OK (ej. 401/403)
+        if (!res.ok) {
+          let message = 'No se pudieron cargar las transacciones.';
+          try {
+            const errBody = await res.json();
+            message = errBody.message || message;
+          } catch {}
+          if (res.status === 401 || res.status === 403) {
+            setError('Tu sesión expiró. Inicia sesión nuevamente.');
+            setTransactions([]);
+            return;
+          }
+          throw new Error(message);
+        }
 
         const data = await res.json();
         if (data.message) {
@@ -62,10 +81,10 @@ export function useTransactions(initialPage = 1) {
 
         setTransactions(data.data || []);
         setPagination({
-          currentPage: data.pagination.page,
-          totalPages: data.pagination.totalPages,
-          totalItems: data.pagination.totalItems,
-          perPage: data.pagination.pageSize,
+          currentPage: data.pagination?.page ?? currentPage,
+          totalPages: data.pagination?.totalPages ?? 1,
+          totalItems: data.pagination?.totalItems ?? (data.data?.length ?? 0),
+          perPage: data.pagination?.pageSize ?? perPage,
         });
 
 
