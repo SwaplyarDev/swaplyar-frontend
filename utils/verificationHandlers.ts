@@ -4,6 +4,8 @@ import {
   updateVerificationStatus,
 } from '@/actions/plusRewards/plusRewards.actions';
 
+import { UpdateSession } from 'next-auth/react';
+
 type Status = 'REENVIAR_DATOS' | 'PENDIENTE' | 'APROBADO' | 'RECHAZADO';
 
 interface HandleStatusParams {
@@ -11,6 +13,7 @@ interface HandleStatusParams {
   setStatus: (status: Status) => void;
   setShowRejectedMessage: (val: boolean) => void;
   setShowApprovedMessage: (val: boolean) => void;
+  update: UpdateSession;
 }
 
 export async function fetchAndHandleVerificationStatus({
@@ -18,6 +21,7 @@ export async function fetchAndHandleVerificationStatus({
   setStatus,
   setShowRejectedMessage,
   setShowApprovedMessage,
+  update,
 }: HandleStatusParams) {
   try {
     const { verification_status } = await getPlusRewards(token);
@@ -29,7 +33,7 @@ export async function fetchAndHandleVerificationStatus({
         await handleRejectedStatus(token, setShowRejectedMessage, setStatus);
         break;
       case 'APROBADO':
-        await handleApprovedStatus(token, setShowApprovedMessage);
+        await handleApprovedStatus(token, setShowApprovedMessage, update);
         break;
       default:
         clearStatusFlags();
@@ -44,7 +48,7 @@ export async function fetchAndHandleVerificationStatus({
 async function handleRejectedStatus(
   token: string,
   setShowRejectedMessage: (val: boolean) => void,
-  setStatus: (status: Status) => void
+  setStatus: (status: Status) => void,
 ) {
   const alreadyShown = localStorage.getItem('verificationRejectedShown');
   if (alreadyShown) return;
@@ -67,7 +71,8 @@ async function handleRejectedStatus(
 
 async function handleApprovedStatus(
   token: string,
-  setShowApprovedMessage: (val: boolean) => void
+  setShowApprovedMessage: (val: boolean) => void,
+  update: UpdateSession
 ) {
   const alreadyShown = localStorage.getItem('verificationApprovedShown');
   if (alreadyShown) return;
@@ -80,6 +85,8 @@ async function handleApprovedStatus(
   try {
     await updateVerificationStatus(token);
     console.log('Token actualizado con verificación');
+
+    await update();
   } catch (err) {
     console.error('Error al actualizar token:', err);
   }

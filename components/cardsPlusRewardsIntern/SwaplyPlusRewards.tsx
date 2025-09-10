@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { CardPlusRewards } from '@/components/cardsPlusRewardsIntern/SwaplyPlusRewardsComponents/CardPlusRewards';
 import { PlusRewards } from '@/app/es/(auth)/auth/plus-rewards/page';
@@ -16,6 +16,7 @@ import { fetchAndHandleVerificationStatus } from '@/utils/verificationHandlers';
 declare module 'next-auth' {
   interface Session {
     verification_status?: string;
+    accessToken?: string;
   }
 }
 
@@ -26,34 +27,52 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
 
   const { status: verifiedStatus, setStatus, setShowApprovedMessage } = useVerificationStore();
 
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const token = session?.accessToken;
 
   const sessionCardBlueYellow = verifiedStatus === 'APROBADO';
 
+  const isUpdatingRef = useRef(false);
+
+  const safeUpdate = useCallback(async () => {
+    if (isUpdatingRef.current) return null;
+    isUpdatingRef.current = true;
+    try {
+      return await update();
+    } finally {
+      setTimeout(() => {
+        isUpdatingRef.current = false;
+      }, 300);
+    }
+  }, [update]);
+
   useEffect(() => {
     if (!token) return;
+    console.log('SESSION: ', session);
     fetchAndHandleVerificationStatus({
       token,
       setStatus,
       setShowRejectedMessage,
       setShowApprovedMessage,
+      update: safeUpdate,
     });
-  }, [token, setStatus, setShowRejectedMessage, setShowApprovedMessage]);
+  }, [token, setStatus, setShowRejectedMessage, setShowApprovedMessage, safeUpdate, session]);
 
   const LoadingState = () => (
-    <p className="text-center text-gray-500">Cargando...</p>
+    <div className="flex min-h-[50vh] w-full items-center justify-center">
+      <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-[#012A8E] dark:border-[#EBE7E0]"></div>
+    </div>
   );
 
   const MainLayout = ({ left, right }: { left: React.ReactNode; right: React.ReactNode }) => (
-  <div className="relative z-0 mx-auto mt-14 flex max-w-[500px] flex-col px-5 text-[40px] lg:max-w-[1200px] lg:px-[100px]">
-    <h1 className="mb-4 font-textFont font-medium">SwaplyAr Plus Rewards</h1>
-    <div className="relative z-0 mx-auto flex max-w-[1000px] flex-col gap-5 text-[16px] lg:flex-row">
-      {left}
-      <div className="relative my-auto items-center">{right}</div>
+    <div className="relative z-0 mx-auto mt-14 flex max-w-[500px] flex-col px-5 text-[40px] lg:max-w-[1200px] lg:px-[100px]">
+      <h1 className="mb-4 font-textFont font-medium">SwaplyAr Plus Rewards</h1>
+      <div className="relative z-0 mx-auto flex max-w-[1000px] flex-col gap-5 text-[16px] lg:flex-row">
+        {left}
+        <div className="relative my-auto items-center">{right}</div>
+      </div>
     </div>
-  </div>
-);
+  );
 
   const RewardsInfo = ({
     RewardsData,
@@ -116,7 +135,7 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
               sessionCardBlueYellow={sessionCardBlueYellow}
               showVerify={showVerify}
               setShowVerify={setShowVerify}
-              memberCode="2448XPAR"
+              memberCode={session.user?.id || '' }
             />
           }
         />
