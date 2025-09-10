@@ -75,49 +75,79 @@ export const tipoCuenta = (payment_type: PaymentType) => {
 
 export const Logos = ({ wallet }: { wallet: WalletList }) => {
   const { isDark } = useDarkTheme();
+  const detail = wallet.details?.[0];
+  if (!detail) return null;
+
+  const imgProps = {
+    width: 80,
+    height: 80,
+    className: "w-[80px]",
+    unoptimized: true,
+  };
 
   switch (wallet.payment_type) {
     case PaymentType.BANK:
-      if (isDark) {
-        return <Image src={BankDarkImg} alt="Banco" className="w-[80px] " />;
-      } else {
-        return <Image src={BankImg} alt="Banco" className="w-[80px] " />;
-      }
+      return (
+        <Image
+          src={isDark ? BankDarkImg : BankImg}
+          alt="Banco"
+          {...imgProps}
+        />
+      );
 
     case PaymentType.PIX:
-      if (isDark) {
-        return <Image src={PixImg} alt="Pix" className="w-[80px] " />;
-      }
-      return <Image src={PixImg} alt="Pix" className="w-[80px] " />;
+      return (
+        <Image
+          src={PixImg}
+          alt="Pix"
+          {...imgProps}
+        />
+      );
 
     case PaymentType.RECEIVER_CRYPTO:
-      if (isDark) {
-        return <Image src={TetherDarkImg} alt="Tether" className="w-[80px] " />;
-      }
-      return <Image src={TetherImg} alt="Tether" className="w-[80px] " />;
+      return (
+        <Image
+          src={isDark ? TetherDarkImg : TetherImg}
+          alt="Tether"
+          {...imgProps}
+        />
+      );
 
     case PaymentType.VIRTUAL_BANK:
-      switch (wallet.details[0].type) {
-
+      switch (detail.type) {
         case PaymentType.PAYONEER:
-          if (isDark) {
-            return <Image src={PayoneerUsdDarkImg} alt="Payoneer" className="w-[80px] " />;
-          }
-          return <Image src={PayoneerUsdImg} alt="Payoneer" className="w-[80px] " />;
+          return (
+            <Image
+              src={isDark ? PayoneerUsdDarkImg : PayoneerUsdImg}
+              alt="Payoneer"
+              {...imgProps}
+            />
+          );
 
         case PaymentType.PAYPAL:
-          if (isDark) {
-            return <Image src={PaypalDarkImg} alt="PayPal" className="w-[80px] " />;
-          }
-          return <Image src={PaypalImg} alt="PayPal" className="w-[80px] " />;
+          return (
+            <Image
+              src={isDark ? PaypalDarkImg : PaypalImg}
+              alt="PayPal"
+              {...imgProps}
+            />
+          );
 
         case PaymentType.WISE:
-          if (isDark) {
-            return <Image src={WiseUsdDarkImg} alt="Wise" className="w-[80px] " />;
-          }
-          return <Image src={WiseUsdImg} alt="Wise" className="w-[80px] " />;
-      }
-  }
-}
+          return (
+            <Image
+              src={isDark ? WiseUsdDarkImg : WiseUsdImg}
+              alt="Wise"
+              {...imgProps}
+            />
+          );
 
+        default:
+          return null;
+      }
+
+    default:
+      return null;
+  }
+};
 
