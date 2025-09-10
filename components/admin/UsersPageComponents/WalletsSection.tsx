@@ -6,8 +6,7 @@ import { Wallet as WalletR } from '@/types/wallets';
 import { WalletsList } from './WalletList';
 import { WalletDetail } from './WalletDetails';
 
-export function WalletsSection({wallets}: { wallets: WalletR[] }) {
-
+export function WalletsSection({ wallets }: { wallets: WalletR[] }) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedWallet, setSelectedWallet] = useState<WalletR | null>(null);
@@ -16,11 +15,10 @@ export function WalletsSection({wallets}: { wallets: WalletR[] }) {
     setIsExpanded(!isExpanded);
   };
 
-  // Filter wallets based on search query
   const filteredWallets = wallets.filter(
     (wallet) =>
       wallet.accountName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      wallet.details[0].account_id.toLowerCase().includes(searchQuery.toLowerCase()),
+      wallet.details[0].detailId.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -61,7 +59,6 @@ export function WalletsSection({wallets}: { wallets: WalletR[] }) {
               </div>
             </div>
 
-            {/* Wallets List */}
             <div className="mb-4 max-h-[500px] divide-y overflow-y-auto rounded-lg border dark:divide-gray-700 dark:border-gray-700">
               {filteredWallets.length > 0 ? (
                 <WalletsList wallets={filteredWallets} onSelectWallet={setSelectedWallet} />
@@ -72,7 +69,6 @@ export function WalletsSection({wallets}: { wallets: WalletR[] }) {
               )}
             </div>
           </>
-
         ) : (
           <WalletDetail wallet={selectedWallet} onSelectWallet={setSelectedWallet} />
         )}

@@ -81,16 +81,6 @@ export default function VirtualWallets() {
     setOpen,
     session,
   });
-
-  const orderedWallets = [...wallets].sort((a, b) => {
-    const typeA = a?.type ?? '';
-    const typeB = b?.type ?? '';
-    if (typeA !== typeB) return typeA.localeCompare(typeB);
-    const idA = a?.id ?? '';
-    const idB = b?.id ?? '';
-    return idA.localeCompare(idB);
-  });
-
   const normalizeType = (type: string, provider?: string, currency?: string): string => {
     const prov = (provider || '').toLowerCase().trim();
     const curr = (currency || '').toLowerCase().trim();
@@ -105,10 +95,23 @@ export default function VirtualWallets() {
     if (type === 'bank' || prov === 'bank' || prov === 'transferencia') return 'transferencia';
     return type;
   };
+  const orderedWallets = [...wallets].sort((a, b) => {
+    const typeA = a?.type ?? '';
+    const typeB = b?.type ?? '';
+    if (typeA !== typeB) return typeA.localeCompare(typeB);
+
+    const idA = a?.id ?? '';
+    const idB = b?.id ?? '';
+    return idA.localeCompare(idB);
+  });
 
   const groupedWallets = orderedWallets.reduce(
     (acc, wallet) => {
-      const normalized = normalizeType(wallet.type, wallet.name, wallet.currency);
+      const detail = wallet.details?.[0];
+      const provider = detail?.type;
+      const currency = detail?.currency;
+
+      const normalized = normalizeType(wallet.type, provider, currency);
       if (!acc[normalized]) acc[normalized] = [];
       acc[normalized].push(wallet);
       return acc;
@@ -217,7 +220,7 @@ export default function VirtualWallets() {
             >
               <div className="flex items-center justify-between sm:mb-6">
                 <WalletIcon
-                  accountType={group[0].type}
+                  accountType={type}
                   provider={group[0].name}
                   currency={group[0].details?.[0]?.currency}
                   accountName={group[0].accountName}

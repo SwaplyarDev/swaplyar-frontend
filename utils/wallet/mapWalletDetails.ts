@@ -24,7 +24,7 @@ export function mapWalletDetails(wallet: { type: string; details: WalletDetail[]
       case 'wise':
         return [
           { label: 'Correo electrónico', value: safe(detail.email) },
-          { label: 'Nombre', value: `${safe(detail.firstName)} ${safe(detail.lastName)}`, align: 'right' },
+          { label: 'Nombre', value: safe(detail.userAccount.accountName), align: 'right' },
         ];
 
      case 'bank':

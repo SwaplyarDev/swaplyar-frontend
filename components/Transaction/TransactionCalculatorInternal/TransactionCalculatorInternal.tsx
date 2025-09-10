@@ -34,12 +34,27 @@ import { useStepperStore } from '@/store/stateStepperStore';
 
 export const allowedCouponInstances: CouponInstance[] = ['THREE', 'FIVE', /* 'THREE_FIVE', */ 'TEN', 'MANUAL'];
 
-export default function InternalTransactionCalculator({ discounts, stars, errors } : { discounts: AdminDiscountsResponse | null; stars: UserStarsAndAmount; errors: string[] }) {
-
-  const { activeSelect,selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
+export default function InternalTransactionCalculator({
+  discounts,
+  stars,
+  errors,
+}: {
+  discounts: AdminDiscountsResponse | null;
+  stars: UserStarsAndAmount;
+  errors: string[];
+}) {
+  const { activeSelect, selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
   const { startUpdatingRates, stopUpdatingRates, rates } = getExchangeRateStore();
-  const { couponInstance, setData, setCouponInstanceByAmount, addDiscountId, resetDiscounts, isUsed } = useRewardsStore();
-  const { wallets: userWallets, selectedWallet, setSelectedWallet, clearSelectedWallet, fetchAndSetWallets, isLoading } = useWalletStore();
+  const { couponInstance, setData, setCouponInstanceByAmount, addDiscountId, resetDiscounts, isUsed } =
+    useRewardsStore();
+  const {
+    wallets: userWallets,
+    selectedWallet,
+    setSelectedWallet,
+    clearSelectedWallet,
+    fetchAndSetWallets,
+    isLoading,
+  } = useWalletStore();
   const { resetToDefault } = useStepperStore();
 
   const { data: session } = useSession();
@@ -49,9 +64,17 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [customReceiveInput, setCustomReceiveInput] = useState('');
-  const [isCustomInputActive, setIsCustomInputActive] = useState(false); 
-  const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne, rateForOneBank, setFinalReceiveAmount } = useAmountCalculator();
-  
+  const [isCustomInputActive, setIsCustomInputActive] = useState(false);
+  const {
+    sendAmount,
+    receiveAmount,
+    handleSendAmountChange,
+    handleReceiveAmountChange,
+    rateForOne,
+    rateForOneBank,
+    setFinalReceiveAmount,
+  } = useAmountCalculator();
+
   const couponUsdAmount = useRef(0);
   const shouldApplyCoupon = useRef(false);
   const couponInstanceForCalc = useRef<CouponInstance | null>(null);
@@ -69,7 +92,23 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
   const eurToUsdRate = rates?.currentValueEURToUSD ?? 0;
   const usdToBrlRate = rates?.currentValueUSDToBRL ?? 0;
   const arsToBrlRate = usdToArsRate > 0 ? (1 / usdToArsRate) * usdToBrlRate : 0;
+  const normalizeType = (type: string, provider?: string, currency?: string): string => {
+    const prov = (provider || '').toLowerCase().trim();
+    const curr = (currency || '').toLowerCase().trim();
 
+    if (type === 'virtual_bank') {
+      if (prov.includes('paypal')) return 'paypal';
+      if (prov.includes('wise')) return curr === 'eur' ? 'wise_eur' : 'wise_usd';
+      if (prov.includes('payoneer')) return curr === 'eur' ? 'payoneer_eur' : 'payoneer_usd';
+      return 'virtual_bank';
+    }
+
+    if (type === 'receiver_crypto' || prov === 'crypto') return 'tether';
+    if (type === 'pix' || prov === 'pix') return 'pix';
+    if (type === 'bank' || prov === 'bank' || prov === 'transferencia') return 'bank';
+
+    return type;
+  };
   // Obtiene las billeteras del usuario
   useEffect(() => {
     if (token) {
@@ -85,7 +124,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
   }, [selectedSendingSystem, selectedReceivingSystem, startUpdatingRates, stopUpdatingRates]);
 
   useEffect(() => {
-      resetDiscounts();
+    resetDiscounts();
   }, []);
 
   // Calcula el couponUsdAmount y el couponInstance según los descuentos obtenidos por parametro
@@ -107,7 +146,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
       });
       addDiscountId(tempDiscountIds);
     }
-    
+
     setData(stars.data.stars, sendAmountNum);
   }, [discounts, stars]);
 
@@ -117,7 +156,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
   couponInstanceForCalc.current = allowedCouponInstances.includes(couponInstance as CouponInstance)
     ? (couponInstance as 'THREE' | 'FIVE' | 'TEN' | 'MANUAL')
     : null;
-  
+
   // Calcula el receiveAmountWithCoupon y el valor a mostrar en el input de "Recibes"
   receiveAmountWithCoupon.current = calculateReceiveAmountWithCoupon({
     couponInstance: couponInstanceForCalc.current,
@@ -131,10 +170,8 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
     usdToBrlRate,
   });
 
-  // Convierte el valor a mostrar en el input de "Recibes" a string
   receiveAmountInputValue.current = shouldApplyCoupon ? formatAmount(receiveAmountWithCoupon.current) : receiveAmount;
 
-  // Redirige si no hay permiso
   useEffect(() => {
     if (!pass && pathname === '/es/auth/solicitud/formulario-de-solicitud') {
       router.push('/es/auth/solicitud');
@@ -165,14 +202,23 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
     }
     return true;
   };
-
   const filteredWallets = useMemo(() => {
     if (!selectedReceivingSystem) {
       return [];
     }
-    return userWallets.filter((wallet) => wallet.type === selectedReceivingSystem.id);
+
+    const walletsToShow = userWallets.filter((wallet) => {
+      const detail = wallet.details?.[0];
+      const currency = detail?.currency;
+      const provider = detail?.type;
+      const normalizedWalletType = normalizeType(wallet.type, provider, currency);
+      const isMatch = normalizedWalletType === selectedReceivingSystem.id;
+
+      return isMatch;
+    });
+
+    return walletsToShow;
   }, [selectedReceivingSystem, userWallets]);
-  
   useEffect(() => {
     if (filteredWallets.length === 1) {
       setSelectedWallet(filteredWallets[0]);
@@ -244,7 +290,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
             <p className="font-textFont text-xs font-light xs:text-sm">Información del sistema de recepción</p>
           </SystemInfo>
 
-          <Coupons balance={receiveAmountNum} receivingCoin={selectedReceivingSystem?.coin}/>
+          <Coupons balance={receiveAmountNum} receivingCoin={selectedReceivingSystem?.coin} />
         </div>
 
         <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
@@ -294,7 +340,7 @@ export default function InternalTransactionCalculator({ discounts, stars, errors
             filteredWallets={filteredWallets}
             selectedWalletId={selectedWallet?.id || null}
             onChange={handleWalletChange}
-          /> 
+          />
 
           <BtnProccessPayment
             handleSubmit={handleSubmit}

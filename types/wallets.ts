@@ -33,7 +33,7 @@ export enum CryptoNetwork {
 
 // Interface base para detalles de cuenta
 export interface AccountDetails {
-  account_id: string;
+  detailId: string;
   currency?: Currency;
   bank_name?: string;
   send_method_key?: string;
