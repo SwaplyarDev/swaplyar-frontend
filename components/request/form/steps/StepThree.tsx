@@ -1,11 +1,12 @@
 import ArrowUp from '@/components/ui/ArrowUp/ArrowUp';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useStepperStore } from '@/store/stateStepperStore';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { useSystemStore } from '@/store/useSystemStore';
-import StepThreeGeneral from './stepsThreeOptions/StepThreeGeneral';
-import StepThreeTether from './stepsThreeOptions/StepThreeTether';
+import dynamic from 'next/dynamic';
+const StepThreeGeneral = dynamic(() => import('./stepsThreeOptions/StepThreeGeneral'));
+const StepThreeTether = dynamic(() => import('./stepsThreeOptions/StepThreeTether'));
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import InfoStep from '@/components/ui/InfoStep/InfoStep';
 import clsx from 'clsx';
@@ -38,8 +39,8 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
 
   const formValues = useWatch({ control });
 
-  const receiveAmount = localStorage.getItem('receiveAmount');
-  const sendAmount = localStorage.getItem('sendAmount');
+  const receiveAmount = typeof window !== 'undefined' ? localStorage.getItem('receiveAmount') : null;
+  const sendAmount = typeof window !== 'undefined' ? localStorage.getItem('sendAmount') : null;
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
 
   useEffect(() => {
@@ -74,11 +75,14 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
     setLoading(false);
   };
 
-  const hasChanges =
-    initialValues &&
-    !Object.keys(initialValues).every(
-      (key) => initialValues[key as keyof FormData] === formValues[key as keyof FormData],
-    );
+  const hasChanges = useMemo(
+    () =>
+      initialValues &&
+      !Object.keys(initialValues).every(
+        (key) => initialValues[key as keyof FormData] === formValues[key as keyof FormData],
+      ),
+    [initialValues, formValues],
+  );
 
   const { onChange, ...restRegister } = register('proof_of_payment', {
     required: true,
@@ -202,4 +206,4 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   );
 };
 
-export default StepThree;
+export default memo(StepThree);

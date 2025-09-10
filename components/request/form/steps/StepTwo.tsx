@@ -2,14 +2,15 @@ import ArrowUp from '@/components/ui/ArrowUp/ArrowUp';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useStepperStore } from '@/store/stateStepperStore';
 import { useSystemStore } from '@/store/useSystemStore';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import StepTwoBank from './stepsTwoOptions/StepTwoBank';
-import StepTwoPayoneer from './stepsTwoOptions/StepTwoPayoneer';
-import StepTwoPaypal from './stepsTwoOptions/StepTwoPaypal';
-import StepTwoWise from './stepsTwoOptions/StepTwoWise';
-import StepTwoTether from './stepsTwoOptions/StepTwoTether';
-import StepTwoPix from './stepsTwoOptions/StepTwoPix';
+import dynamic from 'next/dynamic';
+const StepTwoBank = dynamic(() => import('./stepsTwoOptions/StepTwoBank'));
+const StepTwoPayoneer = dynamic(() => import('./stepsTwoOptions/StepTwoPayoneer'));
+const StepTwoPaypal = dynamic(() => import('./stepsTwoOptions/StepTwoPaypal'));
+const StepTwoWise = dynamic(() => import('./stepsTwoOptions/StepTwoWise'));
+const StepTwoTether = dynamic(() => import('./stepsTwoOptions/StepTwoTether'));
+const StepTwoPix = dynamic(() => import('./stepsTwoOptions/StepTwoPix'));
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import { StepTwoData } from '@/types/transactions/stepperStoretypes';
 import useWalletStore from '@/store/useWalletStore';
@@ -24,8 +25,14 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     getValues,
     watch,
   } = useForm<StepTwoData>({ mode: 'onChange' });
-  const { markStepAsCompleted, setActiveStep, formData, updateFormData, completedSteps } = useStepperStore();
-  const { selectedReceivingSystem } = useSystemStore();
+  const { markStepAsCompleted, setActiveStep, formData, updateFormData, completedSteps } = useStepperStore((s) => ({
+    markStepAsCompleted: s.markStepAsCompleted,
+    setActiveStep: s.setActiveStep,
+    formData: s.formData,
+    updateFormData: s.updateFormData,
+    completedSteps: s.completedSteps,
+  }));
+  const { selectedReceivingSystem } = useSystemStore((s) => ({ selectedReceivingSystem: s.selectedReceivingSystem }));
   const { selectedWallet } = useWalletStore();
   const { isDark } = useDarkTheme();
 
@@ -155,11 +162,14 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     setLoading(false);
   };
 
-  const hasChanges =
-    initialValues &&
-    !Object.keys(initialValues).every(
-      (key) => initialValues[key as keyof StepTwoData] === formValues[key as keyof StepTwoData],
-    );
+  const hasChanges = useMemo(
+    () =>
+      initialValues &&
+      !Object.keys(initialValues).every(
+        (key) => initialValues[key as keyof StepTwoData] === formValues[key as keyof StepTwoData],
+      ),
+    [initialValues, formValues],
+  );
 
   const renderSelectedSystem = () => {
     switch (selectedReceivingSystem?.id) {
@@ -288,4 +298,4 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   );
 };
 
-export default StepTwo;
+export default memo(StepTwo);

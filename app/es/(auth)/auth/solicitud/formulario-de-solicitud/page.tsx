@@ -1,4 +1,5 @@
-import StepperContainer from "@/components/request/form/StepperContainer";
+import dynamic from 'next/dynamic';
+const StepperContainer = dynamic(() => import('@/components/request/form/StepperContainer'), { ssr: false });
 
 const Page = () => {
   return (
