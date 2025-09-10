@@ -14,8 +14,6 @@ import { createHandleAccountAdd } from '@/utils/wallet/handleAccountAdded';
 import ReusableWalletCard from '@/components/wallets/walletCard';
 import { mapWalletDetails } from '@/utils/wallet/mapWalletDetails';
 import clsx from 'clsx';
-import { normalize } from 'path';
-import { normalizeType } from '@/components/admin/utils/normalizeType';
 
 interface Wallet {
   id: string;
@@ -83,20 +81,37 @@ export default function VirtualWallets() {
     setOpen,
     session,
   });
-  const orderedWallets = [...wallets].sort((a, b) => {
-    const typeComparison = (a.type ?? '').localeCompare(b.type ?? '');
-    if (typeComparison !== 0) {
-      return typeComparison;
+  const normalizeType = (type: string, provider?: string, currency?: string): string => {
+    const prov = (provider || '').toLowerCase().trim();
+    const curr = (currency || '').toLowerCase().trim();
+    if (type === 'virtual_bank') {
+      if (prov.includes('paypal')) return 'paypal';
+      if (prov.includes('wise')) return curr === 'eur' ? 'wise-eur' : 'wise-usd';
+      if (prov.includes('payoneer')) return curr === 'eur' ? 'payoneer-eur' : 'payoneer-usd';
+      return 'virtual_bank';
     }
-    const idA = a.details?.[0]?.detailId ?? '';
-    const idB = b.details?.[0]?.detailId ?? '';
+    if (type === 'receiver_crypto' || prov === 'crypto') return 'tether';
+    if (type === 'pix' || prov === 'pix') return 'pix';
+    if (type === 'bank' || prov === 'bank' || prov === 'transferencia') return 'transferencia';
+    return type;
+  };
+  const orderedWallets = [...wallets].sort((a, b) => {
+    const typeA = a?.type ?? '';
+    const typeB = b?.type ?? '';
+    if (typeA !== typeB) return typeA.localeCompare(typeB);
 
+    const idA = a?.id ?? '';
+    const idB = b?.id ?? '';
     return idA.localeCompare(idB);
   });
 
   const groupedWallets = orderedWallets.reduce(
     (acc, wallet) => {
-      const normalized = normalizeType(wallet.type, wallet.name, wallet.currency);
+      const detail = wallet.details?.[0];
+      const provider = detail?.type;
+      const currency = detail?.currency;
+
+      const normalized = normalizeType(wallet.type, provider, currency);
       if (!acc[normalized]) acc[normalized] = [];
       acc[normalized].push(wallet);
       return acc;
@@ -205,7 +220,7 @@ export default function VirtualWallets() {
             >
               <div className="flex items-center justify-between sm:mb-6">
                 <WalletIcon
-                  accountType={group[0].type}
+                  accountType={type}
                   provider={group[0].name}
                   currency={group[0].details?.[0]?.currency}
                   accountName={group[0].accountName}
