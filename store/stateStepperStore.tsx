@@ -77,6 +77,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
   submitAllData: async (
     selectedSendingSystem: System | null,
     selectedReceivingSystem: System | null,
+    accessToken?: string,
   ) : Promise<ResponseCreateTransaction | false> => {
     const state = get();
     const { stepOne, stepTwo, stepThree } = state.formData;
@@ -128,7 +129,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         first_name: stepOne.first_name,
         last_name: stepOne.last_name,
         identification: senderDetails.document_value,
-        phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
+  phone_number: `${stepOne.calling_code?.callingCode || ''}${(stepOne.phone || '').replace(/\D/g, '')}`,
         email: senderDetails.email_account,
       },
       receiver: {
@@ -159,10 +160,9 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     } else {
       console.log('No hay archivo disponible');
     }
-    const createTransactionDto = {
+    const createTransactionDto: any = {
       countryTransaction: payload.transaction.country_transaction,
       message: payload.transaction.message,
-      createdBy: payload.sender.email,
       financialAccounts: {
         senderAccount: {
           firstName: payload.sender.first_name,
@@ -172,35 +172,46 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           paymentMethod: payload.payment_method.sender,
         },
         receiverAccount: {
+          firstName: stepTwo.receiver_first_name || '',
+          lastName: stepTwo.receiver_last_name || '',
           paymentMethod: payload.payment_method.receiver,
         },
       },
-      userId: payload.transaction.user_id,
       amount: {
         amountSent: parseFloat(stepThree.send_amount.replace(/[^\d.-]/g, '')) || 0,
         currencySent: selectedSendingSystem?.coin,
         amountReceived: parseFloat(stepThree.receive_amount.replace(/[^\d.-]/g, '')) || 0,
         currencyReceived: selectedReceivingSystem?.coin,
+        received: false,
       },
-
-      proofOfPayment: {
-        type: 'image',
-        url: '',
-      },
-      note: stepThree.note,
-      createdAt: new Date().toISOString(),
-      finalStatus: payload.status.status,
     };
 
+  // Limpiar campos vacíos opcionales
     formDataPayload.append('createTransactionDto', JSON.stringify(createTransactionDto));
 
     try {
+      const headers: Record<string, string> = {};
+      if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`;
+
       const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/transactions`, {
         method: 'POST',
+        headers,
         body: formDataPayload,
       });
 
       if (!response.ok) {
+        let serverMessage = '';
+        try {
+          const errJson = await response.json();
+          serverMessage = typeof errJson === 'string' ? errJson : JSON.stringify(errJson);
+        } catch (_) {
+          try { serverMessage = await response.text(); } catch { /* noop */ }
+        }
+        console.error('Fallo creación de transacción', {
+          status: response.status,
+          statusText: response.statusText,
+          serverMessage,
+        });
         throw new Error('Error al enviar los datos al servidor');
       }
 

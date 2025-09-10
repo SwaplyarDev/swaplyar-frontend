@@ -174,7 +174,11 @@ const StepperContainer = () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
-      const isSuccess = await submitAllData(selectedSendingSystem, selectedReceivingSystem);
+      const isSuccess = await submitAllData(
+        selectedSendingSystem,
+        selectedReceivingSystem,
+        session?.accessToken,
+      );
 
       if (isSuccess) {
         await handleMarkCouponUsed(discounts_ids, isSuccess.id)
