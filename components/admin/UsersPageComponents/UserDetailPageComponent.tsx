@@ -42,7 +42,13 @@ export async function UserDetailPageComponent({ verificationId }: { verification
                 
                 <TransactionHistorySection transactions={transactions} />  
               */} 
-              <WalletsSection wallets={wallets} /> 
+              {wallets.length > 0 ? (
+                <WalletsSection wallets={wallets} />
+              ) : (
+                <div className="border rounded-md p-4 text-muted-foreground text-sm italic">
+                  Este usuario no tiene cuentas registradas.
+                </div>
+              )}
               <UserRewardsSection discounts={discounts} /> 
             </div>
           </div>

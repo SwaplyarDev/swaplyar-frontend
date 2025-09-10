@@ -88,6 +88,15 @@ export const tipoCuenta = (payment_type: PaymentType) => {
 
 export const Logos = ({ wallet }: { wallet: WalletList }) => {
   const { isDark } = useDarkTheme();
+  const detail = wallet.details?.[0];
+  if (!detail) return null;
+
+  const imgProps = {
+    width: 80,
+    height: 80,
+    className: 'w-[80px]',
+    unoptimized: true,
+  };
 
   switch (wallet.payment_type) {
     case PaymentType.BANK:
@@ -129,5 +138,8 @@ export const Logos = ({ wallet }: { wallet: WalletList }) => {
           }
           return <Image src={WiseUsdImg} alt="Wise" className="w-[80px]" />;
       }
+
+    default:
+      return null;
   }
 };
