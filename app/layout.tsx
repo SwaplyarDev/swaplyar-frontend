@@ -44,12 +44,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="es" className="theme-ready hydrated" suppressHydrationWarning>
       <head>
-        <style id="critical-theme-css">{`
-          html.dark { color-scheme: dark; }
-          html.dark, html.dark body { background: #121212; color: #f5f5f5; }
-          html.dark .bg-white { background-color: #121212 !important; }
-          html.dark .text-darkText { color: #f5f5f5 !important; }
-        `}</style>
         <script
           dangerouslySetInnerHTML={{
             __html: `
