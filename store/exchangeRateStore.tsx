@@ -221,9 +221,9 @@ export const getExchangeRateStore = create<ExchangeRateStore>((set) => {
     startUpdatingRates: async () => {
       if (typeof window === 'undefined') return; // Evita ejecución en SSR
 
-      await fetchRates(set); // Llamada inicial
+      if (intervalId) return; // Evita múltiples intervalos y llamadas redundantes
 
-      if (intervalId) return; // Evita múltiples intervalos
+      await fetchRates(set); // Llamada inicial sólo cuando arrancamos
 
       const ratesLoaded = loadRatesFromLocalStorage();
 

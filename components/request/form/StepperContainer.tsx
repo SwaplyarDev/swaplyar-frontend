@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 import { createRoot } from 'react-dom/client';
 import Arrow from '@/components/ui/Arrow/Arrow';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useSystemStore } from '@/store/useSystemStore';
@@ -22,6 +22,7 @@ import ReactDOMServer from 'react-dom/server';
 import { useSession } from 'next-auth/react';
 import { useRewardsStore } from '@/store/useRewardsStore';
 import { putDiscountsStatus } from '@/actions/Discounts/discounts.action';
+import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 
 const StepperContainer = () => {
   const { formData, activeStep, completedSteps, setActiveStep, updateFormData, submitAllData, resetToDefault } = useStepperStore();  
@@ -35,31 +36,30 @@ const StepperContainer = () => {
   const [loading, setLoading] = useState(false);
   const { isDark } = useDarkTheme();
   const router = useRouter();
+  const { setPassFalse } = useControlRouteRequestStore((s) => s);
 
+  const prefilledOnceRef = useRef(false);
   useEffect(() => {
-    const autoCompleteInfo = () => {
-      const userInfo = {
-    first_name: session?.user?.profile?.firstName || '',
-    last_name: session?.user?.profile?.lastName || '',
-        calling_code: undefined,
-        email: session?.user?.email || '',
-    phone: session?.user?.profile?.phone || '',
-        own_account: undefined,
-      };
+    if (!session || prefilledOnceRef.current) return;
 
-      const transferInfo = {
-        ...formData.stepTwo,
-    tax_identification: session?.user?.profile?.identification || undefined,
-      };
-      updateFormData(0, userInfo);
-      updateFormData(1, transferInfo);
-    }
+    const userInfo = {
+      first_name: session?.user?.profile?.firstName || '',
+      last_name: session?.user?.profile?.lastName || '',
+      calling_code: undefined,
+      email: session?.user?.email || '',
+      phone: session?.user?.profile?.phone || '',
+      own_account: undefined,
+    };
 
-    if (session) {
-      autoCompleteInfo();
-    }
+    const transferInfo = {
+      tax_identification: session?.user?.profile?.identification || undefined,
+    } as const;
 
-  },[session, formData.stepTwo, updateFormData]);
+    updateFormData(0, userInfo);
+    updateFormData(1, transferInfo);
+
+    prefilledOnceRef.current = true;
+  }, [session, updateFormData]);
 
   const steps = [
   { title: 'Mis Datos', component: <StepOne blockAll={blockAll} /> },
@@ -75,6 +75,16 @@ const StepperContainer = () => {
       setActiveStep(index);
     }
   };
+
+  useEffect(() => {
+    // Al desmontar el formulario, invalida el paso para evitar accesos directos posteriores
+    return () => {
+      setPassFalse();
+      try {
+        document.cookie = 'requestPass=; Max-Age=0; Path=/; SameSite=Lax';
+      } catch {}
+    };
+  }, [setPassFalse]);
 
   const handleMarkCouponUsed = async (coupon_id: string[], uuid_transacción: string) => {
     if(couponInstance === 'NONE' || session?.accessToken === undefined || !uuid_transacción) return;

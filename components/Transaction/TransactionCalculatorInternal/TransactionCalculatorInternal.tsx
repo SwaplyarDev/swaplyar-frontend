@@ -83,7 +83,7 @@ export default function InternalTransactionCalculator({
 
   const router = useRouter();
   const pathname = usePathname();
-  const { pass } = useControlRouteRequestStore((state) => state);
+  const { pass, setPassTrue } = useControlRouteRequestStore((state) => state);
 
   // Obtiene los valores numéricos de las cantidades enviadas y recibidas, ademas de las tasas de cambio
   const sendAmountNum = sendAmount ? parseFloat(sendAmount) : 0;
@@ -125,7 +125,7 @@ export default function InternalTransactionCalculator({
 
   useEffect(() => {
     resetDiscounts();
-  }, []);
+  }, [resetDiscounts]);
 
   // Calcula el couponUsdAmount y el couponInstance según los descuentos obtenidos por parametro
   useEffect(() => {
@@ -148,7 +148,7 @@ export default function InternalTransactionCalculator({
     }
 
     setData(stars.data.stars, sendAmountNum);
-  }, [discounts, stars]);
+  }, [discounts, stars, addDiscountId, isUsed, resetDiscounts, sendAmountNum, setCouponInstanceByAmount, setData]);
 
   shouldApplyCoupon.current = sendAmountNum > 0 && couponUsdAmount.current > 0;
 
@@ -172,17 +172,17 @@ export default function InternalTransactionCalculator({
 
   receiveAmountInputValue.current = shouldApplyCoupon ? formatAmount(receiveAmountWithCoupon.current) : receiveAmount;
 
-  useEffect(() => {
-    if (!pass && pathname === '/es/auth/solicitud/formulario-de-solicitud') {
-      router.push('/es/auth/solicitud');
-    }
-  }, [pass, pathname, router]);
+  // Nota: No redirigimos desde el cliente; el middleware se encarga del acceso.
 
   const handleSubmit = () => {
     setIsProcessing(true);
     setFinalReceiveAmount(receiveAmountInputValue.current);
     resetToDefault();
     setTimeout(() => {
+      try {
+        document.cookie = 'requestPass=1; Max-Age=120; Path=/; SameSite=Lax';
+      } catch {}
+      setPassTrue();
       router.push('/es/auth/solicitud/formulario-de-solicitud');
     }, 2000);
   };

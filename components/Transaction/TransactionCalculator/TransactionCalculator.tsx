@@ -41,7 +41,7 @@ export default function TransactionCalculator() {
   const colorError = isDark ? 'text-[#f78a82]' : 'text-[#f44336]';
   const pathname = usePathname();
   const { pass } = useControlRouteRequestStore((state) => state);
-  const { setPass } = useControlRouteRequestStore((state) => state);
+  const { setPassTrue } = useControlRouteRequestStore((state) => state);
   const sendAmountNum = sendAmount ? parseFloat(sendAmount) : 0;
   const receiveAmountNum = receiveAmount ? parseFloat(receiveAmount) : 0;
   const { rates } = getExchangeRateStore.getState();
@@ -53,6 +53,11 @@ export default function TransactionCalculator() {
 
   const handleDirection = () => {
     sessionStorage.setItem('accesoPermitido', 'true');
+    // Cookie efímera para que el middleware permita la navegación interna
+    try {
+      document.cookie = 'requestPass=1; Max-Age=120; Path=/; SameSite=Lax';
+    } catch {}
+    setPassTrue();
     router.push('/es/auth/solicitud/formulario-de-solicitud');
   };
 

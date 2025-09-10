@@ -35,13 +35,26 @@ export default auth((req) => {
       return NextResponse.redirect(new URL('/es/auth/solicitud', req.url));
     }
 
-    // 4) Bloqueo de acceso directo a formularios específicos
-    if (
-      pathname === '/es/inicio/formulario-de-solicitud' ||
-      pathname === '/es/auth/solicitud/formulario-de-solicitud'
-    ) {
+    // 4) Bloqueo de acceso directo a formularios específicos: permitir solo si hay navegación interna del mismo origen
+    if (pathname === '/es/inicio/formulario-de-solicitud') {
+      // Para la ruta pública, requiere cookie o referer same-origin
+      const hasRequestPass = req.cookies.get('requestPass');
+      if (hasRequestPass?.value === '1') {
+        const res = NextResponse.next();
+        res.cookies.set('requestPass', '', { maxAge: 0, path: '/' });
+        return res;
+      }
       const referer = req.headers.get('referer');
-      if (!referer || !referer.includes('/')) {
+      try {
+        if (!referer) {
+          return NextResponse.redirect(new URL('/', req.url));
+        }
+        const refUrl = new URL(referer);
+        const curUrl = new URL(req.url);
+        if (refUrl.origin !== curUrl.origin) {
+          return NextResponse.redirect(new URL('/', req.url));
+        }
+      } catch {
         return NextResponse.redirect(new URL('/', req.url));
       }
     }
