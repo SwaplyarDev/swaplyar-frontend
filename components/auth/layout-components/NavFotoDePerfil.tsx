@@ -19,7 +19,7 @@ export default function NavFotoDePerfil() {
   return (
     <>
       <div className={`mask-nav h-16 w-[8rem] self-start ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
-      <Link
+  <Link
         href={isAdmin ? '#' : '/es/auth/perfil'}
         onClick={() => {
           setMostrarModalPerfil(!mostrarModalPerfil);
@@ -27,7 +27,7 @@ export default function NavFotoDePerfil() {
         className={`${isActive === 'perfil' || pathname === '/es/auth/perfil' ? 'bg-gradient-to-t' : ''} absolute left-4 top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[0.25rem] hover:bg-gradient-to-t`}
       >
         <Image
-          src={user.profile.profilePictureUrl ? user.profile.profilePictureUrl : swaplyArAvatar}
+          src={user.profile?.profilePictureUrl ? user.profile.profilePictureUrl : swaplyArAvatar}
           alt="Foto perfil Usuario"
           width={100}
           height={100}

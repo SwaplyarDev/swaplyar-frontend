@@ -14,12 +14,15 @@ export async function plusRewardsActions(formData: FormData, token: string) {
 
     const data = await res.json();
     if (!res.ok) {
+      if (res.status === 401 || res.status === 403) {
+        throw new Error('Unauthorized');
+      }
       throw new Error(data?.message || 'Error al subir las imágenes');
     }
 
     return { success: true, data };
   } catch (error) {
-    return { success: false };
+    throw error as Error;
   }
 }
 
@@ -35,12 +38,15 @@ export async function plusRewardsActionsPut(formData: FormData, token: string) {
 
     const data = await res.json();
     if (!res.ok) {
+      if (res.status === 401 || res.status === 403) {
+        throw new Error('Unauthorized');
+      }
       throw new Error(data?.message || 'Error al subir las imágenes');
     }
 
     return { success: true, data };
   } catch (error) {
-    return { success: false };
+    throw error as Error;
   }
 }
 
@@ -57,14 +63,20 @@ export async function getPlusRewards(token: string) {
     const data = await res.json();
 
     if (!res.ok) {
+      // Propagar Unauthorized explícitamente para que el caller pueda refrescar/actuar
+      if (res.status === 401 || res.status === 403) {
+        console.warn('Respuesta no OK:', data);
+        throw new Error('Unauthorized');
+      }
       console.warn('Respuesta no OK:', data);
       return { verification_status: 'REENVIAR_DATOS' };
     }
 
-    // El backend devuelve { success: true, data: { status: 'pending' } }
+    // El backend devuelve { success: true, data: { verification_status: 'pending' } }
     // Necesitamos mapear esto a la estructura esperada
-    if (data.success && data.data && data.data.verification_status.toLowerCase()) {
-      const backendStatus = data.data.verification_status.toLowerCase();
+    const rawStatus = data?.data?.verification_status;
+    if (data?.success && typeof rawStatus === 'string') {
+      const backendStatus = rawStatus.toLowerCase();
 
       // Mapear estados del backend a estados del frontend
       let frontendStatus = 'REENVIAR_DATOS'; // default fallback
@@ -91,8 +103,10 @@ export async function getPlusRewards(token: string) {
     console.warn('Estructura de respuesta inesperada:', data);
     return { verification_status: 'REENVIAR_DATOS' };
   } catch (error) {
-    console.error('Error en getPlusRewards:', error);
-    return { verification_status: 'REENVIAR_DATOS' };
+  console.error('Error en getPlusRewards:', error);
+  // Permitir que el caller detecte Unauthorized
+  if ((error as Error)?.message === 'Unauthorized') throw error;
+  return { verification_status: 'REENVIAR_DATOS' };
   }
 }
 
@@ -108,6 +122,11 @@ export async function getCardStatus(token: string) {
     });
 
     if (!res.ok) {
+      if (res.status === 401 || res.status === 403) {
+        const errorBody = await res.text();
+        console.error('Respuesta no OK:', errorBody);
+        throw new Error('Unauthorized');
+      }
       const errorBody = await res.text();
       console.error('Respuesta no OK:', errorBody);
       throw new Error('Error al obtener los plus rewards');
@@ -117,7 +136,8 @@ export async function getCardStatus(token: string) {
     return data;
   } catch (error) {
     console.error('Error en getPlusRewards:', error);
-    return null;
+  if ((error as Error)?.message === 'Unauthorized') throw error;
+  return null;
   }
 }
 
@@ -134,6 +154,9 @@ export async function updateVerificationStatus(token: string) {
     const data = await res.json();
 
     if (!res.ok) {
+      if (res.status === 401 || res.status === 403) {
+        throw new Error('Unauthorized');
+      }
       throw new Error(data.message || 'Error al validar verificación');
     }
 
@@ -143,10 +166,7 @@ export async function updateVerificationStatus(token: string) {
     };
   } catch (err) {
     console.error('❌ Error al validar verificación:', err);
-    return {
-      success: false,
-      message: (err as Error).message,
-    };
+  throw err;
   }
 }
 
@@ -161,11 +181,14 @@ export async function resendVerificationAfterRejection(token: string) {
     console.log('🔁 Respuesta del backend al reenviar verificación:', data);
     
     if (!res.ok) {
+      if (res.status === 401 || res.status === 403) {
+        throw new Error('Unauthorized');
+      }
       throw new Error(data?.message || 'No se pudo solicitar el reenvío de datos');
     }
     return { success: true, data };
   } catch (err) {
     console.error(err);
-    return { success: false, error: (err as Error).message };
+    throw err as Error;
   }
 }

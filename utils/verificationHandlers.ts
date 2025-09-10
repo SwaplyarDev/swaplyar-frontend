@@ -24,16 +24,31 @@ export async function fetchAndHandleVerificationStatus({
   update,
 }: HandleStatusParams) {
   try {
-    const { verification_status } = await getPlusRewards(token);
+    let statusResp;
+    let workingToken = token;
+    try {
+      statusResp = await getPlusRewards(workingToken);
+    } catch (err) {
+      if ((err as Error)?.message === 'Unauthorized') {
+        // Intenta refrescar sesión y reintenta una vez con el nuevo token
+        const updated = await update();
+        const newToken = (updated as any)?.accessToken || workingToken;
+        workingToken = newToken;
+        statusResp = await getPlusRewards(workingToken);
+      } else {
+        throw err;
+      }
+    }
+    const { verification_status } = statusResp;
     const status = verification_status as Status;
     setStatus(status);
 
     switch (status) {
       case 'RECHAZADO':
-        await handleRejectedStatus(token, setShowRejectedMessage, setStatus);
+        await handleRejectedStatus(workingToken, setShowRejectedMessage, setStatus, update);
         break;
       case 'APROBADO':
-        await handleApprovedStatus(token, setShowApprovedMessage, update);
+        await handleApprovedStatus(workingToken, setShowApprovedMessage, update);
         break;
       default:
         clearStatusFlags();
@@ -49,6 +64,7 @@ async function handleRejectedStatus(
   token: string,
   setShowRejectedMessage: (val: boolean) => void,
   setStatus: (status: Status) => void,
+  update: UpdateSession,
 ) {
   const alreadyShown = localStorage.getItem('verificationRejectedShown');
   if (alreadyShown) return;
@@ -62,7 +78,17 @@ async function handleRejectedStatus(
   }, 5000);
 
   try {
-    await resendVerificationAfterRejection(token);
+    try {
+      await resendVerificationAfterRejection(token);
+    } catch (err) {
+      if ((err as Error)?.message === 'Unauthorized') {
+        const updated = await update();
+        const newToken = (updated as any)?.accessToken || token;
+        await resendVerificationAfterRejection(newToken);
+      } else {
+        throw err;
+      }
+    }
     console.log('Token actualizado tras RECHAZADO');
   } catch (err) {
     console.error('Error al actualizar token tras RECHAZADO:', err);
@@ -83,7 +109,17 @@ async function handleApprovedStatus(
   setTimeout(() => setShowApprovedMessage(false), 5000);
 
   try {
-    await updateVerificationStatus(token);
+    try {
+      await updateVerificationStatus(token);
+    } catch (err) {
+      if ((err as Error)?.message === 'Unauthorized') {
+        const updated = await update();
+        const newToken = (updated as any)?.accessToken || token;
+        await updateVerificationStatus(newToken);
+      } else {
+        throw err;
+      }
+    }
     console.log('Token actualizado con verificación');
 
     await update();

@@ -24,11 +24,11 @@ const InfoCard = ({ setShow }: InfoCardProps) => {
         <p className="">Nacionalidad</p>
         <p className="text-right">{session?.user.id}</p>
 
-        <p className="">N° de Documento</p>
-        <p className="text-right">{session?.user.identification}</p>
+  <p className="">N° de Documento</p>
+  <p className="text-right">{session?.user.profile?.identification ?? '-'}</p>
 
-        <p className="">Fecha de Nacimiento</p>
-        <p className="text-right">{session?.user.birthDate}</p>
+  <p className="">Fecha de Nacimiento</p>
+  <p className="text-right">{session?.user.profile?.birthDate ?? '-'}</p>
 
         <p className="">Apodo</p>
         <div className="flex items-center justify-end gap-2 text-right">

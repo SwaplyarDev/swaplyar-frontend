@@ -39,17 +39,17 @@ const StepperContainer = () => {
   useEffect(() => {
     const autoCompleteInfo = () => {
       const userInfo = {
-        first_name: session?.user?.profile.firstName || '',
-        last_name: session?.user?.profile.lastName || '',
+    first_name: session?.user?.profile?.firstName || '',
+    last_name: session?.user?.profile?.lastName || '',
         calling_code: undefined,
         email: session?.user?.email || '',
-        phone: session?.user?.profile.phone || '',
+    phone: session?.user?.profile?.phone || '',
         own_account: undefined,
       };
 
       const transferInfo = {
         ...formData.stepTwo,
-        tax_identification: session?.user.profile.identification,
+    tax_identification: session?.user?.profile?.identification || undefined,
       };
       updateFormData(0, userInfo);
       updateFormData(1, transferInfo);
@@ -59,7 +59,7 @@ const StepperContainer = () => {
       autoCompleteInfo();
     }
 
-  },[session]);
+  },[session, formData.stepTwo, updateFormData]);
 
   const steps = [
   { title: 'Mis Datos', component: <StepOne blockAll={blockAll} /> },

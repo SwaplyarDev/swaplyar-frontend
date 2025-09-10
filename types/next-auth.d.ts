@@ -1,100 +1,98 @@
 /**
- * @file Tipos extendidos para NextAuth
- * @module nextAuthTypes
- * @description
- * Extiende los interfaces Session y JWT para incluir propiedades de tu JWT
+ * Tipos extendidos para NextAuth
+ * Alineados con el mapeo actual en auth.ts (session y jwt callbacks)
  */
-import type { DefaultSession, DefaultUser } from 'next-auth';
-import type { DefaultJWT } from 'next-auth/jwt';
-import type { UserRole } from './lib/auth/types';
+import type { DefaultSession } from 'next-auth';
+
+// Rol de usuario soportado por el backend
+type AppUserRole = 'user' | 'admin' | 'superadmin';
+
+// Perfil de usuario según payload del backend
+interface AppProfile {
+  firstName: string;
+  middleName?: string | null;
+  lastName: string;
+  nickname?: string | null;
+  email: string;
+  identification?: string | null;
+  phone?: string | null;
+  birthDate?: string | null;
+  age?: number | null;
+  gender?: string | null;
+  profilePictureUrl?: string | null;
+  locationId?: string | null;
+  lastActivity?: string | null;
+  // Algunas respuestas incluyen redes sociales como array u objeto; lo tipamos flexible
+  social?: Array<{ network: string; profile: string }> | Record<string, unknown> | null;
+}
 
 declare module 'next-auth' {
   /**
-   * Aquí ampliamos el User que recibe NextAuth en los callbacks
+   * Usuario que devuelve authorize() o los providers sociales, almacenado en el JWT
    */
-  interface User extends DecodedUser {
+  interface User {
+    sub?: string; // id del sujeto en el JWT
+    email: string;
+    role: AppUserRole;
+    fullName?: string | null;
+    terms?: boolean | string | null;
+    isActive?: boolean;
+    createdAt?: string;
+    profile?: AppProfile | null;
+    category?: string | null;
+    isValidated?: boolean;
+    userValidated?: boolean;
+    // Tokens y expiración calculada en authorize()
     accessToken?: string;
     refreshToken?: string;
-    expiresAt?: number;
+    expiresAt?: number; // epoch ms
   }
+
   /**
-   * Sesión en el cliente
+   * Sesión disponible en el cliente (useSession())
    */
-   interface Session {
-    user: DefaultSession['user'] & DecodedUser;
+  interface Session {
+    user: DefaultSession['user'] & {
+      id: string;
+      email: string;
+      role: AppUserRole;
+      fullName?: string | null;
+      terms?: boolean | string | null;
+      isActive?: boolean;
+      createdAt?: string;
+      profile?: AppProfile | null;
+      category?: string | null;
+      isValidated?: boolean;
+      userValidated?: boolean;
+    };
     accessToken?: string;
-    refreshToken?: string;
-    expiresAt?: number;
-     error?: string;
-  }
-
-  /**
-   * Payload decodificado del JWT de backend
-   */
-  interface BaseUser {
-    id: string;
-    fullName: string;
-    email: string;
-    role: UserRole;
-    terms: boolean | string;
-    isActive: boolean;
-    isBanned?: boolean;
-    createdAt: string;
-    profile: Profile;
-    token: string;
-    social: Social[];
-    userVerification: string;
-  }
-
-  interface Profile {
-    firstName: string;
-    middleName: string;
-    lastName: string;
-    email: string;
-    identification: string;
-    phone: string;
-    birthDate: string;
-    age: string;
-    gender: string;
-    profilePictureUrl: string;
-    locationId: string;
-    lastActivity: string;
-  }
-
-  interface Social {
-    network: string;
-    profile: string;
-  }
-
-  interface Profile {
-    firstName: string;
-    middleName?: string | null;
-    lastName: string;
-    nickname?: string | null;
-    email: string;
-    identification?: string | null;
-    phone?: string | null;
-    birthDate?: string | null;
-    age?: number | null;
-    gender?: string | null;
-    profilePictureUrl: string;
-    locationId?: string | null;
-    lastActivity?: string | null;
-    social: Social[] | Record<string, any>;
+    error?: string; // p.ej. 'RefreshAccessTokenError'
   }
 }
 
 declare module 'next-auth/jwt' {
   /**
-   * JWT interno usado por NextAuth
+   * Contenido del token JWT que maneja NextAuth internamente
    */
-  declare module 'next-auth/jwt' {
-  interface JWT extends DefaultJWT {
-    user?: import('next-auth').DecodedUser;
+  interface JWT {
+    user?: {
+      sub?: string;
+      email: string;
+      role: AppUserRole;
+      fullName?: string | null;
+      terms?: boolean | string | null;
+      isActive?: boolean;
+      createdAt?: string;
+      profile?: AppProfile | null;
+      category?: string | null;
+      isValidated?: boolean;
+      userValidated?: boolean;
+    };
     accessToken?: string;
     refreshToken?: string;
-    expiresAt?: number;
+    expiresAt?: number; // epoch ms
     error?: string;
   }
-  }
 }
+
+export {};

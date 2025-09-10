@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import { authConfig } from './auth.config'; // Importamos la config base
-import { de } from 'date-fns/locale';
 
 // Defaults de entorno para evitar UntrustedHost en local/Vercel
 if (!process.env.AUTH_TRUST_HOST) {

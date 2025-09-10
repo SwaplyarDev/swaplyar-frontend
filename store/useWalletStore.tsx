@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { mapApiWalletsToFrontend } from '@/components/Transaction/TransactionCalculatorInternal/walletMapper';
 import { getMyWalletAccounts } from '@/actions/virtualWalletAccount/virtualWallets.action';
-import { mapWalletFromApi } from '@/utils/wallet/mapWalletFromApi';
 export interface Wallet {
   id: string;
   type: string;
@@ -18,8 +17,9 @@ export interface Wallet {
   pixKeyValue?: string;
   walletAddress?: string;
   network?: string;
-  name: string;
-  details: any[];
+  // Campos usados en otras vistas pueden no existir en este store
+  name?: string;
+  details?: any[];
 }
 
 interface WalletStoreState {
@@ -42,14 +42,13 @@ const useWalletStore = create<WalletStoreState>((set) => ({
   fetchAndSetWallets: async (token: string) => {
     set({ isLoading: true });
     try {
-      const apiResponse = await getMyWalletAccounts(token);
-
-      if (!Array.isArray(apiResponse)) {
+  const apiResponse = await getMyWalletAccounts(token);
+  if (!Array.isArray(apiResponse)) {
         console.error('La respuesta de la API no es un array.');
         throw new Error('Respuesta inesperada de la API');
       }
 
-      const mappedWallets = apiResponse.map(mapWalletFromApi);
+  const mappedWallets = mapApiWalletsToFrontend(apiResponse as any);
 
       set({
         wallets: mappedWallets,
@@ -57,7 +56,7 @@ const useWalletStore = create<WalletStoreState>((set) => ({
       });
     } catch (error) {
       console.error('ERROR en fetchAndSetWallets:', error);
-      set({ isLoading: false, error: 'Failed to fetch wallets' });
+  set({ isLoading: false, wallets: [] });
     }
   },
 }));

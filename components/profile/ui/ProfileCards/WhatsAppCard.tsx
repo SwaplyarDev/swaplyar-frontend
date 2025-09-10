@@ -19,7 +19,7 @@ const WhatsAppCard = ({ setShow }: WhatsAppCardProps) => {
         <WhatsApp className="h-[50px] w-[50px]" />
       </div>
       <div className="mt-2 flex items-center justify-between">
-        <p className="">{session?.user.phone}</p>
+  <p className="">{session?.user.profile?.phone ?? '-'}</p>
         <Button onClick={() => setShow(true)} className="h-6 px-2 text-xs text-gray-400">
           Editar
         </Button>

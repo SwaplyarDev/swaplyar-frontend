@@ -23,10 +23,17 @@ export const authConfig: NextAuthConfig = {
         });
 
         if (!res.ok) {
-          if (res.status === 401 || res.status === 403) {
-            throw new InvalidCredentials();
+          // Tratar códigos comunes de credenciales inválidas como null (sin lanzar)
+          if (res.status === 400 || res.status === 401 || res.status === 403 || res.status === 422) {
+            return null;
           }
-          throw new Error(`Error en autenticación: ${res.statusText}`);
+          // Para otros estados, intenta leer el mensaje del backend y lanza un error genérico
+          try {
+            const errData = await res.json();
+            throw new Error(`Error en autenticación: ${errData?.message || res.statusText}`);
+          } catch {
+            throw new Error(`Error en autenticación: ${res.statusText}`);
+          }
         }
 
         const data = await res.json();

@@ -42,8 +42,8 @@ export default async function RequestPage() {
           <PlusRewardInitial
             discounts={discountsData}
             // errors={errors}
-            userId={session?.user.id}
-            userVerification={session?.user.userVerification}
+            userId={session?.user.id ?? ''}
+            userVerification={session?.user.isValidated ? true : null}
             accessToken={session?.accessToken ?? ''}
           />
         </Suspense>

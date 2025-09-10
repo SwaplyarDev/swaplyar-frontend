@@ -31,10 +31,12 @@ export const login = async (email: string, verificationCode: string) => {
       redirect: false,
     });
 
+    // Cuando authorize devuelve null (credenciales inválidas), NextAuth retorna { error: 'CredentialsSignin' }
     if (result?.error) {
+      const isCreds = result.error === 'CredentialsSignin' || /credenciales|unauthorized|invalid/i.test(result.error);
       return {
         ok: false,
-        message: result.error,
+        message: isCreds ? 'El código ingresado es incorrecto o expiró.' : result.error,
       };
     }
 
@@ -42,7 +44,7 @@ export const login = async (email: string, verificationCode: string) => {
   } catch (error: any) {
     return {
       ok: false,
-      message: `No se pudo iniciar sesión. Error: ${error.message}`,
+      message: error?.message || 'No se pudo iniciar sesión.',
     };
   }
 };

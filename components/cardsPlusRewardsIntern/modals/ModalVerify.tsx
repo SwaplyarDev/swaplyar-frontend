@@ -17,7 +17,7 @@ export type ModalProps = {
 };
 
 const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const [ShowModalDni, setShowModalDni] = useState(0);
   const [frontFile, setFrontFile] = useState<File | null>(null);
   const [backFile, setBackFile] = useState<File | null>(null);
@@ -61,19 +61,43 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
     formData.append('document_back', backFile);
     formData.append('selfie_image', selfieFile);
 
-    const result = await plusRewardsActions(formData, session?.accessToken || '');
-    if (result.success) {
-      Swal.fire({
-        icon: 'success',
-        background: '#ffffff00',
-        showConfirmButton: false,
-        timer: 1000,
-      });
-      setIsLoading(false);
-      setTimeout(() => {
-        setShowVerify(false);
-      }, 1000);
-    } else {
+    try {
+      const result = await plusRewardsActions(formData, session?.accessToken || '');
+      if (result.success) {
+        Swal.fire({
+          icon: 'success',
+          background: '#ffffff00',
+          showConfirmButton: false,
+          timer: 1000,
+        });
+        setIsLoading(false);
+        setTimeout(() => {
+          setShowVerify(false);
+        }, 1000);
+      }
+    } catch (err) {
+      if ((err as Error)?.message === 'Unauthorized') {
+        const updated = await update();
+        const newToken = (updated as any)?.accessToken || session?.accessToken || '';
+        try {
+          const retry = await plusRewardsActions(formData, newToken);
+          if (retry.success) {
+            Swal.fire({
+              icon: 'success',
+              background: '#ffffff00',
+              showConfirmButton: false,
+              timer: 1000,
+            });
+            setIsLoading(false);
+            setTimeout(() => {
+              setShowVerify(false);
+            }, 1000);
+            return;
+          }
+        } catch (e2) {
+          // caer al error genérico abajo
+        }
+      }
       Swal.fire({
         icon: 'error',
         background: '#ffffff00',

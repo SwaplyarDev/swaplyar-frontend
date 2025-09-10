@@ -107,10 +107,10 @@ export const VerifyCodePage = () => {
         result = await registerUser(emailToUse, code);
       }
 
-      if (!result.ok) {
+    if (!result.ok) {
         setError('verificationCode', {
           type: 'manual',
-          message: 'El código ingresado es incorrecto.',
+      message: typeof result.message === 'string' ? result.message : 'El código ingresado es incorrecto.',
         });
         clearVerificationInputs();
       } else {

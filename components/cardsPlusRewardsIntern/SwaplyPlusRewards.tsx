@@ -7,7 +7,7 @@ import { PlusRewards } from '@/app/es/(auth)/auth/plus-rewards/page';
 import CardPlusModal from './modals/CardPlusModal';
 import ModalVerify from './modals/ModalVerify';
 import AplicationStateContainer from '@/components/cardsPlusRewardsIntern/SwaplyPlusRewardsComponents/AplicationStateContainer';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 
 import { useVerificationStore } from '../../store/useVerificationStore';
 import { swaplyPlusRewards } from '@/utils/assets/imgDatabaseCloudinary';
@@ -48,6 +48,11 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
 
   useEffect(() => {
     if (!token) return;
+    // Si hubo error de refresh, cerrar sesión para evitar loops de Unauthorized
+    if ((session as any)?.error === 'RefreshAccessTokenError') {
+      signOut({ callbackUrl: '/es/iniciar-sesion-o-registro' });
+      return;
+    }
     console.log('SESSION: ', session);
     fetchAndHandleVerificationStatus({
       token,
