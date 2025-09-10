@@ -19,7 +19,12 @@ let isRefreshing = false;
 let refreshPromise: Promise<JWT> | null = null;
 async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
-    const res = await fetch(`${BACKEND_URL}/token/refresh`, {
+    if (!token.refreshToken) {
+      throw new Error('No refresh token present');
+    }
+
+  const refreshUrl = `${BACKEND_URL}/token/refresh`;
+ const res = await fetch(refreshUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,22 +32,40 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
       body: JSON.stringify({ refresh_token: token.refreshToken }),
     });
 
-    const data = await res.json();
+    let data: any = null;
+    try {
+      data = await res.json();
+    } catch {
+      // Si no es JSON, intentamos texto
+      try {
+        const text = await res.text();
+        data = { message: text };
+      } catch {}
+    }
 
     if (!res.ok) {
-      throw data;
+      throw new Error(data?.message || `HTTP ${res.status}`);
     }
-    
+
+    const accessPayloadRaw = (data.access_token || '').split('.')[1];
+    let accessExpMs: number | undefined;
+    if (accessPayloadRaw) {
+      try {
+        const accessDecoded = JSON.parse(Buffer.from(accessPayloadRaw, 'base64').toString());
+        accessExpMs = accessDecoded?.exp ? accessDecoded.exp * 1000 : undefined;
+      } catch {}
+    }
+
     const expiresIn = data.expires_in || 3600;
+    const computedExpiresAt = accessExpMs ?? (Date.now() + expiresIn * 1000);
 
     return {
-      ...token, 
+      ...token,
       accessToken: data.access_token,
-      refreshToken: data.refresh_token ?? token.refreshToken, 
-      expiresAt: Date.now() + expiresIn * 1000,
+      refreshToken: data.refresh_token ?? token.refreshToken,
+      expiresAt: computedExpiresAt,
       user: data.user ?? token.user,
     };
-
   } catch (error) {
     console.error('Error al refrescar el token de acceso:', error);
     return {
@@ -94,7 +117,8 @@ export const {
       }
 
       const remainingTimeInSeconds = ((token.expiresAt as number) - Date.now()) / 1000;
-      if (remainingTimeInSeconds > 0) {
+      // Refrescar si faltan <= 60s para expirar o ya expiró
+      if (remainingTimeInSeconds > 60) {
         return token;
       }
       if (isRefreshing) {
@@ -118,11 +142,11 @@ export const {
     },
 
 
-     async session({ session, token }) {
+  async session({ session, token }) {
       const userPayload = token.user as any;
 
       // Mapear estructura completa del JWT al session.user
-      session.user = {
+   session.user = {
         id: userPayload.sub,
         email: userPayload.email,
         role: userPayload.role,
@@ -138,6 +162,8 @@ export const {
 
       session.accessToken = token.accessToken as string;
       session.error = token.error as string;
+   // Exponer campo de verificación si existe
+   (session as any).verification_status = userPayload.verification_status;
 
       return session;
     },

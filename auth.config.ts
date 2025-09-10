@@ -37,19 +37,18 @@ export const authConfig: NextAuthConfig = {
         }
 
         const data = await res.json();
-        const accessToken = data.access_token;
-        const refreshToken = data.refresh_token;
+  const accessToken = data.access_token;
+  const refreshToken = data.refresh_token;
 
         if (!accessToken) {
           throw new Error('No se recibió accessToken del backend');
         }
 
-        const expiresIn = data.expires_in || 3600; 
-
-        const expiresAt = Date.now() + expiresIn * 1000;
-
-        const rawPayload = accessToken.split('.')[1];
-        const decoded = JSON.parse(Buffer.from(rawPayload, 'base64').toString());
+  const rawPayload = accessToken.split('.')[1];
+  const decoded = JSON.parse(Buffer.from(rawPayload, 'base64').toString());
+  const tokenExpMs = decoded?.exp ? decoded.exp * 1000 : undefined;
+  const expiresIn = data.expires_in || 3600; // Fallback si no viene exp en el token
+  const expiresAt = tokenExpMs ?? (Date.now() + expiresIn * 1000);
         
         return {
           ...decoded,
