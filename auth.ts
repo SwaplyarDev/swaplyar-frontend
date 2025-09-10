@@ -29,6 +29,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
       accessToken: data.access_token,
       refreshToken: data.refresh_token ?? token.refreshToken, 
       expiresAt: Date.now() + expiresIn * 1000,
+      user: data.user ?? token.user,
     };
 
   } catch (error) {
@@ -51,7 +52,7 @@ export const {
     strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         return {
           ...token,
@@ -62,7 +63,11 @@ export const {
         };
       }
 
-      
+       if (trigger === 'update') {
+        console.log('🔁 Trigger "update" → refresh token');
+        return await refreshAccessToken(token);
+      }
+
       const remainingTimeInSeconds = ((token.expiresAt as number) - Date.now()) / 1000;
       if (remainingTimeInSeconds > 0) {
         return token;
@@ -91,7 +96,7 @@ export const {
         id: userPayload.sub, 
         role: userPayload.role,
         fullName: userPayload.fullName,
-        userVerification: userPayload.isValidated, 
+        userValidated: userPayload.userValidated, 
       };
 
      

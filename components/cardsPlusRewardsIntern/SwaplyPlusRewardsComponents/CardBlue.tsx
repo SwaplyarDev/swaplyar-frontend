@@ -32,8 +32,8 @@ const CardBlue = ({ memberCode }: { memberCode: string }) => {
         </div>
 
         <div className="absolute bottom-0 right-0 mx-4 gap-1 text-[#EBE7E0]">
-          <p className="text-[18px] font-light">Tu Codigo de Miembro:</p>
-          <p className="text-end text-[26px] sm:text-[36px]">{memberCode}</p>
+          <p className="text-[20px] font-light text-end">Tu Codigo de Miembro:</p>
+          <p className="text-end text-[13px] sm:text-[22px]">{memberCode}</p>
         </div>
       </div>
     </>
