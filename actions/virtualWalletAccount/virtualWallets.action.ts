@@ -210,13 +210,20 @@ export async function getUserWalletAccountByUserId(userId: string, token: string
       if (contentType && contentType.includes('application/json')) {
         const error = await res.json();
         errorMessage = error.message || errorMessage;
+
+        if (error.message === 'No se encontraron cuentas registradas') {
+          return [];
+        }
+
+        throw new Error(errorMessage);
       }
-      throw new Error(errorMessage);
+      throw new Error('Error al obtener la cuenta específica del usuario');
     }
 
     if (contentType && contentType.includes('application/json')) {
       const account = await res.json();
-      return account;
+       if (Array.isArray(account)) return account;
+       return [];
     } else {
       throw new Error('Respuesta inesperada del servidor');
     }
