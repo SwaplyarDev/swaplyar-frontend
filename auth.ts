@@ -120,20 +120,26 @@ export const {
 
 
      async session({ session, token }) {
-      const userPayload = token.user as any; 
+      const userPayload = token.user as any;
 
+      // Mapear estructura completa del JWT al session.user
       session.user = {
-        ...session.user, 
-        id: userPayload.sub, 
+        id: userPayload.sub,
+        email: userPayload.email,
         role: userPayload.role,
         fullName: userPayload.fullName,
-        userValidated: userPayload.userValidated, 
-      };
+        terms: userPayload.terms,
+        isActive: userPayload.isActive,
+        createdAt: userPayload.createdAt,
+        profile: userPayload.profile,
+        category: userPayload.category ?? null,
+        isValidated: userPayload.isValidated,
+        userValidated: userPayload.userValidated,
+      } as any;
 
-     
       session.accessToken = token.accessToken as string;
-      session.error = token.error as string; 
-      
+      session.error = token.error as string;
+
       return session;
     },
   },
