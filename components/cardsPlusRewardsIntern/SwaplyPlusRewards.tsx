@@ -1,15 +1,19 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, memo, useMemo } from 'react';
 import Image from 'next/image';
 import { CardPlusRewards } from '@/components/cardsPlusRewardsIntern/SwaplyPlusRewardsComponents/CardPlusRewards';
 import { PlusRewards } from '@/app/es/(auth)/auth/plus-rewards/page';
-import CardPlusModal from './modals/CardPlusModal';
-import ModalVerify from './modals/ModalVerify';
-import AplicationStateContainer from '@/components/cardsPlusRewardsIntern/SwaplyPlusRewardsComponents/AplicationStateContainer';
+import dynamic from 'next/dynamic';
+const CardPlusModal = dynamic(() => import('./modals/CardPlusModal'));
+const ModalVerify = dynamic(() => import('./modals/ModalVerify'));
+const AplicationStateContainer = dynamic(
+  () => import('@/components/cardsPlusRewardsIntern/SwaplyPlusRewardsComponents/AplicationStateContainer'),
+);
 import { signOut, useSession } from 'next-auth/react';
 
 import { useVerificationStore } from '../../store/useVerificationStore';
+import { shallow } from 'zustand/shallow';
 import { swaplyPlusRewards } from '@/utils/assets/imgDatabaseCloudinary';
 import { fetchAndHandleVerificationStatus } from '@/utils/verificationHandlers';
 
@@ -25,9 +29,13 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const [showVerify, setShowVerify] = useState(false);
   const [showRejectedMessage, setShowRejectedMessage] = useState(false);
 
-  const { status: verifiedStatus, setStatus, setShowApprovedMessage } = useVerificationStore();
+  const { status: verifiedStatus, setStatus, setShowApprovedMessage } = useVerificationStore(
+    (s) => ({ status: s.status, setStatus: s.setStatus, setShowApprovedMessage: s.setShowApprovedMessage }),
+    shallow,
+  );
 
   const { data: session, update } = useSession();
+  console.log('🔍 Sesión actual:', session);
   const token = session?.accessToken;
 
   const sessionCardBlueYellow = verifiedStatus === 'APROBADO';
@@ -53,7 +61,6 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
       signOut({ callbackUrl: '/es/iniciar-sesion-o-registro' });
       return;
     }
-    console.log('SESSION: ', session);
     fetchAndHandleVerificationStatus({
       token,
       setStatus,
@@ -61,15 +68,16 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
       setShowApprovedMessage,
       update: safeUpdate,
     });
-  }, [token, setStatus, setShowRejectedMessage, setShowApprovedMessage, safeUpdate, session]);
+  }, [token, setStatus, setShowApprovedMessage, safeUpdate, session]);
 
-  const LoadingState = () => (
+  const LoadingState = memo(() => (
     <div className="flex min-h-[50vh] w-full items-center justify-center">
       <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-[#012A8E] dark:border-[#EBE7E0]"></div>
     </div>
-  );
+  ));
+  LoadingState.displayName = 'LoadingState';
 
-  const MainLayout = ({ left, right }: { left: React.ReactNode; right: React.ReactNode }) => (
+  const MainLayout = memo(({ left, right }: { left: React.ReactNode; right: React.ReactNode }) => (
     <div className="relative z-0 mx-auto mt-14 flex max-w-[500px] flex-col px-5 text-[40px] lg:max-w-[1200px] lg:px-[100px]">
       <h1 className="mb-4 font-textFont font-medium">SwaplyAr Plus Rewards</h1>
       <div className="relative z-0 mx-auto flex max-w-[1000px] flex-col gap-5 text-[16px] lg:flex-row">
@@ -77,9 +85,10 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
         <div className="relative my-auto items-center">{right}</div>
       </div>
     </div>
-  );
+  ));
+  MainLayout.displayName = 'MainLayout';
 
-  const RewardsInfo = ({
+  const RewardsInfo = memo(({
     RewardsData,
     onShowModal,
   }: {
@@ -110,7 +119,8 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
         </div>
       </div>
     </div>
-  );
+  ));
+  RewardsInfo.displayName = 'RewardsInfo';
 
   return (
   <>
@@ -118,9 +128,9 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
       <LoadingState />
     ) : (
       <>
-        <AplicationStateContainer showRejectedMessage={showRejectedMessage} />
-        {showModal && <CardPlusModal setShowModal={setShowModal} />}
-        {showVerify && (
+  <AplicationStateContainer showRejectedMessage={showRejectedMessage} />
+  {showModal && <CardPlusModal setShowModal={setShowModal} />}
+  {showVerify && (
           <ModalVerify
             showVerify={showVerify}
             setShowVerify={setShowVerify}

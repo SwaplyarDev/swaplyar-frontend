@@ -1,7 +1,7 @@
 import ArrowUp from '@/components/ui/ArrowUp/ArrowUp';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useStepperStore } from '@/store/stateStepperStore';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, memo } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import clsx from 'clsx';
 import SelectBoolean from '../inputs/SelectBoolean';
@@ -39,7 +39,17 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     updateOneStep,
     idTransaction,
     setIdTransaction,
-  } = useStepperStore();
+  } = useStepperStore((s) => ({
+    markStepAsCompleted: s.markStepAsCompleted,
+    setActiveStep: s.setActiveStep,
+    formData: s.formData,
+    updateFormData: s.updateFormData,
+    completedSteps: s.completedSteps,
+    submitOneStep: s.submitOneStep,
+    updateOneStep: s.updateOneStep,
+    idTransaction: s.idTransaction,
+    setIdTransaction: s.setIdTransaction,
+  }));
   const { isDark } = useDarkTheme();
 
   const [initialValues, setInitialValues] = useState<FormData | null>(null);
@@ -90,23 +100,19 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     }
   };
 
-  const deepEqual = (obj1: any, obj2: any): boolean => {
+  const deepEqual = useCallback((obj1: any, obj2: any): boolean => {
     if (obj1 === obj2) return true;
     if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) return false;
-
     const keys1 = Object.keys(obj1);
     const keys2 = Object.keys(obj2);
-
     if (keys1.length !== keys2.length) return false;
-
     for (let key of keys1) {
       if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) return false;
     }
-
     return true;
-  };
+  }, []);
 
-  const hasChanges = initialValues && !deepEqual(initialValues, formValues);
+  const hasChanges = useMemo(() => initialValues && !deepEqual(initialValues, formValues), [initialValues, formValues, deepEqual]);
 
   const [isFocused, setIsFocused] = useState(false);
 
@@ -303,4 +309,4 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
   );
 };
 
-export default StepOne;
+export default memo(StepOne);

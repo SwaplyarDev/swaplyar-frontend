@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
-import SwaplyPlusRewards from '@/components/cardsPlusRewardsIntern/SwaplyPlusRewards';
+import dynamic from 'next/dynamic';
+const SwaplyPlusRewards = dynamic(() => import('@/components/cardsPlusRewardsIntern/SwaplyPlusRewards'), { ssr: false });
 
 export interface PlusRewards {
   inscriptionDate: string;

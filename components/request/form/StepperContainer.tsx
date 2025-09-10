@@ -1,42 +1,60 @@
 'use client';
 import { useStepperStore } from '@/store/stateStepperStore';
-import StepOne from './steps/StepOne';
-import StepTwo from './steps/StepTwo';
-import StepThree from './steps/StepThree';
-import StepIndicator from './steps/StepIndicator';
+import dynamic from 'next/dynamic';
 import ArrowDown from '@/components/ui/ArrowDown/ArrowDown';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import Swal from 'sweetalert2';
-import { createRoot } from 'react-dom/client';
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import Arrow from '@/components/ui/Arrow/Arrow';
-import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useSystemStore } from '@/store/useSystemStore';
 import Tick from '@/components/ui/Tick/Tick';
-import Cronometro from './Cronometro';
 import useChronometerState from '@/store/chronometerStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
-import ReactDOMServer from 'react-dom/server';
 import { useSession } from 'next-auth/react';
 import { useRewardsStore } from '@/store/useRewardsStore';
 import { putDiscountsStatus } from '@/actions/Discounts/discounts.action';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
+import { shallow } from 'zustand/shallow';
+
+// Carga diferida de subcomponentes para reducir el bundle inicial
+const StepOne = dynamic(() => import('./steps/StepOne'));
+const StepTwo = dynamic(() => import('./steps/StepTwo'));
+const StepThree = dynamic(() => import('./steps/StepThree'));
+const StepIndicator = dynamic(() => import('./steps/StepIndicator'));
+const Cronometro = dynamic(() => import('./Cronometro'), { ssr: false });
 
 const StepperContainer = () => {
-  const { formData, activeStep, completedSteps, setActiveStep, updateFormData, submitAllData, resetToDefault } = useStepperStore();  
-  const { couponInstance, markUsed, discounts_ids } = useRewardsStore();
+  const { activeStep, completedSteps, setActiveStep, updateFormData, submitAllData, resetToDefault } =
+    useStepperStore(
+      (s) => ({
+        activeStep: s.activeStep,
+        completedSteps: s.completedSteps,
+        setActiveStep: s.setActiveStep,
+        updateFormData: s.updateFormData,
+        submitAllData: s.submitAllData,
+        resetToDefault: s.resetToDefault,
+      }),
+      shallow,
+    );
+  const { couponInstance, markUsed, discounts_ids } = useRewardsStore(
+    (s) => ({ couponInstance: s.couponInstance, markUsed: s.markUsed, discounts_ids: s.discounts_ids }),
+    shallow,
+  );
   const { data: session } = useSession();
   const [blockAll, setBlockAll] = useState(false);
-  const { isStopped, setStop } = useChronometerState();
+  const { isStopped, setStop } = useChronometerState((s) => ({ isStopped: s.isStopped, setStop: s.setStop }), shallow);
   const [correctSend, setCorrectSend] = useState(false);
   const [errorSend, setErrorSend] = useState(false);
-  const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
+  const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore(
+    (s) => ({ selectedSendingSystem: s.selectedSendingSystem, selectedReceivingSystem: s.selectedReceivingSystem }),
+    shallow,
+  );
   const [loading, setLoading] = useState(false);
   const { isDark } = useDarkTheme();
-  const router = useRouter();
-  const { setPassFalse } = useControlRouteRequestStore((s) => s);
+  const { setPassFalse } = useControlRouteRequestStore((s) => ({ setPassFalse: s.setPassFalse }));
+
+  const getSwal = useCallback(async () => (await import('sweetalert2')).default, []);
 
   const prefilledOnceRef = useRef(false);
   useEffect(() => {
@@ -61,20 +79,23 @@ const StepperContainer = () => {
     prefilledOnceRef.current = true;
   }, [session, updateFormData]);
 
-  const steps = [
-  { title: 'Mis Datos', component: <StepOne blockAll={blockAll} /> },
-  {
-    title: 'Información del Destinatario',
-    component: <StepTwo blockAll={blockAll} />,
-  },
-  { title: 'Pago', component: <StepThree blockAll={blockAll} /> },
-  ];
+  const steps = useMemo(
+    () => [
+      { title: 'Mis Datos', render: () => <StepOne blockAll={blockAll} /> },
+      { title: 'Información del Destinatario', render: () => <StepTwo blockAll={blockAll} /> },
+      { title: 'Pago', render: () => <StepThree blockAll={blockAll} /> },
+    ],
+    [blockAll],
+  );
 
-  const handleStepClick = (index: number) => {
-    if (completedSteps[index] || index === activeStep) {
-      setActiveStep(index);
-    }
-  };
+  const handleStepClick = useCallback(
+    (index: number) => {
+      if (completedSteps[index] || index === activeStep) {
+        setActiveStep(index);
+      }
+    },
+    [completedSteps, activeStep, setActiveStep],
+  );
 
   useEffect(() => {
     // Al desmontar el formulario, invalida el paso para evitar accesos directos posteriores
@@ -86,66 +107,56 @@ const StepperContainer = () => {
     };
   }, [setPassFalse]);
 
-  const handleMarkCouponUsed = async (coupon_id: string[], uuid_transacción: string) => {
-    if(couponInstance === 'NONE' || session?.accessToken === undefined || !uuid_transacción) return;
-
-    try {
-        const result = await putDiscountsStatus(session?.accessToken, coupon_id[0], uuid_transacción);
+  const handleMarkCouponUsed = useCallback(
+    async (coupon_id: string[], uuid_transacción: string) => {
+      if (couponInstance === 'NONE' || session?.accessToken === undefined || !uuid_transacción) return;
+      try {
+        const result = await putDiscountsStatus(session.accessToken, coupon_id[0], uuid_transacción);
         markUsed(couponInstance);
         return [result];
-    } catch (error) {
-      console.error('Error marking coupon as used:', error);
-    }
-  };
+      } catch (error) {
+        console.error('Error marking coupon as used:', error);
+      }
+    },
+    [couponInstance, session?.accessToken, markUsed],
+  );
 
-  const handleCancelRequest = () => {
+  const handleCancelRequest = useCallback(async () => {
+    const Swal = await getSwal();
+    const modalHtml = `
+      <div class="flex flex-col gap-3 text-[#545454]">
+        <h2 class="font-textFont text-2xl font-medium dark:text-darkText">¿Estás seguro de que deseas cancelar esta solicitud?</h2>
+        <p class="font-textFont dark:text-darkText">Si cancela esta solicitud, debe generar una nueva solicitud</p>
+        <div class="flex flex-col items-center justify-between gap-10 px-[13px] xs-mini-phone:flex-row">
+          <div id="back-button-container"></div>
+          <div class="flex h-[49px] items-center justify-center">
+            <button id="cancel-button" class="${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 flex h-[42px] min-w-[110px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-base text-white dark:border-darkText dark:bg-darkText dark:text-lightText">Cancelar</button>
+          </div>
+        </div>
+      </div>`;
     Swal.fire({
       icon: 'warning',
-      html: ReactDOMServer.renderToString(
-        <div className="flex flex-col gap-3 text-[#545454]">
-          <h2 className="font-textFont text-2xl font-medium dark:text-darkText">
-            ¿Estás seguro de que deseas cancelar esta solicitud?
-          </h2>
-          <p className="font-textFont dark:text-darkText">
-            Si cancela esta solicitud, debe generar una nueva solicitud
-          </p>
-          <div className="flex flex-col items-center justify-between gap-10 px-[13px] xs-mini-phone:flex-row">
-            <div id="back-button-container"></div>
-            <div className="flex h-[49px] items-center justify-center">
-              <button
-                id="cancel-button"
-                className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'} relative m-1 flex h-[42px] min-w-[110px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-base text-white dark:border-darkText dark:bg-darkText dark:text-lightText`}
-              >
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>,
-      ),
+      html: modalHtml,
       showConfirmButton: false,
       showCancelButton: false,
       background: isDark ? '#252526' : '#ffffff',
       didRender: () => {
         const backElement = document.getElementById('back-button-container');
         if (backElement) {
-          const root = createRoot(backElement);
-          root.render(
-            <button
-              type="button"
-              onClick={() => Swal.close()}
-              className={`group relative m-1 flex h-[46px] min-w-[48px] max-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 font-textFont text-lg font-light text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
-            >
-              <div className="relative h-5 w-5 overflow-hidden">
-                <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
-                  <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
-                </div>
-              </div>
+          backElement.innerHTML = `
+            <button id="back-button" type="button" class="group relative m-1 flex h-[46px] min-w-[48px] max-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 font-textFont text-lg font-light ${isDark ? 'text-darkText dark:border-darkText' : 'text-buttonsLigth'} hover:bg-transparent">
+              <span class="relative h-5 w-5 overflow-hidden inline-flex">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15 18l-6-6 6-6" stroke="${isDark ? '#ebe7e0' : '#012c8a'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
               Volver
-            </button>,
-          );
+            </button>`;
+          const backBtn = document.getElementById('back-button');
+          backBtn?.addEventListener('click', () => Swal.close());
         }
       },
-      didOpen: () => {
+  didOpen: () => {
         const cancelButton = document.getElementById('cancel-button');
         if (cancelButton) {
           cancelButton.addEventListener('click', () => {
@@ -167,13 +178,16 @@ const StepperContainer = () => {
         }
       },
     });
-  };
+  }, [getSwal, isDark, setBlockAll, setStop, resetToDefault, setActiveStep, setCorrectSend, setErrorSend]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
+    if (!selectedSendingSystem || !selectedReceivingSystem) {
+      const Swal = await getSwal();
+      Swal.fire({ icon: 'error', text: 'Selecciona sistemas de envío y recepción antes de continuar.' });
+      return;
+    }
     setLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-
       const isSuccess = await submitAllData(
         selectedSendingSystem,
         selectedReceivingSystem,
@@ -181,13 +195,9 @@ const StepperContainer = () => {
       );
 
       if (isSuccess) {
-        await handleMarkCouponUsed(discounts_ids, isSuccess.id)
-        Swal.fire({
-          icon: 'success',
-          background: '#ffffff00',
-          showConfirmButton: false,
-          timer: 1000,
-        });
+        await handleMarkCouponUsed(discounts_ids, isSuccess.id);
+        const Swal = await getSwal();
+        Swal.fire({ icon: 'success', background: '#ffffff00', showConfirmButton: false, timer: 1000 });
         setBlockAll(true);
         setCorrectSend(true);
         setErrorSend(false);
@@ -200,7 +210,12 @@ const StepperContainer = () => {
       console.error('Error en el proceso de envío:', error);
     }
     setLoading(false);
-  };
+  }, [selectedSendingSystem, selectedReceivingSystem, submitAllData, session?.accessToken, handleMarkCouponUsed, discounts_ids, getSwal]);
+
+  const onSendClick = useCallback(() => {
+    setStop(true);
+    if (!loading) void handleSubmit();
+  }, [setStop, loading, handleSubmit]);
 
   return (
     <div
@@ -435,7 +450,7 @@ const StepperContainer = () => {
               )}
             </div>
 
-            {activeStep === index && <div className="mt-2 rounded-md">{step.component}</div>}
+            {activeStep === index && <div className="mt-2 rounded-md">{step.render()}</div>}
           </section>
         );
       })}
@@ -454,10 +469,7 @@ const StepperContainer = () => {
         ) : (
           <button
             disabled={completedSteps[2] == false || blockAll || loading}
-            onClick={() => {
-              handleSubmit();
-              setStop(true);
-            }}
+            onClick={onSendClick}
             className={`relative h-[60px] w-full max-w-[200px] items-center justify-center rounded-full border border-buttonsLigth bg-buttonsLigth px-9 py-[3px] font-titleFont text-2xl font-semibold text-darkText disabled:border-calculatorLight2 disabled:bg-custom-blue-300 disabled:text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorLight2 dark:disabled:text-darkText ${isDark ? completedSteps[2] == true && 'buttonSecondDark' : completedSteps[2] == true && 'buttonSecond'}`}
           >
             Enviar
