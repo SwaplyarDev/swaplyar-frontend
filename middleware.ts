@@ -5,56 +5,44 @@ import { createRouteMatchers } from './lib/route';
 
 export default auth((req) => {
   try {
-    const { isPublicRoute, isProtectedRoute, isApiRoute } = createRouteMatchers(configRoutes, req);
+    const { isPublicRoute, isProtectedRoute } = createRouteMatchers(configRoutes, req);
     const { nextUrl } = req;
     const isLoggedIn = !!req.auth;
 
-    // Redirigir al home si la ruta contiene "blog"
-    // if (nextUrl.pathname.includes('blog')) {
-    //   return NextResponse.redirect(new URL('/es/pagina-en-mantenimiento', req.url));
-    // }
-    // if (
-    //   nextUrl.pathname.includes('estado-de-solicitud') ||
-    //   nextUrl.pathname.includes('editar-solicitud') ||
-    //   nextUrl.pathname.includes('cancelacion-y-reembolso')
-    // ) {
-    //   return NextResponse.redirect(new URL('/es/pagina-en-mantenimiento', req.url));
-    // }
+    const pathname = nextUrl.pathname;
+    const isAdminRoute = pathname.startsWith('/es/admin');
+    const isAuthSectionRoute = pathname.startsWith('/es/auth');
+    const isLoginRoute = configRoutes.authRoutes.includes(pathname);
 
-    // Verificar si la ruta está bajo /admin
-    const isAdminRoute = nextUrl.pathname.startsWith('/es/admin');
-
-    if (isAdminRoute && isLoggedIn) {
-      const userRole = req.auth?.user.role;
-      if (userRole !== 'admin') {
-        return NextResponse.redirect(new URL('/', req.url)); // Redirigir al home si no es admin
+    // 1) Rutas de Admin: requieren login y rol admin
+    if (isAdminRoute) {
+      if (!isLoggedIn) {
+        return NextResponse.redirect(new URL('/es/iniciar-sesion-o-registro', req.url));
+      }
+      const role = (req.auth as any)?.user?.role;
+      if (role !== 'admin') {
+        return NextResponse.redirect(new URL('/es/auth/solicitud', req.url));
       }
     }
-    // Verificar si la ruta está bajo /es/auth
 
-    const isAuthRoute = nextUrl.pathname.startsWith('/es/auth');
-
-    if (!isAuthRoute && isLoggedIn && !isAdminRoute) {
-      return NextResponse.redirect(new URL('/es/auth/solicitud', req.url));
-    }
-    // Redirigir si la ruta es protegida y el usuario no está logueado
+    // 2) Rutas protegidas (incluye /es/auth/* por config): requieren login
     if (isProtectedRoute && !isLoggedIn) {
       return NextResponse.redirect(new URL('/es/iniciar-sesion-o-registro', req.url));
     }
 
-    // Verificar si la ruta es /admin y el usuario no es admin
-    if (isAdminRoute && !isLoggedIn) {
-      return NextResponse.redirect(new URL('/', req.url));
+    // 3) Si ya está logueado y visita rutas de login/registro, redirigir al dashboard
+    if (isLoggedIn && isLoginRoute) {
+      return NextResponse.redirect(new URL('/es/auth/solicitud', req.url));
     }
 
-    if (isAuthRoute && !isLoggedIn) {
-      return NextResponse.redirect(new URL('/es/iniciar-sesion-o-registro', req.url));
-    }
-
-    if (nextUrl.pathname === '/es/inicio/formulario-de-solicitud' || nextUrl.pathname === '/es/auth/solicitud/formulario-de-solicitud') {
-      const referer = req.headers.get('referer'); // Obtener la URL previa
+    // 4) Bloqueo de acceso directo a formularios específicos
+    if (
+      pathname === '/es/inicio/formulario-de-solicitud' ||
+      pathname === '/es/auth/solicitud/formulario-de-solicitud'
+    ) {
+      const referer = req.headers.get('referer');
       if (!referer || !referer.includes('/')) {
-        return NextResponse.redirect(new URL('/', req.url)); // Bloquear acceso directo
+        return NextResponse.redirect(new URL('/', req.url));
       }
     }
 

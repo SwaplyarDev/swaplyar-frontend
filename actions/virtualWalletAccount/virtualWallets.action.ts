@@ -56,6 +56,14 @@ export async function getMyWalletAccounts(token: string) {
     const contentType = res.headers.get('content-type');
 
     if (!res.ok) {
+      // Tratar 404 como estado vacío (sin cuentas registradas)
+      if (res.status === 404) {
+        return [];
+      }
+      // Manejo explícito de autorización
+      if (res.status === 401 || res.status === 403) {
+        throw new Error('Unauthorized');
+      }
       let errorMessage = 'Error al obtener las cuentas';
       if (contentType && contentType.includes('application/json')) {
         const error = await res.json();
