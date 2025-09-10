@@ -79,6 +79,8 @@ export const createHandleAccountAdd = ({
           payload.userAccValues = {
             accountType: 'bank',
             accountName: formData.accountName || '',
+            firstName: formData.firstName || '',
+            lastName:formData.lastName || '',
             currency: formData.currency || 'ARS',
             bankName: formData.bankName || '',
             document_type: documentType || '',

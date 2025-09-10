@@ -8,14 +8,14 @@ export interface Wallet {
   details: any[];
 }
 
-export const mapWalletFromApi = (walletApi: any): Wallet => {
-  const detail = walletApi.details?.[0] || {};
+export function mapWalletFromApi(apiWallet:string | any): Wallet {
+  const firstDetail = apiWallet.details?.[0];
+  const mainId = firstDetail?.userAccount?.accountId ?? '';
   return {
-    id: detail.userAccount.account_id,
-    type: walletApi.payment_type, 
-    name: detail.type || walletApi.accountName, 
-    currency: detail.currency || '',
-    accountName: walletApi.accountName,
-    details: walletApi.details,
+    id: mainId,
+    type: apiWallet.payment_type,
+    name: apiWallet.accountName,
+    currency: firstDetail?.currency,
+    details: apiWallet.details, 
   };
-};
+}

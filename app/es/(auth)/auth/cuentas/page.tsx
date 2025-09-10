@@ -13,6 +13,8 @@ import { createHandleAccountAdd } from '@/utils/wallet/handleAccountAdded';
 import ReusableWalletCard from '@/components/wallets/walletCard';
 import { mapWalletDetails } from '@/utils/wallet/mapWalletDetails';
 import clsx from 'clsx';
+import { normalize } from 'path';
+import { normalizeType } from '@/components/admin/utils/normalizeType';
 
 interface Wallet {
   id: string;
@@ -70,26 +72,16 @@ export default function VirtualWallets() {
     setOpen,
     session,
   });
-
   const orderedWallets = [...wallets].sort((a, b) => {
-    if (a.type !== b.type) return a.type.localeCompare(b.type);
-    return a.id.localeCompare(b.id);
-  });
-
-  const normalizeType = (type: string, provider?: string, currency?: string): string => {
-    const prov = (provider || '').toLowerCase().trim();
-    const curr = (currency || '').toLowerCase().trim();
-    if (type === 'virtual_bank') {
-      if (prov.includes('paypal')) return 'paypal';
-      if (prov.includes('wise')) return curr === 'eur' ? 'wise-eur' : 'wise-usd';
-      if (prov.includes('payoneer')) return curr === 'eur' ? 'payoneer-eur' : 'payoneer-usd';
-      return 'virtual_bank';
+    const typeComparison = (a.type ?? '').localeCompare(b.type ?? '');
+    if (typeComparison !== 0) {
+      return typeComparison;
     }
-    if (type === 'receiver_crypto' || prov === 'crypto') return 'tether';
-    if (type === 'pix' || prov === 'pix') return 'pix';
-    if (type === 'bank' || prov === 'bank' || prov === 'transferencia') return 'transferencia';
-    return type;
-  };
+    const idA = a.details?.[0]?.detailId ?? '';
+    const idB = b.details?.[0]?.detailId ?? '';
+
+    return idA.localeCompare(idB);
+  });
 
   const groupedWallets = orderedWallets.reduce(
     (acc, wallet) => {

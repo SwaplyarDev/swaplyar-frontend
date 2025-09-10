@@ -21,18 +21,7 @@ import {
   PayoneerEurDarkImg,
 } from '@/utils/assets/imgDatabaseCloudinary';
 import { Wallet } from '@/store/useWalletStore';
-
-/* interface Wallet {
-  id: string;
-  type: string;
-  fullName: string;
-  email: string;
-  bankName?: string;
-  logo: string;
-  logoDark?: string;
-  network: string;
-} */
-
+import { normalizeType } from '@/components/admin/utils/normalizeType';
 
 interface WalletSelectProps {
   filteredWallets: Wallet[];
@@ -43,50 +32,23 @@ interface WalletSelectProps {
 const getWalletLogos = (type: string) => {
   switch (type) {
     case 'paypal':
-      return {
-        logo: PaypalImg,
-        logoDark: PaypalDarkImg,
-      };
-    case 'payoneer_eur':
-      return {
-        logo: PayoneerEurImg,
-        logoDark: PayoneerEurDarkImg,
-      };
-    case 'payoneer_usd':
-      return {
-        logo: PayoneerUsdImg,
-        logoDark: PayoneerUsdDarkImg,
-      };
-    case 'wise_eur':
-      return {
-        logo: WiseEurImg,
-        logoDark: WiseEurDarkImg,
-      };
-    case 'wise_usd':
-      return {
-        logo: WiseUsdImg,
-        logoDark: WiseUsdDarkImg,
-      };
+      return { logo: PaypalImg, logoDark: PaypalDarkImg };
+    case 'payoneer-eur':
+      return { logo: PayoneerEurImg, logoDark: PayoneerEurDarkImg };
+    case 'payoneer-usd':
+      return { logo: PayoneerUsdImg, logoDark: PayoneerUsdDarkImg };
+    case 'wise-eur':
+      return { logo: WiseEurImg, logoDark: WiseEurDarkImg };
+    case 'wise-usd':
+      return { logo: WiseUsdImg, logoDark: WiseUsdDarkImg };
     case 'tether':
-      return {
-        logo: TetherImg,
-        logoDark: TetherDarkImg,
-      };
+      return { logo: TetherImg, logoDark: TetherDarkImg };
     case 'pix':
-      return {
-        logo: PixImg,
-        logoDark: PixImg,
-      };
-    case 'bank':
-      return {
-        logo: BankImg,
-        logoDark: BankDarkImg,
-      };
+      return { logo: PixImg, logoDark: PixImg };
+    case 'transferencia':
+      return { logo: BankImg, logoDark: BankDarkImg };
     default:
-      return {
-        logo: '/icons/default.svg',
-        logoDark: '/icons/default.svg',
-      };
+      return { logo: '/icons/default.svg', logoDark: '/icons/default.svg' };
   }
 };
 
@@ -102,7 +64,12 @@ export default function WalletSelect({ filteredWallets, selectedWalletId, onChan
 
         <SelectContent className="bg-[#FFFFFB] dark:bg-[#4B4B4B]">
           {filteredWallets.map((wallet) => {
-            const { logo, logoDark } = getWalletLogos(wallet.type);
+            const detail = wallet.details?.[0];
+            const provider = detail?.type;
+            const currency = detail?.currency;
+            const normalizedWalletType = normalizeType(wallet.type, provider, currency);
+
+            const { logo, logoDark } = getWalletLogos(normalizedWalletType);
 
             return (
               <SelectItem key={wallet.id} value={wallet.id} className="cursor-pointer text-blue-800 dark:text-white">
@@ -113,21 +80,21 @@ export default function WalletSelect({ filteredWallets, selectedWalletId, onChan
                   <div className="flex justify-start">
                     <Image
                       src={isDark ? logoDark : logo}
-                      alt={wallet.type}
+                      alt={normalizedWalletType}
                       width={90}
                       height={90}
                       className="rounded-sm"
                     />
                   </div>
                   <div className="flex justify-start">
-                    <span className="truncate text-sm font-medium">{wallet.fullName}</span>
+                    <span className="truncate text-sm font-medium">{wallet.name}</span>
                   </div>
                   <div className="hidden flex-col items-end justify-end text-right md:flex">
                     {!['bank', 'tether'].includes(wallet.type) && (
-                      <span className="truncate text-sm font-medium">{wallet.email}</span>
+                      <span className="truncate text-sm font-medium">{detail?.email}</span>
                     )}
-                    {wallet.type === 'bank' && <span className="truncate text-sm font-medium">{wallet.bankName}</span>}
-                    {wallet.type === 'tether' && wallet.network && <span>{wallet.network.toUpperCase()}</span>}
+                    {wallet.type === 'bank' && <span className="truncate text-sm font-medium">{detail?.bankName}</span>}
+                    {wallet.type === 'tether' && detail?.network && <span>{detail.network.toUpperCase()}</span>}
                   </div>
                 </div>
               </SelectItem>

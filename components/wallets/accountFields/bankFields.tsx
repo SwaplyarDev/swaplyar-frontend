@@ -14,6 +14,8 @@ interface BankFieldsProps {
     document_type?: string;
     document_value?: number;
     currency?: string;
+    firstName?: string;
+    lastName?: string;
   };
 }
 
@@ -24,10 +26,24 @@ const BankFields = ({ register, errors, defaultValues }: BankFieldsProps) => (
 
     <InputField
       id="accountName"
-      placeholder="Titular"
+      placeholder="Nombre de la cuenta"
       defaultValue={defaultValues?.accountName || ''}
       register={register('accountName', { required: 'El nombre de la cuenta es obligatorio' })}
       error={errors.accountName?.message}
+    />
+    <InputField
+      id="firstName"
+      placeholder="Nombre"
+      defaultValue={defaultValues?.firstName || ''}
+      register={register('firstName', { required: 'El nombre es obligatorio' })}
+      error={errors.firstName?.message}
+    />
+    <InputField
+      id="lastName"
+      placeholder="Apellido"
+      defaultValue={defaultValues?.lastName || ''}
+      register={register('lastName', { required: 'El apellido es obligatorio' })}
+      error={errors.lastName?.message}
     />
 
     <InputField
