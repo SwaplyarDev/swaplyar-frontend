@@ -30,9 +30,11 @@ export default auth((req) => {
       return NextResponse.redirect(new URL('/es/iniciar-sesion-o-registro', req.url));
     }
 
-    // 3) Si ya está logueado y visita rutas de login/registro, redirigir al dashboard
+    // 3) Si ya está logueado y visita rutas de login/registro, redirigir según rol
     if (isLoggedIn && isLoginRoute) {
-      return NextResponse.redirect(new URL('/es/auth/solicitud', req.url));
+      const role = (req.auth as any)?.user?.role;
+      const target = role === 'admin' ? '/es/admin/transactions' : '/es/auth/solicitud';
+      return NextResponse.redirect(new URL(target, req.url));
     }
 
     // 4) Bloqueo de acceso directo a formularios específicos: permitir solo si hay navegación interna del mismo origen
