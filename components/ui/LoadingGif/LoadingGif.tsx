@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 type LoadingGifProps = {
-  color: string;
+  color?: string;
   size?: string;
 };
 
