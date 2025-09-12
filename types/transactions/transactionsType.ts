@@ -7,6 +7,14 @@ export interface SenderAccount {
   paymentMethod?: PaymentMethodSender
 }
 
+export interface Regret {
+  id: string
+  description: string
+  email: string
+  last_name: string
+  phone_number: string
+}
+
 export interface PaymentMethodSender {
   id: string;
   platformId: string;
@@ -64,7 +72,8 @@ export interface TransactionV2 {
   userId: string | null
   proofOfPayment: ProofOfPayment
   amount: Amount
-  regret_id?: string | null
+  // regret_id?: string | null
+  regret?: Regret | null
   note?: Note 
   isNoteVerified: boolean
   noteVerificationExpiresAt: string
@@ -140,7 +149,8 @@ export const emptyTransactionV2: TransactionV2 = {
     currencyReceived: '',
     received: false,
   },
-  regret_id: null,
+  // regret_id: null,
+  regret: null,
   note: emptyNote,
   isNoteVerified: false,
   noteVerificationExpiresAt: '',
