@@ -115,7 +115,17 @@ export const VerifyCodePage = () => {
         clearVerificationInputs();
       } else {
         localStorage.removeItem('verificationEmail');
-        window.location.href = '/es/auth/solicitud';
+        try {
+          // Consultar la sesión para obtener el rol y redirigir acorde
+          const res = await fetch('/api/auth/session', { cache: 'no-store' });
+          const session = await res.json();
+          const role = session?.user?.role;
+          const target = role === 'admin' ? '/es/admin/transactions' : '/es/auth/solicitud';
+          window.location.href = target;
+        } catch {
+          // Fallback en caso de error
+          window.location.href = '/es/auth/solicitud';
+        }
       }
     } catch (error) {
       console.error('Error durante la verificación del código:', error);

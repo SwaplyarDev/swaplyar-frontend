@@ -1,6 +1,6 @@
 // /app/request/page.tsx
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
-import StepperContainer from '@/components/request/form/StepperContainer';
+import SolicitudFlowWrapper from '@/components/request/form/SolicitudFlowWrapper';
 import { FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
 import { Metadata } from 'next';
 
@@ -35,7 +35,7 @@ const RequestPage = () => {
   return (
     <>
       <div className="flex items-center justify-center px-5 py-10 xs-phone:px-10">
-        <StepperContainer />
+        <SolicitudFlowWrapper />
       </div>
       <FlyerTrabajo
         href="/es/iniciar-sesion-o-registro"
