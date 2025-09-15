@@ -109,7 +109,7 @@ export const NavIcons = ({ isFooter }: NavIconsProps) => {
         }
       >
         <div className="flex items-center justify-center">
-          <Link href={`/es/auth/ayuda`} className="cursor-pointer">
+          <Link href={`/es/auth/centro-de-ayuda`} className="cursor-pointer">
             {isActive === ActiveTab.CENTRODEAYUDA ? (
               <IconsTablet text="Ayuda" classname="relative -translate-y-6 xs:translate-y-9">
                 <CentroDeAyudaIcon />

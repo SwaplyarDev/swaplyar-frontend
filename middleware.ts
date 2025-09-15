@@ -29,7 +29,10 @@ export default auth((req) => {
     if (isProtectedRoute && !isLoggedIn) {
       return NextResponse.redirect(new URL('/es/iniciar-sesion-o-registro', req.url));
     }
-
+    //Si está logueado y va a /es/inicio, redirigir
+    if (isLoggedIn && pathname === '/es/inicio') {
+          return NextResponse.redirect(new URL('/es/auth/solicitud', req.url));
+    }
     // 3) Si ya está logueado y visita rutas de login/registro, redirigir según rol
     if (isLoggedIn && isLoginRoute) {
       const role = (req.auth as any)?.user?.role;

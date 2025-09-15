@@ -74,10 +74,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <GoogleTagManager gtmId="GTM-WMGWHJ7J" />
 
         {/* Verificación de propiedad en Google Search Console */}
-        <meta
-          name="google-site-verification"
-          content="TDYMmlsmcxOohMXHebZJtRXZ-Y0otZk006ExVzrbPqs"
-        />
+        <meta name="google-site-verification" content="TDYMmlsmcxOohMXHebZJtRXZ-Y0otZk006ExVzrbPqs" />
       </head>
       <body className="theme-ready hydrated bg-white text-lightText dark:bg-lightText dark:text-darkText">
         <SessionProvider>
@@ -89,7 +86,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <SpeedInsights />
               <Analytics />
               {children}
-              <Footerblog />
             </MarginProvider>
           </ThemeProvider>
         </SessionProvider>
