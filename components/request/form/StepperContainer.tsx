@@ -1,9 +1,9 @@
 'use client';
+import { useMemo, useState, useCallback, useEffect } from 'react';
 import { useStepperStore } from '@/store/stateStepperStore';
 import dynamic from 'next/dynamic';
 import ArrowDown from '@/components/ui/ArrowDown/ArrowDown';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import Arrow from '@/components/ui/Arrow/Arrow';
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -11,12 +11,11 @@ import { useSystemStore } from '@/store/useSystemStore';
 import Tick from '@/components/ui/Tick/Tick';
 import useChronometerState from '@/store/chronometerStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
-import { useSession } from 'next-auth/react';
 import { useRewardsStore } from '@/store/useRewardsStore';
 import { putDiscountsStatus } from '@/actions/Discounts/discounts.action';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 import { shallow } from 'zustand/shallow';
-
+import type { Session } from 'next-auth';
 // Carga diferida de subcomponentes para reducir el bundle inicial
 const StepOne = dynamic(() => import('./steps/StepOne'));
 const StepTwo = dynamic(() => import('./steps/StepTwo'));
@@ -24,24 +23,24 @@ const StepThree = dynamic(() => import('./steps/StepThree'));
 const StepIndicator = dynamic(() => import('./steps/StepIndicator'));
 const Cronometro = dynamic(() => import('./Cronometro'), { ssr: false });
 
-const StepperContainer = () => {
-  const { activeStep, completedSteps, setActiveStep, updateFormData, submitAllData, resetToDefault } =
-    useStepperStore(
-      (s) => ({
-        activeStep: s.activeStep,
-        completedSteps: s.completedSteps,
-        setActiveStep: s.setActiveStep,
-        updateFormData: s.updateFormData,
-        submitAllData: s.submitAllData,
-        resetToDefault: s.resetToDefault,
-      }),
-      shallow,
-    );
+type StepperContainerProps = {
+  session: Session | null; // Asegúrate de que el tipo sea correcto según tu configuración de next-auth
+};
+const StepperContainer = ({ session }: StepperContainerProps) => {
+  const { activeStep, completedSteps, setActiveStep, submitAllData, resetToDefault } = useStepperStore(
+    (s) => ({
+      activeStep: s.activeStep,
+      completedSteps: s.completedSteps,
+      setActiveStep: s.setActiveStep,
+      submitAllData: s.submitAllData,
+      resetToDefault: s.resetToDefault,
+    }),
+    shallow,
+  );
   const { couponInstance, markUsed, discounts_ids } = useRewardsStore(
     (s) => ({ couponInstance: s.couponInstance, markUsed: s.markUsed, discounts_ids: s.discounts_ids }),
     shallow,
   );
-  const { data: session } = useSession();
   const [blockAll, setBlockAll] = useState(false);
   const { isStopped, setStop } = useChronometerState((s) => ({ isStopped: s.isStopped, setStop: s.setStop }), shallow);
   const [correctSend, setCorrectSend] = useState(false);
@@ -56,29 +55,6 @@ const StepperContainer = () => {
 
   const getSwal = useCallback(async () => (await import('sweetalert2')).default, []);
 
-  const prefilledOnceRef = useRef(false);
-  useEffect(() => {
-    if (!session || prefilledOnceRef.current) return;
-
-    const userInfo = {
-      first_name: session?.user?.profile?.firstName || '',
-      last_name: session?.user?.profile?.lastName || '',
-      calling_code: undefined,
-      email: session?.user?.email || '',
-      phone: session?.user?.profile?.phone || '',
-      own_account: undefined,
-    };
-
-    const transferInfo = {
-      tax_identification: session?.user?.profile?.identification || undefined,
-    } as const;
-
-    updateFormData(0, userInfo);
-    updateFormData(1, transferInfo);
-
-    prefilledOnceRef.current = true;
-  }, [session, updateFormData]);
-
   const steps = useMemo(
     () => [
       { title: 'Mis Datos', render: () => <StepOne blockAll={blockAll} /> },
@@ -90,6 +66,7 @@ const StepperContainer = () => {
 
   const handleStepClick = useCallback(
     (index: number) => {
+      // No necesitas el tipado 'number' si el archivo es .jsx
       if (completedSteps[index] || index === activeStep) {
         setActiveStep(index);
       }
@@ -98,7 +75,7 @@ const StepperContainer = () => {
   );
 
   useEffect(() => {
-    // Al desmontar el formulario, invalida el paso para evitar accesos directos posteriores
+    // Este useEffect se queda porque su responsabilidad es otra (limpiar cookies)
     return () => {
       setPassFalse();
       try {
@@ -109,7 +86,7 @@ const StepperContainer = () => {
 
   const handleMarkCouponUsed = useCallback(
     async (coupon_id: string[], uuid_transacción: string) => {
-      if (couponInstance === 'NONE' || session?.accessToken === undefined || !uuid_transacción) return;
+      if (couponInstance === 'NONE' || !session?.accessToken || !uuid_transacción) return;
       try {
         const result = await putDiscountsStatus(session.accessToken, coupon_id[0], uuid_transacción);
         markUsed(couponInstance);
@@ -118,7 +95,9 @@ const StepperContainer = () => {
         console.error('Error marking coupon as used:', error);
       }
     },
-    [couponInstance, session?.accessToken, markUsed],
+    // ✅ Pequeño ajuste: Es mejor depender del objeto 'session' completo.
+    // Si 'session' cambia por cualquier motivo, esta función se actualizará correctamente.
+    [couponInstance, markUsed, session],
   );
 
   const handleCancelRequest = useCallback(async () => {
@@ -156,7 +135,7 @@ const StepperContainer = () => {
           backBtn?.addEventListener('click', () => Swal.close());
         }
       },
-  didOpen: () => {
+      didOpen: () => {
         const cancelButton = document.getElementById('cancel-button');
         if (cancelButton) {
           cancelButton.addEventListener('click', () => {
@@ -191,7 +170,7 @@ const StepperContainer = () => {
       const isSuccess = await submitAllData(
         selectedSendingSystem,
         selectedReceivingSystem,
-        session?.accessToken,
+        session?.accessToken, // Esto sigue funcionando porque 'session' viene de las props
       );
 
       if (isSuccess) {
@@ -210,7 +189,15 @@ const StepperContainer = () => {
       console.error('Error en el proceso de envío:', error);
     }
     setLoading(false);
-  }, [selectedSendingSystem, selectedReceivingSystem, submitAllData, session?.accessToken, handleMarkCouponUsed, discounts_ids, getSwal]);
+  }, [
+    selectedSendingSystem,
+    selectedReceivingSystem,
+    submitAllData,
+    session?.accessToken,
+    handleMarkCouponUsed,
+    discounts_ids,
+    getSwal,
+  ]);
 
   const onSendClick = useCallback(() => {
     setStop(true);

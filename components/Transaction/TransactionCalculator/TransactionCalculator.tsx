@@ -53,12 +53,13 @@ export default function TransactionCalculator() {
 
   const handleDirection = () => {
     sessionStorage.setItem('accesoPermitido', 'true');
-    // Cookie efímera para que el middleware permita la navegación interna
     try {
       document.cookie = 'requestPass=1; Max-Age=120; Path=/; SameSite=Lax';
     } catch {}
     setPassTrue();
-    router.push('/es/auth/solicitud/formulario-de-solicitud');
+
+    // Cambia a la ruta pública del formulario
+    router.push('/es/inicio/formulario-de-solicitud');
   };
 
   const handleSubmit = () => {
