@@ -37,11 +37,6 @@ export async function UserDetailPageComponent({ verificationId }: { verification
             </div>
 
             <div className="space-y-6">
-              {/* 
-                No hay relacion directa entre el usuario y las transacciones, seccion a agregar dentro de componente WalletDetails
-                
-                <TransactionHistorySection transactions={transactions} />  
-              */} 
               {wallets.length > 0 ? (
                 <WalletsSection wallets={wallets} />
               ) : (
@@ -49,6 +44,10 @@ export async function UserDetailPageComponent({ verificationId }: { verification
                   Este usuario no tiene cuentas registradas.
                 </div>
               )}
+              
+              {/* No hay relacion directa entre el usuario y las transacciones, seccion a agregar dentro de componente WalletDetails */}
+              <TransactionHistorySection transactions={{ meta: { totalPages: 0, totalItems: 0, page: 1, perPage: 10, totalTransactions: 0 }, data: [] }} />
+
               <UserRewardsSection discounts={discounts} /> 
             </div>
           </div>

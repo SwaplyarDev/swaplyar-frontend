@@ -38,24 +38,24 @@ export const MockImagesTransLight: MockImages[] = [
   },
   {
     image: WiseEurImg,
-    name: 'wise eur',
+    name: 'wise_eur',
     type: 'eur',
     id: 3,
   },
   {
     image: PayoneerEurImg,
-    name: 'payoneer eur',
+    name: 'payoneer_eur',
     type: 'eur',
     id: 4,
   },
   {
     image: TetherImg,
-    name: 'crypto',
+    name: 'receiver_crypto',
     id: 5,
   },
   {
     image: PaypalImg,
-    name: 'paypal',
+    name: 'virtual_bank',
     id: 6,
   },
   {
@@ -97,12 +97,12 @@ export const MockImagesTransDark: MockImages[] = [
   },
   {
     image: TetherDarkImg,
-    name: 'crypto',
+    name: 'receiver_crypto',
     id: 5,
   },
   {
     image: PaypalDarkImg,
-    name: 'paypal',
+    name: 'virtual_bank',
     id: 6,
   },
   {

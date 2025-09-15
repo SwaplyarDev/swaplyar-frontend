@@ -180,14 +180,13 @@ export default function TransactionPageClientComponent({
 
               <ClientEditCancelMessage
                 type={
-                  initialTransaction.regret_id
+                  initialTransaction.regret
                     ? ClientMessageType.Cancel
                     : initialTransaction.note?.message
                       ? ClientMessageType.Edit
                       : null
                 }
-                message={initialTransaction.regret_id ? regretCancel?.note : initialTransaction.note?.message}
-                createdAt={initialTransaction.regret_id ? regretCancel?.created_at : initialTransaction.note?.createdAt}
+                message={initialTransaction.regret?.description ? initialTransaction.regret.description : initialTransaction.note?.message}
               />
 
               <TransactionDetail transaction={initialTransaction} isLoading={transactionFlow.isLoading} />
