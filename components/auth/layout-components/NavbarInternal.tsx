@@ -1,5 +1,11 @@
 'use client';
-import { SwaplyArLogoComplete, SwaplyArLogoSolo, SwaplyArlogoWhite, SwaplyArlogoMobileWhite, swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
+import {
+  SwaplyArLogoComplete,
+  SwaplyArLogoSolo,
+  SwaplyArlogoWhite,
+  SwaplyArlogoMobileWhite,
+  swaplyArAvatar,
+} from '@/utils/assets/imgDatabaseCloudinary';
 import Image from 'next/image';
 import { useState } from 'react';
 import { Drawer } from 'flowbite-react';
@@ -48,7 +54,6 @@ const NavbarInternal = () => {
         }}
       />
     );
-
   }
 
   return (
@@ -162,7 +167,7 @@ const NavbarInternal = () => {
                           <CuentasAsociadasIcon classname="flex justify-end" />
                         )}
                       </Link>
-                      <Link href={'/es/auth/ayuda'} onClick={closeDrawerMenu}>
+                      <Link href={'/es/auth/centro-de-ayuda'} onClick={closeDrawerMenu}>
                         {isActive === ActiveTab.CENTRODEAYUDA ? (
                           <IconsTablet classname="w-44 justify-between" text="Ayuda">
                             <CentroDeAyudaIcon />
