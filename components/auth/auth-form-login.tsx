@@ -114,7 +114,7 @@ export const LoginForm = () => {
                 : isDark
                   ? 'buttonSecondDark dark:text-lightText'
                   : 'buttonSecond',
-              'relative m-1 min-h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-titleFont font-semibold text-darkText dark:border-darkText dark:bg-darkText dark:text-darkText',
+              'relative m-1 min-h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-titleFont font-semibold text-darkText dark:border-darkText dark:bg-disabledButtonsDark dark:text-darkText',
             )}
             disabled={loading || !watch('email')} // Desactivar el botón si está cargando
           >
