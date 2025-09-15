@@ -12,8 +12,9 @@ interface TransactionProps {
 }
 
 const TransferImages: React.FC<TransactionProps> = ({ trans }) => {
-  const senderPaymentMethodName = trans.senderAccount?.paymentMethod?.method|| 'pix';
-  const receiverPaymentMethodName = trans.receiverAccount?.paymentMethod?.method || '';
+  console.log(trans)
+  const senderPaymentMethodName = trans.senderAccount?.paymentMethod?.platformId;
+  const receiverPaymentMethodName = trans.receiverAccount?.paymentMethod?.method;
   // const { regret_id, note_id } = trans;
   const { isDark } = useDarkTheme();
 

@@ -65,8 +65,8 @@ const TransactionModal = () => {
 
     // Solo fetch del regret si existe regret_id
     // Las notas ahora vienen directamente en transaction.note
-    if (transaction.regret_id) {
-      fetchRegret(transaction.regret_id);
+    if (transaction.regret) {
+      fetchRegret(transaction.regret.id);
     }
   }, [transaction, fetchRegret]);
 
@@ -206,14 +206,14 @@ const TransactionModal = () => {
 
           <TransferImages trans={(transaction)} />
 
-          {transaction.regret_id ? (
+          {transaction.regret?.id ? (
             <div className="flex flex-col">
               <p className="text-left text-base font-medium">
                 El Cliente solicito la Cancelacion y el Reembolso - Se realiza el reembolso a la cuenta de origen
               </p>
               <ClientMessage
                 headerMessage="Mensaje"
-                message={regretCancel.note}
+                message={transaction.regret.description}
                 classnames="border-[#CE1818] min-h-[4.25rem]"
               />
             </div>
