@@ -144,6 +144,14 @@ export const VerifyCodePage = () => {
           email: email,
         };
       }
+      // Lógica comentada original
+      // if (userVerification?.email) {
+      //   URL_VERIFICATION = 'users/email-validation/send';
+      //   bodyData = {
+      //     email: email,
+      //     ...(userVerification?.email && { email: userVerification.email }),
+      //   };
+      // }
       try {
         await fetch(`${BASE_URL}/${URL_VERIFICATION}`, {
           method: 'POST',
@@ -259,19 +267,7 @@ export const VerifyCodePage = () => {
 
           {errors.verificationCode && <p className="mb-5 text-sm text-red-500">• {errors.verificationCode.message}</p>}
 
-          <div className="mb-4 text-right">
-            <p
-              onClick={timer === 0 && !reLoading && !isLocked ? resendCode : undefined}
-              className={clsx('text-buttonsLigth dark:text-darkText', {
-                'cursor-pointer hover:underline': timer === 0 && !reLoading && !isLocked,
-                'cursor-not-allowed text-gray-500 dark:text-gray-400': timer > 0 || reLoading || isLocked,
-              })}
-            >
-              {reLoading ? 'Enviando...' : timer > 0 ? `Reenviar en ${timer}s` : 'Reenviar código'}
-            </p>
-          </div>
-
-          <div className="mt-2 flex items-center justify-between">
+          <div className="my-5 flex items-center justify-between">
             <ButtonBack route="/es/iniciar-sesion-o-registro" isDark={isDark} />
             <button
               type="submit"
@@ -289,8 +285,20 @@ export const VerifyCodePage = () => {
             </button>
           </div>
 
+          <div className="mt-4 text-center">
+            <p
+              onClick={timer === 0 && !reLoading && !isLocked ? resendCode : undefined}
+              className={clsx('text-buttonsLigth dark:text-darkText', {
+                'cursor-pointer hover:underline': timer === 0 && !reLoading && !isLocked,
+                'cursor-not-allowed text-gray-500 dark:text-gray-400': timer > 0 || reLoading || isLocked,
+              })}
+            >
+              {reLoading ? 'Enviando...' : timer > 0 ? `Reenviar en ${timer}s` : 'Reenviar código'}
+            </p>
+          </div>
+
           {attempts > 0 && !isLocked ? (
-            <p className="mt-4 text-center text-base text-buttonsLigth dark:text-darkText sm:text-lg">
+            <p className="mt-2 text-center text-base text-buttonsLigth dark:text-darkText sm:text-lg">
               Tienes {attempts} {attempts === 1 ? 'intento' : 'intentos'} para reenviar el código
             </p>
           ) : (
