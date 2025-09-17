@@ -1,11 +1,15 @@
 export function buildPaymentMethod(selectedSystem: string, details: Record<string, string>) {
   switch (selectedSystem) {
+    // Casos para VIRTUAL BANK
     case 'paypal':
-    case 'payoneer':
-    case 'wise':
+    case 'payoneer_usd':
+    case 'payoneer_eur':
+    case 'wise_usd':
+    case 'wise_eur':
       return {
         platformId: 'virtual_bank',
         method: 'virtual-bank',
+        type: details.type || '', // <-- Se añade el TIPO GENÉRICO
         virtualBank: {
           currency: details.currency || 'USD',
           emailAccount: details.email_account || '',
@@ -13,6 +17,7 @@ export function buildPaymentMethod(selectedSystem: string, details: Record<strin
         },
       };
 
+    // Caso para BANK (ARS) - Restaurado a su estructura original
     case 'ars':
       return {
         platformId: 'bank',
@@ -27,18 +32,20 @@ export function buildPaymentMethod(selectedSystem: string, details: Record<strin
         },
       };
 
+    // Caso para PIX - Restaurado a su estructura original
     case 'pix':
       return {
         platformId: 'pix',
         method: 'pix',
         pix: {
-          pixId: details.pixId || '123', // Si aplica
+          pixId: details.pixId || '123',
           pixKey: details.pixKey || '',
           pixValue: details.pixValue || '',
           cpf: details.cpf || '',
         },
       };
 
+    // Caso para TETHER - Restaurado a su estructura original
     case 'tether':
       return {
         platformId: 'receiver_crypto',
@@ -55,16 +62,32 @@ export function buildPaymentMethod(selectedSystem: string, details: Record<strin
   }
 }
 
-export function buildSenderMethod(selectedSystem: string){
-   switch (selectedSystem) {
+export function buildSenderMethod(selectedSystem: string) {
+  // Recibe el ID completo, ej: 'wise_usd'
+  switch (selectedSystem) {
+    // Casos para VIRTUAL BANK
     case 'paypal':
-    case 'payoneer':
-    case 'wise':
       return {
         platformId: 'virtual_bank',
         method: 'virtual-bank',
+        type: 'paypal', // <-- Se añade el TIPO GENÉRICO
+      };
+    case 'payoneer_usd':
+    case 'payoneer_eur':
+      return {
+        platformId: 'virtual_bank',
+        method: 'virtual-bank',
+        type: 'payoneer', // <-- Se añade el TIPO GENÉRICO
+      };
+    case 'wise_usd':
+    case 'wise_eur':
+      return {
+        platformId: 'virtual_bank',
+        method: 'virtual-bank',
+        type: 'wise', // <-- Se añade el TIPO GENÉRICO
       };
 
+    // Otros casos - Restaurados a su estructura original
     case 'ars':
       return {
         platformId: 'bank',
@@ -84,6 +107,6 @@ export function buildSenderMethod(selectedSystem: string){
       };
 
     default:
-      throw new Error(`Unsupported payment method: ${selectedSystem}`);
-  } 
+      throw new Error(`Unsupported sender payment method: ${selectedSystem}`);
+  }
 }

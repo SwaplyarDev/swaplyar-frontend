@@ -17,7 +17,6 @@ export interface Wallet {
   pixKeyValue?: string;
   walletAddress?: string;
   network?: string;
-  // Campos usados en otras vistas pueden no existir en este store
   name?: string;
   details?: any[];
 }
@@ -42,21 +41,21 @@ const useWalletStore = create<WalletStoreState>((set) => ({
   fetchAndSetWallets: async (token: string) => {
     set({ isLoading: true });
     try {
-  const apiResponse = await getMyWalletAccounts(token);
-  if (!Array.isArray(apiResponse)) {
+      const apiResponse = await getMyWalletAccounts(token);
+
+      if (!Array.isArray(apiResponse)) {
         console.error('La respuesta de la API no es un array.');
         throw new Error('Respuesta inesperada de la API');
       }
 
-  const mappedWallets = mapApiWalletsToFrontend(apiResponse as any);
-
+      const mappedWallets = mapApiWalletsToFrontend(apiResponse as any);
       set({
         wallets: mappedWallets,
         isLoading: false,
       });
     } catch (error) {
       console.error('ERROR en fetchAndSetWallets:', error);
-  set({ isLoading: false, wallets: [] });
+      set({ isLoading: false, wallets: [] });
     }
   },
 }));
