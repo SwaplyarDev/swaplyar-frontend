@@ -1,5 +1,3 @@
-// /components/auth/verify-code-page.tsx
-
 'use client';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState, useEffect, ChangeEvent } from 'react';
@@ -31,7 +29,11 @@ export const VerifyCodePage = () => {
     clearErrors,
     watch,
     setValue,
-  } = useForm<FormInputs>({});
+  } = useForm<FormInputs>({
+    defaultValues: {
+      verificationCode: Array(6).fill(''),
+    },
+  });
 
   const [loading, setLoading] = useState(false);
   const [reLoading, setReLoading] = useState(false);
@@ -44,7 +46,7 @@ export const VerifyCodePage = () => {
   const { attempts, lockUntil, decrementAttempts, setLockUntil, resetAttempts } = useCodeVerificationStore();
 
   const isLocked = lockUntil && lockUntil > Date.now();
-  const [timer, setTimer] = useState(0);
+  const [timer, setTimer] = useState(60);
 
   useEffect(() => {
     const storedEmail = localStorage.getItem('verificationEmail');
@@ -63,7 +65,6 @@ export const VerifyCodePage = () => {
     }
   }, [email, router, isLocked, lockUntil, setLockUntil, resetAttempts]);
 
-  // Temporizador para el reenvío
   useEffect(() => {
     if (timer > 0) {
       const interval = setInterval(() => {
@@ -107,23 +108,21 @@ export const VerifyCodePage = () => {
         result = await registerUser(emailToUse, code);
       }
 
-    if (!result.ok) {
+      if (!result.ok) {
         setError('verificationCode', {
           type: 'manual',
-      message: typeof result.message === 'string' ? result.message : 'El código ingresado es incorrecto.',
+          message: typeof result.message === 'string' ? result.message : 'El código ingresado es incorrecto.',
         });
         clearVerificationInputs();
       } else {
         localStorage.removeItem('verificationEmail');
         try {
-          // Consultar la sesión para obtener el rol y redirigir acorde
           const res = await fetch('/api/auth/session', { cache: 'no-store' });
           const session = await res.json();
           const role = session?.user?.role;
           const target = role === 'admin' ? '/es/admin/transactions' : '/es/auth/solicitud';
           window.location.href = target;
         } catch {
-          // Fallback en caso de error
           window.location.href = '/es/auth/solicitud';
         }
       }
@@ -145,12 +144,13 @@ export const VerifyCodePage = () => {
           email: email,
         };
       }
+      // Lógica comentada original
       // if (userVerification?.email) {
-      //   URL_VERIFICATION = 'users/email-validation/send';
-      //   bodyData = {
-      //     email: email,
-      //     ...(userVerification?.email && { email: userVerification.email }),
-      //   };
+      //   URL_VERIFICATION = 'users/email-validation/send';
+      //   bodyData = {
+      //     email: email,
+      //     ...(userVerification?.email && { email: userVerification.email }),
+      //   };
       // }
       try {
         await fetch(`${BASE_URL}/${URL_VERIFICATION}`, {
@@ -158,10 +158,10 @@ export const VerifyCodePage = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(bodyData),
         });
-        decrementAttempts(); // Reducir intentos después del reenvío
-        setTimer(10); // Reiniciar el temporizador a 10 segundos
+        decrementAttempts();
+        setTimer(60);
         if (attempts <= 1) {
-          setLockUntil(Date.now() + 5 * 60 * 1000); // Bloquear por 5 minutos si no hay intentos
+          setLockUntil(Date.now() + 5 * 60 * 1000);
         }
       } catch (error) {
         console.error('Error al reenviar el código:', error);
@@ -189,10 +189,6 @@ export const VerifyCodePage = () => {
         const nextInput = document.getElementById(`code-${index + 1}`);
         nextInput?.focus();
       }
-
-      if (newVerificationCode.every((code) => code.length === 1)) {
-        handleSubmit(verifyCode)();
-      }
     }
   };
 
@@ -216,8 +212,10 @@ export const VerifyCodePage = () => {
         setValue(`verificationCode.${i}`, char);
       }
     });
-    if (characters.length === 6) handleSubmit(verifyCode)();
   };
+
+  const verificationCodeValues = watch('verificationCode');
+  const isCodeComplete = verificationCodeValues.join('').length === 6;
 
   return (
     <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-start py-5 xs:mt-0 xs:justify-center">
@@ -269,29 +267,39 @@ export const VerifyCodePage = () => {
 
           {errors.verificationCode && <p className="mb-5 text-sm text-red-500">• {errors.verificationCode.message}</p>}
 
-          <div className="my-5 flex justify-between text-buttonsLigth dark:text-darkText">
+          <div className="my-5 flex items-center justify-between">
             <ButtonBack route="/es/iniciar-sesion-o-registro" isDark={isDark} />
             <button
-              type="button"
-              onClick={resendCode}
-              disabled={timer > 0 || reLoading || !!isLocked}
-              className={`dark:hover:bg- relative m-1 h-[48px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white hover:bg-buttonsLigth disabled:border-gray-400 disabled:bg-gray-400 disabled:shadow-none dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400 ${isDark ? 'buttonSecondDark' : 'buttonSecond'}${timer > 0 || attempts <= 0 ? 'text-gray-500' : ''}`}
+              type="submit"
+              disabled={!isCodeComplete || loading}
+              className={`dark:hover:bg- relative m-1 h-[48px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white transition-colors duration-300 hover:bg-buttonsLigth disabled:cursor-not-allowed disabled:border-gray-400 disabled:bg-gray-400 disabled:shadow-none dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400 ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
             >
-              {reLoading ? (
+              {loading ? (
                 <div className="flex items-center justify-center gap-2">
-                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} />
-                  Enviando...
+                  <LoadingGif color={isDark ? '#ebe7e0' : '#FFFFFF'} />
+                  Confirmando...
                 </div>
-              ) : timer > 0 && attempts > 0 ? (
-                `Reenviar en ${timer}s`
               ) : (
-                'Reenviar código'
+                'Confirmar'
               )}
             </button>
           </div>
+
+          <div className="mt-4 text-center">
+            <p
+              onClick={timer === 0 && !reLoading && !isLocked ? resendCode : undefined}
+              className={clsx('text-buttonsLigth dark:text-darkText', {
+                'cursor-pointer hover:underline': timer === 0 && !reLoading && !isLocked,
+                'cursor-not-allowed text-gray-500 dark:text-gray-400': timer > 0 || reLoading || isLocked,
+              })}
+            >
+              {reLoading ? 'Enviando...' : timer > 0 ? `Reenviar en ${timer}s` : 'Reenviar código'}
+            </p>
+          </div>
+
           {attempts > 0 && !isLocked ? (
             <p className="mt-2 text-center text-base text-buttonsLigth dark:text-darkText sm:text-lg">
-              Tienes {attempts} intentos para reenviar el código
+              Tienes {attempts} {attempts === 1 ? 'intento' : 'intentos'} para reenviar el código
             </p>
           ) : (
             <p className="mt-2 text-center text-base text-red-500">Estás bloqueado por 5 minutos.</p>
