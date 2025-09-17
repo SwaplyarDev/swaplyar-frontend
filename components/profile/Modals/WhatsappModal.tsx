@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { useWhatsAppFormStore } from '../store/WhatsAppFormStore';
 import { CountryOption } from '@/types/request/request';
+import { useSession } from 'next-auth/react';
+import { updatePhone } from '../services/profileServices';
 
 interface WhatsappVerificationProps {
   show: boolean;
@@ -18,6 +20,7 @@ interface FormData {
 
 const WhatsappModal = ({ show, setShow }: WhatsappVerificationProps) => {
   const { isDark } = useDarkTheme();
+  const { data: session } = useSession();
   const {
     register,
     handleSubmit,
@@ -31,13 +34,30 @@ const WhatsappModal = ({ show, setShow }: WhatsappVerificationProps) => {
 
   useEffect(() => {
     setValue('phone', phone);
-  }, [setValue]);
+  }, [setValue, phone]);
 
   const [isFocused, setIsFocused] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data: FormData) => {
-    console.log(data);
+    if (!session?.accessToken) return;
+    setLoading(true);
+
+    try {
+      const phoneWithPrefix = `${data.calling_code?.callingCode || ""}${" " + data.phone}`;
+      const res = await updatePhone(session.accessToken, phoneWithPrefix);
+
+      useWhatsAppFormStore.setState({ phone: phoneWithPrefix });
+
+      setShow(false);
+    } catch (err) {
+      console.error("❌ Error al actualizar teléfono:", err);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (!show) return null;
 
   return (
     <>
@@ -45,7 +65,7 @@ const WhatsappModal = ({ show, setShow }: WhatsappVerificationProps) => {
       <div
         className={`fixed left-1/2 top-1/2 z-50 flex h-[250px] w-[300px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-4 rounded-2xl border-none xs:w-[400px] md:w-[592px] ${isDark ? 'bg-zinc-800 text-white' : 'bg-white text-black'} sm:max-w-md`}
       >
-        <h2 className="xs:text-2x1 text-lg font-light md:text-3xl">Verificar Número de WhatsApp</h2>
+        <h2 className="xs:text-2x1 text-lg font-light md:text-3xl">Editar Teléfono</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <label
             htmlFor="phone"
@@ -54,15 +74,15 @@ const WhatsappModal = ({ show, setShow }: WhatsappVerificationProps) => {
               isFocused || !!watch('phone') ? 'opacity-100' : 'opacity-0',
             )}
           >
-            Telefono
+            Teléfono
           </label>
           <div
             className={clsx(
-              'flex max-h-[42px] max-w-full items-center rounded-2xl border bg-transparent py-2 pr-5 text-lightText focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
+              'flex max-h-[42px] max-w-full items-center rounded-2xl border bg-transparent py-2 pr-5 text-lightText',
               watch('phone') && 'border-inputLight dark:border-lightText',
               errors.phone
                 ? 'mb-0 border-errorColor placeholder-errorColor'
-                : 'mb-5 border-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:hover:border-lightText dark:hover:placeholder-lightText',
+                : 'mb-5 border-inputLightDisabled hover:border-inputLight',
             )}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
@@ -71,9 +91,7 @@ const WhatsappModal = ({ show, setShow }: WhatsappVerificationProps) => {
               name="calling_code"
               control={control}
               defaultValue={undefined}
-              rules={{
-                required: 'Este campo es obligatorio',
-              }}
+              rules={{ required: 'Este campo es obligatorio' }}
               render={({ field, fieldState }) => (
                 <SelectCountry
                   selectedCodeCountry={field.value}
@@ -85,13 +103,8 @@ const WhatsappModal = ({ show, setShow }: WhatsappVerificationProps) => {
               )}
             />
             <input
-              placeholder={isFocused ? '' : errors.phone ? 'Telefono*' : 'Telefono'}
-              className={clsx(
-                'inputChangeAutofillReverse w-full border-none bg-transparent font-textFont focus:border-none focus:outline-none focus:ring-0',
-                errors.phone
-                  ? 'placeholder-errorColor'
-                  : 'placeholder-inputLightDisabled dark:placeholder-placeholderDark',
-              )}
+              placeholder={isFocused ? '' : errors.phone ? 'Teléfono*' : 'Teléfono'}
+              className="inputChangeAutofillReverse w-full border-none bg-transparent font-textFont"
               type="tel"
               {...register('phone', {
                 required: 'El número de teléfono es obligatorio',
@@ -103,7 +116,7 @@ const WhatsappModal = ({ show, setShow }: WhatsappVerificationProps) => {
             />
           </div>
           {errors.phone && (
-            <p className="px-[10px] font-textFont text-sm text-errorColor">{errors.phone.message as string}</p>
+            <p className="px-[10px] font-textFont text-sm text-errorColor">{errors.phone.message}</p>
           )}
 
           <div className="flex justify-between gap-4 pt-5">
@@ -115,9 +128,10 @@ const WhatsappModal = ({ show, setShow }: WhatsappVerificationProps) => {
             </button>
             <button
               type="submit"
+              disabled={loading}
               className={`h-8 rounded-full px-4 ${isDark ? 'bg-white text-[#4B4B4B]' : 'bg-blue-400 text-white hover:bg-blue-700'}`}
             >
-              Enviar Código
+              {loading ? "Guardando..." : "Guardar"}
             </button>
           </div>
         </form>
