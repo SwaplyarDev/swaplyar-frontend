@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
 import { profileMock } from './utils/ProfileMock';
-import SocialMediaModal from './Modals/RedesSocialesModal';
+import SocialNetworkModal from './Modals/RedesSocialesModal';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import WhatsappModal from './Modals/WhatsappModal';
 import { useSession } from 'next-auth/react';
@@ -12,7 +12,11 @@ import InfoPersonalModal from './Modals/InfoPersonalModal';
 import InfoCard from './ui/ProfileCards/InfoCard';
 import EmailCard from './ui/ProfileCards/EmailCard';
 import WhatsAppCard from './ui/ProfileCards/WhatsAppCard';
-import SocialMediaCard from './ui/ProfileCards/SocialMediaCard';
+import SocialNetworkCard from './ui/ProfileCards/SocialNetworkCard';
+import ProfilePictureModal from './Modals/ProfilePictureModal';
+import { useSocialNetworksStore } from './store/socialNetworksStore';
+import { LoadingState } from '../historial/loadingState';
+import { useTransactions } from '@/hooks/useTransactions';
 
 
 const Profile = () => {
@@ -22,12 +26,17 @@ const Profile = () => {
 
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
-  const [showSocialMediaModal, setShowSocialMediaModal] = useState(false);
+  const [showSocialNetworkModal, setShowSocialNetworkModal] = useState(false);
+  const [showPictureModal, setShowPictureModal] = useState(false);
+
+  const socialAccounts = useSocialNetworksStore((state) => state.socialAccounts);
+  const { loading } =
+      useTransactions();
 
   useEffect(() => {
-    document.body.style.overflow = showWhatsAppModal || showProfileModal || showSocialMediaModal ? 'hidden' : 'auto';
+    document.body.style.overflow = showWhatsAppModal || showProfileModal || showSocialNetworkModal ? 'hidden' : 'auto';
     console.log('Session data:', session);
-  }, [showWhatsAppModal, showProfileModal, showSocialMediaModal, session]);
+  }, [showWhatsAppModal, showProfileModal, showSocialNetworkModal, session]);
 
   const ProfileSectionCard = ({ children }: { children: React.ReactNode }) => {
     const { isDark } = useDarkTheme();
@@ -39,6 +48,14 @@ const Profile = () => {
     );
   };
 
+  if (loading) {
+      return (
+        <div className="mx-auto mb-24 mt-10 w-full max-w-xl rounded-xl p-6 sm:my-6">
+          <LoadingState />
+        </div>
+      );
+    }
+
   return (
     <div className="my-14 min-h-screen font-textFont text-white">
       <header className={`mb-10 flex max-h-[150px] w-full items-center justify-center ${isDark ? 'bg-[#4B4B4B]' : 'bg-nav-blue text-white'}`}>
@@ -49,9 +66,22 @@ const Profile = () => {
               <p className="text-xl font-semibold">{session?.user.fullName}</p>
               <p className="text-[16px] text-gray-400 underline">Registrado en 2019</p>
             </div>
-            <div className="relative h-[90px] w-[90px] xs:h-32 xs:w-32">
-              <Image src={session?.user.profile?.profilePictureUrl || swaplyArAvatar} alt="Profile picture" fill className="rounded-full object-cover" />
+            <div
+              className="relative h-[120px] w-[120px] cursor-pointer"
+              onClick={() => setShowPictureModal(true)}
+            >
+              <Image
+                src={session?.user.profile?.profilePictureUrl || swaplyArAvatar}
+                alt="Profile picture"
+                fill
+                className="rounded-full object-cover hover:opacity-80"
+              />
+              <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 hover:opacity-100 transition">
+                <span className="text-sm text-white">Cambiar</span>
+              </div>
             </div>
+
+            {showPictureModal && <ProfilePictureModal setShow={setShowPictureModal} />}
           </div>
         </div>
       </header>
@@ -72,15 +102,15 @@ const Profile = () => {
         </ProfileSectionCard>
 
         <ProfileSectionCard>
-          <SocialMediaCard
-            socialNetworks={profileMock.redesSociales}
-            onEdit={() => setShowSocialMediaModal(true)}
+          <SocialNetworkCard
+            socialNetworks={socialAccounts}
+            onEdit={() => setShowSocialNetworkModal(true)}
           />
-          {showSocialMediaModal && (
-            <SocialMediaModal
-              show={showSocialMediaModal}
-              setShow={setShowSocialMediaModal}
-              socialNetworks={profileMock.redesSociales}
+          {showSocialNetworkModal && (
+            <SocialNetworkModal
+              show={showSocialNetworkModal}
+              setShow={setShowSocialNetworkModal}
+              socialNetworks={socialAccounts}
             />
           )}
         </ProfileSectionCard>

@@ -5,7 +5,7 @@ type Props = {
   onEdit: () => void;
 };
 
-const SocialMediaCard = ({ socialNetworks, onEdit }: Props) => {
+const SocialNetworkCard = ({ socialNetworks, onEdit }: Props) => {
   return (
     <>
       <div className="mb-2 flex items-center justify-between">
@@ -31,4 +31,4 @@ const SocialMediaCard = ({ socialNetworks, onEdit }: Props) => {
   );
 };
 
-export default SocialMediaCard;
+export default SocialNetworkCard;

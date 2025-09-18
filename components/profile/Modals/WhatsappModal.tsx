@@ -61,7 +61,7 @@ const WhatsappModal = ({ show, setShow }: WhatsappVerificationProps) => {
 
   return (
     <>
-      <div onClick={() => setShow(false)} className="fixed inset-0 z-40 bg-black bg-opacity-80"></div>
+      <div onClick={() => setShow(false)} className="fixed inset-0 z-40 bg-black bg-opacity-80 text-black dark:text-white"></div>
       <div
         className={`fixed left-1/2 top-1/2 z-50 flex h-[250px] w-[300px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-4 rounded-2xl border-none xs:w-[400px] md:w-[592px] ${isDark ? 'bg-zinc-800 text-white' : 'bg-white text-black'} sm:max-w-md`}
       >
@@ -98,13 +98,13 @@ const WhatsappModal = ({ show, setShow }: WhatsappVerificationProps) => {
                   setSelectedCodeCountry={(option) => field.onChange(option)}
                   errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
                   textColor={['lightText', 'lightText']}
-                  classNames="pl-4 w-[118px]"
+                  classNames="pl-4 w-[118px] text-black dark:text-white"
                 />
               )}
             />
             <input
               placeholder={isFocused ? '' : errors.phone ? 'Teléfono*' : 'Teléfono'}
-              className="inputChangeAutofillReverse w-full border-none bg-transparent font-textFont"
+              className="inputChangeAutofillReverse w-full border-none bg-transparent font-textFont text-black dark:text-white"
               type="tel"
               {...register('phone', {
                 required: 'El número de teléfono es obligatorio',
