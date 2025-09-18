@@ -139,7 +139,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         receiver_last_name: stepTwo.receiver_last_name,
       },
       payment_method: {
-        sender: buildSenderMethod(selectedSendingSystem?.id || ''), // Pasamos el .id en lugar de .paymentMethod
+        sender: buildSenderMethod(selectedSendingSystem?.id || ''),
         receiver: buildPaymentMethod(selectedReceivingSystem?.id || '', receiverDetails),
       },
       amounts: {
@@ -211,9 +211,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         } catch (_) {
           try {
             serverMessage = await response.text();
-          } catch {
-            /* noop */
-          }
+          } catch {}
         }
         console.error('Fallo creación de transacción', {
           status: response.status,
