@@ -1,9 +1,11 @@
 'use client';
 import InputSteps from '@/components/inputSteps/InputSteps';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useInfoPersonalFormStore } from '../store/InfoPersonalFormStore';
+import { updateLocation, updateNickname } from '../services/profileServices';
+import { useSession } from 'next-auth/react';
 
 type InfoPersonalModalProps = {
   show: boolean;
@@ -12,10 +14,18 @@ type InfoPersonalModalProps = {
 
 type FormData = {
   alias: string;
+  country: string;
+  department: string;
 };
 
-const InfoPersonalModal = ({ setShow }: InfoPersonalModalProps) => {
+const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
   const { isDark } = useDarkTheme();
+  
+  const { data: session } = useSession();
+  const token = session?.accessToken;
+  const { setAlias } = useInfoPersonalFormStore();
+  const [nickName, setNickName] = useState();
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -30,11 +40,30 @@ const InfoPersonalModal = ({ setShow }: InfoPersonalModalProps) => {
 
   useEffect(() => {
     setValue('alias', alias);
-  }, [setValue]);
+  }, [setValue, alias]);
 
   const onSubmit = async (data: FormData) => {
-    console.log(data);
-  };
+  try {
+    if (!token) throw new Error("No access token available");
+    setLoading(true);
+    if (data.alias) {
+      const res = await updateNickname(token, data.alias);
+
+      setAlias((res as { nickName: string }).nickName);
+
+      setShow(false);
+    }
+
+    // if (data.country && data.department) {
+    //   await updateLocation(token, data.country, data.department);
+    // }
+
+    setShow(false);
+  } catch (err) {
+    console.error("Error al actualizar perfil:", err);
+  }
+};
+
 
   return (
     <>
@@ -64,6 +93,44 @@ const InfoPersonalModal = ({ setShow }: InfoPersonalModalProps) => {
               className={'order-1'}
             />
           </div>
+
+          {/* <InputSteps
+            label="País"
+            name="country"
+            id="country"
+            type="text"
+            placeholder={errors.country ? 'País *' : 'País'}
+            register={register}
+            watch={watch}
+            rules={{
+              required: 'El país es obligatorio',
+              pattern: {
+                value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                message: 'El país solo puede contener letras y espacios',
+              },
+            }}
+            error={errors.country}
+            className="order-2"
+          />
+
+          <InputSteps
+            label="Provincia / Departamento"
+            name="department"
+            id="department"
+            type="text"
+            placeholder={errors.department ? 'Provincia / Departamento *' : 'Provincia / Departamento'}
+            register={register}
+            watch={watch}
+            rules={{
+              required: 'El departamento es obligatorio',
+              pattern: {
+                value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                message: 'Solo puede contener letras y espacios',
+              },
+            }}
+            error={errors.department}
+            className="order-3"
+          /> */}
 
           <div className="flex justify-between gap-4 pt-5">
             <button
