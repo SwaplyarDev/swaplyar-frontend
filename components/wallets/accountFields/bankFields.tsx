@@ -1,7 +1,11 @@
 'use client';
 
 import InputField from '@/components/ui/contact-form/InputField';
-import { getTaxIdentificationType, getTransferIdentificationType } from '@/utils/validationUtils';
+import {
+  getTaxIdentificationType,
+  getTransferIdentificationType,
+  validateTaxIdentification,
+} from '@/utils/validationUtils';
 
 interface BankFieldsProps {
   register: any;
@@ -59,11 +63,7 @@ const BankFields = ({ register, errors, defaultValues }: BankFieldsProps) => (
       placeholder={errors.document_value ? 'DNI/CUIT/CUIL *' : 'DNI/CUIT/CUIL'}
       register={register('document_value', {
         required: 'El DNI/CUIT/CUIL es obligatorio',
-        validate: (value: string) => {
-          const tipo = getTaxIdentificationType(value);
-          if (tipo) return true;
-          return 'El formato de DNI/CUIT/CUIL es inválido';
-        },
+        validate: validateTaxIdentification,
       })}
       error={errors.document_value?.message}
     />
