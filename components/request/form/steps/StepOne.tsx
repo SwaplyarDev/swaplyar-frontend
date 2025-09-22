@@ -259,7 +259,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               <Controller
                 name="own_account"
                 control={control}
-                defaultValue={'false'} // <-- Asegúrate de tener el default en 'false'
+                defaultValue={'Seleccione una opción'}
                 rules={{
                   required: 'Este campo es obligatorio',
                 }}
