@@ -59,6 +59,21 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
 
   const isUpdatingRef = useRef(false);
 
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth(); 
+  const monthName = now.toLocaleString('es-AR', { month: 'short' });
+
+  const rewardsPerYear = history.filter(
+    reward => new Date(reward.createdAt).getFullYear() === currentYear
+  ).length;
+
+  const rewardsPerMonth = history.filter(reward => {
+    const date = new Date(reward.createdAt);
+    return date.getFullYear() === currentYear && date.getMonth() === currentMonth;
+  }).length;
+
+
   const safeUpdate = useCallback(async () => {
     if (isUpdatingRef.current) return null;
     isUpdatingRef.current = true;
@@ -165,10 +180,8 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
         />
         <div className="relative mt-4 flex w-full flex-col">
           <p>Fecha de inscripción: {session?.user?.createdAt ? new Date(session.user.createdAt).toLocaleDateString() : 'Desconocida'}</p>
-          {/* <p>Recompensas que obtuviste en nov: {RewardsData.rewardsPerMonth}</p>
-          <p>Recompensas que obtuviste en 2024: {RewardsData.rewardsPerYear}</p> */}
-          <h3>Transacciones acumuladas: <b>{stars.stars}</b></h3>
-          <h3>Total gastado: <b>{stars.quantity} USD</b></h3>
+          <p>Recompensas que obtuviste en {monthName}: {rewardsPerMonth}</p>
+          <p>Recompensas que obtuviste en {currentYear}: {rewardsPerYear}</p>
           <p
             className="mt-4 cursor-pointer self-end font-semibold underline"
             onClick={onShowModal}

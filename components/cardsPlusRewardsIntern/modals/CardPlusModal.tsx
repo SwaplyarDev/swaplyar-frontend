@@ -16,6 +16,28 @@ interface StarsProgress {
   stars: number;
 }
 
+const now = new Date();
+const currentYear = now.getFullYear();
+const monthName = now.toLocaleString('es-AR', { month: 'short' });
+
+const getDiscountsPerMonth = (history: UserDiscount[]) => {
+  return history.filter(d => {
+    const date = new Date(d.createdAt);
+    return (
+      date.getFullYear() === currentYear &&
+      date.getMonth() === now.getMonth()
+    );
+  }).length;
+};
+
+const getDiscountsPerYear = (history: UserDiscount[]) => {
+  return history.filter(d => {
+    const date = new Date(d.createdAt);
+    return date.getFullYear() === currentYear;
+  }).length;
+};
+
+
 const CardPlusModal = ({ setShowModal, stars, history }: { setShowModal: React.Dispatch<React.SetStateAction<boolean>>, stars: StarsProgress, history: UserDiscount[] }) => {
 const { data: session } = useSession();
 
@@ -43,8 +65,14 @@ const { data: session } = useSession();
         <h1 className="mb-4 text-center text-2xl font-semibold">Más información sobre Plus Rewards</h1>
 
         <h3>Fecha de inscripción: <b>{session?.user?.createdAt ? new Date(session.user.createdAt).toLocaleDateString() : 'Desconocida'}</b></h3>
-        <h3>Transacciones acumuladas: <b>{stars.stars}</b></h3>
-        <h3>Total gastado: <b>{stars.quantity} USD</b></h3>
+        <h3>
+          Recompensas que obtuviste en {monthName}:{" "}
+          <b>{getDiscountsPerMonth(history)}</b>
+        </h3>
+        <h3>
+          Recompensas que obtuviste en {currentYear}:{" "}
+          <b>{getDiscountsPerYear(history)}</b>
+        </h3>
 
         <h2 className="mt-6 mb-3 text-lg font-semibold">Historial de Recompensas</h2>
 
