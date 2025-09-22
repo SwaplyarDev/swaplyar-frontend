@@ -24,10 +24,28 @@ declare module 'next-auth' {
   }
 }
 
+type UserDiscount = {
+  id: string;
+  code: string;
+  value: number;
+  currencyCode: string;
+  createdAt: string;
+  isUsed: boolean;
+  updatedAt?: string;
+};
+
+interface RewardsStore {
+  stars: { quantity: number; stars: number };
+  history: UserDiscount[];
+  fetchRewards: (token: string) => Promise<void>;
+}
+
 const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const [showModal, setShowModal] = useState(false);
   const [showVerify, setShowVerify] = useState(false);
   const [showRejectedMessage, setShowRejectedMessage] = useState(false);
+  const [stars, setStars] = useState({ quantity: 0, stars: 0 });
+  const [history, setHistory] = useState<UserDiscount[]>([]);
 
   const { status: verifiedStatus, setStatus, setShowApprovedMessage } = useVerificationStore(
     (s) => ({ status: s.status, setStatus: s.setStatus, setShowApprovedMessage: s.setShowApprovedMessage }),
@@ -35,7 +53,6 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   );
 
   const { data: session, update } = useSession();
-  console.log('🔍 Sesión actual:', session);
   const token = session?.accessToken;
 
   const sessionCardBlueYellow = verifiedStatus === 'APROBADO';
@@ -69,6 +86,46 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
       update: safeUpdate,
     });
   }, [token, setStatus, setShowApprovedMessage, safeUpdate, session]);
+
+  useEffect(() => {
+  if (!session?.accessToken) return;
+
+  const fetchRewards = async () => {
+    try {
+      const resHistory = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/discounts/user-discounts/me?filterType=all`,
+        { headers: { Authorization: `Bearer ${session.accessToken}` } }
+      );
+      const dataHistory = await resHistory.json();
+
+      setHistory(dataHistory);
+
+      const mappedHistory: UserDiscount[] = (dataHistory.data || []).map((item: any) => ({
+        id: item.id,
+        code: item.discountCode?.code ?? "",
+        value: item.discountCode?.value ?? 0,
+        currencyCode: item.discountCode?.currencyCode ?? "USD",
+        createdAt: item.createdAt,
+        isUsed: item.isUsed,
+        updatedAt: item.updatedAt,
+      }));
+
+      setHistory(mappedHistory);
+
+      const resStars = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/discounts/stars`,
+        { headers: { Authorization: `Bearer ${session.accessToken}` } }
+      );
+      const dataStars = await resStars.json();
+      setStars(dataStars.data || { quantity: 0, stars: 0 });
+    } catch (err) {
+      console.error("Error cargando PlusRewards:", err);
+    }
+  };
+
+  fetchRewards();
+}, [session?.accessToken]);
+
 
   const LoadingState = memo(() => (
     <div className="flex min-h-[50vh] w-full items-center justify-center">
@@ -107,9 +164,11 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
           className="w-[356px] sm:w-[486px]"
         />
         <div className="relative mt-4 flex w-full flex-col">
-          <p>Fecha de inscripción: {RewardsData.inscriptionDate}</p>
-          <p>Recompensas que obtuviste en nov: {RewardsData.rewardsPerMonth}</p>
-          <p>Recompensas que obtuviste en 2024: {RewardsData.rewardsPerYear}</p>
+          <p>Fecha de inscripción: {session?.user?.createdAt ? new Date(session.user.createdAt).toLocaleDateString() : 'Desconocida'}</p>
+          {/* <p>Recompensas que obtuviste en nov: {RewardsData.rewardsPerMonth}</p>
+          <p>Recompensas que obtuviste en 2024: {RewardsData.rewardsPerYear}</p> */}
+          <h3>Transacciones acumuladas: <b>{stars.stars}</b></h3>
+          <h3>Total gastado: <b>{stars.quantity} USD</b></h3>
           <p
             className="mt-4 cursor-pointer self-end font-semibold underline"
             onClick={onShowModal}
@@ -129,7 +188,7 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
     ) : (
       <>
   <AplicationStateContainer showRejectedMessage={showRejectedMessage} />
-  {showModal && <CardPlusModal setShowModal={setShowModal} />}
+  {showModal && <CardPlusModal setShowModal={setShowModal} stars={stars} history={history} />}
   {showVerify && (
           <ModalVerify
             showVerify={showVerify}
