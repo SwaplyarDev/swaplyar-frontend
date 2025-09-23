@@ -32,9 +32,11 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
       body: JSON.stringify({ refresh_token: token.refreshToken }),
     });
 
+
     let data: any = null;
     try {
       data = await res.json();
+      console.log('Respuesta refreshtoken en auth.ts: (json)', data);
     } catch {
       // Si no es JSON, intentamos texto
       try {
@@ -91,7 +93,8 @@ export const {
     strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token, user, trigger }) {
+    //se agrega session para que este disponible en jwt
+    async jwt({ token, user, trigger, session }) {
       // Si hubo error de refresh previamente, no volver a intentar en este ciclo
       if ((token as any).error === 'RefreshAccessTokenError') {
         return token;
@@ -105,15 +108,19 @@ export const {
           user: user, 
         };
       }
-
-       if (trigger === 'update') {
+      // ✅ Nuevo: actualizar datos de usuario con update()
+       if (trigger === 'update' && session?.user) {
         console.log('🔁 Trigger "update" → refresh token');
-        const refreshed = await refreshAccessToken(token);
-        if ((refreshed as any).error === 'RefreshAccessTokenError') {
-          return refreshed;
-        }
-        console.log('✨ Refresco completado.');
-        return refreshed;
+
+        token.user = {
+          ...token.user,
+          ...session.user,
+          profile: {
+            ...(token.user?.profile || {}),
+            ...(session.user.profile || {}),
+          },
+        };
+        return token;
       }
 
       const remainingTimeInSeconds = ((token.expiresAt as number) - Date.now()) / 1000;
@@ -126,8 +133,8 @@ export const {
       }
       isRefreshing = true;
       refreshPromise = refreshAccessToken(token);
-      
       const refreshedToken = await refreshPromise;
+      
       if ((refreshedToken as any).error === 'RefreshAccessTokenError') {
         // No log de éxito si falló
         isRefreshing = false;
@@ -143,28 +150,10 @@ export const {
 
 
   async session({ session, token }) {
-      const userPayload = token.user as any;
-
-      // Mapear estructura completa del JWT al session.user
-   session.user = {
-        id: userPayload.sub,
-        email: userPayload.email,
-        role: userPayload.role,
-        fullName: userPayload.fullName,
-        terms: userPayload.terms,
-        isActive: userPayload.isActive,
-        createdAt: userPayload.createdAt,
-        profile: userPayload.profile,
-        category: userPayload.category ?? null,
-        isValidated: userPayload.isValidated,
-        userValidated: userPayload.userValidated,
-      } as any;
-
+      // ✅ Nuevo: siempre tomar el user completo desde token
+      session.user = token.user as any;
       session.accessToken = token.accessToken as string;
       session.error = token.error as string;
-   // Exponer campo de verificación si existe
-   (session as any).verification_status = userPayload.verification_status;
-
       return session;
     },
   },
