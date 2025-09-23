@@ -103,8 +103,8 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId, 
             <p>Nombre del Banco </p>
           </div>
           <div className="flex flex-col text-end text-lightText dark:text-darkText">
-            <p>{transactionData?.transaction?.receiver?.firstName}</p>
-            <p>{transactionData?.transaction?.receiver?.lastName}</p>
+            <p>{transactionData?.transaction?.payment_method?.receiver?.details?.userAccount?.firstName}</p>
+            <p>{transactionData?.transaction?.payment_method?.receiver?.details?.userAccount?.lastName}</p>
             <p>{transactionData?.transaction?.payment_method?.receiver?.details?.document_value}</p>
             <p>{transactionData?.transaction?.payment_method?.receiver?.details?.senderMethodValue}</p>
             <p>{transactionData?.transaction?.payment_method?.receiver?.details?.bankName}</p>
@@ -151,19 +151,6 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId, 
           </div>
         </div>
       );
-    } else if (transactionData?.transaction?.receiverAccount?.paymentMethod?.method === 'bank') {
-      return (
-        <div className="flex justify-between text-sm">
-          <div className="flex flex-col text-start text-lightText dark:text-darkText">
-            <p>{transactionData?.transaction?.receiverAccount?.paymentMethod?.sendMethodKey}</p>
-            <p>Nombre del Banco </p>
-          </div>
-          <div className="flex flex-col text-end text-lightText dark:text-darkText">
-            <p>{transactionData?.transaction?.receiverAccount?.paymentMethod?.sendMethodValue}</p>
-            <p>{transactionData?.transaction?.receiverAccount?.paymentMethod?.bankName}</p>
-          </div>
-        </div>
-      );
     } else {
       console.error('No fue recibido el método', new Error());
       return null;
@@ -190,13 +177,11 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId, 
               <div className="flex flex-col text-start font-textFont font-light text-lightText dark:text-darkText">
                 <p>Nombre </p>
                 <p>Apellido </p>
-                {/* <p>Correo electrónico </p> */}
                 <p>N° de Teléfono </p>
               </div>
               <div className="flex flex-col text-end font-textFont font-light text-lightText dark:text-darkText">
                 <p>{transactionData?.transaction?.senderAccount?.firstName}</p>
                 <p>{transactionData?.transaction?.senderAccount?.lastName}</p>
-                {/* <p>{transactionData?.transaction?.senderAccount?.email}</p> */}
                 <p>{transactionData?.transaction?.senderAccount?.phoneNumber}</p>
               </div>
             </div>

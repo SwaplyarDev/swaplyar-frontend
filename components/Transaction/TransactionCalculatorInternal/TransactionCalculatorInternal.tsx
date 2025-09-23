@@ -31,6 +31,7 @@ import { calculateReceiveAmountWithCoupon } from '@/utils/calculateReceiveAmount
 import { AdminDiscount, AdminDiscountsResponse, UserStarsAndAmount } from '@/types/discounts/adminDiscounts';
 import { useSession } from 'next-auth/react';
 import { useStepperStore } from '@/store/stateStepperStore';
+import { normalizeType } from '@/components/admin/utils/normalizeType';
 
 export const allowedCouponInstances: CouponInstance[] = ['THREE', 'FIVE', /* 'THREE_FIVE', */ 'TEN', 'MANUAL'];
 
@@ -85,38 +86,18 @@ export default function InternalTransactionCalculator({
   const pathname = usePathname();
   const { pass, setPassTrue } = useControlRouteRequestStore((state) => state);
 
-  // Obtiene los valores numéricos de las cantidades enviadas y recibidas, ademas de las tasas de cambio
   const sendAmountNum = sendAmount ? parseFloat(sendAmount) : 0;
   const receiveAmountNum = receiveAmount ? parseFloat(receiveAmount) : 0;
   const usdToArsRate = rates?.currentValueUSDBlueSale ?? 0;
   const eurToUsdRate = rates?.currentValueEURToUSD ?? 0;
   const usdToBrlRate = rates?.currentValueUSDToBRL ?? 0;
   const arsToBrlRate = usdToArsRate > 0 ? (1 / usdToArsRate) * usdToBrlRate : 0;
-  const normalizeType = (type: string, provider?: string, currency?: string): string => {
-    const prov = (provider || '').toLowerCase().trim();
-    const curr = (currency || '').toLowerCase().trim();
 
-    if (type === 'virtual_bank') {
-      if (prov.includes('paypal')) return 'paypal';
-      if (prov.includes('wise')) return curr === 'eur' ? 'wise_eur' : 'wise_usd';
-      if (prov.includes('payoneer')) return curr === 'eur' ? 'payoneer_eur' : 'payoneer_usd';
-      return 'virtual_bank';
-    }
-
-    if (type === 'receiver_crypto' || prov === 'crypto') return 'tether';
-    if (type === 'pix' || prov === 'pix') return 'pix';
-    if (type === 'bank' || prov === 'bank' || prov === 'transferencia') return 'bank';
-
-    return type;
-  };
-  // Obtiene las billeteras del usuario
   useEffect(() => {
     if (token) {
       fetchAndSetWallets(token);
     }
   }, [token, fetchAndSetWallets]);
-
-  // Actualiza las tasas de cambio al seleccionar un sistema
   useEffect(() => {
     if (selectedSendingSystem && selectedReceivingSystem) startUpdatingRates();
 
@@ -151,13 +132,10 @@ export default function InternalTransactionCalculator({
   }, [discounts, stars, addDiscountId, isUsed, resetDiscounts, sendAmountNum, setCouponInstanceByAmount, setData]);
 
   shouldApplyCoupon.current = sendAmountNum > 0 && couponUsdAmount.current > 0;
-
-  // Determina el couponInstance a utilizar en el cálculo
   couponInstanceForCalc.current = allowedCouponInstances.includes(couponInstance as CouponInstance)
     ? (couponInstance as 'THREE' | 'FIVE' | 'TEN' | 'MANUAL')
     : null;
 
-  // Calcula el receiveAmountWithCoupon y el valor a mostrar en el input de "Recibes"
   receiveAmountWithCoupon.current = calculateReceiveAmountWithCoupon({
     couponInstance: couponInstanceForCalc.current,
     receiveAmountNum,
@@ -171,8 +149,6 @@ export default function InternalTransactionCalculator({
   });
 
   receiveAmountInputValue.current = shouldApplyCoupon ? formatAmount(receiveAmountWithCoupon.current) : receiveAmount;
-
-  // Nota: No redirigimos desde el cliente; el middleware se encarga del acceso.
 
   const handleSubmit = () => {
     setIsProcessing(true);
@@ -207,18 +183,33 @@ export default function InternalTransactionCalculator({
       return [];
     }
 
+    console.log(`--- Iniciando filtro para sistema: "${selectedReceivingSystem.id}" ---`);
+
     const walletsToShow = userWallets.filter((wallet) => {
-      const detail = wallet.details?.[0];
-      const currency = detail?.currency;
-      const provider = detail?.type;
+      const detail = wallet.details?.[0] || {};
+      const provider = detail.type;
+      const currency = wallet.currency;
       const normalizedWalletType = normalizeType(wallet.type, provider, currency);
       const isMatch = normalizedWalletType === selectedReceivingSystem.id;
+
+      // Este log nos mostrará la comparación exacta para cada billetera
+      console.log({
+        walletName: wallet.name,
+        originalType: wallet.type,
+        provider: provider,
+        currency: currency,
+        normalizedResult: normalizedWalletType,
+        systemIdToMatch: selectedReceivingSystem.id,
+        isMatch: isMatch,
+      });
 
       return isMatch;
     });
 
+    console.log(`--- Filtro terminado. Se encontraron ${walletsToShow.length} billeteras. ---`);
     return walletsToShow;
   }, [selectedReceivingSystem, userWallets]);
+
   useEffect(() => {
     if (filteredWallets.length === 1) {
       setSelectedWallet(filteredWallets[0]);

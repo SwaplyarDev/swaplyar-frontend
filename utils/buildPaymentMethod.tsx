@@ -1,11 +1,14 @@
 export function buildPaymentMethod(selectedSystem: string, details: Record<string, string>) {
   switch (selectedSystem) {
     case 'paypal':
-    case 'payoneer':
-    case 'wise':
+    case 'payoneer_usd':
+    case 'payoneer_eur':
+    case 'wise_usd':
+    case 'wise_eur':
       return {
         platformId: 'virtual_bank',
         method: 'virtual-bank',
+        type: details.type || '',
         virtualBank: {
           currency: details.currency || 'USD',
           emailAccount: details.email_account || '',
@@ -13,7 +16,7 @@ export function buildPaymentMethod(selectedSystem: string, details: Record<strin
         },
       };
 
-    case 'ars':
+    case 'bank':
       return {
         platformId: 'bank',
         method: 'bank',
@@ -32,7 +35,7 @@ export function buildPaymentMethod(selectedSystem: string, details: Record<strin
         platformId: 'pix',
         method: 'pix',
         pix: {
-          pixId: details.pixId || '123', // Si aplica
+          pixId: details.pixId || '123',
           pixKey: details.pixKey || '',
           pixValue: details.pixValue || '',
           cpf: details.cpf || '',
@@ -55,17 +58,30 @@ export function buildPaymentMethod(selectedSystem: string, details: Record<strin
   }
 }
 
-export function buildSenderMethod(selectedSystem: string){
-   switch (selectedSystem) {
+export function buildSenderMethod(selectedSystem: string) {
+  switch (selectedSystem) {
     case 'paypal':
-    case 'payoneer':
-    case 'wise':
       return {
         platformId: 'virtual_bank',
         method: 'virtual-bank',
+        type: 'paypal',
+      };
+    case 'payoneer_usd':
+    case 'payoneer_eur':
+      return {
+        platformId: 'virtual_bank',
+        method: 'virtual-bank',
+        type: 'payoneer',
+      };
+    case 'wise_usd':
+    case 'wise_eur':
+      return {
+        platformId: 'virtual_bank',
+        method: 'virtual-bank',
+        type: 'wise',
       };
 
-    case 'ars':
+    case 'bank':
       return {
         platformId: 'bank',
         method: 'bank',
@@ -84,6 +100,6 @@ export function buildSenderMethod(selectedSystem: string){
       };
 
     default:
-      throw new Error(`Unsupported payment method: ${selectedSystem}`);
-  } 
+      throw new Error(`Unsupported sender payment method: ${selectedSystem}`);
+  }
 }
