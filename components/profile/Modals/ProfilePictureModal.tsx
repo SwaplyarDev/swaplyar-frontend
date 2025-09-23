@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { updatePicture } from "../services/profileServices";
 
 export default function ProfilePictureModal({ setShow }: { setShow: (show: boolean) => void }) {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -21,7 +21,22 @@ export default function ProfilePictureModal({ setShow }: { setShow: (show: boole
 
     try {
       setLoading(true);
-      await updatePicture(session.accessToken, file);
+      const response = await updatePicture(session.accessToken, file);
+      
+
+      // ✅ Nuevo: actualizar sesión en memoria con la respuesta del servidor
+      if(response?.result?.imgUrl){
+        await update({
+      user: {
+        ...session.user,
+        profile: {
+          ...(session.user?.profile || {}),
+          profilePictureUrl: response.result.imgUrl, // ✅ usamos la URL del backend
+        },
+      },
+    });
+      }
+
       setShow(false);
     } catch (err) {
       console.error(err);

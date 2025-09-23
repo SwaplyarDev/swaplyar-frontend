@@ -1,3 +1,5 @@
+import { UpdatePictureResponse } from "@/types/profileServices";
+
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 async function apiRequest<T>(
@@ -55,7 +57,7 @@ export const updateLocation = (
   );
 
 /** Editar foto de perfil */
-export const updatePicture = async (token: string, file: File) => {
+export const updatePicture = async (token: string, file: File):Promise<UpdatePictureResponse> => {
   const formData = new FormData();
   formData.append("file", file);
 
