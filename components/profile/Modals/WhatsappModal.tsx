@@ -20,7 +20,8 @@ interface FormData {
 
 const WhatsappModal = ({ show, setShow }: WhatsappVerificationProps) => {
   const { isDark } = useDarkTheme();
-  const { data: session } = useSession();
+  //traemos a update desde useSession
+  const { data: session, update } = useSession();
   const {
     register,
     handleSubmit,
@@ -46,8 +47,21 @@ const WhatsappModal = ({ show, setShow }: WhatsappVerificationProps) => {
     try {
       const phoneWithPrefix = `${data.calling_code?.callingCode || ""}${" " + data.phone}`;
       const res = await updatePhone(session.accessToken, phoneWithPrefix);
-
+      console.log("Respuesta updatePhone en WhatsappModal.tsx:", res);
+      //actualizamos el store
       useWhatsAppFormStore.setState({ phone: phoneWithPrefix });
+      // ✅ Actualizamos la sesión en memoria
+      if (session.user) {
+        await update({
+          user: {
+            ...session.user,
+            profile: {
+              ...session.user.profile,
+              phone: res.phone, // reflejamos el cambio de teléfono
+            },
+          },
+        });
+      }
 
       setShow(false);
     } catch (err) {

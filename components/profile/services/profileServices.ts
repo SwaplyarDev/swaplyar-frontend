@@ -1,4 +1,4 @@
-import { UpdateNicknameResponse, UpdatePictureResponse } from "@/types/profileServices";
+import { UpdateNicknameResponse, UpdatePhoneResponse, UpdatePictureResponse } from "@/types/profileServices";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -41,7 +41,11 @@ export const updateNickname = (token: string, nickName: string):Promise<UpdateNi
   );
   
 export const updatePhone = (token: string, phone: string) =>
-  apiRequest(`/users/profiles/my-profile/phone`, "PUT", token, { phone });
+  apiRequest<UpdatePhoneResponse>(
+    `/users/profiles/my-profile/phone`,
+     "PUT", 
+     token,
+      { phone });
 
 /** Editar localización */
 export const updateLocation = (

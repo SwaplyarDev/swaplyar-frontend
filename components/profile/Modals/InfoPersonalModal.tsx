@@ -20,7 +20,7 @@ type FormData = {
 
 const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
   const { isDark } = useDarkTheme();
-  
+    //traemos a update desde useSession
   const { data: session, update } = useSession();
   const token = session?.accessToken;
   const { setAlias } = useInfoPersonalFormStore();
