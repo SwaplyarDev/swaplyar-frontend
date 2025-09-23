@@ -16,7 +16,7 @@ export function buildPaymentMethod(selectedSystem: string, details: Record<strin
         },
       };
 
-    case 'ars':
+    case 'bank':
       return {
         platformId: 'bank',
         method: 'bank',
@@ -81,7 +81,7 @@ export function buildSenderMethod(selectedSystem: string) {
         type: 'wise',
       };
 
-    case 'ars':
+    case 'bank':
       return {
         platformId: 'bank',
         method: 'bank',

@@ -6,7 +6,7 @@ export enum PaymentType {
   PAYONEER = 'payoneer',
   RECEIVER_CRYPTO = 'receiver_crypto',
   VIRTUAL_BANK = 'virtual_bank',
-  PAYPAL = 'paypal'
+  PAYPAL = 'paypal',
 }
 
 // Enum para tipos de moneda
@@ -14,21 +14,21 @@ export enum Currency {
   ARS = 'ARS',
   USD = 'USD',
   BRL = 'BRL',
-  USDT = 'USDT'
+  USDT = 'USDT',
 }
 
 // Enum para tipos de documento
 export enum DocumentType {
   DNI = 'DNI',
   PASSPORT = 'PASSPORT',
-  CE = 'CE'
+  CE = 'CE',
 }
 
 // Enum para redes de criptomonedas
 export enum CryptoNetwork {
   TRC20 = 'TRC20',
   ERC20 = 'ERC20',
-  BSC = 'BSC'
+  BSC = 'BSC',
 }
 
 // Interface base para detalles de cuenta
@@ -49,7 +49,7 @@ export interface AccountDetails {
   wise_id?: string;
   pix_key?: string;
   pix_value?: string;
-  cpf?: number;  
+  cpf?: number;
   receiver_crypto?: string;
   network?: CryptoNetwork;
   wallet?: string;
@@ -74,9 +74,11 @@ export interface Wallet {
   currency: Currency;
   status: boolean;
   payment_type: PaymentType;
+  id: string;
+  type: string;
   details: AccountDetails[];
 }
-  
+
 // Interface para el array de wallets (respuesta del backend)
 export interface WalletsResponse {
   wallets: Wallet[];

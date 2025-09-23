@@ -24,6 +24,7 @@ import {
 } from '@/utils/assets/imgDatabaseCloudinary';
 import { Wallet } from '@/store/useWalletStore';
 import { cn } from '@/lib/utils';
+import { normalizeType } from '@/components/admin/utils/normalizeType';
 
 interface WalletSelectProps {
   filteredWallets: Wallet[];
@@ -57,41 +58,54 @@ const getWalletLogos = (type: string) => {
 export default function WalletSelect({ filteredWallets, selectedWalletId, onChange }: WalletSelectProps) {
   const { isDark } = useDarkTheme();
 
+  // Función para obtener el texto principal de la billetera
+  const getPrimaryText = (wallet: Wallet, detail: any) => {
+    switch (
+      detail.platformId // Usamos platformId que es más confiable
+    ) {
+      case 'virtual_bank':
+        return detail.emailAccount || ''; // Dato desde los detalles
+      case 'pix':
+        return detail.pixValue || '';
+      case 'receiver_crypto':
+        const addr = detail.wallet || '';
+        return addr ? `${addr.slice(0, 6)}...${addr.slice(-4)}` : '';
+      case 'bank':
+        return detail.sendMethodValue || ''; // ALIAS, CBU, etc.
+      default:
+        return wallet.name; // El apodo de la cuenta como fallback
+    }
+  };
+
   const selectedWallet = React.useMemo(
     () => (selectedWalletId ? filteredWallets.find((w) => w.id === selectedWalletId) : null),
     [selectedWalletId, filteredWallets],
   );
 
-  const getPrimaryText = (wallet: Wallet) => {
-    if (wallet.type.startsWith('payoneer') || wallet.type.startsWith('wise') || wallet.type === 'paypal') {
-      return wallet.email || '';
-    }
-    switch (wallet.type) {
-      case 'pix':
-        return wallet.pixKeyValue || '';
-      case 'tether':
-        return wallet.walletAddress ? `${wallet.walletAddress.slice(0, 6)}...${wallet.walletAddress.slice(-4)}` : '';
-      case 'bank':
-        return wallet.alias || wallet.cbu || '';
-      default:
-        return wallet.label;
-    }
-  };
-
   return (
     <div className="w-full max-w-lg pb-2">
       <Select value={selectedWalletId ?? ''} onValueChange={onChange}>
-        <SelectTrigger className="h-auto min-h-[40px] w-full border-blue-600 focus:shadow-none ...">
+        <SelectTrigger className="h-auto min-h-[40px] w-full border-blue-600 ...">
           {selectedWallet ? (
             <div className="flex items-center gap-4">
               <Image
-                src={isDark ? getWalletLogos(selectedWallet.type).logoDark : getWalletLogos(selectedWallet.type).logo}
-                alt={selectedWallet.label || 'logo'}
+                src={
+                  isDark
+                    ? getWalletLogos(
+                        normalizeType(selectedWallet.type, selectedWallet.details?.[0]?.type, selectedWallet.currency),
+                      ).logoDark
+                    : getWalletLogos(
+                        normalizeType(selectedWallet.type, selectedWallet.details?.[0]?.type, selectedWallet.currency),
+                      ).logo
+                }
+                alt={selectedWallet.name || 'logo'}
                 width={30}
                 height={30}
                 className="h-auto w-auto rounded-sm"
               />
-              <span className="text-sm font-medium">{getPrimaryText(selectedWallet)}</span>
+              <span className="text-sm font-medium">
+                {getPrimaryText(selectedWallet, selectedWallet.details?.[0] || {})}
+              </span>
             </div>
           ) : (
             <SelectValue placeholder="Selecciona una billetera" />
@@ -99,26 +113,19 @@ export default function WalletSelect({ filteredWallets, selectedWalletId, onChan
         </SelectTrigger>
         <SelectContent className="bg-[#FFFFFB] dark:bg-[#4B4B4B]">
           {filteredWallets.map((wallet) => {
-            const { logo, logoDark } = getWalletLogos(wallet.type);
-            const primaryText = getPrimaryText(wallet);
-            const secondaryText =
-              wallet.fullName || (wallet.type === 'tether' && wallet.network ? wallet.network.toUpperCase() : '');
+            const detail = wallet.details?.[0] || {};
+            const normalizedWalletType = normalizeType(wallet.type, detail.type, wallet.currency);
+            const { logo, logoDark } = getWalletLogos(normalizedWalletType);
+            const primaryText = getPrimaryText(wallet, detail);
+            const secondaryText = `${detail.firstName || ''} ${detail.lastName || ''}`.trim();
 
             return (
-              <SelectPrimitive.Item
-                key={wallet.id}
-                value={wallet.id}
-                className={cn(
-                  'focus:bg-accent focus:text-accent-foreground relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pr-2 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-                  'pl-2',
-                  'data-[state=checked]:bg-blue-100 dark:data-[state=checked]:bg-blue-900/30',
-                )}
-              >
+              <SelectPrimitive.Item key={wallet.id} value={wallet.id} className={cn('focus:bg-accent ...')}>
                 <div className="flex w-full items-center gap-4">
                   <div className="flex-shrink-0">
                     <Image
                       src={isDark ? logoDark : logo}
-                      alt={wallet.label || 'logo'}
+                      alt={wallet.name || 'logo'}
                       width={40}
                       height={40}
                       className="h-auto w-auto rounded-sm"
@@ -130,7 +137,7 @@ export default function WalletSelect({ filteredWallets, selectedWalletId, onChan
                     </SelectPrimitive.ItemText>
                   </div>
                   <div className="ml-auto flex-shrink-0 pl-4">
-                    <span className="truncate text-sm font-medium">{secondaryText}</span>
+                    <span className="truncate text-sm font-medium text-gray-500">{secondaryText}</span>
                   </div>
                 </div>
               </SelectPrimitive.Item>
