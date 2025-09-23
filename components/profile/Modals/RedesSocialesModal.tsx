@@ -8,6 +8,7 @@ import { Button } from '../../ui/Button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../ui/Dialog';
 import { Input } from '../../ui/Input';
 import AddSocialNetwork from '../ui/AddSocialNetwork';
+import { useSocialNetworksStore } from '../store/socialNetworksStore';
 
 type SocialMedia = {
   id: string;
@@ -24,22 +25,39 @@ type SocialMediaModalProps = {
 const RedesSocialesModal = ({ show, setShow, socialNetworks }: SocialMediaModalProps) => {
   const { isDark } = useDarkTheme();
 
+  const { socialAccounts, addSocial, removeSocial } = useSocialNetworksStore();
+
   const [newSocialType, setNewSocialType] = useState<string>('');
-  const [socialAccounts, setSocialAccounts] = useState<SocialMedia[]>(socialNetworks);
+  // const [socialAccounts, setSocialAccounts] = useState<SocialMedia[]>(socialNetworks);
   const [newSocialUsername, setNewSocialUsername] = useState('');
 
-  const addSocialAccount = () => {
+  // const addSocialAccount = () => {
+  //   if (newSocialType && newSocialUsername) {
+  //     const newAccount: SocialMedia = {
+  //       id: Date.now().toString(),
+  //       type: newSocialType as any,
+  //       username: newSocialUsername,
+  //     };
+  //     setSocialAccounts([...socialAccounts, newAccount]);
+  //     setNewSocialType('');
+  //     setNewSocialUsername('');
+  //   }
+  // };
+  const handleAdd = () => {
     if (newSocialType && newSocialUsername) {
-      const newAccount: SocialMedia = {
+      addSocial({
         id: Date.now().toString(),
-        type: newSocialType as any,
+        type: newSocialType,
         username: newSocialUsername,
-      };
-      setSocialAccounts([...socialAccounts, newAccount]);
+      });
       setNewSocialType('');
       setNewSocialUsername('');
     }
   };
+
+  // const handleSubmit = () => {
+  //   setShow(false);
+  // };
 
   const getSocialIcon = (type: string) => {
     switch (type) {
@@ -56,9 +74,9 @@ const RedesSocialesModal = ({ show, setShow, socialNetworks }: SocialMediaModalP
     }
   };
 
-  const removeSocialAccount = (id: string) => {
-    setSocialAccounts(socialAccounts.filter((account) => account.id !== id));
-  };
+  // const removeSocialAccount = (id: string) => {
+  //   setSocialAccounts(socialAccounts.filter((account) => account.id !== id));
+  // };
 
   const handleSubmit = () => {
     setShow(false);
@@ -98,7 +116,7 @@ const RedesSocialesModal = ({ show, setShow, socialNetworks }: SocialMediaModalP
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8 text-gray-400 hover:bg-zinc-700 hover:text-red-400"
-                      onClick={() => removeSocialAccount(account.id)}
+                      // onClick={() => removeSocialAccount(account.id)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -119,7 +137,7 @@ const RedesSocialesModal = ({ show, setShow, socialNetworks }: SocialMediaModalP
                 placeholder="Nombre de usuario"
               />
               <Button
-                onClick={addSocialAccount}
+                onClick={handleAdd}
                 disabled={!newSocialType || !newSocialUsername}
                 className="bg-blue-400 px-2 text-white hover:bg-blue-700"
               >
