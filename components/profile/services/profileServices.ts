@@ -1,4 +1,4 @@
-import { UpdatePictureResponse } from "@/types/profileServices";
+import { UpdateNicknameResponse, UpdatePictureResponse } from "@/types/profileServices";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -32,7 +32,7 @@ async function apiRequest<T>(
   return res.json();
 }
 
-export const updateNickname = (token: string, nickName: string) =>
+export const updateNickname = (token: string, nickName: string):Promise<UpdateNicknameResponse> =>
   apiRequest(
     `/users/profiles/my-profile/nickname`,
     "PUT",
