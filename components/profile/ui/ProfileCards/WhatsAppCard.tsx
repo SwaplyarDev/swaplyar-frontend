@@ -10,8 +10,8 @@ type WhatsAppCardProps = {
 const WhatsAppCard = ({ setShow }: WhatsAppCardProps) => {
   const { isDark } = useDarkTheme();
 
-  const { data: session } = useSession();
-  const { phone } = useWhatsAppFormStore();
+// store ya contiene el teléfono actualizado, en profile hay un useEffect que lo sincroniza al cargar
+  const { phone } = useWhatsAppFormStore(); 
 
   return (
     <>
@@ -20,7 +20,7 @@ const WhatsAppCard = ({ setShow }: WhatsAppCardProps) => {
         <WhatsApp className="mr-[20px]" />
       </div>
       <div className="mt-2 flex items-center justify-between">
-        <p className="text-[16px] sm:text-[20px] sm:px-6 px-2">{(phone || session?.user.profile?.phone) ?? '-'}</p>
+        <p className="text-[16px] sm:text-[20px] sm:px-6 px-2">{(phone) ?? '-'}</p>
         <button className={`h-6 text-[16px] font-light text-[#0148F4] dark:hover:text-[#E1E1E1] hover:text-[#2A68FE] dark:text-[#C8C8C8] hover:font-normal mr-6`} onClick={() => setShow(true)} >
           Editar
         </button>
