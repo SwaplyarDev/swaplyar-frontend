@@ -1,11 +1,7 @@
 import { Wallet } from '@/store/useWalletStore';
 
 export function mapWalletFromApi(apiWallet: any): Wallet | null {
-  // PRUEBA DEFINITIVA: Si ves este log, estás usando la versión correcta del archivo.
-  console.log('--- EJECUTANDO LA NUEVA VERSIÓN DE mapWalletFromApi ---', apiWallet);
-
   if (!apiWallet?.userAccount?.accountId || !apiWallet?.financialAccount?.paymentMethod) {
-    console.warn('Objeto de billetera con formato inválido, será omitido:', apiWallet);
     return null;
   }
 

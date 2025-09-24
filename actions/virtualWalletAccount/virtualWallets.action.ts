@@ -47,7 +47,6 @@ export async function createWalletAccount(data: any, token: string) {
 export async function getMyWalletAccounts(token: string) {
   try {
     const apiUrl = `${NEXT_PUBLIC_BACKEND_URL}/users/accounts`;
-    console.log('--- SERVER ACTION: Pidiendo datos de la URL:', apiUrl);
 
     const res = await fetch(apiUrl, {
       method: 'GET',
@@ -60,11 +59,9 @@ export async function getMyWalletAccounts(token: string) {
     const contentType = res.headers.get('content-type');
 
     if (!res.ok) {
-      // Tratar 404 como estado vacío (sin cuentas registradas)
       if (res.status === 404) {
         return [];
       }
-      // Manejo explícito de autorización
       if (res.status === 401 || res.status === 403) {
         throw new Error('Unauthorized');
       }
@@ -78,7 +75,6 @@ export async function getMyWalletAccounts(token: string) {
 
     if (contentType && contentType.includes('application/json')) {
       const accounts = await res.json();
-      console.log('--- SERVER ACTION: Respuesta recibida:', accounts);
       return accounts;
     } else {
       throw new Error('Respuesta inesperada del servidor');

@@ -1,4 +1,3 @@
-// src/utils/wallet/normalizeType.ts
 export const normalizeType = (type: string, provider?: string, currency?: string): string => {
   const prov = (provider || '').toLowerCase().trim();
   const curr = (currency || '').toLowerCase().trim();

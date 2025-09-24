@@ -1,10 +1,15 @@
-import ArrowUp from '@/components/ui/ArrowUp/ArrowUp';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+'use client';
+
+import { memo, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import dynamic from 'next/dynamic';
+
 import { useStepperStore } from '@/store/stateStepperStore';
 import { useSystemStore } from '@/store/useSystemStore';
-import { memo, useEffect, useMemo, useState } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
-import dynamic from 'next/dynamic';
+import useWalletStore from '@/store/useWalletStore';
+import { StepTwoData } from '@/types/transactions/stepperStoretypes';
+
+// Carga diferida de los sub-formularios
 const StepTwoBank = dynamic(() => import('./stepsTwoOptions/StepTwoBank'));
 const StepTwoPayoneer = dynamic(() => import('./stepsTwoOptions/StepTwoPayoneer'));
 const StepTwoPaypal = dynamic(() => import('./stepsTwoOptions/StepTwoPaypal'));
@@ -12,8 +17,7 @@ const StepTwoWise = dynamic(() => import('./stepsTwoOptions/StepTwoWise'));
 const StepTwoTether = dynamic(() => import('./stepsTwoOptions/StepTwoTether'));
 const StepTwoPix = dynamic(() => import('./stepsTwoOptions/StepTwoPix'));
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
-import { StepTwoData } from '@/types/transactions/stepperStoretypes';
-import useWalletStore from '@/store/useWalletStore';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   const {
@@ -24,117 +28,71 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     setValue,
     getValues,
     watch,
+    reset,
   } = useForm<StepTwoData>({ mode: 'onChange' });
-  const { markStepAsCompleted, setActiveStep, formData, updateFormData, completedSteps } = useStepperStore((s) => ({
-    markStepAsCompleted: s.markStepAsCompleted,
-    setActiveStep: s.setActiveStep,
-    formData: s.formData,
-    updateFormData: s.updateFormData,
-    completedSteps: s.completedSteps,
-  }));
-  const { selectedReceivingSystem } = useSystemStore((s) => ({ selectedReceivingSystem: s.selectedReceivingSystem }));
+
+  const { markStepAsCompleted, setActiveStep, formData, updateFormData, completedSteps } = useStepperStore();
+  const { selectedReceivingSystem } = useSystemStore();
   const { selectedWallet } = useWalletStore();
   const { isDark } = useDarkTheme();
 
-  const [initialValues, setInitialValues] = useState<StepTwoData | null>(null);
-
-  const formValues = useWatch({ control });
-
+  // --- LÓGICA CORREGIDA PARA RELLENAR EL FORMULARIO ---
   useEffect(() => {
-    const resetFormFields = () => {
-      setValue('receiver_first_name', '');
-      setValue('receiver_last_name', '');
-      setValue('tax_identification', '');
-      setValue('transfer_identification', '');
-      setValue('re_transfer_identification', '');
-      setValue('name_of_bank', '');
-      setValue('bank_email', '');
-      setValue('re_enter_bank_email', '');
-      setValue('usdt_direction', '');
-      setValue('re_enter_usdt_direction', '');
-      setValue('pixId', '');
-      setValue('pixKey', '');
-      setValue('individual_tax_id', '');
-    };
-    resetFormFields();
+    // 1. Limpiamos el formulario y lo inicializamos con datos guardados del stepper (si existen)
+    reset(formData.stepTwo || {});
 
-    if (selectedWallet) {
-      if (selectedWallet.fullName) {
-        const nameParts = selectedWallet.fullName.split(' ');
-        const firstName = nameParts[0] || '';
-        const lastName = nameParts.slice(1).join(' ') || '';
-        setValue('receiver_first_name', firstName, { shouldValidate: true });
-        setValue('receiver_last_name', lastName, { shouldValidate: true });
-      }
-      if (selectedWallet.email) {
-        setValue('bank_email', selectedWallet.email, { shouldValidate: true });
-        setValue('re_enter_bank_email', selectedWallet.email, { shouldValidate: true });
-      }
-      switch (selectedWallet.type) {
-        case 'bank':
-          setValue('transfer_identification', selectedWallet.cbu || selectedWallet.alias || '', {
-            shouldValidate: true,
-          });
-          setValue('re_transfer_identification', selectedWallet.cbu || selectedWallet.alias || '', {
-            shouldValidate: true,
-          });
-          setValue('tax_identification', selectedWallet.taxId || '', { shouldValidate: true });
-          setValue('name_of_bank', selectedWallet.bankName || '', { shouldValidate: true });
-          break;
-        case 'tether':
-          setValue('usdt_direction', selectedWallet.walletAddress || '', { shouldValidate: true });
-          setValue('re_enter_usdt_direction', selectedWallet.walletAddress || '', { shouldValidate: true });
-          setValue('red_selection', {
-            value: selectedWallet.network || '',
-            label: selectedWallet.network || '',
-            image: <></>,
-          });
-          break;
-        case 'pix':
-          setValue('pixId', selectedWallet.pixKeyType || '', { shouldValidate: true });
-          setValue('pixKey', selectedWallet.pixKeyValue || '', { shouldValidate: true });
-          setValue('individual_tax_id', selectedWallet.taxId || '', { shouldValidate: true });
-          break;
+    // 2. Obtenemos el objeto de detalle de la billetera seleccionada de forma segura
+    const detail = selectedWallet?.details?.[0];
 
-        case 'wise_usd':
-        case 'wise_eur':
-        case 'payoneer_usd':
-        case 'payoneer_eur':
-        case 'paypal':
-          break;
+    // 3. Si no hay una billetera seleccionada, manejamos el caso de "cuenta propia"
+    if (!detail) {
+      if (formData.stepOne?.own_account === 'Si' || formData.stepOne?.own_account === 'true') {
+        setValue('receiver_first_name', formData.stepOne.first_name, { shouldValidate: true });
+        setValue('receiver_last_name', formData.stepOne.last_name, { shouldValidate: true });
       }
-    } else if (formData.stepOne?.own_account === 'Si' || formData.stepOne?.own_account === 'true') {
-      setValue('receiver_first_name', formData.stepOne.first_name, { shouldValidate: true });
-      setValue('receiver_last_name', formData.stepOne.last_name, { shouldValidate: true });
+      return; // Salimos si no hay billetera seleccionada
     }
-  }, [selectedWallet, formData.stepOne, setValue]);
-  [
-    formData.stepTwo,
-    setValue,
-    formData.stepOne?.own_account,
-    formData.stepOne?.first_name,
-    formData.stepOne?.last_name,
-    formData.stepOne?.email,
-    selectedWallet,
-  ];
 
-  const [loading, setLoading] = useState(false);
+    // 4. Si hay una billetera, rellenamos los campos desde el objeto 'detail'
+    setValue('receiver_first_name', detail.firstName || '', { shouldValidate: true });
+    setValue('receiver_last_name', detail.lastName || '', { shouldValidate: true });
+
+    switch (selectedWallet.type) {
+      case 'bank':
+        setValue('transfer_identification', detail.sendMethodValue || '', { shouldValidate: true });
+        setValue('re_transfer_identification', detail.sendMethodValue || '', { shouldValidate: true });
+        setValue('tax_identification', detail.documentValue || '', { shouldValidate: true });
+        setValue('name_of_bank', detail.bankName || '', { shouldValidate: true });
+        break;
+
+      case 'virtual_bank':
+        setValue('bank_email', detail.emailAccount || '', { shouldValidate: true });
+        setValue('re_enter_bank_email', detail.emailAccount || '', { shouldValidate: true });
+        break;
+
+      case 'receiver_crypto':
+        setValue('usdt_direction', detail.wallet || '', { shouldValidate: true });
+        setValue('re_enter_usdt_direction', detail.wallet || '', { shouldValidate: true });
+        setValue('red_selection', {
+          value: detail.network || '',
+          label: detail.network?.toUpperCase() || '',
+          image: <></>, // Puedes dejar esto o quitarlo si no lo usas
+        });
+        break;
+
+      case 'pix':
+        setValue('pixId', detail.pixKey || '', { shouldValidate: true });
+        setValue('pixKey', detail.pixValue || '', { shouldValidate: true });
+        setValue('individual_tax_id', detail.cpf || '', { shouldValidate: true });
+        break;
+    }
+  }, [selectedWallet, formData.stepOne, setValue, reset]);
+
   const onSubmit = (data: StepTwoData) => {
-    setLoading(true);
     updateFormData(1, data);
     markStepAsCompleted(1);
     setActiveStep(2);
-    setLoading(false);
   };
-
-  const hasChanges = useMemo(
-    () =>
-      initialValues &&
-      !Object.keys(initialValues).every(
-        (key) => initialValues[key as keyof StepTwoData] === formValues[key as keyof StepTwoData],
-      ),
-    [initialValues, formValues],
-  );
 
   const renderSelectedSystem = () => {
     switch (selectedReceivingSystem?.id) {
@@ -146,7 +104,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             getValues={getValues}
             blockAll={blockAll}
             formData={formData}
-            formValues={formValues}
+            formValues={watch()}
             watch={watch}
           />
         );
@@ -211,7 +169,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
           />
         );
       default:
-        return '';
+        return null;
     }
   };
 
@@ -221,39 +179,19 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
 
       <div className="flex justify-center sm-phone:justify-end">
         {completedSteps[1] ? (
-          hasChanges ? (
-            loading ? (
-              <div className="flex w-full max-w-[300px] items-center justify-center">
-                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="42px" />
-              </div>
-            ) : (
-              <button
-                type="submit"
-                className={`flex h-[46px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] font-titleFont text-base font-semibold text-white disabled:border-gray-400 disabled:bg-custom-blue-300 disabled:text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 dark:disabled:text-darkText ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
-                disabled={!isValid || blockAll || loading}
-              >
-                Siguiente
-              </button>
-            )
-          ) : (
-            <button
-              className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
-              type="submit"
-              disabled={blockAll}
-            >
-              Tratar
-              <ArrowUp />
-            </button>
-          )
-        ) : loading ? (
-          <div className="flex w-full max-w-[300px] items-center justify-center">
-            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="42px" />
-          </div>
+          // El botón cambia a "Editar" si el paso ya está completado
+          <button
+            className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
+            type="submit"
+            disabled={blockAll}
+          >
+            Editar
+          </button>
         ) : (
           <button
             type="submit"
             className={`flex h-[46px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] font-titleFont text-base font-semibold text-white disabled:border-gray-400 disabled:bg-custom-blue-300 disabled:text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 dark:disabled:text-darkText ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
-            disabled={!isValid || blockAll || loading}
+            disabled={!isValid || blockAll}
           >
             Siguiente
           </button>
