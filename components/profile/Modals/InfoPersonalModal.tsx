@@ -49,7 +49,6 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
     if (data.alias) {
 
       const res = await updateNickname(token, data.alias);
-      console.log('Respuesta updateNickname en InfoPersonalModal.tsx:', res);
       
       setAlias((res as { nickName: string }).nickName);
 

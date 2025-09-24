@@ -47,7 +47,6 @@ const WhatsappModal = ({ show, setShow }: WhatsappVerificationProps) => {
     try {
       const phoneWithPrefix = `${data.calling_code?.callingCode || ""}${" " + data.phone}`;
       const res = await updatePhone(session.accessToken, phoneWithPrefix);
-      console.log("Respuesta updatePhone en WhatsappModal.tsx:", res);
       //actualizamos el store
       useWhatsAppFormStore.setState({ phone: phoneWithPrefix });
       // ✅ Actualizamos la sesión en memoria
