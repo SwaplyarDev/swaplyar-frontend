@@ -9,7 +9,6 @@ interface DetailItem {
   align?: 'right' | 'center' | 'left';
 }
 
-// Recibimos el objeto 'wallet' completo que viene de nuestro mapeador
 export function mapWalletDetails(wallet: { name: string; type: string; details: WalletDetail[] }): DetailItem[][] {
   const safe = (val: any) => (val !== undefined && val !== null ? String(val) : '-');
 
@@ -26,7 +25,7 @@ export function mapWalletDetails(wallet: { name: string; type: string; details: 
       case 'payoneer':
       case 'wise':
         return [
-          { label: 'Correo electrónico', value: safe(detail.emailAccount) }, // Asumiendo que el campo es 'emailAccount'
+          { label: 'Correo electrónico', value: safe(detail.emailAccount) },
           { label: 'Titular', value: safe(titular), align: 'right' },
         ];
 
@@ -52,7 +51,6 @@ export function mapWalletDetails(wallet: { name: string; type: string; details: 
         ];
 
       default:
-        // Un fallback por si llega un tipo desconocido
         return [[{ label: 'Cuenta', value: safe(wallet.name) }]];
     }
   });

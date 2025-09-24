@@ -38,7 +38,6 @@ export default function VirtualWallets() {
 
   useEffect(() => {
     const token = session?.accessToken;
-    // Si hay error en sesión (por refresh inválido), cerrar sesión
     if ((session as any)?.error === 'RefreshAccessTokenError') {
       signOut({ callbackUrl: '/es/iniciar-sesion' });
       return;
@@ -98,7 +97,6 @@ export default function VirtualWallets() {
       const detail = wallet.details?.[0] || {};
       const provider = detail.type; // ej: 'wise', 'payoneer'
 
-      // La llamada correcta, usando los datos del detalle
       const normalized = normalizeType(wallet.type, provider, wallet.currency);
 
       if (!acc[normalized]) acc[normalized] = [];

@@ -23,6 +23,49 @@ const StepTwoPayoneer: React.FC<StepTwoPayoneerProps> = ({
   return (
     <div className="mx-0 grid grid-cols-1 gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:grid-cols-2 sm-phone:gap-x-8 sm-phone:gap-y-2">
       <InputSteps
+        label="Nombre"
+        name="receiver_first_name"
+        id="receiver_first_name"
+        type="text"
+        placeholder={errors.receiver_first_name ? 'Nombre *' : 'Nombre'}
+        disabled={blockAll || formData.stepOne?.own_account === 'Si'}
+        register={register}
+        watch={watch}
+        rules={{
+          required: 'El Nombre es obligatorio',
+          pattern: {
+            value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+            message: 'El Nombre solo puede contener letras y espacios',
+          },
+        }}
+        error={errors.receiver_first_name ? (errors.receiver_first_name as FieldError) : undefined}
+        defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
+        value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.first_name : undefined}
+        className="order-1"
+      />
+
+      <InputSteps
+        label="Apellido"
+        name="receiver_last_name"
+        id="receiver_last_name"
+        type="text"
+        placeholder={errors.reciever_last_name ? 'Apellido *' : 'Apellido'}
+        disabled={blockAll || formData.stepOne?.own_account === 'Si'}
+        register={register}
+        watch={watch}
+        rules={{
+          required: 'El Apellido es obligatorio',
+          pattern: {
+            value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+            message: 'El Apellido solo puede contener letras y espacios',
+          },
+        }}
+        error={errors.receiver_last_name ? (errors.receiver_last_name as FieldError) : undefined}
+        defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
+        value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.receiver_last_name : undefined}
+        className="order-2 sm-phone:order-3"
+      />
+      <InputSteps
         label="Correo Electrónico de Payoneer"
         name="bank_email"
         id="bank_email"
@@ -64,26 +107,6 @@ const StepTwoPayoneer: React.FC<StepTwoPayoneerProps> = ({
         }}
         error={errors.re_enter_bank_email ? (errors.re_enter_bank_email as FieldError) : undefined}
         className="order-4"
-      />
-
-      <InputSteps
-        label="Transfer code de Payoneer"
-        name="transfer_identification"
-        id="transfer_identification"
-        type="text"
-        placeholder={errors.transfer_identification ? 'Transfer code de Payoneer *' : 'Transfer code de Payoneer'}
-        disabled={blockAll}
-        register={register}
-        watch={watch}
-        rules={{
-          required: 'El Transfer code de Payoneer es obligatorio',
-          pattern: {
-            value: /^[A-Za-z0-9]+$/,
-            message: 'El Transfer code de Payoneer solo puede contener letras y números',
-          },
-        }}
-        error={errors.transfer_identification ? (errors.transfer_identification as FieldError) : undefined}
-        className="order-3 sm-phone:order-2"
       />
     </div>
   );
