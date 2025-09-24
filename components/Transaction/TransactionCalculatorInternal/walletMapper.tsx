@@ -36,16 +36,16 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
           walletType = `${detail.type}_${detail.currency.toLowerCase()}`;
         }
         mappedWallet = {
-          id: detail.account_id,
+          id: detail.detailId,
           type: walletType,
-          fullName: `${detail.firstName} ${detail.lastName}`,
+          fullName: `${detail.userAccount.firstName} ${detail.userAccount.lastName}`,
           email: detail.email,
         };
         break;
 
       case 'receiver_crypto':
         mappedWallet = {
-          id: detail.account_id,
+          id: detail.detailId,
           type: 'tether',
           fullName: account.accountName,
           walletAddress: detail.wallet,
@@ -55,7 +55,7 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
 
       case 'pix':
         mappedWallet = {
-          id: detail.userAccount.account_id,
+          id: detail.userAccount.accountId,
           type: 'pix',
           fullName: account.accountName,
           email: detail.pix_value,
@@ -69,7 +69,7 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
         const cbuValue = detail.send_method_key === 'CBU' ? detail.send_method_value : undefined;
         const aliasValue = detail.send_method_key === 'ALIAS' ? detail.send_method_value : undefined;
         mappedWallet = {
-          id: detail.account_id,
+          id: detail.detailId,
           type: 'bank',
           label: account.accountName,
           fullName: account.accountName,
@@ -81,7 +81,7 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
         break;
     }
 
-    return {
+    const finalWallet = {
       id: mappedWallet.id || '',
       type: mappedWallet.type || 'default',
       label: mappedWallet.label || account.accountName,
@@ -97,6 +97,8 @@ export const mapApiWalletsToFrontend = (apiAccounts: ApiAccount[]): Wallet[] => 
       network: mappedWallet.network,
       bankName: mappedWallet.bankName,
     } as Wallet;
+
+    return finalWallet;
   });
 
   return wallets.filter((wallet) => wallet.id);

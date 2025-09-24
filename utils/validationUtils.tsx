@@ -1,5 +1,36 @@
 import { System } from '@/types/data';
 
+export function validateTaxIdentification(input: string): true | string {
+  const cleanInput = input.replace(/[-.]/g, '');
+
+  if (!/^\d+$/.test(cleanInput)) {
+    return 'Debe contener solo números.';
+  }
+
+  const isDNI = cleanInput.length === 7 || cleanInput.length === 8;
+  const isCUIT = cleanInput.length === 11;
+
+  if (isDNI || isCUIT) {
+    return true;
+  }
+
+  return 'El DNI debe tener 7 u 8 dígitos, y el CUIT/CUIL 11.';
+}
+
+export function validateTransferIdentification(input: string): true | string {
+  const isCBU = /^\d{22}$/.test(input);
+  const isAlias = /^[a-zA-Z0-9._-]{6,20}$/.test(input);
+
+  if (isCBU || isAlias) {
+    return true;
+  }
+
+  if (/^\d+$/.test(input)) {
+    return 'El CBU/CVU debe tener 22 dígitos.';
+  }
+
+  return 'El formato de CBU/CVU o Alias es inválido.';
+}
 export function getTaxIdentificationType(input: string): string {
   const cuitCuilPattern = /^(?:\d{11}|\d{2}-\d{8}-\d{1})$/;
   const dniPattern = /^\d{8}$/;

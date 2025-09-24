@@ -9,7 +9,7 @@ import { CountryOption } from '@/types/request/request';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import SelectCountry from '../inputs/SelectCountry';
 import InputSteps from '@/components/inputSteps/InputSteps';
-
+import useWalletStore from '@/store/useWalletStore';
 interface FormData {
   first_name: string;
   last_name: string;
@@ -28,7 +28,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     setValue,
     watch,
   } = useForm<FormData>({ mode: 'onChange' });
-
+  const { selectedWallet } = useWalletStore();
   const {
     markStepAsCompleted,
     setActiveStep,
@@ -75,7 +75,12 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
 
     setInitialValues(newValues);
   }, [formData.stepOne, setValue]);
-
+  useEffect(() => {
+    if (selectedWallet) {
+      setValue('own_account', 'false');
+      updateFormData(0, { own_account: 'false' });
+    }
+  }, [selectedWallet, setValue, updateFormData]);
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data: FormData) => {
@@ -112,7 +117,10 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     return true;
   }, []);
 
-  const hasChanges = useMemo(() => initialValues && !deepEqual(initialValues, formValues), [initialValues, formValues, deepEqual]);
+  const hasChanges = useMemo(
+    () => initialValues && !deepEqual(initialValues, formValues),
+    [initialValues, formValues, deepEqual],
+  );
 
   const [isFocused, setIsFocused] = useState(false);
 
@@ -240,31 +248,34 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             <p className="px-[10px] font-textFont text-sm text-errorColor">{errors.phone.message as string}</p>
           )}
         </div>
-        <div className="order-5 mx-[10px] flex w-full items-center justify-start sm-phone:mx-0 sm-phone:justify-center">
-          <p className="h-5 font-textFont text-lightText dark:text-darkText sm-phone:ml-0 sm-phone:text-sm md:text-lg">
-            ¿Se transfiere a una cuenta propia?
-          </p>
-        </div>
-        <div className="order-6 flex w-full flex-col">
-          <Controller
-            name="own_account"
-            control={control}
-            defaultValue={undefined}
-            rules={{
-              required: 'Este campo es obligatorio',
-            }}
-            render={({ field, fieldState }) => (
-              <SelectBoolean
-                blockAll={blockAll}
-                selectedOption={field.value}
-                setSelectedOption={(option) => field.onChange(option)}
-                errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
+        {!selectedWallet && (
+          <>
+            <div className="order-5 mx-[10px] flex w-full items-center justify-start sm-phone:mx-0 sm-phone:justify-center">
+              <p className="h-5 font-textFont text-lightText dark:text-darkText sm-phone:ml-0 sm-phone:text-sm md:text-lg">
+                ¿Se transfiere a una cuenta propia?
+              </p>
+            </div>
+            <div className="order-6 flex w-full flex-col">
+              <Controller
+                name="own_account"
+                control={control}
+                defaultValue={'Seleccione una opción'}
+                rules={{
+                  required: 'Este campo es obligatorio',
+                }}
+                render={({ field, fieldState }) => (
+                  <SelectBoolean
+                    blockAll={blockAll}
+                    selectedOption={field.value}
+                    setSelectedOption={(option) => field.onChange(option)}
+                    errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
+                  />
+                )}
               />
-            )}
-          />
-        </div>
+            </div>
+          </>
+        )}
       </div>
-
       <div className="flex justify-center sm-phone:justify-end">
         {completedSteps[0] ? (
           hasChanges ? (

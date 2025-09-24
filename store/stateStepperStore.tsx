@@ -78,7 +78,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     selectedSendingSystem: System | null,
     selectedReceivingSystem: System | null,
     accessToken?: string,
-  ) : Promise<ResponseCreateTransaction | false> => {
+  ): Promise<ResponseCreateTransaction | false> => {
     const state = get();
     const { stepOne, stepTwo, stepThree } = state.formData;
 
@@ -115,6 +115,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       currency: selectedReceivingSystem?.coin || '',
       network: stepTwo.red_selection?.value || '',
       wallet: stepTwo.usdt_direction || '',
+      type: selectedReceivingSystem?.paymentMethod || '',
     };
 
     const payload = {
@@ -129,7 +130,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         first_name: stepOne.first_name,
         last_name: stepOne.last_name,
         identification: senderDetails.document_value,
-  phone_number: `${stepOne.calling_code?.callingCode || ''}${(stepOne.phone || '').replace(/\D/g, '')}`,
+        phone_number: `${stepOne.calling_code?.callingCode || ''}${(stepOne.phone || '').replace(/\D/g, '')}`,
         email: senderDetails.email_account,
       },
       receiver: {
@@ -138,8 +139,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         receiver_last_name: stepTwo.receiver_last_name,
       },
       payment_method: {
-        sender: buildSenderMethod(selectedSendingSystem?.paymentMethod || ''),
-        receiver: buildPaymentMethod(selectedReceivingSystem?.paymentMethod || '', receiverDetails),
+        sender: buildSenderMethod(selectedSendingSystem?.id || ''),
+        receiver: buildPaymentMethod(selectedReceivingSystem?.id || '', receiverDetails),
       },
       amounts: {
         amount_sent: stepThree.send_amount,
@@ -186,7 +187,10 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       },
     };
 
-  // Limpiar campos vacíos opcionales
+    if (createTransactionDto.financialAccounts.receiverAccount.paymentMethod.method === 'virtual_bank') {
+      createTransactionDto.financialAccounts.receiverAccount.paymentMethod.type = selectedReceivingSystem?.id || '';
+    }
+
     formDataPayload.append('createTransactionDto', JSON.stringify(createTransactionDto));
 
     try {
@@ -205,7 +209,9 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           const errJson = await response.json();
           serverMessage = typeof errJson === 'string' ? errJson : JSON.stringify(errJson);
         } catch (_) {
-          try { serverMessage = await response.text(); } catch { /* noop */ }
+          try {
+            serverMessage = await response.text();
+          } catch {}
         }
         console.error('Fallo creación de transacción', {
           status: response.status,

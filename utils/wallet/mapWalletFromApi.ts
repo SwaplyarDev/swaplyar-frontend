@@ -1,21 +1,27 @@
-export interface Wallet {
-  id: string;
-  type: string;
-  name: string;
-  currency: string;
-  accountName?: string;
-  identifier?: string;
-  details: any[];
-}
+import { Wallet } from '@/store/useWalletStore';
 
-export function mapWalletFromApi(apiWallet:string | any): Wallet {
-  const firstDetail = apiWallet.details?.[0];
-  const mainId = firstDetail?.userAccount?.accountId ?? '';
+export function mapWalletFromApi(apiWallet: any): Wallet | null {
+  // PRUEBA DEFINITIVA: Si ves este log, estás usando la versión correcta del archivo.
+  console.log('--- EJECUTANDO LA NUEVA VERSIÓN DE mapWalletFromApi ---', apiWallet);
+
+  if (!apiWallet?.userAccount?.accountId || !apiWallet?.financialAccount?.paymentMethod) {
+    console.warn('Objeto de billetera con formato inválido, será omitido:', apiWallet);
+    return null;
+  }
+
+  const mainId = apiWallet.userAccount.accountId;
+  const paymentMethod = apiWallet.financialAccount.paymentMethod;
+
   return {
     id: mainId,
-    type: apiWallet.payment_type,
-    name: apiWallet.accountName,
-    currency: firstDetail?.currency,
-    details: apiWallet.details, 
+    type: paymentMethod.platformId,
+    name: apiWallet.accountName || 'Sin Nombre',
+    currency: paymentMethod.currency || '',
+    details: [
+      {
+        ...apiWallet.financialAccount,
+        ...paymentMethod,
+      },
+    ],
   };
 }

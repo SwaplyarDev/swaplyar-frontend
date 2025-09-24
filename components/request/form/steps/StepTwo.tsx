@@ -41,60 +41,24 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   const formValues = useWatch({ control });
 
   useEffect(() => {
-    const {
-      receiver_first_name,
-      receiver_last_name,
-      tax_identification,
-      transfer_identification,
-      re_transfer_identification,
-      name_of_bank,
-      bank_email,
-      re_enter_bank_email,
-      usdt_direction,
-      re_enter_usdt_direction,
-      red_selection,
-      recieveAmountRed,
-      pixId,
-      pixKey,
-      individual_tax_id,
-    } = formData.stepTwo;
-    const newValues = {
-      receiver_first_name,
-      receiver_last_name,
-      tax_identification,
-      transfer_identification,
-      re_transfer_identification,
-      name_of_bank,
-      bank_email,
-      re_enter_bank_email,
-      usdt_direction,
-      re_enter_usdt_direction,
-      red_selection,
-      recieveAmountRed,
-      pixId,
-      pixKey,
-      individual_tax_id,
+    const resetFormFields = () => {
+      setValue('receiver_first_name', '');
+      setValue('receiver_last_name', '');
+      setValue('tax_identification', '');
+      setValue('transfer_identification', '');
+      setValue('re_transfer_identification', '');
+      setValue('name_of_bank', '');
+      setValue('bank_email', '');
+      setValue('re_enter_bank_email', '');
+      setValue('usdt_direction', '');
+      setValue('re_enter_usdt_direction', '');
+      setValue('pixId', '');
+      setValue('pixKey', '');
+      setValue('individual_tax_id', '');
     };
+    resetFormFields();
 
-    setValue(
-      'receiver_first_name', receiver_first_name);
-    setValue(
-      'receiver_last_name',receiver_last_name);
-    setValue('tax_identification', tax_identification);
-    setValue('transfer_identification', transfer_identification);
-    setValue('re_transfer_identification', re_transfer_identification);
-    setValue('name_of_bank', name_of_bank);
-    setValue('bank_email', bank_email);
-    setValue('re_enter_bank_email', re_enter_bank_email);
-    setValue('usdt_direction', usdt_direction);
-    setValue('re_enter_usdt_direction', re_enter_usdt_direction);
-    setValue('red_selection', red_selection);
-    setValue('recieveAmountRed', recieveAmountRed);
-    setValue('pixId', pixId);
-    setValue('pixKey', pixKey);
-    setValue('individual_tax_id', individual_tax_id);
-
-    if (selectedWallet && formData.stepOne?.own_account === 'Si') {
+    if (selectedWallet) {
       if (selectedWallet.fullName) {
         const nameParts = selectedWallet.fullName.split(' ');
         const firstName = nameParts[0] || '';
@@ -117,7 +81,6 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
           setValue('tax_identification', selectedWallet.taxId || '', { shouldValidate: true });
           setValue('name_of_bank', selectedWallet.bankName || '', { shouldValidate: true });
           break;
-
         case 'tether':
           setValue('usdt_direction', selectedWallet.walletAddress || '', { shouldValidate: true });
           setValue('re_enter_usdt_direction', selectedWallet.walletAddress || '', { shouldValidate: true });
@@ -127,7 +90,6 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             image: <></>,
           });
           break;
-
         case 'pix':
           setValue('pixId', selectedWallet.pixKeyType || '', { shouldValidate: true });
           setValue('pixKey', selectedWallet.pixKeyValue || '', { shouldValidate: true });
@@ -141,9 +103,12 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
         case 'paypal':
           break;
       }
+    } else if (formData.stepOne?.own_account === 'Si' || formData.stepOne?.own_account === 'true') {
+      setValue('receiver_first_name', formData.stepOne.first_name, { shouldValidate: true });
+      setValue('receiver_last_name', formData.stepOne.last_name, { shouldValidate: true });
     }
-    setInitialValues(newValues);
-  }, [
+  }, [selectedWallet, formData.stepOne, setValue]);
+  [
     formData.stepTwo,
     setValue,
     formData.stepOne?.own_account,
@@ -151,7 +116,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     formData.stepOne?.last_name,
     formData.stepOne?.email,
     selectedWallet,
-  ]);
+  ];
 
   const [loading, setLoading] = useState(false);
   const onSubmit = (data: StepTwoData) => {

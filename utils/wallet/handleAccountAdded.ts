@@ -15,26 +15,6 @@ export const createHandleAccountAdd = ({
   setWallets: (wallets: any[]) => void;
   setOpen: (open: boolean) => void;
 }) => {
-  const normalizeWalletType = (type: string) => {
-    switch (type.toLowerCase()) {
-      case 'paypal':
-      case 'payoneerusd':
-      case 'payoneereur':
-      case 'wiseusd':
-      case 'wiseeur':
-        return 'virtual_bank';
-      case 'crypto':
-      case 'receiver_crypto':
-        return 'receiver_crypto';
-      case 'pix':
-        return 'pix';
-      case 'bank':
-        return 'bank';
-      default:
-        return type.toLowerCase();
-    }
-  };
-
   const extractVirtualBankType = (type: string) => {
     const lower = type.toLowerCase();
     if (lower.startsWith('wise')) return 'wise';
@@ -46,78 +26,75 @@ export const createHandleAccountAdd = ({
   const extractCurrency = (type: string) => {
     const lower = type.toLowerCase();
     if (lower.endsWith('eur')) return 'EUR';
+    if (lower.endsWith('ars')) return 'ARS';
     return 'USD'; // default
   };
 
   return async (formData: any) => {
     try {
-      const normalizedWalletType = normalizeWalletType(walletType);
+      let payload: any = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        accountName: formData.accountName,
+      };
 
-     
-      const firstName = formData.firstName || '';
-      const lastName = formData.lastName || '';
-
-      const payload: any = { userAccValues: {} };
-
-      switch (normalizedWalletType) {
-          case 'pix': {
-          const pixKey = detectarTipoPixKey(formData.pix_value || ''); 
-          payload.userAccValues = {
-            accountType: 'pix',
-            accountName: formData.accountName || '',
-            firstName: formData.firstName || '',
-            lastName:formData.lastName || '',
-            currency: formData.currency || 'BRL',
-            cpf: formData.cpf || '',
-            pix_value: formData.pix_value || '',
-            pix_key: pixKey || '', 
-          };
-          break;
-        }
-
+      switch (walletType) {
         case 'bank':
-          const documentType = getTaxIdentificationType(formData.document_value || '');
-          const sendMethodType = getTransferIdentificationType(formData.send_method_value || '');
-          payload.userAccValues = {
-            accountType: 'bank',
-            accountName: formData.accountName || '',
-            firstName: formData.firstName || '',
-            lastName:formData.lastName || '',
+          payload.platformId = 'bank';
+          payload.method = 'bank';
+          payload.bank = {
             currency: formData.currency || 'ARS',
-            bankName: formData.bankName || '',
-            document_type: documentType || '',
-            document_value: formData.document_value || '',
-            send_method_key: sendMethodType || '',
-            send_method_value: formData.send_method_value || '',
+            bankName: formData.bankName,
+            sendMethodKey: getTransferIdentificationType(formData.send_method_value),
+            sendMethodValue: formData.send_method_value,
+            documentType: getTaxIdentificationType(formData.document_value),
+            documentValue: formData.document_value,
           };
           break;
 
+        case 'pix':
+          payload.platformId = 'pix';
+          payload.method = 'pix';
+          payload.pix = {
+            pixId: formData.pix_id,
+            pixKey: detectarTipoPixKey(formData.pix_value),
+            pixValue: formData.pix_value,
+            cpf: formData.cpf,
+          };
+          break;
+
+        case 'crypto':
         case 'receiver_crypto':
-          payload.userAccValues = {
-            accountType: 'receiver_crypto',
-            accountName: formData.accountName || '',
-            wallet: formData.wallet || '',
-            network: formData.network || '',
-            currency: formData.currency || 'USDT',
+          payload.platformId = 'receiver_crypto';
+          payload.method = 'receiver-crypto';
+          payload.receiverCrypto = {
+            currency: formData.currency,
+            network: formData.network,
+            wallet: formData.wallet,
           };
           break;
 
-        case 'virtual_bank':
-          payload.userAccValues = {
-            accountType: 'virtual_bank',
-            accountName: formData.accountName || '',
-            currency: formData.currency || extractCurrency(walletType),
-            email: formData.email || '',
-            firstName,
-            lastName,
-            type: extractVirtualBankType(walletType), 
+        case 'paypal':
+        case 'payoneerUSD':
+        case 'payoneerEUR':
+        case 'wiseUSD':
+        case 'wiseEUR':
+          payload.platformId = 'virtual_bank';
+          payload.method = 'virtual-bank';
+          payload.type = extractVirtualBankType(walletType);
+          payload.virtualBank = {
+            currency: extractCurrency(walletType),
+            emailAccount: formData.email,
+            // transferCode: formData.transferCode,
           };
           break;
 
         default:
-          console.warn('Tipo de cuenta no manejado:', walletType);
+          console.error('Tipo de cuenta no manejado:', walletType);
           return;
       }
+
+      console.log('Payload final a enviar:', payload);
 
       await createWalletAccount(payload, token);
 

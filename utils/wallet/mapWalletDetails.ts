@@ -9,7 +9,8 @@ interface DetailItem {
   align?: 'right' | 'center' | 'left';
 }
 
-export function mapWalletDetails(wallet: { type: string; details: WalletDetail[] }): DetailItem[][] {
+// Recibimos el objeto 'wallet' completo que viene de nuestro mapeador
+export function mapWalletDetails(wallet: { name: string; type: string; details: WalletDetail[] }): DetailItem[][] {
   const safe = (val: any) => (val !== undefined && val !== null ? String(val) : '-');
 
   if (!wallet.details || wallet.details.length === 0) {
@@ -17,42 +18,42 @@ export function mapWalletDetails(wallet: { type: string; details: WalletDetail[]
   }
 
   return wallet.details.map((detail) => {
+    const titular = `${detail.firstName || ''} ${detail.lastName || ''}`.trim() || wallet.name;
+
     switch (wallet.type) {
       case 'virtual_bank':
       case 'paypal':
       case 'payoneer':
       case 'wise':
         return [
-          { label: 'Correo electrónico', value: safe(detail.email) },
-          { label: 'Nombre', value: safe(detail.userAccount.accountName), align: 'right' },
+          { label: 'Correo electrónico', value: safe(detail.emailAccount) }, // Asumiendo que el campo es 'emailAccount'
+          { label: 'Titular', value: safe(titular), align: 'right' },
         ];
 
-     case 'bank':
-  return [
-    { label: safe(detail.send_method_key), value: safe(detail.send_method_value) },
-    { label: safe(detail.document_type), value: safe(detail.document_value) },
-    { label: 'Banco', value: safe(detail.bankName) },
-    { label: 'Titular', value: safe(detail.userAccount.accountName) },
-  ];
+      case 'bank':
+        return [
+          { label: 'Tipo de Documento', value: safe(detail.documentType) },
+          { label: 'Documento', value: safe(detail.documentValue) },
+          { label: 'Banco', value: safe(detail.bankName) },
+          { label: 'Titular', value: safe(titular) },
+        ];
 
       case 'receiver_crypto':
         return [
           { label: 'Dirección Wallet', value: safe(detail.wallet) },
-          { label: 'Red', value: safe(detail.network) , align: 'right' },
+          { label: 'Red', value: safe(detail.network), align: 'right' },
         ];
 
       case 'pix':
         return [
-          { label: 'Valor clave PIX', value: safe(detail.pix_value) },
+          { label: 'Clave PIX', value: safe(detail.pixValue) },
           { label: 'CPF', value: safe(detail.cpf) },
-          { label: 'Nombre de la cuenta', value: safe(detail.userAccount.accountName) },
+          { label: 'Titular', value: safe(titular) },
         ];
 
       default:
-        return Object.entries(detail).map(([key, value]) => ({
-          label: key,
-          value: safe(value),
-        }));
+        // Un fallback por si llega un tipo desconocido
+        return [[{ label: 'Cuenta', value: safe(wallet.name) }]];
     }
   });
 }

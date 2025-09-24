@@ -14,6 +14,7 @@ import { createHandleAccountAdd } from '@/utils/wallet/handleAccountAdded';
 import ReusableWalletCard from '@/components/wallets/walletCard';
 import { mapWalletDetails } from '@/utils/wallet/mapWalletDetails';
 import clsx from 'clsx';
+import { normalizeType } from '@/components/admin/utils/normalizeType';
 
 interface Wallet {
   id: string;
@@ -55,7 +56,7 @@ export default function VirtualWallets() {
           return;
         }
 
-        const mapped = response.map(mapWalletFromApi);
+        const mapped = response.map(mapWalletFromApi).filter(Boolean); // Filtra los nulos
         setWallets(mapped);
         hasFetched.current = true;
       } catch (err: any) {
@@ -81,20 +82,7 @@ export default function VirtualWallets() {
     setOpen,
     session,
   });
-  const normalizeType = (type: string, provider?: string, currency?: string): string => {
-    const prov = (provider || '').toLowerCase().trim();
-    const curr = (currency || '').toLowerCase().trim();
-    if (type === 'virtual_bank') {
-      if (prov.includes('paypal')) return 'paypal';
-      if (prov.includes('wise')) return curr === 'eur' ? 'wise-eur' : 'wise-usd';
-      if (prov.includes('payoneer')) return curr === 'eur' ? 'payoneer-eur' : 'payoneer-usd';
-      return 'virtual_bank';
-    }
-    if (type === 'receiver_crypto' || prov === 'crypto') return 'tether';
-    if (type === 'pix' || prov === 'pix') return 'pix';
-    if (type === 'bank' || prov === 'bank' || prov === 'transferencia') return 'transferencia';
-    return type;
-  };
+
   const orderedWallets = [...wallets].sort((a, b) => {
     const typeA = a?.type ?? '';
     const typeB = b?.type ?? '';
@@ -107,11 +95,12 @@ export default function VirtualWallets() {
 
   const groupedWallets = orderedWallets.reduce(
     (acc, wallet) => {
-      const detail = wallet.details?.[0];
-      const provider = detail?.type;
-      const currency = detail?.currency;
+      const detail = wallet.details?.[0] || {};
+      const provider = detail.type; // ej: 'wise', 'payoneer'
 
-      const normalized = normalizeType(wallet.type, provider, currency);
+      // La llamada correcta, usando los datos del detalle
+      const normalized = normalizeType(wallet.type, provider, wallet.currency);
+
       if (!acc[normalized]) acc[normalized] = [];
       acc[normalized].push(wallet);
       return acc;

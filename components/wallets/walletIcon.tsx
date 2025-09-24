@@ -40,11 +40,11 @@ export default function WalletIcon({ accountType, provider, currency, accountNam
       if (prov.includes('paypal')) return 'paypal';
 
       if (prov.includes('wise')) {
-        return curr === 'usd' ? 'wise-usd' : 'wise-eur';
+        return curr === 'usd' ? 'wise_usd' : 'wise_eur';
       }
 
       if (prov.includes('payoneer')) {
-        return curr === 'usd' ? 'payoneer-usd' : 'payoneer-eur';
+        return curr === 'usd' ? 'payoneer_usd' : 'payoneer_eur';
       }
     }
 
@@ -67,7 +67,7 @@ export default function WalletIcon({ accountType, provider, currency, accountNam
         </div>
       );
 
-    case 'wise-usd':
+    case 'wise_usd':
       return (
         <div className="ml-4 flex h-10 items-start justify-start">
           <Image src={WiseUsdImg} alt="Wise USD" width={200} height={200} className="h-12 w-auto dark:hidden sm:h-20" />
@@ -81,7 +81,7 @@ export default function WalletIcon({ accountType, provider, currency, accountNam
         </div>
       );
 
-    case 'wise-eur':
+    case 'wise_eur':
       return (
         <div className="ml-4 flex h-10 items-start justify-start">
           <Image src={WiseEurImg} alt="Wise EUR" width={200} height={200} className="h-12 w-auto dark:hidden sm:h-20" />
@@ -95,7 +95,7 @@ export default function WalletIcon({ accountType, provider, currency, accountNam
         </div>
       );
 
-    case 'payoneer-usd':
+    case 'payoneer_usd':
       return (
         <div className="ml-4 flex h-10 items-start justify-start">
           <Image
@@ -115,7 +115,7 @@ export default function WalletIcon({ accountType, provider, currency, accountNam
         </div>
       );
 
-    case 'payoneer-eur':
+    case 'payoneer_eur':
       return (
         <div className="ml-4 flex h-10 items-start justify-start">
           <Image
