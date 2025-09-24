@@ -40,7 +40,7 @@ export default function VirtualWallets() {
     const token = session?.accessToken;
     // Si hay error en sesión (por refresh inválido), cerrar sesión
     if ((session as any)?.error === 'RefreshAccessTokenError') {
-      signOut({ callbackUrl: '/es/iniciar-sesion-o-registro' });
+      signOut({ callbackUrl: '/es/iniciar-sesion' });
       return;
     }
     if (!token || hasFetched.current) return;
@@ -63,7 +63,7 @@ export default function VirtualWallets() {
         console.error('Error fetching wallets:', err);
         if (err?.message === 'Unauthorized') {
           setError('Tu sesión expiró. Por favor, inicia sesión nuevamente.');
-          await signOut({ callbackUrl: '/es/iniciar-sesion-o-registro' });
+          await signOut({ callbackUrl: '/es/iniciar-sesion' });
           return;
         }
         setError('Error al cargar billeteras. Intenta más tarde.');

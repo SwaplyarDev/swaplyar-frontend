@@ -24,7 +24,6 @@ export const LoginForm = () => {
   } = useForm<FormInputs>({});
   const [loading, setLoading] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const { setView } = useStore();
   const { setEmail } = useEmailVerificationStore(); // Zustand action para guardar el email
   const { isDark } = useDarkTheme();
   const router = useRouter(); // Utiliza useRouter para redirigir después de ingresar el email
@@ -45,7 +44,7 @@ export const LoginForm = () => {
       setEmail(email); // Guardar el email en Zustand
       setTimeout(() => {
         setLoading(false);
-        router.push('/es/iniciar-sesion-o-registro/verificacion-email');
+        router.push('/es/iniciar-sesion/verificacion-email');
       }, 3000); // Redirigir a la página de verificación
     } catch (error) {
       setLoading(false);
@@ -55,8 +54,7 @@ export const LoginForm = () => {
   };
 
   const handleChange = () => {
-    setIsFocused(false);
-    setView('register');
+    router.push('/es/registro');
   };
 
   return (
