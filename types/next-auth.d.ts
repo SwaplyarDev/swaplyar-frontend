@@ -12,16 +12,17 @@ interface AppProfile {
   firstName: string;
   middleName?: string | null;
   lastName: string;
-  nickname?: string | null;
+  nickName?: string | null;
   email: string;
   identification?: string | null;
   phone?: string | null;
-  birthDate?: string | null;
+  birthday?: string | null;
   age?: number | null;
   gender?: string | null;
   profilePictureUrl?: string | null;
   locationId?: string | null;
   lastActivity?: string | null;
+  nationality?: string | null;
   // Algunas respuestas incluyen redes sociales como array u objeto; lo tipamos flexible
   social?: Array<{ network: string; profile: string }> | Record<string, unknown> | null;
 }

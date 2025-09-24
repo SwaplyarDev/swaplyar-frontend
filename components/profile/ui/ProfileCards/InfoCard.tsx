@@ -1,44 +1,58 @@
-import { Button } from '@mui/material';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useSession } from 'next-auth/react';
+import { useInfoPersonalFormStore } from '../../store/InfoPersonalFormStore';
 
 type InfoCardProps = {
   setShow: (show: boolean) => void;
 };
 
-const InfoCard = ({ setShow }: InfoCardProps) => {
-  const { isDark } = useDarkTheme();
+type InfoRowProps = {
+  label: string;
+  value?: string | null;
+  editable?: boolean;
+  onEdit?: () => void;
+  className?: string;
+};
 
+const InfoRow = ({ label, value = '-', editable, onEdit, className = '' }: InfoRowProps) => (
+  <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center  ${className}`}>
+    <p className="text-[20px] sm:text-[20px]">{label}</p>
+    <div className="flex items-center justify-end text-[16px] sm:text-[20px] text-right">
+      {value}
+      {editable && (
+        <button
+          className="ml-6 h-6 text-[16px] font-light text-[#0148F4] dark:hover:text-[#E1E1E1] hover:text-[#2A68FE] dark:text-[#C8C8C8] hover:font-normal"
+          onClick={onEdit}
+        >
+          Editar
+        </button>
+      )}
+    </div>
+  </div>
+);
+
+const InfoCard = ({ setShow }: InfoCardProps) => {
   const { data: session } = useSession();
+  const profile = session?.user.profile;
+  const { alias } = useInfoPersonalFormStore();
 
   return (
-    <div
-      className={`mb-4 w-[75%] max-w-[796px] rounded-2xl ${isDark ? 'bg-[#4B4B4B]' : 'bg-white text-black shadow-xl'} p-4 md-tablet:w-full`}
-    >
-      <h2 className="mb-3 text-lg">Informacion Personal</h2>
-
-      <div className="grid grid-cols-2 gap-y-2">
-        <p className="">Nombre Legal</p>
-        <p className="text-right">{session?.user.fullName}</p>
-
-        <p className="">Nacionalidad</p>
-        <p className="text-right">{session?.user.id}</p>
-
-  <p className="">N° de Documento</p>
-  <p className="text-right">{session?.user.profile?.identification ?? '-'}</p>
-
-  <p className="">Fecha de Nacimiento</p>
-  <p className="text-right">{session?.user.profile?.birthDate ?? '-'}</p>
-
-        <p className="">Apodo</p>
-        <div className="flex items-center justify-end gap-2 text-right">
-          {session?.user.fullName}
-          <Button onClick={() => setShow(true)} className="h-6 px-2 text-xs text-gray-400">
-            Editar
-          </Button>
-        </div>
+    <>
+      <h2 className="mb-3 sm:px-6 px-1 text-[28px] sm:text-[36px]">Información Personal</h2>
+      <div className="flex flex-col sm:gap-y-1 gap-y-3 sm:px-6 px-4">
+        <InfoRow label="Nombre Legal" value={session?.user.fullName} />
+        <InfoRow label="Nacionalidad" value={profile?.nationality ?? '-'} />
+        <InfoRow label="N° de Documento" value={profile?.identification ?? '-'} />
+        <InfoRow label="Fecha de Nacimiento" value={profile?.birthday ?? '-'} />
+        <InfoRow
+          label="Apodo"
+          value={alias || profile?.nickName || '-'}
+          editable
+          onEdit={() => setShow(true)}
+          className="sm:mt-[15px]"
+        />
       </div>
-    </div>
+    </>
   );
 };
 

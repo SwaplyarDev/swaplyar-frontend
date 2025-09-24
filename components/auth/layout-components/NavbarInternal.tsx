@@ -91,11 +91,11 @@ const NavbarInternal = () => {
                 className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} relative left-4 top-1 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t xs:-left-1 xs:ml-5`}
               >
                 <Image
-                  src={swaplyArAvatar}
+                  src={session?.user.profile?.profilePictureUrl || swaplyArAvatar}
                   alt="Foto perfil Usuario"
                   width={100}
                   height={100}
-                  className="h-full w-full overflow-hidden rounded-full bg-white dark:bg-lightText"
+                  className="h-full w-full overflow-hidden rounded-full object-cover bg-white dark:bg-lightText"
                 />
               </Link>
               <p className="hidden pl-2 pt-4 font-sans text-white dark:text-black xs:block lg:ml-4 lg:hidden lg2:block">
