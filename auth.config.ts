@@ -68,6 +68,6 @@ export const authConfig: NextAuthConfig = {
     }),
   ],
   pages: {
-    signIn: '/es/iniciar-sesion-o-registro',
+    signIn: '/es/iniciar-sesion',
   },
 };

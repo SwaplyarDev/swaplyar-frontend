@@ -41,7 +41,7 @@ export const RegisterForm = () => {
 
   const { setView } = useStore();
   const handleChange = () => {
-    setView('login');
+    router.push('/es/iniciar-sesion');
   };
 
   const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -65,10 +65,13 @@ export const RegisterForm = () => {
           termsAccepted: termsConditions,
         }),
       });
+      //console log para ver la respuesta del backend
+      console.log('respuestas al crear usuario:', response);
       if (!response.ok) {
         const errorResponse = await response.json();
         throw new Error(errorResponse.message || 'Error al crear el usuario');
       }
+      //aca deberiamos arrojar un alerta de exito, y redirigir a la pagina de login
       const responseData = await response.json();
       setUserVerification(responseData);
       setLoading(false);
@@ -77,10 +80,11 @@ export const RegisterForm = () => {
 
       setTimeout(() => {
         setLoading(false);
-        router.push('/es/iniciar-sesion-o-registro/verificacion-email');
+        router.push('/es/iniciar-sesion');
       }, 3000);
     } catch (error) {
       setLoading(false);
+      console.log('Error al crear el usuario:', error);
       alert('Ocurrió un error inesperado.');
     }
   };

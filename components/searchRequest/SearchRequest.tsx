@@ -215,7 +215,7 @@ const SearchRequest = () => {
       <div className="mt-10">
         <FlyerTrabajo
           imageSrc={FlyerGif}
-          href="/es/iniciar-sesion-o-registro"
+          href="/es/registro"
           description="Crea tu cuenta para hacer seguimiento de tus solicitudes en tiempo real"
           nameButton="Crear mi cuenta"
         />

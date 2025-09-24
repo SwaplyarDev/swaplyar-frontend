@@ -23,7 +23,7 @@ function RegisterButton({ onButtonClick }: RegisterButtonProps) {
   return (
     <>
       <Link
-        href="/es/iniciar-sesion-o-registro"
+        href="/es/registro"
         onClick={handleClick}
         className={`relative flex h-[48px] w-[200px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-titleFont font-semibold text-white dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} lg2:w-[130px]`}
       >

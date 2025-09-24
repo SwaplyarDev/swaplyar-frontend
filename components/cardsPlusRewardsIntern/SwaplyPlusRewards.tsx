@@ -90,7 +90,7 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
     if (!token) return;
     // Si hubo error de refresh, cerrar sesión para evitar loops de Unauthorized
     if ((session as any)?.error === 'RefreshAccessTokenError') {
-      signOut({ callbackUrl: '/es/iniciar-sesion-o-registro' });
+      signOut({ callbackUrl: '/es/iniciar-sesion' });
       return;
     }
     fetchAndHandleVerificationStatus({

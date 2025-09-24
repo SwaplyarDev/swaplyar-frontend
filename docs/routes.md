@@ -7,7 +7,8 @@ Este documento describe las rutas principales de la aplicación **SwaplyAr**, or
 ## 🛣️ Rutas Principales
 
 - `/es/inicio`: Página de inicio.
-- `/es/iniciar-sesion-o-registro/`: Página para iniciar sesión o registrarse.
+- `/es/iniciar-sesion/`: Página para iniciar sesión.
+- `/es/registro/`: Página para registrarse.
 - `/es/formulario-de-solicitud/`: Sección principal para solicitudes.
 - `/es/terminos-y-condiciones/`: Página de términos y condiciones.
 - `/es/tyc-plus-rewards/`: Programa de recompensas.
@@ -29,11 +30,11 @@ Este documento describe las rutas principales de la aplicación **SwaplyAr**, or
 
 ## 🔒 Rutas de Autenticación
 
-- **`/es/iniciar-sesion-o-registro` - Iniciar Sesión**
+- **`/es/iniciar-sesion` - Iniciar Sesión**
   - Formulario de autenticación.
   - Botón de acceso con Google u otras plataformas.
 
-- **`/es/iniciar-sesion-o-registro` - Crear Nueva Cuenta**
+- **`/es/registro` - Crear Nueva Cuenta**
   - Formulario de registro.
   - Validación de campos requeridos.
 
