@@ -183,8 +183,6 @@ export default function InternalTransactionCalculator({
       return [];
     }
 
-    console.log(`--- Iniciando filtro para sistema: "${selectedReceivingSystem.id}" ---`);
-
     const walletsToShow = userWallets.filter((wallet) => {
       const detail = wallet.details?.[0] || {};
       const provider = detail.type;
@@ -192,7 +190,6 @@ export default function InternalTransactionCalculator({
       const normalizedWalletType = normalizeType(wallet.type, provider, currency);
       const isMatch = normalizedWalletType === selectedReceivingSystem.id;
 
-      // Este log nos mostrará la comparación exacta para cada billetera
       console.log({
         walletName: wallet.name,
         originalType: wallet.type,
@@ -206,19 +203,20 @@ export default function InternalTransactionCalculator({
       return isMatch;
     });
 
-    console.log(`--- Filtro terminado. Se encontraron ${walletsToShow.length} billeteras. ---`);
     return walletsToShow;
   }, [selectedReceivingSystem, userWallets]);
 
   useEffect(() => {
-    if (filteredWallets.length === 1) {
-      setSelectedWallet(filteredWallets[0]);
-    } else {
-      clearSelectedWallet();
-    }
-  }, [selectedReceivingSystem, filteredWallets, setSelectedWallet, clearSelectedWallet]);
+    clearSelectedWallet();
+  }, [selectedReceivingSystem]);
 
+  // En InternalTransactionCalculator.tsx
   const handleWalletChange = (walletId: string) => {
+    if (walletId === 'none') {
+      setSelectedWallet(null);
+      return;
+    }
+
     const wallet = filteredWallets.find((w) => w.id === walletId);
     setSelectedWallet(wallet || null);
   };

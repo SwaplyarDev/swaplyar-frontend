@@ -36,7 +36,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
     let data: any = null;
     try {
       data = await res.json();
-      console.log('Respuesta refreshtoken en auth.ts: (json)', data);
+      //console.log('Respuesta refreshtoken en auth.ts: (json)', data);
     } catch {
       // Si no es JSON, intentamos texto
       try {

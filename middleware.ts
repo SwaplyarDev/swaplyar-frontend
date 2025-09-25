@@ -17,7 +17,7 @@ export default auth((req) => {
     // 1) Rutas de Admin: requieren login y rol admin
     if (isAdminRoute) {
       if (!isLoggedIn) {
-        return NextResponse.redirect(new URL('/es/iniciar-sesion-o-registro', req.url));
+        return NextResponse.redirect(new URL('/es/iniciar-sesion', req.url));
       }
       const role = (req.auth as any)?.user?.role;
       if (role !== 'admin') {
@@ -27,7 +27,7 @@ export default auth((req) => {
 
     // 2) Rutas protegidas (incluye /es/auth/* por config): requieren login
     if (isProtectedRoute && !isLoggedIn) {
-      return NextResponse.redirect(new URL('/es/iniciar-sesion-o-registro', req.url));
+      return NextResponse.redirect(new URL('/es/iniciar-sesion', req.url));
     }
     //Si está logueado y va a /es/inicio, redirigir
     if (isLoggedIn && pathname === '/es/inicio') {

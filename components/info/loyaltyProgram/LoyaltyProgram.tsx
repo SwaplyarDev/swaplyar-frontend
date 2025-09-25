@@ -21,7 +21,7 @@ function LoyaltyProgram() {
 
   const handleChange = () => {
     setView('register');
-    window.location.href = '/es/iniciar-sesion-o-registro';
+    window.location.href = '/es/registro';
   };
 
   return (
@@ -46,8 +46,8 @@ function LoyaltyProgram() {
               ¡Únete ya!
             </button>
             <p className="mx-auto mt-10 max-w-[504px] text-start font-light">
-              ¿Aún no formas parte? <LinkWithHover href="/es/iniciar-sesion-o-registro">Crea</LinkWithHover> tu perfil
-              en SwaplyAr o <LinkWithHover href="/es/iniciar-sesion-o-registro">Inicia Sesión</LinkWithHover> en tu
+              ¿Aún no formas parte? <LinkWithHover href="/es/registro">Crea</LinkWithHover> tu perfil
+              en SwaplyAr o <LinkWithHover href="/es/iniciar-sesion">Inicia Sesión</LinkWithHover> en tu
               cuenta y da el primer paso hacia una experiencia que te recompensa en cada movimiento. ¡Inscríbete hoy y
               comienza a disfrutar las ventajas!
             </p>
@@ -86,7 +86,7 @@ function LoyaltyProgram() {
       </div>
       <FlyerTrabajo
         imageSrc={FlyerGif}
-        href="/es/iniciar-sesion-o-registro"
+        href="/es/registro"
         description="Registrate gratis para empezar a obtener beneficios exclusivos"
         nameButton="Me quiero registrar"
       />

@@ -20,8 +20,8 @@ type FormData = {
 
 const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
   const { isDark } = useDarkTheme();
-  
-  const { data: session } = useSession();
+    //traemos a update desde useSession
+  const { data: session, update } = useSession();
   const token = session?.accessToken;
   const { setAlias } = useInfoPersonalFormStore();
   const [nickName, setNickName] = useState();
@@ -47,9 +47,23 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
     if (!token) throw new Error("No access token available");
     setLoading(true);
     if (data.alias) {
-      const res = await updateNickname(token, data.alias);
 
+      const res = await updateNickname(token, data.alias);
+      
       setAlias((res as { nickName: string }).nickName);
+
+       // ✅ Actualizamos la sesión en memoria
+      if (session?.user) {
+        await update({
+          user: {
+            ...session.user,
+            profile: {
+              ...session.user.profile,
+              nickName: res.nickName, // Aquí reflejamos el cambio
+            },
+          },
+        });
+      }
 
       setShow(false);
     }

@@ -53,7 +53,7 @@ export const VerifyCodePage = () => {
     if (!email && storedEmail) {
       useEmailVerificationStore.getState().setEmail(storedEmail);
     } else if (!email && !storedEmail) {
-      router.push('/es/iniciar-sesion-o-registro');
+      router.push('/es/iniciar-sesion');
     }
 
     if (isLocked) {
@@ -268,7 +268,7 @@ export const VerifyCodePage = () => {
           {errors.verificationCode && <p className="mb-5 text-sm text-red-500">• {errors.verificationCode.message}</p>}
 
           <div className="my-5 flex items-center justify-between">
-            <ButtonBack route="/es/iniciar-sesion-o-registro" isDark={isDark} />
+            <ButtonBack route="/es/iniciar-sesion" isDark={isDark} />
             <button
               type="submit"
               disabled={!isCodeComplete || loading}

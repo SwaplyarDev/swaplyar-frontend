@@ -17,13 +17,18 @@ import ProfilePictureModal from './Modals/ProfilePictureModal';
 import { useSocialNetworksStore } from './store/socialNetworksStore';
 import { LoadingState } from '../historial/loadingState';
 import { useTransactions } from '@/hooks/useTransactions';
+import { useWhatsAppFormStore } from './store/WhatsAppFormStore';
 
 
 const Profile = () => {
   const { isDark } = useDarkTheme();
 
   const { data: session } = useSession();
-
+  useEffect(() => {
+  if (session?.user.profile?.phone) {
+    useWhatsAppFormStore.setState({ phone: session.user.profile.phone });
+  }
+}, [session]);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const [showSocialNetworkModal, setShowSocialNetworkModal] = useState(false);

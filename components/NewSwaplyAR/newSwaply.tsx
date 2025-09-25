@@ -8,7 +8,7 @@ const NewSwaply = () => {
     <div>
       <div className="mt-10 text-center">
         <FlyerTrabajo
-          href="/es/iniciar-sesion-o-registro"
+          href="/es/registro"
           imageSrc={FlyerGif}
           description="Accede a más funciones y guardar tu historial de cambios"
           nameButton="Crear mi cuenta gratis"

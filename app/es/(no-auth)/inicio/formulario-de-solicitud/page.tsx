@@ -38,7 +38,7 @@ const RequestPage = () => {
         <SolicitudFlowWrapper />
       </div>
       <FlyerTrabajo
-        href="/es/iniciar-sesion-o-registro"
+        href="/es/registro"
         description="Para acceder a más beneficios y seguimiento en tiempo real registrate gratis"
         nameButton="¡Me quiero registrar!"
         imageSrc={FlyerGif}

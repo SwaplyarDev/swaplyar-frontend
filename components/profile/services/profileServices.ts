@@ -1,4 +1,4 @@
-import { UpdatePictureResponse } from "@/types/profileServices";
+import { UpdateNicknameResponse, UpdatePhoneResponse, UpdatePictureResponse } from "@/types/profileServices";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -32,7 +32,7 @@ async function apiRequest<T>(
   return res.json();
 }
 
-export const updateNickname = (token: string, nickName: string) =>
+export const updateNickname = (token: string, nickName: string):Promise<UpdateNicknameResponse> =>
   apiRequest(
     `/users/profiles/my-profile/nickname`,
     "PUT",
@@ -41,7 +41,11 @@ export const updateNickname = (token: string, nickName: string) =>
   );
   
 export const updatePhone = (token: string, phone: string) =>
-  apiRequest(`/users/profiles/my-profile/phone`, "PUT", token, { phone });
+  apiRequest<UpdatePhoneResponse>(
+    `/users/profiles/my-profile/phone`,
+     "PUT", 
+     token,
+      { phone });
 
 /** Editar localización */
 export const updateLocation = (

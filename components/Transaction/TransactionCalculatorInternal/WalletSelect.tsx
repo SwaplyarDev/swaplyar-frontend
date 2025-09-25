@@ -58,13 +58,10 @@ const getWalletLogos = (type: string) => {
 export default function WalletSelect({ filteredWallets, selectedWalletId, onChange }: WalletSelectProps) {
   const { isDark } = useDarkTheme();
 
-  // Función para obtener el texto principal de la billetera
   const getPrimaryText = (wallet: Wallet, detail: any) => {
-    switch (
-      detail.platformId // Usamos platformId que es más confiable
-    ) {
+    switch (detail.platformId) {
       case 'virtual_bank':
-        return detail.emailAccount || ''; // Dato desde los detalles
+        return detail.emailAccount || '';
       case 'pix':
         return detail.pixValue || '';
       case 'receiver_crypto':
@@ -73,7 +70,7 @@ export default function WalletSelect({ filteredWallets, selectedWalletId, onChan
       case 'bank':
         return detail.sendMethodValue || ''; // ALIAS, CBU, etc.
       default:
-        return wallet.name; // El apodo de la cuenta como fallback
+        return wallet.name;
     }
   };
 
@@ -83,11 +80,12 @@ export default function WalletSelect({ filteredWallets, selectedWalletId, onChan
   );
 
   return (
-    <div className="w-full max-w-lg pb-2">
+    <div className="relative w-full max-w-lg pb-2">
+      {/* El componente Select. Fíjate que el botón 'X' ya no está dentro del Trigger. */}
       <Select value={selectedWalletId ?? ''} onValueChange={onChange}>
-        <SelectTrigger className="h-auto min-h-[40px] w-full border-blue-600 ...">
+        <SelectTrigger className="h-auto min-h-[40px] w-full border-blue-600 pr-10 ...">
           {selectedWallet ? (
-            <div className="flex items-center gap-4">
+            <div className="flex min-w-0 items-center gap-4">
               <Image
                 src={
                   isDark
@@ -101,9 +99,9 @@ export default function WalletSelect({ filteredWallets, selectedWalletId, onChan
                 alt={selectedWallet.name || 'logo'}
                 width={30}
                 height={30}
-                className="h-auto w-auto rounded-sm"
+                className="h-auto w-auto flex-shrink-0 rounded-sm"
               />
-              <span className="text-sm font-medium">
+              <span className="truncate text-sm font-medium">
                 {getPrimaryText(selectedWallet, selectedWallet.details?.[0] || {})}
               </span>
             </div>
@@ -126,18 +124,18 @@ export default function WalletSelect({ filteredWallets, selectedWalletId, onChan
                     <Image
                       src={isDark ? logoDark : logo}
                       alt={wallet.name || 'logo'}
-                      width={40}
-                      height={40}
+                      width={60}
+                      height={60}
                       className="h-auto w-auto rounded-sm"
                     />
                   </div>
                   <div className="min-w-0">
                     <SelectPrimitive.ItemText>
-                      <span className="truncate text-sm font-medium">{primaryText}</span>
+                      <span className="truncate text-sm font-medium text-blue-800">{primaryText}</span>
                     </SelectPrimitive.ItemText>
                   </div>
                   <div className="ml-auto flex-shrink-0 pl-4">
-                    <span className="truncate text-sm font-medium text-gray-500">{secondaryText}</span>
+                    <span className="truncate text-sm font-medium text-blue-800">{secondaryText}</span>
                   </div>
                 </div>
               </SelectPrimitive.Item>
@@ -145,6 +143,32 @@ export default function WalletSelect({ filteredWallets, selectedWalletId, onChan
           })}
         </SelectContent>
       </Select>
+
+      {/* --- EL BOTÓN 'X' AHORA ESTÁ AQUÍ, FUERA DEL SELECT --- */}
+      {/* Se renderiza solo si hay una billetera seleccionada y se posiciona encima. */}
+      {selectedWallet && (
+        <button
+          type="button"
+          onClick={() => onChange('none')}
+          className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full p-0.5 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700"
+          aria-label="Limpiar selección"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      )}
     </div>
   );
 }

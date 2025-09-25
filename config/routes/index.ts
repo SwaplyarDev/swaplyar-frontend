@@ -16,6 +16,9 @@ export const configRoutes: ConfigRoutes = {
     '/es/terminos-y-condiciones',
     '/es/garantia',
     '/es/inicio/formulario-de-solicitud',
+    '/es/registro',
+    '/es/iniciar-sesion',
+    '/es/iniciar-sesion/verificacion-email',
   ],
   authRoutes: [
     '/es/iniciar-sesion-o-registro',
