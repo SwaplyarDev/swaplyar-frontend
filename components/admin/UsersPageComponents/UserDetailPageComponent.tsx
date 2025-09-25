@@ -13,6 +13,7 @@ import { UserRewardsSection } from './UserRewardSection';
 import { getUserWalletAccountByUserId } from '@/actions/virtualWalletAccount/virtualWallets.action';
 import auth from '@/auth';
 import { getDiscountsByUserId } from '@/actions/Discounts/discounts.action';
+import { getAdminTransactionsByEmail, getTransactionByUserEmail } from '@/actions/transactions/admin-transaction';
 
 export async function UserDetailPageComponent({ verificationId }: { verificationId: string }) {
   const session = await auth();
@@ -21,6 +22,14 @@ export async function UserDetailPageComponent({ verificationId }: { verification
   if (!verification?.success) return <UserNotFound verificationId={verificationId} />;
   const wallets = await getUserWalletAccountByUserId(verification?.data.user_id, token || '');
   const discounts = await getDiscountsByUserId(verification?.data.user_id, token || '');
+  const transactions2 = await getTransactionByUserEmail(verification?.data.user_profile.email || '');
+  const transactions = await getAdminTransactionsByEmail(verification?.data.user_profile.email || '');
+  console.log("🔎 Verification data:", transactions2);
+  console.log("🔎 Verification:", verification);
+//   transactions2.data.forEach((t) => {
+//   console.log("Sender email:", t.senderAccount.createdBy);
+// });
+
 
   return (
     <div className="min-h-screen">
@@ -46,7 +55,7 @@ export async function UserDetailPageComponent({ verificationId }: { verification
               )}
               
               {/* No hay relacion directa entre el usuario y las transacciones, seccion a agregar dentro de componente WalletDetails */}
-              <TransactionHistorySection transactions={{ meta: { totalPages: 0, totalItems: 0, page: 1, perPage: 10, totalTransactions: 0 }, data: [] }} />
+              <TransactionHistorySection transactions={transactions} />
 
               <UserRewardsSection discounts={discounts} /> 
             </div>

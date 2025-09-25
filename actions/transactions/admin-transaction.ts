@@ -260,3 +260,43 @@ export async function getTransactionByUserEmail(user_email: string): Promise<Tra
     return {} as TransactionByUserId;
   }
 }
+
+export async function getAdminTransactionsByEmail(userEmail: string): Promise<TransactionByUserId> {
+  try {
+    const session = await auth();
+    const token = session?.accessToken;
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/transactions/sender/${userEmail}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        cache: "no-store",
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error("Error al obtener transacciones");
+    }
+
+    const raw = await res.json();
+
+    return {
+      data: raw.data ?? [],
+      meta: {
+        totalPages: raw.meta?.totalPages ?? 0,
+        totalItems: raw.meta?.totalItems ?? 0,
+        page: raw.meta?.page ?? 1,
+        perPage: raw.meta?.perPage ?? 10,
+      },
+    };
+  } catch (err) {
+    console.error("❌ Error fetching admin transactions:", err);
+    return {
+      data: [],
+      meta: { totalPages: 0, totalItems: 0, page: 1, perPage: 10 },
+    };
+  }
+}

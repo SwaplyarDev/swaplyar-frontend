@@ -4,10 +4,10 @@ export interface TransactionByUserId {
     totalItems: number;
     page: number;
     perPage: number;
-    totalTransactions: number;
   };
   data: Transaction[];
 }
+
 
 export interface Transaction {
   id: string;

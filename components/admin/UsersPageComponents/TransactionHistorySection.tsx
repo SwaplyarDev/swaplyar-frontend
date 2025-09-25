@@ -5,9 +5,11 @@ import { Search, CreditCard, ChevronDown, ChevronUp, Clock } from 'lucide-react'
 import { TransactionByUserId } from '@/types/transactionsBackEnd2';
 import { formatDate } from '@/utils/utils';
 
+
 export function TransactionHistorySection({ transactions }: { transactions: TransactionByUserId }) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  console.log('transactions in TransactionHistorySection:', transactions);
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -48,7 +50,7 @@ export function TransactionHistorySection({ transactions }: { transactions: Tran
           </div>
         </div>
         <div className="scrollable-list mb-4 max-h-[500px] divide-y overflow-y-auto rounded-lg border scrollbar dark:divide-gray-700 dark:border-gray-700">
-          {transactions.meta.totalTransactions > 0 ? (
+          {transactions?.meta?.totalItems && transactions.meta.totalItems > 0 ? (
             transactions.data.map((transaction) => (
               <div key={transaction.id} className="p-4 transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50">
                 <div className="flex flex-row items-center justify-between">
@@ -56,13 +58,22 @@ export function TransactionHistorySection({ transactions }: { transactions: Tran
                     <SvgTransactionType type={transaction.finalStatus === 'pending' ? 'subscription' : 'transfer'} />
                     <div className="flex flex-col items-start gap-1">
                       <p className="font-medium dark:text-white">{transaction.message}</p>
+
+                      {/* remitente */}
                       <p className="mt-0.5 text-sm text-gray-600 dark:text-gray-400">
-                        To: {transaction.receiverAccount.firstName} {transaction.receiverAccount.lastName}
+                        From: {`${transaction.senderAccount.firstName || ""} ${transaction.senderAccount.lastName || ""}`}
                       </p>
+
+                      {/* receptor */}
+                      <p className="mt-0.5 text-sm text-gray-600 dark:text-gray-400">
+                        To: {`${transaction.receiverAccount.firstName || ""} ${transaction.receiverAccount.lastName || ""}`}
+                      </p>
+
                       <p className="mt-1 text-xs text-gray-500 dark:text-gray-500">
                         {formatDate(transaction.createdAt)}
                       </p>
                     </div>
+
                   </div>
                   <p className={`font-semibold`}>${transaction.amount.amountSent}</p>
                 </div>
