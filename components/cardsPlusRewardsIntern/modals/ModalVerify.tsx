@@ -9,7 +9,6 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import Arrow from '@/components/ui/Arrow/Arrow';
 import DniUpload from '../SwaplyPlusRewardsComponents/DniUpload';
 import SelfieUpload from '../SwaplyPlusRewardsComponents/SelfieUpload';
-import { log } from 'console';
 
 export type ModalProps = {
   showVerify: boolean;
