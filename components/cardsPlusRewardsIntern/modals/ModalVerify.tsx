@@ -9,6 +9,7 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import Arrow from '@/components/ui/Arrow/Arrow';
 import DniUpload from '../SwaplyPlusRewardsComponents/DniUpload';
 import SelfieUpload from '../SwaplyPlusRewardsComponents/SelfieUpload';
+import { log } from 'console';
 
 export type ModalProps = {
   showVerify: boolean;
@@ -63,6 +64,7 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
 
     try {
       const result = await plusRewardsActions(formData, session?.accessToken || '');
+      console.log('Resultado de plusRewardsActions:', result);
       if (result.success) {
         Swal.fire({
           icon: 'success',
