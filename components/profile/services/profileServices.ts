@@ -31,7 +31,7 @@ async function apiRequest<T>(
 
   return res.json();
 }
-
+/** Editar apodo */
 export const updateNickname = (token: string, nickName: string):Promise<UpdateNicknameResponse> =>
   apiRequest(
     `/users/profiles/my-profile/nickname`,
@@ -39,7 +39,7 @@ export const updateNickname = (token: string, nickName: string):Promise<UpdateNi
     token,
     { nickName }
   );
-  
+  /** Editar teléfono */
 export const updatePhone = (token: string, phone: string) =>
   apiRequest<UpdatePhoneResponse>(
     `/users/profiles/my-profile/phone`,
@@ -73,3 +73,12 @@ export const updatePicture = async (token: string, file: File):Promise<UpdatePic
     true
   );
 };
+
+/** Editar email */
+export const updateEmail = (token: string, email: string) =>
+  apiRequest(
+    `/users/profiles/my-profile/email`,
+    "PUT",
+    token,
+    { email }
+  );

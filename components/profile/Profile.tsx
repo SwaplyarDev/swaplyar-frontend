@@ -18,6 +18,8 @@ import { useSocialNetworksStore } from './store/socialNetworksStore';
 import { LoadingState } from '../historial/loadingState';
 import { useTransactions } from '@/hooks/useTransactions';
 import { useWhatsAppFormStore } from './store/WhatsAppFormStore';
+import EmailModal from './Modals/EmailModal';
+
 
 
 const Profile = () => {
@@ -33,6 +35,7 @@ const Profile = () => {
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const [showSocialNetworkModal, setShowSocialNetworkModal] = useState(false);
   const [showPictureModal, setShowPictureModal] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
 
   const socialAccounts = useSocialNetworksStore((state) => state.socialAccounts);
   const { loading } =
@@ -98,8 +101,11 @@ const Profile = () => {
         </ProfileSectionCard>
 
         <ProfileSectionCard>
-          <EmailCard />
-        </ProfileSectionCard>
+  <EmailCard setShow={setShowEmailModal} />
+  {showEmailModal && (
+    <EmailModal show={showEmailModal} setShow={setShowEmailModal} />
+  )}
+</ProfileSectionCard>
 
         <ProfileSectionCard>
           <WhatsAppCard setShow={setShowWhatsAppModal} />
