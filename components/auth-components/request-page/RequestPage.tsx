@@ -21,6 +21,7 @@ export default async function RequestPage() {
     try {
       discountsData = await getDiscounts(session.accessToken);
       starsData = await getUserStarsAndAmount(session.accessToken);
+      console.log('--- Datos de descuentos recibidos en RequestPage:', JSON.stringify(discountsData, null, 2));
     } catch (error) {
       console.log(error);
       const errorMessage = 'No se han podido obtener los descuentos del usuario';
