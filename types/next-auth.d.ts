@@ -23,6 +23,7 @@ interface AppProfile {
   locationId?: string | null;
   lastActivity?: string | null;
   nationality?: string | null;
+  location?: string | null;
   // Algunas respuestas incluyen redes sociales como array u objeto; lo tipamos flexible
   social?: Array<{ network: string; profile: string }> | Record<string, unknown> | null;
 }

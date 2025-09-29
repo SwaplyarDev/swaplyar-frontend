@@ -4,7 +4,7 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useInfoPersonalFormStore } from '../store/InfoPersonalFormStore';
-import { updateLocation, updateNickname } from '../services/profileServices';
+import { updateProfile } from '../services/profileServices';
 import { useSession } from 'next-auth/react';
 
 type InfoPersonalModalProps = {
@@ -48,7 +48,7 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
     setLoading(true);
     if (data.alias) {
 
-      const res = await updateNickname(token, data.alias);
+      const res = await updateProfile(token, data.alias);
       
       setAlias((res as { nickName: string }).nickName);
 
@@ -85,7 +85,7 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
       <div
         className={`fixed left-1/2 top-1/2 z-50 flex h-[250px] w-[300px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-4 rounded-2xl border-none xs:w-[400px] ${isDark ? 'bg-zinc-800 text-white' : 'bg-white text-black'}`}
       >
-        <h2 className="text-3xl font-light">Modificar Apodo</h2>
+        <h2 className="text-3xl font-light">Modificar Apodo y ubicación</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div>
             <InputSteps

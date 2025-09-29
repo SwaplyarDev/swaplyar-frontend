@@ -44,9 +44,17 @@ const InfoCard = ({ setShow }: InfoCardProps) => {
         <InfoRow label="Nacionalidad" value={profile?.nationality ?? '-'} />
         <InfoRow label="N° de Documento" value={profile?.identification ?? '-'} />
         <InfoRow label="Fecha de Nacimiento" value={profile?.birthday ?? '-'} />
+        {/* ambos editables se editan desde el mismo modal */}
         <InfoRow
           label="Apodo"
           value={alias || profile?.nickName || '-'}
+          editable
+          onEdit={() => setShow(true)}
+          className="sm:mt-[15px]"
+        />
+        <InfoRow
+          label="Ubicación"
+          value={alias || profile?.location || '-'}
           editable
           onEdit={() => setShow(true)}
           className="sm:mt-[15px]"

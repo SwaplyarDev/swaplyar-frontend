@@ -27,10 +27,10 @@ const Profile = () => {
 
   const { data: session } = useSession();
   useEffect(() => {
-  if (session?.user.profile?.phone) {
-    useWhatsAppFormStore.setState({ phone: session.user.profile.phone });
-  }
-}, [session]);
+    if (session?.user.profile?.phone) {
+      useWhatsAppFormStore.setState({ phone: session.user.profile.phone });
+    }
+  }, [session]);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const [showSocialNetworkModal, setShowSocialNetworkModal] = useState(false);
@@ -39,7 +39,7 @@ const Profile = () => {
 
   const socialAccounts = useSocialNetworksStore((state) => state.socialAccounts);
   const { loading } =
-      useTransactions();
+    useTransactions();
 
   useEffect(() => {
     document.body.style.overflow = showWhatsAppModal || showProfileModal || showSocialNetworkModal ? 'hidden' : 'auto';
@@ -57,12 +57,12 @@ const Profile = () => {
   };
 
   if (loading) {
-      return (
-        <div className="mx-auto mb-24 mt-10 w-full max-w-xl rounded-xl p-6 sm:my-6">
-          <LoadingState />
-        </div>
-      );
-    }
+    return (
+      <div className="mx-auto mb-24 mt-10 w-full max-w-xl rounded-xl p-6 sm:my-6">
+        <LoadingState />
+      </div>
+    );
+  }
 
   return (
     <div className="my-14 min-h-screen font-textFont text-white">
@@ -101,11 +101,11 @@ const Profile = () => {
         </ProfileSectionCard>
 
         <ProfileSectionCard>
-  <EmailCard setShow={setShowEmailModal} />
-  {showEmailModal && (
-    <EmailModal show={showEmailModal} setShow={setShowEmailModal} />
-  )}
-</ProfileSectionCard>
+          <EmailCard setShow={setShowEmailModal} />
+          {showEmailModal && (
+            <EmailModal show={showEmailModal} setShow={setShowEmailModal} />
+          )}
+        </ProfileSectionCard>
 
         <ProfileSectionCard>
           <WhatsAppCard setShow={setShowWhatsAppModal} />

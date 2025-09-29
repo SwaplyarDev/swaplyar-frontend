@@ -39,9 +39,10 @@ const EmailModal = ({ show, setShow }: EmailModalProps) => {
 
     try {
       const res = await updateEmail(session.accessToken, data.email);
-        console.log("respuesta update email", res);
+      console.log("respuesta update email", res);
       // ✅ Actualizamos sesión en memoria
-      //arroja error porque todavia no tenemos el formato de respuesta del backend, deberiamos hacer tipado con la respuesta del servidor
+      //arroja error por la falta de tipado, falta formato de respuesta del servidor
+      //consultar con back si la edicion es solo para admins.
       if (session.user) {
         await update({
           user: {

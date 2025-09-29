@@ -31,15 +31,17 @@ async function apiRequest<T>(
 
   return res.json();
 }
-/** Editar apodo */
-export const updateNickname = (token: string, nickName: string):Promise<UpdateNicknameResponse> =>
-  apiRequest(
-    `/users/profiles/my-profile/nickname`,
-    "PUT",
-    token,
-    { nickName }
-  );
-  /** Editar teléfono */
+
+/** Editar perfil */
+export const updateProfile = (token: string, nickName?: string, location?: { country: string; department: string }) =>
+  apiRequest<UpdatePhoneResponse>(
+    `/users/profiles/my-profile`,
+     "PUT", 
+     token,
+      { nickName, ...location });
+
+
+/** Editar teléfono */
 export const updatePhone = (token: string, phone: string) =>
   apiRequest<UpdatePhoneResponse>(
     `/users/profiles/my-profile/phone`,
@@ -47,18 +49,6 @@ export const updatePhone = (token: string, phone: string) =>
      token,
       { phone });
 
-/** Editar localización */
-export const updateLocation = (
-  token: string,
-  country: string,
-  department: string
-) =>
-  apiRequest(
-    `/users/profiles/my-profile/location`,
-    "PUT",
-    token,
-    { country, department }
-  );
 
 /** Editar foto de perfil */
 export const updatePicture = async (token: string, file: File):Promise<UpdatePictureResponse> => {
@@ -74,7 +64,7 @@ export const updatePicture = async (token: string, file: File):Promise<UpdatePic
   );
 };
 
-/** Editar email */
+/** Editar email (solo admins por ahora)*/
 export const updateEmail = (token: string, email: string) =>
   apiRequest(
     `/users/profiles/my-profile/email`,
@@ -82,3 +72,27 @@ export const updateEmail = (token: string, email: string) =>
     token,
     { email }
   );
+
+  /*  Se comenta esta parte porque ahora se unificon los endpoints de location y nickname
+  
+  export const updateNickname = (token: string, nickName: string):Promise<UpdateNicknameResponse> =>
+    apiRequest(
+      `/users/profiles/my-profile/nickname`,
+      "PUT",
+      token,
+      { nickName }
+    );
+    
+    export const updateLocation = (
+      token: string,
+      country: string,
+      department: string
+    ) =>
+      apiRequest(
+        `/users/profiles/my-profile/location`,
+        "PUT",
+        token,
+        { country, department }
+      );
+  
+      */
