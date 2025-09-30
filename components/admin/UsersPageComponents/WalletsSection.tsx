@@ -15,12 +15,13 @@ export function WalletsSection({ wallets }: { wallets: WalletR[] }) {
     setIsExpanded(!isExpanded);
   };
 
-  const filteredWallets = wallets.filter(
-    (wallet) =>
-      wallet.accountName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      wallet.details[0].detailId.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const normalizedQuery = searchQuery.toLowerCase();
 
+  const filteredWallets = wallets.filter((wallet) =>
+    (wallet.accountName?.toLowerCase() ?? '').includes(normalizedQuery) ||
+    (wallet.details?.[0]?.detailId?.toLowerCase() ?? '').includes(normalizedQuery)
+  );
+  
   return (
     <div className="rounded-lg border bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
       <div className="mb-4 flex items-center justify-between">

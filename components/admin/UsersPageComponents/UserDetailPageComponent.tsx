@@ -13,6 +13,7 @@ import { UserRewardsSection } from './UserRewardSection';
 import { getUserWalletAccountByUserId } from '@/actions/virtualWalletAccount/virtualWallets.action';
 import auth from '@/auth';
 import { getDiscountsByUserId } from '@/actions/Discounts/discounts.action';
+import { getAdminTransactionsByEmail } from '@/actions/transactions/admin-transaction';
 
 export async function UserDetailPageComponent({ verificationId }: { verificationId: string }) {
   const session = await auth();
@@ -20,6 +21,7 @@ export async function UserDetailPageComponent({ verificationId }: { verification
   const verification = await getVerificationById(verificationId);
   if (!verification?.success) return <UserNotFound verificationId={verificationId} />;
   const wallets = await getUserWalletAccountByUserId(verification?.data.user_id, token || '');
+  const transactions = await getAdminTransactionsByEmail(verification?.data.user_profile.email);
   const discounts = await getDiscountsByUserId(verification?.data.user_id, token || '');
 
   return (
@@ -44,9 +46,8 @@ export async function UserDetailPageComponent({ verificationId }: { verification
                   Este usuario no tiene cuentas registradas.
                 </div>
               )}
-              
-              {/* No hay relacion directa entre el usuario y las transacciones, seccion a agregar dentro de componente WalletDetails */}
-              <TransactionHistorySection transactions={{ meta: { totalPages: 0, totalItems: 0, page: 1, perPage: 10, totalTransactions: 0 }, data: [] }} />
+
+              <TransactionHistorySection transactions={transactions} />
 
               <UserRewardsSection discounts={discounts} /> 
             </div>
