@@ -20,7 +20,7 @@ type FormData = {
 
 const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
   const { isDark } = useDarkTheme();
-    //traemos a update desde useSession
+  //traemos a update desde useSession
   const { data: session, update } = useSession();
   const token = session?.accessToken;
   const { setAlias } = useInfoPersonalFormStore();
@@ -43,40 +43,65 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
   }, [setValue, alias]);
 
   const onSubmit = async (data: FormData) => {
-  try {
-    if (!token) throw new Error("No access token available");
-    setLoading(true);
-    if (data.alias) {
+    try {
+      if (!token) throw new Error("No access token available");
+      setLoading(true);
+      //armamos el body a  enviar
+      const payload: {
+        nickname?: string;
+        location?: {
+          country: string;
+          department: string;
+          postalCode?: string;
+          date?: string;
+        };
+      } = {};
 
-      const res = await updateProfile(token, data.alias);
-      
-      setAlias((res as { nickName: string }).nickName);
+      if (data.alias) {
+        payload.nickname = data.alias;
+      }
 
-       // ✅ Actualizamos la sesión en memoria
+      if (data.country && data.department) {
+        payload.location = {
+          country: data.country,
+          department: data.department,
+          postalCode: "000000", // ⚠️ por ahora hardcodeado
+          date: new Date().toISOString().split("T")[0], // YYYY-MM-DD
+        };
+      }
+
+      //ahora hacemos la peticion al backend
+      console.log('datos qeu enviamos al backend:', payload);
+      const res = await updateProfile(token, payload.nickname, payload.location);
+      console.log('Respuesta de updateProfile:', res);
+
+      // Actualizar store y sesión
+
+      const { result } = res;
+      if (payload.nickname && res.result.nickName) {
+        setAlias(res.result.nickName);
+      }
+
       if (session?.user) {
         await update({
           user: {
             ...session.user,
             profile: {
               ...session.user.profile,
-              nickName: res.nickName, // Aquí reflejamos el cambio
+              nickName: result.nickName ?? session.user.profile?.nickname,
+              location: result.user.locations ?? session.user.profile?.location,
             },
           },
         });
       }
 
       setShow(false);
+    } catch (err) {
+      console.error("Error al actualizar perfil:", err);
+    } finally {
+      setLoading(false);
     }
-
-    // if (data.country && data.department) {
-    //   await updateLocation(token, data.country, data.department);
-    // }
-
-    setShow(false);
-  } catch (err) {
-    console.error("Error al actualizar perfil:", err);
-  }
-};
+  };
 
 
   return (
@@ -108,7 +133,7 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
             />
           </div>
 
-          {/* <InputSteps
+          <InputSteps
             label="País"
             name="country"
             id="country"
@@ -144,7 +169,7 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
             }}
             error={errors.department}
             className="order-3"
-          /> */}
+          />
 
           <div className="flex justify-between gap-4 pt-5">
             <button

@@ -1,4 +1,4 @@
-import { UpdateNicknameResponse, UpdatePhoneResponse, UpdatePictureResponse } from "@/types/profileServices";
+import { UpdateProfileResponse, UpdatePhoneResponse, UpdatePictureResponse } from "@/types/profileServices";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -33,12 +33,20 @@ async function apiRequest<T>(
 }
 
 /** Editar perfil */
-export const updateProfile = (token: string, nickName?: string, location?: { country: string; department: string }) =>
-  apiRequest<UpdatePhoneResponse>(
+export const updateProfile = (
+  token: string,
+  nickname?: string,
+  location?: { country: string; department: string }
+) =>
+  apiRequest<UpdateProfileResponse>(
     `/users/profiles/my-profile`,
-     "PUT", 
-     token,
-      { nickName, ...location });
+    "PUT",
+    token,
+    {
+      ...(nickname && { nickname }), // solo si existe
+      ...(location && { location })  // solo si existe
+    }
+  );
 
 
 /** Editar teléfono */

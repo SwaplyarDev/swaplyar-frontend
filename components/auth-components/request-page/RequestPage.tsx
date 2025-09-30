@@ -10,7 +10,7 @@ import { getUserStarsAndAmount } from '@/actions/Discounts/userStarsAndAmount.ac
 
 export default async function RequestPage() {
   const session = await auth();
-
+  console.log('session in RequestPage:', session);
   let discountsData: AdminDiscountsResponse = { data: [] };
   let starsData: UserStarsAndAmount = { data: { quantity: 0, stars: 0 } };
   let errors: string[] = [];
