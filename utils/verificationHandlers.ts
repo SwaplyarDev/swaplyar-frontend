@@ -26,21 +26,29 @@ export async function fetchAndHandleVerificationStatus({
   try {
     let statusResp;
     let workingToken = token;
+
+    console.log('🔎 Iniciando verificación con token:', workingToken);
+
     try {
       statusResp = await getPlusRewards(workingToken);
     } catch (err) {
       if ((err as Error)?.message === 'Unauthorized') {
         // Intenta refrescar sesión y reintenta una vez con el nuevo token
+
         const updated = await update();
         const newToken = (updated as any)?.accessToken || workingToken;
         workingToken = newToken;
+        console.log('✅ Token actualizado tras refresh:', workingToken)
         statusResp = await getPlusRewards(workingToken);
       } else {
         throw err;
       }
     }
+
     const { verification_status } = statusResp;
     const status = verification_status as Status;
+    console.log('Estado de verificación recibido del backend:', status);
+
     setStatus(status);
 
     switch (status) {
@@ -79,6 +87,7 @@ async function handleRejectedStatus(
 
   try {
     try {
+      console.log('🔄 Reintentando verificación tras RECHAZADO con token:', token);
       await resendVerificationAfterRejection(token);
     } catch (err) {
       if ((err as Error)?.message === 'Unauthorized') {
@@ -90,6 +99,8 @@ async function handleRejectedStatus(
       }
     }
     console.log('Token actualizado tras RECHAZADO');
+    // 🔹 Cambio: disparar un update() para reflejar cambio en la sesion de usuario
+    await update({ verification_status: 'REENVIAR_DATOS' });
   } catch (err) {
     console.error('Error al actualizar token tras RECHAZADO:', err);
   }
@@ -110,11 +121,13 @@ async function handleApprovedStatus(
 
   try {
     try {
+      console.log('Actualizando verificación como APROBADA en backend...');
       await updateVerificationStatus(token);
     } catch (err) {
       if ((err as Error)?.message === 'Unauthorized') {
         const updated = await update();
         const newToken = (updated as any)?.accessToken || token;
+        console.log(' Nuevo token tras refresh en APROBADO:', newToken);
         await updateVerificationStatus(newToken);
       } else {
         throw err;
@@ -122,7 +135,8 @@ async function handleApprovedStatus(
     }
     console.log('Token actualizado con verificación');
 
-    await update();
+    // Cambio: actualizar la session para reflejar el nuevo estado en tiempo real
+    await update({ verification_status: 'APROBADO' });
   } catch (err) {
     console.error('Error al actualizar token:', err);
   }

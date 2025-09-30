@@ -4,6 +4,7 @@ const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export async function plusRewardsActions(formData: FormData, token: string) {
   try {
+    console.log('Enviando imágenes a plusRewardsActions con token:', token);
     const res = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/verification/upload`, {
       method: 'POST',
       headers: {
@@ -11,7 +12,7 @@ export async function plusRewardsActions(formData: FormData, token: string) {
       },
       body: formData,
     });
-
+    console.log('Respuesta de plusRewardsActions:', res.status, res.statusText);
     const data = await res.json();
     if (!res.ok) {
       if (res.status === 401 || res.status === 403) {
@@ -61,14 +62,14 @@ export async function getPlusRewards(token: string) {
       cache: 'no-store',
     });
     const data = await res.json();
-
+    console.log('Respuesta de getPlusRewards:', res.status, res.statusText, data);
     if (!res.ok) {
       // Propagar Unauthorized explícitamente para que el caller pueda refrescar/actuar
       if (res.status === 401 || res.status === 403) {
-        console.warn('Respuesta no OK:', data);
+        console.warn('Respuesta no OK en getPlusRewards:', data);
         throw new Error('Unauthorized');
       }
-      console.warn('Respuesta no OK:', data);
+      console.warn('Respuesta no OK en getPlusRewards:', data);
       return { verification_status: 'REENVIAR_DATOS' };
     }
 
@@ -120,7 +121,7 @@ export async function getCardStatus(token: string) {
       },
       cache: 'no-store',
     });
-
+    console.log('Respuesta de getCardStatus:', res.status, res.statusText);
     if (!res.ok) {
       if (res.status === 401 || res.status === 403) {
         const errorBody = await res.text();
@@ -150,7 +151,7 @@ export async function updateVerificationStatus(token: string) {
         Authorization: `Bearer ${token}`,
       },
     });
-
+    console.log('Respuesta de updateVerificationStatus:', res.status, res.statusText);
     const data = await res.json();
 
     if (!res.ok) {

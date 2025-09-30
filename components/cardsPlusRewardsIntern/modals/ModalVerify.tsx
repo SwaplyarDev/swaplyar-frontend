@@ -63,6 +63,7 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
 
     try {
       const result = await plusRewardsActions(formData, session?.accessToken || '');
+      console.log('Resultado de plusRewardsActions:', result);
       if (result.success) {
         Swal.fire({
           icon: 'success',

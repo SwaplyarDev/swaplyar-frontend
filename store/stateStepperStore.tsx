@@ -78,7 +78,9 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     selectedSendingSystem: System | null,
     selectedReceivingSystem: System | null,
     accessToken?: string,
+    discountsIds?: string[],
   ): Promise<ResponseCreateTransaction | false> => {
+    console.log('STEPPER STORE: discountsIds recibidos como parámetro:', discountsIds);
     const state = get();
     const { stepOne, stepTwo, stepThree } = state.formData;
 
@@ -173,8 +175,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           paymentMethod: payload.payment_method.sender,
         },
         receiverAccount: {
-          firstName: stepTwo.receiver_first_name || '',
-          lastName: stepTwo.receiver_last_name || '',
+          first_name: stepTwo.receiver_first_name || '',
+          last_name: stepTwo.receiver_last_name || '',
           paymentMethod: payload.payment_method.receiver,
         },
       },
@@ -185,8 +187,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         currencyReceived: selectedReceivingSystem?.coin,
         received: false,
       },
+      userDiscountIds: discountsIds || [],
     };
-
     if (createTransactionDto.financialAccounts.receiverAccount.paymentMethod.method === 'virtual_bank') {
       createTransactionDto.financialAccounts.receiverAccount.paymentMethod.type = selectedReceivingSystem?.id || '';
     }

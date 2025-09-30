@@ -56,6 +56,7 @@ export interface StepperState {
     selectedSendingSystem: System | null,
     selectedReceivingSystem: System | null,
     accessToken?: string,
+    discountsIds?: string[],
   ) => Promise<any>;
   submitOneStep: () => Promise<any>;
   updateOneStep: (id: string) => void;
