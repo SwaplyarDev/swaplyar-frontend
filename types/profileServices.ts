@@ -56,3 +56,45 @@ export interface UpdatePhoneResponse {
   lastActivity: string | null;
   profilePictureUrl: string;
 }
+
+export interface UpdateProfileResponse {
+  message: string;
+  result: EditProfileResult;
+}
+
+export interface EditProfileResult {
+  id: string;
+  user: EditUser;
+  firstName: string;
+  lastName: string;
+  nickName: string;
+  email: string;
+  identification: string | null;
+  phone: string;
+  birthday: string | null;
+  age: number | null;
+  gender: string | null;
+  lastActivity: string | null;
+  profilePictureUrl: string;
+}
+
+export interface EditUser {
+  id: string;
+  locations: EditUserLocation[];
+  role: string;
+  termsAccepted: boolean;
+  createdAt: string;
+  validatedAt: string | null;
+  isActive: boolean;
+  isValidated: boolean;
+  userValidated: boolean;
+  refreshToken: string;
+}
+
+export interface EditUserLocation {
+  id: string;
+  country: string;
+  department: string;
+  postalCode: string;
+  date: string;
+}

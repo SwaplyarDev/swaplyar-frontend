@@ -13,6 +13,7 @@ interface AppProfile {
   middleName?: string | null;
   lastName: string;
   nickName?: string | null;
+  nickname?: string | null;
   email: string;
   identification?: string | null;
   phone?: string | null;
@@ -23,6 +24,10 @@ interface AppProfile {
   locationId?: string | null;
   lastActivity?: string | null;
   nationality?: string | null;
+  location?: Array<{
+    country: string;
+    department: string;
+  }> | null;
   // Algunas respuestas incluyen redes sociales como array u objeto; lo tipamos flexible
   social?: Array<{ network: string; profile: string }> | Record<string, unknown> | null;
 }

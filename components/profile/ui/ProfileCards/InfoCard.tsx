@@ -34,6 +34,7 @@ const InfoRow = ({ label, value = '-', editable, onEdit, className = '' }: InfoR
 const InfoCard = ({ setShow }: InfoCardProps) => {
   const { data: session } = useSession();
   const profile = session?.user.profile;
+  const location = profile?.location?.[0];
   const { alias } = useInfoPersonalFormStore();
 
   return (
@@ -44,9 +45,21 @@ const InfoCard = ({ setShow }: InfoCardProps) => {
         <InfoRow label="Nacionalidad" value={profile?.nationality ?? '-'} />
         <InfoRow label="N° de Documento" value={profile?.identification ?? '-'} />
         <InfoRow label="Fecha de Nacimiento" value={profile?.birthday ?? '-'} />
+        {/* ambos editables se editan desde el mismo modal */}
         <InfoRow
           label="Apodo"
           value={alias || profile?.nickName || '-'}
+          editable
+          onEdit={() => setShow(true)}
+          className="sm:mt-[15px]"
+        />
+        <InfoRow
+          label="Ubicación"
+          value={
+            location
+              ? `${location.country}, ${location.department}`
+              : "-"
+          }
           editable
           onEdit={() => setShow(true)}
           className="sm:mt-[15px]"

@@ -18,6 +18,8 @@ import { useSocialNetworksStore } from './store/socialNetworksStore';
 import { LoadingState } from '../historial/loadingState';
 import { useTransactions } from '@/hooks/useTransactions';
 import { useWhatsAppFormStore } from './store/WhatsAppFormStore';
+import EmailModal from './Modals/EmailModal';
+
 
 
 const Profile = () => {
@@ -25,18 +27,19 @@ const Profile = () => {
 
   const { data: session } = useSession();
   useEffect(() => {
-  if (session?.user.profile?.phone) {
-    useWhatsAppFormStore.setState({ phone: session.user.profile.phone });
-  }
-}, [session]);
+    if (session?.user.profile?.phone) {
+      useWhatsAppFormStore.setState({ phone: session.user.profile.phone });
+    }
+  }, [session]);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const [showSocialNetworkModal, setShowSocialNetworkModal] = useState(false);
   const [showPictureModal, setShowPictureModal] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
 
   const socialAccounts = useSocialNetworksStore((state) => state.socialAccounts);
   const { loading } =
-      useTransactions();
+    useTransactions();
 
   useEffect(() => {
     document.body.style.overflow = showWhatsAppModal || showProfileModal || showSocialNetworkModal ? 'hidden' : 'auto';
@@ -54,12 +57,12 @@ const Profile = () => {
   };
 
   if (loading) {
-      return (
-        <div className="mx-auto mb-24 mt-10 w-full max-w-xl rounded-xl p-6 sm:my-6">
-          <LoadingState />
-        </div>
-      );
-    }
+    return (
+      <div className="mx-auto mb-24 mt-10 w-full max-w-xl rounded-xl p-6 sm:my-6">
+        <LoadingState />
+      </div>
+    );
+  }
 
   return (
     <div className="my-14 min-h-screen font-textFont text-white">
@@ -98,7 +101,10 @@ const Profile = () => {
         </ProfileSectionCard>
 
         <ProfileSectionCard>
-          <EmailCard />
+          <EmailCard setShow={setShowEmailModal} />
+          {showEmailModal && (
+            <EmailModal show={showEmailModal} setShow={setShowEmailModal} />
+          )}
         </ProfileSectionCard>
 
         <ProfileSectionCard>

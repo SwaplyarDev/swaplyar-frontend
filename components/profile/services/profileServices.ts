@@ -1,4 +1,4 @@
-import { UpdateNicknameResponse, UpdatePhoneResponse, UpdatePictureResponse } from "@/types/profileServices";
+import { UpdateProfileResponse, UpdatePhoneResponse, UpdatePictureResponse } from "@/types/profileServices";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -32,14 +32,24 @@ async function apiRequest<T>(
   return res.json();
 }
 
-export const updateNickname = (token: string, nickName: string):Promise<UpdateNicknameResponse> =>
-  apiRequest(
-    `/users/profiles/my-profile/nickname`,
+/** Editar perfil */
+export const updateProfile = (
+  token: string,
+  nickname?: string,
+  location?: { country: string; department: string }
+) =>
+  apiRequest<UpdateProfileResponse>(
+    `/users/profiles/my-profile`,
     "PUT",
     token,
-    { nickName }
+    {
+      ...(nickname && { nickname }), // solo si existe
+      ...(location && { location })  // solo si existe
+    }
   );
-  
+
+
+/** Editar teléfono */
 export const updatePhone = (token: string, phone: string) =>
   apiRequest<UpdatePhoneResponse>(
     `/users/profiles/my-profile/phone`,
@@ -47,18 +57,6 @@ export const updatePhone = (token: string, phone: string) =>
      token,
       { phone });
 
-/** Editar localización */
-export const updateLocation = (
-  token: string,
-  country: string,
-  department: string
-) =>
-  apiRequest(
-    `/users/profiles/my-profile/location`,
-    "PUT",
-    token,
-    { country, department }
-  );
 
 /** Editar foto de perfil */
 export const updatePicture = async (token: string, file: File):Promise<UpdatePictureResponse> => {
@@ -73,3 +71,36 @@ export const updatePicture = async (token: string, file: File):Promise<UpdatePic
     true
   );
 };
+
+/** Editar email (solo admins por ahora)*/
+export const updateEmail = (token: string, email: string) =>
+  apiRequest(
+    `/users/profiles/my-profile/email`,
+    "PUT",
+    token,
+    { email }
+  );
+
+  /*  Se comenta esta parte porque ahora se unificon los endpoints de location y nickname
+  
+  export const updateNickname = (token: string, nickName: string):Promise<UpdateNicknameResponse> =>
+    apiRequest(
+      `/users/profiles/my-profile/nickname`,
+      "PUT",
+      token,
+      { nickName }
+    );
+    
+    export const updateLocation = (
+      token: string,
+      country: string,
+      department: string
+    ) =>
+      apiRequest(
+        `/users/profiles/my-profile/location`,
+        "PUT",
+        token,
+        { country, department }
+      );
+  
+      */
