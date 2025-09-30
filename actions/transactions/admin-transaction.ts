@@ -238,25 +238,86 @@ export async function getReceiveTransaction(account_id: string): Promise<Transac
   }
 }
 
-export async function getTransactionByUserEmail(user_email: string): Promise<TransactionByUserId> {
+// export async function getTransactionByUserEmail(user_email: string): Promise<TransactionByUserId> {
+//   try {
+//     const session = await auth();
+//     const token = session?.accessToken;
+
+//     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/transactions?created_by=${user_email}`, {
+//       method: 'GET',
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//       cache: 'no-store',
+//     });
+//     if (!response.ok) {
+//       throw new Error('Error fetching user');
+//     }
+//     const transactions = await response.json();
+//     return transactions;
+//   } catch (e) {
+//     console.error('Error fetching user:', e);
+//     return {} as TransactionByUserId;
+//   }
+// }
+
+// export async function getTransactionByUserEmail(
+//   userEmail: string,
+//   page = 1,
+//   perPage = 10
+// ): Promise<TransactionByUserId> {
+//   const session = await auth();
+//   const token = session?.accessToken;
+
+//   const res = await fetch(
+//     `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/transactions?created_by=${userEmail}&page=${page}&perPage=${perPage}`,
+//     {
+//       method: "GET",
+//       headers: { Authorization: `Bearer ${token}` },
+//       cache: "no-store",
+//     }
+//   );
+
+//   if (!res.ok) throw new Error("Error al obtener transacciones");
+//   return await res.json();
+// }
+
+export async function getAdminTransactionsByEmail(
+  userEmail: string,
+  page = 1,
+  perPage = 10
+): Promise<TransactionByUserId> {
   try {
     const session = await auth();
     const token = session?.accessToken;
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/transactions?created_by=${user_email}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/transactions/sender/${userEmail}?page=${page}&perPage=${perPage}`,
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+        cache: "no-store",
+      }
+    );
+
+    if (!res.ok) throw new Error("Error al obtener transacciones");
+
+    const raw = await res.json();
+
+    return {
+      data: raw.data ?? [],
+      meta: {
+        totalPages: raw.meta?.totalPages ?? 0,
+        totalItems: raw.meta?.totalItems ?? 0,
+        page: raw.meta?.page ?? page,
+        perPage: raw.meta?.perPage ?? perPage,
       },
-      cache: 'no-store',
-    });
-    if (!response.ok) {
-      throw new Error('Error fetching user');
-    }
-    const transactions = await response.json();
-    return transactions;
-  } catch (e) {
-    console.error('Error fetching user:', e);
-    return {} as TransactionByUserId;
+    };
+  } catch (err) {
+    console.error("❌ Error fetching admin transactions:", err);
+    return {
+      data: [],
+      meta: { totalPages: 0, totalItems: 0, page: 1, perPage },
+    };
   }
 }

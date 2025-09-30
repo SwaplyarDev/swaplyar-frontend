@@ -25,12 +25,14 @@ interface WalletsListProps {
 export function WalletsList({ wallets, onSelectWallet }: WalletsListProps) {
   return (
     <div className="divide-y">
-      {wallets.map((wallet) => (
-        <div
-          key={wallet.details[0].detailId}
-          className="cursor-pointer p-4 transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50"
-          onClick={() => onSelectWallet(wallet)}
-        >
+      {wallets.map((wallet, index) => {
+        const key = wallet.details?.[0]?.detailId ?? index;
+        return (
+          <div
+            key={key}
+            className="cursor-pointer p-4 transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50"
+            onClick={() => onSelectWallet(wallet)}
+          >
           <div className="flex items-start justify-between">
             <div className="flex gap-3">
               <div className="flex items-center justify-center">
@@ -43,16 +45,18 @@ export function WalletsList({ wallets, onSelectWallet }: WalletsListProps) {
                 <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400"> {tipoCuenta(wallet.payment_type)}</p>
                 <div className="mt-2 flex items-center gap-2">
                   <span
-                    className={`inline-block h-2 w-2 rounded-full ${wallet.details[0].userAccount?.status ? 'bg-green-500' : 'bg-red-500'}`}
+                    className={`inline-block h-2 w-2 rounded-full ${
+                      wallet.details?.[0]?.userAccount?.status ? 'bg-green-500' : 'bg-red-500'
+                    }`}
                   ></span>
                   <span className="text-xs text-gray-500 dark:text-gray-400">
-                    {wallet.details[0].userAccount?.status ? 'Activa' : 'Inactiva'}
+                    {wallet.details?.[0]?.userAccount?.status ? 'Activa' : 'Inactiva'}
                   </span>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-2">
-              {wallet.details[0].currency && (
+             <div className="flex flex-col gap-2">
+              {wallet.details?.[0]?.currency && (
                 <div className="flex items-center justify-center rounded-full bg-blue-50 p-1.5 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
                   <span className="text-xs font-medium">{wallet.details[0].currency}</span>
                 </div>
@@ -60,7 +64,7 @@ export function WalletsList({ wallets, onSelectWallet }: WalletsListProps) {
             </div>
           </div>
         </div>
-      ))}
+      )})}
     </div>
   );
 }
