@@ -2,7 +2,7 @@ const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export async function getDiscounts(token: string) {
   try {
-    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/discounts/user-discounts/me?filterType=available`, {
+    const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/discounts/user-discounts/available/me`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
