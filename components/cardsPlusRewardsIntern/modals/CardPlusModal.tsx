@@ -8,7 +8,7 @@ interface UserDiscount {
   currencyCode: string;
   createdAt: string;
   isUsed: boolean;
-  updatedAt?: string;
+  usedAt?: string;
 }
 
 interface StarsProgress {
@@ -21,7 +21,12 @@ const currentYear = now.getFullYear();
 const monthName = now.toLocaleString('es-AR', { month: 'short' });
 
 const getDiscountsPerMonth = (history: UserDiscount[]) => {
+  if (!Array.isArray(history)) {
+    console.log('getDiscountsPerMonth: history is not an array:', history);
+    return 0;
+  }
   return history.filter(d => {
+    if (!d?.createdAt) return false;
     const date = new Date(d.createdAt);
     return (
       date.getFullYear() === currentYear &&
@@ -31,7 +36,12 @@ const getDiscountsPerMonth = (history: UserDiscount[]) => {
 };
 
 const getDiscountsPerYear = (history: UserDiscount[]) => {
+  if (!Array.isArray(history)) {
+    console.log('getDiscountsPerYear: history is not an array:', history);
+    return 0;
+  }
   return history.filter(d => {
+    if (!d?.createdAt) return false;
     const date = new Date(d.createdAt);
     return date.getFullYear() === currentYear;
   }).length;
@@ -45,6 +55,13 @@ const { data: session } = useSession();
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = 'auto'; };
   }, []);
+
+  // Debug: Log de los props recibidos
+  useEffect(() => {
+    console.log('CardPlusModal - History prop received:', history);
+    console.log('CardPlusModal - History length:', history?.length);
+    console.log('CardPlusModal - Stars prop received:', stars);
+  }, [history, stars]);
 
   return (
     <div
@@ -77,8 +94,10 @@ const { data: session } = useSession();
         <h2 className="mt-6 mb-3 text-lg font-semibold">Historial de Recompensas</h2>
 
         <section className="max-h-[450px] overflow-y-auto rounded-2xl border-2 border-blue-800 p-4">
-          {history.length === 0 ? (
-            <p className="text-center text-gray-400">Todavía no tenés recompensas</p>
+          {!Array.isArray(history) || history.length === 0 ? (
+            <p className="text-center text-gray-400">
+              {!Array.isArray(history) ? 'Error cargando datos...' : 'Todavía no tenés recompensas'}
+            </p>
           ) : (
             history.map((elem) => (
               <div key={elem.id} className="mb-4">
@@ -86,7 +105,7 @@ const { data: session } = useSession();
                 <p><b>Valor:</b> ${elem.value} {elem.currencyCode}</p>
                 <p><b>Fecha de Emisión:</b> {new Date(elem.createdAt).toLocaleDateString()}</p>
                 <p><b>Estado:</b> {elem.isUsed ? "Usado" : "Disponible"}</p>
-                {elem.updatedAt && <p><b>Fecha de Uso:</b> {new Date(elem.updatedAt).toLocaleDateString()}</p>}
+                {elem.usedAt && <p><b>Fecha de Uso:</b> {new Date(elem.usedAt).toLocaleDateString()}</p>}
                 <hr className="mt-2 border-gray-300" />
               </div>
             ))

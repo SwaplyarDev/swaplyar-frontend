@@ -12,6 +12,33 @@ import { create } from 'zustand';
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+/**
+ * Formatea y valida un número de teléfono
+ * @param callingCode - Código de país con formato +XX
+ * @param phoneNumber - Número de teléfono sin formato
+ * @returns Número de teléfono formateado correctamente o string vacío si es inválido
+ */
+const formatPhoneNumber = (callingCode: string | undefined, phoneNumber: string | undefined): string => {
+  if (!callingCode || !phoneNumber) {
+    return '';
+  }
+  
+  // Limpiar el número de teléfono (solo números)
+  const cleanPhone = phoneNumber.replace(/\D/g, '');
+  
+  // Verificar que el código de país tenga el formato correcto (+XX...)
+  if (!callingCode.startsWith('+')) {
+    return '';
+  }
+  
+  // Verificar que el número tenga al menos 7 dígitos (mínimo internacional)
+  if (cleanPhone.length < 7) {
+    return '';
+  }
+  
+  return `${callingCode}${cleanPhone}`;
+};
+
 export const useStepperStore = create<StepperState>((set, get) => ({
   activeStep: 0,
   completedSteps: [false, false, false],
@@ -78,9 +105,17 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     selectedSendingSystem: System | null,
     selectedReceivingSystem: System | null,
     accessToken?: string,
+    discountsIds?: string[],
   ): Promise<ResponseCreateTransaction | false> => {
+    console.log('STEPPER STORE: discountsIds recibidos como parámetro:', discountsIds);
     const state = get();
     const { stepOne, stepTwo, stepThree } = state.formData;
+
+    // Validar número de teléfono antes de procesar
+    const formattedPhone = formatPhoneNumber(stepOne.calling_code?.callingCode, stepOne.phone);
+    if (!formattedPhone) {
+      throw new Error('Número de teléfono inválido. Verifique que el código de país y número sean correctos.');
+    }
 
     const pixKey = detectarTipoPixKey(stepTwo.pixKey || 'oa@gmail.com');
 
@@ -130,7 +165,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         first_name: stepOne.first_name,
         last_name: stepOne.last_name,
         identification: senderDetails.document_value,
-        phone_number: `${stepOne.calling_code?.callingCode || ''}${(stepOne.phone || '').replace(/\D/g, '')}`,
+        phone_number: formattedPhone,
         email: senderDetails.email_account,
       },
       receiver: {
@@ -173,8 +208,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           paymentMethod: payload.payment_method.sender,
         },
         receiverAccount: {
-          firstName: stepTwo.receiver_first_name || '',
-          lastName: stepTwo.receiver_last_name || '',
+          first_name: stepTwo.receiver_first_name || '',
+          last_name: stepTwo.receiver_last_name || '',
           paymentMethod: payload.payment_method.receiver,
         },
       },
@@ -185,8 +220,8 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         currencyReceived: selectedReceivingSystem?.coin,
         received: false,
       },
+      userDiscountIds: discountsIds || [],
     };
-
     if (createTransactionDto.financialAccounts.receiverAccount.paymentMethod.method === 'virtual_bank') {
       createTransactionDto.financialAccounts.receiverAccount.paymentMethod.type = selectedReceivingSystem?.id || '';
     }
@@ -205,19 +240,36 @@ export const useStepperStore = create<StepperState>((set, get) => ({
 
       if (!response.ok) {
         let serverMessage = '';
+        let errorDetails: any = null;
         try {
           const errJson = await response.json();
+          errorDetails = errJson;
           serverMessage = typeof errJson === 'string' ? errJson : JSON.stringify(errJson);
         } catch (_) {
           try {
             serverMessage = await response.text();
           } catch {}
         }
+        
         console.error('Fallo creación de transacción', {
           status: response.status,
           statusText: response.statusText,
           serverMessage,
         });
+
+        // Manejo específico para errores de validación de teléfono
+        if (response.status === 400 && errorDetails?.errors) {
+          const phoneErrors = errorDetails.errors.filter((error: string) => 
+            error.toLowerCase().includes('número') || error.toLowerCase().includes('teléfono') || error.toLowerCase().includes('phone')
+          );
+          
+          if (phoneErrors.length > 0) {
+            throw new Error(`Error de validación: ${phoneErrors[0]}`);
+          }
+          
+          throw new Error(`Error de validación: ${errorDetails.errors[0] || 'Datos inválidos'}`);
+        }
+        
         throw new Error('Error al enviar los datos al servidor');
       }
 
@@ -236,7 +288,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       first_name: stepOne.first_name,
       last_name: stepOne.last_name,
       email: stepOne.email,
-      phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
+      phone_number: formatPhoneNumber(stepOne.calling_code?.callingCode, stepOne.phone),
     };
 
     try {
@@ -267,7 +319,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       first_name: stepOne.first_name,
       last_name: stepOne.last_name,
       email: stepOne.email,
-      phone_number: stepOne.calling_code?.callingCode + stepOne.phone,
+      phone_number: formatPhoneNumber(stepOne.calling_code?.callingCode, stepOne.phone),
     };
 
     try {

@@ -110,22 +110,17 @@ export default function InternalTransactionCalculator({
 
   // Calcula el couponUsdAmount y el couponInstance según los descuentos obtenidos por parametro
   useEffect(() => {
+    resetDiscounts();
+
     if (discounts && discounts.data && discounts.data.length > 0) {
-      resetDiscounts();
-      couponUsdAmount.current = 0;
-      let tempDiscountIds: string = '';
-      discounts.data.map((discount: AdminDiscount) => {
-        if (couponUsdAmount.current === 0) {
-          couponUsdAmount.current = discount.discountCode.value;
-          setCouponInstanceByAmount(couponUsdAmount.current);
-          tempDiscountIds = discount.id;
-        } else if (discount.discountCode.value < couponUsdAmount.current && !isUsed(discount.discountCode.value)) {
-          couponUsdAmount.current = discount.discountCode.value;
-          setCouponInstanceByAmount(couponUsdAmount.current);
-          tempDiscountIds = discount.id;
-        }
+      discounts.data.forEach((discount: AdminDiscount) => {
+        addDiscountId(discount.id);
       });
-      addDiscountId(tempDiscountIds);
+
+      const totalDiscountValue = discounts.data.reduce((total, discount) => total + discount.discountCode.value, 0);
+      couponUsdAmount.current = totalDiscountValue;
+
+      setCouponInstanceByAmount(totalDiscountValue);
     }
 
     setData(stars.data.stars, sendAmountNum);
@@ -189,16 +184,6 @@ export default function InternalTransactionCalculator({
       const currency = wallet.currency;
       const normalizedWalletType = normalizeType(wallet.type, provider, currency);
       const isMatch = normalizedWalletType === selectedReceivingSystem.id;
-
-      console.log({
-        walletName: wallet.name,
-        originalType: wallet.type,
-        provider: provider,
-        currency: currency,
-        normalizedResult: normalizedWalletType,
-        systemIdToMatch: selectedReceivingSystem.id,
-        isMatch: isMatch,
-      });
 
       return isMatch;
     });

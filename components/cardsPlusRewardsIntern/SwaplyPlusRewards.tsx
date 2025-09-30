@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback, memo, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
 import Image from 'next/image';
 import { CardPlusRewards } from '@/components/cardsPlusRewardsIntern/SwaplyPlusRewardsComponents/CardPlusRewards';
 import { PlusRewards } from '@/app/es/(auth)/auth/plus-rewards/page';
@@ -11,7 +11,6 @@ const AplicationStateContainer = dynamic(
   () => import('@/components/cardsPlusRewardsIntern/SwaplyPlusRewardsComponents/AplicationStateContainer'),
 );
 import { signOut, useSession } from 'next-auth/react';
-
 import { useVerificationStore } from '../../store/useVerificationStore';
 import { shallow } from 'zustand/shallow';
 import { swaplyPlusRewards } from '@/utils/assets/imgDatabaseCloudinary';
@@ -31,14 +30,8 @@ type UserDiscount = {
   currencyCode: string;
   createdAt: string;
   isUsed: boolean;
-  updatedAt?: string;
+  usedAt?: string;
 };
-
-interface RewardsStore {
-  stars: { quantity: number; stars: number };
-  history: UserDiscount[];
-  fetchRewards: (token: string) => Promise<void>;
-}
 
 const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const [showModal, setShowModal] = useState(false);
@@ -47,32 +40,39 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const [stars, setStars] = useState({ quantity: 0, stars: 0 });
   const [history, setHistory] = useState<UserDiscount[]>([]);
 
-  const { status: verifiedStatus, setStatus, setShowApprovedMessage } = useVerificationStore(
+  const {
+    status: verifiedStatus,
+    setStatus,
+    setShowApprovedMessage,
+  } = useVerificationStore(
     (s) => ({ status: s.status, setStatus: s.setStatus, setShowApprovedMessage: s.setShowApprovedMessage }),
     shallow,
   );
 
   const { data: session, update } = useSession();
   const token = session?.accessToken;
-
   const sessionCardBlueYellow = verifiedStatus === 'APROBADO';
 
   const isUpdatingRef = useRef(false);
 
   const now = new Date();
   const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth(); 
+  const currentMonth = now.getMonth();
   const monthName = now.toLocaleString('es-AR', { month: 'short' });
 
-  const rewardsPerYear = history.filter(
-    reward => new Date(reward.createdAt).getFullYear() === currentYear
-  ).length;
+  const rewardsPerYear = Array.isArray(history) 
+    ? history.filter(
+        (reward) => reward?.createdAt && new Date(reward.createdAt).getFullYear() === currentYear,
+      ).length
+    : 0;
 
-  const rewardsPerMonth = history.filter(reward => {
-    const date = new Date(reward.createdAt);
-    return date.getFullYear() === currentYear && date.getMonth() === currentMonth;
-  }).length;
-
+  const rewardsPerMonth = Array.isArray(history) 
+    ? history.filter((reward) => {
+        if (!reward?.createdAt) return false;
+        const date = new Date(reward.createdAt);
+        return date.getFullYear() === currentYear && date.getMonth() === currentMonth;
+      }).length
+    : 0;
 
   const safeUpdate = useCallback(async () => {
     if (isUpdatingRef.current) return null;
@@ -88,7 +88,6 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
 
   useEffect(() => {
     if (!token) return;
-    // Si hubo error de refresh, cerrar sesión para evitar loops de Unauthorized
     if ((session as any)?.error === 'RefreshAccessTokenError') {
       signOut({ callbackUrl: '/es/iniciar-sesion' });
       return;
@@ -103,44 +102,69 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   }, [token, setStatus, setShowApprovedMessage, safeUpdate, session]);
 
   useEffect(() => {
-  if (!session?.accessToken) return;
+    if (!session?.accessToken) return;
 
-  const fetchRewards = async () => {
-    try {
-      const resHistory = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/discounts/user-discounts/me?filterType=all`,
-        { headers: { Authorization: `Bearer ${session.accessToken}` } }
-      );
-      const dataHistory = await resHistory.json();
+    /**
+     * Obtiene el historial de recompensas y las estrellas actuales del usuario.
+     * Esta función se ejecuta cuando la sesión se actualiza.
+     */
+    const fetchRewards = async () => {
+      try {
+        // Historial de cupones usados
+        const resHistory = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/discounts/user-history`,
+          { headers: { Authorization: `Bearer ${session.accessToken}` } },
+        );
+        console.log('Fetch history response status:', resHistory.status);
+        console.log('Fetch history response ok:', resHistory.ok);
+        if (resHistory.ok) {
+          const response = await resHistory.json();
+          console.log('Full history response:', response);
+          const dataHistory: UserDiscount[] = response.data || [];
+          console.log('History data extracted:', dataHistory);
+          console.log('Is array?', Array.isArray(dataHistory));
+          console.log('Length:', dataHistory?.length);
+          setHistory(Array.isArray(dataHistory) ? dataHistory : []);
+        } else if (resHistory.status === 404) {
+          // Usuario sin verificación - inicializar con array vacío
+          setHistory([]);
+          console.log('Usuario sin historial de recompensas (verificación no encontrada)');
+        } else {
+          throw new Error(`Error en historial: ${resHistory.status} ${resHistory.statusText}`);
+        }
 
-      setHistory(dataHistory);
+        // Recompensas actuales
+        const resStars = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/discounts/stars`,
+          { headers: { Authorization: `Bearer ${session.accessToken}` } },
+        );
 
-      const mappedHistory: UserDiscount[] = (dataHistory.data || []).map((item: any) => ({
-        id: item.id,
-        code: item.discountCode?.code ?? "",
-        value: item.discountCode?.value ?? 0,
-        currencyCode: item.discountCode?.currencyCode ?? "USD",
-        createdAt: item.createdAt,
-        isUsed: item.isUsed,
-        updatedAt: item.updatedAt,
-      }));
+        if (resStars.ok) {
+          const { data: starsData } = await resStars.json();
+          setStars(starsData ?? { quantity: 0, stars: 0 });
+        } else if (resStars.status === 404) {
+          // Usuario sin verificación - inicializar con valores por defecto
+          setStars({ quantity: 0, stars: 0 });
+          console.log('Usuario sin estrellas (verificación no encontrada)');
+        } else {
+          throw new Error(`Error en estrellas: ${resStars.status} ${resStars.statusText}`);
+        }
+      } catch (err) {
+        console.error('Error al cargar recompensas:', err);
+        // Inicializar con valores por defecto en caso de error
+        setHistory([]);
+        setStars({ quantity: 0, stars: 0 });
+      }
+    };
 
-      setHistory(mappedHistory);
+    fetchRewards();
+  }, [session?.accessToken]);
 
-      const resStars = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/discounts/stars`,
-        { headers: { Authorization: `Bearer ${session.accessToken}` } }
-      );
-      const dataStars = await resStars.json();
-      setStars(dataStars.data || { quantity: 0, stars: 0 });
-    } catch (err) {
-      console.error("Error cargando PlusRewards:", err);
-    }
-  };
-
-  fetchRewards();
-}, [session?.accessToken]);
-
+  // Debug: Log del estado history cuando cambie
+  useEffect(() => {
+    console.log('History state updated:', history);
+    console.log('History length:', history.length);
+  }, [history]);
 
   const LoadingState = memo(() => (
     <div className="flex min-h-[50vh] w-full items-center justify-center">
@@ -160,13 +184,7 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   ));
   MainLayout.displayName = 'MainLayout';
 
-  const RewardsInfo = memo(({
-    RewardsData,
-    onShowModal,
-  }: {
-    RewardsData: PlusRewards;
-    onShowModal: () => void;
-  }) => (
+  const RewardsInfo = memo(({ RewardsData, onShowModal }: { RewardsData: PlusRewards; onShowModal: () => void }) => (
     <div>
       <p>Consigue beneficios exclusivos cada vez que realices transacciones</p>
       <p>SwaplyAr Plus Rewards.</p>
@@ -179,13 +197,13 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
           className="w-[356px] sm:w-[486px]"
         />
         <div className="relative mt-4 flex w-full flex-col">
-          <p>Fecha de inscripción: {session?.user?.createdAt ? new Date(session.user.createdAt).toLocaleDateString() : 'Desconocida'}</p>
+          <p>
+            Fecha de inscripción:{' '}
+            {session?.user?.createdAt ? new Date(session.user.createdAt).toLocaleDateString() : 'Desconocida'}
+          </p>
           <p>Recompensas que obtuviste en {monthName}: {rewardsPerMonth}</p>
           <p>Recompensas que obtuviste en {currentYear}: {rewardsPerYear}</p>
-          <p
-            className="mt-4 cursor-pointer self-end font-semibold underline"
-            onClick={onShowModal}
-          >
+          <p className="mt-4 cursor-pointer self-end font-semibold underline" onClick={onShowModal}>
             Ver detalles
           </p>
         </div>
@@ -195,41 +213,32 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   RewardsInfo.displayName = 'RewardsInfo';
 
   return (
-  <>
-    {!session ? (
-      <LoadingState />
-    ) : (
-      <>
-  <AplicationStateContainer showRejectedMessage={showRejectedMessage} />
-  {showModal && <CardPlusModal setShowModal={setShowModal} stars={stars} history={history} />}
-  {showVerify && (
-          <ModalVerify
-            showVerify={showVerify}
-            setShowVerify={setShowVerify}
-            verifiedStatus={verifiedStatus}
+    <>
+      {!session ? (
+        <LoadingState />
+      ) : (
+        <>
+          <AplicationStateContainer showRejectedMessage={showRejectedMessage} />
+          {showModal && <CardPlusModal setShowModal={setShowModal} stars={stars} history={history} />}
+          {showVerify && (
+            <ModalVerify showVerify={showVerify} setShowVerify={setShowVerify} verifiedStatus={verifiedStatus} />
+          )}
+          <MainLayout
+            left={<RewardsInfo RewardsData={RewardsData} onShowModal={() => setShowModal(true)} />}
+            right={
+              <CardPlusRewards
+                verifiedStatus={verifiedStatus}
+                sessionCardBlueYellow={sessionCardBlueYellow}
+                showVerify={showVerify}
+                setShowVerify={setShowVerify}
+                memberCode={session.user?.id || ''}
+              />
+            }
           />
-        )}
-        <MainLayout
-          left={
-            <RewardsInfo
-              RewardsData={RewardsData}
-              onShowModal={() => setShowModal(true)}
-            />
-          }
-          right={
-            <CardPlusRewards
-              verifiedStatus={verifiedStatus}
-              sessionCardBlueYellow={sessionCardBlueYellow}
-              showVerify={showVerify}
-              setShowVerify={setShowVerify}
-              memberCode={session.user?.id || '' }
-            />
-          }
-        />
-      </>
-    )}
-  </>
-);
+        </>
+      )}
+    </>
+  );
 };
 
 export default SwaplyPlusRewards;
