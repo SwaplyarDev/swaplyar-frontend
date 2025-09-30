@@ -251,7 +251,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ currentPage }) => {
                         {u.submitted_at ? formatDate(u.submitted_at) : 'No disponible'}
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
-                        {u.users_id}
+                        {u.id}
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                         {u.user_profile.firstName} {u.user_profile.lastName}

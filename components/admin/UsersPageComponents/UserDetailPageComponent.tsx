@@ -13,7 +13,7 @@ import { UserRewardsSection } from './UserRewardSection';
 import { getUserWalletAccountByUserId } from '@/actions/virtualWalletAccount/virtualWallets.action';
 import auth from '@/auth';
 import { getDiscountsByUserId } from '@/actions/Discounts/discounts.action';
-import { getAdminTransactionsByEmail, getTransactionByUserEmail } from '@/actions/transactions/admin-transaction';
+import { getAdminTransactionsByEmail } from '@/actions/transactions/admin-transaction';
 
 export async function UserDetailPageComponent({ verificationId }: { verificationId: string }) {
   const session = await auth();
@@ -21,15 +21,7 @@ export async function UserDetailPageComponent({ verificationId }: { verification
   const verification = await getVerificationById(verificationId);
   if (!verification?.success) return <UserNotFound verificationId={verificationId} />;
   const wallets = await getUserWalletAccountByUserId(verification?.data.user_id, token || '');
-  const discounts = await getDiscountsByUserId(verification?.data.user_id, token || '');
-  const transactions2 = await getTransactionByUserEmail(verification?.data.user_profile.email || '');
-  const transactions = await getAdminTransactionsByEmail(verification?.data.user_profile.email || '');
-  console.log("🔎 Verification data:", transactions2);
-  console.log("🔎 Verification:", verification);
-//   transactions2.data.forEach((t) => {
-//   console.log("Sender email:", t.senderAccount.createdBy);
-// });
-
+  const transactions = await getAdminTransactionsByEmail(verification?.data.user_profile.email);
 
   return (
     <div className="min-h-screen">
@@ -53,11 +45,10 @@ export async function UserDetailPageComponent({ verificationId }: { verification
                   Este usuario no tiene cuentas registradas.
                 </div>
               )}
-              
-              {/* No hay relacion directa entre el usuario y las transacciones, seccion a agregar dentro de componente WalletDetails */}
+
               <TransactionHistorySection transactions={transactions} />
 
-              <UserRewardsSection discounts={discounts} /> 
+              {/* <UserRewardsSection discounts={discounts} />  */}
             </div>
           </div>
         </div>
