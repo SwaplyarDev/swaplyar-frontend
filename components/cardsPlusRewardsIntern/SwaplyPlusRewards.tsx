@@ -112,12 +112,18 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
       try {
         // Historial de cupones usados
         const resHistory = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v2/discounts/user-history`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/discounts/user-history`,
           { headers: { Authorization: `Bearer ${session.accessToken}` } },
         );
-
+        console.log('Fetch history response status:', resHistory.status);
+        console.log('Fetch history response ok:', resHistory.ok);
         if (resHistory.ok) {
-          const dataHistory: UserDiscount[] = await resHistory.json();
+          const response = await resHistory.json();
+          console.log('Full history response:', response);
+          const dataHistory: UserDiscount[] = response.data || [];
+          console.log('History data extracted:', dataHistory);
+          console.log('Is array?', Array.isArray(dataHistory));
+          console.log('Length:', dataHistory?.length);
           setHistory(Array.isArray(dataHistory) ? dataHistory : []);
         } else if (resHistory.status === 404) {
           // Usuario sin verificación - inicializar con array vacío
@@ -129,7 +135,7 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
 
         // Recompensas actuales
         const resStars = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v2/discounts/stars`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/discounts/stars`,
           { headers: { Authorization: `Bearer ${session.accessToken}` } },
         );
 
@@ -153,6 +159,12 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
 
     fetchRewards();
   }, [session?.accessToken]);
+
+  // Debug: Log del estado history cuando cambie
+  useEffect(() => {
+    console.log('History state updated:', history);
+    console.log('History length:', history.length);
+  }, [history]);
 
   const LoadingState = memo(() => (
     <div className="flex min-h-[50vh] w-full items-center justify-center">

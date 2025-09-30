@@ -182,9 +182,8 @@ export async function getUserWalletAccountById(userId: string, accountId: string
 }
 
 export async function deleteWalletAccount(accountId: string, token: string) {
-  const API_URL = 'http://localhost:3001/api/v2/users/accounts';
 
-  const response = await fetch(API_URL, {
+  const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/users/accounts/admin`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
