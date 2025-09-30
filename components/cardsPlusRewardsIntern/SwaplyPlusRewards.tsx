@@ -47,7 +47,11 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const [stars, setStars] = useState({ quantity: 0, stars: 0 });
   const [history, setHistory] = useState<UserDiscount[]>([]);
 
-  const { status: verifiedStatus, setStatus, setShowApprovedMessage } = useVerificationStore(
+  const {
+    status: verifiedStatus,
+    setStatus,
+    setShowApprovedMessage,
+  } = useVerificationStore(
     (s) => ({ status: s.status, setStatus: s.setStatus, setShowApprovedMessage: s.setShowApprovedMessage }),
     shallow,
   );
@@ -61,18 +65,15 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
 
   const now = new Date();
   const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth(); 
+  const currentMonth = now.getMonth();
   const monthName = now.toLocaleString('es-AR', { month: 'short' });
 
-  const rewardsPerYear = history.filter(
-    reward => new Date(reward.createdAt).getFullYear() === currentYear
-  ).length;
+  const rewardsPerYear = history.filter((reward) => new Date(reward.createdAt).getFullYear() === currentYear).length;
 
-  const rewardsPerMonth = history.filter(reward => {
+  const rewardsPerMonth = history.filter((reward) => {
     const date = new Date(reward.createdAt);
     return date.getFullYear() === currentYear && date.getMonth() === currentMonth;
   }).length;
-
 
   const safeUpdate = useCallback(async () => {
     if (isUpdatingRef.current) return null;
@@ -103,44 +104,42 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   }, [token, setStatus, setShowApprovedMessage, safeUpdate, session]);
 
   useEffect(() => {
-  if (!session?.accessToken) return;
+    if (!session?.accessToken) return;
 
-  const fetchRewards = async () => {
-    try {
-      const resHistory = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/discounts/user-discounts/me?filterType=all`,
-        { headers: { Authorization: `Bearer ${session.accessToken}` } }
-      );
-      const dataHistory = await resHistory.json();
+    const fetchRewards = async () => {
+      try {
+        const resHistory = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/discounts/user-discounts/me?filterType=all`,
+          { headers: { Authorization: `Bearer ${session.accessToken}` } },
+        );
+        const dataHistory = await resHistory.json();
+        console.log('dataHistory:', resHistory);
+        setHistory(dataHistory);
 
-      setHistory(dataHistory);
+        const mappedHistory: UserDiscount[] = (dataHistory.data || []).map((item: any) => ({
+          id: item.id,
+          code: item.discountCode?.code ?? '',
+          value: item.discountCode?.value ?? 0,
+          currencyCode: item.discountCode?.currencyCode ?? 'USD',
+          createdAt: item.createdAt,
+          isUsed: item.isUsed,
+          updatedAt: item.updatedAt,
+        }));
 
-      const mappedHistory: UserDiscount[] = (dataHistory.data || []).map((item: any) => ({
-        id: item.id,
-        code: item.discountCode?.code ?? "",
-        value: item.discountCode?.value ?? 0,
-        currencyCode: item.discountCode?.currencyCode ?? "USD",
-        createdAt: item.createdAt,
-        isUsed: item.isUsed,
-        updatedAt: item.updatedAt,
-      }));
+        setHistory(mappedHistory);
 
-      setHistory(mappedHistory);
+        const resStars = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/discounts/stars`, {
+          headers: { Authorization: `Bearer ${session.accessToken}` },
+        });
+        const dataStars = await resStars.json();
+        setStars(dataStars.data || { quantity: 0, stars: 0 });
+      } catch (err) {
+        console.error('Error cargando PlusRewards:', err);
+      }
+    };
 
-      const resStars = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/discounts/stars`,
-        { headers: { Authorization: `Bearer ${session.accessToken}` } }
-      );
-      const dataStars = await resStars.json();
-      setStars(dataStars.data || { quantity: 0, stars: 0 });
-    } catch (err) {
-      console.error("Error cargando PlusRewards:", err);
-    }
-  };
-
-  fetchRewards();
-}, [session?.accessToken]);
-
+    fetchRewards();
+  }, [session?.accessToken]);
 
   const LoadingState = memo(() => (
     <div className="flex min-h-[50vh] w-full items-center justify-center">
@@ -160,13 +159,7 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   ));
   MainLayout.displayName = 'MainLayout';
 
-  const RewardsInfo = memo(({
-    RewardsData,
-    onShowModal,
-  }: {
-    RewardsData: PlusRewards;
-    onShowModal: () => void;
-  }) => (
+  const RewardsInfo = memo(({ RewardsData, onShowModal }: { RewardsData: PlusRewards; onShowModal: () => void }) => (
     <div>
       <p>Consigue beneficios exclusivos cada vez que realices transacciones</p>
       <p>SwaplyAr Plus Rewards.</p>
@@ -179,13 +172,17 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
           className="w-[356px] sm:w-[486px]"
         />
         <div className="relative mt-4 flex w-full flex-col">
-          <p>Fecha de inscripción: {session?.user?.createdAt ? new Date(session.user.createdAt).toLocaleDateString() : 'Desconocida'}</p>
-          <p>Recompensas que obtuviste en {monthName}: {rewardsPerMonth}</p>
-          <p>Recompensas que obtuviste en {currentYear}: {rewardsPerYear}</p>
-          <p
-            className="mt-4 cursor-pointer self-end font-semibold underline"
-            onClick={onShowModal}
-          >
+          <p>
+            Fecha de inscripción:{' '}
+            {session?.user?.createdAt ? new Date(session.user.createdAt).toLocaleDateString() : 'Desconocida'}
+          </p>
+          <p>
+            Recompensas que obtuviste en {monthName}: {rewardsPerMonth}
+          </p>
+          <p>
+            Recompensas que obtuviste en {currentYear}: {rewardsPerYear}
+          </p>
+          <p className="mt-4 cursor-pointer self-end font-semibold underline" onClick={onShowModal}>
             Ver detalles
           </p>
         </div>
@@ -195,41 +192,32 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   RewardsInfo.displayName = 'RewardsInfo';
 
   return (
-  <>
-    {!session ? (
-      <LoadingState />
-    ) : (
-      <>
-  <AplicationStateContainer showRejectedMessage={showRejectedMessage} />
-  {showModal && <CardPlusModal setShowModal={setShowModal} stars={stars} history={history} />}
-  {showVerify && (
-          <ModalVerify
-            showVerify={showVerify}
-            setShowVerify={setShowVerify}
-            verifiedStatus={verifiedStatus}
+    <>
+      {!session ? (
+        <LoadingState />
+      ) : (
+        <>
+          <AplicationStateContainer showRejectedMessage={showRejectedMessage} />
+          {showModal && <CardPlusModal setShowModal={setShowModal} stars={stars} history={history} />}
+          {showVerify && (
+            <ModalVerify showVerify={showVerify} setShowVerify={setShowVerify} verifiedStatus={verifiedStatus} />
+          )}
+          <MainLayout
+            left={<RewardsInfo RewardsData={RewardsData} onShowModal={() => setShowModal(true)} />}
+            right={
+              <CardPlusRewards
+                verifiedStatus={verifiedStatus}
+                sessionCardBlueYellow={sessionCardBlueYellow}
+                showVerify={showVerify}
+                setShowVerify={setShowVerify}
+                memberCode={session.user?.id || ''}
+              />
+            }
           />
-        )}
-        <MainLayout
-          left={
-            <RewardsInfo
-              RewardsData={RewardsData}
-              onShowModal={() => setShowModal(true)}
-            />
-          }
-          right={
-            <CardPlusRewards
-              verifiedStatus={verifiedStatus}
-              sessionCardBlueYellow={sessionCardBlueYellow}
-              showVerify={showVerify}
-              setShowVerify={setShowVerify}
-              memberCode={session.user?.id || '' }
-            />
-          }
-        />
-      </>
-    )}
-  </>
-);
+        </>
+      )}
+    </>
+  );
 };
 
 export default SwaplyPlusRewards;

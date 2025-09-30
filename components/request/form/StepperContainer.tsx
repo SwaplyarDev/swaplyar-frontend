@@ -12,7 +12,6 @@ import Tick from '@/components/ui/Tick/Tick';
 import useChronometerState from '@/store/chronometerStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import { useRewardsStore } from '@/store/useRewardsStore';
-import { putDiscountsStatus } from '@/actions/Discounts/discounts.action';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 import { shallow } from 'zustand/shallow';
 import type { Session } from 'next-auth';
@@ -37,10 +36,7 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
     }),
     shallow,
   );
-  const { couponInstance, markUsed, discounts_ids } = useRewardsStore(
-    (s) => ({ couponInstance: s.couponInstance, markUsed: s.markUsed, discounts_ids: s.discounts_ids }),
-    shallow,
-  );
+  const { discounts_ids } = useRewardsStore((s) => ({ discounts_ids: s.discounts_ids }), shallow);
   const [blockAll, setBlockAll] = useState(false);
   const { isStopped, setStop } = useChronometerState((s) => ({ isStopped: s.isStopped, setStop: s.setStop }), shallow);
   const [correctSend, setCorrectSend] = useState(false);
@@ -83,22 +79,6 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
       } catch {}
     };
   }, [setPassFalse]);
-
-  const handleMarkCouponUsed = useCallback(
-    async (coupon_id: string[], uuid_transacción: string) => {
-      if (couponInstance === 'NONE' || !session?.accessToken || !uuid_transacción) return;
-      try {
-        const result = await putDiscountsStatus(session.accessToken, coupon_id[0], uuid_transacción);
-        markUsed(couponInstance);
-        return [result];
-      } catch (error) {
-        console.error('Error marking coupon as used:', error);
-      }
-    },
-    // ✅ Pequeño ajuste: Es mejor depender del objeto 'session' completo.
-    // Si 'session' cambia por cualquier motivo, esta función se actualizará correctamente.
-    [couponInstance, markUsed, session],
-  );
 
   const handleCancelRequest = useCallback(async () => {
     const Swal = await getSwal();
@@ -170,11 +150,11 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
       const isSuccess = await submitAllData(
         selectedSendingSystem,
         selectedReceivingSystem,
-        session?.accessToken, // Esto sigue funcionando porque 'session' viene de las props
+        session?.accessToken,
+        discounts_ids,
       );
 
       if (isSuccess) {
-        await handleMarkCouponUsed(discounts_ids, isSuccess.id);
         const Swal = await getSwal();
         Swal.fire({ icon: 'success', background: '#ffffff00', showConfirmButton: false, timer: 1000 });
         setBlockAll(true);
@@ -189,15 +169,7 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
       console.error('Error en el proceso de envío:', error);
     }
     setLoading(false);
-  }, [
-    selectedSendingSystem,
-    selectedReceivingSystem,
-    submitAllData,
-    session?.accessToken,
-    handleMarkCouponUsed,
-    discounts_ids,
-    getSwal,
-  ]);
+  }, [selectedSendingSystem, selectedReceivingSystem, submitAllData, session?.accessToken, discounts_ids, getSwal]);
 
   const onSendClick = useCallback(() => {
     setStop(true);
