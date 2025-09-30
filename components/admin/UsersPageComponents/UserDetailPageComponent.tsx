@@ -22,6 +22,7 @@ export async function UserDetailPageComponent({ verificationId }: { verification
   if (!verification?.success) return <UserNotFound verificationId={verificationId} />;
   const wallets = await getUserWalletAccountByUserId(verification?.data.user_id, token || '');
   const transactions = await getAdminTransactionsByEmail(verification?.data.user_profile.email);
+  const discounts = await getDiscountsByUserId(verification?.data.user_id, token || '');
 
   return (
     <div className="min-h-screen">
@@ -48,7 +49,7 @@ export async function UserDetailPageComponent({ verificationId }: { verification
 
               <TransactionHistorySection transactions={transactions} />
 
-              {/* <UserRewardsSection discounts={discounts} />  */}
+              <UserRewardsSection discounts={discounts} /> 
             </div>
           </div>
         </div>
