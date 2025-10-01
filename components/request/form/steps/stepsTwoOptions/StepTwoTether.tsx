@@ -24,10 +24,13 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
   getValues,
   blockAll,
   control,
+  formData,
   watch,
   completedSteps,
 }) => {
   const formValues = useWatch({ control });
+  //aca se agrega para mostrar el monto a recibir
+  const receiveAmount = localStorage.getItem('receiveAmount');
   return (
     <>
       <div
@@ -80,22 +83,38 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
         />
 
         <div className="realative order-3 flex w-full flex-col sm-phone:order-2">
-          <InputSteps
-            label="Red"
-            name="red_selection.value"
-            id="red_selection.value"
-            type="text"
-            placeholder="Red de la billetera"
-            disabled={blockAll}
-            register={register}
-            watch={watch}
-            rules={{
-              required: 'La red es obligatoria',
-            }}
-            error={errors.red_selection ? (errors.red_selection as FieldError) : undefined}
-            className="order-3 sm-phone:order-2"
+          <Controller
+            name="red_selection"
+            control={control}
+            defaultValue={formData?.stepTwo?.red_selection || undefined}
+            rules={{ required: 'Este campo es obligatorio' }}
+            render={({ field, fieldState }) => (
+              <SelectRed
+              blockAll={blockAll}
+                selectedRed={field.value}
+                setSelectedRed={(val) => field.onChange(val)}//
+                errors={errors} //errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
+              />
+            )}
           />
         </div>
+
+        <InputSteps
+          label="Recibes exactamente"
+          name="recieveAmountRed"
+          id="recieveAmountRed"
+          type="text"
+          placeholder={`Monto a Recibir por ${formValues.red_selection?.label ? formValues.red_selection?.label : 'Red'}`}
+          disabled={true}
+          value={`${receiveAmount} USDT ${formValues.red_selection?.label ? formValues.red_selection?.label : 'Red'}`}
+          register={register}
+          watch={watch}
+          rules={{
+            required: false,
+          }}
+          error={errors.recieveAmountRed ? (errors.recieveAmountRed as FieldError) : undefined}
+          className="order-4"
+        />
       </div>
     </>
   );
