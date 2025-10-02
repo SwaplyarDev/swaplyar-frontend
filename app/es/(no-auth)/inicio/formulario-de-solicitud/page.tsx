@@ -1,5 +1,6 @@
 // /app/request/page.tsx
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
+import RequestAccessGuard from '@/components/request/form/RequestAccessGuard';
 import SolicitudFlowWrapper from '@/components/request/form/SolicitudFlowWrapper';
 import { FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
 import { Metadata } from 'next';
@@ -34,6 +35,7 @@ export const metadata: Metadata = {
 const RequestPage = () => {
   return (
     <>
+    <RequestAccessGuard>
       <div className="flex items-center justify-center px-5 py-10 xs-phone:px-10">
         <SolicitudFlowWrapper />
       </div>
@@ -43,6 +45,7 @@ const RequestPage = () => {
         nameButton="¡Me quiero registrar!"
         imageSrc={FlyerGif}
       />
+      </RequestAccessGuard>
     </>
   );
 };
