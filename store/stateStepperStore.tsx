@@ -22,20 +22,20 @@ const formatPhoneNumber = (callingCode: string | undefined, phoneNumber: string 
   if (!callingCode || !phoneNumber) {
     return '';
   }
-  
+
   // Limpiar el número de teléfono (solo números)
   const cleanPhone = phoneNumber.replace(/\D/g, '');
-  
+
   // Verificar que el código de país tenga el formato correcto (+XX...)
   if (!callingCode.startsWith('+')) {
     return '';
   }
-  
+
   // Verificar que el número tenga al menos 7 dígitos (mínimo internacional)
   if (cleanPhone.length < 7) {
     return '';
   }
-  
+
   return `${callingCode}${cleanPhone}`;
 };
 
@@ -244,40 +244,43 @@ export const useStepperStore = create<StepperState>((set, get) => ({
         try {
           const errJson = await response.json();
           errorDetails = errJson;
-          serverMessage = typeof errJson === 'string' ? errJson : JSON.stringify(errJson);
+          if (errJson?.errors && Array.isArray(errJson.errors)) {
+            serverMessage = errJson.errors[0];
+          } else if (errJson?.message) {
+            serverMessage = errJson.message;
+          }
         } catch (_) {
           try {
             serverMessage = await response.text();
-          } catch {}
+          } catch { }
         }
-        
+
+
+        // Manejo específico para errores de validación de teléfono
+        if (response.status === 400 && errorDetails?.errors) {
+          const phoneErrors = errorDetails.errors.filter((error: string) =>
+            error.toLowerCase().includes('número') || error.toLowerCase().includes('teléfono') || error.toLowerCase().includes('phone')
+          );
+
+          if (phoneErrors.length > 0) {
+            throw new Error(`Error de validación: ${phoneErrors[0]}`);
+          }
+
+          throw new Error(`Error de validación: ${errorDetails.errors[0] || 'Datos inválidos'}`);
+        }
+
         console.error('Fallo creación de transacción', {
           status: response.status,
           statusText: response.statusText,
           serverMessage,
         });
-
-        // Manejo específico para errores de validación de teléfono
-        if (response.status === 400 && errorDetails?.errors) {
-          const phoneErrors = errorDetails.errors.filter((error: string) => 
-            error.toLowerCase().includes('número') || error.toLowerCase().includes('teléfono') || error.toLowerCase().includes('phone')
-          );
-          
-          if (phoneErrors.length > 0) {
-            throw new Error(`Error de validación: ${phoneErrors[0]}`);
-          }
-          
-          throw new Error(`Error de validación: ${errorDetails.errors[0] || 'Datos inválidos'}`);
-        }
-        
-        throw new Error('Error al enviar los datos al servidor');
       }
 
       const data = await response.json();
       return data;
     } catch (error) {
       console.error('Error en la solicitud:', error);
-      return false;
+      throw error;
     }
   },
   submitOneStep: async () => {

@@ -40,7 +40,11 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
   const [blockAll, setBlockAll] = useState(false);
   const { isStopped, setStop } = useChronometerState((s) => ({ isStopped: s.isStopped, setStop: s.setStop }), shallow);
   const [correctSend, setCorrectSend] = useState(false);
+
+  // Estado nuevo para guardar mensaje de error detallado
   const [errorSend, setErrorSend] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore(
     (s) => ({ selectedSendingSystem: s.selectedSendingSystem, selectedReceivingSystem: s.selectedReceivingSystem }),
     shallow,
@@ -160,15 +164,18 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
         setBlockAll(true);
         setCorrectSend(true);
         setErrorSend(false);
+        setErrorMessage(null);
         window.scrollTo({ top: 0 });
-      } else {
-        setErrorSend(true);
-        console.error('Hubo un error al enviar los datos');
-      }
-    } catch (error) {
+      } 
+    } catch (error: any) {
+       // Capturamos mensaje real del error lanzado en el store
+       console.log('error completo de en el catch del submit en stepper container:', error);
+       setErrorSend(true);
+      setErrorMessage(error.message || 'Error desconocido en el envío.');
       console.error('Error en el proceso de envío:', error);
+    } finally { 
+      setLoading(false);
     }
-    setLoading(false);
   }, [selectedSendingSystem, selectedReceivingSystem, submitAllData, session?.accessToken, discounts_ids, getSwal]);
 
   const onSendClick = useCallback(() => {
@@ -306,11 +313,13 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
               Error en la solicitud
             </h2>
             <>
-              <p className={clsx('w-full text-center font-textFont text-darkText sm-phone:hidden')}>
-                Si el problema persiste, vuelve a intentarlo más tarde y si tienes alguna pregunta o necesitas ayuda,
-                estamos aquí para ti.
+              {errorMessage && (
+              <p className="w-full text-center font-textFont text-darkText">
+                {errorMessage}
               </p>
+            )}
               <div className="w-full">
+                
                 <p className={clsx('hidden w-full text-end font-textFont text-darkText sm-phone:block')}>
                   Si el problema persiste, vuelve a intentarlo más tarde y si tienes alguna pregunta
                 </p>
