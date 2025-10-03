@@ -54,12 +54,12 @@ const shouldDisableStopButton = transferStatus !== false && !userClickedNoOnTran
       <CardHeader className="p-6">
         <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
           <h2 className="flex items-center text-xl font-semibold text-gray-800 dark:text-gray-100 md:text-2xl">
-            {transaction.regret_id ? (
+            {transaction.regret?.id? (
               <ArrowLeftRight className="text-destructive mr-2 h-6 w-6 dark:text-red-400" />
             ) : (
               <ArrowLeftRight className="text-primary mr-2 h-6 w-6 dark:text-blue-400" />
             )}
-            {transaction.regret_id ? 'Información para el Reembolso' : 'Información para realizar el Pago'}
+            {transaction.regret?.id ? 'Información para el Reembolso' : 'Información para realizar el Pago'}
           </h2>
           <Button
   variant="outline"
@@ -92,7 +92,7 @@ const shouldDisableStopButton = transferStatus !== false && !userClickedNoOnTran
           </Button>
         </div>
 
-        {transaction.regret_id && (
+        {transaction.regret?.id && (
           <Alert
             variant="destructive"
             className="animate-in fade-in border-l-destructive bg-destructive/10 dark:bg-destructive/20 dark:border-destructive/70 mt-4 border-l-4 duration-300"
@@ -141,7 +141,7 @@ const shouldDisableStopButton = transferStatus !== false && !userClickedNoOnTran
 
       <div
         className={`h-1.5 w-full transition-all duration-500 ${
-          transaction.regret_id ? 'bg-destructive dark:bg-red-700' : 'bg-primary dark:bg-blue-700'
+          transaction.regret?.id ? 'bg-destructive dark:bg-red-700' : 'bg-primary dark:bg-blue-700'
         }`}
       ></div>
     </Card>
