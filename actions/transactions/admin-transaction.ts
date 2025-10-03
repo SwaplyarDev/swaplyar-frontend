@@ -321,3 +321,48 @@ export async function getAdminTransactionsByEmail(
     };
   }
 }
+
+export async function updateStars(transactionId: string, quantityUSD: number) {
+  try {
+    const session = await auth();
+    const token = session?.accessToken;
+
+    if (!token) throw new Error("No se encontró token de sesión");
+
+    console.log("📤 Enviando al backend:", {
+      transactionId,
+      quantity: quantityUSD,
+    });
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/discounts/update-star`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        quantity: quantityUSD,
+        transactionId,
+      }),
+    });
+
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error("Error parseando la respuesta del backend");
+    }
+
+    console.log("📥 Respuesta del backend:", data);
+
+    if (!res.ok) {
+      throw new Error(data?.message || "Error al actualizar estrellas");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("❌ updateStars error:", error);
+    throw error; 
+  }
+}
+

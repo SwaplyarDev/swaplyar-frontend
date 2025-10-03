@@ -55,7 +55,7 @@ export const MockImagesTransLight: MockImages[] = [
   },
   {
     image: PaypalImg,
-    name: 'virtual_bank',
+    name: 'paypal',
     id: 6,
   },
   {
@@ -102,7 +102,7 @@ export const MockImagesTransDark: MockImages[] = [
   },
   {
     image: PaypalDarkImg,
-    name: 'virtual_bank',
+    name: 'paypal',
     id: 6,
   },
   {
