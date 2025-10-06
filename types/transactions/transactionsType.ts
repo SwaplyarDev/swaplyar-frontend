@@ -18,7 +18,8 @@ export interface Regret {
 export interface PaymentMethodSender {
   id: string;
   platformId: string;
-  method: string | null;
+  method: string;
+  type?: string;
 }
 
 export interface PaymentMethodReceiver {
@@ -31,6 +32,13 @@ export interface PaymentMethodReceiver {
   sendMethodValue: string;
   documentType: string;
   documentValue: string;
+  type?: string;
+  cpf: string;
+  pixValue?: string;
+  wallet?: string;
+  network?: string;
+  emailAccount?: string;
+  transferCode?: string;
 }
 
 export interface ReceiverAccount {
@@ -72,11 +80,15 @@ export interface TransactionV2 {
   userId: string | null
   proofOfPayment: ProofOfPayment
   amount: Amount
-  // regret_id?: string | null
+  regret_id?: string | null
   regret?: Regret | null
   note?: Note 
   isNoteVerified: boolean
   noteVerificationExpiresAt: string
+  amountReceived: string
+  currencyReceived: string
+  amountSent: string
+  currencySent: string
 }
 
 export interface TransactionArrayV2 {
@@ -133,6 +145,12 @@ export const emptyTransactionV2: TransactionV2 = {
       sendMethodValue: '',
       documentType: '',
       documentValue: '',
+      cpf: '',
+      pixValue: '',
+      wallet: '',
+      network: '',
+      emailAccount: '',
+      transferCode: '',
     },
   },
   userId: null,
@@ -154,6 +172,10 @@ export const emptyTransactionV2: TransactionV2 = {
   note: emptyNote,
   isNoteVerified: false,
   noteVerificationExpiresAt: '',
+  amountReceived: '',
+  currencyReceived: '',
+  amountSent: '',
+  currencySent: '',
 };
 
 //Interfaces anteriores

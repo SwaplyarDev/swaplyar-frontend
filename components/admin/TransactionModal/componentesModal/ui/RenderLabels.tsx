@@ -22,8 +22,8 @@ export const getReceiverLabels = (transaction: TransactionV2) => {
     case 'receiver_crypto':
       return [
        
-        { label: 'Dirección USDT', value: paymentMethod.sendMethodValue ?? 'No disponible' },
-        { label: 'RED', value: 'TRC20' },
+        { label: 'Dirección USDT', value: paymentMethod.wallet ?? 'No disponible' },
+        { label: 'RED', value: paymentMethod.network },
       ];
 
     case 'bank':
@@ -37,15 +37,15 @@ export const getReceiverLabels = (transaction: TransactionV2) => {
     case 'pix':
       return [
         
-        { label: 'Telefono/Email de Pix', value: paymentMethod.sendMethodValue ?? 'No disponible' },
-        { label: 'CPF', value: paymentMethod.documentValue ?? 'No disponible' },
+        { label: 'Telefono/Email de Pix', value: paymentMethod.pixValue ?? 'No disponible' },
+        { label: 'CPF', value: paymentMethod.cpf ?? 'No disponible' },
       ];
 
     default:
       return [
-        { label: 'Método de pago', value: walletType ?? 'Desconocido' },
-        { label: 'Detalle', value: paymentMethod.sendMethodValue ?? 'No disponible' },
-        { label: 'Error', value: 'No hay información o no es correcta' },
+        { label: 'Método de pago', value: paymentMethod.type ?? 'Desconocido' },
+        { label: 'Email', value: paymentMethod.emailAccount ?? 'No disponible' },
+        { label: 'Codigo de Transferencia', value: paymentMethod.transferCode },
       ];
   }
 };

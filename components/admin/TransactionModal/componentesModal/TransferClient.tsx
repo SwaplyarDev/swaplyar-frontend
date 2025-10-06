@@ -28,12 +28,14 @@ import { cn } from '@/lib/utils';
 import { TooltipContent, TooltipProvider, Tooltip, TooltipTrigger } from '@/components/ui/Tooltip';
 import { updateTransactionStatus } from '@/actions/transactions/transaction-status.action';
 import { useParams } from 'next/navigation';
-import { uploadTransactionReceipt } from '@/actions/transactions/admin-transaction';
+import { uploadTransactionReceipt, updateStars } from '@/actions/transactions/admin-transaction';
 import { useSession } from 'next-auth/react';
 import ModalEditReciever from './ModalEditReciever/ModalEditReciever';
 import { useTransactionStore } from '@/store/transactionModalStorage';
 import ServerErrorModal from '../../ModalErrorServidor/ModalErrorSevidor';
 import { TransactionFlowState } from '../../utils/useTransactionHistoryState';
+import { convertTransactionToUSD } from '@/utils/convertToUSD';
+import { getExchangeRateStore } from '@/store/exchangeRateStore';
 
 interface Form {
   transfer_id: string;
@@ -80,7 +82,7 @@ const TransferClient = ({ onTransferStatusChange, transactionFlow }: TransferCli
   const [isInputTransferIdFocused, setIsInputTransferIdFocused] = useState(false);
   const [open, setOpen] = useState<boolean>(false);
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
-  
+
   // Estado local para trackear si el usuario clickeó "No"
   const [hasClickedNo, setHasClickedNo] = useState(false);
 
@@ -199,6 +201,7 @@ const TransferClient = ({ onTransferStatusChange, transactionFlow }: TransferCli
       });
 
       const responseFile = await uploadTransactionReceipt(formData);
+      await updateStars(transId, Math.round(Number(form.amount)));
 
       if (!response || !responseFile) {
         setModalServer(true);
@@ -248,18 +251,10 @@ const TransferClient = ({ onTransferStatusChange, transactionFlow }: TransferCli
   };
 
   const handleDialogAprove = () => {
-    if (!form.transfer_id || !form.amount) {
-      alert('Por favor completa todos los campos requeridos.');
-      return;
-    }
     setShowAlert(true);
   };
 
   const handleDialogRefund = () => {
-    if (!formRefund.description || !formRefund.transfer_id || !formRefund.amount) {
-      alert('Por favor completa todos los campos requeridos.');
-      return;
-    }
     setShowConfirmRefund(true);
   };
 
@@ -282,10 +277,39 @@ const TransferClient = ({ onTransferStatusChange, transactionFlow }: TransferCli
       setIsLoading(false);
     }
   };
-  
+
   const shouldDisableYesButton = !shouldEnableYesButton || isUpdatingStatus || isTransferCompleted || hasClickedNo;
   const shouldDisableNoButton = !shouldEnableNoButton || isTransferCompleted;
   const shouldDisableEditButton = (!shouldEnableEditButton && !hasClickedNo) || isTransferCompleted || isTransferRefunded;
+
+  const { rates, startUpdatingRates, stopUpdatingRates } = getExchangeRateStore();
+
+  useEffect(() => {
+    startUpdatingRates?.();
+    return () => {
+      stopUpdatingRates?.();
+    };
+  }, [startUpdatingRates, stopUpdatingRates]);
+
+  useEffect(() => {
+    if (!trans?.amount) return;
+
+    const rawAmount = Number(trans.amount?.amountSent ?? 0);
+    const rawCurrency = String(trans.amount?.currencySent ?? "USD");
+
+    const usdValue = convertTransactionToUSD({
+      amount: rawAmount,
+      currency: rawCurrency,
+      rates,
+    });
+
+    const usdRounded = usdValue ? Math.floor(usdValue) : 0;
+
+    setForm((prev) => (prev.amount === usdRounded.toString() ? prev : { ...prev, amount: usdRounded.toString() }));
+
+  }, [trans, rates]);
+
+
 
   return (
     <div className="!mt-4">
@@ -411,41 +435,11 @@ const TransferClient = ({ onTransferStatusChange, transactionFlow }: TransferCli
             <AlertDescription>Transferencia en camino - Ya se comunicó al solicitante.</AlertDescription>
           </Alert>
 
-          <div className="space-y-2">
-            <div className="relative my-5 flex-1">
-              <Input
-                id="transfer_id"
-                name="transfer_id"
-                type="text"
-                placeholder="Ingresa el ID de la transferencia"
-                value={form.transfer_id}
-                onChange={handleInputChange}
-                className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] ${
-                  isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
-                }`}
-                aria-required="true"
-                onFocus={() => setIsInputTransferIdFocused(true)}
-                onBlur={() => setIsInputTransferIdFocused(false)}
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <div className="relative mb-5 flex-1">
-              <Input
-                id="amount"
-                name="amount"
-                type="text"
-                placeholder="Monto a transferir"
-                value={form.amount}
-                onChange={handleInputChange}
-                className={`h-11 border-[#90B0FE] transition-all duration-300 placeholder:text-[#90B0FE] ${
-                  isInputTransferIdFocused ? 'ring-primary border-primary ring-2' : ''
-                }`}
-                aria-required="true"
-              />
-            </div>
-          </div>
+          <article className="flex w-full justify-between rounded-lg bg-gray-100 p-3 dark:bg-gray-800">
+            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Monto USD</p>
+            <p className="text-base text-gray-700 dark:text-white">$ {form.amount}</p>
+          </article>
+          <input type="hidden" name="amount" value={form.amount} />
 
           <div className="animate-in fade-in flex flex-col items-center gap-4 pt-2 duration-300">
             <h4 className="text-center text-base font-semibold">Comprobante de Transferencia</h4>
