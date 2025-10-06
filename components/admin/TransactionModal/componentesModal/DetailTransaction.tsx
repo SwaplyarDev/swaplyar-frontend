@@ -60,7 +60,7 @@ const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading 
             <span className="text-sm text-gray-600 dark:text-gray-400">Monto a Transferir:</span>
             <span className="font-medium dark:text-gray-200">
               {amount?.amountSent
-                ? `${amount.amountSent} / ${receiverAccount?.paymentMethod?.method || ''} / ${amount.currencySent}`
+                ? `${amount.amountSent} / ${senderAccount?.paymentMethod?.type || senderAccount?.paymentMethod?.platformId || ''} / ${amount.currencySent}`
                 : 'No disponible'}
             </span>
           </div>
@@ -68,7 +68,7 @@ const TransactionDetail: React.FC<DetailTransProps> = ({ transaction, isLoading 
             <span className="text-sm text-gray-600 dark:text-gray-400">Monto a recibir:</span>
             <span className="font-medium dark:text-gray-200">
               {amount?.amountReceived
-                ? `${amount.amountReceived} / ${receiverAccount?.paymentMethod?.method || ''} / ${amount.currencyReceived}`
+                ? `${amount.amountReceived} / ${receiverAccount?.paymentMethod?.type || receiverAccount?.paymentMethod?.platformId || ''} / ${amount.currencyReceived}`
                 : 'No disponible'}
             </span>
           </div>
