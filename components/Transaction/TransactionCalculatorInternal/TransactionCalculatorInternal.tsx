@@ -151,6 +151,7 @@ export default function InternalTransactionCalculator({
     resetToDefault();
     setTimeout(() => {
       try {
+        sessionStorage.setItem('accesoPermitido','true')
         document.cookie = 'requestPass=1; Max-Age=120; Path=/; SameSite=Lax';
       } catch {}
       setPassTrue();
