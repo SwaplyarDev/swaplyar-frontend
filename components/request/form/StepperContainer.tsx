@@ -169,7 +169,6 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
       } 
     } catch (error: any) {
        // Capturamos mensaje real del error lanzado en el store
-       console.log('error completo de en el catch del submit en stepper container:', error);
        setErrorSend(true);
       setErrorMessage(error.message || 'Error desconocido en el envío.');
       console.error('Error en el proceso de envío:', error);

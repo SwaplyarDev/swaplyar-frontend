@@ -71,9 +71,7 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
       }
 
       //ahora hacemos la peticion al backend
-      console.log('datos qeu enviamos al backend:', payload);
       const res = await updateProfile(token, payload.nickname, payload.location);
-      console.log('Respuesta de updateProfile:', res);
 
       // Actualizar store y sesión
 
