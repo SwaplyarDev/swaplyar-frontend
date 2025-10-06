@@ -51,7 +51,8 @@ export function mapWalletDetails(wallet: { name: string; type: string; details: 
         ];
 
       default:
-        return [[{ label: 'Cuenta', value: safe(wallet.name) }]];
+        // Se quita array anidado, ya que solo se muestra un detalle, ademas evita errores de tipado
+        return [{ label: 'Cuenta', value: safe(wallet.name) }];
     }
   });
 }

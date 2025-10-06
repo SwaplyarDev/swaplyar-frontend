@@ -73,8 +73,10 @@ export const updatePicture = async (token: string, file: File):Promise<UpdatePic
 };
 
 /** Editar email (solo admins por ahora)*/
+//EL TIPADO ESTA SUPONIENDO QUE LA RESPUESTA ES IGUAL A LA DE PHONE, TODAVIA TIENE QUE CONFIRMARCE CON BACK
+//YA QUE TODAVIA SE REQUIERE SER ADMIN PARA EDITAR EMAIL
 export const updateEmail = (token: string, email: string) =>
-  apiRequest(
+  apiRequest<UpdatePhoneResponse>(
     `/users/profiles/my-profile/email`,
     "PUT",
     token,
