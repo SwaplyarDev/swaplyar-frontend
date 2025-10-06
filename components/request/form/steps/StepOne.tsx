@@ -10,6 +10,9 @@ import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import SelectCountry from '../inputs/SelectCountry';
 import InputSteps from '@/components/inputSteps/InputSteps';
 import useWalletStore from '@/store/useWalletStore';
+//importamos validacion nueva para los telefonos.
+import { validatePhoneNumber } from '@/utils/validatePhoneNumber'; 
+
 interface FormData {
   first_name: string;
   last_name: string;
@@ -237,9 +240,10 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               disabled={blockAll}
               {...register('phone', {
                 required: 'El número de teléfono es obligatorio',
-                pattern: {
-                  value: /^\d{9,11}$/,
-                  message: 'Introduce un número válido de entre 9 y 11 dígitos',
+                validate:(value)=>{
+                  const country = watch('calling_code');
+                  const result = validatePhoneNumber(value, country);
+                  return result === true ? true : result;
                 },
               })}
             />
