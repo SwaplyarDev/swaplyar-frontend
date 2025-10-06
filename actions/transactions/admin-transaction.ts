@@ -329,11 +329,6 @@ export async function updateStars(transactionId: string, quantityUSD: number) {
 
     if (!token) throw new Error("No se encontró token de sesión");
 
-    console.log("📤 Enviando al backend:", {
-      transactionId,
-      quantity: quantityUSD,
-    });
-
     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/discounts/update-star`, {
       method: "PUT",
       headers: {
@@ -352,8 +347,6 @@ export async function updateStars(transactionId: string, quantityUSD: number) {
     } catch {
       throw new Error("Error parseando la respuesta del backend");
     }
-
-    console.log("📥 Respuesta del backend:", data);
 
     if (!res.ok) {
       throw new Error(data?.message || "Error al actualizar estrellas");

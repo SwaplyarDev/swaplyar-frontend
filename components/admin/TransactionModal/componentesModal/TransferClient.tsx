@@ -307,8 +307,6 @@ const TransferClient = ({ onTransferStatusChange, transactionFlow }: TransferCli
 
     setForm((prev) => (prev.amount === usdRounded.toString() ? prev : { ...prev, amount: usdRounded.toString() }));
 
-    console.log(`💱 ${rawAmount} ${rawCurrency} = ${usdRounded} USD`);
-    console.log(rates)
   }, [trans, rates]);
 
 
@@ -436,12 +434,6 @@ const TransferClient = ({ onTransferStatusChange, transactionFlow }: TransferCli
           <Alert className="bg-blue-50 text-blue-800">
             <AlertDescription>Transferencia en camino - Ya se comunicó al solicitante.</AlertDescription>
           </Alert>
-
-          <article className="flex w-full justify-between rounded-lg bg-gray-100 p-3 dark:bg-gray-800">
-            <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Transfer ID</p>
-            <p className="text-base text-gray-700 dark:text-white">ID #{transId}</p>
-          </article>
-          <input type="hidden" name="transfer_id" value={transId} />
 
           <article className="flex w-full justify-between rounded-lg bg-gray-100 p-3 dark:bg-gray-800">
             <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Monto USD</p>
