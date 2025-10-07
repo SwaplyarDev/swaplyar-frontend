@@ -21,6 +21,8 @@ import LoadingGif from '../ui/LoadingGif/LoadingGif';
 import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
 import ButtonBack from '../ui/ButtonBack/ButtonBack';
 import { FlyerGif, searchRequestMovile, searchRequestWeb } from '@/utils/assets/imgDatabaseCloudinary';
+//agregamos alert para error en la busqueda
+import Swal from 'sweetalert2';
 
 export enum AdminStatus {
   Pending = 'pending',
@@ -68,12 +70,12 @@ const SearchRequest = () => {
   const handleSearchRequest = (history: { status: string; timestamp: string }[]) => {
     const statusMessages: Record<AdminStatus, { text: string; icon: string }> = {
       [AdminStatus.Pending]: { text: 'Pago en Revisión', icon: ReactDOMServer.renderToString(<Revision />) },
+      [AdminStatus.InTransit]: { text: 'Solicitud Enviada', icon: ReactDOMServer.renderToString(<Enviada />) },
       [AdminStatus.ReviewPayment]: { text: 'Dinero en Camino', icon: ReactDOMServer.renderToString(<DineroEnCamino />) },
       [AdminStatus.Completed]: { text: 'Solicitud Finalizada con Éxito', icon: ReactDOMServer.renderToString(<Finalizada />) },
-      [AdminStatus.InTransit]: { text: 'Solicitud Enviada', icon: ReactDOMServer.renderToString(<Enviada />) },
+      [AdminStatus.Discrepancy]: { text: 'Discrepancia en la Solicitud', icon: ReactDOMServer.renderToString(<Discrepancia />) },
       [AdminStatus.Canceled]: { text: 'Solicitud Cancelada', icon: ReactDOMServer.renderToString(<Cancelada />) },
       [AdminStatus.Modified]: { text: 'Solicitud Modificada', icon: ReactDOMServer.renderToString(<Modificada />) },
-      [AdminStatus.Discrepancy]: { text: 'Discrepancia en la Solicitud', icon: ReactDOMServer.renderToString(<Discrepancia />) },
       [AdminStatus.Refunded]: { text: 'Dinero Reembolsado con Éxito', icon: ReactDOMServer.renderToString(<Reembolso />) },
       [AdminStatus.Approved]: { text: 'Solicitud Aprobada', icon: ReactDOMServer.renderToString(<Enviada />) },
       [AdminStatus.Rejected]: { text: 'Solicitud Rechazada', icon: ReactDOMServer.renderToString(<Cancelada />) },
@@ -97,7 +99,17 @@ const SearchRequest = () => {
       const response = await searchRequest(data.transactionId, data.lastNameRequest) as SearchResponse;
 
       if (!response.ok) {
+        Swal.fire({
+          title: 'Error',
+          text: response.message || 'Hubo un problema al obtener el estado de la transacción. Intente nuevamente.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          background: isDark ? '#1e1e1e' : '#fff',
+          color: isDark ? '#ebe7e0' : '#012A8E',
+          confirmButtonColor: isDark ? '#ebe7e0' : '#012A8E',
+        });
         throw new Error(response.message || 'Hubo un problema al obtener el estado de la transacción');
+        
       }
 
       // Si no hay historial, crear uno con el estado actual
