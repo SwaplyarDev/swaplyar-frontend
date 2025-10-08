@@ -54,7 +54,7 @@ const ClientEditCancelMessage = ({ type, message, createdAt, imageUrl }: ClientE
             <div className="mt-2 flex justify-end">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="text-sm font-medium text-blue-600 hover:underline"
+                className="text-sm font-semibold bg-nav-blue hover:bg-nav-blue/90 rounded-lg px-2 py-1"
               >
                 Ver imagen
               </button>
