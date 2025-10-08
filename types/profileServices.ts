@@ -58,29 +58,25 @@ export interface UpdatePhoneResponse {
 }
 
 export interface UpdateProfileResponse {
-  message: string;
-  result: EditProfileResult;
-}
-
-export interface EditProfileResult {
   id: string;
   user: EditUser;
   firstName: string;
   lastName: string;
-  nickName: string;
+  nickName?: string;
+  nickname?: string;
   email: string;
   identification: string | null;
-  phone: string;
+  phone: string | null;
   birthday: string | null;
   age: number | null;
   gender: string | null;
   lastActivity: string | null;
-  profilePictureUrl: string;
+  profilePictureUrl: string | null;
 }
 
 export interface EditUser {
   id: string;
-  locations: EditUserLocation[];
+  locations?: EditUserLocation[];
   role: string;
   termsAccepted: boolean;
   createdAt: string;
@@ -88,7 +84,6 @@ export interface EditUser {
   isActive: boolean;
   isValidated: boolean;
   userValidated: boolean;
-  refreshToken: string;
 }
 
 export interface EditUserLocation {

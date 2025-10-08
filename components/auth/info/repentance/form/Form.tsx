@@ -30,12 +30,12 @@ const FormAuth = () => {
   const transaction_id = watch('transaction_id');
 
   const handleFormSubmission: SubmitHandler<FormData> = async (data) => {
-    if (!session?.user?.name || !session?.user?.email) {
+    if (!session?.user?.fullName || !session?.user?.email) {
       console.error('Error: No hay datos del usuario disponibles.');
       return;
     }
-    
-    const nameParts = session.user.name.trim().split(/\s+/);
+
+    const nameParts = session.user.fullName.trim().split(/\s+/);
     const last_name = nameParts.length > 1 ? nameParts[1] : '';
     const phone_user = `${data.calling_code?.callingCode}${data.phone_number}`;
 

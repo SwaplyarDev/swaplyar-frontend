@@ -36,10 +36,12 @@ import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
 import { useSession } from 'next-auth/react';
 import { searchRequestMovile, searchRequestWeb } from '@/utils/assets/imgDatabaseCloudinary';
+//importamos alert para mostrar los errores.
+import Swal from 'sweetalert2';
 
 const SearchRequestAuth = () => {
   const { data: session } = useSession();
-  const fullName = session?.user?.name || '';
+  const fullName = session?.user?.fullName || '';
   const [firstName, lastName] = fullName.split(' ');
   const {
     register,
@@ -74,14 +76,18 @@ const SearchRequestAuth = () => {
 
   const handleSearchRequest = (statusObject: Record<string, any>) => {
     const statusMessages = {
-      received: { text: 'Solicitud Enviada', icon: ReactDOMServer.renderToString(<Enviada />) },
       pending: { text: 'Pago en Revisión', icon: ReactDOMServer.renderToString(<Revision />) },
+      in_transit: { text: 'Solicitud Enviada', icon: ReactDOMServer.renderToString(<Enviada />) },
       review_payment: { text: 'Dinero en Camino', icon: ReactDOMServer.renderToString(<DineroEnCamino />) },
-      completed: { text: 'Discrepancia en la Solicitud', icon: ReactDOMServer.renderToString(<Discrepancia />) },
-      in_transit: { text: 'Solicitud Cancelada', icon: ReactDOMServer.renderToString(<Cancelada />) },
-      canceled: { text: 'Solicitud Modificada', icon: ReactDOMServer.renderToString(<Modificada />) },
-      modified: { text: 'Dinero Reembolsado con Éxito', icon: ReactDOMServer.renderToString(<Reembolso />) },
-      discrepancy: { text: 'Solicitud Finalizada con Éxito', icon: ReactDOMServer.renderToString(<Finalizada />) },
+      completed: { text: 'Solicitud Finalizada con Éxito', icon: ReactDOMServer.renderToString(<Finalizada />) },
+      discrepancy: { text: 'Discrepancia en la Solicitud', icon: ReactDOMServer.renderToString(<Discrepancia />) },
+      canceled: { text: 'Solicitud Cancelada', icon: ReactDOMServer.renderToString(<Cancelada />) },
+      modified: { text: 'Solicitud Modificada', icon: ReactDOMServer.renderToString(<Modificada />) },
+      refunded: { text: 'Dinero Reembolsado con Éxito', icon: ReactDOMServer.renderToString(<Reembolso />) },
+      rejected:{ text: 'Solicitud Rechazada', icon: ReactDOMServer.renderToString(<Cancelada />) },
+      approved: { text: 'Solicitud Aprobada', icon: ReactDOMServer.renderToString(<Enviada />) },
+      refundInTransit: { text: 'Reembolso en Proceso', icon: ReactDOMServer.renderToString(<DineroEnCamino />) }
+
     };
 
     const uniqueStatuses = Array.from(new Set(Object.keys(statusObject)));
@@ -111,6 +117,15 @@ const SearchRequestAuth = () => {
       const response = await searchRequest(data.transactionId, lastName) as SearchResponse;
 
       if (!response.ok) {
+        Swal.fire({
+                  title: 'Error',
+                  text: response.message || 'Hubo un problema al obtener el estado de la transacción. Intente nuevamente.',
+                  icon: 'error',
+                  confirmButtonText: 'OK',
+                  background: isDark ? '#1e1e1e' : '#fff',
+                  color: isDark ? '#ebe7e0' : '#012A8E',
+                  confirmButtonColor: isDark ? '#ebe7e0' : '#012A8E',
+                });
         throw new Error(response.message || 'Hubo un problema al obtener el estado de la transacción');
       }
 
@@ -200,7 +215,7 @@ const SearchRequestAuth = () => {
                       : 'buttonSecond'
                 }`}
               >
-                Editar Solicitud
+                Buscar Solicitud
               </button>
             )}
           </div>
