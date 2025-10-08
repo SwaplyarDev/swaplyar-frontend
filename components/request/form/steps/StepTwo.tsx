@@ -86,7 +86,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
         setValue('individual_tax_id', detail.cpf || '', { shouldValidate: true });
         break;
     }
-  }, [selectedWallet, formData.stepOne, setValue, reset]);
+  }, [selectedWallet, formData.stepOne, setValue, reset, formData.stepTwo]);
 
   const onSubmit = (data: StepTwoData) => {
     updateFormData(1, data);
