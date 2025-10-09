@@ -71,6 +71,7 @@ export default function Coupons({ balance, receivingCoin }: IProps) {
         )}
         {couponInstance === 'THREE' && <CouponCard label="+3 USD" amount={3} /> }
         {couponInstance === 'FIVE' && <CouponCard label="+5 USD" amount={5} />}
+        {couponInstance === 'COMBINED' && <CouponCard label="+3 USD + 5 USD" amount={8} />}
         {couponInstance === 'MANUAL' && <ManualCouponInput />}
       </div>
     </div>

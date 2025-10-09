@@ -21,11 +21,11 @@ export default function CouponCard({ label, amount, onRedeem }: Props) {
         {getRewardMessage()}
       </p>
       <div
-        className="flex h-[41px] min-w-[180px] max-w-[190px] items-center justify-center gap-4 rounded-2xl border border-[#FCC21B] bg-[#FFFFF8] px-[10px] py-2"
+        className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#FCC21B] bg-[#FFFFF8] px-3 py-2 max-w-[250px] w-fit"
         onClick={onRedeem}
       >
         <IconTrophy className="transition-transform duration-100 hover:scale-110" />
-        <p className="text-lg font-normal text-lightText">{label || `+${amount}USD`}</p>
+        <p className="text-lg font-normal text-lightText whitespace-nowrap">{label || `+${amount}USD`}</p>
       </div>
     </div>
   );

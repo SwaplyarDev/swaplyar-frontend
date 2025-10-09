@@ -1,8 +1,8 @@
 import { System } from '@/types/data';
 import { is } from 'date-fns/locale';
-
+//agregamos combined como instancia de cupon
 interface Params {
-  couponInstance: 'THREE' | 'FIVE' | 'THREE_FIVE' | 'TEN' | 'MANUAL' | null;
+  couponInstance: 'THREE' | 'FIVE' | 'THREE_FIVE' | 'TEN' | 'MANUAL' | 'COMBINED' | null;
   receiveAmountNum: number;
   sendAmountNum: number;
   selectedSendingSystem: System | null;
@@ -29,6 +29,8 @@ export function calculateReceiveAmountWithCoupon({
   else if (couponInstance === 'FIVE') couponUsdAmount = 5;
   else if (couponInstance === 'THREE_FIVE') couponUsdAmount = 8;
   else if (couponInstance === 'TEN') couponUsdAmount = 10;
+  //agregamos el combined
+  else if (couponInstance === 'COMBINED') couponUsdAmount = 8;
   // else if (couponInstance === 'MANUAL') couponUsdAmount = 2;
 
   const receivingCoin = selectedReceivingSystem?.coin;

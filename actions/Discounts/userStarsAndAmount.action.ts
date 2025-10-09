@@ -15,6 +15,7 @@ export async function getUserStarsAndAmount(token: string) {
     }
 
     const data = await response.json();
+    console.log('getUserStarsAndAmount response:', data);
     return data;
   } catch (error) {
     console.error('Error fetching data:', error);

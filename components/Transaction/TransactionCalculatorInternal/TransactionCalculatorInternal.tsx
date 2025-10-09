@@ -33,7 +33,8 @@ import { useSession } from 'next-auth/react';
 import { useStepperStore } from '@/store/stateStepperStore';
 import { normalizeType } from '@/components/admin/utils/normalizeType';
 
-export const allowedCouponInstances: CouponInstance[] = ['THREE', 'FIVE', /* 'THREE_FIVE', */ 'TEN', 'MANUAL'];
+//agregamos combined como instancia de cupon
+export const allowedCouponInstances: CouponInstance[] = ['THREE', 'FIVE', /* 'THREE_FIVE', */ 'TEN', 'MANUAL', 'COMBINED'];
 
 export default function InternalTransactionCalculator({
   discounts,
@@ -93,8 +94,10 @@ export default function InternalTransactionCalculator({
   const usdToBrlRate = rates?.currentValueUSDToBRL ?? 0;
   const arsToBrlRate = usdToArsRate > 0 ? (1 / usdToArsRate) * usdToBrlRate : 0;
 
+  // 🟦 Carga inicial de wallets
   useEffect(() => {
     if (token) {
+      // console.log('token detectado, cargando billeteras:', token);
       fetchAndSetWallets(token);
     }
   }, [token, fetchAndSetWallets]);
@@ -104,32 +107,51 @@ export default function InternalTransactionCalculator({
     return () => stopUpdatingRates();
   }, [selectedSendingSystem, selectedReceivingSystem, startUpdatingRates, stopUpdatingRates]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     resetDiscounts();
-  }, [resetDiscounts]);
+  }, [resetDiscounts]);*/
 
   // Calcula el couponUsdAmount y el couponInstance según los descuentos obtenidos por parametro
+  //calculadora principal de cupones
   useEffect(() => {
     resetDiscounts();
 
     if (discounts && discounts.data && discounts.data.length > 0) {
+      // console.log('🟢 Descuentos recibidos desde el backend:', discounts.data);
       discounts.data.forEach((discount: AdminDiscount) => {
         addDiscountId(discount.id);
       });
+       // aca puede venir el error de  los dos cupones acumulados
 
-      const totalDiscountValue = discounts.data.reduce((total, discount) => total + discount.discountCode.value, 0);
+      //  console.log("🎟️ Calculando total de descuentos...");
+      const totalDiscountValue = discounts.data.reduce((total, discount) => {
+        const val = discount.discountCode.value || 0;
+        // console.log(`➡️ Sumando descuento: ${val}`);
+        return total + val;
+      }, 0);
+
       couponUsdAmount.current = totalDiscountValue;
+      // console.log('🧾 Total de descuentos acumulados:', totalDiscountValue);
 
       setCouponInstanceByAmount(totalDiscountValue);
-    }
 
+      // console.log('🏷️ cupón asignado:', totalDiscountValue, '→ instancia:', couponInstance);
+    } else {
+      // console.log('⚪ No se recibieron descuentos.');
+    }
+    // console.log('🌟 Datos de estrellas antes de setData:', stars.data)
     setData(stars.data.stars, sendAmountNum);
-  }, [discounts, stars, addDiscountId, isUsed, resetDiscounts, sendAmountNum, setCouponInstanceByAmount, setData]);
+  }, [discounts, stars, addDiscountId, isUsed, resetDiscounts, sendAmountNum, setCouponInstanceByAmount, setData, couponInstance]);
+
+  // 🧮 Calcular si se aplica el cupón
 
   shouldApplyCoupon.current = sendAmountNum > 0 && couponUsdAmount.current > 0;
   couponInstanceForCalc.current = allowedCouponInstances.includes(couponInstance as CouponInstance)
-    ? (couponInstance as 'THREE' | 'FIVE' | 'TEN' | 'MANUAL')
+    ? (couponInstance as 'THREE' | 'FIVE' | 'TEN' | 'MANUAL' | 'COMBINED')
     : null;
+
+  //   console.log('🧠 shouldApplyCoupon:', shouldApplyCoupon.current);
+  // console.log('🎯 cupón para cálculo:', couponInstanceForCalc.current)
 
   receiveAmountWithCoupon.current = calculateReceiveAmountWithCoupon({
     couponInstance: couponInstanceForCalc.current,
@@ -142,6 +164,9 @@ export default function InternalTransactionCalculator({
     eurToUsdRate,
     usdToBrlRate,
   });
+  // console.log('💵 Monto recibido con cupón aplicado:', receiveAmountWithCoupon.current);
+  // console.log('💰 Monto enviado:', sendAmountNum, 'Monto recibido sin cupón:', receiveAmountNum);
+
 
   receiveAmountInputValue.current = shouldApplyCoupon ? formatAmount(receiveAmountWithCoupon.current) : receiveAmount;
 

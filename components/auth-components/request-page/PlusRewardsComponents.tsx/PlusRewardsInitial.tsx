@@ -39,8 +39,10 @@ export default function PlusRewardInitial({ discounts, userVerification, userId,
       try {
         setLoading(true);
         const res = await getUserStarsAndAmount(accessToken);
+        // console.log('🟪 Respuesta de getUserStarsAndAmount en PlusRewardsInitial:', res);
         setData(Number(res.data.stars), Number(res.data.quantity));
       } catch (e) {
+        console.error('Error en PlusRewardsInitial:', e);
         setError('Error al cargar recompensas');
       } finally {
         setLoading(false);
