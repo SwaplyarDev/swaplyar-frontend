@@ -3,8 +3,10 @@ import {
   resendVerificationAfterRejection,
   updateVerificationStatus,
 } from '@/actions/plusRewards/plusRewards.actions';
+import { Session } from 'next-auth';
 
 import { UpdateSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 type Status = 'REENVIAR_DATOS' | 'PENDIENTE' | 'APROBADO' | 'RECHAZADO';
 
@@ -14,6 +16,8 @@ interface HandleStatusParams {
   setShowRejectedMessage: (val: boolean) => void;
   setShowApprovedMessage: (val: boolean) => void;
   update: UpdateSession;
+  session?: Session;
+  router?:ReturnType<typeof useRouter>
 }
 
 export async function fetchAndHandleVerificationStatus({
@@ -22,6 +26,8 @@ export async function fetchAndHandleVerificationStatus({
   setShowRejectedMessage,
   setShowApprovedMessage,
   update,
+  session,
+  router
 }: HandleStatusParams) {
   try {
     let statusResp;
@@ -57,6 +63,15 @@ export async function fetchAndHandleVerificationStatus({
         break;
       case 'APROBADO':
         await handleApprovedStatus(workingToken, setShowApprovedMessage, update);
+        // actualizar la session de NextAuth
+  await update({
+    user: {
+      ...session?.user, // session viene de useSession() en tu componente
+      userValidated: true,
+    },
+  });
+  // redirige a RequestPage para que SSR lea la sesión actualizada
+//if (router) router.replace('/es/auth/solicitud');
         break;
       default:
         clearStatusFlags();

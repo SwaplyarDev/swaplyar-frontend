@@ -15,6 +15,7 @@ import { useVerificationStore } from '../../store/useVerificationStore';
 import { shallow } from 'zustand/shallow';
 import { swaplyPlusRewards } from '@/utils/assets/imgDatabaseCloudinary';
 import { fetchAndHandleVerificationStatus } from '@/utils/verificationHandlers';
+import { useRouter } from 'next/navigation';
 
 declare module 'next-auth' {
   interface Session {
@@ -52,7 +53,7 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const { data: session, update } = useSession();
   const token = session?.accessToken;
   const sessionCardBlueYellow = verifiedStatus === 'APROBADO';
-
+const router = useRouter();
   const isUpdatingRef = useRef(false);
 
   const now = new Date();
@@ -98,6 +99,9 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
       setShowRejectedMessage,
       setShowApprovedMessage,
       update: safeUpdate,
+      session,
+      router,
+
     });
   }, [token, setStatus, setShowApprovedMessage, safeUpdate, session]);
 

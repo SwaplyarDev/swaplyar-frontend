@@ -95,34 +95,36 @@ export const {
   callbacks: {
     //se agrega session para que este disponible en jwt
     async jwt({ token, user, trigger, session }) {
-      // Si hubo error de refresh previamente, no volver a intentar en este ciclo
+       // 1️⃣ Si hubo error de refresh previo, no intentamos nada
       if ((token as any).error === 'RefreshAccessTokenError') {
         return token;
       }
+      // 2️⃣ Primer login (user existe): inicializamos el token con la info del usuario
       if (user) {
         return {
           ...token,
           accessToken: user.accessToken,
           refreshToken: user.refreshToken,
           expiresAt: user.expiresAt,
-          user: user, 
+          user: user, //incluye profile y demas campos
         };
       }
+      // 3️⃣ Update manual desde `update({ user: ... })`
       // ✅ Nuevo: actualizar datos de usuario con update()
        if (trigger === 'update' && session?.user) {
-        console.log('🔁 Trigger "update" → refresh token');
+        console.log('🔁 Trigger "update" → merge de session.user en token');
 
         token.user = {
-          ...token.user,
-          ...session.user,
+          ...token.user,  //lo que ya estaba
+          ...session.user,  // aplicamos los cambios
           profile: {
-            ...(token.user?.profile || {}),
-            ...(session.user.profile || {}),
+            ...(token.user?.profile || {}), //mantenemos el profile previo
+            ...(session.user.profile || {}), // actualizamos el profile, si viene
           },
         };
         return token;
       }
-
+      // 4️⃣ Refresh automático si el token expiró o expira en <= 60s
       const remainingTimeInSeconds = ((token.expiresAt as number) - Date.now()) / 1000;
       // Refrescar si faltan <= 60s para expirar o ya expiró
       if (remainingTimeInSeconds > 60) {
@@ -131,6 +133,7 @@ export const {
       if (isRefreshing) {
         return await refreshPromise;
       }
+      // 5️⃣ Refrescar token desde backend
       isRefreshing = true;
       refreshPromise = refreshAccessToken(token);
       const refreshedToken = await refreshPromise;
