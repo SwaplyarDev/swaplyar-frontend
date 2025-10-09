@@ -10,8 +10,6 @@ import { getUserStarsAndAmount } from '@/actions/Discounts/userStarsAndAmount.ac
 
 export default async function RequestPage() {
   const session = await auth();
-  //session en request page
-  console.log('🟩 Session en RequestPage:', session);
   let discountsData: AdminDiscountsResponse = { data: [] };
   let starsData: UserStarsAndAmount = { data: { quantity: 0, stars: 0 } };
   let errors: string[] = [];
@@ -22,11 +20,11 @@ export default async function RequestPage() {
     try {
       discountsData = await getDiscounts(session.accessToken);
       starsData = await getUserStarsAndAmount(session.accessToken);
-      console.log('🟦 Server discounts: en request page', discountsData);
-      console.log('🟨 Server stars/amount en request page:', starsData);
-      console.log('--- Datos de descuentos recibidos en RequestPage:', JSON.stringify(discountsData, null, 2));
+      // console.log('🟦 Server discounts: en request page', discountsData);
+      // console.log('🟨 Server stars/amount en request page:', starsData);
+      // console.log('--- Datos de descuentos recibidos en RequestPage:', JSON.stringify(discountsData, null, 2));
     } catch (error) {
-      console.log('🟥 Error en RequestPage:', error);
+      // console.log('🟥 Error en RequestPage:', error);
       const errorMessage = 'No se han podido obtener los descuentos del usuario';
       errors.push(errorMessage);
     }

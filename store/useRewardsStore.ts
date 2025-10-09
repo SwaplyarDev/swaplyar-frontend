@@ -48,13 +48,13 @@ export const useRewardsStore = create<RewardsStore>((set, get) => ({
   error: null,
 
   setCouponInstanceByAmount: (couponAmount: number) => {
-    console.log('🎯 [setCouponInstanceByAmount] amount recibido:', couponAmount)
+    // console.log('🎯 [setCouponInstanceByAmount] amount recibido:', couponAmount)
     if (couponAmount === 3 && !get().used3USD) set({ couponInstance: 'THREE' });
     else if (couponAmount === 5 && !get().used5USD) set({ couponInstance: 'FIVE' });
     else if (couponAmount === 10 && !get().used10USD) set({ couponInstance: 'TEN' });
     //creamos nueva instancia para cupones combinados
     else if (couponAmount === 8) {    set({ couponInstance: 'COMBINED' });
-    console.log('🏷️ cupón asignado: 8 → instancia: COMBINED');
+    // console.log('🏷️ cupón asignado: 8 → instancia: COMBINED');
   } 
     else set({ couponInstance: 'MANUAL' });
   },
@@ -79,7 +79,7 @@ export const useRewardsStore = create<RewardsStore>((set, get) => ({
   },
 
   setData: (stars, quantity) => {
-    console.log('🟦 setData en useRewardStore:', { stars, quantity })
+    // console.log('🟦 setData en useRewardStore:', { stars, quantity })
     set({ stars, quantity });
   },
 
@@ -93,7 +93,7 @@ export const useRewardsStore = create<RewardsStore>((set, get) => ({
 
   calculateCouponInstance: (isVerified) => {
     const { stars, quantity, used3USD, used5USD } = get();
-    console.log('🟩 Store actual antes de calcular:', { stars, quantity, used3USD, used5USD });
+    // console.log('🟩 Store actual antes de calcular:', { stars, quantity, used3USD, used5USD });
     const hasGoal = stars >= 5 && quantity >= 500 && isVerified;
 
     if (hasGoal) {

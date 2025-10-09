@@ -97,7 +97,7 @@ export default function InternalTransactionCalculator({
   // 🟦 Carga inicial de wallets
   useEffect(() => {
     if (token) {
-      console.log('token detectado, cargando billeteras:', token);
+      // console.log('token detectado, cargando billeteras:', token);
       fetchAndSetWallets(token);
     }
   }, [token, fetchAndSetWallets]);
@@ -117,29 +117,29 @@ export default function InternalTransactionCalculator({
     resetDiscounts();
 
     if (discounts && discounts.data && discounts.data.length > 0) {
-      console.log('🟢 Descuentos recibidos desde el backend:', discounts.data);
+      // console.log('🟢 Descuentos recibidos desde el backend:', discounts.data);
       discounts.data.forEach((discount: AdminDiscount) => {
         addDiscountId(discount.id);
       });
        // aca puede venir el error de  los dos cupones acumulados
 
-       console.log("🎟️ Calculando total de descuentos...");
+      //  console.log("🎟️ Calculando total de descuentos...");
       const totalDiscountValue = discounts.data.reduce((total, discount) => {
         const val = discount.discountCode.value || 0;
-        console.log(`➡️ Sumando descuento: ${val}`);
+        // console.log(`➡️ Sumando descuento: ${val}`);
         return total + val;
       }, 0);
 
       couponUsdAmount.current = totalDiscountValue;
-      console.log('🧾 Total de descuentos acumulados:', totalDiscountValue);
+      // console.log('🧾 Total de descuentos acumulados:', totalDiscountValue);
 
       setCouponInstanceByAmount(totalDiscountValue);
 
-      console.log('🏷️ cupón asignado:', totalDiscountValue, '→ instancia:', couponInstance);
+      // console.log('🏷️ cupón asignado:', totalDiscountValue, '→ instancia:', couponInstance);
     } else {
-      console.log('⚪ No se recibieron descuentos.');
+      // console.log('⚪ No se recibieron descuentos.');
     }
-    console.log('🌟 Datos de estrellas antes de setData:', stars.data)
+    // console.log('🌟 Datos de estrellas antes de setData:', stars.data)
     setData(stars.data.stars, sendAmountNum);
   }, [discounts, stars, addDiscountId, isUsed, resetDiscounts, sendAmountNum, setCouponInstanceByAmount, setData, couponInstance]);
 
@@ -150,8 +150,8 @@ export default function InternalTransactionCalculator({
     ? (couponInstance as 'THREE' | 'FIVE' | 'TEN' | 'MANUAL' | 'COMBINED')
     : null;
 
-    console.log('🧠 shouldApplyCoupon:', shouldApplyCoupon.current);
-  console.log('🎯 cupón para cálculo:', couponInstanceForCalc.current)
+  //   console.log('🧠 shouldApplyCoupon:', shouldApplyCoupon.current);
+  // console.log('🎯 cupón para cálculo:', couponInstanceForCalc.current)
 
   receiveAmountWithCoupon.current = calculateReceiveAmountWithCoupon({
     couponInstance: couponInstanceForCalc.current,
@@ -164,8 +164,8 @@ export default function InternalTransactionCalculator({
     eurToUsdRate,
     usdToBrlRate,
   });
-  console.log('💵 Monto recibido con cupón aplicado:', receiveAmountWithCoupon.current);
-  console.log('💰 Monto enviado:', sendAmountNum, 'Monto recibido sin cupón:', receiveAmountNum);
+  // console.log('💵 Monto recibido con cupón aplicado:', receiveAmountWithCoupon.current);
+  // console.log('💰 Monto enviado:', sendAmountNum, 'Monto recibido sin cupón:', receiveAmountNum);
 
 
   receiveAmountInputValue.current = shouldApplyCoupon ? formatAmount(receiveAmountWithCoupon.current) : receiveAmount;
