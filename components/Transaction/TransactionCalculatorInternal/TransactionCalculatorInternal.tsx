@@ -147,7 +147,7 @@ export default function InternalTransactionCalculator({
 
   shouldApplyCoupon.current = sendAmountNum > 0 && couponUsdAmount.current > 0;
   couponInstanceForCalc.current = allowedCouponInstances.includes(couponInstance as CouponInstance)
-    ? (couponInstance as 'THREE' | 'FIVE' | 'TEN' | 'MANUAL')
+    ? (couponInstance as 'THREE' | 'FIVE' | 'TEN' | 'MANUAL' | 'COMBINED')
     : null;
 
     console.log('🧠 shouldApplyCoupon:', shouldApplyCoupon.current);
