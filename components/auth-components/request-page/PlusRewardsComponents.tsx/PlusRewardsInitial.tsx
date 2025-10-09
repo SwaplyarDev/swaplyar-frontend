@@ -23,6 +23,7 @@ import { getUserStarsAndAmount } from '@/actions/Discounts/userStarsAndAmount.ac
 import { useRewardsStore } from '@/store/useRewardsStore';
 import ErrorComponent from '../ErrorComponent';
 import { AdminDiscountsResponse } from '@/types/discounts/adminDiscounts';
+import { log } from 'console';
 
 interface Props {
   discounts: AdminDiscountsResponse;
@@ -39,8 +40,10 @@ export default function PlusRewardInitial({ discounts, userVerification, userId,
       try {
         setLoading(true);
         const res = await getUserStarsAndAmount(accessToken);
+        console.log('🟪 Respuesta de getUserStarsAndAmount en PlusRewardsInitial:', res);
         setData(Number(res.data.stars), Number(res.data.quantity));
       } catch (e) {
+        console.error('Error en PlusRewardsInitial:', e);
         setError('Error al cargar recompensas');
       } finally {
         setLoading(false);

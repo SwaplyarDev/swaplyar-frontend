@@ -14,7 +14,7 @@ export async function getDiscounts(token: string) {
     }
 
     const data = await response.json();
-    console.log('data:', data);
+    console.log('get discounts response:', data);
     return data;
   } catch (error) {
     console.error('Error fetching discounts:', error);
