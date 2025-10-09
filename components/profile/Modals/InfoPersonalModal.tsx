@@ -72,12 +72,12 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
 
       //ahora hacemos la peticion al backend
       const res = await updateProfile(token, payload.nickname, payload.location);
-
+      console.log("Respuesta de updateProfile:", res);
       // Actualizar store y sesión
 
-      const { result } = res;
-      if (payload.nickname && res.result.nickName) {
-        setAlias(res.result.nickName);
+      const nickNameFromRes = res.nickName ?? res.nickname ?? payload.nickname;
+      if (nickNameFromRes) {
+        setAlias(nickNameFromRes);
       }
 
       if (session?.user) {
@@ -86,8 +86,8 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
             ...session.user,
             profile: {
               ...session.user.profile,
-              nickName: result.nickName ?? session.user.profile?.nickname,
-              location: result.user.locations ?? session.user.profile?.location,
+              nickName: nickNameFromRes ?? session.user.profile?.nickName,
+              location: res.user?.locations ?? session.user.profile?.location,
             },
           },
         });

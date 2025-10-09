@@ -55,7 +55,7 @@ export default function VirtualWallets() {
           return;
         }
 
-        const mapped = response.map(mapWalletFromApi).filter(Boolean); // Filtra los nulos
+        const mapped = response.map(mapWalletFromApi).filter(Boolean) as Wallet[]; // Filtra los nulos y confirmamos el tipado
         setWallets(mapped);
         hasFetched.current = true;
       } catch (err: any) {

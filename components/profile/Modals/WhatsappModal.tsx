@@ -7,11 +7,14 @@ import { useWhatsAppFormStore } from '../store/WhatsAppFormStore';
 import { CountryOption } from '@/types/request/request';
 import { useSession } from 'next-auth/react';
 import { updatePhone } from '../services/profileServices';
+//importamos nuevas validaciones para el formulario de cambiar telefono
+import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
 
 interface WhatsappVerificationProps {
   show: boolean;
   setShow: (arg: boolean) => void;
 }
+
 
 interface FormData {
   phone: string;
@@ -120,10 +123,10 @@ const WhatsappModal = ({ show, setShow }: WhatsappVerificationProps) => {
               className="inputChangeAutofillReverse w-full border-none bg-transparent font-textFont text-black dark:text-white"
               type="tel"
               {...register('phone', {
-                required: 'El número de teléfono es obligatorio',
-                pattern: {
-                  value: /^\d{9,11}$/,
-                  message: 'Introduce un número válido de entre 9 y 11 dígitos',
+                validate: (value) => {
+                  const country = watch('calling_code');
+                  const result = validatePhoneNumber(value, country);
+                  return result === true ? true : result;
                 },
               })}
             />
