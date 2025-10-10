@@ -38,7 +38,7 @@ const EmailModal = ({ show, setShow }: EmailModalProps) => {
     setLoading(true);
 
     try {
-      const res = await updateEmail(session.accessToken, data.email);
+      const res = await updateEmail(session.accessToken, data.email) as { email: string };
       console.log("respuesta update email", res);
       // ✅ Actualizamos sesión en memoria
       //arroja error por la falta de tipado, falta formato de respuesta del servidor

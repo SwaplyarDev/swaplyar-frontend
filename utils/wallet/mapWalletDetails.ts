@@ -51,7 +51,7 @@ export function mapWalletDetails(wallet: { name: string; type: string; details: 
         ];
 
       default:
-        return [[{ label: 'Cuenta', value: safe(wallet.name) }]];
+        return [{ label: 'Cuenta', value: safe(wallet.name) }];
     }
   });
 }

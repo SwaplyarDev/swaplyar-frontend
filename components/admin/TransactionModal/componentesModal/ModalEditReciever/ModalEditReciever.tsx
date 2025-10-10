@@ -51,7 +51,7 @@ const ModalEditReciever: React.FC<ModalEditRecieverProps> = ({ modal, setModal, 
   const [modifiedValues, setModifiedValues] = useState<{ [key: string]: string }>(
     receiverLabels.reduce(
       (acc, { label, value }) => {
-        acc[label] = value;
+        acc[label] = value ?? '';
         return acc;
       },
       {} as { [key: string]: string },
