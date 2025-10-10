@@ -35,6 +35,8 @@ interface TransactionPageClientComponentProps {
   noteEdit: Note | null;
   regretCancel: RegretTypeSingle | null;
   token: string;
+  createdAt?: string;
+  imageUrl?: string;
 }
 
 export default function TransactionPageClientComponent({
@@ -187,6 +189,8 @@ export default function TransactionPageClientComponent({
                       : null
                 }
                 message={initialTransaction.regret?.description ? initialTransaction.regret.description : initialTransaction.note?.message}
+                imageUrl={initialTransaction.note?.img_url}
+                createdAt={initialTransaction.createdAt}
               />
 
               <TransactionDetail transaction={initialTransaction} isLoading={transactionFlow.isLoading} />
