@@ -23,16 +23,19 @@ import { getUserStarsAndAmount } from '@/actions/Discounts/userStarsAndAmount.ac
 import { useRewardsStore } from '@/store/useRewardsStore';
 import ErrorComponent from '../ErrorComponent';
 import { AdminDiscountsResponse } from '@/types/discounts/adminDiscounts';
+import {  useSession } from 'next-auth/react';
 
 interface Props {
   discounts: AdminDiscountsResponse;
-  userVerification: null | true;
   userId: string;
   accessToken: string;
 }
 
-export default function PlusRewardInitial({ discounts, userVerification, userId, accessToken }: Props) {
+export default function PlusRewardInitial({ discounts, userId, accessToken }: Props) {
   const { stars, quantity, loading, error, setData, setLoading, setError } = useRewardsStore();
+  const { data: session } = useSession();
+  
+  console.log('🟪 Session in PlusRewardInitial:', session);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,7 +87,7 @@ export default function PlusRewardInitial({ discounts, userVerification, userId,
   const haveEnoughStars = stars >= 5;
   const haveEnoughAmount = quantity >= 500;
 
-  const isUserVerified: null | true = userVerification;
+ const isUserVerified = session?.user?.userValidated ?? null;
 
   return (
     <section className="relative m-auto flex w-[80%] max-w-7xl items-center">

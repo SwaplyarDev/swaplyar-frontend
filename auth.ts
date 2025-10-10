@@ -17,7 +17,7 @@ if (!process.env.NEXTAUTH_URL) {
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL!;
 let isRefreshing = false;
 let refreshPromise: Promise<JWT> | null = null;
-async function refreshAccessToken(token: JWT): Promise<JWT> {
+export async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
     if (!token.refreshToken) {
       throw new Error('No refresh token present');

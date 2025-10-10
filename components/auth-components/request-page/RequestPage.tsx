@@ -46,7 +46,6 @@ export default async function RequestPage() {
             discounts={discountsData}
             // errors={errors}
             userId={session?.user.id ?? ''}
-            userVerification={session?.user.userValidated ? true : null}
             accessToken={session?.accessToken ?? ''}
           />
         </Suspense>

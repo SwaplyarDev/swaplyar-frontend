@@ -26,8 +26,6 @@ export async function fetchAndHandleVerificationStatus({
   setShowRejectedMessage,
   setShowApprovedMessage,
   update,
-  session,
-  router
 }: HandleStatusParams) {
   try {
     let statusResp;
@@ -63,15 +61,7 @@ export async function fetchAndHandleVerificationStatus({
         break;
       case 'APROBADO':
         await handleApprovedStatus(workingToken, setShowApprovedMessage, update);
-        // actualizar la session de NextAuth
-  await update({
-    user: {
-      ...session?.user, // session viene de useSession() en tu componente
-      userValidated: true,
-    },
-  });
-  // redirige a RequestPage para que SSR lea la sesión actualizada
-//if (router) router.replace('/es/auth/solicitud');
+               
         break;
       default:
         clearStatusFlags();
@@ -152,6 +142,7 @@ async function handleApprovedStatus(
 
     // Cambio: actualizar la session para reflejar el nuevo estado en tiempo real
     await update({ verification_status: 'APROBADO' });
+    
   } catch (err) {
     console.error('Error al actualizar token:', err);
   }
