@@ -17,7 +17,7 @@ import ButtonBack from '../ui/ButtonBack/ButtonBack';
 type FormInputs = {
   verificationCode: string[];
 };
-
+ 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const VerifyCodePage = () => {
@@ -46,7 +46,10 @@ export const VerifyCodePage = () => {
   const { attempts, lockUntil, decrementAttempts, setLockUntil, resetAttempts } = useCodeVerificationStore();
 
   const isLocked = lockUntil && lockUntil > Date.now();
-  const [timer, setTimer] = useState(60);
+   //empieza en 0 para que el temporizador no inicie automaticamente
+  const [timer, setTimer] = useState(0);
+  //condicional para disparar el temporizador
+  const [startTimer, setStartTimer] = useState(false);
 
   useEffect(() => {
     const storedEmail = localStorage.getItem('verificationEmail');
@@ -66,17 +69,22 @@ export const VerifyCodePage = () => {
   }, [email, router, isLocked, lockUntil, setLockUntil, resetAttempts]);
 
   useEffect(() => {
-    if (timer > 0) {
+     if (startTimer && timer > 0) {
       const interval = setInterval(() => {
         setTimer((prev) => prev - 1);
       }, 1000);
 
       return () => clearInterval(interval);
     }
-  }, [timer]);
+  }, [timer, startTimer]);
 
   const verifyCode: SubmitHandler<FormInputs> = async ({ verificationCode }) => {
     setLoading(true);
+    // Inicia el contador al confirmar
+    if (!startTimer) {
+      setTimer(60);
+      setStartTimer(true);
+    }
     const code = verificationCode.join('');
 
     if (code.length !== 6 || !/^\d+$/.test(code)) {
@@ -109,9 +117,10 @@ export const VerifyCodePage = () => {
       }
 
       if (!result.ok) {
+        const errorMessage = typeof result.message === 'string' ? result.message : 'El código ingresado es incorrecto o ha expirado.';
         setError('verificationCode', {
           type: 'manual',
-          message: typeof result.message === 'string' ? result.message : 'El código ingresado es incorrecto.',
+          message: errorMessage,
         });
         clearVerificationInputs();
       } else {
