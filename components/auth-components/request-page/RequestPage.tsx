@@ -10,6 +10,7 @@ import { getUserStarsAndAmount } from '@/actions/Discounts/userStarsAndAmount.ac
 
 export default async function RequestPage() {
   const session = await auth();
+  console.log('🟩 Session en RequestPage:', session);
   let discountsData: AdminDiscountsResponse = { data: [] };
   let starsData: UserStarsAndAmount = { data: { quantity: 0, stars: 0 } };
   let errors: string[] = [];
@@ -45,7 +46,6 @@ export default async function RequestPage() {
             discounts={discountsData}
             // errors={errors}
             userId={session?.user.id ?? ''}
-            userVerification={session?.user.userValidated ? true : null}
             accessToken={session?.accessToken ?? ''}
           />
         </Suspense>

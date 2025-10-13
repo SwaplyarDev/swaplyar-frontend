@@ -50,9 +50,9 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   );
 
   const { data: session, update } = useSession();
+  console.log('🟪 Session in SwaplyPlusRewards:', session);
   const token = session?.accessToken;
   const sessionCardBlueYellow = verifiedStatus === 'APROBADO';
-
   const isUpdatingRef = useRef(false);
 
   const now = new Date();
@@ -85,21 +85,40 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
       }, 300);
     }
   }, [update]);
-
+  const hasUpdatedSessionRef = useRef(false);
   useEffect(() => {
     if (!token) return;
     if ((session as any)?.error === 'RefreshAccessTokenError') {
       signOut({ callbackUrl: '/es/iniciar-sesion' });
       return;
     }
-    fetchAndHandleVerificationStatus({
+    const verifyStatus = async () => {
+    await fetchAndHandleVerificationStatus({
       token,
       setStatus,
       setShowRejectedMessage,
       setShowApprovedMessage,
-      update: safeUpdate,
+      update: safeUpdate, // safeUpdate sigue pasando, pero no se usa dentro del handler
+      session,
     });
-  }, [token, setStatus, setShowApprovedMessage, safeUpdate, session]);
+
+    // ✅ Si el estado es APROBADO, actualizamos sesión desde aquí
+     if (!hasUpdatedSessionRef.current && verifiedStatus === 'APROBADO') {
+      console.log('🔑 Actualizando sesión desde SwaplyPlusRewards');
+      await update({
+        user: {
+          ...(session?.user || {}),
+          userValidated: true,
+        },
+      });
+      hasUpdatedSessionRef.current = true;
+    }
+  };
+
+  verifyStatus();
+
+    
+  }, [token, setStatus, setShowApprovedMessage, safeUpdate, session, update]);
 
   useEffect(() => {
     if (!session?.accessToken) return;

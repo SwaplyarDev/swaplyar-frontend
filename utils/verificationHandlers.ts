@@ -3,8 +3,10 @@ import {
   resendVerificationAfterRejection,
   updateVerificationStatus,
 } from '@/actions/plusRewards/plusRewards.actions';
+import { Session } from 'next-auth';
 
 import { UpdateSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 type Status = 'REENVIAR_DATOS' | 'PENDIENTE' | 'APROBADO' | 'RECHAZADO';
 
@@ -14,6 +16,8 @@ interface HandleStatusParams {
   setShowRejectedMessage: (val: boolean) => void;
   setShowApprovedMessage: (val: boolean) => void;
   update: UpdateSession;
+  session?: Session;
+  router?:ReturnType<typeof useRouter>
 }
 
 export async function fetchAndHandleVerificationStatus({
@@ -57,6 +61,7 @@ export async function fetchAndHandleVerificationStatus({
         break;
       case 'APROBADO':
         await handleApprovedStatus(workingToken, setShowApprovedMessage, update);
+               
         break;
       default:
         clearStatusFlags();
@@ -137,6 +142,7 @@ async function handleApprovedStatus(
 
     // Cambio: actualizar la session para reflejar el nuevo estado en tiempo real
     await update({ verification_status: 'APROBADO' });
+    
   } catch (err) {
     console.error('Error al actualizar token:', err);
   }
