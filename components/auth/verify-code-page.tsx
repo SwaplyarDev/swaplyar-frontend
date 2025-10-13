@@ -115,12 +115,13 @@ export const VerifyCodePage = () => {
       } else if (view === 'register') {
         result = await registerUser(emailToUse, code);
       }
-
+      console.log('Verification result en verify-code-page:', result);
       if (!result.ok) {
         const errorMessage = typeof result.message === 'string' ? result.message : 'El código ingresado es incorrecto o ha expirado.';
+       const cleanMessage = errorMessage.replace(/Read more at.*$/, '').trim();
         setError('verificationCode', {
           type: 'manual',
-          message: errorMessage,
+          message: cleanMessage,
         });
         clearVerificationInputs();
       } else {
