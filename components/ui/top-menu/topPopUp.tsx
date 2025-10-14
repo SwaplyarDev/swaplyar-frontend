@@ -43,7 +43,7 @@ function TopPopUp() {
 
   return (
     <main
-      className="relative w-full py-2"
+      className="relative w-full  py-[3.5px] lg:py-[1.5px]"
       style={{
         backgroundColor: bannerColor.bg,
         color: bannerColor.text,
@@ -59,7 +59,7 @@ function TopPopUp() {
             Estamos trabajando en las funciones de inicio de sesión y registro
           </motion.p>
         </div>
-        <p className="hidden w-full text-center font-textFont text-xs font-semibold xs:block md:text-sm lg:text-lg">
+        <p className="hidden w-full text-center font-textFont text-xs font-semibold xs:block md:text-sm lg:text-[16px]">
           Estamos trabajando en las funciones de inicio de sesión y registro
         </p>
         <button
