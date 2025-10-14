@@ -34,7 +34,7 @@ export default function InfoBlock({
           alt={imageAlt}
           width={387}
           height={350}
-          className="w-full drop-shadow-light dark:drop-shadow-darkmode"
+          className="w-full scale-90 drop-shadow-light dark:drop-shadow-darkmode"
         />
       </div>
       <div className="info-content-container flex w-full max-w-[433px] flex-col gap-4">
