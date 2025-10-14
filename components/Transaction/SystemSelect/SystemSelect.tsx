@@ -10,7 +10,6 @@ interface SystemSelectProps {
   systems: System[];
   selectedSystem: System | null;
   onSystemSelect: (system: System) => void;
-  label: string;
   inputId: string;
   isSending: boolean;
   showOptions: boolean;
@@ -67,20 +66,21 @@ export default function SystemSelect({ systems, selectedSystem, onSystemSelect, 
   }));
 
   return (
-    <div className="relative w-full sm:mt-4" ref={dropdownRef}>
+    <div className="relative w-full h-full" ref={dropdownRef}>
       <button
-        className={`system-input-select flex h-16 w-full items-center justify-between rounded-2xl rounded-t-none border-2 border-t-0 border-[#012c8a] p-2 dark:border-gray-200 xs:h-[7.4rem] sm:w-64 sm:justify-start sm:rounded-bl-none sm:rounded-tl-none sm:rounded-tr-2xl sm:border-l-0 sm:border-t-2 ${
+        className={`system-input-select flex h-full items-center justify-start sm:justify-between rounded-2xl rounded-t-none border-2 border-t-0 border-[#012c8a] max-sm:pr-2 p-1 md:p-2 dark:border-gray-200 w-full sm:rounded-bl-none sm:rounded-tl-none sm:rounded-tr-2xl sm:border-l-0 sm:border-t-2 ${
           isSending ? 'animation-system-send' : 'animation-system-receive'
         } ${isDark ? 'dark' : ''}`}
         onClick={handleClick}
       >
         {selectedSystem ? (
-          <div className="flex w-full justify-center">
+          <div className="flex max-sm:w-[80%] sm:w-full justify-start sm:justify-center">
             <Image
               src={isDark ? selectedSystem.logoDark : selectedSystem.logo}
               alt={selectedSystem.name}
               width={200}
               height={70}
+              className="w-[150px] h-[30px] sm:w-[200px] sm:h-[70px] object-contain"
             />
           </div>
         ) : (
@@ -89,7 +89,7 @@ export default function SystemSelect({ systems, selectedSystem, onSystemSelect, 
         <FontAwesomeIcon icon={faChevronDown} width={32} height={16} />
       </button>
       {showOptionsInternal && (
-        <ul className="scrollable-list absolute z-[500] max-h-64 w-full overflow-y-auto overflow-x-hidden rounded-2xl border border-custom-blue-800 bg-white shadow-md dark:border-white dark:bg-gray-800 sm:w-64">
+        <ul className="scrollable-list absolute z-[500] max-h-64 w-full overflow-y-auto overflow-x-hidden rounded-2xl border border-custom-blue-800 bg-white shadow-md dark:border-white dark:bg-gray-800">
           {updatedSystems.map((system) => (
             <li
               key={system.id}
@@ -98,7 +98,13 @@ export default function SystemSelect({ systems, selectedSystem, onSystemSelect, 
                 system.isDisabled ? 'cursor-not-allowed opacity-50' : ''
               }`}
             >
-              <Image src={isDark ? system.logoDark : system.logo} alt={system.name} width={200} height={70} />
+              <Image 
+                src={isDark ? system.logoDark : system.logo} 
+                alt={system.name} 
+                width={200} 
+                height={70}
+                className="w-[150px] h-[30px] sm:w-[200px] sm:h-[70px] object-contain"
+                />
             </li>
           ))}
         </ul>

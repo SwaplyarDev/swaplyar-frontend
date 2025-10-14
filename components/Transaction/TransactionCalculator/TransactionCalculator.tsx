@@ -73,28 +73,27 @@ export default function TransactionCalculator() {
   console.log('rate', rateForOne);
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
-      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight p-8 shadow-md dark:bg-calculatorDark dark:text-white sm:h-[623px] lg-tablet:min-w-[500px]">
-        <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
-          <p className="flex w-full max-w-lg items-center gap-[7px] font-textFont text-custom-grayD dark:text-darkText">
+      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight px-2.5 py-2.5 md:px-5 md:py-8 sm:shadow-md dark:bg-calculatorDark dark:text-white sm:h-[460px] lg-tablet:min-w-[590px]">
+        <div className="relative flex w-full flex-col items-center text-[#012c8a] dark:text-darkText">
+          <p className="flex w-full items-center gap-[7px] font-textFont text-custom-grayD dark:text-darkText mb-1 sm:mb-3">
             {selectedSendingSystem?.id === 'bank' ? (
               <>
-                <span className="text-[32px]/[150%] font-light">{rateForOneBank.toFixed(2)}</span>
-                <span className="text-[21px]/[150%] font-semibold">{selectedSendingSystem?.coin}</span>
-                <span className="text-[21px]/[150%] font-normal">=</span>
-                <span className="text-[32px]/[150%] font-light">1</span>
-                <span className="text-[21px]/[150%] font-semibold">{selectedReceivingSystem?.coin}</span>
+                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">{rateForOneBank.toFixed(2)}</span>
+                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-semibold">{selectedSendingSystem?.coin}</span>
+                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-normal">=</span>
+                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">1</span>
+                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-semibold">{selectedReceivingSystem?.coin}</span>
               </>
             ) : (
               <>
-                <span className="text-[32px]/[150%] font-light">1</span>
-                <span className="text-[21px]/[150%] font-semibold">{selectedSendingSystem?.coin}</span>
-                <span className="text-[21px]/[150%] font-normal">=</span>
-                <span className="text-[32px]/[150%] font-light">{rateForOne.toFixed(2)}</span>
-                <span className="text-[21px]/[150%] font-semibold">{selectedReceivingSystem?.coin}</span>
+                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">1</span>
+                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-semibold">{selectedSendingSystem?.coin}</span>
+                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-normal">=</span>
+                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">{rateForOne.toFixed(2)}</span>
+                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-semibold">{selectedReceivingSystem?.coin}</span>
               </>
             )}
           </p>
-
           <TransactionSection
             systems={systems.filter((system) => system.id !== 'pix')}
             selectedSystem={selectedSendingSystem}
@@ -103,17 +102,18 @@ export default function TransactionCalculator() {
             toggleSelect={() => toggleSelect('send')}
             value={sendAmount}
             onChange={handleSendAmountChange}
-            label={`Envías ${selectedSendingSystem?.coin}`}
             isSending={true}
           />
-          <div className="mt-4 flex h-full items-center justify-center">
-            <InvertSystems onInvert={handleInvertSystemsClick} selectedReceivingSystem={selectedReceivingSystem} />
+          <div className='flex items-center gap-5 my-1 sm:my-3'>
+            <SystemInfo pointBorder="border" linePosition="up">
+              <p className="font-textFont text-xs text-lightText xs:text-sm">Información del sistema de recepción</p>
+            </SystemInfo>
+            <div className="flex flex-col h-full items-center justify-center">
+              <InvertSystems onInvert={handleInvertSystemsClick} selectedReceivingSystem={selectedReceivingSystem} />
+            </div>
           </div>
-          <SystemInfo pointBorder="border" linePosition="up">
-            <p className="font-textFont text-xs font-light xs:text-sm">Información del sistema de recepción</p>
-          </SystemInfo>
         </div>
-        <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
+        <div className="relative flex w-full flex-col items-center text-[#012c8a] dark:text-darkText">
           <TransactionSection
             systems={systems}
             selectedSystem={selectedReceivingSystem}
@@ -122,10 +122,9 @@ export default function TransactionCalculator() {
             toggleSelect={() => toggleSelect('receive')}
             value={receiveAmount}
             onChange={handleReceiveAmountChange}
-            label={`Recibes ${selectedReceivingSystem?.coin}`}
             isSending={false}
           />
-          <div className="flex min-h-[40px] w-full items-end justify-center">
+          <div className="flex min-h-[25px] sm:min-h-[30px] w-full items-end justify-center">
             {sendAmount === '' ? null : (
               <div
                 className={clsx(
@@ -160,7 +159,6 @@ export default function TransactionCalculator() {
               </div>
             )}
           </div>
-
           {isProcessing ? (
             <div className="mt-4">
               <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="44px" />
@@ -169,7 +167,7 @@ export default function TransactionCalculator() {
             <button
               className={clsx(
                 isDark ? 'buttonSecondDark' : 'buttonSecond',
-                'w-full max-w-[340px] rounded-full bg-custom-blue-800 px-[14px] py-3 font-titleFont text-base font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-custom-grayD dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD',
+                'w-full rounded-full bg-custom-blue-800 py-2.5 font-titleFont text-base font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-custom-grayD dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD',
               )}
               onClick={handleSubmit}
               disabled={
