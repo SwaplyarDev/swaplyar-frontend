@@ -1,30 +1,48 @@
 'use client';
-import { useState } from 'react';
-import { AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
-import { DetailedVerificationItem } from '@/types/verifiedUsers';
-import { formatDate } from '@/utils/utils';
 
-export function UserAdditionalInfo({ user }: { user: DetailedVerificationItem }) {
+import { useEffect, useState } from 'react';
+import { ChevronDown, ChevronUp, Edit } from 'lucide-react';
+import { EditUserModal } from './EditUserModal';
+import { getUserProfileById } from '@/actions/userVerification/verification.action';
+
+
+export function UserAdditionalInfo({ user }: { user: any }) {
   const [isExpanded, setIsExpanded] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+  const [profile, setProfile] = useState<any>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const res = await getUserProfileById(user.user_id);
+      if (res.success) {
+        console.log('✅ Perfil obtenido:', res.data);
+        setProfile(res.data);
+      }
+    };
+    fetchProfile();
+  }, [user.user_id, refreshKey]);
+
+  const handleProfileUpdated = () => {
+    setRefreshKey((prev) => prev + 1);
   };
+
+  if (!profile)
+    return (
+      <div className="rounded-lg border bg-white p-4 dark:bg-gray-800">
+        <p className="text-sm text-gray-500">Cargando perfil del usuario...</p>
+      </div>
+    );
 
   return (
     <div className="space-y-3 rounded-lg border bg-white p-4 transition-all duration-300 dark:border-gray-700 dark:bg-gray-800">
       <div className="flex items-center justify-between">
-        <h3 className="font-medium dark:text-white">Información Adicional</h3>
+        <h3 className="font-medium dark:text-white">Información del Usuario</h3>
         <button
-          onClick={toggleExpand}
+          onClick={() => setIsExpanded(!isExpanded)}
           className="rounded-full p-1 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
-          aria-label={isExpanded ? 'Colapsar sección' : 'Expandir sección'}
         >
-          {isExpanded ? (
-            <ChevronUp className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-          ) : (
-            <ChevronDown className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-          )}
+          {isExpanded ? <ChevronUp /> : <ChevronDown />}
         </button>
       </div>
 
@@ -33,49 +51,39 @@ export function UserAdditionalInfo({ user }: { user: DetailedVerificationItem })
           isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        {user.verification_status === 'rejected' && (
-          <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800/30 dark:bg-red-900/20">
-            <div className="flex items-start">
-              <AlertCircle className="mr-2 mt-0.5 h-5 w-5 flex-shrink-0 text-red-600 dark:text-red-500" />
-              <div>
-                <h3 className="text-sm font-medium text-red-800 dark:text-red-400">
-                  Verificación de usuario rechazada
-                </h3>
-              </div>
-            </div>
-          </div>
-        )}
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Fecha de Inscripción</p>
-            <p className="font-medium dark:text-gray-200">{formatDate(user.submitted_at)  || 'No disponible'}</p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Nombre</p>
-            <p className="font-medium dark:text-gray-200">{user.user_profile.firstName || 'No disponible'}</p>
-          </div>
-           <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Apellido</p>
-            <p className="font-medium dark:text-gray-200">{user.user_profile.lastName || 'No disponible'}</p>
-          </div> 
-          <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Correo Electrónico</p>
-            <p className="font-medium dark:text-gray-200">{user.user_profile.email || 'No disponible'}</p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">N° de Documento</p>
-            <p className="font-medium dark:text-gray-200">{user.user_profile.identification || 'No disponible'}</p>
-          </div>
-           <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Fecha de Nacimiento</p>
-            <p className="font-medium dark:text-gray-200">{user.user_profile.birthday || 'No disponible'}</p>
-          </div> 
-          <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">N° de Whatsapp</p>
-            <p className="font-medium dark:text-gray-200">{user.user_profile.phone || 'No disponible'}</p>
-          </div>
+          {[
+            { label: 'Nombre', value: profile.firstName },
+            { label: 'Apellido', value: profile.lastName },
+            { label: 'Correo', value: profile.email },
+            { label: 'Teléfono', value: profile.phone },
+            { label: 'País', value: profile.user?.locations?.[0]?.country },
+            { label: 'Apodo', value: profile.nickName },
+          ].map((item) => (
+            <div key={item.label}>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{item.label}</p>
+              <p className="font-medium dark:text-gray-200">{item.value || 'No disponible'}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex justify-end mt-4">
+          <button
+            onClick={() => setOpenModal(true)}
+            className="flex items-center gap-1 rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+          >
+            <Edit className="h-4 w-4 text-blue-500" /> Editar
+          </button>
         </div>
       </div>
+
+      {openModal && (
+        <EditUserModal
+          user={profile}
+          onClose={() => setOpenModal(false)}
+          onUpdated={handleProfileUpdated} 
+        />
+      )}
     </div>
   );
 }

@@ -9,9 +9,9 @@ import { TransactionHistorySection } from './TransactionHistorySection';
 import { WalletsSection } from './WalletsSection';
 import { getVerificationById } from '@/actions/userVerification/verification.action';
 import { UserVerifyProvider } from '@/hooks/admin/usersPageHooks/useUserVerifyState';
-import { UserRewardsSection } from './UserRewardSection';
 import { getUserWalletAccountByUserId } from '@/actions/virtualWalletAccount/virtualWallets.action';
 import auth from '@/auth';
+import { UserRewardsSection } from './UserRewardSection';
 import { getDiscountsByUserId } from '@/actions/Discounts/discounts.action';
 import { getAdminTransactionsByEmail } from '@/actions/transactions/admin-transaction';
 
@@ -22,8 +22,9 @@ export async function UserDetailPageComponent({ verificationId }: { verification
   if (!verification?.success) return <UserNotFound verificationId={verificationId} />;
   const wallets = await getUserWalletAccountByUserId(verification?.data.user_id, token || '');
   const transactions = await getAdminTransactionsByEmail(verification?.data.user_profile.email);
-  const discounts = await getDiscountsByUserId(verification?.data.user_id, token || '');
-
+  // const discounts = await getDiscountsByUserId(verification?.data.user_id, token || '');
+  console.log(verification)
+  
   return (
     <div className="min-h-screen">
       <UserVerifyProvider verification={verification.data}>
@@ -49,7 +50,7 @@ export async function UserDetailPageComponent({ verificationId }: { verification
 
               <TransactionHistorySection transactions={transactions} />
 
-              <UserRewardsSection discounts={discounts} /> 
+              {/* <UserRewardsSection discounts={discounts} />  */}
             </div>
           </div>
         </div>
