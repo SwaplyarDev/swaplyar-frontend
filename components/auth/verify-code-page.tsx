@@ -20,6 +20,7 @@ type FormInputs = {
  
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+
 export const VerifyCodePage = () => {
   const {
     register,
@@ -46,7 +47,7 @@ export const VerifyCodePage = () => {
   const { attempts, lockUntil, decrementAttempts, setLockUntil, resetAttempts } = useCodeVerificationStore();
 
   const isLocked = lockUntil && lockUntil > Date.now();
-   //empieza en 0 para que el temporizador no inicie automaticamente
+  //empieza en 0 para que el temporizador no inicie automaticamente
   const [timer, setTimer] = useState(0);
   //condicional para disparar el temporizador
   const [startTimer, setStartTimer] = useState(false);
@@ -68,8 +69,9 @@ export const VerifyCodePage = () => {
     }
   }, [email, router, isLocked, lockUntil, setLockUntil, resetAttempts]);
 
+  //el useEffect inicia el temporizador cuando startTimer cambia
   useEffect(() => {
-     if (startTimer && timer > 0) {
+    if (startTimer && timer > 0) {
       const interval = setInterval(() => {
         setTimer((prev) => prev - 1);
       }, 1000);

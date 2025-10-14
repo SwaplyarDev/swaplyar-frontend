@@ -22,6 +22,8 @@ export const authConfig: NextAuthConfig = {
           body: JSON.stringify({ email, code }),
         });
 
+        console.log('Respuesta login/email/validate en auth.config.ts:', res);
+
         if (!res.ok) {
           // Tratar códigos comunes de credenciales inválidas como null (sin lanzar)
           if (res.status === 400 || res.status === 401 || res.status === 403 || res.status === 422) {
@@ -29,6 +31,10 @@ export const authConfig: NextAuthConfig = {
             throw new InvalidCredentials('El código ingresado es incorrecto o ha expirado');
           }
           // Para otros estados, intenta leer el mensaje del backend y lanza un error genérico
+          if (res.status === 400 ) {
+  const errorData = await res.json().catch(() => ({}));
+  throw new Error(errorData?.message || `HTTP ${res.status}`);
+}
           try {
             const errData = await res.json();
             throw new Error(`Error en autenticación: ${errData?.message || res.statusText}`);
