@@ -16,7 +16,6 @@ export function UserAdditionalInfo({ user }: { user: any }) {
     const fetchProfile = async () => {
       const res = await getUserProfileById(user.user_id);
       if (res.success) {
-        console.log('✅ Perfil obtenido:', res.data);
         setProfile(res.data);
       }
     };

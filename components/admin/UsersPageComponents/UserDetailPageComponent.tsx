@@ -23,7 +23,6 @@ export async function UserDetailPageComponent({ verificationId }: { verification
   const wallets = await getUserWalletAccountByUserId(verification?.data.user_id, token || '');
   const transactions = await getAdminTransactionsByEmail(verification?.data.user_profile.email);
   // const discounts = await getDiscountsByUserId(verification?.data.user_id, token || '');
-  console.log(verification)
   
   return (
     <div className="min-h-screen">
