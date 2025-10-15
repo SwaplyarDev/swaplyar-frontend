@@ -278,7 +278,6 @@ export default function InternalTransactionCalculator({
               setCustomReceiveInput('');
               handleSendAmountChange(value);
             }}
-            label={`Envías ${selectedSendingSystem?.coin}`}
             isSending={true}
           />
 
@@ -322,7 +321,6 @@ export default function InternalTransactionCalculator({
 
               handleSendAmountChange(sendCalculated.toFixed(2));
             }}
-            label={`Recibes ${selectedReceivingSystem?.coin}`}
             isSending={false}
           />
 

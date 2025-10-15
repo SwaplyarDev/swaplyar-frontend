@@ -144,7 +144,7 @@ export function calculateAmount(from: string, to: string, amount: number, invers
     }
 
     const convertedAmount = formula(amount, rate, usdToBrl);
-    console.log('rateforone', parseFloat(convertedAmount.toFixed(2)));
+
     return parseFloat(convertedAmount.toFixed(2));
   } catch (error) {
     if (error instanceof Error) {
