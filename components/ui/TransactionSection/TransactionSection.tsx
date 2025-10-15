@@ -11,7 +11,6 @@ interface TransactionSectionProps {
   toggleSelect: () => void;
   value: string;
   onChange: (value: string) => void;
-  label: string;
   isSending: boolean;
 }
 
@@ -23,33 +22,28 @@ const TransactionSection: React.FC<TransactionSectionProps> = ({
   toggleSelect,
   value,
   onChange,
-  label,
   isSending,
 }) => {
   return (
-    <div className="relative flex w-full max-w-lg flex-col-reverse items-end text-custom-blue-800 dark:text-darkText sm:flex-row-reverse">
+    <div className="relative flex w-full sm:min-h-[100px] flex-col-reverse items-end text-custom-blue-800 dark:text-darkText sm:flex-row-reverse">
       <SystemSelect
         systems={systems}
         selectedSystem={selectedSystem}
         onSystemSelect={onSystemSelect}
-        label={label}
         inputId={`${isSending ? 'send' : 'receive'}InputUniqueID`}
         isSending={isSending}
         showOptions={showOptions}
         toggleSelect={toggleSelect}
       />
 
-      <div className="absolute top-0 mt-20 w-full flex-col justify-center px-6 xs:mt-[7.6rem] sm:right-0 sm:top-[inherit] sm:mr-64 sm:mt-0 sm:flex sm:h-[7.4rem] sm:w-0 sm:px-0">
-        <div className="bg h-[1px] w-full bg-custom-blue-800 dark:bg-gray-200 sm:h-24 sm:w-[2px]"></div>
-      </div>
-
       <InputTransactionCalculator
         id={`${isSending ? 'send' : 'receive'}InputUniqueID`}
         value={value}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
         placeholder="0"
-        label={label}
       />
+
+      <div className="absolute top-1/2 left-5 right-5 -translate-y-1/2 h-[2px] sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-[2px] sm:h-[calc(100%-20px)] sm:right-auto bg-custom-blue-800 dark:bg-gray-200"></div>
     </div>
   );
 };
