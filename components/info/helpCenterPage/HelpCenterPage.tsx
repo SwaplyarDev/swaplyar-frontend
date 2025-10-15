@@ -28,13 +28,15 @@ const HelpCenterPage = () => {
                   href={item.href}
                   className="group relative flex flex-1 flex-col items-center lg2:after:absolute lg2:after:-right-4 lg2:after:h-full lg2:after:w-[1px] lg2:after:bg-buttonsLigth lg2:after:content-[''] lg2:after:last:hidden lg2:after:dark:bg-darkText"
                 >
-                  <Image
-                    className="drop-shadow-light dark:drop-shadow-darkmode"
-                    src={item.image}
-                    alt={item.title}
-                    width={200}
-                    height={200}
-                  />
+                  <div className="overflow-hidden max-h-[180px] w-[200px]">
+                    <Image
+                      className="w-full object-cover object-top drop-shadow-light dark:drop-shadow-darkmode mb-8"
+                      src={item.image}
+                      alt={item.title}
+                      width={200}
+                      height={200}
+                    />
+                  </div>
                   <h2
                     className={clsx(
                       'w-full border-t-[1px] text-center font-textFont text-[28px] transition-all duration-300',

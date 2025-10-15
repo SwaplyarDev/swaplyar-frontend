@@ -62,9 +62,9 @@ export const TerminosCondiciones =
 export const SwaplyRewardsTnC = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732384862/plus-rewards_vmhrmg.png';
 
 /** We Guarantee **/
-export const Garantizamos = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224583/Garantizamos_oj4fpr.png';
+export const Garantizamos = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678559/Group_29_ncczvo.png';
 export const Ventajaalelegirswaplyar =
-  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225406/ventajaalelegirswaplyar_tg44mf.png';
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678561/Group_33_s4udjr.png';
 
 /** Transaction Status Images **/
 export const Transacciones = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225379/transacciones_jveuqa.png';
@@ -78,23 +78,23 @@ export const PlusRewards = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1
 export const PlusRewardsDark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1726601342/reward1.dark_xsutks.png';
 export const Ayuda1 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732547526/Ayuda1_new_rot3ne.png';
 export const Ayuda2 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732547526/Ayuda2_new_utttp6.png';
-export const helpCenter4 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751468477/helpCenter4_ri2bjh.png';
-export const helpCenter4Dark =
-  'https://res.cloudinary.com/dwrhturiy/image/upload/v1751468407/helpCenter4Dark_dhzozr.png';
-export const helpCenter1 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751469355/helpCenter1_jr0mhz.png';
-export const helpCenter2 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751469356/helpCenter2_vrw7ni.png';
-export const helpCenter3 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751469392/helpCenter3_yhtyvi.png';
-export const helpCenter5 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751469398/helpCenter5_yn13yl.png';
-export const helpCenter6 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751469407/helpCenter6_opjnui.png';
+
+export const helpCenter1 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678489/Group_55_g1thj8.png';
+export const helpCenter2 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678216/Agregar_un_t%C3%ADtulo_16_1_nhvsxr.png';
+export const helpCenter3 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678215/Group_11_dtlz1j.png';
+export const helpCenter4 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678570/Group_23_elupzn.png';
+export const helpCenter4Dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678569/Group_24_v6qfft.png';
+export const helpCenter5 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678570/Group_25_pbgxye.png';
+export const helpCenter6 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678582/Group_27_zzm4vn.png';
 
 /** Why Choose Us and Key Benefits **/
-export const ElegirSwaplyAr = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224460/elegirSwaplyAr_le6gqp.png';
+export const ElegirSwaplyAr = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678572/Group_46_aaapct.png';
 export const Porqueelegirnos =
-  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224950/porqueelegirnos_xj64ck.png';
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678572/Group_50_prvfsn.png';
 export const LideresenCambio =
-  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725224626/lideresencambio_zdakrx.png';
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678584/Group_52_bjxtmr.png';
 export const SeguridadySatisfaccion =
-  'https://res.cloudinary.com/dwrhturiy/image/upload/v1725225337/seguridadysatisfaccion_c0pgcf.png';
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678572/Group_54_lh7bax.png';
 
 /** Transaction Calculator **/
 export const PaypalImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752677907/ppcom_1_qenolt.png';
@@ -193,12 +193,12 @@ export const WsUSDtoWsEUR =
 export const WsUSDtoWsUSD = '/images/request-ws-usd-ws-usd.png';
 
 // Repentance
-export const regretsPc = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1731499821/69_oze2gb.png';
+export const regretsPc = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752761244/Group_55_lf8vh0.png';
 export const regretsPhone = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980580/regretPhone_wbsuui.png';
 
 // Editar Solicitud
-export const EditorPC = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739979458/EditorPC_vu2bwc.png';
-export const EditorMobile = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739979529/EditorMobile_aepfko.png';
+export const EditorPC = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678573/Group_56_asqp1i.png';
+export const EditorMobile = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678215/Group_11_dtlz1j.png';
 
 // 500
 export const Error_500_clear = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739979662/clear-500_fdsntm.png';
@@ -211,9 +211,9 @@ export const homeSearch = 'https://res.cloudinary.com/dwrhturiy/image/upload/v17
 
 // Search Request
 export const searchRequestWeb =
-  'https://res.cloudinary.com/dwrhturiy/image/upload/v1751466093/search-request-web_ektbx6.png';
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678489/Group_59_iyi6zg.png';
 export const searchRequestMovile =
-  'https://res.cloudinary.com/dwrhturiy/image/upload/v1751466193/search-request-phone_pccnhe.png';
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678216/Agregar_un_t%C3%ADtulo_16_1_nhvsxr.png';
 
 // Fraud Prevention
 export const fraudPrevention = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1739980167/fraudPrevent_vd3rvf.png';
@@ -290,13 +290,13 @@ export const yellowStar = 'https://res.cloudinary.com/dwrhturiy/image/upload/v17
 
 // home images PlusRewards component
 export const plusRewardsLight =
-  'https://res.cloudinary.com/dwrhturiy/image/upload/v1746712147/solicitud-plus-rewards-light_rokqud.png';
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678490/e0c9ff33a4_ousiza.png';
 export const plusRewardsCard =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1751466671/plus-rewards-logo_twb9ci.png';
 export const plusRewardsDark =
-  'https://res.cloudinary.com/dwrhturiy/image/upload/v1746712147/solicitud-plus-rewards-dark_hfhbxr.png';
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678490/e0c9ff33a4_1_wngekc.png';
 export const solicitudImage =
-  'https://res.cloudinary.com/dwrhturiy/image/upload/v1746712093/solicitud-image_kminsi.png';
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678524/Group_60_kloyjo.png';
 export const userWinReward =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1747917099/has-ganado-10-dolares_nccmfh.png';
 export const swaplyPlusRewards =
