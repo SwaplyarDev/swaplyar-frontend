@@ -27,7 +27,7 @@ export default function InvertSystems({ onInvert, selectedReceivingSystem }: Inv
       onClick={onInvert}
       aria-label="Invertir sistemas"
     >
-      <SwapVertIcon className="mx-5 my-1.5" />
+      <SwapVertIcon className="mx-3 sm:mx-5 my-0.5 sm:my-1.5" />
     </button>
   );
 }

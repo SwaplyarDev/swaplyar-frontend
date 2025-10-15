@@ -804,3 +804,10 @@ div:where(.swal2-container).swal2-noanimation {
   transform: scaleX(1.015);
   transform-origin: center;
 }
+
+/* Custom Button Back */
+.button-back-gradient-border {
+  background: linear-gradient(white, white) padding-box, linear-gradient(90deg, rgba(102, 102, 102, 0) 32.55%, #012A8E 107.81%) border-box;
+  border-radius: 100%;
+  border: 1px solid transparent;
+}

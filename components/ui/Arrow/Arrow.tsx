@@ -1,12 +1,13 @@
 import React from 'react';
 
-const Arrow = ({ color, backRequest }: { color: string; backRequest?: boolean }) => {
+const Arrow = ({ color, backRequest, className }: { color: string; backRequest?: boolean; className?: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={backRequest ? '15px' : '20px'}
       height={backRequest ? '15px' : '20px'}
       viewBox="0 0 256 256"
+      className={className || ''}
     >
       <path
         fill={color}
