@@ -13,6 +13,7 @@ import { registerUser } from '@/actions/auth/register';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import ButtonBack from '../ui/ButtonBack/ButtonBack';
+import AuthTitle from './AuthTitle';
 
 type FormInputs = {
   verificationCode: string[];
@@ -230,26 +231,30 @@ export const VerifyCodePage = () => {
   const isCodeComplete = verificationCodeValues.join('').length === 6;
 
   return (
-    <div className="my-5 flex h-full min-h-[800px] flex-col items-center justify-start py-5 xs:mt-0 xs:justify-center">
+    <div className="my-5 flex h-full py-10 xl:py-52 md:py-20 flex-col items-center justify-start xs:mt-0 xs:justify-center">
       <AnimatedBlurredCircles tope="top-[124px]" />
-      <div className="w-full max-w-xl px-5">
+      <div className="w-full max-w-xl px-5 font-textFont">
         <form
           onSubmit={handleSubmit(verifyCode)}
-          className="flex w-full max-w-xl flex-col rounded-2xl bg-[#e6e8ef62] px-2 py-8 shadow-md dark:bg-calculatorDark sm:px-8"
+          className="flex w-full max-w-xl flex-col rounded-2xl bg-custom-whiteD-500 py-10 px-5 shadow-md dark:bg-calculatorDark sm:px-8"
         >
-          <h2 className="mb-5 text-center text-5xl font-bold text-buttonsLigth dark:text-darkText">Verificación</h2>
+          <AuthTitle className='!mb-4'>Iniciar Sesión</AuthTitle>
 
-          <label htmlFor="verificationCode" className={'mb-8 text-center text-lightText dark:text-darkText'}>
-            Si tienes una cuenta, te hemos enviado un código a <span className="font-bold">{email}</span>. Introdúcelo a
-            continuación
+          <label htmlFor="verificationCode" className={'mb-4 text-center text-lightText dark:text-darkText'}>
+            Se envió un código de verificación a <span className="font-bold">{email}</span>
           </label>
 
-          <div className="mb-5 flex h-[46px] justify-between gap-2 xs:h-[57px] xs:gap-1 sm:h-[65.33px]">
+          <span className='w-full flex justify-center items-center mb-1'>Ingrese el código</span>
+
+          <div className="flex h-[46px] justify-between gap-2 xs:h-[57px] xs:gap-1 sm:h-[65.33px]">
             {[...Array(6)].map((_, index) => (
               <>
                 <div
                   className={clsx(
-                    `w-[46px] rounded-full border-[0.5px] border-buttonsLigth p-[3px] dark:border-darkText xs:w-[57px] sm:w-full`,
+                    `relative w-[46px] rounded-full border-2 border-buttonsExtraLigthDark p-[3px]
+                      shadow-[0_0_0_2px_#5D8CFE,_0_0_0_4px_#012A8E]
+                      dark:shadow-[0_0_0_2px_#5D8CFE,_0_0_0_4px_#FAFAFA]
+                      dark:border-lightText xs:w-[57px] sm:w-full`
                   )}
                 >
                   <input
@@ -269,7 +274,7 @@ export const VerifyCodePage = () => {
                   />
                 </div>
                 {index < 5 && (
-                  <div className="hidden min-h-full min-w-[0.5rem] items-center justify-center xs:flex">
+                  <div className="hidden min-h-full min-w-1 items-center justify-center xs:flex">
                     <div className="h-[2px] w-full flex-1 bg-buttonsLigth dark:bg-darkText"></div>
                   </div>
                 )}
@@ -279,12 +284,24 @@ export const VerifyCodePage = () => {
 
           {errors.verificationCode && <p className="mb-5 text-sm text-red-500">• {errors.verificationCode.message}</p>}
 
-          <div className="my-5 flex items-center justify-between">
+          <div className="flex self-end mt-11">
+            <p
+              onClick={timer === 0 && !reLoading && !isLocked ? resendCode : undefined}
+              className={clsx('text-buttonsLigth dark:text-darkText', {
+                'cursor-pointer hover:underline': timer === 0 && !reLoading && !isLocked,
+                'cursor-not-allowed text-gray-500 dark:text-gray-400': timer > 0 || reLoading || isLocked,
+              })}
+            >
+              {reLoading ? 'Enviando...' : timer > 0 ? `Reenviar en ${timer}s` : 'Reenviar código'}
+            </p>
+          </div>
+
+          <div className="my-3 flex items-center justify-between">
             <ButtonBack route="/es/iniciar-sesion" isDark={isDark} />
             <button
               type="submit"
               disabled={!isCodeComplete || loading}
-              className={`dark:hover:bg- relative m-1 h-[48px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white transition-colors duration-300 hover:bg-buttonsLigth disabled:cursor-not-allowed disabled:border-gray-400 disabled:bg-gray-400 disabled:shadow-none dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-gray-400 ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
+              className={`dark:hover:bg- relative m-1 h-[48px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white transition-colors duration-300 hover:bg-buttonsLigth disabled:cursor-not-allowed disabled:border-disabledButtonsLigth disabled:bg-disabledButtonsLigth disabled:shadow-none dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-disabledButtonsDark ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
             >
               {loading ? (
                 <div className="flex items-center justify-center gap-2">
@@ -295,18 +312,6 @@ export const VerifyCodePage = () => {
                 'Confirmar'
               )}
             </button>
-          </div>
-
-          <div className="mt-4 text-center">
-            <p
-              onClick={timer === 0 && !reLoading && !isLocked ? resendCode : undefined}
-              className={clsx('text-buttonsLigth dark:text-darkText', {
-                'cursor-pointer hover:underline': timer === 0 && !reLoading && !isLocked,
-                'cursor-not-allowed text-gray-500 dark:text-gray-400': timer > 0 || reLoading || isLocked,
-              })}
-            >
-              {reLoading ? 'Enviando...' : timer > 0 ? `Reenviar en ${timer}s` : 'Reenviar código'}
-            </p>
           </div>
 
           {attempts > 0 && !isLocked ? (
