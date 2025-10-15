@@ -26,8 +26,9 @@ export const authConfig: NextAuthConfig = {
 
         if (!res.ok) {
           // Tratar códigos comunes de credenciales inválidas como null (sin lanzar)
-          if ( res.status === 401 || res.status === 403 || res.status === 422) {
-            return null;
+          if (res.status === 400 || res.status === 401 || res.status === 403 || res.status === 422) {
+            //en vez de return null, enviamos un error personalizado xq sino la UI muestra error por defecto de nextAuth
+            throw new InvalidCredentials('El código ingresado es incorrecto o ha expirado');
           }
           // Para otros estados, intenta leer el mensaje del backend y lanza un error genérico
           if (res.status === 400 ) {

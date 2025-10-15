@@ -33,12 +33,9 @@ export const login = async (email: string, verificationCode: string) => {
 
     // Cuando authorize devuelve null (credenciales inválidas), NextAuth retorna { error: 'CredentialsSignin' }
     if (result?.error) {
-      const isCreds = result.error === 'CredentialsSignin' || /credenciales|unauthorized|invalid/i.test(result.error);
-      return {
-        ok: false,
-        message: isCreds ? 'El código ingresado es incorrecto o expiró.' : result.error,
-      };
-    }
+  // Simplemente devolvemos el mensaje que venga del error lanzado en authorize
+  return { ok: false, message: result.error };
+}
 
     return { ok: true };
   } catch (error: any) {
