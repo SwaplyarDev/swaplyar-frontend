@@ -1,5 +1,7 @@
 import { useRouter } from 'next/navigation';
 import Arrow from '../Arrow/Arrow';
+import { ChevronLeft } from 'lucide-react';
+import ArrowUp from '../ArrowUp/ArrowUp';
 
 interface ButtonBackProps {
   route: string;
@@ -21,14 +23,17 @@ const ButtonBack: React.FC<ButtonBackProps> = ({
     <button
       type="button"
       onClick={() => router.push(route)}
-      className={`group relative m-1 flex h-[46px] min-w-[48px] max-w-[100px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 font-textFont text-lg font-light text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
+      className={`group relative m-1 flex h-[46px] min-w-[48px] max-w-[100px] items-center justify-center gap-2 xs:rounded-3xl xs:border xs:border-buttonsLigth button-back-gradient-border xs:p-3 font-textFont text-lg font-light text-buttonsLigth hover:bg-transparent xs:dark:border-darkText dark:text-darkText dark:bg-none dark:border-white dark:hover:bg-transparent`}
     >
-      <div className="relative h-5 w-5 overflow-hidden">
-        <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
-          <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
+      <div className="relative size-8 overflow-hidden">
+        <div className="absolute left-1 transition-all ease-in-out group-hover:left-2">
+          <ChevronLeft color={isDark ? '#ebe7e0' : '#012c8a'} width={32} height={32} strokeWidth={2} className='inline-block xs:hidden absolute -left-1' />
+          <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} className="hidden xs:inline-block" />
         </div>
       </div>
-      Volver
+      <span className="hidden xs:inline-block">
+        Volver
+      </span>
     </button>
   );
 };

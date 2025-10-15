@@ -17,7 +17,7 @@ import ButtonBack from '../ui/ButtonBack/ButtonBack';
 type FormInputs = {
   verificationCode: string[];
 };
-
+ 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 
@@ -117,11 +117,13 @@ export const VerifyCodePage = () => {
       } else if (view === 'register') {
         result = await registerUser(emailToUse, code);
       }
-
+      console.log('Verification result en verify-code-page:', result);
       if (!result.ok) {
+        const errorMessage = typeof result.message === 'string' ? result.message : 'El código ingresado es incorrecto o ha expirado.';
+       const cleanMessage = errorMessage.replace(/Read more at.*$/, '').trim();
         setError('verificationCode', {
           type: 'manual',
-          message: typeof result.message === 'string' ? result.message : 'El código ingresado es incorrecto.',
+          message: cleanMessage,
         });
         clearVerificationInputs();
       } else {
