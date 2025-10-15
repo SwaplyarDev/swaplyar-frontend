@@ -37,6 +37,7 @@ interface FilterState {
   orderby: string;
   order: string;
   search: string;
+  country?: string;
 }
 
 const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, currentPage }) => {
@@ -53,6 +54,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ transactions, cur
     orderby: 'date',
     order: 'desc',
     search: '',
+    country: '',
   });
   const [activePopover, setActivePopover] = useState<string | null>(null);
   const popoverRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -63,10 +65,12 @@ const fetchFilteredTransactions = useCallback(async (page = 1) => {
     setIsLoading(true);
     const params = new URLSearchParams();
 
+
     if (filters.status.length > 0) params.append('status', filters.status.join(','));
     if (filters.min_date) params.append('from', filters.min_date);
     if (filters.max_date) params.append('to', filters.max_date);
     if (filters.search) params.append('search', filters.search);
+    if (filters.country) params.append('country', filters.country);
 
     params.append('page', String(page));
     params.append('perPage', '12');
@@ -78,7 +82,6 @@ const fetchFilteredTransactions = useCallback(async (page = 1) => {
         cache: 'no-store',
       }
     );
-
     if (!response.ok) throw new Error('Error al obtener transacciones');
     const data = await response.json();
     setTransactionsData(data);
@@ -89,22 +92,18 @@ const fetchFilteredTransactions = useCallback(async (page = 1) => {
   }
 }, [filters, session?.accessToken]);
 
-  /** 🔁 Ejecutar fetch cuando cambian los filtros (reinicia página 1) */
   useEffect(() => {
     fetchFilteredTransactions(1);
   }, [filters, fetchFilteredTransactions]);
 
-  /** 🔁 Ejecutar fetch cuando cambia la página */
   useEffect(() => {
     fetchFilteredTransactions(currentPage);
   }, [currentPage, fetchFilteredTransactions]);
 
-  /** 🔁 Sincronizar datos iniciales desde el servidor */
   useEffect(() => {
     if (transactions) setTransactionsData(transactions);
   }, [transactions]);
 
-  /** 🧩 Popover */
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -355,7 +354,48 @@ const fetchFilteredTransactions = useCallback(async (page = 1) => {
                   </div>
                 </th>
                 <th className="px-4 py-3 text-sm font-medium">ID</th>
-                <th className="px-4 py-3 text-sm font-medium">Remitente</th>
+                {/* REMITENTE */}
+                <th className="px-4 py-3 text-sm font-medium">
+                  <div
+                    className="relative flex cursor-pointer items-center"
+                    onClick={() => togglePopover('sender')}
+                  >
+                    Remitente
+                    <ChevronDown size={16} className="ml-1" />
+                    {activePopover === 'sender' && (
+                      <div
+                        ref={(el) => {
+                          popoverRefs.current['sender'] = el;
+                        }}
+                        className="absolute left-0 top-full z-50 mt-1 w-64 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="p-2">
+                          <div className="mb-2 font-medium text-gray-800 dark:text-gray-200">
+                            Buscar por remitente o mensaje
+                          </div>
+                          <input
+                            type="text"
+                            value={filters.search}
+                            onChange={(e) =>
+                              setFilters((prev) => ({ ...prev, search: e.target.value }))
+                            }
+                            placeholder="Ej: Juan Pérez o referencia..."
+                            className="w-full rounded border border-gray-300 p-1 text-sm text-black dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                          />
+                          <div className="mt-3 flex justify-end border-t border-gray-200 pt-2 dark:border-gray-700">
+                            <button
+                              className="text-xs text-red-600 dark:text-red-400"
+                              onClick={() => setFilters((prev) => ({ ...prev, search: '' }))}
+                            >
+                              Limpiar
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </th>
                 <th className="px-4 py-3 text-sm font-medium">Monto</th>
                 <th className="px-4 py-3 text-sm font-medium">País</th>
                 <th className="px-4 py-3 text-sm font-medium">Mensaje</th>
