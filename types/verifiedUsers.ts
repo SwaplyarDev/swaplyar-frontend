@@ -46,6 +46,7 @@ export interface VerificationUserInfo {
   phone?: string;
   identification?: string;
   birthday?: string;
+  nickName?: string;
 }
 
 export interface DetailedVerificationItem {
