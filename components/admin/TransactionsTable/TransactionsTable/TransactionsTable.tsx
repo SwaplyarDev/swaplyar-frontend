@@ -397,7 +397,48 @@ const fetchFilteredTransactions = useCallback(async (page = 1) => {
                   </div>
                 </th>
                 <th className="px-4 py-3 text-sm font-medium">Monto</th>
-                <th className="px-4 py-3 text-sm font-medium">País</th>
+                {/* PAÍS */}
+                <th className="px-4 py-3 text-sm font-medium">
+                  <div
+                    className="relative flex cursor-pointer items-center"
+                    onClick={() => togglePopover('country')}
+                  >
+                    País
+                    <ChevronDown size={16} className="ml-1" />
+                    {activePopover === 'country' && (
+                      <div
+                        ref={(el) => {
+                          popoverRefs.current['country'] = el;
+                        }}
+                        className="absolute left-0 top-full z-50 mt-1 w-64 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="p-2">
+                          <div className="mb-2 font-medium text-gray-800 dark:text-gray-200">
+                            Buscar por país
+                          </div>
+                          <input
+                            type="text"
+                            value={filters.country}
+                            onChange={(e) =>
+                              setFilters((prev) => ({ ...prev, country: e.target.value }))
+                            }
+                            placeholder="Ej: Argentina, Brasil..."
+                            className="w-full rounded border border-gray-300 p-1 text-sm text-black dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                          />
+                          <div className="mt-3 flex justify-end border-t border-gray-200 pt-2 dark:border-gray-700">
+                            <button
+                              className="text-xs text-red-600 dark:text-red-400"
+                              onClick={() => setFilters((prev) => ({ ...prev, country: '' }))}
+                            >
+                              Limpiar
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </th>
                 <th className="px-4 py-3 text-sm font-medium">Mensaje</th>
               </tr>
             </thead>
