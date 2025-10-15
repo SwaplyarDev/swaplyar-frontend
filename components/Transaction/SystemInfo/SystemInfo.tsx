@@ -60,10 +60,10 @@ export default function SystemInfo({ pointBorder, linePosition, children }: Syst
   }, [isTooltipVisible, isDark, toggleTooltip]);
 
   return (
-    <div className={`system-info-${linePosition}`}>
+    <div className={`system-info-${linePosition} max-sm:hidden`}>
       <div className="data-container flex flex-row items-center">
         {pointBorder === 'fill' && <div className="line-joins-up mb-4 h-1 w-full bg-blue-500"></div>}
-        <div className="system-info-container mt-5 flex flex-row items-center">
+        <div className="system-info-container flex flex-row items-center">
           {pointBorder === 'border' && (
             <div className="icon-tooltip-container">
               <button className="more-info-icon show-tooltip flex" onClick={() => setIsTooltipVisible(true)}>
