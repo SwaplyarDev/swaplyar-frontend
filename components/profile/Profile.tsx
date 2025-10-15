@@ -89,7 +89,7 @@ const Profile = () => {
               </div>
             </div>
 
-            {showPictureModal && <ProfilePictureModal setShow={setShowPictureModal} />}
+            {showPictureModal && <ProfilePictureModal imgProfile ={session?.user.profile?.profilePictureUrl || swaplyArAvatar} setShow={setShowPictureModal} />}
           </div>
         </div>
       </header>
