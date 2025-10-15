@@ -1,6 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+ 
+ /* class for god view in Safari browser  */
+html {
+  -webkit-text-size-adjust: 100%;
+}
 
 @font-face {
   font-family: 'OpenSans';
