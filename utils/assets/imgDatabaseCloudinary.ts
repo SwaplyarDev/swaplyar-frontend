@@ -118,8 +118,8 @@ export const TetherDarkImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/
 export const PixImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752677907/layer1_dw5lwr.png';
 export const PixDarkImg = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752677907/layer1_1_p9gahw.png';
 /** 404 Error **/
-export const Post1_404 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732486012/post1-404_rz6g6k.png';
-export const Post2_404 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732486215/post2-404_qycpu0.png';
+export const Post1_404 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752761244/Group_55_lf8vh0.png';
+export const Post2_404 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678573/Group_56_asqp1i.png';
 export const Enchufe_dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1741184277/enchufe_dark_veg7a4.png';
 export const Enchufe_clear = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1741184086/enchufe_clear_bdoy2z.png';
 
@@ -298,9 +298,9 @@ export const plusRewardsDark =
 export const solicitudImage =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678524/Group_60_kloyjo.png';
 export const userWinReward =
-  'https://res.cloudinary.com/dwrhturiy/image/upload/v1747917099/has-ganado-10-dolares_nccmfh.png';
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678583/Group_65_jijluy.png';
 export const swaplyPlusRewards =
-  'https://res.cloudinary.com/dwrhturiy/image/upload/v1751466383/swaplyPlusRewards_q56rtb.png';
+  'https://res.cloudinary.com/dwrhturiy/image/upload/v1752678506/Group_66_xptizz.png';
 export const swaplyPlusDNI = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751466487/PlusRewardsDNI_vi3fdr.png';
 export const swaplyPlusDNI2 =
   'https://res.cloudinary.com/dwrhturiy/image/upload/v1751466456/PlusRewardsDNI2_hdk9tz.png';
@@ -326,8 +326,8 @@ export const iconoDark_transacciones =
 export const iconoDark_plus = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1745336653/iconoDark_plus_rcetbk.svg';
 
 // Error 404
-export const error404Clear = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751382271/error404Clear_y522fa.svg';
-export const error404Dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1751382271/error404Dark_xsrf6l.svg';
+export const error404Clear = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732488402/clear-404_tz3b71.png';
+export const error404Dark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1732488388/dark-404_t5dlmf.png';
 
 // NavBar internal
 export const montañaBlanca =
