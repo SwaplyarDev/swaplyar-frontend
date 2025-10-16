@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, use } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import Image from 'next/image';
 import '../../ui/cards/CardsCss.css';
@@ -26,6 +26,7 @@ export const CardRecomendation: React.FC<ICardRecomendationProps> = ({ items }) 
     setIsVisible(false);
   };
 
+
   const handleIsVisible = () => setIsVisible(!isVisible);
 
   const swipeHandlersMobile = useSwipeable({
@@ -33,6 +34,7 @@ export const CardRecomendation: React.FC<ICardRecomendationProps> = ({ items }) 
     onSwipedRight: handlePrev,
     preventScrollOnSwipe: true,
     trackMouse: true,
+
   });
 
   useEffect(() => {
@@ -66,29 +68,28 @@ export const CardRecomendation: React.FC<ICardRecomendationProps> = ({ items }) 
   }, []);
 
   return (
-    <div ref={sectionRef} className="relative mt-[34px] h-full w-full flex-col items-center justify-between">
+    <div ref={sectionRef} className="relative  mt-[34px] h-full w-full flex-col items-center justify-between">
       <section
         {...swipeHandlersMobile}
-        className="relative flex h-[450px] items-center justify-between lg:mx-auto lg:w-[937px]"
+        className="relative flex h-[350px] lg:h-[450px] items-center justify-between lg:mx-auto lg:w-[937px]"
       >
         <button
-          className="hidden bg-[#fafafa] dark:bg-[#323232] md:flex md:items-center md:justify-center md:rounded-full md:p-2"
+          className="hidden bg-[#fafafa]  dark:bg-[#323232] md:flex md:items-center md:justify-center md:rounded-full md:p-2"
           onClick={handlePrev}
         >
           <ChevronLeft className="h-[24px] w-[24px]" />
         </button>
-        <div className="flex w-full justify-center">
+        <div className="flex w-full  justify-center ">
           {items.map((item, index: number) => {
             const isCurrent = index === currentIndex;
             const isNext = index === (currentIndex + 1) % items.length;
             const isPrev = index === (currentIndex - 1 + items.length) % items.length;
 
             const isClick = !!activeCards[index];
-
             return (
               <article
                 key={index}
-                className={`linear absolute cursor-pointer select-none transition-all duration-300 ${isCurrent ? 'top-0 z-20' : 'top-0 z-10'} ${isPrev ? 'translate-y-10 md:-translate-x-32 md:translate-y-28 lg:-translate-x-60' : ''} ${isNext ? 'translate-y-20 md:translate-x-32 md:translate-y-28 lg:translate-x-60' : ''}`}
+                className={`linear  absolute cursor-pointer select-none transition-all duration-300 ${isCurrent ? 'top-0 z-20' : 'top-0 z-10'} ${isPrev ? '-translate-x-72 md:-translate-x-52 md:translate-y-28 xl:-translate-x-60' : ''} ${isNext ? 'translate-x-72 md:translate-x-52 md:translate-y-28 xl:translate-x-60' : ''}`}
                 style={{
                   transition: 'transform 0.3s linear, left 0.3s linear, right 0.3s linear',
                   zIndex:
@@ -97,30 +98,36 @@ export const CardRecomendation: React.FC<ICardRecomendationProps> = ({ items }) 
               >
                 <div
                   className={clsx(
-                    'relative h-[275px] w-[280px] md:w-[324px]',
+                    'relative h-[275px] w-[275px] md:w-[324px]',
                     isVisible && item.largeText && 'h-full',
                     isClick && 'card-active',
                   )}
                 >
+
                   <div className="flex h-full w-full flex-col items-center rounded-2xl bg-[#fafafa] p-[6px] text-lightText shadow-lg shadow-black/30 dark:bg-[#323232] dark:text-darkText dark:shadow-[#979797]">
+
                     <Image
-                      className="absolute -top-10 left-0 md:-left-10"
+                      className={clsx(
+                        'absolute -top-12 lg:-top-10 left-0 md:-left-10',
+                        !isCurrent && 'hidden lg:block'
+                      )}
                       src={nube2}
                       alt="Imagen de una nube"
                       width={102}
                       height={58}
                     />
+
                     <div className="flex w-full justify-between gap-[14px]">
                       <div className="flex flex-1 flex-col">
                         <div className="flex items-center justify-between border-b border-placeholderDark pb-[7px] pl-[9px]">
                           <h3 className="font-textFont font-semibold">{item.name}</h3>
                           <Link href={item.href} target="_blank">
-                            <SquareArrowOutUpRight className="h-[30px] w-[30px] text-placeholderDark" />
+                            <SquareArrowOutUpRight className="w-[23px] h-[23px] lg:h-[30px] lg:w-[30px] text-placeholderDark" />
                           </Link>
                         </div>
                         <div className="flex gap-2 border-b border-placeholderDark py-[3px] pl-[9px]">
                           {Array.from({ length: 5 }).map((_, index) => (
-                            <span key={index} className="flex h-[27px] w-[27px] items-center justify-center">
+                            <span key={index} className="flex h-[24px] w-[24px]  lg:h-[27px] lg:w-[27px] items-center justify-center">
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="27"
@@ -139,7 +146,14 @@ export const CardRecomendation: React.FC<ICardRecomendationProps> = ({ items }) 
                         </div>
                       </div>
                       <div>
-                        <Image src={item.image} alt="Imagen del usuario" width={73} height={73} priority />
+                        <Image
+                          src={item.image}
+                          alt="Imagen del usuario"
+                          width={73}
+                          height={73}
+                          priority
+                          className="w-14 h-14 md:w-[73px] md:h-[73px]"
+                        />
                       </div>
                     </div>
                     <p
@@ -173,13 +187,13 @@ export const CardRecomendation: React.FC<ICardRecomendationProps> = ({ items }) 
                     {isCurrent && (
                       <>
                         <Image
-                          className="absolute -bottom-14 right-0 md:-right-6"
+                          className="absolute -bottom-14 -right-8 md:-right-6"
                           src={plane}
                           alt="Imagen del avión"
                           width={136}
                           height={136}
                         />
-                        <div className="absolute -bottom-16 right-0 -z-10 h-[150px] w-[150px] rounded-full border-[3px] border-[#e1e1e1] dark:border-[#646464] md:-right-10"></div>
+                        <div className="absolute -bottom-16 -right-10 -z-10 h-[150px] w-[150px] rounded-full border-[3px] border-[#e1e1e1] dark:border-[#646464] md:-right-10"></div>
                       </>
                     )}
                   </div>
