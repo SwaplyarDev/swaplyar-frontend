@@ -14,6 +14,7 @@ import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import ButtonBack from '../ui/ButtonBack/ButtonBack';
 import AuthTitle from './AuthTitle';
+import ButtonAuth from './AuthButton';
 
 type FormInputs = {
   verificationCode: string[];
@@ -244,17 +245,17 @@ export const VerifyCodePage = () => {
             Se envió un código de verificación a <span className="font-bold">{email}</span>
           </label>
 
-          <span className='w-full flex justify-center items-center mb-1'>Ingrese el código</span>
+          <span className='w-full flex justify-center items-center mb-1'>Ingrese el código de verificación</span>
 
-          <div className="flex h-[46px] justify-between gap-2 xs:h-[57px] xs:gap-1 sm:h-[65.33px]">
+          <div className="flex h-[51px] gap-2 justify-center">
             {[...Array(6)].map((_, index) => (
               <>
                 <div
                   className={clsx(
-                    `relative w-[46px] rounded-full border-2 border-buttonsExtraLigthDark p-[3px]
+                    `relative size-[46px] rounded-full border-2 border-buttonsExtraLigthDark p-[3px]
                       shadow-[0_0_0_2px_#5D8CFE,_0_0_0_4px_#012A8E]
                       dark:shadow-[0_0_0_2px_#5D8CFE,_0_0_0_4px_#FAFAFA]
-                      dark:border-lightText xs:w-[57px] sm:w-full`
+                      dark:border-lightText`
                   )}
                 >
                   <input
@@ -264,7 +265,7 @@ export const VerifyCodePage = () => {
                     maxLength={1}
                     disabled={isLocked || loading}
                     className={clsx(
-                      'h-full w-full rounded-full border-0 text-center text-base focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem]',
+                      'h-full w-full rounded-full border-0 text-center text-base focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem] p-0',
                       errors.verificationCode ? 'border-red-500' : '',
                     )}
                     {...register(`verificationCode.${index}`)}
@@ -282,7 +283,7 @@ export const VerifyCodePage = () => {
             ))}
           </div>
 
-          {errors.verificationCode && <p className="mb-5 text-sm text-red-500">• {errors.verificationCode.message}</p>}
+          {errors.verificationCode && <p className="mt-1 mb-5 text-sm text-center text-red-500">• {errors.verificationCode.message}</p>}
 
           <div className="flex self-end mt-11">
             <p
@@ -298,27 +299,23 @@ export const VerifyCodePage = () => {
 
           <div className="my-3 flex items-center justify-between">
             <ButtonBack route="/es/iniciar-sesion" isDark={isDark} />
-            <button
-              type="submit"
-              disabled={!isCodeComplete || loading}
-              className={`dark:hover:bg- relative m-1 h-[48px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white transition-colors duration-300 hover:bg-buttonsLigth disabled:cursor-not-allowed disabled:border-disabledButtonsLigth disabled:bg-disabledButtonsLigth disabled:shadow-none dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-disabledButtonsDark ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-            >
-              {loading ? (
-                <div className="flex items-center justify-center gap-2">
-                  <LoadingGif color={isDark ? '#ebe7e0' : '#FFFFFF'} />
-                  Confirmando...
-                </div>
-              ) : (
-                'Confirmar'
-              )}
-            </button>
+            
+            {loading ? (
+              <div className="flex items-center justify-center w-[220px] xs:w-[250px]">
+                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
+              </div>
+            ) : (
+                <ButtonAuth
+                  label="Confirmar"
+                  disabled={!isCodeComplete || loading}
+                  loading={loading}
+                  isDark={isDark}
+                  className='px-4 w-[220px] xs:w-[250px]'
+                />
+            )}
           </div>
 
-          {attempts > 0 && !isLocked ? (
-            <p className="mt-2 text-center text-base text-buttonsLigth dark:text-darkText sm:text-lg">
-              Tienes {attempts} {attempts === 1 ? 'intento' : 'intentos'} para reenviar el código
-            </p>
-          ) : (
+          {isLocked && (
             <p className="mt-2 text-center text-base text-red-500">Estás bloqueado por 5 minutos.</p>
           )}
         </form>
