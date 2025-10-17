@@ -246,10 +246,10 @@ export const VerifyCodePage = () => {
   return (
     <div className="my-5 flex h-full py-10 xl:py-52 md:py-20 flex-col items-center justify-start xs:mt-0 xs:justify-center">
       <AnimatedBlurredCircles tope="top-[124px]" />
-      <div className="w-full max-w-xl px-5 font-textFont">
+      <div className="w-full max-w-xl px-4 font-textFont">
         <form
           onSubmit={handleSubmit(verifyCode)}
-          className="flex w-full max-w-xl flex-col rounded-2xl bg-custom-whiteD-500 py-10 px-5 shadow-md dark:bg-calculatorDark sm:px-8"
+          className="flex w-full max-w-xl flex-col rounded-2xl bg-custom-whiteD-500 py-10 px-4 shadow-md dark:bg-calculatorDark sm:px-8"
         >
           <AuthTitle className='!mb-4'>Iniciar Sesión</AuthTitle>
 
@@ -260,12 +260,12 @@ export const VerifyCodePage = () => {
           <div className='relative'>
             <span className='w-full flex justify-center items-center mb-1'>Ingrese el código de verificación</span>
 
-            <div className="flex h-[51px] gap-2 justify-center">
+            <div className="flex h-[51px] gap-1 justify-between xs:justify-center xs:gap-2">
               {[...Array(6)].map((_, index) => (
                 <>
                   <div
                     className={clsx(
-                      `relative size-[46px] rounded-full border-2 border-buttonsExtraLigthDark p-[3px]
+                      `relative size-[43px] rounded-full border-2 border-buttonsExtraLigthDark p-[3px]
                         shadow-[0_0_0_2px_#5D8CFE,_0_0_0_4px_#012A8E]
                         dark:shadow-[0_0_0_2px_#5D8CFE,_0_0_0_4px_#FAFAFA]
                         dark:border-lightText`
@@ -278,7 +278,7 @@ export const VerifyCodePage = () => {
                       maxLength={1}
                       disabled={isLocked || loading}
                       className={clsx(
-                        'h-full w-full rounded-full border-0 text-center text-base text-inputLight focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem] p-0',
+                        'h-full w-full rounded-full border-0 text-center text-2xl text-inputLight focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem] p-0',
                         errors.verificationCode ? 'border-red-500' : '',
                       )}
                       {...register(`verificationCode.${index}`)}
@@ -288,7 +288,7 @@ export const VerifyCodePage = () => {
                     />
                   </div>
                   {index < 5 && (
-                    <div className="hidden min-h-full min-w-1 items-center justify-center xs:flex">
+                    <div className="flex min-h-full min-w-1 items-center justify-center">
                       <div className="h-[2px] w-full flex-1 bg-buttonsLigth dark:bg-darkText"></div>
                     </div>
                   )}
