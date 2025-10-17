@@ -29,13 +29,15 @@ export default function InfoBlock({
       )}
     >
       <div className="info-image-container mb-4 flex w-full max-w-[331px] justify-center sm:max-w-[487px]">
-        <Image
-          src={imageSrc}
-          alt={imageAlt}
-          width={387}
-          height={350}
-          className="w-full scale-90 drop-shadow-light dark:drop-shadow-darkmode"
-        />
+        <div className="relative h-[400px] w-full overflow-hidden flex items-center justify-center">
+      <Image
+        src={imageSrc}
+        alt={imageAlt}
+        width={387}
+        height={350}
+        className="h-full w-auto object-contain drop-shadow-light dark:drop-shadow-darkmode scale-90"
+      />
+    </div>
       </div>
       <div className="info-content-container flex w-full max-w-[433px] flex-col gap-4">
         <h2 className="text-start font-textFont text-4xl text-custom-grayD dark:text-custom-whiteD">{title}</h2>
