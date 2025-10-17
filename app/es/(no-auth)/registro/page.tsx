@@ -14,8 +14,8 @@ export default function RegisterPage() {
     return (
         <>
             <AnimatedBlurredCircles tope="top-[124px]" />
-            <section className="flex min-h-screen flex-col items-center justify-center py-5">
-                <div className="w-full max-w-[552px] px-5">
+            <section className="flex flex-col items-center justify-center">
+                <div className="w-full max-w-[552px]">
                     <RegisterForm />
                 </div>
             </section>
