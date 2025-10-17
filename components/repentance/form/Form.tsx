@@ -6,6 +6,7 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import SelectCountry from '@/components/request/form/inputs/SelectCountry';
 import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
 import AlertProcess from '../Alerts/AlertProcess';
+import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
 
 const Form = () => {
   const [isFocused, setIsFocused] = useState(false);
@@ -19,6 +20,7 @@ const Form = () => {
     formState: { errors, isValid },
     control,
     watch,
+    trigger,
   } = useForm<FormData>({
     mode: 'onChange',
   });
@@ -58,7 +60,7 @@ const Form = () => {
           )}
           type="text"
           placeholder={
-            errors.transaction_id ? 'Número de Solicitud*' : 'N° de Solicitud como figura en el Correo Eletrónico'
+            errors.transaction_id ? 'Número de Solicitud*' : 'N° de Solicitud como figura en el Correo Electrónico'
           }
           {...register('transaction_id', {
             required: 'El N° Solicitud es Obligatorio',
@@ -85,7 +87,7 @@ const Form = () => {
               errors.last_name ? 'placeholder:text-errorColor' : 'placeholder:text-buttonExpandDark',
             )}
             type="text"
-            placeholder={errors.last_name ? 'Apellido*' : 'Apellido como figura en el Correo Eletrónico'}
+            placeholder={errors.last_name ? 'Apellido*' : 'Apellido como figura en el Correo Electrónico'}
             {...register('last_name', {
               required: 'El Apellido es obligatorio',
               minLength: {
@@ -104,7 +106,7 @@ const Form = () => {
       </div>
       <div className="h-[81px]">
         <label className="font-textFont text-xs font-light">
-          Correo Electónico
+          Correo Electrónico
           <input
             className={clsx(
               'inputChangeAutofill placeholder-text-gray-900 h-[41px] w-full border-0 border-b-[1px] ps-0 text-xs placeholder:font-light focus:border-0 focus:border-b-[1px] focus:outline-none focus:ring-0 xs:text-lg',
@@ -122,7 +124,7 @@ const Form = () => {
               },
             })}
             required
-            placeholder={errors.email ? 'Correo Electónico*' : 'El Correo Electónico que usaste para la Solicitud'}
+            placeholder={errors.email ? 'Correo Electrónico*' : 'El Correo Electrónico que usaste para la Solicitud'}
           />
         </label>
         {errors.email && <p className="mb-5 text-sm text-errorColor">{errors.email.message as string}</p>}
@@ -152,7 +154,10 @@ const Form = () => {
               render={({ field, fieldState }) => (
                 <SelectCountry
                   selectedCodeCountry={field.value}
-                  setSelectedCodeCountry={(option) => field.onChange(option)}
+                  setSelectedCodeCountry={(option) => {
+                    field.onChange(option)
+                    trigger('phone_number')
+                  }}
                   errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
                   textColor={['buttonsLigth', 'darkText']}
                   classNames="pl-0 w-[104px]"
@@ -170,10 +175,11 @@ const Form = () => {
               type="tel"
               {...register('phone_number', {
                 required: 'El número de teléfono es obligatorio',
-                pattern: {
-                  value: /^\d{9,11}$/,
-                  message: 'Introduce un número válido de entre 9 y 11 dígitos',
-                },
+                validate: (value) => { 
+                  const country = watch('calling_code');
+                  const result = validatePhoneNumber(value, country);
+                  return result === true ? true : result;
+                }
               })}
             />
           </div>
