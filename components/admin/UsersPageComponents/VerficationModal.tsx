@@ -1,7 +1,7 @@
 'use client';
 
 import type React from 'react';
-
+import Image from 'next/image';
 import { useState } from 'react';
 import { X, CheckCircle, ArrowLeft, ArrowRight } from 'lucide-react';
 import Swal from 'sweetalert2';
@@ -83,18 +83,22 @@ export function VerificationModal({ onClose }: VerificationModalProps) {
             <div className="flex w-full justify-between p-4">
               <div className="relative h-32 w-[30%] overflow-hidden rounded-lg border bg-white">
                 <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                  <img
+                  <Image
                     src="/placeholder.svg?height=128&width=200"
                     alt="Frente del documento"
+                    width={200}
+                    height={128}
                     className="h-full w-full object-cover"
                   />
                 </div>
               </div>
               <div className="relative h-32 w-[30%] overflow-hidden rounded-lg border bg-white">
                 <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                  <img
+                  <Image
                     src="/placeholder.svg?height=128&width=200"
                     alt="Dorso del documento"
+                    width={200}
+                    height={128}
                     className="h-full w-full object-cover"
                   />
                 </div>
@@ -102,9 +106,11 @@ export function VerificationModal({ onClose }: VerificationModalProps) {
               <div className="relative h-32 w-[30%] overflow-hidden rounded-lg border bg-white">
                 <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
                   <div className="relative h-full w-full">
-                    <img
+                    <Image
                       src="/placeholder.svg?height=128&width=100"
                       alt="Foto del usuario"
+                      width={100}
+                      height={128}
                       className="h-full w-full object-cover"
                     />
                     <div className="absolute bottom-2 right-2 h-5 w-5 rounded-full bg-green-500 text-white">
