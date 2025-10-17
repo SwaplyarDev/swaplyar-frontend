@@ -7,7 +7,9 @@ import HeaderSectionEditSoli from './HeaderSectionEditSoli/HeaderSectionEditSoli
 const EditSoli = () => {
   return (
     <>
-      <AnimatedBlurredCircles tope="top-[124px]" />
+      <div className="absolute inset-0 z-0">
+        <AnimatedBlurredCircles tope="top-[124px]" />
+      </div>
       <div className="flex w-full flex-col px-4 md:px-8 lg:px-4">
         <div>
           <h1 className="mx-auto w-full text-center font-titleFont text-[38px] font-medium md:max-w-[504px] lg2:max-w-[741px] lg2:text-[40px]">
@@ -24,7 +26,9 @@ const EditSoli = () => {
         </p>
 
         <div className="relative mx-auto mt-10 flex w-full flex-col lg2:max-w-[800px]">
-          <HeaderSectionEditSoli />
+          <div className="absolute left-0 top-0 z-0">
+            <HeaderSectionEditSoli />
+          </div>
           <div className="mx-auto flex h-auto w-full flex-col border-0 lg2:mb-[100px] lg2:mt-[55px]">
             <SeachRequest />
           </div>

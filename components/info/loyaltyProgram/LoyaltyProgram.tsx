@@ -61,7 +61,7 @@ function LoyaltyProgram() {
               description="Únete a SwaplyAr Plus Rewards™ y recibe $10 adicionales en tu segunda transacción de más de $200, realizada con cualquier billetera virtual."
               linkText=""
               linkHref=""
-              className="md:flex md:flex-row"
+              className="md:flex md:flex-row scale-90"
             />
             <RewardCard
               imageSrc={isDark ? Rewards2Dark : Rewards2}
@@ -70,7 +70,7 @@ function LoyaltyProgram() {
               description="Recompensas Continuas: Gana $5 adicionales después de completar 5 transacciones por un monto igual o superior a $400 cada una."
               linkText=""
               linkHref=""
-              className="md:flex md:flex-row-reverse"
+              className="md:flex md:flex-row-reverse scale-90"
             />
             <RewardCard
               imageSrc={isDark ? Rewards3Dark : Rewards3}
@@ -79,7 +79,7 @@ function LoyaltyProgram() {
               description="¡Mantente siempre atento a nuestras promociones: ¡ofertas exclusivas y acceso a beneficios únicos te esperan!"
               linkText=""
               linkHref=""
-              className="md:flex md:flex-row"
+              className="md:flex md:flex-row scale-90"
             />
           </section>
         </div>
