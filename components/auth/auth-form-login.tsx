@@ -86,8 +86,8 @@ export const LoginForm = () => {
         />
 
         {loading ? (
-          <div className="flex items-center justify-center">
-            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
+          <div className="flex items-center justify-center h-[42px]">
+            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="41px" />
           </div>
         ) : (
           <ButtonAuth label="Ingresar" disabled={loading || !watch('email') || !!errors.email} loading={loading} isDark={isDark} />
