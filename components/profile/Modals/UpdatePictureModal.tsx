@@ -52,7 +52,7 @@ export const UpdatePictureModal = ({
                                 : 'buttonSecond',
                         !file &&
                         "bg-buttonsLigth text-white",
-                        'relative w-[174px] h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth text-[16px]  px-[14px] py-[12px] font-titleFont font-semibold  transition-opacity hover:opacity-90 disabled:opacity-50 dark:border-darkText dark:bg-disabledButtonsDark dark:text-darkText'
+                        'relative  w-[140px] h-[35px] lg:w-[174px] lg:h-[48px]  items-center justify-center rounded-3xl border border-buttonsLigth text-[16px] py-[6px] px-[14px] lg:py-[12px] font-titleFont font-semibold  transition-opacity hover:opacity-90 disabled:opacity-50 dark:border-darkText dark:bg-disabledButtonsDark dark:text-darkText'
                     )}
                 >
                     {file ? "Cambiar foto" : "Cargar foto"}
@@ -77,7 +77,7 @@ export const UpdatePictureModal = ({
                                         : 'buttonSecond',
 
 
-                                'relative w-[174px] h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth text-[16px]  px-[14px] py-[12px] font-titleFont font-semibold text-darkText transition-opacity hover:opacity-90 disabled:opacity-50 dark:border-darkText dark:bg-disabledButtonsDark dark:text-darkText'
+                                'relative w-[140px] h-[35px] lg:w-[174px] lg:h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth text-[16px] py-[6px] px-[14px] lg:py-[12px] font-titleFont font-semibold text-darkText transition-opacity hover:opacity-90 disabled:opacity-50 dark:border-darkText dark:bg-disabledButtonsDark dark:text-darkText'
                             )}
                         >
                             Guardar foto

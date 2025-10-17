@@ -811,3 +811,30 @@ div:where(.swal2-container).swal2-noanimation {
   border-radius: 100%;
   border: 1px solid transparent;
 }
+
+
+
+
+/* class for croper in edit profile picture modal */
+
+ .range-slider::-webkit-slider-thumb {
+      appearance: none;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: #012a8e;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .range-slider::-moz-range-thumb {
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: #012a8e;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+/* /////////////////////////// */
