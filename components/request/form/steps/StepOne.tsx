@@ -12,6 +12,7 @@ import InputSteps from '@/components/inputSteps/InputSteps';
 import useWalletStore from '@/store/useWalletStore';
 //importamos validacion nueva para los telefonos.
 import { validatePhoneNumber } from '@/utils/validatePhoneNumber'; 
+import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
 
 interface FormData {
   first_name: string;
@@ -30,6 +31,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     formState: { errors, isValid },
     setValue,
     watch,
+    trigger,
   } = useForm<FormData>({ mode: 'onChange' });
   const { selectedWallet } = useWalletStore();
   const {
@@ -213,7 +215,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             <Controller
               name="calling_code"
               control={control}
-              defaultValue={undefined}
+              defaultValue={defaultCountryOptions.find((option) => option.callingCode === '+54')}
               rules={{
                 required: 'Este campo es obligatorio',
               }}
@@ -221,7 +223,10 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                 <SelectCountry
                   selectedCodeCountry={field.value}
                   blockAll={blockAll}
-                  setSelectedCodeCountry={(option) => field.onChange(option)}
+                  setSelectedCodeCountry={(option) => {
+                    field.onChange(option)
+                    trigger('phone');
+                  }}
                   errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
                   textColor={['lightText', 'lightText']}
                   classNames="pl-4 w-[118px]"

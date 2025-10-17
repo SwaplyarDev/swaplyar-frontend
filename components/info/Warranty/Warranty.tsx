@@ -40,7 +40,7 @@ const Warranty = () => {
           <p className="font-textFont text-base font-light leading-relaxed">{TextWarranty[0].text}</p>
 
           <Image
-            className="drop-shadow-light dark:drop-shadow-darkmode"
+            className="drop-shadow-light dark:drop-shadow-darkmode scale-90"
             src={Garantizamos}
             alt={'Garantizamos'}
             width={331}
