@@ -10,7 +10,8 @@ export default function VerifyAccount() {
         <span className="text-lg font-semibold text-custom-blue-800 dark:text-custom-whiteD"> $5 USD </span>
         adicionales en tu solicitud.
       </p>
-      <VerifyButton />
+      {/*modificar button por el shortbutton    */}
+      <VerifyButton /> 
     </div>
   );
 }
