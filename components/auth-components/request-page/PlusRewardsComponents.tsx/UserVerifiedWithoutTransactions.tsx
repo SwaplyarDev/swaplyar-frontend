@@ -30,13 +30,15 @@ export default function UserVerifiedWithoutTransactions({ userHave3Discount }: I
         </p>
       )}
 
-      <Image
-        src={solicitudImage}
-        alt="Rewards Character"
-        width={395}
-        height={290}
-        className="object-cover xs-mini-phone:w-[220px] md-phone:w-[240px] lg:w-[220px]"
-      />
+      <div className="overflow-hidden max-h-[160px] xs-mini-phone:max-h-[140px] md-phone:max-h-[180px]">
+        <Image
+          src={solicitudImage}
+          alt="Rewards Character"
+          width={395}
+          height={290}
+          className="object-cover xs-mini-phone:w-[220px] md-phone:w-[240px] lg:w-[220px] translate-y-[-8px] scale-90"
+        />
+      </div>
     </div>
   );
 }

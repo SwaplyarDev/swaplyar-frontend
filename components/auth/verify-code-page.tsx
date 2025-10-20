@@ -14,6 +14,7 @@ import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import ButtonBack from '../ui/ButtonBack/ButtonBack';
 import AuthTitle from './AuthTitle';
+import ButtonAuth from './AuthButton';
 
 type FormInputs = {
   verificationCode: string[];
@@ -49,9 +50,9 @@ export const VerifyCodePage = () => {
 
   const isLocked = lockUntil && lockUntil > Date.now();
   //empieza en 0 para que el temporizador no inicie automaticamente
-  const [timer, setTimer] = useState(0);
+  const [timer, setTimer] = useState(60);
   //condicional para disparar el temporizador
-  const [startTimer, setStartTimer] = useState(false);
+  const [startTimer, setStartTimer] = useState(true);
 
   useEffect(() => {
     const storedEmail = localStorage.getItem('verificationEmail');
@@ -230,13 +231,25 @@ export const VerifyCodePage = () => {
   const verificationCodeValues = watch('verificationCode');
   const isCodeComplete = verificationCodeValues.join('').length === 6;
 
+  //esto es para hacer el submit automaticamente al ingresar el ultimo digito
+  useEffect(() => {
+    const verificationCodeValues = watch('verificationCode');
+    const code = verificationCodeValues?.join('') || '';
+    console.log("submit auto")
+
+    if (code.length === 6 && /^\d{6}$/.test(code) && !loading && !errors.verificationCode) {
+      handleSubmit(verifyCode)();
+    }
+  }, [isCodeComplete]);
+
+
   return (
     <div className="my-5 flex h-full py-10 xl:py-52 md:py-20 flex-col items-center justify-start xs:mt-0 xs:justify-center">
       <AnimatedBlurredCircles tope="top-[124px]" />
-      <div className="w-full max-w-xl px-5 font-textFont">
+      <div className="w-full max-w-xl px-4 font-textFont">
         <form
           onSubmit={handleSubmit(verifyCode)}
-          className="flex w-full max-w-xl flex-col rounded-2xl bg-custom-whiteD-500 py-10 px-5 shadow-md dark:bg-calculatorDark sm:px-8"
+          className="flex w-full max-w-xl flex-col rounded-2xl bg-custom-whiteD-500 py-10 px-4 shadow-md dark:bg-calculatorDark sm:px-8"
         >
           <AuthTitle className='!mb-4'>Iniciar Sesión</AuthTitle>
 
@@ -244,45 +257,48 @@ export const VerifyCodePage = () => {
             Se envió un código de verificación a <span className="font-bold">{email}</span>
           </label>
 
-          <span className='w-full flex justify-center items-center mb-1'>Ingrese el código</span>
+          <div className='relative'>
+            <span className='w-full flex justify-center items-center mb-1'>Ingrese el código de verificación</span>
 
-          <div className="flex h-[46px] justify-between gap-2 xs:h-[57px] xs:gap-1 sm:h-[65.33px]">
-            {[...Array(6)].map((_, index) => (
-              <>
-                <div
-                  className={clsx(
-                    `relative w-[46px] rounded-full border-2 border-buttonsExtraLigthDark p-[3px]
-                      shadow-[0_0_0_2px_#5D8CFE,_0_0_0_4px_#012A8E]
-                      dark:shadow-[0_0_0_2px_#5D8CFE,_0_0_0_4px_#FAFAFA]
-                      dark:border-lightText xs:w-[57px] sm:w-full`
-                  )}
-                >
-                  <input
-                    key={index}
-                    id={`code-${index}`}
-                    type="text"
-                    maxLength={1}
-                    disabled={isLocked || loading}
+            <div className="flex h-[51px] gap-1 justify-between xs:justify-center xs:gap-2">
+              {[...Array(6)].map((_, index) => (
+                <>
+                  <div
                     className={clsx(
-                      'h-full w-full rounded-full border-0 text-center text-base focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem]',
-                      errors.verificationCode ? 'border-red-500' : '',
+                      `relative size-[43px] rounded-full border-2 border-buttonsExtraLigthDark p-[3px]
+                        shadow-[0_0_0_2px_#5D8CFE,_0_0_0_4px_#012A8E]
+                        dark:shadow-[0_0_0_2px_#5D8CFE,_0_0_0_4px_#FAFAFA]
+                        dark:border-lightText`
                     )}
-                    {...register(`verificationCode.${index}`)}
-                    onPaste={handlePaste}
-                    onChange={(event) => handleInputChange(index, event)}
-                    onKeyDown={(event) => handleInputKeyDown(index, event)}
-                  />
-                </div>
-                {index < 5 && (
-                  <div className="hidden min-h-full min-w-1 items-center justify-center xs:flex">
-                    <div className="h-[2px] w-full flex-1 bg-buttonsLigth dark:bg-darkText"></div>
+                  >
+                    <input
+                      key={index}
+                      id={`code-${index}`}
+                      type="text"
+                      maxLength={1}
+                      disabled={isLocked || loading}
+                      className={clsx(
+                        'h-full w-full rounded-full border-0 text-center text-2xl text-inputLight focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem] p-0',
+                        errors.verificationCode ? 'border-red-500' : '',
+                      )}
+                      {...register(`verificationCode.${index}`)}
+                      onPaste={handlePaste}
+                      onChange={(event) => handleInputChange(index, event)}
+                      onKeyDown={(event) => handleInputKeyDown(index, event)}
+                    />
                   </div>
-                )}
-              </>
-            ))}
+                  {index < 5 && (
+                    <div className="flex min-h-full min-w-1 items-center justify-center">
+                      <div className="h-[2px] w-full flex-1 bg-buttonsLigth dark:bg-darkText"></div>
+                    </div>
+                  )}
+                </>
+              ))}
+            </div>
+
+            {errors.verificationCode && <p className="absolute w-full mt-1 mb-5 text-sm text-center text-red-500">• {errors.verificationCode.message}</p>}
           </div>
 
-          {errors.verificationCode && <p className="mb-5 text-sm text-red-500">• {errors.verificationCode.message}</p>}
 
           <div className="flex self-end mt-11">
             <p
@@ -298,28 +314,34 @@ export const VerifyCodePage = () => {
 
           <div className="my-3 flex items-center justify-between">
             <ButtonBack route="/es/iniciar-sesion" isDark={isDark} />
-            <button
-              type="submit"
-              disabled={!isCodeComplete || loading}
-              className={`dark:hover:bg- relative m-1 h-[48px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 text-white transition-colors duration-300 hover:bg-buttonsLigth disabled:cursor-not-allowed disabled:border-disabledButtonsLigth disabled:bg-disabledButtonsLigth disabled:shadow-none dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-disabledButtonsDark ${isDark ? 'buttonSecondDark' : 'buttonSecond'}`}
-            >
-              {loading ? (
-                <div className="flex items-center justify-center gap-2">
-                  <LoadingGif color={isDark ? '#ebe7e0' : '#FFFFFF'} />
-                  Confirmando...
-                </div>
-              ) : (
-                'Confirmar'
-              )}
-            </button>
+            
+            {loading ? (
+              <div className="flex items-center justify-center w-[220px] xs:w-[250px] h-[42px]">
+                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="41px" />
+              </div>
+            ) : (
+                <ButtonAuth
+                  label="Confirmar"
+                  disabled={!isCodeComplete || loading}
+                  loading={loading}
+                  isDark={isDark}
+                  className='px-4 w-[220px] xs:w-[250px]'
+                />
+            )}
           </div>
 
-          {attempts > 0 && !isLocked ? (
-            <p className="mt-2 text-center text-base text-buttonsLigth dark:text-darkText sm:text-lg">
-              Tienes {attempts} {attempts === 1 ? 'intento' : 'intentos'} para reenviar el código
-            </p>
-          ) : (
-            <p className="mt-2 text-center text-base text-red-500">Estás bloqueado por 5 minutos.</p>
+          
+          {attempts > 0 && attempts !== 3 && !reLoading && (
+            <div className='relative'>
+              <p className="absolute w-full text-center text-base text-buttonsLigth dark:text-darkText sm:text-lg">
+                Tienes {attempts} {attempts === 1 ? 'intento' : 'intentos'} para reenviar el código
+              </p>
+            </div>
+          )}
+          {isLocked && (
+            <div className='relative'>
+              <p className="absolute w-full text-center text-base text-red-500">Estás bloqueado por 5 minutos.</p>
+            </div>
           )}
         </form>
       </div>

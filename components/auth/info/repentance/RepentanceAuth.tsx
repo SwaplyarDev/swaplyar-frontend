@@ -8,6 +8,7 @@ import AnimatedBlurredCircles from '@/components/ui/animations/AnimatedBlurredCi
 import { regretsPhone } from '@/utils/assets/imgDatabaseCloudinary';
 import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
 
+
 const RepentanceFormAuth = () => {
   const { isDark } = useDarkTheme();
 
@@ -27,16 +28,17 @@ const RepentanceFormAuth = () => {
             de forma segura y devolveremos el dinero a la cuenta de origen de manera eficiente y sin complicaciones.
           </p>
         </div>
-        <div className="flex w-full flex-col lg2:max-w-[1004px] lg2:flex-row">
+        <div className="flex w-full flex-col lg2:max-w-[1004px] lg2:flex-row lg2:items-center lg2:min-h-[557px]">
           <div className="mt-10 hidden min-h-full flex-1 flex-wrap justify-center lg2:block">
             <Image
               src={regretsPc}
-              alt="regretsPC"
+              alt="regretsPc"
               width={650}
               height={0}
-              className="h-full max-h-[557px] min-h-[557px] object-cover drop-shadow-light dark:drop-shadow-darkmode"
+              className="h-full max-h-[557px] min-h-[557px] object-contain scale-90 drop-shadow-light dark:drop-shadow-darkmode"
             />
           </div>
+
           <div className="mx-auto mt-10 flex min-h-full w-full max-w-[506px] flex-wrap justify-center lg2:hidden">
             <Image
               src={regretsPhone}
@@ -49,6 +51,7 @@ const RepentanceFormAuth = () => {
               className={`min-w-full flex-wrap justify-center border-t-2 lg2:hidden ${isDark ? 'border-t-white' : 'border-t-buttonsLigth'}`}
             ></div>
           </div>
+
           <div
             className={`relative mt-10 flex h-full w-full flex-col items-center justify-center gap-4 border-0 lg2:mr-3 lg2:flex-1 lg2:after:absolute lg2:after:-left-3 lg2:after:top-5 lg2:after:h-[75%] lg2:after:w-[1px] lg2:after:bg-buttonsLigth lg2:after:content-[''] ${isDark ? 'lg2:after:bg-darkText' : ''}`}
           >

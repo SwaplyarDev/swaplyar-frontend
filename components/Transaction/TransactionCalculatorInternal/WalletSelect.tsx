@@ -21,6 +21,7 @@ import {
   WiseEurDarkImg,
   PayoneerEurImg,
   PayoneerEurDarkImg,
+  PixDarkImg,
 } from '@/utils/assets/imgDatabaseCloudinary';
 import { Wallet } from '@/store/useWalletStore';
 import { cn } from '@/lib/utils';
@@ -47,7 +48,7 @@ const getWalletLogos = (type: string) => {
     case 'tether':
       return { logo: TetherImg, logoDark: TetherDarkImg };
     case 'pix':
-      return { logo: PixImg, logoDark: PixImg };
+      return { logo: PixImg, logoDark: PixDarkImg };
     case 'bank':
       return { logo: BankImg, logoDark: BankDarkImg };
     default:
