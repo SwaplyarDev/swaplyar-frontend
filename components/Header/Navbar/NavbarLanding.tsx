@@ -7,14 +7,14 @@ import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdOutlineClose } from 'react-icons/md';
 import NavLinks from '@/components/ui/top-menu/nav-links';
 import Image from 'next/image';
-import LogInButton from '@/components/ui/top-menu/log-register-bt/logiInButton';
-import RegisterButton from '@/components/ui/top-menu/log-register-bt/registerButton';
+
 import Switch from '@/components/ui/top-menu/switch';
 import { swaplyArAvatar, SwaplyArLogoComplete, SwaplyArLogoSolo } from '@/utils/assets/imgDatabaseCloudinary';
 import { Button, Popover } from '@mui/material';
 import clsx from 'clsx';
 import { Drawer, Navbar, Sidebar } from 'flowbite-react';
 import { signOut, useSession } from 'next-auth/react';
+import ShortButton from '@/components/ui/NewButtons/ShortButton';
 
 const NavbarLanding = () => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -133,7 +133,12 @@ const NavbarLanding = () => {
               </>
             ) : (
               <>
-                <LogInButton />
+                <ShortButton
+                  href="/es/iniciar-sesion"
+                  text="Iniciar sesión"
+                  onButtonClick={closeDrawer}
+                  fondoOscuro={false}
+                />
               </>
             )}
           </span>
@@ -211,33 +216,30 @@ const NavbarLanding = () => {
                       )}
                       <Sidebar.ItemGroup className="w-full bg-inherit text-left">
                         <Sidebar.Item
-                          className={`text-buttonsLigth ${
-                            selectedItem === 'about-us'
-                              ? 'h-10 bg-gray-100 dark:bg-gray-700'
-                              : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                          }`}
+                          className={`text-buttonsLigth ${selectedItem === 'about-us'
+                            ? 'h-10 bg-gray-100 dark:bg-gray-700'
+                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                            }`}
                           onClick={() => handleSelect('about-us')}
                           href="/es/quienes-somos"
                         >
                           Quienes Somos
                         </Sidebar.Item>
                         <Sidebar.Item
-                          className={`text-buttonsLigth ${
-                            selectedItem === 'how-to-use'
-                              ? 'h-10 bg-gray-100 dark:bg-gray-700'
-                              : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                          }`}
+                          className={`text-buttonsLigth ${selectedItem === 'how-to-use'
+                            ? 'h-10 bg-gray-100 dark:bg-gray-700'
+                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                            }`}
                           onClick={() => handleSelect('how-to-use')}
                           href="/es/como-usar-swaplyar"
                         >
                           Como Usar SwaplyAr
                         </Sidebar.Item>
                         <Sidebar.Item
-                          className={`text-buttonsLigth ${
-                            selectedItem === 'loyalty-program'
-                              ? 'h-10 bg-gray-100 dark:bg-gray-700'
-                              : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                          }`}
+                          className={`text-buttonsLigth ${selectedItem === 'loyalty-program'
+                            ? 'h-10 bg-gray-100 dark:bg-gray-700'
+                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                            }`}
                           onClick={() => handleSelect('loyalty-program')}
                           href="/es/programa-de-fidelizacion"
                         >
@@ -247,33 +249,30 @@ const NavbarLanding = () => {
                     </div>
                     <Sidebar.ItemGroup className="mt-0 hidden w-full border-t-0 bg-inherit pt-0 text-left md:block">
                       <Sidebar.Item
-                        className={`text-buttonsLigth ${
-                          selectedItem === 'about-us'
-                            ? 'h-10 bg-gray-100 dark:bg-gray-700'
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                        }`}
+                        className={`text-buttonsLigth ${selectedItem === 'about-us'
+                          ? 'h-10 bg-gray-100 dark:bg-gray-700'
+                          : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                          }`}
                         onClick={() => handleSelect('about-us')}
                         href="/es/quienes-somos"
                       >
                         Quienes Somos
                       </Sidebar.Item>
                       <Sidebar.Item
-                        className={`text-buttonsLigth ${
-                          selectedItem === 'how-to-use'
-                            ? 'h-10 bg-gray-100 dark:bg-gray-700'
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                        }`}
+                        className={`text-buttonsLigth ${selectedItem === 'how-to-use'
+                          ? 'h-10 bg-gray-100 dark:bg-gray-700'
+                          : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                          }`}
                         onClick={() => handleSelect('how-to-use')}
                         href="/es/como-usar-swaplyar"
                       >
                         Como Usar SwaplyAr
                       </Sidebar.Item>
                       <Sidebar.Item
-                        className={`text-buttonsLigth ${
-                          selectedItem === 'loyalty-program'
-                            ? 'h-10 bg-gray-100 dark:bg-gray-700'
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                        }`}
+                        className={`text-buttonsLigth ${selectedItem === 'loyalty-program'
+                          ? 'h-10 bg-gray-100 dark:bg-gray-700'
+                          : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                          }`}
                         onClick={() => handleSelect('loyalty-program')}
                         href="/es/programa-de-fidelizacion"
                       >
@@ -297,10 +296,20 @@ const NavbarLanding = () => {
                       ) : (
                         <div className="flex flex-col items-center gap-3">
                           <div className="flex flex-col md:hidden">
-                            <LogInButton onButtonClick={closeDrawer} />
+                            <ShortButton
+                              href="/es/iniciar-sesion"
+                              text="Iniciar sesión"
+                              onButtonClick={closeDrawer}
+                              fondoOscuro={false}
+                            />
                           </div>
                           <div className="flex h-[60px] flex-col">
-                            <RegisterButton onButtonClick={closeDrawer} />
+                            <ShortButton
+                              href="/es/registro"
+                              text="Registrarse"
+                              onButtonClick={closeDrawer}
+                              fondoOscuro={true}
+                            />
                           </div>
                         </div>
                       )}
@@ -372,8 +381,18 @@ const NavbarLanding = () => {
                 </>
               ) : (
                 <>
-                  <LogInButton />
-                  <RegisterButton />
+                  <ShortButton
+                    href="/es/iniciar-sesion"
+                    text="Iniciar sesión"
+                    onButtonClick={closeDrawer}
+                    fondoOscuro={false}
+                  />
+                  <ShortButton
+                    href="/es/registro"
+                    text="Registrarse"
+                    onButtonClick={closeDrawer}
+                    fondoOscuro={true}
+                  />
                 </>
               )}
             </section>
