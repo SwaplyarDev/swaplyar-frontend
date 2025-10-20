@@ -32,7 +32,7 @@ export default async function RequestPage() {
   }
 
   return (
-    <div className="mx-auto mb-20 max-h-[1680px] w-full max-w-[1200px] p-6 xs:mb-0 sm:my-6">
+    <div className="mx-auto mb-20 max-h-[1680px] w-full max-w-[1200px] max-sm:px-4 max-sm:py-6 sm:p-6 xs:mb-0 sm:my-6">
       <h1 className="mb-6 pt-10 text-[34px] font-bold text-gray-800 dark:text-darkText xs:mb-8">
         Envía y recibe dinero de billeteras virtuales y criptomonedas
       </h1>

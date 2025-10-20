@@ -349,3 +349,4 @@ export const tycDark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v17514
 
 // Cupon
 export const coupon = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1750343087/Vector_kpbkff.png';
+export const couponDark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1760627447/CuponDark_c9nt6f.png';
