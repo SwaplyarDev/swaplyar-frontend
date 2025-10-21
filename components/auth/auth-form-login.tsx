@@ -5,10 +5,9 @@ import { useState } from 'react'; // Importa useEffect
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import { useRouter } from 'next/navigation';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
-import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import AuthTitle from './AuthTitle';
 import AuthInput from './AuthInput';
-import ButtonAuth from './AuthButton';
+import AuthButton from './AuthButton';
 import AuthSeparator from './AuthSeparator';
 import ShortButton from '../ui/NewButtons/ShortButton';
 
@@ -86,18 +85,14 @@ export const LoginForm = () => {
           disabled={loading}
         />
 
-        {loading ? (
-          <div className="flex items-center justify-center h-[42px]">
-            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="41px" />
-          </div>
-        ) : (
-          <ButtonAuth
+        
+          <AuthButton
             label="Ingresar"
             disabled={loading || !watch('email') || !!errors.email}
             loading={loading}
             isDark={isDark}
           />
-        )}
+        
 
         <AuthSeparator />
 

@@ -2,6 +2,7 @@
 import React from 'react';
 
 import clsx from 'clsx';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
 interface ButtonAuthProps {
   label: string;
@@ -45,17 +46,22 @@ const ButtonAuth: React.FC<ButtonAuthProps> = ({
     commonClass,
     className
   );
-
-  return (
-    <button
+  if (loading) {
+    return ( <div className="flex items-center justify-center">
+          <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="24px" />
+        </div>)
+  } else{
+    return (
+      <button
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
       className={buttonClass}
-    >
-      {loading ? 'Cargando...' : label}
-    </button>
-  );
+    >{label}</button>
+    )
+  }
+
+  
 };
 
 export default ButtonAuth;

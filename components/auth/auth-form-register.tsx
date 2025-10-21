@@ -180,11 +180,7 @@ export const RegisterForm = () => {
           </div>
         )}
 
-        {loading ? (
-          <div className="flex items-center justify-center">
-            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
-          </div>
-        ) : (
+        
           <AuthButton
             label="Crear cuenta"
             type="submit"
@@ -200,7 +196,7 @@ export const RegisterForm = () => {
             isDark={isDark}
             variant="primary"
           />
-        )}
+        
 
         <div className="my-5 flex items-center">
           <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
