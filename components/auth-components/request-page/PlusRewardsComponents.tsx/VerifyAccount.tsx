@@ -1,3 +1,4 @@
+import ShortButton from '@/components/ui/NewButtons/ShortButton';
 import { VerifyButton } from '../VerifyButton';
 
 export default function VerifyAccount() {
@@ -11,7 +12,11 @@ export default function VerifyAccount() {
         adicionales en tu solicitud.
       </p>
       {/*modificar button por el shortbutton    */}
-      <VerifyButton /> 
+      <ShortButton 
+        text="Verificar ahora"
+        href='/es/auth/plus-rewards'
+        fondoOscuro={true}
+      />
     </div>
   );
 }
