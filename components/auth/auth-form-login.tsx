@@ -10,6 +10,7 @@ import AuthTitle from './AuthTitle';
 import AuthInput from './AuthInput';
 import ButtonAuth from './AuthButton';
 import AuthSeparator from './AuthSeparator';
+import ShortButton from '../ui/NewButtons/ShortButton';
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -90,18 +91,22 @@ export const LoginForm = () => {
             <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="41px" />
           </div>
         ) : (
-          <ButtonAuth label="Ingresar" disabled={loading || !watch('email') || !!errors.email} loading={loading} isDark={isDark} />
+          <ButtonAuth
+            label="Ingresar"
+            disabled={loading || !watch('email') || !!errors.email}
+            loading={loading}
+            isDark={isDark}
+          />
         )}
 
         <AuthSeparator />
 
-        <ButtonAuth
-          label="Registrate aquí"
-          onClick={handleChange}
-          type="button"
-          isDark={isDark}
-          variant="secondary"
+        <ShortButton
+          href='/es/registro'
+          text="Registrate aquí"
+          className='!w-full'
         />
+        
         {errorMessage && <p className="mt-5 text-center text-errorColor">{errorMessage}</p>}
       </form>
     </div>

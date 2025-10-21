@@ -16,6 +16,7 @@ import AuthInput from './AuthInput';
 import AuthButton from './AuthButton';
 import AuthTitle from './AuthTitle';
 import AuthSeparator from './AuthSeparator';
+import ShortButton from '../ui/NewButtons/ShortButton';
 
 type FormInputs = {
   firstName: string;
@@ -207,12 +208,11 @@ export const RegisterForm = () => {
           <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
         </div>
 
-        <AuthButton
-          label="Inicia Sesión"
-          onClick={handleChange}
-          type="button"
-          isDark={isDark}
-          variant="secondary"
+       
+        <ShortButton
+          href='/es/iniciar-sesion'
+          text="Inicia Sesión"
+          className='!w-full'
         />
       </form>
     </div>

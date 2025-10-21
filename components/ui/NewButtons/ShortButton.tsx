@@ -35,7 +35,6 @@ export default function ShortButton({
     relative flex items-center justify-center
     rounded-3xl border p-3 font-titleFont font-semibold
     h-[38px] w-[334px] sm:h-[45px] sm:w-[340px] lg:h-[48px] lg:w-[340px]
-    lg2:w-[380px]
   `;
 
     const colorClass = transparent
