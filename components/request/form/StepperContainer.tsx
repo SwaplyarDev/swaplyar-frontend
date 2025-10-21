@@ -120,28 +120,51 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
         }
       },
       didOpen: () => {
-        const cancelButton = document.getElementById('cancel-button');
-        if (cancelButton) {
-          cancelButton.addEventListener('click', () => {
-            setBlockAll(true);
-            setStop(true);
-            resetToDefault();
-            setActiveStep(0);
-            setCorrectSend(false);
-            setErrorSend(false);
-            Swal.close();
-            window.scrollTo({ top: 0 });
-            Swal.fire({
-              icon: 'error',
-              background: '#ffffff00',
-              showConfirmButton: false,
-              timer: 1000,
-            });
+        // 🔹 Botón "Cancelar"
+      const cancelContainer = document.getElementById('cancel-button-container');
+      if (cancelContainer) {
+        cancelContainer.innerHTML = '';
+
+        const cancelButton = document.createElement('button');
+        cancelButton.innerText = 'Cancelar';
+
+        const baseClasses = `
+          relative flex items-center justify-center rounded-3xl border p-3
+          font-titleFont font-semibold h-[38px] w-[334px]
+          sm:h-[45px] sm:w-[340px] lg:h-[48px] lg:w-[340px]
+          lg2:w-[380px] mx-auto my-[13px]
+        `;
+
+        const colorClasses = isDark
+          ? 'buttonSecondDark border-darkText bg-darkText text-lightText'
+          : 'buttonSecond border-buttonsLigth bg-buttonsLigth text-darkText';
+
+        cancelButton.className = `${baseClasses} ${colorClasses}`;
+
+        cancelButton.addEventListener('click', () => {
+          setBlockAll(true);
+          setStop(true);
+          resetToDefault();
+          setActiveStep(0);
+          setCorrectSend(false);
+          setErrorSend(false);
+          Swal.close();
+
+          window.scrollTo({ top: 0 });
+
+          Swal.fire({
+            icon: 'error',
+            background: '#ffffff00',
+            showConfirmButton: false,
+            timer: 1000,
           });
-        }
-      },
-    });
-  }, [getSwal, isDark, setBlockAll, setStop, resetToDefault, setActiveStep, setCorrectSend, setErrorSend]);
+        });
+
+        cancelContainer.appendChild(cancelButton);
+      }
+    },
+  });
+}, [getSwal, isDark, setBlockAll, setStop, resetToDefault, setActiveStep, setCorrectSend, setErrorSend]);
 
   const handleSubmit = useCallback(async () => {
     if (!selectedSendingSystem || !selectedReceivingSystem) {
