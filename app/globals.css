@@ -791,8 +791,7 @@ div:where(.swal2-container).swal2-noanimation {
   clip-path: path(
     'M203 0V66.25C203 66.25 200.756 62.7424 199 60.75C194.452 55.5897 189.5 52.75 184 50.75C178.513 48.7547 173.644 48.75 173.621 48.75H30C30 48.75 25 48.75 18.5 50.75C14.8605 51.8698 11 54.75 11 54.75C8 56.75 6.5 58.25 5 59.75C2.56483 62.7817 0 66.25 0 66.25V0H203Z'
   );
-
-  transform: scaleX(1.015);
+  transform: scaleX(0.955) translateX(-5.2px);
   transform-origin: center;
 }
 
@@ -810,4 +809,9 @@ div:where(.swal2-container).swal2-noanimation {
   background: linear-gradient(white, white) padding-box, linear-gradient(90deg, rgba(102, 102, 102, 0) 32.55%, #012A8E 107.81%) border-box;
   border-radius: 100%;
   border: 1px solid transparent;
+}
+
+.header-icon-svg svg {
+  position: relative;
+  top: 6px;
 }
