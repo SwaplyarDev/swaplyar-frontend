@@ -68,7 +68,7 @@ export default function SystemSelect({ systems, selectedSystem, onSystemSelect, 
   return (
     <div className="relative w-full h-full" ref={dropdownRef}>
       <button
-        className={`system-input-select flex h-full items-center justify-start sm:justify-between rounded-2xl rounded-t-none border-2 border-t-0 border-[#012c8a] max-sm:pr-2 p-1 md:p-2 dark:border-gray-200 w-full sm:rounded-bl-none sm:rounded-tl-none sm:rounded-tr-2xl sm:border-l-0 sm:border-t-2 ${
+        className={`system-input-select flex h-full items-center justify-start sm:justify-between rounded-2xl rounded-t-none border-2 border-t-0 border-[#012c8a] max-sm:pr-2 p-1 md:p-2 dark:border-custom-whiteD w-full sm:rounded-bl-none sm:rounded-tl-none sm:rounded-tr-2xl sm:border-l-0 sm:border-t-2 ${
           isSending ? 'animation-system-send' : 'animation-system-receive'
         } ${isDark ? 'dark' : ''}`}
         onClick={handleClick}

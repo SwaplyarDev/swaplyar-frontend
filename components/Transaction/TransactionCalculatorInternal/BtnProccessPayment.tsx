@@ -38,8 +38,8 @@ export default function BtnProccessPayment({
 
   if (isProccessing) {
     return (
-      <div className="mt-4">
-        <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="44px" />
+      <div>
+        <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size={window.innerWidth < 698 ? '40px' : window.innerWidth < 1024 ? '42px' : '44px'} />
       </div>
     );
   } else {
@@ -47,7 +47,7 @@ export default function BtnProccessPayment({
       <button
         className={clsx(
           isDark ? 'buttonSecondDark' : 'buttonSecond',
-          'w-full max-w-[340px] rounded-full bg-custom-blue-800 px-[14px] py-3 font-titleFont text-base font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-lightText dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD',
+          'w-full rounded-full bg-custom-blue-800 py-2.5 font-titleFont text-base flex items-center justify-center font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-custom-grayD dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD max-h-[38px] sm:max-h-[42px]',
         )}
         onClick={handleSubmit}
         disabled={

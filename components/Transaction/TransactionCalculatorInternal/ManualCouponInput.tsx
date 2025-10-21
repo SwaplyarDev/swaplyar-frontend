@@ -2,15 +2,17 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { coupon } from '@/utils/assets/imgDatabaseCloudinary';
+import { coupon, couponDark } from '@/utils/assets/imgDatabaseCloudinary';
 import { useRewardsStore } from '@/store/useRewardsStore';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 export default function ManualCouponInput() {
   const [inputValue, setInputValue] = useState('');
   const [isLocked, setIsLocked] = useState(false);
   const setCouponInstance = useRewardsStore((state) => state.setCouponInstance);
   const markManualUsed = useRewardsStore((state) => state.markManualUsed);
-
+  const { isDark } = useDarkTheme();
+  
   const handleApplyCoupon = () => {
     const code = inputValue.trim().toLowerCase();
 
@@ -22,13 +24,13 @@ export default function ManualCouponInput() {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <p className="mb-1 text-center text-xs text-lightText dark:text-darkText">
-        {isLocked ? 'Cupón aplicado' : 'Ingrese su Cupón'}
+    <div className="flex items-start max-h-[42px]">
+      <p className="mb-1 text-center text-xs text-lightText dark:text-darkText dark:bg-darkText">
+        {isLocked ? 'Cupón aplicado' : ''}
       </p>
-      <div className="relative w-[180px]">
+      <div className="relative">
         <Image
-          src={coupon}
+          src={`${isDark ? couponDark : coupon}`}
           alt="Cupón"
           width={22}
           height={22}
@@ -42,12 +44,12 @@ export default function ManualCouponInput() {
             if (e.key === 'Enter') handleApplyCoupon();
           }}
           disabled={isLocked}
-          className={`w-full rounded-2xl border p-2 pl-10 text-[14px] uppercase text-violet-600 focus:border-violet-600 focus:shadow-none focus:outline-none focus:ring-0 focus:ring-transparent focus-visible:ring-0 ${
+          className={`w-full dark:bg-custom-grayD-800 placeholder:text-violet-700 dark:placeholder-darkText rounded-2xl border p-2 pl-10 text-xs sm:text-base focus:border-violet-600 focus:shadow-none focus:outline-none focus:ring-0 focus:ring-transparent focus-visible:ring-0 ${
             isLocked
-              ? 'border-violet-600 bg-white font-bold uppercase text-violet-700 dark:bg-darkText dark:text-violet-400'
-              : 'border-violet-600 bg-white text-lightText dark:bg-darkText'
+              ? 'border-violet-600 font-bold uppercase text-violet-700 dark:text-violet-400'
+              : 'border-violet-600 text-darkLight '
           }`}
-          placeholder="Código de cupón"
+          placeholder="Ingrese el cupón acá"
         />
       </div>
     </div>
