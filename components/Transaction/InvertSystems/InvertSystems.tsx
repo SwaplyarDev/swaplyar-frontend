@@ -21,13 +21,18 @@ export default function InvertSystems({ onInvert, selectedReceivingSystem }: Inv
           : isDark
             ? 'buttonSecondDark dark:text-lightText'
             : 'buttonSecond',
-        'relative m-1 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth font-titleFont font-semibold text-darkText dark:border-darkText dark:bg-darkText',
+        'relative max-sm:max-w-[48px] m-1 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth font-titleFont font-semibold text-darkText dark:border-darkText dark:bg-darkText',
       )}
       disabled={selectedReceivingSystem?.id === 'pix'}
       onClick={onInvert}
       aria-label="Invertir sistemas"
     >
-      <SwapVertIcon className="mx-3 sm:mx-5 my-0.5 sm:my-1.5" />
+      <SwapVertIcon
+        className={clsx(
+          'mx-3 my-0.5 sm:mx-5 sm:my-1.5',
+          isDark ? 'text-lightText' : 'text-darkText'
+        )}
+      />
     </button>
   );
 }

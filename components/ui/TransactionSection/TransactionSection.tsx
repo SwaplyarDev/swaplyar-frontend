@@ -25,7 +25,7 @@ const TransactionSection: React.FC<TransactionSectionProps> = ({
   isSending,
 }) => {
   return (
-    <div className="relative flex w-full sm:min-h-[100px] flex-col-reverse items-end text-custom-blue-800 dark:text-darkText sm:flex-row-reverse">
+    <div className="relative flex w-full md:min-h-[100px] flex-col-reverse items-end text-custom-blue-800 dark:text-darkText sm:flex-row-reverse">
       <SystemSelect
         systems={systems}
         selectedSystem={selectedSystem}
@@ -43,7 +43,7 @@ const TransactionSection: React.FC<TransactionSectionProps> = ({
         placeholder="0"
       />
 
-      <div className="absolute top-1/2 left-5 right-5 -translate-y-1/2 h-[2px] sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-[2px] sm:h-[calc(100%-20px)] sm:right-auto bg-custom-blue-800 dark:bg-gray-200"></div>
+      <div className="absolute top-1/2 sm:top-[50%] md:top-[55%] lg:top-1/2 left-5 right-5 -translate-y-1/2 h-[2px] sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:w-[2px] sm:h-[calc(100%-30px)] md:h-[calc(100%-25px)] lg:h-[calc(100%-20px)] sm:right-auto bg-custom-blue-800 dark:bg-custom-whiteD"></div>
     </div>
   );
 };
