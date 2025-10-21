@@ -51,9 +51,16 @@ const ButtonAuth: React.FC<ButtonAuthProps> = ({
     className
   );
   if (loading) {
-    return ( <div className="flex items-center justify-center">
-          <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="24px" />
-        </div>)
+    return (
+    <div
+      className={clsx(
+        'relative h-10.5 rounded-3xl flex items-center justify-center', 
+        className
+      )}
+    >
+      <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="24px" />
+    </div>
+  )
   } 
     return (
       <button
