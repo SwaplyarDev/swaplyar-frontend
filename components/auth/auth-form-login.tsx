@@ -7,9 +7,9 @@ import { useRouter } from 'next/navigation';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import AuthTitle from './AuthTitle';
-import AuthInput from './AuthInput';
 import ButtonAuth from './AuthButton';
 import AuthSeparator from './AuthSeparator';
+import CustomInput from '@/components/ui/Input/CustomInput';
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -68,7 +68,7 @@ export const LoginForm = () => {
       >
         <AuthTitle>Iniciar Sesión</AuthTitle>
 
-        <AuthInput
+        <CustomInput
           label="Correo Electrónico"
           type="email"
           name="email"
