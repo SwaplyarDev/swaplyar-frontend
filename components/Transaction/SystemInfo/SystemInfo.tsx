@@ -67,7 +67,7 @@ export default function SystemInfo({ pointBorder, linePosition, children }: Syst
           {pointBorder === 'border' && (
             <div className="icon-tooltip-container">
               <button className="more-info-icon show-tooltip flex" onClick={() => setIsTooltipVisible(true)}>
-                <InfoOutlinedIcon className="mr-2 h-6 w-6 text-blue-800 dark:text-white" />
+                <InfoOutlinedIcon className="mr-2 h-6 w-6 text-blue-800 dark:text-custom-whiteD" />
               </button>
             </div>
           )}

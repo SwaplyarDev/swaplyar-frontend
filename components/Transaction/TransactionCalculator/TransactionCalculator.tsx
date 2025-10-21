@@ -106,7 +106,7 @@ export default function TransactionCalculator() {
           />
           <div className='flex items-center gap-5 my-1 sm:my-3'>
             <SystemInfo pointBorder="border" linePosition="up">
-              <p className="font-textFont text-xs text-lightText xs:text-sm">Información del sistema de recepción</p>
+              <p className="font-textFont text-xs text-lightText dark:text-darkText xs:text-sm">Información del sistema de recepción</p>
             </SystemInfo>
             <div className="flex flex-col h-full items-center justify-center">
               <InvertSystems onInvert={handleInvertSystemsClick} selectedReceivingSystem={selectedReceivingSystem} />
@@ -160,14 +160,14 @@ export default function TransactionCalculator() {
             )}
           </div>
           {isProcessing ? (
-            <div className="mt-4">
+            <div>
               <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="44px" />
             </div>
           ) : (
             <button
               className={clsx(
                 isDark ? 'buttonSecondDark' : 'buttonSecond',
-                'w-full rounded-full bg-custom-blue-800 py-2.5 font-titleFont text-base font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-custom-grayD dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD',
+                'w-full rounded-full bg-custom-blue-800 py-2.5 font-titleFont text-base font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-custom-grayD dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD max-h-[42px]',
               )}
               onClick={handleSubmit}
               disabled={
