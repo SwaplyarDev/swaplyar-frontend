@@ -28,11 +28,15 @@ const ButtonAuth: React.FC<ButtonAuthProps> = ({
   let variantClass = '';
   const commonClass = 'relative h-10.5 p-0 items-center justify-center rounded-3xl font-titleFont font-semibold text-base';
   if (variant === 'primary') {
-    variantClass = disabled || loading
-      ? 'border-disabledButtonsLigth bg-disabledButtonsLigth text-darkText dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText cursor-not-allowed'
-      : isDark
-        ? 'border-darkText bg-darkText text-lightText'
-        : 'border-buttonsLigth bg-buttonsLigth text-darkText';
+    if (disabled || loading) {
+      variantClass =
+        'border-disabledButtonsLigth bg-disabledButtonsLigth text-darkText dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText cursor-not-allowed';
+    } else {
+      // Aplicamos tus clases globales de hover
+      variantClass = isDark
+        ? 'border-darkText bg-darkText text-lightText buttonSecondDark'
+        : 'border-buttonsLigth bg-buttonsLigth text-darkText buttonSecond';
+    }
   } else if (variant === 'secondary') {
     variantClass = [
       'dark:hover:bg-transparent',
@@ -50,7 +54,7 @@ const ButtonAuth: React.FC<ButtonAuthProps> = ({
     return ( <div className="flex items-center justify-center">
           <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="24px" />
         </div>)
-  } else{
+  } 
     return (
       <button
       type={type}
@@ -60,8 +64,5 @@ const ButtonAuth: React.FC<ButtonAuthProps> = ({
     >{label}</button>
     )
   }
-
-  
-};
 
 export default ButtonAuth;
