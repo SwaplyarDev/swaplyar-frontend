@@ -43,11 +43,12 @@ const NotFoundComponent = () => {
           <article className="absolute top-0 flex w-full items-center justify-center">
             <Image
               src={isDark ? error404Dark : error404Clear}
-              className="hidden w-full max-w-[1000px] md-phone:block xl-desktop:px-0"
               alt="Descripción de la imagen 404"
-              width={1000}
-              height={400}
+              width={1600}
+              height={800}
+              className="hidden md-phone:block w-[120%] scale-125 object-cover object-center xl-desktop:px-0 transition-all duration-500"
             />
+
             <Image
               src={isDark ? tlf_404_dark : tlf_404_clear}
               className="block xs:px-10 sm-phone:px-8 md-phone:hidden xl-desktop:px-0"
@@ -83,14 +84,14 @@ const NotFoundComponent = () => {
             <Image
               src={Post1_404}
               alt="Man smiling with tablet"
-              className="z-10 hidden h-[291px] w-[200px] object-cover md-phone:block md:h-[355px] lg:h-[475px]"
+              className="z-10 hidden h-[291px] w-[200px] object-fit md-phone:block md:h-[355px] lg:h-[475px] scale-75"
               width={400}
               height={220}
             />
             <Image
               src={Post2_404}
               alt="Woman smiling with a laptop"
-              className="z-10 h-[291px] w-[185px] object-cover md:h-[355px] md:w-[350px] lg:h-[475px] lg:w-[400px]"
+              className="z-10 h-[291px] w-[185px] object-fit md:h-[355px] md:w-[350px] lg:h-[475px] lg:w-[400px] scale-75"
               width={300}
               height={220}
             />

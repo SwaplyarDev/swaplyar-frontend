@@ -6,6 +6,7 @@ import { System } from '@/types/data';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { FieldError } from 'react-hook-form';
 import { detectarMail } from '@/utils/validationUtils';
+import Image from 'next/image';
 
 interface StepThreeGeneralProps {
   register: UseFormRegister<any>;
@@ -168,7 +169,13 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
               {previewImage ? (
                 <div className="absolute -z-10 max-h-full">
                   <div className="flex justify-center">
-                    <img src={previewImage} alt="Preview" className="h-auto max-w-full rounded-lg shadow-md" />
+                    <Image
+                      src={previewImage}
+                      alt="Preview"
+                      width={300} // ajustá según tu diseño
+                      height={150} // ajustá según tu diseño
+                      className="h-auto max-w-full rounded-lg shadow-md"
+                    />
                   </div>
                 </div>
               ) : null}
@@ -194,9 +201,8 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
                 </button>
               ) : (
                 <div
-                  className={`${
-                    isDark ? 'buttonSecondDark' : 'buttonSecond'
-                  } relative h-[48px] w-full max-w-[200px] items-center justify-center rounded-3xl border border-disabledButtonsLigth bg-disabledButtonsLigth p-[10px] text-lg text-darkText group-hover:border-buttonsLigth group-hover:bg-buttonsLigth group-hover:text-darkText dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText group-hover:dark:border-darkText group-hover:dark:bg-darkText group-hover:dark:text-lightText lg:mt-0`}
+                  className={`${isDark ? 'buttonSecondDark' : 'buttonSecond'
+                    } relative h-[48px] w-full max-w-[200px] items-center justify-center rounded-3xl border border-disabledButtonsLigth bg-disabledButtonsLigth p-[10px] text-lg text-darkText group-hover:border-buttonsLigth group-hover:bg-buttonsLigth group-hover:text-darkText dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText group-hover:dark:border-darkText group-hover:dark:bg-darkText group-hover:dark:text-lightText lg:mt-0`}
                 >
                   Subir Archivo
                 </div>

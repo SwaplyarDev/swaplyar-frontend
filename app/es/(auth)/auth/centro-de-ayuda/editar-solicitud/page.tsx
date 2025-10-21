@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 const page: React.FC = () => {
   return (
     <>
-      <EditSoli />
+      <EditSoli></EditSoli>
     </>
   );
 };

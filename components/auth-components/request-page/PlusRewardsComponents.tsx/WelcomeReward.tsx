@@ -18,13 +18,15 @@ export default function WelcomeReward() {
         <span className="whitespace-nowrap"> solicitud.</span>
       </p>
 
-      <Image
-        src={solicitudImage}
-        alt="Rewards Character"
-        width={197}
-        height={145}
-        className="object-cover md-phone:w-[240px] lg:w-[260px]"
-      />
+      <div className="overflow-hidden max-h-[120px] xs-mini-phone:max-h-[100px] md-phone:max-h-[130px]">
+        <Image
+          src={solicitudImage}
+          alt="Rewards Character"
+          width={197}
+          height={145}
+          className="object-fill md-phone:w-[240px] lg:w-[260px] translate-y-[-40px] scale-75"
+        />
+      </div>
     </article>
   );
 }
