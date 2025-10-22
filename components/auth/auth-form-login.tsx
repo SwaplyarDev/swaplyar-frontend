@@ -64,7 +64,7 @@ export const LoginForm = () => {
     <div className="flex py-10 px-4 xl:py-52 md:py-20 flex-col items-center justify-center">
       <form
         onSubmit={handleSubmit(submitEmail)}
-        className="flex w-full max-w-lg flex-col rounded-2xl bg-custom-whiteD-500 py-10 px-5 shadow-md dark:bg-calculatorDark"
+        className="flex w-[356px] md:w-[430px] lg:w-[484px] flex-col rounded-2xl bg-custom-whited-500 py-10 px-5 shadow-md dark:bg-calculatorDark"
       >
         <AuthTitle>Iniciar Sesión</AuthTitle>
 
