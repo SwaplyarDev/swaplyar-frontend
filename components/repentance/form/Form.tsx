@@ -7,6 +7,7 @@ import SelectCountry from '@/components/request/form/inputs/SelectCountry';
 import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
 import AlertProcess from '../Alerts/AlertProcess';
 import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
+import ButtonAuth from '@/components/auth/AuthButton';
 
 const Form = () => {
   const [isFocused, setIsFocused] = useState(false);
@@ -138,8 +139,8 @@ const Form = () => {
             className={clsx(
               `inputChangeAutofill flex h-[41px] w-full items-center border-0 border-b-[1px] border-solid ps-0 text-center text-xs text-lightText xs:text-lg ${isDark ? 'border-b-darkText bg-transparent focus:border-white' : 'border-b-buttonsLigth bg-transparent focus:border-buttonsLigth'} outline-none focus:outline-none`,
               errors.phone_number &&
-                !isFocused &&
-                'border border-errorColor hover:border-blue-600 dark:hover:border-darkText',
+              !isFocused &&
+              'border border-errorColor hover:border-blue-600 dark:hover:border-darkText',
             )}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
@@ -175,7 +176,7 @@ const Form = () => {
               type="tel"
               {...register('phone_number', {
                 required: 'El número de teléfono es obligatorio',
-                validate: (value) => { 
+                validate: (value) => {
                   const country = watch('calling_code');
                   const result = validatePhoneNumber(value, country);
                   return result === true ? true : result;
@@ -205,22 +206,17 @@ const Form = () => {
           />
         </label>
       </div>
-      <button
-        type="submit"
-        disabled={!isValid}
-        className={clsx(
-          'mx-auto mt-2 flex h-[42px] items-center justify-center rounded-3xl px-16 py-3 text-center font-titleFont font-semibold',
-          isValid
-            ? isDark
-              ? 'buttonSecondDark hover:bg-relative border-darkText bg-darkText text-lightText'
-              : 'buttonSecond border border-buttonsLigth bg-buttonsLigth text-darkText hover:bg-buttonsLigth'
-            : isDark
-              ? 'cursor-not-allowed bg-placeholderDark'
-              : 'bg-buttonExpandDark text-darkText',
-        )}
-      >
-        {isLoading ? 'Cargando...' : 'Solcitar Reembolso'}
-      </button>
+      <div className="flex justify-center mt-2">
+        <ButtonAuth
+          label="Solicitar Reembolso"
+          type="submit"
+          isDark={isDark}
+          loading={isLoading}
+          disabled={!isValid || isLoading}
+          className="w-[300px]" // manteniendo ancho similar al botón anterior
+          variant="primary"
+        />
+      </div>
     </form>
   );
 };
