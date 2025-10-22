@@ -78,7 +78,7 @@ export const NavIcons = ({ isFooter }: NavIconsProps) => {
                 : 'h-full'
             }
           >
-            <div className="flex items-center justify-center h-full relative">
+            <div className="flex items-center justify-center h-full relative -mr-[0.5px]">
               {/* Clip-path background para elemento activo */}
               {isItemActive && (
                 <div className='overflow-x-hidden absolute h-full w-[202px] inset-0'>

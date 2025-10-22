@@ -65,7 +65,7 @@ const NavbarInternal = () => {
       <div className="flex w-full">
         <div className={`flex-1 grow max-w-20 ${isDark ? 'bg-custom-whiteD' : 'bg-nav-blue'}`}/>
         <div className="flex h-16 flex-grow xs:px-0">
-          <div className="flex h-full w-full max-w-[1200px] items-center">
+          <div className="flex h-full w-full items-center">
 
             <NavFotoDePerfil isDark={isDark} isActive={isActive} session={session} />
 
