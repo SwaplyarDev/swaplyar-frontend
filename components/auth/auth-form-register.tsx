@@ -12,10 +12,9 @@ import { useRouter } from 'next/navigation';
 import userInfoStore from '@/store/userInfoStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
-import AuthInput from './AuthInput';
+import CustomInput from '@/components/ui/Input/CustomInput';
 import AuthButton from './AuthButton';
 import AuthTitle from './AuthTitle';
-import AuthSeparator from './AuthSeparator';
 import ShortButton from '../ui/NewButtons/ShortButton';
 
 type FormInputs = {
@@ -104,7 +103,7 @@ export const RegisterForm = () => {
 
         <div className="flex flex-wrap gap-1 w-full">
           <div className="flex flex-col flex-1">
-            <AuthInput
+            <CustomInput
               label="Nombre"
               type="text"
               name="firstName"
@@ -116,7 +115,7 @@ export const RegisterForm = () => {
             />
           </div>
           <div className="flex flex-col flex-1">
-            <AuthInput
+            <CustomInput
               label="Apellido"
               type="text"
               name="lastName"
@@ -129,7 +128,7 @@ export const RegisterForm = () => {
           </div>
         </div>
 
-        <AuthInput
+        <CustomInput
           label="Correo electrónico"
           type="text"
           name="email"

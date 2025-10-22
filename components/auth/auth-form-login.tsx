@@ -9,8 +9,8 @@ import AuthTitle from './AuthTitle';
 import AuthInput from './AuthInput';
 import AuthButton from './AuthButton';
 import AuthSeparator from './AuthSeparator';
+import CustomInput from '@/components/ui/Input/CustomInput';
 import ShortButton from '../ui/NewButtons/ShortButton';
-
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 type FormInputs = {
@@ -68,7 +68,7 @@ export const LoginForm = () => {
       >
         <AuthTitle>Iniciar Sesión</AuthTitle>
 
-        <AuthInput
+        <CustomInput
           label="Correo Electrónico"
           type="email"
           name="email"
