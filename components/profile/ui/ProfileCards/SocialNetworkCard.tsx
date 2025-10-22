@@ -5,6 +5,8 @@ type Props = {
 };
 
 const SocialNetworkCard = ({ socialNetworks, onEdit }: Props) => {
+  console.log(socialNetworks, "social");
+  
   return (
     <>
       <section className='sm:px-6 px-4 '>
@@ -13,7 +15,8 @@ const SocialNetworkCard = ({ socialNetworks, onEdit }: Props) => {
           <FaInstagram className="w-[27px] h-[27px] " />
         </div>
         <div className="mt-2 w-full flex flex-col  items-center justify-between ">
-          {socialNetworks.map((network, index) => (
+        
+          {socialNetworks.length > 0 ? socialNetworks.map((network, index) => (
 
 
             <div key={`social-${index}`} className="flex w-full justify-between">
@@ -28,7 +31,9 @@ const SocialNetworkCard = ({ socialNetworks, onEdit }: Props) => {
             </div>
 
 
-          ))}
+          )):(
+<span className="text-gray-400 underline">Aun no tienes redes sociales vinculadas a tu cuenta</span>
+          )}
           <div className="w-full flex justify-end">
             <button
               className="w-10 transition-all text-[16px] font-light hover:font-semibold hover:underline dark:hover:text-[#E1E1E1]  hover:text-[#2A68FE] dark:text-[#C8C8C8] "

@@ -133,7 +133,7 @@ const RedesSocialesModal = ({ show, setShow, socialNetworks }: SocialMediaModalP
               <Input
                 value={newSocialUsername}
                 onChange={(e) => setNewSocialUsername(e.target.value)}
-                className="border border-zinc-600 bg-transparent text-white focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="border border-zinc-600 bg-transparent  focus-visible:ring-0 focus-visible:ring-offset-0"
                 placeholder="Nombre de usuario"
               />
               <Button

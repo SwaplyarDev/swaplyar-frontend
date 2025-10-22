@@ -4,7 +4,6 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
-import { profileMock } from './utils/ProfileMock';
 import SocialNetworkModal from './Modals/RedesSocialesModal';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import WhatsappModal from './Modals/WhatsappModal';
@@ -75,8 +74,7 @@ const Profile = () => {
 
   const mockSocialNetworks = [
     { type: "Instagram", username: "Suarez_Oa" },
-    { type: "Twitter", username: "Suarez_Tw" },
-    { type: "Facebook", username: "SuarezFb" },
+ 
   ];
 
   return (
@@ -87,7 +85,7 @@ const Profile = () => {
           <div className="mr-4 flex flex-col-reverse items-end xs:flex-row xs:items-center xs:justify-end">
             <div className={`sm:mt-[110px] flex flex-col items-end px-2 xs:mb-4 xs:px-10 ${isDark ? 'bg-[#4B4B4B]' : 'bg-nav-blue text-white'}`}>
               <p className="text-xl font-semibold">{session?.user.fullName}</p>
-              <p className="text-[16px] text-gray-400 underline">Registrado en 2019</p>
+              <p className="text-[16px]  underline">Registrado en 2019</p>
             </div>
             <div
               className="relative z-50 h-[120px] w-[120px] cursor-pointer"
@@ -141,7 +139,7 @@ const Profile = () => {
 
         <ProfileSectionCard>
           <SocialNetworkCard
-            socialNetworks={mockSocialNetworks}
+            socialNetworks={socialAccounts}
             onEdit={() => setShowSocialNetworkModal(true)}
           />
           {showSocialNetworkModal && (
