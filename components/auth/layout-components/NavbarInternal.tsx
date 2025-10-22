@@ -62,9 +62,9 @@ const NavbarInternal = () => {
         </div>
       </div>
 
-      <div className="flex w-full">
-        <div className={`flex-1 grow max-w-20 ${isDark ? 'bg-custom-whiteD' : 'bg-nav-blue'}`}/>
-        <div className="flex h-16 flex-grow xs:px-0">
+      <div className="flex w-full h-16">
+        <div className={`min-w-4 sm:min-w-6 md:min-w-10 lg:min-w-14 xl:min-w-16 xl:flex-1 xl:flex-grow ${isDark ? 'bg-custom-whiteD' : 'bg-nav-blue'}`}/>
+        <div className="flex flex-grow xl:w-[1204px] max-w-screen-desktop xs:px-0">
           <div className="flex h-full w-full items-center">
 
             <NavFotoDePerfil isDark={isDark} isActive={isActive} session={session} />
@@ -83,7 +83,7 @@ const NavbarInternal = () => {
             <NavMenuDesplegableTablet isDark={isDark} isActive={isActive} />
           </div>
         </div>
-        <div className={`flex-1 grow max-w-20 ${isDark ? 'bg-custom-whiteD' : 'bg-nav-blue'}`}/>
+        <div className={`min-w-4 sm:min-w-6 md:min-w-10 lg:min-w-14 xl:min-w-16 xl:flex-1 xl:flex-grow ${isDark ? 'bg-custom-whiteD' : 'bg-nav-blue'}`}/>
       </div>
     </header>
   );
