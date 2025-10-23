@@ -62,6 +62,7 @@ const ButtonAuth: React.FC<ButtonAuthProps> = ({
     commonClass,
     className
   );
+  //si loading es true mostramos el loading
   if (loading) {
     return (
       <div
@@ -76,6 +77,7 @@ const ButtonAuth: React.FC<ButtonAuthProps> = ({
       </div>
     )
   }
+  //sino mostramos el boton normal con las clases combinadas.
   return (
     <button
       type={type}
