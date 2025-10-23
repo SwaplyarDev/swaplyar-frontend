@@ -811,6 +811,9 @@ div:where(.swal2-container).swal2-noanimation {
   border: 1px solid transparent;
 }
 
+.navbar-landing > div {
+  height: 100%;
+}
 
 /* class for croper in edit profile picture modal */
 
