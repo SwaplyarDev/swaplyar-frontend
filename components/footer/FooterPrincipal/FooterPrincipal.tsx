@@ -5,7 +5,6 @@ import { AccordionSection } from '../AccordionSectionFooter/AccordionSectionFoot
 import Link from 'next/link';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { SwaplyArLogoSolo } from '@/utils/assets/imgDatabaseCloudinary';
 import LogoSwaplySVG from '@/public/LogoSwaplySVG.svg'
 
 const FooterPrincipal = () => {
@@ -23,7 +22,7 @@ const FooterPrincipal = () => {
         <AccordionSection title="Atención al Cliente" links={footerLinks.atencion} />
       </div>
 
-      <div className="two-info-footer mt-5 flex flex-col items-center justify-between pt-4 sm:flex-row">
+      <div className="two-info-footer mt-5 flex flex-col items-end justify-between pt-4 sm:flex-row ">
         <section className="container-footer-icon-social mb-4 flex justify-center space-x-4 sm:mb-0 sm:w-1/3 sm:justify-start">
           {footerLinks.social.map(({ href, icon, label }) => (
             <Link

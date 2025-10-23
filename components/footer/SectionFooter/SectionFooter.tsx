@@ -30,11 +30,11 @@ export function Section({
         </section>
       ) : (
         <section
-          className={`mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-center sm:text-center ${
-            align === 'start' ? 'lg:items-start' : align === 'end' ? 'lg:items-end' : 'lg:items-center'
-          }`}
+          className={`mb-4  flex flex-col items-center text-left sm:mb-0  sm:items-center sm:text-center ${align === 'start' ? 'lg:items-start' : align === 'end' ? 'lg:items-end' : 'lg:items-center'
+            }`}
         >
-          <p className="mb-2 font-textFont text-lg">{title}</p>
+          <span className="mb-2  font-textFont text-[18px]">{title}</span>
+
           {links.map(({ href, label, view }) => (
             <FooterLink key={href} href={href} label={label} view={view} />
           ))}
