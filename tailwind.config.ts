@@ -162,7 +162,7 @@ const config: Config = {
         'custom-whiteD-200': 'rgba(255, 255, 248, 1)',
         'custom-whiteD-300': 'rgba(255, 252, 245, 1)',
         'custom-whiteD-400': 'rgba(253, 249, 242, 1)',
-        'custom-whiteD-500': 'rgba(250, 246, 239, 1)',
+        'custom-whiteD-500': 'rgba(250, 250, 250, 1)', //#FAFAFA Usos (generalmente en modo oscuro): fondo iniciar sesion, register, verificacion ...
         'custom-whiteD-600': 'rgba(247, 243, 236, 1)',
         'custom-whiteD-700': 'rgba(244, 240, 233, 1)',
         'custom-whiteD-800': 'rgba(241, 237, 230, 1)',
@@ -212,7 +212,9 @@ const config: Config = {
         inputLight: '#012A8E', // Azul Marino Oscuro
         inputDark: '#EEEAE3', // Blanco Hueso o Marfil Claro
         placeholderDark: '#969696', // Gris claro para placeholder
-        errorColor: '#CE1818',
+        errorColor: '#FB2424',
+        errorColorDark: '#A31C01',
+        errorTextColorDark: '#E46B52',
 
         // Estados deshabilitados
         disabledButtonsLigth: '#90B0FE', // Gris claro para fondo deshabilitado de buttonsLigth
@@ -227,8 +229,8 @@ const config: Config = {
         inputLightDisabled: '#90B0FE', // Azul pastel con un tono más vibrante y saturado
       },
       fontFamily: {
-        titleFont: ['OpenSans', 'sans-serif', '100', '200', '300', '400', '500', '600', '700', '800', '900'],
-        textFont: ['Roboto', 'sans-serif', '100', '200', '300', '400', '500', '600', '700', '800', '900'],
+        titleFont: ['OpenSans', 'sans-serif'],
+        textFont: ['Roboto', 'sans-serif'],
       },
       width: {
         '9/10': '90%',
@@ -261,6 +263,12 @@ const config: Config = {
         dark: '4px 4px 10px rgba(255, 255, 255, 0.9)',
         customLight: '4px 4px 0px rgba(0, 0, 0, 0.25);',
         customDark: '4px 4px 0px rgba(131, 131, 131, 0.25);',
+      },
+      fontSize: {
+        '3.5xl': ['2rem', '150%'],
+      },
+      height: {
+        '10.5': '42px',
       },
       animation: {
         rotate: 'rotate 5s cubic-bezier(0.4, 0, 0.2, 1)',

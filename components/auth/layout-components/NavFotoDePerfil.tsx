@@ -5,55 +5,41 @@ import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
+import { Session } from '@auth/core/types';
 
-export default function NavFotoDePerfil() {
-  const pathname = usePathname();
-  const [mostrarModalPerfil, setMostrarModalPerfil] = useState(false);
-  const { isDark } = useDarkTheme();
-  const isActive = pathname.split('/')[3];
-  const { data: session } = useSession();
+interface Props {
+  isDark: boolean;
+  isActive: string;
+  session: Session | null;
+}
+
+export default function NavFotoDePerfil({ isDark, isActive, session }: Props) {
 
   if (!session) return false;
-  const user = session.user;
-  const isAdmin = user.role === 'admin' ? true : false;
   return (
-    <>
-      <div className={`mask-nav h-16 w-[8rem] self-start ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></div>
-  <Link
-        href={isAdmin ? '#' : '/es/auth/perfil'}
-        onClick={() => {
-          setMostrarModalPerfil(!mostrarModalPerfil);
-        }}
-        className={`${isActive === 'perfil' || pathname === '/es/auth/perfil' ? 'bg-gradient-to-t' : ''} absolute left-4 top-2 h-24 w-24 rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[0.25rem] hover:bg-gradient-to-t`}
-      >
-        <Image
-          src={user.profile?.profilePictureUrl ? user.profile.profilePictureUrl : swaplyArAvatar}
-          alt="Foto perfil Usuario"
-          width={100}
-          height={100}
-          className="h-full w-full overflow-hidden rounded-full bg-white dark:bg-lightText"
-        />
-      </Link>
-      <div
-        className={`absolute ${isAdmin && mostrarModalPerfil ? 'flex flex-col items-start justify-center gap-1' : 'hidden'} ${isDark ? 'text-[#252526]' : 'text-white'} ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'} left-2 top-28 h-20 whitespace-nowrap rounded-3xl border-2 border-[#EBE7E0] px-4 text-lg font-semibold`}
-      >
-        <Link
-          href={'/es/auth/perfil/'}
-          onClick={() => {
-            setMostrarModalPerfil(!mostrarModalPerfil);
-          }}
-        >
-          Ver perfil
-        </Link>
-        <Link
-          href={'/es/auth/admin/'}
-          onClick={() => {
-            setMostrarModalPerfil(!mostrarModalPerfil);
-          }}
-        >
-          Ver admin
-        </Link>
+      <div className="relative flex h-full">
+        <div className="relative flex justify-center">
+          <div className={`h-full cursor-pointer mask-nav w-32 ${isDark ? 'bg-custom-whiteD' : 'bg-nav-blue'}`} />
+
+        <div className={`absolute left-[18px] top-2 h-[92px] w-[92px] flex flex-row items-center justify-center rounded-[6.25rem]`}>
+            <Link
+              href="/es/auth/perfil"
+            className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} relative h-[92px] w-[92px] rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t`}
+            >
+              <Image
+                src={session?.user.profile?.profilePictureUrl || swaplyArAvatar}
+                alt="Foto perfil Usuario"
+                width={100}
+                height={100}
+                className="h-full w-full overflow-hidden rounded-full object-cover bg-white dark:bg-lightText"
+              />
+            </Link>
+          </div>
+        </div>
+
+        <p className={`block content-center font-titleFont font-semibold text-white dark:text-black capitalize px-1 ${isDark ? 'bg-custom-whiteD' : 'bg-nav-blue'} -ml-[1px]`}>
+          {session?.user.fullName}
+        </p>
       </div>
-    </>
   );
 }

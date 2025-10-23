@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SwaplyArLogoSolo } from '@/utils/assets/imgDatabaseCloudinary';
+import LogoSwaplySVG from '@/public/LogoSwaplySVG.svg'
 
 const FooterPrincipal = () => {
   return (
@@ -40,7 +41,7 @@ const FooterPrincipal = () => {
         </section>
         <section className="mb-4 flex flex-grow justify-center filter dark:brightness-[0%] dark:invert sm:mb-0 sm:w-1/3 sm:justify-center">
           <Link href="/">
-            <Image src={SwaplyArLogoSolo} alt="Cambiar saldo online" width={65} height={70} />
+            <Image src={LogoSwaplySVG} alt="Cambiar saldo online" width={65} height={70} />
           </Link>
         </section>
         <section className="flex items-center justify-center sm:w-1/3 sm:justify-end">

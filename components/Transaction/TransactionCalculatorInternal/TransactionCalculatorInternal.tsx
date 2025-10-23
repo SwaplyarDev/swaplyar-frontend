@@ -244,24 +244,24 @@ export default function InternalTransactionCalculator({
 
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
-      <div className="mat-card calculator-container flex max-h-[800px] w-full flex-col items-center rounded-2xl bg-calculatorLight px-[19px] py-[27px] shadow-md dark:bg-calculatorDark dark:text-white sm:max-h-[680px] lg-tablet:min-w-[500px]">
-        <div className="relative mb-[10px] flex w-full max-w-lg flex-col items-center gap-[10px] text-[#012c8a] dark:text-darkText">
-          <p className="flex w-full max-w-lg items-center gap-[7px] font-textFont text-lightText dark:text-darkText">
+      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight p-2.5 sm:p-5 sm:shadow-md dark:bg-calculatorDark dark:text-white sm:min-h-[460px] lg-tablet:max-w-[590px]">
+        <div className="relative flex w-full flex-col items-center text-[#012c8a] dark:text-darkText">
+          <p className="flex w-full items-center gap-[7px] font-textFont text-custom-grayD dark:text-darkText mb-1 sm:mb-3">
             {selectedSendingSystem?.id === 'bank' ? (
               <>
-                <span className="text-[32px]/[150%] font-light">{rateForOneBank.toFixed(2)}</span>
-                <span className="text-[21px]/[150%] font-semibold">{selectedSendingSystem?.coin}</span>
-                <span className="text-[21px]/[150%] font-normal">=</span>
-                <span className="text-[32px]/[150%] font-light">1</span>
-                <span className="text-[21px]/[150%] font-semibold">{selectedReceivingSystem?.coin}</span>
+                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">{rateForOneBank.toFixed(2)}</span>
+                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-semibold">{selectedSendingSystem?.coin}</span>
+                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-normal">=</span>
+                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">1</span>
+                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-semibold">{selectedReceivingSystem?.coin}</span>
               </>
             ) : (
               <>
-                <span className="text-[32px]/[150%] font-light">1</span>
-                <span className="text-[21px]/[150%] font-semibold">{selectedSendingSystem?.coin}</span>
-                <span className="text-[21px]/[150%] font-normal">=</span>
-                <span className="text-[32px]/[150%] font-light">{rateForOne.toFixed(2)}</span>
-                <span className="text-[21px]/[150%] font-semibold">{selectedReceivingSystem?.coin}</span>
+                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">1</span>
+                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-semibold">{selectedSendingSystem?.coin}</span>
+                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-normal">=</span>
+                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">{rateForOne.toFixed(2)}</span>
+                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-semibold">{selectedReceivingSystem?.coin}</span>
               </>
             )}
           </p>
@@ -280,19 +280,23 @@ export default function InternalTransactionCalculator({
             }}
             isSending={true}
           />
-
-          <div className="flex h-full items-center justify-center">
-            <InvertSystems onInvert={handleInvertSystemsClick} selectedReceivingSystem={selectedReceivingSystem} />
+          <div className='flex items-center gap-1 sm:gap-3 my-1 sm:my-3 w-full'>
+            <Coupons balance={receiveAmountNum} receivingCoin={selectedReceivingSystem?.coin}>
+              <div className="absolute left-0 top-1/2 -translate-y-1/2">
+                <SystemInfo pointBorder="border" linePosition="up">
+                  <p className="font-textFont text-xs font-light xs:text-sm sm:hidden">
+                    Información del sistema de recepción
+                  </p>
+                </SystemInfo>
+              </div>
+              <div className="flex flex-col h-full items-center justify-center">
+                <InvertSystems onInvert={handleInvertSystemsClick} selectedReceivingSystem={selectedReceivingSystem} />
+              </div>
+            </Coupons>          
           </div>
-
-          <SystemInfo pointBorder="border" linePosition="up">
-            <p className="font-textFont text-xs font-light xs:text-sm">Información del sistema de recepción</p>
-          </SystemInfo>
-
-          <Coupons balance={receiveAmountNum} receivingCoin={selectedReceivingSystem?.coin} />
         </div>
 
-        <div className="relative flex w-full max-w-lg flex-col items-center text-[#012c8a] dark:text-darkText">
+        <div className="relative flex w-full flex-col items-center text-[#012c8a] dark:text-darkText">
           <TransactionSection
             systems={systems}
             selectedSystem={selectedReceivingSystem}

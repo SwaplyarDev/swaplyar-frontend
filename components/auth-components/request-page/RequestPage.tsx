@@ -10,7 +10,6 @@ import { getUserStarsAndAmount } from '@/actions/Discounts/userStarsAndAmount.ac
 
 export default async function RequestPage() {
   const session = await auth();
-  console.log('🟩 Session en RequestPage:', session);
   let discountsData: AdminDiscountsResponse = { data: [] };
   let starsData: UserStarsAndAmount = { data: { quantity: 0, stars: 0 } };
   let errors: string[] = [];
@@ -21,18 +20,14 @@ export default async function RequestPage() {
     try {
       discountsData = await getDiscounts(session.accessToken);
       starsData = await getUserStarsAndAmount(session.accessToken);
-      // console.log('🟦 Server discounts: en request page', discountsData);
-      // console.log('🟨 Server stars/amount en request page:', starsData);
-      // console.log('--- Datos de descuentos recibidos en RequestPage:', JSON.stringify(discountsData, null, 2));
     } catch (error) {
-      // console.log('🟥 Error en RequestPage:', error);
       const errorMessage = 'No se han podido obtener los descuentos del usuario';
       errors.push(errorMessage);
     }
   }
 
   return (
-    <div className="mx-auto mb-20 max-h-[1680px] w-full max-w-[1200px] p-6 xs:mb-0 sm:my-6">
+    <div className="mx-auto mb-20 max-h-[1680px] w-full max-w-[1200px] max-sm:px-4 max-sm:py-6 sm:p-6 xs:mb-0 sm:my-6">
       <h1 className="mb-6 pt-10 text-[34px] font-bold text-gray-800 dark:text-darkText xs:mb-8">
         Envía y recibe dinero de billeteras virtuales y criptomonedas
       </h1>

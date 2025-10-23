@@ -12,6 +12,10 @@ import { useRouter } from 'next/navigation';
 import userInfoStore from '@/store/userInfoStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
+import CustomInput from '@/components/ui/Input/CustomInput';
+import AuthButton from './AuthButton';
+import AuthTitle from './AuthTitle';
+
 type FormInputs = {
   firstName: string;
   lastName: string;
@@ -28,9 +32,6 @@ export const RegisterForm = () => {
   const { setEmail } = useEmailVerificationStore();
   const router = useRouter();
   const { setUserVerification } = userInfoStore();
-  const [isFocused, setIsFocused] = useState(false);
-  const [isFocused2, setIsFocused2] = useState(false);
-  const [isFocused3, setIsFocused3] = useState(false);
 
   const {
     register,
@@ -85,118 +86,63 @@ export const RegisterForm = () => {
     } catch (error) {
       setLoading(false);
       console.log('Error al crear el usuario:', error);
-      alert('Ocurrió un error inesperado.');
+      setErrorMessage(
+        error instanceof Error ? error.message : 'Ocurrió un error inesperado.'
+      );
     }
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-5">
+    <div className="flex py-10 px-4 xl:py-52 md:py-20 flex-col items-center justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="relative flex w-full max-w-lg flex-col rounded-2xl bg-[#e6e8ef62] p-8 shadow-md dark:bg-calculatorDark"
+        className="relative flex w-full max-w-lg flex-col rounded-2xl bg-custom-whiteD-500 py-10 px-5 shadow-md dark:bg-calculatorDark"
       >
-        <h1 className="mb-5 text-center font-textFont text-[32px] font-medium text-buttonsLigth dark:text-darkText">
-          Crear Cuenta
-        </h1>
+        <AuthTitle>Crear Cuenta</AuthTitle>
 
-        <div className="flex flex-col justify-between xs:flex-row">
-          <div className="flex flex-col xs:max-w-48">
-            <label
-              htmlFor="firstName"
-              className={clsx(
-                'font-textFont text-lightText dark:text-darkText',
-                !isFocused && !watch('firstName') && 'hidden',
-                'mb-1 ml-2.5 text-sm',
-              )}
-            >
-              Nombre
-            </label>
-            <input
-              id="firstName"
-              className={clsx(
-                !isFocused && !watch('firstName') && 'mt-6',
-                'max-w-full rounded-2xl border bg-transparent px-5 py-2 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
-                watch('firstName') && 'border-inputLight dark:border-lightText',
-                errors.firstName
-                  ? 'mb-0 border-errorColor text-errorColor placeholder-errorColor'
-                  : 'mb-5 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
-              )}
-              placeholder={isFocused || !!watch('firstName') ? '' : 'Nombre'}
+        <div className="flex flex-wrap gap-1 w-full">
+          <div className="flex flex-col flex-1">
+            <CustomInput
+              label="Nombre"
               type="text"
-              {...register('firstName', {
-                required: 'El nombre es obligatorio',
-              })}
-              onFocus={() => setIsFocused(true)}
-              onBlur={(e) => setIsFocused(e.target.value !== '')}
+              name="firstName"
+              register={register}
+              validation={{ required: 'El nombre es obligatorio' }}
+              error={errors.firstName?.message}
+              placeholder="Nombre"
+              disabled={loading}
             />
-            {errors.firstName && <p className="mb-5 ml-2.5 mt-1 text-sm text-errorColor">{errors.firstName.message}</p>}
           </div>
-          <div className="flex flex-col xs:max-w-48">
-            <label
-              htmlFor="lastName"
-              className={clsx(
-                'font-textFont text-lightText dark:text-darkText',
-                !isFocused2 && !watch('lastName') && 'hidden',
-                'mb-1 ml-2.5 text-sm',
-              )}
-            >
-              Apellido
-            </label>
-            <input
-              id="lastName"
-              className={clsx(
-                !isFocused2 && !watch('lastName') && 'mt-6',
-                'max-w-full rounded-2xl border bg-transparent px-5 py-2 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
-                watch('lastName') && 'border-inputLight dark:border-lightText',
-                errors.lastName
-                  ? 'mb-0 border-errorColor text-errorColor placeholder-errorColor'
-                  : 'mb-5 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
-              )}
-              placeholder={isFocused2 || !!watch('lastName') ? '' : 'Apellido'}
+          <div className="flex flex-col flex-1">
+            <CustomInput
+              label="Apellido"
               type="text"
-              {...register('lastName', {
-                required: 'El apellido es obligatorio',
-              })}
-              onFocus={() => setIsFocused2(true)}
-              onBlur={(e) => setIsFocused2(e.target.value !== '')}
+              name="lastName"
+              register={register}
+              validation={{ required: 'El apellido es obligatorio' }}
+              error={errors.lastName?.message}
+              placeholder="Apellido"
+              disabled={loading}
             />
-            {errors.lastName && <p className="mb-5 ml-2.5 mt-1 text-sm text-errorColor">{errors.lastName.message}</p>}
           </div>
         </div>
 
-        <label
-          htmlFor="email"
-          className={clsx(
-            'font-textFont text-lightText dark:text-darkText',
-            !isFocused3 && !watch('email') && 'hidden',
-            'mb-1 ml-2.5 text-sm',
-          )}
-        >
-          Correo electrónico
-        </label>
-        <input
-          id="email"
-          className={clsx(
-            !isFocused3 && !watch('email') && 'mt-6',
-            'rounded-2xl border bg-transparent px-5 py-2 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
-            watch('email') && 'border-inputLight dark:border-lightText',
-            errors.email
-              ? 'mb-0 border-errorColor text-errorColor placeholder-errorColor'
-              : 'mb-5 border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
-          )}
-          placeholder={isFocused3 || !!watch('email') ? '' : 'Correo Electrónico'}
+        <CustomInput
+          label="Correo electrónico"
           type="text"
-          {...register('email', {
+          name="email"
+          register={register}
+          validation={{
             required: 'El correo electrónico es obligatorio',
             pattern: {
               value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
               message: 'El formato del correo electrónico es inválido',
             },
-          })}
-          onFocus={() => setIsFocused3(true)}
-          onBlur={(e) => setIsFocused3(e.target.value !== '')}
+          }}
+          error={errors.email?.message}
+          placeholder="Correo Electrónico"
+          disabled={loading}
         />
-        {errors.email && <p className="mb-5 ml-2.5 mt-1 text-sm text-errorColor">{errors.email.message}</p>}
 
         <div className="mb-5 flex items-center">
           <input
@@ -237,25 +183,21 @@ export const RegisterForm = () => {
             <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
           </div>
         ) : (
-          <button
+          <AuthButton
+            label="Crear cuenta"
             type="submit"
-            className={clsx(
+            disabled={
               loading ||
-                !watch('email') ||
-                !watch('termsConditions') ||
-                !watch('firstName') ||
-                !watch('lastName') ||
-                errors.email
-                ? 'border-disabledButtonsLigth bg-disabledButtonsLigth dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText'
-                : isDark
-                  ? 'buttonSecondDark dark:text-lightText'
-                  : 'buttonSecond',
-              'relative m-1 min-h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-titleFont font-semibold text-darkText dark:border-darkText dark:bg-darkText',
-            )}
-            disabled={loading || !watch('email')}
-          >
-            Crear cuenta
-          </button>
+              !watch('email') ||
+              !watch('termsConditions') ||
+              !watch('firstName') ||
+              !watch('lastName') ||
+              !!errors.email
+            }
+            loading={loading}
+            isDark={isDark}
+            variant="primary"
+          />
         )}
 
         <div className="my-5 flex items-center">
@@ -264,13 +206,13 @@ export const RegisterForm = () => {
           <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
         </div>
 
-        <button
+        <AuthButton
+          label="Inicia Sesión"
           onClick={handleChange}
-          className={`dark:hover:bg- relative m-1 h-[48px] items-center justify-center rounded-3xl border border-buttonsLigth px-3 font-titleFont font-semibold text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
           type="button"
-        >
-          Inicia Sesión
-        </button>
+          isDark={isDark}
+          variant="secondary"
+        />
       </form>
     </div>
   );

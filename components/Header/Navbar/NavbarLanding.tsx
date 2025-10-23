@@ -145,14 +145,14 @@ const NavbarLanding = () => {
               src={SwaplyArLogoComplete}
               width={200}
               height={200}
-              className="hidden h-12 w-auto rounded-xl filter dark:brightness-[0%] dark:invert md:block"
+              className="hidden scale-90 h-12 w-auto rounded-xl filter dark:brightness-[0%] dark:invert md:block"
             />
             <Image
               alt="SwaplyAr Logo"
               src={SwaplyArLogoSolo}
               width={200}
               height={200}
-              className="h-12 w-auto rounded-xl filter dark:brightness-[0%] dark:invert md:hidden"
+              className="h-12 w-auto scale-90 rounded-xl filter dark:brightness-[0%] dark:invert md:hidden"
             />
           </Navbar.Brand>
 

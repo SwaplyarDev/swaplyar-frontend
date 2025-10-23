@@ -8,16 +8,27 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 /**
  * Obtiene todas las transacciones para administradores
  */
-export async function getAllAdminTransactions(page = 1, perPage = 12) {
+export async function getAllAdminTransactions(
+  page = 1,
+  perPage = 12,
+  filters?: Record<string, string>
+) {
   try {
     const session = await auth();
-    // if (!session || session.decodedToken.role !== "admin") {
-    //   throw new Error("No autorizado")
-    // }
+    const token = session?.accessToken;
 
-    const token = session?.accessToken || '';
+    if (!token) {
+      console.error('❌ No se encontró token en la sesión');
+      throw new Error('No autorizado');
+    }
 
-    const response = await fetch(`${API_BASE_URL}/admin/transactions/info?page=${page}&perPage=${perPage}`, {
+    const params = new URLSearchParams({
+      page: String(page),
+      perPage: String(perPage),
+      ...(filters || {}),
+    });
+
+    const response = await fetch(`${API_BASE_URL}/admin/transactions?${params.toString()}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -27,7 +38,9 @@ export async function getAllAdminTransactions(page = 1, perPage = 12) {
     });
 
     if (!response.ok) {
-      throw new Error(`Error: ${response.status} ${response.statusText}`);
+      const errorText = await response.text();
+      console.error('❌ Error en la respuesta del servidor:', response.status, errorText);
+      throw new Error(`Error al obtener transacciones: ${response.status}`);
     }
 
     return await response.json();
@@ -36,6 +49,39 @@ export async function getAllAdminTransactions(page = 1, perPage = 12) {
     return null;
   }
 }
+
+export const getAdminTransactionsFiltered = async (filters: any = {}, page = 1) => {
+  try {
+    const session = await auth();
+    const token = session?.accessToken;
+
+    if (!token) throw new Error('No autorizado');
+
+    const params = new URLSearchParams();
+
+    if (filters.status?.length) params.append('status', filters.status.join(','));
+    if (filters.min_date) params.append('from', filters.min_date);
+    if (filters.max_date) params.append('to', filters.max_date);
+    if (filters.search) params.append('search', filters.search);
+
+    params.append('page', String(page));
+    params.append('perPage', '12');
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/transactions?${params.toString()}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: 'no-store',
+      }
+    );
+
+    if (!res.ok) throw new Error('Error al obtener transacciones');
+    return await res.json();
+  } catch (err) {
+    console.error('❌ Error en getAdminTransactionsFiltered:', err);
+    return null;
+  }
+};
 
 /**
  * Obtiene una transacción específica por ID
