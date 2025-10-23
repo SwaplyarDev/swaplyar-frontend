@@ -26,9 +26,9 @@ export default function NavInferiorBarInternal() {
 
       <div className="mx-auto flex w-full items-center gap-0 xl-blue-nav:max-w-[81.25rem]">
         <div className="relative flex w-full flex-row justify-between">
-          <NavFotoDePerfil />
+          <NavFotoDePerfil isDark={isDark} isActive={''} session={session} />
           <NavNombreDeUsuario />
-          <NavMenuDesplegableTablet />
+          <NavMenuDesplegableTablet isDark={isDark} isActive={''} />
           <span className="hidden xl-desktop:block">
             <NavIconos />
           </span>

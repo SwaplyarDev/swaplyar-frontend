@@ -81,10 +81,20 @@ export default function WalletSelect({ filteredWallets, selectedWalletId, onChan
   );
 
   return (
-    <div className="relative w-full max-w-lg pb-2">
+    <div className="relative w-full pb-4 sm:pb-6">
       {/* El componente Select. Fíjate que el botón 'X' ya no está dentro del Trigger. */}
       <Select value={selectedWalletId ?? ''} onValueChange={onChange}>
-        <SelectTrigger className="h-auto min-h-[40px] w-full border-blue-600 pr-10 ...">
+        <SelectTrigger 
+          className={`
+            max-sm:max-h-[34px] h-[41px] w-full pr-10
+            border 
+            ${selectedWallet 
+              ? "border-custom-blue-800 text-custom-blue-800 dark:text-darkText dark:border-darkText" 
+              : "border-custom-blue-300 text-custom-blue-300 dark:text-darkText dark:border-darkText"
+            }
+            bg-transparent rounded-3xl dark:focus-darkLight
+          `}
+        >
           {selectedWallet ? (
             <div className="flex min-w-0 items-center gap-4">
               <Image
@@ -98,8 +108,8 @@ export default function WalletSelect({ filteredWallets, selectedWalletId, onChan
                       ).logo
                 }
                 alt={selectedWallet.name || 'logo'}
-                width={30}
-                height={30}
+                width={60}
+                height={60}
                 className="h-auto w-auto flex-shrink-0 rounded-sm"
               />
               <span className="truncate text-sm font-medium">
@@ -107,10 +117,10 @@ export default function WalletSelect({ filteredWallets, selectedWalletId, onChan
               </span>
             </div>
           ) : (
-            <SelectValue placeholder="Selecciona una billetera" />
+            <SelectValue placeholder="Selecciona una Cartera" />
           )}
         </SelectTrigger>
-        <SelectContent className="bg-[#FFFFFB] dark:bg-[#4B4B4B]">
+        <SelectContent className="bg-[#FFFFFB] dark:bg-[#4B4B4B] cursor-pointer">
           {filteredWallets.map((wallet) => {
             const detail = wallet.details?.[0] || {};
             const normalizedWalletType = normalizeType(wallet.type, detail.type, wallet.currency);
@@ -132,11 +142,11 @@ export default function WalletSelect({ filteredWallets, selectedWalletId, onChan
                   </div>
                   <div className="min-w-0">
                     <SelectPrimitive.ItemText>
-                      <span className="truncate text-sm font-medium text-blue-800">{primaryText}</span>
+                      <span className="truncate text-sm font-medium dark:text-darkText text-blue-800">{primaryText}</span>
                     </SelectPrimitive.ItemText>
                   </div>
                   <div className="ml-auto flex-shrink-0 pl-4">
-                    <span className="truncate text-sm font-medium text-blue-800">{secondaryText}</span>
+                    <span className="truncate text-sm font-medium dark:text-darkText text-blue-800">{secondaryText}</span>
                   </div>
                 </div>
               </SelectPrimitive.Item>
@@ -151,7 +161,7 @@ export default function WalletSelect({ filteredWallets, selectedWalletId, onChan
         <button
           type="button"
           onClick={() => onChange('none')}
-          className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full p-0.5 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700"
+          className="absolute right-3 top-5 z-10 -translate-y-1/2 rounded-full p-0.5 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700"
           aria-label="Limpiar selección"
         >
           <svg
