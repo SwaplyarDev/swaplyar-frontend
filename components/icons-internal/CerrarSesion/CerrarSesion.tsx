@@ -7,7 +7,7 @@ const CerrarSesion = () => {
 
   return (
     <div
-      className={`flex h-16 items-center justify-end pr-12 sm-tablet2:justify-center sm-tablet2:pr-0 xl-desktop:w-[300px] ${isDark ? 'bg-[#fffff]' : 'bg-[#012A8E]'}`}
+      className={`flex h-16 min-w-[132px] items-center justify-end sm-tablet2:justify-center ${isDark ? 'bg-custom-whiteD' : 'bg-nav-blue'}`}
     >
       <AnimatedCerrarSesion />
     </div>

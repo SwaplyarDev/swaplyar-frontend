@@ -14,7 +14,7 @@ export enum ActiveTab {
   HISTORIAL = 'historial',
   PLUSREWARDS = 'plus-rewards',
   CUENTASASOCIADAS = 'cuentas',
-  CENTRODEAYUDA = 'ayuda',
+  CENTRODEAYUDA = 'centro-de-ayuda',
 }
 type NavIconsProps = {
   isFooter?: boolean;
@@ -23,103 +23,85 @@ export const NavIcons = ({ isFooter }: NavIconsProps) => {
   const pathname = usePathname();
   const isActive = pathname.split('/')[3];
   const { isDark } = useDarkTheme();
+  
+  const navItems = [
+    { 
+      key: ActiveTab.SOLICITUD, 
+      href: '/es/auth/solicitud', 
+      text: 'Solicitud', 
+      icon: SolicitudIcon,
+      activeKey: 'solicitud'
+    },
+    { 
+      key: ActiveTab.HISTORIAL, 
+      href: '/es/auth/historial', 
+      text: 'Historial', 
+      icon: HistorialIcon,
+      activeKey: ActiveTab.HISTORIAL
+    },
+    { 
+      key: ActiveTab.PLUSREWARDS, 
+      href: '/es/auth/plus-rewards', 
+      text: 'Plus Rewards', 
+      icon: PlusRewardsIcon,
+      activeKey: ActiveTab.PLUSREWARDS
+    },
+    { 
+      key: ActiveTab.CUENTASASOCIADAS, 
+      href: '/es/auth/cuentas', 
+      text: 'Cuentas', 
+      icon: CuentasAsociadasIcon,
+      activeKey: ActiveTab.CUENTASASOCIADAS
+    },
+    { 
+      key: ActiveTab.CENTRODEAYUDA, 
+      href: '/es/auth/centro-de-ayuda', 
+      text: 'Centro de Ayuda', 
+      icon: CentroDeAyudaIcon,
+      activeKey: ActiveTab.CENTRODEAYUDA
+    }
+  ];
+
   return (
     <div className="relative flex w-full items-end justify-around">
-      <div
-        className={
-          isFooter && isActive === 'solicitud'
-            ? `${isDark ? 'montanaDark-footer' : 'montana-footer'} relative bottom-0 w-full`
-            : ''
-        }
-      >
-        <div className="flex items-center justify-center">
-          <Link href={`/es/auth/solicitud`} className="cursor-pointer">
-            {isActive === 'solicitud' ? (
-              <IconsTablet text="Solicitud" classname="relative -translate-y-6 xs:translate-y-9 lg:mr-5">
-                <SolicitudIcon />
-              </IconsTablet>
-            ) : (
-              <SolicitudIcon classname="lg:pr-5" />
-            )}
-          </Link>
-        </div>
-      </div>
-      <div
-        className={
-          isFooter && isActive === ActiveTab.HISTORIAL
-            ? `${isDark ? 'montanaDark-footer' : 'montana-footer'} relative bottom-0 w-full`
-            : ''
-        }
-      >
-        <div className="flex items-center justify-center">
-          <Link href={`/es/auth/historial`} className="cursor-pointer">
-            {isActive === ActiveTab.HISTORIAL ? (
-              <IconsTablet text="Historial" classname="relative -translate-y-6 xs:translate-y-9 lg:mr-5">
-                <HistorialIcon />
-              </IconsTablet>
-            ) : (
-              <HistorialIcon classname="lg:pr-5" />
-            )}
-          </Link>
-        </div>
-      </div>
-      <div
-        className={
-          isFooter && isActive === ActiveTab.PLUSREWARDS
-            ? `${isDark ? 'montanaDark-footer' : 'montana-footer'} relative bottom-0 w-full`
-            : ''
-        }
-      >
-        <div className="flex items-center justify-center">
-          <Link href={`/es/auth/plus-rewards`} className="cursor-pointer">
-            {isActive === ActiveTab.PLUSREWARDS ? (
-              <IconsTablet text="Plus Rewards" classname="relative -translate-y-6 xs:translate-y-9 lg:mr-5">
-                <PlusRewardsIcon />
-              </IconsTablet>
-            ) : (
-              <PlusRewardsIcon classname="lg:pr-5" />
-            )}
-          </Link>
-        </div>
-      </div>
-      <div
-        className={
-          isFooter && isActive === ActiveTab.CUENTASASOCIADAS
-            ? `${isDark ? 'montanaDark-footer' : 'montana-footer'} relative bottom-0 w-full`
-            : ''
-        }
-      >
-        <div className="flex items-center justify-center">
-          <Link href={`/es/auth/cuentas`} className="cursor-pointer">
-            {isActive === ActiveTab.CUENTASASOCIADAS ? (
-              <IconsTablet text="Cuentas" classname="relative -translate-y-6 xs:translate-y-9 lg:mr-5">
-                <CuentasAsociadasIcon />
-              </IconsTablet>
-            ) : (
-              <CuentasAsociadasIcon classname="lg:pr-5" />
-            )}
-          </Link>
-        </div>
-      </div>
-      <div
-        className={
-          isFooter && isActive === ActiveTab.CENTRODEAYUDA
-            ? `${isDark ? 'montanaDark-footer' : 'montana-footer'} relative bottom-0 w-full`
-            : ''
-        }
-      >
-        <div className="flex items-center justify-center">
-          <Link href={`/es/auth/centro-de-ayuda`} className="cursor-pointer">
-            {isActive === ActiveTab.CENTRODEAYUDA ? (
-              <IconsTablet text="Ayuda" classname="relative -translate-y-6 xs:translate-y-9">
-                <CentroDeAyudaIcon />
-              </IconsTablet>
-            ) : (
-              <CentroDeAyudaIcon classname="" />
-            )}
-          </Link>
-        </div>
-      </div>
+      {navItems.map((item, index) => {
+        const IconComponent = item.icon;
+        const isItemActive = isActive === item.activeKey;
+        const isLastItem = index === navItems.length - 1;
+        const isPaddingRight = !isLastItem && !(navItems[index + 1] && isActive === navItems[index + 1].activeKey);
+        return (
+          <div
+            key={item.key}
+            className={
+              isFooter && isItemActive
+                ? `relative bottom-0 w-full`
+                : 'h-full'
+            }
+          >
+            <div className="flex items-center justify-center h-full relative -mr-[0.5px]">
+              {/* Clip-path background para elemento activo */}
+              {isItemActive && (
+                <div className='overflow-x-hidden absolute h-full w-[202px] inset-0'>
+                  <div className={`-top-[1px] h-full mask-icon w-[202px] ${isDark ? 'bg-custom-whiteD' : 'bg-nav-blue'} absolute inset-0`} />
+                </div>
+              )}
+
+              <Link href={item.href} className={`${!isActive && 'cursor-pointer'} relative z-10 h-full`}>
+                {isItemActive ? (
+                  <IconsTablet 
+                    text={item.text} 
+                    classname={`relative -translate-y-4 xs:translate-y-[50px]`}
+                  >
+                    <IconComponent />
+                  </IconsTablet>
+                ) : (
+                    <IconComponent classname={`header-icon-svg h-full content-end ${isPaddingRight ? "lg:pr-4" : ""} ${isDark ? 'bg-custom-whiteD' : 'bg-nav-blue'}`} />
+                )}
+              </Link>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };
