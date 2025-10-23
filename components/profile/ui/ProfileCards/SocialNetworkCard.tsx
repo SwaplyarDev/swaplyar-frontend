@@ -1,32 +1,51 @@
-import { Instagram } from '@mui/icons-material';
-
+import { FaInstagram } from "react-icons/fa";
 type Props = {
   socialNetworks: { type: string; username: string }[];
   onEdit: () => void;
 };
 
 const SocialNetworkCard = ({ socialNetworks, onEdit }: Props) => {
+  console.log(socialNetworks, "social");
+  
   return (
     <>
-      <div className="mb-2 flex items-center justify-between">
-        <h2 className="mb-3 sm:px-6 px-2 text-[28px] sm:text-[36px]">Red Social</h2>
-        <Instagram className="mr-[20px] h-[50px] w-[50px]" />
-      </div>
-
-      {socialNetworks.map((network, index) => (
-        <div key={`social-${index}`} className="flex justify-between">
-          <p className="mb-2 sm:px-6 px-2 text-[18px] sm:text-[20px]">
-            {network.type.charAt(0).toUpperCase() + network.type.slice(1)}
-          </p>
-          <p className="sm:px-6 px-4 text-[16px] sm:text-[20px]">@{network.username}</p>
+      <section className='sm:px-6 px-4 '>
+        <div className="flex items-center justify-between">
+          <h2 className="mb-3 text-[24px] font-normal">Red Social</h2>
+          <FaInstagram className="w-[27px] h-[27px] " />
         </div>
-      ))}
+        <div className="mt-2 w-full flex flex-col  items-center justify-between ">
+        
+          {socialNetworks.length > 0 ? socialNetworks.map((network, index) => (
 
-      <div className="px-5 text-end">
-        <button className="h-6 font-light text-[16px] text-[#0148F4] dark:hover:text-[#E1E1E1] hover:text-[#2A68FE] dark:text-[#C8C8C8] hover:font-normal mr-1" onClick={onEdit}>
-          Editar
-        </button>
-      </div>
+
+            <div key={`social-${index}`} className="flex w-full justify-between">
+              <p className="mb-2  text-[16px] ">
+                {network.type.charAt(0).toUpperCase() + network.type.slice(1)}
+              </p>
+              <div className="flex items-center gap-2.5">
+
+                <p className=" text-[16px]">@{network.username}</p>
+
+              </div>
+            </div>
+
+
+          )):(
+<span className="text-gray-400 underline">Aun no tienes redes sociales vinculadas a tu cuenta</span>
+          )}
+          <div className="w-full flex justify-end">
+            <button
+              className="w-10 transition-all text-[16px] font-light hover:font-semibold hover:underline dark:hover:text-[#E1E1E1]  hover:text-[#2A68FE] dark:text-[#C8C8C8] "
+              onClick={onEdit}
+            >
+              Editar
+            </button>
+          </div>
+
+        </div>
+      </section>
+
     </>
   );
 };

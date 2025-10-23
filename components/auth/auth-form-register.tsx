@@ -12,10 +12,10 @@ import { useRouter } from 'next/navigation';
 import userInfoStore from '@/store/userInfoStore';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
-import AuthInput from './AuthInput';
+import CustomInput from '@/components/ui/Input/CustomInput';
 import AuthButton from './AuthButton';
 import AuthTitle from './AuthTitle';
-import AuthSeparator from './AuthSeparator';
+import ShortButton from '../ui/NewButtons/ShortButton';
 
 type FormInputs = {
   firstName: string;
@@ -103,7 +103,7 @@ export const RegisterForm = () => {
 
         <div className="flex flex-wrap gap-1 w-full">
           <div className="flex flex-col flex-1">
-            <AuthInput
+            <CustomInput
               label="Nombre"
               type="text"
               name="firstName"
@@ -115,7 +115,7 @@ export const RegisterForm = () => {
             />
           </div>
           <div className="flex flex-col flex-1">
-            <AuthInput
+            <CustomInput
               label="Apellido"
               type="text"
               name="lastName"
@@ -128,7 +128,7 @@ export const RegisterForm = () => {
           </div>
         </div>
 
-        <AuthInput
+        <CustomInput
           label="Correo electrónico"
           type="text"
           name="email"
@@ -179,11 +179,7 @@ export const RegisterForm = () => {
           </div>
         )}
 
-        {loading ? (
-          <div className="flex items-center justify-center">
-            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
-          </div>
-        ) : (
+        
           <AuthButton
             label="Crear cuenta"
             type="submit"
@@ -199,7 +195,7 @@ export const RegisterForm = () => {
             isDark={isDark}
             variant="primary"
           />
-        )}
+        
 
         <div className="my-5 flex items-center">
           <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
@@ -207,12 +203,11 @@ export const RegisterForm = () => {
           <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
         </div>
 
-        <AuthButton
-          label="Inicia Sesión"
-          onClick={handleChange}
-          type="button"
-          isDark={isDark}
-          variant="secondary"
+       
+        <ShortButton
+          href='/es/iniciar-sesion'
+          text="Inicia Sesión"
+          className='!w-full'
         />
       </form>
     </div>

@@ -1,6 +1,7 @@
 'use client';
 
-import InputField from '@/components/ui/contact-form/InputField';
+import CustomInput from '@/components/ui/Input/CustomInput';
+
 import {
   getTaxIdentificationType,
   getTransferIdentificationType,
@@ -28,58 +29,74 @@ const BankFields = ({ register, errors, defaultValues }: BankFieldsProps) => (
     <input type="hidden" {...register('userAccValues.accountType')} defaultValue="bank" />
     <input type="hidden" {...register('userAccValues.currency')} defaultValue={defaultValues?.currency || 'USD'} />
 
-    <InputField
-      id="accountName"
+    <CustomInput
+      label="Nombre de la cuenta"
+      name="accountName"
       placeholder="Nombre de la cuenta"
-      defaultValue={defaultValues?.accountName || ''}
-      register={register('accountName', { required: 'El nombre de la cuenta es obligatorio' })}
+      register={register}
+      validation={{ required: 'El nombre de la cuenta es obligatorio' }}
       error={errors.accountName?.message}
+      defaultValue={defaultValues?.accountName || ''}
     />
-    <InputField
-      id="firstName"
+
+    <CustomInput
+      label="Nombre"
+      name="firstName"
       placeholder="Nombre"
-      defaultValue={defaultValues?.firstName || ''}
-      register={register('firstName', { required: 'El nombre es obligatorio' })}
+      register={register}
+      validation={{ required: 'El nombre es obligatorio' }}
       error={errors.firstName?.message}
+      defaultValue={defaultValues?.firstName || ''}
     />
-    <InputField
-      id="lastName"
+
+    <CustomInput
+      label="Apellido"
+      name="lastName"
       placeholder="Apellido"
-      defaultValue={defaultValues?.lastName || ''}
-      register={register('lastName', { required: 'El apellido es obligatorio' })}
+      register={register}
+      validation={{ required: 'El apellido es obligatorio' }}
       error={errors.lastName?.message}
+      defaultValue={defaultValues?.lastName || ''}
     />
 
-    <InputField
-      id="bankName"
+    <CustomInput
+      label="Nombre del banco"
+      name="bankName"
       placeholder="Nombre del banco"
-      defaultValue={defaultValues?.bankName || ''}
-      register={register('bankName', { required: 'El nombre del banco es obligatorio' })}
+      register={register}
+      validation={{ required: 'El nombre del banco es obligatorio' }}
       error={errors.bankName?.message}
+      defaultValue={defaultValues?.bankName || ''}
     />
 
-    <InputField
-      id="document_value"
-      placeholder={errors.document_value ? 'DNI/CUIT/CUIL *' : 'DNI/CUIT/CUIL'}
-      register={register('document_value', {
+    <CustomInput
+      label="DNI/CUIT/CUIL"
+      name="document_value"
+      placeholder="DNI/CUIT/CUIL"
+      register={register}
+      validation={{
         required: 'El DNI/CUIT/CUIL es obligatorio',
         validate: validateTaxIdentification,
-      })}
+      }}
       error={errors.document_value?.message}
+      defaultValue={defaultValues?.document_value?.toString() || ''}
     />
 
-    <InputField
-      id="send_method_value"
-      placeholder={errors.send_method_value ? 'CBU/CVU/ALIAS *' : 'CBU/CVU/ALIAS'}
-      register={register('send_method_value', {
+    <CustomInput
+      label="CBU/CVU/ALIAS"
+      name="send_method_value"
+      placeholder="CBU/CVU/ALIAS"
+      register={register}
+      validation={{
         required: 'El CBU/CVU/ALIAS es obligatorio',
         validate: (value: string) => {
           const tipo = getTransferIdentificationType(value);
           if (tipo) return true;
           return 'El formato de CBU/CVU/ALIAS es inválido';
         },
-      })}
+      }}
       error={errors.send_method_value?.message}
+      defaultValue={defaultValues?.send_method_value || ''}
     />
   </div>
 );

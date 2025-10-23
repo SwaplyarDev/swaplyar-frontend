@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
-
+import clsx from 'clsx';
 type LoadingGifProps = {
   color?: string;
   size?: string;
+  className?: string;
 };
 
-const LoadingGif: FC<LoadingGifProps> = ({ color, size = '20px' }) => {
+const LoadingGif: FC<LoadingGifProps> = ({ color, size = '20px', className }) => {
   return (
     <svg
       version="1.1"
@@ -19,7 +20,7 @@ const LoadingGif: FC<LoadingGifProps> = ({ color, size = '20px' }) => {
       viewBox="-13 -13 45 45"
       enableBackground="new 0 0 96 96"
       xmlSpace="preserve"
-      className={'mb-1'}
+      className={clsx('mb-1', className)}
     >
       <style>
         {`.box5631 {
