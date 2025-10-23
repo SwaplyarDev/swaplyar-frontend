@@ -107,6 +107,7 @@ export type SelectCodeCountryProps = {
   blockAll?: boolean;
   textColor: string[];
   classNames?: string;
+  maxHeightModal?: boolean
 };
 
 export type SelectBooleanProps = {
