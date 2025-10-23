@@ -26,7 +26,18 @@ const ButtonAuth: React.FC<ButtonAuthProps> = ({
   variant = 'primary',
 }) => {
   let variantClass = '';
-  const commonClass = 'relative h-10.5 p-0 items-center justify-center rounded-3xl font-titleFont font-semibold text-base';
+
+  // Alturas: mobile 44px, tablet 46px, notebooks 48px
+  const heightClass = 'h-[44px] sm:h-[46px] lg:h-[48px]';
+
+  // Texto: 16px en todos los breakpoints
+  const textClass = 'text-[16px] leading-[20px]';
+
+  // Clases comunes para todos los botones
+  const commonClass = clsx('relative h-10.5 p-0 items-center justify-center rounded-3xl font-titleFont font-semibold text-base',
+    heightClass,
+    textClass);
+
   if (variant === 'primary') {
     if (disabled || loading) {
       variantClass =
@@ -45,6 +56,7 @@ const ButtonAuth: React.FC<ButtonAuthProps> = ({
       disabled || loading ? 'border-disabledButtonsLigth text-disabledButtonsLigth dark:border-disabledButtonsDark dark:text-disabledButtonsDark cursor-not-allowed' : '',
     ].filter(Boolean).join(' ');
   }
+  //combinamos las clases
   const buttonClass = clsx(
     variantClass,
     commonClass,
@@ -52,24 +64,26 @@ const ButtonAuth: React.FC<ButtonAuthProps> = ({
   );
   if (loading) {
     return (
-    <div
-      className={clsx(
-        'relative h-10.5 rounded-3xl flex items-center justify-center', 
-        className
-      )}
-    >
-      <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="24px" />
-    </div>
-  )
-  } 
-    return (
-      <button
+      <div
+        className={clsx(
+          'relative h-10.5 rounded-3xl flex items-center justify-center',
+          heightClass,
+          textClass,
+          className
+        )}
+      >
+        <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="24px" className="sm:size-[42px] lg:size-[45px]" />
+      </div>
+    )
+  }
+  return (
+    <button
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
       className={buttonClass}
     >{label}</button>
-    )
-  }
+  )
+}
 
 export default ButtonAuth;
