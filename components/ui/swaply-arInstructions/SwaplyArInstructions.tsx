@@ -8,6 +8,7 @@ import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import Link from 'next/link';
 import QuestionHowToUse from '../QuestionHowToUse/QuestionHowToUse';
 import { FlyerGif, howToUseDark, howToUse } from '@/utils/assets/imgDatabaseCloudinary';
+import ShortButton from '../NewButtons/ShortButton';
 
 export default function SwaplyArInstructions() {
   const { isDark } = useDarkTheme();
@@ -33,17 +34,12 @@ export default function SwaplyArInstructions() {
               para resolver cualquier duda, brindándote <strong className="font-semibold">confianza y comodidad</strong>{' '}
               en cada operación.
             </p>
-            <Link
+            <ShortButton
               href="/"
-              className={clsx(
-                'mx-auto mt-2 flex h-[42px] w-[280px] items-center justify-center rounded-3xl py-3 text-center font-titleFont font-semibold',
-                isDark
-                  ? 'buttonSecondDark hover:bg-relative border-darkText bg-darkText text-lightText'
-                  : 'buttonSecond border border-buttonsLigth bg-buttonsLigth text-darkText hover:bg-buttonsLigth',
-              )}
-            >
-              ¡Empieza ahora!
-            </Link>
+              text="¡Empieza ahora!"
+              fondoOscuro
+              className="mx-auto mt-2 w-[280px]"
+            />
           </div>
           <Image
             className="w-full max-w-[500px] flex-1 drop-shadow-light dark:drop-shadow-darkmode"

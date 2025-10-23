@@ -10,6 +10,7 @@ const StepThreeTether = dynamic(() => import('./stepsThreeOptions/StepThreeTethe
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import InfoStep from '@/components/ui/InfoStep/InfoStep';
 import clsx from 'clsx';
+import AuthButton from '@/components/auth/AuthButton';
 
 interface FormData {
   send_amount: string;
@@ -73,6 +74,9 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
     markStepAsCompleted(2);
     setActiveStep(3);
     setLoading(false);
+
+    // Hacemos scroll hacia arriba cuando se completa step3 sino se queda abajo en el footer
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const hasChanges = useMemo(
@@ -162,22 +166,17 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
       </div>
       {renderSelectedSystem()}
 
-      <div className="flex justify-center sm-phone:justify-end">
+      <div className="flex justify-center sm-phone:justify-end sm-tablet:justify-center lg:justify-end">
         {completedSteps[2] ? (
           hasChanges ? (
-            loading ? (
-              <div className="flex w-full max-w-[300px] items-center justify-center">
-                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="42px" />
-              </div>
-            ) : (
-              <button
-                type="submit"
-                className={`flex h-[46px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] font-titleFont text-base font-semibold text-white disabled:border-gray-400 disabled:bg-custom-blue-300 disabled:text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 dark:disabled:text-darkText ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
-                disabled={!isValid || blockAll || loading}
-              >
-                Siguiente
-              </button>
-            )
+            <AuthButton
+              label="Siguiente"
+              type="submit"
+              isDark={isDark}
+              loading={loading}
+              disabled={!isValid || blockAll}
+              className="w-full max-w-[300px]"
+            />
           ) : (
             <button
               className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
@@ -188,18 +187,15 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
               <ArrowUp />
             </button>
           )
-        ) : loading ? (
-          <div className="flex w-full max-w-[300px] items-center justify-center">
-            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="42px" />
-          </div>
         ) : (
-          <button
+          <AuthButton
+            label="Siguiente"
             type="submit"
-            className={`flex h-[46px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] font-titleFont text-base font-semibold text-white disabled:border-gray-400 disabled:bg-custom-blue-300 disabled:text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 dark:disabled:text-darkText ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
-            disabled={!isValid || blockAll || loading}
-          >
-            Siguiente
-          </button>
+            isDark={isDark}
+            loading={loading}
+            disabled={!isValid || blockAll}
+            className="w-full max-w-[300px]"
+          />
         )}
       </div>
     </form>

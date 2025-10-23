@@ -11,7 +11,7 @@ import SelectCountry from '../inputs/SelectCountry';
 import InputSteps from '@/components/inputSteps/InputSteps';
 import useWalletStore from '@/store/useWalletStore';
 //importamos validacion nueva para los telefonos.
-import { validatePhoneNumber } from '@/utils/validatePhoneNumber'; 
+import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
 import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
 import AuthButton from '@/components/auth/AuthButton';
 
@@ -246,7 +246,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               disabled={blockAll}
               {...register('phone', {
                 required: 'El número de teléfono es obligatorio',
-                validate:(value)=>{
+                validate: (value) => {
                   const country = watch('calling_code');
                   const result = validatePhoneNumber(value, country);
                   return result === true ? true : result;
@@ -286,38 +286,38 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
           </>
         )}
       </div>
-      <div className="flex justify-center sm-phone:justify-end">
-  {completedSteps[0] ? (
-    hasChanges ? (
-      <AuthButton
-        label="Siguiente"
-        type="submit"
-        isDark={isDark}
-        loading={loading}
-        disabled={!isValid || blockAll}
-        className="w-full max-w-[300px] "
-      />
-    ) : (
-      <button
-        className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
-        type="submit"
-        disabled={blockAll}
-      >
-        Tratar
-        <ArrowUp />
-      </button>
-    )
-  ) : (
-    <AuthButton
-      label="Siguiente"
-      type="submit"
-      isDark={isDark}
-      loading={loading}
-      disabled={!isValid || blockAll}
-      className="w-full max-w-[300px] "
-    />
-  )}
-</div>
+      <div className="flex justify-center sm-phone:justify-end sm-tablet:justify-center lg:justify-end">
+        {completedSteps[0] ? (
+          hasChanges ? (
+            <AuthButton
+              label="Siguiente"
+              type="submit"
+              isDark={isDark}
+              loading={loading}
+              disabled={!isValid || blockAll}
+              className="w-full max-w-[300px] "
+            />
+          ) : (
+            <button
+              className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
+              type="submit"
+              disabled={blockAll}
+            >
+              Tratar
+              <ArrowUp />
+            </button>
+          )
+        ) : (
+          <AuthButton
+            label="Siguiente"
+            type="submit"
+            isDark={isDark}
+            loading={loading}
+            disabled={!isValid || blockAll}
+            className="w-full max-w-[300px] "
+          />
+        )}
+      </div>
 
     </form>
   );
