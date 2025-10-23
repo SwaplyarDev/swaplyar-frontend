@@ -212,7 +212,9 @@ const config: Config = {
         inputLight: '#012A8E', // Azul Marino Oscuro
         inputDark: '#EEEAE3', // Blanco Hueso o Marfil Claro
         placeholderDark: '#969696', // Gris claro para placeholder
-        errorColor: '#CE1818',
+        errorColor: '#FB2424',
+        errorColorDark: '#A31C01',
+        errorTextColorDark: '#E46B52',
 
         // Estados deshabilitados
         disabledButtonsLigth: '#90B0FE', // Gris claro para fondo deshabilitado de buttonsLigth
