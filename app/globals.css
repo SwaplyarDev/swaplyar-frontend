@@ -601,7 +601,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 .buttonSecond:hover:not(:disabled) {
   box-shadow: 
     0px 0px 0px 2px #ffffff, 
-    0px 0px 0px 4px #91aeec;
+    0px 0px 0px 3px #012c8a;
 }
 
 div:where(.swal2-container).swal2-backdrop-show,
@@ -617,7 +617,7 @@ div:where(.swal2-container).swal2-noanimation {
 .buttonSecondDark:hover:not(:disabled) {
   box-shadow: 
     0px 0px 0px 2px #252526, 
-    0px 0px 0px 4px #ebe7e0;
+    0px 0px 0px 3px #ebe7e0;
 }
 
 .buttonSecond:disabled,

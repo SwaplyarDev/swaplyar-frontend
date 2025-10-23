@@ -10,6 +10,7 @@ import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import { PopUp } from '../PopUp/PopUp';
 import CustomInput from '@/components/ui/Input/CustomInput';
 import TextAreaContact from './TextAreaContact';
+import ButtonAuth from '@/components/auth/AuthButton';
 
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -141,29 +142,17 @@ const ContactForm = () => {
             rows={8}
           />
         </div>
-      </div>
-      <div className="flex justify-center">
-        {loading ? (
-          <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="44px" />
-        ) : (
-          <button
-            disabled={!isValid || loading}
+        <div className="flex justify-center">
+          <ButtonAuth
+            label="Enviar Mensaje"
             type="submit"
-            className={clsx(
-              isDark && isValid
-                ? 'buttonSecondDark dark:bg-darkText dark:text-lightText'
-                : isValid
-                  ? 'buttonSecond'
-                  : '',
-              'relative flex w-[300px] items-center justify-center rounded-3xl px-[14px] py-3 font-titleFont font-semibold text-[#fffff8]',
-              isValid
-                ? 'cursor-pointer bg-buttonsLigth'
-                : 'cursor-default bg-inputLightDisabled dark:bg-placeholderDark',
-            )}
-          >
-            Enviar Mensaje
-          </button>
-        )}
+            isDark={isDark}
+            loading={loading}
+            disabled={!isValid || loading}
+            className="w-[300px]" // para que mantenga el mismo ancho que antes
+            variant="primary"
+          />
+        </div>
       </div>
     </form>
   );

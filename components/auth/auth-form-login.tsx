@@ -5,12 +5,12 @@ import { useState } from 'react'; // Importa useEffect
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import { useRouter } from 'next/navigation';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
-import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import AuthTitle from './AuthTitle';
-import ButtonAuth from './AuthButton';
+import AuthInput from './AuthInput';
+import AuthButton from './AuthButton';
 import AuthSeparator from './AuthSeparator';
 import CustomInput from '@/components/ui/Input/CustomInput';
-
+import ShortButton from '../ui/NewButtons/ShortButton';
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 type FormInputs = {
@@ -85,23 +85,23 @@ export const LoginForm = () => {
           disabled={loading}
         />
 
-        {loading ? (
-          <div className="flex items-center justify-center h-[42px]">
-            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="41px" />
-          </div>
-        ) : (
-          <ButtonAuth label="Ingresar" disabled={loading || !watch('email') || !!errors.email} loading={loading} isDark={isDark} />
-        )}
+        
+          <AuthButton
+            label="Ingresar"
+            disabled={loading || !watch('email') || !!errors.email}
+            loading={loading}
+            isDark={isDark}
+          />
+        
 
         <AuthSeparator />
 
-        <ButtonAuth
-          label="Registrate aquí"
-          onClick={handleChange}
-          type="button"
-          isDark={isDark}
-          variant="secondary"
+        <ShortButton
+          href='/es/registro'
+          text="Registrate aquí"
+          className='!w-full'
         />
+        
         {errorMessage && <p className="mt-5 text-center text-errorColor">{errorMessage}</p>}
       </form>
     </div>

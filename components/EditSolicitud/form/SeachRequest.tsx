@@ -7,6 +7,7 @@ import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import VerifycodeEditRequest from '../VerifyCodeEditRequest/VerifyCodeEditRequest';
 import clsx from 'clsx';
 import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
+import ButtonAuth from '@/components/auth/AuthButton';
 
 interface FormValues {
   transaccionId: string;
@@ -92,43 +93,31 @@ const SeachRequest: React.FC = () => {
 
         {errorMessage && <div className="mt-2 text-end text-sm text-errorColor">{errorMessage}</div>}
         <div className="mb-10 mt-4 flex w-full flex-col items-center justify-center gap-1 text-center lg:mb-0 lg:justify-end">
-          {!isToggled ? (
-            <>
-              {isLoading ? (
-                <div className="flex items-center justify-center">
-                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
-                </div>
-              ) : (
-                <button
-                  type="submit"
-                  className={clsx(
-                    isLoading || !watch('transaccionId')
-                      ? 'border-disabledButtonsLigth bg-disabledButtonsLigth dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText'
-                      : isDark
-                        ? 'buttonSecondDark dark:text-lightText'
-                        : 'buttonSecond',
-                    'relative m-1 min-h-[48px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth py-1 text-lg text-darkText dark:border-darkText dark:bg-darkText',
-                  )}
-                  disabled={isLoading || !watch('transaccionId')} // Desactivar el botón si está cargando
-                >
-                  Editar Solicitud
-                </button>
-              )}
-              <ButtonBack route="/es/centro-de-ayuda" isDark={isDark} />
-            </>
-          ) : (
-            <VerifycodeEditRequest
-              transaccionId={transaccionId}
-              toggle={() => {
-                setIsToggled(false);
-                reset({
-                  transaccionId: '',
-                });
-              }}
-              isDark={isDark}
-            />
-          )}
-        </div>
+  {!isToggled ? (
+    <>
+      <ButtonAuth
+        label="Editar Solicitud"
+        type="submit"
+        isDark={isDark}
+        loading={isLoading}
+        disabled={!watch('transaccionId') || isLoading}
+        className="w-full max-w-[300px]"
+        variant="primary"
+      />
+      <ButtonBack route="/es/centro-de-ayuda" isDark={isDark} />
+    </>
+  ) : (
+    <VerifycodeEditRequest
+      transaccionId={transaccionId}
+      toggle={() => {
+        setIsToggled(false);
+        reset({ transaccionId: '' });
+      }}
+      isDark={isDark}
+    />
+  )}
+</div>
+
       </form>
     </div>
   );
