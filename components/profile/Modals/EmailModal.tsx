@@ -1,9 +1,12 @@
+'use client';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import clsx from 'clsx';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSession } from 'next-auth/react';
 import { updateEmail } from '../services/profileServices';
+import { Dialog, DialogContent } from '@mui/material';
+import InputSteps from '@/components/inputSteps/InputSteps';
 
 interface EmailModalProps {
   show: boolean;
@@ -22,6 +25,7 @@ const EmailModal = ({ show, setShow }: EmailModalProps) => {
     handleSubmit,
     formState: { errors },
     setValue,
+    watch
   } = useForm<FormData>();
 
   const [loading, setLoading] = useState(false);
@@ -38,16 +42,14 @@ const EmailModal = ({ show, setShow }: EmailModalProps) => {
     setLoading(true);
 
     try {
-      const res = await updateEmail(session.accessToken, data.email) as { email: string };
+      const res = (await updateEmail(session.accessToken, data.email)) as { email: string };
       console.log("respuesta update email", res);
-      // ✅ Actualizamos sesión en memoria
-      //arroja error por la falta de tipado, falta formato de respuesta del servidor
-      //consultar con back si la edicion es solo para admins.
+
       if (session.user) {
         await update({
           user: {
             ...session.user,
-            email: res.email, // reflejamos el cambio
+            email: res.email,
           },
         });
       }
@@ -60,54 +62,79 @@ const EmailModal = ({ show, setShow }: EmailModalProps) => {
     }
   };
 
-  if (!show) return null;
-
   return (
-    <>
-      <div onClick={() => setShow(false)} className="fixed inset-0 z-40 bg-black bg-opacity-80"></div>
-      <div
-        className={`fixed left-1/2 top-1/2 z-50 flex h-[220px] w-[300px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-4 rounded-2xl border-none xs:w-[400px] md:w-[500px] ${isDark ? 'bg-zinc-800 text-white' : 'bg-white text-black'}`}
-      >
-        <h2 className="xs:text-2x1 text-lg font-light md:text-3xl">Editar Correo</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-[80%] gap-4">
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            className={clsx(
-              "rounded-xl border px-3 py-2 text-black dark:text-white",
-              errors.email ? "border-errorColor" : "border-inputLight"
-            )}
-            {...register("email", {
-              required: "El email es obligatorio",
-              pattern: {
-                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                message: "Introduce un email válido",
-              },
-            })}
-          />
-          {errors.email && (
-            <p className="text-sm text-errorColor">{errors.email.message}</p>
-          )}
+    <Dialog
+      open={show}
+      onClose={() => setShow(false)}
+      PaperProps={{
+        sx: {
+          borderRadius: '16px',
+          backgroundColor: isDark ? '#27272a' : '#fff',
+          color: isDark ? '#fff' : '#000',
+          width: 1500,
+          maxWidth: 600
+        },
+      }}
+    >
+      <DialogContent>
+        <div className="flex h-full flex-col items-center gap-0 text-center">
+          <h2 className="mb-4 w-full text-start text-lg sm:text-xl font-semibold">
+            Correo Electrónico
+          </h2>
+          <span className="mb-4 text-xs md:text-base">
+            ¿Cuál es tu correo electrónico?
+          </span>
+          <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-4">
+            <InputSteps
+              label=""
+              name="email"
+              id="email"
+              type="email"
+              placeholder="Correo electrónico"
+              register={register}
+              watch={watch}
+              rules={{
+                required: 'El email es obligatorio',
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: 'Introduce un email válido',
+                },
+              }}
+              error={errors.email}
+              className=" w-full flex justify-start"
+            />
 
-          <div className="flex justify-between gap-4 pt-2">
-            <button
-              type="button"
-              onClick={() => setShow(false)}
-              className={`rounded-full px-4 ${isDark ? 'border border-white text-white hover:bg-white hover:text-[#4B4B4B]' : 'border border-blue-400 bg-white text-blue-400'}`}
-            >
-              Volver
-            </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className={`h-8 rounded-full px-4 ${isDark ? 'bg-white text-[#4B4B4B]' : 'bg-blue-400 text-white hover:bg-blue-700'}`}
-            >
-              {loading ? "Guardando..." : "Guardar"}
-            </button>
-          </div>
-        </form>
-      </div>
-    </>
+            <div className="flex justify-between gap-4 pt-2">
+              <button
+                type="button"
+                onClick={() => setShow(false)}
+                className={clsx(
+                  'rounded-full px-4 py-2 border',
+                  isDark
+                    ? 'border-white text-white hover:bg-white hover:text-[#4B4B4B]'
+                    : 'border-blue-400 bg-white text-blue-400 hover:bg-blue-50'
+                )}
+              >
+                Volver
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className={clsx(
+                  'h-10 rounded-full px-4 py-2 transition-colors',
+                  isDark
+                    ? 'bg-white text-[#4B4B4B] hover:bg-gray-200'
+                    : 'bg-blue-400 text-white hover:bg-blue-700',
+                  loading && 'opacity-50 cursor-not-allowed'
+                )}
+              >
+                {loading ? 'Guardando...' : 'Guardar'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 

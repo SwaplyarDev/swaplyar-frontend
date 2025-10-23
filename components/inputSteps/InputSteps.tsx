@@ -75,14 +75,13 @@ const InputSteps: React.FC<InputStepsProps> = ({
       <label
         htmlFor={id}
         className={clsx(
-          'font-textFont text-lightText dark:text-darkText',
-          'mb-1 ml-2.5 text-sm transition-opacity duration-300',
+          'font-textFont text-lightText dark:text-darkText ml-2.5 text-sm transition-opacity duration-300',
           isFocused || watch(name) || errorMessage ? 'opacity-100' : 'opacity-0',
+          label === '' ? 'mb-0' : 'mb-1'
         )}
       >
         {label}
       </label>
-
       <input
         id={id}
         type={type}
