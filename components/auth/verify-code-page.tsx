@@ -14,7 +14,7 @@ import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import ButtonBack from '../ui/ButtonBack/ButtonBack';
 import AuthTitle from './AuthTitle';
-import ButtonAuth from './AuthButton';
+import AuthButton from './AuthButton';
 
 type FormInputs = {
   verificationCode: string[];
@@ -320,7 +320,7 @@ export const VerifyCodePage = () => {
                 <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="41px" />
               </div>
             ) : (
-                <ButtonAuth
+                <AuthButton
                   label="Confirmar"
                   disabled={!isCodeComplete || loading}
                   loading={loading}

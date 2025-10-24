@@ -5,12 +5,12 @@ import { useState } from 'react'; // Importa useEffect
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import { useRouter } from 'next/navigation';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
-import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import AuthTitle from './AuthTitle';
 import AuthInput from './AuthInput';
-import ButtonAuth from './AuthButton';
+import AuthButton from './AuthButton';
 import AuthSeparator from './AuthSeparator';
-
+import CustomInput from '@/components/ui/Input/CustomInput';
+import ShortButton from '../ui/NewButtons/ShortButton';
 const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 type FormInputs = {
@@ -64,11 +64,11 @@ export const LoginForm = () => {
     <div className="flex py-10 px-4 xl:py-52 md:py-20 flex-col items-center justify-center">
       <form
         onSubmit={handleSubmit(submitEmail)}
-        className="flex w-full max-w-lg flex-col rounded-2xl bg-custom-whiteD-500 py-10 px-5 shadow-md dark:bg-calculatorDark"
+        className="flex w-[356px] md:w-[430px] lg:w-[484px] flex-col rounded-2xl bg-custom-whited-500 py-10 px-5 shadow-md dark:bg-calculatorDark"
       >
         <AuthTitle>Iniciar Sesión</AuthTitle>
 
-        <AuthInput
+        <CustomInput
           label="Correo Electrónico"
           type="email"
           name="email"
@@ -85,23 +85,23 @@ export const LoginForm = () => {
           disabled={loading}
         />
 
-        {loading ? (
-          <div className="flex items-center justify-center h-[42px]">
-            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="41px" />
-          </div>
-        ) : (
-          <ButtonAuth label="Ingresar" disabled={loading || !watch('email') || !!errors.email} loading={loading} isDark={isDark} />
-        )}
+        
+          <AuthButton
+            label="Ingresar"
+            disabled={loading || !watch('email') || !!errors.email}
+            loading={loading}
+            isDark={isDark}
+          />
+        
 
         <AuthSeparator />
 
-        <ButtonAuth
-          label="Registrate aquí"
-          onClick={handleChange}
-          type="button"
-          isDark={isDark}
-          variant="secondary"
+        <ShortButton
+          href='/es/registro'
+          text="Registrate aquí"
+          className='!w-full'
         />
+        
         {errorMessage && <p className="mt-5 text-center text-errorColor">{errorMessage}</p>}
       </form>
     </div>

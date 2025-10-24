@@ -5,6 +5,7 @@ import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import { motion } from 'motion/react';
 import clsx from 'clsx';
 import { useSize } from '@/hooks/useSize';
+import ShortButton from '../ui/NewButtons/ShortButton';
 
 interface FlyerTrabajoProps {
   title?: string;
@@ -54,12 +55,12 @@ export default function FlyerTrabajo({ title, description, nameButton, imageSrc,
             </>
           )}
           {nameButton && (
-            <Link
+            <ShortButton
               href={href}
-              className={`ease rounded-[50px] bg-buttonsLigth px-[14px] py-3 font-titleFont text-base font-semibold text-darkText transition-colors duration-300 ${isDark ? 'buttonSecondDark bg-darkText text-lightText' : 'text buttonSecond'} `}
-            >
-              {nameButton}
-            </Link>
+              text={nameButton}
+              transparent
+              className="!h-[42px] !w-[220px] text-sm"
+            />
           )}
         </div>
       </div>

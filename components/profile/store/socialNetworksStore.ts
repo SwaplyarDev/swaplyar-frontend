@@ -1,8 +1,9 @@
 import { create } from 'zustand';
+export type PlataformSocial = 'facebook' | 'instagram' | 'twitter' | 'linkedin';
 
 export type SocialMedia = {
   id: string;
-  type: 'facebook' | 'instagram' | 'twitter' | 'linkedin' | string;
+  type: PlataformSocial;
   username: string;
 };
 

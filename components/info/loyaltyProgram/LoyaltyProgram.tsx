@@ -14,6 +14,7 @@ import {
   FlyerGif,
 } from '@/utils/assets/imgDatabaseCloudinary';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import ShortButton from '@/components/ui/NewButtons/ShortButton';
 
 function LoyaltyProgram() {
   const { setView } = useStore();
@@ -33,18 +34,19 @@ function LoyaltyProgram() {
             SwaplyAr Plus Rewards™ premia tu fidelidad
           </h1>
 
-          <div className="mt-10 text-center">
+          <div className="mt-10 text-center flex flex-col items-center">
             <section className="mx-auto max-w-[796px] text-center font-light">
-              <strong className="text-lg"> Cada transacción es una oportunidad de obtener más.</strong>
+              <strong className="text-lg">Cada transacción es una oportunidad de obtener más.</strong>
               Únete a SwaplyAr Plus Rewards y disfruta de beneficios exclusivos cada vez que realices un intercambio.
             </section>
-            <button
-              id="submit-25456"
-              className={`relative mt-4 h-[48px] w-[280px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-[14px] py-3 font-titleFont font-semibold text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText ${isDark ? 'buttonSecondDark' : 'buttonSecond'} `}
-              onClick={() => handleChange()}
-            >
-              ¡Únete ya!
-            </button>
+
+            <ShortButton
+              text="¡Únete ya!"
+              onButtonClick={handleChange}
+              fondoOscuro={true}
+              className="mt-4 h-[48px] w-[280px] px-[14px] py-3 text-white hover:bg-buttonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText"
+            />
+
             <p className="mx-auto mt-10 max-w-[504px] text-start font-light">
               ¿Aún no formas parte? <LinkWithHover href="/es/registro">Crea</LinkWithHover> tu perfil
               en SwaplyAr o <LinkWithHover href="/es/iniciar-sesion">Inicia Sesión</LinkWithHover> en tu

@@ -15,6 +15,7 @@ import ReusableWalletCard from '@/components/wallets/walletCard';
 import { mapWalletDetails } from '@/utils/wallet/mapWalletDetails';
 import clsx from 'clsx';
 import { normalizeType } from '@/components/admin/utils/normalizeType';
+import ShortButton from '@/components/ui/NewButtons/ShortButton';
 
 interface Wallet {
   id: string;
@@ -146,15 +147,11 @@ export default function VirtualWallets() {
         <Dialog open={open} onOpenChange={setOpen}>
           <div className="mb-6 flex w-full justify-end px-2 sm:justify-end sm:px-0">
             <DialogTrigger asChild>
-              <Button
-                className={`${
-                  isDark
-                    ? 'bg-[#EBE7E0] text-black ring-offset-black hover:dark:ring-[#EBE7E0]'
-                    : 'bg-[#012A8E] text-white hover:ring-[#012A8E]'
-                } rounded-full px-8 py-4 text-xl font-semibold hover:ring-2 hover:ring-offset-2`}
-              >
-                Añadir Cuenta
-              </Button>
+              <ShortButton
+              text="Añadir Cuenta"
+              onButtonClick={() => setOpen(true)}
+              fondoOscuro={true}
+            />
             </DialogTrigger>
           </div>
           <DialogContent
@@ -182,16 +179,11 @@ export default function VirtualWallets() {
             <p className="max-w-md text-sm text-gray-600 dark:text-custom-grayD-100">
               Agrega una cuenta para recibir o enviar fondos y gestionarlas desde aquí.
             </p>
-            <Button
-              onClick={() => setOpen(true)}
-              className={`${
-                isDark
-                  ? 'bg-[#EBE7E0] text-black ring-offset-black hover:dark:ring-[#EBE7E0]'
-                  : 'bg-[#012A8E] text-white hover:ring-[#012A8E]'
-              } rounded-full px-6 py-3 text-base font-semibold hover:ring-2 hover:ring-offset-2`}
-            >
-              Añadir Cuenta
-            </Button>
+            <ShortButton
+              text="Añadir Cuenta"
+              onButtonClick={() => setOpen(true)}
+              fondoOscuro={true}
+            />
             <p className="mt-2 text-xs text-gray-600 dark:text-custom-grayD-100">
               ¿Necesitas ayuda?{' '}
               <Link href="/es/centro-de-ayuda" className="font-medium text-[#012A8E] underline dark:text-[#EBE7E0]">
