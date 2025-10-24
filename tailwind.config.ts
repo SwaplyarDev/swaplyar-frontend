@@ -80,6 +80,7 @@ const config: Config = {
         'lg-tablet': '960px',
         lg: '1024px',
         lg2: '1124px',
+        'navbar-desktop': '1140px',
         'xl-desktop': '1080px',
         xl: '1280px',
         'xl-nav': '1300px',
