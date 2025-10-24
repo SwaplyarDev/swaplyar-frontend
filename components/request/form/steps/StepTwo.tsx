@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useEffect } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import dynamic from 'next/dynamic';
 
@@ -16,8 +16,9 @@ const StepTwoPaypal = dynamic(() => import('./stepsTwoOptions/StepTwoPaypal'));
 const StepTwoWise = dynamic(() => import('./stepsTwoOptions/StepTwoWise'));
 const StepTwoTether = dynamic(() => import('./stepsTwoOptions/StepTwoTether'));
 const StepTwoPix = dynamic(() => import('./stepsTwoOptions/StepTwoPix'));
-import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import AuthButton from '@/components/auth/AuthButton';
+import ArrowUp from '@/components/ui/ArrowUp/ArrowUp';
 
 const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   const {
@@ -35,12 +36,14 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   const { selectedReceivingSystem } = useSystemStore();
   const { selectedWallet } = useWalletStore();
   const { isDark } = useDarkTheme();
-
+  //agregué el useState para initialValues
+  const [loading, setLoading] = useState(false);
+  const [initialValues, setInitialValues] = useState<StepTwoData | null>(null);
   // --- LÓGICA CORREGIDA PARA RELLENAR EL FORMULARIO ---
   useEffect(() => {
-    // 1. Limpiamos el formulario y lo inicializamos con datos guardados del stepper (si existen)
+    // 1. Limpiamos el formulario y lo inicializamos con datos guardados del stepper (si existen) y guardamos initial values
     reset(formData.stepTwo || {});
-
+    setInitialValues(formData.stepTwo || {});
     // 2. Obtenemos el objeto de detalle de la billetera seleccionada de forma segura
     const detail = selectedWallet?.details?.[0];
 
@@ -88,10 +91,34 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     }
   }, [selectedWallet, formData.stepOne, setValue, reset, formData.stepTwo]);
 
+  // 🔹 Deep comparison para detectar cambios y pooder usar condicional al renderizar el button
+
+  const deepEqual = useCallback((obj1: any, obj2: any): boolean => {
+    if (obj1 === obj2) return true;
+    if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) return false;
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+    if (keys1.length !== keys2.length) return false;
+    for (let key of keys1) {
+      if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) return false;
+    }
+    return true;
+  }, []);
+
+  const formValues = watch();
+  const hasChanges = useMemo(
+    () => initialValues && !deepEqual(initialValues, formValues),
+    [initialValues, formValues, deepEqual],
+  );
+
+
+
   const onSubmit = (data: StepTwoData) => {
+    setLoading(true);
     updateFormData(1, data);
     markStepAsCompleted(1);
     setActiveStep(2);
+    setLoading(false);
   };
 
   const renderSelectedSystem = () => {
@@ -177,24 +204,36 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       {renderSelectedSystem()}
 
-      <div className="flex justify-center sm-phone:justify-end">
+      <div className="flex justify-center sm-phone:justify-end sm-tablet:justify-center lg:justify-end">
         {completedSteps[1] ? (
-          // El botón cambia a "Editar" si el paso ya está completado
-          <button
-            className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
-            type="submit"
-            disabled={blockAll}
-          >
-            Editar
-          </button>
+          hasChanges ? (
+            <AuthButton
+              label="Siguiente"
+              type="submit"
+              isDark={isDark}
+              loading={loading}
+              disabled={!isValid || blockAll}
+              className="w-full max-w-[300px]"
+            />
+          ) : (
+            <button
+              className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
+              type="submit"
+              disabled={blockAll}
+            >
+              Tratar
+              <ArrowUp />
+            </button>
+          )
         ) : (
-          <button
+          <AuthButton
+            label="Siguiente"
             type="submit"
-            className={`flex h-[46px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] font-titleFont text-base font-semibold text-white disabled:border-gray-400 disabled:bg-custom-blue-300 disabled:text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 dark:disabled:text-darkText ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
+            isDark={isDark}
+            loading={loading}
             disabled={!isValid || blockAll}
-          >
-            Siguiente
-          </button>
+            className="w-full max-w-[300px]"
+          />
         )}
       </div>
     </form>

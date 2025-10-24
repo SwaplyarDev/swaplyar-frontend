@@ -1,10 +1,11 @@
 'use client';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
+import { PlataformSocial } from '../store/socialNetworksStore';
 
 type AddSocialNetworkProps = {
   newSocialType: string;
-  setNewSocialType: React.Dispatch<React.SetStateAction<string>>;
+  setNewSocialType: React.Dispatch<React.SetStateAction<PlataformSocial>>;
 };
 
 const AddSocialNetwork = ({ newSocialType, setNewSocialType }: AddSocialNetworkProps) => {
@@ -16,7 +17,7 @@ const AddSocialNetwork = ({ newSocialType, setNewSocialType }: AddSocialNetworkP
 
       <div className="grid grid-cols-12 gap-2">
         <div className="col-span-5">
-          <Select value={newSocialType} onValueChange={setNewSocialType}>
+          <Select value={newSocialType} onValueChange={(value) => setNewSocialType(value as PlataformSocial)}>
             <SelectTrigger className="border border-zinc-600 bg-transparent focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0">
               <SelectValue placeholder="Red social" />
             </SelectTrigger>
@@ -30,7 +31,7 @@ const AddSocialNetwork = ({ newSocialType, setNewSocialType }: AddSocialNetworkP
               <SelectItem className="hover:bg-zinc-700" value="twitter">
                 Twitter/X
               </SelectItem>
-              <SelectItem className="hover:bg-zinc-700" value="LinkedIn">
+              <SelectItem className="hover:bg-zinc-700" value="linkedin">
                 LinkedIn
               </SelectItem>
             </SelectContent>

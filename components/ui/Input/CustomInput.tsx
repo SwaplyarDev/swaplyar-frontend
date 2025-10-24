@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 interface CustomInputProps {
   label: string;
@@ -21,7 +22,6 @@ const CustomInput: React.FC<CustomInputProps> = ({
   value,
   onChange,
   error,
-  placeholder,
   name,
   register,
   validation,
@@ -29,13 +29,15 @@ const CustomInput: React.FC<CustomInputProps> = ({
 }) => {
   const [isFocused, setIsFocused] = React.useState(false);
   const inputProps = register ? register(name, validation) : {};
+  const { isDark } = useDarkTheme();
+
+  const isLabelFloating = isFocused || !!value;
 
   return (
-    <div className="w-full relative h-[50px]">
+    <div className="w-full relative h-[40px] sm:h-[45px] md:h-[50px]">
       <input
         type={type}
         value={value}
-        placeholder=""
         name={name}
         disabled={disabled}
         {...inputProps}
@@ -46,35 +48,43 @@ const CustomInput: React.FC<CustomInputProps> = ({
         onFocus={() => setIsFocused(true)}
         onBlur={(e) => setIsFocused(e.target.value !== '')}
         className={[
-          'peer w-full rounded-2xl border bg-custom-whiteD-200 h-[50px]',
-          'focus:outline-none focus:ring-0 focus:border-inputLight',
-          'dark:bg-inputDark dark:text-lightText',
+          'peer w-full rounded-2xl border h-[40px] sm:h-[45px] md:h-[50px] focus:outline-none focus:ring-0 px-3 transition-colors duration-150',
           error
-            ? '!border-errorColor text-errorColor'
-            : 'border-inputLightDisabled hover:border-inputLight',
-        ]
+            ? isDark
+              ? 'bg-custom-grayD-900 border-errorColorDark focus:border-errorColorDark text-custom-whiteD-200'
+              : 'bg-custom-whiteD-200 border-errorColor focus:border-errorColor text-custom-dark'
+            : isDark
+              ? 'bg-custom-grayD-900 border-inputLightDisabled text-custom-whiteD-200 hover:border-custom-whiteD-200 focus:border-custom-whiteD-200'
+              : 'bg-custom-whiteD-200 border-inputLightDisabled text-custom-dark hover:border-inputLight focus:border-inputLight',
+              ]
           .filter(Boolean)
           .join(' ')}
       />
-
       <label
         htmlFor={name}
         className={[
-          'absolute left-3 px-1 transition-all duration-200 ease-in-out font-textFont',
-          isFocused || value
-            ? 'top-[-0.6rem] text-[12px] opacity-100 bg-custom-whiteD-200 dark:bg-inputDark px-1'
+          'absolute left-3 px-1 transition-all duration-200 ease-in-out font-textFont pointer-events-none',
+          isLabelFloating
+            ? `-top-2 text-[12px] opacity-100 ${
+                isDark ? 'bg-inputDark' : 'bg-custom-whiteD-200 peer-hover:text-inputLight peer-focus:text-inputLight'
+              }`
             : 'top-1/2 -translate-y-1/2 text-[14px]',
-          'peer-hover:text-inputLight peer-focus:text-inputLight text-inputLightDisabled dark:text-darkText',
-          error && '!text-errorColor',
+          ' text-inputLightDisabled',
+          error && (isDark ? '!text-errorColorDark' : '!text-errorColor'),
+          isDark ? 'peer-hover:text-custom-whiteD-200  peer-focus:text-custom-whiteD-200  dark:bg-custom-grayD-900 focus:border-custom-whiteD-200 hover:border-custom-whiteD-200 hover:text-custom-whiteD-200' : 'peer-hover:text-inputLight peer-focus:text-inputLight',
         ]
           .filter(Boolean)
           .join(' ')}
       >
         {label}
       </label>
-
       {error && (
-        <span className="absolute left-3 top-[-0.6rem] text-sm text-errorColor px-1 bg-custom-whiteD-200 dark:bg-inputDark">
+        <span
+          className={[
+            'absolute left-3 top-[-0.6rem] text-sm  px-1',
+            isDark ? 'dark:bg-custom-grayD-900 text-errorTextColorDark' : 'bg-custom-whiteD-200 text-errorColor',
+          ].filter(Boolean).join(' ')}
+        >
           {error}
         </span>
       )}

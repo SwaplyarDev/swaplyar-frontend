@@ -15,6 +15,7 @@ import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 import { systems } from '@/utils/dataCoins';
 import { validSendReceive } from '@/utils/currencyApis';
+import AuthButton from '@/components/auth/AuthButton';
 
 export default function TransactionCalculator() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -55,7 +56,7 @@ export default function TransactionCalculator() {
     sessionStorage.setItem('accesoPermitido', 'true');
     try {
       document.cookie = 'requestPass=1; Max-Age=120; Path=/; SameSite=Lax';
-    } catch {}
+    } catch { }
     setPassTrue();
 
     // Cambia a la ruta pública del formulario
@@ -145,7 +146,7 @@ export default function TransactionCalculator() {
                   selectedReceivingSystem?.id ?? '',
                 ) &&
                   selectedReceivingSystem?.id === 'payoneer_usd') ||
-                selectedReceivingSystem?.id === 'payoneer_eur' ? (
+                  selectedReceivingSystem?.id === 'payoneer_eur' ? (
                   <p className={`p-1 text-sm ${colorError}`}>
                     El monto minimo a recibir en Payoneer es de 50 {selectedReceivingSystem.coin}
                   </p>
@@ -159,33 +160,19 @@ export default function TransactionCalculator() {
               </div>
             )}
           </div>
-          {isProcessing ? (
-            <div>
-              <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="44px" />
-            </div>
-          ) : (
-            <button
-              className={clsx(
-                isDark ? 'buttonSecondDark' : 'buttonSecond',
-                'w-full rounded-full bg-custom-blue-800 py-2.5 font-titleFont text-base font-semibold text-custom-whiteD disabled:bg-custom-blue-300 dark:bg-custom-whiteD dark:text-custom-grayD dark:disabled:bg-custom-grayD-500 dark:disabled:text-custom-whiteD max-h-[42px]',
-              )}
-              onClick={handleSubmit}
-              disabled={
-                isProcessing ||
-                sendAmount === '' ||
-                isNaN(sendAmountNum) ||
-                isNaN(receiveAmountNum) ||
-                !validSendReceive(
-                  sendAmountNum,
-                  selectedSendingSystem?.id ?? '',
-                  receiveAmountNum,
-                  selectedReceivingSystem?.id ?? '',
-                )
-              }
-            >
-              Procesar pago
-            </button>
-          )}
+          <AuthButton
+            label="Procesar pago"
+            onClick={handleSubmit}
+            isDark={isDark}
+            loading={isProcessing}
+            disabled={
+              sendAmount === '' ||
+              isNaN(sendAmountNum) ||
+              isNaN(receiveAmountNum) ||
+              !validSendReceive(sendAmountNum, selectedSendingSystem?.id ?? '', receiveAmountNum, selectedReceivingSystem?.id ?? '')
+            }
+            className='!w-full'
+          />
         </div>
       </div>
     </div>

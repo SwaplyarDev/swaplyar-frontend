@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import Link from 'next/link';
 import clsx from 'clsx';
+import ShortButton from '../NewButtons/ShortButton';
 const questions = [
   {
     title: '¿Es seguro usar SwaplyAr?',
@@ -69,8 +70,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolea
   <MuiAccordionSummary
     expandIcon={
       <div
-        className={`${
-          props.expanded
+        className={`${props.expanded
             ? props.isDark
               ? 'bg-custom-grayD-600'
               : 'bg-custom-blue-800'
@@ -79,7 +79,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolea
                 ? 'bg-custom-grayD-200'
                 : 'bg-custom-grayD-800'
               : ''
-        } ${props.isDark ? 'group-active:bg-custom-grayD-600 lg2:group-hover:bg-custom-grayD-600' : 'group-active:bg-custom-blue lg2:group-hover:bg-custom-blue'}`}
+          } ${props.isDark ? 'group-active:bg-custom-grayD-600 lg2:group-hover:bg-custom-grayD-600' : 'group-active:bg-custom-blue lg2:group-hover:bg-custom-blue'}`}
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -90,15 +90,14 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolea
         }}
       >
         <ExpandMore
-          className={`${
-            props.isDark
+          className={`${props.isDark
               ? props.expanded
                 ? 'text-custom-whiteD'
                 : 'text-custom-grayD-500'
               : props.expanded
                 ? 'text-custom-whiteD'
                 : 'text-custom-blue-300'
-          } ${props.isDark ? 'group-active:text-custom-whiteD lg2:group-hover:text-custom-whiteD' : 'group-active:text-custom-whiteD lg2:group-hover:text-custom-whiteD'} `}
+            } ${props.isDark ? 'group-active:text-custom-whiteD lg2:group-hover:text-custom-whiteD' : 'group-active:text-custom-whiteD lg2:group-hover:text-custom-whiteD'} `}
           sx={{
             fontSize: '2rem',
             transition: 'color 0.3s ease',
@@ -166,13 +165,12 @@ const QuestionHowToUse = () => {
               expanded={expanded === `panel${index}`}
             >
               <Typography
-                className={`font-textFont text-[21px] ${
-                  isDark
+                className={`font-textFont text-[21px] ${isDark
                     ? 'text-custom-whiteD'
                     : expanded === `panel${index}`
                       ? 'text-custom-blue-800'
                       : 'text-custom-grayD'
-                } ${expanded === `panel${index}` ? '!font-bold' : 'font-light'}`}
+                  } ${expanded === `panel${index}` ? '!font-bold' : 'font-light'}`}
               >
                 {dato.title}
               </Typography>
@@ -196,17 +194,13 @@ const QuestionHowToUse = () => {
       </section>
 
       {/* w-full px-[5%] sm:px-[10%]  md:px-[0px]*/}
-      <div className={'flex w-full flex-col justify-between gap-4 md:flex-row md:items-center'}>
+      <div className="flex w-full flex-col justify-between gap-4 md:flex-row md:items-center">
         <p className="font-textFont text-lg">¿Tenés más dudas?</p>
-        <Link
-          className={clsx(
-            'flex w-[244px] items-center justify-center rounded-full border border-buttonsLigth bg-transparent p-2 font-titleFont font-semibold text-buttonsLigth dark:border-darkText dark:text-darkText',
-            isDark ? 'buttonSecondDark' : 'buttonSecond',
-          )}
+
+        <ShortButton
           href="/es/centro-de-ayuda/preguntas-frecuentes"
-        >
-          Ir a Preguntas Frecuentes
-        </Link>
+          text="Ir a Preguntas Frecuentes"
+        />
       </div>
     </main>
   );
