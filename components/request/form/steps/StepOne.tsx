@@ -3,12 +3,10 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useStepperStore } from '@/store/stateStepperStore';
 import { useCallback, useEffect, useMemo, useState, memo } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
-import clsx from 'clsx';
 import SelectBoolean from '../inputs/SelectBoolean';
 import { CountryOption } from '@/types/request/request';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import SelectCountry from '../inputs/SelectCountry';
-import InputSteps from '@/components/inputSteps/InputSteps';
 import useWalletStore from '@/store/useWalletStore';
 import { validatePhoneNumber } from '@/utils/validatePhoneNumber'; 
 import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
@@ -32,7 +30,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     setValue,
     watch,
     trigger,
-  } = useForm<FormData>({ mode: 'onChange' });
+  } = useForm<FormData>({ mode: 'onChange', reValidateMode: 'onChange', });
   const { selectedWallet } = useWalletStore();
   const {
     markStepAsCompleted,
@@ -63,29 +61,36 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
 
   useEffect(() => {
     const { first_name, last_name, calling_code, phone, email, own_account } = formData.stepOne;
+    
+    const defaultCountry = defaultCountryOptions.find(option => option.callingCode === '+54') || defaultCountryOptions[0];
+    const finalCallingCode = calling_code || defaultCountry;
+    
     const newValues = {
       first_name,
       last_name,
-      calling_code,
+      calling_code: finalCallingCode,
       phone,
       email,
       own_account,
     };
+    
     setValue('first_name', first_name);
     setValue('last_name', last_name);
-    setValue('calling_code', calling_code);
+    setValue('calling_code', finalCallingCode);
     setValue('phone', phone);
     setValue('email', email);
     setValue('own_account', own_account);
 
     setInitialValues(newValues);
   }, [formData.stepOne, setValue]);
+
   useEffect(() => {
     if (selectedWallet) {
       setValue('own_account', 'false');
       updateFormData(0, { own_account: 'false' });
     }
   }, [selectedWallet, setValue, updateFormData]);
+
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data: FormData) => {
@@ -126,9 +131,6 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     () => initialValues && !deepEqual(initialValues, formValues),
     [initialValues, formValues, deepEqual],
   );
-
-  const [isFocused, setIsFocused] = useState(false);
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
       <div className="mx-0 grid grid-cols-1 gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:grid-cols-2 sm-phone:gap-x-8 sm-phone:gap-y-2">
@@ -190,41 +192,36 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             name="calling_code"
             control={control}
             defaultValue={defaultCountryOptions.find((option) => option.callingCode === '+54')}
-            rules={{
-              required: 'Este campo es obligatorio',
-            }}
+            rules={{ validate: () => true }}
             render={({ field, fieldState }) => (
-            <CustomInput
-              label="Teléfono"
-              type="tel"
-              name="phone"
-              register={register}
-              defaultValue=""
-              validation={{
-                validate: (value: string) => {
-                  if (!value) return 'El número de teléfono es obligatorio';
-                  const country = watch('calling_code');
-                  const result = validatePhoneNumber(value, country);
-                  return result === true ? true : result;
-                },
-              }}
-              error={errors.phone?.message}
-              disabled={blockAll}
-            >
-              <SelectCountry
-                selectedCodeCountry={field.value}
-                blockAll={blockAll}
-                setSelectedCodeCountry={(option) => {
-                  field.onChange(option);
-                  trigger('phone');
+              <CustomInput
+                label="Teléfono"
+                type="tel"
+                name="phone"
+                register={register}
+                value={watch('phone')}
+                defaultValue=""
+                validation={{
+                  validate: (value: string) => {
+                    if (!value) return 'El número de teléfono es obligatorio';
+                    const result = validatePhoneNumber(value, field.value);
+                    return result === true ? true : result;
+                  },
                 }}
-                errors={
-                  fieldState.error ? { [field.name]: fieldState.error } : {}
-                }
-                textColor={['lightText', 'lightText']}
-                classNames="pl-2 w-[95px]"
-              />
-            </CustomInput>
+                error={errors.phone?.message}
+                disabled={blockAll}
+              >
+                <SelectCountry
+                  selectedCodeCountry={field.value}
+                  setSelectedCodeCountry={(option) => {
+                    field.onChange(option);
+                    trigger('phone');
+                  }}
+                  errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
+                  textColor={['lightText', 'lightText']}
+                  classNames="pl-2 w-[95px]"
+                />
+              </CustomInput>
             )}
           />
         </div>

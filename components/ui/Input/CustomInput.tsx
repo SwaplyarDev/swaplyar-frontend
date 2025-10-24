@@ -39,7 +39,6 @@ const CustomInput: React.FC<CustomInputProps> = ({
   React.useEffect(() => {
     if (hasValue) setIsFocused(true);
   }, [hasValue]);
-
   return (
     <div className="w-full relative">
       <div
@@ -56,12 +55,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           .filter(Boolean)
           .join(' ')}
       >
-        {children && (
-          <div className="flex items-center pr-2 border-r border-inputLightDisabled">
-            {children}
-          </div>
-        )}
-
+        {children && <div className="flex items-center pr-2">{children}</div>}
         <input
           type={type}
           value={value}
@@ -74,41 +68,39 @@ const CustomInput: React.FC<CustomInputProps> = ({
           }}
           onFocus={() => setIsFocused(true)}
           onBlur={(e) => setIsFocused(e.target.value !== '')}
-          autoComplete="on"
           className={[
             'peer flex-1 bg-transparent border-none px-2 font-textFont focus:outline-none focus:ring-0',
             isDark
               ? 'text-custom-whiteD-200 placeholder:text-placeholderDark'
               : 'text-custom-dark placeholder:text-inputLightDisabled',
-            'rounded-2xl',
           ]
             .filter(Boolean)
             .join(' ')}
         />
-
-        <label
-          htmlFor={name}
-          className={[
-            'absolute px-1 transition-all duration-200 ease-in-out font-textFont pointer-events-none',
-            children ? 'left-[108px]' : 'left-3',
-            isLabelFloating
-              ? `-top-2 text-[12px] opacity-100 ${
-                  isDark ? 'bg-inputDark' : 'bg-custom-whiteD-200'
-                }`
-              : 'top-1/2 -translate-y-1/2 text-[14px]',
-            'text-inputLightDisabled',
-            error && !children && (isDark ? '!text-errorColorDark' : '!text-errorColor'),
-            isDark
-              ? 'peer-hover:text-custom-whiteD-200 peer-focus:text-custom-whiteD-200 dark:bg-custom-grayD-900'
-              : 'peer-hover:text-inputLight peer-focus:text-inputLight',
-          ]
-            .filter(Boolean)
-            .join(' ')}
-        >
-          {label}
-        </label>
+        {(
+          <label
+            htmlFor={name}
+            className={[
+              'absolute px-1 transition-all duration-200 ease-in-out font-textFont pointer-events-none',
+              isLabelFloating ? 'left-3' : children ? 'left-[108px]' : 'left-3',
+              isLabelFloating
+                ? `-top-2 text-[12px] opacity-100 ${
+                    isDark ? 'bg-inputDark' : 'bg-custom-whiteD-200'
+                  }`
+                : 'top-1/2 -translate-y-1/2 text-[14px]',
+              'text-inputLightDisabled',
+              error && (isDark ? '!text-errorColorDark' : '!text-errorColor'),
+              isDark
+                ? 'peer-hover:text-custom-whiteD-200 peer-focus:text-custom-whiteD-200 dark:bg-custom-grayD-900 focus:border-custom-whiteD-200 hover:border-custom-whiteD-200 hover:text-custom-whiteD-200'
+                : 'peer-hover:text-inputLight peer-focus:text-inputLight',
+            ]
+              .filter(Boolean)
+              .join(' ')}
+          >
+            {label}
+          </label>
+        )}        
       </div>
-
       {error && (
         <span
           className={[
@@ -116,9 +108,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
             isDark
               ? 'dark:bg-custom-grayD-900 text-errorTextColorDark'
               : 'bg-custom-whiteD-200 text-errorColor',
-          ]
-            .filter(Boolean)
-            .join(' ')}
+          ].filter(Boolean).join(' ')}
         >
           {error}
         </span>
