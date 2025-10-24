@@ -11,16 +11,16 @@ export function UserAdditionalInfo({ user }: { user: any }) {
   const [openModal, setOpenModal] = useState(false);
   const [profile, setProfile] = useState<any>(null);
   const [refreshKey, setRefreshKey] = useState(0);
-
+  
   useEffect(() => {
-    const fetchProfile = async () => {
-      const res = await getUserProfileById(user.user_id);
-      if (res.success) {
-        setProfile(res.data);
-      }
-    };
-    fetchProfile();
-  }, [user.user_id, refreshKey]);
+  const fetchProfile = async () => {
+    const res = await getUserProfileById(user.user_id);
+    setProfile(res.data);
+    console.log(res.data);
+  };
+  if (user.user_id) fetchProfile();
+}, [user.user_id, refreshKey]);
+
 
   const handleProfileUpdated = () => {
     setRefreshKey((prev) => prev + 1);
