@@ -23,13 +23,13 @@ const ButtonBack: React.FC<ButtonBackProps> = ({
       onClick={() => router.push(route)}
       aria-label="Volver"
       className={`
-       
         btn-back 
+        ${isDark ? 'dark' : ''} 
         flex items-center justify-center
-         border-none bg-transparent
+        border-none bg-transparent
         transition-all duration-200 ease-in-out
         outline-none cursor-pointer
-        overflow-hidden rounded-full
+        overflow-visible rounded-full
         ${absolute ? 'absolute top-[19.02px] left-[18.31px]' : 'mx-auto'}
         ${className}
         w-[38px] h-[38px] sm:w-[45px] sm:h-[45px] lg:w-[48px] lg:h-[48px]
