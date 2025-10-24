@@ -33,7 +33,7 @@ export function Section({
         </section>
       ) : (
         <section
-          className={`pb-12  flex flex-col items-center text-left sm:mb-0   ${align === 'start' ? 'sm:items-start' : align === 'end' ? 'sm:items-end' : 'sm:items-center'
+          className={`pb-12   flex flex-col items-center text-left sm:mb-0   ${align === 'start' ? 'sm:items-start' : align === 'end' ? 'sm:items-end' : 'sm:items-center'
             }`}
         >
           <span className="mb-2  font-textFont text-[18px]">{title}</span>

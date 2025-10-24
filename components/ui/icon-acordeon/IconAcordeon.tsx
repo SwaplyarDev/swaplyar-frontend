@@ -31,13 +31,18 @@ export const IconAcordeon = ({
         width: size,
         height: size,
         borderRadius: '50%',
-        backgroundColor: bgColor,
+ 
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}
+       className={`
+        
+        bg-[#F7F5F0] dark:bg-[#4a4a4a] 
+    
+      `}
     >
-      <ExpandMoreIcon sx={{ color: iconColor, fontSize: sizeIcon }} />
+      <ExpandMoreIcon className='dark:text-[#252526]' sx={{ color: iconColor, fontSize: sizeIcon }} />
     </motion.div>
   )
 }

@@ -5,7 +5,7 @@ import { Accordion, AccordionDetails, AccordionSummary, ClickAwayListener } from
 import { FooterLink } from '../FooterLink/FooterLink';
 import { useState } from 'react';
 import { IconAcordeon } from '@/components/ui/icon-acordeon/IconAcordeon';
-
+import  { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 interface FooterLinkProps {
   href: string;
   label: string;
@@ -14,6 +14,7 @@ interface FooterLinkProps {
 
 export function AccordionSection({ title, links }: { title: string; links: FooterLinkProps[] }) {
   const [expanded, setExpanded] = useState(false);
+  const { isDark } = useDarkTheme();
 
   return (
     <ClickAwayListener onClickAway={() => setExpanded(false)}>
@@ -34,7 +35,7 @@ export function AccordionSection({ title, links }: { title: string; links: Foote
           },
         }}
       >
-        {/* --- Título del acordeón --- */}
+        {/* --- Título del acordion --- */}
         <AccordionSummary
           expandIcon={<IconAcordeon sizeIcon={30} expanded={expanded} />}
           aria-controls={`${title}-content`}
@@ -58,31 +59,16 @@ export function AccordionSection({ title, links }: { title: string; links: Foote
               transform: 'translateX(-50%)',
               width: { xs: '62%', sm: '75%' },
               height: '1px',
-              backgroundColor: '#012A8E',
+               backgroundColor: isDark ? '#EBE7E0' : '#012A8E', 
          
               transformOrigin: 'center',
     
               transition: 'opacity 0.3s ease, scale 0.3s ease, width 0.3s ease',
             }
             ,
-            // '&::after': !expanded
-            //   ? {
-            //     content: '""',
-            //     position: 'absolute',
-            //     bottom: -5,
-            //     left: { xs: '45%', sm: '55%' },
-            //     transform: 'translateX(-50%)',
-            //     width: { xs: '60%', sm: '75%' },
-            //     height: '1px',
-            //     backgroundColor: '#012A8E',
-            //     opacity: expanded ? 0 : 1,
-            //     transformOrigin: 'center',
-            //     scale: expanded ? '0.8' : '1',
-            //     transition: 'opacity 0.3s ease, scale 0.3s ease, width 0.3s ease',
-            //   }
-            //   : {},
+           
           }}
-          className='transition-all'
+          className='transition-all dark:text-[#FFFFFF]  '
         >
           <h4>{title}</h4>
         </AccordionSummary>

@@ -9,14 +9,14 @@ import LogoSwaplySVG from '@/public/LogoSwaplySVG.svg'
 
 const FooterPrincipal = () => {
   return (
-    <section className='relative pb-4'>
+    <section className='relative pb-4 '>
       <div className="one-info-footer hidden w-full flex-col items-center gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 md:flex">
         <Section title="Regístrate y Disfruta de Beneficios" links={footerLinks.registro} align="start" />
         <Section title="Normativa" links={footerLinks.normativa} align="center" />
         <Section title="Atención al Cliente" links={footerLinks.atencion} align="end" />
       </div>
 
-      <div className="flex flex-col gap-4 md:hidden">
+      <div className="flex flex-col gap-4 md:hidden ">
         <AccordionSection title="Regístrate y Disfruta de Beneficios" links={footerLinks.registro} />
         <AccordionSection title="Normativa" links={footerLinks.normativa} />
         <AccordionSection title="Atención al Cliente" links={footerLinks.atencion} />
@@ -38,9 +38,9 @@ const FooterPrincipal = () => {
             </Link>
           ))}
         </section>
-        <section className="w-full  md:hidden mb-4 flex flex-grow justify-center filter dark:brightness-[0%] dark:invert sm:mb-0 sm:w-1/3 sm:justify-center">
+        <section className="w-full  md:hidden mb-1 lg:mb-4 flex flex-grow justify-center filter dark:brightness-[0%] dark:invert sm:mb-0 sm:w-1/3 sm:justify-center">
           <Link href="/">
-            <Image src={LogoSwaplySVG} alt="Cambiar saldo online" width={65} height={70} />
+            <Image src={LogoSwaplySVG} alt="Cambiar saldo online" className='w-[40px] md:w-auto' width={65} height={70} />
           </Link>
         </section>
         <section className="md:hidden flex  justify-center gap-5 items-center ">
@@ -54,7 +54,7 @@ const FooterPrincipal = () => {
               title={`SwaplyAr en ${label}`}
               className="transition-opacity duration-200 hover:opacity-75"
             >
-              <FontAwesomeIcon icon={icon} className="text-[20px] md:text-2xl text-[#012D8A] dark:text-[#FFFFFF]" />
+              <FontAwesomeIcon icon={icon} className="text-[20px] md:text-[28px] text-[#012D8A] dark:text-[#FFFFFF]" />
             </Link>
           ))}
         </section>
