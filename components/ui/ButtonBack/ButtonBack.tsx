@@ -20,7 +20,7 @@ const ButtonBack: React.FC<ButtonBackProps> = ({
   return (
     <button
       type="button"
-      onClick={() => console.log('bton')}
+      onClick={() => router.push(route)}
       aria-label="Volver"
       className={`
        
