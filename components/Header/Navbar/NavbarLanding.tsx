@@ -171,13 +171,6 @@ const NavbarLanding = () => {
               height={200}
               className="hidden h-[46px] w-auto rounded-xl filter dark:brightness-[0%] dark:invert sm-phone:block"
             />
-            {/* <Image
-              alt="SwaplyAr Logo"
-              src={SwaplyArLogoSolo}
-              width={200}
-              height={200}
-              className="h-12 w-auto scale-90 rounded-xl filter dark:brightness-[0%] dark:invert md:hidden"
-              /> */}
             <Image
               src={LogoSwaplyMobile}
               alt="SwaplyAr Logo"
