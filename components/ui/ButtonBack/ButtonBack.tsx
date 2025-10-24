@@ -1,37 +1,48 @@
+'use client';
 import { useRouter } from 'next/navigation';
-import Arrow from '../Arrow/Arrow';
 import { ChevronLeft } from 'lucide-react';
 
 interface ButtonBackProps {
   route: string;
   isDark?: boolean;
-  label?: string;
-  size?: string;
-  cancel?: boolean;
+  absolute?: boolean;
+  className?: string;
 }
 
 const ButtonBack: React.FC<ButtonBackProps> = ({
   route,
   isDark = false,
-  label = 'Volver',
-  size = '100px',
-  cancel = false,
+  absolute = false,
+  className = '',
 }) => {
   const router = useRouter();
+
   return (
     <button
       type="button"
       onClick={() => router.push(route)}
-      className={`group relative m-1 flex h-[42px] min-w-[48px] max-w-[100px] items-center justify-center gap-2 xs:rounded-3xl xs:border xs:border-buttonsLigth button-back-gradient-border xs:p-3 xs:ps-2 font-textFont text-lg font-light text-buttonsLigth hover:bg-transparent xs:dark:border-darkText dark:text-darkText dark:bg-none dark:border-white dark:hover:bg-transparent`}
+      aria-label="Volver"
+      className={`
+       
+        btn-back 
+        flex items-center justify-center
+         border-none bg-transparent
+        transition-all duration-200 ease-in-out
+        outline-none cursor-pointer
+        overflow-hidden rounded-full
+        ${absolute ? 'absolute top-[19.02px] left-[18.31px]' : 'mx-auto'}
+        ${className}
+        w-[38px] h-[38px] sm:w-[45px] sm:h-[45px] lg:w-[48px] lg:h-[48px]
+      `}
     >
-      <div className="relative size-8 overflow-hidden">
-        <div className="absolute -left-[2px] transition-all ease-in-out group-hover:left-2">
-          <ChevronLeft color={isDark ? '#ebe7e0' : '#012c8a'} width={32} height={32} strokeWidth={2} className='inline-block xs:hidden absolute left-[2px]' />
-          <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} className="hidden xs:inline-block" />
-        </div>
-      </div>
-      <span className="hidden xs:inline-block">
-        Volver
+      <span className="flex items-center justify-center w-full h-full transform transition-transform duration-200 ease-in-out">
+        <ChevronLeft
+          className='rounded-full'
+          color={isDark ? '#ebe7e0' : '#012c8a'}
+          width={24}
+          height={24}
+          strokeWidth={2}
+        />
       </span>
     </button>
   );
