@@ -15,6 +15,26 @@ import clsx from 'clsx';
 import { Drawer, Navbar, Sidebar } from 'flowbite-react';
 import { signOut, useSession } from 'next-auth/react';
 import ShortButton from '@/components/ui/NewButtons/ShortButton';
+import { Menu } from 'lucide-react';
+
+// Array de enlaces de navegación
+const NAVIGATION_LINKS = [
+  {
+    id: 'about-us',
+    label: 'Quienes Somos',
+    href: '/es/quienes-somos',
+  },
+  {
+    id: 'how-to-use',
+    label: 'Como Usar SwaplyAr',
+    href: '/es/como-usar-swaplyar',
+  },
+  {
+    id: 'loyalty-program',
+    label: 'Programa de Fidelización',
+    href: '/es/programa-de-fidelizacion',
+  },
+];
 
 const NavbarLanding = () => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -78,15 +98,15 @@ const NavbarLanding = () => {
   const id1 = open ? 'simple-popover' : undefined;
 
   return (
-    <div>
+    <div className="w-full mx-auto px-3 py-[6px] h-[48.5px] md:h-[57px] lg:h-[68px] md:px-8 lg:max-w-screen-desktop lg:px-4 lg:py-[11px]">
       <Navbar
         fluid
         rounded
-        className="sticky mx-auto w-full px-4 py-3 dark:bg-lightText md:px-8 lg:max-w-[1204px] lg:px-4"
+        className="sticky mx-auto w-full h-full bg-custom-whiteD-500 dark:bg-lightText !p-0 navbar-landing"
       >
-        <div className="flex w-full flex-row justify-between lg:max-w-[1204px]">
+        <div className="flex w-full h-full flex-row p-0 justify-between items-center">
           {/* Botón para iniciar sesión o cerrar sesión */}
-          <span className="hidden md:flex lg2:hidden">
+          <span className="hidden md:flex md:max-w-[156px] md:h-[41px] lg:hidden">
             {status === 'authenticated' ? (
               <>
                 <Button
@@ -132,25 +152,24 @@ const NavbarLanding = () => {
                 </Popover>
               </>
             ) : (
-              <>
                 <ShortButton
                   href="/es/iniciar-sesion"
                   text="Iniciar sesión"
                   onButtonClick={closeDrawer}
                   fondoOscuro={false}
+                  className='!h-full'
                 />
-              </>
             )}
           </span>
 
           {/* Logo */}
-          <Navbar.Brand href="/">
+          <Navbar.Brand href="/" className='h-full lg:h-[46px] md:h-[45px]'>
             <Image
               alt="SwaplyAr Logo"
               src={SwaplyArLogoComplete}
-              width={200}
+              width={300}
               height={200}
-              className="hidden scale-90 h-12 w-auto rounded-xl filter dark:brightness-[0%] dark:invert md:block"
+              className="hidden h-[46px] w-auto rounded-xl filter dark:brightness-[0%] dark:invert md:block"
             />
             <Image
               alt="SwaplyAr Logo"
@@ -162,11 +181,11 @@ const NavbarLanding = () => {
           </Navbar.Brand>
 
           {/* Navegación */}
-          <nav className="flex flex-row items-center justify-center">
-            <section className="flex items-center justify-end gap-4 lg2:pr-2">
+          <nav className="flex flex-row items-center justify-center h-full">
+            <section className="flex items-center justify-end gap-4 lg:pr-2">
               <Switch />
-              <button onClick={() => setDrawerMenu(true)} className="block lg2:hidden">
-                <GiHamburgerMenu className="size-8 text-lightText dark:text-darkText" />
+              <button onClick={() => setDrawerMenu(true)} className="block lg:hidden">
+                <Menu strokeWidth={3} className="size-9 text-custom-blue dark:text-darkText" />
               </button>
             </section>
 
@@ -215,69 +234,37 @@ const NavbarLanding = () => {
                         </div>
                       )}
                       <Sidebar.ItemGroup className="w-full bg-inherit text-left">
-                        <Sidebar.Item
-                          className={`text-buttonsLigth ${selectedItem === 'about-us'
-                            ? 'h-10 bg-gray-100 dark:bg-gray-700'
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                        {NAVIGATION_LINKS.map((link) => (
+                          <Sidebar.Item
+                            key={link.id}
+                            className={`text-buttonsLigth ${
+                              selectedItem === link.id
+                                ? 'h-10 bg-gray-100 dark:bg-gray-700'
+                                : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                             }`}
-                          onClick={() => handleSelect('about-us')}
-                          href="/es/quienes-somos"
-                        >
-                          Quienes Somos
-                        </Sidebar.Item>
-                        <Sidebar.Item
-                          className={`text-buttonsLigth ${selectedItem === 'how-to-use'
-                            ? 'h-10 bg-gray-100 dark:bg-gray-700'
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                            }`}
-                          onClick={() => handleSelect('how-to-use')}
-                          href="/es/como-usar-swaplyar"
-                        >
-                          Como Usar SwaplyAr
-                        </Sidebar.Item>
-                        <Sidebar.Item
-                          className={`text-buttonsLigth ${selectedItem === 'loyalty-program'
-                            ? 'h-10 bg-gray-100 dark:bg-gray-700'
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                            }`}
-                          onClick={() => handleSelect('loyalty-program')}
-                          href="/es/programa-de-fidelizacion"
-                        >
-                          Programa de Fidelización
-                        </Sidebar.Item>
+                            onClick={() => handleSelect(link.id)}
+                            href={link.href}
+                          >
+                            {link.label}
+                          </Sidebar.Item>
+                        ))}
                       </Sidebar.ItemGroup>
                     </div>
                     <Sidebar.ItemGroup className="mt-0 hidden w-full border-t-0 bg-inherit pt-0 text-left md:block">
-                      <Sidebar.Item
-                        className={`text-buttonsLigth ${selectedItem === 'about-us'
-                          ? 'h-10 bg-gray-100 dark:bg-gray-700'
-                          : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                      {NAVIGATION_LINKS.map((link) => (
+                        <Sidebar.Item
+                          key={link.id}
+                          className={`text-buttonsLigth ${
+                            selectedItem === link.id
+                              ? 'h-10 bg-gray-100 dark:bg-gray-700'
+                              : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                           }`}
-                        onClick={() => handleSelect('about-us')}
-                        href="/es/quienes-somos"
-                      >
-                        Quienes Somos
-                      </Sidebar.Item>
-                      <Sidebar.Item
-                        className={`text-buttonsLigth ${selectedItem === 'how-to-use'
-                          ? 'h-10 bg-gray-100 dark:bg-gray-700'
-                          : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                          }`}
-                        onClick={() => handleSelect('how-to-use')}
-                        href="/es/como-usar-swaplyar"
-                      >
-                        Como Usar SwaplyAr
-                      </Sidebar.Item>
-                      <Sidebar.Item
-                        className={`text-buttonsLigth ${selectedItem === 'loyalty-program'
-                          ? 'h-10 bg-gray-100 dark:bg-gray-700'
-                          : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                          }`}
-                        onClick={() => handleSelect('loyalty-program')}
-                        href="/es/programa-de-fidelizacion"
-                      >
-                        Programa de Fidelización
-                      </Sidebar.Item>
+                          onClick={() => handleSelect(link.id)}
+                          href={link.href}
+                        >
+                          {link.label}
+                        </Sidebar.Item>
+                      ))}
                     </Sidebar.ItemGroup>
                     <Sidebar.ItemGroup className="w-full bg-inherit">
                       {status === 'authenticated' ? (
@@ -320,7 +307,7 @@ const NavbarLanding = () => {
             </Drawer>
 
             {/* Navegación completa */}
-            <section className="hidden lg2:flex lg2:items-center lg2:gap-2">
+            <section className="hidden lg:flex lg:items-center lg:gap-2">
               <NavLinks />
               {status === 'authenticated' ? (
                 <>
@@ -380,7 +367,7 @@ const NavbarLanding = () => {
                   </Popover>
                 </>
               ) : (
-                <>
+                <div className="flex gap-2 max-w-[294px]">
                   <ShortButton
                     href="/es/iniciar-sesion"
                     text="Iniciar sesión"
@@ -393,7 +380,7 @@ const NavbarLanding = () => {
                     onButtonClick={closeDrawer}
                     fondoOscuro={true}
                   />
-                </>
+                </div>
               )}
             </section>
           </nav>
