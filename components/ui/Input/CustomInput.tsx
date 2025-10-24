@@ -16,6 +16,7 @@ interface CustomInputProps {
   disabled?: boolean;
   children?: React.ReactNode;
   className?: string;
+  maxLength?: number;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -30,6 +31,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   disabled = false,
   children,
   className = '',
+  maxLength
 }) => {
   const [isFocused, setIsFocused] = React.useState(false);
   const inputProps = register ? register(name, validation) : {};
@@ -63,6 +65,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           value={value}
           name={name}
           disabled={disabled}
+          maxLength={maxLength}
           {...inputProps}
           onChange={(e) => {
             onChange?.(e);
