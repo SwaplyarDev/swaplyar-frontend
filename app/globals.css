@@ -62,6 +62,55 @@ html {
   background-color: #90b0fe; /* buttonExpandDark */
 }
 
+/* BACK BUTTON base */
+.btn-back {
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid transparent; /* default: sin borde visible */
+  position: relative;
+  overflow: visible;
+  z-index: 0;
+}
+
+/* Hover: */
+.btn-back:hover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  padding: 1px; /* grosor del borde */
+  background: linear-gradient(90deg, rgba(102, 102, 102, 0) 32.55%, #012A8E 107.81%);
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  pointer-events: none; /* para que no interfiera con el click */
+  z-index: 1;    
+}
+
+/* Active  */
+.btn-back:active::before {
+  background: linear-gradient(90deg, rgba(102,102,102,0) 8.73%, #012A8E 58.27%);
+  padding: 1px;
+}
+.btn-back:active::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0; /* detrás del pseudo-borde */
+  box-shadow: 0px 3px 4px rgba(0,0,0,0.39);
+}
+
+/* Focus visible */
+.btn-back:focus-visible {
+  box-shadow: 0 0 0 3px rgba(1, 42, 138, 0.12);
+  outline: none;
+}
+
+
 .accordion-summary {
   min-height: 40px !important;
   background: transparent !important;

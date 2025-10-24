@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useDarkTheme } from '../../ui/theme-Provider/themeProvider';
-import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdOutlineClose } from 'react-icons/md';
 import NavLinks from '@/components/ui/top-menu/nav-links';
 import Image from 'next/image';
@@ -16,25 +15,10 @@ import { Drawer, Navbar, Sidebar } from 'flowbite-react';
 import { signOut, useSession } from 'next-auth/react';
 import ShortButton from '@/components/ui/NewButtons/ShortButton';
 import { Menu } from 'lucide-react';
+import LogoSwaplyMobile from '@/public/LogoSwaplyMobile.svg'
 
 // Array de enlaces de navegación
-const NAVIGATION_LINKS = [
-  {
-    id: 'about-us',
-    label: 'Quienes Somos',
-    href: '/es/quienes-somos',
-  },
-  {
-    id: 'how-to-use',
-    label: 'Como Usar SwaplyAr',
-    href: '/es/como-usar-swaplyar',
-  },
-  {
-    id: 'loyalty-program',
-    label: 'Programa de Fidelización',
-    href: '/es/programa-de-fidelizacion',
-  },
-];
+const NAVIGATION_LINKS: any[] = [];
 
 const NavbarLanding = () => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -98,7 +82,7 @@ const NavbarLanding = () => {
   const id1 = open ? 'simple-popover' : undefined;
 
   return (
-    <div className="w-full mx-auto px-3 py-[6px] h-[48.5px] md:h-[57px] lg:h-[68px] md:px-8 lg:max-w-screen-desktop lg:px-4 lg:py-[11px]">
+    <div className="w-full mx-auto px-[10px] py-1 h-[48.5px] sm-phone:h-[57px] sm-phone:px-[14px] navbar-desktop:h-[68px] navbar-desktop:max-w-screen-desktop navbar-desktop:px-4 navbar-desktop:py-[10px]">
       <Navbar
         fluid
         rounded
@@ -106,7 +90,7 @@ const NavbarLanding = () => {
       >
         <div className="flex w-full h-full flex-row p-0 justify-between items-center">
           {/* Botón para iniciar sesión o cerrar sesión */}
-          <span className="hidden md:flex md:max-w-[156px] md:h-[41px] lg:hidden">
+          <span className="hidden sm-phone:flex sm-phone:max-w-[156px] sm-phone:h-[41px] navbar-desktop:hidden">
             {status === 'authenticated' ? (
               <>
                 <Button
@@ -163,33 +147,37 @@ const NavbarLanding = () => {
           </span>
 
           {/* Logo */}
-          <Navbar.Brand href="/" className='h-full lg:h-[46px] md:h-[45px]'>
+          <Navbar.Brand href="/" className='h-full navbar-desktop:h-[46px] sm-phone:h-[45px]'>
             <Image
               alt="SwaplyAr Logo"
               src={SwaplyArLogoComplete}
               width={300}
               height={200}
-              className="hidden h-[46px] w-auto rounded-xl filter dark:brightness-[0%] dark:invert md:block"
+              className="hidden h-[46px] w-auto rounded-xl filter dark:brightness-[0%] dark:invert sm-phone:block"
             />
             <Image
+              src={LogoSwaplyMobile}
               alt="SwaplyAr Logo"
-              src={SwaplyArLogoSolo}
-              width={200}
-              height={200}
-              className="h-12 w-auto scale-90 rounded-xl filter dark:brightness-[0%] dark:invert md:hidden"
+              width={40}
+              height={40}
+              className="h-9 w-auto scale-90 rounded-xl filter dark:brightness-[0%] dark:invert sm-phone:hidden"
             />
+            
           </Navbar.Brand>
 
           {/* Navegación */}
           <nav className="flex flex-row items-center justify-center h-full">
-            <section className="flex items-center justify-end gap-4 lg:pr-2">
+            <section className="flex items-center justify-end gap-3 navbar-desktop:pr-2">
               <Switch />
-              <button onClick={() => setDrawerMenu(true)} className="block lg:hidden">
-                <Menu strokeWidth={3} className="size-9 text-custom-blue dark:text-darkText" />
+              {(status !== 'authenticated' || NAVIGATION_LINKS.length > 0) && (
+              <button onClick={() => setDrawerMenu(true)} className="block navbar-desktop:hidden">
+                <Menu className="size-6 stroke-[2.5px] sm-phone:stroke-[3px] sm-phone:size-9 text-custom-blue dark:text-darkText" />
               </button>
+              )}
             </section>
 
             {/* Menú desplegable */}
+            {(status !== 'authenticated' || NAVIGATION_LINKS.length > 0) && (
             <Drawer
               open={drawerMenu}
               onClose={closeDrawer}
@@ -208,7 +196,7 @@ const NavbarLanding = () => {
                   className="h-[92vh] w-full text-center [&>div]:bg-transparent [&>div]:p-0"
                 >
                   <Sidebar.Items className="flex h-full w-full flex-col justify-between pt-5">
-                    <div className="md:hidden">
+                    <div className="sm-phone:hidden">
                       {status === 'authenticated' && (
                         <div className="flex items-center">
                           <div className="h-11 w-11 min-w-[inherit] rounded-full bg-buttonsLigth p-0">
@@ -233,7 +221,7 @@ const NavbarLanding = () => {
                           </div>
                         </div>
                       )}
-                      <Sidebar.ItemGroup className="w-full bg-inherit text-left">
+                      {/* <Sidebar.ItemGroup className="w-full bg-inherit text-left">
                         {NAVIGATION_LINKS.map((link) => (
                           <Sidebar.Item
                             key={link.id}
@@ -248,9 +236,9 @@ const NavbarLanding = () => {
                             {link.label}
                           </Sidebar.Item>
                         ))}
-                      </Sidebar.ItemGroup>
+                      </Sidebar.ItemGroup> */}
                     </div>
-                    <Sidebar.ItemGroup className="mt-0 hidden w-full border-t-0 bg-inherit pt-0 text-left md:block">
+                    {/* <Sidebar.ItemGroup className="mt-0 hidden w-full border-t-0 bg-inherit pt-0 text-left sm-phone:block">
                       {NAVIGATION_LINKS.map((link) => (
                         <Sidebar.Item
                           key={link.id}
@@ -265,7 +253,7 @@ const NavbarLanding = () => {
                           {link.label}
                         </Sidebar.Item>
                       ))}
-                    </Sidebar.ItemGroup>
+                    </Sidebar.ItemGroup> */}
                     <Sidebar.ItemGroup className="w-full bg-inherit">
                       {status === 'authenticated' ? (
                         <button
@@ -282,7 +270,7 @@ const NavbarLanding = () => {
                         </button>
                       ) : (
                         <div className="flex flex-col items-center gap-3">
-                          <div className="flex flex-col md:hidden">
+                          <div className="flex flex-col sm-phone:hidden">
                             <ShortButton
                               href="/es/iniciar-sesion"
                               text="Iniciar sesión"
@@ -305,10 +293,11 @@ const NavbarLanding = () => {
                 </Sidebar>
               </Drawer.Items>
             </Drawer>
+            )}
 
             {/* Navegación completa */}
-            <section className="hidden lg:flex lg:items-center lg:gap-2">
-              <NavLinks />
+            <section className="hidden navbar-desktop:flex navbar-desktop:items-center navbar-desktop:gap-2">
+              {/* <NavLinks /> */}
               {status === 'authenticated' ? (
                 <>
                   <Button

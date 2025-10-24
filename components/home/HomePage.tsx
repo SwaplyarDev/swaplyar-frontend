@@ -84,7 +84,7 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
-      <section className="mt-10">
+      <section className="mt-[120px] mb-40">
         <FlyerTrabajo
           imageSrc={FlyerGif}
           href="/es/como-usar-swaplyar"

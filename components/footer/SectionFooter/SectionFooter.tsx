@@ -1,4 +1,7 @@
+import Link from 'next/link';
 import { FooterLink } from '../FooterLink/FooterLink';
+import Image from 'next/image';
+import LogoSwaplySVG from '@/public/LogoSwaplySVG.svg'
 
 interface FooterLinkProps {
   href: string;
@@ -30,15 +33,27 @@ export function Section({
         </section>
       ) : (
         <section
-          className={`mb-4 flex flex-col items-center text-left sm:mb-0 sm:w-1/3 sm:items-center sm:text-center gap-[12px] ${
-            align === 'start' ? 'lg:items-start' : align === 'end' ? 'lg:items-end' : 'lg:items-center'
-          }`}
+          className={`pb-12   flex flex-col items-center text-left sm:mb-0   ${align === 'start' ? 'sm:items-start' : align === 'end' ? 'sm:items-end' : 'sm:items-center'
+            }`}
         >
-          <p className="mb-2 font-textFont text-lg">{title}</p>
+          <span className="mb-2  font-textFont text-[18px]">{title}</span>
+
           {links.map(({ href, label, view }) => (
-            <FooterLink key={href} href={href} label={label} view={view} />
+            <div key={href} className="mb-3">
+              <FooterLink href={href} label={label} view={view} />
+            </div>
           ))}
+          {/* Conditional Rendering for the view image */}
+          {title == "Normativa" && (
+            <section className="absolute bottom-5  flex flex-grow justify-center filter dark:brightness-[0%] dark:invert sm:mb-0 sm:w-1/3 sm:justify-center">
+              <Link href="/">
+                <Image src={LogoSwaplySVG} alt="Cambiar saldo online" width={60} height={60} />
+              </Link>
+            </section>
+          )}
+
         </section>
+
       )}
     </>
   );
