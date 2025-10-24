@@ -11,6 +11,7 @@ interface InfoBlockProps {
   content?: string;
   contentNode?: React.ReactNode;
   position?: boolean;
+  customImageSpacing?: boolean;
 }
 
 export default function InfoBlock({
@@ -20,6 +21,7 @@ export default function InfoBlock({
   content,
   contentNode,
   position = false,
+  customImageSpacing = false,
 }: InfoBlockProps) {
   return (
     <div
@@ -28,14 +30,14 @@ export default function InfoBlock({
         'flex max-w-6xl items-center justify-center gap-4 md:gap-2',
       )}
     >
-      <div className="info-image-container mb-4 md:mb-0 flex w-full max-w-[692px] justify-center sm:max-w-[403px]">
-        <div className="relative h-[400px] md:h-[350px] w-full overflow-hidden flex items-center justify-center">
+      <div className={`info-image-container ${customImageSpacing ? 'mb-0' : 'mb-4 md:mb-0'} flex w-full max-w-[692px] justify-center sm:max-w-[403px]`}>
+        <div className={`relative ${customImageSpacing ? 'h-auto' : 'h-[400px] md:h-[350px]'} w-full ${customImageSpacing ? 'overflow-visible' : 'overflow-hidden'} flex items-center justify-center`}>
       <Image
         src={imageSrc}
         alt={imageAlt}
-        width={387}
-        height={350}
-        className="h-full max-w-[692px] object-contain drop-shadow-light dark:drop-shadow-darkmode scale-90 md:scale-90"
+        width={customImageSpacing ? 258: 387}
+        height={ customImageSpacing ? 350:350}
+        className={`${customImageSpacing ? 'w-[258px] h-[350px]' : 'h-full max-w-[692px]'} object-contain drop-shadow-light dark:drop-shadow-darkmode ${customImageSpacing ? '' : 'scale-90 md:scale-90'}`}
       />
     </div>
       </div>

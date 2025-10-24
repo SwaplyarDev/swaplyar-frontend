@@ -11,7 +11,7 @@ export default function Footer() {
 
   return (
     <footer
-      className={`rs-wrapper-v4 mx-auto w-full px-4 py-8 md:px-8 lg:max-w-[1204px] lg:px-4 ${isAdminPage && 'hidden'}`}
+      className={`rs-wrapper-v4 mx-auto w-full px-4 pb-1 md:px-8 lg:max-w-[1204px] lg:px-4 mt-[120px] ${isAdminPage && 'hidden'}`}
     >
       {pathname.includes('blog') ? <FooterBlog /> : <FooterPrincipal />}
     </footer>

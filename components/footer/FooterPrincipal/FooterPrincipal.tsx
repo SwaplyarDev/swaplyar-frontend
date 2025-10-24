@@ -17,7 +17,7 @@ const FooterPrincipal = () => {
         <Section title="Atención al Cliente" links={footerLinks.atencion} align="end" />
       </div>
 
-      <div className="flex flex-col gap-5 md:hidden">
+      <div className="flex flex-col gap-5 md:hidden ">
         <AccordionSection title="Regístrate y Disfruta de Beneficios" links={footerLinks.registro} />
         <AccordionSection title="Normativa" links={footerLinks.normativa} />
         <AccordionSection title="Atención al Cliente" links={footerLinks.atencion} />
@@ -41,7 +41,7 @@ const FooterPrincipal = () => {
         </section>
         <section className="mb-4 flex flex-grow justify-center filter dark:brightness-[0%] dark:invert sm:mb-0 sm:w-1/3 sm:justify-center">
           <Link href="/">
-            <Image src={LogoSwaplySVG} alt="Cambiar saldo online" width={65} height={70} />
+            <Image src={LogoSwaplySVG} alt="Cambiar saldo online" width={60} height={60} />
           </Link>
         </section>
         <section className="flex items-center justify-center sm:w-1/3 sm:justify-end">

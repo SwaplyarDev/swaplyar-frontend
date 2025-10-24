@@ -94,7 +94,7 @@ export const RegisterForm = () => {
   };
 
   return (
-    <div className="flex py-10 px-4 xl:py-52 md:py-20 flex-col items-center justify-center">
+    <div className="flex pt-[242px] pb-10 px-4 flex-col items-center justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="relative flex w-full max-w-lg flex-col rounded-2xl bg-custom-whiteD-500 py-10 px-5 shadow-md dark:bg-calculatorDark"
