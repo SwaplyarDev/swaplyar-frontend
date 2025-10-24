@@ -6,12 +6,14 @@ interface ButtonBackProps {
   route: string;
   isDark?: boolean;
   absolute?: boolean;
+  className?: string;
 }
 
 const ButtonBack: React.FC<ButtonBackProps> = ({
   route,
   isDark = false,
   absolute = false,
+  className = '',
 }) => {
   const router = useRouter();
 
@@ -29,6 +31,7 @@ const ButtonBack: React.FC<ButtonBackProps> = ({
         outline-none cursor-pointer
         overflow-hidden rounded-full
         ${absolute ? 'absolute top-[19.02px] left-[18.31px]' : 'mx-auto'}
+        ${className}
         w-[38px] h-[38px] sm:w-[45px] sm:h-[45px] lg:w-[48px] lg:h-[48px]
       `}
     >
