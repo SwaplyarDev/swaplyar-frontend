@@ -67,43 +67,41 @@ html {
   border-radius: 50%;
   background: transparent;
   border: 1px solid transparent; /* default: sin borde visible */
-  transition: all 0.2s ease-in-out;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  z-index: 0;
 }
 
-/* Hover: solo borde con gradiente */
+/* Hover: */
 .btn-back:hover::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: 50%;
   padding: 1px; /* grosor del borde */
-  background: linear-gradient(135.41deg, rgba(102, 102, 102, 0) 32.55%, #012A8E 107.81%);
+  background: linear-gradient(90deg, rgba(102, 102, 102, 0) 32.55%, #012A8E 107.81%);
   -webkit-mask: 
     linear-gradient(#fff 0 0) content-box, 
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: destination-out;
   mask-composite: exclude;
   pointer-events: none; /* para que no interfiera con el click */
+  z-index: 1;    
 }
 
-/* Active (press): borde gradiente + sombra + pequeño press */
+/* Active  */
 .btn-back:active::before {
+  background: linear-gradient(90deg, rgba(102,102,102,0) 8.73%, #012A8E 58.27%);
+  padding: 1px;
+}
+.btn-back:active::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  padding: 1px; /* grosor del borde */
-  background: linear-gradient(135.41deg, rgba(102, 102, 102, 0) 8.73%, #012A8E 58.27%);
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
   pointer-events: none;
-  box-shadow: 0px 3px 4px 0px #00000063;
-  transform: translateY(1px);
+  z-index: 0; /* detrás del pseudo-borde */
+  box-shadow: 0px 3px 4px rgba(0,0,0,0.39);
 }
 
 /* Focus visible */
