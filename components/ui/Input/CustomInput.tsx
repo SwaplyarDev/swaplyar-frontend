@@ -15,6 +15,7 @@ interface CustomInputProps {
   validation?: any;
   disabled?: boolean;
   children?: React.ReactNode;
+  className?: string;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -28,6 +29,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   validation,
   disabled = false,
   children,
+  className = '',
 }) => {
   const [isFocused, setIsFocused] = React.useState(false);
   const inputProps = register ? register(name, validation) : {};
@@ -40,7 +42,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
     if (hasValue) setIsFocused(true);
   }, [hasValue]);
   return (
-    <div className="w-full relative">
+    <div className={['w-full relative', className].filter(Boolean).join(' ')}>
       <div
         className={[
           'flex items-center w-full rounded-2xl border h-[40px] sm:h-[45px] md:h-[50px] px-2 transition-colors duration-150',
