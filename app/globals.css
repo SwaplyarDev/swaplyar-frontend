@@ -72,7 +72,7 @@ html {
   z-index: 0;
 }
 
-/* Hover: */
+/* Hover */
 .btn-back:hover::before {
   content: '';
   position: absolute;
@@ -85,15 +85,24 @@ html {
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: destination-out;
   mask-composite: exclude;
-  pointer-events: none; /* para que no interfiera con el click */
+  pointer-events: none;
   z-index: 1;    
 }
 
-/* Active  */
+/* Hover Dark */
+.btn-back.dark:hover::before {
+  background: linear-gradient(90deg, rgba(235, 231, 224, 0) 32.55%, #D6E2FF 107.81%);
+}
+
+/* Active */
 .btn-back:active::before {
   background: linear-gradient(90deg, rgba(102,102,102,0) 8.73%, #012A8E 58.27%);
   padding: 1px;
 }
+.btn-back.dark:active::before {
+  background: linear-gradient(90deg, rgba(235, 231, 224, 0) 8.73%, #D6E2FF 58.27%);
+}
+
 .btn-back:active::after {
   content: '';
   position: absolute;
@@ -102,6 +111,9 @@ html {
   pointer-events: none;
   z-index: 0; /* detrás del pseudo-borde */
   box-shadow: 0px 3px 4px rgba(0,0,0,0.39);
+}
+.btn-back.dark:active::after {
+  box-shadow: 0px 3px 4px rgba(214, 226, 255, 0.5); /* sombra color claro */
 }
 
 /* Focus visible */
