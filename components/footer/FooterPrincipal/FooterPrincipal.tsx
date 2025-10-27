@@ -40,7 +40,7 @@ const FooterPrincipal = () => {
         </section>
         <section className="w-full  md:hidden mb-1 lg:mb-4 flex flex-grow justify-center filter dark:brightness-[0%] dark:invert sm:mb-0 sm:w-1/3 sm:justify-center">
           <Link href="/">
-            <Image src={LogoSwaplySVG} alt="Cambiar saldo online" width={60} height={60} />
+            <Image src={LogoSwaplySVG} alt="Cambiar saldo online" className='w-[40px] md:w-auto' width={60} height={60} />
           </Link>
         </section>
         <section className="md:hidden flex  justify-center gap-5 items-center ">

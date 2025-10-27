@@ -94,14 +94,14 @@ export const RegisterForm = () => {
   };
 
   return (
-    <div className="flex pt-[242px] pb-10 px-4 flex-col items-center justify-center">
+    <div className="flex pt-[180px] pb-10 px-4 flex-col items-center justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="relative flex w-full max-w-lg flex-col rounded-2xl bg-custom-whiteD-500 py-10 px-5 shadow-md dark:bg-calculatorDark"
+        className="relative flex w-full max-w-lg flex-col rounded-2xl gap-[16px] bg-custom-whiteD-500 py-10 px-5 shadow-md dark:bg-calculatorDark dark:shadow-dark-form"
       >
         <AuthTitle>Crear Cuenta</AuthTitle>
 
-        <div className="flex flex-wrap gap-1 w-full">
+        <div className="flex flex-wrap gap-4 w-full">
           <div className="flex flex-col flex-1">
             <CustomInput
               label="Nombre"
@@ -206,7 +206,7 @@ export const RegisterForm = () => {
        
         <ShortButton
           href='/es/iniciar-sesion'
-          text="Inicia Sesión"
+          text="Iniciar Sesión"
           className='!w-full'
         />
       </form>

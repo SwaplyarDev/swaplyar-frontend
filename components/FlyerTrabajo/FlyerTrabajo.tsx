@@ -21,7 +21,7 @@ export default function FlyerTrabajo({ title, description, nameButton, imageSrc,
   const { size } = useSize();
 
   return (
-    <div className={`relative mt-20 h-[272px] w-full bg-cover bg-center bg-repeat`} style={{ backgroundImage }}>
+    <div className={`relative mt-20 mb-[120px] h-[272px] w-full bg-cover bg-center bg-repeat`} style={{ backgroundImage }}>
       <div className={clsx('flex h-full w-full items-center justify-center', title ? 'bg-black bg-opacity-30' : '')}>
         <div className="flex flex-col items-center gap-4 overflow-hidden py-4 text-center font-textFont text-[21px] font-extrabold text-darkText">
           {title && <h2>{title}</h2>}
