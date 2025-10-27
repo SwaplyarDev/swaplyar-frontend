@@ -1,20 +1,24 @@
 'use client';
+//hooks
 import { useState, useEffect } from 'react';
-import SystemInfo from '../SystemInfo/SystemInfo';
-import InvertSystems from '../InvertSystems/InvertSystems';
 import { useSystemStore } from '@/store/useSystemStore';
 import { usePathname, useRouter } from 'next/navigation';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useAmountCalculator } from '@/hooks/useAmountCalculator';
 import { useSystemSelection } from '@/hooks/useSystemSelection';
-import TransactionSection from '@/components/ui/TransactionSection/TransactionSection';
-import clsx from 'clsx';
+import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
+//store
 import { getExchangeRateStore } from '@/store/exchangeRateStore';
 import { useStepperStore } from '@/store/stateStepperStore';
-import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
-import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
+
+//utils
+import SystemInfo from '../SystemInfo/SystemInfo';
 import { systems } from '@/utils/dataCoins';
 import { validSendReceive } from '@/utils/currencyApis';
+//components y otros
+import InvertSystems from '../InvertSystems/InvertSystems';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import TransactionSection from '@/components/ui/TransactionSection/TransactionSection';
+import clsx from 'clsx';
 import AuthButton from '@/components/auth/AuthButton';
 
 export default function TransactionCalculator() {
