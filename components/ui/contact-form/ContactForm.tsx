@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { FormValues } from '@/types/data';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
@@ -77,12 +77,63 @@ const ContactForm = () => {
 
   const handleSendRequest = () =>
     PopUp({
-      icon: 'success',
-      title: 'Mensaje enviado con éxito',
-      text: 'Gracias por tu mensaje, en la brevedad nos pondremos en contacto contigo',
+      variant: 'success-full',
+      title: 'Mensaje enviado con Éxito',
+      text: 'Recuerde que puede comunicarse por nuestros canales oficiales: <strong>info@swaplyar.com</strong> o <strong>WhatsApp</strong> al <strong>+54 9 387 455 3521</strong>.',
+      isHtml: true,
       isDark,
     });
 
+  useEffect(() => {
+    /* handleSendRequest(); */
+    /* PopUp({
+      variant: 'success-compact',
+      title: 'Solicitud enviada con Éxito',
+      text: 'Hemos recibido su solicitud de modificación. Si necesitamos información adicional, nos comunicaremos por WhatsApp al número indicado en el formulario.',
+      isDark,
+    }); */
+    
+    /* PopUp({
+      variant: 'info-detailed',
+      title: 'La solicitud #MJUthVRBs0 se encuentra en proceso',
+      text: '¿Desea cancelarla? - los fondos se devolverá a la cuenta de origen utilizada para esta operación',
+      note: 'Si la transferencia ya se ha completado en el sistema, no será posible procesar un reembolso - el reembolso puede demorar entre 24 a 72 horas hábiles dependiendo el método de pago realizado',
+      isDark,
+      actionButton: {
+        text: 'Cancelar',
+        style: 'cancel',
+        onClick: () => console.log('Operación cancelada')
+      }
+    }); */
+    
+    /* // Nueva variante success-with-status
+    PopUp({
+      variant: 'success-with-status',
+      title: 'Solicitud Procesada',
+      text: 'Tu solicitud ha sido procesada exitosamente. Te notificaremos cualquier actualización.',
+      status: ['Solicitud Enviada', 'Pago Confirmado', 'En Proceso'],
+      isDark,
+      actionButton: {
+        text: 'WhatsApp',
+        style: 'whatsapp',
+        onClick: () => window.open('https://wa.me/5493874553521', '_blank')
+      }
+    }); */
+    
+    // Nueva variante warning-with-cancel
+    PopUp({
+      variant: 'warning-with-cancel',
+      title: '¿Estás seguro?',
+      text: 'Esta acción no se puede deshacer. Por favor confirma si deseas continuar.',
+      isDark,
+      actionButton: {
+        text: 'Cancelar',
+        style: 'cancel',
+        onClick: () => console.log('Acción cancelada')
+      }
+    });
+  }, [isDark]);
+  
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-4">
       <div className="flex flex-col gap-10 rounded-2xl px-[15px] py-[13px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] dark:bg-[#323232]">

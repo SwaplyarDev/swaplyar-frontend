@@ -2,49 +2,100 @@ import Swal from 'sweetalert2';
 import { IPopUpProps } from './types';
 import ReactDOMServer from 'react-dom/server';
 import { createRoot } from 'react-dom/client';
-import Arrow from '../Arrow/Arrow';
+import { POPUP_VARIANTS } from './PopUpVariants';
+import { ActionButtons } from './PopUpComponents/ActionButtons';
 
-export const PopUp = ({ icon, title, text, isDark }: IPopUpProps) => {
+/**
+ * PopUp Component - Sistema de alertas con variantes predefinidas
+ * 
+ * @description
+ * Componente que muestra alertas/notificaciones usando SweetAlert2 con un sistema
+ * de variantes predefinidas que determinan el diseño y comportamiento del popup.
+ * 
+ * @example
+ * // Success completo con avión
+ * PopUp({
+ *   variant: 'success-full',
+ *   title: '¡Solicitud enviada!',
+ *   text: 'Tu solicitud ha sido procesada correctamente',
+ *   isDark: false
+ * });
+ * 
+ * @example
+ * // Info detallado con nota y botón de acción
+ * PopUp({
+ *   variant: 'info-detailed',
+ *   title: 'Información importante',
+ *   text: 'Por favor revisa los siguientes datos',
+ *   note: 'Esta información es confidencial',
+ *   isDark: false,
+ *   actionButton: {
+ *     text: 'Cancelar',
+ *     style: 'cancel',
+ *     onClick: () => console.log('Cancelado')
+ *   }
+ * });
+ */
+export const PopUp = ({ 
+  variant, 
+  title, 
+  text, 
+  isHtml = false, 
+  isDark, 
+  note,
+  actionButton,
+  status
+}: IPopUpProps) => {
+  // Obtener configuración de la variante
+  const variantConfig = POPUP_VARIANTS[variant];
+  
+  if (!variantConfig) {
+    console.error(`Variante de PopUp no encontrada: ${variant}`);
+    return;
+  }
+
+  const { iconComponent: IconComponent, contentComponent: ContentComponent, iconProps = {}, contentProps = {} } = variantConfig;
+
+  // Combinar props del usuario con props de configuración
+  const mergedIconProps = {
+    ...iconProps,
+    title,
+    isDark,
+  };
+
+  console.log('ActionButton recibido:', actionButton);
+
   Swal.fire({
-    icon:
-      icon === 'success'
-        ? 'success'
-        : icon === 'info'
-          ? 'info'
-          : icon === 'warning'
-            ? 'warning'
-            : icon === 'error'
-              ? 'error'
-              : undefined,
+    icon: undefined,
+    iconHtml: ReactDOMServer.renderToString(
+      <IconComponent {...mergedIconProps} />
+    ),
+    customClass: {
+      icon: 'border-none',
+      popup: 'w-full !max-w-[350px] !px-4 !py-6 sm-phone:!max-w-[510px] sm-phone:!px-6 navbar-desktop:!max-w-[556px]',
+      htmlContainer: '!m-0 !p-0',
+    },
     html: ReactDOMServer.renderToString(
-      <div>
-        <div className="flex flex-col gap-3">
-          <h2 className="font-textFont text-2xl font-medium dark:text-darkText">{title}</h2>
-          <p className="font-textFont dark:text-darkText">{text}</p>
-        </div>
-        <div id="back-button-container" className="mt-5 flex items-center justify-center"></div>
-      </div>,
+      <ContentComponent 
+        title={title}
+        text={text}
+        isHtml={isHtml}
+        note={note}
+        status={status}
+        {...contentProps}
+      />
     ),
     showConfirmButton: false,
-    background: isDark ? '#252526' : '#ffffff',
+    background: isDark ? '#4B4B4B' : '#FFFFFB',
     didRender: () => {
+      console.log('didRender ejecutado');
       const backElement = document.getElementById('back-button-container');
+      console.log('Elemento encontrado:', backElement);
+      console.log('ActionButton en didRender:', actionButton);
+      
       if (backElement) {
         const root = createRoot(backElement);
-        root.render(
-          <button
-            type="button"
-            onClick={() => Swal.close()}
-            className={`group relative m-1 flex h-[46px] min-w-[48px] max-w-[110px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 font-textFont text-lg font-light text-buttonsLigth hover:bg-transparent dark:border-darkText dark:text-darkText dark:hover:bg-transparent`}
-          >
-            <div className="relative h-5 w-5 overflow-hidden">
-              <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
-                <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
-              </div>
-            </div>
-            Volver
-          </button>,
-        );
+        root.render(<ActionButtons isDark={isDark} actionButton={actionButton} />);
       }
     },
   });
