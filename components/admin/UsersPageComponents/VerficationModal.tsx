@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { X, CheckCircle, ArrowLeft, ArrowRight } from 'lucide-react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
 
 const MySwal = withReactContent(Swal);
 
@@ -210,13 +211,7 @@ export function VerificationModal({ onClose }: VerificationModalProps) {
 
               {/* Botones de acción */}
               <div className="flex justify-between">
-                <button
-                  className="flex items-center rounded-full border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                  onClick={onClose}
-                >
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  Volver
-                </button>
+                <ButtonBack onClick={onClose} />
                 <button
                   className="rounded-full bg-blue-100 px-6 py-2 text-sm font-medium text-blue-700 hover:bg-blue-200"
                   onClick={handleSave}

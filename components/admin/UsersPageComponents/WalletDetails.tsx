@@ -3,6 +3,7 @@
 import { Wallet as WalletList } from '@/types/wallets';
 import { CreditCard, ChevronDown } from 'lucide-react';
 import { Logos, tipoCuenta } from './WalletList';
+import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
 
 interface WalletsListProps {
   wallet: WalletList;
@@ -48,13 +49,7 @@ export function WalletDetail({ wallet, onSelectWallet }: WalletsListProps) {
 
   return (
     <div className="mb-4">
-      <button
-        onClick={() => onSelectWallet(null)}
-        className="mb-4 flex items-center text-blue-600 hover:underline dark:text-blue-400"
-      >
-        <ChevronDown className="mr-1 h-4 w-4 rotate-90" />
-        <span>Volver a la lista</span>
-      </button>
+      <ButtonBack onClick={() => onSelectWallet(null)} className="mb-4" />
 
       {/* Wallet Info */}
       <div className="rounded-t-lg border-b bg-white p-4 dark:border-gray-700 dark:bg-gray-800/90">

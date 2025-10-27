@@ -5,7 +5,7 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import clsx from 'clsx';
 import { ChevronLeft } from 'lucide-react';
 
-export default function ButtonBack() {
+export default function BlogButtonBack() {
   const router = useRouter();
   const { isDark } = useDarkTheme();
 

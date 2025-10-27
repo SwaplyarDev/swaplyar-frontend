@@ -13,7 +13,7 @@ import ProgressBar from '@/components/ui/ProgressBar/ProgressBar';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { gifImage } from '@/utils/assets/img-database';
 import slugify from 'slugify';
-import ButtonBack from '../ButtonBack/ButtonBack';
+import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
 
 // Funcion para evaluar si es un string
 function isString(value: unknown): value is string {
