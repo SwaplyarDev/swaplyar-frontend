@@ -28,14 +28,13 @@ export interface TotalResponse {
   toPlatform: string;
 }
 
-const BASE = process.env.NEXT_PUBLIC_CONVERSIONS_BASE ?? '/api/v2/conversions';
+const BASE = process.env.NEXT_PUBLIC_BACKEND_URL!;
 
-export async function postTotal(payload: TotalRequest, signal?: AbortSignal): Promise<TotalResponse> {
-  const res = await fetch(`${BASE}/total`, {
+export async function postTotal(payload: TotalRequest): Promise<TotalResponse> {
+  const res = await fetch(`${BASE}/conversions/total`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
-    signal,
   });
   if (!res.ok) {
     const text = await res.text().catch(() => '');

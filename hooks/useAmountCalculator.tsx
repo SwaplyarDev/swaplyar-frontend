@@ -1,110 +1,103 @@
 import { useState, useEffect } from 'react';
-import { calculateAmount } from '@/utils/currencyApis';
 import { useSystemStore } from '@/store/useSystemStore';
-import { getExchangeRateStore } from '@/store/exchangeRateStore';
+import { postTotal } from '@/components/Transaction/services/conversionsApi';
+import {
+  mapSystemsToTotalPayload,
+  systemToBackend,
+  type SystemBackendId,
+} from '@/components/Transaction/services/systemBackendMapper';
+
+const isSystemBackendId = (id: string): id is SystemBackendId => id in systemToBackend;
 
 export const useAmountCalculator = () => {
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
-  const { rates } = getExchangeRateStore();
-  const [sendAmount, setSendAmount] = useState<string>('');
-  const [receiveAmount, setReceiveAmount] = useState<string>('');
-  const [isSendActive, setIsSendActive] = useState<boolean>(true);
-  const [rateForOne, setRateForOne] = useState<number>(0);
-  const [rateForOneBank, setRateForOneBank] = useState<number>(0);
+  const [sendAmount, setSendAmount] = useState('');
+  const [receiveAmount, setReceiveAmount] = useState('');
+  const [isSendActive, setIsSendActive] = useState(true);
+  const [rateForOne, setRateForOne] = useState(0);
 
-  // Efecto para actualizar montos al cambiar el sistema de envío o recepción
-  useEffect(() => {
-    const updateAmounts = async () => {
-      if (selectedSendingSystem && selectedReceivingSystem && Object.keys(rates).length > 0) {
-        try {
-          if ((sendAmount === '' || sendAmount === '0') && isSendActive) {
-            setReceiveAmount('');
-            localStorage.setItem('receiveAmount', '');
-            localStorage.setItem('sendAmount', '');
-          } else if (sendAmount !== '' && sendAmount !== '0' && isSendActive) {
-            const parsedSendAmount = parseFloat(sendAmount);
-            if (!isNaN(parsedSendAmount)) {
-              const amount = await calculateAmount(
-                selectedSendingSystem.id,
-                selectedReceivingSystem.id,
-                parsedSendAmount,
-              );
-              localStorage.setItem('sendAmount', parsedSendAmount.toString());
-              setReceiveAmount(amount.toString());
-              localStorage.setItem('receiveAmount', amount.toString());
-            }
-          } else if ((receiveAmount === '' || receiveAmount === '0') && !isSendActive) {
-            setSendAmount('');
-            localStorage.setItem('sendAmount', '');
-          } else if (receiveAmount !== '' && receiveAmount !== '0' && !isSendActive) {
-            const parsedReceiveAmount = parseFloat(receiveAmount);
-            if (!isNaN(parsedReceiveAmount)) {
-              const amount = await calculateAmount(
-                selectedSendingSystem.id,
-                selectedReceivingSystem.id,
-                parsedReceiveAmount,
-                true,
-              );
-              setSendAmount(amount.toString());
-              localStorage.setItem('sendAmount', amount.toString());
-            }
-          }
-        } catch (error) {
-          console.error('Error updating amounts:', error);
-        }
-      }
-    };
+  // 🔄 Calcula usando backend
+  const calculate = async (amount: number, inverse = false, isRateOnly = false) => {
+    if (!selectedSendingSystem || !selectedReceivingSystem || isNaN(amount)) return;
+    if (!isSystemBackendId(selectedSendingSystem.id) || !isSystemBackendId(selectedReceivingSystem.id)) return;
 
-    updateAmounts();
-  }, [selectedSendingSystem, selectedReceivingSystem, sendAmount, receiveAmount, isSendActive, rates]);
+    const payload = inverse
+      ? mapSystemsToTotalPayload(selectedReceivingSystem.id, selectedSendingSystem.id, amount)
+      : mapSystemsToTotalPayload(selectedSendingSystem.id, selectedReceivingSystem.id, amount);
 
-  // Efecto para calcular la tasa por una unidad
-  useEffect(() => {
-    const fetchRates = async () => {
-      if (selectedSendingSystem && selectedReceivingSystem && Object.keys(rates).length > 0) {
-        try {
-          const rateOneUnit = await calculateAmount(selectedSendingSystem.id, selectedReceivingSystem.id, 1);
-          const rateOneUnitBank = await calculateAmount(selectedSendingSystem.id, selectedReceivingSystem.id, 1, true);
-          setRateForOne(rateOneUnit || 0);
-          setRateForOneBank(rateOneUnitBank || 0);
-        } catch (error) {
-          console.error('Error fetching rates:', error);
-        }
-      }
-    };
+    const res = await postTotal(payload);
+    console.log('Respuesta total:', res);
 
-    fetchRates();
-  }, [selectedSendingSystem, selectedReceivingSystem, rates]);
+    // guardamos el valor por 1 unidad con comisión aplicada
+    setRateForOne(res.totalReceived / res.amount); // 👈 totalReceived ya incluye comisión
+    if (isRateOnly) return; // 👈 evita modificar montos del usuario
 
-  // Funciones para manejar cambios en los montos
-  const handleSendAmountChange = (value: string) => {
-    if (/^[0-9]*\.?[0-9]{0,2}$/.test(value) || value === '') {
-      setIsSendActive(true);
-      setSendAmount(value);
-      setReceiveAmount('');
+    if (inverse) {
+      // recibo → envío
+      setSendAmount(res.totalReceived.toFixed(2));
+    } else {
+      // envío → recibo
+      setReceiveAmount(res.totalReceived.toFixed(2));
     }
   };
+  
+// 🕒 debounce para sendAmount
+  useEffect(() => {
+    if (!isSendActive) return;
+    if (!selectedSendingSystem || !selectedReceivingSystem) return;
+    if (!sendAmount || parseFloat(sendAmount) <= 0) {
+      setReceiveAmount('0');
+      return;
+    }
 
-  const handleReceiveAmountChange = (value: string) => {
-    if (/^[0-9]*\.?[0-9]{0,2}$/.test(value) || value === '') {
-      setIsSendActive(false);
-      setReceiveAmount(value);
+    const timeout = setTimeout(() => {
+      calculate(parseFloat(sendAmount));
+    }, 300); // 👈 espera 300 ms tras dejar de escribir
+
+    return () => clearTimeout(timeout);
+  }, [sendAmount, selectedSendingSystem, selectedReceivingSystem]);
+
+  // 🕒 debounce para receiveAmount
+  useEffect(() => {
+    if (isSendActive) return;
+    if (!selectedSendingSystem || !selectedReceivingSystem) return;
+    if (!receiveAmount || parseFloat(receiveAmount) <= 0) {
       setSendAmount('');
+      return;
     }
+
+    const timeout = setTimeout(() => {
+      calculate(parseFloat(receiveAmount), true);
+    }, 300); // 👈 igual retardo
+
+    return () => clearTimeout(timeout);
+  }, [receiveAmount, selectedSendingSystem, selectedReceivingSystem]);
+
+  // obtiene rateForOne inicial al montar o cambiar sistemas
+  useEffect(() => {
+    const fetchRateForOne = async () => {
+      if (selectedSendingSystem && selectedReceivingSystem) {
+        try {
+          await calculate(1, false, true);
+        } catch (err) {
+          console.error('Error obteniendo rateForOne inicial:', err);
+        }
+      }
+    };
+    fetchRateForOne();
+  }, [selectedSendingSystem, selectedReceivingSystem]);
+
+  const handleSendAmountChange = (v: string) => {
+    if (!/^[0-9]*\.?[0-9]{0,2}$/.test(v)) return;
+    setIsSendActive(true);
+    setSendAmount(v);
   };
 
-  const setFinalReceiveAmount = (value: string) => {
-    if (/^[0-9]*\.?[0-9]{0,2}$/.test(value) || value === '') {
-      localStorage.setItem('receiveAmount', value);
-    }
+  const handleReceiveAmountChange = (v: string) => {
+    if (!/^[0-9]*\.?[0-9]{0,2}$/.test(v)) return;
+    setIsSendActive(false);
+    setReceiveAmount(v);
   };
-  return {
-    sendAmount,
-    receiveAmount,
-    handleSendAmountChange,
-    handleReceiveAmountChange,
-    rateForOne,
-    rateForOneBank,
-    setFinalReceiveAmount
-  };
+
+  return { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne };
 };

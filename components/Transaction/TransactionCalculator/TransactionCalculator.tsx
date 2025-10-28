@@ -41,7 +41,7 @@ export default function TransactionCalculator() {
   const router = useRouter();
   const { isDark } = useDarkTheme();
   const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } = useSystemSelection();
-  const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne, rateForOneBank } =
+  const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne} =
     useAmountCalculator();
   const colorError = isDark ? 'text-[#f78a82]' : 'text-[#f44336]';
   const pathname = usePathname();
@@ -83,7 +83,7 @@ export default function TransactionCalculator() {
           <p className="flex w-full items-center gap-[7px] font-textFont text-custom-grayD dark:text-darkText mb-1 sm:mb-3">
             {selectedSendingSystem?.id === 'bank' ? (
               <>
-                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">{rateForOneBank.toFixed(2)}</span>
+                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">{rateForOne.toFixed(2)}</span>
                 <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-semibold">{selectedSendingSystem?.coin}</span>
                 <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-normal">=</span>
                 <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">1</span>
