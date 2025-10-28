@@ -2,7 +2,7 @@ import React from 'react';
 
 const IconArbitrum = () => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24">
       <g fill="#213147">
         <path
           fill="#12AAFF"

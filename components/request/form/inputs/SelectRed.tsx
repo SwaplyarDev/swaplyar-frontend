@@ -96,15 +96,15 @@ const SelectRed: React.FC<SelectRedProps> = ({ selectedRed, setSelectedRed, erro
             initial={{ opacity: 0, y: -5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -5 }}
-            className="scrollable-list absolute top-10 z-10 mt-2 max-h-64 w-full overflow-y-auto rounded-2xl border border-custom-grayD-300 bg-custom-whiteD shadow-lg"
+            className="scrollable-list absolute top-10 z-10 mt-2 max-h-64 w-full overflow-y-auto bg-custom-whiteD rounded-[32px] pl-2"
           >
             {options.map((option, index) => (
               <li
                 key={index}
                 className={cn(
-                  'flex cursor-pointer items-center gap-2 px-4 py-2 font-textFont hover:bg-buttonsLigth hover:text-darkText',
+                'flex cursor-pointer items-center gap-2 px-4 py-1.5 rounded-full font-textFont text-inputLight hover:bg-custom-whiteD-500 hover:text-inputLight',
                   {
-                    'bg-gray-100': selectedRed?.value === option.value,
+                    'bg-custom-whiteD-500': selectedRed?.value === option.value,
                   },
                 )}
                 onClick={() => {
@@ -112,7 +112,7 @@ const SelectRed: React.FC<SelectRedProps> = ({ selectedRed, setSelectedRed, erro
                   setIsOpen(false);
                 }}
               >
-                {option.image}
+                 <span className="w-8 h-8">{option.image}</span>
                 <span>{option.label}</span>
               </li>
             ))}
