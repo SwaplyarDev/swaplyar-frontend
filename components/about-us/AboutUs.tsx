@@ -137,7 +137,7 @@ const AboutUs = () => {
           </section>
         </div>
       </div>
-      <section className="mt-[47px] overflow-hidden text-center">
+      <section className="mt-[87px] overflow-hidden text-center">
         <FlyerTrabajo
           imageSrc={FlyerGif}
           href="/es/como-usar-swaplyar"
