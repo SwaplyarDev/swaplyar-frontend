@@ -74,7 +74,7 @@ const FormAuth = () => {
           className={clsx(
             'inputChangeAutofill h-[50px] w-full border-0 border-b-[1px] ps-0 text-xs placeholder:font-light focus:border-0 focus:border-b-[1px] focus:placeholder-transparent focus:outline-none focus:ring-0 xs:text-lg',
             isDark
-              ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
+              ? 'border-b-darkText bg-transparent text-custom-blue-300 placeholder:text-custom-blue-300 focus:border-darkText'
               : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
             errors.transaction_id ? 'placeholder:text-errorColor' : 'placeholder:text-buttonExpandDark',
           )}
@@ -134,7 +134,7 @@ const FormAuth = () => {
                 'inputChangeAutofill placeholder-text-gray-900 ml-3 h-[50px] w-full border-0 border-none bg-transparent ps-0 text-xs placeholder:font-light focus:border-none focus:outline-none focus:ring-0 dark:text-darkText xs:text-lg',
                 errors.phone_number
                   ? 'placeholder:text-errorColor'
-                  : 'placeholder:text-buttonExpandDark dark:placeholder:text-placeholderDark',
+                  : 'placeholder:text-buttonExpandDark dark:placeholder:text-custom-blue-300',
               )}
               type="tel"
               {...register('phone_number', {

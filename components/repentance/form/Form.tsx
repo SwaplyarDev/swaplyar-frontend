@@ -83,7 +83,7 @@ const Form = () => {
             className={clsx(
               'inputChangeAutofill placeholder-text-gray-900 h-[50px] w-full border-0 border-b-[1px] ps-0 text-xs placeholder:font-light focus:border-0 focus:border-b-[1px] focus:outline-none focus:ring-0 xs:text-lg',
               isDark
-                ? 'border-b-darkText bg-transparent text-custom-blue-300 placeholder:text-text-custom-blue-300 focus:border-darkText'
+                ? 'border-b-darkText bg-transparent text-custom-blue-300 placeholder:text-custom-blue-300 focus:border-darkText'
                 : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
               errors.last_name ? 'placeholder:text-errorColor' : 'placeholder:text-buttonExpandDark',
             )}
