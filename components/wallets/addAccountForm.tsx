@@ -28,14 +28,10 @@ import clsx from 'clsx';
 import Arrow from '../ui/Arrow/Arrow';
 import { useRouter } from 'next/navigation';
 import LoadingGif from '../ui/LoadingGif/LoadingGif';
-import PaypalFields from './accountFields/paypalFields';
 import PixFields from './accountFields/pixFields';
-import PayoneerFieldsEUR from './accountFields/payoneerFieldsEUR';
 import CryptoFields from './accountFields/cryptoFields';
 import BankFields from './accountFields/bankFields';
-import PayoneerFieldsUSD from './accountFields/payoneerFieldsUSD';
-import WiseFieldsEUR from './accountFields/wiseFieldsEUR';
-import WiseFieldsUSD from './accountFields/wiseFieldsUSD';
+import PaymentFields from './accountFields/PaymentFields';
 
 interface AccountFormData {
   nombre?: string;
@@ -94,22 +90,20 @@ export default function AddAccountForm({
     if (!walletType) return null;
     switch (walletType) {
       case 'paypal':
-        return <PaypalFields register={register} errors={errors} />;
-
+        return <PaymentFields register={register} errors={errors} currency="USD" type="paypal" />;
       case 'crypto':
       case 'receiver_crypto':
         return <CryptoFields register={register} errors={errors} control={control} />;
-
       case 'pix':
         return <PixFields register={register} errors={errors} />;
       case 'payoneerUSD':
-        return <PayoneerFieldsUSD register={register} errors={errors} />;
+        return <PaymentFields register={register} errors={errors} currency="USD" type="payoneer" />;
       case 'payoneerEUR':
-        return <PayoneerFieldsEUR register={register} errors={errors} />;
+        return <PaymentFields register={register} errors={errors} currency="EUR" type="payoneer" />;
       case 'wiseUSD':
-        return <WiseFieldsUSD register={register} errors={errors} />;
+        return <PaymentFields register={register} errors={errors} currency="USD" type="wise" />;
       case 'wiseEUR':
-        return <WiseFieldsEUR register={register} errors={errors} />;
+        return <PaymentFields register={register} errors={errors} currency="EUR" type="wise" />;
       case 'bank':
         return <BankFields register={register} errors={errors} />;
       default:
