@@ -1,5 +1,5 @@
 import { IconBadgeCheck, IconError, IconInfo, IconWarning } from '@/components/ui/PopUp/Icons';
-import { TIconType } from '@/components/ui/PopUp/types';
+import { TIconSize, TIconType } from '@/components/ui/PopUp/types';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -21,18 +21,37 @@ export const formatDate = (isoDateString: string) => {
 
 /**
  * Obtiene el componente de icono según el tipo
+ * @param type - Tipo de icono a renderizar
+ * @param size - Tamaño del icono en píxeles (opcional)
  */
-export const getIconByType = (type: TIconType): JSX.Element | null => {
+export const getIconByType = (type: TIconType, size?: number) => {
   switch (type) {
     case 'success':
-      return IconBadgeCheck();
+      return IconBadgeCheck({ size });
     case 'info':
-      return IconInfo();
+      return IconInfo({ size });
     case 'warning':
-      return IconWarning();
+      return IconWarning({ size });
     case 'error':
-      return IconError();
+      return IconError({ size });
     default:
       return null;
+  }
+};
+
+/**
+ * Obtiene las clases Tailwind para el tamaño del icono
+ * Maneja el comportamiento responsive para el tamaño 'large'
+ */
+export const getIconSizeClass = (size: TIconSize = 'medium'): string => {
+  switch (size) {
+    case 'small':
+      return 'size-12'; // 48px
+    case 'medium':
+      return 'size-[72px]';
+    case 'large':
+      return 'size-[100px] sm-phone:size-[130px]';
+    default:
+      return 'size-[72px]';
   }
 };

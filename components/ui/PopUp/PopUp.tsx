@@ -44,7 +44,8 @@ export const PopUp = ({
   isDark, 
   note,
   actionButton,
-  status
+  status,
+  iconSize
 }: IPopUpProps) => {
   // Obtener configuración de la variante
   const variantConfig = POPUP_VARIANTS[variant];
@@ -57,10 +58,12 @@ export const PopUp = ({
   const { iconComponent: IconComponent, contentComponent: ContentComponent, iconProps = {}, contentProps = {} } = variantConfig;
 
   // Combinar props del usuario con props de configuración
+  // El iconSize del usuario tiene prioridad sobre el default de la variante
   const mergedIconProps = {
     ...iconProps,
     title,
     isDark,
+    ...(iconSize && { iconSize }), // Override si el usuario lo especifica
   };
 
   console.log('ActionButton recibido:', actionButton);

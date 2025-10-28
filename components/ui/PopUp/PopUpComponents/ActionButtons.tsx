@@ -17,7 +17,7 @@ const BackArrowButton: React.FC<{ isDark?: boolean }> = ({ isDark }) => (
     onClick={() => Swal.close()}
     className="btn-back items-center relative flex h-[38px] sm-phone:h-12 rounded-full hover:bg-transparent dark:text-darkText dark:bg-none"
   >
-    <div className="relative size-8 sm-phone:size-12 overflow-hidden">
+    <div className="relative size-8 sm-phone:size-12 overflow-hidden content-center">
       <ChevronLeft
         color={isDark ? '#ebe7e0' : '#252526'}
         width={32}

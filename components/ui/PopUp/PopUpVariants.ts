@@ -11,7 +11,7 @@ import {
   SimpleContent,
   StatusContent 
 } from './PopUpComponents/ContentComponents';
-import { TIconType } from './types';
+import { TIconType, TIconSize } from './types';
 
 /**
  * Tipos de variantes disponibles para el PopUp
@@ -44,42 +44,42 @@ export const POPUP_VARIANTS: Record<TPopUpVariant, PopUpVariantConfig> = {
     icon: 'success',
     iconComponent: PlaneWithBadge,
     contentComponent: FullContent,
-    iconProps: { iconType: 'success' },
+    iconProps: { iconType: 'success', iconSize: 'large' as TIconSize },
   },
   'success-compact': {
     icon: 'success',
     iconComponent: IconWithTitle,
     contentComponent: TextOnlyContent,
-    iconProps: { iconType: 'success', isVertical: false },
+    iconProps: { iconType: 'success', isVertical: false, iconSize: 'medium' as TIconSize },
   },
   'info-detailed': {
     icon: 'info',
     iconComponent: CenteredIcon,
     contentComponent: DetailedContent,
-    iconProps: { iconType: 'info' },
+    iconProps: { iconType: 'info', iconSize: 'large' as TIconSize },
   },
   'simple-error': {
     icon: 'error',
     iconComponent: SimpleIcon,
     contentComponent: SimpleContent,
-    iconProps: { iconType: 'error' },
+    iconProps: { iconType: 'error', iconSize: 'medium' as TIconSize },
   },
   'simple-warning': {
     icon: 'warning',
     iconComponent: SimpleIcon,
     contentComponent: SimpleContent,
-    iconProps: { iconType: 'warning' },
+    iconProps: { iconType: 'warning', iconSize: 'medium' as TIconSize },
   },
   'success-with-status': {
     icon: 'success',
     iconComponent: IconWithTitle,
     contentComponent: StatusContent,
-    iconProps: { iconType: 'success', isVertical: false },
+    iconProps: { iconType: 'success', isVertical: false, iconSize: 'medium' as TIconSize },
   },
   'warning-with-cancel': {
     icon: 'warning',
     iconComponent: CenteredIcon,
-    contentComponent: FullContent,
-    iconProps: { iconType: 'warning' },
+    contentComponent: DetailedContent,
+    iconProps: { iconType: 'warning', iconSize: 'small' as TIconSize },
   },
 };
