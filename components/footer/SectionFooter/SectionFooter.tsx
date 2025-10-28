@@ -23,12 +23,12 @@ export function Section({
   return (
     <>
       {blog ? (
-        <section className="flex flex-col items-center sm:mb-4 sm:flex-row">
+        <section className="flex flex-col items-center sm:mb-4 sm:flex-row ">
           {links.map(({ href, label, view }, index) => (
-            <>
-              <FooterLink key={href} href={href} label={label} view={view} />
+            <div key={href} className="flex items-center">
+              <FooterLink href={href} label={label} view={view} />
               {index < links.length - 1 && <span className="mx-2 hidden sm:block">|</span>}
-            </>
+            </div>
           ))}
         </section>
       ) : (
@@ -39,7 +39,9 @@ export function Section({
           <span className="mb-2  font-textFont text-[18px]">{title}</span>
 
           {links.map(({ href, label, view }) => (
-            <FooterLink key={href} href={href} label={label} view={view} />
+            <div key={href} className="mb-3">
+              <FooterLink href={href} label={label} view={view} />
+            </div>
           ))}
           {/* Conditional Rendering for the view image */}
           {title == "Normativa" && (

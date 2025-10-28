@@ -15,7 +15,7 @@ const HelpCenterPage = () => {
 
   return (
     <>
-      <div className="relative flex w-full flex-col items-center justify-center gap-20 px-4 py-10 md:px-8 lg:px-4">
+      <div className="relative flex w-full flex-col items-center justify-center gap-20 px-4 py-10 md:px-8 lg:px-4 mt-16">
         <AnimatedBlurredCircles tope="top-[-260px]" />
         <div>
           <div className="mx-auto max-w-[490px] lg2:max-w-[1204px]">
@@ -52,7 +52,7 @@ const HelpCenterPage = () => {
                 </Link>
               ))}
             </div>
-            <div className="mt-20 flex flex-col text-center font-textFont lg2:flex-row lg2:items-center lg2:justify-center lg2:gap-4">
+            <div className="mt-10 flex flex-col text-center font-textFont lg2:flex-row lg2:items-center lg2:justify-center lg2:gap-4">
               <p className="font-light">¿Sospechas que eres víctima de un fraude?</p>
               <Link
                 href="/es/centro-de-ayuda/prevencion-y-fraude"
@@ -62,18 +62,20 @@ const HelpCenterPage = () => {
               </Link>
             </div>
           </div>
-          <section className="mx-auto mt-20 flex max-w-[996px] flex-col items-center">
+          <section className="mx-auto mt-10 flex max-w-[996px] flex-col items-center">
             <ContactForm />
           </section>
-          <div className="mx-auto mt-10 flex max-w-[918px] flex-col items-center gap-2 md:flex-row">
-            <Image
-              className="h-[320px] w-[332px] object-cover drop-shadow-light dark:drop-shadow-darkmode lg2:h-[386px] lg2:w-[398px]"
-              src={isDark ? helpCenter4Dark : helpCenter4}
-              alt="Imagen de SwaplyAr Plus Rewards"
-              width={360}
-              height={270}
-            />
-            <div className="flex flex-col items-center gap-2">
+          <div className="mx-auto mt-10 flex max-w-[918px] flex-col items-center gap-12 md:flex-row">
+            <div className="w-[381px] overflow-hidden flex-shrink-0">
+              <Image
+                className="h-[320px] w-[381px] object-cover drop-shadow-light dark:drop-shadow-darkmode lg2:h-[386px] lg2:w-[381px]"
+                src={isDark ? helpCenter4Dark : helpCenter4}
+                alt="Imagen de SwaplyAr Plus Rewards"
+                width={360}
+                height={270}
+              />
+            </div>
+            <div className="flex flex-col items-center max-w-[489px] gap-2">
               <h2 className="text-center font-textFont text-[36px]">
                 SwaplyAr Plus Rewards™ premia tu fidelidad, con el programa de fidelización
               </h2>
@@ -87,7 +89,7 @@ const HelpCenterPage = () => {
               />
             </div>
           </div>
-          <div className="mx-auto mt-10 flex max-w-[490px] flex-col gap-10 lg2:max-w-[989px] lg2:flex-row">
+          <div className="mx-auto mt-11 mb-[50px] flex max-w-[490px] flex-col gap-10 lg2:max-w-[989px] lg2:flex-row">
             {sectionBottomHelpCenter.map((item, i: number) => (
               <Link key={i} href={item.href} target="_blank" className="group flex flex-1 flex-col items-center gap-2">
                 <Image
@@ -113,14 +115,14 @@ const HelpCenterPage = () => {
           </div>
         </div>
       </div>
-      <section className="hidden md:block">
+      {/* <section className="hidden md:block">
         <FlyerTrabajo
           imageSrc={FlyerGif}
           description="Encontrá respuestas a tus dudas"
           nameButton="Preguntas frecuentes"
           href="/es/centro-de-ayuda/preguntas-frecuentes"
         />
-      </section>
+      </section> */}
     </>
   );
 };

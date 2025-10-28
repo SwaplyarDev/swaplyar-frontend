@@ -15,6 +15,7 @@ interface RewardCardProps {
   linkText: string;
   linkHref: string;
   className: string;
+  customImageWidth?: number;
 }
 
 function RewardCard({
@@ -26,23 +27,25 @@ function RewardCard({
   linkText,
   linkHref,
   className,
+  customImageWidth,
 }: RewardCardProps) {
   return (
     <div
       className={clsx(
-        'box-border flex w-full transform flex-col items-center rounded md:justify-between lg2:flex-col',
+        'box-border flex transform flex-col items-center rounded md:justify-between lg2:flex-col w-[386px]',
         className,
       )}
     >
       <Image
-        className="w-[332px] object-cover drop-shadow-light dark:drop-shadow-darkmode lg2:w-[385px]"
+        className="object-cover drop-shadow-light dark:drop-shadow-darkmode"
         src={imageSrc}
         alt={imageAlt}
         width={350}
         height={350}
+        style={{ width: customImageWidth ? `${customImageWidth}px` : '386px' }}
       />
-      <div className="max-w-[332px] lg2:max-w-[385px]">
-        <h3 className="self-start text-[28px]">{title}</h3>
+      <div style={{ maxWidth: '386px' }} className="text-center">
+        <h3 className="text-[28px]">{title}</h3>
         <p className="font-light">
           {description}
           <Link
