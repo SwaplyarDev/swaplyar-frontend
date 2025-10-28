@@ -31,7 +31,7 @@ import LoadingGif from '../ui/LoadingGif/LoadingGif';
 import PixFields from './accountFields/pixFields';
 import CryptoFields from './accountFields/cryptoFields';
 import BankFields from './accountFields/bankFields';
-import PaymentFields from './accountFields/paymentFields';
+import PaymentFields from './accountFields/PaymentFields';
 
 interface AccountFormData {
   nombre?: string;
