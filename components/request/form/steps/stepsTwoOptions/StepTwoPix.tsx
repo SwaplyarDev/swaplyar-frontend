@@ -1,9 +1,8 @@
 import React from 'react';
 import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch } from 'react-hook-form';
-import InputSteps from '@/components/inputSteps/InputSteps';
-import { FieldError } from 'react-hook-form';
 import InfoStep from '@/components/ui/InfoStep/InfoStep';
 import clsx from 'clsx';
+import CustomInput from '@/components/ui/Input/CustomInput';
 
 interface StepTwoPixProps {
   register: UseFormRegister<any>;
@@ -28,40 +27,61 @@ const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, blockAll, for
         <InfoStep option="pix" />
       </div>
       <div className="mx-0 grid grid-cols-1 gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:grid-cols-2 sm-phone:gap-x-8 sm-phone:gap-y-2">
-        <InputSteps
+        <CustomInput
           label="Nombre"
           name="receiver_first_name"
-          id="receiver_first_name"
           type="text"
-          placeholder={errors.reciever_first_name ? 'Nombre *' : 'Nombre'}
+          placeholder={errors.receiver_first_name ? 'Nombre *' : 'Nombre'}
           disabled={blockAll || formData.stepOne?.own_account === 'Si'}
-          value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_first_name : undefined}
-          defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
           register={register}
-          watch={watch}
-          rules={{
+          value={
+            formData.stepOne?.own_account === 'Si'
+              ? formData.stepOne?.sender_first_name
+              : watch('receiver_first_name')
+          }
+          validation={{
             required: 'El Nombre es obligatorio',
             pattern: {
               value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
               message: 'El Nombre solo puede contener letras y espacios',
             },
           }}
-          error={errors.receiver_first_name ? (errors.receiver_first_name as FieldError) : undefined}
+          error={errors.receiver_first_name?.message as string}
           className="order-1"
         />
-
-        <InputSteps
+        <CustomInput
+          label="Apellido"
+          name="receiver_last_name"
+          type="text"
+          placeholder={errors.receiver_last_name ? 'Apellido *' : 'Apellido'}
+          disabled={blockAll || formData.stepOne?.own_account === 'Si'}
+          register={register}
+          value={
+            formData.stepOne?.own_account === 'Si'
+              ? formData.stepOne?.sender_last_name
+              : watch('receiver_last_name')
+          }
+          validation={{
+            required: 'El Apellido es obligatorio',
+            pattern: {
+              value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+              message: 'El Apellido solo puede contener letras y espacios',
+            },
+          }}
+          error={errors.receiver_last_name?.message as string}
+          className="order-2 sm-phone:order-3"
+        />
+        <CustomInput
           label="PIX KEY / Correo Electronico"
           name="pixKey"
-          id="pixKey"
           type="text"
           placeholder={errors.pixKey ? 'PIX KEY / Correo Electronico *' : 'PIX KEY / Correo Electronico'}
           disabled={blockAll}
           register={register}
-          watch={watch}
-          rules={{
-            required: 'El PIX KEY es obligatorio',
-            validate: (value) => {
+          value={watch('pixKey')}
+          validation={{
+            required: 'El PIX KEY / Correo electronico es obligatorio',
+            validate: (value: string) => {
               const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i;
               const phonePattern = /^\+?[1-9]\d{1,14}$/;
               const cpfPattern = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
@@ -74,59 +94,35 @@ const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, blockAll, for
                 cpfPattern.test(value) ||
                 cnpjPattern.test(value) ||
                 randomKeyPattern.test(value)
-              ) {
-                return true;
-              }
+              ) return true;
 
-              return 'El PIX KEY es obligatorio';
+              return 'El PIX KEY / Correo electronico es obligatorio';
             },
           }}
-          error={errors.pix_key ? (errors.pix_key as FieldError) : undefined}
+          error={errors.pixKey?.message as string}
           className="order-3 sm-phone:order-2"
         />
-
-
-        <InputSteps
-          label="Apellido"
-          name="receiver_last_name"
-          id="receiver_last_name"
-          type="text"
-          placeholder={errors.reciever_last_name ? 'Apellido *' : 'Apellido'}
-          disabled={blockAll || formData.stepOne?.own_account === 'Si'}
-          value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.sender_last_name : undefined}
-          defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
-          register={register}
-          watch={watch}
-          rules={{
-            required: 'El Apellido es obligatorio',
-            pattern: {
-              value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
-              message: 'El Apellido solo puede contener letras y espacios',
-            },
-          }}
-          error={errors.receiver_last_name ? (errors.receiver_last_name as FieldError) : undefined}
-          className="order-2 sm-phone:order-3"
-        />
-
-        
-        <InputSteps
+        <CustomInput
           label="CPF"
           name="individual_tax_id"
-          id="individual_tax_id"
           type="text"
           placeholder={errors.individual_tax_id ? 'CPF *' : 'CPF'}
           disabled={blockAll}
           register={register}
-          watch={watch}
-          maxLength={14}
-          disabledLetters
-          rules={{
+          value={watch('individual_tax_id') || ''}
+          validation={{
             required: 'El CPF es obligatorio',
+            validate: (value: string) =>
+              !value
+                ? true
+                : /^[0-9.-]+$/.test(value)
+                ? true
+                : 'El CPF solo puede contener números, puntos y guiones',
           }}
-          error={errors.individual_tax_id ? (errors.individual_tax_id as FieldError) : undefined}
+          error={errors.individual_tax_id?.message as string}
           className="order-4"
+          maxLength={14}
         />
-        {/* Agregar pixId */}
       </div>
     </>
   );

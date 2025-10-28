@@ -120,6 +120,7 @@ export const RegisterForm = () => {
               type="text"
               name="lastName"
               register={register}
+              value={watch('lastName')}
               validation={{ required: 'El apellido es obligatorio' }}
               error={errors.lastName?.message}
               placeholder="Apellido"
@@ -133,6 +134,7 @@ export const RegisterForm = () => {
           type="text"
           name="email"
           register={register}
+          value={watch('email')}
           validation={{
             required: 'El correo electrónico es obligatorio',
             pattern: {
