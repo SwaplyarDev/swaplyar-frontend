@@ -2,6 +2,7 @@
 import React from 'react';
 
 import clsx from 'clsx';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 
 interface ButtonAuthProps {
   label: string;
@@ -25,13 +26,28 @@ const ButtonAuth: React.FC<ButtonAuthProps> = ({
   variant = 'primary',
 }) => {
   let variantClass = '';
-  const commonClass = 'relative h-10.5 p-0 items-center justify-center rounded-3xl font-titleFont font-semibold text-base';
+
+  // Alturas: mobile 44px, tablet 46px, notebooks 48px
+  const heightClass = 'h-[44px] sm:h-[46px] lg:h-[48px]';
+
+  // Texto: 16px en todos los breakpoints
+  const textClass = 'text-[16px] leading-[20px]';
+
+  // Clases comunes para todos los botones
+  const commonClass = clsx('relative h-10.5 p-0 items-center justify-center rounded-3xl font-titleFont font-semibold text-base',
+    heightClass,
+    textClass);
+
   if (variant === 'primary') {
-    variantClass = disabled || loading
-      ? 'border-disabledButtonsLigth bg-disabledButtonsLigth text-darkText dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText cursor-not-allowed'
-      : isDark
-        ? 'border-darkText bg-darkText text-lightText'
-        : 'border-buttonsLigth bg-buttonsLigth text-darkText';
+    if (disabled || loading) {
+      variantClass =
+        'border-disabledButtonsLigth bg-disabledButtonsLigth text-darkText dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText cursor-not-allowed';
+    } else {
+      // Aplicamos tus clases globales de hover
+      variantClass = isDark
+        ? 'border-darkText bg-darkText text-lightText buttonSecondDark'
+        : 'border-buttonsLigth bg-buttonsLigth text-darkText buttonSecond';
+    }
   } else if (variant === 'secondary') {
     variantClass = [
       'dark:hover:bg-transparent',
@@ -40,22 +56,36 @@ const ButtonAuth: React.FC<ButtonAuthProps> = ({
       disabled || loading ? 'border-disabledButtonsLigth text-disabledButtonsLigth dark:border-disabledButtonsDark dark:text-disabledButtonsDark cursor-not-allowed' : '',
     ].filter(Boolean).join(' ');
   }
+  //combinamos las clases
   const buttonClass = clsx(
     variantClass,
     commonClass,
     className
   );
-
+  //si loading es true mostramos el loading
+  if (loading) {
+    return (
+      <div
+        className={clsx(
+          'relative h-10.5 rounded-3xl flex items-center justify-center',
+          heightClass,
+          textClass,
+          className
+        )}
+      >
+        <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="24px" className="sm:size-[42px] lg:size-[45px]" />
+      </div>
+    )
+  }
+  //sino mostramos el boton normal con las clases combinadas.
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
       className={buttonClass}
-    >
-      {loading ? 'Cargando...' : label}
-    </button>
-  );
-};
+    >{label}</button>
+  )
+}
 
 export default ButtonAuth;

@@ -14,12 +14,12 @@ import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import ButtonBack from '../ui/ButtonBack/ButtonBack';
 import AuthTitle from './AuthTitle';
-import ButtonAuth from './AuthButton';
+import AuthButton from './AuthButton';
 
 type FormInputs = {
   verificationCode: string[];
 };
- 
+
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 
@@ -122,7 +122,7 @@ export const VerifyCodePage = () => {
       console.log('Verification result en verify-code-page:', result);
       if (!result.ok) {
         const errorMessage = typeof result.message === 'string' ? result.message : 'El código ingresado es incorrecto o ha expirado.';
-       const cleanMessage = errorMessage.replace(/Read more at.*$/, '').trim();
+        const cleanMessage = errorMessage.replace(/Read more at.*$/, '').trim();
         setError('verificationCode', {
           type: 'manual',
           message: cleanMessage,
@@ -314,23 +314,17 @@ export const VerifyCodePage = () => {
 
           <div className="my-3 flex items-center justify-between">
             <ButtonBack route="/es/iniciar-sesion" isDark={isDark} />
-            
-            {loading ? (
-              <div className="flex items-center justify-center w-[220px] xs:w-[250px] h-[42px]">
-                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="41px" />
-              </div>
-            ) : (
-                <ButtonAuth
-                  label="Confirmar"
-                  disabled={!isCodeComplete || loading}
-                  loading={loading}
-                  isDark={isDark}
-                  className='px-4 w-[220px] xs:w-[250px]'
-                />
-            )}
+
+            <AuthButton
+              label="Confirmar"
+              disabled={!isCodeComplete || loading}
+              loading={loading}
+              isDark={isDark}
+              className="px-4 w-[220px] xs:w-[250px]"
+            />
           </div>
 
-          
+
           {attempts > 0 && attempts !== 3 && !reLoading && (
             <div className='relative'>
               <p className="absolute w-full text-center text-base text-buttonsLigth dark:text-darkText sm:text-lg">

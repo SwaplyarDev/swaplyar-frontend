@@ -1,5 +1,5 @@
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { Email } from '@mui/icons-material';
+import { MdOutlineEmail } from "react-icons/md";
 import { useSession } from 'next-auth/react';
 
 type EmailCardProps = {
@@ -8,25 +8,20 @@ type EmailCardProps = {
 
 const EmailCard = ({ setShow }: EmailCardProps) => {
   const { isDark } = useDarkTheme();
-// siempre trae el email actualizado desde la sesión
+  // siempre trae el email actualizado desde la sesión
   const { data: session } = useSession();
 
   return (
-    <>
+    <section className='sm:px-6 px-4 '>
       <div className="flex items-center justify-between">
-        <h2 className="mb-3 sm:px-6 px-2 text-[28px] sm:text-[36px] md:text-[36px]">Correo Electrónico</h2>
-        <Email className="h-[50px] w-[50px] mr-[20px]" />
+        <h2 className="mb-3 text-[24px] font-normal">Correo Electrónico</h2>
+        <MdOutlineEmail className="w-[27px] h-[27px] " />
       </div>
-      <div className="mt-2 flex items-center justify-between">
-        <p className="text-[16px] sm:text-[20px] sm:px-6 px-2">{session?.user.email}</p>
-        <button
-          className={`h-6 text-[16px] font-light text-[#0148F4] dark:hover:text-[#E1E1E1] hover:text-[#2A68FE] dark:text-[#C8C8C8] hover:font-normal mr-6`}
-          onClick={() => setShow(true)}
-        >
-          Editar
-        </button>
+      <div className="mt-2  flex items-center justify-between ">
+        <p className="text-[16px] ">{session?.user.email}</p>
+       
       </div>
-    </>
+    </section>
   );
 };
 

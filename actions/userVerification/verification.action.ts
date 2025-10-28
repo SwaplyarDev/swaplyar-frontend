@@ -85,7 +85,7 @@ export const updateUserProfileAdmin = async (profileId: string, payload: Record<
     }
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/profiles/${profileId}?profileId=${profileId}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/profiles/${profileId}`,
       {
         method: 'PATCH',
         headers: {
@@ -97,7 +97,6 @@ export const updateUserProfileAdmin = async (profileId: string, payload: Record<
     );
 
     const data = await response.json();
-
     if (!response.ok) {
       return { success: false, message: data.message || 'Error al actualizar el perfil' };
     }

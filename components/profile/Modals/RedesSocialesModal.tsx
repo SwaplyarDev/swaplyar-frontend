@@ -8,11 +8,11 @@ import { Button } from '../../ui/Button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../ui/Dialog';
 import { Input } from '../../ui/Input';
 import AddSocialNetwork from '../ui/AddSocialNetwork';
-import { useSocialNetworksStore } from '../store/socialNetworksStore';
+import { PlataformSocial, useSocialNetworksStore } from '../store/socialNetworksStore';
 
 type SocialMedia = {
   id: string;
-  type: 'facebook' | 'instagram' | 'twitter' | 'linkedin' | any;
+  type: PlataformSocial;
   username: string;
 };
 
@@ -27,7 +27,7 @@ const RedesSocialesModal = ({ show, setShow, socialNetworks }: SocialMediaModalP
 
   const { socialAccounts, addSocial, removeSocial } = useSocialNetworksStore();
 
-  const [newSocialType, setNewSocialType] = useState<string>('');
+  const [newSocialType, setNewSocialType] = useState<PlataformSocial>('facebook');
   // const [socialAccounts, setSocialAccounts] = useState<SocialMedia[]>(socialNetworks);
   const [newSocialUsername, setNewSocialUsername] = useState('');
 
@@ -50,7 +50,7 @@ const RedesSocialesModal = ({ show, setShow, socialNetworks }: SocialMediaModalP
         type: newSocialType,
         username: newSocialUsername,
       });
-      setNewSocialType('');
+      setNewSocialType('facebook');
       setNewSocialUsername('');
     }
   };
@@ -133,7 +133,7 @@ const RedesSocialesModal = ({ show, setShow, socialNetworks }: SocialMediaModalP
               <Input
                 value={newSocialUsername}
                 onChange={(e) => setNewSocialUsername(e.target.value)}
-                className="border border-zinc-600 bg-transparent text-white focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="border border-zinc-600 bg-transparent  focus-visible:ring-0 focus-visible:ring-offset-0"
                 placeholder="Nombre de usuario"
               />
               <Button

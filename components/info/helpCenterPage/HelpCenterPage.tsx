@@ -8,6 +8,7 @@ import { sectionBottomHelpCenter, sectionLinksHelpCenter } from '@/data/sectionH
 import clsx from 'clsx';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 import { FlyerGif, helpCenter4, helpCenter4Dark } from '@/utils/assets/imgDatabaseCloudinary';
+import ShortButton from '@/components/ui/NewButtons/ShortButton';
 
 const HelpCenterPage = () => {
   const { isDark } = useDarkTheme();
@@ -66,7 +67,7 @@ const HelpCenterPage = () => {
           </section>
           <div className="mx-auto mt-10 flex max-w-[918px] flex-col items-center gap-2 md:flex-row">
             <Image
-              className="h-[320px] w-[332px] object-cover drop-shadow-light dark:drop-shadow-darkmode lg2:h-[386px] lg2:w-[388px]"
+              className="h-[320px] w-[332px] object-cover drop-shadow-light dark:drop-shadow-darkmode lg2:h-[386px] lg2:w-[398px]"
               src={isDark ? helpCenter4Dark : helpCenter4}
               alt="Imagen de SwaplyAr Plus Rewards"
               width={360}
@@ -79,17 +80,11 @@ const HelpCenterPage = () => {
               <p className="font-textFont font-light">
                 Obtené beneficios exclusivos cada vez que realices un cambio de divisas con SwaplyAr Plus Rewards™.
               </p>
-              <Link
+              <ShortButton
                 href="/es/programa-de-fidelizacion"
-                className={clsx(
-                  isDark
-                    ? 'buttonSecondDark border-darkText bg-darkText dark:text-lightText'
-                    : 'buttonSecond border-buttonsLigth bg-buttonsLigth',
-                  'relative flex w-[300px] items-center justify-center rounded-3xl border px-[14px] py-3 font-titleFont font-semibold text-darkText',
-                )}
-              >
-                Plus Rewards
-              </Link>
+                text="Plus Rewards"
+                fondoOscuro={true}
+              />
             </div>
           </div>
           <div className="mx-auto mt-10 flex max-w-[490px] flex-col gap-10 lg2:max-w-[989px] lg2:flex-row">

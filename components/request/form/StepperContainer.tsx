@@ -15,6 +15,8 @@ import { useRewardsStore } from '@/store/useRewardsStore';
 import useControlRouteRequestStore from '@/store/controlRouteRequestStore';
 import { shallow } from 'zustand/shallow';
 import type { Session } from 'next-auth';
+import AuthButton from '@/components/auth/AuthButton';
+import { useRouter } from 'next/navigation'
 // Carga diferida de subcomponentes para reducir el bundle inicial
 const StepOne = dynamic(() => import('./steps/StepOne'));
 const StepTwo = dynamic(() => import('./steps/StepTwo'));
@@ -40,7 +42,7 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
   const [blockAll, setBlockAll] = useState(false);
   const { isStopped, setStop } = useChronometerState((s) => ({ isStopped: s.isStopped, setStop: s.setStop }), shallow);
   const [correctSend, setCorrectSend] = useState(false);
-
+  const router = useRouter();
   // Estado nuevo para guardar mensaje de error detallado
   const [errorSend, setErrorSend] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -80,7 +82,7 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
       setPassFalse();
       try {
         document.cookie = 'requestPass=; Max-Age=0; Path=/; SameSite=Lax';
-      } catch {}
+      } catch { }
     };
   }, [setPassFalse]);
 
@@ -122,7 +124,7 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
       didOpen: () => {
         const cancelButton = document.getElementById('cancel-button');
         if (cancelButton) {
-          cancelButton.addEventListener('click', () => {
+          cancelButton.addEventListener('click', async () => {
             setBlockAll(true);
             setStop(true);
             resetToDefault();
@@ -130,7 +132,12 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
             setCorrectSend(false);
             setErrorSend(false);
             Swal.close();
-            window.scrollTo({ top: 0 });
+            console.log('Solicitud cancelada por el usuario.');
+
+            // 🔹 Redirección a la pantalla de inicio
+            router.push('/es/inicio/');
+
+            // 🔹 Efecto visual de cancelación
             Swal.fire({
               icon: 'error',
               background: '#ffffff00',
@@ -139,7 +146,9 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
             });
           });
         }
-      },
+      }
+
+      ,
     });
   }, [getSwal, isDark, setBlockAll, setStop, resetToDefault, setActiveStep, setCorrectSend, setErrorSend]);
 
@@ -166,13 +175,13 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
         setErrorSend(false);
         setErrorMessage(null);
         window.scrollTo({ top: 0 });
-      } 
+      }
     } catch (error: any) {
-       // Capturamos mensaje real del error lanzado en el store
-       setErrorSend(true);
+      // Capturamos mensaje real del error lanzado en el store
+      setErrorSend(true);
       setErrorMessage(error.message || 'Error desconocido en el envío.');
       console.error('Error en el proceso de envío:', error);
-    } finally { 
+    } finally {
       setLoading(false);
     }
   }, [selectedSendingSystem, selectedReceivingSystem, submitAllData, session?.accessToken, discounts_ids, getSwal]);
@@ -313,12 +322,12 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
             </h2>
             <>
               {errorMessage && (
-              <p className="w-full text-center font-textFont text-darkText">
-                {errorMessage}
-              </p>
-            )}
+                <p className="w-full text-center font-textFont text-darkText">
+                  {errorMessage}
+                </p>
+              )}
               <div className="w-full">
-                
+
                 <p className={clsx('hidden w-full text-end font-textFont text-darkText sm-phone:block')}>
                   Si el problema persiste, vuelve a intentarlo más tarde y si tienes alguna pregunta
                 </p>
@@ -367,9 +376,8 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
             )}
           >
             <div
-              className={`relative w-full justify-between sm:flex ${completedSteps[index] ? 'flex md-tablet:items-start' : 'flex-col items-center'} ${
-                !completedSteps[index] && index !== activeStep ? 'opacity-50' : ''
-              }`}
+              className={`relative w-full justify-between sm:flex ${completedSteps[index] ? 'flex md-tablet:items-start' : 'flex-col items-center'} ${!completedSteps[index] && index !== activeStep ? 'opacity-50' : ''
+                }`}
             >
               <div
                 className={clsx(
@@ -385,10 +393,10 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
                 >
                   {activeStep === 1 && !completedSteps[1]
                     ? step.title.split('del').map((part, index) => (
-                        <span key={index} className={index === 1 ? 'block' : ''}>
-                          {index === 1 ? 'del' + part : part}
-                        </span>
-                      ))
+                      <span key={index} className={index === 1 ? 'block' : ''}>
+                        {index === 1 ? 'del' + part : part}
+                      </span>
+                    ))
                     : step.title}
                 </h2>
               </div>
@@ -429,19 +437,15 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
         >
           Cancelar esta Solicitud
         </button>
-        {loading ? (
-          <div id="loading" className="flex w-full max-w-[200px] items-center justify-center gap-2">
-            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="56px" />
-          </div>
-        ) : (
-          <button
-            disabled={completedSteps[2] == false || blockAll || loading}
-            onClick={onSendClick}
-            className={`relative h-[60px] w-full max-w-[200px] items-center justify-center rounded-full border border-buttonsLigth bg-buttonsLigth px-9 py-[3px] font-titleFont text-2xl font-semibold text-darkText disabled:border-calculatorLight2 disabled:bg-custom-blue-300 disabled:text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorLight2 dark:disabled:text-darkText ${isDark ? completedSteps[2] == true && 'buttonSecondDark' : completedSteps[2] == true && 'buttonSecond'}`}
-          >
-            Enviar
-          </button>
-        )}
+
+        <AuthButton
+          label="Enviar"
+          onClick={onSendClick}
+          isDark={isDark}
+          loading={loading}
+          disabled={!completedSteps[2] || blockAll || loading}
+          className="w-full max-w-[260px] h-[60px] text-4xl font-semibold" // tamaño más grande
+        />
       </div>
     </div>
   );

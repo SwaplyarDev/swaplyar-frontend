@@ -114,10 +114,19 @@ const InfoStep: FC<InfoStepProps> = ({ option }) => {
 
           const button = document.createElement('button');
           button.innerText = 'Aceptar';
-          button.className = isDark
-            ? 'buttonSecondDark border-darkText bg-darkText dark:text-lightText relative mx-auto my-[13px] flex w-[280px] items-center justify-center rounded-3xl border px-[14px] py-3 font-titleFont font-semibold text-darkText'
-            : 'buttonSecond border-buttonsLigth bg-buttonsLigth relative mx-auto my-[13px] flex w-[280px] items-center justify-center rounded-3xl border px-[14px] py-3 font-titleFont font-semibold text-darkText';
+          // ✅ Clases idénticas a las del ShortButton
+          const baseClasses = `
+            relative flex items-center justify-center
+            rounded-3xl border p-3 font-titleFont font-semibold
+            h-[38px] w-[334px] sm:h-[45px] sm:w-[340px] lg:h-[48px] lg:w-[340px]
+            lg2:w-[380px] mx-auto my-[13px]`;
 
+          // ✅ Colores iguales al ShortButton según el modo
+          const colorClasses = isDark
+            ? 'buttonSecondDark border-darkText bg-darkText text-lightText'
+            : 'buttonSecond border-buttonsLigth bg-buttonsLigth text-darkText';
+
+          button.className = `${baseClasses} ${colorClasses}`;
           button.onclick = () => {
             Swal.close();
             setIsTooltipVisible(false);

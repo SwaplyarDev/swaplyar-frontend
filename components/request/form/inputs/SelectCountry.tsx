@@ -11,6 +11,8 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
   setSelectedCodeCountry,
   errors,
   classNames,
+  // add prop for god view in modal because this broke visual
+  maxHeightModal = false
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const fieldName = 'calling_code';
@@ -69,7 +71,7 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -5 }}
-          className="scrollable-list absolute top-16 z-10 mt-2 max-h-64 w-full overflow-y-auto border border-custom-grayD-300 bg-custom-whiteD shadow-lg"
+          className={`scrollable-list absolute ${maxHeightModal ? "top-10" : "top-16 "} z-10 mt-2 ${maxHeightModal ? "max-h-40" : "max-h-64"}  w-full overflow-y-auto border border-custom-grayD-300 bg-custom-whiteD shadow-lg`}
         >
           {countryOptions.map((country, index) => (
             <li

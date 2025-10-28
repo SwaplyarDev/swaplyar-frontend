@@ -10,7 +10,7 @@ export function TopMenu() {
 
   return (
     <main
-      className={`sticky top-0 z-[1000] flex flex-col bg-white shadow-md dark:bg-lightText ${isAdminPage && 'hidden'}`}
+      className={`sticky top-0 z-[1000] flex flex-col bg-custom-whiteD-500 shadow-md dark:drop-shadow-darkmode dark:bg-lightText ${isAdminPage && 'hidden'}`}
     >
       <TopPopUp />
       <NavbarLanding />

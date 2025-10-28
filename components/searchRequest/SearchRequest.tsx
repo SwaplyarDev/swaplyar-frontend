@@ -23,6 +23,7 @@ import ButtonBack from '../ui/ButtonBack/ButtonBack';
 import { FlyerGif, searchRequestMovile, searchRequestWeb } from '@/utils/assets/imgDatabaseCloudinary';
 //agregamos alert para error en la busqueda
 import Swal from 'sweetalert2';
+import ButtonAuth from '../auth/AuthButton';
 
 export enum AdminStatus {
   Pending = 'pending',
@@ -109,13 +110,13 @@ const SearchRequest = () => {
           confirmButtonColor: isDark ? '#ebe7e0' : '#012A8E',
         });
         throw new Error(response.message || 'Hubo un problema al obtener el estado de la transacción');
-        
+
       }
 
       // Si no hay historial, crear uno con el estado actual
-      const history = response.history || 
-        (response.status ? [{ status: response.status, timestamp: new Date().toISOString() }] : 
-        [{ status: AdminStatus.Pending, timestamp: new Date().toISOString() }]);
+      const history = response.history ||
+        (response.status ? [{ status: response.status, timestamp: new Date().toISOString() }] :
+          [{ status: AdminStatus.Pending, timestamp: new Date().toISOString() }]);
 
       handleSearchRequest(history);
       console.log('Respuesta completa:', response);
@@ -199,25 +200,17 @@ const SearchRequest = () => {
             </div>
 
             <div className="flex h-[50px] flex-col items-center justify-center gap-[18px]">
-              {loading ? (
-                <div className="flex items-center justify-center">
-                  <LoadingGif color={isDark ? '#ebe7e0' : '#012A8E'} size="50px" />
-                </div>
-              ) : (
-                <button
-                  disabled={!isValid}
-                  className={`relative flex h-10 w-[280px] items-center justify-center rounded-3xl bg-buttonsLigth px-[14px] py-3 font-titleFont font-semibold text-darkText dark:bg-darkText ${
-                    !isValid
-                      ? 'bg-disabledButtonsLigth dark:bg-placeholderDark dark:text-darkText'
-                      : isDark && isValid
-                        ? 'buttonSecondDark text-lightText'
-                        : 'buttonSecond'
-                  }`}
-                >
-                  Buscar Solicitud
-                </button>
-              )}
+              <ButtonAuth
+                label="Buscar Solicitud"
+                type="submit"
+                isDark={isDark}
+                loading={loading}
+                disabled={!isValid || loading}
+                className="w-[280px]"
+                variant="primary"
+              />
             </div>
+
 
             <ButtonBack route="/es/centro-de-ayuda" isDark={isDark} />
           </form>

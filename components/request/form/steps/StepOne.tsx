@@ -8,9 +8,10 @@ import { CountryOption } from '@/types/request/request';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import SelectCountry from '../inputs/SelectCountry';
 import useWalletStore from '@/store/useWalletStore';
-import { validatePhoneNumber } from '@/utils/validatePhoneNumber'; 
-import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
 import CustomInput from '@/components/ui/Input/CustomInput';
+import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
+import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
+import AuthButton from '@/components/auth/AuthButton';
 
 interface FormData {
   first_name: string;
@@ -221,9 +222,31 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                   textColor={['lightText', 'lightText']}
                   classNames="pl-2 w-[95px]"
                 />
-              </CustomInput>
-            )}
-          />
+              )}
+            />
+            <input
+              placeholder={isFocused ? '' : errors.phone ? 'Telefono*' : 'Telefono'}
+              className={clsx(
+                'inputChangeAutofillReverse w-full border-none bg-transparent font-textFont focus:border-none focus:outline-none focus:ring-0',
+                errors.phone
+                  ? 'placeholder-errorColor'
+                  : 'placeholder-inputLightDisabled dark:placeholder-placeholderDark',
+              )}
+              type="tel"
+              disabled={blockAll}
+              {...register('phone', {
+                required: 'El número de teléfono es obligatorio',
+                validate: (value) => {
+                  const country = watch('calling_code');
+                  const result = validatePhoneNumber(value, country);
+                  return result === true ? true : result;
+                },
+              })}
+            />
+          </div>
+          {errors.phone && (
+            <p className="px-[10px] font-textFont text-sm text-errorColor">{errors.phone.message as string}</p>
+          )}
         </div>
         {!selectedWallet && (
           <>
@@ -253,22 +276,17 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
           </>
         )}
       </div>
-      <div className="flex justify-center sm-phone:justify-end">
+      <div className="flex justify-center sm-phone:justify-end sm-tablet:justify-center lg:justify-end">
         {completedSteps[0] ? (
           hasChanges ? (
-            loading ? (
-              <div className="flex w-full max-w-[300px] items-center justify-center">
-                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="42px" />
-              </div>
-            ) : (
-              <button
-                type="submit"
-                className={`flex h-[46px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] font-titleFont text-base font-semibold text-white disabled:border-gray-400 disabled:bg-custom-blue-300 disabled:text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 dark:disabled:text-darkText ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
-                disabled={!isValid || blockAll || loading}
-              >
-                Siguiente
-              </button>
-            )
+            <AuthButton
+              label="Siguiente"
+              type="submit"
+              isDark={isDark}
+              loading={loading}
+              disabled={!isValid || blockAll}
+              className="w-full max-w-[300px] "
+            />
           ) : (
             <button
               className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
@@ -279,20 +297,18 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               <ArrowUp />
             </button>
           )
-        ) : loading ? (
-          <div className="flex w-full max-w-[300px] items-center justify-center">
-            <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="42px" />
-          </div>
         ) : (
-          <button
+          <AuthButton
+            label="Siguiente"
             type="submit"
-            className={`flex h-[46px] w-full max-w-[300px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-6 py-[18px] font-titleFont text-base font-semibold text-white disabled:border-gray-400 disabled:bg-custom-blue-300 disabled:text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText dark:disabled:bg-calculatorDark2 dark:disabled:text-darkText ${isDark ? isValid && 'buttonSecondDark' : isValid && 'buttonSecond'}`}
-            disabled={!isValid || blockAll || loading}
-          >
-            Siguiente
-          </button>
+            isDark={isDark}
+            loading={loading}
+            disabled={!isValid || blockAll}
+            className="w-full max-w-[300px] "
+          />
         )}
       </div>
+
     </form>
   );
 };
