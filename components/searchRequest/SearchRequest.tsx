@@ -134,7 +134,7 @@ const SearchRequest = () => {
   };
 
   return (
-    <div>
+    <div className='mt-20'>
       <div className="mx-auto flex w-full max-w-screen-lg flex-col px-4 py-8 md:gap-4 md:px-8 lg2:px-4">
         <div className="flex flex-col items-center justify-center">
           <h1 className="flex h-auto w-full max-w-[505px] items-center justify-center text-center font-titleFont text-[38px] font-medium text-lightText dark:text-darkText lg2:text-[40px]">

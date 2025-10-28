@@ -152,13 +152,14 @@ export const RegisterForm = () => {
             id="termsConditions"
             type="checkbox"
             className={clsx(
-              watch('termsConditions') && 'border-inputLight bg-inputLight dark:border-lightText dark:bg-lightText',
-              'h-5 w-5 cursor-pointer appearance-none rounded-full border-2 border-inputLightDisabled transition-all duration-200 dark:border-lightText',
-              'checked:border-inputLight checked:bg-inputLight checked:ring-opacity-0 dark:checked:border-lightText dark:checked:bg-lightText',
+              watch('termsConditions') && 'border-inputLight bg-inputLight dark:border-custom-blue-300 dark:bg-transparent',
+              'h-5 w-5 cursor-pointer appearance-none rounded-full border-2 border-inputLightDisabled transition-all duration-200 dark:border-custom-blue-300/50 dark:bg-transparent',
+              'checked:border-inputLight checked:bg-inputLight checked:ring-opacity-0 dark:checked:border-custom-blue-300/50 dark:checked:bg-white',
+              'checked:after:content-["✓"] checked:after:text-white checked:after:text-xs checked:after:font-bold checked:after:flex checked:after:items-center checked:after:justify-center checked:after:w-full checked:after:h-full dark:checked:after:text-black',
               'focus:shadow-none focus:outline-none focus:ring-0 focus:ring-offset-0',
-              'hover:border-inputLight checked:hover:border-inputLight checked:focus:border-inputLight checked:focus:bg-inputLight dark:checked:hover:border-lightText dark:checked:focus:border-lightText dark:checked:focus:bg-lightText',
+              'hover:border-inputLight checked:hover:border-inputLight checked:focus:border-inputLight checked:focus:bg-inputLight dark:checked:hover:border-custom-blue-300/50 dark:checked:focus:border-custom-blue-300/50 dark:checked:focus:bg-white',
               errors.termsConditions ? 'border-red-500 ring-2 ring-red-500' : '',
-              'dark:border-lightText dark:bg-lightText dark:invert dark:hover:border-lightText',
+              'dark:hover:border-custom-blue-300',
             )}
             {...register('termsConditions', {
               required: 'Debes aceptar los términos y condiciones.',
