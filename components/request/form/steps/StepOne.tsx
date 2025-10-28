@@ -222,31 +222,9 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                   textColor={['lightText', 'lightText']}
                   classNames="pl-2 w-[95px]"
                 />
-              )}
-            />
-            <input
-              placeholder={isFocused ? '' : errors.phone ? 'Telefono*' : 'Telefono'}
-              className={clsx(
-                'inputChangeAutofillReverse w-full border-none bg-transparent font-textFont focus:border-none focus:outline-none focus:ring-0',
-                errors.phone
-                  ? 'placeholder-errorColor'
-                  : 'placeholder-inputLightDisabled dark:placeholder-placeholderDark',
-              )}
-              type="tel"
-              disabled={blockAll}
-              {...register('phone', {
-                required: 'El número de teléfono es obligatorio',
-                validate: (value) => {
-                  const country = watch('calling_code');
-                  const result = validatePhoneNumber(value, country);
-                  return result === true ? true : result;
-                },
-              })}
-            />
-          </div>
-          {errors.phone && (
-            <p className="px-[10px] font-textFont text-sm text-errorColor">{errors.phone.message as string}</p>
-          )}
+              </CustomInput>
+            )}
+          />
         </div>
         {!selectedWallet && (
           <>
@@ -308,7 +286,6 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
           />
         )}
       </div>
-
     </form>
   );
 };
