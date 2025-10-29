@@ -135,7 +135,7 @@ const SearchRequest = () => {
 
   return (
     <div className='mt-20'>
-      <div className="mx-auto flex w-full max-w-screen-lg flex-col px-4 py-8 md:gap-4 md:px-8 lg2:px-4">
+      <div className="mx-auto flex w-full max-w-screen-lg flex-col px-4 py-8 md:gap-4 md:px-8 lg2:px-0">
         <div className="flex flex-col items-center justify-center">
           <h1 className="flex h-auto w-full max-w-[505px] items-center justify-center text-center font-titleFont text-[38px] font-medium text-lightText dark:text-darkText lg2:text-[40px]">
             Consulta el estado de tu solicitud fácilmente
@@ -151,12 +151,12 @@ const SearchRequest = () => {
           </p>
         </div>
 
-        <section className="relative mt-10 flex min-h-[500px] flex-col items-center justify-center">
+        <section className="relative mx-auto mt-[38px] flex min-h-[500px] w-full max-w-[1047px] flex-col items-center justify-center">
           <Image
-            className="absolute left-0 hidden w-[588px] drop-shadow-light dark:drop-shadow-darkmode lg2:block"
+            className="hidden w-[680px] drop-shadow-light dark:drop-shadow-darkmode lg2:block lg2:absolute lg2:left-0 lg2:top-0"
             src={searchRequestWeb}
             alt="SwaplyAr Search Request™"
-            width={700}
+            width={680}
             height={700}
           />
           <div className="flex w-full max-w-[506px] flex-col items-center border-b border-buttonsLigth dark:border-darkText lg2:hidden">
@@ -171,15 +171,13 @@ const SearchRequest = () => {
 
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="mt-10 flex w-full max-w-[466px] flex-col items-center gap-4 lg2:self-end"
+            className="flex w-[490px] h-[180px] flex-col items-center gap-4  lg2:absolute lg2:right-0 lg2:top-[20px] lg2:mt-0"
           >
-            <div className="flex h-[81px] w-full flex-col">
-              <label htmlFor="numberOfRequest" className="text-right font-textFont text-xs font-light">
-                Número de Solicitud
-              </label>
+            <div className="flex h-[50px] w-full flex-col ">
+            
               <InputOnlyLine
                 placeholder={
-                  errors.transactionId ? 'Número de Solicitud*' : 'N° de Solicitud como figura en el Correo Eletrónico'
+                  errors.transactionId ? 'Número de Solicitud*' : 'N° de Solicitud'
                 }
                 id="numberOfRequest"
                 register={register('transactionId', { required: 'El Número de Solicitud es Obligatorio' })}
@@ -187,32 +185,29 @@ const SearchRequest = () => {
               />
             </div>
 
-            <div className="flex h-[81px] w-full flex-col">
-              <label htmlFor="lastNameRequest" className="text-right font-textFont text-xs font-light">
-                Apellido
-              </label>
+            <div className="flex h-[50px] w-full flex-col">
+              
               <InputOnlyLine
-                placeholder={errors.lastNameRequest ? 'Apellido*' : 'Apellido como figura en el Correo Eletrónico'}
+                placeholder={errors.lastNameRequest ? 'Apellido*' : 'Apellido'}
                 id="lastNameRequest"
                 register={register('lastNameRequest', { required: 'El Apellido es Obligatorio' })}
                 error={errors.lastNameRequest?.message}
               />
             </div>
 
-            <div className="flex h-[50px] flex-col items-center justify-center gap-[18px]">
+            <div className="flex h-[50px] w-full flex-row items-center justify-between">
+              <ButtonBack route="/es/centro-de-ayuda" isDark={isDark} className="!mx-0" />
               <ButtonAuth
                 label="Buscar Solicitud"
                 type="submit"
                 isDark={isDark}
                 loading={loading}
                 disabled={!isValid || loading}
-                className="w-[280px]"
+                className="w-[408px]"
                 variant="primary"
               />
             </div>
-
-
-            <ButtonBack route="/es/centro-de-ayuda" isDark={isDark} />
+           
           </form>
         </section>
       </div>

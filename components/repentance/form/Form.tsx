@@ -165,10 +165,11 @@ const Form = () => {
             <input
               placeholder={errors.phone_number ? 'Número de Telefóno*' : 'Número de Telefóno'}
               className={clsx(
-                'inputChangeAutofill placeholder-text-gray-900 ml-3 h-[50px] w-full border-0 border-none bg-transparent ps-0 text-xs placeholder:font-light focus:border-none focus:outline-none focus:ring-0 dark:text-custom-blue-300 xs:text-lg',
+                'inputChangeAutofill placeholder-text-gray-900 ml-3 h-[50px] w-full border-0 border-none bg-transparent ps-0 text-xs placeholder:font-light focus:border-none focus:outline-none focus:ring-0 xs:text-lg',
+                isDark ? 'text-darkText' : 'text-custom-blue-800',
                 errors.phone_number
                   ? 'placeholder:text-errorColor'
-                  : 'placeholder:text-custom-blue-300 dark:placeholder:text-custom-blue-300',
+                  : isDark ? 'placeholder:text-darkText' : 'placeholder:text-custom-blue-800',
               )}
               type="tel"
               {...register('phone_number', {
@@ -194,8 +195,8 @@ const Form = () => {
             className={clsx(
               'inputChangeAutofill placeholder-text-gray-900 w-[490px] h-[120px] rounded-md border border-gray-300 p-3 text-xs placeholder:font-light focus:outline-none focus:ring-0 xs:text-lg resize-none',
               isDark
-                ? 'border-b-darkText bg-transparent text-darkText placeholder:dark:text-custom-blue-300focus:border-darkText'
-                : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
+                ? 'border-darkText bg-transparent text-custom-blue-300 placeholder: dark:text-custom-blue-300 focus:border-darkText'
+                : 'border-buttonsLigth bg-transparent text-custom-blue-800 placeholder:text-custom-blue-800 focus:border-buttonsLigth focus:outline-none',
               errors.note ? 'placeholder:text-errorColor' : 'placeholder:text-buttonExpandDark',
             )}
             placeholder="Mencione el motivo del Reembolso"

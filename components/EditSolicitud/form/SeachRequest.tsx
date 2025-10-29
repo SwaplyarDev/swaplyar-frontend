@@ -58,24 +58,19 @@ const SeachRequest: React.FC = () => {
         onSubmit={handleSubmit(handleSeachRequestSubmit)}
       >
         <div className="flex h-[100px] flex-col">
-          <label
-            className="mb-3 flex flex-col text-right font-textFont text-xs font-light xs:mb-0 lg:text-sm"
-            htmlFor="transaccionId"
-          >
-            Número de Solicitud
-          </label>
+     
           <input
             disabled={isToggled}
-            className={`flex h-[41px] w-full border-0 border-b-[1px] border-solid pr-0 ps-0 pt-0 text-right text-base placeholder:text-xs xs:placeholder:text-base lg:text-xl ${
+            className={`flex h-[41px] w-full border-0 border-b-[1px] border-solid pr-0 ps-0 pt-0 text-base placeholder:text-xs xs:placeholder:text-base lg:text-xl ${
               isDark
-                ? `${errors.transaccionId !== undefined ? 'placeholder-errorColor' : 'placeholder-placeholderDark'} border-b-darkText bg-transparent text-darkText hover:border-b-placeholderDark focus:border-b-placeholderDark disabled:border-b-disabledDarkText disabled:text-disabledDarkText disabled:placeholder-disabledDarkText disabled:hover:border-b-disabledDarkText`
-                : `${errors.transaccionId !== undefined ? 'placeholder-errorColor' : 'placeholder-inputLightDisabled'} border-b-buttonsLigth bg-transparent text-lightText hover:border-b-selectBtsLight focus:border-b-selectBtsLight disabled:border-b-disabledDarkText disabled:text-disabledLightText disabled:placeholder-disabledLightText disabled:hover:border-b-disabledDarkText`
+                ? `${errors.transaccionId !== undefined ? 'placeholder-errorColor' : 'placeholder:text-custom-blue-300'} border-b-darkText bg-transparent text-custom-blue-300 hover:border-b-placeholderDark focus:border-b-placeholderDark disabled:border-b-disabledDarkText disabled:text-disabledDarkText disabled:placeholder-disabledDarkText disabled:hover:border-b-disabledDarkText`
+                : `${errors.transaccionId !== undefined ? 'placeholder-errorColor' : 'placeholder-inputLightDisabled'} border-b-buttonsLigth bg-transparent text-custom-blue-300 hover:border-b-selectBtsLight focus:border-b-selectBtsLight disabled:border-b-disabledDarkText disabled:text-disabledLightText disabled:placeholder-disabledLightText disabled:hover:border-b-disabledDarkText`
             } outline-none focus:shadow-none focus:outline-none focus:ring-0`}
             type="text"
             placeholder={
               errors.transaccionId !== undefined
                 ? 'N° de Solicitud como figura en el Correo Eletrónico*'
-                : 'N° de Solicitud como figura en el Correo Eletrónico'
+                : 'Número de Solicitud' 
             }
             {...register('transaccionId', {
               required: 'El número de solicitud es obligatorio',
@@ -95,16 +90,20 @@ const SeachRequest: React.FC = () => {
         <div className="mb-10 mt-4 flex w-full flex-col items-center justify-center gap-1 text-center lg:mb-0 lg:justify-end">
   {!isToggled ? (
     <>
+    <div className="flex h-[50px] w-full flex-row items-center justify-between">
+      <ButtonBack route="/es/centro-de-ayuda" isDark={isDark} className="!mx-0" />
       <ButtonAuth
-        label="Editar Solicitud"
+        label="Modificar solicitud"
         type="submit"
         isDark={isDark}
         loading={isLoading}
         disabled={!watch('transaccionId') || isLoading}
-        className="w-full max-w-[300px]"
+        className="w-full max-w-[408px]"
         variant="primary"
       />
-      <ButtonBack route="/es/centro-de-ayuda" isDark={isDark} />
+            </div>
+      
+     
     </>
   ) : (
     <VerifycodeEditRequest
