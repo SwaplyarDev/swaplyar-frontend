@@ -203,7 +203,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
               >
                 Red: Tron (TRC-20)
               </p>
-              <IconTron size="18px" />
+              <IconTron className="w-5 h-5" />
             </div>
             <div
               className={clsx(

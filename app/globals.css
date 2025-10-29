@@ -531,9 +531,13 @@ body.swal2-shown {
 
 body {
   --sb-track-color: #232e33;
-  --sb-thumb-color: #75bfff;
+  --sb-thumb-color: #012A8E;
   --sb-size: 6px;
   padding-right: 0px !important;
+}
+
+.dark body {
+  --sb-thumb-color: #90B0FE;
 }
 
 body::-webkit-scrollbar {
@@ -581,12 +585,12 @@ body::-webkit-scrollbar-thumb {
 /* Estilos del scrollbar usando variables definidas en el body */
 ul.scrollable-list {
   margin-top: 5px;
-  clip-path: inset(0 round 16px);
+  clip-path: inset(0 round 32px);
 }
 
 ul.scrollable-list-repentance {
   margin-top: 5px;
-  clip-path: inset(0 0 0 0 round 0 0 16px 16px);
+  clip-path: inset(0 0 0 0 round 0 0 32px 32px);
 }
 
 ul.scrollable-list,
@@ -602,7 +606,7 @@ ul.scrollable-list-repentance::-webkit-scrollbar {
 
 ul.scrollable-list::-webkit-scrollbar-track,
 ul.scrollable-list-repentance::-webkit-scrollbar-track {
-  background: var(--sb-track-color);
+  background: transparent;
   border-radius: 3px;
 }
 
