@@ -30,18 +30,15 @@ export const useAmountCalculator = () => {
 
     // guardamos el valor por 1 unidad con comisión aplicada
     setRateForOne(res.totalReceived / res.amount); // 👈 totalReceived ya incluye comisión
-    if (isRateOnly) return; // 👈 evita modificar montos del usuario
+    if (isRateOnly) return res; // 👈 evita modificar montos del usuario
+    // recibo → envío
+    if (inverse) setSendAmount(res.totalReceived.toFixed(2));
+    else setReceiveAmount(res.totalReceived.toFixed(2)); // envío → recibo
 
-    if (inverse) {
-      // recibo → envío
-      setSendAmount(res.totalReceived.toFixed(2));
-    } else {
-      // envío → recibo
-      setReceiveAmount(res.totalReceived.toFixed(2));
-    }
+    return res;
   };
-  
-// 🕒 debounce para sendAmount
+
+  // 🕒 debounce para sendAmount
   useEffect(() => {
     if (!isSendActive) return;
     if (!selectedSendingSystem || !selectedReceivingSystem) return;
@@ -78,14 +75,29 @@ export const useAmountCalculator = () => {
     const fetchRateForOne = async () => {
       if (selectedSendingSystem && selectedReceivingSystem) {
         try {
-          await calculate(1, false, true);
+          let invertForRate = false;
+
+          // 🧠 Si la moneda base es ARS, invertimos el cálculo
+          if (selectedSendingSystem.coin === 'ARS') {
+            invertForRate = true;
+          }
+
+          const res = await calculate(1, invertForRate, true);
+
+          // si invertimos, invertimos también el rate para mostrar correctamente
+          if (invertForRate && res) {
+            const newRate = 1 / (res.totalReceived / res.amount);
+            setRateForOne(newRate);
+          }
+
         } catch (err) {
           console.error('Error obteniendo rateForOne inicial:', err);
         }
       }
     };
+
     fetchRateForOne();
-  }, [selectedSendingSystem, selectedReceivingSystem]);
+  }, [selectedSendingSystem?.id, selectedReceivingSystem?.id]);
 
   const handleSendAmountChange = (v: string) => {
     if (!/^[0-9]*\.?[0-9]{0,2}$/.test(v)) return;

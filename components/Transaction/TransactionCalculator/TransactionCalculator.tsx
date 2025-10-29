@@ -41,7 +41,7 @@ export default function TransactionCalculator() {
   const router = useRouter();
   const { isDark } = useDarkTheme();
   const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } = useSystemSelection();
-  const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne} =
+  const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne } =
     useAmountCalculator();
   const colorError = isDark ? 'text-[#f78a82]' : 'text-[#f44336]';
   const pathname = usePathname();
@@ -81,23 +81,26 @@ export default function TransactionCalculator() {
       <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight px-2.5 py-2.5 md:px-5 md:py-8 sm:shadow-md dark:bg-calculatorDark dark:text-white sm:h-[460px] lg-tablet:min-w-[590px]">
         <div className="relative flex w-full flex-col items-center text-[#012c8a] dark:text-darkText">
           <p className="flex w-full items-center gap-[7px] font-textFont text-custom-grayD dark:text-darkText mb-1 sm:mb-3">
-            {selectedSendingSystem?.id === 'bank' ? (
+            {selectedSendingSystem?.coin === 'ARS' ? (
+              // 💱 Caso inverso: mostramos al revés
               <>
-                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">{rateForOne.toFixed(2)}</span>
-                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-semibold">{selectedSendingSystem?.coin}</span>
-                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-normal">=</span>
-                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">1</span>
-                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-semibold">{selectedReceivingSystem?.coin}</span>
+                <span className="text-[20px] sm:text-[32px] font-light">1</span>
+                <span className="text-[16px] sm:text-[21px] font-semibold">{selectedSendingSystem?.coin}</span>
+                <span className="text-[16px] sm:text-[21px] font-normal">=</span>
+                <span className="text-[20px] sm:text-[32px] font-light">{rateForOne.toFixed(5)}</span>
+                <span className="text-[16px] sm:text-[21px] font-semibold">{selectedReceivingSystem?.coin}</span>
               </>
             ) : (
+              // 💱 Caso normal
               <>
-                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">1</span>
-                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-semibold">{selectedSendingSystem?.coin}</span>
-                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-normal">=</span>
-                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">{rateForOne.toFixed(2)}</span>
-                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-semibold">{selectedReceivingSystem?.coin}</span>
+                <span className="text-[20px] sm:text-[32px] font-light">1</span>
+                <span className="text-[16px] sm:text-[21px] font-semibold">{selectedSendingSystem?.coin}</span>
+                <span className="text-[16px] sm:text-[21px] font-normal">=</span>
+                <span className="text-[20px] sm:text-[32px] font-light">{rateForOne.toFixed(2)}</span>
+                <span className="text-[16px] sm:text-[21px] font-semibold">{selectedReceivingSystem?.coin}</span>
               </>
             )}
+
           </p>
           <TransactionSection
             systems={systems.filter((system) => system.id !== 'pix')}
