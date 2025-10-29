@@ -84,7 +84,7 @@ const ContactForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-4">
-      <div className="flex flex-col gap-10 rounded-2xl px-[15px] py-[13px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] dark:bg-[#323232]">
+      <div className="flex flex-col gap-10 rounded-2xl px-[15px] py-[13px] shadow-md dark:shadow-dark-form dark:bg-[#323232]">
         <h4 className="font-textFont text-[32px] font-medium text-buttonsLigth dark:text-darkText">Contáctanos</h4>
         <div className="flex flex-col gap-10 md:flex-row md:gap-16">
           <div className="flex w-full flex-col items-center gap-3">

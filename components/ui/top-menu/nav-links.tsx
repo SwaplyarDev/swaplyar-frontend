@@ -6,11 +6,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import useStore from '@/store/authViewStore';
 
-export const Links = [
-  { name: 'Quienes Somos', href: '/es/quienes-somos' },
-  { name: 'Como Usar SwaplyAr', href: '/es/como-usar-swaplyar' },
-  { name: 'Programa de Fidelización', href: '/es/programa-de-fidelizacion' },
-];
+export const Links: any[] = [];
 
 export default function NavLinks() {
   const { setView } = useStore();

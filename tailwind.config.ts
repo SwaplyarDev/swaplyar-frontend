@@ -251,6 +251,7 @@ const config: Config = {
       boxShadow: {
         'custom-blueBox': '0 5px 10px #012a8d',
         'custom-blackBox': '0 5px 10px #000',
+        'dark-form': '0 4px 6px -1px #EBE7E03F, 0 2px 4px -2px #EBE7E03F',
       },
       backgroundColor: {
         'dark-blue': 'rgb(3, 35, 54)',

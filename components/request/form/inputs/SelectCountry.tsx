@@ -4,13 +4,12 @@ import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { CountryOption, FieldError, SelectCodeCountryProps } from '@/types/request/request';
 import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 const SelectCountry: React.FC<SelectCodeCountryProps> = ({
   selectedCodeCountry,
   setSelectedCodeCountry,
   errors,
-  blockAll,
-  textColor,
   classNames,
   // add prop for god view in modal because this broke visual
   maxHeightModal = false
@@ -20,6 +19,7 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
   const errorMessage = (errors as { [key: string]: FieldError })[fieldName]?.message;
   const [countryOptions, setCountryOptions] = useState<CountryOption[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { isDark } = useDarkTheme();
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -52,10 +52,15 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
     <div ref={dropdownRef}>
       <button
         // className="flex items-center justify-between gap-1 rounded-lg bg-transparent py-2 pl-4 font-textFont text-lightText focus:outline-none"
-        className={`${classNames} flex items-center justify-between gap-1 rounded-lg bg-transparent py-2 font-textFont text-${textColor[0]} dark:text-${textColor[1]} focus:outline-none`}
+        className={`
+          ${classNames} 
+          flex items-center justify-between gap-1 rounded-lg bg-transparent py-2 font-textFont focus:outline-none
+          ${isDark ? 'text-custom-whiteD-200' : 'text-custom-dark'}
+        `}
+
         onClick={() => setIsOpen(!isOpen)}
         type="button"
-        disabled={selectedCodeCountry?.label === undefined || blockAll}
+        disabled={selectedCodeCountry?.label === undefined}
       >
         <span>{`${selectedCodeCountry?.label === undefined ? 'Cargando...' : selectedCodeCountry?.value}`}</span>
         <ChevronDown className={cn('h-5 w-5 transition-transform', { 'rotate-180': isOpen })} />

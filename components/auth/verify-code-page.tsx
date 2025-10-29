@@ -11,7 +11,6 @@ import useStore from '@/store/authViewStore';
 import userInfoStore from '@/store/userInfoStore';
 import { registerUser } from '@/actions/auth/register';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
-import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
 import ButtonBack from '../ui/ButtonBack/ButtonBack';
 import AuthTitle from './AuthTitle';
 import AuthButton from './AuthButton';
@@ -244,33 +243,26 @@ export const VerifyCodePage = () => {
 
 
   return (
-    <div className="my-5 flex h-full py-10 xl:py-52 md:py-20 flex-col items-center justify-start xs:mt-0 xs:justify-center">
-      <AnimatedBlurredCircles tope="top-[124px]" />
+    <div className="flex h-full pt-[151px] pb-0 flex-col items-center justify-start">
       <div className="w-full max-w-xl px-4 font-textFont">
         <form
           onSubmit={handleSubmit(verifyCode)}
-          className="flex w-full max-w-xl flex-col rounded-2xl bg-custom-whiteD-500 py-10 px-4 shadow-md dark:bg-calculatorDark sm:px-8"
+          className="flex w-[484px] h-[420px] mx-auto flex-col rounded-2xl bg-custom-whiteD-500 py-10 shadow-md dark:bg-calculatorDark"
         >
+          <div className="w-[440px] mx-auto">
           <AuthTitle className='!mb-4'>Iniciar Sesión</AuthTitle>
 
-          <label htmlFor="verificationCode" className={'mb-4 text-center text-lightText dark:text-darkText'}>
+          <label htmlFor="verificationCode" className={'mb-6 text-center text-lightText dark:text-darkText'}>
             Se envió un código de verificación a <span className="font-bold">{email}</span>
           </label>
 
           <div className='relative'>
-            <span className='w-full flex justify-center items-center mb-1'>Ingrese el código de verificación</span>
+            <span className='w-full flex justify-center items-center mb-4'>Ingrese el código de verificación</span>
 
             <div className="flex h-[51px] gap-1 justify-between xs:justify-center xs:gap-2">
               {[...Array(6)].map((_, index) => (
                 <>
-                  <div
-                    className={clsx(
-                      `relative size-[43px] rounded-full border-2 border-buttonsExtraLigthDark p-[3px]
-                        shadow-[0_0_0_2px_#5D8CFE,_0_0_0_4px_#012A8E]
-                        dark:shadow-[0_0_0_2px_#5D8CFE,_0_0_0_4px_#FAFAFA]
-                        dark:border-lightText`
-                    )}
-                  >
+                  <div className="relative size-[58px] rounded-full">
                     <input
                       key={index}
                       id={`code-${index}`}
@@ -278,7 +270,7 @@ export const VerifyCodePage = () => {
                       maxLength={1}
                       disabled={isLocked || loading}
                       className={clsx(
-                        'h-full w-full rounded-full border-0 text-center text-2xl text-inputLight focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem] p-0',
+                        'h-full w-full rounded-full border-2 border-[#90B0FE] text-center text-2xl text-inputLight focus:outline-none focus:border-[#012A8E] hover:border-[#012A8E] dark:border-[#FAF6EF] dark:bg-[#FAF6EF] dark:focus:border-[#012A8E80] dark:focus:border-4 dark:hover:border-[#012A8E80] sm:text-[2.5rem] p-0 transition-colors duration-200',
                         errors.verificationCode ? 'border-red-500' : '',
                       )}
                       {...register(`verificationCode.${index}`)}
@@ -288,7 +280,7 @@ export const VerifyCodePage = () => {
                     />
                   </div>
                   {index < 5 && (
-                    <div className="flex min-h-full min-w-1 items-center justify-center">
+                    <div className="flex min-h-full  items-center justify-center">
                       <div className="h-[2px] w-full flex-1 bg-buttonsLigth dark:bg-darkText"></div>
                     </div>
                   )}
@@ -296,11 +288,11 @@ export const VerifyCodePage = () => {
               ))}
             </div>
 
-            {errors.verificationCode && <p className="absolute w-full mt-1 mb-5 text-sm text-center text-red-500">• {errors.verificationCode.message}</p>}
+            {errors.verificationCode && <p className="absolute w-full mt-4 mb-5 text-sm text-red-500">• {errors.verificationCode.message}</p>}
           </div>
 
 
-          <div className="flex self-end mt-11">
+          <div className="flex justify-end mt-11 mr-1">
             <p
               onClick={timer === 0 && !reLoading && !isLocked ? resendCode : undefined}
               className={clsx('text-buttonsLigth dark:text-darkText', {
@@ -312,16 +304,19 @@ export const VerifyCodePage = () => {
             </p>
           </div>
 
-          <div className="my-3 flex items-center justify-between">
-            <ButtonBack route="/es/iniciar-sesion" isDark={isDark} />
-
-            <AuthButton
-              label="Confirmar"
-              disabled={!isCodeComplete || loading}
-              loading={loading}
-              isDark={isDark}
-              className="px-4 w-[220px] xs:w-[250px]"
-            />
+          <div className="my-3 flex justify-between items-center w-full">
+            <div className="flex justify-start">
+              <ButtonBack route="/es/iniciar-sesion" isDark={isDark} />
+            </div>
+            <div className="flex justify-end">
+              <AuthButton
+                label="Confirmar"
+                disabled={!isCodeComplete || loading}
+                loading={loading}
+                isDark={isDark}
+                className="px-4 w-[220px] xs:w-[250px]"
+              />
+            </div>
           </div>
 
 
@@ -337,6 +332,7 @@ export const VerifyCodePage = () => {
               <p className="absolute w-full text-center text-base text-red-500">Estás bloqueado por 5 minutos.</p>
             </div>
           )}
+          </div>
         </form>
       </div>
     </div>

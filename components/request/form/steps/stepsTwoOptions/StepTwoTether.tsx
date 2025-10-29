@@ -5,7 +5,7 @@ import InputSteps from '@/components/inputSteps/InputSteps';
 import { FieldError } from 'react-hook-form';
 import InfoStep from '@/components/ui/InfoStep/InfoStep';
 import clsx from 'clsx';
-import { System } from '@/types/data';
+import CustomInput from '@/components/ui/Input/CustomInput';
 
 interface StepTwoTetherProps {
   register: UseFormRegister<any>;
@@ -29,7 +29,6 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
   completedSteps,
 }) => {
   const formValues = useWatch({ control });
-  //aca se agrega para mostrar el monto a recibir
   const receiveAmount = localStorage.getItem('receiveAmount');
   return (
     <>
@@ -43,43 +42,39 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
         <InfoStep option="cripto" />
       </div>
       <div className="mx-0 grid grid-cols-1 gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:grid-cols-2 sm-phone:gap-x-8 sm-phone:gap-y-2">
-        <InputSteps
+        <CustomInput
           label="Dirección USDT"
           name="usdt_direction"
-          id="usdt_direction"
           type="text"
           placeholder="Dirección USDT"
           disabled={blockAll}
           register={register}
-          watch={watch}
-          rules={{
+          value={watch('usdt_direction')}
+          validation={{
             required: 'La dirección de USDT es obligatoria',
             pattern: {
               value: /^(0x[a-fA-F0-9]{40}|T[a-zA-Z0-9]{33})$/,
               message: 'La dirección de USDT no es válida',
             },
           }}
-          error={errors.usdt_direction ? (errors.usdt_direction as FieldError) : undefined}
-          className="order-1"
+          error={errors.usdt_direction?.message as string}
         />
-        <InputSteps
+        <CustomInput
           label="RE-ENTER Dirección USDT"
           name="re_enter_usdt_direction"
-          id="re_enter_usdt_direction"
           type="text"
           placeholder="RE-ENTER Dirección USDT"
           disabled={blockAll}
           register={register}
-          watch={watch}
-          rules={{
+          value={watch('re_enter_usdt_direction')}
+          validation={{
             required: 'La dirección de USDT es obligatoria',
-            validate: (value) => {
+            validate: (value: string) => {
               const originalValue = getValues('usdt_direction');
               return value === originalValue || 'Debe coincidir con la Dirección USDT';
             },
           }}
-          error={errors.re_enter_usdt_direction ? (errors.re_enter_usdt_direction as FieldError) : undefined}
-          className="order-2 sm-phone:order-3"
+          error={errors.re_enter_usdt_direction?.message as string}
         />
 
         <div className="realative order-3 flex w-full flex-col sm-phone:order-2">
