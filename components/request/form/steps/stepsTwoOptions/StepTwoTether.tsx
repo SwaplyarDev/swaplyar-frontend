@@ -1,35 +1,40 @@
 import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { Control, FieldErrors, UseFormRegister, UseFormGetValues, UseFormWatch, Controller } from 'react-hook-form';
 import SelectRed from '../../inputs/SelectRed';
 import InfoStep from '@/components/ui/InfoStep/InfoStep';
 import clsx from 'clsx';
 import CustomInput from '@/components/ui/Input/CustomInput';
 
-interface FormValues {
-  usdt_direction: string;
-  re_enter_usdt_direction: string;
-  red_selection: { value: string; label: string; image: JSX.Element } | null;
+interface StepTwoTetherProps {
+  register: UseFormRegister<any>;
+  errors: FieldErrors<any>;
+  getValues: UseFormGetValues<any>;
+  blockAll: boolean;
+  formData: any;
+  control: Control<any>;
+  watch: UseFormWatch<any>;
+  completedSteps: boolean[];
 }
 
-const StepTwoTether = () => {
-  const { control, register, handleSubmit, watch, getValues, formState: { errors } } = useForm<FormValues>({
-    defaultValues: {
-      usdt_direction: '',
-      re_enter_usdt_direction: '',
-      red_selection: null,
-    }
-  });
-
-  const onSubmit = (data: FormValues) => {
-    console.log('Formulario enviado:', data);
-  };
-
-  const blockAll = false;
-  const completedSteps = [true, false];
-
+const StepTwoTether: React.FC<StepTwoTetherProps> = ({
+  register,
+  errors,
+  getValues,
+  blockAll,
+  formData,
+  control,
+  watch,
+  completedSteps,
+}) => {
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className={clsx(completedSteps[1] ? 'absolute right-[15px] top-[15px] sm:right-14' : 'absolute right-5 top-[9rem] mini-phone:top-4')}>
+    <div className="space-y-4">
+      <div
+        className={clsx(
+          completedSteps[1]
+            ? 'absolute right-[15px] top-[15px] sm:right-14'
+            : 'absolute right-5 top-[9rem] mini-phone:top-4'
+        )}
+      >
         <InfoStep option="cripto" />
       </div>
 
@@ -49,7 +54,7 @@ const StepTwoTether = () => {
               message: 'La dirección de USDT no es válida',
             },
           }}
-          error={errors.usdt_direction?.message}
+          error={errors.usdt_direction?.message as string}
         />
 
         <CustomInput
@@ -64,16 +69,18 @@ const StepTwoTether = () => {
             required: 'La dirección de USDT es obligatoria',
             validate: (value: string) => {
               const originalValue = getValues('usdt_direction');
-              return value === originalValue || 'Debe coincidir con la Dirección USDT';
+              return (
+                value === originalValue || 'Debe coincidir con la Dirección USDT'
+              );
             },
           }}
-          error={errors.re_enter_usdt_direction?.message}
+          error={errors.re_enter_usdt_direction?.message as string}
         />
 
         <div className="relative order-3 flex w-full flex-col sm-phone:order-2">
           <Controller
             name="red_selection"
-            control={control}            
+            control={control}
             rules={{ required: 'Este campo es obligatorio' }}
             render={({ field }) => (
               <SelectRed
@@ -86,7 +93,7 @@ const StepTwoTether = () => {
           />
         </div>
       </div>
-    </form>
+    </div>
   );
 };
 
