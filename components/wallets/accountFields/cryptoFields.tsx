@@ -2,7 +2,7 @@
 
 import { Controller } from 'react-hook-form';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/Select';
-import InputField from '@/components/ui/contact-form/InputField';
+import CustomInput from '@/components/ui/Input/CustomInput';
 
 interface CryptoFieldsProps {
   register: any;
@@ -20,20 +20,26 @@ interface CryptoFieldsProps {
 
 const CryptoFields = ({ register, errors, control, defaultValues }: CryptoFieldsProps) => (
   <div className="flex flex-col gap-4">
-    <InputField
-      id="accountName"
+    <CustomInput
+      label="Nombre de la cuenta"
+      type="text"
+      name="accountName"
+      register={register}
+      validation={{ required: 'El nombre de la cuenta es obligatorio' }}
+      error={errors.accountName?.message}
       placeholder="Nombre de la cuenta"
       defaultValue={defaultValues?.accountName || ''}
-      register={register('accountName', { required: 'El nombre de la cuenta es obligatorio' })}
-      error={errors.accountName?.message}
     />
 
-    <InputField
-      id="wallet"
+    <CustomInput
+      label="Dirección de billetera"
+      type="text"
+      name="wallet"
+      register={register}
+      validation={{ required: 'La dirección de billetera es obligatoria' }}
+      error={errors.wallet?.message}
       placeholder="Dirección de billetera"
       defaultValue={defaultValues?.wallet || ''}
-      register={register('wallet', { required: 'La dirección de billetera es obligatoria' })}
-      error={errors.wallet?.message}
     />
 
     <Controller

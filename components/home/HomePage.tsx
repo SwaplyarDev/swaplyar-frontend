@@ -18,18 +18,24 @@ export default function HomePage() {
   }, [resetToDefault]);
 
   return (
-    <>
+    <div className="relative top-[120px]">
       <AnimatedBlurredCircles tope="top-[-175px]" />
-      <section className="mx-auto w-full max-w-none overflow-hidden px-4 md:px-8 lg:px-4">
+      <section className="mx-auto w-full max-w-[1204px] overflow-hidden px-4 md:px-8 lg:px-4">
         <article className="m-auto flex w-full flex-col items-center justify-center">
           <div className="mt-0 flex w-full flex-col items-center justify-center">
             <ConversionInstructions />
           </div>
-          <div className="relative mb-10 mt-8 flex w-full max-w-none flex-col items-center justify-center gap-10">
+          <div className="relative mb-10 mt-8 flex w-full max-w-[1000px] flex-col items-center justify-center gap-10">
             <InfoBlock
               title="Podes cambiar USD o EUR de tu billetera virtual por la moneda de tu preferencia"
               imageSrc={UsdArs}
               imageAlt="Cambia USD de PayPal por ARS"
+              customImageSpacing={true}
+              customImageWidth={237}
+              customImageAlign="left"
+              customContentWidth={692}
+              customImageContainerWidth={237}
+              customGap={70}
               contentNode={
                 <>
                   Realizá cambios de USD, EUR o USDT de tu billetera virtual a la moneda que necesitas de manera rápida
@@ -83,7 +89,7 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
-      <section className="mt-10">
+      <section className="mt-[120px] mb-40">
         <FlyerTrabajo
           imageSrc={FlyerGif}
           href="/es/como-usar-swaplyar"
@@ -91,6 +97,6 @@ export default function HomePage() {
           nameButton="¡Empieza ahora!"
         />
       </section>
-    </>
+    </div>
   );
 }

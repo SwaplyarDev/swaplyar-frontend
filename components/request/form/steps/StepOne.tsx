@@ -3,14 +3,12 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useStepperStore } from '@/store/stateStepperStore';
 import { useCallback, useEffect, useMemo, useState, memo } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
-import clsx from 'clsx';
 import SelectBoolean from '../inputs/SelectBoolean';
 import { CountryOption } from '@/types/request/request';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import SelectCountry from '../inputs/SelectCountry';
-import InputSteps from '@/components/inputSteps/InputSteps';
 import useWalletStore from '@/store/useWalletStore';
-//importamos validacion nueva para los telefonos.
+import CustomInput from '@/components/ui/Input/CustomInput';
 import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
 import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
 import AuthButton from '@/components/auth/AuthButton';
@@ -33,7 +31,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     setValue,
     watch,
     trigger,
-  } = useForm<FormData>({ mode: 'onChange' });
+  } = useForm<FormData>({ mode: 'onChange', reValidateMode: 'onChange', });
   const { selectedWallet } = useWalletStore();
   const {
     markStepAsCompleted,
@@ -64,29 +62,36 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
 
   useEffect(() => {
     const { first_name, last_name, calling_code, phone, email, own_account } = formData.stepOne;
+    
+    const defaultCountry = defaultCountryOptions.find(option => option.callingCode === '+54') || defaultCountryOptions[0];
+    const finalCallingCode = calling_code || defaultCountry;
+    
     const newValues = {
       first_name,
       last_name,
-      calling_code,
+      calling_code: finalCallingCode,
       phone,
       email,
       own_account,
     };
+    
     setValue('first_name', first_name);
     setValue('last_name', last_name);
-    setValue('calling_code', calling_code);
+    setValue('calling_code', finalCallingCode);
     setValue('phone', phone);
     setValue('email', email);
     setValue('own_account', own_account);
 
     setInitialValues(newValues);
   }, [formData.stepOne, setValue]);
+
   useEffect(() => {
     if (selectedWallet) {
       setValue('own_account', 'false');
       updateFormData(0, { own_account: 'false' });
     }
   }, [selectedWallet, setValue, updateFormData]);
+
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data: FormData) => {
@@ -127,136 +132,99 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     () => initialValues && !deepEqual(initialValues, formValues),
     [initialValues, formValues, deepEqual],
   );
-
-  const [isFocused, setIsFocused] = useState(false);
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
       <div className="mx-0 grid grid-cols-1 gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:grid-cols-2 sm-phone:gap-x-8 sm-phone:gap-y-2">
-        <InputSteps
+        <CustomInput
           label="Nombre"
-          name="first_name"
-          id="first_name"
           type="text"
+          name="first_name"
           placeholder={errors.first_name ? 'Nombre *' : 'Nombre'}
           disabled={blockAll}
           register={register}
-          watch={watch}
-          rules={{
+          value={watch('first_name')}
+          validation={{
             required: 'El Nombre es obligatorio',
             pattern: {
               value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
               message: 'El Nombre solo puede contener letras y espacios',
             },
           }}
-          error={errors.first_name}
-          className={'order-1'}
+          error={errors.first_name?.message}
         />
 
-        <InputSteps
-          id="last_name"
-          name="last_name"
+        <CustomInput
           label="Apellido"
           type="text"
+          name="last_name"
           placeholder={errors.last_name ? 'Apellido *' : 'Apellido'}
           disabled={blockAll}
           register={register}
-          watch={watch}
-          rules={{
+          value={watch('last_name')}
+          validation={{
             required: 'El Apellido es obligatorio',
             pattern: {
               value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
               message: 'El Apellido solo puede contener letras y espacios',
             },
           }}
-          error={errors.last_name}
-          className={`order-2 sm-phone:order-3`}
+          error={errors.last_name?.message}
         />
 
-        <InputSteps
+        <CustomInput
           label="Correo Electrónico"
-          name="email"
-          id="email"
           type="email"
+          name="email"
           placeholder={errors.email ? 'Correo Electrónico *' : 'Correo Electrónico'}
           disabled={blockAll}
           register={register}
-          watch={watch}
-          rules={{
-            required: 'El Correo Electrónico es obligatorio',
+          value={watch('email')}
+          validation={{
+            required: 'El correo electrónico es obligatorio',
             pattern: {
-              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
-              message: 'El formato del Correo electrónico es inválido',
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: 'El formato del correo electrónico es inválido',
             },
           }}
-          error={errors.email}
-          className="order-3 sm-phone:order-2"
+          error={errors.email?.message}
         />
         <div className="relative order-4 flex flex-col">
-          <label
-            htmlFor="phone"
-            className={clsx(
-              'mb-1 ml-2.5 h-5 font-textFont text-sm text-lightText transition-opacity duration-300 dark:text-darkText',
-              isFocused || !!watch('phone') ? 'opacity-100' : 'opacity-0',
-            )}
-          >
-            Telefono
-          </label>
-          <div
-            className={clsx(
-              'flex max-h-[42px] max-w-full items-center rounded-2xl border bg-transparent py-2 pr-5 text-lightText focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
-              watch('phone') && 'border-inputLight dark:border-lightText',
-              errors.phone
-                ? 'mb-0 border-errorColor placeholder-errorColor'
-                : 'mb-5 border-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:hover:border-lightText dark:hover:placeholder-lightText',
-            )}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-          >
-            <Controller
-              name="calling_code"
-              control={control}
-              defaultValue={defaultCountryOptions.find((option) => option.callingCode === '+54')}
-              rules={{
-                required: 'Este campo es obligatorio',
-              }}
-              render={({ field, fieldState }) => (
+          <Controller
+            name="calling_code"
+            control={control}
+            defaultValue={defaultCountryOptions.find((option) => option.callingCode === '+54')}
+            rules={{ validate: () => true }}
+            render={({ field, fieldState }) => (
+              <CustomInput
+                label="Teléfono"
+                type="tel"
+                name="phone"
+                register={register}
+                value={watch('phone')}
+                defaultValue=""
+                validation={{
+                  validate: (value: string) => {
+                    if (!value) return 'El número de teléfono es obligatorio';
+                    const result = validatePhoneNumber(value, field.value);
+                    return result === true ? true : result;
+                  },
+                }}
+                error={errors.phone?.message}
+                disabled={blockAll}
+              >
                 <SelectCountry
                   selectedCodeCountry={field.value}
-                  blockAll={blockAll}
                   setSelectedCodeCountry={(option) => {
-                    field.onChange(option)
+                    field.onChange(option);
                     trigger('phone');
                   }}
                   errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
                   textColor={['lightText', 'lightText']}
-                  classNames="pl-4 w-[118px]"
+                  classNames="pl-2 w-[95px]"
                 />
-              )}
-            />
-            <input
-              placeholder={isFocused ? '' : errors.phone ? 'Telefono*' : 'Telefono'}
-              className={clsx(
-                'inputChangeAutofillReverse w-full border-none bg-transparent font-textFont focus:border-none focus:outline-none focus:ring-0',
-                errors.phone
-                  ? 'placeholder-errorColor'
-                  : 'placeholder-inputLightDisabled dark:placeholder-placeholderDark',
-              )}
-              type="tel"
-              disabled={blockAll}
-              {...register('phone', {
-                required: 'El número de teléfono es obligatorio',
-                validate: (value) => {
-                  const country = watch('calling_code');
-                  const result = validatePhoneNumber(value, country);
-                  return result === true ? true : result;
-                },
-              })}
-            />
-          </div>
-          {errors.phone && (
-            <p className="px-[10px] font-textFont text-sm text-errorColor">{errors.phone.message as string}</p>
-          )}
+              </CustomInput>
+            )}
+          />
         </div>
         {!selectedWallet && (
           <>
@@ -318,7 +286,6 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
           />
         )}
       </div>
-
     </form>
   );
 };
