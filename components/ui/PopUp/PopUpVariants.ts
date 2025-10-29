@@ -2,14 +2,16 @@ import {
   PlaneWithBadge, 
   IconWithTitle, 
   CenteredIcon, 
-  SimpleIcon 
+  SimpleIcon,
+  EmptyIcon
 } from './PopUpComponents/IconComponents';
 import { 
   FullContent, 
   TextOnlyContent, 
   DetailedContent, 
   SimpleContent,
-  StatusContent 
+  StatusContent,
+  ReceiptExamplesContent
 } from './PopUpComponents/ContentComponents';
 import { TIconType, TIconSize } from './types';
 
@@ -23,7 +25,8 @@ export type TPopUpVariant =
   | 'simple-error'        // Error simple: icono + título pequeño
   | 'simple-warning'      // Warning simple: icono + título pequeño
   | 'success-with-status' // Success con icono/título + texto + estado(s) + botón WhatsApp + avión (tablet+)
-  | 'warning-with-cancel'; // Warning con icono centrado + título + texto + botones (atrás + cancelar)
+  | 'warning-with-cancel' // Warning con icono centrado + título + texto + botones (atrás + cancelar)
+  | 'receipt-examples';   // Galería de ejemplos de comprobantes con imágenes ampliables
 
 /**
  * Configuración de una variante de PopUp
@@ -81,5 +84,12 @@ export const POPUP_VARIANTS: Record<TPopUpVariant, PopUpVariantConfig> = {
     iconComponent: CenteredIcon,
     contentComponent: DetailedContent,
     iconProps: { iconType: 'warning', iconSize: 'small' as TIconSize },
+  },
+  'receipt-examples': {
+    icon: 'info',
+    iconComponent: EmptyIcon,
+    contentComponent: ReceiptExamplesContent,
+    iconProps: {},
+    contentProps: {},
   },
 };

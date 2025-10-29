@@ -4,6 +4,8 @@ import ReactDOMServer from 'react-dom/server';
 import { createRoot } from 'react-dom/client';
 import { POPUP_VARIANTS } from './PopUpVariants';
 import { ActionButtons } from './PopUpComponents/ActionButtons';
+import { ReceiptGallery } from './PopUpComponents/ReceiptGallery';
+import { ReceiptHeader } from './PopUpComponents/ReceiptHeader';
 
 /**
  * PopUp Component - Sistema de alertas con variantes predefinidas
@@ -41,11 +43,13 @@ export const PopUp = ({
   title, 
   text, 
   isHtml = false, 
-  isDark, 
+  isDark,
+  isVertical = false,
   note,
   actionButton,
   status,
-  iconSize
+  iconSize,
+  images
 }: IPopUpProps) => {
   // Obtener configuración de la variante
   const variantConfig = POPUP_VARIANTS[variant];
@@ -63,6 +67,7 @@ export const PopUp = ({
     ...iconProps,
     title,
     isDark,
+    isVertical,
     ...(iconSize && { iconSize }), // Override si el usuario lo especifica
   };
 
@@ -75,7 +80,7 @@ export const PopUp = ({
     ),
     customClass: {
       icon: 'border-none',
-      popup: 'w-full !max-w-[350px] !px-4 !py-6 sm-phone:!max-w-[510px] sm-phone:!px-6 navbar-desktop:!max-w-[556px]',
+      popup: 'w-full !max-w-[350px] !px-4 !py-6 sm-phone:!max-w-[510px] sm-phone:!px-6 navbar-desktop:!max-w-[556px] dark:bg-custom-grayD-800',
       htmlContainer: '!m-0 !p-0',
     },
     html: ReactDOMServer.renderToString(
@@ -85,6 +90,7 @@ export const PopUp = ({
         isHtml={isHtml}
         note={note}
         status={status}
+        images={images}
         {...contentProps}
       />
     ),
@@ -92,13 +98,32 @@ export const PopUp = ({
     background: isDark ? '#4B4B4B' : '#FFFFFB',
     didRender: () => {
       console.log('didRender ejecutado');
+      
+      // Renderizar botones de acción si existen
       const backElement = document.getElementById('back-button-container');
-      console.log('Elemento encontrado:', backElement);
-      console.log('ActionButton en didRender:', actionButton);
       
       if (backElement) {
         const root = createRoot(backElement);
         root.render(<ActionButtons isDark={isDark} actionButton={actionButton} />);
+      }
+
+      // Renderizar header y galería si es la variante receipt-examples
+      if (variant === 'receipt-examples') {
+        // Renderizar header con flecha de retroceso
+        const headerElement = document.getElementById('receipt-header-container');
+        if (headerElement) {
+          const headerRoot = createRoot(headerElement);
+          headerRoot.render(<ReceiptHeader title={title} isDark={isDark} />);
+        }
+
+        // Renderizar galería de imágenes
+        const galleryElement = document.getElementById('receipt-gallery-container');
+        if (galleryElement) {
+          const imagesData = galleryElement.getAttribute('data-images');
+          const imagesArray = imagesData ? JSON.parse(imagesData) : images || [];
+          const galleryRoot = createRoot(galleryElement);
+          galleryRoot.render(<ReceiptGallery images={imagesArray} isDark={isDark} />);
+        }
       }
     },
   });

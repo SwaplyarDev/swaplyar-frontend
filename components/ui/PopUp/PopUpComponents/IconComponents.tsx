@@ -1,6 +1,8 @@
 import { plane } from '@/utils/assets/imgDatabaseCloudinary';
 import { TIconType, TIconSize, ICON_SIZE_MAP } from '../types';
 import { getIconByType, getIconSizeClass } from '@/utils/utils';
+import { ChevronLeft } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 interface IconComponentProps {
   iconType?: TIconType;
@@ -16,7 +18,7 @@ export const PlaneWithBadge: React.FC<IconComponentProps> = ({
   iconType = 'success',
   iconSize = 'large' 
 }) => {
-  const badgeSize = iconSize === 'small' ? 32 : 40;
+  const numericSize = ICON_SIZE_MAP[iconSize];
   
   return (
     <div className="flex justify-center w-full">
@@ -29,8 +31,8 @@ export const PlaneWithBadge: React.FC<IconComponentProps> = ({
           height={136}
         />
       </div>
-      <div className="absolute -top-2 -left-2" style={{ width: badgeSize, height: badgeSize }}>
-        {getIconByType(iconType, badgeSize)}
+      <div className={`absolute -top-2 -left-2 ${getIconSizeClass(iconSize)}`}>
+        {getIconByType(iconType, numericSize)}
       </div>
     </div>
   );
@@ -89,4 +91,11 @@ export const SimpleIcon: React.FC<IconComponentProps> = ({
       {getIconByType(iconType, numericSize)}
     </div>
   );
+};
+
+/**
+ * Placeholder vacío para receipt-examples (el header se renderiza en didRender)
+ */
+export const EmptyIcon: React.FC<IconComponentProps> = () => {
+  return <div id="receipt-header-container"></div>;
 };

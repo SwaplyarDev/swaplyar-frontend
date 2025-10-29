@@ -1,28 +1,32 @@
-const IconBadgeCheck = () => (
-  <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+interface IconProps {
+  size?: number;
+}
+
+const IconBadgeCheck = ({ size = 72 }: IconProps) => (
+  <svg width={size} height={size} viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="36" cy="36" r="32" fill="#97D700" stroke="#CFF4C5" strokeWidth="8" />
     <path d="M31.5 36L34.5 39L41.25 32.25M29.0007 23.728C30.2064 23.6318 31.3511 23.1577 32.2717 22.3731C34.4201 20.5423 37.5799 20.5423 39.7283 22.3731C40.6489 23.1577 41.7936 23.6318 42.9993 23.728C45.8131 23.9526 48.0474 26.1869 48.272 29.0007C48.3682 30.2064 48.8423 31.3511 49.6269 32.2717C51.4577 34.4201 51.4577 37.5799 49.6269 39.7283C48.8423 40.6489 48.3682 41.7936 48.272 42.9993C48.0474 45.8131 45.8131 48.0474 42.9993 48.272C41.7936 48.3682 40.6489 48.8423 39.7283 49.6269C37.5799 51.4577 34.4201 51.4577 32.2717 49.6269C31.3511 48.8423 30.2064 48.3682 29.0007 48.272C26.1869 48.0474 23.9526 45.8131 23.728 42.9993C23.6318 41.7936 23.1577 40.6489 22.3731 39.7283C20.5423 37.5799 20.5423 34.4201 22.3731 32.2717C23.1577 31.3511 23.6318 30.2064 23.728 29.0007C23.9526 26.1869 26.1869 23.9526 29.0007 23.728Z" stroke="#011B5B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
 
-const IconWarning = () => (
-  <svg width="130" height="130" viewBox="0 0 145 145" fill="none" xmlns="http://www.w3.org/2000/svg">
+const IconWarning = ({ size = 130 }: IconProps) => (
+  <svg width={size} height={size} viewBox="0 0 145 145" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M7.42969 72.4287C7.42969 36.5302 36.5312 7.42871 72.4297 7.42871C108.328 7.42871 137.43 36.5302 137.43 72.4287C137.43 108.327 108.328 137.429 72.4297 137.429C36.5312 137.429 7.42969 108.327 7.42969 72.4287Z" fill="#FEF0C7" />
     <path d="M7.42969 72.4287C7.42969 36.5302 36.5312 7.42871 72.4297 7.42871C108.328 7.42871 137.43 36.5302 137.43 72.4287C137.43 108.327 108.328 137.429 72.4297 137.429C36.5312 137.429 7.42969 108.327 7.42969 72.4287Z" stroke="#F3E5BF" strokeWidth="14.8571" />
     <path d="M72.4297 58.4287V72.4287M72.4297 86.4287H72.4647M107.43 72.4287C107.43 91.7587 91.7597 107.429 72.4297 107.429C53.0997 107.429 37.4297 91.7587 37.4297 72.4287C37.4297 53.0987 53.0997 37.4287 72.4297 37.4287C91.7597 37.4287 107.43 53.0987 107.43 72.4287Z" stroke="#DC6803" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
 
-const IconError = () => (
-  <svg width="130" height="130" viewBox="0 0 145 145" fill="none" xmlns="http://www.w3.org/2000/svg">
+const IconError = ({ size = 130 }: IconProps) => (
+  <svg width={size} height={size} viewBox="0 0 145 145" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="7.42969" y="7.42969" width="130" height="130" rx="65" fill="#FEE4E2" />
     <rect x="7.42969" y="7.42969" width="130" height="130" rx="65" stroke="#FEF3F2" strokeWidth="14.86" />
     <path d="M97.4297 47.4297L47.4297 97.4297M47.4297 47.4297L97.4297 97.4297" stroke="#A31C01" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
 
-const IconInfo = () => (
-  <svg width="130" height="130" viewBox="0 0 145 145" fill="none" xmlns="http://www.w3.org/2000/svg">
+const IconInfo = ({ size = 130 }: IconProps) => (
+  <svg width={size} height={size} viewBox="0 0 145 145" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M137.43 72.4287C137.43 108.327 108.328 137.429 72.4297 137.429C36.5312 137.429 7.42968 108.327 7.42968 72.4287C7.42968 36.5302 36.5312 7.42872 72.4297 7.42872C108.328 7.42871 137.43 36.5302 137.43 72.4287Z" fill="#EAFAFB" />
     <path d="M137.43 72.4287C137.43 108.327 108.328 137.429 72.4297 137.429C36.5312 137.429 7.42968 108.327 7.42968 72.4287C7.42968 36.5302 36.5312 7.42872 72.4297 7.42872C108.328 7.42871 137.43 36.5302 137.43 72.4287Z" stroke="#F2FFFF" strokeWidth="14.8571" />
     <path d="M72.4297 86.4287L72.4297 72.4287M72.4297 58.4287L72.3947 58.4287M37.4297 72.4287C37.4297 53.0987 53.0997 37.4287 72.4297 37.4287C91.7596 37.4287 107.43 53.0987 107.43 72.4287C107.43 91.7587 91.7597 107.429 72.4297 107.429C53.0997 107.429 37.4297 91.7587 37.4297 72.4287Z" stroke="#23A3A9" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
@@ -36,3 +40,5 @@ export {
   IconError,
   IconInfo,
 }
+
+export type { IconProps };
