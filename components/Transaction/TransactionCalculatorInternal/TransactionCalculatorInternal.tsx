@@ -72,9 +72,7 @@ export default function InternalTransactionCalculator({
     receiveAmount,
     handleSendAmountChange,
     handleReceiveAmountChange,
-    rateForOne,
-    rateForOneBank,
-    setFinalReceiveAmount,
+    rateForOne
   } = useAmountCalculator();
 
   const couponUsdAmount = useRef(0);
@@ -121,7 +119,7 @@ export default function InternalTransactionCalculator({
       discounts.data.forEach((discount: AdminDiscount) => {
         addDiscountId(discount.id);
       });
-       // aca puede venir el error de  los dos cupones acumulados
+      // aca puede venir el error de  los dos cupones acumulados
 
       //  console.log("🎟️ Calculando total de descuentos...");
       const totalDiscountValue = discounts.data.reduce((total, discount) => {
@@ -172,13 +170,12 @@ export default function InternalTransactionCalculator({
 
   const handleSubmit = () => {
     setIsProcessing(true);
-    setFinalReceiveAmount(receiveAmountInputValue.current);
     resetToDefault();
     setTimeout(() => {
       try {
-        sessionStorage.setItem('accesoPermitido','true')
+        sessionStorage.setItem('accesoPermitido', 'true')
         document.cookie = 'requestPass=1; Max-Age=120; Path=/; SameSite=Lax';
-      } catch {}
+      } catch { }
       setPassTrue();
       router.push('/es/auth/solicitud/formulario-de-solicitud');
     }, 2000);
@@ -188,7 +185,7 @@ export default function InternalTransactionCalculator({
     if (sendingSystemId === 'payoneer_usd' || sendingSystemId === 'payoneer_eur') {
       return sendAmountNum >= 50;
     } else if (sendingSystemId === 'bank') {
-      return sendAmountNum >= rateForOneBank * couponUsdAmount.current && receiveAmountNum >= 10;
+      return sendAmountNum >= rateForOne * couponUsdAmount.current && receiveAmountNum >= 10;
     }
     return sendAmountNum >= 10;
   };
@@ -247,23 +244,24 @@ export default function InternalTransactionCalculator({
       <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight p-2.5 sm:p-5 sm:shadow-md dark:bg-calculatorDark dark:text-white sm:min-h-[460px] lg-tablet:max-w-[590px]">
         <div className="relative flex w-full flex-col items-center text-[#012c8a] dark:text-darkText">
           <p className="flex w-full items-center gap-[7px] font-textFont text-custom-grayD dark:text-darkText mb-1 sm:mb-3">
-            {selectedSendingSystem?.id === 'bank' ? (
+            {selectedSendingSystem?.coin === 'ARS' ? (
               <>
-                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">{rateForOneBank.toFixed(2)}</span>
-                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-semibold">{selectedSendingSystem?.coin}</span>
-                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-normal">=</span>
-                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">1</span>
-                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-semibold">{selectedReceivingSystem?.coin}</span>
+                <span className="text-[20px] sm:text-[32px] font-light">1</span>
+                <span className="text-[16px] sm:text-[21px] font-semibold">{selectedSendingSystem?.coin}</span>
+                <span className="text-[16px] sm:text-[21px] font-normal">=</span>
+                <span className="text-[20px] sm:text-[32px] font-light">{rateForOne.toFixed(5)}</span>
+                <span className="text-[16px] sm:text-[21px] font-semibold">{selectedReceivingSystem?.coin}</span>
               </>
             ) : (
               <>
-                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">1</span>
-                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-semibold">{selectedSendingSystem?.coin}</span>
-                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-normal">=</span>
-                <span className="text-[20px]/[150%] sm:text-[32px]/[150%] font-light">{rateForOne.toFixed(2)}</span>
-                <span className="text-[16px]/[150%] sm:text-[21px]/[150%] font-semibold">{selectedReceivingSystem?.coin}</span>
+                <span className="text-[20px] sm:text-[32px] font-light">1</span>
+                <span className="text-[16px] sm:text-[21px] font-semibold">{selectedSendingSystem?.coin}</span>
+                <span className="text-[16px] sm:text-[21px] font-normal">=</span>
+                <span className="text-[20px] sm:text-[32px] font-light">{rateForOne.toFixed(2)}</span>
+                <span className="text-[16px] sm:text-[21px] font-semibold">{selectedReceivingSystem?.coin}</span>
               </>
             )}
+
           </p>
 
           <TransactionSection
@@ -292,7 +290,7 @@ export default function InternalTransactionCalculator({
               <div className="flex flex-col h-full items-center justify-center">
                 <InvertSystems onInvert={handleInvertSystemsClick} selectedReceivingSystem={selectedReceivingSystem} />
               </div>
-            </Coupons>          
+            </Coupons>
           </div>
         </div>
 
@@ -315,7 +313,7 @@ export default function InternalTransactionCalculator({
                 selectedSendingSystem,
                 selectedReceivingSystem,
                 rateForOne,
-                rateForOneBank,
+                rateForOneBank: rateForOne,
                 usdToArsRate,
                 eurToUsdRate,
                 usdToBrlRate,
@@ -354,7 +352,7 @@ export default function InternalTransactionCalculator({
             selectedSendingSystem={selectedSendingSystem}
             sendAmount={sendAmount}
             sendAmountNum={sendAmountNum}
-            // isDisabled={isDisabled}
+          // isDisabled={isDisabled}
           />
         </div>
       </div>

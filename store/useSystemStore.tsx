@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { System } from '@/types/data';
 import { BankDarkImg, BankImg, PaypalDarkImg, PaypalImg } from '@/utils/assets/imgDatabaseCloudinary';
 
+
 const defaultSendingSystem: System = {
   id: 'paypal',
   name: 'PayPal',
