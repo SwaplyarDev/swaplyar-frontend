@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { FormValues } from '@/types/data';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
+import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
+import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import { PopUp } from '../PopUp/PopUp';
 import CustomInput from '@/components/ui/Input/CustomInput';
 import TextAreaContact from './TextAreaContact';
@@ -65,8 +67,18 @@ const ContactForm = () => {
     } catch (error) {
       if (error instanceof Error) {
         console.error('Error!', error.message);
+        PopUp({
+          variant: 'simple-error',
+          title: 'Hubo un problema al enviar su mensaje. Por favor, inténtelo de nuevo más tarde.',
+          isDark,
+        });
       } else {
         console.error('An unexpected error occurred', error);
+        PopUp({
+          variant: 'simple-error',
+          title: 'Hubo un problema al enviar su mensaje. Por favor, inténtelo de nuevo más tarde.',
+          isDark,
+        });
       }
     } finally {
       setLoading(false);
@@ -81,7 +93,7 @@ const ContactForm = () => {
       isHtml: true,
       isDark,
     });
-
+  
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-4">
       <div className="flex flex-col gap-10 rounded-2xl px-[15px] py-[13px] shadow-md dark:shadow-dark-form dark:bg-[#323232]">
