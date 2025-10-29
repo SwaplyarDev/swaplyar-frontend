@@ -8,28 +8,14 @@ import { FieldError, SelectRedProps } from '@/types/request/request';
 import { cn } from '@/lib/utils';
 import { ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
+import CustomInput from '@/components/ui/Input/CustomInput';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 const options = [
-  {
-    value: 'arbitrum',
-    label: 'Arbitrum One',
-    image: <IconArbitrum />,
-  },
-  {
-    value: 'bnb',
-    label: 'BNB Chain (BEP-20)',
-    image: <IconBnb />,
-  },
-  {
-    value: 'tron',
-    label: 'Tron (TRC20)',
-    image: <IconTron />,
-  },
-  {
-    value: 'optimism',
-    label: 'Optimism',
-    image: <IconOptimism />,
-  },
+  { value: 'arbitrum', label: 'Arbitrum One', image: <IconArbitrum className="w-7 h-7" /> },
+  { value: 'bnb', label: 'BNB Chain (BEP-20)', image: <IconBnb className="w-7 h-7" /> },
+  { value: 'tron', label: 'Tron (TRC20)', image: <IconTron className="w-7 h-7" /> },
+  { value: 'optimism', label: 'Optimism', image: <IconOptimism className="w-7 h-7" /> }
 ];
 
 const SelectRed: React.FC<SelectRedProps> = ({ selectedRed, setSelectedRed, errors, blockAll }) => {
@@ -37,90 +23,77 @@ const SelectRed: React.FC<SelectRedProps> = ({ selectedRed, setSelectedRed, erro
   const errorMessage = (errors as { [key: string]: FieldError })[fieldName]?.message;
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const { isDark } = useDarkTheme();
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
   return (
-    <>
-      <label
-        htmlFor={fieldName}
-        className={clsx(
-          'font-textFont text-lightText dark:text-darkText',
-          'mb-1 ml-2.5 text-sm transition-opacity duration-300',
-          selectedRed === undefined
-            ? 'opacity-0'
-            : errorMessage
-              ? 'text-errorColor opacity-100'
-              : 'text-lightText opacity-100 dark:text-darkText',
-        )}
-      >
-        Selecciona una Red
-      </label>
+    <div ref={dropdownRef} className="relative w-full">
       <div
-        ref={dropdownRef}
-        className={clsx(
-          'relative mb-5 flex max-h-[42px] max-w-full items-center rounded-2xl border bg-transparent py-2 pr-5 focus:shadow-none focus:outline-none focus:ring-0 dark:bg-inputDark',
-          errorMessage
-            ? 'border-errorColor text-errorColor placeholder-errorColor'
-            : 'border-inputLightDisabled placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText dark:hover:placeholder-lightText',
-        )}
+        className="relative w-full cursor-pointer"
+        onClick={() => !blockAll && setIsOpen(!isOpen)}
       >
-        <button
-          className="flex w-full items-center justify-between gap-1 rounded-lg bg-transparent py-2 pl-4 font-textFont text-lightText focus:outline-none"
-          onClick={() => setIsOpen(!isOpen)}
-          type="button"
+        <CustomInput
+          label="Selecciona la red"
+          value={selectedRed?.label ?? ''}
+          readOnly
           disabled={blockAll}
+          isSelect={true}
+          classNameInput='cursor-pointer'
         >
-          <span
-            className={clsx(
-              selectedRed === undefined ? 'text-inputLightDisabled dark:text-placeholderDark' : 'text-lightText',
-              'flex items-center gap-2',
+          <>
+            {selectedRed?.image && (
+              <span className="w-7 h-7 flex items-center justify-center">{selectedRed.image}</span>
             )}
-          >
-            {selectedRed?.image}
-            {selectedRed?.label || 'Selecciona una Red'}
-          </span>
-          <ChevronDown className={cn('h-5 w-5 transition-transform', { 'rotate-180': isOpen })} />
-        </button>
-        {isOpen && (
-          <motion.ul
-            initial={{ opacity: 0, y: -5 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -5 }}
-            className="scrollable-list absolute top-10 z-10 mt-2 max-h-64 w-full overflow-y-auto rounded-2xl border border-custom-grayD-300 bg-custom-whiteD shadow-lg"
-          >
-            {options.map((option, index) => (
-              <li
-                key={index}
-                className={cn(
-                  'flex cursor-pointer items-center gap-2 px-4 py-2 font-textFont hover:bg-buttonsLigth hover:text-darkText',
-                  {
-                    'bg-gray-100': selectedRed?.value === option.value,
-                  },
-                )}
-                onClick={() => {
-                  setSelectedRed(option);
-                  setIsOpen(false);
-                }}
-              >
-                {option.image}
-                <span>{option.label}</span>
-              </li>
-            ))}
-          </motion.ul>
-        )}
-        {errorMessage && <p className="mt-1 text-sm text-errorColor">{errorMessage}</p>}
+            <ChevronDown
+              className={cn(
+                'absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 transition-transform',
+                { 'rotate-180': isOpen }
+              )}
+            />
+          </>
+        </CustomInput>
       </div>
-    </>
+
+      {isOpen && (
+        <motion.ul
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -5 }}
+          className="scrollable-list absolute top-full mt-1 z-10 w-full max-h-48 overflow-y-auto rounded-[32px] bg-custom-whiteD pl-2"
+        >
+          {options.map((option) => (
+            <li
+              key={option.value}
+              className={clsx(
+                'scrollable-list flex cursor-pointer items-center gap-2 my-2 mx-2 rounded-full font-textFont hover:bg-custom-whiteD-500',
+                isDark ? 'text-custom-grayD' : 'text-inputLight',
+                { 'bg-custom-whiteD-500': selectedRed?.value === option.value }
+              )}
+              onClick={() => {
+                setSelectedRed(option);
+                setIsOpen(false);
+              }}
+            >
+              <span className="flex items-center justify-center w-8 h-8">{option.image}</span>
+              <span>{option.label}</span>
+            </li>
+          ))}
+        </motion.ul>
+      )}
+
+      {errorMessage && (
+        <p className="mt-1 text-sm text-red-500">{errorMessage}</p>
+      )}
+    </div>
   );
 };
 

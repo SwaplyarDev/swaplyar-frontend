@@ -8,15 +8,19 @@ interface CustomInputProps {
   value?: string;
   defaultValue?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => void;
   error?: string;
   placeholder?: string;
   name?: string;
   register?: any;
   validation?: any;
   disabled?: boolean;
+  readOnly?: boolean;
   children?: React.ReactNode;
   className?: string;
+  classNameInput?: string;
   maxLength?: number;
+  isSelect?: boolean;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -29,8 +33,11 @@ const CustomInput: React.FC<CustomInputProps> = ({
   register,
   validation,
   disabled = false,
+  readOnly = false,
+  isSelect = false,
   children,
   className = '',
+  classNameInput = '',
   maxLength
 }) => {
   const [isFocused, setIsFocused] = React.useState(false);
@@ -43,11 +50,13 @@ const CustomInput: React.FC<CustomInputProps> = ({
   React.useEffect(() => {
     if (hasValue) setIsFocused(true);
   }, [hasValue]);
+
   return (
     <div className={['w-full relative', className].filter(Boolean).join(' ')}>
       <div
         className={[
-          'flex items-center w-full rounded-2xl border h-[40px] sm:h-[45px] md:h-[50px] px-2 transition-colors duration-150',
+          'flex items-center w-full rounded-2xl border h-[40px] sm:h-[45px] md:h-[50px] transition-colors duration-150',
+          children ? '' : 'px-2',          
           error
             ? isDark
               ? 'bg-custom-grayD-900 border-errorColorDark focus-within:border-errorColorDark text-custom-whiteD-200'
@@ -59,12 +68,14 @@ const CustomInput: React.FC<CustomInputProps> = ({
           .filter(Boolean)
           .join(' ')}
       >
-        {children && <div className="flex items-center pr-2">{children}</div>}
+        {children && <div 
+          className={`flex items-center pr-2' ${isSelect ? 'pl-2.5' : ''}`}>{children}</div>}
         <input
           type={type}
           value={value}
           name={name}
           disabled={disabled}
+          readOnly={readOnly}
           maxLength={maxLength}
           {...inputProps}
           onChange={(e) => {
@@ -74,7 +85,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           onFocus={() => setIsFocused(true)}
           onBlur={(e) => setIsFocused(e.target.value !== '')}
           className={[
-            'peer flex-1 bg-transparent border-none px-2 font-textFont focus:outline-none focus:ring-0',
+            'peer flex-1 bg-transparent border-none px-2 font-textFont focus:outline-none focus:ring-0', classNameInput,
             isDark
               ? 'text-custom-whiteD-200 placeholder:text-placeholderDark'
               : 'text-custom-dark placeholder:text-inputLightDisabled',
@@ -82,29 +93,25 @@ const CustomInput: React.FC<CustomInputProps> = ({
             .filter(Boolean)
             .join(' ')}
         />
-        {(
-          <label
-            htmlFor={name}
-            className={[
-              'absolute px-1 transition-all duration-200 ease-in-out font-textFont pointer-events-none',
-              isLabelFloating ? 'left-3' : children ? 'left-[108px]' : 'left-3',
-              isLabelFloating
-                ? `-top-2 text-[12px] opacity-100 ${
-                    isDark ? 'bg-inputDark' : 'bg-custom-whiteD-200'
-                  }`
-                : 'top-1/2 -translate-y-1/2 text-[14px]',
-              'text-inputLightDisabled',
-              error && (isDark ? '!text-errorColorDark' : '!text-errorColor'),
-              isDark
-                ? 'peer-hover:text-custom-whiteD-200 peer-focus:text-custom-whiteD-200 dark:bg-custom-grayD-900 focus:border-custom-whiteD-200 hover:border-custom-whiteD-200 hover:text-custom-whiteD-200'
-                : 'peer-hover:text-inputLight peer-focus:text-inputLight',
-            ]
-              .filter(Boolean)
-              .join(' ')}
-          >
-            {label}
-          </label>
-        )}        
+        <label
+          htmlFor={name}
+          className={[
+            'absolute px-1 transition-all duration-200 ease-in-out font-textFont pointer-events-none',
+            isLabelFloating ? 'left-3' : (children && !isSelect) ? 'left-[108px]' : 'left-3',
+            isLabelFloating
+              ? `-top-2 text-[12px] opacity-100 ${isDark ? 'bg-inputDark' : 'bg-custom-whiteD-200'}`
+              : 'top-1/2 -translate-y-1/2 text-[14px]',
+            'text-inputLightDisabled',
+            error && (isDark ? '!text-errorColorDark' : '!text-errorColor'),
+            isDark
+              ? 'peer-hover:text-custom-whiteD-200 peer-focus:text-custom-whiteD-200 dark:bg-custom-grayD-900 focus:border-custom-whiteD-200 hover:border-custom-whiteD-200 hover:text-custom-whiteD-200'
+              : 'peer-hover:text-inputLight peer-focus:text-inputLight',
+          ]
+            .filter(Boolean)
+            .join(' ')}
+        >
+          {label}
+        </label>
       </div>
       {error && (
         <span
@@ -113,7 +120,9 @@ const CustomInput: React.FC<CustomInputProps> = ({
             isDark
               ? 'dark:bg-custom-grayD-900 text-errorTextColorDark'
               : 'bg-custom-whiteD-200 text-errorColor',
-          ].filter(Boolean).join(' ')}
+          ]
+            .filter(Boolean)
+            .join(' ')}
         >
           {error}
         </span>

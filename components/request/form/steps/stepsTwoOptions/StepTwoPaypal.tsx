@@ -1,7 +1,6 @@
 import React from 'react';
 import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch } from 'react-hook-form';
-import InputSteps from '@/components/inputSteps/InputSteps';
-import { FieldError } from 'react-hook-form';
+import CustomInput from '@/components/ui/Input/CustomInput';
 
 interface StepTwoPaypalProps {
   register: UseFormRegister<any>;
@@ -12,93 +11,108 @@ interface StepTwoPaypalProps {
   formData: any;
 }
 
-const StepTwoPaypal: React.FC<StepTwoPaypalProps> = ({ register, errors, getValues, blockAll, formData, watch }) => {
+const StepTwoPaypal: React.FC<StepTwoPaypalProps> = ({
+  register,
+  errors,
+  getValues,
+  blockAll,
+  formData,
+  watch,
+}) => {
   return (
     <div className="mx-0 grid grid-cols-1 gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:grid-cols-2 sm-phone:gap-x-8 sm-phone:gap-y-2">
-      <InputSteps
+      <CustomInput
         label="Nombre"
         name="receiver_first_name"
-        id="receiver_first_name"
         type="text"
         placeholder={errors.receiver_first_name ? 'Nombre *' : 'Nombre'}
         disabled={blockAll || formData.stepOne?.own_account === 'Si'}
         register={register}
-        watch={watch}
-        rules={{
+        value={
+          formData.stepOne?.own_account === 'Si'
+            ? formData.stepOne?.first_name
+            : watch('receiver_first_name')
+        }
+        validation={{
           required: 'El Nombre es obligatorio',
           pattern: {
             value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
             message: 'El Nombre solo puede contener letras y espacios',
           },
         }}
-        error={errors.receiver_first_name ? (errors.receiver_first_name as FieldError) : undefined}
-        defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
-        value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.first_name : undefined}
+        error={errors.receiver_first_name?.message as string}
         className="order-1"
       />
 
-      <InputSteps
+      <CustomInput
         label="Apellido"
         name="receiver_last_name"
-        id="receiver_last_name"
         type="text"
-        placeholder={errors.reciever_last_name ? 'Apellido *' : 'Apellido'}
+        placeholder={errors.receiver_last_name ? 'Apellido *' : 'Apellido'}
         disabled={blockAll || formData.stepOne?.own_account === 'Si'}
         register={register}
-        watch={watch}
-        rules={{
+        value={
+          formData.stepOne?.own_account === 'Si'
+            ? formData.stepOne?.receiver_last_name
+            : watch('receiver_last_name')
+        }
+        validation={{
           required: 'El Apellido es obligatorio',
           pattern: {
             value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
             message: 'El Apellido solo puede contener letras y espacios',
           },
         }}
-        error={errors.receiver_last_name ? (errors.receiver_last_name as FieldError) : undefined}
-        defaultValue={formData.stepOne?.own_account !== 'Si' ? undefined : ''}
-        value={formData.stepOne?.own_account === 'Si' ? formData.stepOne?.receiver_last_name : undefined}
+        error={errors.receiver_last_name?.message as string}
         className="order-2 sm-phone:order-3"
       />
-      <InputSteps
-        label="Correo Electrónico de Paypal"
-        name="bank_email"
-        id="bank_email"
-        type="email"
-        placeholder={errors.bank_email ? 'Correo Electrónico de Paypal *' : 'Correo Electrónico de Paypal'}
-        disabled={blockAll}
-        register={register}
-        watch={watch}
-        rules={{
-          required: 'El Correo Electrónico de Paypal es obligatorio',
-          pattern: {
-            value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
-            message: 'El Correo Electrónico de Paypal no es válido',
-          },
-        }}
-        error={errors.bank_email ? (errors.bank_email as FieldError) : undefined}
-        className="order-3 sm-phone:order-2"
-      />
 
-      <InputSteps
-        label="RE-ENTER Correo Electrónico de Paypal"
-        name="re_enter_bank_email"
-        id="re_enter_bank_email"
+      <CustomInput
+        label="Correo Electrónico de PayPal"
+        name="bank_email"
         type="email"
         placeholder={
-          errors.re_enter_bank_email
-            ? 'RE-ENTER Correo Electrónica de Paypal *'
-            : 'RE-ENTER Correo Electrónica de Paypal'
+          errors.bank_email
+            ? 'Correo Electrónico de PayPal *'
+            : 'Correo Electrónico de PayPal'
         }
         disabled={blockAll}
         register={register}
-        watch={watch}
-        rules={{
-          required: 'El Correo Electrónico de Paypal es obligatorio',
-          validate: (value) => {
-            const originalValue = getValues('bank_email');
-            return value === originalValue || 'Debe coincidir con el Correo Electrónico de Paypal';
+        value={watch('bank_email')}
+        validation={{
+          required: 'El Correo Electrónico de PayPal es obligatorio',
+          pattern: {
+            value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+            message: 'El Correo Electrónico de PayPal no es válido',
           },
         }}
-        error={errors.re_enter_bank_email ? (errors.re_enter_bank_email as FieldError) : undefined}
+        error={errors.bank_email?.message as string}
+        className="order-3 sm-phone:order-2"
+      />
+
+      <CustomInput
+        label="RE-ENTER Correo Electrónico de PayPal"
+        name="re_enter_bank_email"
+        type="email"
+        placeholder={
+          errors.re_enter_bank_email
+            ? 'RE-ENTER Correo Electrónico de PayPal *'
+            : 'RE-ENTER Correo Electrónico de PayPal'
+        }
+        disabled={blockAll}
+        register={register}
+        value={watch('re_enter_bank_email')}
+        validation={{
+          required: 'El Correo Electrónico de PayPal es obligatorio',
+          validate: (value: string) => {
+            const originalValue = getValues('bank_email');
+            return (
+              value === originalValue ||
+              'Debe coincidir con el Correo Electrónico de PayPal'
+            );
+          },
+        }}
+        error={errors.re_enter_bank_email?.message as string}
         className="order-4"
       />
     </div>
