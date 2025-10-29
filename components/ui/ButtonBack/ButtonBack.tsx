@@ -37,8 +37,8 @@ const ButtonBack: React.FC<ButtonBackProps> = ({
     >
       <span className="flex items-center justify-center w-full h-full transform transition-transform duration-200 ease-in-out">
         <ChevronLeft
-          className='rounded-full'
-          color={isDark ? '#ebe7e0' : '#012c8a'}
+          className="rounded-full"
+          style={{ stroke: isDark ? '#EBE7E0' : '#012c8a' }}
           width={24}
           height={24}
           strokeWidth={2}

@@ -122,6 +122,19 @@ html {
   outline: none;
 }
 
+/* Dark mode overrides */
+.dark .btn-back:hover::before {
+  background: linear-gradient(90deg, rgba(102, 102, 102, 0) 32.55%, #EBE7E0 107.81%) !important;
+}
+
+.dark .btn-back:active::before {
+  background: linear-gradient(90deg, rgba(102,102,102,0) 8.73%, #EBE7E0 58.27%) !important;
+}
+
+.dark .btn-back svg {
+  stroke: #EBE7E0 !important;
+}
+
 
 .accordion-summary {
   min-height: 40px !important;

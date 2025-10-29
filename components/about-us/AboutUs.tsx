@@ -75,10 +75,10 @@ const AboutUs = () => {
 
   return (
     <>
-      <div className="relative mx-4 flex flex-col items-center justify-center md:mx-8 lg:mx-4">
+      <div className="relative top-[54px] mx-4 flex flex-col items-center justify-center md:mx-8 lg:mx-4">
         <AnimatedBlurredCircles tope="top-[0px]" />
         <div className="flex w-full max-w-[1000px] flex-col items-center justify-center text-lightText dark:text-darkText">
-          <section className="md:max-w-[80%]">
+          <section className="max-w-[1000px] ">
             <h1 className="mt-6 text-center font-titleFont text-[38px] font-medium lg2:mt-20 lg2:text-left lg2:text-[40px]">
               Nuestra Historia, Misión, Visión y Valores
             </h1>
@@ -137,7 +137,7 @@ const AboutUs = () => {
           </section>
         </div>
       </div>
-      <section className="mt-[47px] overflow-hidden text-center">
+      <section className="mt-[87px] overflow-hidden text-center">
         <FlyerTrabajo
           imageSrc={FlyerGif}
           href="/es/como-usar-swaplyar"
