@@ -75,7 +75,8 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
             <li
               key={index}
               className={cn(
-                'flex cursor-pointer justify-between px-3 mx-1 my-1 rounded-xl font-textFont text-inputLight leading-5 hover:bg-custom-whiteD-500 hover:text-inputLight',
+                'flex cursor-pointer justify-between px-3 mx-1 my-1 rounded-xl font-textFont leading-5 hover:bg-custom-whiteD-500',
+                isDark ? 'text-custom-grayD' : 'text-inputLight',
                 {
                   'bg-custom-whiteD-500': selectedCodeCountry?.callingCode === country.callingCode,
                 }

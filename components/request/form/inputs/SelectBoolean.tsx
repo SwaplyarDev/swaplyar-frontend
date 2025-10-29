@@ -1,10 +1,12 @@
 import React from 'react';
 import clsx from 'clsx';
 import { FieldError, SelectBooleanProps } from '@/types/request/request';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelectedOption, errors, blockAll }) => {
   const fieldName = 'own_account';
   const errorMessage = (errors as { [key: string]: FieldError })[fieldName]?.message;
+  const { isDark } = useDarkTheme();
 
   const options = ['SI', 'NO'];
 
@@ -13,7 +15,7 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelect
       <label
         className={clsx(
           errorMessage ? 'text-errorColor' : 'text-gray-900 dark:text-gray-300',
-          'font-textFont text-lightText dark:text-darkText sm-phone:ml-0 sm-phone:text-sm md:text-lg'
+          'font-textFont text-lightText dark:text-darkText sm-phone:ml-0 text-sm md:text-lg'
         )}
       >
         ¿Se transfiere a una cuenta propia?
@@ -26,10 +28,14 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelect
             disabled={blockAll}
             onClick={() => setSelectedOption(option)}
             className={clsx(
-              'w-10 h-10 rounded-full border text-buttonsLigth  hover:text-custom-whiteD-500 hover:border-buttonsLigth border-buttonsLigth flex items-center justify-center font-semibold transition-colors',
+              'text-xs md:text-base w-6 h-6 sm:w-8 sm:h-8 rounded-full border flex items-center justify-center transition-colors',
               selectedOption === option
-                ? 'bg-buttonsLigth text-custom-whiteD-500 border-buttonsLigth'
-                : 'bg-transparent text-buttonsLigth border-buttonsLigth hover:bg-buttonsLigth',
+                ? isDark
+                  ? 'bg-buttonsLigth text-custom-whiteD-500 border-custom-grayD-500'
+                  : 'bg-buttonsLigth text-custom-whiteD-500 border-buttonsLigth'
+                : isDark
+                  ? 'bg-transparent text-custom-grayD-500 border-custom-grayD-500 hover:bg-buttonsLigth hover:text-custom-whiteD-500'
+                  : 'bg-transparent text-buttonsLigth border-buttonsLigth hover:bg-buttonsLigth hover:text-custom-whiteD-500',
               blockAll && 'opacity-50 cursor-not-allowed'
             )}
           >

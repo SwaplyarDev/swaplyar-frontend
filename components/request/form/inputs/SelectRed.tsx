@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
 import CustomInput from '@/components/ui/Input/CustomInput';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 const options = [
   { value: 'arbitrum', label: 'Arbitrum One', image: <IconArbitrum className="w-7 h-7" /> },
@@ -22,6 +23,7 @@ const SelectRed: React.FC<SelectRedProps> = ({ selectedRed, setSelectedRed, erro
   const errorMessage = (errors as { [key: string]: FieldError })[fieldName]?.message;
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const { isDark } = useDarkTheme();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -72,7 +74,8 @@ const SelectRed: React.FC<SelectRedProps> = ({ selectedRed, setSelectedRed, erro
             <li
               key={option.value}
               className={clsx(
-                'scrollable-list flex cursor-pointer items-center gap-2 my-2 mx-2 rounded-full font-textFont text-inputLight hover:bg-custom-whiteD-500 hover:text-inputLight',
+                'scrollable-list flex cursor-pointer items-center gap-2 my-2 mx-2 rounded-full font-textFont hover:bg-custom-whiteD-500',
+                isDark ? 'text-custom-grayD' : 'text-inputLight',
                 { 'bg-custom-whiteD-500': selectedRed?.value === option.value }
               )}
               onClick={() => {

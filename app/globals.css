@@ -523,6 +523,10 @@ body {
   padding-right: 0px !important;
 }
 
+.dark body {
+  --sb-thumb-color: #90B0FE;
+}
+
 body::-webkit-scrollbar {
   width: var(--sb-size);
 }
