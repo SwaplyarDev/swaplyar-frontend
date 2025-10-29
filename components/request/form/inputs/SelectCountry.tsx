@@ -11,7 +11,6 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
   setSelectedCodeCountry,
   errors,
   classNames,
-  // add prop for god view in modal because this broke visual
   maxHeightModal = false
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,12 +48,11 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
   }, []);
 
   return (
-    <div ref={dropdownRef}>
+    <div ref={dropdownRef} className=''>
       <button
-        // className="flex items-center justify-between gap-1 rounded-lg bg-transparent py-2 pl-4 font-textFont text-lightText focus:outline-none"
         className={`
           ${classNames} 
-          flex items-center justify-between gap-1 rounded-lg bg-transparent py-2 font-textFont focus:outline-none
+          flex items-center justify-between gap-1 rounded-lg w-full bg-transparent py-2 font-textFont focus:outline-none
           ${isDark ? 'text-custom-whiteD-200' : 'text-custom-dark'}
         `}
 
@@ -71,13 +69,13 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -5 }}
-          className={`scrollable-list absolute top-${maxHeightModal ? "10" : "16"} z-10 mt-2 w-full ${maxHeightModal ? "max-h-32" : "max-h-40"} overflow-y-auto py-4 bg-custom-whiteD rounded-[32px]`}
+          className={`scrollable-list absolute top-full z-10 mt-2 w-full ${maxHeightModal ? "max-h-32" : "max-h-40"} overflow-y-auto py-4 bg-custom-whiteD rounded-[32px]`}
         >
           {countryOptions.map((country, index) => (
             <li
               key={index}
               className={cn(
-                'flex cursor-pointer justify-between px-3 mx-1 rounded-xl font-textFont text-inputLight leading-5 hover:bg-custom-whiteD-500 hover:text-inputLight',
+                'flex cursor-pointer justify-between px-3 mx-1 my-1 rounded-xl font-textFont text-inputLight leading-5 hover:bg-custom-whiteD-500 hover:text-inputLight',
                 {
                   'bg-custom-whiteD-500': selectedCodeCountry?.callingCode === country.callingCode,
                 }

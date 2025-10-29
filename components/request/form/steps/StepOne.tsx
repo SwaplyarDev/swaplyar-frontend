@@ -188,7 +188,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
           }}
           error={errors.email?.message}
         />
-        <div className="relative order-4 flex flex-col">
+        <div className="relative order-4 flex flex-col w-full">
           <Controller
             name="calling_code"
             control={control}
@@ -220,7 +220,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                   }}
                   errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
                   textColor={['lightText', 'lightText']}
-                  classNames="pl-2 w-[95px]"
+                  classNames="pl-4 w-full"
                 />
               </CustomInput>
             )}
@@ -228,12 +228,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
         </div>
         {!selectedWallet && (
           <>
-            <div className="order-5 mx-[10px] flex w-full items-center justify-start sm-phone:mx-0 sm-phone:justify-center">
-              <p className="h-5 font-textFont text-lightText dark:text-darkText sm-phone:ml-0 sm-phone:text-sm md:text-lg">
-                ¿Se transfiere a una cuenta propia?
-              </p>
-            </div>
-            <div className="order-6 flex w-full flex-col">
+            <div className="order-6 flex w-full justify-center items-center flex-col sm-phone:col-span-2">
               <Controller
                 name="own_account"
                 control={control}

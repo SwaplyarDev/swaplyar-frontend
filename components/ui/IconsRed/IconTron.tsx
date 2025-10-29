@@ -1,12 +1,8 @@
 import React from 'react';
 
-interface IconTronProps {
-  size?: string;
-}
-
-const IconTron: React.FC<IconTronProps> = ({ size = '1em' }) => {
+const IconTron = ({ className }: { className?: string }) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24">
       <path
         fill="#C4342B"
         fillRule="evenodd"
