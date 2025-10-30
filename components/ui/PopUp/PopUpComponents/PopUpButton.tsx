@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import Swal from 'sweetalert2';
 
 interface PopUpButtonProps {
   text: string;
@@ -39,15 +40,19 @@ export const PopUpButton: React.FC<PopUpButtonProps> = ({
 
   const baseClass = `
     relative flex items-center justify-center
-    rounded-3xl border p-3 font-textFont font-semibold
+    rounded-3xl border p-3 m-[3px] font-textFont font-semibold
     h-[38px] w-auto min-w-[196px] sm-phone:min-w-[246px] desktop:min-w-[296px] px-6
     sm:h-[45px] lg:h-[48px]
+    ${isDark ? 'buttonSecondDark' : 'buttonSecond'}
   `;
 
   const finalClass = clsx(baseClass, getVariantStyles(), className);
 
   return (
-    <button onClick={onClick} className={finalClass}>
+    <button onClick={() => {
+      onClick();
+      Swal.close();
+    }} className={finalClass}>
       <span className='text-sm sm-phone:text-lg'>{text}</span>
     </button>
   );
