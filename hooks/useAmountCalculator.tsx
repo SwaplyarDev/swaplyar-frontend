@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSystemStore } from '@/store/useSystemStore';
 import { postTotal } from '@/components/Transaction/services/conversionsApi';
 import {
@@ -6,6 +6,7 @@ import {
   systemToBackend,
   type SystemBackendId,
 } from '@/components/Transaction/services/systemBackendMapper';
+import { useRealtimeRates } from '@/hooks/useRealtimeRates'; //hook con websocket
 
 const isSystemBackendId = (id: string): id is SystemBackendId => id in systemToBackend;
 
@@ -15,6 +16,17 @@ export const useAmountCalculator = () => {
   const [receiveAmount, setReceiveAmount] = useState('');
   const [isSendActive, setIsSendActive] = useState(true);
   const [rateForOne, setRateForOne] = useState(0);
+
+  // hook para recibir tasas en tiempo real
+  const { rateUpdate, conversionResult, sendCalculation } = useRealtimeRates();
+  //refs para comprar los rates y las comissions anteriores
+  const lastRateRef = useRef<number | null>(null);
+  const lastCommissionRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (rateUpdate) {
+      console.log('📡 Actualización recibida desde el WS:', rateUpdate);
+    }
+  }, [rateUpdate]);
 
   // 🔄 Calcula usando backend
   const calculate = async (amount: number, inverse = false, isRateOnly = false) => {
@@ -69,35 +81,87 @@ export const useAmountCalculator = () => {
 
     return () => clearTimeout(timeout);
   }, [receiveAmount, selectedSendingSystem, selectedReceivingSystem]);
+// 📡 Cuando llega un resultado del backend por WebSocket
+  useEffect(() => {
+    if (conversionResult) {
+      const { totalReceived, amount } = conversionResult;
+
+      // rateForOne = monto final / cantidad
+      const newRate = totalReceived / amount;
+      setRateForOne(newRate);
+
+      console.log(`💹 rateForOne actualizado desde WS: ${newRate}`);
+    }
+  }, [conversionResult]);
+
 
   // obtiene rateForOne inicial al montar o cambiar sistemas
   useEffect(() => {
-    const fetchRateForOne = async () => {
-      if (selectedSendingSystem && selectedReceivingSystem) {
-        try {
-          let invertForRate = false;
+    if (!selectedSendingSystem || !selectedReceivingSystem) return;
 
-          // 🧠 Si la moneda base es ARS, invertimos el cálculo
-          if (selectedSendingSystem.coin === 'ARS') {
-            invertForRate = true;
-          }
+    // Si los IDs no son válidos, no hacemos nada
+    if (
+      !isSystemBackendId(selectedSendingSystem.id) ||
+      !isSystemBackendId(selectedReceivingSystem.id)
+    )
+      return;
 
-          const res = await calculate(1, invertForRate, true);
+    const payload = mapSystemsToTotalPayload(
+      selectedSendingSystem.id,
+      selectedReceivingSystem.id,
+      1
+    );
 
-          // si invertimos, invertimos también el rate para mostrar correctamente
-          if (invertForRate && res) {
-            const newRate = 1 / (res.totalReceived / res.amount);
-            setRateForOne(newRate);
-          }
+    console.log('⚙️ Preparando solicitud de rateForOne vía WebSocket...', payload);
 
-        } catch (err) {
-          console.error('Error obteniendo rateForOne inicial:', err);
-        }
-      }
-    };
+    // 🕒 Esperar un pequeño retardo para asegurar conexión WS estable
+    const timeout = setTimeout(() => {
+      console.log('🚀 Enviando cálculo rateForOne vía WebSocket...');
+      sendCalculation(payload);
+    }, 1500); // 👈 1500 ms suele ser suficiente, pero podés ajustar a 2000 si querés más margen
 
-    fetchRateForOne();
+    return () => clearTimeout(timeout);
   }, [selectedSendingSystem?.id, selectedReceivingSystem?.id]);
+
+
+  useEffect(() => {
+    if (
+      !selectedSendingSystem ||
+      !selectedReceivingSystem ||
+      !isSystemBackendId(selectedSendingSystem.id) ||
+      !isSystemBackendId(selectedReceivingSystem.id)
+    ) return;
+
+    const newRate = rateUpdate?.rate ?? null;
+
+    // Simulamos un objeto "commission-update" que también llega por WS
+    const newCommissionRate = (conversionResult?.commission?.commissionRate ?? null);
+
+    // Si no hay datos, no hacemos nada
+    if (newRate === null && newCommissionRate === null) return;
+
+    const rateChanged = newRate !== null && newRate !== lastRateRef.current;
+    const commissionChanged =
+      newCommissionRate !== null && newCommissionRate !== lastCommissionRef.current;
+
+    if (rateChanged || commissionChanged) {
+      console.log('🔁 Cambios detectados en rate/commission. Recalculando rateForOne...');
+      lastRateRef.current = newRate ?? lastRateRef.current;
+      lastCommissionRef.current = newCommissionRate ?? lastCommissionRef.current;
+
+      const payload = mapSystemsToTotalPayload(
+        selectedSendingSystem.id,
+        selectedReceivingSystem.id,
+        1
+      );
+
+      sendCalculation(payload); // recalcula solo si cambió algo
+    } else {
+      console.log('✅ No hay cambios en rate ni commission, no se recalcula.');
+    }
+  }, [rateUpdate, conversionResult]);
+
+
 
   const handleSendAmountChange = (v: string) => {
     if (!/^[0-9]*\.?[0-9]{0,2}$/.test(v)) return;
