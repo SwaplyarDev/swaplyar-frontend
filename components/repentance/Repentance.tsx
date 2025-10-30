@@ -53,13 +53,13 @@ const RepentanceForm = () => {
 
           <div className="mt-10 flex h-full w-full max-w-[490px] flex-col items-center justify-center gap-4 border-0 lg2:ml-10 lg2:w-[490px]">
             <Form></Form>
-            <div className="flex flex-row items-center justify-center gap-4">
+            <div className="flex flex-row items-center mt-10 gap-4">
                 <ButtonBack route="/es/centro-de-ayuda" isDark={isDark} />
               <button
                 type="submit"
                 form="repentance-form"
                 className={clsx(
-                  'relative h-[44px] sm:h-[42px] lg:h-[48px] w-[474px] p-0 flex items-center justify-center rounded-3xl font-titleFont font-semibold text-[16px] leading-[20px] cursor-pointer transition-all duration-200',
+                  'relative h-[44px] sm:h-[42px] lg:h-[48px] min-w-[474px] w-[474px] p-0 flex items-center justify-center rounded-3xl font-titleFont font-semibold text-[16px] leading-[20px] cursor-pointer transition-all duration-200',
                   isDark
                     ? 'border-darkText bg-darkText text-lightText hover:bg-darkText/90'
                     : 'border-buttonsLigth bg-buttonsLigth text-white hover:bg-buttonsLigth/90',
@@ -68,7 +68,6 @@ const RepentanceForm = () => {
               >
                 Solicitar Reembolso
               </button>
-            
             </div>
           </div>
         </div>
