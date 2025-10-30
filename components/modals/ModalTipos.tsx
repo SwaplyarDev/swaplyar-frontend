@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-import { fetchCode, sendFormData } from '@/actions/editRequest/editRequest.action';
+import { fetchCode, fetchTransactionById, sendFormData } from '@/actions/editRequest/editRequest.action';
 import clsx from 'clsx';
 import PopUp from '../ui/PopUp/PopUp';
 import { IconWarning } from '../ui/PopUp/Icons';
@@ -18,29 +18,68 @@ interface ModalProps {
   code: string;
 }
 
-const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId, code }) => {
+
+const Modal1 = ({ isOpen, onClose, isDark, transaccionId, code }: ModalProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [transactionData, setTransactionData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [note, setNote] = useState<string>('');
   const [isFocused, setIsFocused] = useState(false);
-
   const [noteAccessToken, setNoteAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
-    if (transaccionId && code.length === 6) {
-      const fetchData = async () => {
+    const fetchData = async () => {
+      if (transaccionId && code.length === 6) {
         setLoading(true);
         const data = await fetchCode(code, { transactionId: transaccionId });
+        /* El data que viene del fetch code no coincide con los datos que tengo que renderizar de data */
+        console.log('data', data)
         setTransactionData(data.data);
         setNoteAccessToken(data.noteAccessToken);
         setLoading(false);
-      };
-      fetchData();
-    }
+      }
+    };
+    fetchData();
   }, [transaccionId, code]);
 
+  
   if (!isOpen) return null;
+
+  return (
+    <Modal1Content
+      isOpen={isOpen}
+      onClose={onClose}
+      isDark={isDark}
+      transaccionId={transaccionId}
+      code={code}
+      transactionData={transactionData}
+      file={file}
+      setFile={setFile}
+      note={note}
+      setNote={setNote}
+      isFocused={isFocused}
+      setIsFocused={setIsFocused}
+      noteAccessToken={noteAccessToken}
+      loading={loading}
+      setLoading={setLoading}
+    />
+  );
+};
+
+interface Modal1Props extends ModalProps {
+  transactionData: any;
+  file: File | null;
+  setFile: React.Dispatch<React.SetStateAction<File | null>>;
+  note: string;
+  setNote: React.Dispatch<React.SetStateAction<string>>;
+  isFocused: boolean;
+  setIsFocused: React.Dispatch<React.SetStateAction<boolean>>;
+  noteAccessToken: string | null;
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transaccionId, code, transactionData, file, setFile, note, setNote, isFocused, setIsFocused, noteAccessToken, loading, setLoading }) => {
 
   const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNote(event.target.value);
@@ -160,11 +199,11 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId, 
         className="relative mt-24 w-full max-w-[350px] xs-phone:max-w-[510px] xl-desktop:max-w-[556px] rounded-lg bg-[#FFF] p-6 shadow-lg dark:bg-[#333231]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className='flex gap-5 h-10'>
-          <div className='relative -left-4 -top-4'>
+        <div className='flex h-10'>
+          <div className='absolute left-2 top-2'>
             <IconWarning size={70} />
           </div>
-          <h2 className="text-start font-textFont text-lg xs-phone:text-xl font-semibold text-custom-blue dark:text-darkText">
+          <h2 className="w-full text-center font-textFont text-lg xs-phone:text-xl font-semibold text-custom-blue dark:text-darkText">
             Solicitud N° {transaccionId}
           </h2>
         </div>
