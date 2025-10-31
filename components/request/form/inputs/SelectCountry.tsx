@@ -71,15 +71,18 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -5 }}
-          className={`scrollable-list absolute ${maxHeightModal ? "top-10" : "top-16 "} z-10 mt-2 ${maxHeightModal ? "max-h-40" : "max-h-64"}  w-full overflow-y-auto border border-custom-grayD-300 bg-custom-whiteD shadow-lg`}
+          className={`scrollable-list absolute ${maxHeightModal ? "top-10" : "top-16 "} z-10 mt-2 ${maxHeightModal ? "max-h-40" : "max-h-64"}  w-full overflow-y-auto border border-custom-grayD-300 ${isDark ? 'bg-custom-grayD-900' : 'bg-custom-whiteD'} shadow-lg`}
         >
           {countryOptions.map((country, index) => (
             <li
               key={index}
               className={cn(
-                'flex cursor-pointer justify-between px-4 py-2 font-textFont hover:bg-buttonsLigth hover:text-darkText',
+                `flex cursor-pointer justify-between px-4 py-2 font-textFont transition-colors duration-150`,
+                isDark 
+                  ? 'text-custom-grayD-300 hover:bg-custom-grayD-800 hover:text-white'
+                  : 'text-gray-600 hover:bg-gray-100 hover:text-white',
                 {
-                  'bg-gray-100': selectedCodeCountry?.callingCode === country.callingCode,
+                  [isDark ? 'bg-custom-grayD-800' : 'bg-gray-100']: selectedCodeCountry?.callingCode === country.callingCode,
                 },
               )}
               onClick={() => {
