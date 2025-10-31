@@ -79,5 +79,17 @@ export const useRealtimeRates = () => {
     }
   }, []);
 
-  return { rateUpdate, sendCalculation, conversionResult};
+    // 👉 Función para esperar hasta que el socket esté conectado
+  const waitForConnection = useCallback(() => {
+    return new Promise<void>(resolve => {
+      const socket = socketRef.current;
+      if (socket?.connected) {
+        resolve();
+      } else {
+        socket?.once('connect', () => resolve());
+      }
+    });
+  }, []);
+
+  return { rateUpdate, sendCalculation, conversionResult, waitForConnection};
 };

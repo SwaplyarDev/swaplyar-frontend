@@ -18,7 +18,7 @@ export const useAmountCalculator = () => {
   const [rateForOne, setRateForOne] = useState(0);
 
   // hook para recibir tasas en tiempo real
-  const { rateUpdate, conversionResult, sendCalculation } = useRealtimeRates();
+  const { rateUpdate, conversionResult, sendCalculation, waitForConnection } = useRealtimeRates();
   //refs para comprar los rates y las comissions anteriores
   const lastRateRef = useRef<number | null>(null);
   const lastCommissionRef = useRef<number | null>(null);
@@ -81,46 +81,56 @@ export const useAmountCalculator = () => {
 
     return () => clearTimeout(timeout);
   }, [receiveAmount, selectedSendingSystem, selectedReceivingSystem]);
-// 📡 Cuando llega un resultado del backend por WebSocket
+  // 📡 Cuando llega un resultado del backend por WebSocket
   useEffect(() => {
     if (conversionResult) {
       const { totalReceived, amount } = conversionResult;
 
       // rateForOne = monto final / cantidad
-      const newRate = totalReceived / amount;
+      let newRate = totalReceived / amount;
+
+      // 💡 Si la conversión fue ARS→otra, pero se invirtió el cálculo,
+      // mostramos el inverso semántico: “X ARS = 1 USD”
+      if (selectedSendingSystem?.coin === 'ARS') {
+        newRate = totalReceived; // equivale a cuántos ARS por 1 USD
+      }
+
       setRateForOne(newRate);
 
       console.log(`💹 rateForOne actualizado desde WS: ${newRate}`);
     }
-  }, [conversionResult]);
+  }, [conversionResult, selectedSendingSystem?.coin]);
 
 
   // obtiene rateForOne inicial al montar o cambiar sistemas
   useEffect(() => {
-    if (!selectedSendingSystem || !selectedReceivingSystem) return;
+    const fetchInitialRate = async () => {
+      if (
+        !selectedSendingSystem ||
+        !selectedReceivingSystem ||
+        !isSystemBackendId(selectedSendingSystem.id) ||
+        !isSystemBackendId(selectedReceivingSystem.id)
+      ) return;
 
-    // Si los IDs no son válidos, no hacemos nada
-    if (
-      !isSystemBackendId(selectedSendingSystem.id) ||
-      !isSystemBackendId(selectedReceivingSystem.id)
-    )
-      return;
+      let fromSystem = selectedSendingSystem.id;
+      let toSystem = selectedReceivingSystem.id;
 
-    const payload = mapSystemsToTotalPayload(
-      selectedSendingSystem.id,
-      selectedReceivingSystem.id,
-      1
-    );
+      // 💡 Si enviamos desde ARS, invertimos la consulta
+      const isFromARS = selectedSendingSystem.coin === 'ARS';
+      if (isFromARS) {
+        fromSystem = selectedReceivingSystem.id;
+        toSystem = selectedSendingSystem.id;
+      }
 
-    console.log('⚙️ Preparando solicitud de rateForOne vía WebSocket...', payload);
+      const payload = mapSystemsToTotalPayload(fromSystem, toSystem, 1);
 
-    // 🕒 Esperar un pequeño retardo para asegurar conexión WS estable
-    const timeout = setTimeout(() => {
-      console.log('🚀 Enviando cálculo rateForOne vía WebSocket...');
+      console.log('⚙️ Preparando solicitud de rateForOne vía WebSocket...', payload);
+      await waitForConnection(); // 👈 Espera conexión real
+      console.log('✅ WS conectado, enviando cálculo rateForOne...');
       sendCalculation(payload);
-    }, 1500); // 👈 1500 ms suele ser suficiente, pero podés ajustar a 2000 si querés más margen
+    };
 
-    return () => clearTimeout(timeout);
+    fetchInitialRate();
   }, [selectedSendingSystem?.id, selectedReceivingSystem?.id]);
 
 
