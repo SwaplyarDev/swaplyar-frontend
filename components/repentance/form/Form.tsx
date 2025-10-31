@@ -11,7 +11,7 @@ import ButtonAuth from '@/components/auth/AuthButton';
 
 const Form = () => {
   const [isFocused, setIsFocused] = useState(false);
-  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+  const [isTooltipVisible, setIsTooltipVisible] = useState(true);
   const toggleTooltip = useCallback(() => {
     setIsTooltipVisible((prev) => !prev);
   }, []);

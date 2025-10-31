@@ -1,10 +1,12 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-import Arrow from '../ui/Arrow/Arrow';
-import { fetchCode, sendFormData } from '@/actions/editRequest/editRequest.action';
-import LoadingGif from '../ui/LoadingGif/LoadingGif';
+import { fetchCode, fetchTransactionById, sendFormData } from '@/actions/editRequest/editRequest.action';
 import clsx from 'clsx';
 import PopUp from '../ui/PopUp/PopUp';
+import { IconWarning } from '../ui/PopUp/Icons';
+import { ChevronLeft } from 'lucide-react';
+import ButtonAuth from '../auth/AuthButton';
+import FileUpload from '../ui/FileUpload/FileUpload';
 
 interface ModalProps {
   isDark: boolean;
@@ -16,54 +18,84 @@ interface ModalProps {
   code: string;
 }
 
-const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId, code }) => {
+
+const Modal1 = ({ isOpen, onClose, isDark, transaccionId, code }: ModalProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [transactionData, setTransactionData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [note, setNote] = useState<string>('');
   const [isFocused, setIsFocused] = useState(false);
-
   const [noteAccessToken, setNoteAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
-    if (transaccionId && code.length === 6) {
-      const fetchData = async () => {
+    const fetchData = async () => {
+      if (transaccionId && code.length === 6) {
         setLoading(true);
         const data = await fetchCode(code, { transactionId: transaccionId });
+        /* El data que viene del fetch code no coincide con los datos que tengo que renderizar de data */
+        console.log('data', data)
         setTransactionData(data.data);
         setNoteAccessToken(data.noteAccessToken);
         setLoading(false);
-      };
-      fetchData();
-    }
+      }
+    };
+    fetchData();
   }, [transaccionId, code]);
 
+  
   if (!isOpen) return null;
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setFile(event.target.files[0]);
-    }
-  };
-  const handleFileRemove = () => {
-    setFile(null);
-  };
+  return (
+    <Modal1Content
+      isOpen={isOpen}
+      onClose={onClose}
+      isDark={isDark}
+      transaccionId={transaccionId}
+      code={code}
+      transactionData={transactionData}
+      file={file}
+      setFile={setFile}
+      note={note}
+      setNote={setNote}
+      isFocused={isFocused}
+      setIsFocused={setIsFocused}
+      noteAccessToken={noteAccessToken}
+      loading={loading}
+      setLoading={setLoading}
+    />
+  );
+};
+
+interface Modal1Props extends ModalProps {
+  transactionData: any;
+  file: File | null;
+  setFile: React.Dispatch<React.SetStateAction<File | null>>;
+  note: string;
+  setNote: React.Dispatch<React.SetStateAction<string>>;
+  isFocused: boolean;
+  setIsFocused: React.Dispatch<React.SetStateAction<boolean>>;
+  noteAccessToken: string | null;
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transaccionId, code, transactionData, file, setFile, note, setNote, isFocused, setIsFocused, noteAccessToken, loading, setLoading }) => {
+
   const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNote(event.target.value);
   };
   const handleEditRequestError = () =>
     PopUp({
-      icon: 'error',
-      title: 'Error al editar solicitud!',
-      text: 'Debe ingresar una nota, seleccionar un archivo y proporcionar el ID de transacción. Si sigue dando error, contactar a soporte.',
+      variant: 'simple-warning',
+      title: 'Algunos de los datos son incorrectos por favor verifique los datos ingresados e intente nuevamente',
       isDark: isDark,
     });
 
   const handleEditRequestSuccess = () =>
     PopUp({
-      icon: 'success',
-      title: 'Solucitud enviado con exito!',
-      text: 'Su solicitud fue envia con exito, en la brevedad nos pondremos en contacto contigo.',
+      variant: 'success-compact',
+      title: 'Solicitud enviada con Éxito',
+      text: 'Hemos recibido su solicitud de modificación. Si necesitamos información adicional, nos comunicaremos por WhatsApp al número indicado en el formulario.',
       isDark: isDark,
     });
 
@@ -87,19 +119,23 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId, 
       onClose();
     } catch (error) {
       console.error('Error al enviar los datos:', error);
-      handleEditRequestError();
+      PopUp({
+        variant: 'simple-error',
+        title: 'Algunos de los datos son incorrectos por favor verifique los datos ingresados e intente nuevamente',
+        isDark: isDark,
+      });
       setLoading(false);
     }
   };
   const PayMethodInfo: React.FC = () => {
     if (transactionData?.transaction?.payment_method?.receiver?.value === 'ars') {
       return (
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between text-sm xs-phone:text-base">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
             <p>Nombre </p>
             <p>Apellido </p>
-            <p>DNI/CUIT/CUIL </p>
-            <p>CBU/CVU/ALIAS </p>
+            <p>DNI / CUIT / CUIL </p>
+            <p>CBU / CVU / ALIAS </p>
             <p>Nombre del Banco </p>
           </div>
           <div className="flex flex-col text-end text-lightText dark:text-darkText">
@@ -113,7 +149,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId, 
       );
     } else if (transactionData?.transaction?.receiverAccount?.paymentMethod?.method === 'receiver_crypto') {
       return (
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between text-sm xs-phone:text-base">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
             <p>Dirección USDT </p>
             <p>Red </p>
@@ -129,7 +165,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId, 
       );
     } else if (transactionData?.transaction?.receiverAccount?.paymentMethod?.method === 'pix') {
       return (
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between text-sm xs-phone:text-base">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
             <p>PIX KEY</p>
             <p>CPF</p>
@@ -142,7 +178,7 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId, 
       );
     } else if (transactionData?.transaction?.receiverAccount?.paymentMethod?.method === 'virtual_bank') {
       return (
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between text-sm xs-phone:text-base">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
             <p>Correo electrónico</p>
           </div>
@@ -157,23 +193,25 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId, 
     }
   };
   return (
-    <div className="fixed inset-0 left-0 right-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 left-0 right-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={onClose}>
       <div
         style={{ top: '0px', bottom: '64px' }}
-        className="relative mt-24 w-full max-w-[400px] rounded-lg bg-[#FFF] px-0 py-2 shadow-lg dark:bg-[#333231] xs:px-0"
+        className="relative mt-24 w-full max-w-[350px] xs-phone:max-w-[510px] xl-desktop:max-w-[556px] rounded-lg bg-[#FFF] p-6 shadow-lg dark:bg-[#333231]"
         onClick={(e) => e.stopPropagation()}
       >
-        <button onClick={onClose} className="absolute right-2.5 top-1.5 text-2xl">
-          <p className={`inline-block text-buttonsLigth dark:text-darkText`}>X</p>
-        </button>
-        <h2 className="mb-4 pl-4 pr-7 text-start font-textFont text-lg font-semibold text-lightText dark:text-darkText">
-          Formulario de Solicitud N° {transaccionId}
-        </h2>
+        <div className='flex h-10'>
+          <div className='absolute left-2 top-2'>
+            <IconWarning size={70} />
+          </div>
+          <h2 className="w-full text-center font-textFont text-lg xs-phone:text-xl font-semibold text-custom-blue dark:text-darkText">
+            Solicitud N° {transaccionId}
+          </h2>
+        </div>
 
-        <div className="flex max-h-[70vh] flex-col gap-2 overflow-y-auto px-4 scrollbar">
-          <section className="flex flex-col border-b border-darkText pb-2">
-            <h3 className="mb-2 flex font-textFont font-semibold text-buttonsLigth dark:text-darkText">Mis Datos</h3>
-            <div className="flex justify-between text-sm">
+        <div className="flex flex-col gap-3 overflow-y-auto scrollbar">
+          <section className="flex flex-col">
+            <h3 className="flex justify-center font-textFont font-semibold xs-phone:text-lg text-buttonsLigth dark:text-darkText">Mis Datos</h3>
+            <div className="flex justify-between text-sm xs-phone:text-base">
               <div className="flex flex-col text-start font-textFont font-light text-lightText dark:text-darkText">
                 <p>Nombre </p>
                 <p>Apellido </p>
@@ -185,22 +223,24 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId, 
                 <p>{transactionData?.transaction?.senderAccount?.phoneNumber}</p>
               </div>
             </div>
+            <div className='w-2/3 h-[1px] bg-custom-blue self-center' />
           </section>
 
-          <section className="flex flex-col border-b border-darkText pb-2">
-            <h3 className="mb-2 flex font-textFont font-semibold text-buttonsLigth dark:text-darkText">
-              informacion del Destinatario
+          <section className="flex flex-col">
+            <h3 className="flex justify-center font-textFont font-semibold xs-phone:text-lg text-buttonsLigth dark:text-darkText">
+              información del Destinatario
             </h3>
 
             <PayMethodInfo />
+            <div className='w-2/3 h-[1px] bg-custom-blue self-center' />
           </section>
 
-          <section className="flex flex-col border-b border-darkText pb-2">
-            <h3 className="mb-2 flex font-textFont font-semibold text-buttonsLigth dark:text-darkText">Pago</h3>
-            <div className="flex justify-between text-sm">
+          <section className="flex flex-col">
+            <h3 className="flex justify-center font-textFont font-semibold xs-phone:text-lg text-buttonsLigth dark:text-darkText">Pago</h3>
+            <div className="flex justify-between text-sm xs-phone:text-base">
               <div className="flex flex-col text-start text-lightText dark:text-darkText">
-                <p className="mr-20">Monto a pagar </p>
-                <p>Monto a recibir </p>
+                <p>Monto a Pagar </p>
+                <p>Monto a Recibir </p>
               </div>
               <div className="flex flex-col text-end text-lightText dark:text-darkText">
                 <p>
@@ -213,120 +253,77 @@ const Modal1: React.FC<ModalProps> = ({ isOpen, onClose, isDark, transaccionId, 
                 </p>
               </div>
             </div>
+            <div className='w-2/3 h-[1px] bg-custom-blue self-center' />
           </section>
 
           <section>
-            <p className="mb-2 flex h-1/2 flex-col text-buttonsLigth dark:text-darkText">
-              <div className="text-start font-textFont text-sm">
-                <span className="mr-1 font-semibold">Nota:</span>
+            <p className="flex h-1/2 flex-col dark:text-darkText">
+              <div className="text-start font-textFont text-sm leading-3">
+                <span className="mr-1 font-semibold text-custom-blue">Nota:</span>
                 <span className="text-start text-xs font-light">
-                  Indique la sección que desea modificar o cargue el comprobante correcto si envió uno por error.{' '}
+                  Indique la sección que desea modificar y adjunte el comprobante correcto si el anterior fue enviado por error.
                 </span>
               </div>
             </p>
-            <form className="flex flex-col">
-              <label
-                htmlFor="note"
-                className={clsx(
-                  'font-textFont font-light text-lightText dark:text-darkText',
-                  !isFocused && 'opacity-0',
-                  'w-full pl-3 text-start text-sm',
-                )}
-              >
-                Necesito Modificar...
-              </label>
-              <textarea
-                rows={1}
-                id="note"
-                className={`w-ful mb-4 block h-[45px] resize-none rounded-2xl border border-inputLightDisabled px-3 py-2 placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight focus:placeholder-transparent dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText hover:dark:border-transparent dark:hover:placeholder-lightText focus:dark:border-transparent focus:dark:ring-transparent`}
-                placeholder={isFocused ? '' : 'Necesito Modificar...'}
-                onChange={handleNoteChange}
-                required
-                minLength={20}
-                maxLength={200}
-                onFocus={() => setIsFocused(true)}
-                onBlur={(e) => setIsFocused(e.target.value !== '')}
-              ></textarea>
+          </section>
 
-              <div className="file-upload flex flex-col justify-between rounded-2xl">
-                <div className="group flex h-full w-full flex-col items-center justify-center rounded-2xl border-[1px] border-inputLightDisabled py-2 text-center hover:border-inputLight dark:border-disabledDarkText dark:border-transparent dark:text-lightText dark:hover:border-darkText">
-                  {!file ? (
-                    <>
-                      <p className="mb-1 hidden font-textFont text-sm text-inputLightDisabled group-hover:text-buttonsLigth dark:text-disabledDarkText group-hover:dark:text-darkText lg:inline-block">
-                        SUBIR COMPROBANTE
-                      </p>
-                      <label
-                        className={`${
-                          isDark ? 'buttonSecondDark' : 'buttonSecond'
-                        } relative mt-5 h-[48px] w-full max-w-[200px] items-center justify-center rounded-3xl border border-disabledButtonsLigth bg-disabledButtonsLigth p-[10px] font-textFont text-lg text-darkText group-hover:border-buttonsLigth group-hover:bg-buttonsLigth group-hover:text-darkText dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText group-hover:dark:border-darkText group-hover:dark:bg-darkText group-hover:dark:text-lightText lg:mt-0`}
-                      >
-                        Subir Archivo
-                        <input
-                          type="file"
-                          onChange={handleFileChange}
-                          accept=".png,.jpg,.pdf"
-                          className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-                        />
-                      </label>
-                    </>
-                  ) : (
-                    <div className="flex items-center">
-                      <p className="text-sm text-buttonsLigth group-hover:text-darkText dark:text-disabledDarkText">
-                        Archivo seleccionado: {file.name}
-                      </p>
-                      <button
-                        onClick={handleFileRemove}
-                        className="ml-3 rounded-full bg-buttonsLigth px-2 text-darkText hover:bg-errorColor dark:bg-darkText dark:text-lightText hover:dark:bg-errorColor"
-                        aria-label="Eliminar archivo"
-                      >
-                        X
-                      </button>
-                    </div>
-                  )}
-                  {!file && (
-                    <p className="mt-1 text-xs text-inputLightDisabled group-hover:text-buttonsLigth dark:text-disabledDarkText group-hover:dark:text-darkText">
-                      Formatos de archivo: PNG, JPG, PDF
-                    </p>
-                  )}
-                </div>
-              </div>
-            </form>
+          <section>
+            <FileUpload
+              file={file}
+              onFileChange={setFile}
+              isDark={isDark}
+              accept=".png,.jpg,.pdf"
+              maxSizeText="max. 800x400px"
+              maxSizeMB={10}
+              onError={(error) => {
+                PopUp({
+                  variant: 'simple-error',
+                  title: error,
+                  isDark: isDark,
+                });
+              }}
+            />
+
+            <label
+              htmlFor="note"
+              className={clsx(
+                'font-textFont font-light text-lightText dark:text-darkText',
+                !isFocused && 'opacity-0',
+                'w-full pl-3 text-start text-sm',
+              )}
+            >
+              Necesito Modificar...
+            </label>
+            <textarea
+              rows={1}
+              id="note"
+              className={`w-full block h-[45px] resize-none rounded-2xl border border-inputLightDisabled px-3 py-2 placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight focus:placeholder-transparent dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText hover:dark:border-transparent dark:hover:placeholder-lightText focus:dark:border-transparent focus:dark:ring-transparent`}
+              placeholder={isFocused ? '' : 'Necesito Modificar...'}
+              onChange={handleNoteChange}
+              required
+              minLength={20}
+              maxLength={200}
+              onFocus={() => setIsFocused(true)}
+              onBlur={(e) => setIsFocused(e.target.value !== '')}
+            ></textarea>
           </section>
 
           <div className="mt-4 flex flex-col-reverse justify-between xs:flex-row">
             <button
               onClick={onClose}
-              className={`group relative m-1 flex h-[48px] min-w-[112px] items-center justify-center gap-2 rounded-3xl border border-buttonsLigth p-3 text-xl font-light text-buttonsLigth dark:border-darkText dark:text-darkText xs:min-w-[1px]`}
+              className="btn-back items-center relative flex h-[38px] sm-phone:h-12 rounded-full hover:bg-transparent dark:text-darkText dark:bg-none"
             >
-              <div className="relative h-5 w-5 overflow-hidden">
-                <div className="absolute left-0 transition-all ease-in-out group-hover:left-1">
-                  <Arrow color={isDark ? '#ebe7e0' : '#012c8a'} />
-                </div>
+              <div className="relative size-8 sm-phone:size-12 overflow-hidden content-center">
+                <ChevronLeft
+                  color={isDark ? '#ebe7e0' : '#012c8a'}
+                  width={32}
+                  height={32}
+                  strokeWidth={2}
+                  className="inline-block sm-phone:size-10"
+                />
               </div>
-              <p className={`inline-block text-buttonsLigth dark:text-darkText`}>Volver</p>
             </button>
-            <div className="flex h-[48px] min-w-[183px] items-center justify-center">
-              {loading ? (
-                <div className="flex items-center justify-center">
-                  <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
-                </div>
-              ) : (
-                <button
-                  className={`${
-                    !note
-                      ? 'border-disabledButtonsLigth bg-disabledButtonsLigth dark:border-disabledButtonsDark dark:bg-disabledButtonsDark dark:text-darkText'
-                      : isDark
-                        ? 'buttonSecondDark'
-                        : 'buttonSecond'
-                  } relative m-1 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-darkText dark:border-darkText dark:bg-darkText dark:text-lightText`}
-                  disabled={!note}
-                  onClick={handleFormSubmit}
-                  type="button"
-                >
-                  Enviar solicitud
-                </button>
-              )}
-            </div>
+            <ButtonAuth disabled={!note} label='Solicitar Modificación' isDark={isDark} onClick={handleFormSubmit} className='px-6 sm-phone:px-14 max-h-8 sm-phone:max-h-10 xl-desktop:max-h-11' />
           </div>
         </div>
       </div>
