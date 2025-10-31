@@ -98,6 +98,7 @@ export type SelectRedProps = {
   setSelectedRed: (option: RedType | undefined) => void;
   errors: { [key: string]: FieldError } | {};
   blockAll: boolean;
+  isDarkOverride?: boolean;
 };
 
 export type SelectCodeCountryProps = {

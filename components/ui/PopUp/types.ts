@@ -1,3 +1,4 @@
+import NETWORKS_DATA from './networksData';
 import { TPopUpVariant } from './PopUpVariants';
 
 /**
@@ -8,7 +9,7 @@ export type TActionButtonStyle = 'default' | 'cancel' | 'whatsapp';
 /**
  * Tipo de icono del popup
  */
-export type TIconType = 'success' | 'info' | 'warning' | 'error';
+export type TIconType = 'success' | 'info' | 'warning' | 'error' | 'usdt';
 
 /**
  * Tamaños disponibles para los iconos del popup
@@ -61,5 +62,21 @@ export interface IPopUpProps {
   status?: string | string[];
   iconSize?: TIconSize;
   images?: string[];
+
+  networkName?: string;
+  qrImage?: string;
+  walletAddress?: string;
+  networks?: INetworkOption[];
+}
+
+export type NetworkKey = keyof typeof NETWORKS_DATA;
+
+export interface INetworkOption {
+  value: string;
+  label: string;
+  wallet: string;
+  image: JSX.Element;
+  qrLight: string;
+  qrDark: string;
 }
 

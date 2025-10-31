@@ -99,3 +99,22 @@ export const SimpleIcon: React.FC<IconComponentProps> = ({
 export const EmptyIcon: React.FC<IconComponentProps> = () => {
   return <div id="receipt-header-container"></div>;
 };
+
+export const IconWithTitleReverse: React.FC<IconComponentProps & { isVertical?: boolean }> = ({
+  iconType = 'usdt',
+  iconSize = 'medium',
+  title,
+}) => {
+  const numericSize = ICON_SIZE_MAP[iconSize];
+
+  return (
+    <div className={`flex flex-row-reverse items-center justify-center gap-2 w-full mb-6`}>
+      <div className={getIconSizeClass(iconSize)}>
+        {getIconByType(iconType, numericSize)}
+      </div>
+      <h2 className="font-textFont text-[28px] leading-8 sm-phone:text-4xl text-custom-blue font-semibold dark:text-darkText text-center">
+        {title}
+      </h2>
+    </div>
+  );
+};

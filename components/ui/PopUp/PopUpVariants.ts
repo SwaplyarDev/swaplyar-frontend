@@ -3,7 +3,8 @@ import {
   IconWithTitle, 
   CenteredIcon, 
   SimpleIcon,
-  EmptyIcon
+  EmptyIcon,
+  IconWithTitleReverse
 } from './PopUpComponents/IconComponents';
 import { 
   FullContent, 
@@ -11,7 +12,8 @@ import {
   DetailedContent, 
   SimpleContent,
   StatusContent,
-  ReceiptExamplesContent
+  ReceiptExamplesContent,
+  UsdtDepositContent
 } from './PopUpComponents/ContentComponents';
 import { TIconType, TIconSize } from './types';
 
@@ -26,7 +28,8 @@ export type TPopUpVariant =
   | 'simple-warning'      // Warning simple: icono + título pequeño
   | 'success-with-status' // Success con icono/título + texto + estado(s) + botón WhatsApp + avión (tablet+)
   | 'warning-with-cancel' // Warning con icono centrado + título + texto + botones (atrás + cancelar)
-  | 'receipt-examples';   // Galería de ejemplos de comprobantes con imágenes ampliables
+  | 'receipt-examples'    // Galería de ejemplos de comprobantes con imágenes ampliables
+  | 'usdt-deposit';       // Depósito USDT con icono/título + instrucciones + botón copiar
 
 /**
  * Configuración de una variante de PopUp
@@ -91,5 +94,12 @@ export const POPUP_VARIANTS: Record<TPopUpVariant, PopUpVariantConfig> = {
     contentComponent: ReceiptExamplesContent,
     iconProps: {},
     contentProps: {},
+  },
+  'usdt-deposit': {
+    icon: 'info',
+    iconComponent: IconWithTitleReverse,
+    contentComponent: UsdtDepositContent,
+    iconProps: { iconType: 'usdt', iconSize: 'small' as TIconSize },
+    contentProps: {    },
   },
 };

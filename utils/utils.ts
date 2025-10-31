@@ -1,4 +1,4 @@
-import { IconBadgeCheck, IconError, IconInfo, IconWarning } from '@/components/ui/PopUp/Icons';
+import { IconBadgeCheck, IconError, IconInfo, IconTheter, IconWarning } from '@/components/ui/PopUp/Icons';
 import { TIconSize, TIconType } from '@/components/ui/PopUp/types';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -34,6 +34,8 @@ export const getIconByType = (type: TIconType, size?: number) => {
       return IconWarning({ size });
     case 'error':
       return IconError({ size });
+    case 'usdt':
+      return IconTheter({ size });
     default:
       return null;
   }

@@ -27,9 +27,9 @@ export const PopUpButton: React.FC<PopUpButtonProps> = ({
   const getVariantStyles = () => {
     switch (variant) {
       case 'cancel':
-        return 'bg-errorColor border-errorColorDark text-white hover:bg-red-700 dark:bg-errorColorDark dark:border-errorColorDark dark:hover:bg-errorColorDark/90 dark:text-white';
+        return 'bg-errorColor border-errorColorDark !shadow-errorColorDark text-white hover:bg-red-700 dark:bg-errorColorDark dark:border-errorColorDark dark:hover:bg-errorColorDark/90 dark:text-white';
       case 'whatsapp':
-        return 'bg-[#25D366] border-[#25D366] text-white hover:bg-[#20BD5A] dark:bg-[#25D366] dark:border-[#25D366] dark:text-white';
+        return 'bg-[#25D366] border-[#25D366] !shadow-[#25D366] text-white hover:bg-[#20BD5A] dark:bg-[#25D366] dark:border-[#25D366] dark:text-white';
       case 'default':
       default:
         return isDark 
