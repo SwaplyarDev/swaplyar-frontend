@@ -103,7 +103,7 @@ const CardWarranty: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
               }}
             >
               <div
-                className={clsx(isClick ? 'card-active relative h-64 w-52' : 'relative h-64 w-52')}
+                className={clsx(isClick ? 'card-active relative h-[284px] w-[231px]' : 'relative h-[284px] w-[231px]')}
                 onClick={() => handleToggle(index)}
               >
                 <div className="card-inner h-full w-full duration-700">
