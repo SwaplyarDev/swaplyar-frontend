@@ -922,3 +922,12 @@ div:where(.swal2-container).swal2-noanimation {
   top: 6px;
 }
 
+/* Clases del Pop-up de SweetAlert2 */
+.swal2-icon, .swal2-icon-content {
+  width:100%;
+}
+
+.swal2-icon {
+  height:100%;
+  margin:0;
+}
