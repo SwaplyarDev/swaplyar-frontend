@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { FormValues } from '@/types/data';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
@@ -67,8 +67,18 @@ const ContactForm = () => {
     } catch (error) {
       if (error instanceof Error) {
         console.error('Error!', error.message);
+        PopUp({
+          variant: 'simple-error',
+          title: 'Hubo un problema al enviar su mensaje. Por favor, inténtelo de nuevo más tarde.',
+          isDark,
+        });
       } else {
         console.error('An unexpected error occurred', error);
+        PopUp({
+          variant: 'simple-error',
+          title: 'Hubo un problema al enviar su mensaje. Por favor, inténtelo de nuevo más tarde.',
+          isDark,
+        });
       }
     } finally {
       setLoading(false);
@@ -77,12 +87,13 @@ const ContactForm = () => {
 
   const handleSendRequest = () =>
     PopUp({
-      icon: 'success',
-      title: 'Mensaje enviado con éxito',
-      text: 'Gracias por tu mensaje, en la brevedad nos pondremos en contacto contigo',
+      variant: 'success-full',
+      title: 'Mensaje enviado con Éxito',
+      text: 'Recuerde que puede comunicarse por nuestros canales oficiales: <strong>info@swaplyar.com</strong> o <strong>WhatsApp</strong> al <strong>+54 9 387 455 3521</strong>.',
+      isHtml: true,
       isDark,
     });
-
+  
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-4">
       <div className="flex flex-col gap-10 rounded-2xl px-[15px] py-[13px] shadow-md dark:shadow-dark-form dark:bg-[#323232]">
