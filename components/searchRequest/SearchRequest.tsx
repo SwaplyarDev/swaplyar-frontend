@@ -1,10 +1,17 @@
 'use client';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InputOnlyLine from '../ui/InputOnlyLine/InputOnlyLine';
 import { RequestSearch } from '@/types/data';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
+import useStatusManager from '@/hooks/useStatusManager';
+import { searchRequest } from '@/actions/request/action.search-request/action.searchRecuest';
+import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
+import ButtonBack from '../ui/ButtonBack/ButtonBack';
+import { FlyerGif, searchRequestMovile, searchRequestWeb } from '@/utils/assets/imgDatabaseCloudinary';
+import ButtonAuth from '../auth/AuthButton';
+import PopUp from '../ui/PopUp/PopUp';
 
 interface SearchResponse {
   ok: boolean;
@@ -12,18 +19,6 @@ interface SearchResponse {
   history?: { status: string; timestamp: string }[];
   status?: AdminStatus;
 }
-import useStatusManager from '@/hooks/useStatusManager';
-import { searchRequest } from '@/actions/request/action.search-request/action.searchRecuest';
-import { showStatusAlert } from './swalConfig';
-import ReactDOMServer from 'react-dom/server';
-import { Modificada, Cancelada, Discrepancia, Reembolso, Enviada, Revision, DineroEnCamino, Finalizada } from './icons';
-import LoadingGif from '../ui/LoadingGif/LoadingGif';
-import FlyerTrabajo from '../FlyerTrabajo/FlyerTrabajo';
-import ButtonBack from '../ui/ButtonBack/ButtonBack';
-import { FlyerGif, searchRequestMovile, searchRequestWeb } from '@/utils/assets/imgDatabaseCloudinary';
-//agregamos alert para error en la busqueda
-import Swal from 'sweetalert2';
-import ButtonAuth from '../auth/AuthButton';
 
 export enum AdminStatus {
   Pending = 'pending',
@@ -69,18 +64,18 @@ const SearchRequest = () => {
   };
 
   const handleSearchRequest = (history: { status: string; timestamp: string }[]) => {
-    const statusMessages: Record<AdminStatus, { text: string; icon: string }> = {
-      [AdminStatus.Pending]: { text: 'Pago en Revisión', icon: ReactDOMServer.renderToString(<Revision />) },
-      [AdminStatus.InTransit]: { text: 'Solicitud Enviada', icon: ReactDOMServer.renderToString(<Enviada />) },
-      [AdminStatus.ReviewPayment]: { text: 'Dinero en Camino', icon: ReactDOMServer.renderToString(<DineroEnCamino />) },
-      [AdminStatus.Completed]: { text: 'Solicitud Finalizada con Éxito', icon: ReactDOMServer.renderToString(<Finalizada />) },
-      [AdminStatus.Discrepancy]: { text: 'Discrepancia en la Solicitud', icon: ReactDOMServer.renderToString(<Discrepancia />) },
-      [AdminStatus.Canceled]: { text: 'Solicitud Cancelada', icon: ReactDOMServer.renderToString(<Cancelada />) },
-      [AdminStatus.Modified]: { text: 'Solicitud Modificada', icon: ReactDOMServer.renderToString(<Modificada />) },
-      [AdminStatus.Refunded]: { text: 'Dinero Reembolsado con Éxito', icon: ReactDOMServer.renderToString(<Reembolso />) },
-      [AdminStatus.Approved]: { text: 'Solicitud Aprobada', icon: ReactDOMServer.renderToString(<Enviada />) },
-      [AdminStatus.Rejected]: { text: 'Solicitud Rechazada', icon: ReactDOMServer.renderToString(<Cancelada />) },
-      [AdminStatus.RefundInTransit]: { text: 'Reembolso en Proceso', icon: ReactDOMServer.renderToString(<DineroEnCamino />) },
+    const statusMessages: Record<AdminStatus, string> = {
+      [AdminStatus.Pending]: 'Pago en Revisión',
+      [AdminStatus.InTransit]: 'Solicitud Enviada',
+      [AdminStatus.ReviewPayment]: 'Dinero en Camino',
+      [AdminStatus.Completed]: 'Solicitud Finalizada con Éxito',
+      [AdminStatus.Discrepancy]: 'Discrepancia en la Solicitud',
+      [AdminStatus.Canceled]: 'Solicitud Cancelada',
+      [AdminStatus.Modified]: 'Solicitud Modificada',
+      [AdminStatus.Refunded]: 'Dinero Reembolsado con Éxito',
+      [AdminStatus.Approved]: 'Solicitud Aprobada',
+      [AdminStatus.Rejected]: 'Solicitud Rechazada',
+      [AdminStatus.RefundInTransit]: 'Reembolso en Proceso',
     };
 
     const uniqueStatuses = Array.from(new Set(history.map((h) => h.status)));
@@ -88,7 +83,26 @@ const SearchRequest = () => {
       .map((status) => statusMessages[status as AdminStatus])
       .filter(Boolean);
 
-    showStatusAlert(messages, isDark);
+    const currentStatus = history[history.length - 1]?.status as AdminStatus;
+    const dynamicTitle = (currentStatus === AdminStatus.Completed || currentStatus === AdminStatus.Refunded)
+      ? 'Solicitud Finalizada' 
+      : 'Solicitud en Proceso';
+
+    PopUp({
+      variant: 'success-with-status',
+      title: dynamicTitle,
+      text: 'Te puedes comunicar con el equipo de soporte mediante WhatsApp al numero <strong>+54 9 11 2383-2198</strong>',
+      isHtml: true,
+      status: messages,
+      isDark,
+      actionButton: {
+        text: 'Contactar por WhatsApp',
+        style: 'whatsapp',
+        onClick: () => {
+          window.open('https://wa.me/5493874553521', '_blank');
+        }
+      }
+    });
   };
 
   const onSubmit: SubmitHandler<RequestSearch> = async (data) => {
@@ -100,17 +114,12 @@ const SearchRequest = () => {
       const response = await searchRequest(data.transactionId, data.lastNameRequest) as SearchResponse;
 
       if (!response.ok) {
-        Swal.fire({
-          title: 'Error',
-          text: response.message || 'Hubo un problema al obtener el estado de la transacción. Intente nuevamente.',
-          icon: 'error',
-          confirmButtonText: 'OK',
-          background: isDark ? '#1e1e1e' : '#fff',
-          color: isDark ? '#ebe7e0' : '#012A8E',
-          confirmButtonColor: isDark ? '#ebe7e0' : '#012A8E',
+        PopUp({
+          variant: 'simple-error',
+          title: response.message || 'Hubo un problema al obtener el estado de la transacción. Intente nuevamente.',
+          isDark
         });
         throw new Error(response.message || 'Hubo un problema al obtener el estado de la transacción');
-
       }
 
       // Si no hay historial, crear uno con el estado actual
