@@ -20,7 +20,7 @@ export default function HomePage() {
   return (
     <div className="relative top-[120px]">
       <AnimatedBlurredCircles tope="top-[-175px]" />
-      <section className="mx-auto w-full max-w-[1204px] overflow-hidden px-4 md:px-8 lg:px-4">
+      <section className="mx-auto w-full max-w-[1204px] overflow-hidden px-4 xs:px-6 sm:px-8 md:px-16 lg:px-12 xl:px-4">
         <article className="m-auto flex w-full flex-col items-center justify-center">
           <div className="mt-0 flex w-full flex-col items-center justify-center">
             <ConversionInstructions />
@@ -33,9 +33,9 @@ export default function HomePage() {
               customImageSpacing={true}
               customImageWidth={237}
               customImageAlign="left"
-              customContentWidth={692}
+              customContentWidth={450}
               customImageContainerWidth={237}
-              customGap={70}
+              customGap={16}
               contentNode={
                 <>
                   Realizá cambios de USD, EUR o USDT de tu billetera virtual a la moneda que necesitas de manera rápida
@@ -51,6 +51,11 @@ export default function HomePage() {
               imageSrc={RecargaPaypal}
               imageAlt="Recarga PayPal"
               position={true}
+              customImageSpacing={true}
+              customImageWidth={365}
+              customContentWidth={323}
+              customImageContainerWidth={365}
+              customGap={16}
               contentNode={
                 <>
                   Es tan simple que lo podes hacer en tres pasos. Colocas el monto que deseas en la calculadora,
@@ -64,6 +69,13 @@ export default function HomePage() {
               title="¿Buscas un intercambio seguro y rápido para tu dinero?"
               imageSrc={homeSearch}
               imageAlt="Intercambio seguro y rápido"
+              verticalLayout={true}
+              customImageSpacing={true}
+              customImageWidth={441}
+              customContentWidth={704}
+              customImageContainerWidth={441}
+              customGap={16}
+              customImageAlign="center"
               contentNode={
                 <>
                   En SwaplyAr, ayudamos a freelancers y trabajadores remotos a cambiar sus pagos desde su billetera
@@ -79,7 +91,7 @@ export default function HomePage() {
           </div>
         </article>
         <Recommendations />
-        <div className="mt-20 flex flex-col gap-[14px] text-center font-textFont">
+        <div className="mt-20 flex flex-col gap-[14px] text-center font-textFont hidden sm:block">
           <p className="font-light">Descubre por qué SwaplyAr es la clave que necesitas.</p>
           <Link
             href="/es/por-que-elegir-swaplyar"
@@ -89,7 +101,7 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
-      <section className="mt-[120px] mb-40">
+      <section className="mt-20 mb-40">
         <FlyerTrabajo
           imageSrc={FlyerGif}
           href="/es/como-usar-swaplyar"

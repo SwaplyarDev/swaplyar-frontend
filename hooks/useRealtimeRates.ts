@@ -22,12 +22,13 @@ export const useRealtimeRates = () => {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    // 🧠 Importante: el backend usa el namespace raíz
-    const socket = io('http://localhost:3001', {
-      transports: ['websocket'],
-    });
+    // Solo conectar si estamos en desarrollo y hay servidor backend
+    if (process.env.NODE_ENV !== 'production' && process.env.NEXT_PUBLIC_ENABLE_WEBSOCKET === 'true') {
+      const socket = io('http://localhost:3001', {
+        transports: ['websocket'],
+      });
 
-    socketRef.current = socket;
+      socketRef.current = socket;
     //conexión y eventos
     socket.on('connect', () => {
       console.log('🟢 Conectado al WebSocket (Conversions):', socket.id);
@@ -64,10 +65,11 @@ export const useRealtimeRates = () => {
     });
 
 
-    // Limpieza al desmontar
-    return () => {
-      socket.disconnect();
-    };
+      // Limpieza al desmontar
+      return () => {
+        socket.disconnect();
+      };
+    }
   }, []);
   // 👉 Función para emitir un cálculo manual 
   const sendCalculation = useCallback((payload: ConversionRequest) => {
