@@ -17,7 +17,7 @@ export default function ButtonBack() {
     <button
       onClick={handleBack}
       className={clsx(
-        'group relative mt-2 flex h-[40px] w-[40px] items-center justify-center rounded-full transition-colors duration-300',
+        'group relative mt-2 flex h-[48px] w-[48px] items-center justify-center rounded-full transition-colors duration-300',
         '-ml-4 md:-ml-4 lg:-ml-2',
         isDark ? 'text-gray-200' : 'text-gray-700 hover:text-[#0A2A83]',
       )}

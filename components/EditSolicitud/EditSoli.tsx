@@ -12,7 +12,7 @@ const EditSoli = () => {
       </div>
       <div className="flex w-full flex-col px-4 md:px-8 lg:px-4">
         <div>
-          <h1 className="mx-auto w-full text-center font-titleFont text-[38px] font-medium md:max-w-[504px] lg2:max-w-[741px] lg2:text-[40px]">
+          <h1 className="mx-auto w-full text-center font-titleFont text-[38px] font-medium md:max-w-[504px] mt-[58px]">
             Modifica tu solicitud de forma rápida y sencilla
           </h1>
           <p className="mx-auto mt-[46px] w-full text-center font-textFont font-light lg2:max-w-[796px]">
@@ -25,8 +25,8 @@ const EditSoli = () => {
           Introduce los datos exactamente como aparecen en el correo electrónico enviado.
         </p>
 
-        <div className="relative mx-auto mt-10 flex w-full flex-col lg2:max-w-[800px]">
-          <div className="absolute left-0 top-0 z-0">
+        <div className="relative mx-auto mt-10 mb-[100px] flex w-full max-w-[850px] flex-col">
+          <div className="absolute left-0 top-0 z-10">
             <HeaderSectionEditSoli />
           </div>
           <div className="mx-auto flex h-auto w-full flex-col border-0 lg2:mb-[100px] lg2:mt-[55px]">
