@@ -82,22 +82,20 @@ export default function TransactionCalculator() {
         <div className="relative flex w-full flex-col items-center text-[#012c8a] dark:text-darkText">
           <p className="flex w-full items-center gap-[7px] font-textFont text-custom-grayD dark:text-darkText mb-1 sm:mb-3">
             {selectedSendingSystem?.coin === 'ARS' ? (
-              // 💱 Caso inverso: mostramos al revés
               <>
+                <span className="text-[20px] sm:text-[32px] font-light">{rateForOne.toFixed(2)}</span>
+                <span className="text-[16px] sm:text-[21px] font-semibold"> {selectedSendingSystem?.coin}</span>
+                <span className="text-[16px] sm:text-[21px] font-normal"> = </span>
                 <span className="text-[20px] sm:text-[32px] font-light">1</span>
-                <span className="text-[16px] sm:text-[21px] font-semibold">{selectedSendingSystem?.coin}</span>
-                <span className="text-[16px] sm:text-[21px] font-normal">=</span>
-                <span className="text-[20px] sm:text-[32px] font-light">{rateForOne.toFixed(5)}</span>
-                <span className="text-[16px] sm:text-[21px] font-semibold">{selectedReceivingSystem?.coin}</span>
+                <span className="text-[16px] sm:text-[21px] font-semibold"> {selectedReceivingSystem?.coin}</span>
               </>
             ) : (
-              // 💱 Caso normal
               <>
                 <span className="text-[20px] sm:text-[32px] font-light">1</span>
-                <span className="text-[16px] sm:text-[21px] font-semibold">{selectedSendingSystem?.coin}</span>
-                <span className="text-[16px] sm:text-[21px] font-normal">=</span>
+                <span className="text-[16px] sm:text-[21px] font-semibold"> {selectedSendingSystem?.coin}</span>
+                <span className="text-[16px] sm:text-[21px] font-normal"> = </span>
                 <span className="text-[20px] sm:text-[32px] font-light">{rateForOne.toFixed(2)}</span>
-                <span className="text-[16px] sm:text-[21px] font-semibold">{selectedReceivingSystem?.coin}</span>
+                <span className="text-[16px] sm:text-[21px] font-semibold"> {selectedReceivingSystem?.coin}</span>
               </>
             )}
 

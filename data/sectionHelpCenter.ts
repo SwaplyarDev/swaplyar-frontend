@@ -3,7 +3,7 @@ import { helpCenter1, helpCenter2, helpCenter3, helpCenter5, helpCenter6 } from 
 export const sectionLinksHelpCenter = [
   {
     image: helpCenter1,
-    title: 'Cancelacion y Reembolso',
+    title: 'Cancelación y Reembolso',
     text: 'Cancela tu transferencia para obtener un reembolso.',
     href: '/es/centro-de-ayuda/cancelacion-y-reembolso',
     hrefAuth: '/es/auth/centro-de-ayuda/cancelacion-y-reembolso',
