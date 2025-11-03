@@ -69,7 +69,7 @@ export const useRealtimeRates = () => {
       socket.disconnect();
     };
   }, []);
-  // 👉 Función para emitir un cálculo manual
+  // 👉 Función para emitir un cálculo manual 
   const sendCalculation = useCallback((payload: ConversionRequest) => {
     if (socketRef.current?.connected) {
       console.log('🚀 Enviando cálculo al servidor...', payload);
