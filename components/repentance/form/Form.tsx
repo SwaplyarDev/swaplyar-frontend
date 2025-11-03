@@ -102,7 +102,7 @@ const Form = () => {
         register={register}
         validation={{
           required: 'El número de teléfono es obligatorio',
-          validate: (value) => {
+          validate: (value: string) => {
             const country = watch('calling_code');
             const result = validatePhoneNumber(value, country);
             return result === true ? true : result;
