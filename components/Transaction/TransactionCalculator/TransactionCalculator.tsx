@@ -37,7 +37,7 @@ export default function TransactionCalculator() {
   }, [selectedSendingSystem, selectedReceivingSystem, startUpdatingRates, stopUpdatingRates]);
 
   const { activeSelect } = useSystemStore();
-  const { resetToDefault } = useStepperStore();
+  const { resetToDefault, updateFormData } = useStepperStore();
   const router = useRouter();
   const { isDark } = useDarkTheme();
   const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } = useSystemSelection();
@@ -69,9 +69,13 @@ export default function TransactionCalculator() {
 
   const handleSubmit = () => {
     setIsProcessing(true);
+    // ✅ Actualizar StepperStore antes de avanzar
+    updateFormData(2, {
+      send_amount: sendAmount,
+      receive_amount: receiveAmount,
+    });
     setTimeout(() => {
       handleDirection();
-      resetToDefault();
       setIsProcessing(false);
     }, 3000);
   };

@@ -11,7 +11,7 @@ import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import InfoStep from '@/components/ui/InfoStep/InfoStep';
 import clsx from 'clsx';
 import AuthButton from '@/components/auth/AuthButton';
-
+ 
 interface FormData {
   send_amount: string;
   receive_amount: string;
@@ -40,32 +40,28 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
 
   const formValues = useWatch({ control });
 
-  const receiveAmount = typeof window !== 'undefined' ? localStorage.getItem('receiveAmount') : null;
-  const sendAmount = typeof window !== 'undefined' ? localStorage.getItem('sendAmount') : null;
+const sendAmount = formData.stepThree.send_amount;
+const receiveAmount = formData.stepThree.receive_amount;
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
 
   useEffect(() => {
-    const { proof_of_payment, note } = formData.stepThree;
-    const newValues = {
-      ...formData.stepThree,
-      proof_of_payment,
-      note,
-    };
-    if (sendAmount && receiveAmount) {
-      setValue('send_amount', sendAmount);
-      setValue('receive_amount', receiveAmount);
-    }
-    setValue('pay_email', '');
-    setValue('proof_of_payment', proof_of_payment);
-    setValue('note', note);
+  const { proof_of_payment, note, send_amount, receive_amount } = formData.stepThree;
 
-    if (selectedSendingSystem?.id === 'tether') {
-      setValue('network', 'TRC-20');
-      setValue('wallet', 'TSgBPeFSb9TxJWyzDjDfuNqBktF898ZFUb');
-    }
+  if (send_amount) setValue('send_amount', send_amount);
+  if (receive_amount) setValue('receive_amount', receive_amount);
 
-    setInitialValues(newValues);
-  }, [formData.stepThree, setValue, receiveAmount, sendAmount, selectedSendingSystem]);
+  setValue('pay_email', '');
+  setValue('proof_of_payment', proof_of_payment);
+  setValue('note', note);
+
+  if (selectedSendingSystem?.id === 'tether') {
+    setValue('network', 'TRC-20');
+    setValue('wallet', 'TSgBPeFSb9TxJWyzDjDfuNqBktF898ZFUb');
+  }
+
+  setInitialValues(formData.stepThree);
+}, [formData.stepThree, setValue, selectedSendingSystem]);
+
 
   const [loading, setLoading] = useState(false);
   const onSubmit = (data: FormData) => {

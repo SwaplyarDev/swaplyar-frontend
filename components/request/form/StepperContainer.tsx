@@ -145,6 +145,8 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
         setCorrectSend(true);
         setErrorMessage(null);
         window.scrollTo({ top: 0 });
+
+         resetToDefault();
       }
     } catch (error: any) {
       // Capturamos mensaje real del error lanzado en el store
