@@ -36,6 +36,10 @@ export interface StepThreeData {
   note: string;
   network?: string;
   wallet?: string;
+  red_selection?: {
+    value: string;
+    label: string;
+  };
 }
 
 export interface FormData {

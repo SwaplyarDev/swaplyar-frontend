@@ -269,19 +269,18 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
 
           <section>
             <FileUpload
-              file={file}
-              onFileChange={setFile}
+              previewImage={file ? URL.createObjectURL(file) : null}
+              handleChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  setFile(e.target.files[0]);
+                }
+              }}
+              disabled
               isDark={isDark}
               accept=".png,.jpg,.pdf"
               maxSizeText="max. 800x400px"
               maxSizeMB={10}
-              onError={(error) => {
-                PopUp({
-                  variant: 'simple-error',
-                  title: error,
-                  isDark: isDark,
-                });
-              }}
+              showPreview={true}
             />
 
             <label

@@ -41,11 +41,11 @@ export const ReceiptGallery: React.FC<ReceiptGalleryProps> = ({ images, isDark }
             {index === 0 ? (
               <div className="absolute bottom-2 right-2 bg-green-700 rounded-full size-5 flex items-center justify-center">
                 <Check size={16} className="text-white" />
-            </div>
+              </div>
             ) : (
-                <div className="absolute bottom-2 right-2 bg-errorColorDark rounded-full size-5 flex items-center justify-center">
-                  <X size={16} className="text-white" />
-                </div>
+              <div className="absolute bottom-2 right-2 bg-errorColorDark rounded-full size-5 flex items-center justify-center">
+                <X size={16} className="text-white" />
+              </div>
             )}
           </div>
         ))}
@@ -53,26 +53,25 @@ export const ReceiptGallery: React.FC<ReceiptGalleryProps> = ({ images, isDark }
 
       {/* Modal de imagen expandida */}
       {expandedImage && (
-        <div 
+        <div
           className="absolute inset-0 z-[9999] w-full h-full self-center justify-self-center rounded-xl !max-w-[350px] !px-4 !py-6 sm-phone:!max-w-[510px] sm-phone:!px-6 navbar-desktop:!max-w-[556px] dark:bg-custom-grayD-800"
           onClick={handleCloseExpanded}
         >
           <ReceiptHeader onClose={() => handleCloseExpanded} />
-          <div className="relative flex flex-col h-[90%] gap-2 items-center" onClick={(e) => e.stopPropagation()}>
+          <div className={`${isDark ? 'bg-custom-grayD-800' : 'bg-custom-whiteD-500'} relative flex flex-col h-[90%] sm-phone:h-[92%] gap-2 items-center`} onClick={(e) => e.stopPropagation()}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={expandedImage.url}
               alt="Comprobante ampliado"
               className="flex flex-1 object-contain rounded-lg h-[inherit]"
             />
-            <div className={`max-w-max inline-flex items-center gap-2 px-4 py-2 rounded-full text-white ${
-              isAccepted 
-              ? 'bg-green-700' 
+            <div className={`max-w-max inline-flex items-center gap-2 px-4 py-2 rounded-full text-white ${isAccepted
+                ? 'bg-green-700'
                 : 'bg-errorColorDark'
-            }`}>
+              }`}>
               {isAccepted ? (
                 <>
-                  <Check size={20}  />
+                  <Check size={20} />
                   <span className="font-textFont text-sm font-semibold">
                     Imagen aceptada
                   </span>

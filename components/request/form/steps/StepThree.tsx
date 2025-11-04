@@ -7,11 +7,9 @@ import { useSystemStore } from '@/store/useSystemStore';
 import dynamic from 'next/dynamic';
 const StepThreeGeneral = dynamic(() => import('./stepsThreeOptions/StepThreeGeneral'));
 const StepThreeTether = dynamic(() => import('./stepsThreeOptions/StepThreeTether'));
-import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
-import InfoStep from '@/components/ui/InfoStep/InfoStep';
-import clsx from 'clsx';
 import AuthButton from '@/components/auth/AuthButton';
- 
+import NETWORKS_DATA from '@/components/ui/PopUp/networksData';
+
 interface FormData {
   send_amount: string;
   receive_amount: string;
@@ -20,6 +18,10 @@ interface FormData {
   note: string;
   network?: string;
   wallet?: string;
+  red_selection?: {
+    value: string;
+    label: string;
+  };
 }
 
 const StepThree = ({ blockAll }: { blockAll: boolean }) => {
@@ -44,27 +46,67 @@ const sendAmount = formData.stepThree.send_amount;
 const receiveAmount = formData.stepThree.receive_amount;
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
 
+  // Observar cambios en red_selection
+  const redSelection = watch('red_selection');
+
+  // Setear valores iniciales del formulario
   useEffect(() => {
-  const { proof_of_payment, note, send_amount, receive_amount } = formData.stepThree;
+    const { proof_of_payment, note, red_selection } = formData.stepThree;
+    const newValues = {
+      ...formData.stepThree,
+      proof_of_payment,
+      note,
+    };
+    
+    // Inicializar montos con valores por defecto si no existen
+    const sendAmountValue = sendAmount || '0';
+    const receiveAmountValue = receiveAmount || '0';
+        
+    setValue('send_amount', sendAmountValue, { shouldValidate: true });
+    setValue('receive_amount', receiveAmountValue, { shouldValidate: true });
+    
+    setValue('pay_email', '');
+    setValue('proof_of_payment', proof_of_payment);
+    setValue('note', note);
 
-  if (send_amount) setValue('send_amount', send_amount);
-  if (receive_amount) setValue('receive_amount', receive_amount);
+    // Setear red por defecto solo si es tether
+    if (selectedSendingSystem?.id === 'tether') {
+      const defaultRedSelection = red_selection || {
+        value: 'tron',
+        label: 'Tron (TRC20)',
+        image: NETWORKS_DATA.tron.image,
+      };
+      setValue('red_selection', defaultRedSelection, { shouldValidate: true });
 
-  setValue('pay_email', '');
-  setValue('proof_of_payment', proof_of_payment);
-  setValue('note', note);
+      // Inicializar network y wallet basados en la red seleccionada
+      const networkKey = defaultRedSelection.value as keyof typeof NETWORKS_DATA;
+      const networkData = NETWORKS_DATA[networkKey];
+      if (networkData) {
+        setValue('network', networkData.name, { shouldValidate: true });
+        setValue('wallet', networkData.wallet, { shouldValidate: true });
+      }
 
-  if (selectedSendingSystem?.id === 'tether') {
-    setValue('network', 'TRC-20');
-    setValue('wallet', 'TSgBPeFSb9TxJWyzDjDfuNqBktF898ZFUb');
-  }
+    }
 
-  setInitialValues(formData.stepThree);
-}, [formData.stepThree, setValue, selectedSendingSystem]);
+    setInitialValues(newValues);
+  }, [formData.stepThree, setValue, receiveAmount, sendAmount, selectedSendingSystem]);
 
+  // Actualizar network y wallet cuando cambia red_selection
+  useEffect(() => {
+    if (selectedSendingSystem?.id === 'tether' && redSelection?.value) {
+      const networkKey = redSelection.value as keyof typeof NETWORKS_DATA;
+      const networkData = NETWORKS_DATA[networkKey];
+
+      if (networkData) {
+        setValue('network', networkData.name);
+        setValue('wallet', networkData.wallet);
+      }
+    }
+  }, [redSelection, selectedSendingSystem, setValue]);
 
   const [loading, setLoading] = useState(false);
   const onSubmit = (data: FormData) => {
+    console.log('Submitting form data:', data);
     setLoading(true);
     updateFormData(2, data);
     markStepAsCompleted(2);
@@ -72,7 +114,7 @@ const receiveAmount = formData.stepThree.receive_amount;
     setLoading(false);
 
     // Hacemos scroll hacia arriba cuando se completa step3 sino se queda abajo en el footer
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const hasChanges = useMemo(
@@ -100,6 +142,24 @@ const receiveAmount = formData.stepThree.receive_amount;
     }
     onChange(event);
   };
+
+  // Restaurar preview cuando vuelvas al paso si ya hay un archivo cargado
+  useEffect(() => {
+    const proofOfPayment = watch('proof_of_payment');
+    if (proofOfPayment && proofOfPayment[0]) {
+      const file = proofOfPayment[0];
+      if (file.type.startsWith('image/')) {
+        const imageUrl = URL.createObjectURL(file);
+        setPreviewImage(imageUrl);
+        console.log('🖼️ [StepThree - Restore Preview] Preview restaurado:', imageUrl);
+        
+        // Cleanup del objeto URL cuando el componente se desmonte
+        return () => URL.revokeObjectURL(imageUrl);
+      }
+    } else if (!proofOfPayment) {
+      setPreviewImage(null);
+    }
+  }, [formValues.proof_of_payment, watch]);
 
   const renderSelectedSystem = () => {
     switch (selectedSendingSystem?.id) {
@@ -145,6 +205,7 @@ const receiveAmount = formData.stepThree.receive_amount;
             restRegister={restRegister}
             previewImage={previewImage}
             setPreviewImage={setPreviewImage}
+            control={control}
           />
         );
       default:
@@ -153,16 +214,9 @@ const receiveAmount = formData.stepThree.receive_amount;
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-      <div
-        className={clsx(
-          completedSteps[2] ? 'absolute right-14 top-[30px] xs-phone:top-[26px] sm:top-4' : 'absolute right-5 top-4',
-        )}
-      >
-        <InfoStep />
-      </div>
       {renderSelectedSystem()}
 
-      <div className="flex justify-center sm-phone:justify-end sm-tablet:justify-center lg:justify-end">
+      <div className="flex justify-end">
         {completedSteps[2] ? (
           hasChanges ? (
             <AuthButton
@@ -185,7 +239,7 @@ const receiveAmount = formData.stepThree.receive_amount;
           )
         ) : (
           <AuthButton
-            label="Siguiente"
+            label="Ya realice el pago"
             type="submit"
             isDark={isDark}
             loading={loading}
