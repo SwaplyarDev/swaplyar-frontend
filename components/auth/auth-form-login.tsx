@@ -61,10 +61,10 @@ export const LoginForm = () => {
   };
 
   return (
-    <div className="flex mt-[70px] sm:mt-[201px] mb-[5px] px-4 flex-col items-center justify-center">
+    <div className="flex mt-[70px] sm:mt-[201px] lg:mt-[120px] mb-[5px] px-4 flex-col items-center justify-center">
       <form
         onSubmit={handleSubmit(submitEmail)}
-        className="flex w-[358px] md:w-[430px] lg:w-[484px] flex-col rounded-2xl gap-[16px] bg-custom-whited-500 py-10 px-5 shadow-md dark:bg-calculatorDark dark:shadow-dark-form"
+        className="flex w-[358px] sm:w-[430px] lg:w-[484px] flex-col rounded-2xl gap-[16px] bg-custom-whited-500 py-10 px-5 shadow-md dark:bg-calculatorDark dark:shadow-dark-form"
       >
         <AuthTitle>Iniciar Sesión</AuthTitle>
 

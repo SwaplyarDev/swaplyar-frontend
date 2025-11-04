@@ -53,7 +53,7 @@ export default function InfoBlock({
       />
     </div>
       </div>
-      <div className={`info-content-container flex  ${customContentWidth ? `max-w-[${customContentWidth}px]` : customImageSpacing ? 'max-w-[742px]' : 'max-w-[355px] md:max-w-[680px]'} flex-col gap-4`}>
+      <div className={`info-content-container flex  ${customContentWidth ? `max-w-[${customContentWidth}px] sm:max-w-[${customContentWidth}px] lg:max-w-[692px]` : customImageSpacing ? 'max-w-[742px]' : 'max-w-[355px] md:max-w-[680px]'} flex-col gap-4`}>
         <h2 className="text-start font-textFont text-4xl text-custom-grayD dark:text-custom-whiteD">{title}</h2>
         <div className="info-content text-left text-base text-custom-grayD dark:text-custom-whiteD">
           {contentNode ? (
