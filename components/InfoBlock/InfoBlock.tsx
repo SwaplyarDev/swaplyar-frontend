@@ -40,7 +40,8 @@ export default function InfoBlock({
       className={clsx(
         verticalLayout ? 'flex-col lg:flex-row' : position ? 'flex-col sm:flex-row-reverse' : 'flex-col sm:flex-row',
         'flex max-w-6xl items-center justify-center',
-        !customGap && 'gap-4 md:gap-2',
+        !customGap && 'gap-4 md:gap-2 lg:gap-4',
+        customGap && verticalLayout && 'lg:gap-4',
       )}
       style={customGap ? { gap: `${customGap}px` } : {}}
     >
@@ -55,7 +56,7 @@ export default function InfoBlock({
       />
     </div>
       </div>
-      <div className={`info-content-container flex ${customContentWidth ? `w-[358px] xs-mini-phone:w-[358px] sm:w-full sm:max-w-[${customContentWidth}px] lg:w-[692px] lg:max-w-[692px]` : customImageSpacing ? 'w-[358px] xs-mini-phone:w-[358px] sm:w-full sm:max-w-[742px] lg:max-w-[500px]' : 'w-[358px] xs-mini-phone:w-[358px] sm:w-full sm:max-w-[355px] lg:max-w-[500px]'} flex-col gap-4`}>
+      <div className={`info-content-container flex ${customContentWidth ? `w-[358px] xs-mini-phone:w-[358px] sm:w-full sm:max-w-[${customContentWidth}px] lg:w-[${customContentWidth}px] lg:max-w-[${customContentWidth}px]` : customImageSpacing ? 'w-[358px] xs-mini-phone:w-[358px] sm:w-full sm:max-w-[742px] lg:max-w-[500px]' : 'w-[358px] xs-mini-phone:w-[358px] sm:w-full sm:max-w-[355px] lg:max-w-[500px]'} flex-col gap-4`}>
         <h2 className="text-start font-textFont text-4xl text-custom-grayD dark:text-custom-whiteD">{title}</h2>
         <div className="info-content text-left text-base text-custom-grayD dark:text-custom-whiteD">
           {contentNode ? (

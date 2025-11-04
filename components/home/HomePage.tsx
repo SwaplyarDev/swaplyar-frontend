@@ -72,7 +72,7 @@ export default function HomePage() {
               verticalLayout={true}
               customImageSpacing={true}
               customImageWidth={441}
-              customContentWidth={704}
+              customContentWidth={501}
               customImageContainerWidth={441}
               customGap={16}
               customImageAlign="center"
