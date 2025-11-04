@@ -18,7 +18,23 @@ import { Menu } from 'lucide-react';
 import LogoSwaplyMobile from '@/public/LogoSwaplyMobile.svg'
 
 // Array de enlaces de navegación
-const NAVIGATION_LINKS: any[] = [];
+const NAVIGATION_LINKS = [
+  {
+    id: 'about-us',
+    label: 'Quienes Somos',
+    href: '/es/quienes-somos',
+  },
+  {
+    id: 'how-to-use',
+    label: 'Como Usar SwaplyAr',
+    href: '/es/como-usar-swaplyar',
+  },
+  {
+    id: 'loyalty-program',
+    label: 'Programa de Fidelización',
+    href: '/es/programa-de-fidelizacion',
+  },
+];
 
 const NavbarLanding = () => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -136,13 +152,13 @@ const NavbarLanding = () => {
                 </Popover>
               </>
             ) : (
-                <ShortButton
-                  href="/es/iniciar-sesion"
-                  text="Iniciar sesión"
-                  onButtonClick={closeDrawer}
-                  fondoOscuro={false}
-                  className='!h-full'
-                />
+              <ShortButton
+                href="/es/iniciar-sesion"
+                text="Iniciar sesión"
+                onButtonClick={closeDrawer}
+                fondoOscuro={false}
+                className='!h-full'
+              />
             )}
           </span>
 
@@ -162,27 +178,24 @@ const NavbarLanding = () => {
               height={40}
               className="h-9 w-auto scale-90 rounded-xl filter dark:brightness-[0%] dark:invert sm-phone:hidden"
             />
-            
+
           </Navbar.Brand>
 
           {/* Navegación */}
           <nav className="flex flex-row items-center justify-center h-full">
             <section className="flex items-center justify-end gap-3 navbar-desktop:pr-2">
               <Switch />
-              {(status !== 'authenticated' || NAVIGATION_LINKS.length > 0) && (
               <button onClick={() => setDrawerMenu(true)} className="block navbar-desktop:hidden">
                 <Menu className="size-6 stroke-[2.5px] sm-phone:stroke-[3px] sm-phone:size-9 text-custom-blue dark:text-darkText" />
               </button>
-              )}
             </section>
 
             {/* Menú desplegable */}
-            {(status !== 'authenticated' || NAVIGATION_LINKS.length > 0) && (
             <Drawer
               open={drawerMenu}
               onClose={closeDrawer}
               position="right"
-              className="flex h-full w-full max-w-full transform flex-col items-center justify-between transition-all duration-500 ease-in-out xs-mini-phone2:w-[inherit] xs-mini-phone2:max-w-[80%]"
+              className="bg-custom-whiteD-500 dark:bg-gray-800 flex h-full w-full max-w-full transform flex-col items-center justify-between transition-all duration-500 ease-in-out xs-mini-phone2:w-[inherit] xs-mini-phone2:max-w-[80%] min-h-screen"
             >
               <Drawer.Header
                 title=""
@@ -221,39 +234,37 @@ const NavbarLanding = () => {
                           </div>
                         </div>
                       )}
-                      {/* <Sidebar.ItemGroup className="w-full bg-inherit text-left">
+                      <Sidebar.ItemGroup className="w-full bg-inherit text-left">
                         {NAVIGATION_LINKS.map((link) => (
                           <Sidebar.Item
                             key={link.id}
-                            className={`text-buttonsLigth ${
-                              selectedItem === link.id
-                                ? 'h-10 bg-gray-100 dark:bg-gray-700'
-                                : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                            }`}
+                            className={`text-buttonsLigth ${selectedItem === link.id
+                              ? 'h-10 bg-gray-100 dark:bg-gray-700'
+                              : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                              }`}
                             onClick={() => handleSelect(link.id)}
                             href={link.href}
                           >
                             {link.label}
                           </Sidebar.Item>
                         ))}
-                      </Sidebar.ItemGroup> */}
+                      </Sidebar.ItemGroup>
                     </div>
-                    {/* <Sidebar.ItemGroup className="mt-0 hidden w-full border-t-0 bg-inherit pt-0 text-left sm-phone:block">
+                    <Sidebar.ItemGroup className="mt-0 hidden w-full border-t-0 bg-inherit pt-0 text-left sm-phone:block">
                       {NAVIGATION_LINKS.map((link) => (
                         <Sidebar.Item
                           key={link.id}
-                          className={`text-buttonsLigth ${
-                            selectedItem === link.id
-                              ? 'h-10 bg-gray-100 dark:bg-gray-700'
-                              : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                          }`}
+                          className={`text-buttonsLigth ${selectedItem === link.id
+                            ? 'h-10 bg-gray-100 dark:bg-gray-700'
+                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                            }`}
                           onClick={() => handleSelect(link.id)}
                           href={link.href}
                         >
                           {link.label}
                         </Sidebar.Item>
                       ))}
-                    </Sidebar.ItemGroup> */}
+                    </Sidebar.ItemGroup>
                     <Sidebar.ItemGroup className="w-full bg-inherit">
                       {status === 'authenticated' ? (
                         <button
@@ -293,11 +304,10 @@ const NavbarLanding = () => {
                 </Sidebar>
               </Drawer.Items>
             </Drawer>
-            )}
 
             {/* Navegación completa */}
             <section className="hidden navbar-desktop:flex navbar-desktop:items-center navbar-desktop:gap-2">
-              {/* <NavLinks /> */}
+              <NavLinks />
               {status === 'authenticated' ? (
                 <>
                   <Button
