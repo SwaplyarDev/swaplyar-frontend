@@ -17,6 +17,7 @@ import { shallow } from 'zustand/shallow';
 import type { Session } from 'next-auth';
 import AuthButton from '@/components/auth/AuthButton';
 import { useRouter } from 'next/navigation'
+import InfoStep from '@/components/ui/InfoStep/InfoStep';
 // Carga diferida de subcomponentes para reducir el bundle inicial
 const StepOne = dynamic(() => import('./steps/StepOne'));
 const StepTwo = dynamic(() => import('./steps/StepTwo'));
@@ -25,7 +26,7 @@ const StepIndicator = dynamic(() => import('./steps/StepIndicator'));
 const Cronometro = dynamic(() => import('./Cronometro'), { ssr: false });
 
 type StepperContainerProps = {
-  session: Session | null; // Asegúrate de que el tipo sea correcto según tu configuración de next-auth
+  session: Session | null;
 };
 const StepperContainer = ({ session }: StepperContainerProps) => {
   const { activeStep, completedSteps, setActiveStep, submitAllData, resetToDefault } = useStepperStore(
@@ -43,7 +44,6 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
   const { isStopped, setStop } = useChronometerState((s) => ({ isStopped: s.isStopped, setStop: s.setStop }), shallow);
   const [correctSend, setCorrectSend] = useState(false);
   const router = useRouter();
-  // Estado nuevo para guardar mensaje de error detallado
   const [errorSend, setErrorSend] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -68,7 +68,6 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
 
   const handleStepClick = useCallback(
     (index: number) => {
-      // No necesitas el tipado 'number' si el archivo es .jsx
       if (completedSteps[index] || index === activeStep) {
         setActiveStep(index);
       }
@@ -77,7 +76,6 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
   );
 
   useEffect(() => {
-    // Este useEffect se queda porque su responsabilidad es otra (limpiar cookies)
     return () => {
       setPassFalse();
       try {
@@ -134,10 +132,8 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
             Swal.close();
             console.log('Solicitud cancelada por el usuario.');
 
-            // 🔹 Redirección a la pantalla de inicio
             router.push('/es/inicio/');
 
-            // 🔹 Efecto visual de cancelación
             Swal.fire({
               icon: 'error',
               background: '#ffffff00',
@@ -147,8 +143,6 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
           });
         }
       }
-
-      ,
     });
   }, [getSwal, isDark, setBlockAll, setStop, resetToDefault, setActiveStep, setCorrectSend, setErrorSend]);
 
@@ -177,7 +171,6 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
         window.scrollTo({ top: 0 });
       }
     } catch (error: any) {
-      // Capturamos mensaje real del error lanzado en el store
       setErrorSend(true);
       setErrorMessage(error.message || 'Error desconocido en el envío.');
       console.error('Error en el proceso de envío:', error);
@@ -327,7 +320,6 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
                 </p>
               )}
               <div className="w-full">
-
                 <p className={clsx('hidden w-full text-end font-textFont text-darkText sm-phone:block')}>
                   Si el problema persiste, vuelve a intentarlo más tarde y si tienes alguna pregunta
                 </p>
@@ -372,24 +364,18 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
             key={index}
             className={clsx(
               completedSteps[index] || index == activeStep ? 'flex-col' : 'flex-row',
-              'relative flex min-h-20 w-full gap-4 rounded-2xl bg-calculatorDark p-4 dark:bg-calculatorLight',
+              'relative flex min-h-20 w-full gap-2 rounded-2xl bg-calculatorDark p-3 sm:p-4 md:p-5 dark:bg-calculatorLight',
             )}
           >
             <div
-              className={`relative w-full justify-between sm:flex ${completedSteps[index] ? 'flex md-tablet:items-start' : 'flex-col items-center'} ${!completedSteps[index] && index !== activeStep ? 'opacity-50' : ''
+              className={`relative w-full justify-between flex  ${!completedSteps[index] && index !== activeStep ? 'opacity-50' : ''
                 }`}
             >
               <div
-                className={clsx(
-                  activeStep === index && completedSteps[index]
-                    ? 'mb-2 flex w-full items-center justify-start pr-8 sm:mb-0 sm:block'
-                    : activeStep === index && !completedSteps[index]
-                      ? 'flex w-full justify-center sm:justify-start'
-                      : 'flex w-full justify-start',
-                )}
+                className="flex w-full justify-start"
               >
                 <h2
-                  className={`${activeStep != index || activeStep == 0 || activeStep == 2 ? 'top-0 md-tablet:absolute' : 'flex max-w-[260px] flex-col items-center justify-center sm:block'} ${activeStep === index && completedSteps[index] && 'text-start'} ${completedSteps[index] && activeStep != index && 'mr-[60px]'} ${completedSteps[index] || (activeStep != index && 'pr-8')} mb-2 ${completedSteps[index] || activeStep != index ? 'text-left' : 'text-center'} ${activeStep != index ? 'text-left' : 'text-center'} w-full font-textFont text-4xl xs-phone:mb-0 sm:text-left md-tablet:left-0 ${activeStep !== index && 'relative'}`}
+                  className='flex max-w-[260px] flex-col items-start justify-end w-full font-textFont text-2xl sm:text-3xl sm:text-left'
                 >
                   {activeStep === 1 && !completedSteps[1]
                     ? step.title.split('del').map((part, index) => (
@@ -400,32 +386,39 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
                     : step.title}
                 </h2>
               </div>
-              {activeStep === index && !completedSteps[index] && (
-                <StepIndicator currentStep={activeStep} completedSteps={completedSteps} />
-              )}
+              <div className='flex flex-col gap-1 justify-between'>
+                <div className={`flex justify-end ${completedSteps[index] ? 'hidden' : ''}`}>
+                  <InfoStep option="pix" />
+                </div>
+                {activeStep === index && !completedSteps[index] && (
+                  <StepIndicator currentStep={activeStep} completedSteps={completedSteps} className="w-5 h-5 sm:w-[30px] sm:h-[30px]" />
+                )}
+              </div>
               {(index < activeStep || completedSteps[index]) && (
-                <div
-                  className={`absolute right-0 top-1/2 flex -translate-y-1/2 flex-col items-end justify-between sm:relative sm:translate-y-0`}
-                >
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
-                    <Tick color={isDark ? '#414244' : '#FCFBFA'} />
+                <div className='flex flex-col justify-start gap-1'>
+                  <div className={`flex justify-end ${!completedSteps[index] ? 'hidden' : ''}`}>
+                    <InfoStep option="pix" />
                   </div>
-                  {index != activeStep && (
-                    <button
-                      disabled={blockAll}
-                      onClick={() => handleStepClick(index)}
-                      className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
-                      type="button"
-                    >
-                      Tratar
-                      <ArrowDown />
-                    </button>
-                  )}
+                  <div className='flex flex-col items-end mb-2'>                    
+                    <div className="flex h-5 w-5 sm:h-[30px] sm:w-[30px] items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
+                      <Tick color={isDark ? '#414244' : '#FCFBFA'} className='h-3 w-3 sm:h-5 sm:w-5' />
+                    </div>
+                    {index != activeStep && (
+                      <button
+                        disabled={blockAll}
+                        onClick={() => handleStepClick(index)}
+                        className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
+                        type="button"
+                      >
+                        Tratar
+                        <ArrowDown />
+                      </button>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
-
-            {activeStep === index && <div className="mt-2 rounded-md">{step.render()}</div>}
+            {activeStep === index && <div>{step.render()}</div>}
           </section>
         );
       })}
@@ -437,7 +430,6 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
         >
           Cancelar esta Solicitud
         </button>
-
         <AuthButton
           label="Enviar"
           onClick={onSendClick}

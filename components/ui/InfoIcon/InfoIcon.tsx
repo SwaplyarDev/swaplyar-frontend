@@ -3,13 +3,13 @@ import { FC } from 'react';
 import { useDarkTheme } from '../theme-Provider/themeProvider';
 
 interface InfoIconProps {
-  size?: string;
+  className?: string;
 }
 
-const InfoIcon: FC<InfoIconProps> = ({ size = '30px' }) => {
+const InfoIcon: FC<InfoIconProps> = ({className}) => {
   const { isDark } = useDarkTheme();
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 30 30" fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 30 30" fill="none">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
