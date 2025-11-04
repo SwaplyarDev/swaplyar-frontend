@@ -98,7 +98,7 @@ export const PopUp = ({
     ),
     customClass: {
       icon: 'border-none',
-      popup: 'w-full !max-w-[350px] !px-4 !py-6 sm-phone:!max-w-[510px] sm-phone:!px-6 navbar-desktop:!max-w-[556px] dark:bg-custom-grayD-800',
+      popup: 'w-full !max-w-[350px] !px-4 !py-6 sm-phone:!max-w-[510px] sm-phone:!px-6 navbar-desktop:!max-w-[556px] bg-custom-whiteD-500 dark:bg-custom-grayD-800',
       htmlContainer: '!m-0 !p-0',
     },
     html: ReactDOMServer.renderToString(
@@ -143,12 +143,13 @@ export const PopUp = ({
           galleryRoot.render(<ReceiptGallery images={imagesArray} isDark={isDark} />);
         }
       }
-      
+
       if (variant === 'usdt-deposit') {
         // Obtener redes desde las props del PopUp o usar fallback
         const networksList = networks ?? Object.values(NETWORKS_DATA);
         const defaultRed = networksList[0];
-        let selectedRed = defaultRed.value;
+        // Usar networkName si está disponible, sino usar el default
+        let selectedRed = networkName || defaultRed.value;
 
         const selectRedElement = document.getElementById('select-red-container');
         const walletInputElement = document.getElementById('wallet-input-container');
@@ -217,7 +218,7 @@ export const PopUp = ({
                 </ThemeProvider>
                 <button
                   type="button"
-                  className={`flex h-[38px] absolute right-2 top-2 sm-phone:top-3 sm-phone:right-3 rounded border-none bg-transparent pr-2 transition-all duration-300 ${isDark ? 'bg-custom-grayD-900' : 'bg-custom-whiteD-200'
+                  className={`flex absolute right-4 top-2 sm-phone:top-3 sm-phone:right-5 rounded border-none bg-transparent transition-all duration-300 bg-white h-auto ${isDark ? 'bg-custom-grayD-900' : 'bg-custom-whiteD-200'
                     }`}
                   onClick={handleCopy}
                 >

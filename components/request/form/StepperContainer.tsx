@@ -132,6 +132,8 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
         discounts_ids,
       );
 
+      console.log('isSuccess', isSuccess)
+
       if (isSuccess) {
         PopUp({
           variant: 'success-compact',
