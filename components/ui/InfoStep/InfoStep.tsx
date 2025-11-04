@@ -10,7 +10,10 @@ import { createRoot } from 'react-dom/client';
 interface InfoStepProps {
   option?: string;
 }
-
+/**
+ * @deprecated Este componente ya no se va a utilizar. 
+ * Borrar de donde este usandose y luego importar el nuevo PopUp.
+ */
 const InfoStep: FC<InfoStepProps> = ({ option }) => {
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
   const { isDark } = useDarkTheme();
