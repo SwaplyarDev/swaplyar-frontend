@@ -132,7 +132,6 @@ const receiveAmount = formData.stepThree.receive_amount;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    console.log('file', file)
     if (file) {
       if (file.type.startsWith('image/')) {
         const imageUrl = URL.createObjectURL(file);
@@ -161,34 +160,6 @@ const receiveAmount = formData.stepThree.receive_amount;
       setPreviewImage(null);
     }
   }, [formValues.proof_of_payment, watch]);
-
-  // Log para debug del estado del formulario
-  useEffect(() => {
-    const proofOfPayment = watch('proof_of_payment');
-    const redSelectionValue = watch('red_selection');
-    const allValues = getValues();
-    console.log('🔍 [StepThree - Debug] Estado del formulario:', {
-      isValid,
-      errors,
-      errorsKeys: Object.keys(errors),
-      proofOfPayment,
-      proofOfPaymentExists: !!proofOfPayment,
-      proofOfPaymentLength: proofOfPayment?.length,
-      redSelection: redSelectionValue,
-      blockAll,
-      allFormValues: allValues,
-      '>>> VALORES DETALLADOS <<<': {
-        send_amount: allValues.send_amount,
-        receive_amount: allValues.receive_amount,
-        pay_email: allValues.pay_email,
-        proof_of_payment: allValues.proof_of_payment,
-        note: allValues.note,
-        network: allValues.network,
-        wallet: allValues.wallet,
-        red_selection: allValues.red_selection,
-      },
-    });
-  }, [isValid, errors, watch, getValues, blockAll]);
 
   const renderSelectedSystem = () => {
     switch (selectedSendingSystem?.id) {
