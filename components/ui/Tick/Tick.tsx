@@ -4,12 +4,12 @@ import { useDarkTheme } from '../theme-Provider/themeProvider';
 type TickProps = {
   copy?: boolean;
   color: string;
-  size?: string;
+  className?: string;
 };
 
-const Tick: FC<TickProps> = ({ copy = false, color, size = '22px' }) => {
+const Tick: FC<TickProps> = ({ copy = false, color, className }) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 16 16">
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 16 16">
       <path
         fill="none"
         stroke={copy ? '#12C971' : color}

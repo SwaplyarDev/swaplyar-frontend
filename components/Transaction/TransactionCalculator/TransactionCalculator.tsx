@@ -63,7 +63,6 @@ export default function TransactionCalculator() {
     } catch { }
     setPassTrue();
 
-    // Cambia a la ruta pública del formulario
     router.push('/es/inicio/formulario-de-solicitud');
   };
 
@@ -82,9 +81,9 @@ export default function TransactionCalculator() {
 
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
-      <div className="mat-card calculator-container flex w-[358px] xs-mini-phone:w-[358px] sm:w-full flex-col items-center rounded-2xl bg-calculatorLight px-2.5 py-2.5 md:px-5 md:py-8 sm:shadow-md dark:bg-calculatorDark dark:text-white sm:h-[460px] lg-tablet:min-w-[590px]">
+      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight px-1 py-2.5 md:px-5 md:py-8 sm:shadow-md dark:bg-calculatorDark dark:text-white sm:h-[460px] lg-tablet:min-w-[590px]">
         <div className="relative flex w-full flex-col items-center text-[#012c8a] dark:text-darkText">
-          <p className="flex w-full items-center gap-[7px] font-textFont text-custom-grayD dark:text-darkText mb-1 sm:mb-3">
+          <p className="flex w-full items-center gap-[7px] font-textFont text-custom-grayD dark:text-darkText mb-1 sm:mb-3 max-sm:pl-1">
             {selectedSendingSystem?.coin === 'ARS' ? (
               <>
                 <span className="text-[20px] sm:text-[32px] font-light">{rateForOne.toFixed(2)}</span>
@@ -114,9 +113,9 @@ export default function TransactionCalculator() {
             onChange={handleSendAmountChange}
             isSending={true}
           />
-          <div className='flex items-center gap-5 my-1 sm:my-3'>
+          <div className='flex items-center gap-5 my-1 sm:my-3 max-sm:justify-between max-sm:w-full'>
             <SystemInfo pointBorder="border" linePosition="up">
-              <p className="font-textFont text-xs text-lightText dark:text-darkText xs:text-sm">Información del sistema de recepción</p>
+              <p className="font-textFont font-light text-xs text-lightText dark:text-custom-grayD-500 xs:text-sm">Información del sistema de recepción</p>
             </SystemInfo>
             <div className="flex flex-col h-full items-center justify-center">
               <InvertSystems onInvert={handleInvertSystemsClick} selectedReceivingSystem={selectedReceivingSystem} />
@@ -156,15 +155,15 @@ export default function TransactionCalculator() {
                 ) &&
                   selectedReceivingSystem?.id === 'payoneer_usd') ||
                   selectedReceivingSystem?.id === 'payoneer_eur' ? (
-                  <p className={`p-1 text-sm ${colorError}`}>
+                  <p className={`p-1 text-xs sm:text-sm ${colorError}`}>
                     El monto minimo a recibir en Payoneer es de 50 {selectedReceivingSystem.coin}
                   </p>
                 ) : selectedSendingSystem?.id === 'payoneer_usd' || selectedSendingSystem?.id === 'payoneer_eur' ? (
-                  <p className={`p-1 text-sm ${colorError}`}>
+                  <p className={`p-1 text-xs sm:text-sm ${colorError}`}>
                     El monto minimo a enviar en Payoneer es de 50 {selectedSendingSystem.coin}
                   </p>
                 ) : (
-                  <p className={`p-1 text-sm ${colorError}`}>El monto minimo a enviar es de 10 USD</p>
+                  <p className={`p-1 text-xs sm:text-sm ${colorError}`}>El monto minimo a enviar es de 10 USD</p>
                 )}
               </div>
             )}

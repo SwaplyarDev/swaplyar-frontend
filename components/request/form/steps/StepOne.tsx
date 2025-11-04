@@ -135,8 +135,8 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     [initialValues, formValues, deepEqual],
   );
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
-      <div className="mx-0 grid grid-cols-1 gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:grid-cols-2 sm-phone:gap-x-8 sm-phone:gap-y-2">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2.5">
+      <div className="mx-0 grid grid-cols-1 gap-2 sm:mx-0 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-2">
         <CustomInput
           label="Nombre"
           type="text"
@@ -254,7 +254,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
           </>
         )}
       </div>
-      <div className="flex justify-center sm-phone:justify-end sm-tablet:justify-center lg:justify-end">
+      <div className="flex max-sm:justify-center sm:justify-end">
         {completedSteps[0] ? (
           hasChanges ? (
             <AuthButton
@@ -263,7 +263,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               isDark={isDark}
               loading={loading}
               disabled={!isValid || blockAll}
-              className="w-full max-w-[300px] "
+              className="max-sm:w-full sm:max-w-[344px]"
             />
           ) : (
             <button
@@ -282,7 +282,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             isDark={isDark}
             loading={loading}
             disabled={!isValid || blockAll}
-            className="w-full max-w-[300px] "
+            className="w-full sm:max-w-[344px]"
           />
         )}
       </div>

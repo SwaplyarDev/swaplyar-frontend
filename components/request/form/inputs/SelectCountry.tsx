@@ -69,18 +69,17 @@ const SelectCountry: React.FC<SelectCodeCountryProps> = ({
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -5 }}
-          className={`scrollable-list absolute top-full z-10 mt-2 w-full ${maxHeightModal ? "max-h-32" : "max-h-40"} overflow-y-auto py-4 ${isDark ? 'bg-custom-grayD-900' : 'bg-custom-whiteD'} rounded-[32px]`}
+          className={`scrollable-list absolute top-full z-10 mt-2 w-full ${maxHeightModal ? "max-h-32" : "max-h-40"} ${isDark ? 'bg-custom-grayD-800' : 'bg-custom-whiteD'} overflow-y-auto py-4 rounded-[32px]` } 
         >
           {countryOptions.map((country, index) => (
             <li
               key={index}
               className={cn(
-                'flex cursor-pointer justify-between px-3 mx-1 my-1 rounded-xl font-textFont leading-5 transition-colors duration-150',
-                isDark 
-                  ? 'text-custom-grayD-300 hover:bg-custom-grayD-800 hover:text-white'
-                  : 'text-gray-600 hover:bg-gray-100 hover:text-white',
-                {
-                  [isDark ? 'bg-custom-grayD-800' : 'bg-custom-whiteD-500']: selectedCodeCountry?.callingCode === country.callingCode,
+                'flex cursor-pointer justify-between px-3 mx-1 my-1 rounded-xl font-textFont leading-5 ',
+                isDark ? 'text-custom-whiteD  hover:bg-custom-grayD-700' : 'text-inputLight hover:bg-custom-whiteD-500',
+                { 
+                  [isDark ? 'bg-custom-grayD-700 text-custom-whiteD' : 'bg-custom-whiteD-500']:
+                  selectedCodeCountry?.callingCode === country.callingCode,
                 }
               )}
               onClick={() => {

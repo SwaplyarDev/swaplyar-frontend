@@ -282,7 +282,7 @@ export default function InternalTransactionCalculator({
             <Coupons balance={receiveAmountNum} receivingCoin={selectedReceivingSystem?.coin}>
               <div className="absolute left-0 top-1/2 -translate-y-1/2">
                 <SystemInfo pointBorder="border" linePosition="up">
-                  <p className="font-textFont text-xs font-light xs:text-sm sm:hidden">
+                  <p className="font-textFont text-xs font-light xs:text-sm hidden">
                     Información del sistema de recepción
                   </p>
                 </SystemInfo>

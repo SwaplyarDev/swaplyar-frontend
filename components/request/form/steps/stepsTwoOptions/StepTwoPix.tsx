@@ -17,16 +17,7 @@ interface StepTwoPixProps {
 const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, blockAll, formData, watch, completedSteps }) => {
   return (
     <>
-      <div
-        className={clsx(
-          completedSteps[1]
-            ? 'absolute right-[15px] top-[15px] sm:right-14'
-            : 'absolute right-5 top-[9rem] mini-phone:top-4',
-        )}
-      >
-        <InfoStep option="pix" />
-      </div>
-      <div className="mx-0 grid grid-cols-1 gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:grid-cols-2 sm-phone:gap-x-8 sm-phone:gap-y-2">
+      <div className="mx-0 grid grid-cols-1 gap-2 sm:mx-0 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-2">
         <CustomInput
           label="Nombre"
           name="receiver_first_name"
@@ -100,7 +91,7 @@ const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, blockAll, for
             },
           }}
           error={errors.pixKey?.message as string}
-          className="order-3 sm-phone:order-2"
+          className="order-3 sm:order-2 md:pb-1"
         />
         <CustomInput
           label="CPF"

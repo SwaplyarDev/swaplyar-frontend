@@ -21,7 +21,6 @@ export default function SystemSelect({ systems, selectedSystem, onSystemSelect, 
   const [showOptionsInternal, setShowOptionsInternal] = useState(false);
 
   const { selectedSendingSystem, selectedReceivingSystem, activeSelect, setActiveSelect } = useSystemStore();
-
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleClick = () => {
@@ -46,12 +45,8 @@ export default function SystemSelect({ systems, selectedSystem, onSystemSelect, 
         setShowOptionsInternal(false);
       }
     };
-
     document.addEventListener('mousedown', handleOutsideClick);
-
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
-    };
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, []);
 
   const handleOptionClick = (system: System) => {
@@ -67,44 +62,64 @@ export default function SystemSelect({ systems, selectedSystem, onSystemSelect, 
 
   return (
     <div className="relative w-full h-full" ref={dropdownRef}>
+      {showOptionsInternal && (
+        <div
+          className="fixed inset-0 z-[400] bg-black/40 sm:hidden"
+          onClick={() => setShowOptionsInternal(false)}
+        />
+      )}
       <button
-        className={`system-input-select flex h-full items-center justify-start sm:justify-between rounded-2xl rounded-t-none border-2 border-t-0 border-[#012c8a] max-sm:pr-2 p-1 md:p-2 dark:border-custom-whiteD w-full sm:rounded-bl-none sm:rounded-tl-none sm:rounded-tr-2xl sm:border-l-0 sm:border-t-2 ${
-          isSending ? 'animation-system-send' : 'animation-system-receive'
-        } ${isDark ? 'dark' : ''}`}
+        className={`max-sm:h-[70px] sm:max-h-[80px] md:max-h-[100px] h-full system-input-select flex items-center justify-end sm:justify-between w-full ${ isSending ? 'animation-system-send' : 'animation-system-receive'} ${isDark ? 'dark' : ''}`}
         onClick={handleClick}
       >
         {selectedSystem ? (
-          <div className="flex max-sm:w-[80%] sm:w-full justify-start sm:justify-center">
+          <div className="flex max-h-[70px] sm:max-h-[80px] md:max-h-[100px] max-sm:w-[80%] sm:w-full justify-start sm:justify-center">
             <Image
               src={isDark ? selectedSystem.logoDark : selectedSystem.logo}
               alt={selectedSystem.name}
-              width={200}
+              width={190}
               height={70}
-              className="w-[150px] h-[30px] sm:w-[200px] sm:h-[70px] object-contain"
+              className="w-[150px] sm:w-[190px] h-[50px] sm:h-[70px] object-contain"
             />
           </div>
-        ) : (
-          <></>
-        )}
-        <FontAwesomeIcon icon={faChevronDown} width={32} height={16} />
+        ) : null}
+        <div className="sm:pr-4">
+          <FontAwesomeIcon icon={faChevronDown} className="w-6 h-4 md:w-8 md:h-5" />
+        </div>
       </button>
       {showOptionsInternal && (
-        <ul className="scrollable-list absolute z-[500] max-h-64 w-full overflow-y-auto overflow-x-hidden rounded-2xl border border-custom-blue-800 bg-white shadow-md dark:border-white dark:bg-gray-800">
+        <ul
+          className={`
+            scrollable-list absolute z-[500] max-h-64 w-full overflow-y-auto overflow-x-hidden rounded-2xl 
+            pl-2 sm:top-full sm:mt-1 
+            max-sm:fixed max-sm:bottom-0 max-sm:left-0 max-sm:right-0 
+            max-sm:mx-4 max-sm:w-[calc(100%-2rem)] max-sm:rounded-t-2xl max-sm:h-[40vh]
+            ${isDark ? 'bg-custom-grayD-800' : 'bg-custom-whiteD'}
+          `}
+        >
           {updatedSystems.map((system) => (
             <li
               key={system.id}
               onClick={() => !system.isDisabled && handleOptionClick(system)}
-              className={`flex cursor-pointer items-center justify-center px-5 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                system.isDisabled ? 'cursor-not-allowed opacity-50' : ''
-              }`}
+              className={`scrollable-list flex cursor-pointer items-center justify-center gap-2 py-1 my-1 rounded-full font-textFont
+                ${system.isDisabled ? 'cursor-not-allowed opacity-50' : ''} 
+                ${isDark ? 'text-custom-grayD hover:bg-custom-grayD-700' : 'text-inputLight hover:bg-custom-whiteD-500'}
+                ${
+                  selectedSystem?.id === system.id  
+                    ? isDark
+                      ? 'bg-custom-grayD-700'
+                      : 'bg-custom-whiteD-500'
+                    : ''
+                }
+              `}
             >
-              <Image 
-                src={isDark ? system.logoDark : system.logo} 
-                alt={system.name} 
-                width={200} 
+              <Image
+                src={isDark ? system.logoDark : system.logo}
+                alt={system.name}
+                width={200}
                 height={70}
-                className="w-[150px] h-[30px] sm:w-[200px] sm:h-[70px] object-contain"
-                />
+                className="w-[150px] sm:w-[175px] h-[40px] sm:h-[45px] object-contain"
+              />
             </li>
           ))}
         </ul>
