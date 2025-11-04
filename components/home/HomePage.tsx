@@ -33,7 +33,7 @@ export default function HomePage() {
               customImageSpacing={true}
               customImageWidth={237}
               customImageAlign="left"
-              customContentWidth={450}
+              customContentWidth={692}
               customImageContainerWidth={237}
               customGap={16}
               contentNode={
@@ -71,9 +71,9 @@ export default function HomePage() {
               imageAlt="Intercambio seguro y rápido"
               verticalLayout={true}
               customImageSpacing={true}
-              customImageWidth={441}
-              customContentWidth={501}
-              customImageContainerWidth={441}
+              customImageWidth={348}
+              customContentWidth={594}
+              customImageContainerWidth={348}
               customGap={16}
               customImageAlign="center"
               contentNode={
