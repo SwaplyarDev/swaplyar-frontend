@@ -137,6 +137,8 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
         setCorrectSend(true);
         setErrorMessage(null);
         window.scrollTo({ top: 0 });
+
+         resetToDefault();
       }
     } catch (error: any) {
       PopUp({

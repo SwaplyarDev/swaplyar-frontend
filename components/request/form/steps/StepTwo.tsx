@@ -49,7 +49,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
 
     // 3. Si no hay una billetera seleccionada, manejamos el caso de "cuenta propia"
     if (!detail) {
-      if (formData.stepOne?.own_account === 'Si' || formData.stepOne?.own_account === 'true') {
+      if (formData.stepOne?.own_account === 'SI') {
         setValue('receiver_first_name', formData.stepOne.first_name, { shouldValidate: true });
         setValue('receiver_last_name', formData.stepOne.last_name, { shouldValidate: true });
       }

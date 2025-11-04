@@ -37,7 +37,7 @@ export default function TransactionCalculator() {
   }, [selectedSendingSystem, selectedReceivingSystem, startUpdatingRates, stopUpdatingRates]);
 
   const { activeSelect } = useSystemStore();
-  const { resetToDefault } = useStepperStore();
+  const { resetToDefault, updateFormData } = useStepperStore();
   const router = useRouter();
   const { isDark } = useDarkTheme();
   const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } = useSystemSelection();
@@ -68,9 +68,13 @@ export default function TransactionCalculator() {
 
   const handleSubmit = () => {
     setIsProcessing(true);
+    // ✅ Actualizar StepperStore antes de avanzar
+    updateFormData(2, {
+      send_amount: sendAmount,
+      receive_amount: receiveAmount,
+    });
     setTimeout(() => {
       handleDirection();
-      resetToDefault();
       setIsProcessing(false);
     }, 3000);
   };
@@ -82,19 +86,19 @@ export default function TransactionCalculator() {
           <p className="flex w-full items-center gap-[7px] font-textFont text-custom-grayD dark:text-darkText mb-1 sm:mb-3 max-sm:pl-1">
             {selectedSendingSystem?.coin === 'ARS' ? (
               <>
+                <span className="text-[20px] sm:text-[32px] font-light">{rateForOne.toFixed(2)}</span>
+                <span className="text-[16px] sm:text-[21px] font-semibold"> {selectedSendingSystem?.coin}</span>
+                <span className="text-[16px] sm:text-[21px] font-normal"> = </span>
                 <span className="text-[20px] sm:text-[32px] font-light">1</span>
-                <span className="text-[16px] sm:text-[21px] font-semibold">{selectedSendingSystem?.coin}</span>
-                <span className="text-[16px] sm:text-[21px] font-normal">=</span>
-                <span className="text-[20px] sm:text-[32px] font-light">{rateForOne.toFixed(5)}</span>
-                <span className="text-[16px] sm:text-[21px] font-semibold">{selectedReceivingSystem?.coin}</span>
+                <span className="text-[16px] sm:text-[21px] font-semibold"> {selectedReceivingSystem?.coin}</span>
               </>
             ) : (
               <>
                 <span className="text-[20px] sm:text-[32px] font-light">1</span>
-                <span className="text-[16px] sm:text-[21px] font-semibold">{selectedSendingSystem?.coin}</span>
-                <span className="text-[16px] sm:text-[21px] font-normal">=</span>
+                <span className="text-[16px] sm:text-[21px] font-semibold"> {selectedSendingSystem?.coin}</span>
+                <span className="text-[16px] sm:text-[21px] font-normal"> = </span>
                 <span className="text-[20px] sm:text-[32px] font-light">{rateForOne.toFixed(2)}</span>
-                <span className="text-[16px] sm:text-[21px] font-semibold">{selectedReceivingSystem?.coin}</span>
+                <span className="text-[16px] sm:text-[21px] font-semibold"> {selectedReceivingSystem?.coin}</span>
               </>
             )}
 

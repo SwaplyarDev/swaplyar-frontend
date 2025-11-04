@@ -66,15 +66,15 @@ const FormAuth = () => {
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmission)}
-      className="flex h-full w-full max-w-[490px] flex-col justify-evenly gap-1 md:mt-3"
+      className="flex h-full w-full max-w-[490px] flex-col gap-4 md:mt-3"
     >
-      <div className="h-[81px]">
-        <label className="text-tx font-ligth font-textFont">Numero Solicitud</label>
+      <div className="h-[50px]">
+       
         <input
           className={clsx(
-            'inputChangeAutofill h-[41px] w-full border-0 border-b-[1px] ps-0 text-xs placeholder:font-light focus:border-0 focus:border-b-[1px] focus:placeholder-transparent focus:outline-none focus:ring-0 xs:text-lg',
+            'inputChangeAutofill h-[50px] w-full border-0 border-b-[1px] ps-0 text-xs placeholder:font-light focus:border-0 focus:border-b-[1px] focus:placeholder-transparent focus:outline-none focus:ring-0 xs:text-lg',
             isDark
-              ? 'border-b-darkText bg-transparent text-darkText placeholder:text-placeholderDark focus:border-darkText'
+              ? 'border-b-darkText bg-transparent text-custom-blue-300 placeholder:text-custom-blue-300 focus:border-darkText'
               : 'border-b-buttonsLigth bg-transparent outline-none focus:border-buttonsLigth focus:outline-none',
             errors.transaction_id ? 'placeholder:text-errorColor' : 'placeholder:text-buttonExpandDark',
           )}
@@ -95,7 +95,7 @@ const FormAuth = () => {
           <p className="mb-5 text-sm text-errorColor">{errors.transaction_id.message as string}</p>
         )}
       </div>
-      <div className="relative mt-1 h-[81px]">
+      <div className="relative h-[50px]">
         <div className="flex flex-col">
           {/* Falta funcionalidad para cuando el usuario tenga su numero de telefono y no haga falta que lo ingrese el */}
           <label htmlFor="phone_number" className="font-textFont text-xs font-light">
@@ -103,7 +103,7 @@ const FormAuth = () => {
           </label>
           <div
             className={clsx(
-              `inputChangeAutofill flex h-[41px] w-full items-center border-0 border-b-[1px] border-solid ps-0 text-center text-xs text-lightText xs:text-lg ${isDark ? 'border-b-darkText bg-transparent focus:border-white' : 'border-b-buttonsLigth bg-transparent focus:border-buttonsLigth'} outline-none focus:outline-none`,
+              `inputChangeAutofill flex h-[50px] w-full items-center border-0 border-b-[1px] border-solid ps-0 text-center text-xs text-lightText xs:text-lg ${isDark ? 'border-b-darkText bg-transparent focus:border-white' : 'border-b-buttonsLigth bg-transparent focus:border-buttonsLigth'} outline-none focus:outline-none`,
               errors.phone_number &&
                 !isFocused &&
                 'border border-errorColor hover:border-blue-600 dark:hover:border-darkText',
@@ -131,10 +131,10 @@ const FormAuth = () => {
             <input
               placeholder={errors.phone_number ? 'Número de Telefóno*' : 'Número de Telefóno'}
               className={clsx(
-                'inputChangeAutofill placeholder-text-gray-900 ml-3 h-[41px] w-full border-0 border-none bg-transparent ps-0 text-xs placeholder:font-light focus:border-none focus:outline-none focus:ring-0 dark:text-darkText xs:text-lg',
+                'inputChangeAutofill placeholder-text-gray-900 ml-3 h-[50px] w-full border-0 border-none bg-transparent ps-0 text-xs placeholder:font-light focus:border-none focus:outline-none focus:ring-0 dark:text-darkText xs:text-lg',
                 errors.phone_number
                   ? 'placeholder:text-errorColor'
-                  : 'placeholder:text-buttonExpandDark dark:placeholder:text-placeholderDark',
+                  : 'placeholder:text-buttonExpandDark dark:placeholder:text-custom-blue-300',
               )}
               type="tel"
               {...register('phone_number', {

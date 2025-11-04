@@ -28,7 +28,7 @@ const RepentanceFormAuth = () => {
             de forma segura y devolveremos el dinero a la cuenta de origen de manera eficiente y sin complicaciones.
           </p>
         </div>
-        <div className="flex w-full flex-col lg2:max-w-[1004px] lg2:flex-row lg2:items-center lg2:min-h-[557px]">
+        <div className="flex w-full flex-col lg2:max-w-[1004px] lg2:flex-row">
           <div className="mt-10 hidden min-h-full flex-1 flex-wrap justify-center lg2:block">
             <Image
               src={regretsPc}

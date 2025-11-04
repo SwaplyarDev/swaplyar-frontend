@@ -209,7 +209,7 @@ const TransactionModal = () => {
           {transaction.regret?.id ? (
             <div className="flex flex-col">
               <p className="text-left text-base font-medium">
-                El Cliente solicito la Cancelacion y el Reembolso - Se realiza el reembolso a la cuenta de origen
+                El Cliente solicito la Cancelación y el Reembolso - Se realiza el reembolso a la cuenta de origen
               </p>
               <ClientMessage
                 headerMessage="Mensaje"
@@ -219,7 +219,7 @@ const TransactionModal = () => {
             </div>
           ) : transaction.note?.message ? (
             <div className="flex flex-col">
-              <p className="text-base font-medium">El Cliente solicito Editar la Solicitud</p>
+              <p className="text-base font-medium">El Cliente solicito editar la solicitud</p>
               <ClientMessage
                 headerMessage="mensaje"
                 message={transaction.note.message}

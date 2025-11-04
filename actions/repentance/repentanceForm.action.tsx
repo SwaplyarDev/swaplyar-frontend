@@ -52,7 +52,7 @@ export const createRegret = async (createRepentance: FormData) => {
     if (response.status === 400) {
       return {
         ok: false,
-        message: 'Esta solicitud ya genero una alerta de cancelacion y/o reembolso',
+        message: 'Esta solicitud ya genero una alerta de cancelación y/o reembolso',
         status: 400,
       };
     }
