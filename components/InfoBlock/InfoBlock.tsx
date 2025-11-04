@@ -40,13 +40,12 @@ export default function InfoBlock({
       className={clsx(
         verticalLayout ? 'flex-col' : position ? 'flex-col sm:flex-row-reverse' : 'flex-col sm:flex-row',
         'flex max-w-6xl items-center justify-center',
-        !customGap && 'gap-4 md:gap-2 lg:gap-4 xl:gap-4',
-        customGap && 'md:gap-4 lg:gap-4 xl:gap-4',
+        !customGap && 'gap-4 md:gap-2',
       )}
       style={customGap ? { gap: `${customGap}px` } : {}}
     >
-      <div className={`info-image-container ${customImageSpacing ? 'mb-0' : 'mb-4 md:mb-0'} flex ${customImageContainerWidth ? `w-[358px] xs-mini-phone:w-[358px] sm:w-[${customImageContainerWidth}px] lg:w-[450px] xl:w-[450px] flex-shrink-0` : 'w-full max-w-[358px] xs-mini-phone:max-w-[358px] sm:max-w-[692px] justify-center lg:max-w-[450px] xl:max-w-[450px]'} ${!customImageContainerWidth ? 'justify-center' : ''}`}>
-        <div className={`relative ${customImageSpacing ? 'h-auto' : 'h-[400px] md:h-[350px]'} ${customImageContainerWidth ? `w-[358px] xs-mini-phone:w-[358px] sm:w-[${customImageContainerWidth}px] lg:w-[450px] xl:w-[450px]` : 'w-full'} ${customImageSpacing ? 'overflow-visible' : 'overflow-hidden'} flex items-center ${customImageAlign === 'left' ? 'justify-start' : customImageAlign === 'right' ? 'justify-end' : 'justify-center'}`}>
+      <div className={`info-image-container ${customImageSpacing ? 'mb-0' : 'mb-4 md:mb-0'} flex ${customImageContainerWidth ? `w-[358px] xs-mini-phone:w-[358px] sm:w-[${customImageContainerWidth}px] lg:w-[${customImageContainerWidth}px] flex-shrink-0` : 'w-full max-w-[358px] xs-mini-phone:max-w-[358px] sm:max-w-[692px] justify-center lg:max-w-[500px]'} ${!customImageContainerWidth ? 'justify-center' : customImageAlign === 'left' ? 'justify-start' : customImageAlign === 'right' ? 'justify-end' : 'justify-center'}`}>
+        <div className={`relative ${customImageSpacing ? 'h-auto' : 'h-[400px] md:h-[350px]'} ${customImageContainerWidth && customImageWidth ? `w-[${customImageWidth}px] lg:w-[${customImageWidth}px]` : customImageContainerWidth ? `w-[358px] xs-mini-phone:w-[358px] sm:w-[${customImageContainerWidth}px] lg:w-[${customImageContainerWidth}px]` : 'w-full'} ${customImageSpacing ? 'overflow-visible' : 'overflow-hidden'} flex items-center ${customImageAlign === 'left' ? 'justify-start' : customImageAlign === 'right' ? 'justify-end' : 'justify-center'}`}>
       <Image
         src={imageSrc}
         alt={imageAlt}
@@ -56,7 +55,7 @@ export default function InfoBlock({
       />
     </div>
       </div>
-      <div className={`info-content-container flex ${customContentWidth ? `w-[358px] xs-mini-phone:w-[358px] sm:max-w-[${customContentWidth}px] lg:max-w-[480px] xl:max-w-[480px]` : customImageSpacing ? 'w-[358px] xs-mini-phone:w-[358px] sm:max-w-[742px] md:max-w-[400px] lg:max-w-[480px] xl:max-w-[480px]' : 'w-[358px] xs-mini-phone:w-[358px] sm:max-w-[355px] md:max-w-[400px] lg:max-w-[480px] xl:max-w-[480px]'} flex-col gap-4`}>
+      <div className={`info-content-container flex ${customContentWidth ? `w-[358px] xs-mini-phone:w-[358px] sm:w-full sm:max-w-[${customContentWidth}px] lg:w-[692px] lg:max-w-[692px]` : customImageSpacing ? 'w-[358px] xs-mini-phone:w-[358px] sm:w-full sm:max-w-[742px] lg:max-w-[500px]' : 'w-[358px] xs-mini-phone:w-[358px] sm:w-full sm:max-w-[355px] lg:max-w-[500px]'} flex-col gap-4`}>
         <h2 className="text-start font-textFont text-4xl text-custom-grayD dark:text-custom-whiteD">{title}</h2>
         <div className="info-content text-left text-base text-custom-grayD dark:text-custom-whiteD">
           {contentNode ? (
