@@ -38,7 +38,7 @@ export default function InfoBlock({
   return (
     <div
       className={clsx(
-        verticalLayout ? 'flex-col' : position ? 'flex-col sm:flex-row-reverse' : 'flex-col sm:flex-row',
+        verticalLayout ? 'flex-col lg:flex-row' : position ? 'flex-col sm:flex-row-reverse' : 'flex-col sm:flex-row',
         'flex max-w-6xl items-center justify-center',
         !customGap && 'gap-4 md:gap-2',
       )}

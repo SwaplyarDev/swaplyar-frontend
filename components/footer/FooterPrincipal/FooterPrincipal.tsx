@@ -9,7 +9,7 @@ import LogoSwaplySVG from '@/public/LogoSwaplySVG.svg'
 
 const FooterPrincipal = () => {
   return (
-    <section className='relative pb-4 '>
+    <section className='relative pb-4'>
       <div className="one-info-footer hidden w-full flex-col items-center gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 lg:flex">
         <Section title="Regístrate y Disfruta de Beneficios" links={footerLinks.registro} align="start" />
         <Section title="Normativa" links={footerLinks.normativa} align="center" />
