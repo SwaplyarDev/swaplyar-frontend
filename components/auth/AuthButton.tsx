@@ -27,8 +27,8 @@ const ButtonAuth: React.FC<ButtonAuthProps> = ({
 }) => {
   let variantClass = '';
 
-  // Alturas: mobile 44px, tablet 46px, notebooks 48px
-  const heightClass = 'h-[44px] sm:h-[46px] lg:h-[48px]';
+  // Alturas: mobile 32px, tablet 39px, notebooks 48px
+  const heightClass = 'h-[32px] sm:h-[39px] md:h-[48px]';
 
   // Texto: 16px en todos los breakpoints
   const textClass = 'text-[16px] leading-[20px]';

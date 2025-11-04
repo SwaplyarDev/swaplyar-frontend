@@ -6,7 +6,7 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import Link from 'next/link';
 import { sectionBottomHelpCenter, sectionLinksHelpCenter } from '@/data/sectionHelpCenter';
 import clsx from 'clsx';
-import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
+
 import { FlyerGif, helpCenter4, helpCenter4Dark } from '@/utils/assets/imgDatabaseCloudinary';
 import ShortButton from '@/components/ui/NewButtons/ShortButton';
 
@@ -18,7 +18,7 @@ const HelpCenterPage = () => {
       <div className="relative flex w-full flex-col items-center justify-center gap-20 px-4 py-10 md:px-8 lg:px-4 mt-16">
         <AnimatedBlurredCircles tope="top-[-260px]" />
         <div>
-          <div className="mx-auto max-w-[490px] lg2:max-w-[1204px]">
+          <div className="mx-auto max-w-[490px] lg2:max-w-[1205px]">
             <h1 className="mx-auto max-w-[592px] text-center font-titleFont text-[38px] font-medium lg2:text-[40px]">
               Bienvenido al Centro de Ayuda de SwaplyAr
             </h1>
@@ -29,9 +29,9 @@ const HelpCenterPage = () => {
                   href={item.href}
                   className="group relative flex flex-1 flex-col items-center lg2:after:absolute lg2:after:-right-4 lg2:after:h-full lg2:after:w-[1px] lg2:after:bg-buttonsLigth lg2:after:content-[''] lg2:after:last:hidden lg2:after:dark:bg-darkText"
                 >
-                  <div className="overflow-hidden max-h-[180px] w-[200px]">
+                  <div className="overflow-hidden max-h-[200px] w-[200px]">
                     <Image
-                      className="w-full object-cover object-top drop-shadow-light dark:drop-shadow-darkmode mb-8"
+                      className={`w-full h-[200px] object-contain drop-shadow-light dark:drop-shadow-darkmode mb-8 ${i === 0 ? 'scale-[2.5] translate-y-40' : i === 2 ? 'scale-[1.5] translate-y-14' : ''}`}
                       src={item.image}
                       alt={item.title}
                       width={200}
@@ -48,7 +48,7 @@ const HelpCenterPage = () => {
                   >
                     {item.title}
                   </h2>
-                  <p className="text-center font-textFont font-light">{item.text}</p>
+                  <p className="text-center font-textFont mb-none font-light">{item.text}</p>
                 </Link>
               ))}
             </div>
@@ -89,7 +89,7 @@ const HelpCenterPage = () => {
               />
             </div>
           </div>
-          <div className="mx-auto mt-11 mb-[50px] flex max-w-[490px] flex-col gap-10 lg2:max-w-[989px] lg2:flex-row">
+          <div className="mx-auto mt-11 mb-[50px] flex max-w-[473px] flex-col gap-20 lg2:max-w-[989px] lg2:flex-row">
             {sectionBottomHelpCenter.map((item, i: number) => (
               <Link key={i} href={item.href} target="_blank" className="group flex flex-1 flex-col items-center gap-2">
                 <Image

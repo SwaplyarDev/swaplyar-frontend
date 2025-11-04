@@ -15,7 +15,7 @@ const AlertError = async ({ isDark, toggleTooltip, setIsTooltipVisible, setIsLoa
       <>
         <div id="back-button-container"></div>
         <div className="flex flex-col items-center gap-12 px-[38px]">
-          <p className="text-2xl">Esta solicitud ya genero una alerta de cancelacion y/o reembolso</p>
+          <p className="text-2xl">Esta solicitud ya genero una alerta de cancelación y/o reembolso</p>
           <div id="back-button-container2"></div>
         </div>
       </>,

@@ -7,22 +7,22 @@ import { sectionTermsAndConditions } from '@/data/sectionTermsAndConditions';
 
 const TermsAndConditions = () => {
   return (
-    <div className="relative mx-auto flex max-w-[1000px] flex-col items-center px-4 py-10 text-custom-grayD md:px-8 lg:px-4">
+    <div className="relative mx-auto flex w-[1000px] mt-[55px] flex-col items-center py-10 text-custom-grayD">
       <AnimatedBlurredCircles tope="top-[-1675px]" />
-      <section className="flex flex-col items-center md:flex-row md:items-start lg:items-center">
-        <h1 className="flex-1 text-center font-titleFont text-[38px] font-medium dark:text-darkText lg:text-[40px]">
+      <section className="flex flex-col items-center md:flex-row md:items-start lg:items-center gap-2 ">
+        <h1 className="flex-1 text-center w-[592px] font-titleFont text-[40px] pl-2 font-medium dark:text-darkText ">
           Términos y Condiciones de Uso y Navegación del Sitio SwaplyAr
         </h1>
         <Image
-          className="hero-img mt-4 h-[358px] w-[358px] drop-shadow-light dark:drop-shadow-darkmode md:h-[331px] md:w-[331px]"
+          className="hero-img mt-4 h-[385px] w-[401px] drop-shadow-light dark:drop-shadow-darkmode"
           src={TerminosCondiciones}
           alt="terminos-y-condiciones"
-          width={358}
-          height={358}
+          width={401}
+          height={385}
         />
       </section>
 
-      <section className="mt-[40px] flex flex-col gap-6">
+      <section className="mt-[40px] mb-[60px] flex flex-col gap-6">
         {sectionTermsAndConditions.map((item, i: number) => {
           const divideTitle = item.title.split('.');
 

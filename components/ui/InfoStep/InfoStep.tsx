@@ -184,7 +184,7 @@ const InfoStep: FC<InfoStepProps> = ({ option }) => {
       onClick={() => setIsTooltipVisible(true)}
       type="button"
     >
-      <InfoIcon />
+      <InfoIcon className="w-5 h-5 sm:w-[30px] sm:h-[30px]" />
       <div className="invisible absolute -right-5 bottom-full mb-2 w-max max-w-[281px] scale-90 rounded-lg bg-buttonsLigth p-[10px] text-sm text-white opacity-0 transition-all duration-300 ease-in-out group-hover:visible group-hover:scale-100 group-hover:opacity-100 dark:bg-custom-grayD-300 mini-phone:right-0">
         <p className="text-center font-textFont text-xs font-light text-darkText dark:text-lightText">
           {option === 'pix' ? (

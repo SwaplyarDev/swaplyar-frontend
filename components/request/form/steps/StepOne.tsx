@@ -1,13 +1,15 @@
-import ArrowUp from '@/components/ui/ArrowUp/ArrowUp';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { useStepperStore } from '@/store/stateStepperStore';
 import { useCallback, useEffect, useMemo, useState, memo } from 'react';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import ArrowUp from '@/components/ui/ArrowUp/ArrowUp';
+//stores
+import { useStepperStore } from '@/store/stateStepperStore';
+import useWalletStore from '@/store/useWalletStore';
+//types
+import { CountryOption } from '@/types/request/request';
+//comonents y otros
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import SelectBoolean from '../inputs/SelectBoolean';
-import { CountryOption } from '@/types/request/request';
-import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import SelectCountry from '../inputs/SelectCountry';
-import useWalletStore from '@/store/useWalletStore';
 import CustomInput from '@/components/ui/Input/CustomInput';
 import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
 import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
@@ -62,10 +64,10 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
 
   useEffect(() => {
     const { first_name, last_name, calling_code, phone, email, own_account } = formData.stepOne;
-    
+
     const defaultCountry = defaultCountryOptions.find(option => option.callingCode === '+54') || defaultCountryOptions[0];
     const finalCallingCode = calling_code || defaultCountry;
-    
+
     const newValues = {
       first_name,
       last_name,
@@ -74,7 +76,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
       email,
       own_account,
     };
-    
+
     setValue('first_name', first_name);
     setValue('last_name', last_name);
     setValue('calling_code', finalCallingCode);
@@ -133,8 +135,8 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
     [initialValues, formValues, deepEqual],
   );
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8">
-      <div className="mx-0 grid grid-cols-1 gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:grid-cols-2 sm-phone:gap-x-8 sm-phone:gap-y-2">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2.5">
+      <div className="mx-0 grid grid-cols-1 gap-2 sm:mx-0 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-2">
         <CustomInput
           label="Nombre"
           type="text"
@@ -240,7 +242,10 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
                   <SelectBoolean
                     blockAll={blockAll}
                     selectedOption={field.value}
-                    setSelectedOption={(option) => field.onChange(option)}
+                    setSelectedOption={(option) => {
+                      console.log('🔍 Valor recibido de SelectBoolean:', option);
+                      field.onChange(option);
+                    }}
                     errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
                   />
                 )}
@@ -249,7 +254,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
           </>
         )}
       </div>
-      <div className="flex justify-center sm-phone:justify-end sm-tablet:justify-center lg:justify-end">
+      <div className="flex max-sm:justify-center sm:justify-end">
         {completedSteps[0] ? (
           hasChanges ? (
             <AuthButton
@@ -258,7 +263,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               isDark={isDark}
               loading={loading}
               disabled={!isValid || blockAll}
-              className="w-full max-w-[300px] "
+              className="max-sm:w-full sm:max-w-[344px]"
             />
           ) : (
             <button
@@ -277,7 +282,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             isDark={isDark}
             loading={loading}
             disabled={!isValid || blockAll}
-            className="w-full max-w-[300px] "
+            className="w-full sm:max-w-[344px]"
           />
         )}
       </div>

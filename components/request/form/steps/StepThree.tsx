@@ -42,8 +42,8 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
 
   const formValues = useWatch({ control });
 
-  const receiveAmount = typeof window !== 'undefined' ? localStorage.getItem('receiveAmount') : null;
-  const sendAmount = typeof window !== 'undefined' ? localStorage.getItem('sendAmount') : null;
+const sendAmount = formData.stepThree.send_amount;
+const receiveAmount = formData.stepThree.receive_amount;
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
 
   // Observar cambios en red_selection

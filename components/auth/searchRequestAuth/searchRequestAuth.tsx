@@ -38,6 +38,7 @@ import { useSession } from 'next-auth/react';
 import { searchRequestMovile, searchRequestWeb } from '@/utils/assets/imgDatabaseCloudinary';
 //importamos alert para mostrar los errores.
 import Swal from 'sweetalert2';
+import BottomBorderInput from '@/components/ui/Input/BottomBorderInput';
 
 const SearchRequestAuth = () => {
   const { data: session } = useSession();
@@ -186,19 +187,13 @@ const SearchRequestAuth = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="mt-10 flex w-full max-w-[466px] flex-col items-center gap-4 lg2:self-end"
         >
-          <div className="flex h-[81px] w-full flex-col">
-            <label htmlFor="numberOfRequest" className="text-right font-textFont text-xs font-light">
-              Número de Solicitud
-            </label>
-            <InputOnlyLine
-              placeholder={
-                errors.transactionId ? 'Número de Solicitud*' : 'N° de Solicitud como figura en el Correo Eletrónico'
-              }
-              id="numberOfRequest"
-              register={register('transactionId', { required: 'El Número de Solicitud es Obligatorio' })}
-              error={errors.transactionId?.message}
-            />
-          </div>
+          <BottomBorderInput
+            label="Número de Solicitud"
+            name="transactionId"
+            register={register}
+            validation={{ required: 'El Número de Solicitud es Obligatorio' }}
+            error={errors.transactionId?.message}
+          />
           <div className="flex h-[50px] flex-col items-center justify-center gap-[18px]">
             {loading ? (
               <div className="flex items-center justify-center">
