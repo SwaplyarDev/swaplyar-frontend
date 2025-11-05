@@ -55,15 +55,15 @@ const Warranty = () => {
 
         <section className="mx-auto mt-10 mb-[-30px] max-w-[358px] md:max-w-[704px] lg:max-w-[927px] flex w-full flex-col items-center gap-5 md:gap-0 lg:gap-5 text-left text-lightText dark:text-darkText md:flex-row md:justify-between lg:justify-start">
           <Image
-            className="drop-shadow-light dark:drop-shadow-darkmode w-[300px] md:w-[331px] lg:w-[454px] h-[300px] md:h-[300px] lg:h-[400px] object-contain"
+            className="drop-shadow-light dark:drop-shadow-darkmode w-[358px] md:w-[331px] lg:w-[454px] h-[300px] md:h-[300px] lg:h-[400px] object-contain"
             src={Ventajaalelegirswaplyar}
             alt={'Ventajas de elegir SwaplyAr'}
             width={454}
             height={400}
           />
           <article className="mt-10 md:mt-0 flex flex-col w-full max-w-[358px] md:max-w-[360px] lg:max-w-[388px]">
-            <h2 className="font-textFont text-4xl">{TextWarranty[1].title}</h2>
-            <p className="mt-10 font-textFont text-base font-light leading-relaxed md:mt-0 md:max-w-[360px] ">
+            <h2 className="font-textFont text-[30px] leading-tight">{TextWarranty[1].title}</h2>
+            <p className="mt-0 mb-4 font-textFont text-base font-light leading-relaxed md:mt-0 md:max-w-[360px] ">
               {combinedText.map((text, index) => (
                 <span key={index} dangerouslySetInnerHTML={{ __html: text }} />
               ))}
