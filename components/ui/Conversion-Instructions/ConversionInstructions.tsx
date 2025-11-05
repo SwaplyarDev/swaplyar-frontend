@@ -13,7 +13,7 @@ const ConversionInstructions = () => {
           <span className="font-bold">operaciones realizadas con éxito</span> respaldan nuestra eficiencia y seguridad.
         </p>
       </article>
-      <aside className="flex-1">
+      <aside className="flex-1 max-sm:w-full">
         <TransactionCalculator />
       </aside>
     </section>

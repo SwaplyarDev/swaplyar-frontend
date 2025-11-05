@@ -17,10 +17,10 @@ const StepTwoPayoneer: React.FC<StepTwoPayoneerProps> = ({
   getValues,
   blockAll,
   formData,
-  watch,
+  watch
 }) => {
   return (
-    <div className="mx-0 grid grid-cols-1 gap-4 xs:mx-6 sm-phone:mx-0 sm-phone:grid-cols-2 sm-phone:gap-x-8 sm-phone:gap-y-2">
+    <div className="mx-0 grid grid-cols-1 gap-2 sm:mx-0 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-2">
       <CustomInput
         label="Nombre"
         name="receiver_first_name"
@@ -63,7 +63,7 @@ const StepTwoPayoneer: React.FC<StepTwoPayoneerProps> = ({
           },
         }}
         error={errors.receiver_last_name?.message as string}
-        className="order-2 sm-phone:order-3"
+        className="order-2 sm:order-3"
       />
       <CustomInput
         label="Correo Electrónico de Payoneer"

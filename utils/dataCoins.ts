@@ -92,7 +92,7 @@ export const systems: System[] = [
     logo: TetherImg,
     logoDark: TetherDarkImg,
     isDisabled: false,
-    coin: 'USDT',
+    coin: 'USD',
     paymentMethod: 'tether',
     coinSign: 'US$',
   },

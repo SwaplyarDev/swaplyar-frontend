@@ -68,15 +68,18 @@ const SelectRed: React.FC<SelectRedProps> = ({ selectedRed, setSelectedRed, erro
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -5 }}
-          className="scrollable-list absolute top-full mt-1 z-10 w-full max-h-48 overflow-y-auto rounded-[32px] bg-custom-whiteD pl-2"
+          className={`scrollable-list absolute top-full mt-1 z-10 w-full max-h-48 overflow-y-auto rounded-[32px] pl-2 ${isDark ? 'bg-custom-grayD-800' : 'bg-custom-whiteD'}`}
         >
           {options.map((option) => (
             <li
               key={option.value}
               className={clsx(
-                'scrollable-list flex cursor-pointer items-center gap-2 my-2 mx-2 rounded-full font-textFont hover:bg-custom-whiteD-500',
-                isDark ? 'text-custom-grayD' : 'text-inputLight',
-                { 'bg-custom-whiteD-500': selectedRed?.value === option.value }
+                'scrollable-list flex cursor-pointer items-center gap-2 my-2 mx-2 rounded-full font-textFont',
+                isDark ? 'text-custom-whiteD  hover:bg-custom-grayD-700' : 'text-inputLight hover:bg-custom-whiteD-500',
+                { 
+                  [isDark ? 'bg-custom-grayD-700 text-custom-whiteD' : 'bg-custom-whiteD-500']:
+                  selectedRed?.value === option.value,
+                },   
               )}
               onClick={() => {
                 setSelectedRed(option);

@@ -19,7 +19,6 @@ export default function SystemInfo({ pointBorder, linePosition, children }: Syst
 
   useEffect(() => {
     if (isTooltipVisible) {
-      // Guardar el ancho del scroll y aplicar no-scroll
       const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.paddingRight = `${scrollBarWidth}px`;
       document.body.classList.add('no-scroll');
@@ -53,14 +52,13 @@ export default function SystemInfo({ pointBorder, linePosition, children }: Syst
 
       showTooltip();
     } else {
-      // Restaurar el padding cuando se cierra el tooltip
       document.body.style.paddingRight = '0px';
       document.body.classList.remove('no-scroll');
     }
   }, [isTooltipVisible, isDark, toggleTooltip]);
 
   return (
-    <div className={`system-info-${linePosition} max-sm:hidden`}>
+    <div className={`system-info-${linePosition}`}>
       <div className="data-container flex flex-row items-center">
         {pointBorder === 'fill' && <div className="line-joins-up mb-4 h-1 w-full bg-blue-500"></div>}
         <div className="system-info-container flex flex-row items-center">

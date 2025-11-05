@@ -49,7 +49,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
 
     // 3. Si no hay una billetera seleccionada, manejamos el caso de "cuenta propia"
     if (!detail) {
-      if (formData.stepOne?.own_account === 'Si' || formData.stepOne?.own_account === 'true') {
+      if (formData.stepOne?.own_account === 'SI') {
         setValue('receiver_first_name', formData.stepOne.first_name, { shouldValidate: true });
         setValue('receiver_last_name', formData.stepOne.last_name, { shouldValidate: true });
       }
@@ -203,8 +203,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       {renderSelectedSystem()}
-
-      <div className="flex justify-center sm-phone:justify-end sm-tablet:justify-center lg:justify-end">
+      <div className="flex justify-center sm:justify-end">
         {completedSteps[1] ? (
           hasChanges ? (
             <AuthButton
@@ -213,7 +212,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
               isDark={isDark}
               loading={loading}
               disabled={!isValid || blockAll}
-              className="w-full max-w-[300px]"
+              className="w-full"
             />
           ) : (
             <button
@@ -232,7 +231,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             isDark={isDark}
             loading={loading}
             disabled={!isValid || blockAll}
-            className="w-full max-w-[300px]"
+            className="w-full sm:max-w-[344px]"
           />
         )}
       </div>
