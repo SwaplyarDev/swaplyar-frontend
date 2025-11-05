@@ -75,15 +75,15 @@ const AboutUs = () => {
 
   return (
     <>
-      <div className="relative top-[54px] mx-4 flex flex-col items-center justify-center md:mx-8 lg:mx-4">
+      <div className="relative top-[54px] mx-4 flex flex-col items-center justify-center md:mx-[43.5px] lg:mx-4">
         <AnimatedBlurredCircles tope="top-[0px]" />
-        <div className="flex w-full max-w-[1000px] flex-col items-center justify-center text-lightText dark:text-darkText">
-          <section className="max-w-[1000px] ">
+        <div className="flex w-full max-w-[358px] md:max-w-[681px] lg:max-w-[1000px] flex-col items-center justify-center text-lightText dark:text-darkText">
+          <section className="max-w-[358px] md:max-w-[681px] lg:max-w-[1000px]">
             <h1 className="mt-6 text-center font-titleFont text-[38px] font-medium lg2:mt-20 lg2:text-left lg2:text-[40px]">
               Nuestra Historia, Misión, Visión y Valores
             </h1>
 
-            <section className="rs-wrapper-v4 max-w-[1000px] text-left font-textFont font-light sm:mt-4 md:mt-8 md:w-full lg2:mt-10">
+            <section className="rs-wrapper-v4 max-w-[358px] md:max-w-[681px] lg:max-w-[1000px] text-left font-textFont font-light sm:mt-4 md:mt-8 md:w-full lg2:mt-10">
               <p className="mt-6 md:mt-7 md:text-base lg:text-xl">
                 En SwaplyAr, transformamos la forma en que las personas y empresas realizan transacciones
                 internacionales, garantizando un intercambio seguro y confiable entre las principales billeteras
@@ -98,7 +98,7 @@ const AboutUs = () => {
             </section>
           </section>
 
-          <div className="mt-6 w-full max-w-[1000px] lg2:mt-10">
+          <div className="mt-6 w-full max-w-[358px] md:max-w-[681px] lg:max-w-[1000px] lg2:mt-10">
             <CaedAboutUs cardsData={cardsData} />
           </div>
 
@@ -114,9 +114,9 @@ const AboutUs = () => {
             ))}
           </section>
 
-          <section className="flex w-full max-w-[1000px] justify-center">
+          <section className="flex w-full max-w-[358px] md:max-w-[681px] lg:max-w-[1000px] justify-center">
             <section className="mt-10 grid w-[90%] grid-cols-1 items-center justify-center gap-6 md:w-full md:grid-cols-2">
-              <article className="col-right order-1 text-left font-textFont text-lg text-lightText dark:text-darkText md:order-2">
+              <article className="col-right order-2 text-left font-textFont text-lg text-lightText dark:text-darkText md:order-2">
                 <p>
                   "Nos Dedicamos a transformar la manera en que las personas manejan su dinero, utilizando las
                   tecnologias mas avanzadas y sistemas de pago innovadores. Porque entendemos que detrás de cada
@@ -126,7 +126,7 @@ const AboutUs = () => {
                 </p>
               </article>
 
-              <article className="col-left order-2 flex flex-col items-center md:order-1">
+              <article className="col-left order-1 flex flex-col items-center md:order-1">
                 <Image src={swaplyArCEO} alt="Chief Executive Officer (CEO)" width={286} height={286} />
                 <div className="text-team mt-4 text-center font-textFont text-lightText dark:text-darkText">
                   <h5 className="text-[28px]">Oa Johan Javier Suarez Merchan</h5>
@@ -137,7 +137,7 @@ const AboutUs = () => {
           </section>
         </div>
       </div>
-      <section className="mt-[87px] overflow-hidden text-center">
+      <section className="mt-[87px] md:mt-[37px] lg:mt-[87px] overflow-hidden text-center">
         <FlyerTrabajo
           imageSrc={FlyerGif}
           href="/es/como-usar-swaplyar"

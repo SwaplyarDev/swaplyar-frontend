@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const FooterBlog = () => {
   return (
-    <div className="relative mt-14 flex flex-col items-center justify-between gap-6 lg:flex-row lg:gap-0">
+    <div className="relative flex flex-col items-center justify-between gap-6 lg:flex-row lg:gap-0">
       <section className="order-2 mb-4 flex justify-center filter dark:brightness-[0%] dark:invert sm:mb-0 sm:justify-start lg:order-1">
         <Link href="/">
           <Image src={SwaplyArLogoSolo} alt="Cambiar saldo online" width={65} height={70} className='scale-90'/>
