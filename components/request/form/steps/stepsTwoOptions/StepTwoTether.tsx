@@ -1,8 +1,6 @@
 import React from 'react';
 import { Control, FieldErrors, UseFormRegister, UseFormGetValues, UseFormWatch, Controller } from 'react-hook-form';
 import SelectRed from '../../inputs/SelectRed';
-import InfoStep from '@/components/ui/InfoStep/InfoStep';
-import clsx from 'clsx';
 import CustomInput from '@/components/ui/Input/CustomInput';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
@@ -31,22 +29,8 @@ const StepTwoTether: React.FC<StepTwoTetherProps> = ({
   
   return (
     <>
-      <div
-        className={clsx(
-          completedSteps[1]
-            ? 'absolute right-[15px] top-[15px] sm:right-14'
-            : 'absolute right-3 sm:right-4 md:right-5 top-3 sm:top-4 md:top-5'
-        )}
-      >
-        <InfoStep option="cripto" />
-      </div>
-
       <div className="flex flex-col gap-2 sm:mx-0 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-2">
-        <p
-          className={`pb-2 text-xs sm:text-sm font-textFont leading-5 sm:leading-6 ${
-            isDark ? "text-custom-grayD-200" : "text-custom-grayD-600"
-          }`}
-        >
+        <p className='pb-2 text-sm sm:text-base font-textFont leading-5 sm:leading-6 dark:text-custom-grayD-200 text-custom-grayD-600'>
           Para un depósito correcto, asegúrese de que la dirección del monedero es exacta. 
           De lo contrario, los fondos que enviamos a la dirección indicada no se añadirán ni se reembolsarán.
         </p>

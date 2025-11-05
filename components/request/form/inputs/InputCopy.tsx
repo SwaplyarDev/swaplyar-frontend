@@ -79,11 +79,11 @@ const InputCopy: FC<InputCopyProps> = ({
         />
         <button
           type="button"
-          className="absolute right-0 flex h-[38px] items-center justify-center rounded border-none bg-transparent pr-2 transition-all duration-300 ease-in-out"
+          className="absolute right-0 flex h-[38px] items-center justify-center rounded border-none bg-transparent pr-2 transition-all duration-300 ease-in-out dark:text-custom-grayD-700"
           disabled={copied}
           onClick={handleCopy}
         >
-          {copied ? <Tick copy={true} color={isDark ? '#414244' : '#FCFBFA'} /> : <Copy />}
+          {copied ? <Tick copy={true} color={isDark ? '#646464' : '#252526'} /> : <Copy color={isDark ? '#646464' : '#252526'} />}
         </button>
       </div>
       {error && <p className="text-sm text-red-500">{error.message}</p>}

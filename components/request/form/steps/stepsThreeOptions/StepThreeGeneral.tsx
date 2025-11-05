@@ -1,12 +1,10 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import clsx from 'clsx';
 import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch } from 'react-hook-form';
 import InputCopy from '../../inputs/InputCopy';
 import { System } from '@/types/data';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { FieldError } from 'react-hook-form';
 import { detectarMail } from '@/utils/validationUtils';
-import Image from 'next/image';
 import FileUpload from '@/components/ui/FileUpload/FileUpload';
 import PopUp from '@/components/ui/PopUp/PopUp';
 
@@ -43,16 +41,7 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
   setPreviewImage,
 }) => {
   const { isDark } = useDarkTheme();
-  const [isFocused, setIsFocused] = useState(false);
   const emailAccount = detectarMail(selectedSendingSystem);
-
-  const proofOfPayment = watch('proof_of_payment');
-
-  const handleRemoveImage = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    setPreviewImage(null);
-  };
-
   const handleOpenReceiptPopup = () => {
     PopUp({
       variant: 'receipt-examples',
@@ -62,7 +51,7 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
 
   return (
     <>
-      <p className="text-left font-textFont">
+      <p className='text-sm sm:text-base font-textFont leading-5 sm:leading-6 dark:text-custom-grayD-200 text-custom-grayD-600'>        
         Realiza el pago a
         {selectedSendingSystem?.name === 'Bank' ? (
           <span>
@@ -127,8 +116,15 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
           />
           <div className="flex w-full flex-col gap-4">
             <div className='flex flex-col text-start text-sm'>
-              <span>Sube el comprobante de pago / los pagos</span>
-              <span>Si tienes dudas, puedes consultar los <strong className="text-custom-blue cursor-pointer" onClick={handleOpenReceiptPopup}>ejemplos de como subir la documentación</strong></span>
+            <span className='text-sm sm:text-base font-textFont leading-5 sm:leading-6 dark:text-custom-grayD-200 text-custom-grayD-600'> 
+              Sube el comprobante de pago / los pagos 
+            </span>
+            <span className='text-sm sm:text-base font-textFont leading-5 sm:leading-6 dark:text-custom-grayD-200 text-custom-grayD-600'>
+              Si tienes dudas, puedes consultar los <span> </span>
+              <strong className="text-custom-blue dark:text-darkText cursor-pointer" onClick={handleOpenReceiptPopup}>
+                ejemplos de como subir la documentación
+              </strong>
+            </span>
             </div>
             <FileUpload
               label="Comprobante"
