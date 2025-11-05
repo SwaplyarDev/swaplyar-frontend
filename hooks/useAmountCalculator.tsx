@@ -111,125 +111,129 @@ export const useAmountCalculator = () => {
 
   // obtiene rateForOne inicial al montar o cambiar sistemas
   useEffect(() => {
-    const fetchInitialRate = async () => {
-      if (
-        !selectedSendingSystem ||
-        !selectedReceivingSystem ||
-        !isSystemBackendId(selectedSendingSystem.id) ||
-        !isSystemBackendId(selectedReceivingSystem.id)
-      ) return;
+    if (
+      !selectedSendingSystem?.id ||
+      !selectedReceivingSystem?.id ||
+      !isSystemBackendId(selectedSendingSystem.id) ||
+      !isSystemBackendId(selectedReceivingSystem.id)
+    ) return;
 
+    const timeout = setTimeout(async () => {
       let fromSystem = selectedSendingSystem.id;
       let toSystem = selectedReceivingSystem.id;
 
-      // 💡 Si enviamos desde ARS, invertimos la consulta
       const isFromARS = selectedSendingSystem.coin === 'ARS';
       if (isFromARS) {
         fromSystem = selectedReceivingSystem.id;
         toSystem = selectedSendingSystem.id;
       }
 
-      const payload = mapSystemsToTotalPayload(fromSystem, toSystem, 1);
+      const payload = mapSystemsToTotalPayload(
+        fromSystem as SystemBackendId,
+        toSystem as SystemBackendId,
+        1
+      );
 
-      console.log('⚙️ Preparando solicitud de rateForOne vía WebSocket...', payload);
-      await waitForConnection(); // 👈 Espera conexión real
-      console.log('✅ WS conectado, enviando cálculo rateForOne...');
+      console.log('⚙️ Preparando solicitud inicial de rateForOne...', payload);
+      await waitForConnection();
+      console.log('✅ WS conectado, enviando cálculo inicial...');
       sendCalculation(payload);
-    };
+    }, 300); // 👈 Espera breve para garantizar que Zustand haya seteado valores
 
-    fetchInitialRate();
+    return () => clearTimeout(timeout);
   }, [selectedSendingSystem?.id, selectedReceivingSystem?.id]);
 
-useEffect(() => {
-  const activePair = activePairRef.current;
 
-  // 🧩 Verificamos que haya un par activo antes de comparar
-  if (
-    !activePair ||
-    !activePair.from ||
-    !activePair.to ||
-    !activePair.fromPlatform ||
-    !activePair.toPlatform
-  ) {
-    console.log('⏸️ No hay par activo definido aún, se ignora comparación.');
-    return;
-  }
+  useEffect(() => {
+    const activePair = activePairRef.current;
 
-  const { from, to, fromPlatform, toPlatform } = activePair;
+    // 🧩 Verificamos que haya un par activo antes de comparar
+    if (
+      !activePair ||
+      !activePair.from ||
+      !activePair.to ||
+      !activePair.fromPlatform ||
+      !activePair.toPlatform
+    ) {
+      console.log('⏸️ No hay par activo definido aún, se ignora comparación.');
+      return;
+    }
 
-  if (
-    !selectedSendingSystem ||
-    !selectedReceivingSystem ||
-    !isSystemBackendId(selectedSendingSystem.id) ||
-    !isSystemBackendId(selectedReceivingSystem.id)
-  )
-    return;
+    const { from, to, fromPlatform, toPlatform } = activePair;
 
-  // 🔢 Nuevos datos recibidos por WS
-  const newRate = rateUpdate?.rate ?? null;
-  const newFrom = rateUpdate?.from;
-  const newTo = rateUpdate?.to;
+    if (
+      !selectedSendingSystem ||
+      !selectedReceivingSystem ||
+      !isSystemBackendId(selectedSendingSystem.id) ||
+      !isSystemBackendId(selectedReceivingSystem.id)
+    )
+      return;
 
-  const newCommissionRate = conversionResult?.commission?.commissionRate ?? null;
-  const newFromPlatform = conversionResult?.commission?.fromPlatform;
-  const newToPlatform = conversionResult?.commission?.toPlatform;
+    // 🔢 Nuevos datos recibidos por WS
+    const newRate = rateUpdate?.rate ?? null;
+    const newFrom = rateUpdate?.from;
+    const newTo = rateUpdate?.to;
 
-  // 🧩 Comparación estricta contra el par activo real del backend
-  const sameCurrencyPair =
-    !!newFrom &&
-    !!newTo &&
-    normalize(newFrom) === normalize(from) &&
-    normalize(newTo) === normalize(to);
+    const newCommissionRate = conversionResult?.commission?.commissionRate ?? null;
+    const newFromPlatform = conversionResult?.commission?.fromPlatform;
+    const newToPlatform = conversionResult?.commission?.toPlatform;
 
-  const samePlatformPair =
-    !!newFromPlatform &&
-    !!newToPlatform &&
-    normalize(newFromPlatform) === normalize(fromPlatform) &&
-    normalize(newToPlatform) === normalize(toPlatform);
+    // 🧩 Comparación estricta contra el par activo real del backend
+    const sameCurrencyPair =
+      !!newFrom &&
+      !!newTo &&
+      normalize(newFrom) === normalize(from) &&
+      normalize(newTo) === normalize(to);
 
-  console.log('🧩 Comparando update con par activo:', {
-    newFrom,
-    newTo,
-    newFromPlatform,
-    newToPlatform,
-    currentFrom: from,
-    currentTo: to,
-    currentFromPlatform: fromPlatform,
-    currentToPlatform: toPlatform,
-  });
+    const samePlatformPair =
+      !!newFromPlatform &&
+      !!newToPlatform &&
+      normalize(newFromPlatform) === normalize(fromPlatform) &&
+      normalize(newToPlatform) === normalize(toPlatform);
 
-  // 🚫 Si no coinciden las monedas o plataformas, ignoramos el update global
-  if (!sameCurrencyPair || !samePlatformPair) {
-    console.log(
-      '⚠️ rate/commission update ignorado: no corresponde al par actual.'
-    );
-    return;
-  }
+    console.log('🧩 Comparando update con par activo:', {
+      newFrom,
+      newTo,
+      newFromPlatform,
+      newToPlatform,
+      currentFrom: from,
+      currentTo: to,
+      currentFromPlatform: fromPlatform,
+      currentToPlatform: toPlatform,
+    });
 
-  // 🧠 Solo seguimos si los valores realmente cambiaron
-  const rateChanged = newRate !== null && newRate !== lastRateRef.current;
-  const commissionChanged =
-    newCommissionRate !== null && newCommissionRate !== lastCommissionRef.current;
+    // 🚫 Si no coinciden las monedas o plataformas, ignoramos el update global
+    if (!sameCurrencyPair || !samePlatformPair) {
+      console.log(
+        '⚠️ rate/commission update ignorado: no corresponde al par actual.'
+      );
+      return;
+    }
 
-  if (rateChanged || commissionChanged) {
-    console.log(
-      '🔁 Cambios detectados en rate/commission relevantes. Recalculando rateForOne...'
-    );
+    // 🧠 Solo seguimos si los valores realmente cambiaron
+    const rateChanged = newRate !== null && newRate !== lastRateRef.current;
+    const commissionChanged =
+      newCommissionRate !== null && newCommissionRate !== lastCommissionRef.current;
 
-    lastRateRef.current = newRate ?? lastRateRef.current;
-    lastCommissionRef.current = newCommissionRate ?? lastCommissionRef.current;
+    if (rateChanged || commissionChanged) {
+      console.log(
+        '🔁 Cambios detectados en rate/commission relevantes. Recalculando rateForOne...'
+      );
 
-    const payload = mapSystemsToTotalPayload(
-      selectedSendingSystem.id,
-      selectedReceivingSystem.id,
-      1
-    );
+      lastRateRef.current = newRate ?? lastRateRef.current;
+      lastCommissionRef.current = newCommissionRate ?? lastCommissionRef.current;
 
-    sendCalculation(payload);
-  } else {
-    console.log('✅ No hay cambios relevantes en rate ni commission.');
-  }
-}, [rateUpdate, conversionResult]);
+      const payload = mapSystemsToTotalPayload(
+        selectedSendingSystem.id,
+        selectedReceivingSystem.id,
+        1
+      );
+
+      sendCalculation(payload);
+    } else {
+      console.log('✅ No hay cambios relevantes en rate ni commission.');
+    }
+  }, [rateUpdate, conversionResult]);
 
 
 

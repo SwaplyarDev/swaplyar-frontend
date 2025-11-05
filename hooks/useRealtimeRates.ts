@@ -23,8 +23,8 @@ export const useRealtimeRates = () => {
 
   useEffect(() => {
     // Solo conectar si estamos en desarrollo y hay servidor backend
-    if (process.env.NODE_ENV !== 'production' && process.env.NEXT_PUBLIC_ENABLE_WEBSOCKET === 'true') {
-      const socket = io('http://localhost:3001', {
+    if (process.env.NEXT_PUBLIC_ENABLE_WEBSOCKET === 'true') {
+      const socket = io(process.env.NEXT_PUBLIC_WS_URL ?? 'http://localhost:3001', {
         transports: ['websocket'],
       });
 
