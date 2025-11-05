@@ -75,7 +75,7 @@ const AboutUs = () => {
 
   return (
     <>
-      <div className="relative top-[54px] mx-4 flex flex-col items-center justify-center md:mx-[43.5px] md:max-w-[681px] md:w-full lg:mx-4 lg:max-w-[1000px]">
+      <div className="relative top-[54px] mx-4 flex flex-col items-center justify-center md:mx-[43.5px] lg:mx-4">
         <AnimatedBlurredCircles tope="top-[0px]" />
         <div className="flex w-full max-w-[358px] md:max-w-[681px] lg:max-w-[1000px] flex-col items-center justify-center text-lightText dark:text-darkText">
           <section className="max-w-[358px] md:max-w-[681px] lg:max-w-[1000px]">
