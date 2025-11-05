@@ -6,7 +6,6 @@ import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import { useRouter } from 'next/navigation';
 import useEmailVerificationStore from '@/store/emailVerificationStore';
 import AuthTitle from './AuthTitle';
-import AuthInput from './AuthInput';
 import AuthButton from './AuthButton';
 import AuthSeparator from './AuthSeparator';
 import CustomInput from '@/components/ui/Input/CustomInput';
@@ -26,7 +25,6 @@ export const LoginForm = () => {
     clearErrors,
   } = useForm<FormInputs>({});
   const [loading, setLoading] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
   const { setEmail } = useEmailVerificationStore(); // Zustand action para guardar el email
   const { isDark } = useDarkTheme();
   const router = useRouter(); // Utiliza useRouter para redirigir después de ingresar el email
@@ -56,15 +54,11 @@ export const LoginForm = () => {
     }
   };
 
-  const handleChange = () => {
-    router.push('/es/registro');
-  };
-
   return (
-    <div className="flex mt-[180px] mb-[74px] px-4 flex-col items-center justify-center">
+    <div className="flex my-[60px] md:mt-[120px] md:mb-[80px] lg:mt-[150px] lg:mb-[250px] px-4 flex-col items-center justify-center">
       <form
         onSubmit={handleSubmit(submitEmail)}
-        className="flex w-[356px] md:w-[430px] lg:w-[484px] flex-col rounded-2xl gap-[16px] bg-custom-whited-500 py-10 px-5 shadow-md dark:bg-calculatorDark dark:shadow-dark-form"
+        className="flex w-[356px] md:w-[430px] lg:w-[484px] flex-col rounded-2xl gap-3 bg-custom-whiteD-500 py-10 px-5 shadow-md dark:bg-calculatorDark dark:shadow-dark-form"
       >
         <AuthTitle>Iniciar Sesión</AuthTitle>
 
@@ -90,7 +84,8 @@ export const LoginForm = () => {
             label="Ingresar"
             disabled={loading || !watch('email') || !!errors.email}
             loading={loading}
-            isDark={isDark}
+          isDark={isDark}
+          className='md:text-lg lg:text-xl max-h-[42px]'
           />
         
 
@@ -99,7 +94,7 @@ export const LoginForm = () => {
         <ShortButton
           href='/es/registro'
           text="Registrate aquí"
-          className='!w-full'
+          className='!w-full md:text-lg max-h-[42px]'
         />
         
         {errorMessage && <p className="mt-5 text-center text-errorColor">{errorMessage}</p>}

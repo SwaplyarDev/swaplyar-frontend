@@ -6,7 +6,7 @@ interface AuthTitleProps {
 }
 
 const AuthTitle: React.FC<AuthTitleProps> = ({ children, className }) => (
-  <h1 className={`font-textFont mb-7 text-center text-3.5xl font-medium text-lightText dark:text-darkText ${className}`}>
+  <h1 className={`font-textFont text-center text-[28px] leading-normal md:text-[30px] lg:text-3.5xl font-medium text-lightText dark:text-darkText ${className}`}>
     {children}
   </h1>
 );
