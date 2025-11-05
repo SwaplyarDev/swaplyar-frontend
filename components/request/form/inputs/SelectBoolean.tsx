@@ -15,7 +15,7 @@ const SelectBoolean: React.FC<SelectBooleanProps> = ({ selectedOption, setSelect
       <label
         className={clsx(
           errorMessage ? 'text-errorColor' : 'text-gray-900 dark:text-gray-300',
-          'font-textFont text-lightText dark:text-darkText sm-phone:ml-0 text-sm md:text-lg'
+          'font-textFont text-lightText dark:text-darkText sm-phone:ml-0 text-sm md:text-base'
         )}
       >
         ¿Se transfiere a una cuenta propia?

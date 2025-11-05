@@ -86,7 +86,7 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
 
   return (
     <>
-      <p className="text-left font-textFont text-custom-grayD dark:text-darkText text-sm ">
+      <p className='text-left text-sm sm:text-base font-textFont leading-5 sm:leading-6 dark:text-custom-grayD-200 text-custom-grayD-600'>
         Asegúrese de que mediante esta dirección solo se hacen depósitos de USDT. De lo contrario, los fondos que haya enviado nose añadirán a la billetera disponible ni se reembolsarán.
       </p>
       <div className="mx-0 flex flex-col gap-4 sm-phone:mx-0 sm-phone:flex-row sm-phone:gap-8">
@@ -161,8 +161,15 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
 
           <div className="flex w-full flex-col gap-4">
             <div className='flex flex-col text-start text-sm'>
-            <span>Sube el comprobante de pago / los pagos</span>
-            <span>Si tienes dudas, puedes consultar los <strong className="text-custom-blue dark:text-darkText cursor-pointer" onClick={handleOpenReceiptPopup}>ejemplos de como subir la documentación</strong></span>
+            <span className='text-sm sm:text-base font-textFont leading-5 sm:leading-6 dark:text-custom-grayD-200 text-custom-grayD-600'> 
+              Sube el comprobante de pago / los pagos 
+            </span>
+            <span className='text-sm sm:text-base font-textFont leading-5 sm:leading-6 dark:text-custom-grayD-200 text-custom-grayD-600'>
+              Si tienes dudas, puedes consultar los <span> </span>
+              <strong className="text-custom-blue dark:text-darkText cursor-pointer" onClick={handleOpenReceiptPopup}>
+                ejemplos de como subir la documentación
+              </strong>
+            </span>
             </div>
             <FileUpload
               label="Comprobante"

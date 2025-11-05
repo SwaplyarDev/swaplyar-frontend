@@ -289,12 +289,15 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
         <Cronometro setBlockAll={setBlockAll} />
       </div>
       {steps.map((step, index) => {
+        const isClickable = !blockAll && index < activeStep;
         return (
           <section
             key={index}
+            onClick={() => isClickable && handleStepClick(index)}
             className={clsx(
               completedSteps[index] || index == activeStep ? 'flex-col' : 'flex-row',
               'relative flex min-h-20 w-full gap-2 rounded-2xl bg-calculatorDark p-3 sm:p-4 md:p-5 dark:bg-calculatorLight',
+              isClickable && 'cursor-pointer hover:bg-opacity-90 transition-colors duration-200'
             )}
           >
             <div
@@ -317,18 +320,22 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
                 </h2>
               </div>
               <div className='flex flex-col gap-1 justify-between'>
-                <div className={`flex justify-end ${completedSteps[index] ? 'hidden' : ''}`}>
-                  <InfoStep option="pix" />
-                </div>
+                {index >= 1 && (
+                  <div className={`flex justify-end ${completedSteps[index] ? 'hidden' : ''}`}>
+                    {index >= 1 && index <= 2 && <InfoStep step={index + 1} />}
+                  </div>
+                )}
                 {activeStep === index && !completedSteps[index] && (
                   <StepIndicator currentStep={activeStep} completedSteps={completedSteps} className="w-5 h-5 sm:w-[30px] sm:h-[30px]" />
                 )}
               </div>
               {(index < activeStep || completedSteps[index]) && (
                 <div className='flex flex-col justify-start gap-1'>
-                  <div className={`flex justify-end ${!completedSteps[index] ? 'hidden' : ''}`}>
-                    <InfoStep option="pix" />
-                  </div>
+                  {index >= 1 && (
+                    <div className="flex justify-end">
+                      {index >= 1 && index <= 2 && <InfoStep step={index + 1} />}
+                    </div>
+                  )}
                   <div className='flex flex-col items-end mb-2'>                    
                     <div className="flex h-5 w-5 sm:h-[30px] sm:w-[30px] items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
                       <Tick color={isDark ? '#414244' : '#FCFBFA'} className='h-3 w-3 sm:h-5 sm:w-5' />

@@ -1,7 +1,5 @@
 import React from 'react';
 import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch } from 'react-hook-form';
-import InfoStep from '@/components/ui/InfoStep/InfoStep';
-import clsx from 'clsx';
 import CustomInput from '@/components/ui/Input/CustomInput';
 
 interface StepTwoPixProps {

@@ -113,7 +113,6 @@ const receiveAmount = formData.stepThree.receive_amount;
     setActiveStep(3);
     setLoading(false);
 
-    // Hacemos scroll hacia arriba cuando se completa step3 sino se queda abajo en el footer
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
