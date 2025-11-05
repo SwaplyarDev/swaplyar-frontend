@@ -76,7 +76,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {/* Verificación de propiedad en Google Search Console */}
         <meta name="google-site-verification" content="TDYMmlsmcxOohMXHebZJtRXZ-Y0otZk006ExVzrbPqs" />
       </head>
-      <body className="theme-ready hydrated bg-white text-lightText dark:bg-lightText dark:text-darkText">
+      <body className="theme-ready hydrated bg-custom-whiteD-200 text-lightText dark:bg-transparent dark:text-darkText">
         <SessionProvider>
           {/* Integración de Google Analytics */}
           <GoogleAnalytics gaId="G-PX1MMJCPQL" />
