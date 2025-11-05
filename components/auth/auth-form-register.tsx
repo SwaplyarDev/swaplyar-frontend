@@ -16,6 +16,7 @@ import CustomInput from '@/components/ui/Input/CustomInput';
 import AuthButton from './AuthButton';
 import AuthTitle from './AuthTitle';
 import ShortButton from '../ui/NewButtons/ShortButton';
+import AuthSeparator from './AuthSeparator';
 
 type FormInputs = {
   firstName: string;
@@ -94,10 +95,10 @@ export const RegisterForm = () => {
   };
 
   return (
-    <div className="flex pt-[80px] sm:pt-[131px] pb-[5px] px-4 flex-col items-center justify-center">
+    <div className="flex my-[60px] md:mt-[120px] md:mb-[80px] lg:mt-[150px] lg:mb-[250px] px-4 flex-col items-center justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="relative flex w-full max-w-lg flex-col rounded-2xl gap-[16px] bg-custom-whiteD-500 py-10 px-5 shadow-md dark:bg-calculatorDark dark:shadow-dark-form"
+        className="relative flex w-full max-w-lg flex-col rounded-2xl gap-4 bg-custom-whiteD-500 py-10 px-5 shadow-md dark:bg-calculatorDark dark:shadow-dark-form"
       >
         <AuthTitle>Crear Cuenta</AuthTitle>
 
@@ -147,7 +148,7 @@ export const RegisterForm = () => {
           disabled={loading}
         />
 
-        <div className="mb-5 flex items-center">
+        <div className="flex items-center">
           <input
             id="termsConditions"
             type="checkbox"
@@ -182,35 +183,31 @@ export const RegisterForm = () => {
           </div>
         )}
 
-        
-          <AuthButton
-            label="Crear cuenta"
-            type="submit"
-            disabled={
-              loading ||
-              !watch('email') ||
-              !watch('termsConditions') ||
-              !watch('firstName') ||
-              !watch('lastName') ||
-              !!errors.email
-            }
-            loading={loading}
-            isDark={isDark}
-            variant="primary"
-          />
-        
 
-        <div className="my-5 flex items-center">
-          <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
-          <div className="px-2 text-2xl font-bold text-buttonsLigth dark:text-darkText">O</div>
-          <div className="flex-1 border-t border-buttonsLigth dark:border-darkText"></div>
-        </div>
+        <AuthButton
+          label="Crear Cuenta"
+          type="submit"
+          disabled={
+            loading ||
+            !watch('email') ||
+            !watch('termsConditions') ||
+            !watch('firstName') ||
+            !watch('lastName') ||
+            !!errors.email
+          }
+          loading={loading}
+          isDark={isDark}
+          variant="primary"
+          className='md:text-lg lg:text-xl max-h-[42px]'
+        />
 
-       
+        <AuthSeparator />
+
+
         <ShortButton
           href='/es/iniciar-sesion'
           text="Iniciar Sesión"
-          className='!w-full'
+          className='!w-full md:text-lg max-h-[42px]'
         />
       </form>
     </div>
