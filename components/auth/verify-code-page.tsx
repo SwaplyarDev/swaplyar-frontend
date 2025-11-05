@@ -243,90 +243,97 @@ export const VerifyCodePage = () => {
 
 
   return (
-    <div className="flex h-full pt-[40px] sm:pt-[121px] pb-0 sm:pb-[0px] flex-col items-center justify-start">
-      <div className="w-full max-w-xl px-4 font-textFont">
-        <form
-          onSubmit={handleSubmit(verifyCode)}
-          className="flex w-[358px] sm:w-[430px] lg:w-[484px] h-[420px] mx-auto mt-[30px] sm:mt-0 flex-col rounded-2xl bg-custom-whiteD-500 py-10 shadow-md dark:bg-calculatorDark"
-        >
-          <div className="w-[320px] sm:w-[390px] lg:w-[440px] mx-auto">
-          <AuthTitle className='!mb-4'>Iniciar Sesión</AuthTitle>
+    <div className="flex h-full my-[60px] md:mt-[120px] md:mb-[80px] lg:mt-[150px] lg:mb-[250px] flex-col items-center justify-start">
+      <form
+        onSubmit={handleSubmit(verifyCode)}
+        className="flex w-[356px] md:w-[430px] lg:w-[484px] px-2 py-5 flex-col gap-2 rounded-2xl font-textFont bg-custom-whiteD-500 shadow-md dark:bg-calculatorDark"
+      >
+        <AuthTitle >Iniciar Sesión</AuthTitle>
 
-          <label htmlFor="verificationCode" className={'mb-6 text-center text-lightText dark:text-darkText block'}>
-            Se envió un código de verificación a <span className="font-bold">{email}</span>
-          </label>
+        <label htmlFor="verificationCode" className={'my-2 flex flex-col text-center text-lightText dark:text-darkText'}>
+          Se envió un código de verificación a
+          <span className="font-bold">{email}</span>
+        </label>
 
-          <div className='relative'>
-            <span className='w-full flex justify-center items-center mb-4'>Ingrese el código de verificación</span>
+        <div className='relative'>
+          <span className='w-full flex justify-center items-center mb-4'>Ingrese el código de verificación</span>
 
-            <div className="flex h-[52px] gap-1 sm:gap-[10px] lg:gap-2 justify-center">
-              {[...Array(6)].map((_, index) => (
-                <div key={index} className="relative w-[52px] h-[52px] sm:w-[56px] sm:h-[56px] lg:w-[58px] lg:h-[58px] rounded-full flex-shrink-0">
-                  <input
-                    id={`code-${index}`}
-                    type="text"
-                    maxLength={1}
-                    disabled={isLocked || loading}
-                    className={clsx(
-                      'h-full w-full rounded-full  border-2 border-[#90B0FE] text-center text-2xl text-inputLight focus:outline-none focus:border-[#012A8E] hover:border-[#012A8E] dark:border-[#FAF6EF] dark:bg-[#FAF6EF] dark:focus:border-[#012A8E80] dark:focus:border-4 dark:hover:border-[#012A8E80] sm:text-[2.5rem] p-0 transition-colors duration-200',
-                      errors.verificationCode ? 'border-red-500' : '',
-                    )}
-                    {...register(`verificationCode.${index}`)}
-                    onPaste={handlePaste}
-                    onChange={(event) => handleInputChange(index, event)}
-                    onKeyDown={(event) => handleInputKeyDown(index, event)}
-                  />
-                </div>
-              ))}
-            </div>
-
-            {errors.verificationCode && <p className="absolute w-full mt-4 mb-5 text-sm text-red-500">• {errors.verificationCode.message}</p>}
+          <div className="flex h-[46px] md:h-[56px] lg:h-[58px] gap-[6px] md:gap-[10px] lg:gap-4 justify-center">
+            {[...Array(6)].map((_, index) => {
+              const hasValue = watch(`verificationCode.${index}`)?.length > 0;
+              return (
+                <>
+                  <div className="relative size-[46px] md:size-[56px] lg:size-[58px] rounded-full">
+                    <input
+                      key={index}
+                      id={`code-${index}`}
+                      type="text"
+                      maxLength={1}
+                      disabled={isLocked || loading}
+                      className={clsx(
+                        'h-full w-full rounded-full border-2 border-[#90B0FE] text-center text-2xl text-inputLight focus:outline-none focus:border-[#012A8E] focus:shadow-[inset_0_0_6px_1px_rgba(1,42,142,0.3)] hover:border-[#012A8E] dark:border-[#FAF6EF] dark:bg-[#FAF6EF] dark:focus:border-[#012A8E80] dark:focus:border-4 dark:focus:shadow-[inset_0_0_6px_1px_rgba(250,246,239,0.5)] dark:hover:border-[#012A8E80] sm:text-3xl p-0 transition-all duration-200',
+                        hasValue && !errors.verificationCode ? '!border-custom-blue shadow-[inset_0px_0_6px_1px_rgba(1,42,142,0.3)] dark:!border-custom-whiteD-500 dark:shadow-[inset_0_0_6px_1px_rgba(1,42,142,0.5)]' : '',
+                        errors.verificationCode ? 'border-red-500 focus:shadow-[inset_0_2px_4px_0_rgba(240,82,82,0.3)]' : '',
+                      )}
+                      {...register(`verificationCode.${index}`)}
+                      onPaste={handlePaste}
+                      onChange={(event) => handleInputChange(index, event)}
+                      onKeyDown={(event) => handleInputKeyDown(index, event)}
+                    />
+                  </div>
+                </>
+              )
+            })}
           </div>
 
+          {errors.verificationCode && <p className="relative w-full text-center my-4 text-sm text-red-500">• {errors.verificationCode.message}</p>}
+        </div>
 
-          <div className="flex justify-end mt-11 mr-1">
-            <p
-              onClick={timer === 0 && !reLoading && !isLocked ? resendCode : undefined}
-              className={clsx('text-buttonsLigth dark:text-darkText', {
-                'cursor-pointer hover:underline': timer === 0 && !reLoading && !isLocked,
-                'cursor-not-allowed text-gray-500 dark:text-gray-400': timer > 0 || reLoading || isLocked,
-              })}
-            >
-              {reLoading ? 'Enviando...' : timer > 0 ? `Reenviar en ${timer}s` : 'Reenviar código'}
+
+        <div className="flex justify-end mt-4 mr-1">
+          <p
+            onClick={timer === 0 && !reLoading && !isLocked ? resendCode : undefined}
+            className={clsx('text-buttonsLigth dark:text-darkText', {
+              'cursor-pointer hover:underline': timer === 0 && !reLoading && !isLocked,
+              'cursor-not-allowed text-gray-500 dark:text-gray-400': timer > 0 || reLoading || isLocked,
+            })}
+          >
+            {reLoading ? 'Enviando...' : timer > 0 ? `Reenviar en ${timer}s` : 'Reenviar código'}
+          </p>
+        </div>
+
+        <div className="my-3 flex justify-between items-center w-full">
+          <div className="flex justify-start">
+            <ButtonBack route="/es/iniciar-sesion" isDark={isDark} />
+          </div>
+          <div className="flex justify-end">
+            <AuthButton
+              label="Confirmar"
+              disabled={!isCodeComplete || loading}
+              loading={loading}
+              isDark={isDark}
+              className="px-4 w-[220px] xs:w-[250px]"
+            />
+          </div>
+        </div>
+
+
+
+        {(attempts > 0 && attempts !== 3 && !reLoading) ? (
+          <div className='relative'>
+            <p className="relative w-full text-center text-sm dark:text-darkText">
+              Tienes {attempts} {attempts === 1 ? 'intento' : 'intentos'} para reenviar el código
             </p>
           </div>
-
-          <div className="my-3 flex justify-between items-center w-full">
-            <div className="flex justify-start">
-              <ButtonBack route="/es/iniciar-sesion" isDark={isDark} />
-            </div>
-            <div className="flex justify-end">
-              <AuthButton
-                label="Confirmar"
-                disabled={!isCodeComplete || loading}
-                loading={loading}
-                isDark={isDark}
-                className="px-4 w-[220px] xs:w-[250px]"
-              />
-            </div>
+        ) : (
+          <span className='text-sm w-full flex justify-center items-center'>Ingrese el código de verificación</span>
+        )}
+        {isLocked && (
+          <div className='relative'>
+            <p className="relative w-full text-center text-base text-red-500">Estás bloqueado por 5 minutos.</p>
           </div>
-
-
-          {attempts > 0 && attempts !== 3 && !reLoading && (
-            <div className='relative'>
-              <p className="absolute w-full text-center text-base text-buttonsLigth dark:text-darkText sm:text-lg">
-                Tienes {attempts} {attempts === 1 ? 'intento' : 'intentos'} para reenviar el código
-              </p>
-            </div>
-          )}
-          {isLocked && (
-            <div className='relative'>
-              <p className="absolute w-full text-center text-base text-red-500">Estás bloqueado por 5 minutos.</p>
-            </div>
-          )}
-          </div>
-        </form>
-      </div>
+        )}
+      </form>
     </div>
   );
 };
