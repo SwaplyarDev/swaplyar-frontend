@@ -243,48 +243,40 @@ export const VerifyCodePage = () => {
 
 
   return (
-    <div className="flex h-full pt-[151px] pb-0 flex-col items-center justify-start">
+    <div className="flex h-full pt-[40px] sm:pt-[121px] pb-0 sm:pb-[0px] flex-col items-center justify-start">
       <div className="w-full max-w-xl px-4 font-textFont">
         <form
           onSubmit={handleSubmit(verifyCode)}
-          className="flex w-[484px] h-[420px] mx-auto flex-col rounded-2xl bg-custom-whiteD-500 py-10 shadow-md dark:bg-calculatorDark"
+          className="flex w-[358px] sm:w-[430px] lg:w-[484px] h-[420px] mx-auto mt-[30px] sm:mt-0 flex-col rounded-2xl bg-custom-whiteD-500 py-10 shadow-md dark:bg-calculatorDark"
         >
-          <div className="w-[440px] mx-auto">
+          <div className="w-[320px] sm:w-[390px] lg:w-[440px] mx-auto">
           <AuthTitle className='!mb-4'>Iniciar Sesión</AuthTitle>
 
-          <label htmlFor="verificationCode" className={'mb-6 text-center text-lightText dark:text-darkText'}>
+          <label htmlFor="verificationCode" className={'mb-6 text-center text-lightText dark:text-darkText block'}>
             Se envió un código de verificación a <span className="font-bold">{email}</span>
           </label>
 
           <div className='relative'>
             <span className='w-full flex justify-center items-center mb-4'>Ingrese el código de verificación</span>
 
-            <div className="flex h-[51px] gap-1 justify-between xs:justify-center xs:gap-2">
+            <div className="flex h-[52px] gap-1 sm:gap-[10px] lg:gap-2 justify-center">
               {[...Array(6)].map((_, index) => (
-                <>
-                  <div className="relative size-[58px] rounded-full">
-                    <input
-                      key={index}
-                      id={`code-${index}`}
-                      type="text"
-                      maxLength={1}
-                      disabled={isLocked || loading}
-                      className={clsx(
-                        'h-full w-full rounded-full border-2 border-[#90B0FE] text-center text-2xl text-inputLight focus:outline-none focus:border-[#012A8E] hover:border-[#012A8E] dark:border-[#FAF6EF] dark:bg-[#FAF6EF] dark:focus:border-[#012A8E80] dark:focus:border-4 dark:hover:border-[#012A8E80] sm:text-[2.5rem] p-0 transition-colors duration-200',
-                        errors.verificationCode ? 'border-red-500' : '',
-                      )}
-                      {...register(`verificationCode.${index}`)}
-                      onPaste={handlePaste}
-                      onChange={(event) => handleInputChange(index, event)}
-                      onKeyDown={(event) => handleInputKeyDown(index, event)}
-                    />
-                  </div>
-                  {index < 5 && (
-                    <div className="flex min-h-full  items-center justify-center">
-                      <div className="h-[2px] w-full flex-1 bg-buttonsLigth dark:bg-darkText"></div>
-                    </div>
-                  )}
-                </>
+                <div key={index} className="relative w-[52px] h-[52px] sm:w-[56px] sm:h-[56px] lg:w-[58px] lg:h-[58px] rounded-full flex-shrink-0">
+                  <input
+                    id={`code-${index}`}
+                    type="text"
+                    maxLength={1}
+                    disabled={isLocked || loading}
+                    className={clsx(
+                      'h-full w-full rounded-full  border-2 border-[#90B0FE] text-center text-2xl text-inputLight focus:outline-none focus:border-[#012A8E] hover:border-[#012A8E] dark:border-[#FAF6EF] dark:bg-[#FAF6EF] dark:focus:border-[#012A8E80] dark:focus:border-4 dark:hover:border-[#012A8E80] sm:text-[2.5rem] p-0 transition-colors duration-200',
+                      errors.verificationCode ? 'border-red-500' : '',
+                    )}
+                    {...register(`verificationCode.${index}`)}
+                    onPaste={handlePaste}
+                    onChange={(event) => handleInputChange(index, event)}
+                    onKeyDown={(event) => handleInputKeyDown(index, event)}
+                  />
+                </div>
               ))}
             </div>
 

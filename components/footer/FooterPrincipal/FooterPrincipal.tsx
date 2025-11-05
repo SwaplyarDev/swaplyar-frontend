@@ -9,21 +9,21 @@ import LogoSwaplySVG from '@/public/LogoSwaplySVG.svg'
 
 const FooterPrincipal = () => {
   return (
-    <section className='relative pb-4 '>
-      <div className="one-info-footer hidden w-full flex-col items-center gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 md:flex">
+    <section className='relative pb-4'>
+      <div className="one-info-footer hidden w-full flex-col items-center gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0 lg:flex">
         <Section title="Regístrate y Disfruta de Beneficios" links={footerLinks.registro} align="start" />
         <Section title="Normativa" links={footerLinks.normativa} align="center" />
         <Section title="Atención al Cliente" links={footerLinks.atencion} align="end" />
       </div>
 
-      <div className="flex flex-col gap-4 md:hidden ">
+      <div className="flex flex-col gap-4 lg:hidden ">
         <AccordionSection title="Regístrate y Disfruta de Beneficios" links={footerLinks.registro} />
         <AccordionSection title="Normativa" links={footerLinks.normativa} />
         <AccordionSection title="Atención al Cliente" links={footerLinks.atencion} />
       </div>
 
-      <div className="flex flex-col gap-2 justify-center items-center mt-8 md:flex-row md:justify-between">
-        <section className="hidden md:flex  justify-center gap-5 items-center ">
+      <div className="flex flex-col gap-2 justify-center items-center mt-8 lg:flex-row lg:justify-between">
+        <section className="hidden lg:flex  justify-center gap-5 items-center ">
           {footerLinks.social.map(({ href, icon, label }) => (
             <Link
               key={href}
@@ -38,12 +38,12 @@ const FooterPrincipal = () => {
             </Link>
           ))}
         </section>
-        <section className="w-full  md:hidden mb-1 lg:mb-4 flex flex-grow justify-center filter dark:brightness-[0%] dark:invert sm:mb-0 sm:w-1/3 sm:justify-center">
+        <section className="w-full  lg:hidden mb-1 lg:mb-4 flex flex-grow justify-center filter dark:brightness-[0%] dark:invert sm:mb-0 sm:w-1/3 sm:justify-center">
           <Link href="/">
-            <Image src={LogoSwaplySVG} alt="Cambiar saldo online" className='w-[40px] md:w-auto' width={60} height={60} />
+            <Image src={LogoSwaplySVG} alt="Cambiar saldo online" className='w-[50px] lg:w-auto' width={50} height={50} />
           </Link>
         </section>
-        <section className="md:hidden flex  justify-center gap-5 items-center ">
+        <section className="lg:hidden flex  justify-center gap-5 items-center ">
           {footerLinks.social.map(({ href, icon, label }) => (
             <Link
               key={href}
@@ -54,11 +54,11 @@ const FooterPrincipal = () => {
               title={`SwaplyAr en ${label}`}
               className="transition-opacity duration-200 hover:opacity-75"
             >
-              <FontAwesomeIcon icon={icon} className="text-[20px] md:text-[28px] text-[#012D8A] dark:text-[#FFFFFF]" />
+              <FontAwesomeIcon icon={icon} className="text-[20px] lg:text-[28px] text-[#012D8A] dark:text-[#FFFFFF]" />
             </Link>
           ))}
         </section>
-        <section className="flex items-end justify-center sm:w-1/2 md:w-1/3 sm:justify-end">
+        <section className="flex items-end justify-center sm:w-1/2 lg:w-1/3 sm:justify-end">
           <p className="text-center font-textFont text-xs font-thin text-gray-600 dark:text-gray-400">
             Todos los derechos reservados © SWAPLYAR | Group OA
           </p>
