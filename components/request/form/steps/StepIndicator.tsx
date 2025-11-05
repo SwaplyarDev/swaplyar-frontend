@@ -20,14 +20,14 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep, completedSte
     >
       {completedSteps.map((completed, index) => (
         <React.Fragment key={index}>
-          {index < currentStep ? (
+          {index <= currentStep ? (
             <div className="flex h-5 w-5 sm:h-[30px] sm:w-[30px] items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
               <Tick color={isDark ? '#414244' : '#FCFBFA'} className='h-3 w-3 sm:h-5 sm:w-5' />
             </div>
           ) : (
             <div className={`${className} rounded-full border border-1 ${isDark ? 'border-darkText' : 'border-lightText'}`}></div>
           )}
-          {index < completedSteps.length - 1 && <div className="h-[1px] w-6 mx-0.5 bg-lightText dark:bg-darkText"></div>}
+          {index < completedSteps.length - 1 && <div className="h-[1px] w-4 sm:w-11 mx-0.5 bg-lightText dark:bg-darkText"></div>}
         </React.Fragment>
       ))}
     </div>
