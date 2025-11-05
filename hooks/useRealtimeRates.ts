@@ -22,11 +22,9 @@ export const useRealtimeRates = () => {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    // Solo conectar si estamos en desarrollo y hay servidor backend
-    if (process.env.NEXT_PUBLIC_ENABLE_WEBSOCKET === 'true') {
-      const socket = io(process.env.NEXT_PUBLIC_WS_URL ?? 'http://localhost:3001', {
-        transports: ['websocket'],
-      });
+    const socket = io(process.env.NEXT_PUBLIC_WS_URL, {
+      transports: ['websocket'],
+    });
 
       socketRef.current = socket;
     //conexión y eventos
@@ -69,7 +67,7 @@ export const useRealtimeRates = () => {
       return () => {
         socket.disconnect();
       };
-    }
+    
   }, []);
   // 👉 Función para emitir un cálculo manual 
   const sendCalculation = useCallback((payload: ConversionRequest) => {
