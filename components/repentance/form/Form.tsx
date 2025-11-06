@@ -154,6 +154,7 @@ const Form = () => {
           className='w-[272px] md:w-[394px]'
           disabled={!isValid || isLoading}
           isDark={isDark}
+          loading={isLoading}
         />
       </div>
 
