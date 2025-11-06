@@ -7,14 +7,14 @@ import { sectionTermsAndConditions } from '@/data/sectionTermsAndConditions';
 
 const TermsAndConditions = () => {
   return (
-    <div className="relative mx-auto flex w-[1000px] mt-[55px] flex-col items-center py-10 text-custom-grayD">
+    <div className="relative mx-auto flex lg:mt-[55px] mx-auto max-w-[390px] md:max-w-[704px] lg:max-w-[1000px] flex-col items-center py-10 text-custom-grayD">
       <AnimatedBlurredCircles tope="top-[-1675px]" />
-      <section className="flex flex-col items-center md:flex-row md:items-start lg:items-center gap-2 ">
-        <h1 className="flex-1 text-center w-[592px] font-titleFont text-[40px] pl-2 font-medium dark:text-darkText ">
-          Términos y Condiciones de Uso y Navegación del Sitio SwaplyAr
+      <section className="flex flex-col items-center md:flex-row md:items-center lg:items-center gap-2 ">
+        <h1 className="flex-1 text-center w-[368px] md:w-[412px] lg:w-[592px] font-titleFont text-[32px] md:text-[40px] pl-2 font-medium dark:text-darkText md:leading-tight">
+          Términos y condiciones de uso y navegación del sitio SwaplyAr
         </h1>
         <Image
-          className="hero-img mt-4 h-[385px] w-[401px] drop-shadow-light dark:drop-shadow-darkmode"
+          className="hero-img mt-4 mx-auto hidden md:block md:w-[280px] lg:w-[401px] drop-shadow-light dark:drop-shadow-darkmode"
           src={TerminosCondiciones}
           alt="terminos-y-condiciones"
           width={401}
@@ -22,14 +22,14 @@ const TermsAndConditions = () => {
         />
       </section>
 
-      <section className="mt-[40px] mb-[60px] flex flex-col gap-6">
+      <section className="mt-[40px] lg:mb-[60px] mb-[0px] flex flex-col gap-6">
         {sectionTermsAndConditions.map((item, i: number) => {
           const divideTitle = item.title.split('.');
 
           return (
             <section
               key={i}
-              className="rounded-lg bg-custom-whiteD-900 p-[10px] shadow-md dark:bg-graytyc dark:text-darkText"
+              className="w-[358px] md:w-auto rounded-lg bg-custom-whiteD-900 p-[10px] shadow-md dark:bg-graytyc dark:text-darkText"
             >
               <h2 className="font-textFont text-[28px]">
                 {divideTitle[0]}. <span className="text-4xl">{divideTitle[1]}</span>
