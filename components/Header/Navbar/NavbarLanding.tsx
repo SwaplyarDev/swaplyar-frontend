@@ -42,39 +42,36 @@ const NavbarLanding = () => {
   const [shouldRenderDrawer, setShouldRenderDrawer] = useState(false);
 
   useEffect(() => {
-  let timer: NodeJS.Timeout;
+    let timer: NodeJS.Timeout;
 
-  if (drawerMenu) {
-    setShouldRenderDrawer(true);
-    document.body.style.overflow = 'hidden';
+    if (drawerMenu) {
+      setShouldRenderDrawer(true);
+      document.body.style.overflow = 'hidden';
 
-    // 🔹 Esperar a que el Drawer exista en el DOM
-    timer = setTimeout(() => {
-      const drawer = document.getElementById('swaply-drawer');
-      if (drawer) {
-        // ⚡️ Forzar reflow para asegurar que el navegador "pinte" el estado inicial
-        void drawer.offsetWidth;
-
-        // Luego aplicar las clases de entrada (animación visible de der → izq)
-        drawer.classList.remove('opacity-0', 'translate-x-[100%]');
-        drawer.classList.add('opacity-100', 'translate-x-0');
+      // Esperar a que el shell exista
+      timer = setTimeout(() => {
+        const shell = document.getElementById('swaply-drawer-shell');
+        if (shell) {
+          // Forzar reflow para que el estado inicial se pinte (offscreen)
+          void shell.offsetWidth;
+          // Activar animación de entrada der → izq
+          shell.classList.remove('opacity-0', 'translate-x-[100%]');
+          shell.classList.add('opacity-100', 'translate-x-0');
+        }
+      }, 20);
+    } else {
+      // Animación de salida izq → der
+      const shell = document.getElementById('swaply-drawer-shell');
+      if (shell) {
+        shell.classList.remove('opacity-100', 'translate-x-0');
+        shell.classList.add('opacity-0', 'translate-x-[100%]');
       }
-    }, 30);
-  } else {
-    // 🔹 Animación de salida (izq → der)
-    const drawer = document.getElementById('swaply-drawer');
-    if (drawer) {
-      drawer.classList.remove('opacity-100', 'translate-x-0');
-      drawer.classList.add('opacity-0', 'translate-x-[100%]');
+      timer = setTimeout(() => setShouldRenderDrawer(false), 450);
+      document.body.style.overflow = '';
     }
 
-    timer = setTimeout(() => setShouldRenderDrawer(false), 450);
-    document.body.style.overflow = '';
-  }
-
-  return () => clearTimeout(timer);
-}, [drawerMenu]);
-
+    return () => clearTimeout(timer);
+  }, [drawerMenu]);
 
 
 
@@ -218,55 +215,81 @@ const NavbarLanding = () => {
 
             {/* Menú desplegable */}
             {shouldRenderDrawer && (
-              <Drawer
-                id="swaply-drawer"
-                open={drawerMenu}
-                onClose={() => setDrawerMenu(false)}
-                position="right"
+              <div
+                id="swaply-drawer-shell"
                 className={clsx(
-                  'fixed right-0 top-0 z-[2000] flex flex-col min-h-screen w-[320px] xs-mini-phone2:w-[80%]',
-                  'bg-custom-whiteD-500 dark:bg-gray-800 transition-all duration-500 ease-in-out',
-                  'opacity-0 translate-x-[100%]' // 👈 arranca fuera del viewport, invisible
+                  // shell fijo que ANIMA (no el Drawer)
+                  'fixed right-0 top-0 z-[2000] h-screen w-[320px] xs-mini-phone2:w-[80%]',
+                  'transition-all duration-[450ms] ease-[cubic-bezier(0.45,0,0.55,1)]',
+                  // estado inicial: fuera del viewport y transparente
+                  'opacity-0 translate-x-[100%]'
                 )}
               >
-                <Drawer.Header
-                  title=""
-                  titleIcon={() => <></>}
-                  closeIcon={() => <MdOutlineClose className="size-7 text-blue-800 dark:text-sky-500" />}
-                  className="flex items-center text-lg font-bold [&>button]:top-4"
-                />
-                <Drawer.Items>
-                  <Sidebar
-                    aria-label="Sidebar with content separator example"
-                    className="h-[92vh] w-full text-center [&>div]:bg-transparent [&>div]:p-0"
-                  >
-                    <Sidebar.Items className="flex h-full w-full flex-col justify-between pt-5">
-                      <div className="sm-phone:hidden">
-                        {status === 'authenticated' && (
-                          <div className="flex items-center">
-                            <div className="h-11 w-11 min-w-[inherit] rounded-full bg-buttonsLigth p-0">
-                              <Image
-                                src={swaplyArAvatar}
-                                alt="profile"
-                                width={40}
-                                height={40}
-                                className="h-11 w-11 rounded-full"
-                              />
+                <Drawer
+                  open
+                  onClose={() => setDrawerMenu(false)}
+                  position="right"
+                  className={clsx(
+                    // el Drawer NO anima su transform; ocupa todo el shell
+                    '!transform-none !translate-x-0 !opacity-100',
+                    'bg-custom-whiteD-500 dark:bg-gray-800',
+                    'flex h-full w-full flex-col'
+                  )}
+                >
+                  <Drawer.Header
+                    title=""
+                    titleIcon={() => <></>}
+                    closeIcon={() => <MdOutlineClose className="size-7 text-blue-800 dark:text-sky-500" />}
+                    className="flex items-center text-lg font-bold [&>button]:top-4"
+                  />
+                  <Drawer.Items>
+                    <Sidebar
+                      aria-label="Sidebar with content separator example"
+                      className="h-[92vh] w-full text-center [&>div]:bg-transparent [&>div]:p-0"
+                    >
+                      <Sidebar.Items className="flex h-full w-full flex-col justify-between pt-5">
+                        <div className="sm-phone:hidden">
+                          {status === 'authenticated' && (
+                            <div className="flex items-center">
+                              <div className="h-11 w-11 min-w-[inherit] rounded-full bg-buttonsLigth p-0">
+                                <Image
+                                  src={swaplyArAvatar}
+                                  alt="profile"
+                                  width={40}
+                                  height={40}
+                                  className="h-11 w-11 rounded-full"
+                                />
+                              </div>
+                              <div className="flex flex-col items-start">
+                                <p className="ml-5 text-2xl">Bienvenido!</p>
+                                <p className="ml-5 text-sm underline">{session?.user?.email}</p>
+                                {session?.user?.role === 'admin' ? (
+                                  <Link href={'/admin/transactions'}>
+                                    <p className="text-blue-600 underline decoration-white transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 active:text-blue-900">
+                                      Administración
+                                    </p>
+                                  </Link>
+                                ) : null}
+                              </div>
                             </div>
-                            <div className="flex flex-col items-start">
-                              <p className="ml-5 text-2xl">Bienvenido!</p>
-                              <p className="ml-5 text-sm underline">{session?.user?.email}</p>
-                              {session?.user?.role === 'admin' ? (
-                                <Link href={'/admin/transactions'}>
-                                  <p className="text-blue-600 underline decoration-white transition-all duration-150 hover:text-blue-800 hover:decoration-blue-800 active:text-blue-900">
-                                    Administración
-                                  </p>
-                                </Link>
-                              ) : null}
-                            </div>
-                          </div>
-                        )}
-                        <Sidebar.ItemGroup className="w-full bg-inherit text-left">
+                          )}
+                          <Sidebar.ItemGroup className="w-full bg-inherit text-left">
+                            {NAVIGATION_LINKS.map((link) => (
+                              <Sidebar.Item
+                                key={link.id}
+                                className={`text-buttonsLigth ${selectedItem === link.id
+                                  ? 'h-10 bg-gray-100 dark:bg-gray-700'
+                                  : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                                  }`}
+                                onClick={() => handleSelect(link.id)}
+                                href={link.href}
+                              >
+                                {link.label}
+                              </Sidebar.Item>
+                            ))}
+                          </Sidebar.ItemGroup>
+                        </div>
+                        <Sidebar.ItemGroup className="mt-0 hidden w-full border-t-0 bg-inherit pt-0 text-left sm-phone:block">
                           {NAVIGATION_LINKS.map((link) => (
                             <Sidebar.Item
                               key={link.id}
@@ -281,61 +304,44 @@ const NavbarLanding = () => {
                             </Sidebar.Item>
                           ))}
                         </Sidebar.ItemGroup>
-                      </div>
-                      <Sidebar.ItemGroup className="mt-0 hidden w-full border-t-0 bg-inherit pt-0 text-left sm-phone:block">
-                        {NAVIGATION_LINKS.map((link) => (
-                          <Sidebar.Item
-                            key={link.id}
-                            className={`text-buttonsLigth ${selectedItem === link.id
-                              ? 'h-10 bg-gray-100 dark:bg-gray-700'
-                              : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                              }`}
-                            onClick={() => handleSelect(link.id)}
-                            href={link.href}
-                          >
-                            {link.label}
-                          </Sidebar.Item>
-                        ))}
-                      </Sidebar.ItemGroup>
-                      <Sidebar.ItemGroup className="w-full bg-inherit">
-                        {status === 'authenticated' ? (
-                          <button
-                            onClick={() => {
-                              signOut();
-                              closeDrawer();
-                            }}
-                            className={clsx(
-                              isDark ? 'buttonSecondDark dark:text-lightText' : 'buttonSecond',
-                              'relative m-1 min-h-[38px] w-11/12 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-3 py-1 text-sm text-darkText dark:border-darkText dark:bg-darkText',
-                            )}
-                          >
-                            Salir
-                          </button>
-                        ) : (
-                          <div className="flex flex-col items-center gap-3">
-                            <div className="flex flex-col sm-phone:hidden">
+                        <Sidebar.ItemGroup className="w-full bg-inherit">
+                          {status === 'authenticated' ? (
+                            <button
+                              onClick={() => {
+                                signOut();
+                                closeDrawer();
+                              }}
+                              className={clsx(
+                                isDark ? 'buttonSecondDark dark:text-lightText' : 'buttonSecond',
+                                'relative m-1 min-h-[38px] w-11/12 items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth px-3 py-1 text-sm text-darkText dark:border-darkText dark:bg-darkText',
+                              )}
+                            >
+                              Salir
+                            </button>
+                          ) : (
+                            <div className="flex flex-col w-full items-center justify-center gap-2 mt-4">
                               <ShortButton
                                 href="/es/iniciar-sesion"
                                 text="Iniciar sesión"
                                 onButtonClick={closeDrawer}
                                 fondoOscuro={false}
+                                className="!w-[90%]"
                               />
-                            </div>
-                            <div className="flex h-[60px] flex-col">
                               <ShortButton
                                 href="/es/registro"
                                 text="Registrarse"
                                 onButtonClick={closeDrawer}
                                 fondoOscuro={true}
+                                className="!w-[90%] "
                               />
                             </div>
-                          </div>
-                        )}
-                      </Sidebar.ItemGroup>
-                    </Sidebar.Items>
-                  </Sidebar>
-                </Drawer.Items>
-              </Drawer>
+                          )}
+                        </Sidebar.ItemGroup>
+                      </Sidebar.Items>
+                    </Sidebar>
+                  </Drawer.Items>
+                </Drawer>
+              </div>
             )}
 
             {/* Navegación completa */}
