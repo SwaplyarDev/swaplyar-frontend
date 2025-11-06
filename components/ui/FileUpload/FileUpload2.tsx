@@ -1,7 +1,6 @@
 'use client';
 
 import { CloudUpload, Trash2 } from 'lucide-react';
-import Image from 'next/image';
 import { useState } from 'react';
 import { UseFormWatch } from 'react-hook-form';
 
@@ -21,9 +20,6 @@ export interface FileUploadProps {
   maxSizeMB?: number;
   disabled?: boolean;
   name?: string; // nombre del campo para react-hook-form
-  files?: File[];
-  setFiles?: React.Dispatch<React.SetStateAction<File[]>>;
-  maxFiles?: number;
 }
 
 /**
@@ -75,9 +71,6 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   maxSizeMB = 5,
   disabled = false,
   name = '',
-  files = [],
-  setFiles,
-  maxFiles = 5,
 }) => {
   const [dragActive, setDragActive] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
@@ -88,14 +81,14 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 
   const validateFile = (file: File): string | null => {
     const maxSizeBytes = maxSizeMB * 1024 * 1024;
-
+    
     if (file.size > maxSizeBytes) {
       return `El archivo es demasiado grande. Tamaño máximo: ${maxSizeMB}MB`;
     }
 
     const acceptedTypes = accept.split(',').map(type => type.trim());
     const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
-
+    
     if (!acceptedTypes.includes(fileExtension)) {
       return `Tipo de archivo no permitido. Formatos aceptados: ${accept}`;
     }
@@ -104,28 +97,24 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   };
 
   const handleFileChangeInternal = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!setFiles) return;
-    const selectedFiles = Array.from(event.target.files || []);
-    const validFiles: File[] = [];
-
-    if (files.length + selectedFiles.length > maxFiles) {
-      setValidationError(`Solo se pueden subir hasta ${maxFiles} archivos.`);
-      return;
-    }
-
-    for (const file of selectedFiles) {
-      const errorMsg = validateFile(file);
+    if (event.target.files && event.target.files[0]) {
+      const selectedFile = event.target.files[0];
+      const errorMsg = validateFile(selectedFile);
+      
       if (errorMsg) {
         setValidationError(errorMsg);
+        event.target.value = ''; // Reset input
         return;
       }
-      validFiles.push(file);
+      
+      setValidationError(null);
+      
+      // Llamar al handleChange del padre (react-hook-form)
+      if (handleChange) {
+        handleChange(event);
+      }
     }
-
-    setValidationError(null);
-    setFiles([...files, ...validFiles]);
   };
-
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -142,33 +131,39 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     e.stopPropagation();
     setDragActive(false);
 
-    if (disabled || !setFiles) return;
+    if (disabled) return;
 
-    const droppedFiles = Array.from(e.dataTransfer.files);
-    if (files.length + droppedFiles.length > maxFiles) {
-      setValidationError(`Solo se permiten ${maxFiles} archivos como máximo.`);
-      return;
-    }
-
-    const validFiles: File[] = [];
-    for (const file of droppedFiles) {
-      const errorMsg = validateFile(file);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      const droppedFile = e.dataTransfer.files[0];
+      const errorMsg = validateFile(droppedFile);
+      
       if (errorMsg) {
         setValidationError(errorMsg);
         return;
       }
-      validFiles.push(file);
+      
+      setValidationError(null);
+
+      // Crear evento sintético para react-hook-form
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(droppedFile);
+      
+      const syntheticEvent = {
+        target: { files: dataTransfer.files },
+        currentTarget: { files: dataTransfer.files },
+      } as React.ChangeEvent<HTMLInputElement>;
+
+      // Llamar al handleChange del padre (react-hook-form)
+      if (handleChange) {
+        handleChange(syntheticEvent);
+      }
     }
-
-    setValidationError(null);
-    setFiles([...files, ...validFiles]);
   };
-
 
   const handleFileRemove = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-
+    
     if (onRemoveImage) {
       onRemoveImage();
     }
@@ -177,12 +172,13 @@ export const FileUpload: React.FC<FileUploadProps> = ({
   return (
     <div className={`file-upload flex ${file && showPreview && previewImage ? 'flex-row gap-2' : 'flex-col'} justify-between rounded-2xl ${className}`}>
       <div
-        className={`relative group flex h-[126px] w-full py-4 px-2 flex-col items-center justify-center rounded-2xl border-[1px] border-dashed dark:bg-custom-grayD-800 ${dragActive
-          ? 'border-custom-blue dark:border-darkText'
-          : error || validationError
+        className={`relative group flex h-[126px] w-full py-4 px-2 flex-col items-center justify-center rounded-2xl border-[1px] border-dashed dark:bg-custom-grayD-800 ${
+          dragActive 
+            ? 'border-custom-blue dark:border-darkText' 
+            : error || validationError
             ? 'border-errorColor'
             : 'border-inputLightDisabled dark:border-disabledDarkText'
-          } text-center hover:border-inputLight dark:border-transparent dark:text-lightText dark:hover:border-darkText transition-colors`}
+        } text-center hover:border-inputLight dark:border-transparent dark:text-lightText dark:hover:border-darkText transition-colors`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
@@ -203,8 +199,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           </div>
         </label>
         <p
-          className={`mt-12 text-xs ${file && showPreview && previewImage ? 'xs-phone:px-16' : 'xs-phone:px-32'
-            } text-custom-grayD group-hover:text-inputLightDisabled dark:text-disabledDarkText group-hover:dark:text-darkText`}
+          className={`mt-12 text-xs ${
+            file && showPreview && previewImage ? 'xs-phone:px-16' : 'xs-phone:px-32'
+          } text-custom-grayD group-hover:text-inputLightDisabled dark:text-disabledDarkText group-hover:dark:text-darkText`}
         >
           {file && previewImage ? (
             <span className="text-custom-blue dark:text-white">
@@ -224,33 +221,28 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         )}
       </div>
 
-      {files.length > 0 && showPreview && (
-        <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {files.map((file, index) => (
-            <div key={index} className="relative flex flex-col items-center rounded-xl overflow-hidden w-28 h-[126px] bg-custom-grayD-200">
-              {file.type.startsWith('image/') ? (
-                <Image
-                  src={URL.createObjectURL(file)}
-                  alt={file.name}
-                  className="w-full h-full object-cover rounded-xl"
-                />
-              ) : (
-                <div className="flex items-center justify-center w-full h-full text-xs text-gray-500">{file.name}</div>
-              )}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setFiles?.(files.filter((_, i) => i !== index));
-                }}
-                className="absolute right-1 top-1 rounded-full p-1 text-darkText bg-errorColor border border-darkText dark:text-lightText hover:dark:bg-errorColorDark transition-colors"
-                aria-label="Eliminar archivo"
-              >
-                <Trash2 className="size-4" />
-              </button>
-            </div>
-          ))}
+      {file && showPreview && previewImage && (
+        <div className="relative flex flex-col items-center rounded-xl overflow-hidden w-28 h-[126px] bg-custom-grayD-200">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={previewImage}
+            alt="Vista previa del archivo"
+            className="w-full h-full rounded-xl object-cover"
+          />
+          <p
+            className="w-full rounded-b-xl text-xs absolute bottom-0 bg-custom-grayD-200 dark:bg-custom-whiteD-500 dark:text-lightText"
+            style={{ overflowWrap: 'anywhere' }}
+          >
+            {file.name}
+          </p>
+          <button
+            type="button"
+            onClick={handleFileRemove}
+            className="absolute right-1 top-1 rounded-full p-1 text-darkText bg-errorColor border border-darkText dark:text-lightText hover:dark:bg-errorColorDark transition-colors"
+            aria-label="Eliminar archivo"
+          >
+            <Trash2 className="size-4" />
+          </button>
         </div>
       )}
     </div>

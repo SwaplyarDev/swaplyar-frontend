@@ -20,7 +20,7 @@ interface ModalProps {
 
 
 const Modal1 = ({ isOpen, onClose, isDark, transaccionId, code }: ModalProps) => {
-  const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
   const [transactionData, setTransactionData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [note, setNote] = useState<string>('');
@@ -42,7 +42,7 @@ const Modal1 = ({ isOpen, onClose, isDark, transaccionId, code }: ModalProps) =>
     fetchData();
   }, [transaccionId, code]);
 
-  
+
   if (!isOpen) return null;
 
   return (
@@ -53,8 +53,8 @@ const Modal1 = ({ isOpen, onClose, isDark, transaccionId, code }: ModalProps) =>
       transaccionId={transaccionId}
       code={code}
       transactionData={transactionData}
-      file={file}
-      setFile={setFile}
+      files={files}
+      setFiles={setFiles}
       note={note}
       setNote={setNote}
       isFocused={isFocused}
@@ -68,8 +68,8 @@ const Modal1 = ({ isOpen, onClose, isDark, transaccionId, code }: ModalProps) =>
 
 interface Modal1Props extends ModalProps {
   transactionData: any;
-  file: File | null;
-  setFile: React.Dispatch<React.SetStateAction<File | null>>;
+  files: File[];
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>
   note: string;
   setNote: React.Dispatch<React.SetStateAction<string>>;
   isFocused: boolean;
@@ -79,7 +79,7 @@ interface Modal1Props extends ModalProps {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transaccionId, code, transactionData, file, setFile, note, setNote, isFocused, setIsFocused, noteAccessToken, loading, setLoading }) => {
+const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transaccionId, code, transactionData, files, setFiles, note, setNote, isFocused, setIsFocused, noteAccessToken, loading, setLoading }) => {
 
   const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNote(event.target.value);
@@ -109,7 +109,7 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
       setLoading(true);
       await sendFormData({
         message: note,
-        file: file,
+        files, // 👈 array de archivos
         transaccionId: transaccionId,
         noteAccessToken: noteAccessToken ?? '',
       });
@@ -269,18 +269,12 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
 
           <section>
             <FileUpload
-              previewImage={file ? URL.createObjectURL(file) : null}
-              handleChange={(e) => {
-                if (e.target.files && e.target.files[0]) {
-                  setFile(e.target.files[0]);
-                }
-              }}
-              disabled
+              files={files}
+              setFiles={setFiles}
               isDark={isDark}
-              accept=".png,.jpg,.pdf"
-              maxSizeText="max. 800x400px"
-              maxSizeMB={10}
-              showPreview={true}
+              accept=".png,.jpg,.jpeg,.pdf"
+              maxFiles={5}
+              showPreview
             />
 
             <label

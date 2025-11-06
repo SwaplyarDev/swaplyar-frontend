@@ -7,7 +7,7 @@ export interface TransactionRequestData {
 
 export interface SendForm {
   message: string;
-  file?: File | null;
+  files?: File[] | null;
   transaccionId: string;
   noteAccessToken: string;
 }
@@ -99,7 +99,7 @@ export const resendCodeAction = async (transactionId: string) => {
   }
 };
 
-export const sendFormData = async ({ message, file, transaccionId, noteAccessToken }: SendForm): Promise<any> => {
+export const sendFormData = async ({ message, files, transaccionId, noteAccessToken }: SendForm): Promise<any> => {
   try {
     if (!message) {
       throw new Error('El mensaje  no fue encontrado.');
@@ -113,8 +113,11 @@ export const sendFormData = async ({ message, file, transaccionId, noteAccessTok
 
     const formData = new FormData();
     formData.append('message', message);
-    if (file) {
-      formData.append('image', file);
+
+     if (files && files.length > 0) {
+      files.forEach((file) => {
+        formData.append('files', file); // 👈 plural, para que el backend reciba un array
+      });
     }
 
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/notes/${transaccionId}`, {
@@ -124,10 +127,12 @@ export const sendFormData = async ({ message, file, transaccionId, noteAccessTok
         'note-access-token': noteAccessToken,
       },
     });
+    
     if (!response.ok) {
       throw new Error('Error al enviar los datos');
     }
     const result = await response.json();
+    console.log('Response de editrequest:', result);
     return result;
   } catch (error) {
     console.error('Error al enviar la solicitud:', error);
