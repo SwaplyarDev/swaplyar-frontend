@@ -21,7 +21,7 @@ const FraudPrevention = () => {
   return (
     <main className="flex w-full flex-col items-center gap-10 pt-16">
       <AnimatedBlurredCircles tope="top-[40px]" />
-      <h1 className="self-center text-center text-4xl font-medium">Concientización sobre el fraude</h1>
+      <h1 className="self-center text-center text-4xl lg:mt-10 md:mt-8 font-medium">Concientización sobre el fraude</h1>
 
       <section className="flex w-[358px] md:w-[656px] lg:w-[1000px] mx-[56px] flex-col gap-2 md:gap-2 lg:flex-row lg:gap-20">
         <FraudMobile
@@ -36,7 +36,7 @@ const FraudPrevention = () => {
           handleButtonClick={handleButtonClick}
         />
       </section>
-      <div className="my-20 w-[100%] bg-contain bg-center hidden lg:block">
+      <div className="my-20 lg:mb-[-100px] w-[100%] bg-contain bg-center hidden lg:block">
         <FlyerTrabajo href="" imageSrc={fraudPrevention} />
       </div>
     </main>

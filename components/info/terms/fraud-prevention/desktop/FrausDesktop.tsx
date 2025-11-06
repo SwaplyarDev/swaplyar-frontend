@@ -23,7 +23,7 @@ const FraudDesktop: React.FC<FraudDesktopProps> = ({ selectedTextIndex, handleBu
         ))}
       </article>
       <article className="hidden w-full md:flex md:w-[656px]  md:mx-auto lg:w-[592px]  flex-col items-start gap-5 lg:flex">
-        <h2 className="w-[100%] self-center md:border-t-0 lg:border-t-[1px] border-[#012A8E] p-2 text-start text-3xl font-normal dark:border-[#EBE7E0]">
+        <h2 className="w-[100%] self-center  md:border-t-0 lg:border-t-[1px] border-[#012A8E] p-2 text-start text-3xl font-normal dark:border-[#EBE7E0]">
           {mockTexts[selectedTextIndex]?.mainTitle}
         </h2>
         {selectedTextIndex !== null ? (
