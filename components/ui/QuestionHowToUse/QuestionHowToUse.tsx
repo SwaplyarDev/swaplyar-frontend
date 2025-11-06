@@ -144,7 +144,7 @@ const QuestionHowToUse = () => {
 
   return (
     <main
-      className={`${isDark ? 'text-custom-whiteD' : 'text-custom-grayD'} relative flex w-full max-w-[538px] flex-col items-center justify-center gap-10 lg2:max-w-[872px]`}
+      className={`${isDark ? 'text-custom-whiteD' : 'text-custom-grayD'} relative flex w-[358px] md:w-[704px] lg:w-[872px] flex-col items-center justify-center gap-10`}
     >
       <header className={'w-full text-center text-[36px] lg2:text-left'}>
         <h2 className="font-textFont">Todo lo que necesitas saber antes de usar SwaplyAr</h2>

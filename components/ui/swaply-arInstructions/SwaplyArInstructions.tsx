@@ -16,57 +16,60 @@ export default function SwaplyArInstructions() {
   return (
     <>
       <AnimatedBlurredCircles tope="0px" />
-      <div className="mx-auto flex max-w-[1000px] flex-col items-center gap-20 px-4 py-10 md:px-8 lg2:px-4">
-        <section className="flex max-w-[500px] flex-col gap-10 lg2:max-w-full lg2:flex-row lg2:items-center">
-          <div className="flex flex-1 flex-col gap-4">
-            <h1 className="font-titleFont text-[38px] font-medium lg2:text-[40px]">
-              La Forma mas rapida y segura de Usar SwaplyAr
-            </h1>
-            <p className="font-textFont font-light">
-              <strong className="font-semibold">SwaplyAr</strong> es la mejor opción para tus intercambios por su{' '}
-              <strong className="font-semibold">rapidez, seguridad y simplicidad.</strong> Procesamos las transacciones{' '}
-              <strong className="font-semibold">en menos de 5 minutos,</strong> garantizando la{' '}
-              <strong className="font-semibold">protección de tus datos y fondos</strong> con sistemas de verificación
-              seguros. Ofrecemos un{' '}
-              <strong className="font-semibold">
-                proceso transparente, múltiples métodos de pago y soporte en tiempo real
-              </strong>{' '}
-              para resolver cualquier duda, brindándote <strong className="font-semibold">confianza y comodidad</strong>{' '}
-              en cada operación.
-            </p>
-            <ShortButton
+      <div className="mx-auto flex lg:w-[1026px] md:w-[794px] flex-col items-center gap-20 px-4 py-10 md:px-8 lg2:px-4">
+        <section className="flex w-full max-w-[1026px] flex-col md:flex-row md:gap-6 lg:gap-10 md:items-start">
+            <div className="flex flex-col md:flex-row md:gap-6 md:items-start lg:flex-row lg:gap-10">
+              <div className="flex flex-col gap-4">
+                <h1 className="font-titleFont text-[38px] font-medium lg2:text-[40px] md:w-[334px] lg:w-[506px]">
+                  La Forma mas rápida y segura de usar SwaplyAr
+                </h1>
+                <p className="font-textFont font-light md:w-[334px] lg:w-[506px]">
+                  <strong className="font-semibold">SwaplyAr</strong> es la mejor opción para tus intercambios por su{' '}
+                  <strong className="font-semibold">rapidez, seguridad y simplicidad.</strong> Procesamos las transacciones{' '}
+                  <strong className="font-semibold">en menos de 5 minutos,</strong> garantizando la{' '}
+                  <strong className="font-semibold">protección de tus datos y fondos</strong> con sistemas de verificación
+                  seguros. Ofrecemos un{' '}
+                  <strong className="font-semibold">
+                    proceso transparente, múltiples métodos de pago y soporte en tiempo real
+                  </strong>{' '}
+                  para resolver cualquier duda, brindándote <strong className="font-semibold">confianza y comodidad</strong>{' '}
+                  en cada operación.
+                </p>
+                <ShortButton
               href="/"
               text="¡Empieza ahora!"
               fondoOscuro
               className="mx-auto mt-2 w-[280px]"
             />
-          </div>
-          <Image
-            className="w-full max-w-[500px] flex-1 drop-shadow-light dark:drop-shadow-darkmode"
-            src={isDark ? howToUseDark : howToUse}
-            alt="Imagen principal"
-            width={500}
-            height={500}
-            priority
-          />
+                
+              </div>
+              <Image
+                className="w-full md:w-[354px] lg:w-[459px] md:flex-shrink-0 drop-shadow-light dark:drop-shadow-darkmode"
+                src={isDark ? howToUseDark : howToUse}
+                alt="Imagen principal"
+                width={500}
+                height={500}
+                priority
+              />
+            </div>
         </section>
-        <section className="flex w-full flex-col gap-4 rounded-2xl border border-buttonsLigth p-[10px] dark:border-darkText">
-          <h2 className="text-center font-textFont text-4xl">Conocé los pasos a seguir para una solicitud exitosa</h2>
+        <section className="flex lg:w-[1015px] md:w-[680px] flex-col gap-4 rounded-2xl border border-buttonsLigth p-[10px] dark:border-darkText">
+          <h2 className="text-left md:text-center font-textFont text-[28px] md:text-4xl">Conocé los pasos a seguir para una solicitud exitosa</h2>
           <div className="flex flex-col gap-4 font-textFont font-light">
             <div>
-              <p>
+              <p >
                 <strong className="font-semibold">
                   <span className="text-xl">Paso 1:</span> Selecciona la billetera
                 </strong>{' '}
                 e ingresa el monto que deseas cambiar.
               </p>
-              <p>
+              <p >
                 <strong className="font-semibold">
                   <span className="text-xl">Paso 2:</span> Indica dónde quieres recibir el dinero
                 </strong>{' '}
                 y presiona "Procesar pago".
               </p>
-              <p>
+              <p >
                 <strong className="font-semibold">
                   <span className="text-xl">Paso 3:</span> Completa el formulario
                 </strong>{' '}
@@ -80,7 +83,7 @@ export default function SwaplyArInstructions() {
             </div>
           </div>
         </section>
-        <section className="flex max-w-[800px] flex-col gap-10">
+        <section className="flex max-w-[788px] md:max-w-[704px] flex-col gap-10">
           {howToUseData.map((item: IHowToUse, i: number) => {
             const pair = i % 2 === 0;
 
@@ -90,7 +93,7 @@ export default function SwaplyArInstructions() {
                 className={clsx('flex flex-col items-center gap-10', pair ? 'md:flex-row' : 'md:flex-row-reverse')}
               >
                 <Image
-                  className="w-full max-w-[390px] flex-1 drop-shadow-light dark:drop-shadow-darkmode"
+                  className={`w-[230px] md:w-[390px] ${i === 0 ? 'lg:w-[380px]' : i === 1 ? 'lg:w-[428px]' : 'lg:w-[346px]'} h-auto drop-shadow-light dark:drop-shadow-darkmode`}
                   src={isDark ? item.srcDark : item.src}
                   alt={item.title}
                   width={500}
@@ -98,8 +101,8 @@ export default function SwaplyArInstructions() {
                   priority
                 />
                 <div className="flex flex-1 flex-col gap-4">
-                  <h3 className="font-textFont text-[28px]">{item.title}</h3>
-                  <div className="font-textFont font-light">
+                  <h3 className="font-textFont text-[28px] lg:w-[388px] text-center md:text-left">{item.title}</h3>
+                  <div className="font-textFont font-light lg:w-[388px]">
                     <p>
                       {item.text.includes('"Procesar Pago".') ? (
                         <>
