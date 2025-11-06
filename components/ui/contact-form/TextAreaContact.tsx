@@ -12,6 +12,7 @@ interface AuthTextareaProps {
   validation?: any;
   disabled?: boolean;
   rows?: number;
+  className?: string;
 }
 
 const AuthTextarea: React.FC<AuthTextareaProps> = ({
@@ -25,6 +26,7 @@ const AuthTextarea: React.FC<AuthTextareaProps> = ({
   validation,
   disabled = false,
   rows = 5,
+  className,
 }) => {
   const [isFocused, setIsFocused] = React.useState(false);
   const inputProps = register ? register(name, validation) : {};
@@ -45,10 +47,10 @@ const AuthTextarea: React.FC<AuthTextareaProps> = ({
         onFocus={() => setIsFocused(true)}
         onBlur={(e) => setIsFocused(e.target.value !== '')}
         className={[
-          'peer w-full rounded-2xl border bg-custom-whiteD-200 p-3 pt-5 resize-none font-titleFont text-lightText dark:bg-transparent dark:text-custom-whiteD-200',
+          `peer w-full rounded-2xl border bg-custom-whiteD-200 p-3 pt-5 resize-none font-titleFont text-lightText dark:bg-transparent dark:text-custom-whiteD-200 ${className}`,
           error
             ? '!border-errorColor text-errorColor hover:!border-errorColor focus:!border-errorColor focus:!ring-errorColor'
-            : 'border-inputLightDisabled hover:border-inputLight focus:border-inputLight dark:hover:border-custom-whiteD-200 dark:focus:border-custom-whiteD-200',
+            : 'border-inputLightDisabled hover:border-inputLight focus:border-inputLight dark:border-custom-whiteD-200 dark:hover:border-custom-whiteD-200 dark:focus:border-custom-whiteD-200',
         ]
           .filter(Boolean)
           .join(' ')}
