@@ -359,9 +359,9 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
           </section>
         );
       })}
-      <div className="flex flex-col items-center gap-4 sm-phone:flex-row sm-phone:justify-between sm-phone:gap-0">
+      <div className="flex flex-col items-center gap-8 sm:gap-4 sm-phone:flex-row sm-phone:justify-between sm-phone:gap-0 px-3 sm:px-5">
         <button
-          className="font-textFont text-base transition-all hover:text-buttonsLigth dark:hover:text-darkText dark:hover:underline"
+          className="max-sm:order-2 font-textFont text-sm sm:text-base transition-all hover:text-buttonsLigth dark:hover:text-darkText dark:hover:underline"
           onClick={handleCancelRequest}
           disabled={blockAll}
         >
@@ -373,7 +373,7 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
           isDark={isDark}
           loading={loading}
           disabled={!completedSteps[2] || blockAll || loading}
-          className="w-full max-w-[260px] h-[60px] text-4xl font-semibold" // tamaño más grande
+          className="w-full sm:max-w-[300px]"
         />
       </div>
     </div>

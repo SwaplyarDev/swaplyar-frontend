@@ -14,7 +14,7 @@ interface FormData {
   send_amount: string;
   receive_amount: string;
   pay_email: string;
-  proof_of_payment: FileList | null;
+  proof_of_payment: File[] | null;
   note: string;
   network?: string;
   wallet?: string;
@@ -38,12 +38,13 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   const { isDark } = useDarkTheme();
 
   const [initialValues, setInitialValues] = useState<FormData | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
+  const [storedFiles, setStoredFiles] = useState<File[]>([]);
 
   const formValues = useWatch({ control });
 
-const sendAmount = formData.stepThree.send_amount;
-const receiveAmount = formData.stepThree.receive_amount;
+  const sendAmount = formData.stepThree.send_amount;
+  const receiveAmount = formData.stepThree.receive_amount;
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
 
   // Observar cambios en red_selection
@@ -85,7 +86,6 @@ const receiveAmount = formData.stepThree.receive_amount;
         setValue('network', networkData.name, { shouldValidate: true });
         setValue('wallet', networkData.wallet, { shouldValidate: true });
       }
-
     }
 
     setInitialValues(newValues);
@@ -106,7 +106,8 @@ const receiveAmount = formData.stepThree.receive_amount;
 
   const [loading, setLoading] = useState(false);
   const onSubmit = (data: FormData) => {
-    console.log('Submitting form data:', data);
+    data.proof_of_payment = storedFiles;
+
     setLoading(true);
     updateFormData(2, data);
     markStepAsCompleted(2);
@@ -130,35 +131,88 @@ const receiveAmount = formData.stepThree.receive_amount;
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      if (file.type.startsWith('image/')) {
-        const imageUrl = URL.createObjectURL(file);
-        setPreviewImage(imageUrl);
-      } else {
-        setPreviewImage(null);
+    const newFiles = Array.from(event.target.files || []);
+    if (newFiles.length === 0) return;
+
+    const combined = [...storedFiles, ...newFiles].slice(0, 5);
+    setStoredFiles(combined);
+
+    const newPreviews = newFiles
+      .map(file => (file.type.startsWith('image/') ? URL.createObjectURL(file) : null))
+      .filter(Boolean) as string[];
+    
+      setPreviewImages(prev => {
+        const updatedPreviews = [...prev, ...newPreviews].slice(0, 5);
+
+        return updatedPreviews;
+      });
+      setValue('proof_of_payment', combined, { shouldValidate: true });
+    const dataTransfer = new DataTransfer();
+    combined.forEach(file => dataTransfer.items.add(file));
+    event.target.files = dataTransfer.files;
+  };  
+
+  const handleRemoveImage = (index: number) => {
+    URL.revokeObjectURL(previewImages[index]);
+
+    setPreviewImages(prev => prev.filter((_, i) => i !== index));
+    
+    setStoredFiles((prev) => {
+      const updatedFiles = prev.filter((_, i) => i !== index);
+      setValue('proof_of_payment', updatedFiles, { shouldValidate: true });
+
+      if (updatedFiles.length === 0) {
+        markStepAsCompleted(2);
       }
-    }
-    onChange(event);
+
+      return updatedFiles;
+    });
   };
 
-  // Restaurar preview cuando vuelvas al paso si ya hay un archivo cargado
+  useEffect(() => {
+    const hasImages = storedFiles.length > 0;
+
+    if (hasImages && !completedSteps[2]) {
+      markStepAsCompleted(2);
+    }
+
+    if (!hasImages && completedSteps[2]) {
+      completedSteps[2] = false;
+    }
+  }, [storedFiles, completedSteps, markStepAsCompleted]);
+
   useEffect(() => {
     const proofOfPayment = watch('proof_of_payment');
-    if (proofOfPayment && proofOfPayment[0]) {
-      const file = proofOfPayment[0];
-      if (file.type.startsWith('image/')) {
-        const imageUrl = URL.createObjectURL(file);
-        setPreviewImage(imageUrl);
-        console.log('🖼️ [StepThree - Restore Preview] Preview restaurado:', imageUrl);
-        
-        // Cleanup del objeto URL cuando el componente se desmonte
-        return () => URL.revokeObjectURL(imageUrl);
-      }
-    } else if (!proofOfPayment) {
-      setPreviewImage(null);
+    if (proofOfPayment && proofOfPayment.length > 0) {
+      const files = Array.from(proofOfPayment);
+      const imagePreviews: string[] = [];
+      const imageFiles: File[] = [];
+
+      files.forEach((file) => {
+        if (file.type.startsWith('image/')) {
+          const imageUrl = URL.createObjectURL(file);
+          imagePreviews.push(imageUrl);
+          imageFiles.push(file);
+        }
+      });
+
+      setPreviewImages(imagePreviews);
+      setStoredFiles(imageFiles);
+      
+      return () => {
+        imagePreviews.forEach(url => URL.revokeObjectURL(url));
+      };
+    } else if (!proofOfPayment || proofOfPayment.length === 0) {
+      setPreviewImages([]);
+      setStoredFiles([]);
     }
   }, [formValues.proof_of_payment, watch]);
+
+  useEffect(() => {
+    return () => {
+      previewImages.forEach(url => URL.revokeObjectURL(url));
+    };
+  }, [previewImages]); 
 
   const renderSelectedSystem = () => {
     switch (selectedSendingSystem?.id) {
@@ -181,10 +235,11 @@ const receiveAmount = formData.stepThree.receive_amount;
             selectedReceivingSystem={selectedReceivingSystem}
             receiveAmount={receiveAmount}
             handleChange={handleChange}
+            handleRemoveImage={handleRemoveImage}
             watch={watch}
             restRegister={restRegister}
-            previewImage={previewImage}
-            setPreviewImage={setPreviewImage}
+            previewImages={previewImages}
+            setPreviewImages={setPreviewImages}
           />
         );
       case 'tether':
@@ -200,10 +255,11 @@ const receiveAmount = formData.stepThree.receive_amount;
             selectedReceivingSystem={selectedReceivingSystem}
             receiveAmount={receiveAmount}
             handleChange={handleChange}
+            handleRemoveImage={handleRemoveImage}
             watch={watch}
             restRegister={restRegister}
-            previewImage={previewImage}
-            setPreviewImage={setPreviewImage}
+            previewImages={previewImages}
+            setPreviewImages={setPreviewImages}
             control={control}
           />
         );
@@ -219,12 +275,12 @@ const receiveAmount = formData.stepThree.receive_amount;
         {completedSteps[2] ? (
           hasChanges ? (
             <AuthButton
-              label="Siguiente"
+              label="Ya realicé el pago"
               type="submit"
               isDark={isDark}
               loading={loading}
-              disabled={!isValid || blockAll}
-              className="w-full max-w-[300px]"
+              disabled={storedFiles.length < 1}
+              className="w-full sm:max-w-[300px]"
             />
           ) : (
             <button
@@ -238,12 +294,12 @@ const receiveAmount = formData.stepThree.receive_amount;
           )
         ) : (
           <AuthButton
-            label="Ya realice el pago"
+            label="Ya realicé el pago"
             type="submit"
             isDark={isDark}
             loading={loading}
-            disabled={!isValid || blockAll}
-            className="w-full max-w-[300px]"
+            disabled={storedFiles.length < 1}
+            className="w-full sm:max-w-[300px]"
           />
         )}
       </div>

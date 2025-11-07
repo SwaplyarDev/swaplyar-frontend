@@ -32,7 +32,7 @@ export interface StepThreeData {
   send_amount: string;
   receive_amount: string;
   pay_email: string;
-  proof_of_payment: FileList | null;
+  proof_of_payment: File[] | null;
   note: string;
   network?: string;
   wallet?: string;
