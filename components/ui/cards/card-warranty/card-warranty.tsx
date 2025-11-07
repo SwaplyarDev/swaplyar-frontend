@@ -95,9 +95,9 @@ const CardWarranty: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
           return (
             <article
               key={index}
-              className={`linear absolute cursor-pointer transition-all duration-300 ${isCurrent ? 'z-20 scale-100 lg:z-0 lg:scale-90' : 'z-10 scale-90 blur-sm lg:z-0 lg:blur-none'} ${isPrev ? '-translate-x-20 md:-translate-x-0' : ''} ${isNext ? 'translate-x-20 md:translate-x-0' : ''} ${
-                isCurrent ? 'lg:translate-y-0' : ''
-              } ${isBack1 ? 'md:left-0' : isBack2 ? 'md:right-0' : ''} lg:static`}
+              className={`linear absolute cursor-pointer transition-all duration-300 ${isCurrent ? 'z-20 scale-100 md:z-0 md:scale-90 lg:z-0 lg:scale-90' : 'z-10 scale-90 blur-sm md:z-0 md:blur-none lg:z-0 lg:blur-none'} ${isPrev ? '-translate-x-20 md:-translate-x-0' : ''} ${isNext ? 'translate-x-20 md:translate-x-0' : ''} ${
+                isCurrent ? 'md:translate-y-0 lg:translate-y-0' : ''
+              } ${isBack1 ? 'md:left-0' : isBack2 ? 'md:right-0' : ''} md:static lg:static`}
               style={{
                 transition: 'transform 0.3s linear, left 0.3s linear, right 0.3s linear',
               }}

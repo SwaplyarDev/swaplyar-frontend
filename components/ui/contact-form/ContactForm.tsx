@@ -92,57 +92,58 @@ const ContactForm = () => {
       text: 'Recuerde que puede comunicarse por nuestros canales oficiales: <strong>info@swaplyar.com</strong> o <strong>WhatsApp</strong> al <strong>+54 9 387 455 3521</strong>.',
       isHtml: true,
       isDark,
+      iconSize: 'medium',
     });
-  
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-4">
-      <div className="flex flex-col gap-10 rounded-2xl px-[15px] py-[13px] shadow-md dark:shadow-dark-form dark:bg-[#323232]">
-        <h4 className="font-textFont text-[32px] font-medium text-buttonsLigth dark:text-darkText">Contáctanos</h4>
-        <div className="flex flex-col gap-10 md:flex-row md:gap-16">
-          <div className="flex w-full flex-col items-center gap-3">
-            <CustomInput
-              label="Nombre"
-              name="Nombre"
-              placeholder="Nombre"
-              register={register}
-              validation={{
-                required: 'El Nombre es obligatorio',
-                pattern: {
-                  value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
-                  message: 'El Nombre solo puede contener letras y espacios',
-                },
-              }}
-              error={errors.Nombre?.message}
-            />
-            <CustomInput
-              label="Apellido"
-              name="Apellido"
-              placeholder="Apellido"
-              register={register}
-              validation={{
-                required: 'El Apellido es obligatorio',
-                pattern: {
-                  value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
-                  message: 'El Apellido solo puede contener letras y espacios',
-                },
-              }}
-              error={errors.Apellido?.message}
-            />
-            <CustomInput
-              label="Correo Electrónico"
-              type="email"
-              name="email"
-              placeholder="Correo Electrónico"
-              register={register}
-              validation={{
-                required: 'El Email es obligatorio',
-                pattern: {
-                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
-                  message: 'El formato del Email es inválido',
-                },
-              }}
-              error={errors.email?.message}
-            />
+    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-4 rounded-2xl bg-custom-whiteD-100 dark:bg-custom-grayD-900">
+      <div className="flex flex-col gap-4 rounded-2xl px-[15px] py-[13px] shadow-md dark:shadow-dark-form dark:bg-[#323232]">
+        <h4 className="font-textFont text-[32px] leading-[150%] md:text-4xl font-medium text-buttonsLigth dark:text-darkText">Contáctanos</h4>
+        <div className="flex w-full flex-col items-center gap-3 md:flex-row">
+          <div className='flex flex-col w-full gap-3'>
+          <CustomInput
+            label="Nombre"
+            name="Nombre"
+            placeholder="Nombre"
+            register={register}
+            validation={{
+              required: 'El Nombre es obligatorio',
+              pattern: {
+                value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                message: 'El Nombre solo puede contener letras y espacios',
+              },
+            }}
+            error={errors.Nombre?.message}
+          />
+          <CustomInput
+            label="Apellido"
+            name="Apellido"
+            placeholder="Apellido"
+            register={register}
+            validation={{
+              required: 'El Apellido es obligatorio',
+              pattern: {
+                value: /^[A-Za-zÀ-ÿ\s]{1,100}$/i,
+                message: 'El Apellido solo puede contener letras y espacios',
+              },
+            }}
+            error={errors.Apellido?.message}
+          />
+          <CustomInput
+            label="Correo Electrónico"
+            type="email"
+            name="email"
+            placeholder="Correo Electrónico"
+            register={register}
+            validation={{
+              required: 'El Email es obligatorio',
+              pattern: {
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
+                message: 'El formato del Email es inválido',
+              },
+            }}
+            error={errors.email?.message}
+          />
           </div>
           <TextAreaContact
             label="Mensaje"
@@ -150,7 +151,7 @@ const ContactForm = () => {
             register={register}
             validation={{ required: 'El mensaje es obligatorio' }}
             error={errors.message?.message}
-            rows={8}
+            rows={6}
           />
         </div>
         <div className="flex justify-center">
@@ -160,7 +161,7 @@ const ContactForm = () => {
             isDark={isDark}
             loading={loading}
             disabled={!isValid || loading}
-            className="w-[300px]" // para que mantenga el mismo ancho que antes
+            className="w-full md:max-w-[300px]"
             variant="primary"
           />
         </div>
