@@ -6,11 +6,6 @@
 html {
   -webkit-text-size-adjust: 100%;
 }
-/* --- FIX Flowbite Drawer horizontal scroll --- */
-html,
-body {
-  overflow-x: hidden;
-}
 
 
 @font-face {
