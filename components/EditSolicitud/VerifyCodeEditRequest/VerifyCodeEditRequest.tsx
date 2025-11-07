@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
 import { VerificationCodeInput } from '@/components/ui/VerificationCodeInput/VerificationCodeInput';
 import AuthButton from '@/components/auth/AuthButton';
+import PopUp from '@/components/ui/PopUp/PopUp';
 
 interface FormInputs {
   verificationCode: string[];
@@ -34,6 +35,7 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
     watch,
   } = useForm<FormInputs>();
   const { lockUntil, setLockUntil, resetAttempts } = useCodeVerificationStore();
+  /* SUGIERO PASAR ESTE TRANSACTION DIRECTAMENTE A MODAL1 PARA QUE NO SE HAGA UN DOBLE LLAMADO Y ESTE LA DATA MAS RAPIDO */
   const [transaction, setTransaction] = useState<any>(null);
 
   const isLocked = lockUntil && lockUntil > Date.now();
@@ -103,12 +105,26 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
       const { success, message } = await resendCodeAction(transaccionId);
 
       if (success) {
-        alert('El código ha sido reenviado exitosamente a tu correo electrónico.');
+        PopUp({
+          variant: 'success-compact',
+          isDark,
+          title: 'El código ha sido reenviado exitosamente a tu correo electrónico.',
+        });
       } else {
-        alert(`Hubo un error al intentar reenviar el código: ${message}`);
+        console.error('Error al reenviar el código:', message);
+        PopUp({
+          variant: 'simple-error',
+          isDark,
+          title: 'Hubo un error al intentar reenviar el código. Intente nuevamente.',
+        });
       }
     } catch (error) {
-      alert('Ocurrió un problema al reenviar el código. Por favor, verifica tu conexión.');
+      console.error('Error al reenviar el código:', error);
+      PopUp({
+        variant: 'simple-error',
+        isDark,
+        title: 'Ocurrió un problema al reenviar el código',
+      });
     } finally {
       setReLoading(false);
     }
@@ -121,7 +137,7 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
           <label htmlFor="verificationCode" className="text-center text-xl text-lightText dark:text-darkText">
             Ingrese el código de 6 dígitos que recibiste por email
           </label>
-          
+
           <div className="flex w-full justify-center">
             <VerificationCodeInput
               register={register}
