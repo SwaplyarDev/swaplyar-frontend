@@ -100,6 +100,13 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
     });
 
   const handleFormSubmit = async () => {
+    console.log('Datos a enviar en el submittt:', {
+      note,
+      transaccionId,
+      noteAccessToken,
+      files,
+    });
+
     if (!note || !transaccionId) {
       handleEditRequestError();
       return;
@@ -107,47 +114,55 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
 
     try {
       setLoading(true);
-      await sendFormData({
+      const result = await sendFormData({
         message: note,
-        files, // 👈 array de archivos
-        transaccionId: transaccionId,
-        noteAccessToken: noteAccessToken ?? '',
+        files,
+        transaccionId,
+        noteAccessToken: noteAccessToken ?? '', 
+        section: 'datos_envio',
       });
 
-      setLoading(false);
+      console.log('✅ Enviado correctamente:', result);
       handleEditRequestSuccess();
       onClose();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error al enviar los datos:', error);
+
+      // 👇 Detectamos si viene un mensaje desde el backend
+      const backendMessage =
+        typeof error === 'object' && error.message
+          ? error.message
+          : 'Error desconocido al enviar la solicitud.';
+
       PopUp({
         variant: 'simple-error',
-        title: 'Algunos de los datos son incorrectos por favor verifique los datos ingresados e intente nuevamente',
+        title: backendMessage, // 👈 lo mostramos dinámico
         isDark: isDark,
       });
+
       setLoading(false);
     }
   };
   const PayMethodInfo: React.FC = () => {
-    if (transactionData?.transaction?.payment_method?.receiver?.value === 'ars') {
+    const method = transactionData?.transaction?.receiverAccount?.paymentMethod?.method;
+    if (method === 'bank') {
       return (
         <div className="flex justify-between text-sm xs-phone:text-base">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
             <p>Nombre </p>
             <p>Apellido </p>
-            <p>DNI / CUIT / CUIL </p>
             <p>CBU / CVU / ALIAS </p>
             <p>Nombre del Banco </p>
           </div>
           <div className="flex flex-col text-end text-lightText dark:text-darkText">
-            <p>{transactionData?.transaction?.payment_method?.receiver?.details?.userAccount?.firstName}</p>
-            <p>{transactionData?.transaction?.payment_method?.receiver?.details?.userAccount?.lastName}</p>
-            <p>{transactionData?.transaction?.payment_method?.receiver?.details?.document_value}</p>
-            <p>{transactionData?.transaction?.payment_method?.receiver?.details?.senderMethodValue}</p>
-            <p>{transactionData?.transaction?.payment_method?.receiver?.details?.bankName}</p>
+            <p>{transactionData?.transaction?.receiverAccount?.firstName}</p>
+            <p>{transactionData?.transaction?.receiverAccount?.lastName}</p>
+            <p>{transactionData?.transaction?.receiverAccount?.paymentMethod?.sendMethodValue}</p>
+            <p>{transactionData?.transaction?.receiverAccount?.paymentMethod?.bankName}</p>
           </div>
         </div>
       );
-    } else if (transactionData?.transaction?.receiverAccount?.paymentMethod?.method === 'receiver_crypto') {
+    } else if (method === 'receiver_crypto') {
       return (
         <div className="flex justify-between text-sm xs-phone:text-base">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
@@ -163,7 +178,7 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
           </div>
         </div>
       );
-    } else if (transactionData?.transaction?.receiverAccount?.paymentMethod?.method === 'pix') {
+    } else if (method === 'pix') {
       return (
         <div className="flex justify-between text-sm xs-phone:text-base">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
@@ -176,7 +191,7 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
           </div>
         </div>
       );
-    } else if (transactionData?.transaction?.receiverAccount?.paymentMethod?.method === 'virtual_bank') {
+    } else if (method === 'virtual_bank') {
       return (
         <div className="flex justify-between text-sm xs-phone:text-base">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">

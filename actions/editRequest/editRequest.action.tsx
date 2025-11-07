@@ -10,6 +10,7 @@ export interface SendForm {
   files?: File[] | null;
   transaccionId: string;
   noteAccessToken: string;
+  section: 'datos_envio' | 'datos_recepcion' | 'monto';
 }
 
 interface TransactionData {
@@ -99,24 +100,26 @@ export const resendCodeAction = async (transactionId: string) => {
   }
 };
 
-export const sendFormData = async ({ message, files, transaccionId, noteAccessToken }: SendForm): Promise<any> => {
+export const sendFormData = async ({
+  message,
+  files,
+  transaccionId,
+  noteAccessToken,
+  section,
+}: SendForm): Promise<any> => {
   try {
-    if (!message) {
-      throw new Error('El mensaje  no fue encontrado.');
-    }
-    if (!transaccionId) {
-      throw new Error('El ID de la transacción no fue encontrada.');
-    }
-    if (!noteAccessToken) {
-      throw new Error('El token de acceso a la nota no fue proporcionado.');
-    }
+    if (!message?.trim()) throw new Error('El mensaje no fue encontrado.');
+    if (!transaccionId) throw new Error('El ID de la transacción no fue encontrado.');
+    if (!noteAccessToken) throw new Error('El token de acceso no fue proporcionado.');
+    if (!section) throw new Error('La sección es obligatoria.');
 
     const formData = new FormData();
-    formData.append('message', message);
+    formData.append('message', String(message));
+    formData.append('section', String(section));
 
-     if (files && files.length > 0) {
+    if (files && files.length > 0) {
       files.forEach((file) => {
-        formData.append('files', file); // 👈 plural, para que el backend reciba un array
+        formData.append('files', file, file.name);
       });
     }
 
@@ -127,12 +130,17 @@ export const sendFormData = async ({ message, files, transaccionId, noteAccessTo
         'note-access-token': noteAccessToken,
       },
     });
-    
+
+    const result = await response.json().catch(() => ({}));
+
+    console.log('🔎 Status:', response.status);
+    console.log('📦 Backend response:', result);
+
     if (!response.ok) {
-      throw new Error('Error al enviar los datos');
+      // 👇 ahora sí usamos el mismo result
+      throw new Error(result?.message || 'Error al enviar los datos.');
     }
-    const result = await response.json();
-    console.log('Response de editrequest:', result);
+
     return result;
   } catch (error) {
     console.error('Error al enviar la solicitud:', error);

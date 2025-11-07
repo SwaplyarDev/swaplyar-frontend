@@ -233,6 +233,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                   src={URL.createObjectURL(file)}
                   alt={file.name}
                   className="w-full h-full object-cover rounded-xl"
+                  width={100}
+                  height={100}
                 />
               ) : (
                 <div className="flex items-center justify-center w-full h-full text-xs text-gray-500">{file.name}</div>
