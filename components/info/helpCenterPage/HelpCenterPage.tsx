@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { sectionBottomHelpCenter, sectionLinksHelpCenter } from '@/data/sectionHelpCenter';
 import clsx from 'clsx';
 
-import { helpCenter4, helpCenter4Dark, FlyerTrabajoImg } from '@/utils/assets/imgDatabaseCloudinary';
+import { helpCenter4, helpCenter4Dark, FlyerTrabajoImg, FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
 import ShortButton from '@/components/ui/NewButtons/ShortButton';
 import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 
@@ -118,8 +118,10 @@ const HelpCenterPage = () => {
         </div>
       </div>
       <FlyerTrabajo
-        imageSrc={FlyerTrabajoImg}
-        href=''
+        href="/es/registro"
+        imageSrc={FlyerGif}
+        description="Accede a más funciones y guardar tu historial de cambios"
+        nameButton="Crear mi cuenta gratis"
       />
     </>
   );
