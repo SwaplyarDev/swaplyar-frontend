@@ -1,13 +1,13 @@
 'use client';
-import { useState, useEffect, ChangeEvent } from 'react';
-import clsx from 'clsx';
+import { useState, useEffect } from 'react';
 import useCodeVerificationStore from '@/store/codeVerificationStore';
-import Arrow from '@/components/ui/Arrow/Arrow';
 import Modal1 from '@/components/modals/ModalTipos';
 import { fetchCode, resendCodeAction } from '@/actions/editRequest/editRequest.action';
 import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import { useForm } from 'react-hook-form';
 import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
+import { VerificationCodeInput } from '@/components/ui/VerificationCodeInput/VerificationCodeInput';
+import AuthButton from '@/components/auth/AuthButton';
 
 interface FormInputs {
   verificationCode: string[];
@@ -34,6 +34,7 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
     watch,
   } = useForm<FormInputs>();
   const { lockUntil, setLockUntil, resetAttempts } = useCodeVerificationStore();
+  const [transaction, setTransaction] = useState<any>(null);
 
   const isLocked = lockUntil && lockUntil > Date.now();
   const [timer, setTimer] = useState(0);
@@ -66,7 +67,7 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
     return () => document.documentElement.classList.remove('overflow-hidden');
   }, [isModalOpen]);
 
-  const verifyCode = async ({ verificationCode, requestData }: FormInputs) => {
+  const verifyCode = async ({ verificationCode }: FormInputs) => {
     const code = verificationCode.join('');
     setLoading(true);
 
@@ -76,9 +77,14 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
       if (result.success) {
         setIsCodeCorrect(true);
         setIsModalOpen(true);
+        setCode(code);
+        /* SUGIERO PASAR ESTE TRANSACTION DIRECTAMENTE A MODAL1 PARA QUE NO SE HAGA UN DOBLE LLAMADO Y ESTE LA DATA MAS RAPIDO */
+        setTransaction(result.data);
+        return;
       } else {
         setIsCodeCorrect(false);
         setValue('verificationCode', ['', '', '', '', '', '']);
+        console.log('result no success', result)
       }
     } catch (error) {
       console.error('Error durante la verificación del código:', error);
@@ -86,25 +92,6 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
       setValue('verificationCode', ['', '', '', '', '', '']);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-
-    if (/^\d*$/.test(value)) {
-      const newVerificationCode = [...(watch('verificationCode') || ([] as string[]))];
-      newVerificationCode[index] = value;
-      setValue('verificationCode', newVerificationCode);
-
-      if (newVerificationCode.every((val) => val.trim() !== '' && val.length === 1)) {
-        handleSubmit(verifyCode)();
-      }
-
-      if (value.length === 1 && index < 5) {
-        const nextInput = document.getElementById(`code-${index + 1}`);
-        nextInput?.focus();
-      }
     }
   };
 
@@ -127,64 +114,40 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
     }
   };
 
-  const handleInputKeyDown = (index: number, event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Backspace' && event.currentTarget.value === '') {
-      if (index > 0) {
-        const prevInput = document.getElementById(`code-${index - 1}`);
-        prevInput?.focus();
-      }
-    }
-  };
-
   return (
     <>
-      <div className="w-full">
-        <form onSubmit={handleSubmit(verifyCode)} className="flex w-auto flex-col items-center">
+      <div className="w-full my-4">
+        <form onSubmit={handleSubmit(verifyCode)} className="flex w-auto flex-col items-center gap-2">
           <label htmlFor="verificationCode" className="text-center text-xl text-lightText dark:text-darkText">
             Ingrese el código de 6 dígitos que recibiste por email
           </label>
+          
           <div className="flex w-full justify-center">
-            <div className="mb-5 flex h-[46px] justify-between gap-2 xs:h-[57px] xs:gap-1 sm:h-[65.33px]">
-              {[...Array(6)].map((_, index) => (
-                <>
-                  <div
-                    key={index}
-                    className={clsx(
-                      isCodeCorrect === false ? 'border-errorColor' : 'border-buttonsLigth dark:border-darkText',
-                      `w-[46px] rounded-full border-[0.5px] border-buttonsLigth p-[3px] dark:border-darkText xs:w-[57px] sm:w-full`,
-                    )}
-                  >
-                    <input
-                      id={`code-${index}`}
-                      type="text"
-                      maxLength={1}
-                      disabled={isLocked || loading}
-                      className={clsx(
-                        'h-full w-full rounded-full border-0 text-center text-base focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem]',
-                        isCodeCorrect === false ? 'border-errorColor' : '',
-                      )}
-                      {...register(`verificationCode.${index}`)}
-                      onChange={(event) => {
-                        handleInputChange(index, event);
-                        setCode((prevcode) => prevcode + event.target.value);
-                      }}
-                      onKeyDown={(event) => handleInputKeyDown(index, event)}
-                    />
-                  </div>
-                  {index < 5 && (
-                    <div className="hidden min-h-full min-w-[0.5rem] items-center justify-center xs:flex">
-                      <div className="h-[2px] w-full flex-1 bg-buttonsLigth dark:bg-darkText"></div>
-                    </div>
-                  )}
-                </>
-              ))}
-            </div>
+            <VerificationCodeInput
+              register={register}
+              watch={watch}
+              setValue={setValue}
+              onComplete={async () => {
+                await handleSubmit(verifyCode)();
+              }}
+              onChange={() => {
+                if (isCodeCorrect === false) {
+                  setIsCodeCorrect(null);
+                }
+              }}
+              isDisabled={isLocked || loading}
+              isLoading={loading}
+              error={isCodeCorrect === false}
+              isDark={isDark}
+              showSeparators={true}
+              className="h-[46px] xs:h-[57px] sm:h-[65.33px] gap-2 xs:gap-1"
+            />
           </div>
 
           {errors.verificationCode && <p className="mb-5 text-sm text-errorColor">{errors.verificationCode.message}</p>}
 
           {isCodeCorrect === false && (
-            <p className="mt-2 text-sm text-errorColor">Código incorrecto. Intenta de nuevo.</p>
+            <p className="text-sm text-errorColor">Código incorrecto. Intenta de nuevo.</p>
           )}
 
           {loading && (
@@ -193,48 +156,17 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
             </div>
           )}
 
-          <div className="my-5 flex flex-col-reverse items-center justify-evenly gap-5 text-buttonsLigth dark:text-darkText xs:flex-row">
+          <div className="flex flex-col-reverse items-center justify-evenly gap-5 text-buttonsLigth dark:text-darkText xs:flex-row">
             <ButtonBack route="/es/centro-de-ayuda" isDark={isDark} />
 
-            {reLoading ? (
-              <div className="flex min-w-[150px] items-center justify-center">
-                <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="50px" />
-              </div>
-            ) : timer > 0 ? (
-              <button
-                type="button"
-                onClick={resendCode}
-                disabled={reLoading || timer > 0 || loading}
-                className={`${
-                  isDark
-                    ? reLoading || timer > 0 || loading
-                      ? 'buttonSecondDarkDisabled'
-                      : 'buttonSecondDark'
-                    : reLoading || timer > 0 || loading
-                      ? 'buttonSecondDisabled'
-                      : 'buttonSecond'
-                } flex h-[42px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-darkText disabled:border-disabledButtonsLigth disabled:bg-disabledButtonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText disabled:dark:border-disabledButtonsDark disabled:dark:bg-disabledButtonsDark`}
-              >
-                Reenviar en {timer}s
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={resendCode}
-                disabled={reLoading || timer > 0 || loading}
-                className={`${
-                  isDark
-                    ? reLoading || timer > 0 || loading
-                      ? 'buttonSecondDarkDisabled'
-                      : 'buttonSecondDark'
-                    : reLoading || timer > 0 || loading
-                      ? 'buttonSecondDisabled'
-                      : 'buttonSecond'
-                } flex h-[42px] min-w-[150px] items-center justify-center rounded-3xl border border-buttonsLigth bg-buttonsLigth p-3 font-bold text-darkText disabled:border-disabledButtonsLigth disabled:bg-disabledButtonsLigth dark:border-darkText dark:bg-darkText dark:text-lightText disabled:dark:border-disabledButtonsDark disabled:dark:bg-disabledButtonsDark`}
-              >
-                Reenviar código
-              </button>
-            )}
+            <AuthButton
+              label={timer > 0 ? `Reenviar en ${timer}s` : 'Reenviar código'}
+              onClick={resendCode}
+              disabled={reLoading || timer > 0 || loading}
+              loading={reLoading}
+              isDark={isDark}
+              className="min-w-[150px]"
+            />
           </div>
         </form>
       </div>

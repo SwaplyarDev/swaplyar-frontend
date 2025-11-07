@@ -40,7 +40,7 @@ const EditSoli = () => {
         </div>
 
         <div className="flex w-full flex-col md:max-w-[792px] md:flex-row md:items-center md:gap-4">
-          <div className={`relative hidden min-h-full w-full items-center justify-center md:block`}>
+          <div className={`relative hidden min-h-full w-full max-w-fit items-center justify-center md:block`}>
             <Image
               src={EditorPC}
               alt="regretsPc"
