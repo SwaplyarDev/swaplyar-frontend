@@ -8,8 +8,8 @@ interface FraudDesktopProps {
 
 const FraudDesktop: React.FC<FraudDesktopProps> = ({ selectedTextIndex, handleButtonClick, isAnimating }) => {
   return (
-    <section className="hidden w-[100%] flex-row gap-20 lg:flex">
-      <article className="hidden w-[85%] select-none flex-col items-start gap-4 pt-5 text-2xl lg:flex">
+    <section className="hidden w-[100%] md:flex md:flex-col md:gap-4 lg:flex-row lg:gap-[102px] lg:flex">
+      <article className="hidden w-full md:flex md:flex-col md:items-start md:gap-2 md:pt-2 lg:w-[388px] lg:flex-col lg:pt-5 select-none items-start gap-4 text-2xl lg:flex">
         {mockTexts.map((mock, key) => (
           <button
             key={key}
@@ -22,13 +22,13 @@ const FraudDesktop: React.FC<FraudDesktopProps> = ({ selectedTextIndex, handleBu
           </button>
         ))}
       </article>
-      <article className="hidden w-[100%] flex-col items-start gap-5 lg:flex">
-        <h2 className="w-[100%] self-center border-t-[1px] border-[#012A8E] p-2 text-start text-3xl font-normal dark:border-[#EBE7E0]">
+      <article className="hidden w-full md:flex md:w-[656px]  md:mx-auto lg:w-[592px]  flex-col items-start gap-5 lg:flex">
+        <h2 className="w-[100%] self-center  md:border-t-0 lg:border-t-[1px] border-[#012A8E] p-2 text-start text-3xl font-normal dark:border-[#EBE7E0]">
           {mockTexts[selectedTextIndex]?.mainTitle}
         </h2>
         {selectedTextIndex !== null ? (
           <section
-            className={`duration-5 00 max-w-[518px] shrink-0 self-end transition-all ease-in-out ${
+            className={`duration-5 00 max-w-[538px] shrink-0 self-end transition-all ease-in-out ${
               isAnimating ? 'max-h-0 opacity-0' : 'max-h-[100%] opacity-100'
             } flex flex-col gap-5 overflow-hidden rounded-2xl bg-[#EEEAE3] p-5 text-base dark:bg-[#4B4B4B]`}
           >

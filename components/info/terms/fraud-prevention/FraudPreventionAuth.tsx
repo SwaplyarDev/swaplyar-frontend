@@ -21,7 +21,7 @@ const FraudPreventionAuth = () => {
       <AnimatedBlurredCircles tope="top-[40px]" />
       <h1 className="self-center text-center text-4xl font-medium">Concientización sobre el fraude</h1>
 
-      <section className="flex min-h-[100vh] w-[80%] max-w-[60.375rem] flex-col gap-2 lg:flex-row lg:gap-20">
+      <section className="flex w-[358px] md:w-[656px] lg:w-[1000px] mx-[56px] flex-col gap-2 md:gap-2 lg:flex-row lg:gap-20">
         <FraudMobile
           isAnimating={isAnimating}
           selectedTextIndex={selectedTextIndex}
