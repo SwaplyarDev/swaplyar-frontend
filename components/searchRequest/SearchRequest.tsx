@@ -12,6 +12,8 @@ import ButtonBack from '../ui/ButtonBack/ButtonBack';
 import { FlyerGif, searchRequestMovile, searchRequestWeb } from '@/utils/assets/imgDatabaseCloudinary';
 import ButtonAuth from '../auth/AuthButton';
 import PopUp from '../ui/PopUp/PopUp';
+import AnimatedBlurredCircles from '../ui/animations/AnimatedBlurredCircles';
+import BottomBorderInput from '../ui/Input/BottomBorderInput';
 
 interface SearchResponse {
   ok: boolean;
@@ -85,7 +87,7 @@ const SearchRequest = () => {
 
     const currentStatus = history[history.length - 1]?.status as AdminStatus;
     const dynamicTitle = (currentStatus === AdminStatus.Completed || currentStatus === AdminStatus.Refunded)
-      ? 'Solicitud Finalizada' 
+      ? 'Solicitud Finalizada'
       : 'Solicitud en Proceso';
 
     PopUp({
@@ -143,93 +145,98 @@ const SearchRequest = () => {
   };
 
   return (
-    <div className='mt-20'>
-      <div className="mx-auto flex w-full max-w-screen-lg flex-col px-4 py-8 md:gap-4 md:px-8 lg2:px-0">
-        <div className="flex flex-col items-center justify-center">
-          <h1 className="flex h-auto w-full max-w-[505px] items-center justify-center text-center font-titleFont text-[38px] font-medium text-lightText dark:text-darkText lg2:text-[40px]">
-            Consulta el estado de tu solicitud fácilmente
-          </h1>
+    <>
+      <div className='my-[60px] lg2:my-[120px]'>
+        <AnimatedBlurredCircles tope="top-[124px]" />
+        <div className="mx-auto flex w-full max-w-screen-lg flex-col px-4 md:gap-4 md:px-8 lg2:px-0">
+          <div className="flex flex-col items-center justify-center gap-2">
+            <div className="mx-auto mt-10 md:mt-[90px] flex min-h-full w-full max-w-[506px] flex-wrap justify-center md:hidden">
+              <Image
+                className="h-[150px] w-[150px] drop-shadow-light dark:drop-shadow-darkmode"
+                src={searchRequestMovile}
+                alt="SwaplyAr Search Request Mobile™"
+                width={300}
+                height={300}
+              />
+              <div
+                className={`min-w-full flex-wrap justify-center border-t-2 lg2:hidden ${isDark ? 'border-t-white' : 'border-t-buttonsLigth'}`}
+              ></div>
+            </div>
+            <h1 className="mx-auto max-w-[506px] text-center font-titleFont text-3.5xl leading-[120%] md:text-[40px] font-medium md:max-w-[704px]">
+              Consulta el estado de tu solicitud fácilmente
+            </h1>
 
-          <p className="mt-10 flex h-auto w-full max-w-[505px] items-center justify-center text-center font-textFont font-light text-custom-grayD-1000 dark:text-custom-grayD-100 lg2:max-w-[592px]">
-            Ingresa el Número de Solicitud y el Apellido tal como figura en el correo electrónico enviado para verificar
-            el estado actual de tu solicitud de manera rápida y precisa.
-          </p>
+            <p className="mx-auto max-w-[679px] text-center font-textFont font-light lg2:max-w-[792px]">
+              Ingresa el Número de Solicitud y el Apellido tal como figura en el correo electrónico enviado para verificar
+              el estado actual de tu solicitud de manera rápida y precisa.
+            </p>
 
-          <p className="mt-10 flex h-auto w-full max-w-[515px] items-center justify-center text-left font-textFont text-[21px] font-light text-custom-grayD-1000 dark:text-custom-grayD-100 md:text-center lg2:max-w-full">
-            Introduce los datos exactamente como aparecen en el correo electrónico enviado.
-          </p>
-        </div>
-
-        <section className="relative mx-auto mt-[38px] flex min-h-[500px] w-full max-w-[1047px] flex-col items-center justify-center">
-          <Image
-            className="hidden w-[680px] drop-shadow-light dark:drop-shadow-darkmode lg2:block lg2:absolute lg2:left-0 lg2:top-0"
-            src={searchRequestWeb}
-            alt="SwaplyAr Search Request™"
-            width={680}
-            height={700}
-          />
-          <div className="flex w-full max-w-[506px] flex-col items-center border-b border-buttonsLigth dark:border-darkText lg2:hidden">
-            <Image
-              className="h-[200px] w-[200px] drop-shadow-light dark:drop-shadow-darkmode"
-              src={searchRequestMovile}
-              alt="SwaplyAr Search Request Mobile™"
-              width={300}
-              height={300}
-            />
+            <p className="mt-2 md:mb-2 w-full font-textFont text-center font-light md:text-xl lg2:mx-auto lg2:max-w-[637px]">
+              Introduce los datos exactamente como aparecen en el correo electrónico enviado.
+            </p>
           </div>
 
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex w-[490px] h-[180px] flex-col items-center gap-4  lg2:absolute lg2:right-0 lg2:top-[20px] lg2:mt-0"
-          >
-            <div className="flex h-[50px] w-full flex-col ">
-            
-              <InputOnlyLine
-                placeholder={
-                  errors.transactionId ? 'Número de Solicitud*' : 'N° de Solicitud'
-                }
-                id="numberOfRequest"
-                register={register('transactionId', { required: 'El Número de Solicitud es Obligatorio' })}
+          <section className="relative flex w-full flex-col items-center lg2:flex-row lg2:justify-end lg2:items-start lg2:h-[520px]">
+            <div className={`relative mt-2 hidden w-[302px] md:w-[508px] lg2:w-[714px] items-center justify-center md:block lg2:absolute lg2:top-0 lg2:left-0`}>
+              <Image
+                className="w-[680px] drop-shadow-light dark:drop-shadow-darkmode"
+                src={searchRequestWeb}
+                alt="SwaplyAr Search Request™"
+                width={680}
+                height={700}
+              />
+            </div>
+
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="w-full flex h-[180px] flex-col items-center gap-5 lg2:max-w-[490px]"
+            >
+              <BottomBorderInput
+                label="Número de Solicitud"
+                type="text"
+                name="transactionId"
+                register={register}
+                validation={{
+                  required: 'El Número de Solicitud es Obligatorio',
+                }}
                 error={errors.transactionId?.message}
               />
-            </div>
-
-            <div className="flex h-[50px] w-full flex-col">
               
-              <InputOnlyLine
-                placeholder={errors.lastNameRequest ? 'Apellido*' : 'Apellido'}
-                id="lastNameRequest"
-                register={register('lastNameRequest', { required: 'El Apellido es Obligatorio' })}
+              <BottomBorderInput
+                label="Apellido"
+                type="text"
+                name="lastNameRequest"
+                register={register}
+                validation={{
+                  required: 'El Apellido es Obligatorio',
+                }}
                 error={errors.lastNameRequest?.message}
               />
-            </div>
 
-            <div className="flex h-[50px] w-full flex-row items-center justify-between">
-              <ButtonBack route="/es/centro-de-ayuda" isDark={isDark} className="!mx-0" />
-              <ButtonAuth
-                label="Buscar Solicitud"
-                type="submit"
-                isDark={isDark}
-                loading={loading}
-                disabled={!isValid || loading}
-                className="w-[408px]"
-                variant="primary"
-              />
-            </div>
-           
-          </form>
-        </section>
-      </div>
+              <div className="w-full flex flex-row items-center justify-between gap-4 md:mt-4 md:justify-center">
+                <ButtonBack route="/es/centro-de-ayuda" isDark={isDark} className="!mx-0" />
+                <ButtonAuth
+                  label="Buscar Solicitud"
+                  type="submit"
+                  isDark={isDark}
+                  loading={loading}
+                  disabled={!isValid || loading}
+                  className='w-[272px] md:w-[394px]'
+                  variant="primary"
+                />
+              </div>
 
-      <div className="mt-10">
-        <FlyerTrabajo
-          imageSrc={FlyerGif}
-          href="/es/registro"
-          description="Crea tu cuenta para hacer seguimiento de tus solicitudes en tiempo real"
-          nameButton="Crear mi cuenta"
-        />
+            </form>
+          </section>
+        </div>
       </div>
-    </div>
+      <FlyerTrabajo
+        imageSrc={FlyerGif}
+        href="/es/registro"
+        description="Crea tu cuenta para hacer seguimiento de tus solicitudes en tiempo real"
+        nameButton="Crear mi cuenta"
+      />
+    </>
   );
 };
 
