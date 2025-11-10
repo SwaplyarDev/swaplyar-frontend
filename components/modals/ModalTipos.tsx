@@ -1,6 +1,6 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import { fetchCode, fetchTransactionById, sendFormData } from '@/actions/editRequest/editRequest.action';
+import React, { useState } from 'react';
+import { sendFormData } from '@/actions/editRequest/editRequest.action';
 import clsx from 'clsx';
 import PopUp from '../ui/PopUp/PopUp';
 import { IconWarning } from '../ui/PopUp/Icons';
@@ -12,103 +12,58 @@ interface ModalProps {
   isDark: boolean;
   isOpen: boolean;
   onClose: () => void;
-  title?: string;
-  children?: React.ReactNode;
-  transaccionId?: string;
+  transaccionId: string;
   code: string;
+  transactionData: any; // viene desde VerifycodeEditRequest
+  noteAccessToken: string | null;
 }
 
-
-const Modal1 = ({ isOpen, onClose, isDark, transaccionId, code }: ModalProps) => {
+const Modal1: React.FC<ModalProps> = ({
+  isDark,
+  isOpen,
+  onClose,
+  transaccionId,
+  code,
+  transactionData,
+  noteAccessToken,
+}) => {
   const [files, setFiles] = useState<File[]>([]);
-  const [transactionData, setTransactionData] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [note, setNote] = useState<string>('');
+  const [note, setNote] = useState('');
   const [isFocused, setIsFocused] = useState(false);
-  const [noteAccessToken, setNoteAccessToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (transaccionId && code.length === 6) {
-        setLoading(true);
-        const data = await fetchCode(code, { transactionId: transaccionId });
-        /* El data que viene del fetch code no coincide con los datos que tengo que renderizar de data */
-        console.log('data', data)
-        setTransactionData(data.data);
-        setNoteAccessToken(data.noteAccessToken);
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [transaccionId, code]);
-
-
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedSection, setSelectedSection] = useState<'datos_envio' | 'datos_recepcion' | 'monto' | null>(null);
   if (!isOpen) return null;
 
-  return (
-    <Modal1Content
-      isOpen={isOpen}
-      onClose={onClose}
-      isDark={isDark}
-      transaccionId={transaccionId}
-      code={code}
-      transactionData={transactionData}
-      files={files}
-      setFiles={setFiles}
-      note={note}
-      setNote={setNote}
-      isFocused={isFocused}
-      setIsFocused={setIsFocused}
-      noteAccessToken={noteAccessToken}
-      loading={loading}
-      setLoading={setLoading}
-    />
-  );
-};
-
-interface Modal1Props extends ModalProps {
-  transactionData: any;
-  files: File[];
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>
-  note: string;
-  setNote: React.Dispatch<React.SetStateAction<string>>;
-  isFocused: boolean;
-  setIsFocused: React.Dispatch<React.SetStateAction<boolean>>;
-  noteAccessToken: string | null;
-  loading: boolean;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transaccionId, code, transactionData, files, setFiles, note, setNote, isFocused, setIsFocused, noteAccessToken, loading, setLoading }) => {
-
-  const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setNote(event.target.value);
+  /** 📝 Handlers */
+  const handleNoteChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNote(e.target.value);
   };
-  const handleEditRequestError = () =>
-    PopUp({
-      variant: 'simple-warning',
-      title: 'Algunos de los datos son incorrectos por favor verifique los datos ingresados e intente nuevamente',
-      isDark: isDark,
-    });
 
-  const handleEditRequestSuccess = () =>
-    PopUp({
-      variant: 'success-compact',
-      title: 'Solicitud enviada con Éxito',
-      text: 'Hemos recibido su solicitud de modificación. Si necesitamos información adicional, nos comunicaremos por WhatsApp al número indicado en el formulario.',
-      isDark: isDark,
-    });
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newFiles = Array.from(event.target.files || []);
 
+    const newPreviews = newFiles
+      .map((file) => (file.type.startsWith('image/') ? URL.createObjectURL(file) : null))
+      .filter(Boolean) as string[];
+
+    setFiles((prev) => [...prev, ...newFiles]);
+    setPreviewImages((prev) => [...prev, ...newPreviews]);
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+    setPreviewImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  /** Envío del formulario */
   const handleFormSubmit = async () => {
-    console.log('Datos a enviar en el submittt:', {
-      note,
-      transaccionId,
-      noteAccessToken,
-      files,
-    });
-
     if (!note || !transaccionId) {
-      handleEditRequestError();
+      PopUp({
+        variant: 'simple-warning',
+        title: 'Por favor, complete la nota antes de enviar.',
+        isDark,
+      });
       return;
     }
 
@@ -118,220 +73,314 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
         message: note,
         files,
         transaccionId,
-        noteAccessToken: noteAccessToken ?? '', 
-        section: 'datos_envio',
+        noteAccessToken: noteAccessToken ?? '',
+        section: selectedSection || 'datos_envio',
       });
 
       console.log('✅ Enviado correctamente:', result);
-      handleEditRequestSuccess();
+      PopUp({
+        variant: 'success-compact',
+        title: 'Solicitud enviada con éxito',
+        text: 'Hemos recibido su solicitud de modificación. Si necesitamos más información, te contactaremos.',
+        isDark,
+      });
+
       onClose();
     } catch (error: any) {
       console.error('Error al enviar los datos:', error);
-
-      // 👇 Detectamos si viene un mensaje desde el backend
-      const backendMessage =
-        typeof error === 'object' && error.message
-          ? error.message
-          : 'Error desconocido al enviar la solicitud.';
-
       PopUp({
         variant: 'simple-error',
-        title: backendMessage, // 👈 lo mostramos dinámico
-        isDark: isDark,
+        title: error.message || 'Error desconocido al enviar la solicitud.',
+        isDark,
       });
-
+    } finally {
       setLoading(false);
     }
   };
+
+  /** 🧠 Render según método de pago */
   const PayMethodInfo: React.FC = () => {
-    const method = transactionData?.transaction?.receiverAccount?.paymentMethod?.method;
+    const method = transactionData?.receiverAccount?.paymentMethod?.method
+
     if (method === 'bank') {
       return (
-        <div className="flex justify-between text-sm xs-phone:text-base">
+        <div className="flex justify-between text-sm">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
-            <p>Nombre </p>
-            <p>Apellido </p>
-            <p>CBU / CVU / ALIAS </p>
-            <p>Nombre del Banco </p>
+            <p>Nombre</p>
+            <p>Apellido</p>
+            <p>CBU / CVU / ALIAS</p>
+            <p>Banco</p>
           </div>
           <div className="flex flex-col text-end text-lightText dark:text-darkText">
-            <p>{transactionData?.transaction?.receiverAccount?.firstName}</p>
-            <p>{transactionData?.transaction?.receiverAccount?.lastName}</p>
-            <p>{transactionData?.transaction?.receiverAccount?.paymentMethod?.sendMethodValue}</p>
-            <p>{transactionData?.transaction?.receiverAccount?.paymentMethod?.bankName}</p>
+            <p>{transactionData?.receiverAccount?.firstName}</p>
+            <p>{transactionData?.receiverAccount?.lastName}</p>
+            <p>{transactionData?.receiverAccount?.paymentMethod?.sendMethodValue}</p>
+            <p>{transactionData?.receiverAccount?.paymentMethod?.bankName}</p>
           </div>
         </div>
       );
-    } else if (method === 'receiver_crypto') {
-      return (
-        <div className="flex justify-between text-sm xs-phone:text-base">
-          <div className="flex flex-col text-start text-lightText dark:text-darkText">
-            <p>Dirección USDT </p>
-            <p>Red </p>
-          </div>
-          <div className="flex flex-col justify-between text-end text-lightText dark:text-darkText">
-            <p className="max-w-[250px] overflow-x-auto whitespace-nowrap scrollbar-thin">
-              {transactionData?.transaction?.receiverAccount?.paymentMethod?.wallet}
-            </p>
+    }
 
-            <p>{transactionData?.transaction?.receiverAccount?.paymentMethod?.network}</p>
+    if (method === 'receiver_crypto') {
+      return (
+        <div className="flex justify-between text-sm">
+          <div className="flex flex-col text-start text-lightText dark:text-darkText">
+            <p>Dirección USDT</p>
+            <p>Red</p>
+          </div>
+          <div className="flex flex-col text-end text-lightText dark:text-darkText">
+            <p>{transactionData?.receiverAccount?.paymentMethod?.wallet}</p>
+            <p>{transactionData?.receiverAccount?.paymentMethod?.network}</p>
           </div>
         </div>
       );
-    } else if (method === 'pix') {
+    }
+
+    if (method === 'pix') {
       return (
-        <div className="flex justify-between text-sm xs-phone:text-base">
+        <div className="flex justify-between text-sm">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
             <p>PIX KEY</p>
             <p>CPF</p>
           </div>
           <div className="flex flex-col text-end text-lightText dark:text-darkText">
-            <p>{transactionData?.transaction?.receiverAccount?.paymentMethod?.pixValue}</p>
-            <p>{transactionData?.transaction?.receiverAccount?.paymentMethod?.cpf}</p>
+            <p>{transactionData?.receiverAccount?.paymentMethod?.pixValue}</p>
+            <p>{transactionData?.receiverAccount?.paymentMethod?.cpf}</p>
           </div>
         </div>
       );
-    } else if (method === 'virtual_bank') {
+    }
+
+    if (method === 'virtual_bank') {
       return (
-        <div className="flex justify-between text-sm xs-phone:text-base">
+        <div className="flex justify-between text-sm">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
             <p>Correo electrónico</p>
           </div>
           <div className="flex flex-col text-end text-lightText dark:text-darkText">
-            <p>{transactionData?.transaction?.receiverAccount?.paymentMethod?.emailAccount}</p>
+            <p>{transactionData?.receiverAccount?.paymentMethod?.emailAccount}</p>
           </div>
         </div>
       );
-    } else {
-      console.error('No fue recibido el método', new Error());
-      return null;
     }
+
+    return <p className="text-center text-sm text-lightText dark:text-darkText">Método no reconocido.</p>;
   };
+
+  /** 🧱 Render principal */
   return (
-    <div className="fixed inset-0 left-0 right-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      onClick={onClose}
+    >
       <div
-        style={{ top: '0px', bottom: '64px' }}
-        className="relative mt-24 w-full max-w-[350px] xs-phone:max-w-[510px] xl-desktop:max-w-[556px] rounded-lg bg-[#FFF] p-6 shadow-lg dark:bg-[#333231]"
+        className="relative mt-24 w-full max-w-[350px] xs:max-w-[510px] xl:max-w-[556px] rounded-lg bg-white p-6 shadow-lg dark:bg-[#333231]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className='flex h-10'>
-          <div className='absolute left-2 top-2'>
+        <div className="flex h-10">
+          <div className="absolute left-2 top-2">
             <IconWarning size={70} />
           </div>
-          <h2 className="w-full text-center font-textFont text-lg xs-phone:text-xl font-semibold text-custom-blue dark:text-darkText">
+          <h2 className="w-full text-center font-textFont text-lg font-semibold text-custom-blue dark:text-darkText">
             Solicitud N° {transaccionId}
           </h2>
         </div>
 
         <div className="flex flex-col gap-3 overflow-y-auto scrollbar">
-          <section className="flex flex-col">
-            <h3 className="flex justify-center font-textFont font-semibold xs-phone:text-lg text-buttonsLigth dark:text-darkText">Mis Datos</h3>
-            <div className="flex justify-between text-sm xs-phone:text-base">
-              <div className="flex flex-col text-start font-textFont font-light text-lightText dark:text-darkText">
-                <p>Nombre </p>
-                <p>Apellido </p>
-                <p>N° de Teléfono </p>
+          {/* DATOS DEL USUARIO */}
+          <section>
+            <div className="flex items-center justify-between">
+              <h3 className="text-center font-semibold text-buttonsLigth dark:text-darkText">
+                Mis Datos
+              </h3>
+              <label className="relative flex items-center cursor-pointer">
+                <input
+                  type="radio"
+                  name="section"
+                  value="datos_envio"
+                  checked={selectedSection === 'datos_envio'}
+                  onChange={() => setSelectedSection('datos_envio')}
+                  className="peer sr-only"
+                />
+                <div
+                  className={clsx(
+                    'w-4 h-4 rounded-full border transition-all duration-200',
+                    selectedSection === 'datos_envio'
+                      ? 'border-custom-blue'
+                      : 'border-gray-400 dark:border-gray-500'
+                  )}
+                >
+                  <div
+                    className={clsx(
+                      'absolute inset-0 m-auto w-2 h-2 rounded-full transition-opacity duration-200',
+                      selectedSection === 'datos_envio'
+                        ? 'bg-custom-blue opacity-100'
+                        : 'opacity-0'
+                    )}
+                  ></div>
+                </div>
+              </label>
+            </div>
+            <div className="flex justify-between text-sm">
+              <div className="flex flex-col text-start text-lightText dark:text-darkText">
+                <p>Nombre</p>
+                <p>Apellido</p>
+                <p>Teléfono</p>
               </div>
-              <div className="flex flex-col text-end font-textFont font-light text-lightText dark:text-darkText">
-                <p>{transactionData?.transaction?.senderAccount?.firstName}</p>
-                <p>{transactionData?.transaction?.senderAccount?.lastName}</p>
-                <p>{transactionData?.transaction?.senderAccount?.phoneNumber}</p>
+              <div className="flex flex-col text-end text-lightText dark:text-darkText">
+                <p>{transactionData?.senderAccount?.firstName}</p>
+                <p>{transactionData?.senderAccount?.lastName}</p>
+                <p>{transactionData?.senderAccount?.phoneNumber}</p>
               </div>
             </div>
-            <div className='w-2/3 h-[1px] bg-custom-blue self-center' />
+            <div className="w-2/3 h-[1px] bg-custom-blue self-center" />
           </section>
 
-          <section className="flex flex-col">
-            <h3 className="flex justify-center font-textFont font-semibold xs-phone:text-lg text-buttonsLigth dark:text-darkText">
-              información del Destinatario
-            </h3>
-
+          {/* DATOS DEL DESTINATARIO */}
+          <section>
+            <div className="flex items-center justify-between">
+              <h3 className="text-center font-semibold text-buttonsLigth dark:text-darkText">
+                Información del Destinatario
+              </h3>
+              <label className="relative flex items-center cursor-pointer">
+                <input
+                  type="radio"
+                  name="section"
+                  value="datos_recepcion"
+                  checked={selectedSection === 'datos_recepcion'}
+                  onChange={() => setSelectedSection('datos_recepcion')}
+                  className="peer sr-only"
+                />
+                <div
+                  className={clsx(
+                    'w-4 h-4 rounded-full border transition-all duration-200',
+                    selectedSection === 'datos_recepcion'
+                      ? 'border-custom-blue'
+                      : 'border-gray-400 dark:border-gray-500'
+                  )}
+                >
+                  <div
+                    className={clsx(
+                      'absolute inset-0 m-auto w-2 h-2 rounded-full transition-opacity duration-200',
+                      selectedSection === 'datos_recepcion'
+                        ? 'bg-custom-blue opacity-100'
+                        : 'opacity-0'
+                    )}
+                  ></div>
+                </div>
+              </label>
+            </div>
             <PayMethodInfo />
-            <div className='w-2/3 h-[1px] bg-custom-blue self-center' />
+            <div className="w-2/3 h-[1px] bg-custom-blue self-center" />
           </section>
 
-          <section className="flex flex-col">
-            <h3 className="flex justify-center font-textFont font-semibold xs-phone:text-lg text-buttonsLigth dark:text-darkText">Pago</h3>
-            <div className="flex justify-between text-sm xs-phone:text-base">
+          {/* DATOS DEL PAGO */}
+          <section>
+            <div className="flex items-center justify-between">
+              <h3 className="text-center font-semibold text-buttonsLigth dark:text-darkText">
+                Pago
+              </h3>
+              <label className="relative flex items-center cursor-pointer">
+                <input
+                  type="radio"
+                  name="section"
+                  value="monto"
+                  checked={selectedSection === 'monto'}
+                  onChange={() => setSelectedSection('monto')}
+                  className="peer sr-only"
+                />
+                <div
+                  className={clsx(
+                    'w-4 h-4 rounded-full border transition-all duration-200',
+                    selectedSection === 'monto'
+                      ? 'border-custom-blue'
+                      : 'border-gray-400 dark:border-gray-500'
+                  )}
+                >
+                  <div
+                    className={clsx(
+                      'absolute inset-0 m-auto w-2 h-2 rounded-full transition-opacity duration-200',
+                      selectedSection === 'monto'
+                        ? 'bg-custom-blue opacity-100'
+                        : 'opacity-0'
+                    )}
+                  ></div>
+                </div>
+              </label>
+            </div>
+            <div className="flex justify-between text-sm">
               <div className="flex flex-col text-start text-lightText dark:text-darkText">
-                <p>Monto a Pagar </p>
-                <p>Monto a Recibir </p>
+                <p>Monto a Pagar</p>
+                <p>Monto a Recibir</p>
               </div>
               <div className="flex flex-col text-end text-lightText dark:text-darkText">
                 <p>
-                  {transactionData?.transaction?.amount?.amountSent}{' '}
-                  {transactionData?.transaction?.amount?.currencySent}
+                  {transactionData?.amount?.amountSent} {transactionData?.amount?.currencySent}
                 </p>
                 <p>
-                  {transactionData?.transaction?.amount?.amountReceived}{' '}
-                  {transactionData?.transaction?.amount?.currencyReceived}
+                  {transactionData?.amount?.amountReceived} {transactionData?.amount?.currencyReceived}
                 </p>
               </div>
             </div>
-            <div className='w-2/3 h-[1px] bg-custom-blue self-center' />
+            <div className="w-2/3 h-[1px] bg-custom-blue self-center" />
           </section>
 
+          {/* NOTA Y ARCHIVOS */}
           <section>
-            <p className="flex h-1/2 flex-col dark:text-darkText">
-              <div className="text-start font-textFont text-sm leading-3">
-                <span className="mr-1 font-semibold text-custom-blue">Nota:</span>
-                <span className="text-start text-xs font-light">
-                  Indique la sección que desea modificar y adjunte el comprobante correcto si el anterior fue enviado por error.
-                </span>
-              </div>
-            </p>
-          </section>
+            <div className="text-start text-sm dark:text-darkText">
+              <span className="mr-1 font-semibold text-custom-blue">Nota:</span>
+              <span className="text-xs font-light">
+                Indique la sección que desea modificar y adjunte el comprobante correcto.
+              </span>
+            </div>
 
-          <section>
             <FileUpload
-              files={files}
-              setFiles={setFiles}
+              label="Comprobantes"
+              handleChange={handleFileChange}
+              previewImages={previewImages}
+              onRemoveImage={handleRemoveImage}
               isDark={isDark}
               accept=".png,.jpg,.jpeg,.pdf"
               maxFiles={5}
               showPreview
             />
 
-            <label
-              htmlFor="note"
-              className={clsx(
-                'font-textFont font-light text-lightText dark:text-darkText',
-                !isFocused && 'opacity-0',
-                'w-full pl-3 text-start text-sm',
-              )}
-            >
-              Necesito Modificar...
-            </label>
             <textarea
-              rows={1}
+              rows={2}
               id="note"
-              className={`w-full block h-[45px] resize-none rounded-2xl border border-inputLightDisabled px-3 py-2 placeholder-inputLightDisabled hover:border-inputLight hover:placeholder-inputLight focus:placeholder-transparent dark:border-transparent dark:text-lightText dark:placeholder-placeholderDark dark:hover:border-lightText hover:dark:border-transparent dark:hover:placeholder-lightText focus:dark:border-transparent focus:dark:ring-transparent`}
-              placeholder={isFocused ? '' : 'Necesito Modificar...'}
+              className={clsx(
+                'w-full mt-3 rounded-2xl border border-inputLightDisabled px-3 py-2 text-sm',
+                'text-lightText dark:text-lightText'
+              )}
+              placeholder="Necesito modificar..."
+              value={note}
               onChange={handleNoteChange}
-              required
-              minLength={20}
-              maxLength={200}
               onFocus={() => setIsFocused(true)}
               onBlur={(e) => setIsFocused(e.target.value !== '')}
-            ></textarea>
+            />
           </section>
 
+          {/* BOTONES */}
           <div className="mt-4 flex flex-col-reverse justify-between xs:flex-row">
             <button
               onClick={onClose}
-              className="btn-back items-center relative flex h-[38px] sm-phone:h-12 rounded-full hover:bg-transparent dark:text-darkText dark:bg-none"
+              className="flex items-center h-[38px] rounded-full dark:text-darkText"
             >
-              <div className="relative size-8 sm-phone:size-12 overflow-hidden content-center">
-                <ChevronLeft
-                  color={isDark ? '#ebe7e0' : '#012c8a'}
-                  width={32}
-                  height={32}
-                  strokeWidth={2}
-                  className="inline-block sm-phone:size-10"
-                />
-              </div>
+              <ChevronLeft
+                color={isDark ? '#ebe7e0' : '#012c8a'}
+                width={32}
+                height={32}
+                strokeWidth={2}
+              />
             </button>
-            <ButtonAuth disabled={!note} label='Solicitar Modificación' isDark={isDark} onClick={handleFormSubmit} className='px-6 sm-phone:px-14 max-h-8 sm-phone:max-h-10 xl-desktop:max-h-11' />
+
+            <ButtonAuth
+              disabled={!note || loading}
+              label={loading ? 'Enviando...' : 'Solicitar Modificación'}
+              isDark={isDark}
+              onClick={handleFormSubmit}
+              className="px-6 sm:px-14 max-h-8 sm:max-h-10"
+            />
           </div>
         </div>
       </div>
