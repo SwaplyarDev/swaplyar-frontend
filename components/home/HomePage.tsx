@@ -18,9 +18,9 @@ export default function HomePage() {
   }, [resetToDefault]);
 
   return (
-    <div className="relative top-[120px]">
+    <>
       <AnimatedBlurredCircles tope="top-[-175px]" />
-      <section className="mx-auto w-full max-w-[1204px] overflow-hidden px-4 md:px-8 lg:px-4">
+      <section className="mx-auto w-full max-w-[1204px] overflow-hidden px-4 md:px-8 lg:px-4 my-[60px] md:mt-[120px] md:mb-[80px] lg:mt-[150px] lg:mb-[250px]">
         <article className="m-auto flex w-full flex-col items-center justify-center">
           <div className="mt-0 flex w-full flex-col items-center justify-center">
             <ConversionInstructions />
@@ -79,7 +79,7 @@ export default function HomePage() {
           </div>
         </article>
         <Recommendations />
-        <div className="mt-20 flex flex-col gap-[14px] text-center font-textFont hidden sm:block">
+        <div className="mt-20 flex-col gap-[14px] text-center font-textFont hidden sm:flex">
           <p className="font-light">Descubre por qué SwaplyAr es la clave que necesitas.</p>
           <Link
             href="/es/por-que-elegir-swaplyar"
@@ -97,6 +97,6 @@ export default function HomePage() {
           nameButton="¡Empieza ahora!"
         />
       </section>
-    </div>
+    </>
   );
 }

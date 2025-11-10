@@ -49,7 +49,7 @@ export const VerifyCodePage = () => {
 
   const isLocked = lockUntil && lockUntil > Date.now();
   //empieza en 0 para que el temporizador no inicie automaticamente
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(0);
   //condicional para disparar el temporizador
   const [startTimer, setStartTimer] = useState(true);
 
