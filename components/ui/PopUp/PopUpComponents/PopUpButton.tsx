@@ -27,23 +27,22 @@ export const PopUpButton: React.FC<PopUpButtonProps> = ({
   const getVariantStyles = () => {
     switch (variant) {
       case 'cancel':
-        return 'bg-errorColor border-errorColorDark !shadow-errorColorDark text-white hover:bg-red-700 dark:bg-errorColorDark dark:border-errorColorDark dark:hover:bg-errorColorDark/90 dark:text-white';
+        return `bg-errorColor border-errorColorDark !shadow-errorColorDark text-white hover:bg-red-700 dark:bg-errorColorDark dark:border-errorColorDark dark:hover:bg-errorColorDark/90 dark:text-white ${isDark ? 'buttonCancelDark' : 'buttonCancel'}`;
       case 'whatsapp':
-        return 'bg-[#25D366] border-[#25D366] !shadow-[#25D366] text-white hover:bg-[#20BD5A] dark:bg-[#25D366] dark:border-[#25D366] dark:text-white';
+        return `bg-[#25D366] border-[#25D366] !shadow-[#25D366] text-white hover:bg-[#20BD5A] dark:bg-[#25D366] dark:border-[#25D366] dark:text-white ${isDark ? 'buttonWhatsappDark' : 'buttonWhatsapp'}`;
       case 'default':
       default:
         return isDark 
-          ? 'border-darkText bg-darkText text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText'
-          : 'border-buttonsLigth bg-buttonsLigth text-white dark:border-darkText dark:bg-darkText dark:text-lightText';
+          ? 'buttonSecondDark border-darkText bg-darkText text-lightText dark:border-darkText dark:bg-darkText dark:text-lightText'
+          : 'buttonSecond border-buttonsLigth bg-buttonsLigth text-white dark:border-darkText dark:bg-darkText dark:text-lightText';
     }
   };
 
   const baseClass = `
     relative flex items-center justify-center
-    rounded-3xl border p-3 m-[3px] font-textFont font-semibold
+    rounded-3xl border p-3 m-2 font-textFont font-semibold
     h-[38px] w-auto min-w-[196px] sm-phone:min-w-[246px] desktop:min-w-[296px] px-6
     sm:h-[45px] lg:h-[48px]
-    ${isDark ? 'buttonSecondDark' : 'buttonSecond'}
   `;
 
   const finalClass = clsx(baseClass, getVariantStyles(), className);
@@ -52,7 +51,8 @@ export const PopUpButton: React.FC<PopUpButtonProps> = ({
     <button onClick={() => {
       onClick();
       Swal.close();
-    }} className={finalClass}>
+    }} className={finalClass}
+    >
       <span className='text-sm sm-phone:text-lg'>{text}</span>
     </button>
   );

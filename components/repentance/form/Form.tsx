@@ -9,6 +9,10 @@ import AlertProcess from '../Alerts/AlertProcess';
 import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
 import ButtonAuth from '@/components/auth/AuthButton';
 import BottomBorderInput from '@/components/ui/Input/BottomBorderInput';
+import TextAreaContact from '@/components/ui/contact-form/TextAreaContact';
+import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
+import ShortButton from '@/components/ui/NewButtons/ShortButton';
+import AuthButton from '@/components/auth/AuthButton';
 
 const Form = () => {
   const [isFocused, setIsFocused] = useState(false);
@@ -49,7 +53,7 @@ const Form = () => {
     <form
       id="repentance-form"
       onSubmit={handleSubmit(handleFormSubmission)}
-      className="flex h-full w-full max-w-[490px] flex-col gap-4 md:mt-3"
+      className="flex h-full w-full flex-col gap-4 mt-3"
     >
       <BottomBorderInput
         label="Número de Solicitud"
@@ -132,20 +136,26 @@ const Form = () => {
         />
       </BottomBorderInput>
       <div>
-       
-          <textarea
-            {...register('note')}
-            maxLength={200}
-            className={clsx(
-              'inputChangeAutofill placeholder-text-gray-900 w-[490px] h-[120px] rounded-md border border-gray-300 p-3 text-xs placeholder:font-light focus:outline-none focus:ring-0 xs:text-lg resize-none',
-              isDark
-                ? 'border-darkText bg-transparent text-custom-blue-300 placeholder: dark:text-custom-blue-300 focus:border-darkText'
-                : 'border-buttonsLigth bg-transparent text-custom-blue-800 placeholder:text-custom-blue-800 focus:border-buttonsLigth focus:outline-none',
-              errors.note ? 'placeholder:text-errorColor' : 'placeholder:text-buttonExpandDark',
-            )}
-            placeholder="Mencione el motivo del Reembolso"
-          />
-       
+        <TextAreaContact
+          label="Mensaje (opcional)"
+          name="note"
+          register={register}
+          error={errors.note?.message}
+          rows={4}
+          className='bg-transparent'
+        />
+
+      </div>
+      <div className="w-full flex flex-row items-center justify-between gap-4 md:mt-4">
+        <ButtonBack route="/es/centro-de-ayuda" isDark={isDark} className='!mx-0' />
+        
+        <AuthButton
+          label='Solicitar Reembolso'
+          className='w-[272px] md:w-[394px]'
+          disabled={!isValid || isLoading}
+          isDark={isDark}
+          loading={isLoading}
+        />
       </div>
 
     </form>
