@@ -8,11 +8,11 @@ import { sectionTermsAndConditions } from '@/data/sectionTermsAndConditions';
 
 const TermsAndConditions: React.FC = () => {
   return (
-    <div className="relative mx-auto lg:mt-[55px] flex w-[clamp(320px,92vw,1026px)] max-w-screen-xl flex-col items-center py-10 text-custom-grayD px-4 md:px-8">
+    <div className="relative mx-auto  lg:mt-[55px] flex w-[clamp(320px,92vw,1026px)] max-w-screen-xl flex-col items-center py-10 text-custom-grayD px-4 md:px-8">
       <AnimatedBlurredCircles tope="top-[-1675px]" />
 
       <section className="flex flex-col items-center md:flex-row md:items-center lg:items-center gap-2 w-full">
-        <h1 className="flex-1 text-center max-w-[592px] w-full md:w-auto font-titleFont text-[28px] md:text-[40px] font-medium dark:text-darkText md:leading-tight">
+        <h1 className="flex-1 text-center max-w-[592px] mt-[10px] w-full md:w-auto font-titleFont text-[28px] md:text-[40px] font-medium dark:text-darkText md:leading-tight">
           Términos y condiciones de uso y navegación del sitio SwaplyAr
         </h1>
 
