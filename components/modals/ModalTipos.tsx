@@ -20,7 +20,7 @@ interface ModalProps {
 
 
 const Modal1 = ({ isOpen, onClose, isDark, transaccionId, code }: ModalProps) => {
-  const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
   const [transactionData, setTransactionData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [note, setNote] = useState<string>('');
@@ -42,7 +42,7 @@ const Modal1 = ({ isOpen, onClose, isDark, transaccionId, code }: ModalProps) =>
     fetchData();
   }, [transaccionId, code]);
 
-  
+
   if (!isOpen) return null;
 
   return (
@@ -53,8 +53,8 @@ const Modal1 = ({ isOpen, onClose, isDark, transaccionId, code }: ModalProps) =>
       transaccionId={transaccionId}
       code={code}
       transactionData={transactionData}
-      file={file}
-      setFile={setFile}
+      files={files}
+      setFiles={setFiles}
       note={note}
       setNote={setNote}
       isFocused={isFocused}
@@ -68,8 +68,8 @@ const Modal1 = ({ isOpen, onClose, isDark, transaccionId, code }: ModalProps) =>
 
 interface Modal1Props extends ModalProps {
   transactionData: any;
-  file: File | null;
-  setFile: React.Dispatch<React.SetStateAction<File | null>>;
+  files: File[];
+  setFiles: React.Dispatch<React.SetStateAction<File[]>>
   note: string;
   setNote: React.Dispatch<React.SetStateAction<string>>;
   isFocused: boolean;
@@ -79,15 +79,55 @@ interface Modal1Props extends ModalProps {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transaccionId, code, transactionData, file, setFile, note, setNote, isFocused, setIsFocused, noteAccessToken, loading, setLoading }) => {
+const Modal1Content: React.FC<Modal1Props> = ({
+  isOpen,
+  onClose,
+  isDark,
+  transaccionId,
+  code,
+  transactionData,
+  files,
+  setFiles,
+  note,
+  setNote,
+  isFocused,
+  setIsFocused,
+  noteAccessToken,
+  loading,
+  setLoading,
+}) => {
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
 
   const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNote(event.target.value);
   };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newFiles = Array.from(event.target.files || []);
+
+    const newPreviews = newFiles
+      .map((file) => {
+        if (file.type.startsWith('image/')) {
+          return URL.createObjectURL(file);
+        }
+        return null;
+      })
+      .filter(Boolean) as string[];
+
+    setFiles((prev) => [...prev, ...newFiles]);
+    setPreviewImages((prev) => [...prev, ...newPreviews]);
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+    setPreviewImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const handleEditRequestError = () =>
     PopUp({
       variant: 'simple-warning',
-      title: 'Algunos de los datos son incorrectos por favor verifique los datos ingresados e intente nuevamente',
+      title:
+        'Algunos de los datos son incorrectos, por favor verifique los datos ingresados e intente nuevamente.',
       isDark: isDark,
     });
 
@@ -100,6 +140,13 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
     });
 
   const handleFormSubmit = async () => {
+    console.log('Datos a enviar en el submittt:', {
+      note,
+      transaccionId,
+      noteAccessToken,
+      files,
+    });
+
     if (!note || !transaccionId) {
       handleEditRequestError();
       return;
@@ -107,47 +154,55 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
 
     try {
       setLoading(true);
-      await sendFormData({
+      const result = await sendFormData({
         message: note,
-        file: file,
-        transaccionId: transaccionId,
+        files,
+        transaccionId,
         noteAccessToken: noteAccessToken ?? '',
+        section: 'datos_envio',
+      });
+
+      console.log('✅ Enviado correctamente:', result);
+      handleEditRequestSuccess();
+      onClose();
+    } catch (error: any) {
+      console.error('Error al enviar los datos:', error);
+
+      const backendMessage =
+        typeof error === 'object' && error.message
+          ? error.message
+          : 'Error desconocido al enviar la solicitud.';
+
+      PopUp({
+        variant: 'simple-error',
+        title: backendMessage,
+        isDark: isDark,
       });
 
       setLoading(false);
-      handleEditRequestSuccess();
-      onClose();
-    } catch (error) {
-      console.error('Error al enviar los datos:', error);
-      PopUp({
-        variant: 'simple-error',
-        title: 'Algunos de los datos son incorrectos por favor verifique los datos ingresados e intente nuevamente',
-        isDark: isDark,
-      });
-      setLoading(false);
     }
   };
+
   const PayMethodInfo: React.FC = () => {
-    if (transactionData?.transaction?.payment_method?.receiver?.value === 'ars') {
+    const method = transactionData?.transaction?.receiverAccount?.paymentMethod?.method;
+    if (method === 'bank') {
       return (
         <div className="flex justify-between text-sm xs-phone:text-base">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
             <p>Nombre </p>
             <p>Apellido </p>
-            <p>DNI / CUIT / CUIL </p>
             <p>CBU / CVU / ALIAS </p>
             <p>Nombre del Banco </p>
           </div>
           <div className="flex flex-col text-end text-lightText dark:text-darkText">
-            <p>{transactionData?.transaction?.payment_method?.receiver?.details?.userAccount?.firstName}</p>
-            <p>{transactionData?.transaction?.payment_method?.receiver?.details?.userAccount?.lastName}</p>
-            <p>{transactionData?.transaction?.payment_method?.receiver?.details?.document_value}</p>
-            <p>{transactionData?.transaction?.payment_method?.receiver?.details?.senderMethodValue}</p>
-            <p>{transactionData?.transaction?.payment_method?.receiver?.details?.bankName}</p>
+            <p>{transactionData?.transaction?.receiverAccount?.firstName}</p>
+            <p>{transactionData?.transaction?.receiverAccount?.lastName}</p>
+            <p>{transactionData?.transaction?.receiverAccount?.paymentMethod?.sendMethodValue}</p>
+            <p>{transactionData?.transaction?.receiverAccount?.paymentMethod?.bankName}</p>
           </div>
         </div>
       );
-    } else if (transactionData?.transaction?.receiverAccount?.paymentMethod?.method === 'receiver_crypto') {
+    } else if (method === 'receiver_crypto') {
       return (
         <div className="flex justify-between text-sm xs-phone:text-base">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
@@ -158,12 +213,11 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
             <p className="max-w-[250px] overflow-x-auto whitespace-nowrap scrollbar-thin">
               {transactionData?.transaction?.receiverAccount?.paymentMethod?.wallet}
             </p>
-
             <p>{transactionData?.transaction?.receiverAccount?.paymentMethod?.network}</p>
           </div>
         </div>
       );
-    } else if (transactionData?.transaction?.receiverAccount?.paymentMethod?.method === 'pix') {
+    } else if (method === 'pix') {
       return (
         <div className="flex justify-between text-sm xs-phone:text-base">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
@@ -176,7 +230,7 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
           </div>
         </div>
       );
-    } else if (transactionData?.transaction?.receiverAccount?.paymentMethod?.method === 'virtual_bank') {
+    } else if (method === 'virtual_bank') {
       return (
         <div className="flex justify-between text-sm xs-phone:text-base">
           <div className="flex flex-col text-start text-lightText dark:text-darkText">
@@ -192,15 +246,19 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
       return null;
     }
   };
+
   return (
-    <div className="fixed inset-0 left-0 right-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={onClose}>
+    <div
+      className="fixed inset-0 left-0 right-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      onClick={onClose}
+    >
       <div
         style={{ top: '0px', bottom: '64px' }}
         className="relative mt-24 w-full max-w-[350px] xs-phone:max-w-[510px] xl-desktop:max-w-[556px] rounded-lg bg-[#FFF] p-6 shadow-lg dark:bg-[#333231]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className='flex h-10'>
-          <div className='absolute left-2 top-2'>
+        <div className="flex h-10">
+          <div className="absolute left-2 top-2">
             <IconWarning size={70} />
           </div>
           <h2 className="w-full text-center font-textFont text-lg xs-phone:text-xl font-semibold text-custom-blue dark:text-darkText">
@@ -209,8 +267,11 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
         </div>
 
         <div className="flex flex-col gap-3 overflow-y-auto scrollbar">
+          {/* DATOS DEL USUARIO */}
           <section className="flex flex-col">
-            <h3 className="flex justify-center font-textFont font-semibold xs-phone:text-lg text-buttonsLigth dark:text-darkText">Mis Datos</h3>
+            <h3 className="flex justify-center font-textFont font-semibold xs-phone:text-lg text-buttonsLigth dark:text-darkText">
+              Mis Datos
+            </h3>
             <div className="flex justify-between text-sm xs-phone:text-base">
               <div className="flex flex-col text-start font-textFont font-light text-lightText dark:text-darkText">
                 <p>Nombre </p>
@@ -223,20 +284,23 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
                 <p>{transactionData?.transaction?.senderAccount?.phoneNumber}</p>
               </div>
             </div>
-            <div className='w-2/3 h-[1px] bg-custom-blue self-center' />
+            <div className="w-2/3 h-[1px] bg-custom-blue self-center" />
           </section>
 
+          {/* DATOS DEL DESTINATARIO */}
           <section className="flex flex-col">
             <h3 className="flex justify-center font-textFont font-semibold xs-phone:text-lg text-buttonsLigth dark:text-darkText">
-              información del Destinatario
+              Información del Destinatario
             </h3>
-
             <PayMethodInfo />
-            <div className='w-2/3 h-[1px] bg-custom-blue self-center' />
+            <div className="w-2/3 h-[1px] bg-custom-blue self-center" />
           </section>
 
+          {/* PAGO */}
           <section className="flex flex-col">
-            <h3 className="flex justify-center font-textFont font-semibold xs-phone:text-lg text-buttonsLigth dark:text-darkText">Pago</h3>
+            <h3 className="flex justify-center font-textFont font-semibold xs-phone:text-lg text-buttonsLigth dark:text-darkText">
+              Pago
+            </h3>
             <div className="flex justify-between text-sm xs-phone:text-base">
               <div className="flex flex-col text-start text-lightText dark:text-darkText">
                 <p>Monto a Pagar </p>
@@ -253,34 +317,29 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
                 </p>
               </div>
             </div>
-            <div className='w-2/3 h-[1px] bg-custom-blue self-center' />
+            <div className="w-2/3 h-[1px] bg-custom-blue self-center" />
           </section>
 
+          {/* NOTA + ARCHIVOS */}
           <section>
-            <p className="flex h-1/2 flex-col dark:text-darkText">
-              <div className="text-start font-textFont text-sm leading-3">
-                <span className="mr-1 font-semibold text-custom-blue">Nota:</span>
-                <span className="text-start text-xs font-light">
-                  Indique la sección que desea modificar y adjunte el comprobante correcto si el anterior fue enviado por error.
-                </span>
-              </div>
-            </p>
+            <div className="text-start font-textFont text-sm leading-3 dark:text-darkText">
+              <span className="mr-1 font-semibold text-custom-blue">Nota:</span>
+              <span className="text-start text-xs font-light">
+                Indique la sección que desea modificar y adjunte el comprobante correcto si el anterior fue enviado por error.
+              </span>
+            </div>
           </section>
 
           <section>
             <FileUpload
-              previewImage={file ? URL.createObjectURL(file) : null}
-              handleChange={(e) => {
-                if (e.target.files && e.target.files[0]) {
-                  setFile(e.target.files[0]);
-                }
-              }}
-              disabled
+              label="Comprobantes"
+              handleChange={handleFileChange}
+              previewImages={previewImages}
+              onRemoveImage={handleRemoveImage}
               isDark={isDark}
-              accept=".png,.jpg,.pdf"
-              maxSizeText="max. 800x400px"
-              maxSizeMB={10}
-              showPreview={true}
+              accept=".png,.jpg,.jpeg,.pdf"
+              maxFiles={5}
+              showPreview
             />
 
             <label
@@ -288,7 +347,7 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
               className={clsx(
                 'font-textFont font-light text-lightText dark:text-darkText',
                 !isFocused && 'opacity-0',
-                'w-full pl-3 text-start text-sm',
+                'w-full pl-3 text-start text-sm'
               )}
             >
               Necesito Modificar...
@@ -304,9 +363,10 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
               maxLength={200}
               onFocus={() => setIsFocused(true)}
               onBlur={(e) => setIsFocused(e.target.value !== '')}
-            ></textarea>
+            />
           </section>
 
+          {/* BOTONES */}
           <div className="mt-4 flex flex-col-reverse justify-between xs:flex-row">
             <button
               onClick={onClose}
@@ -322,7 +382,13 @@ const Modal1Content: React.FC<Modal1Props> = ({ isOpen, onClose, isDark, transac
                 />
               </div>
             </button>
-            <ButtonAuth disabled={!note} label='Solicitar Modificación' isDark={isDark} onClick={handleFormSubmit} className='px-6 sm-phone:px-14 max-h-8 sm-phone:max-h-10 xl-desktop:max-h-11' />
+            <ButtonAuth
+              disabled={!note}
+              label="Solicitar Modificación"
+              isDark={isDark}
+              onClick={handleFormSubmit}
+              className="px-6 sm-phone:px-14 max-h-8 sm-phone:max-h-10 xl-desktop:max-h-11"
+            />
           </div>
         </div>
       </div>
