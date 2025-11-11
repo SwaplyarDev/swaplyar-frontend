@@ -32,9 +32,7 @@ export const metadata: Metadata = {
 const editRequestPage: React.FC = () => {
   return (
     <>
-      <div className="pt-10">
-        <EditSoli></EditSoli>
-      </div>
+      <EditSoli></EditSoli>
       <div className="w-full">
         <NewSwaply></NewSwaply>
       </div>

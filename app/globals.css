@@ -705,6 +705,63 @@ div:where(.swal2-container).swal2-noanimation {
   box-shadow: none !important;
 }
 
+.buttonWhatsapp {
+  outline: none;
+  box-shadow: 
+    0px 0px 0px 0px #ffffff, 
+    0px 0px 0px 0px #20bd5a;
+  transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+}
+
+.buttonWhatsapp:hover:not(:disabled) {
+  box-shadow: 
+    0px 0px 0px 2px #ffffff, 
+    0px 0px 0px 3px #20bd5a;
+}
+
+.buttonWhatsappDark {
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+}
+
+.buttonWhatsappDark:hover:not(:disabled) {
+  box-shadow: 
+    0px 0px 0px 2px #4b4b4b, 
+    0px 0px 0px 3px #25d366;
+}
+
+.buttonCancel {
+  outline: none;
+  box-shadow: 
+    0px 0px 0px 0px #ffffff, 
+    0px 0px 0px 0px #ff4d4d;
+  transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+}
+
+.buttonCancel:hover:not(:disabled) {
+  box-shadow: 
+    0px 0px 0px 2px #ffffff, 
+    0px 0px 0px 3px #ff4d4d;
+}
+
+.buttonCancelDark {
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+}
+
+.buttonCancelDark:hover:not(:disabled) {
+  box-shadow: 
+    0px 0px 0px 2px #4b4b4b, 
+    0px 0px 0px 3px #ff4d4d;
+}
+
+.buttonWhatsapp:disabled,
+.buttonWhatsappDark:disabled,
+.buttonCancel:disabled,
+.buttonCancelDark:disabled {
+  box-shadow: none !important;
+}
+
 .confirmAlert {
   max-width: 650px;
   width: 100%;

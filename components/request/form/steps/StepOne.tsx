@@ -263,7 +263,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
               isDark={isDark}
               loading={loading}
               disabled={!isValid || blockAll}
-              className="max-sm:w-full sm:max-w-[344px]"
+              className="w-full sm:max-w-[344px]"
             />
           ) : (
             <button

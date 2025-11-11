@@ -7,9 +7,10 @@ export interface TransactionRequestData {
 
 export interface SendForm {
   message: string;
-  file?: File | null;
+  files?: File[] | null;
   transaccionId: string;
   noteAccessToken: string;
+  section: 'datos_envio' | 'datos_recepcion' | 'monto';
 }
 
 interface TransactionData {
@@ -35,9 +36,9 @@ export const fetchTransactionById = async (requestData: TransactionRequestData):
 
     if (!response.ok) {
       if (response.status === 404) {
-        throw new Error('El ID de la transacción no fue encontrada.');
+        throw new Error('El ID de la transacci贸n no fue encontrada.');
       } else {
-        throw new Error('Ocurrió un error al buscar la transacción.');
+        throw new Error('Ocurri贸 un error al buscar la transacci贸n.');
       }
     }
     const result = await response.json();
@@ -62,12 +63,12 @@ export const fetchCode = async (code: string, requestData: { transactionId: stri
 
     const result = await response.json();
     if (!response.ok) {
-      throw new Error(result.message || 'Código incorrecto');
+      throw new Error(result.message || 'C贸digo incorrecto');
     }
 
     return {
       success: true,
-      message: result.message || 'Código verificado exitosamente.',
+      message: result.message || 'C贸digo verificado exitosamente.',
       data: result,
       noteAccessToken: result.noteAccessToken,
     };
@@ -92,29 +93,34 @@ export const resendCodeAction = async (transactionId: string) => {
     }
     const result = await response.json();
 
-    return { success: true, message: result.message || 'Código reenviado exitosamente.' };
+    return { success: true, message: result.message || 'C贸digo reenviado exitosamente.' };
   } catch (error) {
-    console.error('Error al reenviar el código:', error);
+    console.error('Error al reenviar el c贸digo:', error);
     return { success: false, message: 'Error al conectarse con el servidor.' };
   }
 };
 
-export const sendFormData = async ({ message, file, transaccionId, noteAccessToken }: SendForm): Promise<any> => {
+export const sendFormData = async ({
+  message,
+  files,
+  transaccionId,
+  noteAccessToken,
+  section,
+}: SendForm): Promise<any> => {
   try {
-    if (!message) {
-      throw new Error('El mensaje  no fue encontrado.');
-    }
-    if (!transaccionId) {
-      throw new Error('El ID de la transacción no fue encontrada.');
-    }
-    if (!noteAccessToken) {
-      throw new Error('El token de acceso a la nota no fue proporcionado.');
-    }
+    if (!message?.trim()) throw new Error('El mensaje no fue encontrado.');
+    if (!transaccionId) throw new Error('El ID de la transacci贸n no fue encontrado.');
+    if (!noteAccessToken) throw new Error('El token de acceso no fue proporcionado.');
+    if (!section) throw new Error('La secci贸n es obligatoria.');
 
     const formData = new FormData();
-    formData.append('message', message);
-    if (file) {
-      formData.append('image', file);
+    formData.append('message', String(message));
+    formData.append('section', String(section));
+
+    if (files && files.length > 0) {
+      files.forEach((file) => {
+        formData.append('files', file, file.name);
+      });
     }
 
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/notes/${transaccionId}`, {
@@ -124,10 +130,16 @@ export const sendFormData = async ({ message, file, transaccionId, noteAccessTok
         'note-access-token': noteAccessToken,
       },
     });
+
+    const result = await response.json().catch(() => ({}));
+
+    console.log('馃攷 Status:', response.status);
+    console.log('馃摝 Backend response:', result);
+
     if (!response.ok) {
-      throw new Error('Error al enviar los datos');
+      throw new Error(result?.message || 'Error al enviar los datos.');
     }
-    const result = await response.json();
+
     return result;
   } catch (error) {
     console.error('Error al enviar la solicitud:', error);

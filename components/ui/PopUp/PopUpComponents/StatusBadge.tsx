@@ -23,7 +23,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
           <div className="relative flex flex-col items-center">
             {/* Check blanco con fondo negro */}
             <div className="flex items-center justify-center size-5 bg-black dark:bg-darkText rounded-full flex-shrink-0 z-10">
-              <Check className="size-3 text-white" strokeWidth={3} />
+              <Check className="size-3 text-white dark:text-custom-grayD-800" strokeWidth={3} />
             </div>
             
             {/* Línea conectora (solo si no es el último elemento) */}

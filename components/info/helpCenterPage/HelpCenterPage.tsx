@@ -7,27 +7,28 @@ import Link from 'next/link';
 import { sectionBottomHelpCenter, sectionLinksHelpCenter } from '@/data/sectionHelpCenter';
 import clsx from 'clsx';
 
-import { FlyerGif, helpCenter4, helpCenter4Dark } from '@/utils/assets/imgDatabaseCloudinary';
+import { helpCenter4, helpCenter4Dark, FlyerTrabajoImg, FlyerGif } from '@/utils/assets/imgDatabaseCloudinary';
 import ShortButton from '@/components/ui/NewButtons/ShortButton';
+import FlyerTrabajo from '@/components/FlyerTrabajo/FlyerTrabajo';
 
 const HelpCenterPage = () => {
   const { isDark } = useDarkTheme();
 
   return (
     <>
-      <div className="relative flex w-full flex-col items-center justify-center gap-20 px-4 py-10 md:px-8 lg:px-4 mt-16">
+      <div className="relative flex w-full flex-col items-center justify-center gap-20 px-4 py-10 md:px-8 lg:px-4">
         <AnimatedBlurredCircles tope="top-[-260px]" />
-        <div>
-          <div className="mx-auto max-w-[490px] lg2:max-w-[1205px]">
-            <h1 className="mx-auto max-w-[592px] text-center font-titleFont text-[38px] font-medium lg2:text-[40px]">
-              Bienvenido al Centro de Ayuda de SwaplyAr
+        <div className="w-full mt-5">
+          <div className="mx-auto lg2:max-w-[1205px]">
+            <h1 className="mx-auto max-w-[592px] lg2:max-w-[631px] text-center font-titleFont text-[32px] leading-[120%] md:text-[38px] font-semibold lg2:text-[40px]">
+              Bienvenido al Centro de Ayuda <span className='hidden lg2:inline'>y soporte</span> de SwaplyAr
             </h1>
-            <div className="mt-10 flex flex-col gap-[31px] lg2:flex-row lg2:px-4">
+            <div className="mt-10 flex flex-col md:flex-row md:flex-wrap md:justify-center lg2:justify-between gap-3 lg2:flex-row">
               {sectionLinksHelpCenter.map((item, i: number) => (
                 <Link
                   key={i}
                   href={item.href}
-                  className="group relative flex flex-1 flex-col items-center lg2:after:absolute lg2:after:-right-4 lg2:after:h-full lg2:after:w-[1px] lg2:after:bg-buttonsLigth lg2:after:content-[''] lg2:after:last:hidden lg2:after:dark:bg-darkText"
+                  className="group relative flex flex-col items-center lg2:after:absolute lg2:after:-right-4 lg2:after:h-full lg2:after:w-[1px] lg2:after:bg-buttonsLigth lg2:after:content-[''] lg2:after:last:hidden lg2:after:dark:bg-darkText xl:after:-mr-6 md:w-[346px]"
                 >
                   <div className="overflow-hidden max-h-[200px] w-[200px]">
                     <Image
@@ -66,17 +67,17 @@ const HelpCenterPage = () => {
             <ContactForm />
           </section>
           <div className="mx-auto mt-10 flex max-w-[918px] flex-col items-center gap-12 md:flex-row">
-            <div className="w-[381px] overflow-hidden flex-shrink-0">
+            <div className="flex flex-1 overflow-hidden flex-shrink-0">
               <Image
-                className="h-[320px] w-[381px] object-cover drop-shadow-light dark:drop-shadow-darkmode lg2:h-[386px] lg2:w-[381px]"
+                className="h-[320px] w-[381px] object-contain drop-shadow-light dark:drop-shadow-darkmode lg2:h-[386px] lg2:w-[381px]"
                 src={isDark ? helpCenter4Dark : helpCenter4}
                 alt="Imagen de SwaplyAr Plus Rewards"
                 width={360}
                 height={270}
               />
             </div>
-            <div className="flex flex-col items-center max-w-[489px] gap-2">
-              <h2 className="text-center font-textFont text-[36px]">
+            <div className="flex flex-1 flex-col items-center max-w-[489px] gap-2 lg2:gap-4">
+              <h2 className="text-center font-textFont text-3xl md:text-[36px]">
                 SwaplyAr Plus Rewards™ premia tu fidelidad, con el programa de fidelización
               </h2>
               <p className="font-textFont font-light">
@@ -86,10 +87,11 @@ const HelpCenterPage = () => {
                 href="/es/programa-de-fidelizacion"
                 text="Plus Rewards"
                 fondoOscuro={true}
+                className='w-full'
               />
             </div>
           </div>
-          <div className="mx-auto mt-11 mb-[50px] flex max-w-[473px] flex-col gap-20 lg2:max-w-[989px] lg2:flex-row">
+          <div className="mx-8 md:mx-auto mt-11 mb-[50px] flex flex-col md:flex-row gap-20 md:gap-4 lg2:max-w-[989px] lg2:flex-row">
             {sectionBottomHelpCenter.map((item, i: number) => (
               <Link key={i} href={item.href} target="_blank" className="group flex flex-1 flex-col items-center gap-2">
                 <Image
@@ -115,14 +117,12 @@ const HelpCenterPage = () => {
           </div>
         </div>
       </div>
-      {/* <section className="hidden md:block">
-        <FlyerTrabajo
-          imageSrc={FlyerGif}
-          description="Encontrá respuestas a tus dudas"
-          nameButton="Preguntas frecuentes"
-          href="/es/centro-de-ayuda/preguntas-frecuentes"
-        />
-      </section> */}
+      <FlyerTrabajo
+        href="/es/registro"
+        imageSrc={FlyerGif}
+        description="Accede a más funciones y guardar tu historial de cambios"
+        nameButton="Crear mi cuenta gratis"
+      />
     </>
   );
 };

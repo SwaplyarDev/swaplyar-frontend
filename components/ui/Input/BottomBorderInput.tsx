@@ -42,8 +42,9 @@ const BottomBorderInput: React.FC<BottomBorderInputProps> = ({
     <div className={`w-full relative h-[50px] ${className}`}>
       <div className={`
         flex items-center w-full h-full border-0 border-b transition-colors duration-150
-        border-b-white hover:border-b-[#646464] focus-within:border-b-[#646464]
-        ${error ? 'border-b-errorColor' : ''}
+        
+        ${error ? '!border-b-errorColor' : ''}
+        ${isDark ? 'border-b-custom-whiteD-200 hover:border-b-custom-whiteD-200 focus-within:border-b-custom-whiteD-200' : 'border-b-inputLightDisabled hover:border-b-inputLight focus-within:border-b-inputLight'}
       `}>
         {children && <div className="flex items-center pr-2">{children}</div>}
         <input
@@ -81,17 +82,19 @@ const BottomBorderInput: React.FC<BottomBorderInputProps> = ({
             }
           `}
         >
-          {label}
-        </label>
-      </div>
-      {error && (
-        <span className={`
-          absolute left-3 top-[-0.5rem] font-textFont text-xs px-1
+          {error ? (
+            <span className={`
+          font-textFont text-xs
           ${isDark ? 'text-errorTextColorDark' : 'text-errorColor'}
         `}>
-          {error}
-        </span>
-      )}
+              {error}
+            </span>
+          ) : (
+            <span>{label}</span>
+          )}
+        </label>
+      </div>
+      
     </div>
   );
 };

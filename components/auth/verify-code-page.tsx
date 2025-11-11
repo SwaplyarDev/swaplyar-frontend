@@ -1,6 +1,6 @@
 'use client';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect } from 'react';
 import { login } from '@/actions/auth/login';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import clsx from 'clsx';
@@ -10,10 +10,10 @@ import useCodeVerificationStore from '@/store/codeVerificationStore';
 import useStore from '@/store/authViewStore';
 import userInfoStore from '@/store/userInfoStore';
 import { registerUser } from '@/actions/auth/register';
-import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import ButtonBack from '../ui/ButtonBack/ButtonBack';
 import AuthTitle from './AuthTitle';
 import AuthButton from './AuthButton';
+import { VerificationCodeInput } from '@/components/ui/VerificationCodeInput/VerificationCodeInput';
 
 type FormInputs = {
   verificationCode: string[];
@@ -49,7 +49,7 @@ export const VerifyCodePage = () => {
 
   const isLocked = lockUntil && lockUntil > Date.now();
   //empieza en 0 para que el temporizador no inicie automaticamente
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(0);
   //condicional para disparar el temporizador
   const [startTimer, setStartTimer] = useState(true);
 
@@ -135,6 +135,7 @@ export const VerifyCodePage = () => {
           const role = session?.user?.role;
           const target = role === 'admin' ? '/es/admin/transactions' : '/es/auth/solicitud';
           window.location.href = target;
+          return;
         } catch {
           window.location.href = '/es/auth/solicitud';
         }
@@ -190,56 +191,8 @@ export const VerifyCodePage = () => {
     }
   };
 
-  const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    if (/^\d*$/.test(value)) {
-      clearErrors('verificationCode');
-      const newVerificationCode = [...(watch('verificationCode') || ([] as string[]))];
-      newVerificationCode[index] = value;
-      setValue('verificationCode', newVerificationCode);
-
-      if (value.length === 1 && index < 5) {
-        const nextInput = document.getElementById(`code-${index + 1}`);
-        nextInput?.focus();
-      }
-    }
-  };
-
-  const handleInputKeyDown = (index: number, event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Backspace' && event.currentTarget.value === '') {
-      if (index > 0) {
-        const prevInput = document.getElementById(`code-${index - 1}`);
-        prevInput?.focus();
-      }
-    }
-  };
-
-  const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    clearErrors('verificationCode');
-    const pastedData = event.clipboardData.getData('text').replace(/\s/g, '');
-    const characters = pastedData.slice(0, 6).split('');
-
-    characters.forEach((char, i) => {
-      if (i < 6) {
-        setValue(`verificationCode.${i}`, char);
-      }
-    });
-  };
-
   const verificationCodeValues = watch('verificationCode');
-  const isCodeComplete = verificationCodeValues.join('').length === 6;
-
-  //esto es para hacer el submit automaticamente al ingresar el ultimo digito
-  useEffect(() => {
-    const verificationCodeValues = watch('verificationCode');
-    const code = verificationCodeValues?.join('') || '';
-    console.log("submit auto")
-
-    if (code.length === 6 && /^\d{6}$/.test(code) && !loading && !errors.verificationCode) {
-      handleSubmit(verifyCode)();
-    }
-  }, [isCodeComplete]);
+  const isCodeComplete = verificationCodeValues?.join('').length === 6;
 
 
   return (
@@ -258,33 +211,20 @@ export const VerifyCodePage = () => {
         <div className='relative'>
           <span className='w-full flex justify-center items-center mb-4'>Ingrese el código de verificación</span>
 
-          <div className="flex h-[46px] md:h-[56px] lg:h-[58px] gap-[6px] md:gap-[10px] lg:gap-4 justify-center">
-            {[...Array(6)].map((_, index) => {
-              const hasValue = watch(`verificationCode.${index}`)?.length > 0;
-              return (
-                <>
-                  <div className="relative size-[46px] md:size-[56px] lg:size-[58px] rounded-full">
-                    <input
-                      key={index}
-                      id={`code-${index}`}
-                      type="text"
-                      maxLength={1}
-                      disabled={isLocked || loading}
-                      className={clsx(
-                        'h-full w-full rounded-full border-2 border-[#90B0FE] text-center text-2xl text-inputLight focus:outline-none focus:border-[#012A8E] focus:shadow-[inset_0_0_6px_1px_rgba(1,42,142,0.3)] hover:border-[#012A8E] dark:border-[#FAF6EF] dark:bg-[#FAF6EF] dark:focus:border-[#012A8E80] dark:focus:border-4 dark:focus:shadow-[inset_0_0_6px_1px_rgba(250,246,239,0.5)] dark:hover:border-[#012A8E80] sm:text-3xl p-0 transition-all duration-200',
-                        hasValue && !errors.verificationCode ? '!border-custom-blue shadow-[inset_0px_0_6px_1px_rgba(1,42,142,0.3)] dark:!border-custom-whiteD-500 dark:shadow-[inset_0_0_6px_1px_rgba(1,42,142,0.5)]' : '',
-                        errors.verificationCode ? 'border-red-500 focus:shadow-[inset_0_2px_4px_0_rgba(240,82,82,0.3)]' : '',
-                      )}
-                      {...register(`verificationCode.${index}`)}
-                      onPaste={handlePaste}
-                      onChange={(event) => handleInputChange(index, event)}
-                      onKeyDown={(event) => handleInputKeyDown(index, event)}
-                    />
-                  </div>
-                </>
-              )
-            })}
-          </div>
+          <VerificationCodeInput
+            register={register}
+            watch={watch}
+            setValue={setValue}
+            onComplete={async () => {
+              await handleSubmit(verifyCode)();
+            }}
+            isDisabled={isLocked || loading}
+            isLoading={loading}
+            error={errors.verificationCode ? errors.verificationCode.message : undefined}
+            isDark={isDark}
+            clearErrors={() => clearErrors('verificationCode')}
+            className="h-[46px] md:h-[56px] lg:h-[58px] gap-[6px] md:gap-[10px] lg:gap-4"
+          />
 
           {errors.verificationCode && <p className="relative w-full text-center my-4 text-sm text-red-500">• {errors.verificationCode.message}</p>}
         </div>
