@@ -20,9 +20,10 @@ interface StepThreeGeneralProps {
   selectedReceivingSystem: System | null;
   receiveAmount: string | null;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleRemoveImage: (index: number) => void;
   restRegister: any;
-  previewImage: string | null;
-  setPreviewImage: Dispatch<SetStateAction<string | null>>;
+  previewImages: string[];
+  setPreviewImages: Dispatch<SetStateAction<string[]>>;
 }
 
 const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
@@ -37,11 +38,12 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
   handleChange,
   restRegister,
   watch,
-  previewImage,
-  setPreviewImage,
+  previewImages,
+  handleRemoveImage,
 }) => {
   const { isDark } = useDarkTheme();
   const emailAccount = detectarMail(selectedSendingSystem);
+  
   const handleOpenReceiptPopup = () => {
     PopUp({
       variant: 'receipt-examples',
@@ -116,31 +118,32 @@ const StepThreeGeneral: React.FC<StepThreeGeneralProps> = ({
           />
           <div className="flex w-full flex-col gap-4">
             <div className='flex flex-col text-start text-sm'>
-            <span className='text-sm sm:text-base font-textFont leading-5 sm:leading-6 dark:text-custom-grayD-200 text-custom-grayD-600'> 
-              Sube el comprobante de pago / los pagos 
-            </span>
-            <span className='text-sm sm:text-base font-textFont leading-5 sm:leading-6 dark:text-custom-grayD-200 text-custom-grayD-600'>
-              Si tienes dudas, puedes consultar los <span> </span>
-              <strong className="text-custom-blue dark:text-darkText cursor-pointer" onClick={handleOpenReceiptPopup}>
-                ejemplos de como subir la documentación
-              </strong>
-            </span>
+              <span className='text-sm sm:text-base font-textFont leading-5 sm:leading-6 dark:text-custom-grayD-200 text-custom-grayD-600'> 
+                Sube el comprobante de pago / los pagos
+              </span>
+              <span className='text-sm sm:text-base font-textFont leading-5 sm:leading-6 dark:text-custom-grayD-200 text-custom-grayD-600'>
+                Si tienes dudas, puedes consultar los <span> </span>
+                <strong className="text-custom-blue dark:text-darkText cursor-pointer" onClick={handleOpenReceiptPopup}>
+                  ejemplos de como subir la documentación
+                </strong>
+              </span>
             </div>
             <FileUpload
-              label="Comprobante"
+              label="Comprobantes"
               name="proof_of_payment"
               restRegister={restRegister}
               watch={watch}
               handleChange={handleChange}
-              previewImage={previewImage}
-              onRemoveImage={() => setPreviewImage(null)}
-              error={errors.proof_of_payment ? 'Este campo es obligatorio' : undefined}
+              previewImages={previewImages}
+              onRemoveImage={handleRemoveImage}
+              error={previewImages.length === 0 ? 'Este campo es obligatorio' : undefined}
               isDark={isDark}
-              accept=".png,.jpg,.pdf"
-              maxSizeText="max. 5MB"
+              accept=".png,.jpg,.jpeg,.webp,.pdf"
+              maxSizeText="max. 5MB por archivo"
               maxSizeMB={5}
               showPreview={true}
               disabled={blockAll}
+              maxFiles={5}
             />
           </div>
         </div>
