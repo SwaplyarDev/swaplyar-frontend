@@ -27,7 +27,6 @@ export const getAllTransactions = async (page: number, token: string): Promise<T
   }
 };
 
-
 export async function getTransactionById(transactionId: string, token: string): Promise<TransactionV2 | null> {
   try {
     const response = await fetch(`${NEXT_PUBLIC_BACKEND_URL}/admin/transactions/${transactionId}`, {
@@ -85,8 +84,6 @@ export const getTransactionStatusHistory = async (
     return [];
   }
 };
-
-
 
 export const deleteTransactionById = async (id: string, token: string) => {
   try {

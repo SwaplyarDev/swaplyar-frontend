@@ -76,7 +76,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
       send_amount: '',
       receive_amount: '',
       pay_email: '',
-      proof_of_payment: null,
+      proof_of_payment: [] as File[] | null,
       note: '',
       network: '',
       wallet: '',
@@ -191,11 +191,15 @@ export const useStepperStore = create<StepperState>((set, get) => ({
     const formDataPayload = new FormData();
 
     if (stepThree.proof_of_payment && stepThree.proof_of_payment.length > 0) {
-      const realFile = stepThree.proof_of_payment[0];
-      formDataPayload.append('file', realFile);
+      const files = Array.from(stepThree.proof_of_payment);
+
+      files.forEach((file, index) => {
+        formDataPayload.append('files', file);
+      });
     } else {
-      console.log('No hay archivo disponible');
+      console.log('No hay archivos disponibles');
     }
+    
     const createTransactionDto: any = {
       countryTransaction: payload.transaction.country_transaction,
       message: payload.transaction.message,
@@ -381,7 +385,7 @@ export const useStepperStore = create<StepperState>((set, get) => ({
           send_amount: '',
           receive_amount: '',
           pay_email: '',
-          proof_of_payment: null,
+          proof_of_payment: [] as File[] | null,
           note: '',
           network: '',
           wallet: '',

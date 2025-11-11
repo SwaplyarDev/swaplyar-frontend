@@ -5,16 +5,16 @@ import { memo, useEffect, useMemo, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { useSystemStore } from '@/store/useSystemStore';
 import dynamic from 'next/dynamic';
-const StepThreeGeneral = dynamic(() => import('./stepsThreeOptions/StepThreeGeneral'));
-const StepThreeTether = dynamic(() => import('./stepsThreeOptions/StepThreeTether'));
 import AuthButton from '@/components/auth/AuthButton';
 import NETWORKS_DATA from '@/components/ui/PopUp/networksData';
 
+const StepThreeGeneral = dynamic(() => import('./stepsThreeOptions/StepThreeGeneral'));
+const StepThreeTether = dynamic(() => import('./stepsThreeOptions/StepThreeTether'));
 interface FormData {
   send_amount: string;
   receive_amount: string;
   pay_email: string;
-  proof_of_payment: FileList | null;
+  proof_of_payment: File[] | null;
   note: string;
   network?: string;
   wallet?: string;
@@ -38,30 +38,30 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   const { isDark } = useDarkTheme();
 
   const [initialValues, setInitialValues] = useState<FormData | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
+  const [storedFiles, setStoredFiles] = useState<File[]>([]);
 
   const formValues = useWatch({ control });
 
-const sendAmount = formData.stepThree.send_amount;
-const receiveAmount = formData.stepThree.receive_amount;
+  const sendAmount = formData.stepThree.send_amount;
+  const receiveAmount = formData.stepThree.receive_amount;
   const { selectedSendingSystem, selectedReceivingSystem } = useSystemStore();
 
-  // Observar cambios en red_selection
   const redSelection = watch('red_selection');
 
   // Setear valores iniciales del formulario
   useEffect(() => {
     const { proof_of_payment, note, red_selection } = formData.stepThree;
+    
     const newValues = {
       ...formData.stepThree,
       proof_of_payment,
       note,
     };
     
-    // Inicializar montos con valores por defecto si no existen
     const sendAmountValue = sendAmount || '0';
     const receiveAmountValue = receiveAmount || '0';
-        
+           
     setValue('send_amount', sendAmountValue, { shouldValidate: true });
     setValue('receive_amount', receiveAmountValue, { shouldValidate: true });
     
@@ -69,7 +69,6 @@ const receiveAmount = formData.stepThree.receive_amount;
     setValue('proof_of_payment', proof_of_payment);
     setValue('note', note);
 
-    // Setear red por defecto solo si es tether
     if (selectedSendingSystem?.id === 'tether') {
       const defaultRedSelection = red_selection || {
         value: 'tron',
@@ -78,18 +77,31 @@ const receiveAmount = formData.stepThree.receive_amount;
       };
       setValue('red_selection', defaultRedSelection, { shouldValidate: true });
 
-      // Inicializar network y wallet basados en la red seleccionada
       const networkKey = defaultRedSelection.value as keyof typeof NETWORKS_DATA;
       const networkData = NETWORKS_DATA[networkKey];
       if (networkData) {
         setValue('network', networkData.name, { shouldValidate: true });
         setValue('wallet', networkData.wallet, { shouldValidate: true });
       }
-
     }
 
     setInitialValues(newValues);
   }, [formData.stepThree, setValue, receiveAmount, sendAmount, selectedSendingSystem]);
+
+  // Inicializar previews de imágenes SOLO al montar si hay archivos guardados
+  useEffect(() => {
+    const initialProofOfPayment = formData.stepThree.proof_of_payment;
+    
+    if (initialProofOfPayment && initialProofOfPayment.length > 0) {
+      const files = Array.from(initialProofOfPayment);
+      const previews = files
+        .filter(file => file.type.startsWith('image/'))
+        .map(file => URL.createObjectURL(file));
+      
+      setPreviewImages(previews);
+      setStoredFiles(files);
+    }
+  }, []);
 
   // Actualizar network y wallet cuando cambia red_selection
   useEffect(() => {
@@ -105,8 +117,9 @@ const receiveAmount = formData.stepThree.receive_amount;
   }, [redSelection, selectedSendingSystem, setValue]);
 
   const [loading, setLoading] = useState(false);
-  const onSubmit = (data: FormData) => {
-    console.log('Submitting form data:', data);
+  const onSubmit = (data: FormData) => {   
+    data.proof_of_payment = storedFiles;
+
     setLoading(true);
     updateFormData(2, data);
     markStepAsCompleted(2);
@@ -117,11 +130,13 @@ const receiveAmount = formData.stepThree.receive_amount;
   };
 
   const hasChanges = useMemo(
-    () =>
-      initialValues &&
-      !Object.keys(initialValues).every(
-        (key) => initialValues[key as keyof FormData] === formValues[key as keyof FormData],
-      ),
+    () => {
+      const result = initialValues &&
+        !Object.keys(initialValues).every(
+          (key) => initialValues[key as keyof FormData] === formValues[key as keyof FormData],
+        );
+      return result;
+    },
     [initialValues, formValues],
   );
 
@@ -130,35 +145,87 @@ const receiveAmount = formData.stepThree.receive_amount;
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      if (file.type.startsWith('image/')) {
-        const imageUrl = URL.createObjectURL(file);
-        setPreviewImage(imageUrl);
-      } else {
-        setPreviewImage(null);
+    const newFiles = Array.from(event.target.files || []);
+    if (newFiles.length === 0) return;
+
+    const combined = [...storedFiles, ...newFiles].slice(0, 5);
+    
+    setStoredFiles(combined);
+
+    const newPreviews = newFiles
+      .map(file => (file.type.startsWith('image/') ? URL.createObjectURL(file) : null))
+      .filter(Boolean) as string[];
+    
+    setPreviewImages(prev => {
+      const updatedPreviews = [...prev, ...newPreviews].slice(0, 5);
+      return updatedPreviews;
+    });
+    
+    setValue('proof_of_payment', combined, { shouldValidate: true });
+    
+    const dataTransfer = new DataTransfer();
+    combined.forEach(file => dataTransfer.items.add(file));
+    
+    const syntheticEvent = {
+      ...event,
+      target: {
+        ...event.target,
+        files: dataTransfer.files
       }
-    }
-    onChange(event);
+    } as React.ChangeEvent<HTMLInputElement>;
+    
+    onChange(syntheticEvent);
+  };  
+
+  const handleRemoveImage = (index: number) => {
+    URL.revokeObjectURL(previewImages[index]);
+
+    setPreviewImages(prev => prev.filter((_, i) => i !== index));
+    
+    setStoredFiles((prev) => {
+      const updatedFiles = prev.filter((_, i) => i !== index);
+      
+      setValue('proof_of_payment', updatedFiles, { shouldValidate: true });
+      
+      const dataTransfer = new DataTransfer();
+      updatedFiles.forEach(file => dataTransfer.items.add(file));
+      
+      const syntheticEvent = {
+        target: {
+          files: dataTransfer.files
+        },
+        currentTarget: {
+          files: dataTransfer.files
+        }
+      } as React.ChangeEvent<HTMLInputElement>;
+      
+      onChange(syntheticEvent);
+
+      if (updatedFiles.length === 0) {
+        completedSteps[2] = false;
+      }
+
+      return updatedFiles;
+    });
   };
 
-  // Restaurar preview cuando vuelvas al paso si ya hay un archivo cargado
   useEffect(() => {
-    const proofOfPayment = watch('proof_of_payment');
-    if (proofOfPayment && proofOfPayment[0]) {
-      const file = proofOfPayment[0];
-      if (file.type.startsWith('image/')) {
-        const imageUrl = URL.createObjectURL(file);
-        setPreviewImage(imageUrl);
-        console.log('🖼️ [StepThree - Restore Preview] Preview restaurado:', imageUrl);
-        
-        // Cleanup del objeto URL cuando el componente se desmonte
-        return () => URL.revokeObjectURL(imageUrl);
-      }
-    } else if (!proofOfPayment) {
-      setPreviewImage(null);
+    const hasImages = storedFiles.length > 0;
+
+    if (hasImages && !completedSteps[2]) {
+      markStepAsCompleted(2);
     }
-  }, [formValues.proof_of_payment, watch]);
+
+    if (!hasImages && completedSteps[2]) {
+      completedSteps[2] = false;
+    }
+  }, [storedFiles, completedSteps, markStepAsCompleted]);
+
+  useEffect(() => {
+    return () => {
+      previewImages.forEach(url => URL.revokeObjectURL(url));
+    };
+  }, [previewImages]);
 
   const renderSelectedSystem = () => {
     switch (selectedSendingSystem?.id) {
@@ -181,10 +248,11 @@ const receiveAmount = formData.stepThree.receive_amount;
             selectedReceivingSystem={selectedReceivingSystem}
             receiveAmount={receiveAmount}
             handleChange={handleChange}
+            handleRemoveImage={handleRemoveImage}
             watch={watch}
             restRegister={restRegister}
-            previewImage={previewImage}
-            setPreviewImage={setPreviewImage}
+            previewImages={previewImages}
+            setPreviewImages={setPreviewImages}
           />
         );
       case 'tether':
@@ -200,10 +268,11 @@ const receiveAmount = formData.stepThree.receive_amount;
             selectedReceivingSystem={selectedReceivingSystem}
             receiveAmount={receiveAmount}
             handleChange={handleChange}
+            handleRemoveImage={handleRemoveImage}
             watch={watch}
             restRegister={restRegister}
-            previewImage={previewImage}
-            setPreviewImage={setPreviewImage}
+            previewImages={previewImages}
+            setPreviewImages={setPreviewImages}
             control={control}
           />
         );
@@ -218,33 +287,39 @@ const receiveAmount = formData.stepThree.receive_amount;
       <div className="flex justify-end">
         {completedSteps[2] ? (
           hasChanges ? (
+            <>
+              <AuthButton
+                label="Ya realicé el pago"
+                type="submit"
+                isDark={isDark}
+                loading={loading}
+                disabled={storedFiles.length < 1}
+                className="w-full sm:max-w-[300px]"
+              />
+            </>
+          ) : (
+            <>
+              <button
+                className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
+                type="submit"
+                disabled={blockAll}
+              >
+                Tratar
+                <ArrowUp />
+              </button>
+            </>
+          )
+        ) : (
+          <>
             <AuthButton
-              label="Siguiente"
+              label="Ya realicé el pago"
               type="submit"
               isDark={isDark}
               loading={loading}
-              disabled={!isValid || blockAll}
-              className="w-full max-w-[300px]"
+              disabled={storedFiles.length < 1}
+              className="w-full sm:max-w-[300px]"
             />
-          ) : (
-            <button
-              className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
-              type="submit"
-              disabled={blockAll}
-            >
-              Tratar
-              <ArrowUp />
-            </button>
-          )
-        ) : (
-          <AuthButton
-            label="Ya realice el pago"
-            type="submit"
-            isDark={isDark}
-            loading={loading}
-            disabled={!isValid || blockAll}
-            className="w-full max-w-[300px]"
-          />
+          </>
         )}
       </div>
     </form>

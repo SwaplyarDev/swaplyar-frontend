@@ -58,6 +58,13 @@ const Modal1: React.FC<ModalProps> = ({
 
   /** Envío del formulario */
   const handleFormSubmit = async () => {
+    console.log('Datos a enviar en el submittt:', {
+      note,
+      transaccionId,
+      noteAccessToken,
+      files,
+    });
+
     if (!note || !transaccionId) {
       PopUp({
         variant: 'simple-warning',
@@ -70,7 +77,10 @@ const Modal1: React.FC<ModalProps> = ({
     try {
       setLoading(true);
       const result = await sendFormData({
+      const result = await sendFormData({
         message: note,
+        files,
+        transaccionId,
         files,
         transaccionId,
         noteAccessToken: noteAccessToken ?? '',
@@ -87,7 +97,14 @@ const Modal1: React.FC<ModalProps> = ({
 
       onClose();
     } catch (error: any) {
+    } catch (error: any) {
       console.error('Error al enviar los datos:', error);
+
+      const backendMessage =
+        typeof error === 'object' && error.message
+          ? error.message
+          : 'Error desconocido al enviar la solicitud.';
+
       PopUp({
         variant: 'simple-error',
         title: error.message || 'Error desconocido al enviar la solicitud.',
@@ -179,6 +196,8 @@ const Modal1: React.FC<ModalProps> = ({
       >
         <div className="flex h-10">
           <div className="absolute left-2 top-2">
+        <div className="flex h-10">
+          <div className="absolute left-2 top-2">
             <IconWarning size={70} />
           </div>
           <h2 className="w-full text-center font-textFont text-lg font-semibold text-custom-blue dark:text-darkText">
@@ -233,6 +252,7 @@ const Modal1: React.FC<ModalProps> = ({
                 <p>{transactionData?.senderAccount?.phoneNumber}</p>
               </div>
             </div>
+            <div className="w-2/3 h-[1px] bg-custom-blue self-center" />
             <div className="w-2/3 h-[1px] bg-custom-blue self-center" />
           </section>
 
@@ -323,6 +343,7 @@ const Modal1: React.FC<ModalProps> = ({
               </div>
             </div>
             <div className="w-2/3 h-[1px] bg-custom-blue self-center" />
+            <div className="w-2/3 h-[1px] bg-custom-blue self-center" />
           </section>
 
           {/* NOTA Y ARCHIVOS */}
@@ -339,7 +360,14 @@ const Modal1: React.FC<ModalProps> = ({
               handleChange={handleFileChange}
               previewImages={previewImages}
               onRemoveImage={handleRemoveImage}
+              label="Comprobantes"
+              handleChange={handleFileChange}
+              previewImages={previewImages}
+              onRemoveImage={handleRemoveImage}
               isDark={isDark}
+              accept=".png,.jpg,.jpeg,.pdf"
+              maxFiles={5}
+              showPreview
               accept=".png,.jpg,.jpeg,.pdf"
               maxFiles={5}
               showPreview
@@ -358,8 +386,10 @@ const Modal1: React.FC<ModalProps> = ({
               onFocus={() => setIsFocused(true)}
               onBlur={(e) => setIsFocused(e.target.value !== '')}
             />
+            />
           </section>
 
+          {/* BOTONES */}
           {/* BOTONES */}
           <div className="mt-4 flex flex-col-reverse justify-between xs:flex-row">
             <button

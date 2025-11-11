@@ -2,7 +2,6 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { FieldErrors, UseFormGetValues, UseFormRegister, UseFormWatch, Controller, Control } from 'react-hook-form';
 import InputCopy from '../../inputs/InputCopy';
 import { System } from '@/types/data';
-import InputSteps from '@/components/inputSteps/InputSteps';
 import { FieldError } from 'react-hook-form';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { FileUpload } from '@/components/ui/FileUpload/FileUpload';
@@ -24,9 +23,10 @@ interface StepThreeTetherProps {
   selectedReceivingSystem: System | null;
   receiveAmount: string | null;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleRemoveImage: (index: number) => void;
   restRegister: any;
-  previewImage: string | null;
-  setPreviewImage: Dispatch<SetStateAction<string | null>>;
+  previewImages: string[];
+  setPreviewImages: Dispatch<SetStateAction<string[]>>;
 }
 
 const StepThreeTether: React.FC<StepThreeTetherProps> = ({
@@ -40,8 +40,8 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
   selectedReceivingSystem,
   handleChange,
   restRegister,
-  previewImage,
-  setPreviewImage,
+  previewImages,
+  handleRemoveImage,
   watch,
   control,
 }) => {
@@ -172,16 +172,16 @@ const StepThreeTether: React.FC<StepThreeTetherProps> = ({
             </span>
             </div>
             <FileUpload
-              label="Comprobante"
+              label="Comprobantes"
               name="proof_of_payment"
               restRegister={restRegister}
               watch={watch}
               handleChange={handleChange}
-              previewImage={previewImage}
-              onRemoveImage={() => setPreviewImage(null)}
+              previewImages={previewImages}
+              onRemoveImage={handleRemoveImage}
               error={errors.proof_of_payment ? 'Este campo es obligatorio' : undefined}
               isDark={isDark}
-              accept=".png,.jpg,.pdf"
+              accept=".png,.jpg,.jpeg,.webp,.pdf"
               maxSizeText="max. 5MB"
               maxSizeMB={5}
               showPreview={true}

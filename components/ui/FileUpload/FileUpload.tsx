@@ -210,8 +210,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         {canAddMore && (
           <div
             className={`group relative flex-shrink-0 sm:gap-2 sm:flex-1 h-full py-2 px-2 flex flex-col items-center justify-center rounded-2xl border-[1px] border-dashed dark:bg-custom-grayD-800 overflow-hidden 
-              ${filesArray.length === 0
-                ? 'max-sm:w-full'
+              ${previewImages.length === 0
+                ? 'w-full'
                 : 'max-sm:flex-1 max-sm:min-w-[217px]'
               }
               ${
