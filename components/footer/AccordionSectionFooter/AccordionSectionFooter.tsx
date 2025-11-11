@@ -23,7 +23,7 @@ export function AccordionSection({ title, links }: { title: string; links: Foote
         expanded={expanded}
         onChange={() => setExpanded(!expanded)}
         sx={{
-          width: { xs: '358px', sm: '704px', lg: 'auto' },
+          width: 'clamp(320px, 90vw, 100%)',
           '&.MuiAccordion-root': {
             backgroundColor: 'transparent',
             boxShadow: 'none',
@@ -56,9 +56,9 @@ export function AccordionSection({ title, links }: { title: string; links: Foote
               content: '""',
               position: 'absolute',
               bottom: -5,
-              left: { xs: '48%', sm: '50%' },
+              left: '50%',
               transform: 'translateX(-50%)',
-              width: { xs: '62%', sm: '75%' },
+              width: 'clamp(62%, 75vw, 75%)',
               height: '1px',
                backgroundColor: isDark ? '#EBE7E0' : '#012A8E', 
          
