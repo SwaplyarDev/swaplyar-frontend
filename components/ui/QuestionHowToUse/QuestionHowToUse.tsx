@@ -11,12 +11,13 @@ import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import useQuestion from '@/components/ui/top-menu/UseQuestion/useQuestion';
 import SkeletonQuestions from '@/components/ui/SkeletonQuestions/SkeletonQuestions';
 import ShortButton from '../NewButtons/ShortButton';
+import useQuestion from '@/components/ui/top-menu/UseQuestion/useQuestion';
+import SkeletonQuestions from '@/components/ui/SkeletonQuestions/SkeletonQuestions';
+// ...existing code...
 
-// ---------- ESTILOS ----------
-const Accordion = styled((props: AccordionProps & { isDark: boolean; expanded: boolean }) => {
-  const { expanded, ...accordionProps } = props;
-  return <MuiAccordion disableGutters elevation={0} square {...accordionProps} />;
-})(({ isDark }) => ({
+const Accordion = styled((props: AccordionProps & { isDark: boolean; expanded: boolean }) => (
+  <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ isDark, expanded }) => ({
   border: 'none',
   background: 'transparent',
   position: 'relative',
@@ -34,76 +35,12 @@ const Accordion = styled((props: AccordionProps & { isDark: boolean; expanded: b
   },
 }));
 
-const AccordionSummary = styled((props: AccordionSummaryProps & { isDark: boolean; expanded: boolean }) => {
-  const { expanded, isDark, ...summaryProps } = props;
-  return (
-    <MuiAccordionSummary
-      expandIcon={
-        <div
-          className={`${expanded
-              ? isDark
-                ? 'bg-custom-grayD-600'
-                : 'bg-custom-blue-800'
-              : !expanded
-                ? !isDark
-                  ? 'bg-custom-grayD-200'
-                  : 'bg-custom-grayD-800'
-                : ''
-            } ${isDark ? 'group-hover:bg-custom-grayD-600' : 'group-hover:bg-custom-blue'}`}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: '50%',
-            width: '40px',
-            height: '40px',
-          }}
-        >
-          <ExpandMore
-            className={`${isDark
-                ? expanded
-                  ? 'text-custom-whiteD'
-                  : 'text-custom-grayD-500'
-                : expanded
-                  ? 'text-custom-whiteD'
-                  : 'text-custom-blue-300'
-              } ${isDark ? 'group-hover:text-custom-whiteD' : 'group-hover:text-custom-whiteD'} `}
-            sx={{
-              fontSize: '2rem',
-              transition: 'color 0.3s ease',
-            }}
-          />
-        </div>
-      }
-      {...summaryProps}
-    />
-  );
-})(({ theme, isDark }) => ({
-  border: 'none',
-  [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]: {
-    transform: 'rotate(180deg)',
-  },
-  [`& .${accordionSummaryClasses.content}`]: {
-    marginLeft: theme.spacing(0),
-  },
-  '&:hover': {
-    backgroundColor: isDark ? '#333' : '#f5f5f5',
-    [`& .MuiTypography-root`]: {
-      color: isDark ? '#f5f5f5' : 'rgb(1, 42, 141)',
-      fontWeight: '600',
-    },
-  },
-}));
-
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
-  border: 'none',
-}));
+// ...existing styled components...
 
 // ---------- COMPONENTE PRINCIPAL ----------
 const QuestionHowToUse = () => {
   const { isDark } = useDarkTheme();
-  const { questions = [], loading } = useQuestion(); // Asegúrate de que este hook esté retornando el resultado esperado
+  const { questions = [], loading } = useQuestion(); // <-- usa el hook para pedir preguntas
   const [expanded, setExpanded] = useState<string | false>(false);
 
   // Filtrar duplicados por título
@@ -115,6 +52,11 @@ const QuestionHowToUse = () => {
     setExpanded(isExpanded ? panel : false);
   };
 
+  // opcional: eliminar duplicados por título o id
+  const uniqueQuestions = Array.isArray(questions)
+    ? questions.filter((q, i, self) => i === self.findIndex(x => (x.id ?? x.title) === (q.id ?? q.title)))
+    : [];
+
   return (
     <main
   className={`${isDark ? 'text-custom-whiteD' : 'text-custom-grayD'} relative mx-auto flex w-[clamp(320px,92vw,1026px)] flex-col items-center justify-center gap-10 px-4 md:px-8 lg2:px-4 md:mb-[50px] lg:mb-[50px] transition-all duration-300`}
@@ -123,71 +65,61 @@ const QuestionHowToUse = () => {
     <h2 className="font-textFont">Todo lo que necesitas saber antes de usar SwaplyAr</h2>
   </header>
 
-  <section className="grid gap-6 w-full">
-    {loading ? (
-      <SkeletonQuestions />
-    ) : uniqueQuestions.length > 0 ? (
-      uniqueQuestions.map((dato, index) => (
-        <Accordion
-          isDark={isDark}
-          key={dato.id ?? index}
-          expanded={expanded === `panel${index}`}
-          onChange={handleChange(`panel${index}`)}
-          className="group"
-        >
-          <AccordionSummary
-            className="p-0 hover:bg-transparent"
-            isDark={isDark}
-            expanded={expanded === `panel${index}`}
-          >
-            <Typography
-              className={`font-textFont text-[21px] ${isDark
-                  ? expanded === `panel${index}`
-                    ? 'text-custom-whiteD'
-                    : 'text-[#969696]'
-                  : expanded === `panel${index}`
-                    ? 'text-custom-blue-800'
-                    : 'text-[#969696]'
-                } ${expanded === `panel${index}` ? '!font-bold' : 'font-light'}`}
-              style={{ transition: 'color 0.3s ease' }}
+      <section className="grid gap-6 w-full">
+        {loading ? (
+          <SkeletonQuestions />
+        ) : uniqueQuestions.length > 0 ? (
+          uniqueQuestions.map((dato, index) => (
+            <Accordion
+              isDark={isDark}
+              key={dato.id ?? index}
+              expanded={expanded === `panel${index}`}
+              onChange={handleChange(`panel${index}`)}
+              className="group"
             >
-              {dato.title}
-            </Typography>
-          </AccordionSummary>
+              <AccordionSummary
+                className={`p-0 hover:bg-transparent`}
+                isDark={isDark}
+                expanded={expanded === `panel${index}`}
+              >
+                <Typography
+                  className={`font-textFont text-[21px] ${isDark
+                      ? 'text-custom-whiteD'
+                      : expanded === `panel${index}`
+                        ? 'text-custom-blue-800'
+                        : 'text-custom-grayD'
+                    } ${expanded === `panel${index}` ? '!font-bold' : 'font-light'}`}
+                >
+                  {dato.title}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails
+                className={`flex flex-col items-center justify-center ${isDark ? 'text-custom-whiteD' : 'text-custom-grayD'}`}
+              >
+                <Typography
+                  className={`flex w-full gap-6 rounded-md p-2.5 text-left`}
+                  style={
+                    isDark
+                      ? { background: 'rgba(75,75,75,1)', borderRadius: '16px' }
+                      : { background: 'rgb(238, 234, 227)', borderRadius: '16px' }
+                  }
+                >
+                  {dato.descripcion ?? dato.description}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))
+        ) : (
+          <p className="text-center text-lg font-textFont py-6">No hay preguntas disponibles por el momento.</p>
+        )}
+      </section>
 
-          <AccordionDetails
-            className={`flex flex-col items-center justify-center ${isDark ? 'text-custom-whiteD' : 'text-custom-grayD'
-              }`}
-          >
-            <Typography
-              className="flex w-9/10 gap-6 rounded-md p-2.5 text-left"
-              style={
-                isDark
-                  ? { background: 'rgba(75,75,75,1)', borderRadius: '16px' }
-                  : { background: 'rgb(238, 234, 227)', borderRadius: '16px' }
-              }
-            >
-              {dato.description || dato.descripcion}
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-      ))
-    ) : (
-      <p className="text-center text-lg font-textFont py-6">
-        No hay preguntas disponibles por el momento.
-      </p>
-    )}
-  </section>
+      <div className="flex w-full flex-col justify-between gap-4 md:flex-row md:items-center">
+        <p className="font-textFont text-lg">¿Tenés más dudas?</p>
 
-  <div className="flex w-full flex-col justify-between gap-4 md:flex-row md:items-center">
-    <p className="font-textFont text-lg">¿Tenés más dudas?</p>
-
-    <ShortButton
-      href="/es/centro-de-ayuda/preguntas-frecuentes"
-      text="Ir a Preguntas Frecuentes"
-    />
-  </div>
-</main>
+        <ShortButton href="/es/centro-de-ayuda/preguntas-frecuentes" text="Ir a Preguntas Frecuentes" />
+      </div>
+    </main>
   );
 };
 
