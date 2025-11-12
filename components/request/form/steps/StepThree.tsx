@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic';
 import AuthButton from '@/components/auth/AuthButton';
 import NETWORKS_DATA from '@/components/ui/PopUp/networksData';
 import clsx from 'clsx';
+import PopUp from '@/components/ui/PopUp/PopUp';
 
 const StepThreeGeneral = dynamic(() => import('./stepsThreeOptions/StepThreeGeneral'));
 const StepThreeTether = dynamic(() => import('./stepsThreeOptions/StepThreeTether'));
@@ -153,34 +154,55 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
     const newFiles = Array.from(event.target.files || []);
     if (newFiles.length === 0) return;
 
-    const combined = [...storedFiles, ...newFiles].slice(0, 5);
-    
+    const existingFiles = storedFiles;
+    const filteredNewFiles = newFiles.filter(
+      (newFile) =>
+        !existingFiles.some(
+          (existingFile) =>
+            existingFile.name === newFile.name &&
+            existingFile.size === newFile.size &&
+            existingFile.lastModified === newFile.lastModified
+        )
+    );
+
+    if (filteredNewFiles.length < newFiles.length) {
+      PopUp({
+        variant: 'simple-error',
+        title: 'La imagen que intentás subir ya existe, no se pueden subir duplicados.',
+        isDark
+      });
+    }
+
+    if (filteredNewFiles.length === 0) return;
+
+    const combined = [...existingFiles, ...filteredNewFiles].slice(0, 5);
+
     setStoredFiles(combined);
 
-    const newPreviews = newFiles
-      .map(file => (file.type.startsWith('image/') ? URL.createObjectURL(file) : null))
+    const newPreviews = filteredNewFiles
+      .map((file) => (file.type.startsWith('image/') ? URL.createObjectURL(file) : null))
       .filter(Boolean) as string[];
-   
-    setPreviewImages(prev => {
+
+    setPreviewImages((prev) => {
       const updatedPreviews = [...prev, ...newPreviews].slice(0, 5);
       return updatedPreviews;
     });
-    
+
     setValue('proof_of_payment', combined, { shouldValidate: true });
-    
+
     const dataTransfer = new DataTransfer();
-    combined.forEach(file => dataTransfer.items.add(file));
-    
+    combined.forEach((file) => dataTransfer.items.add(file));
+
     const syntheticEvent = {
       ...event,
       target: {
         ...event.target,
-        files: dataTransfer.files
-      }
+        files: dataTransfer.files,
+      },
     } as React.ChangeEvent<HTMLInputElement>;
-    
+
     onChange(syntheticEvent);
-  };  
+  }; 
 
   const handleRemoveImage = (index: number) => {
     URL.revokeObjectURL(previewImages[index]);
