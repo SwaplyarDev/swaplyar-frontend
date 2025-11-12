@@ -36,9 +36,9 @@ export const fetchTransactionById = async (requestData: TransactionRequestData):
 
     if (!response.ok) {
       if (response.status === 404) {
-        throw new Error('El ID de la transacci贸n no fue encontrada.');
+        throw new Error('El ID de la transacción no fue encontrada.');
       } else {
-        throw new Error('Ocurri贸 un error al buscar la transacci贸n.');
+        throw new Error('Ocurrió un error al buscar la transacción.');
       }
     }
     const result = await response.json();
@@ -63,12 +63,12 @@ export const fetchCode = async (code: string, requestData: { transactionId: stri
 
     const result = await response.json();
     if (!response.ok) {
-      throw new Error(result.message || 'C贸digo incorrecto');
+      throw new Error(result.message || 'Código incorrecto');
     }
 
     return {
       success: true,
-      message: result.message || 'C贸digo verificado exitosamente.',
+      message: result.message || 'Código verificado exitosamente.',
       data: result,
       noteAccessToken: result.noteAccessToken,
     };
@@ -93,9 +93,9 @@ export const resendCodeAction = async (transactionId: string) => {
     }
     const result = await response.json();
 
-    return { success: true, message: result.message || 'C贸digo reenviado exitosamente.' };
+    return { success: true, message: result.message || 'Código reenviado exitosamente.' };
   } catch (error) {
-    console.error('Error al reenviar el c贸digo:', error);
+    console.error('Error al reenviar el código:', error);
     return { success: false, message: 'Error al conectarse con el servidor.' };
   }
 };
@@ -109,9 +109,9 @@ export const sendFormData = async ({
 }: SendForm): Promise<any> => {
   try {
     if (!message?.trim()) throw new Error('El mensaje no fue encontrado.');
-    if (!transaccionId) throw new Error('El ID de la transacci贸n no fue encontrado.');
+    if (!transaccionId) throw new Error('El ID de la transacción no fue encontrado.');
     if (!noteAccessToken) throw new Error('El token de acceso no fue proporcionado.');
-    if (!section) throw new Error('La secci贸n es obligatoria.');
+    if (!section) throw new Error('La sección es obligatoria.');
 
     const formData = new FormData();
     formData.append('message', String(message));
@@ -133,10 +133,11 @@ export const sendFormData = async ({
 
     const result = await response.json().catch(() => ({}));
 
-    console.log('馃攷 Status:', response.status);
-    console.log('馃摝 Backend response:', result);
+    console.log('🔎 Status:', response.status);
+    console.log('📦 Backend response:', result);
 
     if (!response.ok) {
+      // 👇 ahora sí usamos el mismo result
       throw new Error(result?.message || 'Error al enviar los datos.');
     }
 

@@ -37,6 +37,7 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
   const { lockUntil, setLockUntil, resetAttempts } = useCodeVerificationStore();
   /* SUGIERO PASAR ESTE TRANSACTION DIRECTAMENTE A MODAL1 PARA QUE NO SE HAGA UN DOBLE LLAMADO Y ESTE LA DATA MAS RAPIDO */
   const [transaction, setTransaction] = useState<any>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
   const isLocked = lockUntil && lockUntil > Date.now();
   const [timer, setTimer] = useState(0);
@@ -81,7 +82,8 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
         setIsModalOpen(true);
         setCode(code);
         /* SUGIERO PASAR ESTE TRANSACTION DIRECTAMENTE A MODAL1 PARA QUE NO SE HAGA UN DOBLE LLAMADO Y ESTE LA DATA MAS RAPIDO */
-        setTransaction(result.data);
+        setTransaction(result.data.transaction)
+        setAccessToken(result.noteAccessToken);
         return;
       } else {
         setIsCodeCorrect(false);
@@ -191,11 +193,12 @@ const VerifycodeEditRequest: React.FC<VerifycodeEditRequestProps> = ({ toggle, i
         isDark={isDark}
         isOpen={isModalOpen}
         code={code}
+        transactionData={transaction} // ahora es solo el objeto transaction
+        noteAccessToken={accessToken} 
         onClose={() => {
           setIsModalOpen(false);
           toggle();
         }}
-        title="modal de tipos"
       />
     </>
   );
