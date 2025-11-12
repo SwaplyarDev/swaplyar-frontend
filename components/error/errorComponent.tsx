@@ -91,7 +91,7 @@ const NotFoundComponent = () => {
             <Image
               src={Post2_404}
               alt="Woman smiling with a laptop"
-              className="z-10 h-[291px] w-[185px] object-fit md:h-[355px] md:w-[350px] lg:h-[475px] lg:w-[400px] scale-75"
+              className="hidden md-phone:block z-10 h-[291px] w-[185px] object-fit md:h-[355px] md:w-[350px] lg:h-[475px] lg:w-[400px] scale-75"
               width={300}
               height={220}
             />
