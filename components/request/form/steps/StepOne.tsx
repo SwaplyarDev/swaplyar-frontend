@@ -14,6 +14,7 @@ import CustomInput from '@/components/ui/Input/CustomInput';
 import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
 import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
 import AuthButton from '@/components/auth/AuthButton';
+import clsx from 'clsx';
 
 interface FormData {
   first_name: string;
@@ -254,7 +255,7 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
           </>
         )}
       </div>
-      <div className="flex max-sm:justify-center sm:justify-end">
+      <div className="flex justify-end">
         {completedSteps[0] ? (
           hasChanges ? (
             <AuthButton
@@ -267,12 +268,28 @@ const StepOne = ({ blockAll }: { blockAll: boolean }) => {
             />
           ) : (
             <button
-              className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
+              className="group flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
               type="submit"
               disabled={blockAll}
             >
               Tratar
-              <ArrowUp />
+              <div
+                className={clsx(
+                  "flex h-5 w-5 sm:h-[30px] sm:w-[30px] items-center justify-center rounded-full border-lightText transition-all duration-300",
+                  isDark
+                    ? "group-bg-[#414244]"
+                    : "group-bg-custom-whiteD-900 group-hover:bg-buttonsLigth group-focus:shadow-[0_4px_4px_rgba(1,42,142,0.3)]"
+                )}
+              >
+                <ArrowUp
+                  className={clsx(
+                    "h-4 w-4 sm:h-6 sm:w-6 transition-colors duration-300",
+                    isDark
+                      ? "group-text-[#414244]"
+                      : "group-text-[#012a8e] group-hover:text-[#FCFBFA]"
+                  )}
+                />
+              </div>       
             </button>
           )
         ) : (

@@ -1,13 +1,22 @@
-import React from 'react';
-import { useDarkTheme } from '../theme-Provider/themeProvider';
+import React, { FC } from 'react';
 
-const ArrowDown = () => {
-  const { isDark } = useDarkTheme();
+type ArrowDownProps = {
+  copy?: boolean;
+  color?: string;
+  className?: string;
+};
+
+const ArrowDown: FC<ArrowDownProps> = ({ copy = false, color, className }) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 48 48">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      viewBox="0 0 48 48"
+      style={{ color }}
+    >
       <path
         fill="none"
-        stroke={isDark ? '#ebe7e0' : '#252526'}
+        stroke={copy ? '#12C971' : 'currentColor'}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="4"
