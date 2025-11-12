@@ -8,6 +8,10 @@ import { useStepperStore } from '@/store/stateStepperStore';
 import { useSystemStore } from '@/store/useSystemStore';
 import useWalletStore from '@/store/useWalletStore';
 import { StepTwoData } from '@/types/transactions/stepperStoretypes';
+import clsx from 'clsx';
+import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
+import AuthButton from '@/components/auth/AuthButton';
+import ArrowUp from '@/components/ui/ArrowUp/ArrowUp';
 
 // Carga diferida de los sub-formularios
 const StepTwoBank = dynamic(() => import('./stepsTwoOptions/StepTwoBank'));
@@ -16,9 +20,6 @@ const StepTwoPaypal = dynamic(() => import('./stepsTwoOptions/StepTwoPaypal'));
 const StepTwoWise = dynamic(() => import('./stepsTwoOptions/StepTwoWise'));
 const StepTwoTether = dynamic(() => import('./stepsTwoOptions/StepTwoTether'));
 const StepTwoPix = dynamic(() => import('./stepsTwoOptions/StepTwoPix'));
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import AuthButton from '@/components/auth/AuthButton';
-import ArrowUp from '@/components/ui/ArrowUp/ArrowUp';
 
 const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   const {
@@ -203,7 +204,7 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       {renderSelectedSystem()}
-      <div className="flex justify-center sm:justify-end">
+      <div className="flex justify-end">
         {completedSteps[1] ? (
           hasChanges ? (
             <AuthButton
@@ -216,12 +217,28 @@ const StepTwo = ({ blockAll }: { blockAll: boolean }) => {
             />
           ) : (
             <button
-              className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
+              className="group flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
               type="submit"
               disabled={blockAll}
             >
               Tratar
-              <ArrowUp />
+              <div
+                className={clsx(
+                  "flex h-5 w-5 sm:h-[30px] sm:w-[30px] items-center justify-center rounded-full border-lightText transition-all duration-300",
+                  isDark
+                    ? "group-bg-[#414244]"
+                    : "group-bg-custom-whiteD-900 group-hover:bg-buttonsLigth group-focus:shadow-[0_4px_4px_rgba(1,42,142,0.3)]"
+                )}
+              >
+                <ArrowUp
+                  className={clsx(
+                    "h-4 w-4 sm:h-6 sm:w-6 transition-colors duration-300",
+                    isDark
+                      ? "group-text-[#414244]"
+                      : "group-text-[#012a8e] group-hover:text-[#FCFBFA]"
+                  )}
+                />
+              </div> 
             </button>
           )
         ) : (
