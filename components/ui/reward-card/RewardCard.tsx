@@ -37,7 +37,7 @@ function RewardCard({
 }: RewardCardProps) {
   const textWidthClasses = customTextWidth 
     ? `w-[${customTextWidth.mobile}px] md:w-[${customTextWidth.tablet}px] lg:w-[${customTextWidth.desktop}px]`
-    : 'w-[358px] md:w-[333px] lg:w-[385px]';
+    : '';
   return (
     <div
       className={clsx(
@@ -53,9 +53,9 @@ function RewardCard({
         height={350}
         style={{ width: customImageWidth ? `${customImageWidth}px` : '303px' }}
       />
-      <div className="text-center w-full mt-4 md:mt-0 md:text-left md:flex-1 md:ml-4">
-        <h3 className="text-[28px]">{title}</h3>
-        <p className={`font-light ${textWidthClasses} mx-auto md:mx-0`}>
+      <div className="flex flex-col gap-3 text-center w-full mt-4 md:mt-0 lg:text-left md:flex-1 md:ml-4">
+        <h3 className="text-3xl">{title}</h3>
+        <p className={`font-light ${textWidthClasses}`}>
           {description}
           <Link
             href={linkHref}
