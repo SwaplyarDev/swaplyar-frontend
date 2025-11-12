@@ -81,7 +81,7 @@ export default function TransactionCalculator() {
 
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
-      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight px-1 py-2.5 md:px-5 md:py-8 sm:shadow-md dark:bg-calculatorDark dark:text-white sm:h-[460px] lg-tablet:min-w-[590px]">
+      <div className="mat-card calculator-container flex w-full h-full flex-col justify-center items-center rounded-2xl bg-custom-whiteD-500 px-1 py-2.5 md:px-5 md:py-8 sm:shadow-md dark:bg-calculatorDark dark:text-white sm:h-[460px] lg-tablet:min-w-[590px]">
         <div className="relative flex w-full flex-col items-center text-[#012c8a] dark:text-darkText">
           <p className="flex w-full items-center gap-[7px] font-textFont text-custom-grayD dark:text-darkText mb-1 sm:mb-3 max-sm:pl-1">
             {selectedSendingSystem?.coin === 'ARS' ? (

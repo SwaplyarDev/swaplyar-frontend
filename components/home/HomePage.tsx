@@ -20,20 +20,19 @@ export default function HomePage() {
   return (
     <>
       <AnimatedBlurredCircles tope="top-[-175px]" />
-      <section className="mx-auto w-full max-w-[1204px] overflow-hidden px-4 md:px-8 lg:px-4 my-[60px] md:mt-[120px] md:mb-[80px] lg:mt-[150px] lg:mb-[250px]">
+      <section className="mx-auto w-full max-w-[1204px] overflow-hidden px-4 md:px-8 lg:px-4 my-[40px] md:my-[80px] lg:my-[120px]">
         <article className="m-auto flex w-full flex-col items-center justify-center">
           <div className="mt-0 flex w-full flex-col items-center justify-center">
             <ConversionInstructions />
           </div>
-          <div className="relative mb-10 mt-8 flex w-full max-w-[358px] sm:max-w-[704px] lg:max-w-[1000px] flex-col items-center justify-center gap-10">
+          <div className="relative mb-10 mt-8 flex w-full flex-col items-center justify-center gap-10">
             <InfoBlock
               title="Podes cambiar USD o EUR de tu billetera virtual por la moneda de tu preferencia"
               imageSrc={UsdArs}
               imageAlt="Cambia USD de PayPal por ARS"
-              customImageSpacing={true}
               customImageWidth={237}
+              customImageContainerClassName='w-[237px]'
               customImageAlign="left"
-              customContentWidth={450}
               customImageContainerWidth={237}
               customGap={16}
               contentNode={
@@ -64,6 +63,7 @@ export default function HomePage() {
               title="¿Buscas un intercambio seguro y rápido para tu dinero?"
               imageSrc={homeSearch}
               imageAlt="Intercambio seguro y rápido"
+              customContainerClassName='!flex-col'
               contentNode={
                 <>
                   En SwaplyAr, ayudamos a freelancers y trabajadores remotos a cambiar sus pagos desde su billetera
@@ -89,7 +89,7 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
-      <section className="mt-[120px] mb-40">
+      <section>
         <FlyerTrabajo
           imageSrc={FlyerGif}
           href="/es/como-usar-swaplyar"

@@ -42,7 +42,7 @@ function TopPopUp() {
   }
 
   return (
-    <main
+    <div
       className="relative w-full  py-[3.5px] lg:py-[1.5px]"
       style={{
         backgroundColor: bannerColor.bg,
@@ -70,7 +70,7 @@ function TopPopUp() {
           <MdOutlineClose />
         </button>
       </div>
-    </main>
+    </div>
   );
 }
 
