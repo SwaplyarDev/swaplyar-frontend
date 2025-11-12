@@ -50,6 +50,7 @@ export default function HomePage() {
               imageSrc={RecargaPaypal}
               imageAlt="Recarga PayPal"
               position={true}
+              customContainerClassName='w-full'
               contentNode={
                 <>
                   Es tan simple que lo podes hacer en tres pasos. Colocas el monto que deseas en la calculadora,
@@ -63,7 +64,7 @@ export default function HomePage() {
               title="¿Buscas un intercambio seguro y rápido para tu dinero?"
               imageSrc={homeSearch}
               imageAlt="Intercambio seguro y rápido"
-              customContainerClassName='!flex-col'
+              customContainerClassName='!flex-col w-full'
               contentNode={
                 <>
                   En SwaplyAr, ayudamos a freelancers y trabajadores remotos a cambiar sus pagos desde su billetera
