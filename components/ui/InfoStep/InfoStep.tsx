@@ -7,9 +7,9 @@ interface InfoStepProps {
 }
 
 const InfoStep: FC<InfoStepProps> = ({ step }) => {
-  if (step !== 2 && step !== 3) return null;
   const { isDark } = useDarkTheme();
   
+  if (step !== 2 && step !== 3) return null;
 
   return (
     <button type="button" className="group relative">
