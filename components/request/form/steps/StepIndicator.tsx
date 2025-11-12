@@ -15,7 +15,7 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep, completedSte
   return (
     <div
       className={clsx(
-        'flex items-center justify-end mb-1.5',
+        'flex items-center justify-end mb-1.5 z-50',
       )}
     >
       {completedSteps.map((completed, index) => (
