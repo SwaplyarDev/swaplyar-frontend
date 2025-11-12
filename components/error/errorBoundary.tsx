@@ -73,7 +73,7 @@ const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ reset }) => {
             <Image
               src={Post1_500}
               alt="Woman smiling with tablet"
-              className="z-10 xs-mini-phone2:min-w-[400px] xs-mini-phone2:max-w-[426px] xs:min-w-[426px] xs:max-w-[460px] md-phone:min-w-[410px] md-phone:max-w-[420px] md-tablet:max-w-[460px] lg-tablet:max-w-[550px] lg:max-w-[600px] xl-desktop:max-w-[650px]"
+              className="hidden md:block z-10 w-auto h-auto max-w-[650px] xs-mini-phone2:min-w-[400px] xs-mini-phone2:max-w-[426px] xs:min-w-[426px] xs:max-w-[460px] md-phone:min-w-[410px] md-phone:max-w-[420px] md-tablet:max-w-[460px] lg-tablet:max-w-[550px] lg:max-w-[600px]"
               width={800}
               height={437}
             />
