@@ -34,6 +34,13 @@ const Accordion = styled((props: AccordionProps & { isDark: boolean }) => {
     height: '1px',
     backgroundColor: isDark ? '#ffffff' : '#012c8a',
   },
+  // Ensure child Summary hover doesn't turn white due to external styles
+  '& .MuiAccordionSummary-root:hover': {
+    backgroundColor: isDark ? '#333 !important' : '#f5f5f5 !important',
+  },
+  '& .MuiButtonBase-root.MuiAccordionSummary-root:hover': {
+    backgroundColor: isDark ? '#333 !important' : '#f5f5f5 !important',
+  },
 }));
 
 const AccordionSummary = styled((props: AccordionSummaryProps & { $expanded: boolean }) => {

@@ -34,13 +34,13 @@ const Accordion = styled((props: AccordionProps & { isDark: boolean }) => {
   },
 }));
 
-const AccordionSummary = styled((props: AccordionSummaryProps & { isDark?: boolean; expanded?: boolean }) => {
-  const { expanded, isDark, ...summaryProps } = props;
+const AccordionSummary = styled((props: AccordionSummaryProps & { isDark?: boolean; $expanded: boolean }) => {
+  const { $expanded, isDark, ...summaryProps } = props;
   return (
     <MuiAccordionSummary
       expandIcon={
         <div
-          className={`${expanded ? (isDark ? 'bg-custom-grayD-600' : 'bg-custom-blue-800') : !isDark ? 'bg-custom-grayD-200' : 'bg-custom-grayD-800'} ${isDark ? 'group-hover:bg-custom-grayD-600' : 'group-hover:bg-custom-blue'}`}
+          className={`${$expanded ? (isDark ? 'bg-custom-grayD-600' : 'bg-custom-blue-800') : !isDark ? 'bg-custom-grayD-200' : 'bg-custom-grayD-800'}`}
           style={{
             display: 'flex',
             justifyContent: 'center',
@@ -51,7 +51,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark?: boole
           }}
         >
           <ExpandMore
-            className={`${isDark ? (expanded ? 'text-custom-whiteD' : 'text-custom-grayD-500') : expanded ? 'text-custom-whiteD' : 'text-custom-blue-300'} ${isDark ? 'group-hover:text-custom-whiteD' : 'group-hover:text-custom-whiteD'}`}
+            className={`${isDark ? ($expanded ? 'text-custom-whiteD' : 'text-custom-grayD-500') : $expanded ? 'text-custom-whiteD' : 'text-custom-blue-300'}`}
             sx={{
               fontSize: '2rem',
               transition: 'color 0.3s ease',
@@ -62,7 +62,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark?: boole
       {...summaryProps}
     />
   );
-})(({ theme, isDark }) => ({
+})(({ theme }) => ({
   border: 'none',
   [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]: {
     transform: 'rotate(180deg)',
@@ -70,12 +70,8 @@ const AccordionSummary = styled((props: AccordionSummaryProps & { isDark?: boole
   [`& .${accordionSummaryClasses.content}`]: {
     marginLeft: theme.spacing(0),
   },
-  '&:hover': {
-    backgroundColor: isDark ? '#333' : '#f5f5f5',
-    [`& .MuiTypography-root`]: {
-      color: isDark ? '#f5f5f5' : 'rgb(1, 42, 141)',
-      fontWeight: '600',
-    },
+  '&&:hover': {
+    backgroundColor: theme.palette.mode === 'dark' ? '#333 !important' : '#f5f5f5 !important',
   },
 }));
 
@@ -127,9 +123,9 @@ const QuestionHowToUse = () => {
               className="group"
             >
               <AccordionSummary
-                className={`p-0 hover:bg-transparent`}
+                className={`p-0`}
                 isDark={isDark}
-                expanded={expanded === `panel${index}`}
+                $expanded={expanded === `panel${index}`}
               >
                 <Typography
                   className={`font-textFont text-[21px] ${
