@@ -75,22 +75,22 @@ const AboutUs = () => {
 
   return (
     <>
-      <div className="relative top-[54px] mx-4 flex flex-col items-center justify-center md:mx-[43.5px] lg:mx-4">
+      <div className="relative mx-4 my-[40px] md:my-[80px] lg:my-[120px] flex flex-col items-center justify-center md:mx-11 lg:mx-4">
         <AnimatedBlurredCircles tope="top-[0px]" />
-        <div className="flex w-full max-w-[358px] md:max-w-[681px] lg:max-w-[1000px] flex-col items-center justify-center text-lightText dark:text-darkText">
-          <section className="max-w-[358px] md:max-w-[681px] lg:max-w-[1000px]">
-            <h1 className="mt-6 text-center font-titleFont text-[38px] font-medium lg2:mt-20 lg2:text-left lg2:text-[40px]">
+        <div className="flex w-full lg:max-w-[1000px] flex-col gap-5 md:gap-8 lg:gap-10 items-center justify-center text-lightText dark:text-darkText">
+          <section className="lg:max-w-[1000px] flex flex-col gap-5 md:gap-8 lg:gap-10">
+            <h1 className="text-center font-titleFont text-3.5xl md:text-4xl font-medium lg2:text-left lg2:text-[40px]">
               Nuestra Historia, Misión, Visión y Valores
             </h1>
 
-            <section className="rs-wrapper-v4 max-w-[358px] md:max-w-[681px] lg:max-w-[1000px] text-left font-textFont font-light sm:mt-4 md:mt-8 md:w-full lg2:mt-10">
-              <p className="mt-6 md:mt-7 md:text-base lg:text-xl">
+            <section className="flex flex-col gap-5 md:gap-8 lg:gap-10 rs-wrapper-v4 lg:max-w-[1000px] text-left font-textFont font-light md:w-full">
+              <p className="md:text-base lg:text-xl">
                 En SwaplyAr, transformamos la forma en que las personas y empresas realizan transacciones
                 internacionales, garantizando un intercambio seguro y confiable entre las principales billeteras
                 virtuales y cuentas bancarias a nivel global. Nuestro enfoque en la seguridad, rapidez y transparencia
                 nos permite ofrecer soluciones financieras innovadoras que se adaptan a tus necesidades.
               </p>
-              <p className="mt-6 md:mt-7 md:text-base lg:text-xl">
+              <p className="md:text-base lg:text-xl">
                 Desde nuestros inicios, SwaplyAr nació con la visión de simplificar las transferencias internacionales
                 para todos: empresas, personas y familias. Nos dedicamos a proporcionar servicios rápidos, seguros y
                 accesibles, siempre enfocados en garantizar la mejor experiencia para cada cliente.
@@ -98,24 +98,24 @@ const AboutUs = () => {
             </section>
           </section>
 
-          <div className="mt-6 w-full max-w-[358px] md:max-w-[681px] lg:max-w-[1000px] lg2:mt-10">
+          <div className="w-full lg:max-w-[1000px]">
             <CaedAboutUs cardsData={cardsData} />
           </div>
 
-          <section className="mt-6 flex flex-col gap-6 text-lightText dark:text-darkText lg2:mt-10 lg2:gap-10">
+          <section className="flex flex-col gap-5 md:gap-8 lg:gap-10 text-lightText dark:text-darkText lg2:gap-10">
             {sectionsData.map((section, i) => (
               <article key={i}>
-                <h2 className="font-textFont text-4xl">{section.title}</h2>
-                <p className="font-textFont font-light">{section.description}</p>
+                <h2 className="font-textFont text-3xl md:text-4xl">{section.title}</h2>
+                <p className="font-textFont font-light text-base">{section.description}</p>
                 {section.secondaryDescription && (
-                  <p className="mt-6 font-textFont font-light">{section.secondaryDescription}</p>
+                  <p className="font-textFont font-light text-base">{section.secondaryDescription}</p>
                 )}
               </article>
             ))}
           </section>
 
-          <section className="flex w-full max-w-[358px] md:max-w-[681px] lg:max-w-[1000px] justify-center">
-            <section className="mt-10 grid w-[90%] grid-cols-1 items-center justify-center gap-6 md:w-full md:grid-cols-2">
+          <section className="flex w-full lg:max-w-[1000px] justify-center">
+            <section className="py-6 md:py-0 grid w-full grid-cols-1 items-center justify-center gap-6 md:w-full md:grid-cols-2">
               <article className="col-right order-2 text-left font-textFont text-lg text-lightText dark:text-darkText md:order-2">
                 <p>
                   "Nos Dedicamos a transformar la manera en que las personas manejan su dinero, utilizando las
@@ -137,7 +137,7 @@ const AboutUs = () => {
           </section>
         </div>
       </div>
-      <section className="mt-[87px] md:mt-[37px] lg:mt-[87px] overflow-hidden text-center">
+      <section>
         <FlyerTrabajo
           imageSrc={FlyerGif}
           href="/es/como-usar-swaplyar"
