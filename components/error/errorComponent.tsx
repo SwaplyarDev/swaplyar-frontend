@@ -84,14 +84,14 @@ const NotFoundComponent = () => {
             <Image
               src={Post1_404}
               alt="Man smiling with tablet"
-              className="z-10 hidden h-[291px] w-[200px] object-fit md-phone:block md:h-[355px] lg:h-[475px] scale-75"
+              className="z-10 h-[291px] w-[200px] object-fit hidden md:block md:h-[355px] lg:h-[475px] scale-75"
               width={400}
               height={220}
             />
             <Image
               src={Post2_404}
               alt="Woman smiling with a laptop"
-              className="hidden md-phone:block z-10 h-[291px] w-[185px] object-fit md:h-[355px] md:w-[350px] lg:h-[475px] lg:w-[400px] scale-75"
+              className=" hidden md:block z-10 h-[291px] w-[185px] object-fit md:h-[355px] md:w-[350px] lg:h-[475px] lg:w-[400px] scale-75"
               width={300}
               height={220}
             />
