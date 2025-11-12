@@ -15,7 +15,7 @@ interface StepTwoPixProps {
 const StepTwoPix: React.FC<StepTwoPixProps> = ({ register, errors, blockAll, formData, watch, completedSteps }) => {
   return (
     <>
-      <div className="mx-0 grid grid-cols-1 gap-2 sm:mx-0 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-2">
+      <div className="mx-0 grid grid-cols-1 gap-2 sm:mx-0 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-2 z-50">
         <CustomInput
           label="Nombre"
           name="receiver_first_name"
