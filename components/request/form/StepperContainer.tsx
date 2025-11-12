@@ -294,7 +294,7 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
             onClick={() => isClickable && handleStepClick(index)}
             className={clsx(
               completedSteps[index] || index == activeStep ? 'flex-col' : 'flex-row',
-              'relative flex min-h-20 w-full gap-2 rounded-2xl bg-calculatorDark p-3 sm:p-4 md:p-5 dark:bg-calculatorLight',
+              'relative flex min-h-20 w-full gap-2 rounded-2xl bg-custom-whiteD-500 p-3 sm:p-4 md:p-5 dark:bg-calculatorLight',
               isClickable && 'cursor-pointer hover:bg-opacity-90 transition-colors duration-200'
             )}
           >
@@ -329,25 +329,41 @@ const StepperContainer = ({ session }: StepperContainerProps) => {
               </div>
               {(index < activeStep || completedSteps[index]) && (
                 <div className='flex flex-col justify-start gap-1'>
-                  {index >= 1 && (
+                  {index === activeStep && (
                     <div className="flex justify-end">
                       {index >= 1 && index <= 2 && <InfoStep step={index + 1} />}
                     </div>
                   )}
-                  <div className='flex flex-col items-end mb-2'>                    
+                  <div className='flex flex-col items-end mb-2 gap-2 z-50'>                    
                     <div className="flex h-5 w-5 sm:h-[30px] sm:w-[30px] items-center justify-center rounded-full border-lightText bg-lightText dark:border-darkText dark:bg-darkText">
                       <Tick color={isDark ? '#414244' : '#FCFBFA'} className='h-3 w-3 sm:h-5 sm:w-5' />
                     </div>
                     {index != activeStep && (
-                      <button
-                        disabled={blockAll}
-                        onClick={() => handleStepClick(index)}
-                        className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
-                        type="button"
+                    <button
+                      disabled={blockAll}
+                      onClick={() => handleStepClick(index)}
+                      type="button"
+                      className="group flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
+                    >
+                      Tratar
+                      <div
+                        className={clsx(
+                          "flex h-5 w-5 sm:h-[30px] sm:w-[30px] items-center justify-center rounded-full border-lightText transition-all duration-300",
+                          isDark
+                            ? "group-bg-[#414244]"
+                            : "group-bg-custom-whiteD-900 group-hover:bg-buttonsLigth group-focus:shadow-[0_4px_4px_rgba(1,42,142,0.3)]"
+                        )}
                       >
-                        Tratar
-                        <ArrowDown />
-                      </button>
+                        <ArrowDown
+                          className={clsx(
+                            "h-4 w-4 sm:h-6 sm:w-6 transition-colors duration-300",
+                            isDark
+                              ? "group-text-[#414244]"
+                              : "group-text-[#012a8e] group-hover:text-[#FCFBFA]"
+                          )}
+                        />
+                      </div>
+                    </button>
                     )}
                   </div>
                 </div>

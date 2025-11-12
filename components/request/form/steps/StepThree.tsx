@@ -7,9 +7,12 @@ import { useSystemStore } from '@/store/useSystemStore';
 import dynamic from 'next/dynamic';
 import AuthButton from '@/components/auth/AuthButton';
 import NETWORKS_DATA from '@/components/ui/PopUp/networksData';
+import clsx from 'clsx';
+import PopUp from '@/components/ui/PopUp/PopUp';
 
 const StepThreeGeneral = dynamic(() => import('./stepsThreeOptions/StepThreeGeneral'));
 const StepThreeTether = dynamic(() => import('./stepsThreeOptions/StepThreeTether'));
+
 interface FormData {
   send_amount: string;
   receive_amount: string;
@@ -103,7 +106,6 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
     }
   }, []);
 
-  // Actualizar network y wallet cuando cambia red_selection
   useEffect(() => {
     if (selectedSendingSystem?.id === 'tether' && redSelection?.value) {
       const networkKey = redSelection.value as keyof typeof NETWORKS_DATA;
@@ -117,7 +119,8 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   }, [redSelection, selectedSendingSystem, setValue]);
 
   const [loading, setLoading] = useState(false);
-  const onSubmit = (data: FormData) => {   
+  const onSubmit = (data: FormData) => {
+    
     data.proof_of_payment = storedFiles;
 
     setLoading(true);
@@ -141,41 +144,65 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
   );
 
   const { onChange, ...restRegister } = register('proof_of_payment', {
-    required: true,
+    required: false,
+    validate: (value) => {
+      return true;
+    }
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.from(event.target.files || []);
     if (newFiles.length === 0) return;
 
-    const combined = [...storedFiles, ...newFiles].slice(0, 5);
-    
+    const existingFiles = storedFiles;
+    const filteredNewFiles = newFiles.filter(
+      (newFile) =>
+        !existingFiles.some(
+          (existingFile) =>
+            existingFile.name === newFile.name &&
+            existingFile.size === newFile.size &&
+            existingFile.lastModified === newFile.lastModified
+        )
+    );
+
+    if (filteredNewFiles.length < newFiles.length) {
+      PopUp({
+        variant: 'simple-error',
+        title: 'La imagen que intentás subir ya existe, no se pueden subir duplicados.',
+        isDark
+      });
+    }
+
+    if (filteredNewFiles.length === 0) return;
+
+    const combined = [...existingFiles, ...filteredNewFiles].slice(0, 5);
+
     setStoredFiles(combined);
 
-    const newPreviews = newFiles
-      .map(file => (file.type.startsWith('image/') ? URL.createObjectURL(file) : null))
+    const newPreviews = filteredNewFiles
+      .map((file) => (file.type.startsWith('image/') ? URL.createObjectURL(file) : null))
       .filter(Boolean) as string[];
-    
-    setPreviewImages(prev => {
+
+    setPreviewImages((prev) => {
       const updatedPreviews = [...prev, ...newPreviews].slice(0, 5);
       return updatedPreviews;
     });
-    
+
     setValue('proof_of_payment', combined, { shouldValidate: true });
-    
+
     const dataTransfer = new DataTransfer();
-    combined.forEach(file => dataTransfer.items.add(file));
-    
+    combined.forEach((file) => dataTransfer.items.add(file));
+
     const syntheticEvent = {
       ...event,
       target: {
         ...event.target,
-        files: dataTransfer.files
-      }
+        files: dataTransfer.files,
+      },
     } as React.ChangeEvent<HTMLInputElement>;
-    
+
     onChange(syntheticEvent);
-  };  
+  }; 
 
   const handleRemoveImage = (index: number) => {
     URL.revokeObjectURL(previewImages[index]);
@@ -300,12 +327,28 @@ const StepThree = ({ blockAll }: { blockAll: boolean }) => {
           ) : (
             <>
               <button
-                className="flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
+                className="group flex items-center justify-center gap-1 font-textFont text-base text-lightText underline dark:text-darkText"
                 type="submit"
                 disabled={blockAll}
               >
-                Tratar
-                <ArrowUp />
+                Tratar                              
+                <div
+                  className={clsx(
+                    "flex h-5 w-5 sm:h-[30px] sm:w-[30px] items-center justify-center rounded-full border-lightText transition-all duration-300",
+                    isDark
+                      ? "group-bg-[#414244]"
+                      : "group-bg-custom-whiteD-900 group-hover:bg-buttonsLigth group-focus:shadow-[0_4px_4px_rgba(1,42,142,0.3)]"
+                  )}
+                >
+                  <ArrowUp
+                    className={clsx(
+                      "h-4 w-4 sm:h-6 sm:w-6 transition-colors duration-300",
+                      isDark
+                        ? "group-text-[#414244]"
+                        : "group-text-[#012a8e] group-hover:text-[#FCFBFA]"
+                    )}
+                  />
+                </div>
               </button>
             </>
           )
