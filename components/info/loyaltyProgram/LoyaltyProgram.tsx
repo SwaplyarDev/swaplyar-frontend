@@ -28,7 +28,7 @@ function LoyaltyProgram() {
   return (
     <>
       <AnimatedBlurredCircles tope={'top-[20px]'} />
-      <section className="mx-auto w-full max-w-[1204px] overflow-hidden px-4 md:px-8 lg:px-4 my-[40px] md:my-[80px] lg:my-[120px]">
+      <section className="mx-auto w-full max-w-[1204px] overflow-hidden px-4 md:px-8 navbar-desktop:px-4 my-[40px] md:my-[80px] navbar-desktop:my-[120px]">
         <h1 className="mx-auto mb-3 md:mb-5 lg2:mb-10 max-w-[504px] text-center font-titleFont text-3.5xl md:text-[38px] font-medium lg2:text-[40px]">
           SwaplyAr Plus Rewards™ premia tu fidelidad
         </h1>
@@ -55,7 +55,7 @@ function LoyaltyProgram() {
         </div>
 
         <section className="relative flex flex-col items-center gap-4 md:gap-5 lg2:flex-row lg2:gap-10">
-          <div className="w-auto lg2:h-[400px]">
+          <div className="w-auto lg2:h-[432px]">
             <RewardCard
               imageSrc={isDark ? Rewards1Dark : Rewards1}
               imageAlt="paso 1 de como cambiar tu dinero en SwaplyAr"
@@ -67,7 +67,7 @@ function LoyaltyProgram() {
               customImageWidth={313}
             />
           </div>
-          <div className="w-auto lg2:h-[400px]">
+          <div className="w-auto lg2:h-[432px]">
             <RewardCard
               imageSrc={isDark ? Rewards2Dark : Rewards2}
               imageAlt="paso 2 de como cambiar tu dinero en SwaplyAr"
@@ -79,7 +79,7 @@ function LoyaltyProgram() {
               customImageWidth={318}
             />
           </div>
-          <div className="w-auto lg2:h-[400px]">
+          <div className="w-auto lg2:h-[432px]">
             <RewardCard
               imageSrc={isDark ? Rewards3Dark : Rewards3}
               imageAlt="paso 3 de como cambiar tu dinero en SwaplyAr"

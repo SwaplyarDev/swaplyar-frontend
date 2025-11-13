@@ -20,12 +20,12 @@ export default function HomePage() {
   return (
     <>
       <AnimatedBlurredCircles tope="top-[-175px]" />
-      <section className="mx-auto w-full max-w-[1204px] overflow-hidden px-4 md:px-8 lg:px-4 my-[40px] md:my-[80px] lg:my-[120px]">
+      <section className="mx-auto w-full max-w-[1204px] overflow-hidden container-spacing">
         <article className="m-auto flex w-full flex-col items-center justify-center">
           <div className="mt-0 flex w-full flex-col items-center justify-center">
             <ConversionInstructions />
           </div>
-          <div className="relative mb-10 mt-8 flex w-full flex-col items-center justify-center gap-10">
+          <div className="relative mb-10 mt-8 max-w-[1000px] flex w-full flex-col items-center justify-center gap-10">
             <InfoBlock
               title="Podes cambiar USD o EUR de tu billetera virtual por la moneda de tu preferencia"
               imageSrc={UsdArs}
@@ -64,7 +64,7 @@ export default function HomePage() {
               title="¿Buscas un intercambio seguro y rápido para tu dinero?"
               imageSrc={homeSearch}
               imageAlt="Intercambio seguro y rápido"
-              customContainerClassName='!flex-col w-full'
+              customContainerClassName='!flex-col lg:!flex-row w-full'
               contentNode={
                 <>
                   En SwaplyAr, ayudamos a freelancers y trabajadores remotos a cambiar sus pagos desde su billetera

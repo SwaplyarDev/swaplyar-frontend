@@ -989,3 +989,8 @@ div:where(.swal2-container).swal2-noanimation {
   height:100%;
   margin:0;
 }
+
+/* Contenedor con espaciado responsivo para todas las secciones principales */
+.container-spacing {
+  @apply px-4 md:px-8 navbar-desktop:px-4 my-[40px] md:my-[80px] navbar-desktop:my-[120px];
+}

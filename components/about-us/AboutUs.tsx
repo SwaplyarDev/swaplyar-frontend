@@ -75,11 +75,11 @@ const AboutUs = () => {
 
   return (
     <>
-      <div className="relative mx-4 my-[40px] md:my-[80px] lg:my-[120px] flex flex-col items-center justify-center md:mx-11 lg:mx-4">
-        <AnimatedBlurredCircles tope="top-[0px]" />
+      <AnimatedBlurredCircles tope="top-[0px]" />
+      <div className="relative flex flex-col items-center justify-center container-spacing">
         <div className="flex w-full lg:max-w-[1000px] flex-col gap-5 md:gap-8 lg:gap-10 items-center justify-center text-lightText dark:text-darkText">
           <section className="lg:max-w-[1000px] flex flex-col gap-5 md:gap-8 lg:gap-10">
-            <h1 className="text-center font-titleFont text-3.5xl md:text-4xl font-medium lg2:text-left lg2:text-[40px]">
+            <h1 className="text-center font-titleFont text-3.5xl md:text-4xl font-medium lg2:text-4xl">
               Nuestra Historia, Misión, Visión y Valores
             </h1>
 
