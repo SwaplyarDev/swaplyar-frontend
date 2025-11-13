@@ -80,24 +80,13 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   border: 'none',
 }));
 
-// ---------- COMPONENTE PRINCIPAL ----------
+
 const QuestionHowToUse = () => {
   const { isDark } = useDarkTheme();
   const { questions = [], loading } = useQuestion();
   const [expanded, setExpanded] = useState<string | false>(false);
 
-  // Eliminar duplicados por id (normalizado) y, como fallback, por título (normalizado)
-  const uniqueQuestions = Array.isArray(questions)
-    ? questions.filter((q, i, self) =>
-        i ===
-        self.findIndex(
-          (x) =>
-            String(x.id) === String(q.id) ||
-            (typeof x.title === 'string' && typeof q.title === 'string' && x.title.trim().toLowerCase() === q.title.trim().toLowerCase())
-        )
-      )
-    : [];
-
+  
   const handleChange = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : false);
   };
