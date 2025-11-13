@@ -102,6 +102,11 @@ const QuestionHowToUse = () => {
     setExpanded(isExpanded ? panel : false);
   };
 
+  // opcional: eliminar duplicados por título o id
+  const uniqueQuestions = Array.isArray(questions)
+    ? questions.filter((q, i, self) => i === self.findIndex(x => (x.id ?? x.title) === (q.id ?? q.title)))
+    : [];
+
   return (
     <main
       className={`${isDark ? 'text-custom-whiteD' : 'text-custom-grayD'} relative mx-auto flex w-[clamp(320px,92vw,1026px)] flex-col items-center justify-center gap-10 px-4 md:px-8 lg2:px-4 md:mb-[50px] lg:mb-[50px] transition-all duration-300`}
@@ -161,6 +166,7 @@ const QuestionHowToUse = () => {
       <div className="flex w-full flex-col justify-between gap-4 md:flex-row md:items-center">
         <p className="font-textFont text-lg">¿Tenés más dudas?</p>
 
+        <ShortButton href="/es/centro-de-ayuda/preguntas-frecuentes" text="Ir a Preguntas Frecuentes" />
         <ShortButton href="/es/centro-de-ayuda/preguntas-frecuentes" text="Ir a Preguntas Frecuentes" />
       </div>
     </main>
