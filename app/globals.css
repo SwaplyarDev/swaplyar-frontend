@@ -624,6 +624,17 @@ ul.scrollable-list-repentance::-webkit-scrollbar-thumb {
   }
 }
 
+@media (max-width: 640px) {
+  ul.scrollable-list {
+    border-radius: 0;
+    clip-path: inset(0 0 0 0 round 32px 32px 0 0);
+  }
+
+  ul.scrollable-list::-webkit-scrollbar {
+    width: 8px;
+  }
+}
+
 /* boton de pago */
 
 .buttonPay {
