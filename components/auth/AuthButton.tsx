@@ -27,16 +27,18 @@ const ButtonAuth: React.FC<ButtonAuthProps> = ({
 }) => {
   let variantClass = '';
 
-  // Alturas: mobile 32px, tablet 39px, notebooks 48px
-  const heightClass = 'h-[32px] sm:h-[39px] md:h-[48px]';
+  // Alturas: mobile 38px, tablet 45px, desktop 48px
+  const heightClass = 'h-[38px] sm:h-[45px] lg:h-[48px]';
 
-  // Texto: 16px en todos los breakpoints
-  const textClass = 'text-[16px] leading-[20px]';
+  // Texto: mobile 14px, tablet/desktop 20px
+  const textClass = 'text-[14px] leading-[18px] sm:text-[20px] sm:leading-[24px]';
 
   // Clases comunes para todos los botones
-  const commonClass = clsx('relative h-10.5 p-0 items-center justify-center rounded-3xl font-titleFont font-semibold text-base',
+  const commonClass = clsx(
+    'relative h-10.5 p-0 items-center justify-center rounded-3xl font-titleFont font-semibold text-base',
     heightClass,
-    textClass);
+    textClass
+  );
 
   if (variant === 'primary') {
     if (disabled || loading) {
@@ -53,16 +55,18 @@ const ButtonAuth: React.FC<ButtonAuthProps> = ({
       'dark:hover:bg-transparent',
       'm-1 border border-buttonsLigth text-lg text-buttonsLigth hover:bg-transparent',
       isDark ? 'dark:border-darkText dark:text-darkText dark:hover:bg-transparent buttonSecondDark' : 'buttonSecond',
-      disabled || loading ? 'border-disabledButtonsLigth text-disabledButtonsLigth dark:border-disabledButtonsDark dark:text-disabledButtonsDark cursor-not-allowed' : '',
-    ].filter(Boolean).join(' ');
+      disabled || loading
+        ? 'border-disabledButtonsLigth text-disabledButtonsLigth dark:border-disabledButtonsDark dark:text-disabledButtonsDark cursor-not-allowed'
+        : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
   }
-  //combinamos las clases
-  const buttonClass = clsx(
-    variantClass,
-    commonClass,
-    className
-  );
-  //si loading es true mostramos el loading
+
+  // combinamos las clases
+  const buttonClass = clsx(variantClass, commonClass, className);
+
+  // si loading es true mostramos el loading
   if (loading) {
     return (
       <div
@@ -73,19 +77,26 @@ const ButtonAuth: React.FC<ButtonAuthProps> = ({
           className
         )}
       >
-        <LoadingGif color={isDark ? '#ebe7e0' : '#012c8a'} size="24px" className="sm:size-[42px] lg:size-[45px]" />
+        <LoadingGif
+          color={isDark ? '#ebe7e0' : '#012c8a'}
+          size="24px"
+          className="sm:size-[42px] lg:size-[45px]"
+        />
       </div>
-    )
+    );
   }
-  //sino mostramos el boton normal con las clases combinadas.
+
+  // sino mostramos el boton normal con las clases combinadas.
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
       className={buttonClass}
-    >{label}</button>
-  )
-}
+    >
+      {label}
+    </button>
+  );
+};
 
 export default ButtonAuth;
