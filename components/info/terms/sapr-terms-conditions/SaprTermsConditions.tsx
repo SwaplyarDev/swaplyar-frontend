@@ -12,14 +12,14 @@ const SaprTermsConditions = () => {
   const { isDark } = useDarkTheme();
 
   return (
-    <div className="relative mx-auto flex max-w-[1000px] flex-col items-center px-4 py-10 text-custom-grayD dark:text-darkText md:px-8 lg:px-4">
+    <div className="relative mx-auto lg:mt-[55px] flex max-w-[1000px] flex-col items-center px-4 py-10 text-custom-grayD dark:text-darkText md:px-8 lg:px-4">
       <AnimatedBlurredCircles tope="top-[-1675px]" />
       <section className="flex flex-col items-center md:flex-row md:items-start lg:items-center">
         <h1 className="flex-1 text-center font-titleFont text-[38px] font-medium lg:text-[40px]">
           Términos y Condiciones de Programa de Fidelización
         </h1>
         <Image
-          className="hero-img mt-4 h-[179px] w-[332px] lg:h-[205px] lg:w-[380px]"
+          className="hero-img mt-4 hidden md:block h-[179px] w-[332px] lg:h-[205px] lg:w-[380px]"
           src={`${isDark ? tycDark : tycLight}`}
           alt="terminos-y-condiciones"
           width={332}
