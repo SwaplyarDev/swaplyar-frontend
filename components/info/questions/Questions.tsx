@@ -34,16 +34,23 @@ const Accordion = styled((props: AccordionProps & { isDark: boolean }) => {
     height: '1px',
     backgroundColor: isDark ? '#ffffff' : '#012c8a',
   },
+  // Ensure child Summary hover doesn't turn white due to external styles
+  '& .MuiAccordionSummary-root:hover': {
+    backgroundColor: isDark ? '#333 !important' : '#f5f5f5 !important',
+  },
+  '& .MuiButtonBase-root.MuiAccordionSummary-root:hover': {
+    backgroundColor: isDark ? '#333 !important' : '#f5f5f5 !important',
+  },
 }));
 
-const AccordionSummary = styled((props: AccordionSummaryProps) => {
-  const { expanded, ...summaryProps } = props;
+const AccordionSummary = styled((props: AccordionSummaryProps & { $expanded: boolean }) => {
+  const { $expanded, ...summaryProps } = props;
   return (
     <MuiAccordionSummary
       expandIcon={
         <div
           className={`${
-            expanded ? 'bg-custom-grayD-600' : 'bg-custom-grayD-200'
+            $expanded ? 'bg-custom-grayD-600' : 'bg-custom-grayD-200'
           }`}
           style={{
             display: 'flex',
@@ -56,7 +63,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => {
         >
           <ExpandMore
             className={`${
-              expanded ? 'text-custom-whiteD' : 'text-custom-grayD-500'
+              $expanded ? 'text-custom-whiteD' : 'text-custom-grayD-500'
             }`}
             sx={{
               fontSize: '2rem',
@@ -77,12 +84,8 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => {
   [`& .${accordionSummaryClasses.content}`]: {
     marginLeft: theme.spacing(0),
   },
-  '&:hover': {
-    backgroundColor: theme.palette.mode === 'dark' ? '#333' : '#f5f5f5',
-    [`& .MuiTypography-root`]: {
-      color: theme.palette.mode === 'dark' ? '#f5f5f5' : 'rgb(1, 42, 141)',
-      fontWeight: '600',
-    },
+  '&&:hover': {
+    backgroundColor: theme.palette.mode === 'dark' ? '#333 !important' : '#f5f5f5 !important',
   },
 }));
 
@@ -95,7 +98,7 @@ const FrequentlyQuestions = () => {
   const { questions = [] } = useQuestion({ force: true, path: '/questions', minCount: 11, scope: 'faq' });
   const { isDark } = useDarkTheme();
   
-  // Eliminar duplicados por id (normalizado) y, como fallback, por título (normalizado)
+
   const uniqueQuestions = Array.isArray(questions)
     ? questions.filter((q, i, self) =>
         i ===
@@ -134,14 +137,14 @@ const FrequentlyQuestions = () => {
               isDark={isDark}
             >
               <AccordionSummary
-                className={`p-0 hover:bg-transparent`}
-                expanded={expanded === `panel${index}`}
+                className={`p-0`}
+                $expanded={expanded === `panel${index}`}
               >
                 <Typography
                   className={`text-xl ${
                     isDark
                       ? 'text-custom-whiteD'
-                      : expanded === `panel${index}`
+                      : expanded === `panel${index}` 
                       ? 'text-custom-blue-800'
                       : 'text-custom-grayD'
                   } ${expanded === `panel${index}` ? 'font-semibold' : 'font-normal'}`}
