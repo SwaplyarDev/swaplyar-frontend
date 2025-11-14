@@ -219,7 +219,7 @@ const NavbarLanding = () => {
                 id="swaply-drawer-shell"
                 className={clsx(
                   // shell fijo que ANIMA (no el Drawer)
-                  'fixed right-0 top-0 z-[2000] h-screen w-[320px] xs-mini-phone2:w-[80%]',
+                  'fixed right-0 top-0 z-[2000] h-[100dvh] w-[320px] xs-mini-phone2:w-[80%]',
                   'transition-all duration-[450ms] ease-[cubic-bezier(0.45,0,0.55,1)]',
                   // estado inicial: fuera del viewport y transparente
                   'opacity-0 translate-x-[100%]'
@@ -233,7 +233,7 @@ const NavbarLanding = () => {
                     // el Drawer NO anima su transform; ocupa todo el shell
                     '!transform-none !translate-x-0 !opacity-100',
                     'bg-custom-whiteD-500 dark:bg-gray-800',
-                    'flex h-full w-full flex-col'
+                    'flex h-full w-full flex-col overflow-hidden'
                   )}
                 >
                   <Drawer.Header
@@ -319,7 +319,7 @@ const NavbarLanding = () => {
                               Salir
                             </button>
                           ) : (
-                            <div className="flex flex-col w-full items-center justify-center gap-2 mt-4">
+                            <div className="flex flex-col w-full items-center justify-center gap-2 mt-4 mb-[5svh]">
                               <ShortButton
                                 href="/es/iniciar-sesion"
                                 text="Iniciar sesión"
