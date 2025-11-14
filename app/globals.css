@@ -182,7 +182,6 @@ html {
 
 .container-blur {
   @apply fixed top-0 flex h-full min-h-[1000px] w-full justify-center overflow-hidden;
-  @apply fixed top-0 flex h-full min-h-[1000px] w-full justify-center overflow-hidden;
 }
 
 .box {
@@ -194,77 +193,79 @@ html {
 }
 
 .ball {
-  @apply absolute h-[80px] w-[80px] rounded-full blur-[3em];
+  @apply absolute rounded-full blur-[3em];
+  height: clamp(40px, 8vw, 80px);
+  width: clamp(40px, 8vw, 80px);
 }
 
 .ball1 {
   background-color: rgba(42, 41, 120, 0.601);
-  transform: rotate(33deg) translateX(429px);
+  transform: rotate(33deg) translateX(clamp(200px, 40vw, 429px));
 }
 
 .ball2 {
   background-color: rgba(42, 41, 120, 0.601);
-  transform: rotate(72deg) translateX(264px);
+  transform: rotate(72deg) translateX(clamp(130px, 25vw, 264px));
 }
 
 .ball3 {
   background-color: rgba(42, 41, 120, 0.601);
-  transform: rotate(134deg) translateX(252px);
+  transform: rotate(134deg) translateX(clamp(120px, 24vw, 252px));
 }
 
 .ball4 {
   background-color: rgba(42, 41, 120, 0.601);
-  transform: rotate(234deg) translateX(302px);
+  transform: rotate(234deg) translateX(clamp(150px, 28vw, 302px));
 }
 
 .ball5 {
   background-color: rgba(42, 41, 120, 0.601);
-  transform: rotate(308deg) translateX(225px);
+  transform: rotate(308deg) translateX(clamp(110px, 22vw, 225px));
 }
 
 .ball6 {
   background-color: rgba(42, 41, 120, 0.601);
-  transform: rotate(-6deg) translateX(420px);
+  transform: rotate(-6deg) translateX(clamp(200px, 39vw, 420px));
 }
 
 .ball7 {
   background-color: rgba(42, 41, 120, 0.601);
-  transform: rotate(189deg) translateX(368px);
+  transform: rotate(189deg) translateX(clamp(180px, 35vw, 368px));
 }
 
 .ball6Dark {
   background-color: rgba(117, 117, 119, 0.601);
-  transform: rotate(-6deg) translateX(420px);
+  transform: rotate(-6deg) translateX(clamp(200px, 39vw, 420px));
 }
 
 .ball7Dark {
   background-color: rgba(117, 117, 119, 0.601);
-  transform: rotate(189deg) translateX(368px);
+  transform: rotate(189deg) translateX(clamp(180px, 35vw, 368px));
 }
 
 .ball5Dark {
   background-color: rgba(117, 117, 119, 0.601);
-  transform: rotate(308deg) translateX(225px);
+  transform: rotate(308deg) translateX(clamp(110px, 22vw, 225px));
 }
 
 .ball4Dark {
   background-color: rgba(117, 117, 119, 0.601);
-  transform: rotate(234deg) translateX(302px);
+  transform: rotate(234deg) translateX(clamp(150px, 28vw, 302px));
 }
 
 .ball3Dark {
   background-color: rgba(117, 117, 119, 0.601);
-  transform: rotate(134deg) translateX(252px);
+  transform: rotate(134deg) translateX(clamp(120px, 24vw, 252px));
 }
 
 .ball2Dark {
   background-color: rgba(117, 117, 119, 0.601);
-  transform: rotate(72deg) translateX(264px);
+  transform: rotate(72deg) translateX(clamp(130px, 25vw, 264px));
 }
 
 .ball1Dark {
   background-color: rgba(117, 117, 119, 0.601);
-  transform: rotate(33deg) translateX(429px);
+  transform: rotate(33deg) translateX(clamp(200px, 40vw, 429px));
 }
 
 @keyframes spin {
