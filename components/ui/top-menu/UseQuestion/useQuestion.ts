@@ -52,11 +52,11 @@ const useQuestion = (options: UseQuestionOptions = {}) => {
           return;
         }
 
-        // Acumular múltiples páginas hasta alcanzar minCount o no haya más resultados
+      
         const collected: any[] = [];
         let p = targetPage || 1;
         let pageSize = 0;
-        const maxPages = 20; // límite de seguridad
+        const maxPages = 20; 
 
         while (collected.length < minCount && p <= maxPages) {
           const url = `${BASE_URL}${path}?page=${p}`;
@@ -70,9 +70,9 @@ const useQuestion = (options: UseQuestionOptions = {}) => {
             if (!collected.find((e) => e.id === q.id)) collected.push(q);
           }
 
-          // Cortes de seguridad: si la página viene vacía o menor al tamaño típico, probablemente no hay más
+     
           if (batch.length === 0) break;
-          // Si conocemos el pageSize y la página actual trajo menos, asumimos fin
+    
           if (pageSize > 0 && batch.length < pageSize) break;
 
           p += 1;
