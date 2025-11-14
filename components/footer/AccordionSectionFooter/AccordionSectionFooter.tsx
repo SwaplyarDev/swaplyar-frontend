@@ -37,13 +37,14 @@ export function AccordionSection({ title, links }: { title: string; links: Foote
       >
         {/* --- Título del acordion --- */}
         <AccordionSummary
-          expandIcon={<IconAcordeon sizeIcon={30} expanded={expanded} />}
+          expandIcon={<IconAcordeon sizeIcon={24} expanded={expanded} className='!size-6' classNameSvg={expanded ? 'self-end' : 'self-center'} />}
           aria-controls={`${title}-content`}
           id={`${title}-header`}
           sx={{
             position: 'relative',
             minHeight: '1px !important',
             paddingY: 0,
+            paddingX: 0,
             '& .MuiAccordionSummary-content': {
               margin: '0 !important',
             },
@@ -68,7 +69,7 @@ export function AccordionSection({ title, links }: { title: string; links: Foote
             ,
            
           }}
-          className='transition-all dark:text-[#FFFFFF]  '
+          className='transition-all dark:text-[#FFFFFF]'
         >
           <h4>{title}</h4>
         </AccordionSummary>
