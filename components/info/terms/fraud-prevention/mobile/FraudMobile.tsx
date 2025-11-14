@@ -7,7 +7,7 @@ interface FraudMobileProps {
 }
 
 const FraudMobile: React.FC<FraudMobileProps> = ({ selectedTextIndex, handleButtonClick, isAnimating }) => (
-  <section className="flex w-[100%] flex-col items-start gap-4 md:hidden">
+  <section className="flex w-full flex-col items-start gap-4 md:hidden">
     {/* Todos los botones del menú arriba */}
     <div className="flex flex-col gap-2 w-full">
       {mockTexts.map((item, key) => (
@@ -28,12 +28,12 @@ const FraudMobile: React.FC<FraudMobileProps> = ({ selectedTextIndex, handleButt
 
     {/* Contenido seleccionado abajo */}
     {selectedTextIndex !== null && (
-      <section className="flex w-[390px] flex-col items-start gap-5">
-        <h2 className="w-[358px] self-start border-[#012A8E] p-2 text-start text-3xl font-normal dark:border-[#EBE7E0]">
+      <section className="flex w-full flex-col items-start gap-5">
+        <h2 className="w-full self-start border-[#012A8E] p-2 text-start text-3xl font-normal dark:border-[#EBE7E0] mr-4">
           {mockTexts[selectedTextIndex]?.mainTitle}
         </h2>
         <article
-          className={`max-w-[332px] shrink-0 self-start transition-all duration-500 ease-in-out ${
+          className={`max-w-full shrink-0 self-start mx-4 transition-all duration-500 ease-in-out ${
             isAnimating ? 'opacity-0 blur-xl' : 'opacity-100 blur-none'
           } flex flex-col gap-5 overflow-hidden rounded-2xl bg-[#EEEAE3] p-5 text-sm dark:bg-[#4B4B4B]`}
         >
