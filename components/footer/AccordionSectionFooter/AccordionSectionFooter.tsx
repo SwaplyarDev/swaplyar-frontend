@@ -23,7 +23,7 @@ export function AccordionSection({ title, links }: { title: string; links: Foote
         expanded={expanded}
         onChange={() => setExpanded(!expanded)}
         sx={{
-          width: 'clamp(320px, 90vw, 100%)',
+          width: '100%',
           '&.MuiAccordion-root': {
             backgroundColor: 'transparent',
             boxShadow: 'none',

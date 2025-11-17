@@ -121,7 +121,7 @@ const NavbarLanding = () => {
   const id1 = open ? 'simple-popover' : undefined;
 
   return (
-    <div className="w-full mx-auto px-[10px] py-1 h-[48.5px] sm-phone:h-[57px] sm-phone:px-[14px] navbar-desktop:h-[68px] navbar-desktop:max-w-screen-desktop navbar-desktop:px-4 navbar-desktop:py-[10px]">
+    <div className="w-full mx-auto px-4 md:px-8 py-1 h-[48.5px] sm-phone:h-[57px] sm-phone:px-[14px] navbar-desktop:h-[68px] navbar-desktop:max-w-screen-desktop navbar-desktop:px-0 navbar-desktop:py-[10px]">
       <Navbar
         fluid
         rounded
