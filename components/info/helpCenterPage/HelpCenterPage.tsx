@@ -16,7 +16,7 @@ const HelpCenterPage = () => {
 
   return (
     <>
-      <div className="relative flex w-full flex-col items-center justify-center gap-20 px-4 py-10 md:px-8 lg:px-4">
+      <div className="relative flex w-full flex-col items-center justify-center gap-20 px-4 md:px-8 navbar-desktop:px-4 my-[40px] md:my-[80px] navbar-desktop:my-[120px]">
         <AnimatedBlurredCircles tope="top-[-260px]" />
         <div className="w-full mt-5">
           <div className="mx-auto lg2:max-w-[1205px]">

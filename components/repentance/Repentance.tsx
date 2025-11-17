@@ -14,7 +14,7 @@ const RepentanceForm = () => {
   const { isDark } = useDarkTheme();
 
   return (
-    <div className="my-[60px] lg2:my-[120px] w-full flex flex-col items-center justify-center px-4 md:px-8">
+    <div className="px-4 md:px-8 navbar-desktop:px-4 my-[40px] md:my-[80px] navbar-desktop:my-[120px] w-full flex flex-col items-center justify-center">
       <AnimatedBlurredCircles tope="top-[124px]" />
       <div className="flex flex-col md:gap-7">
         <div className="mx-auto mt-10 md:mt-[90px] flex min-h-full w-full max-w-[506px] flex-wrap justify-center md:hidden">
