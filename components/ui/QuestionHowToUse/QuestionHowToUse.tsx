@@ -181,12 +181,10 @@ const QuestionHowToUse = () => {
   <div className="flex w-full flex-col justify-between gap-4 md:flex-row md:items-center">
     <p className="font-textFont text-lg">¿Tenés más dudas?</p>
 
-    <ShortButton
-      href="/es/centro-de-ayuda/preguntas-frecuentes"
-      text="Ir a Preguntas Frecuentes"
-    />
-  </div>
-</main>
+       
+        <ShortButton href="/es/centro-de-ayuda/preguntas-frecuentes" text="Ir a Preguntas Frecuentes" />
+      </div>
+    </main>
   );
 };
 
