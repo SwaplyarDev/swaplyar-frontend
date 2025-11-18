@@ -58,8 +58,8 @@ const FooterPrincipal = () => {
             </Link>
           ))}
         </section>
-        <section className="flex items-end justify-center sm:w-1/2 navbar-desktop:w-1/3 sm:justify-end">
-          <p className="text-center font-textFont text-xs font-thin text-gray-600 dark:text-gray-400">
+        <section className="flex items-end justify-center sm:w-1/2 navbar-desktop:w-1/3 navbar-desktop:justify-end">
+          <p className="text-center font-textFont text-xs font-thin text-custom-grayD dark:text-gray-400">
             Todos los derechos reservados © SWAPLYAR | Group OA
           </p>
         </section>

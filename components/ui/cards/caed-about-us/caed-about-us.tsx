@@ -8,7 +8,7 @@ import '../CardsCss.css';
 import SwipeHands from '../../animations/SwipeHands';
 import clsx from 'clsx';
 import { useSize } from '@/hooks/useSize';
-import { rotateCard } from '@/utils/assets/imgDatabaseCloudinary';
+import { RefreshCw } from 'lucide-react';
 
 interface CardData {
   src: string;
@@ -117,7 +117,7 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
                 onClick={() => handleToggle(index)}
               >
                 <div className="card-inner h-full w-full duration-700">
-                  <div className="card-front backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-2xl bg-white text-black shadow-lg dark:bg-gray-800 dark:text-white">
+                  <div className="card-front backface-hidden absolute flex h-full w-full flex-col items-center justify-center rounded-2xl bg-white text-black shadow-lg dark:bg-gray-800 dark:text-white shadow-black/50 lg:shadow-[#012A8E80]">
                     <Image
                       src={card.src}
                       alt={card.alt}
@@ -125,25 +125,13 @@ const CaedAboutUs: React.FC<CaedAboutUsProps> = ({ cardsData }) => {
                       objectFit="cover"
                       className="rounded-2xl shadow-md shadow-black/50 lg:shadow-[#012A8E80]"
                     />
-                    <Image
-                      src={rotateCard}
-                      alt="Icono de rotacion de la card"
-                      width={25}
-                      height={25}
-                      className="absolute right-2 top-2"
-                    />
+                    <RefreshCw size={25} color='white' className='absolute right-2 top-2 rotate-90' strokeWidth={2} />
                     <h3 className="font-vold absolute bottom-0 mt-2 w-full rounded-bl-2xl rounded-br-2xl bg-[#323232] p-[10px] font-textFont text-darkText">
                       {card.title}
                     </h3>
                   </div>
-                  <div className="card-back backface-hidden shadow-custom-black absolute flex h-full w-full flex-col items-center justify-center rounded-lg bg-[#000c29] p-4 text-darkText dark:bg-gray-800 dark:text-darkText">
-                    <Image
-                      src={rotateCard}
-                      alt="Icono de rotacion de la card"
-                      width={25}
-                      height={25}
-                      className="absolute right-2 top-2"
-                    />
+                  <div className="card-back backface-hidden rounded-2xl shadow-custom-black absolute flex h-full w-full flex-col items-center justify-center bg-[#000c29] p-4 text-darkText dark:text-darkText shadow-md shadow-black/50 lg:shadow-[#012A8E80]">
+                    <RefreshCw size={25} color='white' className='absolute right-2 top-2 rotate-90' />
                     <h3 className="self-start font-textFont font-bold">{card.backTitle}</h3>
                     <p className="mt-2 font-textFont font-light">{card.backText}</p>
                   </div>

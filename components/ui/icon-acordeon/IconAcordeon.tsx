@@ -13,7 +13,9 @@ interface IconAcordeonProps {
   /** Color del icono */
   iconColor?: string,
     /** Size del icono */
-  sizeIcon?:number,
+  sizeIcon?: number,
+  className?: string
+  classNameSvg?: string
 }
 
 export const IconAcordeon = ({
@@ -21,11 +23,13 @@ export const IconAcordeon = ({
   size = 40,
   bgColor = '#F7F5F0', 
   iconColor = '#002984',
-  sizeIcon=18
+  sizeIcon = 18,
+  className = '',
+  classNameSvg = ''
 }: IconAcordeonProps) => {
   return (
     <motion.div
-      animate={{ rotate: expanded ? 180 : 0 }}
+      animate={{ rotate: expanded ? 360 : 0 }}
       transition={{ duration: 0.3 }}
       style={{
         width: size,
@@ -37,12 +41,10 @@ export const IconAcordeon = ({
         justifyContent: 'center',
       }}
        className={`
-        
-        bg-[#F7F5F0] dark:bg-[#4a4a4a] 
-    
+        ${className}
       `}
     >
-      <ExpandMoreIcon className='dark:text-[#252526]' sx={{ color: iconColor, fontSize: sizeIcon }} />
+      <ExpandMoreIcon className={`dark:text-darkText ${classNameSvg}`} sx={{ color: iconColor, fontSize: sizeIcon }} />
     </motion.div>
   )
 }

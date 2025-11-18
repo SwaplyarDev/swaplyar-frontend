@@ -625,6 +625,17 @@ ul.scrollable-list-repentance::-webkit-scrollbar-thumb {
   }
 }
 
+@media (max-width: 640px) {
+  ul.scrollable-list {
+    border-radius: 0;
+    clip-path: inset(0 0 0 0 round 32px 32px 0 0);
+  }
+
+  ul.scrollable-list::-webkit-scrollbar {
+    width: 8px;
+  }
+}
+
 /* boton de pago */
 
 .buttonPay {
@@ -989,4 +1000,9 @@ div:where(.swal2-container).swal2-noanimation {
 .swal2-icon {
   height:100%;
   margin:0;
+}
+
+/* Contenedor con espaciado responsivo para todas las secciones principales */
+.container-spacing {
+  @apply px-4 md:px-8 navbar-desktop:px-4 my-[40px] md:my-[80px] navbar-desktop:my-[120px];
 }

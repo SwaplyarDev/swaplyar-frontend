@@ -11,7 +11,7 @@ const EditSoli = () => {
   const { isDark } = useDarkTheme();
 
   return (
-    <div className="my-[60px] lg2:my-[120px] w-full flex flex-col items-center justify-center px-4 md:px-8">
+    <div className="w-full flex flex-col items-center justify-center px-4 md:px-8 navbar-desktop:px-4 my-[40px] md:my-[80px] navbar-desktop:my-[120px]">
       <AnimatedBlurredCircles tope="top-[124px]" />
       <div className="flex w-full flex-col items-center lg2:gap-10">
         <div className="flex flex-col md:gap-7">

@@ -146,8 +146,8 @@ const SearchRequest = () => {
 
   return (
     <>
-      <div className='my-[60px] lg2:my-[120px]'>
-        <AnimatedBlurredCircles tope="top-[124px]" />
+      <AnimatedBlurredCircles tope="top-[124px]" />
+      <div className='px-4 md:px-8 navbar-desktop:px-4 my-[40px] md:my-[80px] navbar-desktop:my-[120px]'>
         <div className="mx-auto flex w-full max-w-screen-lg flex-col px-4 md:gap-4 md:px-8 lg2:px-0">
           <div className="flex flex-col items-center justify-center gap-2">
             <div className="mx-auto mt-10 md:mt-[90px] flex min-h-full w-full max-w-[506px] flex-wrap justify-center md:hidden">
@@ -201,7 +201,7 @@ const SearchRequest = () => {
                 }}
                 error={errors.transactionId?.message}
               />
-              
+
               <BottomBorderInput
                 label="Apellido"
                 type="text"

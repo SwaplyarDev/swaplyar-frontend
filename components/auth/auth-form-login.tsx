@@ -58,7 +58,7 @@ export const LoginForm = () => {
     <div className="flex my-[60px] md:mt-[120px] md:mb-[80px] lg:mt-[150px] lg:mb-[250px] px-4 flex-col items-center justify-center">
       <form
         onSubmit={handleSubmit(submitEmail)}
-        className="flex w-[356px] md:w-[430px] lg:w-[484px] flex-col rounded-2xl gap-3 bg-custom-whiteD-500 py-10 px-5 shadow-md dark:bg-calculatorDark dark:shadow-dark-form"
+        className="flex w-full max-w-96 md:max-w-[430px] lg:max-w-[484px] flex-col rounded-2xl gap-3 bg-custom-whiteD-500 py-10 px-5 shadow-md dark:bg-calculatorDark dark:shadow-dark-form"
       >
         <AuthTitle>Iniciar Sesión</AuthTitle>
 

@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 const Page: React.FC = () => {
   return (
     <main>
-      <div className="flex-column flex w-full flex-wrap items-center justify-center lg:px-10">
+      <div className="flex-column flex w-full flex-wrap items-center justify-center">
         <RepentanceForm />
       </div>
       <FlyerTrabajo
