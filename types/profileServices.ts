@@ -1,3 +1,31 @@
+export interface ProfileResponse {
+  id: string;
+  user: EditUser;
+  firstName: string;
+  lastName: string;
+  nickName: string;
+  email: string;
+  identification: string | null;
+  phone: string | null;
+  birthday: string | null;
+  age: number | null;
+  gender: string;
+  lastActivity: string | null;
+  socials: {
+    id: string;
+    whatsappNumber: string;
+    facebook: string;
+    instagram: string;
+    tiktok: string;
+    twitterX: string;
+    snapchat: string;
+    linkedin: string;
+    youtube: string;
+    pinterest: string;
+  };
+  profilePictureUrl: string | null;
+}
+
 export interface UpdatePictureResponse {
   message: string;
   result: {

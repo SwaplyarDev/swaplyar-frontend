@@ -1,13 +1,13 @@
 
+
 'use client';
 import SelectCountry from '@/components/request/form/inputs/SelectCountry';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useWhatsAppFormStore } from '../store/WhatsAppFormStore';
+import { useProfileStore } from '@/store/useProfileStore';
 import { CountryOption } from '@/types/request/request';
 import { useSession } from 'next-auth/react';
-import { updatePhone } from '../services/profileServices';
 import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
 import { Dialog, DialogContent } from '@mui/material';
 import InputSteps from '@/components/inputSteps/InputSteps';
@@ -15,7 +15,7 @@ import InputSteps from '@/components/inputSteps/InputSteps';
 interface WhatsappVerificationProps {
   show: boolean;
   setShow: (arg: boolean) => void;
-  onVerificationSuccess: () => void; // Nueva prop
+  onVerificationSuccess: () => void;
 }
 
 interface FormData {
@@ -26,6 +26,7 @@ interface FormData {
 const WhatsappModal = ({ show, setShow, onVerificationSuccess }: WhatsappVerificationProps) => {
   const { isDark } = useDarkTheme();
   const { data: session, update } = useSession();
+  const { phone, updatePhone: updatePhoneStore } = useProfileStore();
 
   const {
     register,
@@ -35,8 +36,6 @@ const WhatsappModal = ({ show, setShow, onVerificationSuccess }: WhatsappVerific
     setValue,
     watch,
   } = useForm<FormData>({ mode: 'onChange' });
-
-  const phone = useWhatsAppFormStore((state) => state.phone);
 
   useEffect(() => {
     setValue('phone', phone);
@@ -50,9 +49,9 @@ const WhatsappModal = ({ show, setShow, onVerificationSuccess }: WhatsappVerific
 
     try {
       const phoneWithPrefix = `${data.calling_code?.callingCode || ''}${' ' + data.phone}`;
-      const res = await updatePhone(session.accessToken, phoneWithPrefix);
-
-      useWhatsAppFormStore.setState({ phone: phoneWithPrefix });
+      
+      // Use store action to update phone
+      await updatePhoneStore(session.accessToken, phoneWithPrefix);
 
       if (session.user) {
         await update({
@@ -60,22 +59,19 @@ const WhatsappModal = ({ show, setShow, onVerificationSuccess }: WhatsappVerific
             ...session.user,
             profile: {
               ...session.user.profile,
-              phone: res.phone,
+              phone: phoneWithPrefix,
             },
           },
         });
       }
 
-      // Llamar a la función de éxito en lugar de manejar el estado aquí
       onVerificationSuccess();
     } catch (err) {
       console.error('❌ Error al actualizar teléfono:', err);
     } finally {
       setLoading(false);
     }
-  };
-
-  return (
+  };  return (
     <Dialog
       open={show}
       onClose={() => setShow(false)}
