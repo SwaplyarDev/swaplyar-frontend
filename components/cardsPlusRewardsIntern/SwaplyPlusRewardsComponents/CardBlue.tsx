@@ -5,7 +5,17 @@ import { plusRewardsCard } from '@/utils/assets/imgDatabaseCloudinary';
 const CardBlue = ({ memberCode }: { memberCode: string }) => {
   return (
     <>
-      <div className="relative mx-auto mb-20 flex h-[210px] max-h-[288px] max-w-[358px] overflow-hidden rounded-[16px] bg-opacity-60 font-textFont text-[#000] sm:h-[288px] sm:w-[490px] sm:max-w-[490px]">
+      <div
+  className="
+    relative mx-auto
+    h-[200px] w-full
+    max-w-[340px]
+    rounded-[16px]
+    overflow-hidden
+    font-textFont text-[#EBE7E0]
+    sm:h-[200px] sm:w-[340px]
+  "
+>
         <div
           className="absolute -top-[225px] -z-10 h-[700px] w-[540px] rotate-[80deg] rounded-[240px]"
           style={{ background: ' linear-gradient(19deg, #011B5B 0%, #D0D0D0 34.33%, #011B5B 100%)', opacity: '0.6' }}

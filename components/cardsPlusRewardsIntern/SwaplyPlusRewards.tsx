@@ -60,18 +60,18 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   const currentMonth = now.getMonth();
   const monthName = now.toLocaleString('es-AR', { month: 'short' });
 
-  const rewardsPerYear = Array.isArray(history) 
+  const rewardsPerYear = Array.isArray(history)
     ? history.filter(
-        (reward) => reward?.createdAt && new Date(reward.createdAt).getFullYear() === currentYear,
-      ).length
+      (reward) => reward?.createdAt && new Date(reward.createdAt).getFullYear() === currentYear,
+    ).length
     : 0;
 
-  const rewardsPerMonth = Array.isArray(history) 
+  const rewardsPerMonth = Array.isArray(history)
     ? history.filter((reward) => {
-        if (!reward?.createdAt) return false;
-        const date = new Date(reward.createdAt);
-        return date.getFullYear() === currentYear && date.getMonth() === currentMonth;
-      }).length
+      if (!reward?.createdAt) return false;
+      const date = new Date(reward.createdAt);
+      return date.getFullYear() === currentYear && date.getMonth() === currentMonth;
+    }).length
     : 0;
 
   const safeUpdate = useCallback(async () => {
@@ -93,31 +93,31 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
       return;
     }
     const verifyStatus = async () => {
-    await fetchAndHandleVerificationStatus({
-      token,
-      setStatus,
-      setShowRejectedMessage,
-      setShowApprovedMessage,
-      update: safeUpdate, // safeUpdate sigue pasando, pero no se usa dentro del handler
-      session,
-    });
-
-    // ✅ Si el estado es APROBADO, actualizamos sesión desde aquí
-     if (!hasUpdatedSessionRef.current && verifiedStatus === 'APROBADO') {
-      console.log('🔑 Actualizando sesión desde SwaplyPlusRewards');
-      await update({
-        user: {
-          ...(session?.user || {}),
-          userValidated: true,
-        },
+      await fetchAndHandleVerificationStatus({
+        token,
+        setStatus,
+        setShowRejectedMessage,
+        setShowApprovedMessage,
+        update: safeUpdate, // safeUpdate sigue pasando, pero no se usa dentro del handler
+        session,
       });
-      hasUpdatedSessionRef.current = true;
-    }
-  };
 
-  verifyStatus();
+      // ✅ Si el estado es APROBADO, actualizamos sesión desde aquí
+      if (!hasUpdatedSessionRef.current && verifiedStatus === 'APROBADO') {
+        console.log('🔑 Actualizando sesión desde SwaplyPlusRewards');
+        await update({
+          user: {
+            ...(session?.user || {}),
+            userValidated: true,
+          },
+        });
+        hasUpdatedSessionRef.current = true;
+      }
+    };
 
-    
+    verifyStatus();
+
+
   }, [token, setStatus, setShowApprovedMessage, safeUpdate, session, update]);
 
   useEffect(() => {
@@ -192,44 +192,129 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   ));
   LoadingState.displayName = 'LoadingState';
 
-  const MainLayout = memo(({ left, right }: { left: React.ReactNode; right: React.ReactNode }) => (
-    <div className="relative z-0 mx-auto mt-14 flex max-w-[500px] flex-col px-5 text-[40px] lg:max-w-[1200px] lg:px-[100px]">
-      <h1 className="mb-4 font-textFont font-medium">SwaplyAr Plus Rewards</h1>
-      <div className="relative z-0 mx-auto flex max-w-[1000px] flex-col gap-5 text-[16px] lg:flex-row">
-        {left}
-        <div className="relative my-auto items-center">{right}</div>
-      </div>
-    </div>
-  ));
-  MainLayout.displayName = 'MainLayout';
+  const MainLayout = memo(
+  ({ left, right, bottom }: { left: React.ReactNode; right: React.ReactNode; bottom?: React.ReactNode }) => (
+    <div className="
+      relative z-0 mx-auto mt-14 
+      flex flex-col 
+      max-w-[500px] px-5 
+      lg:max-w-[1200px] lg:px-[100px]
+    ">
 
-  const RewardsInfo = memo(({ RewardsData, onShowModal }: { RewardsData: PlusRewards; onShowModal: () => void }) => (
-    <div>
-      <p>Consigue beneficios exclusivos cada vez que realices transacciones</p>
-      <p>SwaplyAr Plus Rewards.</p>
-      <div className="mb-4 mt-4 flex flex-col items-center">
-        <Image
-          src={swaplyPlusRewards}
-          alt="swaplyPlusRewards"
-          width={486}
-          height={404}
-          className="w-[356px] sm:w-[486px]"
-        />
-        <div className="relative mt-4 flex w-full flex-col">
-          <p>
-            Fecha de inscripción:{' '}
-            {session?.user?.createdAt ? new Date(session.user.createdAt).toLocaleDateString() : 'Desconocida'}
-          </p>
-          <p>Recompensas que obtuviste en {monthName}: {rewardsPerMonth}</p>
-          <p>Recompensas que obtuviste en {currentYear}: {rewardsPerYear}</p>
-          <p className="mt-4 cursor-pointer self-end font-semibold underline" onClick={onShowModal}>
-            Ver detalles
-          </p>
+      {/* TÍTULO */}
+      <h1 className="font-textFont text-[40px] font-medium mb-2">
+        SwaplyAr Plus Rewards
+      </h1>
+
+      {/* DESCRIPCIÓN */}
+      <p className="text-[16px] mb-2">
+        Consigue beneficios exclusivos cada vez que realices transacciones
+        SwaplyAr Plus Rewards.
+      </p>
+
+      {/* BLOQUE PRINCIPAL */}
+      <div className="
+        flex flex-col 
+        lg:flex-row 
+        gap-[20px]        /* EXACTO de Figma */
+        max-w-[1000px] 
+        mx-auto
+        mt-[40px]         /* EXACTO: separación desde texto */
+      ">
+        {/* LEFT */}
+        <div className="flex-shrink-0 w-full lg:w-[361.5px]">
+          {left}
+        </div>
+
+        {/* RIGHT */}
+        <div className="flex-shrink-0">
+          {right}
         </div>
       </div>
+
+      {/* BLOQUE INFERIOR */}
+      {bottom && (
+        <div className="mt-10 max-w-[1000px] mx-auto w-full">
+          {bottom}
+        </div>
+      )}
     </div>
-  ));
+  )
+);
+
+  MainLayout.displayName = 'MainLayout';
+
+
+
+ const RewardsInfo = memo(({ onShowModal }: { onShowModal: () => void }) => (
+  <div className="flex flex-col">
+
+    {/* Contenedor exacto → 361.5 × 300 */}
+    <div className="
+      flex items-center justify-center
+      w-full 
+      h-[300px]
+      lg:w-[361.5px]
+      overflow-hidden
+    ">
+      <Image
+        src={swaplyPlusRewards}
+        alt="swaplyPlusRewards"
+        width={486}
+        height={404}
+        className="
+          w-full 
+          h-full 
+          object-contain
+        "
+      />
+    </div>
+
+  </div>
+));
+
   RewardsInfo.displayName = 'RewardsInfo';
+
+
+  const RewardsHistoryInfo = memo(
+    ({
+      monthName,
+      rewardsPerMonth,
+      currentYear,
+      rewardsPerYear,
+      session,
+      onShowModal,
+    }: any) => (
+      <div className="mt-6 flex w-full flex-col text-start">
+
+        <p>
+          Fecha de inscripción:{' '}
+          {session?.user?.createdAt
+            ? new Date(session.user.createdAt).toLocaleDateString()
+            : 'Desconocida'}
+        </p>
+
+        <p>
+          Recompensas que obtuviste en {monthName}: {rewardsPerMonth}
+        </p>
+
+        <p>
+          Recompensas que obtuviste en {currentYear}: {rewardsPerYear}
+        </p>
+
+        <p
+          className="mt-4 cursor-pointer self-end font-semibold underline"
+          onClick={onShowModal}
+        >
+          Ver detalles
+        </p>
+      </div>
+    )
+  );
+  RewardsHistoryInfo.displayName = 'RewardsHistoryInfo';
+
+
+
 
   return (
     <>
@@ -243,7 +328,11 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
             <ModalVerify showVerify={showVerify} setShowVerify={setShowVerify} verifiedStatus={verifiedStatus} />
           )}
           <MainLayout
-            left={<RewardsInfo RewardsData={RewardsData} onShowModal={() => setShowModal(true)} />}
+            left={
+              <RewardsInfo
+                onShowModal={() => setShowModal(true)}
+              />
+            }
             right={
               <CardPlusRewards
                 verifiedStatus={verifiedStatus}
@@ -251,6 +340,16 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
                 showVerify={showVerify}
                 setShowVerify={setShowVerify}
                 memberCode={session.user?.id || ''}
+              />
+            }
+            bottom={
+              <RewardsHistoryInfo
+                monthName={monthName}
+                rewardsPerMonth={rewardsPerMonth}
+                currentYear={currentYear}
+                rewardsPerYear={rewardsPerYear}
+                session={session}
+                onShowModal={() => setShowModal(true)}
               />
             }
           />

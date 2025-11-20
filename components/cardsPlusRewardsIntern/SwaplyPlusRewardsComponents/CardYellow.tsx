@@ -11,7 +11,17 @@ const CardYellow: React.FC<ModalProps> = ({ showVerify, setShowVerify, verifiedS
   const isPending = verifiedStatus.toUpperCase() === 'PENDIENTE';
 
   return (
-    <div className="relative mx-auto mb-20 flex h-[210px] max-h-[288px] max-w-[358px] overflow-hidden rounded-[16px] bg-opacity-60 font-textFont text-[#000] xs:h-[230px] sm:h-[288px] sm:w-[490px] sm:max-w-[490px]">
+   <div
+  className="
+    relative mx-auto
+    h-[200px] w-full       /* MOBILE */
+    max-w-[340px]          /* EXACTO FIGMA */
+    rounded-[16px]
+    overflow-hidden
+    font-textFont text-[#000]
+    sm:h-[200px] sm:w-[340px]   /* DESKTOP EXACTO */
+  "
+>
       <div
         className="absolute -top-[225px] -z-10 h-[700px] w-[540px] rotate-[80deg] rounded-[240px]"
         style={{ background: 'linear-gradient(19deg, #FFEA04 0%, #C3B036 60%, #DF0 100%)', opacity: '0.6' }}
