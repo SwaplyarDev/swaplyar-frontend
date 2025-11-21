@@ -13,75 +13,84 @@ const CardYellow: React.FC<ModalProps> = ({ showVerify, setShowVerify, verifiedS
   return (
    <div
   className="
-    relative mx-auto
-    h-[200px] w-full       /* MOBILE */
-    max-w-[340px]          /* EXACTO FIGMA */
-    rounded-[16px]
+    relative 
+    w-[340px] h-[200px]
+    rounded-[11px]
     overflow-hidden
-    font-textFont text-[#000]
-    sm:h-[200px] sm:w-[340px]   /* DESKTOP EXACTO */
+    font-textFont text-black
   "
 >
-      <div
-        className="absolute -top-[225px] -z-10 h-[700px] w-[540px] rotate-[80deg] rounded-[240px]"
-        style={{ background: 'linear-gradient(19deg, #FFEA04 0%, #C3B036 60%, #DF0 100%)', opacity: '0.6' }}
-      ></div>
+  {/* Fondos decorativos */}
+  <div
+    className="absolute -top-[225px] -z-10 h-[700px] w-[540px] rotate-[80deg] rounded-[240px]"
+    style={{ background: 'linear-gradient(19deg, #FFEA04 0%, #C3B036 60%, #DF0 100%)', opacity: '0.6' }}
+  ></div>
 
-      <div
-        className="absolute right-[70px] top-[42px] -z-10 h-[700px] w-[540px] rotate-[48deg] rounded-[240px]"
-        style={{ background: 'linear-gradient(19deg, #FFEA04 0%, #C3B036 60%, #D4DC28 100%)', opacity: '0.6' }}
-      ></div>
+  <div
+    className="absolute right-[70px] top-[42px] -z-10 h-[700px] w-[540px] rotate-[48deg] rounded-[240px]"
+    style={{ background: 'linear-gradient(19deg, #FFEA04 0%, #C3B036 60%, #D4DC28 100%)', opacity: '0.6' }}
+  ></div>
 
-      <div
-        className="absolute right-[76px] top-[43px] -z-0 h-[700px] w-[540px] rotate-[60deg] rounded-[240px] opacity-60"
-        style={{ background: 'linear-gradient(19deg, #FFEA04 0%, #C3B036 60%, #D4DC28 100%)', opacity: '0.6' }}
-      ></div>
+  <div
+    className="absolute right-[76px] top-[43px] -z-0 h-[700px] w-[540px] rotate-[60deg] rounded-[240px]"
+    style={{ background: 'linear-gradient(19deg, #FFEA04 0%, #C3B036 60%, #D4DC28 100%)', opacity: '0.6' }}
+  ></div>
 
-      <div className="absolute m-[14px]">
-        <Image 
-          src={plusRewardsCard} 
-          alt="Plus Rewards Card Logo" 
-          width={250} 
-          height={250} 
-          className="w-[130px] sm:w-[250px] md:w-[250px]" 
-        />
-      </div>
+  {/* Logo */}
+  <div className="absolute left-[14px] top-[8px]">
+    <Image
+      src={plusRewardsCard}
+      alt="Plus Rewards"
+      width={173}
+      height={83}
+      className="w-[173px] h-[83px] object-contain"
+    />
+  </div>
 
-      <div className="absolute right-[12px] top-[20px] text-right text-[13px] sm:right-0 sm:top-[30px] sm:mx-[14px] sm:text-left">
-        <p className="text-[13px] font-light sm:mr-2 sm:text-[16px]">Tu Código de Miembro:</p>
-        <p className="text-end text-[15px] sm:mr-2 sm:text-[21px]">2448XPAR</p>
-      </div>
+  {/* Código de miembro */}
+  <div className="absolute right-[14px] top-[20px] text-right">
+    <p className="text-[13px] font-light">Tu Código de Miembro:</p>
+    <p className="text-[15px] font-semibold">2448XPAR</p>
+  </div>
 
-      <div className="align-center absolute right-0 top-[90px] flex w-full justify-center px-4 text-[#CE1818] xs:top-[115px] sm:top-[172.5px] sm:gap-[10px]">
-        <AlertIcon />
-        <div className="flex flex-col justify-center text-center">
-          {isPending ? (
-            <>
-              <p className="text-[13px] font-semibold sm:text-[18px]">EN PROCESO DE REVISIÓN</p>
-              <p className="text-[10px] sm:text-[12px]">Estamos revisando la información enviada</p>
-            </>
-          ) : (
-            <>
-              <p className="text-[12px] font-semibold sm:text-[18px]">TU CUENTA NO ESTÁ VERIFICADA</p>
-              <p className="text-[10px] sm:text-[12px]">Necesitas cargar la documentación para la verificación</p>
-            </>
-          )}
-        </div>
-      </div>
+  {/* Mensaje alerta */}
+  <div className="absolute top-[106px] left-1/2 -translate-x-1/2 flex items-center gap-[5px] text-[#CE1818] w-[233px] justify-center text-center h-[35px]">
 
-      <div
-        className={`absolute bottom-3 left-1/2 box-border -translate-x-1/2 rounded-[40px] border-[2px] border-transparent p-[2px] ${isPending ? '' : 'hover:border-2 hover:border-buttonsLigth'}`}
-      >
-        <ButtonCustom
-          setShowVerify={setShowVerify}
-          verifiedStatus={verifiedStatus.toUpperCase()}
-          className="rounded-3sm flex h-[30px] w-[120px] justify-center rounded-[40px] font-titleFont text-sm font-semibold text-white sm:h-[40px] sm:w-[177px] sm:text-lg"
-          title="Verificar ahora"
-          onClick={() => setShowVerify(true)}
-          disabled={isPending}
-        />
-      </div>
+    <AlertIcon />
+    <div className='w-full'>
+      {isPending ? (
+        <>
+          <p className="text-[12px] font-semibold">EN PROCESO DE REVISIÓN</p>
+          <p className="text-[10px]">Estamos revisando la información enviada</p>
+        </>
+      ) : (
+        <>
+          <p className="text-[12px] font-semibold">TU CUENTA NO ESTÁ VERIFICADA</p>
+          <p className="text-[10px]">Necesitas cargar la documentación para la verificación</p>
+        </>
+      )}
     </div>
+  </div>
+
+ {/* Botón */}
+<div className="absolute top-[150px] left-1/2 -translate-x-1/2">
+  <ButtonCustom
+    setShowVerify={setShowVerify}
+    verifiedStatus={verifiedStatus.toUpperCase()}
+    className="
+      w-[145px] h-[38px]
+      rounded-[50px]
+      flex items-center justify-center
+      font-titleFont text-[14px] font-semibold text-white
+    "
+    title="Verificar ahora"
+    onClick={() => setShowVerify(true)}
+    disabled={isPending}
+  />
+</div>
+
+</div>
+
   );
 };
 

@@ -15,6 +15,7 @@ import { useVerificationStore } from '../../store/useVerificationStore';
 import { shallow } from 'zustand/shallow';
 import { swaplyPlusRewards } from '@/utils/assets/imgDatabaseCloudinary';
 import { fetchAndHandleVerificationStatus } from '@/utils/verificationHandlers';
+import RewardsHistoryAccordion from './SwaplyPlusRewardsComponents/RewardsHistoryAccordion';
 
 declare module 'next-auth' {
   interface Session {
@@ -193,85 +194,88 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
   LoadingState.displayName = 'LoadingState';
 
   const MainLayout = memo(
-  ({ left, right, bottom }: { left: React.ReactNode; right: React.ReactNode; bottom?: React.ReactNode }) => (
-    <div className="
+    ({ left, right, bottom }: { left: React.ReactNode; right: React.ReactNode; bottom?: React.ReactNode }) => (
+      <div className="
       relative z-0 mx-auto mt-14 
       flex flex-col 
       max-w-[500px] px-5 
       lg:max-w-[1200px] lg:px-[100px]
     ">
 
-      {/* TÍTULO */}
-      <h1 className="font-textFont text-[40px] font-medium mb-2">
-        SwaplyAr Plus Rewards
-      </h1>
+        {/* TÍTULO */}
+        <h1 className="font-textFont text-[40px] font-medium mb-2">
+          SwaplyAr Plus Rewards
+        </h1>
 
-      {/* DESCRIPCIÓN */}
-      <p className="text-[16px] mb-2">
-        Consigue beneficios exclusivos cada vez que realices transacciones
-        SwaplyAr Plus Rewards.
-      </p>
+        {/* DESCRIPCIÓN */}
+        <p className="text-[16px] mb-2">
+          Consigue beneficios exclusivos cada vez que realices transacciones
+          SwaplyAr Plus Rewards.
+        </p>
 
-      {/* BLOQUE PRINCIPAL */}
-      <div className="
+        {/* BLOQUE PRINCIPAL */}
+        <div
+          className="
         flex flex-col 
         lg:flex-row 
-        gap-[20px]        /* EXACTO de Figma */
-        max-w-[1000px] 
-        mx-auto
-        mt-[40px]         /* EXACTO: separación desde texto */
-      ">
-        {/* LEFT */}
-        <div className="flex-shrink-0 w-full lg:w-[361.5px]">
-          {left}
+        items-center
+        justify-center
+        gap-[20px]
+        max-w-[1000px]
+        mx-auto      /* ← ESTO VUELVE A CENTRAR TODO */
+        mt-[40px]"
+        >
+          {/* LEFT */}
+          <div className="flex-shrink-0 w-full lg:w-[361.5px]">
+            {left}
+          </div>
+
+          {/* RIGHT */}
+          <div className="flex-shrink-0 w-[340px] h-[200px]">
+            {right}
+          </div>
         </div>
 
-        {/* RIGHT */}
-        <div className="flex-shrink-0">
-          {right}
-        </div>
+        {/* BLOQUE INFERIOR */}
+        {bottom && (
+          <div className="mt-10 max-w-[1000px] mx-auto w-full">
+            {bottom}
+          </div>
+        )}
       </div>
-
-      {/* BLOQUE INFERIOR */}
-      {bottom && (
-        <div className="mt-10 max-w-[1000px] mx-auto w-full">
-          {bottom}
-        </div>
-      )}
-    </div>
-  )
-);
+    )
+  );
 
   MainLayout.displayName = 'MainLayout';
 
 
 
- const RewardsInfo = memo(({ onShowModal }: { onShowModal: () => void }) => (
-  <div className="flex flex-col">
+  const RewardsInfo = memo(({ onShowModal }: { onShowModal: () => void }) => (
+    <div className="flex flex-col">
 
-    {/* Contenedor exacto → 361.5 × 300 */}
-    <div className="
+      {/* Contenedor exacto → 361.5 × 300 */}
+      <div className="
       flex items-center justify-center
       w-full 
       h-[300px]
       lg:w-[361.5px]
       overflow-hidden
     ">
-      <Image
-        src={swaplyPlusRewards}
-        alt="swaplyPlusRewards"
-        width={486}
-        height={404}
-        className="
+        <Image
+          src={swaplyPlusRewards}
+          alt="swaplyPlusRewards"
+          width={486}
+          height={404}
+          className="
           w-full 
           h-full 
           object-contain
         "
-      />
-    </div>
+        />
+      </div>
 
-  </div>
-));
+    </div>
+  ));
 
   RewardsInfo.displayName = 'RewardsInfo';
 
@@ -343,13 +347,10 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
               />
             }
             bottom={
-              <RewardsHistoryInfo
-                monthName={monthName}
-                rewardsPerMonth={rewardsPerMonth}
-                currentYear={currentYear}
-                rewardsPerYear={rewardsPerYear}
-                session={session}
-                onShowModal={() => setShowModal(true)}
+              <RewardsHistoryAccordion
+                history={history}
+                registrationDate={session?.user?.createdAt}
+                totalRewards={history.length}
               />
             }
           />
