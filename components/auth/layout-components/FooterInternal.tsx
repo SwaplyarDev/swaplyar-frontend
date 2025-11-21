@@ -29,7 +29,7 @@ export const FooterInternal = () => {
       </div>
 
       {/* Footer Mobile */}
-      <div className={`fixed bottom-0 mx-auto flex h-16 w-full justify-center md-phone:hidden`}>
+      <div className={`fixed bottom-0 mx-auto flex h-16 w-full justify-center md-phone:hidden z-50`}>
         <span className={`flex-1 grow ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></span>
         <FooterIconos />
         <span className={`flex-1 grow ${isDark ? 'bg-[#EBE7E0]' : 'bg-[#012A8E]'}`}></span>

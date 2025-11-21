@@ -123,7 +123,7 @@ const RedesSocialesModal = ({ show, setShow }: SocialMediaModalProps) => {
                 >
                   <div className="flex items-center gap-3">
                     {getSocialIcon(account.type)}
-                    <span className="font-medium">{account.username}</span>
+                    <span>{account.username}</span>
                   </div>
                   <button
                     className="content-center rounded-full p-1 justify-center text-red-500 hover:underline flex items-center gap-1"

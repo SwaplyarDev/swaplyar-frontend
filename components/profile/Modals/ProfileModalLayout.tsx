@@ -15,6 +15,7 @@ type ProfileModalLayoutProps = {
   buttonDisabled?: boolean;
   showBackButton?: boolean;
   saveButtonLabel?: string;
+  className?: string;
 };
 
 const ProfileModalLayout = ({
@@ -27,6 +28,7 @@ const ProfileModalLayout = ({
   buttonDisabled = false,
   showBackButton = true,
   saveButtonLabel = 'Guardar',
+  className = '',
 }: ProfileModalLayoutProps) => {
   const { isDark } = useDarkTheme();
 
@@ -44,14 +46,14 @@ const ProfileModalLayout = ({
       }}
     >
       <DialogContent className="!p-0">
-        <div className="flex flex-col items-center text-center p-6 gap-8">
+        <div className={`flex flex-col items-center text-center p-6 gap-8 ${className}`}>
           {/* Header */}
-          <div className="w-full flex gap-3">
+          <div className="relative w-full flex gap-3 h-12">
             {showBackButton && (
               <button
                 type="button"
                 onClick={() => setShow(false)}
-                className="btn-back items-center relative flex h-[38px] sm-phone:h-12 rounded-full hover:bg-transparent dark:text-darkText dark:bg-none"
+                className="btn-back items-center !absolute top-0 left-0 flex h-[38px] sm-phone:h-12 rounded-full hover:bg-transparent dark:text-darkText dark:bg-none"
               >
                 <div className="relative size-8 sm-phone:size-12 overflow-hidden content-center">
                   <ChevronLeft
@@ -69,7 +71,7 @@ const ProfileModalLayout = ({
             </h2>
           </div>
 
-          <div>
+          <div className='w-full'>
           {/* Content */}
           {children}
 
