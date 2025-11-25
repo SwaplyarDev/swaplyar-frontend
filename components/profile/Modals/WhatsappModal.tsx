@@ -11,6 +11,10 @@ import { updatePhone } from '../services/profileServices';
 import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
 import { Dialog, DialogContent } from '@mui/material';
 import InputSteps from '@/components/inputSteps/InputSteps';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import clsx from 'clsx';
+import { ChevronLeft } from 'lucide-react';
 
 interface WhatsappVerificationProps {
   show: boolean;
@@ -44,46 +48,21 @@ const WhatsappModal = ({ show, setShow, onVerificationSuccess }: WhatsappVerific
 
   const [loading, setLoading] = useState(false);
 
+  const handleClose = () => setShow(false);
+
   const onSubmit = async (data: FormData) => {
-    if (!session?.accessToken) return;
     setLoading(true);
 
     try {
       const phoneWithPrefix = `${data.calling_code?.callingCode || ''}${' ' + data.phone}`;
-      const phoneNumber = `${data.calling_code?.callingCode || ''}${data.phone}`; // Número sin espacios para API
 
-      const res = await updatePhone(session.accessToken, phoneWithPrefix);
-
+      // Actualizar store localmente para testing
       useWhatsAppFormStore.setState({ phone: phoneWithPrefix });
 
-      if (session.user) {
-        await update({
-          user: {
-            ...session.user,
-            profile: {
-              ...session.user.profile,
-              phone: res.phone,
-            },
-          },
-        });
-      }
-
-      // Enviar código de verificación por WhatsApp
-      const sendCodeResponse = await fetch('/api/whatsapp/send-code', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: phoneNumber }),
-      });
-
-      if (!sendCodeResponse.ok) {
-        throw new Error('Failed to send verification code');
-      }
-
-      // Llamar a la función de éxito en lugar de manejar el estado aquí
+      // Para testing, directamente abrir el modal de verificación
       onVerificationSuccess();
     } catch (err) {
-      console.error('❌ Error al actualizar teléfono o enviar código:', err);
-      // Aquí podrías mostrar un mensaje de error al usuario
+      console.error('❌ Error:', err);
     } finally {
       setLoading(false);
     }
@@ -99,19 +78,20 @@ const WhatsappModal = ({ show, setShow, onVerificationSuccess }: WhatsappVerific
           backgroundColor: isDark ? '#27272a' : '#fff',
           color: isDark ? '#fff' : '#000',
           width: 1500,
-          height: "310px",
           maxWidth: 680
         },
       }}
     >
       <DialogContent>
+        <div className="flex items-center justify-center mb-4">
+          <FontAwesomeIcon
+            icon={faWhatsapp}
+            className={clsx('text-9xl', isDark ? 'text-green-400' : 'text-green-500')}
+          />
+        </div>
         <div className="flex h-full flex-col items-center gap-0 text-center">
-          <h2 className="mb-4 w-full text-start text-lg sm:text-xl font-semibold">
-            WhatsApp
-          </h2>
-          <span className="mb-4 text-xs md:text-base">
-            Mantén actualizado tu número de WhatsApp para no perderte nuestras novedades.
-          </span>
+           <h1 className='mb-4'>WhatsApp</h1>
+         
 
           <form onSubmit={handleSubmit(onSubmit)} className="relative w-full flex flex-col gap-12">
             <div className="w-full relative flex items-center justify-center gap-2 rounded-full border bg-transparent pl-5 lg:pl-3 text-lightText mb-5 transition-all duration-200">
@@ -155,16 +135,26 @@ const WhatsappModal = ({ show, setShow, onVerificationSuccess }: WhatsappVerific
                 {errors.phone.message}
               </p>
             )}
+            <span className="mb-4 text-xs md:text-base">
+            Mantén actualizado tu número de WhatsApp para no perderte nuestras novedades.
+          </span>
             <div className="flex justify-between gap-4 pt-5">
               <button
-                type="button"
-                onClick={() => setShow(false)}
-                className={`rounded-full px-4 ${isDark
-                  ? 'border border-white text-white hover:bg-white hover:text-[#4B4B4B]'
-                  : 'border border-blue-400 bg-white text-blue-400'
-                  }`}
+                onClick={handleClose}
+                className={clsx(
+                  'group relative mt-2 flex h-[48px] w-[48px] items-center justify-center rounded-full transition-colors duration-300',
+                  '-ml-4 md:-ml-4 lg:-ml-2',
+                  isDark ? 'text-gray-200' : 'text-gray-700 hover:text-[#0A2A83]',
+                )}
+                aria-label="Volver"
               >
-                Volver
+                <span
+                  className={clsx(
+                    'pointer-events-none absolute h-[40px] w-[40px] rounded-full border-r-[3px] opacity-0 transition-opacity duration-300 group-hover:opacity-100',
+                    isDark ? 'border-r-white' : 'border-r-[#0A2A83]',
+                  )}
+                />
+                <ChevronLeft size={28} strokeWidth={2.5} className="relative z-10" />
               </button>
               <button
                 type="submit"
@@ -174,7 +164,7 @@ const WhatsappModal = ({ show, setShow, onVerificationSuccess }: WhatsappVerific
                   : 'bg-blue-400 text-white hover:bg-blue-700'
                   }`}
               >
-                {loading ? 'Guardando...' : 'Guardar'}
+                {loading ? 'Procesando...' : 'Enviar Código'}
               </button>
             </div>
           </form>

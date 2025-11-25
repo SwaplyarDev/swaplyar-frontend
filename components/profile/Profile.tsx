@@ -40,6 +40,7 @@ const Profile = () => {
 
   const socialAccounts = useSocialNetworksStore((state) => state.socialAccounts);
   const { loading } = useTransactions();
+  const { phone } = useWhatsAppFormStore();
 
   useEffect(() => {
     const anyModalOpen = showWhatsAppModal || showProfileModal || showSocialNetworkModal || showVerificationCodeModal;
@@ -133,7 +134,8 @@ const Profile = () => {
           <VerifyCodeModal
             show={showVerificationCodeModal}
             setShow={setShowVerificationCodeModal}
-            onVerify={handleVerificationComplete}
+            fullPhone={phone}
+            onVerificationSuccess={handleVerificationComplete}
           />
         )}
 
