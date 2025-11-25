@@ -50,6 +50,8 @@ const WhatsappModal = ({ show, setShow, onVerificationSuccess }: WhatsappVerific
 
     try {
       const phoneWithPrefix = `${data.calling_code?.callingCode || ''}${' ' + data.phone}`;
+      const phoneNumber = `${data.calling_code?.callingCode || ''}${data.phone}`; // Número sin espacios para API
+
       const res = await updatePhone(session.accessToken, phoneWithPrefix);
 
       useWhatsAppFormStore.setState({ phone: phoneWithPrefix });
@@ -66,10 +68,22 @@ const WhatsappModal = ({ show, setShow, onVerificationSuccess }: WhatsappVerific
         });
       }
 
+      // Enviar código de verificación por WhatsApp
+      const sendCodeResponse = await fetch('/api/whatsapp/send-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: phoneNumber }),
+      });
+
+      if (!sendCodeResponse.ok) {
+        throw new Error('Failed to send verification code');
+      }
+
       // Llamar a la función de éxito en lugar de manejar el estado aquí
       onVerificationSuccess();
     } catch (err) {
-      console.error('❌ Error al actualizar teléfono:', err);
+      console.error('❌ Error al actualizar teléfono o enviar código:', err);
+      // Aquí podrías mostrar un mensaje de error al usuario
     } finally {
       setLoading(false);
     }
