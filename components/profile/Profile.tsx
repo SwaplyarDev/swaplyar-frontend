@@ -17,6 +17,8 @@ import ProfilePictureModal from './Modals/ProfilePictureModal';
 import { LoadingState } from '../historial/loadingState';
 import { useProfileStore } from '@/store/useProfileStore';
 import { VerifyCodeModal } from './Modals/VerifyCodeModal';
+import ManagementCard from './ui/ProfileCards/ManagementCard';
+import CloseAccountModal from './Modals/CloseAccountModal';
 
 const Profile = () => {
   const { isDark } = useDarkTheme();
@@ -36,6 +38,7 @@ const Profile = () => {
   const [showSocialNetworkModal, setShowSocialNetworkModal] = useState(false);
   const [showPictureModal, setShowPictureModal] = useState(false);
   const [showEmailModal, setShowEmailModal] = useState(false);
+  const [showManagementModal, setShowManagementModal] = useState(false);
 
 
   useEffect(() => {
@@ -46,7 +49,7 @@ const Profile = () => {
   const ProfileSectionCard = ({ children }: { children: React.ReactNode }) => {
     const { isDark } = useDarkTheme();
     return (
-      <div className={`shadow-infoCard sm:mx-4 mb-4 w-[90%] max-w-[796px] rounded-2xl z-30 px-6 py-2.5 md-tablet:w-full ${isDark ? 'bg-[#4B4B4B]' : 'bg-white text-black'}`}>
+      <div className={`shadow-infoCard w-full max-w-[796px] rounded-2xl z-30 p-3 sm:px-6 sm:py-2.5 md-tablet:w-full ${isDark ? 'bg-[#4B4B4B]' : 'bg-white text-black'}`}>
         {children}
       </div>
     );
@@ -82,15 +85,15 @@ const Profile = () => {
   return (
     <div className={`container-spacing ${(!loading) && 'min-h-screen'} !px-0 font-textFont text-white`}>
       <header className={`mb-10 flex max-h-[150px] w-full items-center justify-center ${isDark ? 'bg-[#4B4B4B]' : 'bg-nav-blue text-white'}`}>
-        <div className="h-full flex w-full max-w-[1040px] justify-between py-4 px-4 md:px-8">
-          <h1 className="text-3.5xl font-bold">Perfil</h1>
-          <div className="flex flex-col-reverse items-end xs:flex-row  xs:justify-end">
+        <div className="h-full flex w-full max-w-[1040px] justify-between py-4 px-8">
+          <h1 className="text-2xl md:text-3.5xl font-bold">Perfil</h1>
+          <div className="flex items-end flex-row justify-end">
             <div className={`flex flex-col items-end px-2 xs:px-10 ${isDark ? 'bg-[#4B4B4B]' : 'bg-nav-blue text-white'}`}>
-              <p className="text-xl font-semibold capitalize">{displayName}</p>
-              <p className="text-[16px]  underline">Registrado en { getYearOfRegister(userProfile?.user.createdAt || '')}</p>
+              <p className="text-sm xs:text-xl font-semibold capitalize text-end">{displayName}</p>
+              <p className="text-xs underline">Registrado en { getYearOfRegister(userProfile?.user.createdAt || '')}</p>
             </div>
             <div
-              className="relative z-50 h-[120px] w-[120px] cursor-pointer"
+              className="relative z-50 size-20 md:size-[120px] cursor-pointer"
               onClick={() => setShowPictureModal(true)}
             >
               <Image
@@ -109,7 +112,7 @@ const Profile = () => {
         </div>
       </header>
 
-      <div className="mt-5 flex flex-col items-center">
+      <div className="mt-5 mx-4 md:mx-8 flex flex-col gap-7 items-center">
         <ProfileSectionCard>
           <InfoCard setShow={setShowProfileModal} />
           {showProfileModal && <InfoPersonalModal show={showProfileModal} setShow={setShowProfileModal} />}
@@ -147,6 +150,18 @@ const Profile = () => {
             <SocialNetworkModal
               show={showSocialNetworkModal}
               setShow={setShowSocialNetworkModal}
+            />
+          )}
+        </ProfileSectionCard>
+
+        <ProfileSectionCard>
+          <ManagementCard
+            setShow={setShowManagementModal}
+          />
+          {showManagementModal && (
+            <CloseAccountModal
+              show={showManagementModal}
+              setShow={setShowManagementModal}
             />
           )}
         </ProfileSectionCard>

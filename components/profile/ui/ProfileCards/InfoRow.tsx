@@ -8,7 +8,7 @@ type InfoRowProps = {
 };
 
 export const InfoRow = ({ label, value = '-', editable, onEdit, className = '', classNameValue }: InfoRowProps) => (
-    <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center text-custom-grayD-800 dark:text-custom-whiteD ${className}`}>
+    <div className={`flex flex-row justify-between items-start sm:items-center text-custom-grayD-800 dark:text-custom-whiteD ${className}`}>
         <p className={`text-[16px] font-normal ${classNameValue}`}>{label}</p>
         <div className="flex items-center justify-end   text-right">
             <span className={`${value == "-" ? "font-semibold" : "font-normal"} `} >

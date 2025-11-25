@@ -11,33 +11,33 @@ const SocialNetworkCard = ({ onEdit }: Props) => {
   return (
     <section>
       <div className="flex items-center justify-between text-custom-grayD-800 dark:text-custom-whiteD">
-        <h2 className="mb-3 text-[24px] font-normal">Red Social</h2>
+        <h2 className="text-[24px] font-normal">Red Social</h2>
         <FaInstagram className="w-[27px] h-[27px] " />
       </div>
-      <div className="mt-2 w-full flex items-center justify-between p-3">
+      <div className="w-full flex items-center justify-between p-3">
 
         {socialNetworks.length > 0 ? (
           <>
-          <div className="flex flex-col w-full gap-2">
-            {
-              socialNetworks.map((network, index) => (
-                <div key={`social-${index}`} className="flex flex-col w-full justify-between text-custom-grayD-800 dark:text-custom-whiteD">
-                  <p>
-                    {network.type.charAt(0).toUpperCase() + network.type.slice(1)}
-                  </p>
-                  <div className="flex items-center gap-2.5">
-                    <p>@{network.username}</p>
+            <div className="flex flex-col w-full gap-2">
+              {
+                socialNetworks.map((network, index) => (
+                  <div key={`social-${index}`} className="flex flex-col w-full justify-between text-custom-grayD-800 dark:text-custom-whiteD">
+                    <p>
+                      {network.type.charAt(0).toUpperCase() + network.type.slice(1)}
+                    </p>
+                    <div className="flex items-center gap-2.5">
+                      <p>{network.username}</p>
+                    </div>
                   </div>
-                </div>
-              ))
-            }
-          </div>
-            <p className='italic text-xs max-w-80'>Mantén tu red social registrada para enviarte promociones y beneficios exclusivos a nuestro clientes mediante MD privado </p>
+                ))
+              }
+            </div>
+            <p className='italic text-sm max-w-80'>Mantén tu red social registrada para enviarte promociones y beneficios exclusivos a nuestro clientes mediante MD privado </p>
           </>
         ) : (
           <div className="w-full flex items-between">
             <span>-</span>
-            <span className='italic text-xs w-full text-end me-3'>Aun no tienes redes sociales vinculadas a tu cuenta</span>
+            <span className='italic text-sm w-full text-end me-3'>Aun no tienes redes sociales vinculadas a tu cuenta</span>
           </div>
         )}
         <div className="flex justify-end">

@@ -13,12 +13,12 @@ const EmailCard = ({ setShow }: EmailCardProps) => {
   return (
     <section >
       <div className="flex items-center justify-between text-custom-grayD-800 dark:text-custom-whiteD">
-        <h2 className="mb-3 text-[24px] font-normal">Correo Electrónico</h2>
+        <h2 className="text-[24px] font-normal">Correo Electrónico</h2>
         <MdOutlineEmail className="w-[27px] h-[27px] " />
       </div>
-      <div className="mt-2 p-3 flex items-center justify-between ">
+      <div className="p-3 flex items-center justify-between gap-2">
         <p className="text-[16px] text-custom-grayD-800 dark:text-custom-whiteD">{userProfile?.email}</p>
-        <p className='italic text-xs max-w-80'>Todos los Email se enviaran al correo electrónico con el que te registraste</p>
+        <p className='italic text-sm max-w-80 sm:me-12'>Todos los Email se enviaran al correo electrónico con el que te registraste</p>
       </div>
     </section>
   );

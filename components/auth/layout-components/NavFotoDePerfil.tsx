@@ -39,7 +39,7 @@ export default function NavFotoDePerfil({ isDark, isActive }: Props) {
           </div>
         </div>
 
-        <p className={`block content-center font-titleFont font-semibold text-white dark:text-black capitalize px-1 ${isDark ? 'bg-custom-whiteD' : 'bg-nav-blue'} -ml-[1px]`}>
+        <p className={`hidden sm:block content-center font-titleFont font-semibold text-white dark:text-black capitalize px-1 ${isDark ? 'bg-custom-whiteD' : 'bg-nav-blue'} -ml-[1px]`}>
         {displayName}
         </p>
       </div>
