@@ -1,140 +1,224 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { ChevronDown, ArrowLeft, ArrowRight } from 'lucide-react';
 
 type UserDiscount = {
-    id: string;
-    code: string;
-    value: number;
-    currencyCode: string;
-    createdAt: string;
-    usedAt?: string;
-    isUsed: boolean;
+  id: string;
+  code: string;
+  value: number;
+  currencyCode: string;
+  createdAt: string;
+  usedAt?: string;
+  isUsed: boolean;
 };
 
 interface Props {
-    title?: string;
-    history: UserDiscount[];
-
-    registrationDate?: string;
-    totalRewards?: number;
+  title?: string;
+  history: UserDiscount[];
+  registrationDate?: string;
+  totalRewards?: number;
 }
 
+const ITEMS_PER_PAGE = 5;
+
 const RewardsHistoryAccordion: React.FC<Props> = ({
-    title = 'Historial de recompensas',
-    history,
-    registrationDate,
-    totalRewards = 0,
+  title = 'Historial de recompensas',
+  history,
+  registrationDate,
+  totalRewards = 0,
 }) => {
-    const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(1);
 
-    return (
-        <div className="w-full max-w-[1000px] rounded-[16px] border border-gray-200 bg-white overflow-hidden">
+  // 🧩 refs y animación
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState('0px');
+  const [opacity, setOpacity] = useState(0);
 
-            {/* HEADER */}
-            <button
-                onClick={() => setOpen(!open)}
-                className="w-full flex flex-col gap-3 px-6 py-5 text-left"
-            >
-                {/* Título + Flecha */}
-                <div className="flex w-full items-center justify-between">
-                    <span className="font-medium text-[18px] text-gray-600">
-                        {title}
-                    </span>
-
-                    <svg
-                        className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${open ? 'rotate-180' : ''
-                            }`}
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        viewBox="0 0 24 24"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </div>
-
-                {/* RESUMEN CUANDO ESTÁ CERRADO */}
-                {!open && (
-                    <div className="flex flex-col sm:flex-row gap-10 mt-2">
-
-                        {/* Fecha de inscripción */}
-                        <div className="flex flex-col">
-                            <span className="text-[12px] font-normal text-gray-400">
-                                Fecha de inscripción
-                            </span>
-                            <span className="text-[12px] font-light text-[#262626]">
-                                {registrationDate
-                                    ? new Date(registrationDate).toLocaleDateString()
-                                    : '-'}
-                            </span>
-                        </div>
-
-                        {/* Recompensas obtenidas */}
-                        <div className="flex flex-col">
-                            <span className="text-[12px] font-normal text-gray-400">
-                                Recompensas que has obtenido
-                            </span>
-                            <span className="text-[12px] font-light text-[#262626]">
-                                {totalRewards}
-                            </span>
-                        </div>
-                    </div>
-                )}
-            </button>
+  useEffect(() => {
+  if (open && contentRef.current) {
+    setHeight(`${contentRef.current.scrollHeight}px`);
+    setOpacity(1);
+  } else {
+    setHeight('0px');
+    setOpacity(0);
+  }
+}, [open, history]);
 
 
-            {/* CONTENIDO DESPLEGABLE */}
-            {open && (
-                <div className="border-t border-gray-200">
+  const totalPages = Math.ceil(history.length / ITEMS_PER_PAGE);
 
-                    {history.length === 0 ? (
-                        <div className="p-6 text-sm text-gray-500 text-center">
-                            Aún no tienes recompensas registradas
-                        </div>
-                    ) : (
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-sm text-left">
-                                <thead className="bg-gray-50 text-gray-600">
-                                    <tr>
-                                        <th className="px-6 py-3 font-medium">Tipo de Cupón</th>
-                                        <th className="px-6 py-3 font-medium">Monto</th>
-                                        <th className="px-6 py-3 font-medium">Fecha de Emisión</th>
-                                        <th className="px-6 py-3 font-medium">Fecha de uso</th>
-                                    </tr>
-                                </thead>
+  const paginatedHistory = useMemo(() => {
+    const start = (page - 1) * ITEMS_PER_PAGE;
+    const end = start + ITEMS_PER_PAGE;
+    return history.slice(start, end);
+  }, [history, page]);
 
-                                <tbody className="divide-y divide-gray-100">
-                                    {history.map((item) => (
-                                        <tr key={item.id} className="text-gray-800">
-                                            <td className="px-6 py-4 text-blue-700 font-medium">
-                                                {item.code}
-                                            </td>
+  const goPrev = () => setPage((p) => Math.max(p - 1, 1));
+  const goNext = () => setPage((p) => Math.min(p + 1, totalPages));
 
-                                            <td className="px-6 py-4">
-                                                {item.value} {item.currencyCode}
-                                            </td>
+  return (
+    <div className="w-full max-w-[1000px] rounded-[16px] border border-gray-200 bg-white overflow-hidden">
 
-                                            <td className="px-6 py-4">
-                                                {new Date(item.createdAt).toLocaleDateString()}
-                                            </td>
+      {/* HEADER */}
+      <button
+        onClick={() => setOpen(!open)}
+        className={`
+          w-full flex flex-col gap-3 text-left transition-all
+          ${open
+            ? 'px-4 py-3 bg-gray-100 border-b border-gray-300 rounded-t-[16px]'
+            : 'px-6 py-5'}
+        `}
+      >
+        <div className="flex w-full items-center justify-between">
+          <span
+            className={`
+              font-medium transition-all
+              ${open
+                ? 'text-[16px] text-[#6B7280]'
+                : 'text-[18px] text-gray-600'}
+            `}
+          >
+            {title}
+          </span>
 
-                                            <td className="px-6 py-4">
-                                                {item.usedAt
-                                                    ? new Date(item.usedAt).toLocaleDateString()
-                                                    : '-'}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    )}
-
-                </div>
-            )}
+          <ChevronDown
+            className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${
+              open ? 'rotate-180' : ''
+            }`}
+          />
         </div>
-    );
+
+        {!open && (
+          <div className="flex flex-col sm:flex-row gap-10 mt-2">
+            <div className="flex flex-col">
+              <span className="text-[12px] font-normal text-gray-400">
+                Fecha de inscripción
+              </span>
+              <span className="text-[12px] font-light text-[#262626]">
+                {registrationDate
+                  ? new Date(registrationDate).toLocaleDateString()
+                  : '-'}
+              </span>
+            </div>
+
+            <div className="flex flex-col">
+              <span className="text-[12px] font-normal text-gray-400">
+                Recompensas que has obtenido
+              </span>
+              <span className="text-[12px] font-light text-[#262626]">
+                {totalRewards}
+              </span>
+            </div>
+          </div>
+        )}
+      </button>
+
+      {/* ✅ CONTENIDO ANIMADO */}
+      <div
+  style={{
+    maxHeight: height,
+    opacity,
+  }}
+  className={`
+    overflow-hidden 
+    transition-all 
+    duration-300 
+    ease-in
+    border-t border-gray-200
+  `}
+>
+        <div ref={contentRef}>
+          {history.length === 0 ? (
+            <div className="p-6 text-sm text-gray-500 text-center">
+              Aún no tienes recompensas registradas
+            </div>
+          ) : (
+            <>
+              {/* TABLA */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm text-left">
+                  <thead className="text-gray-600 border-b">
+                    <tr>
+                      <th className="px-6 py-3 font-medium">Tipo de Cupón</th>
+                      <th className="px-6 py-3 font-medium">Monto</th>
+                      <th className="px-6 py-3 font-medium">Fecha de Emisión</th>
+                      <th className="px-6 py-3 font-medium">Fecha de uso</th>
+                    </tr>
+                  </thead>
+
+                  <tbody className="divide-y divide-gray-100">
+                    {paginatedHistory.map((item) => (
+                      <tr key={item.id} className="text-gray-800">
+                        <td className="px-6 py-4 text-blue-700 font-medium">
+                          {item.code}
+                        </td>
+                        <td className="px-6 py-4">
+                          {item.value} {item.currencyCode}
+                        </td>
+                        <td className="px-6 py-4">
+                          {new Date(item.createdAt).toLocaleDateString()}
+                        </td>
+                        <td className="px-6 py-4">
+                          {item.usedAt
+                            ? new Date(item.usedAt).toLocaleDateString()
+                            : '-'}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* PAGINACIÓN */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-between px-6 py-5 mt-4">
+                  <button
+                    onClick={goPrev}
+                    disabled={page === 1}
+                    className="w-[48px] h-[48px] flex items-center justify-center rounded-full border border-gray-200 disabled:opacity-50"
+                  >
+                    <ArrowLeft className="w-5 h-5 text-gray-600" />
+                  </button>
+
+                  <div className="flex gap-2">
+                    {Array.from({ length: totalPages }).map((_, i) => {
+                      const p = i + 1;
+                      return (
+                        <button
+                          key={p}
+                          onClick={() => setPage(p)}
+                          className={`
+                            w-[40px] h-[40px] rounded-full text-sm font-medium flex items-center justify-center transition-all duration-150
+                            ${
+                              page === p
+                                ? 'bg-blue-50 text-blue-600 border border-blue-200 shadow-sm'
+                                : 'text-gray-500 hover:bg-blue-50 hover:border hover:border-blue-200 hover:text-blue-600'
+                            }
+                          `}
+                        >
+                          {p}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <button
+                    onClick={goNext}
+                    disabled={page === totalPages}
+                    className="w-[48px] h-[48px] flex items-center justify-center rounded-full border border-gray-200 disabled:opacity-50"
+                  >
+                    <ArrowRight className="w-5 h-5 text-gray-600" />
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default RewardsHistoryAccordion;
