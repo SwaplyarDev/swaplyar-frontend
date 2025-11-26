@@ -3,7 +3,7 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
+import { avatarUser1 } from '@/utils/assets/imgDatabaseCloudinary';
 import SocialNetworkModal from './Modals/RedesSocialesModal';
 import { useDarkTheme } from '../ui/theme-Provider/themeProvider';
 import WhatsappModal from './Modals/WhatsappModal';
@@ -14,7 +14,6 @@ import EmailCard from './ui/ProfileCards/EmailCard';
 import WhatsAppCard from './ui/ProfileCards/WhatsAppCard';
 import SocialNetworkCard from './ui/ProfileCards/SocialNetworkCard';
 import ProfilePictureModal from './Modals/ProfilePictureModal';
-import { LoadingState } from '../historial/loadingState';
 import { useProfileStore } from '@/store/useProfileStore';
 import { VerifyCodeModal } from './Modals/VerifyCodeModal';
 import ManagementCard from './ui/ProfileCards/ManagementCard';
@@ -79,7 +78,7 @@ const Profile = () => {
 
   const displayName = `${userProfile?.firstName || ''} ${userProfile?.lastName || ''}`.trim();
 
-  const profilePictureUrl = userProfile?.profilePictureUrl || session?.user.profile?.profilePictureUrl || swaplyArAvatar;
+  const profilePictureUrl = userProfile?.profilePictureUrl || session?.user.profile?.profilePictureUrl || avatarUser1;
 
 
   return (

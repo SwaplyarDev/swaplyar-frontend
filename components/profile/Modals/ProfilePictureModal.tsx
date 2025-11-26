@@ -4,7 +4,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import NextImage from "next/image";
-import { swaplyArAvatar, Apoyo, regretsPhone, Transparencia } from "@/utils/assets/imgDatabaseCloudinary";
+import { avatarUser1, avatarUser2, avatarUser3, avatarUser4 } from "@/utils/assets/imgDatabaseCloudinary";
 import Cropper, { Area } from "react-easy-crop";
 import { getCroppedImg } from "@/utils/canvasUtils";
 import ProfileModalLayout from "./ProfileModalLayout";
@@ -19,10 +19,10 @@ interface ProfilePictureModalProps {
 
 // Esta array de imagenes va a tener imagenes de avatar por defecto
 const AVATAR_ICONS = [
-  { name: "avatar 1", image: swaplyArAvatar },
-  { name: "avatar 2", image: Apoyo },
-  { name: "avatar 3", image: regretsPhone },
-  { name: "avatar 4", image: Transparencia },
+  { name: "avatar 1", image: avatarUser1 },
+  { name: "avatar 2", image: avatarUser2 },
+  { name: "avatar 3", image: avatarUser3 },
+  { name: "avatar 4", image: avatarUser4 },
 ]
 
 type ModalState = 'initial' | 'crop' | 'current' | 'delete-confirmation';
@@ -48,11 +48,6 @@ export default function ProfilePictureModal({
 
   // Detectar si la imagen actual es un avatar por defecto o una foto personalizada
   const isCustomPicture = !AVATAR_ICONS.some(avatar => avatar.image === imgProfile);
-  console.log("isCustomPicture", isCustomPicture)
-  console.log("avatarIcons", AVATAR_ICONS)
-  console.log("avatarIcons 0 image", AVATAR_ICONS[0].image)
-  console.log("validacion", AVATAR_ICONS[0].image === imgProfile)
-
 
   // Inicializar estado basado en si hay imagen personalizada
   useEffect(() => {
@@ -168,9 +163,6 @@ export default function ProfilePictureModal({
       }
     };
   }, [file, imagePreview]);
-
-  console.log("imageProfile", imgProfile)
-  console.log("selectedAvatar", selectedAvatar)
 
   return (
     <ProfileModalLayout

@@ -8,6 +8,8 @@ import { Dialog, DialogContent } from '@mui/material';
 import { ChevronLeft } from 'lucide-react';
 import ButtonAuth from '@/components/auth/AuthButton';
 import ShortButton from '@/components/ui/NewButtons/ShortButton';
+import { deleteAccountImg } from "@/utils/assets/imgDatabaseCloudinary";
+import NextImage from "next/image";
 
 type CloseAccountModalProps = {
   show: boolean;
@@ -21,7 +23,7 @@ type FormData = {
 };
 
 const CloseAccountModal = ({ show, setShow }: CloseAccountModalProps) => {
-    const { isDark } = useDarkTheme();
+  const { isDark } = useDarkTheme();
   const { data: session, update } = useSession();
   const token = session?.accessToken;
   const { updateNickname, userProfile } = useProfileStore();
@@ -85,51 +87,60 @@ const CloseAccountModal = ({ show, setShow }: CloseAccountModalProps) => {
       }}
     >
       <DialogContent className="!p-0">
-        <div className={`flex flex-col items-center text-center p-3 xs-phone:p-6 gap-8`}>
+        <div className={`flex flex-col items-center text-center p-3 xs-phone:p-6 gap-6`}>
           {/* Header */}
-          <div className="relative w-full flex gap-3 items-center h-9 xs-phone:h-12">
-              <button
-                type="button"
-                onClick={() => setShow(false)}
-                className="btn-back items-center !absolute top-0 left-0 flex h-[38px] rounded-full hover:bg-transparent dark:text-darkText dark:bg-none"
-              >
-                <div className="relative size-8 overflow-hidden content-center">
-                  <ChevronLeft
-                    color={isDark ? '#ebe7e0' : '#252526'}
-                    width={32}
-                    height={32}
-                    strokeWidth={2}
-                    className="inline-block"
-                  />
-                </div>
-              </button>
+          <div className="relative w-full flex gap-3 items-center">
+            <button
+              type="button"
+              onClick={() => setShow(false)}
+              className="btn-back items-center !absolute top-0 left-0 flex h-[38px] rounded-full hover:bg-transparent dark:text-darkText dark:bg-none"
+            >
+              <div className="relative size-8 overflow-hidden content-center">
+                <ChevronLeft
+                  color={isDark ? '#ebe7e0' : '#252526'}
+                  width={32}
+                  height={32}
+                  strokeWidth={2}
+                  className="inline-block"
+                />
+              </div>
+            </button>
+          <div className='flex flex-col items-center w-full h-full gap-6 pt-8'>
+            <NextImage
+              src={deleteAccountImg}
+              alt="Eliminar cuenta Imagen"
+              className="!relative object-cover rounded-full "
+              width={290}
+              height={194}
+            />
             <h2 className="w-full text-center font-textFont text-custom-blue dark:text-custom-whiteD text-2xl xs-phone:text-4xl font-semibold">
               ¿Estás seguro?
             </h2>
           </div>
+          </div>
 
           <div className='w-full'>
 
-            <span>Lamentamos verte partir. El cierre de la cuenta es permanente y no se puede deshacer.</span>
+            <p className='text-start'>Lamentamos verte partir. El cierre de la cuenta es permanente y no se puede deshacer.</p>
 
             {/* Footer - Save Button */}
-            <div className="flex flex-col justify-center items-center gap-4 pt-5 w-full">
+            <div className="flex flex-col justify-center items-center gap-4 pt-6 w-full">
               <ShortButton
                 text='Mantener mi cuenta abierta'
                 fondoOscuro
                 onButtonClick={() => setShow(false)}
                 className="min-w-[320px]"
               />
-                <ButtonAuth
+              <ButtonAuth
                 label="Continuar con el cierre de la cuenta"
                 variant='secondary'
-                  isDark={isDark}
-                  onClick={() => {}}
-                  disabled={loading}
-                  loading={loading}
-                  className="min-w-[320px] !font-normal !text-base"
-                />
-              </div>
+                isDark={isDark}
+                onClick={() => { }}
+                disabled={loading}
+                loading={loading}
+                className="min-w-[320px] !font-normal !text-base"
+              />
+            </div>
           </div>
         </div>
       </DialogContent>

@@ -62,28 +62,30 @@ export const VerifyCodeModal = ({ show, setShow, onVerify, loading = false }: Ve
           </h2>
 
           <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-            <div className="flex h-[46px] justify-between gap-2 xs:h-[57px] xs:gap-1 sm:h-[65.33px]">
-              <VerificationCodeInput
-                register={register}
-                watch={watch}
-                setValue={setValue}
-                onComplete={async () => {
-                  await handleSubmit(onSubmit)();
-                }}
-                isDisabled={isLocked || loading}
-                isLoading={loading}
-                error={errors.verificationCode ? errors.verificationCode.message : undefined}
-                isDark={isDark}
-                clearErrors={() => clearErrors('verificationCode')}
-                className="h-[46px] md:h-[56px] lg:h-[58px] gap-[6px] md:gap-[10px] lg:gap-4"
-              />
+            <div className='flex flex-col items-center'>
+              <div className="flex h-[46px] justify-between gap-2 xs:h-[57px] xs:gap-1 sm:h-[65.33px]">
+                <VerificationCodeInput
+                  register={register}
+                  watch={watch}
+                  setValue={setValue}
+                  onComplete={async () => {
+                    await handleSubmit(onSubmit)();
+                  }}
+                  isDisabled={isLocked || loading}
+                  isLoading={loading}
+                  error={errors.verificationCode ? errors.verificationCode.message : undefined}
+                  isDark={isDark}
+                  clearErrors={() => clearErrors('verificationCode')}
+                  className="h-[46px] md:h-[56px] lg:h-[58px] gap-[6px] md:gap-[10px] lg:gap-4"
+                />
 
-              {errors.verificationCode && <p className="relative w-full text-center my-4 text-sm text-red-500">• {errors.verificationCode.message}</p>}
+                {errors.verificationCode && <p className="relative w-full text-center my-4 text-sm text-red-500">• {errors.verificationCode.message}</p>}
+              </div>
+
+              <span className="text-start">
+                Ingresa el código que se envio por WhatsApp para verificarlo.
+              </span>
             </div>
-
-            <span className="text-start">
-              Ingresa el código que se envio por WhatsApp para verificarlo.
-            </span>
 
             <div className="flex justify-between gap-4 pt-5">
               <button
