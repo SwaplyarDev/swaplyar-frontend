@@ -320,7 +320,7 @@ const NavbarLanding = () => {
                             </button>
                           ) : (
                             <div className="flex flex-col w-full items-center justify-center gap-2 mt-4 mb-[5svh]">
-                              <ShortButton
+                              {/* <ShortButton
                                 href="/es/iniciar-sesion"
                                 text="Iniciar sesión"
                                 onButtonClick={closeDrawer}
@@ -333,7 +333,7 @@ const NavbarLanding = () => {
                                 onButtonClick={closeDrawer}
                                 fondoOscuro={true}
                                 className="!w-[90%] "
-                              />
+                              /> */}
                             </div>
                           )}
                         </Sidebar.ItemGroup>
@@ -406,7 +406,7 @@ const NavbarLanding = () => {
                 </>
               ) : (
                 <div className="flex gap-2 max-w-[294px]">
-                  <ShortButton
+                  {/* <ShortButton
                     href="/es/iniciar-sesion"
                     text="Iniciar sesión"
                     onButtonClick={closeDrawer}
@@ -417,7 +417,7 @@ const NavbarLanding = () => {
                     text="Registrarse"
                     onButtonClick={closeDrawer}
                     fondoOscuro={true}
-                  />
+                  /> */}
                 </div>
               )}
             </section>
