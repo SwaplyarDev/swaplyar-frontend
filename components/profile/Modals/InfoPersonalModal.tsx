@@ -58,11 +58,11 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
         }
       }
 
-      setShow(false);
     } catch (err) {
       console.error("Error al actualizar perfil:", err);
     } finally {
       setLoading(false);
+      setShow(false);
     }
   };
 
@@ -88,6 +88,7 @@ const InfoPersonalModal = ({ show, setShow }: InfoPersonalModalProps) => {
             value={watch('alias')}
           />
         </form>
+        {errors.alias && <p className="text-red-500 text-sm">{errors.alias.message}</p>}
       </div>
     </ProfileModalLayout>
   );

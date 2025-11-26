@@ -10,7 +10,10 @@ import { CountryOption } from '@/types/request/request';
 import { useSession } from 'next-auth/react';
 import { validatePhoneNumber } from '@/utils/validatePhoneNumber';
 import { Dialog, DialogContent } from '@mui/material';
-import InputSteps from '@/components/inputSteps/InputSteps';
+import CustomInput from '@/components/ui/Input/CustomInput';
+import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
+import ButtonAuth from '@/components/auth/AuthButton';
+import { ChevronLeft } from 'lucide-react';
 
 interface WhatsappVerificationProps {
   show: boolean;
@@ -35,6 +38,7 @@ const WhatsappModal = ({ show, setShow, onVerificationSuccess }: WhatsappVerific
     formState: { errors },
     setValue,
     watch,
+    trigger,
   } = useForm<FormData>({ mode: 'onChange' });
 
   useEffect(() => {
@@ -49,7 +53,7 @@ const WhatsappModal = ({ show, setShow, onVerificationSuccess }: WhatsappVerific
 
     try {
       const phoneWithPrefix = `${data.calling_code?.callingCode || ''}${' ' + data.phone}`;
-      
+
       // Use store action to update phone
       await updatePhoneStore(session.accessToken, phoneWithPrefix);
 
@@ -71,93 +75,99 @@ const WhatsappModal = ({ show, setShow, onVerificationSuccess }: WhatsappVerific
     } finally {
       setLoading(false);
     }
-  };  return (
+  };
+
+  return (
     <Dialog
       open={show}
       onClose={() => setShow(false)}
       PaperProps={{
         sx: {
           borderRadius: '16px',
-          backgroundColor: isDark ? '#27272a' : '#fff',
+          backgroundColor: isDark ? '#323232' : '#fffffb',
           color: isDark ? '#fff' : '#000',
-          width: 1500,
-          height: "310px",
-          maxWidth: 680
+          maxWidth: 556,
+          minWidth: 358,
         },
       }}
     >
-      <DialogContent>
-        <div className="flex h-full flex-col items-center gap-0 text-center">
-          <h2 className="mb-4 w-full text-start text-lg sm:text-xl font-semibold">
+      <DialogContent className="!p-0">
+        <div className="flex h-full flex-col items-center p-3 xs-phone:p-6 gap-8 text-center">
+          <h2 className="w-full text-center font-textFont text-custom-blue dark:text-custom-whiteD text-2xl xs-phone:text-4xl font-semibold">
             WhatsApp
           </h2>
-          <span className="mb-4 text-xs md:text-base">
-            Mantén actualizado tu número de WhatsApp para no perderte nuestras novedades.
-          </span>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="relative w-full flex flex-col gap-12">
-            <div className="w-full relative flex items-center justify-center gap-2 rounded-full border bg-transparent pl-5 lg:pl-3 text-lightText mb-5 transition-all duration-200">
-              <Controller
-                name="calling_code"
-                control={control}
-                defaultValue={undefined}
-                rules={{ required: 'Este campo es obligatorio' }}
-                render={({ field, fieldState }) => (
+          <form onSubmit={handleSubmit(onSubmit)} className="relative w-full flex flex-col gap-6">
+            <Controller
+              name="calling_code"
+              control={control}
+              defaultValue={defaultCountryOptions.find((option) => option.callingCode === '+54')}
+              rules={{ validate: () => true }}
+              render={({ field, fieldState }) => (
+                <CustomInput
+                  label="Teléfono"
+                  type="tel"
+                  name="phone"
+                  register={register}
+                  value={watch('phone')}
+                  defaultValue=""
+                  validation={{
+                    validate: (value: string) => {
+                      if (!value) return 'El número de teléfono es obligatorio';
+                      const result = validatePhoneNumber(value, field.value);
+                      return result === true ? true : result;
+                    },
+                  }}
+                  error={errors.phone?.message}
+                >
                   <SelectCountry
                     selectedCodeCountry={field.value}
-                    setSelectedCodeCountry={(option) => field.onChange(option)}
+                    setSelectedCodeCountry={(option) => {
+                      field.onChange(option);
+                      trigger('phone');
+                    }}
                     errors={fieldState.error ? { [field.name]: fieldState.error } : {}}
-                    textColor={['gray-700', 'gray-200']}
-                    maxHeightModal={true}
+                    textColor={['lightText', 'lightText']}
+                    classNames="pl-4 w-full"
                   />
-                )}
-              />
-
-              <InputSteps
-                label=""
-                name="phone"
-                id="phone"
-                type="tel"
-                placeholder="Número de WhatsApp"
-                register={register}
-                watch={watch}
-                rules={{
-                  validate: (value) => {
-                    const country = watch('calling_code');
-                    const result = validatePhoneNumber(value, country);
-                    return result === true ? true : result;
-                  },
-                }}
-                disabledWithoutMargin={true}
-                className="w-full text-sm border-none "
-              />
-            </div>
+                </CustomInput>
+              )}
+            />
             {errors.phone && (
-              <p className="absolute top-16 w-full text-center font-textFont text-sm text-errorColor">
+              <p className="w-full text-center font-textFont text-sm text-errorColor">
                 {errors.phone.message}
               </p>
             )}
+
+            <span className="text-start">
+              Mantén actualizado tu número de WhatsApp para no perderte nuestras novedades y promociones.
+            </span>
+
             <div className="flex justify-between gap-4 pt-5">
               <button
                 type="button"
                 onClick={() => setShow(false)}
-                className={`rounded-full px-4 ${isDark
-                  ? 'border border-white text-white hover:bg-white hover:text-[#4B4B4B]'
-                  : 'border border-blue-400 bg-white text-blue-400'
-                  }`}
+                className="btn-back items-center flex h-[38px] rounded-full hover:bg-transparent dark:text-darkText dark:bg-none"
               >
-                Volver
+                <div className="relative size-8 overflow-hidden content-center">
+                  <ChevronLeft
+                    color={isDark ? '#ebe7e0' : '#252526'}
+                    width={32}
+                    height={32}
+                    strokeWidth={2}
+                    className="inline-block"
+                  />
+                </div>
               </button>
-              <button
+
+              <ButtonAuth
+                loading={loading}
                 type="submit"
-                disabled={loading}
-                className={`h-8 rounded-full px-4 ${isDark
-                  ? 'bg-white text-[#4B4B4B]'
-                  : 'bg-blue-400 text-white hover:bg-blue-700'
-                  }`}
-              >
-                {loading ? 'Guardando...' : 'Guardar'}
-              </button>
+                variant="primary"
+                label='Guardar'
+                isDark={isDark}
+                className='px-4'
+              />
             </div>
           </form>
         </div>

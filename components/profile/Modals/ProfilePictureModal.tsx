@@ -4,7 +4,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import NextImage from "next/image";
-import { swaplyArAvatar } from "@/utils/assets/imgDatabaseCloudinary";
+import { swaplyArAvatar, Apoyo, regretsPhone, Transparencia } from "@/utils/assets/imgDatabaseCloudinary";
 import Cropper, { Area } from "react-easy-crop";
 import { getCroppedImg } from "@/utils/canvasUtils";
 import ProfileModalLayout from "./ProfileModalLayout";
@@ -20,9 +20,9 @@ interface ProfilePictureModalProps {
 // Esta array de imagenes va a tener imagenes de avatar por defecto
 const AVATAR_ICONS = [
   { name: "avatar 1", image: swaplyArAvatar },
-  { name: "avatar 2", image: swaplyArAvatar },
-  { name: "avatar 3", image: swaplyArAvatar },
-  { name: "avatar 4", image: swaplyArAvatar },
+  { name: "avatar 2", image: Apoyo },
+  { name: "avatar 3", image: regretsPhone },
+  { name: "avatar 4", image: Transparencia },
 ]
 
 type ModalState = 'initial' | 'crop' | 'current' | 'delete-confirmation';

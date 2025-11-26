@@ -127,7 +127,7 @@ const CloseAccountModal = ({ show, setShow }: CloseAccountModalProps) => {
                   onClick={() => {}}
                   disabled={loading}
                   loading={loading}
-                  className="min-w-[320px] !font-normal"
+                  className="min-w-[320px] !font-normal !text-base"
                 />
               </div>
           </div>

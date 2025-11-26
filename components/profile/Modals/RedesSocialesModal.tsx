@@ -67,6 +67,7 @@ const RedesSocialesModal = ({ show, setShow }: SocialMediaModalProps) => {
       console.error('Error al agregar red social:', err);
     } finally {
       setLoading(false);
+      setShow(false);
     }
   };
 
@@ -80,6 +81,7 @@ const RedesSocialesModal = ({ show, setShow }: SocialMediaModalProps) => {
       console.error('Error al remover red social:', err);
     } finally {
       setLoading(false);
+      setShow(false);
     }
   };
 
