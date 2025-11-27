@@ -370,7 +370,7 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
               loading={isLoading}
               disabled={!(frontFile && backFile && selfieFile)}
               isDark={isDark}
-              className="min-w-[200px]"
+              className="min-w-[200px] text-[12px] leading-[16px] sm:text-[20px] sm:leading-[24px]"
             />
           </section>
         </div>
