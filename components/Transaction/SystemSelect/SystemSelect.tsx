@@ -90,7 +90,7 @@ export default function SystemSelect({ systems, selectedSystem, onSystemSelect, 
       {showOptionsInternal && (
         <ul
           className={`
-            scrollable-list absolute z-[500] max-h-80 w-full overflow-y-auto overflow-x-hidden rounded-2xl 
+            scrollable-list rounded-calculator absolute z-[500] max-h-80 w-full overflow-y-auto overflow-x-hidden rounded-2xl 
             pl-2 sm:top-full sm:mt-1 
             max-sm:fixed max-sm:bottom-0 max-sm:left-0 max-sm:right-0 
             max-sm:mx-4 max-sm:w-[calc(100%-2rem)] max-sm:rounded-t-2xl max-sm:h-[40vh]

@@ -1,52 +1,57 @@
 import { FaInstagram } from "react-icons/fa";
+import { useProfileStore } from '@/store/useProfileStore';
+
 type Props = {
-  socialNetworks: { type: string; username: string }[];
   onEdit: () => void;
 };
 
-const SocialNetworkCard = ({ socialNetworks, onEdit }: Props) => {
-  console.log(socialNetworks, "social");
-  
+const SocialNetworkCard = ({ onEdit }: Props) => {
+  const socialNetworks = useProfileStore((state) => state.socialAccounts);
+
   return (
-    <>
-      <section className='sm:px-6 px-4 '>
-        <div className="flex items-center justify-between">
-          <h2 className="mb-3 text-[24px] font-normal">Red Social</h2>
-          <FaInstagram className="w-[27px] h-[27px] " />
-        </div>
-        <div className="mt-2 w-full flex flex-col  items-center justify-between ">
-        
-          {socialNetworks.length > 0 ? socialNetworks.map((network, index) => (
+    <section>
+      <div className="flex items-center justify-between text-custom-grayD-800 dark:text-custom-whiteD">
+        <h2 className="text-[24px] font-normal">Red Social</h2>
+        <FaInstagram className="w-[27px] h-[27px] " />
+      </div>
+      <div className="w-full flex items-center justify-between p-3">
 
-
-            <div key={`social-${index}`} className="flex w-full justify-between">
-              <p className="mb-2  text-[16px] ">
-                {network.type.charAt(0).toUpperCase() + network.type.slice(1)}
-              </p>
-              <div className="flex items-center gap-2.5">
-
-                <p className=" text-[16px]">@{network.username}</p>
-
-              </div>
+        {socialNetworks.length > 0 ? (
+          <>
+            <div className="flex flex-col w-full gap-2">
+              {
+                socialNetworks.map((network, index) => (
+                  <div key={`social-${index}`} className="flex flex-col w-full justify-between text-custom-grayD-800 dark:text-custom-whiteD">
+                    <p>
+                      {network.type.charAt(0).toUpperCase() + network.type.slice(1)}
+                    </p>
+                    <div className="flex items-center gap-2.5">
+                      <p>{network.username}</p>
+                    </div>
+                  </div>
+                ))
+              }
             </div>
-
-
-          )):(
-<span className="text-gray-400 underline">Aun no tienes redes sociales vinculadas a tu cuenta</span>
-          )}
-          <div className="w-full flex justify-end">
-            <button
-              className="w-10 transition-all text-[16px] font-light hover:font-semibold hover:underline dark:hover:text-[#E1E1E1]  hover:text-[#2A68FE] dark:text-[#C8C8C8] "
-              onClick={onEdit}
-            >
-              Editar
-            </button>
+            <p className='italic text-sm max-w-80'>Mantén tu red social registrada para enviarte promociones y beneficios exclusivos a nuestro clientes mediante MD privado </p>
+          </>
+        ) : (
+          <div className="w-full flex items-between">
+            <span>-</span>
+            <span className='italic text-sm w-full text-end me-3'>Aun no tienes redes sociales vinculadas a tu cuenta</span>
           </div>
-
+        )}
+        <div className="flex justify-end">
+          <button
+            className="transition-all ms-2 font-light hover:font-semibold hover:underline dark:hover:text-[#E1E1E1]  hover:text-[#2A68FE] dark:text-[#C8C8C8] "
+            onClick={onEdit}
+          >
+            {socialNetworks.length > 0 ? "Editar" : "Agregar"}
+          </button>
         </div>
-      </section>
 
-    </>
+      </div>
+    </section>
+
   );
 };
 
