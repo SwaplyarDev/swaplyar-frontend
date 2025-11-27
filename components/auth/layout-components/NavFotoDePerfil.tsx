@@ -1,22 +1,23 @@
 import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
-import { swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
-import { Session } from '@auth/core/types';
+import { avatarUser1 } from '@/utils/assets/imgDatabaseCloudinary';
 import { useProfileStore } from '@/store/useProfileStore';
+import { useSession } from 'next-auth/react';
 interface Props {
   isDark: boolean;
   isActive: string;
 }
 
 export default function NavFotoDePerfil({ isDark, isActive }: Props) {
-  const { userProfile} = useProfileStore();
+  const { data: session } = useSession();
+  const { userProfile } = useProfileStore();
 
   const displayName = userProfile?.nickName
     ? userProfile.nickName
     : `${userProfile?.firstName || ''} ${userProfile?.lastName || ''}`.trim();
 
-  const profilePictureUrl = userProfile?.profilePictureUrl || swaplyArAvatar;
+  const profilePictureUrl = userProfile?.profilePictureUrl || session?.user.profile?.profilePictureUrl || avatarUser1;
 
   return (
       <div className="relative flex h-full">
