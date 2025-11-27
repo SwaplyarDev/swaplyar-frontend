@@ -1,4 +1,5 @@
-import { UpdateProfileResponse, UpdatePhoneResponse, UpdatePictureResponse } from "@/types/profileServices";
+import { logout } from "@/actions/auth/logout";
+import { UpdateProfileResponse, UpdatePhoneResponse, UpdatePictureResponse, ProfileResponse } from "@/types/profileServices";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -24,12 +25,20 @@ async function apiRequest<T>(
 
   if (!res.ok) {
     const errorText = await res.text();
+    if (res.status === 401) {
+      logout();
+    }
     throw new Error(
       `❌ Error ${res.status} ${res.statusText}: ${errorText || "Unknown"}`
     );
   }
 
   return res.json();
+}
+
+/** Obtener perfil */
+export const getProfile = (token: string) => {
+  return apiRequest<ProfileResponse>(`/users/profiles/my-profile`, "GET", token);
 }
 
 /** Editar perfil */
@@ -81,26 +90,12 @@ export const updateEmail = (token: string, email: string) =>
     { email }
   );
 
-  /*  Se comenta esta parte porque ahora se unificon los endpoints de location y nickname
-  
-  export const updateNickname = (token: string, nickName: string):Promise<UpdateNicknameResponse> =>
-    apiRequest(
-      `/users/profiles/my-profile/nickname`,
-      "PUT",
-      token,
-      { nickName }
-    );
-    
-    export const updateLocation = (
-      token: string,
-      country: string,
-      department: string
-    ) =>
-      apiRequest(
-        `/users/profiles/my-profile/location`,
-        "PUT",
-        token,
-        { country, department }
-      );
-  
-      */
+/** Modificar redes sociales */
+export const updateSocialAccounts = (token: string, socialAccounts: Record<string, string | null>) => {
+  return apiRequest(
+    `/users/profiles/socials`,
+    "PATCH",
+    token,
+    socialAccounts
+  );
+}

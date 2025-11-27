@@ -350,3 +350,12 @@ export const tycDark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v17514
 // Cupon
 export const coupon = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1750343087/Vector_kpbkff.png';
 export const couponDark = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1760627447/CuponDark_c9nt6f.png';
+
+// Auth Profile
+export const deleteAccountImg = "https://res.cloudinary.com/dwrhturiy/image/upload/v1764169722/Eliminar_cuenta_twpykh.png"
+
+// Avatar Users
+export const avatarUser1 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1764169993/swaply-avatar-1-hombre_zx7j1j.png';
+export const avatarUser2 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1764169977/swaply-avatar-2-hombre_deqh8b.png';
+export const avatarUser3 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1764169954/swaply-avatar-2-mujer_qs04tb.png';
+export const avatarUser4 = 'https://res.cloudinary.com/dwrhturiy/image/upload/v1764169944/swaply-avatar-1-mujer_f8ovtx.png';
