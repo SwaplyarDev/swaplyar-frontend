@@ -71,6 +71,7 @@ declare module 'next-auth' {
       category?: string | null;
       isValidated?: boolean;
       userValidated?: boolean;
+      memberCode?: string;
     };
     accessToken?: string;
     error?: string; // p.ej. 'RefreshAccessTokenError'

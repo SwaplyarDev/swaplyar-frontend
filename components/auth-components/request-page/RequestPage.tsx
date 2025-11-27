@@ -27,11 +27,13 @@ export default async function RequestPage() {
   }
 
   return (
-    <div className="mx-auto mb-20 max-h-[1680px] w-full max-w-[1200px] max-sm:px-4 max-sm:py-6 sm:p-6 xs:mb-0 sm:my-6">
-      <h1 className="mb-6 pt-10 text-[34px] font-bold text-gray-800 dark:text-darkText xs:mb-8">
-        Envía y recibe dinero de billeteras virtuales y criptomonedas
+    <div className="mx-auto mb-20 max-h-[1680px] w-full max-w-[1000px] container-spacing !px-8 lg:!px-0 ">
+      <h1 className="text-4xl !text-[40px] mb-10 font-bold text-gray-800 dark:text-darkText">
+        Nueva Solicitud
       </h1>
-      <section className="flex flex-col gap-6 lg:flex-row-reverse">
+      <section className="flex flex-col gap-6 lg:flex-row">
+        {/* // TODO: Se le deben pasar los errores (si existen) */}
+        <TransactionCalculatorInternal discounts={discountsData} stars={starsData} errors={errors} />
         <Suspense
           fallback={
             <div className="flex h-[331px] w-full animate-pulse items-center justify-center rounded-2xl bg-gray-200 dark:bg-custom-grayD-700 lg:h-[623px]"></div>
@@ -40,12 +42,10 @@ export default async function RequestPage() {
           <PlusRewardInitial
             discounts={discountsData}
             // errors={errors}
-            userId={session?.user.id ?? ''}
+            memberCode={session?.user.memberCode ?? ''}
             accessToken={session?.accessToken ?? ''}
           />
         </Suspense>
-        {/* // TODO: Se le deben pasar los errores (si existen) */}
-        <TransactionCalculatorInternal discounts={discountsData} stars={starsData} errors={errors} />
       </section>
     </div>
   );

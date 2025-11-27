@@ -2,14 +2,16 @@
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { useForm } from 'react-hook-form';
 import { Dialog, DialogContent } from '@mui/material';
+import { useState } from 'react';
+import { VerificationCodeInput } from '@/components/ui/VerificationCodeInput/VerificationCodeInput';
+import { ChevronLeft } from 'lucide-react';
+import ButtonAuth from '@/components/auth/AuthButton';
 import clsx from 'clsx';
-import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { updatePhone } from '../services/profileServices';
-import { useWhatsAppFormStore } from '../store/WhatsAppFormStore';
-import { ChevronLeft } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import { useProfileStore } from '@/store/useProfileStore';
 
 
 interface VerificationCodeForm {
@@ -29,41 +31,17 @@ export const VerifyCodeModal = ({ show, setShow, fullPhone, onVerificationSucces
   const [isLocked, setIsLocked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const { phone, updatePhone: updatePhoneStore } = useProfileStore();
+  
 
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors },
+    watch,
+    clearErrors
   } = useForm<VerificationCodeForm>();
-
-  const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    const paste = event.clipboardData.getData('text');
-    const numbers = paste.replace(/\D/g, '').split('').slice(0, 6);
-    numbers.forEach((number, index) => setValue(`verificationCode.${index}`, number));
-
-    if (numbers.length < 6) {
-      const nextIndex = numbers.length;
-      const nextInput = document.getElementById(`code-${nextIndex}`);
-      if (nextInput) (nextInput as HTMLInputElement).focus();
-    }
-  };
-
-  const handleInputChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    if (value && index < 5) {
-      const nextInput = document.getElementById(`code-${index + 1}`);
-      if (nextInput) (nextInput as HTMLInputElement).focus();
-    }
-  };
-
-  const handleInputKeyDown = (index: number, event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Backspace' && !event.currentTarget.value && index > 0) {
-      const prevInput = document.getElementById(`code-${index - 1}`);
-      if (prevInput) (prevInput as HTMLInputElement).focus();
-    }
-  };
 
   const onOtpVerified = () => {
     setShow(false); // cerrar modal de verificación
@@ -95,8 +73,9 @@ export const VerifyCodeModal = ({ show, setShow, fullPhone, onVerificationSucces
         console.log('Verificación exitosa, mostrando modal de éxito');
         // Actualizar teléfono solo si cambió
         if (fullPhone !== session?.user?.profile?.phone) {
+
           const res = await updatePhone(session.accessToken, fullPhone);
-          useWhatsAppFormStore.setState({ phone: fullPhone });
+          
           if (session.user) {
             await update({
               user: {
@@ -105,8 +84,6 @@ export const VerifyCodeModal = ({ show, setShow, fullPhone, onVerificationSucces
               },
             });
           }
-        } else {
-          useWhatsAppFormStore.setState({ phone: fullPhone });
         }
 
         onOtpVerified(); // disparar modal de éxito con confetti
@@ -126,95 +103,84 @@ export const VerifyCodeModal = ({ show, setShow, fullPhone, onVerificationSucces
   const handleClose = () => setShow(false);
 
   return (
-    <>
-      <Dialog
-        open={show}
-        onClose={handleClose}
-        PaperProps={{
-          sx: {
-            borderRadius: '16px',
-            backgroundColor: isDark ? '#27272a' : '#fff',
-            color: isDark ? '#fff' : '#000',
-            width: 1500,
-            maxWidth: 680,
-          },
-        }}
-      >
-        <DialogContent>
-          <div className="flex h-full flex-col items-center gap-4 text-center">
-            <div className="flex items-center justify-center mb-4">
-              <FontAwesomeIcon
-                icon={faWhatsapp}
-                className={clsx('text-9xl', isDark ? 'text-green-400' : 'text-green-500')}
-              />
+    <Dialog
+      open={show}
+      onClose={handleClose}
+      PaperProps={{
+        sx: {
+          borderRadius: '16px',
+          backgroundColor: isDark ? '#323232' : '#fffffb',
+          color: isDark ? '#fff' : '#000',
+          maxWidth: 556,
+          minWidth: 358,
+        },
+      }}
+    >
+      <DialogContent className="!p-0">
+        <div className="flex h-full flex-col items-center p-3 xs-phone:p-6 gap-8 text-center">
+          <FontAwesomeIcon
+            icon={faWhatsapp}
+            className={clsx('text-9xl', isDark ? 'text-green-400' : 'text-green-500')}
+          />
+          <h2 className="w-full text-center font-textFont text-custom-blue dark:text-custom-whiteD text-2xl xs-phone:text-4xl font-semibold">
+            WhatsApp
+          </h2>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+            <div className='flex flex-col items-center'>
+              <div className="flex h-[46px] justify-between gap-2 xs:h-[57px] xs:gap-1 sm:h-[65.33px]">
+                <VerificationCodeInput
+                  register={register}
+                  watch={watch}
+                  setValue={setValue}
+                  onComplete={async () => {
+                    await handleSubmit(onSubmit)();
+                  }}
+                  isDisabled={isLocked || loading}
+                  isLoading={loading}
+                  error={errors.verificationCode ? errors.verificationCode.message : undefined}
+                  isDark={isDark}
+                  clearErrors={() => clearErrors('verificationCode')}
+                  className="h-[46px] md:h-[56px] lg:h-[58px] gap-[6px] md:gap-[10px] lg:gap-4"
+                />
+
+                {errors.verificationCode && <p className="relative w-full text-center my-4 text-sm text-red-500">• {errors.verificationCode.message}</p>}
+              </div>
+
+              <span className="text-start">
+                Ingresa el código que se envio por WhatsApp para verificarlo.
+              </span>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-              <div className="mb-8 flex h-[46px] justify-center gap-2 xs:h-[57px] sm:h-[65.33px]">
-                {[...Array(6)].map((_, index) => (
-                  <div
-                    key={index}
-                    className={clsx(
-                      `w-[46px] h-[46px] rounded-full border-[0.5px] border-buttonsLigth p-[3px] dark:border-darkText xs:w-[57px] xs:h-[57px] sm:w-[65.33px] sm:h-[65.33px]`
-                    )}
-                  >
-                    <input
-                      id={`code-${index}`}
-                      type="text"
-                      maxLength={1}
-                      disabled={isLocked || loading}
-                      className={clsx(
-                        'h-full w-full rounded-full border-0 text-center text-base focus:outline-none dark:border-[0.5px] dark:bg-lightText sm:text-[2.5rem]',
-                        errors.verificationCode ? 'border-red-500' : ''
-                      )}
-                      {...register(`verificationCode.${index}`, { required: false })}
-                      onPaste={handlePaste}
-                      onChange={(event) => handleInputChange(index, event)}
-                      onKeyDown={(event) => handleInputKeyDown(index, event)}
-                      autoFocus={index === 0}
-                    />
-                  </div>
-                ))}
-              </div>
-              <span className="text-xs md:text-base">
-                Introduzca el código que se envío por WhatsApp para verificarlo
-              </span>
-
-              <div className="flex justify-between gap-4 pt-5">
-                <button
-                  onClick={handleClose}
-                  className={clsx(
-                    'group relative mt-2 flex h-[48px] w-[48px] items-center justify-center rounded-full transition-colors duration-300',
-                    '-ml-4 md:-ml-4 lg:-ml-2',
-                    isDark ? 'text-gray-200' : 'text-gray-700 hover:text-[#0A2A83]'
-                  )}
-                  aria-label="Volver"
-                >
-                  <span
-                    className={clsx(
-                      'pointer-events-none absolute h-[40px] w-[40px] rounded-full border-r-[3px] opacity-0 transition-opacity duration-300 group-hover:opacity-100',
-                      isDark ? 'border-r-white' : 'border-r-[#0A2A83]'
-                    )}
+            <div className="flex justify-between gap-4 pt-5">
+              <button
+                type="button"
+                onClick={() => setShow(false)}
+                className="btn-back items-center flex h-[38px] rounded-full hover:bg-transparent dark:text-darkText dark:bg-none"
+              >
+                <div className="relative size-8 overflow-hidden content-center">
+                  <ChevronLeft
+                    color={isDark ? '#ebe7e0' : '#252526'}
+                    width={32}
+                    height={32}
+                    strokeWidth={2}
+                    className="inline-block"
                   />
-                  <ChevronLeft size={28} strokeWidth={2.5} className="relative z-10" />
-                </button>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className={`h-8 rounded-full px-4 ${
-                    isDark ? 'bg-white text-[#4B4B4B]' : 'bg-blue-400 text-white hover:bg-blue-700'
-                  }`}
-                >
-                  {loading ? 'Verificando...' : 'Verificar'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </DialogContent>
-      </Dialog>
+                </div>
+              </button>
 
-      
-      
-    </>
+              <ButtonAuth
+                loading={loading}
+                type="submit"
+                variant="primary"
+                label='Verificar'
+                isDark={isDark}
+                className='px-4'
+              />
+            </div>
+          </form>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };

@@ -626,9 +626,9 @@ ul.scrollable-list-repentance::-webkit-scrollbar-thumb {
 }
 
 @media (max-width: 640px) {
-  ul.scrollable-list {
+  .rounded-calculator {
     border-radius: 0;
-    clip-path: inset(0 0 0 0 round 32px 32px 0 0);
+    clip-path: inset(0 0 0 0 round 32px 32px 0 0) !important;
   }
 
   ul.scrollable-list::-webkit-scrollbar {

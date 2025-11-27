@@ -1,21 +1,24 @@
 import Link from 'next/link';
-import React, { useState } from 'react';
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { usePathname } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import React from 'react';
 import Image from 'next/image';
-import { swaplyArAvatar } from '@/utils/assets/imgDatabaseCloudinary';
-import { Session } from '@auth/core/types';
-
+import { avatarUser1 } from '@/utils/assets/imgDatabaseCloudinary';
+import { useProfileStore } from '@/store/useProfileStore';
+import { useSession } from 'next-auth/react';
 interface Props {
   isDark: boolean;
   isActive: string;
-  session: Session | null;
 }
 
-export default function NavFotoDePerfil({ isDark, isActive, session }: Props) {
+export default function NavFotoDePerfil({ isDark, isActive }: Props) {
+  const { data: session } = useSession();
+  const { userProfile } = useProfileStore();
 
-  if (!session) return false;
+  const displayName = userProfile?.nickName
+    ? userProfile.nickName
+    : `${userProfile?.firstName || ''} ${userProfile?.lastName || ''}`.trim();
+
+  const profilePictureUrl = userProfile?.profilePictureUrl || session?.user.profile?.profilePictureUrl || avatarUser1;
+
   return (
       <div className="relative flex h-full">
         <div className="relative flex justify-center">
@@ -27,7 +30,7 @@ export default function NavFotoDePerfil({ isDark, isActive, session }: Props) {
             className={`${isActive === 'perfil' ? 'bg-gradient-to-t' : ''} relative h-[92px] w-[92px] rounded-full from-[#98cf09] via-[#B614FF] to-[#092993] p-[4px] hover:bg-gradient-to-t`}
             >
               <Image
-                src={session?.user.profile?.profilePictureUrl || swaplyArAvatar}
+                src={profilePictureUrl}
                 alt="Foto perfil Usuario"
                 width={100}
                 height={100}
@@ -37,8 +40,8 @@ export default function NavFotoDePerfil({ isDark, isActive, session }: Props) {
           </div>
         </div>
 
-        <p className={`block content-center font-titleFont font-semibold text-white dark:text-black capitalize px-1 ${isDark ? 'bg-custom-whiteD' : 'bg-nav-blue'} -ml-[1px]`}>
-          {session?.user.fullName}
+        <p className={`hidden sm:block content-center font-titleFont font-semibold text-white dark:text-black capitalize px-1 ${isDark ? 'bg-custom-whiteD' : 'bg-nav-blue'} -ml-[1px]`}>
+        {displayName}
         </p>
       </div>
   );
