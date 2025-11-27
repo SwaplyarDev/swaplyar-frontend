@@ -16,6 +16,7 @@ export const useAmountCalculator = () => {
   const [receiveAmount, setReceiveAmount] = useState('');
   const [isSendActive, setIsSendActive] = useState(true);
   const [rateForOne, setRateForOne] = useState(0);
+  const [error, setError] = useState<string | null>(null);
   const normalize = (value?: string) => value?.trim().toLowerCase().replace(/\s+/g, ' ') ?? '';
   // hook para recibir tasas en tiempo real
   const { rateUpdate, conversionResult, sendCalculation, waitForConnection } = useRealtimeRates();
@@ -43,17 +44,30 @@ export const useAmountCalculator = () => {
       ? mapSystemsToTotalPayload(selectedReceivingSystem.id, selectedSendingSystem.id, amount)
       : mapSystemsToTotalPayload(selectedSendingSystem.id, selectedReceivingSystem.id, amount);
 
-    const res = await postTotal(payload);
-    console.log('Respuesta total:', res);
+    try {
+      const res = await postTotal(payload);
+      console.log('Respuesta total:', res);
 
-    // guardamos el valor por 1 unidad con comisión aplicada
-    setRateForOne(res.totalReceived / res.amount); // 👈 totalReceived ya incluye comisión
-    if (isRateOnly) return res; // 👈 evita modificar montos del usuario
-    // recibo → envío
-    if (inverse) setSendAmount(res.totalReceived.toFixed(2));
-    else setReceiveAmount(res.totalReceived.toFixed(2)); // envío → recibo
+      // Limpiar error si la operación fue exitosa
+      setError(null);
 
-    return res;
+      // guardamos el valor por 1 unidad con comisión aplicada
+      setRateForOne(res.totalReceived / res.amount); // 👈 totalReceived ya incluye comisión
+      if (isRateOnly) return res; // 👈 evita modificar montos del usuario
+      // recibo → envío
+      if (inverse) setSendAmount(res.totalReceived.toFixed(2));
+      else setReceiveAmount(res.totalReceived.toFixed(2)); // envío → recibo
+
+      return res;
+    } catch (error) {
+      console.error('❌ Error al calcular conversión:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido al calcular la conversión';
+      setError(errorMessage);
+      // Resetear valores en caso de error
+      setRateForOne(0);
+      if (inverse) setSendAmount('0');
+      else setReceiveAmount('0');
+    }
   };
 
   // 🕒 debounce para sendAmount
@@ -249,5 +263,5 @@ export const useAmountCalculator = () => {
     setReceiveAmount(v);
   };
 
-  return { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne };
+  return { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne, error };
 };

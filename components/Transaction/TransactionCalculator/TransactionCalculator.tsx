@@ -41,7 +41,7 @@ export default function TransactionCalculator() {
   const router = useRouter();
   const { isDark } = useDarkTheme();
   const { handleSystemSelection, handleInvertSystemsClick, toggleSelect } = useSystemSelection();
-  const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne } =
+  const { sendAmount, receiveAmount, handleSendAmountChange, handleReceiveAmountChange, rateForOne, error } =
     useAmountCalculator();
   const colorError = isDark ? 'text-[#f78a82]' : 'text-[#f44336]';
   const pathname = usePathname();
@@ -103,6 +103,15 @@ export default function TransactionCalculator() {
             )}
 
           </p>
+
+          {error && (
+            <div className="w-full mb-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-700 rounded-lg">
+              <p className="text-sm text-red-700 dark:text-red-400 font-medium">
+                ⚠️ {error}
+              </p>
+            </div>
+          )}
+
           <TransactionSection
             systems={systems.filter((system) => system.id !== 'pix')}
             selectedSystem={selectedSendingSystem}
