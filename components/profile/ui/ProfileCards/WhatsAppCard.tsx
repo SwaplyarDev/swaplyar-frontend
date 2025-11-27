@@ -1,4 +1,3 @@
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 import { FaWhatsapp } from "react-icons/fa";
 import { useProfileStore } from '@/store/useProfileStore';
 
@@ -7,12 +6,11 @@ type WhatsAppCardProps = {
 };
 
 const WhatsAppCard = ({ setShow }: WhatsAppCardProps) => {
-  const { isDark } = useDarkTheme();
   const phone = useProfileStore((state) => state.phone);
 
   return (
     <>
-      <section >
+      <section>
         <div className="flex items-center justify-between text-custom-grayD-800 dark:text-custom-whiteD">
           <h2 className="text-[24px] font-normal">WhatsApp</h2>
           <FaWhatsapp className="w-[27px] h-[27px] " />

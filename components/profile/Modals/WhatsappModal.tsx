@@ -13,6 +13,9 @@ import { Dialog, DialogContent } from '@mui/material';
 import CustomInput from '@/components/ui/Input/CustomInput';
 import { defaultCountryOptions } from '@/utils/defaultCountryOptions';
 import ButtonAuth from '@/components/auth/AuthButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import clsx from 'clsx';
 import { ChevronLeft } from 'lucide-react';
 
 interface WhatsappVerificationProps {
@@ -29,7 +32,7 @@ interface FormData {
 const WhatsappModal = ({ show, setShow, onVerificationSuccess }: WhatsappVerificationProps) => {
   const { isDark } = useDarkTheme();
   const { data: session, update } = useSession();
-  const { phone, updatePhone: updatePhoneStore } = useProfileStore();
+  const { phone, setPhone } = useProfileStore();
 
   const {
     register,
@@ -47,31 +50,24 @@ const WhatsappModal = ({ show, setShow, onVerificationSuccess }: WhatsappVerific
 
   const [loading, setLoading] = useState(false);
 
+  const handleClose = () => setShow(false);
+
   const onSubmit = async (data: FormData) => {
-    if (!session?.accessToken) return;
     setLoading(true);
 
     try {
       const phoneWithPrefix = `${data.calling_code?.callingCode || ''}${' ' + data.phone}`;
 
-      // Use store action to update phone
-      await updatePhoneStore(session.accessToken, phoneWithPrefix);
-
-      if (session.user) {
-        await update({
-          user: {
-            ...session.user,
-            profile: {
-              ...session.user.profile,
-              phone: phoneWithPrefix,
-            },
-          },
-        });
+      if (!session?.accessToken) {
+        throw new Error('No access token available');
       }
 
+      // Actualizar store localmente para testing
+      setPhone(phoneWithPrefix);
+     
       onVerificationSuccess();
     } catch (err) {
-      console.error('❌ Error al actualizar teléfono:', err);
+      console.error('❌ Error:', err);
     } finally {
       setLoading(false);
     }
@@ -93,6 +89,10 @@ const WhatsappModal = ({ show, setShow, onVerificationSuccess }: WhatsappVerific
     >
       <DialogContent className="!p-0">
         <div className="flex h-full flex-col items-center p-3 xs-phone:p-6 gap-8 text-center">
+          <FontAwesomeIcon
+            icon={faWhatsapp}
+            className={clsx('text-9xl', isDark ? 'text-green-400' : 'text-green-500')}
+          />
           <h2 className="w-full text-center font-textFont text-custom-blue dark:text-custom-whiteD text-2xl xs-phone:text-4xl font-semibold">
             WhatsApp
           </h2>
@@ -164,7 +164,7 @@ const WhatsappModal = ({ show, setShow, onVerificationSuccess }: WhatsappVerific
                 loading={loading}
                 type="submit"
                 variant="primary"
-                label='Guardar'
+                label={loading ? 'Procesando...' : 'Enviar Código'}
                 isDark={isDark}
                 className='px-4'
               />

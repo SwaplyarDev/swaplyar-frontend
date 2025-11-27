@@ -22,7 +22,7 @@ import CloseAccountModal from './Modals/CloseAccountModal';
 const Profile = () => {
   const { isDark } = useDarkTheme();
   const { data: session } = useSession();
-  const { userProfile, loading, fetchProfile } = useProfileStore();
+  const { userProfile, phone, loading, fetchProfile } = useProfileStore();
 
   // Fetch profile on mount or when session changes
   useEffect(() => {
@@ -38,7 +38,6 @@ const Profile = () => {
   const [showPictureModal, setShowPictureModal] = useState(false);
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [showManagementModal, setShowManagementModal] = useState(false);
-
 
   useEffect(() => {
     const anyModalOpen = showWhatsAppModal || showProfileModal || showSocialNetworkModal || showVerificationCodeModal;
@@ -63,14 +62,6 @@ const Profile = () => {
     setShowVerificationCodeModal(false);
   };
 
-/*   if (loading) {
-    return (
-      <div className="mx-auto mb-24 mt-10 w-full max-w-xl rounded-xl p-6 sm:my-6">
-        <LoadingState />
-      </div>
-    );
-  } */
-
   const getYearOfRegister = (dateString: string) => {
     const date = new Date(dateString);
     return date.getFullYear();
@@ -79,7 +70,6 @@ const Profile = () => {
   const displayName = `${userProfile?.firstName || ''} ${userProfile?.lastName || ''}`.trim();
 
   const profilePictureUrl = userProfile?.profilePictureUrl || session?.user.profile?.profilePictureUrl || avatarUser1;
-
 
   return (
     <div className={`container-spacing ${(!loading) && 'min-h-screen'} !px-0 font-textFont text-white`}>
@@ -137,7 +127,8 @@ const Profile = () => {
           <VerifyCodeModal
             show={showVerificationCodeModal}
             setShow={setShowVerificationCodeModal}
-            onVerify={handleVerificationComplete}
+            fullPhone={phone}
+            onVerificationSuccess={handleVerificationComplete}
           />
         )}
 

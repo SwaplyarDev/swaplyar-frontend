@@ -37,8 +37,17 @@ export async function postTotal(payload: TotalRequest): Promise<TotalResponse> {
     body: JSON.stringify(payload),
   });
   if (!res.ok) {
-    const text = await res.text().catch(() => '');
-    throw new Error(`Error /total: ${res.status} ${res.statusText} ${text}`);
+    let errorMessage = `Error al calcular la conversión (${res.status})`;
+    try {
+      const errorData = await res.json();
+      if (errorData.message) {
+        errorMessage = errorData.message;
+      }
+    } catch {
+      const text = await res.text().catch(() => '');
+      if (text) errorMessage += `: ${text}`;
+    }
+    throw new Error(errorMessage);
   }
   return res.json();
 }
