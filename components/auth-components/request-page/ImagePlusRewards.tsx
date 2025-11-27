@@ -12,17 +12,17 @@ export const ImagePlusRewards = () => {
         <Image
           src={plusRewardsDark}
           alt="Plus Rewards"
-          width={250}
-          height={128}
-          className="mb-2 object-cover xs-mini-phone:w-[220px] md-phone:w-[260px]"
+          width={187.5}
+          height={96}
+          className="object-cover xs-mini-phone:w-[220px] md-phone:w-[260px]"
         />
       ) : (
         <Image
           src={plusRewardsLight}
           alt="Plus Rewards"
-          width={250}
-          height={128}
-          className="mb-2 object-cover xs-mini-phone:w-[220px] md-phone:w-[260px]"
+            width={187.5}
+          height={96}
+          className="object-cover xs-mini-phone:w-[220px] md-phone:w-[260px]"
         />
       )}
     </>
