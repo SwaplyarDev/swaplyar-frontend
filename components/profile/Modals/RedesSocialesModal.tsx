@@ -1,169 +1,146 @@
 'use client';
 
-import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
-import { Facebook, Instagram, LinkedIn, Twitter } from '@mui/icons-material';
-import { Plus, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { useState } from 'react';
-import { Button } from '../../ui/Button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../ui/Dialog';
-import { Input } from '../../ui/Input';
+import { useSession } from 'next-auth/react';
 import AddSocialNetwork from '../ui/AddSocialNetwork';
-import { PlataformSocial, useSocialNetworksStore } from '../store/socialNetworksStore';
-
-type SocialMedia = {
-  id: string;
-  type: PlataformSocial;
-  username: string;
-};
+import { useProfileStore, PlataformSocial } from '@/store/useProfileStore';
+import ProfileModalLayout from './ProfileModalLayout';
+import { IconInstagram, IconFacebook, IconTwitterX, IconLinkedin } from '@/components/ui/IconsRed';
 
 type SocialMediaModalProps = {
   show: boolean;
   setShow: (show: boolean) => void;
-  socialNetworks: SocialMedia[];
 };
 
-const RedesSocialesModal = ({ show, setShow, socialNetworks }: SocialMediaModalProps) => {
-  const { isDark } = useDarkTheme();
+type SocialOption = {
+  value: string;
+  label: string;
+  image: React.ReactNode;
+};
 
-  const { socialAccounts, addSocial, removeSocial } = useSocialNetworksStore();
+// Helper para obtener el icono según el tipo de red social
+const getSocialIcon = (type: string) => {
+  switch (type) {
+    case 'facebook':
+      return <IconFacebook className="w-7 h-7" />;
+    case 'instagram':
+      return <IconInstagram className="w-7 h-7" />;
+    case 'twitterX':
+      return <IconTwitterX className="w-7 h-7" />;
+    case 'Linkedin':
+      return <IconLinkedin className="w-7 h-7" />;
+    default:
+      return null;
+  }
+};
 
-  const [newSocialType, setNewSocialType] = useState<PlataformSocial>('facebook');
-  // const [socialAccounts, setSocialAccounts] = useState<SocialMedia[]>(socialNetworks);
-  const [newSocialUsername, setNewSocialUsername] = useState('');
+const RedesSocialesModal = ({ show, setShow }: SocialMediaModalProps) => {
+  const { data: session } = useSession();
+  const token = session?.accessToken;
+  const { socialAccounts, addSocial, removeSocial } = useProfileStore();
+  const [loading, setLoading] = useState(false);
 
-  // const addSocialAccount = () => {
-  //   if (newSocialType && newSocialUsername) {
-  //     const newAccount: SocialMedia = {
-  //       id: Date.now().toString(),
-  //       type: newSocialType as any,
-  //       username: newSocialUsername,
-  //     };
-  //     setSocialAccounts([...socialAccounts, newAccount]);
-  //     setNewSocialType('');
-  //     setNewSocialUsername('');
-  //   }
-  // };
-  const handleAdd = () => {
-    if (newSocialType && newSocialUsername) {
-      addSocial({
+  const [selectedRed, setSelectedRed] = useState<SocialOption | null>(null);
+  const [username, setUsername] = useState('');
+
+  const isFormValid = selectedRed && username.trim() !== '';
+
+  const handleSave = async () => {
+    if (!isFormValid || !token) return;
+
+    try {
+      setLoading(true);
+      await addSocial(token, {
         id: Date.now().toString(),
-        type: newSocialType,
-        username: newSocialUsername,
+        type: selectedRed.value as PlataformSocial,
+        username,
       });
-      setNewSocialType('facebook');
-      setNewSocialUsername('');
+
+      // Limpiar el formulario
+      setSelectedRed(null);
+      setUsername('');
+
+      // Cerrar modal después de agregar
+      /* setShow(false); */
+    } catch (err) {
+      console.error('Error al agregar red social:', err);
+    } finally {
+      setLoading(false);
+      setShow(false);
     }
   };
 
-  // const handleSubmit = () => {
-  //   setShow(false);
-  // };
-
-  const getSocialIcon = (type: string) => {
-    switch (type) {
-      case 'facebook':
-        return <Facebook className="h-5 w-5 text-blue-500" />;
-      case 'instagram':
-        return <Instagram className="h-5 w-5 text-pink-500" />;
-      case 'twitter':
-        return <Twitter className="h-5 w-5 text-sky-500" />;
-      case 'LinkedIn':
-        return <LinkedIn className="h-5 w-5" />;
-      default:
-        return null;
+  const handleRemoveSocial = async (id: string) => {
+    if (!token) return;
+    
+    try {
+      setLoading(true);
+      await removeSocial(token, id);
+    } catch (err) {
+      console.error('Error al remover red social:', err);
+    } finally {
+      setLoading(false);
+      setShow(false);
     }
-  };
-
-  // const removeSocialAccount = (id: string) => {
-  //   setSocialAccounts(socialAccounts.filter((account) => account.id !== id));
-  // };
-
-  const handleSubmit = () => {
-    setShow(false);
-    //logica para conectar con el backend
   };
 
   return (
-    <Dialog open={show} onOpenChange={setShow}>
-      <DialogContent className={`border-none ${isDark ? 'bg-zinc-800 text-white' : 'text-black'} sm:max-w-md`}>
-        <DialogHeader className="relative">
-          <DialogTitle className="pt-4 text-center text-xl font-normal">Redes sociales</DialogTitle>
-        </DialogHeader>
-
-        <div className="mb-6 mt-4 space-y-5">
-          {/* Redes sociales conectadas */}
-          <div className="space-y-3">
-            <h3 className="text-sm font-medium">Cuentas conectadas</h3>
-
-            {socialAccounts.length === 0 ? (
-              <div
-                className={`py-6 text-center text-sm ${isDark ? 'bg-zinc-800 text-white' : 'text-gray-400 underline'}`}
-              >
-                No tienes redes sociales conectadas
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {socialAccounts.map((account) => (
-                  <div
-                    key={`social-account-modal-${account.id}`}
-                    className={`flex items-center justify-between rounded-lg ${isDark ? 'bg-zinc-700/50' : 'border border-zinc-600'} p-3`}
-                  >
-                    <div className="flex items-center space-x-3">
-                      {getSocialIcon(account.type)}
-                      <span>{account.username}</span>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-gray-400 hover:bg-zinc-700 hover:text-red-400"
-                      // onClick={() => removeSocialAccount(account.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            )}
+    <ProfileModalLayout
+      show={show}
+      setShow={setShow}
+      title="Agrega tus redes sociales"
+      onSave={handleSave}
+      loading={loading}
+      buttonDisabled={!isFormValid}
+      saveButtonLabel="Guardar"
+    >
+      <div className="mb-6 mt-4 space-y-5 w-full">
+        {/* Formulario para agregar red social */}
+        <div className="space-y-3">
+          <div className="flex flex-col gap-3 text-start font-textFont">
+            <span>Conecta tus redes sociales para enviarte promociones, alertas y beneficios exclusivos por mensaje directo.</span>
+            <span className="italic font-light">
+              Usaremos esta cuenta cada vez que te hablemos por mensajes o notificaciones.
+            </span>
           </div>
 
-          {/* Agregar nueva red social */}
+          <AddSocialNetwork 
+            selectedRed={selectedRed}
+            onSelectRed={setSelectedRed}
+            username={username}
+            onUsernameChange={setUsername}
+          />
+        </div>
+
+        {/* Redes sociales conectadas */}
+        {socialAccounts.length > 0 && (
           <div className="space-y-3">
-            <AddSocialNetwork newSocialType={newSocialType} setNewSocialType={setNewSocialType} />
-            <div className="col-span-7 flex space-x-1">
-              <Input
-                value={newSocialUsername}
-                onChange={(e) => setNewSocialUsername(e.target.value)}
-                className="border border-zinc-600 bg-transparent  focus-visible:ring-0 focus-visible:ring-offset-0"
-                placeholder="Nombre de usuario"
-              />
-              <Button
-                onClick={handleAdd}
-                disabled={!newSocialType || !newSocialUsername}
-                className="bg-blue-400 px-2 text-white hover:bg-blue-700"
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
+            <span className="block text-start font-textFont mb-2">Redes Sociales Conectadas</span>
+            <div className="flex flex-col gap-2">
+              {socialAccounts.map((account) => (
+                <div
+                  key={account.id}
+                  className="flex gap-3 p-3 border border-inputLightDisabled justify-between rounded-2xl"
+                >
+                  <div className="flex items-center gap-3">
+                    {getSocialIcon(account.type)}
+                    <span>{account.username}</span>
+                  </div>
+                  <button
+                    className="content-center rounded-full p-1 justify-center text-red-500 hover:underline flex items-center gap-1"
+                    onClick={() => handleRemoveSocial(account.id)}
+                    disabled={loading}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-
-        <div className="mt-4 flex justify-between">
-          <Button
-            onClick={() => setShow(false)}
-            variant="ghost"
-            className={`rounded-full px-4 ${isDark ? 'border border-white text-white hover:bg-white hover:text-[#4B4B4B]' : 'border border-blue-400 bg-white text-blue-400'}`}
-          >
-            Cancelar
-          </Button>
-          <Button
-            className={`rounded-full px-4 ${isDark ? 'bg-white text-[#4B4B4B]' : 'bg-blue-400 text-white hover:bg-blue-700'}`}
-            onClick={handleSubmit}
-          >
-            Guardar
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+        )}
+      </div>
+    </ProfileModalLayout>
   );
 };
 
