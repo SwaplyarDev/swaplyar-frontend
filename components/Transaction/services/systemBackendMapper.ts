@@ -14,10 +14,10 @@ export const systemToBackend: Record<SystemBackendId, { currency: 'USD'|'EUR'|'A
   paypal:        { currency: 'USD', platform: 'PayPal USD' },
   payoneer_usd:  { currency: 'USD', platform: 'Payoneer USD' },
   payoneer_eur:  { currency: 'EUR', platform: 'Payoneer EUR' },
-  wise_usd:      { currency: 'USD', platform: 'Wise USD' },
-  wise_eur:      { currency: 'EUR', platform: 'Wise EUR' },
-  tether:        { currency: 'USD', platform: 'Tether USD' },
-  pix:           { currency: 'BRL', platform: 'Banco BRL' },
+  wise_usd:      { currency: 'USD', platform: 'wise USD' },
+  wise_eur:      { currency: 'EUR', platform: 'wise EUR' },
+  tether:        { currency: 'USD', platform: 'tether USD' },
+  pix:           { currency: 'BRL', platform: 'pix BRL' },
 };
 
 export function mapSystemsToTotalPayload(fromId: SystemBackendId, toId: SystemBackendId, amount: number) {
