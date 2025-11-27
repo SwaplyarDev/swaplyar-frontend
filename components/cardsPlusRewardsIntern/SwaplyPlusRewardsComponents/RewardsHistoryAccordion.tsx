@@ -172,47 +172,77 @@ const RewardsHistoryAccordion: React.FC<Props> = ({
               </div>
 
               {/* PAGINACIÓN */}
-              {totalPages > 1 && (
-                <div className="flex items-center justify-between px-6 py-5 mt-4">
-                  <button
-                    onClick={goPrev}
-                    disabled={page === 1}
-                    className="w-[48px] h-[48px] flex items-center justify-center rounded-full border border-gray-200 disabled:opacity-50"
-                  >
-                    <ArrowLeft className="w-5 h-5 text-gray-600" />
-                  </button>
+{totalPages > 1 && (
+  <div
+    className="
+      flex flex-col gap-3
+      sm:flex-row sm:items-center sm:justify-between
+      px-4 sm:px-6 py-4 sm:py-5 mt-4
+    "
+  >
+    {/* Flecha izquierda */}
+    <button
+      onClick={goPrev}
+      disabled={page === 1}
+      className="
+        w-[40px] h-[40px] sm:w-[48px] sm:h-[48px]
+        flex items-center justify-center
+        rounded-full border border-gray-200
+        disabled:opacity-50
+        mx-auto sm:mx-0
+      "
+    >
+      <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+    </button>
 
-                  <div className="flex gap-2">
-                    {Array.from({ length: totalPages }).map((_, i) => {
-                      const p = i + 1;
-                      return (
-                        <button
-                          key={p}
-                          onClick={() => setPage(p)}
-                          className={`
-                            w-[40px] h-[40px] rounded-full text-sm font-medium flex items-center justify-center transition-all duration-150
-                            ${
-                              page === p
-                                ? 'bg-blue-50 text-blue-600 border border-blue-200 shadow-sm'
-                                : 'text-gray-500 hover:bg-blue-50 hover:border hover:border-blue-200 hover:text-blue-600'
-                            }
-                          `}
-                        >
-                          {p}
-                        </button>
-                      );
-                    })}
-                  </div>
+    {/* Páginas */}
+    <div
+      className="
+        flex flex-wrap justify-center gap-2
+        max-w-full
+      "
+    >
+      {Array.from({ length: totalPages }).map((_, i) => {
+        const p = i + 1;
+        return (
+          <button
+            key={p}
+            onClick={() => setPage(p)}
+            className={`
+              w-[32px] h-[32px] sm:w-[40px] sm:h-[40px]
+              rounded-full text-xs sm:text-sm font-medium
+              flex items-center justify-center
+              transition-all
+              ${
+                page === p
+                  ? 'bg-blue-50 text-blue-600 border border-blue-200 shadow-sm'
+                  : 'text-gray-500 hover:bg-blue-50 hover:border hover:border-blue-200 hover:text-blue-600'
+              }
+            `}
+          >
+            {p}
+          </button>
+        );
+      })}
+    </div>
 
-                  <button
-                    onClick={goNext}
-                    disabled={page === totalPages}
-                    className="w-[48px] h-[48px] flex items-center justify-center rounded-full border border-gray-200 disabled:opacity-50"
-                  >
-                    <ArrowRight className="w-5 h-5 text-gray-600" />
-                  </button>
-                </div>
-              )}
+    {/* Flecha derecha */}
+    <button
+      onClick={goNext}
+      disabled={page === totalPages}
+      className="
+        w-[40px] h-[40px] sm:w-[48px] sm:h-[48px]
+        flex items-center justify-center
+        rounded-full border border-gray-200
+        disabled:opacity-50
+        mx-auto sm:mx-0
+      "
+    >
+      <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+    </button>
+  </div>
+)}
+
             </>
           )}
         </div>

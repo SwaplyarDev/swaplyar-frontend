@@ -7,7 +7,7 @@ import { ButtonCustom } from '@/components/ui/ButtonCustom/ButtonCustom';
 import AlertIcon from '@/components/ui/AlertIcon/AlertIcon';
 import { plusRewardsCard } from '@/utils/assets/imgDatabaseCloudinary';
 
-const CardYellow: React.FC<ModalProps> = ({ showVerify, setShowVerify, verifiedStatus }) => {
+const CardYellow: React.FC<ModalProps> = ({ showVerify, setShowVerify, verifiedStatus, memberCode }) => {
   const isPending = verifiedStatus.toUpperCase() === 'PENDIENTE';
 
   return (
@@ -50,7 +50,7 @@ const CardYellow: React.FC<ModalProps> = ({ showVerify, setShowVerify, verifiedS
   {/* Código de miembro */}
   <div className="absolute right-[14px] top-[20px] text-right">
     <p className="text-[13px] font-light">Tu Código de Miembro:</p>
-    <p className="text-[15px] font-semibold">2448XPAR</p>
+    <p className="text-[15px] font-semibold">{memberCode}</p>
   </div>
 
   {/* Mensaje alerta */}

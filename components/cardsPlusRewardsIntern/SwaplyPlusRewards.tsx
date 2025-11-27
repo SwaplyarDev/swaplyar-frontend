@@ -343,7 +343,7 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
                 sessionCardBlueYellow={sessionCardBlueYellow}
                 showVerify={showVerify}
                 setShowVerify={setShowVerify}
-                memberCode={session.user?.id || ''}
+                memberCode={session.user?.memberCode || ''}
               />
             }
             bottom={

@@ -21,6 +21,8 @@ import {
   ShieldCheck,
   X as CloseIcon,
 } from 'lucide-react';
+import ButtonBack from '@/components/ui/ButtonBack/ButtonBack';
+import ButtonAuth from '@/components/auth/AuthButton';
 
 /* -------------------------------------------------------------------------- */
 /*                                    TYPES                                   */
@@ -30,6 +32,7 @@ export type ModalProps = {
   showVerify: boolean;
   setShowVerify: React.Dispatch<React.SetStateAction<boolean>>;
   verifiedStatus: string;
+  memberCode?: string;   
 };
 
 type UploadItemProps = {
@@ -52,11 +55,21 @@ const UploadItem = ({
   hasFile,
 }: UploadItemProps) => {
   return (
-    <div className="flex items-center justify-between gap-4 rounded-2xl bg-[#E5E6E8] px-4 py-4">
+    <div
+      className="
+        flex flex-col sm:flex-row
+        items-start sm:items-center
+        justify-between
+        gap-4
+        rounded-2xl bg-[#E5E6E8]
+        px-4 py-4
+      "
+    >
+      {/* IZQUIERDA (IMG + TEXTO) */}
+      <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 w-full">
 
-      {/* IZQUIERDA */}
-      <div className="flex items-center gap-4">
-        <div className="flex h-[80px] w-[80px] items-center justify-center rounded-full bg-[#F2F2F2]">
+        {/* IMAGEN */}
+        <div className="flex h-[80px] w-[80px] items-center justify-center rounded-full bg-[#F2F2F2] shrink-0">
           <img
             src={imageSrc}
             alt={title}
@@ -65,8 +78,8 @@ const UploadItem = ({
           />
         </div>
 
-        {/* TEXTO + ESTADO */}
-        <div className="max-w-[320px]">
+        {/* TEXTO */}
+        <div className="text-center sm:text-left w-full">
           <p className="text-sm font-bold text-[#1A1A1A]">{title}</p>
 
           <p className="text-sm text-gray-600 leading-snug">
@@ -74,7 +87,7 @@ const UploadItem = ({
           </p>
 
           {hasFile && (
-            <div className="mt-1 flex items-center gap-1 text-xs font-medium text-green-600">
+            <div className="mt-1 flex sm:justify-start justify-center items-center gap-1 text-xs font-medium text-green-600">
               <CheckCircle className="h-4 w-4" />
               Imagen subida correctamente
             </div>
@@ -82,8 +95,8 @@ const UploadItem = ({
         </div>
       </div>
 
-      {/* DERECHA */}
-      <label className="cursor-pointer">
+      {/* BOTÓN ABAJO EN MOBILE, DERECHA EN DESKTOP */}
+      <label className="cursor-pointer w-full sm:w-auto flex justify-center sm:justify-end">
         <input
           type="file"
           hidden
@@ -231,7 +244,7 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 font-textFont text-[16px]"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 font-textFont text-[16px]"
       onClick={() => setShowVerify(false)}
     >
       {!!ShowModalDni && (
@@ -252,39 +265,39 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
         onClick={(e) => e.stopPropagation()}
       >
         {/* BOTÓN CERRAR */}
-        <button
-          className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
-          onClick={() => setShowVerify(false)}
-        >
-          <CloseIcon className="h-5 w-5" />
-        </button>
+
 
         {/* HEADER */}
-        <header className="relative px-6 pt-6 pb-4 mb-2">
-          <div className="absolute left-6 top-6 flex flex-col items-start gap-2">
-            <button
-              type="button"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 hover:bg-gray-50"
-              onClick={() => setShowVerify(false)}
-            >
-              <ArrowLeft className="h-4 w-4 text-[#012A8E]" />
-            </button>
+        <header className="relative flex flex-col gap-3 px-6 pt-6 pb-4">
 
-            <div className="inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-600">
-              <span className="h-2 w-2 rounded-full bg-red-500" />
-              No verificado
+          {/* FILA SUPERIOR: botón izquierda / título derecha */}
+          <div className="flex items-start justify-between">
+
+            {/* IZQUIERDA */}
+            <div className="flex flex-col gap-2">
+              <ButtonBack
+                onClick={() => setShowVerify(false)}
+                className='p-0 m-0'
+
+              />
+
+              <div className="inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-600 w-fit">
+                <span className="h-2 w-2 rounded-full bg-red-500" />
+                No verificado
+              </div>
             </div>
-          </div>
 
-          <h1 className="text-center text-[20px] sm:text-[24px] font-semibold text-[#012A8E]">
-            Verificación de identidad
-          </h1>
+            {/* DERECHA */}
+            <h1 className="text-[20px] sm:text-[24px] font-semibold text-[#012A8E] text-right">
+              Verificación de identidad
+            </h1>
+          </div>
         </header>
 
         {/* CUERPO */}
         <div className="flex-1 overflow-y-auto px-6 pb-6 pt-4 space-y-6">
           {/* WARNING */}
-          <section className="flex gap-3 rounded-2xl border border-[#FFD89A] bg-[#FFF6E5] px-4 py-3">
+          <section className="flex gap-3 rounded-2xl border border-[#FFD89A] bg-[#FFF6E5] px-4 py-3 border-b">
             <AlertTriangle className="h-5 w-5 text-[#F59E0B]" />
             <div>
               <p className="text-sm font-semibold text-[#B45309]">
@@ -297,11 +310,17 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
           </section>
 
           {/* INFO */}
-          <section className="flex items-center gap-2 rounded-md bg-white px-3 py-2 text-xs sm:text-sm text-gray-600 border border-gray-200">
+          <section className="flex items-center gap-2 rounded-md px-3 py-2 pt-4 text-xs sm:text-sm text-gray-600 border-t border-gray-200">
             <Info className="h-4 w-4 text-[#012A8E]" />
             <p>
               Si tienes dudas, consulta los{' '}
-              <span className="font-semibold">
+              <span
+                className="font-semibold text-[#012A8E] cursor-pointer hover:underline"
+                onClick={(e) => {
+                  e.stopPropagation();       // evita cerrar el modal padre
+                  setShowModalDni(1);        // abre el modal DNI
+                }}
+              >
                 ejemplos de cómo subir la documentación
               </span>.
             </p>
@@ -345,26 +364,14 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
               </p>
             </div>
 
-            {isLoading ? (
-              <LoadingGif
-                color={isDark ? '#ebe7e0' : '#012c8a'}
-                size="42px"
-              />
-            ) : (
-              <button
-                className={`
-                  h-[48px] min-w-[200px] rounded-[999px] px-6
-                  text-sm sm:text-base font-semibold text-white
-                  ${frontFile && backFile && selfieFile
-                    ? 'bg-[#012A8E] hover:bg-[#0239B0]'
-                    : 'cursor-not-allowed bg-[#90B0FE] opacity-70'
-                  }
-                `}
-                onClick={handleSubmit}
-              >
-                Enviar para revisión
-              </button>
-            )}
+            <ButtonAuth
+              label="Enviar para revisión"
+              onClick={handleSubmit}
+              loading={isLoading}
+              disabled={!(frontFile && backFile && selfieFile)}
+              isDark={isDark}
+              className="min-w-[200px]"
+            />
           </section>
         </div>
       </div>
