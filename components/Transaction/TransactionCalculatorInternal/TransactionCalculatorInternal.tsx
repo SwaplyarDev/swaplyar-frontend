@@ -72,7 +72,8 @@ export default function InternalTransactionCalculator({
     receiveAmount,
     handleSendAmountChange,
     handleReceiveAmountChange,
-    rateForOne
+    rateForOne,
+    error
   } = useAmountCalculator();
 
   const couponUsdAmount = useRef(0);
@@ -263,6 +264,14 @@ export default function InternalTransactionCalculator({
             )}
 
           </p>
+
+          {error && (
+            <div className="w-full mb-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-700 rounded-lg">
+              <p className="text-sm text-red-700 dark:text-red-400 font-medium">
+                ⚠️ {error}
+              </p>
+            </div>
+          )}
 
           <TransactionSection
             systems={systems.filter((system) => system.id !== 'pix')}
