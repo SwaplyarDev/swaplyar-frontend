@@ -16,6 +16,7 @@ import { shallow } from 'zustand/shallow';
 import { swaplyPlusRewards } from '@/utils/assets/imgDatabaseCloudinary';
 import { fetchAndHandleVerificationStatus } from '@/utils/verificationHandlers';
 import RewardsHistoryAccordion from './SwaplyPlusRewardsComponents/RewardsHistoryAccordion';
+import mockHistory from './utils/mockHistory'; //para probar paginacion de historial
 
 declare module 'next-auth' {
   interface Session {
@@ -24,7 +25,7 @@ declare module 'next-auth' {
   }
 }
 
-type UserDiscount = {
+export type UserDiscount = {
   id: string;
   code: string;
   value: number;
@@ -348,9 +349,9 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
             }
             bottom={
               <RewardsHistoryAccordion
-                history={MOCK_HISTORY}
+                history={history}
                 registrationDate={session?.user?.createdAt}
-                totalRewards={MOCK_HISTORY.length}
+                totalRewards={history.length}
               />
             }
           />
@@ -361,231 +362,3 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
 };
 
 export default SwaplyPlusRewards;
-// Mock data for testing
-const MOCK_HISTORY: UserDiscount[] = [
-  {
-    id: '1',
-    code: 'Cupon de Bienvenida',
-    value: 10,
-    currencyCode: 'USD',
-    createdAt: '2024-01-05T00:00:00Z',
-    usedAt: '2024-01-10T00:00:00Z',
-    isUsed: true,
-  },
-  {
-    id: '2',
-    code: 'Cupon de Fidelizacion',
-    value: 5,
-    currencyCode: 'USD',
-    createdAt: '2024-01-15T00:00:00Z',
-    usedAt: '2024-01-20T00:00:00Z',
-    isUsed: true,
-  },
-  {
-    id: '3',
-    code: 'Cupon de Verificacion',
-    value: 5,
-    currencyCode: 'USD',
-    createdAt: '2024-02-01T00:00:00Z',
-    usedAt: '2024-02-05T00:00:00Z',
-    isUsed: true,
-  },
-  {
-    id: '4',
-    code: 'Cupon de Referido',
-    value: 3,
-    currencyCode: 'USD',
-    createdAt: '2024-02-10T00:00:00Z',
-    usedAt: '2024-02-12T00:00:00Z',
-    isUsed: true,
-  },
-  {
-    id: '5',
-    code: 'Cupon de Fidelizacion',
-    value: 5,
-    currencyCode: 'USD',
-    createdAt: '2024-02-20T00:00:00Z',
-    usedAt: undefined,
-    isUsed: false,
-  },
-  {
-    id: '6',
-    code: 'Cupon Premium',
-    value: 15,
-    currencyCode: 'USD',
-    createdAt: '2024-03-01T00:00:00Z',
-    usedAt: '2024-03-03T00:00:00Z',
-    isUsed: true,
-  },
-  {
-    id: '7',
-    code: 'Cupon de Bienvenida',
-    value: 10,
-    currencyCode: 'USD',
-    createdAt: '2024-03-10T00:00:00Z',
-    usedAt: undefined,
-    isUsed: false,
-  },
-  {
-    id: '8',
-    code: 'Cupon de Referido',
-    value: 3,
-    currencyCode: 'USD',
-    createdAt: '2024-03-15T00:00:00Z',
-    usedAt: '2024-03-20T00:00:00Z',
-    isUsed: true,
-  },
-  {
-    id: '9',
-    code: 'Cupon de Fidelizacion',
-    value: 5,
-    currencyCode: 'USD',
-    createdAt: '2024-03-25T00:00:00Z',
-    usedAt: undefined,
-    isUsed: false,
-  },
-  {
-    id: '10',
-    code: 'Cupon Promo Especial',
-    value: 20,
-    currencyCode: 'USD',
-    createdAt: '2024-04-01T00:00:00Z',
-    usedAt: '2024-04-02T00:00:00Z',
-    isUsed: true,
-  },
-  {
-    id: '11',
-    code: 'Cupon de Verificacion',
-    value: 5,
-    currencyCode: 'USD',
-    createdAt: '2024-04-05T00:00:00Z',
-    usedAt: undefined,
-    isUsed: false,
-  },
-  {
-    id: '12',
-    code: 'Cupon de Fidelizacion',
-    value: 5,
-    currencyCode: 'USD',
-    createdAt: '2024-04-10T00:00:00Z',
-    usedAt: '2024-04-12T00:00:00Z',
-    isUsed: true,
-  },
-  {
-    id: '13',
-    code: 'Cupon Premium',
-    value: 15,
-    currencyCode: 'USD',
-    createdAt: '2024-04-20T00:00:00Z',
-    usedAt: undefined,
-    isUsed: false,
-  },
-  {
-    id: '14',
-    code: 'Cupon de Referido',
-    value: 3,
-    currencyCode: 'USD',
-    createdAt: '2024-05-01T00:00:00Z',
-    usedAt: '2024-05-03T00:00:00Z',
-    isUsed: true,
-  },
-  {
-    id: '15',
-    code: 'Cupon de Bienvenida',
-    value: 10,
-    currencyCode: 'USD',
-    createdAt: '2024-05-05T00:00:00Z',
-    usedAt: undefined,
-    isUsed: false,
-  },
-  {
-    id: '16',
-    code: 'Cupon de Fidelizacion',
-    value: 5,
-    currencyCode: 'USD',
-    createdAt: '2024-05-10T00:00:00Z',
-    usedAt: '2024-05-15T00:00:00Z',
-    isUsed: true,
-  },
-  {
-    id: '17',
-    code: 'Cupon Promo Especial',
-    value: 20,
-    currencyCode: 'USD',
-    createdAt: '2024-05-20T00:00:00Z',
-    usedAt: undefined,
-    isUsed: false,
-  },
-  {
-    id: '18',
-    code: 'Cupon de Verificacion',
-    value: 5,
-    currencyCode: 'USD',
-    createdAt: '2024-06-01T00:00:00Z',
-    usedAt: '2024-06-03T00:00:00Z',
-    isUsed: true,
-  },
-  {
-    id: '19',
-    code: 'Cupon de Bienvenida',
-    value: 10,
-    currencyCode: 'USD',
-    createdAt: '2024-06-05T00:00:00Z',
-    usedAt: undefined,
-    isUsed: false,
-  },
-  {
-    id: '20',
-    code: 'Cupon de Fidelizacion',
-    value: 5,
-    currencyCode: 'USD',
-    createdAt: '2024-06-10T00:00:00Z',
-    usedAt: '2024-06-12T00:00:00Z',
-    isUsed: true,
-  },
-  {
-    id: '21',
-    code: 'Cupon de Referido',
-    value: 3,
-    currencyCode: 'USD',
-    createdAt: '2024-06-15T00:00:00Z',
-    usedAt: undefined,
-    isUsed: false,
-  },
-  {
-    id: '22',
-    code: 'Cupon Premium',
-    value: 15,
-    currencyCode: 'USD',
-    createdAt: '2024-06-20T00:00:00Z',
-    usedAt: '2024-06-22T00:00:00Z',
-    isUsed: true,
-  },
-  {
-    id: '23',
-    code: 'Cupon Promo Especial',
-    value: 20,
-    currencyCode: 'USD',
-    createdAt: '2024-06-25T00:00:00Z',
-    usedAt: undefined,
-    isUsed: false,
-  },
-  {
-    id: '24',
-    code: 'Cupon de Verificacion',
-    value: 5,
-    currencyCode: 'USD',
-    createdAt: '2024-07-01T00:00:00Z',
-    usedAt: '2024-07-03T00:00:00Z',
-    isUsed: true,
-  },
-  {
-    id: '25',
-    code: 'Cupon de Bienvenida',
-    value: 10,
-    currencyCode: 'USD',
-    createdAt: '2024-07-05T00:00:00Z',
-    usedAt: undefined,
-    isUsed: false,
-  },
-];

@@ -8,7 +8,6 @@ import { plusRewardsActions } from '@/actions/plusRewards/plusRewards.actions';
 import { useDarkTheme } from '@/components/ui/theme-Provider/themeProvider';
 
 // UI Components
-import LoadingGif from '@/components/ui/LoadingGif/LoadingGif';
 import ModalDni from './ModalDni';
 import DniUpload from '../SwaplyPlusRewardsComponents/DniUpload';
 import SelfieUpload from '../SwaplyPlusRewardsComponents/SelfieUpload';
@@ -61,15 +60,14 @@ const UploadItem = ({
         items-start sm:items-center
         justify-between
         gap-4
-        rounded-2xl bg-[#E5E6E8]
+        rounded-2xl
+        bg-[#E5E6E8] dark:bg-custom-grayD-900
         px-4 py-4
       "
     >
-      {/* IZQUIERDA (IMG + TEXTO) */}
       <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 w-full">
 
-        {/* IMAGEN */}
-        <div className="flex h-[80px] w-[80px] items-center justify-center rounded-full bg-[#F2F2F2] shrink-0">
+        <div className="flex h-[80px] w-[80px] items-center justify-center rounded-full bg-[#F2F2F2] dark:bg-custom-grayD-800 shrink-0">
           <img
             src={imageSrc}
             alt={title}
@@ -78,16 +76,15 @@ const UploadItem = ({
           />
         </div>
 
-        {/* TEXTO */}
         <div className="text-center sm:text-left w-full">
-          <p className="text-sm font-bold text-[#1A1A1A]">{title}</p>
+          <p className="text-sm font-bold text-[#1A1A1A] dark:text-custom-whiteD">{title}</p>
 
-          <p className="text-sm text-gray-600 leading-snug">
+          <p className="text-sm text-gray-600 dark:text-custom-whiteD-800 leading-snug">
             {description}
           </p>
 
           {hasFile && (
-            <div className="mt-1 flex sm:justify-start justify-center items-center gap-1 text-xs font-medium text-green-600">
+            <div className="mt-1 flex sm:justify-start justify-center items-center gap-1 text-xs font-medium text-green-600 dark:text-custom-green">
               <CheckCircle className="h-4 w-4" />
               Imagen subida correctamente
             </div>
@@ -95,7 +92,6 @@ const UploadItem = ({
         </div>
       </div>
 
-      {/* BOTÓN ABAJO EN MOBILE, DERECHA EN DESKTOP */}
       <label className="cursor-pointer w-full sm:w-auto flex justify-center sm:justify-end">
         <input
           type="file"
@@ -107,19 +103,17 @@ const UploadItem = ({
         />
 
         <div
-          className={`
+          className="
             flex items-center justify-center
             h-[34px] min-w-[141px]
             rounded-full
             px-[14px] py-[12px]
             text-[14px] font-semibold leading-none
             transition-colors
-            ${hasFile
-              ? 'bg-green-600 hover:bg-green-700'
-              : 'bg-[#012A8E] hover:bg-[#0239B0]'
-            }
-            text-white
-          `}
+            bg-[#012A8E] hover:bg-[#0239B0]
+            dark:bg-buttonsLigthDark dark:hover:bg-custom-blue-400
+            text-white dark:text-gray-700
+          "
         >
           {hasFile ? 'Reemplazar' : 'Subir'}
         </div>
@@ -146,8 +140,6 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
   const handleBackFileChange = (file: File | null) => setBackFile(file);
   const handleSelfieFileChange = (file: File | null) => setSelfieFile(file);
 
-  /* ------------------------------- Side effects ------------------------------ */
-
   useEffect(() => {
     window.scrollTo(0, 0);
     document.body.style.overflow = 'hidden';
@@ -157,20 +149,8 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
     };
   }, []);
 
-  /* --------------------------------- Submit ---------------------------------- */
-
   const handleSubmit = async () => {
-    if (!frontFile || !backFile || !selfieFile) {
-      Swal.fire({
-        icon: 'warning',
-        text: 'por favor sube todas las imagenes',
-        customClass: { popup: 'text-white' },
-        background: '#ffffff00',
-        showConfirmButton: false,
-        timer: 1000,
-      });
-      return;
-    }
+    if (!frontFile || !backFile || !selfieFile) return;
 
     setIsLoading(true);
 
@@ -186,61 +166,14 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
       );
 
       if (result.success) {
-        Swal.fire({
-          icon: 'success',
-          background: '#ffffff00',
-          showConfirmButton: false,
-          timer: 1000,
-        });
-
-        setIsLoading(false);
-
         setTimeout(() => {
           setShowVerify(false);
         }, 1000);
       }
-    } catch (err) {
-      if ((err as Error)?.message === 'Unauthorized') {
-        const updated = await update();
-        const newToken =
-          (updated as any)?.accessToken || session?.accessToken || '';
-
-        try {
-          const retry = await plusRewardsActions(formData, newToken);
-
-          if (retry.success) {
-            Swal.fire({
-              icon: 'success',
-              background: '#ffffff00',
-              showConfirmButton: false,
-              timer: 1000,
-            });
-
-            setIsLoading(false);
-
-            setTimeout(() => {
-              setShowVerify(false);
-            }, 1000);
-
-            return;
-          }
-        } catch {
-          // fallback al error general
-        }
-      }
-
-      Swal.fire({
-        icon: 'error',
-        background: '#ffffff00',
-        showConfirmButton: false,
-        timer: 1000,
-      });
-
+    } finally {
       setIsLoading(false);
     }
   };
-
-  /* ---------------------------------- RENDER --------------------------------- */
 
   return (
     <div
@@ -259,66 +192,61 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
       <div
         className="
           relative m-3 w-full max-w-[700px] max-h-[90vh]
-          rounded-2xl bg-[#FFFFFB] dark:bg-[#4b4b4b]
+          rounded-2xl bg-[#FFFFFB] dark:bg-custom-grayD-900
           shadow-lg flex flex-col
         "
         onClick={(e) => e.stopPropagation()}
       >
-        {/* BOTÓN CERRAR */}
 
-
-        {/* HEADER */}
         <header className="relative flex flex-col gap-3 px-6 pt-6 pb-4">
-
-          {/* FILA SUPERIOR: botón izquierda / título derecha */}
           <div className="flex items-start justify-between">
-
-            {/* IZQUIERDA */}
             <div className="flex flex-col gap-2">
               <ButtonBack
                 onClick={() => setShowVerify(false)}
                 className='p-0 m-0'
-
               />
 
-              <div className="inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-600 w-fit">
+              <div className="inline-flex items-center gap-2 rounded-full bg-red-50 dark:bg-custom-grayD-800 px-3 py-1 text-xs font-medium text-red-600 dark:text-errorTextColorDark w-fit">
                 <span className="h-2 w-2 rounded-full bg-red-500" />
                 No verificado
               </div>
             </div>
 
-            {/* DERECHA */}
-            <h1 className="text-[20px] sm:text-[24px] font-semibold text-[#012A8E] text-right">
+            <h1 className="text-[20px] sm:text-[24px] font-semibold text-[#012A8E] dark:text-custom-whiteD text-right">
               Verificación de identidad
             </h1>
           </div>
         </header>
 
-        {/* CUERPO */}
         <div className="flex-1 overflow-y-auto px-6 pb-6 pt-4 space-y-6">
-          {/* WARNING */}
-          <section className="flex gap-3 rounded-2xl border border-[#FFD89A] bg-[#FFF6E5] px-4 py-3 border-b">
-            <AlertTriangle className="h-5 w-5 text-[#F59E0B]" />
-            <div>
-              <p className="text-sm font-semibold text-[#B45309]">
-                TU CUENTA NO ESTA VERIFICADA
-              </p>
-              <p className="text-xs text-[#92400E]">
-                Sube tus documentos para completar la verificación y disfrutar los beneficios de SwaplyAr.
-              </p>
-            </div>
-          </section>
 
-          {/* INFO */}
-          <section className="flex items-center gap-2 rounded-md px-3 py-2 pt-4 text-xs sm:text-sm text-gray-600 border-t border-gray-200">
-            <Info className="h-4 w-4 text-[#012A8E]" />
+        <section className="flex gap-3 rounded-2xl border border-[#FFD89A] bg-[#FFF6E5] px-4 py-3 border-b
+  dark:border-[rgba(147,55,13,1)]
+  dark:bg-[rgba(147,55,13,0.9)]">
+
+  <AlertTriangle className="h-5 w-5 text-[#F59E0B] dark:text-custom-yellow" />
+
+  <div>
+    <p className="text-sm font-semibold text-[#B45309] dark:text-custom-whiteD">
+      TU CUENTA NO ESTA VERIFICADA
+    </p>
+
+    <p className="text-xs text-[#92400E] dark:text-custom-whiteD-800">
+      Sube tus documentos para completar la verificación.
+    </p>
+  </div>
+</section>
+
+
+          <section className="flex items-center gap-2 rounded-md px-3 py-2 pt-4 text-xs sm:text-sm text-gray-600 dark:text-custom-whiteD-800 border-t border-gray-200 dark:border-custom-grayD-700">
+            <Info className="h-4 w-4 text-[#012A8E] dark:text-custom-whiteD" />
             <p>
               Si tienes dudas, consulta los{' '}
               <span
-                className="font-semibold text-[#012A8E] cursor-pointer hover:underline"
+                className="font-semibold text-[#012A8E] dark:text-custom-whiteD cursor-pointer hover:underline"
                 onClick={(e) => {
-                  e.stopPropagation();       // evita cerrar el modal padre
-                  setShowModalDni(1);        // abre el modal DNI
+                  e.stopPropagation();
+                  setShowModalDni(1);
                 }}
               >
                 ejemplos de cómo subir la documentación
@@ -326,11 +254,10 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
             </p>
           </section>
 
-          {/* UPLOADS */}
-          <section className="rounded-2xl border border-gray-200 bg-gray-50 px-4 sm:px-6 py-5 space-y-4">
+          <section className="rounded-2xl border border-gray-200 dark:border-custom-grayD-700 bg-gray-50 dark:bg-custom-grayD-800 px-4 sm:px-6 py-5 space-y-4">
             <UploadItem
               title="FRENTE:"
-              description="Sube una foto de tu pasaporte, licencia o identificación oficial."
+              description="Sube una foto de tu documento."
               imageSrc="/images/frente.png"
               onUpload={handleFrontFileChange}
               hasFile={!!frontFile}
@@ -338,7 +265,7 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
 
             <UploadItem
               title="DORSO:"
-              description="Sube una foto de tu pasaporte, licencia o identificación oficial."
+              description="Sube una foto de tu documento."
               imageSrc="/images/dorso.png"
               onUpload={handleBackFileChange}
               hasFile={!!backFile}
@@ -353,12 +280,11 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
             />
           </section>
 
-          <hr className="border-gray-200" />
+          <hr className="border-gray-200 dark:border-custom-grayD-700" />
 
-          {/* FOOTER */}
           <section className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-start gap-2 text-xs text-gray-500 max-w-[320px]">
-              <ShieldCheck className="mt-[2px] h-4 w-4 text-[#012A8E]" />
+            <div className="flex items-start gap-2 text-xs text-gray-500 dark:text-custom-whiteD-800 max-w-[320px]">
+              <ShieldCheck className="mt-[2px] h-4 w-4 text-[#012A8E] dark:text-custom-whiteD" />
               <p>
                 Tus datos están protegidos y se usan solo para verificar tu identidad.
               </p>
