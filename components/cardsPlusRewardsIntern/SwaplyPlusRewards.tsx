@@ -349,7 +349,7 @@ const SwaplyPlusRewards = ({ RewardsData }: { RewardsData: PlusRewards }) => {
             }
             bottom={
               <RewardsHistoryAccordion
-                history={history}
+                history={history} //usar 'Mockhistory' cuando se quiera ver paginado con muchos ítems
                 registrationDate={session?.user?.createdAt}
                 totalRewards={history.length}
               />

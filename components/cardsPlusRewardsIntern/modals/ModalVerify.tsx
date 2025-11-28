@@ -238,16 +238,17 @@ const ModalVerify: React.FC<ModalProps> = ({ showVerify, setShowVerify }) => {
 </section>
 
 
-          <section className="flex items-center gap-2 rounded-md px-3 py-2 pt-4 text-xs sm:text-sm text-gray-600 dark:text-custom-whiteD-800 border-t border-gray-200 dark:border-custom-grayD-700">
-            <Info className="h-4 w-4 text-[#012A8E] dark:text-custom-whiteD" />
+          <section className="flex items-center gap-2 rounded-md px-3 py-2 pt-4 text-xs sm:text-sm text-gray-600 dark:text-custom-whiteD-800 border-t border-gray-200 dark:border-custom-grayD-700  dark:text-custom-whiteD cursor-pointer hover:underline"
+          onClick={(e) => {
+                  e.stopPropagation();
+                  setShowModalDni(1);
+                }}>
+            <Info className="h-[30px] w-[30px] text-[#012A8E] dark:text-custom-whiteD" />
             <p>
               Si tienes dudas, consulta los{' '}
               <span
                 className="font-semibold text-[#012A8E] dark:text-custom-whiteD cursor-pointer hover:underline"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowModalDni(1);
-                }}
+                
               >
                 ejemplos de cómo subir la documentación
               </span>.

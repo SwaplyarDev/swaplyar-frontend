@@ -85,7 +85,7 @@ const ModalDni: React.FC<ShowModalDniProps> = ({ setShowModalDni }) => {
                 width={360}
                 height={240}
                 unoptimized
-                className="rounded-xl object-contain bg-white dark:bg-custom-grayD-800"
+                className="rounded-xl object-contain bg-transparent"
               />
             </div>
 
