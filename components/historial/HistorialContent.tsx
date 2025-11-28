@@ -65,15 +65,15 @@ export function HistorialContent() {
   }
 
   return (
-    <div className="mx-auto mb-24 mt-10 w-full max-w-[1000px] rounded-xl p-6 sm:my-6">
-      <h1 className="mb-8 mt-10 text-start text-3xl font-bold">Historial de Transacciones</h1>
+    <div className="mx-auto w-full max-w-[1000px] rounded-xl container-spacing md:!px-8">
+      <h1 className="mb-8 mt-10 text-start text-3xl font-medium">Historial de Transacciones</h1>
 
       {transactions.length === 0 ? (
         <EmptyState />
       ) : (
         <>
           <div className="space-y-4">
-            {transactions.map((transaction, index) => (
+              {transactions.map((transaction, index) => (
               <TransactionCard key={transaction.id} transaction={transaction} index={index} />
             ))}
           </div>

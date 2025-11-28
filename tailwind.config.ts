@@ -189,13 +189,40 @@ const config: Config = {
         'custom-aquamarine2': 'rgba(27, 122, 126, 1)',
 
         //'custom violet'
-
         'custom-violet': 'rgba(120, 0, 173, 1)',
+        'purple-50': '#F4F3FF',
+        'purple-700': '#5925DC',
+
+        // indigo colors
+        'indigo-50': '#EEF4FF',
+        'indigo-700': '#3538CD',
+
+        //warning colors
+        'warning-50': '#FFFAEB',
+        'warning-700': '#B54708',
+
+        //success colors
+        'success-50': '#ECFDF3',
+        'success-700': '#027A48',
+
+        //blue light colors
+        'blue-light-50': '#F0F9FF',
+        'blue-light-700': '#026AA2',
+
+        //orange colors
+        'orange-50': '#FFF6ED',
+        'orange-700': '#C4320A',
+
+        //blue gray colors
+        'blue-gray-50': '#F8F9FC',
+        'blue-gray-700': '#363F72',
 
         blue: {
+          50: '#EFF8FF',
           400: '#2589FE',
           500: '#0070F3',
           600: '#2F6FEB',
+          700: '#175CD3',
         },
         // calculatorDark: 'rgb(69 69 69 / 48%)',
         buttonsExtraLigth: '#2A68FE', // Azul Marino Claro
@@ -216,6 +243,8 @@ const config: Config = {
         errorColor: '#FB2424',
         errorColorDark: '#A31C01',
         errorTextColorDark: '#E46B52',
+        'error-50': '#FEF3F2',
+        'error-700': '#B42318',
 
         // Estados deshabilitados
         disabledButtonsLigth: '#90B0FE', // Gris claro para fondo deshabilitado de buttonsLigth
