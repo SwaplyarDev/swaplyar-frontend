@@ -1,10 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import type { TransactionData } from '@/types/transaction';
 import { getEstadoEspanol, getPlatformDisplayName } from '../../utils/transactionHelpers';
 import LabelValueRow from './ui/LabelValueRow';
 import ReceiverDetails from './ui/ReceiverDetails';
+import ProofModal from './ui/ProofModal';
 
 const capitalizar = (texto: string) => texto.charAt(0).toUpperCase() + texto.slice(1);
 
@@ -36,6 +38,9 @@ export function ExpandedTransactionDetails({
   montoRecibido,
   colorClase,
 }: Props) {
+  const [proofModalOpen, setProofModalOpen] = useState(false);
+
+  const hasProofs = transaction.proofsOfPayment && transaction.proofsOfPayment.length > 0;
   return (
     <div className="space-y-4 pt-7 pb-3 px-4 text-sm cursor-auto" onClick={(e) => e.stopPropagation}>
       <div className="grid grid-cols-2 border-b-2 border-[#012d8a] pb-4 dark:border-[#EBE7E0]">
@@ -73,21 +78,21 @@ export function ExpandedTransactionDetails({
           {completada ? 'completada con éxito' : transaction.message || 'procesada'}
         </div>
 
-        {transaction.proofsOfPayment && transaction.proofsOfPayment.length > 0 &&
-          <>
-            {transaction.proofsOfPayment.map((proof) => (
-              <Button
-                key={proof.id}
-                className="self-center rounded-full bg-[#012d8a] px-6 text-white hover:ring-2 hover:ring-[#012A8E] hover:ring-offset-2 dark:bg-[#EBE7E0] dark:text-black dark:ring-offset-[#4B4B4B] hover:dark:ring-[#EBE7E0] sm:self-auto"
-
-                onClick={() => window.open(proof.imgUrl, '_blank')}
-              >
-                Ver Comprobante
-              </Button>
-            ))}
-          </>
-        }
+        {hasProofs && (
+          <Button
+            className="self-center rounded-full bg-[#012d8a] px-6 text-white hover:ring-2 hover:ring-[#012A8E] hover:ring-offset-2 dark:bg-[#EBE7E0] dark:text-black dark:ring-offset-[#4B4B4B] hover:dark:ring-[#EBE7E0] sm:self-auto"
+            onClick={() => setProofModalOpen(true)}
+          >
+            Ver Comprobante{transaction.proofsOfPayment.length > 1 ? 's' : ''}
+          </Button>
+        )}
       </div>
+
+      <ProofModal
+        isOpen={proofModalOpen}
+        proofs={transaction.proofsOfPayment || []}
+        onClose={() => setProofModalOpen(false)}
+      />
     </div>
   );
 }
