@@ -242,7 +242,7 @@ export default function InternalTransactionCalculator({
 
   return (
     <div className={`not-design-system flex w-full flex-col items-center`}>
-      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight p-2.5 sm:p-5 sm:shadow-md dark:bg-calculatorDark dark:text-white sm:min-h-[460px] lg-tablet:max-w-[590px]">
+      <div className="mat-card calculator-container flex w-full flex-col items-center rounded-2xl bg-calculatorLight p-2.5 sm:p-5 sm:shadow-md dark:bg-calculatorDark dark:text-white sm:min-h-[460px] lg:max-w-[590px]">
         <div className="relative flex w-full flex-col items-center text-[#012c8a] dark:text-darkText">
           <p className="flex w-full items-center gap-[7px] font-textFont text-custom-grayD dark:text-darkText mb-1 sm:mb-3">
             {selectedSendingSystem?.coin === 'ARS' ? (

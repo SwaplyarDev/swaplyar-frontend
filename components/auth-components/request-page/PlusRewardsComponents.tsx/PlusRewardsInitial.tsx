@@ -27,11 +27,11 @@ import {  useSession } from 'next-auth/react';
 
 interface Props {
   discounts: AdminDiscountsResponse;
-  userId: string;
+  memberCode: string;
   accessToken: string;
 }
 
-export default function PlusRewardInitial({ discounts, userId, accessToken }: Props) {
+export default function PlusRewardInitial({ discounts, memberCode, accessToken }: Props) {
   const { stars, quantity, loading, error, setData, setLoading, setError } = useRewardsStore();
   const { data: session } = useSession();
   
@@ -57,7 +57,7 @@ export default function PlusRewardInitial({ discounts, userId, accessToken }: Pr
 
   if (loading) {
     return (
-      <div className="mx-auto flex h-[600px] w-[80%] max-w-xl animate-pulse flex-col justify-between rounded-xl bg-gray-100 p-5 dark:bg-custom-grayD-800">
+      <div className="mx-auto flex h-[600px] w-full max-w-[388px] animate-pulse flex-col justify-between rounded-xl bg-gray-100 p-5 dark:bg-custom-grayD-800">
         <div className="mb-6 h-32 w-52 rounded bg-[#C2D4FF] dark:bg-custom-grayD-500" />
 
         <div className="flex flex-col items-end">
@@ -90,24 +90,24 @@ export default function PlusRewardInitial({ discounts, userId, accessToken }: Pr
  const isUserVerified = session?.user?.userValidated ?? null;
 
   return (
-    <section className="relative m-auto flex w-[80%] max-w-7xl items-center">
-      <section className="flex w-full flex-col justify-center rounded-lg font-light text-lightText dark:text-custom-whiteD xs-phone:p-8 md-phone:p-10 md:flex-row-reverse lg:flex-col">
-        <article className="flex flex-col justify-center xs:mx-auto xs:w-[388px] xs-phone:mb-8 lg:justify-between">
-          <div className="xs-mini-phone:w-64 xs-phone:w-48 md-phone:w-52 md:w-full lg:ml-0 lg:w-64">
+    <section className="relative flex w-full lg:max-w-[388px] items-center lg:items-start">
+      <section className="flex w-full flex-col gap-2 justify-center rounded-lg font-light text-lightText dark:text-custom-whiteD">
+        <article className="flex flex-col md-phone:flex-row justify-between items-center lg:justify-center md-phone:gap-7">
+          <div className="w-[187.5px]">
             <ImagePlusRewards />
           </div>
 
-          <article className="mb-5 text-end xs-phone:mb-6">
-            <p className="align-text-top text-sm xs-mini-phone:text-base">Tu Código de Miembro:</p>
-            <p className="title text-3xl font-bold xs-mini-phone:text-[32px] xs-phone:text-[36px] md-phone:text-[40px]">
-              {userId.toUpperCase()}
+          <article className="text-center md-phone:text-end">
+            <p className="align-text-top text-center text-base font-light">Tu Código de Miembro:</p>
+            <p className="font-textFont text-4xl">
+              {memberCode.toUpperCase()}
             </p>
           </article>
         </article>
 
         {!isUserVerified ? (
           userHave3Discount ? (
-            <div className="flex w-full flex-col items-center gap-[19px]">
+            <div className="flex w-full flex-col gap-[19px]">
               <WelcomeReward />
               <VerifyAccount />
             </div>
