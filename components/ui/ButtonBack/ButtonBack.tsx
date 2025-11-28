@@ -1,12 +1,14 @@
 'use client';
+
 import { useRouter } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
 
 interface ButtonBackProps {
-  route: string;
+  route?: string;
   isDark?: boolean;
   absolute?: boolean;
   className?: string;
+  onClick?: () => void;
 }
 
 const ButtonBack: React.FC<ButtonBackProps> = ({
@@ -14,13 +16,25 @@ const ButtonBack: React.FC<ButtonBackProps> = ({
   isDark = false,
   absolute = false,
   className = '',
+  onClick,
 }) => {
   const router = useRouter();
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+      return;
+    }
+
+    if (route) {
+      router.push(route);
+    }
+  };
 
   return (
     <button
       type="button"
-      onClick={() => router.push(route)}
+      onClick={handleClick}
       aria-label="Volver"
       className={`
         btn-back 

@@ -23,7 +23,12 @@ export const CardPlusRewards: React.FC<CardProps> = ({
       {sessionCardBlueYellow == true ? (
         <CardBlue memberCode={memberCode} />
       ) : sessionCardBlueYellow == false ? (
-        <CardYellow showVerify={showVerify} setShowVerify={setShowVerify} verifiedStatus={verifiedStatus} />
+        <CardYellow
+          showVerify={showVerify}
+          setShowVerify={setShowVerify}
+          verifiedStatus={verifiedStatus}
+          memberCode={memberCode}
+        />
       ) : (
         <div>cargando</div>
       )}
