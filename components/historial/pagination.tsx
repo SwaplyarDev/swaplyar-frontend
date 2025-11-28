@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/Button';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface PaginationProps {
   currentPage: number;
@@ -35,37 +35,37 @@ export function Pagination({ currentPage, totalPages, totalItems, itemsCount, on
 
   return (
     <>
-      <div className="mt-6 flex items-center justify-center gap-2">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => goToPage(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="h-8 w-8"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-
-        {getVisiblePages().map((page) => (
-          <Button
-            key={page}
-            variant={currentPage === page ? 'default' : 'outline'}
-            onClick={() => goToPage(page)}
-            className="h-8 w-8 px-0"
-          >
-            {page}
-          </Button>
-        ))}
-
-        <Button
-          variant="outline"
-          size="icon"
+      <div className="mt-6 flex items-center justify-evenly gap-2">
+        <button
+          type='button'
           onClick={() => goToPage(currentPage + 1)}
           disabled={currentPage === totalPages || totalPages === 0}
-          className="h-8 w-8"
+          className="size-8 md:size-10 rounded-full border border-gray-300 bg-custom-whiteD-500 dark:bg-custom-grayD-300 dark:text-black justify-items-center cursor-pointer"
         >
-          <ChevronRight className="h-4 w-4" />
-        </Button>
+          <ArrowLeft className="h-4 w-4" />
+        </button>
+
+        {getVisiblePages().map((page) => (
+          <button
+            key={page}
+            type='button'
+            onClick={() => goToPage(page)}
+            className={`size-8 md:size-10 rounded-full bg-custom-whiteD-500 dark:bg-custom-grayD-300 justify-items-center cursor-pointer ${currentPage === page ? 'bg-blue-light-50 text-blue-light-700 dark:text-black' : ''}`}
+          >
+            {page}
+          </button>
+        ))}
+
+
+        <button
+          type='button'
+          onClick={() => goToPage(currentPage + 1)}
+          disabled={currentPage === totalPages || totalPages === 0}
+          className="size-8 md:size-10 rounded-full border border-gray-300 bg-custom-whiteD-500 dark:bg-custom-grayD-300 dark:text-black justify-items-center cursor-pointer"
+        >
+          <ArrowRight className="h-4 w-4" />
+        </button>
+
       </div>
 
       <p className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">

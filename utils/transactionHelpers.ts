@@ -14,17 +14,17 @@ export const isCompleted = (status: string): boolean => {
 export const getEstadoEspanol = (status: string): string => {
   const statusMap: Record<string, string> = {
     completed: 'Completada',
-    approved: 'Completada',
-    in_transit: 'En tránsito',
-    refund_in_transit: 'Reembolso en tránsito',
-    pending: 'Pendiente',
-    review_payment: 'En revisión de pago',
-    modified: 'Modificada',
-    discrepancy: 'Discrepancia',
-    rejected: 'Rechazada',
+    approved: 'Solicitud Aprobada',
+    in_transit: 'Transferencia en tránsito',
+    refund_in_transit: 'Reembolso en camino',
+    pending: 'Enviado / en espera',
+    review_payment: 'Pago en revisión',
+    modified: 'Editada / modificada',
+    discrepancy: 'Hay problema / discrepancia',
+    rejected: 'Solicitud rechazada',
     cancelled: 'Cancelada',
     canceled: 'Cancelada',
-    refunded: 'Reembolsada',
+    refunded: 'Reembolso confirmado',
   };
 
   return statusMap[status.toLowerCase()] || status;
@@ -53,3 +53,18 @@ export const formatTime = (dateString: string): string => {
     second: '2-digit',
   });
 };
+
+export function getPlatformDisplayName(platformId: string): string {
+  switch (platformId) {
+    case 'virtual_bank':
+      return 'Banco Virtual';
+    case 'bank':
+      return 'Banco';
+    case 'pix':
+      return 'Pix';
+    case 'receiver_crypto':
+      return 'Crypto';
+    default:
+      return 'Método Desconocido';
+  }
+}

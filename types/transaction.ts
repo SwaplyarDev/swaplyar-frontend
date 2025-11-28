@@ -59,11 +59,22 @@ export interface TransactionData {
   countryTransaction: string;
   message: string;
   createdAt: string;
-  finalStatus: string;
+  finalStatus: | 'completed'
+    | 'approved'
+    | 'in_transit'
+    | 'refund_in_transit'
+    | 'pending'
+    | 'review_payment'
+    | 'modified'
+    | 'discrepancy'
+    | 'rejected'
+    | 'cancelled'
+    | 'canceled'
+    | 'refunded';
   senderAccount: SenderAccount;
   receiverAccount: ReceiverAccount;
   note: Note;
-  proofOfPayment: ProofOfPayment;
+  proofsOfPayment: ProofOfPayment[];
   amount: Amount;
   isNoteVerified: boolean;
   noteVerificationExpiresAt: string;
